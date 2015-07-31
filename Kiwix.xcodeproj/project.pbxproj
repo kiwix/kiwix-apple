@@ -1,0 +1,523 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		97EF99D71B6C1C6100FF68D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EF99D61B6C1C6100FF68D9 /* AppDelegate.swift */; };
+		97EF99D91B6C1C6100FF68D9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EF99D81B6C1C6100FF68D9 /* ViewController.swift */; };
+		97EF99DC1B6C1C6100FF68D9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97EF99DA1B6C1C6100FF68D9 /* Main.storyboard */; };
+		97EF99DF1B6C1C6100FF68D9 /* Kiwix.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 97EF99DD1B6C1C6100FF68D9 /* Kiwix.xcdatamodeld */; };
+		97EF99E11B6C1C6100FF68D9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97EF99E01B6C1C6100FF68D9 /* Assets.xcassets */; };
+		97EF99E41B6C1C6100FF68D9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97EF99E21B6C1C6100FF68D9 /* LaunchScreen.storyboard */; };
+		97EF99EF1B6C1C6100FF68D9 /* KiwixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EF99EE1B6C1C6100FF68D9 /* KiwixTests.swift */; };
+		97EF99FA1B6C1C6100FF68D9 /* KiwixUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EF99F91B6C1C6100FF68D9 /* KiwixUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		97EF99EB1B6C1C6100FF68D9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97EF99CB1B6C1C6100FF68D9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 97EF99D21B6C1C6100FF68D9;
+			remoteInfo = Kiwix;
+		};
+		97EF99F61B6C1C6100FF68D9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97EF99CB1B6C1C6100FF68D9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 97EF99D21B6C1C6100FF68D9;
+			remoteInfo = Kiwix;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		97EF99D31B6C1C6100FF68D9 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		97EF99D61B6C1C6100FF68D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		97EF99D81B6C1C6100FF68D9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		97EF99DB1B6C1C6100FF68D9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		97EF99DE1B6C1C6100FF68D9 /* Kiwix.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Kiwix.xcdatamodel; sourceTree = "<group>"; };
+		97EF99E01B6C1C6100FF68D9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		97EF99E31B6C1C6100FF68D9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		97EF99E51B6C1C6100FF68D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		97EF99EA1B6C1C6100FF68D9 /* KiwixTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KiwixTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		97EF99EE1B6C1C6100FF68D9 /* KiwixTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KiwixTests.swift; sourceTree = "<group>"; };
+		97EF99F01B6C1C6100FF68D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		97EF99F51B6C1C6100FF68D9 /* KiwixUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KiwixUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		97EF99F91B6C1C6100FF68D9 /* KiwixUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KiwixUITests.swift; sourceTree = "<group>"; };
+		97EF99FB1B6C1C6100FF68D9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		97EF99D01B6C1C6100FF68D9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		97EF99E71B6C1C6100FF68D9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		97EF99F21B6C1C6100FF68D9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		97EF99CA1B6C1C6100FF68D9 = {
+			isa = PBXGroup;
+			children = (
+				97EF99D51B6C1C6100FF68D9 /* Kiwix */,
+				97EF99ED1B6C1C6100FF68D9 /* KiwixTests */,
+				97EF99F81B6C1C6100FF68D9 /* KiwixUITests */,
+				97EF99D41B6C1C6100FF68D9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		97EF99D41B6C1C6100FF68D9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				97EF99D31B6C1C6100FF68D9 /* Kiwix.app */,
+				97EF99EA1B6C1C6100FF68D9 /* KiwixTests.xctest */,
+				97EF99F51B6C1C6100FF68D9 /* KiwixUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		97EF99D51B6C1C6100FF68D9 /* Kiwix */ = {
+			isa = PBXGroup;
+			children = (
+				97EF99D61B6C1C6100FF68D9 /* AppDelegate.swift */,
+				97EF99D81B6C1C6100FF68D9 /* ViewController.swift */,
+				97EF99DA1B6C1C6100FF68D9 /* Main.storyboard */,
+				97EF99E01B6C1C6100FF68D9 /* Assets.xcassets */,
+				97EF99E21B6C1C6100FF68D9 /* LaunchScreen.storyboard */,
+				97EF99E51B6C1C6100FF68D9 /* Info.plist */,
+				97EF99DD1B6C1C6100FF68D9 /* Kiwix.xcdatamodeld */,
+			);
+			path = Kiwix;
+			sourceTree = "<group>";
+		};
+		97EF99ED1B6C1C6100FF68D9 /* KiwixTests */ = {
+			isa = PBXGroup;
+			children = (
+				97EF99EE1B6C1C6100FF68D9 /* KiwixTests.swift */,
+				97EF99F01B6C1C6100FF68D9 /* Info.plist */,
+			);
+			path = KiwixTests;
+			sourceTree = "<group>";
+		};
+		97EF99F81B6C1C6100FF68D9 /* KiwixUITests */ = {
+			isa = PBXGroup;
+			children = (
+				97EF99F91B6C1C6100FF68D9 /* KiwixUITests.swift */,
+				97EF99FB1B6C1C6100FF68D9 /* Info.plist */,
+			);
+			path = KiwixUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		97EF99D21B6C1C6100FF68D9 /* Kiwix */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 97EF99FE1B6C1C6100FF68D9 /* Build configuration list for PBXNativeTarget "Kiwix" */;
+			buildPhases = (
+				97EF99CF1B6C1C6100FF68D9 /* Sources */,
+				97EF99D01B6C1C6100FF68D9 /* Frameworks */,
+				97EF99D11B6C1C6100FF68D9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Kiwix;
+			productName = Kiwix;
+			productReference = 97EF99D31B6C1C6100FF68D9 /* Kiwix.app */;
+			productType = "com.apple.product-type.application";
+		};
+		97EF99E91B6C1C6100FF68D9 /* KiwixTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 97EF9A011B6C1C6100FF68D9 /* Build configuration list for PBXNativeTarget "KiwixTests" */;
+			buildPhases = (
+				97EF99E61B6C1C6100FF68D9 /* Sources */,
+				97EF99E71B6C1C6100FF68D9 /* Frameworks */,
+				97EF99E81B6C1C6100FF68D9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				97EF99EC1B6C1C6100FF68D9 /* PBXTargetDependency */,
+			);
+			name = KiwixTests;
+			productName = KiwixTests;
+			productReference = 97EF99EA1B6C1C6100FF68D9 /* KiwixTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		97EF99F41B6C1C6100FF68D9 /* KiwixUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 97EF9A041B6C1C6100FF68D9 /* Build configuration list for PBXNativeTarget "KiwixUITests" */;
+			buildPhases = (
+				97EF99F11B6C1C6100FF68D9 /* Sources */,
+				97EF99F21B6C1C6100FF68D9 /* Frameworks */,
+				97EF99F31B6C1C6100FF68D9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				97EF99F71B6C1C6100FF68D9 /* PBXTargetDependency */,
+			);
+			name = KiwixUITests;
+			productName = KiwixUITests;
+			productReference = 97EF99F51B6C1C6100FF68D9 /* KiwixUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		97EF99CB1B6C1C6100FF68D9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = "Chris Li";
+				TargetAttributes = {
+					97EF99D21B6C1C6100FF68D9 = {
+						CreatedOnToolsVersion = 7.0;
+					};
+					97EF99E91B6C1C6100FF68D9 = {
+						CreatedOnToolsVersion = 7.0;
+						TestTargetID = 97EF99D21B6C1C6100FF68D9;
+					};
+					97EF99F41B6C1C6100FF68D9 = {
+						CreatedOnToolsVersion = 7.0;
+						TestTargetID = 97EF99D21B6C1C6100FF68D9;
+					};
+				};
+			};
+			buildConfigurationList = 97EF99CE1B6C1C6100FF68D9 /* Build configuration list for PBXProject "Kiwix" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 97EF99CA1B6C1C6100FF68D9;
+			productRefGroup = 97EF99D41B6C1C6100FF68D9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				97EF99D21B6C1C6100FF68D9 /* Kiwix */,
+				97EF99E91B6C1C6100FF68D9 /* KiwixTests */,
+				97EF99F41B6C1C6100FF68D9 /* KiwixUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		97EF99D11B6C1C6100FF68D9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97EF99E41B6C1C6100FF68D9 /* LaunchScreen.storyboard in Resources */,
+				97EF99E11B6C1C6100FF68D9 /* Assets.xcassets in Resources */,
+				97EF99DC1B6C1C6100FF68D9 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		97EF99E81B6C1C6100FF68D9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		97EF99F31B6C1C6100FF68D9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		97EF99CF1B6C1C6100FF68D9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97EF99D91B6C1C6100FF68D9 /* ViewController.swift in Sources */,
+				97EF99DF1B6C1C6100FF68D9 /* Kiwix.xcdatamodeld in Sources */,
+				97EF99D71B6C1C6100FF68D9 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		97EF99E61B6C1C6100FF68D9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97EF99EF1B6C1C6100FF68D9 /* KiwixTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		97EF99F11B6C1C6100FF68D9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97EF99FA1B6C1C6100FF68D9 /* KiwixUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		97EF99EC1B6C1C6100FF68D9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 97EF99D21B6C1C6100FF68D9 /* Kiwix */;
+			targetProxy = 97EF99EB1B6C1C6100FF68D9 /* PBXContainerItemProxy */;
+		};
+		97EF99F71B6C1C6100FF68D9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 97EF99D21B6C1C6100FF68D9 /* Kiwix */;
+			targetProxy = 97EF99F61B6C1C6100FF68D9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		97EF99DA1B6C1C6100FF68D9 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				97EF99DB1B6C1C6100FF68D9 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		97EF99E21B6C1C6100FF68D9 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				97EF99E31B6C1C6100FF68D9 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		97EF99FC1B6C1C6100FF68D9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		97EF99FD1B6C1C6100FF68D9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		97EF99FF1B6C1C6100FF68D9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Kiwix/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		97EF9A001B6C1C6100FF68D9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Kiwix/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		97EF9A021B6C1C6100FF68D9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = KiwixTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = self.KiwixTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kiwix.app/Kiwix";
+			};
+			name = Debug;
+		};
+		97EF9A031B6C1C6100FF68D9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = KiwixTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = self.KiwixTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kiwix.app/Kiwix";
+			};
+			name = Release;
+		};
+		97EF9A051B6C1C6100FF68D9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = KiwixUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = self.KiwixUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Kiwix;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		97EF9A061B6C1C6100FF68D9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = KiwixUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = self.KiwixUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Kiwix;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		97EF99CE1B6C1C6100FF68D9 /* Build configuration list for PBXProject "Kiwix" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97EF99FC1B6C1C6100FF68D9 /* Debug */,
+				97EF99FD1B6C1C6100FF68D9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		97EF99FE1B6C1C6100FF68D9 /* Build configuration list for PBXNativeTarget "Kiwix" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97EF99FF1B6C1C6100FF68D9 /* Debug */,
+				97EF9A001B6C1C6100FF68D9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		97EF9A011B6C1C6100FF68D9 /* Build configuration list for PBXNativeTarget "KiwixTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97EF9A021B6C1C6100FF68D9 /* Debug */,
+				97EF9A031B6C1C6100FF68D9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		97EF9A041B6C1C6100FF68D9 /* Build configuration list for PBXNativeTarget "KiwixUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97EF9A051B6C1C6100FF68D9 /* Debug */,
+				97EF9A061B6C1C6100FF68D9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		97EF99DD1B6C1C6100FF68D9 /* Kiwix.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				97EF99DE1B6C1C6100FF68D9 /* Kiwix.xcdatamodel */,
+			);
+			currentVersion = 97EF99DE1B6C1C6100FF68D9 /* Kiwix.xcdatamodel */;
+			path = Kiwix.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 97EF99CB1B6C1C6100FF68D9 /* Project object */;
+}
