@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8173.3" systemVersion="14E11f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="pv8-i6-4nu">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8142"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="cgX-xk-Of8">
+            <objects>
+                <navigationController id="pv8-i6-4nu" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="NDB-rp-mQ7">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="RdH-Ae-Tri" kind="relationship" relationship="rootViewController" id="Q7c-Ff-ouz"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kMj-Xs-VLg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-176" y="442"/>
+        </scene>
+        <!--Main-->
+        <scene sceneID="8T7-uI-oz6">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Main" id="fUx-aq-5h2" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0ZU-Di-ic3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="959" y="36"/>
+        </scene>
+        <!--Main View Controller-->
+        <scene sceneID="Rna-Dp-IjZ">
+            <objects>
+                <viewController id="RdH-Ae-Tri" customClass="MainViewController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="J87-2F-dD8"/>
+                        <viewControllerLayoutGuide type="bottom" id="rbO-pU-qQ3"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="KLx-mm-ftm">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XOZ-rq-yWa">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="XOZ-rq-yWa" firstAttribute="leading" secondItem="KLx-mm-ftm" secondAttribute="leadingMargin" constant="-20" id="Bah-u9-XkM"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="XOZ-rq-yWa" secondAttribute="trailing" constant="-20" id="VBP-23-XJS"/>
+                            <constraint firstItem="XOZ-rq-yWa" firstAttribute="top" secondItem="J87-2F-dD8" secondAttribute="bottom" constant="-64" id="avZ-Tb-trq"/>
+                            <constraint firstItem="rbO-pU-qQ3" firstAttribute="top" secondItem="XOZ-rq-yWa" secondAttribute="bottom" id="xdX-jJ-F0n"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="AVT-nD-0Qn">
+                        <rightBarButtonItems>
+                            <barButtonItem title="Setting" id="qNT-b8-plZ"/>
+                            <barButtonItem title="Lib" id="lHz-4D-iSz">
+                                <connections>
+                                    <segue destination="fUx-aq-5h2" kind="popoverPresentation" identifier="ShowLibrary" popoverAnchorBarButtonItem="lHz-4D-iSz" id="ACl-Mn-9pm">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                    </segue>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="X8l-UB-7fR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="503" y="442"/>
+        </scene>
+    </scenes>
+</document>
