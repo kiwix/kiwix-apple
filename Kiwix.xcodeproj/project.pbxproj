@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		974F2FCC1B7AD85D000DC08E /* LibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974F2FCB1B7AD85D000DC08E /* LibraryViewController.swift */; };
+		974F2FD31B7BA562000DC08E /* iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 974F2FD21B7BA562000DC08E /* iPhone.storyboard */; };
 		978710241B6F188500CD3523 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978710231B6F188500CD3523 /* Preference.swift */; };
 		978710271B6FD82D00CD3523 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978710261B6FD82D00CD3523 /* Utilities.swift */; };
 		978710291B6FD93700CD3523 /* ISOLangCode.plist in Resources */ = {isa = PBXBuildFile; fileRef = 978710281B6FD93700CD3523 /* ISOLangCode.plist */; };
@@ -20,7 +21,7 @@
 		97DFDA3F1B7965D6004AA061 /* iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97DFDA3E1B7965D6004AA061 /* iPad.storyboard */; };
 		97EF99D71B6C1C6100FF68D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EF99D61B6C1C6100FF68D9 /* AppDelegate.swift */; };
 		97EF99D91B6C1C6100FF68D9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EF99D81B6C1C6100FF68D9 /* ViewController.swift */; };
-		97EF99DC1B6C1C6100FF68D9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97EF99DA1B6C1C6100FF68D9 /* Main.storyboard */; };
+		97EF99DC1B6C1C6100FF68D9 /* Library.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97EF99DA1B6C1C6100FF68D9 /* Library.storyboard */; };
 		97EF99DF1B6C1C6100FF68D9 /* Kiwix.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 97EF99DD1B6C1C6100FF68D9 /* Kiwix.xcdatamodeld */; };
 		97EF99E11B6C1C6100FF68D9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97EF99E01B6C1C6100FF68D9 /* Assets.xcassets */; };
 		97EF99E41B6C1C6100FF68D9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97EF99E21B6C1C6100FF68D9 /* LaunchScreen.storyboard */; };
@@ -53,6 +54,7 @@
 
 /* Begin PBXFileReference section */
 		974F2FCB1B7AD85D000DC08E /* LibraryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryViewController.swift; sourceTree = "<group>"; };
+		974F2FD21B7BA562000DC08E /* iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iPhone.storyboard; sourceTree = "<group>"; };
 		978710231B6F188500CD3523 /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		978710261B6FD82D00CD3523 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		978710281B6FD93700CD3523 /* ISOLangCode.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ISOLangCode.plist; sourceTree = "<group>"; };
@@ -67,7 +69,7 @@
 		97EF99D31B6C1C6100FF68D9 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97EF99D61B6C1C6100FF68D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		97EF99D81B6C1C6100FF68D9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		97EF99DB1B6C1C6100FF68D9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		97EF99DB1B6C1C6100FF68D9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Library.storyboard; sourceTree = "<group>"; };
 		97EF99DE1B6C1C6100FF68D9 /* Kiwix.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Kiwix.xcdatamodel; sourceTree = "<group>"; };
 		97EF99E01B6C1C6100FF68D9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97EF99E31B6C1C6100FF68D9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -179,8 +181,9 @@
 				9787102D1B6FEAD300CD3523 /* View */,
 				97EF9A1B1B6C532200FF68D9 /* Coredata */,
 				97EF9A1A1B6C531400FF68D9 /* Utilities */,
-				97EF99DA1B6C1C6100FF68D9 /* Main.storyboard */,
+				97EF99DA1B6C1C6100FF68D9 /* Library.storyboard */,
 				97DFDA3E1B7965D6004AA061 /* iPad.storyboard */,
+				974F2FD21B7BA562000DC08E /* iPhone.storyboard */,
 				9787102A1B6FD94100CD3523 /* Supporting */,
 				97EF9A071B6C1CFB00FF68D9 /* CodeTest.playground */,
 			);
@@ -363,8 +366,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				97EF99E41B6C1C6100FF68D9 /* LaunchScreen.storyboard in Resources */,
+				974F2FD31B7BA562000DC08E /* iPhone.storyboard in Resources */,
 				97EF99E11B6C1C6100FF68D9 /* Assets.xcassets in Resources */,
-				97EF99DC1B6C1C6100FF68D9 /* Main.storyboard in Resources */,
+				97EF99DC1B6C1C6100FF68D9 /* Library.storyboard in Resources */,
 				97DFDA3F1B7965D6004AA061 /* iPad.storyboard in Resources */,
 				978710291B6FD93700CD3523 /* ISOLangCode.plist in Resources */,
 			);
@@ -444,12 +448,12 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		97EF99DA1B6C1C6100FF68D9 /* Main.storyboard */ = {
+		97EF99DA1B6C1C6100FF68D9 /* Library.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				97EF99DB1B6C1C6100FF68D9 /* Base */,
 			);
-			name = Main.storyboard;
+			name = Library.storyboard;
 			sourceTree = "<group>";
 		};
 		97EF99E21B6C1C6100FF68D9 /* LaunchScreen.storyboard */ = {

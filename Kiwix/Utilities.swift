@@ -124,13 +124,19 @@ class Utilities {
     class func readResumeData(book: Book) -> NSData? {
         let tempDownloadLocation = NSURL(fileURLWithPath: libDirPath()).URLByAppendingPathComponent("DownloadTemp", isDirectory: true)
         let tempFileURL = tempDownloadLocation.URLByAppendingPathComponent(book.idString!, isDirectory: false)
-        return NSData(contentsOfURL: tempFileURL)
+        if let path = tempFileURL.path {
+            return NSFileManager.defaultManager().contentsAtPath(path)
+        } else {
+            return nil
+        }
     }
     
     class func removeResumeData(book: Book) {
         let tempDownloadLocation = NSURL(fileURLWithPath: libDirPath()).URLByAppendingPathComponent("DownloadTemp", isDirectory: true)
         let tempFileURL = tempDownloadLocation.URLByAppendingPathComponent(book.idString!, isDirectory: false)
-        removeFile(AtLocation: tempDownloadLocation)
+        if NSFileManager.defaultManager().fileExistsAtPath(tempFileURL.path!) {
+            removeFile(AtLocation: tempDownloadLocation)
+        }
     }
     
     // MARK: - Alert

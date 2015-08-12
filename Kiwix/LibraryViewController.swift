@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class LibraryViewController: UITableViewController, NSFetchedResultsControllerDelegate, BookCellDelegate {
+class LibraryViewController: UITableViewController, NSFetchedResultsControllerDelegate, BookCellDelegate, DownloaderDelegate {
 
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
@@ -22,11 +22,12 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
         super.viewDidLoad()
         
         performFetch()
-        adjustForiPad()
+        adjustForDevice()
         configureTableView()
+        Downloader.sharedInstance.delegate = self
         
         NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "libraryFilteredLanguages", options: NSKeyValueObservingOptions.New, context: nil)
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: "resetDownloadProgressShouldRefresh", userInfo: nil, repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "resetDownloadProgressShouldRefresh", userInfo: nil, repeats: true)
         LibraryRefresher.sharedInstance.refreshLibraryIfNecessary()
     }
     
@@ -41,8 +42,13 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
             self.onlineFetchedResultController.fetchRequest.predicate = onlineCompoundPredicate()
             self.indexPathsShouldDisplayDetailDic["Online"]?.removeAll()
             performFetch()
-            tableView.reloadData()
+            refreshTableView()
         }
+    }
+    
+    func refreshTableView() {
+        tableView.reloadData()
+        tableView.tableFooterView = tableFooterView()
     }
     
     func resetDownloadProgressShouldRefresh() {
@@ -60,10 +66,13 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
         tableView.backgroundColor = UIColor.groupTableViewBackgroundColor()
     }
     
-    func adjustForiPad() {
+    func adjustForDevice() {
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
             self.preferredContentSize = CGSizeMake(400, 500)
             self.edgesForExtendedLayout = .None
+        } else if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
+            let dismiss = UIBarButtonItem(title: "dismiss", style: .Plain, target: self, action: "dismissSelf")
+            self.navigationItem.leftBarButtonItem = dismiss
         }
     }
     
@@ -71,35 +80,59 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
     
     func didTapOnAccessoryViewForCell(atIndexPath indexPath: NSIndexPath?) {
         if segmentedControl.selectedSegmentIndex == 1 {
+            if let cell = tableView.cellForRowAtIndexPath(indexPath!) as? BookDownloadingCell, book = selectedFetchedResultController.objectAtIndexPath(indexPath!) as? Book {
+                switch cell.downloadState {
+                case BookDownloadState.CanPause:
+                    Downloader.sharedInstance.pauseDownloadBook(book)
+                case BookDownloadState.CanResume:
+                    Downloader.sharedInstance.resumeDownloadBook(book)
+                default:
+                    return
+                }
+            }
         } else {
-            let cell = tableView.cellForRowAtIndexPath(indexPath!) as! BookOrdinaryCell
-            let book = selectedFetchedResultController.objectAtIndexPath(indexPath!) as! Book
-            
-            switch cell.downloadState {
-            case BookDownloadState.GoAhead:
-                Downloader.sharedInstance.startDownloadBook(book)
-            case BookDownloadState.WithCaution:
-                let actionProceed = UIAlertAction(title: "Proceed", style: .Default, handler: { (action) -> Void in
+            if let cell = tableView.cellForRowAtIndexPath(indexPath!) as? BookOrdinaryCell, book = selectedFetchedResultController.objectAtIndexPath(indexPath!) as? Book {
+                switch cell.downloadState {
+                case BookDownloadState.GoAhead:
                     Downloader.sharedInstance.startDownloadBook(book)
-                })
-                let actionCancel = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-                let alert = Utilities.alertWith("Space alert.", message: "This book will take up more than 80% of your free space.", actions: [actionProceed, actionCancel])
-                self.navigationController?.presentViewController(alert, animated: true, completion: nil)
-            case BookDownloadState.NotAllowed:
-                let actionCancel = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
-                let alert = Utilities.alertWith("Not enough space.", message: "Please free up some space and try again.", actions: [actionCancel])
-                self.navigationController?.presentViewController(alert, animated: true, completion: nil)
-            case BookDownloadState.Finished:
-                let actionProceed = UIAlertAction(title: "Yes", style: .Default, handler: { (action) -> Void in
-                    if Utilities.removeBookFromDisk(book) == true {
-                        book.managedObjectContext?.deleteObject(book)
+                case BookDownloadState.WithCaution:
+                    let actionProceed = UIAlertAction(title: "Proceed", style: .Default, handler: { (action) -> Void in
+                        Downloader.sharedInstance.startDownloadBook(book)
+                    })
+                    let actionCancel = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+                    let alert = Utilities.alertWith("Space alert.", message: "This book will take up more than 80% of your free space.", actions: [actionProceed, actionCancel])
+                    self.navigationController?.presentViewController(alert, animated: true, completion: nil)
+                case BookDownloadState.NotAllowed:
+                    let actionCancel = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+                    let alert = Utilities.alertWith("Not enough space.", message: "Please free up some space and try again.", actions: [actionCancel])
+                    self.navigationController?.presentViewController(alert, animated: true, completion: nil)
+                case BookDownloadState.Finished:
+                    let actionProceed = UIAlertAction(title: "Yes", style: .Default, handler: { (action) -> Void in
+                        if Utilities.removeBookFromDisk(book) == true {
+                        }
+                    })
+                    let actionCancel = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+                    let alert = Utilities.alertWith("Delete the book?", message: "This is not recoverable.", actions: [actionProceed, actionCancel])
+                    self.navigationController?.presentViewController(alert, animated: true, completion: nil)
+                default:
+                    return
+                }
+            }
+        }
+    }
+    
+    // MARK: DownloaderDelegate
+    
+    func bookDownloadProgressUpdate(book: Book, totalBytesWritten: Int64) {
+        if segmentedControl.selectedSegmentIndex == 1 {
+            if let indexPath = self.downloadFetchedResultController.indexPathForObject(book), visibleIndexPaths = tableView.indexPathsForVisibleRows {
+                if visibleIndexPaths.contains(indexPath) {
+                    if let cell = tableView.cellForRowAtIndexPath(indexPath) as? BookDownloadingCell, fileSize = book.fileSize?.longLongValue {
+                        cell.progressView.progress = Float(totalBytesWritten)/Float(fileSize * 1024)
+                        cell.fileSizeLabel.text = Utilities.formattedFileSizeStringFromByteCount(totalBytesWritten) + " of " + Utilities.formattedFileSizeStringFromByteCount(fileSize * 1024)
+                        cell.progressLabel.text = String(format: "%.0f%%", cell.progressView.progress*100)
                     }
-                })
-                let actionCancel = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
-                let alert = Utilities.alertWith("Delete the book?", message: "This is not recoverable.", actions: [actionProceed, actionCancel])
-                self.navigationController?.presentViewController(alert, animated: true, completion: nil)
-            default:
-                return
+                }
             }
         }
     }
@@ -111,8 +144,11 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let sectionInfo = self.selectedFetchedResultController.sections![section]
-        return sectionInfo.numberOfObjects
+        if let sectionInfo = self.selectedFetchedResultController.sections?[section] {
+            return sectionInfo.numberOfObjects
+        } else {
+            return 0
+        }
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -150,16 +186,16 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if segmentedControl.selectedSegmentIndex == 0 || segmentedControl.selectedSegmentIndex == 2 {
             let cell = tableView.dequeueReusableCellWithIdentifier("BookOrdinaryCell", forIndexPath: indexPath)
-            self.configureCell(cell, atIndexPath: indexPath, animated: false)
+            self.configureCell(cell, atIndexPath: indexPath)
             return cell
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("BookDownloadingCell", forIndexPath: indexPath)
-            self.configureCell(cell, atIndexPath: indexPath, animated: false)
+            self.configureCell(cell, atIndexPath: indexPath)
             return cell
         }
     }
     
-    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath, animated: Bool) {
+    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         if let book = selectedFetchedResultController.objectAtIndexPath(indexPath) as? Book {
             if cell.isKindOfClass(BookOrdinaryCell) {
                 let cell = cell as! BookOrdinaryCell
@@ -181,11 +217,10 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
                 cell.indexPath = indexPath
                 cell.delegate = self
                 if let totalBytesWritten = Downloader.sharedInstance.totalBytesWrittenDic[book.idString!], fileSize = book.fileSize?.longLongValue {
-                    if !animated || downloadProgressShouldRefresh {
+                    if downloadProgressShouldRefresh {
                         cell.progressView.setProgress(Float(totalBytesWritten)/Float(fileSize * 1024), animated: false)
                         cell.fileSizeLabel.text = Utilities.formattedFileSizeStringFromByteCount(totalBytesWritten) + " of " + Utilities.formattedFileSizeStringFromByteCount(fileSize * 1024)
                     }
-                    if animated {downloadProgressShouldRefresh = false}
                 } else {
                     cell.progressView.setProgress(0.0, animated: false)
                     cell.fileSizeLabel.text = "Unknown"
@@ -220,15 +255,17 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         if segmentedControl.selectedSegmentIndex == 0 ||  segmentedControl.selectedSegmentIndex == 2 {
-            let header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
-            header.textLabel!.font = UIFont.boldSystemFontOfSize(14)
+            if let header = view as? UITableViewHeaderFooterView {
+                header.textLabel!.font = UIFont.boldSystemFontOfSize(14)
+            }
         }
     }
     
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let cancelAction = UITableViewRowAction(style: .Destructive, title: "Cancel") { (action, indexPath) -> Void in
-            let book = self.selectedFetchedResultController.objectAtIndexPath(indexPath) as! Book
-            Downloader.sharedInstance.cancelDownloadBook(book)
+            if let book = self.selectedFetchedResultController.objectAtIndexPath(indexPath) as? Book {
+                Downloader.sharedInstance.cancelDownloadBook(book)
+            }
         }
         return [cancelAction]
     }
@@ -272,23 +309,20 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
     func downloadStateOfBook(book: Book) -> BookDownloadState {
         let bookSizeInBytes = book.fileSize!.longLongValue * 1024
         let freeSpaceInBytes = Utilities.availableDiskspaceInBytes()
-        if segmentedControl.selectedSegmentIndex == 1 {
-            if book.hasResumeData == nil {
-                return .CanPause
+        switch book.downloadState!.integerValue {
+        case 1:
+            return .CanPause
+        case 2:
+            return .CanResume
+        case 3:
+            return .Finished
+        default:
+            if Int64(0.8 * Double(freeSpaceInBytes)) > bookSizeInBytes {
+                return .GoAhead
+            } else if freeSpaceInBytes < bookSizeInBytes{
+                return .NotAllowed
             } else {
-                return .CanResume
-            }
-        } else {
-            if book.isLocal == true {
-                return .Finished
-            } else {
-                if Int64(0.8 * Double(freeSpaceInBytes)) > bookSizeInBytes {
-                    return .GoAhead
-                } else if freeSpaceInBytes < bookSizeInBytes{
-                    return .NotAllowed
-                } else {
-                    return .WithCaution
-                }
+                return .WithCaution
             }
         }
     }
@@ -340,7 +374,7 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
         let langDescriptor = NSSortDescriptor(key: "language", ascending: true)
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
-        fetchRequest.predicate = NSPredicate(format: "isLocal == NO AND totalBytesWritten != nil", argumentArray: nil)
+        fetchRequest.predicate = NSPredicate(format: "downloadState > 0 AND downloadState < 3", argumentArray: nil)
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "language", cacheName: "DownloadFetchedResultsController")
         fetchedResultsController.delegate = self
         return fetchedResultsController
@@ -352,7 +386,7 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
         let langDescriptor = NSSortDescriptor(key: "language", ascending: true)
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
-        fetchRequest.predicate = NSPredicate(format: "isLocal == YES", argumentArray: nil)
+        fetchRequest.predicate = NSPredicate(format: "downloadState = 3", argumentArray: nil)
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "language", cacheName: "LocalFetchedResultsController")
         fetchedResultsController.delegate = self
         return fetchedResultsController
@@ -384,19 +418,19 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
             return nil
             }()
         
-        let isNotLocalPredicate = NSPredicate(format: "isLocal == NO AND totalBytesWritten == nil", argumentArray: nil)
+        let isNotLocalPredicate = NSPredicate(format: "downloadState = 0", argumentArray: nil)
         
-        if langCompoundPredicate != nil {
-            return NSCompoundPredicate(andPredicateWithSubpredicates: [langCompoundPredicate!, isNotLocalPredicate])
+        if let langCompoundPredicate = langCompoundPredicate {
+            return NSCompoundPredicate(andPredicateWithSubpredicates: [langCompoundPredicate, isNotLocalPredicate])
         } else {
             return isNotLocalPredicate
         }
     }
     
     func performFetch() {
-//        NSFetchedResultsController.deleteCacheWithName("DownloadFetchedResultsController")
-//        NSFetchedResultsController.deleteCacheWithName("LocalFetchedResultsController")
-//        NSFetchedResultsController.deleteCacheWithName("OnlineFetchedResultsController")
+        NSFetchedResultsController.deleteCacheWithName("DownloadFetchedResultsController")
+        NSFetchedResultsController.deleteCacheWithName("LocalFetchedResultsController")
+        NSFetchedResultsController.deleteCacheWithName("OnlineFetchedResultsController")
         do {
             try self.onlineFetchedResultController.performFetch()
             try self.downloadFetchedResultController.performFetch()
@@ -447,7 +481,7 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
             case .Delete:
                 tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
             case .Update:
-                self.configureCell(tableView.cellForRowAtIndexPath(indexPath!)!, atIndexPath: indexPath!, animated: true)
+                self.configureCell(tableView.cellForRowAtIndexPath(indexPath!)!, atIndexPath: indexPath!)
             case .Move:
                 tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
                 tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
@@ -469,7 +503,10 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
     }
     
     @IBAction func segmentedControlChanged(sender: UISegmentedControl) {
-        tableView.reloadData()
-        tableView.tableFooterView = tableFooterView()
+        refreshTableView()
+    }
+    
+    func dismissSelf() {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
 }

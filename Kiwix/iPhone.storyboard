@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8173.3" systemVersion="14E11f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wpK-8c-XK0">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8142"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="6aq-2N-u9H">
+            <objects>
+                <navigationController toolbarHidden="NO" id="wpK-8c-XK0" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1vr-iG-WgK">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="KfF-jD-sHy">
+                        <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="qTg-eN-Nvh" kind="relationship" relationship="rootViewController" id="LLB-vg-tDn"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="reF-gP-dhT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-176" y="442"/>
+        </scene>
+        <!--Library-->
+        <scene sceneID="cXa-Ah-5Gx">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Library" id="KJd-7p-YvV" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eXv-8M-Nc2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="959" y="36"/>
+        </scene>
+        <!--Main View Controller-->
+        <scene sceneID="rvt-dH-AMZ">
+            <objects>
+                <viewController id="qTg-eN-Nvh" customClass="MainViewController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="DNf-0Z-EAd"/>
+                        <viewControllerLayoutGuide type="bottom" id="y8h-t2-XGb"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="KmZ-lh-egO">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dsR-lN-68d">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="dsR-lN-68d" secondAttribute="trailing" constant="-20" id="E74-i4-wZl"/>
+                            <constraint firstItem="dsR-lN-68d" firstAttribute="leading" secondItem="KmZ-lh-egO" secondAttribute="leadingMargin" constant="-20" id="aGL-67-CoL"/>
+                            <constraint firstItem="dsR-lN-68d" firstAttribute="top" secondItem="DNf-0Z-EAd" secondAttribute="bottom" constant="-64" id="k0F-Za-Cf9"/>
+                            <constraint firstItem="y8h-t2-XGb" firstAttribute="top" secondItem="dsR-lN-68d" secondAttribute="bottom" constant="-44" id="raK-eQ-du0"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="rcT-9G-0xZ"/>
+                        <barButtonItem title="Lib" id="3gp-fu-d3D">
+                            <connections>
+                                <segue destination="KJd-7p-YvV" kind="popoverPresentation" identifier="ShowLibrary" popoverAnchorBarButtonItem="3gp-fu-d3D" id="RMl-E0-Xiq">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem title="Setting" id="pXS-gZ-iQB"/>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" id="0tB-KF-gWw"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3HW-kk-ro5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="503" y="442"/>
+        </scene>
+    </scenes>
+</document>

@@ -77,7 +77,7 @@ class Book: NSManagedObject {
     
     class func allOnlineBookIDs(context: NSManagedObjectContext) -> [String] {
         let fetchRequest = NSFetchRequest(entityName: "Book")
-        fetchRequest.predicate = NSPredicate(format: "isLocal = NO AND totalBytesWritten = nil")
+        fetchRequest.predicate = NSPredicate(format: "downloadState == 0")
         
         do {
             let matches = try context.executeFetchRequest(fetchRequest)
@@ -89,13 +89,13 @@ class Book: NSManagedObject {
         }
     }
     
-    class func allBooksWithBytesWritten(context: NSManagedObjectContext) -> [Book]? {
+    class func allPausedBooks(context: NSManagedObjectContext) -> [Book]? {
         let fetchRequest = NSFetchRequest(entityName: "Book")
-        fetchRequest.predicate = NSPredicate(format: "totalBytesWritten != nil")
+        fetchRequest.predicate = NSPredicate(format: "downloadState == 2")
         
         do {
-            let matches = try context.executeFetchRequest(fetchRequest)
-            return matches as? [Book]
+            let matches = try context.executeFetchRequest(fetchRequest) as? [Book]
+            return matches
         } catch let error as NSError {
             // failure
             print("Fetch failed: \(error.localizedDescription)")
