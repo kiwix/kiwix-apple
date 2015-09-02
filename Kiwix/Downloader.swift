@@ -11,21 +11,50 @@ import UIKit
 class Downloader: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSURLSessionTaskDelegate{
     static let sharedInstance = Downloader()
     var delegate: DownloaderDelegate?
-    
-    var urlSessionDic = [String: NSURLSession]()
-    var booksDic = [String: Book]()
-    var totalBytesWrittenDic = [String: Int64]()
-    
-    override init() {
+    var booksDic: [String: Book] = {
         let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
-        if let pausedBooks = Book.allPausedBooks(managedObjectContext) {
-            for book in pausedBooks {
-                if let idString = book.idString, totalBytesWritten = book.totalBytesWritten?.longLongValue {
-                    booksDic[idString] = book
-                    totalBytesWrittenDic[idString] = totalBytesWritten
-                }
+        if let bookDownloading = Book.allDownloadingBooks(managedObjectContext), let bookPaused = Book.allPausedBooks(managedObjectContext) {
+            let books = bookPaused + bookDownloading
+            var booksDic = [String: Book]()
+            for book in books {
+                booksDic[book.idString!] = book
+                book.downloadState = 2
+            }
+            return booksDic
+        } else {
+            return [String: Book]()
+        }
+    }()
+    
+    lazy var totalBytesWrittenDic: [String: Int64] = {
+        var totalBytesWrittenDic = [String: Int64]()
+        for (idString, book) in self.booksDic {
+            let totalBytesWritten = book.totalBytesWritten ?? 0.0
+            totalBytesWrittenDic[book.idString!] = totalBytesWritten.longLongValue
+        }
+        return totalBytesWrittenDic
+    }()
+    
+    lazy var urlSessionDic = [String: NSURLSession]()
+    
+    func saveTotalBytesWrittenToCoredata() {
+        for (idString, totalBytesWritten) in totalBytesWrittenDic {
+            if let book = booksDic[idString] {
+                book.totalBytesWritten = NSNumber(longLong: totalBytesWritten)
+            } else {
+                print("Error: didn't find book with \(idString) in booksdic")
             }
         }
+    }
+    
+    func rejoinSessionWithIdentifier(identifier: String) {
+        let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(identifier)
+        let session = NSURLSession(configuration: configuration, delegate: Downloader.sharedInstance, delegateQueue: NSOperationQueue.mainQueue())
+        let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+        let book = Book.bookWithIDString(identifier, context: managedObjectContext)
+        urlSessionDic[identifier] = session
+        booksDic[identifier] = book
+        totalBytesWrittenDic[identifier] = (book?.totalBytesWritten ?? 0.0).longLongValue
     }
     
     func sessionWithIdentifier(identifier: String) -> NSURLSession {
@@ -33,6 +62,7 @@ class Downloader: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, 
             return session
         } else {
             let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(identifier)
+            configuration.allowsCellularAccess = Preference.downloaderAllowCellularData
             configuration.timeoutIntervalForRequest = 15.0
             let session = NSURLSession(configuration: configuration, delegate: self, delegateQueue: nil)
             return session
@@ -94,12 +124,14 @@ class Downloader: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, 
             let session = sessionWithIdentifier(book.idString!)
             session.downloadTaskWithResumeData(resumeData).resume()
             urlSessionDic[book.idString!] = session
+            booksDic[book.idString!] = book
         } else {
-            print("Resume book download failed, cannot read temp data of book \(book.idString!) successfully")
+            print("Resume book download failed, cannot read temp data of book \(book.idString!) successfully, restart download")
+            startDownloadBook(book)
         }
     }
     
-    // MARK: NSURLSessionTaskDelegate
+    // MARK: - NSURLSessionTaskDelegate
     
     func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
         
@@ -136,7 +168,31 @@ class Downloader: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, 
     }
     
     func URLSessionDidFinishEventsForBackgroundURLSession(session: NSURLSession) {
+        let idString = session.configuration.identifier!
+        let book: Book? = {
+            if let book = booksDic[idString] {
+                return book
+            } else {
+                let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+                return Book.bookWithIDString(idString, context: managedObjectContext)
+            }
+        }()
+        session.invalidateAndCancel()
         
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            Utilities.updateApplicationIconBadgeNumber()
+            let localNotification = UILocalNotification()
+            localNotification.alertBody = "Book " + (book?.title ?? "") + " has finished downloading!"
+            localNotification.category = "KIWIX_BOOK_DOWNLOAD_FINISH"
+            localNotification.soundName = UILocalNotificationDefaultSoundName
+            localNotification.userInfo = ["idString": idString]
+            UIApplication.sharedApplication().presentLocalNotificationNow(localNotification) // Confirmed didFinishDownloadingToURL is called before this method
+            
+            // TODO: Use an array of closure to correctly call back handler for each urlsession
+            if let handler = (UIApplication.sharedApplication().delegate as! AppDelegate).completionHandler {
+                handler()
+            }
+        }
     }
     
     // MARK: NSURLSessionDownloadDelegate
@@ -147,6 +203,8 @@ class Downloader: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, 
             booksDic.removeValueForKey(identifier)
             totalBytesWrittenDic.removeValueForKey(identifier)
             book.downloadState = 3
+            session.invalidateAndCancel()
+            if Preference.webViewHomePageBookID == nil {Preference.webViewHomePageBookID = book.idString; Preference.webViewHomePage = .MainPage}
         } else {
             print("Error:download finished but identifier or self.booksDic[identifier] is nil")
         }

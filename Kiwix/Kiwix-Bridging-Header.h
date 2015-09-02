@@ -4,3 +4,6 @@
 
 #import "Reachability.h"
 #import "OldObjcMethods.h"
+#import "ZimReader.h"
+
+#import "FontSizeTBVC.h"

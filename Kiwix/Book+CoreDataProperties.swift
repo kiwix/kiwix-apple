@@ -2,7 +2,7 @@
 //  Book+CoreDataProperties.swift
 //  Kiwix
 //
-//  Created by Chris Li on 8/12/15.
+//  Created by Chris Li on 8/19/15.
 //  Copyright © 2015 Chris Li. All rights reserved.
 //
 //  Delete this file and regenerate it using "Create NSManagedObject Subclass…"
@@ -18,6 +18,7 @@ extension Book {
     @NSManaged var creator: String?
     @NSManaged var date: NSDate?
     @NSManaged var desc: String?
+    @NSManaged var downloadState: NSNumber?
     @NSManaged var favIcon: NSData?
     @NSManaged var fileName: String?
     @NSManaged var fileSize: NSNumber?
@@ -31,6 +32,6 @@ extension Book {
     @NSManaged var publisher: String?
     @NSManaged var title: String?
     @NSManaged var totalBytesWritten: NSNumber?
-    @NSManaged var downloadState: NSNumber?
+    @NSManaged var hasArticles: NSSet?
 
 }

@@ -1,0 +1,36 @@
+
+/* Class = "UIBarButtonItem"; title = " "; ObjectID = "1Dg-Wc-Xol"; */
+"1Dg-Wc-Xol.title" = " ";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "A7t-uJ-Meg"; */
+"A7t-uJ-Meg.text" = "Label";
+
+/* Class = "UIBarButtonItem"; title = "Message"; ObjectID = "AWI-te-wL4"; */
+"AWI-te-wL4.title" = "Message";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "K4u-0s-tgm"; */
+"K4u-0s-tgm.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "MkO-Kj-bXK"; */
+"MkO-Kj-bXK.text" = "Label";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "QDN-hE-Wea"; */
+"QDN-hE-Wea.text" = "Title";
+
+/* Class = "UILabel"; text = "Date"; ObjectID = "UFH-ah-arg"; */
+"UFH-ah-arg.text" = "Date";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "ilP-f8-yda"; */
+"ilP-f8-yda.text" = "Label";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "pfM-ba-HXY"; */
+"pfM-ba-HXY.text" = "Title";
+
+/* Class = "UIBarButtonItem"; title = " "; ObjectID = "rID-jq-EZ7"; */
+"rID-jq-EZ7.title" = " ";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "vYK-1m-gbB"; */
+"vYK-1m-gbB.text" = "Label";
+
+/* Class = "UILabel"; text = "Detail"; ObjectID = "yQK-Bw-uVe"; */
+"yQK-Bw-uVe.text" = "Detail";

@@ -16,9 +16,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
-        
+        NSURLProtocol.registerClass(KiwixURLProtocol)
+        ZimMultiReader.sharedInstance
+        Downloader.sharedInstance
         setupNotification()
+        Updater.updateToVersion1_1()
+        
+//        if let launchOptions = launchOptions, let localNotification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey] as? UILocalNotification {
+//            if let userInfo = localNotification.userInfo, let idString = userInfo["idString"] {
+//                // TODO: load main page
+//            }
+//        }
         
         return true
     }
@@ -26,6 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+        Utilities.updateApplicationIconBadgeNumber()
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
@@ -39,24 +48,63 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        LibraryRefresher.sharedInstance.refreshLibraryIfNecessary()
     }
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
+        Downloader.sharedInstance.saveTotalBytesWrittenToCoredata()
+        Utilities.updateApplicationIconBadgeNumber()
         self.saveContext()
     }
     
-    // MARK: - Helper
+    // MARK: - Notification
+    
+    var completionHandler: (() -> Void)?
     
     func setupNotification() {
+        let openLibrary = UIMutableUserNotificationAction()
+        openLibrary.identifier = "OPEN_BOOK_LIBRARY"
+        openLibrary.title = "Open Library"
+        openLibrary.activationMode = .Foreground
+        
+        let openMainPage = UIMutableUserNotificationAction()
+        openMainPage.identifier = "OPEN_MAIN_PAGE"
+        openMainPage.title = "Open Main Page"
+        openMainPage.activationMode = .Foreground
+        
         let bookDownloadFinishCategory = UIMutableUserNotificationCategory()
         bookDownloadFinishCategory.identifier = "KIWIX_BOOK_DOWNLOAD_FINISH"
-        bookDownloadFinishCategory.setActions([], forContext: .Minimal)
+//        bookDownloadFinishCategory.setActions([openLibrary, openMainPage], forContext: .Minimal)
         let settings = UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: Set(arrayLiteral: bookDownloadFinishCategory))
         UIApplication.sharedApplication().registerUserNotificationSettings(settings)
     }
-
+    
+    func application(application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: () -> Void) {
+        Downloader.sharedInstance.rejoinSessionWithIdentifier(identifier)
+        self.completionHandler = completionHandler
+    }
+    
+    func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, withResponseInfo responseInfo: [NSObject : AnyObject], completionHandler: () -> Void) {
+        if notification.category == "KIWIX_BOOK_DOWNLOAD_FINISH" {
+            if identifier == "OPEN_BOOK_LIBRARY" {
+                if let mainViewController = (self.window?.rootViewController as? UINavigationController)?.topViewController {
+                    if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
+                        mainViewController.performSegueWithIdentifier("ShowLibrary", sender: mainViewController)
+                    } else {
+                        
+                    }
+                }
+            } else if identifier == "OPEN_MAIN_PAGE" {
+                if let idString = responseInfo["idString"] {
+                    print(idString)
+                }
+            }
+        }
+        completionHandler()
+    }
+    
     // MARK: - Core Data stack
 
     lazy var applicationLibraryDirectory: NSURL = {
@@ -75,10 +123,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // The persistent store coordinator for the application. This implementation creates and returns a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
         // Create the coordinator and store
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-        let url = self.applicationLibraryDirectory.URLByAppendingPathComponent("SingleViewCoreData.sqlite")
+        let url = self.applicationLibraryDirectory.URLByAppendingPathComponent("Kiwix.sqlite")
         var failureReason = "There was an error creating or loading the application's saved data."
+        let options = [NSMigratePersistentStoresAutomaticallyOption: true, NSInferMappingModelAutomaticallyOption: true]
         do {
-            try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
+            try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: options)
         } catch {
             // Report any error we got.
             var dict = [String: AnyObject]()

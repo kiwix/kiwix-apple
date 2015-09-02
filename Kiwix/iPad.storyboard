@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8173.3" systemVersion="14E11f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="pv8-i6-4nu">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8173.3" systemVersion="15A263e" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="pv8-i6-4nu">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8142"/>
@@ -14,7 +14,13 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="NDB-rp-mQ7">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="VX8-IQ-bjl">
+                        <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                    </toolbar>
                     <connections>
                         <segue destination="RdH-Ae-Tri" kind="relationship" relationship="rootViewController" id="Q7c-Ff-ouz"/>
                     </connections>
@@ -22,14 +28,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kMj-Xs-VLg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-176" y="442"/>
-        </scene>
-        <!--Library-->
-        <scene sceneID="8T7-uI-oz6">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Library" id="fUx-aq-5h2" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0ZU-Di-ic3" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="959" y="36"/>
         </scene>
         <!--Main View Controller-->
         <scene sceneID="Rna-Dp-IjZ">
@@ -43,11 +41,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XOZ-rq-yWa">
+                            <webView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XOZ-rq-yWa">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <animations/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </webView>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="XOZ-rq-yWa" firstAttribute="leading" secondItem="KLx-mm-ftm" secondAttribute="leadingMargin" constant="-20" id="Bah-u9-XkM"/>
@@ -56,22 +56,55 @@
                             <constraint firstItem="rbO-pU-qQ3" firstAttribute="top" secondItem="XOZ-rq-yWa" secondAttribute="bottom" id="xdX-jJ-F0n"/>
                         </constraints>
                     </view>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" id="AVT-nD-0Qn">
+                        <nil key="title"/>
+                        <leftBarButtonItems>
+                            <barButtonItem image="LeftArrow" id="NSl-Ch-by8"/>
+                            <barButtonItem image="RightArrow" id="nCu-BL-Evj"/>
+                            <barButtonItem title="      " id="tWQ-uL-0GO"/>
+                            <barButtonItem title="      " id="Ezq-aQ-EWS"/>
+                        </leftBarButtonItems>
+                        <view key="titleView" contentMode="scaleToFill" id="z4M-g4-dbh">
+                            <rect key="frame" x="212" y="5.5" width="176" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <animations/>
+                            <color key="backgroundColor" red="1" green="0.86348416969999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        </view>
                         <rightBarButtonItems>
-                            <barButtonItem title="Setting" id="qNT-b8-plZ"/>
-                            <barButtonItem title="Lib" id="lHz-4D-iSz">
+                            <barButtonItem image="Setting" id="qNT-b8-plZ">
+                                <inset key="imageInsets" minX="-6" minY="0.0" maxX="6" maxY="0.0"/>
                                 <connections>
-                                    <segue destination="fUx-aq-5h2" kind="popoverPresentation" identifier="ShowLibrary" popoverAnchorBarButtonItem="lHz-4D-iSz" id="ACl-Mn-9pm">
-                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                    </segue>
+                                    <action selector="showSetting:" destination="RdH-Ae-Tri" id="j5m-Oe-0JK"/>
                                 </connections>
                             </barButtonItem>
+                            <barButtonItem image="Library" id="lHz-4D-iSz">
+                                <connections>
+                                    <action selector="showLibrary:" destination="RdH-Ae-Tri" id="n1z-jE-DKn"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="Bookmark" id="CJ0-zw-BJk">
+                                <inset key="imageInsets" minX="0.0" minY="0.0" maxX="-26" maxY="0.0"/>
+                            </barButtonItem>
+                            <barButtonItem title="      " id="iQJ-bZ-H87"/>
                         </rightBarButtonItems>
                     </navigationItem>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="showLibraryButton" destination="lHz-4D-iSz" id="yhb-HS-rJp"/>
+                        <outlet property="webView" destination="XOZ-rq-yWa" id="F40-op-PgB"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X8l-UB-7fR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="503" y="442"/>
+            <point key="canvasLocation" x="579" y="442"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Bookmark" width="21" height="21"/>
+        <image name="LeftArrow" width="21" height="21"/>
+        <image name="Library" width="29" height="29"/>
+        <image name="RightArrow" width="21" height="21"/>
+        <image name="Setting" width="27" height="27"/>
+    </resources>
 </document>

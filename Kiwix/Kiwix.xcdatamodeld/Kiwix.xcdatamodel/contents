@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8175.2" systemVersion="14E11f" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8175.2" systemVersion="15A263e" minimumToolsVersion="Automatic">
+    <entity name="Article" representedClassName="Article" syncable="YES">
+        <attribute name="isBookmarked" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isMainPage" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="lastPosition" optional="YES" attributeType="Float" syncable="YES"/>
+        <attribute name="lastReadDate" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
+        <attribute name="title" attributeType="String" syncable="YES"/>
+        <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="belongsToBook" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Book" inverseName="hasArticles" inverseEntity="Book" syncable="YES"/>
+    </entity>
     <entity name="Book" representedClassName="Book" syncable="YES">
         <attribute name="articleCount" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="creator" optional="YES" attributeType="String" defaultValueString=" " syncable="YES"/>
@@ -10,17 +19,21 @@
         <attribute name="fileName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="fileSize" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="globalCount" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
-        <attribute name="idString" attributeType="String" syncable="YES"/>
-        <attribute name="isNoPic" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="language" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="idString" attributeType="String" defaultValueString="Unknown" syncable="YES"/>
+        <attribute name="isNoPic" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="language" optional="YES" attributeType="String" defaultValueString="Unknown" indexed="YES" syncable="YES"/>
         <attribute name="localURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mediaCount" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
         <attribute name="meta4URL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="publisher" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="totalBytesWritten" optional="YES" attributeType="Integer 64" minValueString="0" syncable="YES"/>
+        <relationship name="hasArticles" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Article" inverseName="belongsToBook" inverseEntity="Article" syncable="YES"/>
     </entity>
+    <fetchRequest name="AllArticles" entity="Article" predicateString="belongsToBook.isLocal == 1"/>
+    <fetchRequest name="AllArticlesBookmarked" entity="Article" predicateString="isBookmarked == 1 AND belongsToBook.isLocal == 1"/>
     <elements>
-        <element name="Book" positionX="-63" positionY="-18" width="128" height="315"/>
+        <element name="Article" positionX="162" positionY="81" width="128" height="148"/>
+        <element name="Book" positionX="-54" positionY="-58" width="128" height="328"/>
     </elements>
 </model>

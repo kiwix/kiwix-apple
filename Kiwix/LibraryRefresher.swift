@@ -52,7 +52,9 @@ class LibraryRefresher: NSObject, NSXMLParserDelegate {
                 // Processing fetched data
                 if let data = fetchedData {
                     self.isProcessing = true
-                    self.delegate?.startedProcessingLibrary()
+                    dispatch_sync(dispatch_get_main_queue(), { () -> Void in
+                        self.delegate?.startedProcessingLibrary()
+                    })
                     let xmlParser = NSXMLParser(data: data)
                     xmlParser.delegate = self
                     xmlParser.parse()
@@ -61,7 +63,9 @@ class LibraryRefresher: NSObject, NSXMLParserDelegate {
             task.resume()
         } else {
             // Cannot connect to internet
-            self.delegate?.failedWithErrorMessage("Cannot connect to the Internet.")
+            dispatch_sync(dispatch_get_main_queue(), { () -> Void in
+                self.delegate?.failedWithErrorMessage("Cannot connect to the Internet.")
+            })
         }
     }
     
@@ -80,7 +84,9 @@ class LibraryRefresher: NSObject, NSXMLParserDelegate {
             if let langCode = attributeDict["language"] {
                 if let language = self.isoLangPairs[langCode] {
                     attributeDict["language"] = language
-                    Book.bookWithMetaDataDictionary(attributeDict, context: self.privateManagedObjectContext)
+                    if !self.allOldOnlineBookIdInDatabase.contains(attributeDict["id"]!) {
+                        Book.bookWithMetaDataDictionary(attributeDict, context: self.privateManagedObjectContext)
+                    }
                     
                     let idString = attributeDict["id"]!
                     self.allNewOnlineBookIdInDatabase.append(idString)
@@ -92,9 +98,10 @@ class LibraryRefresher: NSObject, NSXMLParserDelegate {
     func parserDidEndDocument(parser: NSXMLParser) {
         let idStringOfBookShouldBeDeleted = Set(self.allOldOnlineBookIdInDatabase).subtract(Set(self.allNewOnlineBookIdInDatabase))
         for idString in idStringOfBookShouldBeDeleted {
-            let book = Book.bookWithIDString(idString, context: self.privateManagedObjectContext)
-            print("about to delete \(book?.idString)")
-            self.privateManagedObjectContext.deleteObject(book!)
+            if let book = Book.bookWithIDString(idString, context: self.privateManagedObjectContext) {
+                print("about to delete \(book.idString)")
+                self.privateManagedObjectContext.deleteObject(book)
+            }
         }
         
         if self.privateManagedObjectContext.hasChanges {
@@ -118,12 +125,16 @@ class LibraryRefresher: NSObject, NSXMLParserDelegate {
         
         Preference.libraryLastRefreshTime = NSDate()
         self.isProcessing = false
-        self.delegate?.finishedProcessingLibrary()
+        dispatch_sync(dispatch_get_main_queue(), { () -> Void in
+            self.delegate?.finishedProcessingLibrary()
+        })
     }
     
     func parser(parser: NSXMLParser, parseErrorOccurred parseError: NSError) {
         // Parsing Error
-        self.delegate?.failedWithErrorMessage(parseError.userInfo.description)
+        dispatch_sync(dispatch_get_main_queue(), { () -> Void in
+            self.delegate?.failedWithErrorMessage(parseError.userInfo.description)
+        })
     }
 }
 

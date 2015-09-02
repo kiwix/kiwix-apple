@@ -9,14 +9,15 @@
 import UIKit
 import CoreData
 
-class LibraryViewController: UITableViewController, NSFetchedResultsControllerDelegate, BookCellDelegate, DownloaderDelegate {
+class LibraryViewController: UITableViewController, NSFetchedResultsControllerDelegate, BookCellDelegate, DownloaderDelegate, LibraryRefresherDelegate {
 
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
     var indexPathsShouldDisplayDetailDic = ["Online":[NSIndexPath](), "Local":[NSIndexPath]()]
-    var downloadProgressShouldRefresh = true
-    var timer = NSTimer()
+    var shouldRefreshDownloadProgress = true
+    var oneSecondTimer = NSTimer()
+    var oneMinuteTimer = NSTimer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,15 +25,19 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
         performFetch()
         adjustForDevice()
         configureTableView()
+        configureToolBar()
+        showPreferredLanguagePromptIfNeeded()
         Downloader.sharedInstance.delegate = self
+        LibraryRefresher.sharedInstance.delegate = self
         
         NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "libraryFilteredLanguages", options: NSKeyValueObservingOptions.New, context: nil)
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "resetDownloadProgressShouldRefresh", userInfo: nil, repeats: true)
-        LibraryRefresher.sharedInstance.refreshLibraryIfNecessary()
+        oneSecondTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "resetDownloadProgressShouldRefresh", userInfo: nil, repeats: true)
+        oneMinuteTimer = NSTimer.scheduledTimerWithTimeInterval(60.0, target: self, selector: "refreshMessageLabel", userInfo: nil, repeats: true)
     }
     
     deinit {
-        timer.invalidate()
+        oneSecondTimer.invalidate()
+        oneMinuteTimer.invalidate()
         NSUserDefaults.standardUserDefaults().removeObserver(self, forKeyPath: "libraryFilteredLanguages")
     }
     
@@ -46,16 +51,26 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
         }
     }
     
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        tableView.tableFooterView = tableFooterView()
+    }
+    
     func refreshTableView() {
         tableView.reloadData()
         tableView.tableFooterView = tableFooterView()
     }
     
     func resetDownloadProgressShouldRefresh() {
-        downloadProgressShouldRefresh = true
+        shouldRefreshDownloadProgress = true
+    }
+    
+    func refreshMessageLabel() {
+        messageBarButtonItem?.label.text = messageLabelText()
     }
     
     // MARK: - Initializations and view setup
+    
+    var messageBarButtonItem: MessageBarButtonItem?
     
     func configureTableView() {
         tableView.estimatedRowHeight = 44.0
@@ -64,15 +79,59 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
         tableView.dataSource = self
         tableView.tableFooterView = tableFooterView()
         tableView.backgroundColor = UIColor.groupTableViewBackgroundColor()
+        
+    }
+    
+    func configureToolBar() {
+        messageBarButtonItem = MessageBarButtonItem(withLabelText: messageLabelText())
+        self.toolbarItems![2] = messageBarButtonItem!
+    }
+    
+    func showPreferredLanguagePromptIfNeeded() {
+        if !Preference.libraryHasShownPreferredLanguagePrompt {
+            let preferredLanguages = Utilities.preferredLanguage()
+            let message = Utilities.preferredLanguagePromptMessage(preferredLanguages)
+            let applyFilterAction = UIAlertAction(title: "Yes", style: .Default, handler: { (action) -> Void in
+                Preference.libraryFilteredLanguages = preferredLanguages
+                self.performFetch()
+            })
+            let cancelAction = UIAlertAction(title: "No", style: .Cancel, handler: nil)
+            let alert = Utilities.alertWith("Only Show Preferred Language?", message: message, actions: [applyFilterAction, cancelAction])
+            self.navigationController?.presentViewController(alert, animated: true, completion: { () -> Void in
+                Preference.libraryHasShownPreferredLanguagePrompt = true
+            })
+        }
+    }
+    
+    func messageLabelText() -> String {
+        if LibraryRefresher.sharedInstance.isRetrieving {return "Retrieving..."}
+        if LibraryRefresher.sharedInstance.isProcessing {return "Processing..."}
+        
+        if let libraryLastRefreshTime = Preference.libraryLastRefreshTime {
+            let interval = libraryLastRefreshTime.timeIntervalSinceNow * -1.0
+            if interval < 60.0 {return "Last Refresh: just now"}
+            
+            let formatter = NSDateComponentsFormatter()
+            formatter.allowedUnits = [.Year, .Month, .WeekOfMonth, .Day, .Hour, .Minute]
+            formatter.unitsStyle = NSDateComponentsFormatterUnitsStyle.Short
+            if let formattedInterval = formatter.stringFromTimeInterval(interval) {
+                return "Last Refresh: " + formattedInterval + " ago"
+            } else {
+                return "Unknown"
+            }
+        } else {
+            return "Never refreshed"
+        }
     }
     
     func adjustForDevice() {
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
             self.preferredContentSize = CGSizeMake(400, 500)
             self.edgesForExtendedLayout = .None
-        } else if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-            let dismiss = UIBarButtonItem(title: "dismiss", style: .Plain, target: self, action: "dismissSelf")
-            self.navigationItem.leftBarButtonItem = dismiss
+            self.navigationItem.leftBarButtonItem = nil
+            self.navigationItem.rightBarButtonItem = nil
+        } else {
+            self.preferredContentSize = tableView.frame.size
         }
     }
     
@@ -109,6 +168,7 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
                 case BookDownloadState.Finished:
                     let actionProceed = UIAlertAction(title: "Yes", style: .Default, handler: { (action) -> Void in
                         if Utilities.removeBookFromDisk(book) == true {
+                            book.downloadState = 0
                         }
                     })
                     let actionCancel = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
@@ -124,17 +184,37 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
     // MARK: DownloaderDelegate
     
     func bookDownloadProgressUpdate(book: Book, totalBytesWritten: Int64) {
-        if segmentedControl.selectedSegmentIndex == 1 {
+        if segmentedControl.selectedSegmentIndex == 1 && shouldRefreshDownloadProgress {
             if let indexPath = self.downloadFetchedResultController.indexPathForObject(book), visibleIndexPaths = tableView.indexPathsForVisibleRows {
                 if visibleIndexPaths.contains(indexPath) {
                     if let cell = tableView.cellForRowAtIndexPath(indexPath) as? BookDownloadingCell, fileSize = book.fileSize?.longLongValue {
                         cell.progressView.progress = Float(totalBytesWritten)/Float(fileSize * 1024)
                         cell.fileSizeLabel.text = Utilities.formattedFileSizeStringFromByteCount(totalBytesWritten) + " of " + Utilities.formattedFileSizeStringFromByteCount(fileSize * 1024)
                         cell.progressLabel.text = String(format: "%.0f%%", cell.progressView.progress*100)
+                        self.shouldRefreshDownloadProgress = false
                     }
                 }
             }
         }
+    }
+    
+    // MARK: LibraryRefresherDelegate
+    
+    func startedRetrievingLibrary() {
+        messageBarButtonItem?.label.text = "Retrieving..."
+    }
+    
+    func startedProcessingLibrary() {
+        messageBarButtonItem?.label.text = "Processing..."
+    }
+    
+    func finishedProcessingLibrary() {
+        messageBarButtonItem?.label.text = messageLabelText()
+        showPreferredLanguagePromptIfNeeded()
+    }
+    
+    func failedWithErrorMessage(message: String) {
+        messageBarButtonItem?.label.text = message
     }
     
     // MARK: - Table view data source
@@ -199,25 +279,26 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
         if let book = selectedFetchedResultController.objectAtIndexPath(indexPath) as? Book {
             if cell.isKindOfClass(BookOrdinaryCell) {
                 let cell = cell as! BookOrdinaryCell
+                let indexPathsShouldDisplayDetailDic = segmentedControl.selectedSegmentIndex == 0 ? self.indexPathsShouldDisplayDetailDic["Online"] : self.indexPathsShouldDisplayDetailDic["Local"]
                 cell.titleLabel.text = book.title ?? ""
-                cell.subtitleLabel.text = subtitleStringOfBook(book, atIndexPath: indexPath)
-                cell.hasPicIndicator.backgroundColor = book.isNoPic!.boolValue ? UIColor.lightGrayColor() : Utilities.customTintColor()
-                cell.favIcon.image = book.favIcon != nil ? UIImage(data: book.favIcon!) : nil
+                cell.subtitleLabel.text = indexPathsShouldDisplayDetailDic!.contains(indexPath) ? book.veryDetailedDescription : book.detailedDescription
+                cell.hasPicIndicator.backgroundColor = (book.isNoPic?.boolValue ?? true) ? UIColor.lightGrayColor() : Utilities.customTintColor()
+                cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
                 cell.indexPath = indexPath
                 cell.downloadState = downloadStateOfBook(book)
                 cell.delegate = self
             } else if cell.isKindOfClass(BookDownloadingCell) {
                 let cell = cell as! BookDownloadingCell
                 cell.titleLabel.text = book.title ?? ""
-                cell.dateLabel.text = Book.formattedDateStringOf(book)
-                cell.articleLabel.text = Book.formattedArticleCountOf(book)
-                cell.hasPicIndicator.backgroundColor = book.isNoPic!.boolValue ? UIColor.lightGrayColor() : Utilities.customTintColor()
-                cell.favIcon.image = book.favIcon != nil ? UIImage(data: book.favIcon!) : nil
+                cell.dateLabel.text = book.dateFormatted
+                cell.articleLabel.text = book.articleCountFormatted
+                cell.hasPicIndicator.backgroundColor = (book.isNoPic?.boolValue ?? true) ? UIColor.lightGrayColor() : Utilities.customTintColor()
+                cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
                 cell.downloadState = downloadStateOfBook(book)
                 cell.indexPath = indexPath
                 cell.delegate = self
                 if let totalBytesWritten = Downloader.sharedInstance.totalBytesWrittenDic[book.idString!], fileSize = book.fileSize?.longLongValue {
-                    if downloadProgressShouldRefresh {
+                    if shouldRefreshDownloadProgress {
                         cell.progressView.setProgress(Float(totalBytesWritten)/Float(fileSize * 1024), animated: false)
                         cell.fileSizeLabel.text = Utilities.formattedFileSizeStringFromByteCount(totalBytesWritten) + " of " + Utilities.formattedFileSizeStringFromByteCount(fileSize * 1024)
                     }
@@ -275,35 +356,38 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
     func tableFooterView() -> UIView {
         let count = self.selectedFetchedResultController.fetchedObjects!.count
         let availableSpaceFormatted = Utilities.formattedFileSizeStringFromByteCount(Utilities.availableDiskspaceInBytes())
-        let preferredWidth = UIDevice.currentDevice().userInterfaceIdiom == .Pad ? preferredContentSize.width : tableView.frame.size.width
-        if segmentedControl.selectedSegmentIndex == 0 {
-            switch count {
-            case 0:
-                return Utilities.tableHeaderFooterView(withMessage: "No book available for download\n\(availableSpaceFormatted) available", andPreferredWidth: preferredWidth)
-            case 1:
-                return Utilities.tableHeaderFooterView(withMessage: "1 book available for download\n\(availableSpaceFormatted) available", andPreferredWidth: preferredWidth)
-            default:
-                return Utilities.tableHeaderFooterView(withMessage: "\(count) books available for download\n\(availableSpaceFormatted) available", andPreferredWidth: preferredWidth)
+        let message: String = {
+            if segmentedControl.selectedSegmentIndex == 0 {
+                switch count {
+                case 0:
+                    return "No book available for download\n\(availableSpaceFormatted) available"
+                case 1:
+                    return "1 book available for download\n\(availableSpaceFormatted) available"
+                default:
+                    return "\(count) books available for download\n\(availableSpaceFormatted) available"
+                }
+            } else if segmentedControl.selectedSegmentIndex == 1 {
+                switch count {
+                case 0:
+                    return "No book is downloading"
+                case 1:
+                    return "1 book is downloading" + "\n\nApp can be minimized at any time, but please do not force quit the app to allow ongoing task to continue in the background."
+                default:
+                    return "\(count) books are downloading" + "\n\nApp can be minimized at any time, but please do not force quit the app to allow ongoing task to continue in the background."
+                }
+            } else {
+                switch count {
+                case 0:
+                    return "No book is on device" + "\n\n You can also add file through iTunes File Sharing.\nAll Files here will automatically become searchable and readable"
+                case 1:
+                    return "1 book on device"  + "\n\n You can also add file through iTunes File Sharing.\nAll Files here will automatically become searchable and readable"
+                default:
+                    return "\(count) books are on device"  + "\n\n You can also add file through iTunes File Sharing.\nAll Files here will automatically become searchable and readable"
+                }
             }
-        } else if segmentedControl.selectedSegmentIndex == 1 {
-            switch count {
-            case 0:
-                return Utilities.tableHeaderFooterView(withMessage: "No book is downloading", andPreferredWidth: preferredWidth)
-            case 1:
-                return Utilities.tableHeaderFooterView(withMessage: "1 book is downloading", andPreferredWidth: preferredWidth)
-            default:
-                return Utilities.tableHeaderFooterView(withMessage: "\(count) books are downloading", andPreferredWidth: preferredWidth)
-            }
-        } else {
-            switch count {
-            case 0:
-                return Utilities.tableHeaderFooterView(withMessage: "No book is on device", andPreferredWidth: preferredWidth)
-            case 1:
-                return Utilities.tableHeaderFooterView(withMessage: "1 book on device", andPreferredWidth: preferredWidth)
-            default:
-                return Utilities.tableHeaderFooterView(withMessage: "\(count) books are on device", andPreferredWidth: preferredWidth)
-            }
-        }
+        }()
+        
+        return Utilities.tableHeaderFooterView(withMessage: message, preferredWidth: preferredContentSize.width, textAlientment: .Center)
     }
     
     func downloadStateOfBook(book: Book) -> BookDownloadState {
@@ -325,35 +409,6 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
                 return .WithCaution
             }
         }
-    }
-    
-    func subtitleStringOfBook(book: Book, atIndexPath indexPath: NSIndexPath) -> String {
-        var subtitleString: String = {
-            let fileDateFormatted = Book.formattedDateStringOf(book)
-            let fileSizeFormatted = book.fileSize != nil ? Utilities.formattedFileSizeStringFromByteCount(book.fileSize!.longLongValue * 1024) : ""
-            // TODO: - Add articleCount = 1 case
-            let articleCountFormatted = Book.formattedArticleCountOf(book)
-            return fileDateFormatted + ", " + fileSizeFormatted + ", " + articleCountFormatted
-            }()
-        
-        if self.indexPathsShouldDisplayDetailDic["Online"]!.contains(indexPath) {
-            if let desc = book.desc {
-                subtitleString = subtitleString + "\n" + desc
-            }
-            
-            if let creator = book.creator, publisher = book.publisher {
-                if creator == publisher {
-                    subtitleString = subtitleString + "\n" + "Creator and publisher: " + creator
-                } else {
-                    subtitleString = subtitleString + "\n" + "Creator: " + creator + " Publisher: " + publisher
-                }
-            } else if let creator = book.creator {
-                subtitleString = subtitleString + "\n" + "Creator: " + creator
-            } else if let publisher = book.publisher {
-                subtitleString = subtitleString + "\n" + "Publisher: " + publisher
-            }
-        }
-        return subtitleString
     }
     
     // MARK: - Fetched Result Controller Initialization
@@ -506,7 +561,7 @@ class LibraryViewController: UITableViewController, NSFetchedResultsControllerDe
         refreshTableView()
     }
     
-    func dismissSelf() {
+    @IBAction func dismissSelf(sender: UIBarButtonItem) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 }

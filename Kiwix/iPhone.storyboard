@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8173.3" systemVersion="14E11f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wpK-8c-XK0">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8173.3" systemVersion="15A263e" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="wpK-8c-XK0">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8142"/>
@@ -13,10 +13,12 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="1vr-iG-WgK">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </navigationBar>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="KfF-jD-sHy">
                         <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                     </toolbar>
                     <connections>
                         <segue destination="qTg-eN-Nvh" kind="relationship" relationship="rootViewController" id="LLB-vg-tDn"/>
@@ -32,7 +34,7 @@
                 <viewControllerPlaceholder storyboardName="Library" id="KJd-7p-YvV" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eXv-8M-Nc2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="959" y="36"/>
+            <point key="canvasLocation" x="954.5" y="347"/>
         </scene>
         <!--Main View Controller-->
         <scene sceneID="rvt-dH-AMZ">
@@ -46,35 +48,61 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dsR-lN-68d">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <webView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dsR-lN-68d">
+                                <rect key="frame" x="2" y="0.0" width="596" height="600"/>
+                                <animations/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </webView>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="dsR-lN-68d" secondAttribute="trailing" constant="-20" id="E74-i4-wZl"/>
-                            <constraint firstItem="dsR-lN-68d" firstAttribute="leading" secondItem="KmZ-lh-egO" secondAttribute="leadingMargin" constant="-20" id="aGL-67-CoL"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="dsR-lN-68d" secondAttribute="trailing" constant="-18" id="E74-i4-wZl"/>
+                            <constraint firstItem="dsR-lN-68d" firstAttribute="leading" secondItem="KmZ-lh-egO" secondAttribute="leadingMargin" constant="-18" id="aGL-67-CoL"/>
                             <constraint firstItem="dsR-lN-68d" firstAttribute="top" secondItem="DNf-0Z-EAd" secondAttribute="bottom" constant="-64" id="k0F-Za-Cf9"/>
                             <constraint firstItem="y8h-t2-XGb" firstAttribute="top" secondItem="dsR-lN-68d" secondAttribute="bottom" constant="-44" id="raK-eQ-du0"/>
                         </constraints>
                     </view>
                     <toolbarItems>
+                        <barButtonItem image="LeftArrow" id="OLg-0m-JuB"/>
+                        <barButtonItem image="RightArrow" id="0G2-hm-Jpj"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="lub-sz-TOK"/>
+                        <barButtonItem image="Bookmark" id="KGm-zJ-s7u"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="rcT-9G-0xZ"/>
-                        <barButtonItem title="Lib" id="3gp-fu-d3D">
+                        <barButtonItem image="Library" id="3gp-fu-d3D">
                             <connections>
-                                <segue destination="KJd-7p-YvV" kind="popoverPresentation" identifier="ShowLibrary" popoverAnchorBarButtonItem="3gp-fu-d3D" id="RMl-E0-Xiq">
-                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                </segue>
+                                <segue destination="KJd-7p-YvV" kind="presentation" identifier="ShowLibrary" id="RMl-E0-Xiq"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem title="Setting" id="pXS-gZ-iQB"/>
+                        <barButtonItem image="Setting" id="pXS-gZ-iQB">
+                            <connections>
+                                <segue destination="ohm-di-tLF" kind="presentation" id="EqL-F3-Shv"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="0tB-KF-gWw"/>
+                    <connections>
+                        <outlet property="webView" destination="dsR-lN-68d" id="7bw-eT-Ton"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3HW-kk-ro5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="503" y="442"/>
         </scene>
+        <!--Setting-->
+        <scene sceneID="LVV-gn-o6G">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Setting" id="ohm-di-tLF" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LV7-g8-Rgq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="955" y="521"/>
+        </scene>
     </scenes>
+    <resources>
+        <image name="Bookmark" width="21" height="21"/>
+        <image name="LeftArrow" width="21" height="21"/>
+        <image name="Library" width="29" height="29"/>
+        <image name="RightArrow" width="21" height="21"/>
+        <image name="Setting" width="27" height="27"/>
+    </resources>
 </document>
