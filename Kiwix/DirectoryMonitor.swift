@@ -51,7 +51,6 @@ class DirectoryMonitor {
             dispatch_source_set_event_handler(directoryMonitorSource!) {
                 // Call out to the `DirectoryMonitorDelegate` so that it can react appropriately to the change.
                 self.directoryContentDidChange()
-                
                 return
             }
             
@@ -85,30 +84,33 @@ class DirectoryMonitor {
     var hashEqualCheck = 0
     
     func directoryContentDidChange() {
+        hashEqualCheck = 0
         if isCheckingChanges == false {
             checkDirectoryChanges()
         }
     }
     
     func checkDirectoryChanges() {
-        print(directoryHashes())
-        
         isCheckingChanges = true
-        
         
         previousDirectoryHash = currentDirectoryHash
         currentDirectoryHash = directoryHashes()
         if let previousDirectoryHash = previousDirectoryHash, let currentDirectoryHash = currentDirectoryHash {
             if previousDirectoryHash == currentDirectoryHash {
                 hashEqualCheck += 1
-                print("equal")
+                //print("equal check")
+                //print(currentDirectoryHash)
                 if hashEqualCheck > 2 {
-                    self.delegate?.directoryMonitorDidObserveChange()
+                    hashEqualCheck = 0
                     isCheckingChanges = false
+                    self.previousDirectoryHash = nil
+                    self.currentDirectoryHash = nil
+                    directoryDidReachStasis()
                 } else {
                     waitAndCheckAgain()
                 }
             } else {
+                hashEqualCheck = 0
                 waitAndCheckAgain()
             }
         } else {
@@ -116,11 +118,19 @@ class DirectoryMonitor {
         }
     }
     
-    func waitAndCheckAgain() {
+    func directoryDidReachStasis() {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(NSEC_PER_SEC/10)) , dispatch_get_main_queue(), { () -> Void in
+            self.delegate?.directoryMonitorDidObserveChange()
+        })
+    }
+    
+    func waitAndCheckAgain() {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(NSEC_PER_SEC/2)) , directoryMonitorQueue, { () -> Void in
             self.checkDirectoryChanges()
         })
     }
+    
+    // MARK: - Generate directory file info array
     
     func directoryHashes() -> [String] {
         var hashes = [String]()

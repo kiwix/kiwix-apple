@@ -10,29 +10,24 @@ import UIKit
 
 class KiwixURLProtocol: NSURLProtocol {
     override class func canInitWithRequest(request: NSURLRequest) -> Bool {
-        if request.URL?.scheme.caseInsensitiveCompare("Kiwix") == .OrderedSame {
-            return true
-        } else {
-            return false
-        }
+        return request.URL?.scheme.caseInsensitiveCompare("Kiwix") == .OrderedSame ? true : false
     }
     
     override class func canonicalRequestForRequest(request: NSURLRequest) -> NSURLRequest {
         return request
     }
     
-    override class func requestIsCacheEquivalent(aRequest: NSURLRequest,
-        toRequest bRequest: NSURLRequest) -> Bool {
-            return super.requestIsCacheEquivalent(aRequest, toRequest:bRequest)
+    override class func requestIsCacheEquivalent(aRequest: NSURLRequest, toRequest bRequest: NSURLRequest) -> Bool {
+        return super.requestIsCacheEquivalent(aRequest, toRequest:bRequest)
     }
     
     override func startLoading() {
-        if let idString = self.request.URL?.host, let contentURLString = self.request.URL?.path?.stringByRemovingPercentEncoding {
-            if let dataDic = ZimMultiReader.sharedInstance.data(withZimFileID: idString, contentURLString: contentURLString),
+        if let id = self.request.URL?.host, let contentURLString = self.request.URL?.path?.stringByRemovingPercentEncoding {
+            if let dataDic = UIApplication.multiReader.data(id, contentURLString: contentURLString),
                 data = dataDic["data"] as? NSData,
                 mimeType = dataDic["mime"] as? String,
                 dataLength = dataDic["length"]?.integerValue {
-                    let response = NSURLResponse(URL: self.request.URL!, MIMEType: (mimeType == "text/html; charset=utf-8" ? "text/html" : mimeType), expectedContentLength: dataLength, textEncodingName: nil)
+                    let response = NSURLResponse(URL: self.request.URL!, MIMEType: mimeType, expectedContentLength: dataLength, textEncodingName: nil)
                 self.client?.URLProtocol(self, didReceiveResponse: response, cacheStoragePolicy: .Allowed)
                 self.client?.URLProtocol(self, didLoadData: data)
                 self.client?.URLProtocolDidFinishLoading(self)
@@ -52,13 +47,17 @@ class KiwixURLProtocol: NSURLProtocol {
 }
 
 extension NSURL {
-    class func kiwixURLWithZimFileIDString(idString: String, contentURLString: String) -> NSURL {
-        if let escapedContentURLString = contentURLString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet()) {
-            let baseURLString = "kiwix://" + idString
-            return NSURL(string: escapedContentURLString, relativeToURL: NSURL(string: baseURLString))!
-        } else {
-            print("Unable to escape characters in contentURLString, is going to replace contentURL by empty string")
-            return NSURL(scheme: "Kiwix", host: idString, path: "")!
+    class func kiwixURLWithZimFileid(id: String, contentURLString: String) -> NSURL? {
+        guard let escapedContentURLString = contentURLString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet()) else {return nil}
+        let baseURLString = "kiwix://" + id
+        return NSURL(string: escapedContentURLString, relativeToURL: NSURL(string: baseURLString))
+    }
+    
+    class func kiwixURLWithZimFileid(id: String, articleTitle: String) -> NSURL? {
+        guard let contentURLString = UIApplication.multiReader.pageURLString(articleTitle, bookid: id) else {
+            print("ZimMultiReader cannot get pageURLString from \(articleTitle) in book \(id)")
+            return nil
         }
+        return NSURL.kiwixURLWithZimFileid(id, contentURLString: contentURLString)
     }
 }

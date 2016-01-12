@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0720"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "97EF99D21B6C1C6100FF68D9"
+               BlueprintIdentifier = "97A2AB871C1B80FF00052E74"
                BuildableName = "Kiwix.app"
                BlueprintName = "Kiwix"
                ReferencedContainer = "container:Kiwix.xcodeproj">
@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "97EF99E91B6C1C6100FF68D9"
+               BlueprintIdentifier = "97A2AB9E1C1B80FF00052E74"
                BuildableName = "KiwixTests.xctest"
                BlueprintName = "KiwixTests"
                ReferencedContainer = "container:Kiwix.xcodeproj">
@@ -42,7 +42,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "97EF99F41B6C1C6100FF68D9"
+               BlueprintIdentifier = "97A2ABA91C1B810000052E74"
                BuildableName = "KiwixUITests.xctest"
                BlueprintName = "KiwixUITests"
                ReferencedContainer = "container:Kiwix.xcodeproj">
@@ -52,7 +52,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "97EF99D21B6C1C6100FF68D9"
+            BlueprintIdentifier = "97A2AB871C1B80FF00052E74"
             BuildableName = "Kiwix.app"
             BlueprintName = "Kiwix"
             ReferencedContainer = "container:Kiwix.xcodeproj">
@@ -75,7 +75,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "97EF99D21B6C1C6100FF68D9"
+            BlueprintIdentifier = "97A2AB871C1B80FF00052E74"
             BuildableName = "Kiwix.app"
             BlueprintName = "Kiwix"
             ReferencedContainer = "container:Kiwix.xcodeproj">
@@ -94,7 +94,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "97EF99D21B6C1C6100FF68D9"
+            BlueprintIdentifier = "97A2AB871C1B80FF00052E74"
             BuildableName = "Kiwix.app"
             BlueprintName = "Kiwix"
             ReferencedContainer = "container:Kiwix.xcodeproj">

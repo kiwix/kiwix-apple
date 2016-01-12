@@ -2,99 +2,94 @@
 //  BookmarkTBVC.swift
 //  Kiwix
 //
-//  Created by Chris Li on 8/18/15.
-//  Copyright © 2015 Chris Li. All rights reserved.
+//  Created by Chris on 1/10/16.
+//  Copyright © 2016 Chris. All rights reserved.
 //
 
 import UIKit
 import CoreData
 
 class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
-
-    let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Bookmark"
-        
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-            self.navigationItem.leftBarButtonItem = nil
-        }
-        
-        performFetch()
+        clearsSelectionOnViewWillAppear = true
+        title = LocalizedStrings.bookmarks
     }
     
-    func performFetch() {
-        //NSFetchedResultsController.deleteCacheWithName("BookmarkFetchedResultsController")
-        do {
-            try self.bookmarkFetchedResultController.performFetch()
-        } catch let error as NSError {
-            print("fetchedResultController performFetch failed: \(error.localizedDescription)")
-        }
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        let numberOfArticles = fetchedResultController.fetchedObjects?.count ?? 0
+        tableView.setBackgroundText(numberOfArticles == 0 ? LocalizedStrings.bookmarkAddGuide : nil)
+        isOnScreen = true
+        tableView.reloadData()
     }
-
-    lazy var bookmarkFetchedResultController: NSFetchedResultsController = {
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        isOnScreen = false
+    }
+    
+    var isOnScreen = false
+    let managedObjectContext = UIApplication.appDelegate.managedObjectContext
+    
+    lazy var fetchedResultController: NSFetchedResultsController = {
         let fetchRequest = NSFetchRequest(entityName: "Article")
-        fetchRequest.fetchBatchSize = 20
-        fetchRequest.predicate = NSPredicate(format: "isBookmarked = YES AND belongsToBook.downloadState == 3", argumentArray: nil)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "lastReadDate", ascending: true)]
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "BookmarkFetchedResultsController")
+        let dateDescriptor = NSSortDescriptor(key: "lastReadDate", ascending: false)
+        let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
+        fetchRequest.sortDescriptors = [dateDescriptor, titleDescriptor]
+        fetchRequest.predicate = NSPredicate(format: "isBookmarked == true")
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "BookmarkFRC")
         fetchedResultsController.delegate = self
+        fetchedResultsController.performFetch(deleteCache: false)
         return fetchedResultsController
-        }()
+    }()
 
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return self.bookmarkFetchedResultController.sections?.count ?? 0
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let sectionInfo = self.bookmarkFetchedResultController.sections?[section] {
-            return sectionInfo.numberOfObjects
-        } else {
-            return 0
-        }
+        return fetchedResultController.sections?.count ?? 0
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ArticleCell", forIndexPath: indexPath) as! ArticleCell
-        
-        configureCell(cell, atIndexPath: indexPath)
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let sectionInfo = fetchedResultController.sections?[section] else {return 0}
+        return sectionInfo.numberOfObjects
+    }
 
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("ArticleCell", forIndexPath: indexPath)
+        configureCell(cell, atIndexPath: indexPath)
         return cell
     }
     
-    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath)  {
-        if let cell = cell as? ArticleCell {
-            if let article = bookmarkFetchedResultController.objectAtIndexPath(indexPath) as? Article  {
-                cell.titleLabel?.text = article.title
-                if let book = article.belongsToBook {
-                    cell.favIcon.image = book.favIcon != nil ? UIImage(data: book.favIcon!) : nil
-                    cell.hasPicIndicator.backgroundColor = book.isNoPic!.boolValue ? UIColor.lightGrayColor() : Utilities.customTintColor()
-                }
-            }
-        }
+    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+        guard let cell = cell as? ArticleCell else {return}
+        guard let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
+        guard let book = article.book else {return}
+        
+        cell.titleLabel.text = article.title
+        cell.hasPicIndicator.backgroundColor = book.isNoPic!.boolValue ? UIColor.lightGrayColor() : UIColor.havePicTintColor
+        cell.favIcon.image = book.favIcon != nil ? UIImage(data: book.favIcon!) : nil
     }
     
-    // MARK: - Table view delegate 
+    // MARK: - Table view delegate
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat.min
+    }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let navigationController = self.presentingViewController as? UINavigationController, let mainViewController = navigationController.topViewController as? MainViewController {
-            if let article = bookmarkFetchedResultController.objectAtIndexPath(indexPath) as? Article {
-                if let contentURLString = article.urlString, let idString = article.belongsToBook?.idString {
-                    mainViewController.load(articleContentURLString: contentURLString, inBookWithID: idString)
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                }
-            }
-        }
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        defer {dismissViewControllerAnimated(true, completion: nil)}
+        guard let navigationController = navigationController?.presentingViewController as? UINavigationController else {return}
+        guard let mainVC = navigationController.topViewController as? MainVC else {return}
+        guard let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
+        mainVC.load(article.url)
     }
-    
-    // MARK: - Fetched Result Controller
+
+    // MARK: - Fetched Result Controller Delegate
     
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        self.tableView.beginUpdates()
+        tableView.beginUpdates()
     }
     
     func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
@@ -109,11 +104,6 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
     }
     
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-        // suspected bug
-        if type.rawValue == 0 {
-            return
-        }
-        
         switch type {
         case .Insert:
             tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
@@ -128,12 +118,17 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
     }
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        self.tableView.endUpdates()
+        tableView.endUpdates()
     }
-    
-    // MARK: - Actions
 
-    @IBAction func dismissSelf(sender: UIBarButtonItem) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    // MARK: - Action
+    
+    @IBAction func dismissButtonTapped(sender: UIBarButtonItem) {
+        dismissViewControllerAnimated(true, completion: nil)
     }
+}
+
+extension LocalizedStrings {
+    class var bookmarks: String {return NSLocalizedString("Bookmarks", comment: "")}
+    class var bookmarkAddGuide: String {return NSLocalizedString("To add a bookmark, long press the star button when reading an article", comment: "")}
 }

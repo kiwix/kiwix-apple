@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Pak-ru-uaL">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="IZb-lm-Iyu">
+            <objects>
+                <navigationController toolbarHidden="NO" id="Pak-ru-uaL" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="F6k-Rb-yO0">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="iCQ-c3-CuS">
+                        <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="0ot-2d-UO3" kind="relationship" relationship="rootViewController" id="KNP-Vf-n0i"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="45h-IE-XPH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="218" y="574"/>
+        </scene>
+        <!--MapVC-->
+        <scene sceneID="ncK-bO-f7d">
+            <objects>
+                <viewController id="0ot-2d-UO3" customClass="MapVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="BzR-tr-p4Q"/>
+                        <viewControllerLayoutGuide type="bottom" id="d4o-XL-NVW"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="0Hv-hO-OVA">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="9Hb-Yr-JYt">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="9Hb-Yr-JYt" firstAttribute="leading" secondItem="0Hv-hO-OVA" secondAttribute="leadingMargin" constant="-20" id="0PE-fq-Fhw"/>
+                            <constraint firstItem="d4o-XL-NVW" firstAttribute="top" secondItem="9Hb-Yr-JYt" secondAttribute="bottom" constant="-44" id="Au0-fB-MpZ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="9Hb-Yr-JYt" secondAttribute="trailing" constant="-20" id="bXT-MG-cw8"/>
+                            <constraint firstItem="9Hb-Yr-JYt" firstAttribute="top" secondItem="BzR-tr-p4Q" secondAttribute="bottom" constant="-64" id="zz4-Bz-h2C"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="V5J-Ht-hPK"/>
+                        <barButtonItem title="Point me!" id="aPB-RZ-PUe">
+                            <connections>
+                                <action selector="centerMapOnCurrentLocation:" destination="0ot-2d-UO3" id="WaW-4g-EgG"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="5Me-lz-PJf"/>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" id="F48-fI-RNL">
+                        <barButtonItem key="leftBarButtonItem" image="DownArrow" id="SzD-7k-xJY">
+                            <connections>
+                                <action selector="dismissButtonTapped:" destination="0ot-2d-UO3" id="u3R-wT-haX"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="mapView" destination="9Hb-Yr-JYt" id="Z8M-Gn-pvB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="47c-el-omq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="911" y="574"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="DownArrow" width="21" height="21"/>
+    </resources>
+</document>

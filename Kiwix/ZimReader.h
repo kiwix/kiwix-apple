@@ -12,6 +12,7 @@
 @interface ZimReader : NSObject
 
 - (instancetype)initWithZIMFileURL:(NSURL *)url;
+@property NSURL *fileURL;
 
 #pragma mark - validation
 

@@ -2,79 +2,112 @@
 //  SettingTBVC.swift
 //  Kiwix
 //
-//  Created by Chris Li on 8/15/15.
-//  Copyright © 2015 Chris Li. All rights reserved.
+//  Created by Chris on 12/12/15.
+//  Copyright © 2015 Chris. All rights reserved.
 //
 
 import UIKit
 
 class SettingTBVC: UITableViewController {
-    
-    @IBOutlet weak var libraryAutoRefreshLabel: UILabel!
-    @IBOutlet weak var downloadUseCellularDataLabel: UILabel!
-    @IBOutlet weak var homePageLabel: UILabel!
-    @IBOutlet weak var scalePageToFitWidthLabel: UILabel!
-    @IBOutlet weak var fontSizeLabel: UILabel!
+
+    let sectionHeader = [LocalizedStrings.library, LocalizedStrings.reading, LocalizedStrings.misc]
+    let cellTextlabels = [[LocalizedStrings.libraryAutoRefresh, LocalizedStrings.libraryUseCelluarData],
+                          [LocalizedStrings.fontSize, LocalizedStrings.adjustLayout],
+                          [LocalizedStrings.rateKiwix, LocalizedStrings.about]]
     
     let dateComponentsFormatter: NSDateComponentsFormatter = {
         let formatter = NSDateComponentsFormatter()
         formatter.unitsStyle = NSDateComponentsFormatterUnitsStyle.Full
         return formatter
-        }()
-
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Settings"
-        adjustForiPad()
-        tableView.tableFooterView = tableFooterView(tableView.frame.width)
+        title = LocalizedStrings.settings
+        clearsSelectionOnViewWillAppear = true
+        showRateKiwixIfNeeded()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        refreshTableViewCellLabels()
+        tableView.reloadData()
     }
     
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        tableView.tableFooterView = tableFooterView(size.width)
-    }
-
-    func adjustForiPad() {
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-            self.navigationController!.preferredContentSize = CGSizeMake(400, 500)
-            self.edgesForExtendedLayout = .None
-            self.navigationItem.leftBarButtonItem = nil
+    // MARK: - Rate Kiwix
+    
+    func showRateKiwixIfNeeded() {
+        guard Preference.haveRateKiwix == false else {return}
+        guard let firstActiveDate = Preference.activeUseHistory.first else {return}
+        let installtionIsOldEnough = NSDate().timeIntervalSinceDate(firstActiveDate) > 3600.0 * 24 * 7
+        let hasActivelyUsed = Preference.activeUseHistory.count > 10
+        if installtionIsOldEnough && hasActivelyUsed {
+            showRateKiwixAlert(showRemindLater: true)
         }
     }
     
-    func refreshTableViewCellLabels() {
-        libraryAutoRefreshLabel.text = dateComponentsFormatter.stringFromTimeInterval(Preference.libraryRefreshInterval)
-        downloadUseCellularDataLabel.text = Preference.downloaderAllowCellularData ? "On" : "Off"
-        homePageLabel.text = {
-            if let webViewHomePage = Preference.webViewHomePage {
-                switch webViewHomePage {
-                case WebViewHomePage.Blank:
-                    return "Blank"
-                case WebViewHomePage.Random:
-                    return "Random"
-                case WebViewHomePage.MainPage:
-                    if let idString = Preference.webViewHomePageBookID, let book = ZimMultiReader.sharedInstance.allLocalBooksInDataBase[idString] {
-                        return book.title
-                    }
-                }
-            }
-            return "Not Set"
-        }()
-        scalePageToFitWidthLabel.text = Preference.webViewScalePageToFitWidth ? "On" : "Off"
-        fontSizeLabel.text = String(format: "%.0f%%", Preference.webViewZoomScale)
+    func showRateKiwixAlert(showRemindLater showRemindLater: Bool) {
+        guard Preference.haveRateKiwix == false else {return}
+        let alert = UIAlertController(title: LocalizedStrings.rateKiwixTitle, message: LocalizedStrings.rateKiwixMessage, preferredStyle: .Alert)
+        let remindLater = UIAlertAction(title: LocalizedStrings.rateLater, style: .Default) { (action) -> Void in
+            Preference.activeUseHistory.removeAll()
+        }
+        let remindNever = UIAlertAction(title: LocalizedStrings.rateNever, style: .Default) { (action) -> Void in
+            Preference.haveRateKiwix = true
+        }
+        let rateNow = UIAlertAction(title: LocalizedStrings.rateNow, style: .Cancel) { (action) -> Void in
+            self.goRateInAppStore()
+            Preference.haveRateKiwix = true
+        }
+        let cancel = UIAlertAction(title: LocalizedStrings.cancel, style: .Default, handler: nil)
+        
+        if showRemindLater {
+            alert.addAction(remindLater)
+            alert.addAction(remindNever)
+            alert.addAction(rateNow)
+        } else {
+            alert.addAction(rateNow)
+            alert.addAction(cancel)
+        }
+        
+        self.presentViewController(alert, animated: true, completion: nil)
     }
     
-    func tableFooterView(width: CGFloat) -> UIView {
-        let preferredWidth = UIDevice.currentDevice().userInterfaceIdiom == .Pad ? self.navigationController!.preferredContentSize.width : width
-        return Utilities.tableHeaderFooterView(withMessage: "Kiwix for iOS v1.1", preferredWidth: preferredWidth, textAlientment: .Center)
+    func goRateInAppStore() {
+        let url = NSURL(string: "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=997079563&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8")!
+        UIApplication.sharedApplication().openURL(url)
     }
     
-    @IBAction func dismissSelf(sender: UIBarButtonItem) {
+    // MARK: - Actions
+    
+    @IBAction func dismissButtonTapped(sender: UIBarButtonItem) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+
+}
+
+extension LocalizedStrings {
+    class var settings: String {return NSLocalizedString("Settings", comment: "Setting: Title")}
+    class var versionString: String {return NSLocalizedString("Kiwix for iOS v%@", comment: "Version footnote (please translate 'v' as version)")}
     
+    //MARK: -  Table Header Text
+    class var library: String {return NSLocalizedString("Library ", comment: "Setting: Section Header")}
+    class var reading: String {return NSLocalizedString("Reading", comment: "Setting: Section Header")}
+    class var search: String {return NSLocalizedString("Search", comment: "Setting: Section Header")}
+    class var misc: String {return NSLocalizedString("Misc", comment: "Setting: Section Header")}
+    
+    //MARK: -  Table Cell Text
+    class var libraryAutoRefresh: String {return NSLocalizedString("Auto Refresh", comment: "Setting: Library Auto Refresh")}
+    class var libraryUseCelluarData: String {return NSLocalizedString("Refresh Using Celluar Data", comment: "Setting: Library Use Celluar Data")}
+    class var fontSize: String {return NSLocalizedString("Font Size", comment: "Setting: Font Size")}
+    class var adjustLayout: String {return NSLocalizedString("Adjust Layout", comment: "Setting: Adjust Layout")}
+    class var rateKiwix: String {return NSLocalizedString("Please Rate Kiwix", comment: "Setting: Others")}
+    class var emailFeedback: String {return NSLocalizedString("Send Email Feedback", comment: "Setting: Others")}
+    class var about: String {return NSLocalizedString("About", comment: "Setting: Others")}
+    
+    //MARK: -  Rate Kiwix
+    class var rateKiwixTitle: String {return NSLocalizedString("Give Kiwix a rate!", comment: "Rate Kiwix in App Store Alert Title")}
+    class var rateNow: String {return NSLocalizedString("Rate Now", comment: "Rate Kiwix in App Store Alert Action")}
+    class var rateLater: String {return NSLocalizedString("Remind me later", comment: "Rate Kiwix in App Store Alert Action")}
+    class var rateNever: String {return NSLocalizedString("Never remind me again", comment: "Rate Kiwix in App Store Alert Action")}
+    class var rateKiwixMessage: String {return NSLocalizedString("We hope you enjoyed using Kiwix so far. Would you like to give us a rate in App Store?", comment: "Rate Kiwix in App Store Alert Message")}
 }

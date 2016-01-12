@@ -2,8 +2,8 @@
 //  KiwixTests.swift
 //  KiwixTests
 //
-//  Created by Chris Li on 7/31/15.
-//  Copyright © 2015 Chris Li. All rights reserved.
+//  Created by Chris on 12/11/15.
+//  Copyright © 2015 Chris. All rights reserved.
 //
 
 import XCTest

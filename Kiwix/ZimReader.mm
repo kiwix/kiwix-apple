@@ -14,8 +14,6 @@
 @interface ZimReader () {
     kiwix::Reader *_reader;
 }
-
-@property NSURL *fileURL;
 @end
 
 @implementation ZimReader
@@ -123,13 +121,13 @@
 #pragma mark - get File Attributes
 
 - (NSString *)getID {
-    NSString *idString = nil;
+    NSString *id = nil;
     
-    string idStringC;
-    idStringC = _reader->getId();
-    idString = [NSString stringWithCString:idStringC.c_str() encoding:NSUTF8StringEncoding];
+    string idC;
+    idC = _reader->getId();
+    id = [NSString stringWithCString:idC.c_str() encoding:NSUTF8StringEncoding];
     
-    return idString;
+    return id;
 }
 
 - (NSString *)getTitle {

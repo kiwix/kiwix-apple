@@ -2,8 +2,8 @@
 //  KiwixUITests.swift
 //  KiwixUITests
 //
-//  Created by Chris Li on 7/31/15.
-//  Copyright © 2015 Chris Li. All rights reserved.
+//  Created by Chris on 12/11/15.
+//  Copyright © 2015 Chris. All rights reserved.
 //
 
 import XCTest
@@ -19,6 +19,8 @@ class KiwixUITests: XCTestCase {
         continueAfterFailure = false
         // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
         XCUIApplication().launch()
+
+        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }
     
     override func tearDown() {

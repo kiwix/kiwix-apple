@@ -1,78 +1,21 @@
 //
-//  BarButtonItems.swift
-//  Kiwix
+//  UIBarButtonItemExtention.swift
+//  Grid
 //
-//  Created by Chris Li on 8/5/15.
-//  Copyright © 2015 Chris Li. All rights reserved.
+//  Created by Chris on 12/9/15.
+//  Copyright © 2015 Chris. All rights reserved.
 //
 
 import UIKit
 
-class BarButtonItemCustomImageView: UIImageView {
-    override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
-        let frame = CGRectInset(self.bounds, -9, -9)
-        return CGRectContainsPoint(frame, point) ? self : nil
-    }
-}
-
-class SpinningBarButtonItem: UIBarButtonItem {
-    var isSpinning = false
-    var imageView = UIImageView()
-    var button = LargeTouchDetectionButton(type: .Custom)
-    
-//    init(withImage customImage: UIImage) {
-//        
-//        imageView.image = customImage.imageWithRenderingMode(.AlwaysTemplate)
-//        imageView.autoresizingMask = UIViewAutoresizing.None
-//        imageView.contentMode = UIViewContentMode.Center
-//        
-//        button.frame = CGRectMake(0, 0, 40, 40)
-//        button.addSubview(imageView)
-//        button.tintColor = nil
-//        imageView.center = button.center
-//        
-//        let view = self.customView
-//        self.customView?.addSubview(button)
-//        let view = UIView()
-//        super.init(customView: view)
-//    }
-
-    
-    
-    func startSpinning() {
-        if self.imageView.isAnimating() {
-            return
-        }
-        isSpinning = true
-        button.enabled = false
-        rotateSpinningView()
-    }
-    
-    func stopSpinning() {
-        isSpinning = false
-        button.enabled = true
-    }
-    
-    func rotateSpinningView() {
-        UIView.animateWithDuration(0.4, delay: 0.0, options: UIViewAnimationOptions.CurveLinear, animations: { () -> Void in
-            self.imageView.transform = CGAffineTransformRotate(self.imageView.transform, CGFloat(M_PI_2))
-            }) { (finished) -> Void in
-                if finished && self.isSpinning {
-                    self.rotateSpinningView()
-                }
-        }
-    }
-}
-
-class LargeTouchDetectionButton: UIButton {
-    override func alignmentRectInsets() -> UIEdgeInsets {
-        return UIEdgeInsetsMake(0.0, 9.0, 0.0, 9.0)
-    }
-}
-
 class MessageBarButtonItem: UIBarButtonItem {
+    var text: String? {
+        get {return label.text}
+        set {label.text = newValue}
+    }
+    
     let label: UILabel = {
-        let label = UILabel(frame: CGRectMake(0, 0, 180, 40))
+        let label = UILabel(frame: CGRectMake(0, 0, 220, 40))
         label.textAlignment = .Center
         label.numberOfLines = 1
         label.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption2)
@@ -81,20 +24,36 @@ class MessageBarButtonItem: UIBarButtonItem {
     
     override init() {
         super.init()
+        self.customView = label
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    convenience init(withLabelText text: String) {
-        self.init(customView: UIView())
+    convenience init(labelText text: String?) {
+        self.init()
         self.customView = label
         self.label.text = text
     }
+    
+    func setText(text: String?, animated: Bool) {
+        if animated {
+            let animation = CATransition()
+            animation.duration = 0.2
+            animation.type = kCATransitionFade
+            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+            label.layer.addAnimation(animation, forKey: "changeTextTransition")
+            label.text = ""
+            label.text = text
+        } else {
+            label.text = text
+        }
+    }
 }
 
-class LongPressAndTapBarButtonItem: UIBarButtonItem {
+// Long Press & Tap BarButtonItem
+class LPTBarButtonItem: UIBarButtonItem {
     override init() {
         super.init()
     }
@@ -104,17 +63,65 @@ class LongPressAndTapBarButtonItem: UIBarButtonItem {
     }
     
     convenience init(image: UIImage?, highlightedImage: UIImage?, target: AnyObject?, longPressAction: Selector, tapAction: Selector) {
-        let customImageView = BarButtonItemCustomImageView(image: image?.imageWithRenderingMode(.AlwaysTemplate), highlightedImage: highlightedImage?.imageWithRenderingMode(.AlwaysTemplate))
+        let customImageView = LargeHitZoneImageView(image: image?.imageWithRenderingMode(.AlwaysTemplate),
+                                                    highlightedImage: highlightedImage?.imageWithRenderingMode(.AlwaysTemplate))
         customImageView.contentMode = UIViewContentMode.ScaleAspectFit
-        customImageView.frame = CGRectMake(0, 0, 22, 22)
-        let containerView = UIView(frame: CGRectMake(0, 0, 32, 30))
+        customImageView.frame = CGRectMake(0, 0, 26, 26)
+        customImageView.tintColor = UIColor.grayColor()
+        let containerView = UIView(frame: CGRectMake(0, 0, 52, 30))
         customImageView.center = containerView.center
         containerView.addSubview(customImageView)
         self.init(customView: containerView)
         
-        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: target, action: longPressAction)
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target
+            : target, action: longPressAction)
         let tapGestureRecognizer = UITapGestureRecognizer(target: target, action: tapAction)
         containerView.addGestureRecognizer(longPressGestureRecognizer)
         containerView.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    convenience init(imageName: String, highlightedImageName: String, delegate: LPTBarButtonItemDelegate) {
+        let customImageView = LargeHitZoneImageView(image: UIImage(named: imageName)?.imageWithRenderingMode(.AlwaysTemplate),
+            highlightedImage: UIImage(named: highlightedImageName)?.imageWithRenderingMode(.AlwaysTemplate))
+        customImageView.contentMode = UIViewContentMode.ScaleAspectFit
+        customImageView.frame = CGRectMake(0, 0, 26, 26)
+        //customImageView.tintColor = UIColor.grayColor()
+        let containerView = UIView(frame: CGRectMake(0, 0, 52, 30))
+        customImageView.center = containerView.center
+        containerView.addSubview(customImageView)
+        self.init(customView: containerView)
+
+        self.delegate = delegate
+        self.customImageView = customImageView
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPressGesture:")
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleTapGesture:")
+        containerView.addGestureRecognizer(longPressGestureRecognizer)
+        containerView.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    weak var delegate: LPTBarButtonItemDelegate?
+    var customImageView: LargeHitZoneImageView?
+    
+    func handleTapGesture(gestureRecognizer: UIGestureRecognizer) {
+        delegate?.barButtonTapped(self, gestureRecognizer: gestureRecognizer)
+    }
+    
+    func handleLongPressGesture(gestureRecognizer: UIGestureRecognizer) {
+        guard gestureRecognizer.state == .Began else {return}
+        delegate?.barButtonLongPressedStart(self, gestureRecognizer: gestureRecognizer)
+    }
+}
+
+protocol LPTBarButtonItemDelegate: class {
+    func barButtonTapped(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer)
+    func barButtonLongPressedStart(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer)
+}
+
+// MARK: - Helper Class
+
+class LargeHitZoneImageView: UIImageView {
+    override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+        let frame = CGRectInset(self.bounds, -9, -9)
+        return CGRectContainsPoint(frame, point) ? self : nil
     }
 }

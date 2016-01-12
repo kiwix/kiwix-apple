@@ -9,7 +9,8 @@
 import UIKit
 
 class LibraryAutoRefreshTBVC: UITableViewController {
-    let sectionHeader = ["hour", "day", "week", "month"]
+    let sectionHeader = ["day", "week", "month"]
+    let sectionHeaderLocalized = [LocalizedStrings.day, LocalizedStrings.week, LocalizedStrings.month]
     let enableAutoRefreshSwitch = UISwitch()
     var checkedRowIndexPath: NSIndexPath?
     var libraryAutoRefreshDisabled = Preference.libraryAutoRefreshDisabled
@@ -19,32 +20,28 @@ class LibraryAutoRefreshTBVC: UITableViewController {
         let day = 24.0 * hour
         let week = 7.0 * day
         
-        let timeIntervals = ["hour": [hour, 3*hour, 6*hour, 12*hour], "day": [day, 3*day], "week": [week, 2*week, 4*week]]
+        let timeIntervals = ["day": [day, 3*day, 5*day], "week": [week, 2*week, 4*week]]
         return timeIntervals
     }()
     
     let dateComponentsFormatter: NSDateComponentsFormatter = {
         let formatter = NSDateComponentsFormatter()
         formatter.unitsStyle = NSDateComponentsFormatterUnitsStyle.Full
+        formatter.maximumUnitCount = 1
         return formatter
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = LocalizedStrings.libraryAutoRefresh
         enableAutoRefreshSwitch.addTarget(self, action: "switcherValueChanged:", forControlEvents: .ValueChanged)
         enableAutoRefreshSwitch.on = !libraryAutoRefreshDisabled
-        self.title = "Library Auto Refresh"
-        tableView.tableHeaderView = tableHeaderView(tableView.frame.width)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         Preference.libraryAutoRefreshDisabled = libraryAutoRefreshDisabled
         Preference.libraryRefreshInterval = libraryRefreshInterval
-    }
-    
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        tableView.tableHeaderView = tableHeaderView(size.width)
     }
 
     // MARK: - Table view data source
@@ -69,7 +66,7 @@ class LibraryAutoRefreshTBVC: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         if indexPath.section == 0 {
-            cell.textLabel?.text = "Enable Auto Refresh"
+            cell.textLabel?.text = LocalizedStrings.enableAutoRefresh
             cell.accessoryView = enableAutoRefreshSwitch
         } else {
             let sectionHeader = self.sectionHeader[indexPath.section-1]
@@ -87,17 +84,11 @@ class LibraryAutoRefreshTBVC: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section != 0 {
-            return sectionHeader[section-1]
+        if section == 0 {
+            return LocalizedStrings.autoRefreshHelpMessage
         } else {
-            return nil
+            return sectionHeaderLocalized[section-1]
         }
-    }
-    
-    func tableHeaderView(width: CGFloat) -> UIView {
-        let headerMessage = "When turned on, your library will refresh automatically according to the selected interval when you open the app or enter library."
-        let preferredWidth = UIDevice.currentDevice().userInterfaceIdiom == .Pad ? self.navigationController!.preferredContentSize.width : width
-        return Utilities.tableHeaderFooterView(withMessage: headerMessage, preferredWidth: preferredWidth, textAlientment: .Left)
     }
     
     // MARK: - Table view delegate
@@ -118,6 +109,14 @@ class LibraryAutoRefreshTBVC: UITableViewController {
         }
     }
     
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if section == 0 {
+            if let view = view as? UITableViewHeaderFooterView {
+                view.textLabel?.text = LocalizedStrings.autoRefreshHelpMessage
+            }
+        }
+    }
+    
     // MARK: - Action
     
     func switcherValueChanged(switcher: UISwitch) {
@@ -128,4 +127,12 @@ class LibraryAutoRefreshTBVC: UITableViewController {
             tableView.insertSections(NSIndexSet(indexesInRange: NSMakeRange(1, sectionHeader.count-1)), withRowAnimation: .Fade)
         }
     }
+}
+
+extension LocalizedStrings {
+    class var day: String {return NSLocalizedString("day", comment: "Setting: Library Auto Refresh Page section title")}
+    class var week: String {return NSLocalizedString("week", comment: "Setting: Library Auto Refresh Page section title")}
+    class var month: String {return NSLocalizedString("month", comment: "Setting: Library Auto Refresh Page section title")}
+    class var enableAutoRefresh: String {return NSLocalizedString("Enable Auto Refresh", comment: "Setting: Library Auto Refresh Page")}
+    class var autoRefreshHelpMessage: String {return NSLocalizedString("When enabled, your library will refresh automatically according to the selected interval when you open the app.", comment: "Setting: Library Auto Refresh Page")}
 }
