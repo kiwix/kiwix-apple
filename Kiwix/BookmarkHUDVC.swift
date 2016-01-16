@@ -26,8 +26,9 @@ class BookmarkHUDVC: UIViewController {
         stackView.transform = CGAffineTransformMakeScale(0.5, 0.5)
     }
     
-    func show(text: String?) {
-        label.text = text
+    func show(isAddingBookmark: Bool) {
+        label.text = isAddingBookmark ? LocalizedStrings.bookmarked : LocalizedStrings.removed
+        starImageView.highlighted = isAddingBookmark
         UIView.animateWithDuration(0.2, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: .CurveEaseInOut, animations: { () -> Void in
             self.blurView.transform = CGAffineTransformIdentity
             self.stackView.transform = CGAffineTransformIdentity

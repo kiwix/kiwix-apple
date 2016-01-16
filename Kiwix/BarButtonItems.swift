@@ -73,16 +73,15 @@ class LPTBarButtonItem: UIBarButtonItem {
         containerView.addSubview(customImageView)
         self.init(customView: containerView)
         
-        let longPressGestureRecognizer = UILongPressGestureRecognizer(target
-            : target, action: longPressAction)
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: target, action: longPressAction)
         let tapGestureRecognizer = UITapGestureRecognizer(target: target, action: tapAction)
         containerView.addGestureRecognizer(longPressGestureRecognizer)
         containerView.addGestureRecognizer(tapGestureRecognizer)
     }
     
     convenience init(imageName: String, highlightedImageName: String, delegate: LPTBarButtonItemDelegate) {
-        let customImageView = LargeHitZoneImageView(image: UIImage(named: imageName)?.imageWithRenderingMode(.AlwaysTemplate),
-            highlightedImage: UIImage(named: highlightedImageName)?.imageWithRenderingMode(.AlwaysTemplate))
+        let customImageView = LargeHitZoneImageView(image: UIImage(named: imageName),
+            highlightedImage: UIImage(named: highlightedImageName))
         customImageView.contentMode = UIViewContentMode.ScaleAspectFit
         customImageView.frame = CGRectMake(0, 0, 26, 26)
         //customImageView.tintColor = UIColor.grayColor()

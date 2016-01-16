@@ -25,6 +25,7 @@ class MainVC: UIViewController {
         configureSearchBar()
         configureChildViewController()
         configureButtonColor()
+        configureBookmarkButton()
         showGetStartedAlertIfNeeded()
     }
     
@@ -34,10 +35,23 @@ class MainVC: UIViewController {
         libraryVC = nil
         settingVC = nil
     }
-    
+        
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         configureUIElements(self.traitCollection)
+    }
+    
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        guard traitCollection.horizontalSizeClass == .Regular else {return}
+        if searchController.active {
+            let searchText = searchController.searchBar.text
+            coordinator.animateAlongsideTransition({ (context) -> Void in
+                self.searchController.active = false
+                }, completion: { (completed) -> Void in
+                    self.searchController.active = true
+                    self.searchController.searchBar.text = searchText
+            })
+        }
     }
     
     lazy var searchController: UISearchController = {
@@ -48,7 +62,7 @@ class MainVC: UIViewController {
         searchController.delegate = self
         searchController.searchBar.autocapitalizationType = .None
         searchController.searchBar.searchBarStyle = .Minimal
-        //searchController.searchBar.delegate = self
+        searchController.searchBar.delegate = self
         searchController.modalPresentationStyle = .Popover
         searchController.dimsBackgroundDuringPresentation = true
         self.definesPresentationContext = true
@@ -61,11 +75,14 @@ class MainVC: UIViewController {
         
         let showLibraryAction = UIAlertAction(title: NSLocalizedString("Open Book Library", comment: "Welcome Message"), style: .Default, handler: { (action) -> Void in
             self.showLibraryButtonTapped()
+            Preference.hasShowGetStartedAlert = true
         })
         let importFromiTunesAction = UIAlertAction(title: NSLocalizedString("Import Book from iTunes", comment: "Welcome Message"), style: .Default, handler: { (action) -> Void in
-            let action = UIAlertAction(title: NSLocalizedString("OK", comment: "Welcome Message"), style: .Default, handler: nil)
+            let action = UIAlertAction(title: NSLocalizedString("OK", comment: "Welcome Message"), style: .Default, handler: { (action) -> Void in
+                Preference.hasShowGetStartedAlert = true
+            })
             let importTitle = NSLocalizedString("Import from iTunes", comment: "Welcome Message")
-            let importMessage = NSLocalizedString("Import Message", comment: "Welcome Message")
+            let importMessage = NSLocalizedString("Add zim files using iTunes File Sharing, kiwix will scan and recognize the files automatically.", comment: "Welcome Message")
             let alertController = UIAlertController(title: importTitle, message: importMessage, style: .Alert, actions: [action])
             self.navigationController?.presentViewController(alertController, animated: true, completion: nil)
         })
@@ -125,6 +142,16 @@ class MainVC: UIViewController {
         settingButton.tintColor = UIColor.grayColor()
     }
     
+    func configureBookmarkButton() {
+        if let article = article {
+            bookmarkButton.customImageView?.highlighted = article.isBookmarked
+            bookmarkButton.customImageView?.tintColor = article.isBookmarked ? UIColor.yellowColor() : UIColor.grayColor()
+        } else {
+            bookmarkButton.customImageView?.highlighted = false
+            bookmarkButton.customImageView?.tintColor = UIColor.grayColor()
+        }
+    }
+    
     func configureChildViewController() {
         if let _ = url {
             guard let webViewVC = self.webViewVC ?? UIStoryboard.main.instantiateViewControllerWithIdentifier("WebViewVC") as? WebViewVC else {return}
@@ -139,15 +166,17 @@ class MainVC: UIViewController {
     }
     
     func replaceChildViewController(oldVC: UIViewController?, withChildViewController newVC: UIViewController) {
-        if let oldVC = oldVC {
-            oldVC.view.removeFromSuperview()
-            oldVC.removeFromParentViewController()
-        }
+        
         
         if !childViewControllers.contains(newVC) {
             addChildViewController(newVC)
             view.addSubview(newVC.view)
             newVC.didMoveToParentViewController(self)
+        }
+        
+        if let oldVC = oldVC {
+            oldVC.view.removeFromSuperview()
+            oldVC.removeFromParentViewController()
         }
     }
     

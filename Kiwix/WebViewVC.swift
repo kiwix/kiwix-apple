@@ -12,11 +12,24 @@ class WebViewVC: UIViewController, UIWebViewDelegate {
     
     let managedObjectContext = UIApplication.appDelegate.managedObjectContext
     weak var delegate: WebViewLoadingDelegate?
+    var context: UnsafeMutablePointer<Void> = nil
     @IBOutlet weak var webView: UIWebView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.delegate = self
+        NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "webViewNotInjectJavascriptToAdjustPageLayout", options: .New, context: context)
+        NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "webViewZoomScale", options: .New, context: context)
+    }
+    
+    deinit {
+        NSUserDefaults.standardUserDefaults().removeObserver(self, forKeyPath: "webViewNotInjectJavascriptToAdjustPageLayout")
+        NSUserDefaults.standardUserDefaults().removeObserver(self, forKeyPath: "webViewZoomScale")
+    }
+    
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        guard context == self.context else {return}
+        webView.reload()
     }
     
     override func viewWillLayoutSubviews() {
@@ -60,11 +73,12 @@ class WebViewVC: UIViewController, UIWebViewDelegate {
         guard let book = Book.fetch(bookID, context: managedObjectContext) else {return}
         guard let article = Article.addOrUpdate(title, url: url, book: book, context: managedObjectContext) else {return}
         
-        injectTableWrappingJavaScriptIfNecesssary()
+        injectTableWrappingJavaScriptIfNeeded()
+        adjustFontSizeIfNeeded()
         delegate?.webViewDidFinishLoad(article, canGoback: webView.canGoBack, canGoForward: webView.canGoForward)
     }
     
-    func injectTableWrappingJavaScriptIfNecesssary() {
+    func injectTableWrappingJavaScriptIfNeeded() {
         if Preference.webViewInjectJavascriptToAdjustPageLayout {
             if traitCollection.horizontalSizeClass == .Compact {
                 guard let path = NSBundle.mainBundle().pathForResource("adjustlayoutiPhone", ofType: "js") else {return}
@@ -77,6 +91,13 @@ class WebViewVC: UIViewController, UIWebViewDelegate {
                 webView.stringByEvaluatingJavaScriptFromString(jString)
             }
         }
+    }
+    
+    func adjustFontSizeIfNeeded() {
+        let zoomScale = Preference.webViewZoomScale
+        guard zoomScale != 100.0 else {return}
+        let jString = String(format: "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%.0f%%'", zoomScale)
+        webView.stringByEvaluatingJavaScriptFromString(jString)
     }
     
 }

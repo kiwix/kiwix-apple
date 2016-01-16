@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension MainVC: UISearchControllerDelegate, WebViewLoadingDelegate, LPTBarButtonItemDelegate {
+extension MainVC: UISearchControllerDelegate, WebViewLoadingDelegate, UISearchBarDelegate, LPTBarButtonItemDelegate {
     
     // MARK: - UISearchControllerDelegate
     
@@ -19,7 +19,8 @@ extension MainVC: UISearchControllerDelegate, WebViewLoadingDelegate, LPTBarButt
             if UIDevice.currentDevice().userInterfaceIdiom == .Pad {navigationItem.rightBarButtonItem = cancelButton}
         case .Regular:
             searchController.preferredContentSize = CGSizeMake(searchController.searchBar.frame.width, self.view.frame.size.height * 0.75)
-            searchController.dimsBackgroundDuringPresentation = false
+            searchController.popoverPresentationController?.permittedArrowDirections = .Up
+            searchController.dimsBackgroundDuringPresentation = true
         case .Unspecified:
             break
         }
@@ -27,7 +28,10 @@ extension MainVC: UISearchControllerDelegate, WebViewLoadingDelegate, LPTBarButt
     }
     
     func didPresentSearchController(searchController: UISearchController) {
-        navigationController?.toolbarHidden = true
+        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+            self.navigationController?.toolbarHidden = true
+            searchController.searchBar.becomeFirstResponder()
+        }
     }
     
     func willDismissSearchController(searchController: UISearchController) {
@@ -52,6 +56,7 @@ extension MainVC: UISearchControllerDelegate, WebViewLoadingDelegate, LPTBarButt
         }()
         navigateLeftButton.tintColor = canGoback ? nil : UIColor.lightGrayColor()
         navigateRightButton.tintColor = canGoForward ? nil : UIColor.lightGrayColor()
+        configureBookmarkButton()
     }
     
     // MARK: - LPTBarButtonItemDelegate
@@ -72,8 +77,8 @@ extension MainVC: UISearchControllerDelegate, WebViewLoadingDelegate, LPTBarButt
         guard let article = article else {return}
         guard let bookmarkHUDVC = UIStoryboard.main.initViewController(BookmarkHUDVC.self) else {return}
         UIApplication.appDelegate.window?.addSubview(bookmarkHUDVC.view)
-        bookmarkHUDVC.show(article.isBookmarked ? LocalizedStrings.removed : LocalizedStrings.bookmarked)
         article.isBookmarked = !article.isBookmarked
-        bookmarkButton.customImageView?.highlighted = article.isBookmarked
+        bookmarkHUDVC.show(article.isBookmarked)
+        configureBookmarkButton()
     }
 }

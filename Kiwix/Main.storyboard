@@ -212,7 +212,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Eyz-t1-ycg">
                                 <rect key="frame" x="280.5" y="204" width="39" height="30"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Star" translatesAutoresizingMaskIntoConstraints="NO" id="Mi8-s2-8u5">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Star" highlightedImage="StarHighlighted" translatesAutoresizingMaskIntoConstraints="NO" id="Mi8-s2-8u5">
                                         <rect key="frame" x="0.0" y="3" width="24" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="24" id="AdX-U6-c4z"/>
@@ -469,5 +469,6 @@
     <resources>
         <image name="DownArrow" width="21" height="21"/>
         <image name="Star" width="21" height="20"/>
+        <image name="StarHighlighted" width="21" height="20"/>
     </resources>
 </document>
