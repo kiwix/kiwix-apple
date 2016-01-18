@@ -11,7 +11,7 @@ import UIKit
 class SettingTBVC: UITableViewController {
 
     let sectionHeader = [LocalizedStrings.library, LocalizedStrings.reading, LocalizedStrings.misc]
-    let cellTextlabels = [[LocalizedStrings.libraryAutoRefresh, LocalizedStrings.libraryUseCelluarData],
+    let cellTextlabels = [[LocalizedStrings.libraryAutoRefresh, LocalizedStrings.libraryUseCellularData],
                           [LocalizedStrings.fontSize, LocalizedStrings.adjustLayout],
                           [LocalizedStrings.rateKiwix, LocalizedStrings.about]]
     
@@ -97,7 +97,7 @@ extension LocalizedStrings {
     
     //MARK: -  Table Cell Text
     class var libraryAutoRefresh: String {return NSLocalizedString("Auto Refresh", comment: "Setting: Library Auto Refresh")}
-    class var libraryUseCelluarData: String {return NSLocalizedString("Refresh Using Celluar Data", comment: "Setting: Library Use Celluar Data")}
+    class var libraryUseCellularData: String {return NSLocalizedString("Refresh Using Cellular Data", comment: "Setting: Library Use Cellular Data")}
     class var fontSize: String {return NSLocalizedString("Font Size", comment: "Setting: Font Size")}
     class var adjustLayout: String {return NSLocalizedString("Adjust Layout", comment: "Setting: Adjust Layout")}
     class var rateKiwix: String {return NSLocalizedString("Please Rate Kiwix", comment: "Setting: Others")}

@@ -73,7 +73,7 @@ extension SettingTBVC {
         switch text {
         case LocalizedStrings.libraryAutoRefresh:
             performSegueWithIdentifier("LibraryAutoRefresh", sender: self)
-        case LocalizedStrings.libraryUseCelluarData:
+        case LocalizedStrings.libraryUseCellularData:
             performSegueWithIdentifier("LibraryUseCellularData", sender: self)
         case LocalizedStrings.fontSize:
             performSegueWithIdentifier("ReadingFontSize", sender: self)

@@ -15,7 +15,7 @@ class LibraryUseCellularDataTBVC: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = LocalizedStrings.libraryUseCelluarData
+        title = LocalizedStrings.libraryUseCellularData
         libraryrefreshAllowCellularDataSwitch.addTarget(self, action: "switcherValueChanged:", forControlEvents: .ValueChanged)
         libraryrefreshAllowCellularDataSwitch.on = libraryRefreshAllowCellularData
     }
@@ -38,7 +38,7 @@ class LibraryUseCellularDataTBVC: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         
-        cell.textLabel?.text = LocalizedStrings.libraryUseCelluarData
+        cell.textLabel?.text = LocalizedStrings.libraryUseCellularData
         cell.accessoryView = libraryrefreshAllowCellularDataSwitch
         
         return cell
@@ -63,7 +63,7 @@ class LibraryUseCellularDataTBVC: UITableViewController {
 }
 
 extension LocalizedStrings {
-    class var refreshLibraryUsingCellularData: String {return NSLocalizedString("Refresh Library Using Cellular Data", comment: "Setting: Use Celluar Data")}
-    class var cellularLibraryRefreshMessage1: String {return NSLocalizedString("When enabled, library refresh will use cellular data.", comment: "Setting: Use Celluar Data")}
-    class var cellularLibraryRefreshMessage2: String {return NSLocalizedString("Note: a 5-6MB database is downloaded every time the library refreshes.", comment: "Setting: Use Celluar Data")}
+    class var refreshLibraryUsingCellularData: String {return NSLocalizedString("Refresh Library Using Cellular Data", comment: "Setting: Use Cellular Data")}
+    class var cellularLibraryRefreshMessage1: String {return NSLocalizedString("When enabled, library refresh will use cellular data.", comment: "Setting: Use Cellular Data")}
+    class var cellularLibraryRefreshMessage2: String {return NSLocalizedString("Note: a 5-6MB database is downloaded every time the library refreshes.", comment: "Setting: Use Cellular Data")}
 }
