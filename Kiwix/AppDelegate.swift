@@ -15,8 +15,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     private(set) lazy var libraryRefresher = LibraryRefresher()
     private(set) lazy var downloader = Downloader()
-    private(set) lazy var multiReader = ZIMMultiReader()
     private(set) lazy var searchEngine = SearchEngine()
+    private(set) lazy var multiReader = ZIMMultiReader()
     
     var networkTaskCount = 0 {
         didSet {
@@ -40,6 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         NSURLProtocol.registerClass(KiwixURLProtocol)
         if LibraryRefresher.libraryIsOld && LibraryRefresher.libraryAutoRefreshEnabled {libraryRefresher.refresh()}
+        multiReader.refresh()
         return true
     }
 

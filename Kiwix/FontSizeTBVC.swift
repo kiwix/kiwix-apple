@@ -31,13 +31,11 @@ class FontSizeTBVC: UITableViewController {
     // MARK: - Table view data source
     
     override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return LocalizedStrings.fontSizeMessage1 + "\n\n" + LocalizedStrings.fontSizeMessage2
+        return LocalizedStrings.fontSizeMessage
     }
 
 }
 
 extension LocalizedStrings {
-    class var fontSizeMessage1: String {return NSLocalizedString("Drag the slider above to adjust the font size of the article. The size of the percentage numbers shows the acutal font size of article body on screen.", comment: "Setting: Font Size")}
-    class var fontSizeMessage2: String {return NSLocalizedString("Font size adjustment is applied only when Scale Page to Fit Width is off in settings.", comment: "Setting: Font Size")}
-    
+    class var fontSizeMessage: String {return NSLocalizedString("Drag the slider above to adjust the font size of the article. The size of the percentage numbers shows the acutal font size of article body on screen.", comment: "Setting: Font Size")}
 }

@@ -77,7 +77,11 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
     
     // MARK: - Search
     
+    let lock = NSLock()
     func search(searchTerm: String, zimFileID: String) -> [(id: String, articleTitle: String)] {
+        defer {lock.unlock()}
+        lock.lock()
+        
         var resultTuples = [(id: String, articleTitle: String)]()
         let firstCharRange = searchTerm.startIndex...searchTerm.startIndex
         let firstLetterCapitalisedSearchTerm = searchTerm.stringByReplacingCharactersInRange(firstCharRange, withString: searchTerm.substringWithRange(firstCharRange).capitalizedString)

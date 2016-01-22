@@ -8,7 +8,7 @@
         <!--About downloads-->
         <scene sceneID="dUl-Xg-amn">
             <objects>
-                <viewController storyboardIdentifier="AboutDownloads" title="About downloads" id="UWj-EK-pge" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AboutDownloads" title="About downloads" id="UWj-EK-pge" customClass="HelpDownloadVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="TBI-gu-1G0"/>
                         <viewControllerLayoutGuide type="bottom" id="6MG-GE-Kfh"/>
@@ -17,41 +17,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g34-hM-OS1">
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bM2-im-ZfP">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <string key="text">// Under construction
-### How download works
-1. start a download
-2. minimize the app, go on with you life
-3. wait to be notified when the download is finished
-
-FAQ:  
-Q: Will Kiwix use cellular data to download books?  
-A: No, Kiwix will download only when Wifi is available.
-
-Q: Should I pause a download when I disconnect wifi?  
-A: No, download will pause automatically and resume when connected to wifi again.
-
-Q: Should I keep the app open when downloading?  
-A: No, downloads will continue in the background if you press home button to dismiss the app. However, force quit the app by double pressing the home button and sliding up the app card will pause all download tasks.
-
-Q: Do I need to open a book after downloading it?
-A: No, Kiwix will automatically detect book and open books when they are downloaded
-</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
+                            </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="g34-hM-OS1" firstAttribute="top" secondItem="TBI-gu-1G0" secondAttribute="bottom" constant="-64" id="4ka-00-fmJ"/>
-                            <constraint firstItem="6MG-GE-Kfh" firstAttribute="top" secondItem="g34-hM-OS1" secondAttribute="bottom" id="PK7-aF-NKr"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="g34-hM-OS1" secondAttribute="trailing" constant="-20" id="PaO-H7-0Pb"/>
-                            <constraint firstItem="g34-hM-OS1" firstAttribute="leading" secondItem="f6G-7g-TrY" secondAttribute="leadingMargin" constant="-20" id="aA0-fK-3Ic"/>
+                            <constraint firstItem="bM2-im-ZfP" firstAttribute="top" secondItem="TBI-gu-1G0" secondAttribute="bottom" constant="-44" id="1OT-g8-xfP"/>
+                            <constraint firstItem="bM2-im-ZfP" firstAttribute="leading" secondItem="f6G-7g-TrY" secondAttribute="leadingMargin" constant="-20" id="ITf-YC-Cy7"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="bM2-im-ZfP" secondAttribute="trailing" constant="-20" id="a1R-v5-LtA"/>
+                            <constraint firstItem="6MG-GE-Kfh" firstAttribute="top" secondItem="bM2-im-ZfP" secondAttribute="bottom" id="jwc-og-Pzh"/>
                         </constraints>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="webView" destination="bM2-im-ZfP" id="sQ1-6V-oBw"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o66-c3-JI1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

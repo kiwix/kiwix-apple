@@ -35,7 +35,7 @@ extension MainVC: UISearchControllerDelegate, WebViewLoadingDelegate, UISearchBa
     }
     
     func willDismissSearchController(searchController: UISearchController) {
-        navigationController?.toolbarHidden = false
+        navigationController?.toolbarHidden = traitCollection.horizontalSizeClass == .Compact ? false : true
         if self.traitCollection.horizontalSizeClass == .Compact {
             self.navigationItem.rightBarButtonItem = nil
         }
