@@ -5,11 +5,12 @@ Kiwix for iOS is a offline reader for the web. It's mission is to give people eq
 What you need:
 
 - A Mac  
-- Xcode 7.0  
+- Xcode 7.0 or up  
 
 ### Prepare  
-1. Install Macports
-2. sudo port install autoconf automake libtool
+1. Make sure Xcode is at least launched once and commnad line tool is installed
+2. Install Macports 
+3. sudo port install autoconf automake libtool
 
 ### Compile xz-5.2.2  
 1. Download xz-5.2.2
