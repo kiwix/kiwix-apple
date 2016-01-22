@@ -13,7 +13,6 @@
 		9733815D1C321DDB0016CEFB /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9733815C1C321DDB0016CEFB /* MainVC.swift */; };
 		973381611C331D530016CEFB /* SearchResultTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973381601C331D530016CEFB /* SearchResultTBVC.swift */; };
 		973381631C331D660016CEFB /* ArticleCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973381621C331D660016CEFB /* ArticleCells.swift */; };
-		973381651C331DE50016CEFB /* SearchAsync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973381641C331DE50016CEFB /* SearchAsync.swift */; };
 		973381691C343F2C0016CEFB /* Logo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973381681C343F2C0016CEFB /* Logo.swift */; };
 		9733816B1C34446F0016CEFB /* MainVCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9733816A1C34446F0016CEFB /* MainVCD.swift */; };
 		973C8D5C1C25F945007272F9 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973C8D5B1C25F945007272F9 /* Preference.swift */; };
@@ -31,7 +30,6 @@
 		9764027E1C27952F004E31B5 /* libicuio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976402741C27952F004E31B5 /* libicuio.a */; };
 		9764027F1C27952F004E31B5 /* libicule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976402751C27952F004E31B5 /* libicule.a */; };
 		976402801C27952F004E31B5 /* libiculx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976402761C27952F004E31B5 /* libiculx.a */; };
-		976402811C27952F004E31B5 /* libicutest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976402771C27952F004E31B5 /* libicutest.a */; };
 		976402821C27952F004E31B5 /* libicutu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976402781C27952F004E31B5 /* libicutu.a */; };
 		976402831C27952F004E31B5 /* libicuuc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976402791C27952F004E31B5 /* libicuuc.a */; };
 		976402841C27952F004E31B5 /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9764027A1C27952F004E31B5 /* liblzma.a */; };
@@ -83,6 +81,7 @@
 		97A2ABA41C1B80FF00052E74 /* KiwixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A2ABA31C1B80FF00052E74 /* KiwixTests.swift */; };
 		97A2ABAF1C1B810000052E74 /* KiwixUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A2ABAE1C1B810000052E74 /* KiwixUITests.swift */; };
 		97A7140A1C274FCB00951244 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A714091C274FCB00951244 /* DirectoryMonitor.swift */; };
+		97BAEEA01C528B3000ECB667 /* SearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BAEE9F1C528B3000ECB667 /* SearchEngine.swift */; };
 		97C01FC71C39B44D00D010E5 /* LibraryAutoRefreshTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C01FC61C39B44D00D010E5 /* LibraryAutoRefreshTBVC.swift */; };
 		97C01FC91C39B73E00D010E5 /* SettingTBVCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C01FC81C39B73E00D010E5 /* SettingTBVCD.swift */; };
 		97C01FCD1C39BC8D00D010E5 /* LibraryUseCellularDataTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C01FCB1C39BBBF00D010E5 /* LibraryUseCellularDataTBVC.swift */; };
@@ -119,7 +118,6 @@
 		9733815C1C321DDB0016CEFB /* MainVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
 		973381601C331D530016CEFB /* SearchResultTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultTBVC.swift; sourceTree = "<group>"; };
 		973381621C331D660016CEFB /* ArticleCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleCells.swift; sourceTree = "<group>"; };
-		973381641C331DE50016CEFB /* SearchAsync.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchAsync.swift; sourceTree = "<group>"; };
 		973381681C343F2C0016CEFB /* Logo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logo.swift; sourceTree = "<group>"; };
 		9733816A1C34446F0016CEFB /* MainVCD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainVCD.swift; sourceTree = "<group>"; };
 		973C8D5B1C25F945007272F9 /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
@@ -201,6 +199,7 @@
 		97A2ABAE1C1B810000052E74 /* KiwixUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = KiwixUITests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		97A2ABB01C1B810000052E74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97A714091C274FCB00951244 /* DirectoryMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryMonitor.swift; sourceTree = "<group>"; };
+		97BAEE9F1C528B3000ECB667 /* SearchEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEngine.swift; sourceTree = "<group>"; };
 		97C01FC61C39B44D00D010E5 /* LibraryAutoRefreshTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryAutoRefreshTBVC.swift; sourceTree = "<group>"; };
 		97C01FC81C39B73E00D010E5 /* SettingTBVCD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingTBVCD.swift; sourceTree = "<group>"; };
 		97C01FCB1C39BBBF00D010E5 /* LibraryUseCellularDataTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryUseCellularDataTBVC.swift; sourceTree = "<group>"; };
@@ -224,7 +223,6 @@
 				976402841C27952F004E31B5 /* liblzma.a in Frameworks */,
 				9764027E1C27952F004E31B5 /* libicuio.a in Frameworks */,
 				976402801C27952F004E31B5 /* libiculx.a in Frameworks */,
-				976402811C27952F004E31B5 /* libicutest.a in Frameworks */,
 				976402831C27952F004E31B5 /* libicuuc.a in Frameworks */,
 				976402851C27952F004E31B5 /* libzim.a in Frameworks */,
 				976FEDD81C224DE100AE0874 /* MapKit.framework in Frameworks */,
@@ -435,7 +433,7 @@
 				978C58891C1CD1DB0077AE47 /* LocalizedStrings.swift */,
 				974570F71C2DE67A00680E43 /* KiwixURLProtocol.swift */,
 				978C58A81C1CFF290077AE47 /* Preference */,
-				973381641C331DE50016CEFB /* SearchAsync.swift */,
+				97BAEE9F1C528B3000ECB667 /* SearchEngine.swift */,
 				97254FDD1C26442F0056950B /* ZIMMultiReader */,
 				977998851C1E2C2600B1DD5E /* Utilities */,
 			);
@@ -728,7 +726,6 @@
 				9764026E1C2794FE004E31B5 /* reader.cpp in Sources */,
 				97CCC4EA1C1F12990041DAEE /* LibraryUIElements.swift in Sources */,
 				972B007C1C35DAC000B5FDC5 /* WebViewVC.swift in Sources */,
-				973381651C331DE50016CEFB /* SearchAsync.swift in Sources */,
 				9779987D1C1E242800B1DD5E /* LibraryTBVCD.swift in Sources */,
 				978C58811C1CCDA90077AE47 /* LibraryTBVC.swift in Sources */,
 				9787E87E1C3D6B810000F529 /* BookmarkHUDVC.swift in Sources */,
@@ -771,6 +768,7 @@
 				973381631C331D660016CEFB /* ArticleCells.swift in Sources */,
 				97A2AB8C1C1B80FF00052E74 /* AppDelegate.swift in Sources */,
 				97C020131C3A021D00D010E5 /* AboutVC.swift in Sources */,
+				97BAEEA01C528B3000ECB667 /* SearchEngine.swift in Sources */,
 				977998771C1E0B7900B1DD5E /* Article+CoreDataProperties.swift in Sources */,
 				97C01FD11C39BF4B00D010E5 /* FontSizeTBVC.swift in Sources */,
 				973381611C331D530016CEFB /* SearchResultTBVC.swift in Sources */,
@@ -919,11 +917,12 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Kiwix/libkiwix";
 				INFOPLIST_FILE = Kiwix/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -945,11 +944,12 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_CXX_LIBRARY = "libstdc++";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Kiwix/libkiwix";
 				INFOPLIST_FILE = Kiwix/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
