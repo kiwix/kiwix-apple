@@ -63,8 +63,8 @@ class MainVC: UIViewController {
         searchController.searchBar.autocapitalizationType = .None
         searchController.searchBar.searchBarStyle = .Minimal
         searchController.searchBar.delegate = self
-        searchController.modalPresentationStyle = .Popover
         searchController.dimsBackgroundDuringPresentation = true
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {searchController.modalPresentationStyle = .Popover}
         self.definesPresentationContext = true
         self.searchBarOriginalPlaceHolder = searchController.searchBar.placeholder
         return searchController
