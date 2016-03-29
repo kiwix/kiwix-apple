@@ -27,19 +27,17 @@ class DownloadTask: NSManagedObject {
         return fetch(fetchRequest, type: DownloadTask.self, context: context) ?? [DownloadTask]()
     }
     
-    var state: DownloadTaskState? {
+    var state: DownloadTaskState {
         get {
-            guard let stateRaw = stateRaw?.integerValue else {return nil}
             switch stateRaw {
             case 0: return .Queued
             case 1: return .Downloading
             case 2: return .Paused
-            case 3: return .Error
-            default: return nil
+            default: return .Error
             }
         }
         set {
-            stateRaw = newValue?.rawValue
+            stateRaw = Int16(newValue.rawValue)
         }
     }
 

@@ -87,8 +87,7 @@ extension LibraryTBVC {
         cell.subtitleLabel.text = progress.description
         cell.progressView.progress = Float(progress.fractionCompleted)
         
-        guard let state = downloadTask.state else {return}
-        switch state {
+        switch downloadTask.state {
         case .Downloading, .Queued:
             cell.accessoryImageTintColor = UIColor.orangeColor().colorWithAlphaComponent(0.75)
             cell.accessoryImageView.highlighted = false
@@ -101,9 +100,9 @@ extension LibraryTBVC {
     func configureLocalBookCell(cell: LocalBookCell, atIndexPath indexPath: NSIndexPath) {
         guard let book = selectedFetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
         
-        configureBookCell(book, cell: cell, atIndexPath: indexPath)
-        cell.subtitleLabel.text = localDetailBooks.contains(book) ? book.veryDetailedDescription : book.detailedDescription
-        cell.accessoryImageTintColor = UIColor.redColor().colorWithAlphaComponent(0.75)
+//        configureBookCell(book, cell: cell, atIndexPath: indexPath)
+//        cell.subtitleLabel.text = localDetailBooks.contains(book) ? book.veryDetailedDescription : book.detailedDescription
+//        cell.accessoryImageTintColor = UIColor.redColor().colorWithAlphaComponent(0.75)
     }
     
     // MARK: - Table View  Data Source

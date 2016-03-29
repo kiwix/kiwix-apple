@@ -67,7 +67,7 @@ class Downloader: NSObject, NSURLSessionDelegate {
                     downloadTask?.state = .Queued
                 }
                 
-                downloadTask?.totalBytesWritten = NSNumber(longLong: task.countOfBytesReceived)
+                downloadTask?.totalBytesWritten = task.countOfBytesReceived
                 
                 let progress = BookDownloadProgress(book: book)
                 self.progresses[id] = progress

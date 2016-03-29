@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="Kiwix/Base.lproj/LaunchScreen.storyboard" source-language="en" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="7.2.1" build-num="7C1002"/>
+    </header>
+    <body/>
+  </file>
+  <file original="Kiwix/Info.plist" source-language="en" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="7.2.1" build-num="7C1002"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+      </trans-unit>
+      <trans-unit id="CFBundleShortVersionString">
+        <source>1.4</source>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="Kiwix/Localizable.strings" source-language="en" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="7.2.1" build-num="7C1002"/>
+    </header>
+    <body>
+      <trans-unit id="%@ and %@ are selected">
+        <source>%1$@ and %2$@ are selected</source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="%@ is selected">
+        <source>%@ is selected</source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="%d books are downloading">
+        <source>%d books are downloading</source>
+        <note>Library ToolBar: Download Status</note>
+      </trans-unit>
+      <trans-unit id="%d languages are selected">
+        <source>%d languages are selected</source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="%d local books">
+        <source>%d local books</source>
+        <note>Library ToolBar: Local Status</note>
+      </trans-unit>
+      <trans-unit id="1 book is downloading">
+        <source>1 book is downloading</source>
+        <note>Library ToolBar: Download Status</note>
+      </trans-unit>
+      <trans-unit id="1 local book">
+        <source>1 local book</source>
+        <note>Library ToolBar: Local Status</note>
+      </trans-unit>
+      <trans-unit id="About">
+        <source>About</source>
+        <note>Setting: Others</note>
+      </trans-unit>
+      <trans-unit id="Add a book to get started">
+        <source>Add a book to get started</source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Adjust Layout">
+        <source>Adjust Layout</source>
+        <note>Setting: Adjust Layout</note>
+      </trans-unit>
+      <trans-unit id="Adjust Page Layout (Beta)">
+        <source>Adjust Page Layout (Beta)</source>
+        <note>Setting: Reading Optimization</note>
+      </trans-unit>
+      <trans-unit id="All download tasks have finished.">
+        <source>All download tasks have finished.</source>
+        <note>Notification: Book Download Tasks Finshed</note>
+      </trans-unit>
+      <trans-unit id="All languages will be shown">
+        <source>All languages will be shown</source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Auto Refresh">
+        <source>Auto Refresh</source>
+        <note>Setting: Library Auto Refresh</note>
+      </trans-unit>
+      <trans-unit id="Bookmarked">
+        <source>Bookmarked</source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Bookmarks">
+        <source>Bookmarks</source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Books To Include">
+        <source>Books To Include</source>
+        <note>Setting: Books To Include</note>
+      </trans-unit>
+      <trans-unit id="Cancel">
+        <source>Cancel</source>
+        <note>Basic</note>
+      </trans-unit>
+      <trans-unit id="Delete">
+        <source>Delete</source>
+        <note>Basic</note>
+      </trans-unit>
+      <trans-unit id="Delete the book?">
+        <source>Delete the book?</source>
+        <note>Library: Download Space Alert</note>
+      </trans-unit>
+      <trans-unit id="Disabled">
+        <source>Disabled</source>
+        <note>Basic</note>
+      </trans-unit>
+      <trans-unit id="Download Anyway">
+        <source>Download Anyway</source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Download Error">
+        <source>Download Error</source>
+        <note>Library: Download task description</note>
+      </trans-unit>
+      <trans-unit id="Drag the slider above to adjust the font size of the article. The size of the percentage numbers shows the acutal font size of article body on screen.">
+        <source>Drag the slider above to adjust the font size of the article. The size of the percentage numbers shows the acutal font size of article body on screen.</source>
+        <note>Setting: Font Size</note>
+      </trans-unit>
+      <trans-unit id="Enable Auto Refresh">
+        <source>Enable Auto Refresh</source>
+        <note>Setting: Library Auto Refresh Page</note>
+      </trans-unit>
+      <trans-unit id="Estimating speed and remaining time">
+        <source>Estimating speed and remaining time</source>
+        <note>Library: Download task description</note>
+      </trans-unit>
+      <trans-unit id="Font Size">
+        <source>Font Size</source>
+        <note>Setting: Font Size</note>
+      </trans-unit>
+      <trans-unit id="Give Kiwix a rate!">
+        <source>Give Kiwix a rate!</source>
+        <note>Rate Kiwix in App Store Alert Title</note>
+      </trans-unit>
+      <trans-unit id="Kiwix for iOS v%@">
+        <source>Kiwix for iOS v%@</source>
+        <note>Version footnote (please translate 'v' as version)</note>
+      </trans-unit>
+      <trans-unit id="Last Refresh: %@ ago">
+        <source>Last Refresh: %@ ago</source>
+        <note>Library ToolBar: Refresh Status</note>
+      </trans-unit>
+      <trans-unit id="Last Refresh: Unknown">
+        <source>Last Refresh: Unknown</source>
+        <note>Library ToolBar: Refresh Status</note>
+      </trans-unit>
+      <trans-unit id="Last Refresh: just now">
+        <source>Last Refresh: just now</source>
+        <note>Library ToolBar: Refresh Status</note>
+      </trans-unit>
+      <trans-unit id="Library ">
+        <source>Library </source>
+        <note>Setting: Section Header</note>
+      </trans-unit>
+      <trans-unit id="Manual Scan Completed">
+        <source>Manual Scan Completed</source>
+        <note>Library: Manual Scan Alert</note>
+      </trans-unit>
+      <trans-unit id="Misc">
+        <source>Misc</source>
+        <note>Setting: Section Header</note>
+      </trans-unit>
+      <trans-unit id="Never remind me again">
+        <source>Never remind me again</source>
+        <note>Rate Kiwix in App Store Alert Action</note>
+      </trans-unit>
+      <trans-unit id="No">
+        <source>No</source>
+        <note>Basic</note>
+      </trans-unit>
+      <trans-unit id="No book is downloading">
+        <source>No book is downloading</source>
+        <note>Library ToolBar: Download Status</note>
+      </trans-unit>
+      <trans-unit id="No local book">
+        <source>No local book</source>
+        <note>Library ToolBar: Local Status</note>
+      </trans-unit>
+      <trans-unit id="Not enough space">
+        <source>Not enough space</source>
+        <note>Library: Download Space Alert</note>
+      </trans-unit>
+      <trans-unit id="Not yet refreshed">
+        <source>Not yet refreshed</source>
+        <note>Library ToolBar: Refresh Status</note>
+      </trans-unit>
+      <trans-unit id="Note: a 5-6MB database is downloaded every time the library refreshes.">
+        <source>Note: a 5-6MB database is downloaded every time the library refreshes.</source>
+        <note>Setting: Use Cellular Data</note>
+      </trans-unit>
+      <trans-unit id="OK">
+        <source>OK</source>
+        <note>Basic</note>
+      </trans-unit>
+      <trans-unit id="Off">
+        <source>Off</source>
+        <note>Basic</note>
+      </trans-unit>
+      <trans-unit id="On">
+        <source>On</source>
+        <note>Basic</note>
+      </trans-unit>
+      <trans-unit id="Only Show Preferred Language?">
+        <source>Only Show Preferred Language?</source>
+        <note>Library: Language Filter Prompt</note>
+      </trans-unit>
+      <trans-unit id="Others">
+        <source>Others</source>
+        <note>Basic</note>
+      </trans-unit>
+      <trans-unit id="Paused">
+        <source>Paused</source>
+        <note>Library: Download task description</note>
+      </trans-unit>
+      <trans-unit id="Please Rate Kiwix">
+        <source>Please Rate Kiwix</source>
+        <note>Setting: Others</note>
+      </trans-unit>
+      <trans-unit id="Please free up some space and try again.">
+        <source>Please free up some space and try again.</source>
+        <note>Library: Download Space Alert</note>
+      </trans-unit>
+      <trans-unit id="Proceed">
+        <source>Proceed</source>
+        <note>Library: Download Space Alert</note>
+      </trans-unit>
+      <trans-unit id="Processing...">
+        <source>Processing...</source>
+        <note>Library ToolBar: Refresh Status</note>
+      </trans-unit>
+      <trans-unit id="Queued">
+        <source>Queued</source>
+        <note>Library: Download task description</note>
+      </trans-unit>
+      <trans-unit id="Rate Now">
+        <source>Rate Now</source>
+        <note>Rate Kiwix in App Store Alert Action</note>
+      </trans-unit>
+      <trans-unit id="Reading">
+        <source>Reading</source>
+        <note>Setting: Section Header</note>
+      </trans-unit>
+      <trans-unit id="Refresh Library Using Cellular Data">
+        <source>Refresh Library Using Cellular Data</source>
+        <note>Setting: Use Cellular Data</note>
+      </trans-unit>
+      <trans-unit id="Refresh Using Cellular Data">
+        <source>Refresh Using Cellular Data</source>
+        <note>Setting: Library Use Cellular Data</note>
+      </trans-unit>
+      <trans-unit id="Remind me later">
+        <source>Remind me later</source>
+        <note>Rate Kiwix in App Store Alert Action</note>
+      </trans-unit>
+      <trans-unit id="Remove">
+        <source>Remove</source>
+        <note>Basic</note>
+      </trans-unit>
+      <trans-unit id="Removed">
+        <source>Removed</source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Resuming">
+        <source>Resuming</source>
+        <note>Library: Download task description</note>
+      </trans-unit>
+      <trans-unit id="Retrieving...">
+        <source>Retrieving...</source>
+        <note>Library ToolBar: Refresh Status</note>
+      </trans-unit>
+      <trans-unit id="Search">
+        <source>Search</source>
+        <note>Setting: Section Header</note>
+      </trans-unit>
+      <trans-unit id="Send Email Feedback">
+        <source>Send Email Feedback</source>
+        <note>Setting: Others</note>
+      </trans-unit>
+      <trans-unit id="Settings">
+        <source>Settings</source>
+        <note>Setting: Title</note>
+      </trans-unit>
+      <trans-unit id="Space Caution">
+        <source>Space Caution</source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Space Not Enough">
+        <source>Space Not Enough</source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Space alert">
+        <source>Space alert</source>
+        <note>Library: Download Space Alert</note>
+      </trans-unit>
+      <trans-unit id="Starting">
+        <source>Starting</source>
+        <note>Library: Download task description</note>
+      </trans-unit>
+      <trans-unit id="The list of local books is now updated.">
+        <source>The list of local books is now updated.</source>
+        <note>Library: Manual Scan Alert</note>
+      </trans-unit>
+      <trans-unit id="This book takes up more than 80% of the remaining space on your device. Are you sure you want to download it?">
+        <source>This book takes up more than 80% of the remaining space on your device. Are you sure you want to download it?</source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="This book will take up more than 80% of the free space on your device.">
+        <source>This book will take up more than 80% of the free space on your device.</source>
+        <note>Library: Download Space Alert</note>
+      </trans-unit>
+      <trans-unit id="This is not recoverable.">
+        <source>This is not recoverable.</source>
+        <note>Library: Download Space Alert</note>
+      </trans-unit>
+      <trans-unit id="To add a bookmark, long press the star button when reading an article">
+        <source>To add a bookmark, long press the star button when reading an article</source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="Unknown">
+        <source>Unknown</source>
+        <note>Basic</note>
+      </trans-unit>
+      <trans-unit id="We have found you may know %@, would you like to filter the library by these languages?">
+        <source>We have found you may know %@, would you like to filter the library by these languages?</source>
+        <note>Library: Language Filter Prompt</note>
+      </trans-unit>
+      <trans-unit id="We hope you enjoyed using Kiwix so far. Would you like to give us a rate in App Store?">
+        <source>We hope you enjoyed using Kiwix so far. Would you like to give us a rate in App Store?</source>
+        <note>Rate Kiwix in App Store Alert Message</note>
+      </trans-unit>
+      <trans-unit id="When enabled, library refresh will use cellular data.">
+        <source>When enabled, library refresh will use cellular data.</source>
+        <note>Setting: Use Cellular Data</note>
+      </trans-unit>
+      <trans-unit id="When enabled, your library will refresh automatically according to the selected interval when you open the app.">
+        <source>When enabled, your library will refresh automatically according to the selected interval when you open the app.</source>
+        <note>Setting: Library Auto Refresh Page</note>
+      </trans-unit>
+      <trans-unit id="When turned on, Kiwix will try its best to adjust the page layout for your device.">
+        <source>When turned on, Kiwix will try its best to adjust the page layout for your device.</source>
+        <note>Setting: Reading Optimization</note>
+      </trans-unit>
+      <trans-unit id="Yes">
+        <source>Yes</source>
+        <note>Basic</note>
+      </trans-unit>
+      <trans-unit id="You don't have enough remaining space to download this book.">
+        <source>You don't have enough remaining space to download this book.</source>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="and">
+        <source>and</source>
+        <note>Basic</note>
+      </trans-unit>
+      <trans-unit id="day">
+        <source>day</source>
+        <note>Setting: Library Auto Refresh Page section title</note>
+      </trans-unit>
+      <trans-unit id="month">
+        <source>month</source>
+        <note>Setting: Library Auto Refresh Page section title</note>
+      </trans-unit>
+      <trans-unit id="week">
+        <source>week</source>
+        <note>Setting: Library Auto Refresh Page section title</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="KiwixTests/Info.plist" source-language="en" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="7.2.1" build-num="7C1002"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+      </trans-unit>
+      <trans-unit id="CFBundleShortVersionString">
+        <source>1.0</source>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="KiwixUITests/Info.plist" source-language="en" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="7.2.1" build-num="7C1002"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+      </trans-unit>
+      <trans-unit id="CFBundleShortVersionString">
+        <source>1.0</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

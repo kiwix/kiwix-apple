@@ -20,11 +20,15 @@ extension UIApplication {
     }
     
     class var multiReader: ZIMMultiReader {
-        get {return appDelegate.multiReader}
+        get {return ZIMMultiReader.sharedInstance}
     }
     
     class var searchEngine: SearchEngine {
         get {return appDelegate.searchEngine}
+    }
+    
+    class var globalOperationQueue: OperationQueue {
+        get {return appDelegate.globalOperationQueue}
     }
     
     // MARK: - 

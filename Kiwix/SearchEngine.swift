@@ -32,7 +32,7 @@ class SortOperation: NSOperation {
     override func main() {
         for operation in dependencies {
             guard let operation = operation as? SearchOperation else {continue}
-            searchOperationCount++
+            searchOperationCount += 1
             results += operation.results
         }
         

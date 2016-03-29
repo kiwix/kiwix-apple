@@ -33,8 +33,8 @@ class LanguageTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
     override func viewWillDisappear(animated: Bool) {
         let hasChange = showLanguageSet != Set(showLanguages)
         guard hasChange else {return}
-        guard let libraryTBVC = self.navigationController?.topViewController as? LibraryTBVC else {return}
-        libraryTBVC.refreshOnlineFetchedResultController()
+        guard let libraryOnlineTBVC = self.navigationController?.topViewController as? LibraryOnlineTBVC else {return}
+        libraryOnlineTBVC.refreshFetchedResultController()
     }
     
     func configureToolBar() {

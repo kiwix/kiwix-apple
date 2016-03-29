@@ -76,7 +76,7 @@ extension Downloader {
             NSFileManager.saveResumeData(resumeData, book: book)
             progress.resetSpeed()
             NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                book.downloadTask?.totalBytesWritten = NSNumber(longLong: progress.completedUnitCount)
+                book.downloadTask?.totalBytesWritten = progress.completedUnitCount
             })
         }
     }

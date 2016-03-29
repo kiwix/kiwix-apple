@@ -8,7 +8,7 @@
 
 import Foundation
 import CoreData
-
+import UIKit
 
 class Book: NSManagedObject {
 
@@ -64,11 +64,16 @@ class Book: NSManagedObject {
         return book
     }
     
-    // MARK: - URL 
+    // MARK: - Properties
     
     var url: NSURL? {
         guard let meta4URL = meta4URL else {return nil}
         return NSURL(string: meta4URL.stringByReplacingOccurrencesOfString(".meta4", withString: ""))
+    }
+    
+    var favIconImage: UIImage? {
+        guard let favIcon = favIcon else {return nil}
+        return UIImage(data: favIcon)
     }
     
     // MARK: - Fetch

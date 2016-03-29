@@ -132,9 +132,9 @@ extension NSFileManager {
                 try url.getResourceValue(&isDirectory, forKey: NSURLIsDirectoryKey)
                 if let isDirectory = (isDirectory as? NSNumber)?.boolValue {
                     if !isDirectory {
-                        if url.pathExtension?.caseInsensitiveCompare("zim") == .OrderedSame {
-                            zimFiles.append(url)
-                        }
+                        guard let pathExtension = url.pathExtension?.lowercaseString else {continue}
+                        guard pathExtension.containsString("zim") else {continue}
+                        zimFiles.append(url)
                     }
                 }
             } catch {

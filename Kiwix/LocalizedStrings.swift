@@ -20,4 +20,7 @@ class LocalizedStrings: NSObject {
     class var others: String {return NSLocalizedString("Others", comment: "Basic")}
     class var unknown: String {return NSLocalizedString("Unknown", comment: "Basic")}
     class var disabled: String {return NSLocalizedString("Disabled", comment: "Basic")}
+    class var remove: String {return NSLocalizedString("Remove", comment: "Basic")}
+    class var delete: String {return NSLocalizedString("Delete", comment: "Basic")}
+    class var refreshing: String {return NSLocalizedString("Refreshing...", comment: "Basic")}
 }

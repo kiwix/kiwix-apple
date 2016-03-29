@@ -67,8 +67,8 @@ extension LibraryTBVC: DownloaderDelegate {
     func didTapOnDownloadBookCellAccessory(indexPath: NSIndexPath) {
         guard let downloadTask = selectedFetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask else {return}
         guard let book = downloadTask.book else {return}
-        guard let state = downloadTask.state else {return}
-        switch state {
+        
+        switch downloadTask.state {
         case .Downloading, .Queued:
             UIApplication.downloader.pauseDownloadBook(book)
         case .Paused, .Error:

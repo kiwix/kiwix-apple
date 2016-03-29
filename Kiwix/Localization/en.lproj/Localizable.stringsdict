@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+   en. stringsdict.plist
+   Kiwix
+
+   Created by Chris Li on 3/29/16.
+   Copyright (c) 2016 Chris. All rights reserved.
+-->
+<plist version="1.0">
+    <dict>
+        <key>%d book(s) available for download</key>
+        <dict>
+            <key>NSStringLocalizedFormatKey</key>
+            <string>%#@books@</string>
+            <key>books</key>
+            <dict>
+                <key>NSStringFormatSpecTypeKey</key>
+                <string>NSStringPluralRuleType</string>
+                <key>NSStringFormatValueTypeKey</key>
+                <string>d</string>
+                <key>zero</key>
+                <string>No book available for download.
+Try refresh the library.</string>
+                <key>one</key>
+                <string>%d book available for download</string>
+                <key>other</key>
+                <string>%d books available for download</string>
+            </dict>
+        </dict>
+    </dict>
+</plist>

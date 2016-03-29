@@ -9,18 +9,19 @@
 import UIKit
 
 class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
-
-    let monitor = DirectoryMonitor(URL: NSFileManager.docDirURL)
-    var zimURLs = Set<NSURL>()
-    var zimAdded = Set<NSURL>()
-    var zimRemoved = Set<NSURL>()
+    
+    static let sharedInstance = ZIMMultiReader()
+    
+    private let monitor = DirectoryMonitor(URL: NSFileManager.docDirURL)
+    private var zimURLs = Set<NSURL>()
+    private var zimAdded = Set<NSURL>()
+    private var zimRemoved = Set<NSURL>()
     var readers = [String: ZimReader]()
     
     override init() {
         super.init()
         monitor.delegate = self
         monitor.startMonitoring()
-        refresh()
     }
     
     deinit {
@@ -30,12 +31,13 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
     // MARK: - DirectoryMonitorDelegate
     
     func directoryMonitorDidObserveChange() {
-        refresh()
+        let operation = RescanZimMultiReaderOperation()
+        UIApplication.globalOperationQueue.addOperation(operation)
     }
     
     // MARK: - Refresh
     
-    func refresh() {
+    func rescan() {
         let newZimURLs = Set(NSFileManager.zimFilesInDocDir())
         zimAdded = newZimURLs.subtract(zimURLs)
         zimRemoved = zimURLs.subtract(newZimURLs)
@@ -46,7 +48,7 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
         zimURLs = newZimURLs
     }
     
-    func removeOld() {
+    private func removeOld() {
         for (id, reader) in readers {
             guard zimRemoved.contains(reader.fileURL) else {continue}
             readers[id] = nil
@@ -57,13 +59,12 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
             } else {
                 UIApplication.appDelegate.managedObjectContext.deleteObject(book)
             }
-            
         }
     }
     
-    func addNew() {
+    private func addNew() {
         for url in zimAdded {
-            let reader = ZimReader(ZIMFileURL: url)
+            guard let reader = ZimReader(ZIMFileURL: url) else {continue}
             let id = reader.getID()
             readers[id] = reader
             
@@ -74,31 +75,23 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
             book?.isLocal = true
         }
     }
+}
+
+// This class is unfinished
+class RescanZimMultiReaderOperation: Operation {
+    override init() {
+        super.init()
+        addCondition(MutuallyExclusive<ZIMMultiReader>())
+    }
     
-    // MARK: - Search
-    
-    let lock = NSLock()
-    func search(searchTerm: String, zimFileID: String) -> [(id: String, articleTitle: String)] {
-        defer {lock.unlock()}
-        lock.lock()
-        
-        var resultTuples = [(id: String, articleTitle: String)]()
-        let firstCharRange = searchTerm.startIndex...searchTerm.startIndex
-        let firstLetterCapitalisedSearchTerm = searchTerm.stringByReplacingCharactersInRange(firstCharRange, withString: searchTerm.substringWithRange(firstCharRange).capitalizedString)
-        let searchTermVariations = Set([searchTerm, searchTerm.uppercaseString, searchTerm.lowercaseString, searchTerm.capitalizedString, firstLetterCapitalisedSearchTerm])
-        
-        let reader = readers[zimFileID]
-        var results = Set<String>()
-        for searchTermVariation in searchTermVariations {
-            guard let result = reader?.searchSuggestionsSmart(searchTermVariation) as? [String] else {continue}
-            results.unionInPlace(result)
+    override func execute() {
+        let context = UIApplication.appDelegate.managedObjectContext
+        context.performBlockAndWait { () -> Void in
+            // rescan() needs to read from Coredata, ZIMMultiReader use a Main Queue ManagedObjectContext
+            ZIMMultiReader.sharedInstance.rescan()
+            print("number of readers: \(ZIMMultiReader.sharedInstance.readers.count)")
         }
-        
-        for result in results {
-            resultTuples.append((id: zimFileID, articleTitle: result))
-        }
-        
-        return resultTuples
+        finish()
     }
 }
 

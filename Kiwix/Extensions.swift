@@ -35,32 +35,6 @@ extension UIColor {
     class var havePicTintColor: UIColor {
         return UIColor(red: 255.0/255.0, green: 153.0/255.0, blue: 51.0/255.0, alpha: 1.0)
     }
-    
-    convenience init?(hexString: String) {
-        let r, g, b, a: CGFloat
-        
-        if hexString.hasPrefix("#") {
-            let start = hexString.startIndex.advancedBy(1)
-            let hexColor = hexString.substringFromIndex(start)
-            
-            if hexColor.characters.count == 8 {
-                let scanner = NSScanner(string: hexColor)
-                var hexNumber: UInt64 = 0
-                
-                if scanner.scanHexLongLong(&hexNumber) {
-                    r = CGFloat((hexNumber & 0xff000000) >> 24) / 255
-                    g = CGFloat((hexNumber & 0x00ff0000) >> 16) / 255
-                    b = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
-                    a = CGFloat(hexNumber & 0x000000ff) / 255
-                    
-                    self.init(red: r, green: g, blue: b, alpha: a)
-                    return
-                }
-            }
-        }
-        
-        return nil
-    }
 }
 
 extension UITableView {
@@ -73,17 +47,6 @@ extension UITableView {
         label.numberOfLines = 0
         label.textColor = UIColor.grayColor()
         backgroundView = label
-    }
-}
-
-extension UIBarButtonItem {
-    convenience init(barButtonSystemItem systemItem: UIBarButtonSystemItem) {
-        self.init(barButtonSystemItem: systemItem, target: nil, action: nil)
-    }
-    
-    convenience init(imageNamed name: String, target: AnyObject?, action: Selector) {
-        let image = UIImage(named: name)?.imageWithRenderingMode(.AlwaysTemplate)
-        self.init(image: image, style: .Plain, target: target, action: action)
     }
 }
 
@@ -129,11 +92,14 @@ extension NSManagedObject {
         }
     }
     
+    class func fetchAll<T:NSManagedObject>(context: NSManagedObjectContext) -> [T]? {
+        let className = String(T)
+        let fetchRequest = NSFetchRequest(entityName: className)
+        return fetch(fetchRequest, type: T.self, context: context)
+    }
+    
     class func insert<T:NSManagedObject>(type: T.Type, context: NSManagedObjectContext) -> T? {
-        guard let className = NSStringFromClass(T).componentsSeparatedByString(".").last else {
-            print("NSManagedObjectExtension: Unable to get class name")
-            return nil
-        }
+        let className = String(T)
         guard let obj = NSEntityDescription.insertNewObjectForEntityForName(className, inManagedObjectContext: context) as? T else {return nil}
         return obj
     }
@@ -153,5 +119,27 @@ extension NSFetchedResultsController {
             print("FetchedResultController performFetch failed: \(error.localizedDescription)")
         }
     }
+}
+
+extension NSManagedObjectContext {
+    func saveInCorrectThreadIfNeeded() {
+        performBlock { () -> Void in
+            self.saveIfNeeded()
+        }
+    }
     
+    func saveIfNeeded() {
+        guard hasChanges else {return}
+        do {
+            try save()
+        } catch let error as NSError {
+            print("ObjContext save failed: \(error.localizedDescription)")
+        }
+    }
+    
+    func deleteObjects(objects: [NSManagedObject]) {
+        for object in objects {
+            deleteObject(object)
+        }
+    }
 }

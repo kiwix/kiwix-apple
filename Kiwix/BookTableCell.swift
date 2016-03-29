@@ -27,8 +27,11 @@ class DownloadBookCell: BookTableCell {
     }
 }
 
-class LocalBookCell: BookTableCell {
-
+class LocalBookCell: UITableViewCell {
+    @IBOutlet weak var favIcon: UIImageView!
+    @IBOutlet weak var hasPicIndicator: UIView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
 }
 
 class BookTableCell: UITableViewCell {

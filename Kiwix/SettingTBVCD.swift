@@ -36,6 +36,8 @@ extension SettingTBVC {
                 return Preference.libraryRefreshAllowCellularData ? LocalizedStrings.on : LocalizedStrings.off
             case NSIndexPath(forRow: 0, inSection: 1):
                 return Utilities.formattedPercentString(NSNumber(double: Preference.webViewZoomScale / 100))
+            case NSIndexPath(forRow: 1, inSection: 1):
+                return Preference.webViewInjectJavascriptToAdjustPageLayout ? LocalizedStrings.on : LocalizedStrings.off
             default:
                 return nil
             }
@@ -59,10 +61,9 @@ extension SettingTBVC {
     }
     
     override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        if section == tableView.numberOfSections - 1 {
-            if let view = view as? UITableViewHeaderFooterView {
-                view.textLabel?.textAlignment = .Center
-            }
+        guard section == tableView.numberOfSections - 1 else {return}
+        if let view = view as? UITableViewHeaderFooterView {
+            view.textLabel?.textAlignment = .Center
         }
     }
     

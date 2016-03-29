@@ -1,5 +1,5 @@
 //
-//  ZIMMultiReaderLoading.swift
+//  ZIMMultiReaderAPI.swift
 //  Kiwix
 //
 //  Created by Chris on 12/25/15.
@@ -9,6 +9,28 @@
 import UIKit
 
 extension ZIMMultiReader {
+    
+    // MARK: - Search
+    
+    func search(searchTerm: String, zimFileID: String) -> [(id: String, articleTitle: String)] {
+        var resultTuples = [(id: String, articleTitle: String)]()
+        let firstCharRange = searchTerm.startIndex...searchTerm.startIndex
+        let firstLetterCapitalisedSearchTerm = searchTerm.stringByReplacingCharactersInRange(firstCharRange, withString: searchTerm.substringWithRange(firstCharRange).capitalizedString)
+        let searchTermVariations = Set([searchTerm, searchTerm.uppercaseString, searchTerm.lowercaseString, searchTerm.capitalizedString, firstLetterCapitalisedSearchTerm])
+        
+        let reader = readers[zimFileID]
+        var results = Set<String>()
+        for searchTermVariation in searchTermVariations {
+            guard let result = reader?.searchSuggestionsSmart(searchTermVariation) as? [String] else {continue}
+            results.unionInPlace(result)
+        }
+        
+        for result in results {
+            resultTuples.append((id: zimFileID, articleTitle: result))
+        }
+        
+        return resultTuples
+    }
     
     // MARK: - Loading System
     

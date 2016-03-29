@@ -46,7 +46,6 @@ class SettingTBVC: UITableViewController {
     }
     
     func showRateKiwixAlert(showRemindLater showRemindLater: Bool) {
-        guard Preference.haveRateKiwix == false else {return}
         let alert = UIAlertController(title: LocalizedStrings.rateKiwixTitle, message: LocalizedStrings.rateKiwixMessage, preferredStyle: .Alert)
         let remindLater = UIAlertAction(title: LocalizedStrings.rateLater, style: .Default) { (action) -> Void in
             Preference.activeUseHistory.removeAll()
@@ -100,6 +99,7 @@ extension LocalizedStrings {
     class var libraryUseCellularData: String {return NSLocalizedString("Refresh Using Cellular Data", comment: "Setting: Library Use Cellular Data")}
     class var fontSize: String {return NSLocalizedString("Font Size", comment: "Setting: Font Size")}
     class var adjustLayout: String {return NSLocalizedString("Adjust Layout", comment: "Setting: Adjust Layout")}
+    class var booksToInclude: String {return NSLocalizedString("Books To Include", comment: "Setting: Books To Include")}
     class var rateKiwix: String {return NSLocalizedString("Please Rate Kiwix", comment: "Setting: Others")}
     class var emailFeedback: String {return NSLocalizedString("Send Email Feedback", comment: "Setting: Others")}
     class var about: String {return NSLocalizedString("About", comment: "Setting: Others")}

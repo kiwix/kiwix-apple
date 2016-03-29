@@ -10,13 +10,13 @@ import UIKit
 import CoreData
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {
 
     var window: UIWindow?
     private(set) lazy var libraryRefresher = LibraryRefresher()
     private(set) lazy var downloader = Downloader()
     private(set) lazy var searchEngine = SearchEngine()
-    private(set) lazy var multiReader = ZIMMultiReader()
+    let globalOperationQueue = OperationQueue()
     
     var networkTaskCount = 0 {
         didSet {
@@ -30,6 +30,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Preference.activeUseHistory.append(NSDate()) 
     }
     
+    func operationQueue(operationQueue: OperationQueue, operationDidFinish operation: NSOperation, withErrors errors: [NSError]) {
+        print(globalOperationQueue.operationCount)
+    }
+    
     func setupNotification() {
         let bookDownloadFinishCategory = UIMutableUserNotificationCategory()
         bookDownloadFinishCategory.identifier = "KIWIX_BOOK_DOWNLOAD_FINISH"
@@ -39,8 +43,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         NSURLProtocol.registerClass(KiwixURLProtocol)
-        if LibraryRefresher.libraryIsOld && LibraryRefresher.libraryAutoRefreshEnabled {libraryRefresher.refresh()}
-        multiReader.refresh()
+        setupNotification()
+        Network.sharedInstance.restoreProgresses()
         return true
     }
 
@@ -62,7 +66,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         NSTimer.scheduledTimerWithTimeInterval(60.0, target: self, selector: "recordActiveSession", userInfo: nil, repeats: false)
-        setupNotification()
+        
+        ZIMMultiReader.sharedInstance.rescan()
     }
 
     func applicationWillTerminate(application: UIApplication) {

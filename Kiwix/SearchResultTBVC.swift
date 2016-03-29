@@ -8,9 +8,14 @@
 
 import UIKit
 
-class SearchResultTBVC: UITableViewController, UISearchResultsUpdating, SortOperationDelegate {
+class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDelegate, SortOperationDelegate {
     
+    @IBOutlet weak var tableView: UITableView!
     var searchResults = [(id: String, articleTitle: String)]()
+    
+    var shouldClipRoundCorner: Bool {
+        return traitCollection.verticalSizeClass == .Regular && traitCollection.horizontalSizeClass == .Regular
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,28 +23,56 @@ class SearchResultTBVC: UITableViewController, UISearchResultsUpdating, SortOper
         tableView.rowHeight = UITableViewAutomaticDimension
     }
     
-    // This commended out part is for showing add book message when user have no book 
-//    override func viewWillAppear(animated: Bool) {
-//        super.viewWillAppear(animated)
-//        if UIApplication.multiReader.readers.count == 0 {
-//            tableView.setBackgroundText(LocalizedStrings.searchAddBookGuide)
-//            tableView.tableFooterView = UIView()
-//        } else {
-//            tableView.tableFooterView = nil
-//        }
-//    }
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        tableView.contentInset = UIEdgeInsetsMake(0.0, 0, 0, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0, 0, 0, 0)
+        tableView.layer.cornerRadius = shouldClipRoundCorner ? 10.0 : 0.0
+        tableView.layer.masksToBounds = shouldClipRoundCorner
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func keyboardDidShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo as? [String: NSValue] else {return}
+        guard let keyboardOrigin = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue().origin else {return}
+        let point = view.convertPoint(keyboardOrigin, fromView: UIApplication.appDelegate.window)
+        let buttomInset = view.frame.height - point.y
+        tableView.contentInset = UIEdgeInsetsMake(0.0, 0, buttomInset, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0, 0, buttomInset, 0)
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        tableView.contentInset = UIEdgeInsetsMake(0.0, 0, 0, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0, 0, 0, 0)
+    }
+    
+    func selectFirstResultIfPossible() {
+        guard searchResults.count > 0 else {return}
+        tableView.selectRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), animated: true, scrollPosition: .Top)
+        tableView(tableView, didSelectRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0))
+    }
     
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ArticleCell", forIndexPath: indexPath) as! ArticleCell
         
         let result = searchResults[indexPath.row]
@@ -55,29 +88,26 @@ class SearchResultTBVC: UITableViewController, UISearchResultsUpdating, SortOper
     
     // MARK: Table view delegate
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        guard let navigationController = self.presentingViewController as? UINavigationController else {return}
-        guard let mainVC = navigationController.topViewController as? MainVC else {return}
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        guard let mainVC = parentViewController?.parentViewController as? MainVC else {return}
         let result = searchResults[indexPath.row]
         let url = NSURL.kiwixURLWithZimFileid(result.id, articleTitle: result.articleTitle)
         mainVC.load(url)
-        mainVC.searchController.active = false
+        mainVC.hideSearch()
     }
 
-    // MARK: - UISearchResultUpdating
+    // MARK: - Search Result Updater
     
-    var results = [[(id: String, articleTitle: String)]]()
-    
-    func updateSearchResultsForSearchController(searchController: UISearchController) {
+    func startSearch(searchText: String) {
         UIApplication.searchEngine.searchQueue.cancelAllOperations()
         UIApplication.searchEngine.searchInProgress.removeAll()
         searchResults.removeAll()
         
-        guard let searchTerm = searchController.searchBar.text else {return}
-        guard searchTerm != "" else {tableView.reloadData(); return}
+        guard searchText != "" else {tableView.reloadData(); return}
         
         let sortOperation = SortOperation()
-        let sortOperationIdentifier = searchTerm + "_Sort"
+        let sortOperationIdentifier = searchText + "_Sort"
         sortOperation.delegate = self
         sortOperation.completionBlock = {
             UIApplication.searchEngine.searchInProgress.removeAll()
@@ -86,8 +116,8 @@ class SearchResultTBVC: UITableViewController, UISearchResultsUpdating, SortOper
         
         let zimFileIDs = Array(UIApplication.multiReader.readers.keys)
         for id in zimFileIDs {
-            let identifier = searchTerm + "_" + id
-            let searchOperation = SearchOperation(searchTerm: searchTerm, zimFileID: id)
+            let identifier = searchText + "_" + id
+            let searchOperation = SearchOperation(searchTerm: searchText, zimFileID: id)
             sortOperation.addDependency(searchOperation)
             UIApplication.searchEngine.searchInProgress[identifier] = searchOperation
             UIApplication.searchEngine.searchQueue.addOperation(searchOperation)
@@ -102,6 +132,7 @@ class SearchResultTBVC: UITableViewController, UISearchResultsUpdating, SortOper
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
             self.searchResults = results
             self.tableView.reloadData()
+            self.tableView.setContentOffset(CGPointMake(0, 0 - self.tableView.contentInset.top), animated: true)
         }
     }
 }

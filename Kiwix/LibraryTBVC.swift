@@ -18,7 +18,7 @@ class LibraryTBVC: UITableViewController, NSFetchedResultsControllerDelegate, Li
     var progressShouldUpdate = true
     var timerProgress = NSTimer()
     var timerLabel = NSTimer()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
