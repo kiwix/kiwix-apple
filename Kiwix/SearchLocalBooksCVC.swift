@@ -1,5 +1,5 @@
 //
-//  SearchResultCVC.swift
+//  SearchLocalBooksCVC.swift
 //  Kiwix
 //
 //  Created by Chris Li on 1/30/16.
@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SearchResultCVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
+class SearchLocalBooksCVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
 
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -133,7 +133,7 @@ class SearchResultCVC: UIViewController, UICollectionViewDataSource, UICollectio
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         let predicate = NSPredicate(format: "isLocal = true")
         fetchRequest.sortDescriptors = [titleDescriptor]
-        fetchRequest.predicate = predicate
+        //fetchRequest.predicate = predicate
         fetchRequest.fetchLimit = 100
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "MasterFRC")
         fetchedResultsController.delegate = self

@@ -8,11 +8,13 @@
 
 #import "ZimReader.h"
 #include "reader.h"
+#include "xapian.h"
 
 #define SEARCH_SUGGESTIONS_COUNT 50
 
 @interface ZimReader () {
     kiwix::Reader *_reader;
+    Xapian::Database *_db;
 }
 @end
 
@@ -23,14 +25,70 @@
     if (self) {
         try {
             _reader = new kiwix::Reader([url fileSystemRepresentation]);
-        } catch (const std::exception& e) {
+        } catch (const std::exception &e) {
             return nil;
         }
+        
+        try {
+            _db = new Xapian::Database([[url URLByAppendingPathExtension:@"idx"] fileSystemRepresentation]);
+            [self searchInIndex:@"test"];
+        } catch (const Xapian::DatabaseOpeningError &e) {}
         
         self.fileURL = url;
     }
     
     return self;
+}
+
+#pragma mark - search
+- (NSArray *)searchSuggestionsSmart:(NSString *)searchTerm {
+    string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];
+    int count = SEARCH_SUGGESTIONS_COUNT;
+    NSMutableArray *searchSuggestionsArray = [[NSMutableArray alloc] init];
+    
+    if(_reader->searchSuggestionsSmart(searchTermC, count)) {
+        //NSLog(@"%s, %d", searchTermC.c_str(), count);
+        string titleC;
+        while (_reader->getNextSuggestion(titleC)) {
+            NSString *title = [NSString stringWithUTF8String:titleC.c_str()];
+            [searchSuggestionsArray addObject:title];
+        }
+    }
+    //NSLog(@"count = %lu", (unsigned long)[searchSuggestionsArray count]);
+    return searchSuggestionsArray;
+}
+
+- (void)searchInIndex:(NSString *)searchTerm {
+    try {
+        
+        Xapian::Enquire enquire(*_db);
+        
+        vector<string> queryTerms;
+        string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];
+        queryTerms.push_back(searchTermC);
+        
+        
+        Xapian::Query query(Xapian::Query::OP_OR, queryTerms.begin(), queryTerms.end());
+        cout << "Performing query `" << query.get_description() << "'" << endl;
+        
+        enquire.set_query(query);
+        
+        Xapian::MSet matches = enquire.get_mset(0, 10);
+        Xapian::MSetIterator i;
+        for (i = matches.begin(); i != matches.end(); ++i) {
+            cout << "Document ID " << *i << "\t";
+            cout << i.get_percent() << "% ";
+            Xapian::Document doc = i.get_document();
+            
+            NSString *path = [NSString stringWithUTF8String:doc.get_data().c_str()];
+            NSString *title = [NSString stringWithUTF8String:doc.get_value(0).c_str()];
+            NSString *snippet = [NSString stringWithUTF8String:doc.get_value(1).c_str()];
+            
+            NSLog([NSString stringWithFormat:@"%@, %@", path, title]);
+        }
+    } catch(const Xapian::Error &error) {
+        cout << "Xapian Exception: "  << error.get_msg() << endl;
+    }
 }
 
 #pragma mark - validation
@@ -39,7 +97,7 @@
     return _reader->isCorrupted();
 }
 
-#pragma mark - contents
+#pragma mark - getContents
 - (NSDictionary *)dataWithContentURLString:(NSString *)contentURLString {
     NSData *contentData;
     NSString *mimeType;
@@ -84,24 +142,6 @@
 - (NSString *)getRandomPageUrl {
     string url = _reader->getRandomPageUrl();
     return [NSString stringWithUTF8String:url.c_str()];
-}
-
-#pragma mark - search
-- (NSArray *)searchSuggestionsSmart:(NSString *)searchTerm {
-    string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];
-    int count = SEARCH_SUGGESTIONS_COUNT;
-    NSMutableArray *searchSuggestionsArray = [[NSMutableArray alloc] init];
-    
-    if(_reader->searchSuggestionsSmart(searchTermC, count)) {
-        //NSLog(@"%s, %d", searchTermC.c_str(), count);
-        string titleC;
-        while (_reader->getNextSuggestion(titleC)) {
-            NSString *title = [NSString stringWithUTF8String:titleC.c_str()];
-            [searchSuggestionsArray addObject:title];
-        }
-    }
-    //NSLog(@"count = %lu", (unsigned long)[searchSuggestionsArray count]);
-    return searchSuggestionsArray;
 }
 
 #pragma mark - getCounts
@@ -227,6 +267,10 @@
 - (void)dealloc {
     if (_reader != NULL) {
         _reader->~Reader();
+    }
+    
+    if (_db != NULL) {
+        _db->~Database();
     }
 }
 

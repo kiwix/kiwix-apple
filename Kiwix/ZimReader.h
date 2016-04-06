@@ -35,7 +35,8 @@
 - (NSString *)getGlobalCount;
 
 - (NSString *)getID;
-- (NSString *)getTitle;- (NSString *)getDesc;
+- (NSString *)getTitle;
+- (NSString *)getDesc;
 - (NSString *)getLanguage;
 - (NSString *)getDate;
 - (NSString *)getCreator;

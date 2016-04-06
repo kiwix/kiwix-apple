@@ -10,7 +10,7 @@ import UIKit
 
 class SearchVC: UIViewController, UISearchBarDelegate, UIGestureRecognizerDelegate {
     
-    @IBOutlet weak var searchBookCVContainer: UIView!
+    @IBOutlet weak var tabControllerContainer: UIView!
     @IBOutlet weak var searchResultTBVCContainer: UIView!
     @IBOutlet var tapGestureRecognizer: UITapGestureRecognizer!
     var searchResultTBVC: SearchResultTBVC?
@@ -48,10 +48,10 @@ class SearchVC: UIViewController, UISearchBarDelegate, UIGestureRecognizerDelega
     func configureViewVisibility() {
         if searchText == "" {
             searchResultTBVCContainer.hidden = true
-            searchBookCVContainer.hidden = false
+            tabControllerContainer.hidden = false
         } else {
             searchResultTBVCContainer.hidden = false
-            searchBookCVContainer.hidden = true
+            tabControllerContainer.hidden = true
         }
     }
     
