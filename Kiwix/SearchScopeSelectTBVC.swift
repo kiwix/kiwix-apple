@@ -37,7 +37,7 @@ class SearchScopeSelectTBVC: UITableViewController {
 //        cell.titleLabel.text = book.title
 //        cell.hasPicIndicator.backgroundColor = (book.isNoPic?.boolValue ?? true) ? UIColor.lightGrayColor() : UIColor.havePicTintColor
 //        cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
-//        cell.subtitleLabel.text = book.veryDetailedDescription
+//        cell.subtitleLabel.text = book.detailedDescription2
         
         cell.titleLabel.text = "Wikipedia"
         cell.subtitleLabel.text = "This is a test"

@@ -18,6 +18,7 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.tableFooterView = UIView()
+        configureToolBar()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -32,7 +33,7 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
         Network.sharedInstance.delegate = nil
     }
     
-    // MARK: -
+    // MARK: - BookTableCellDelegate
     
     func didTapOnAccessoryViewForCell(cell: BookTableCell) {
         guard let indexPath = tableView.indexPathForCell(cell),
@@ -60,7 +61,7 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
         }
     }
     
-    // MARK: - ToolBar Button Actions
+    // MARK: - ToolBar Button
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBAction func segmentedControlValueChanged(sender: UISegmentedControl) {
@@ -68,6 +69,21 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
     }
     @IBAction func dismissSelf(sender: UIBarButtonItem) {
         dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    var messageButton = MessageBarButtonItem()
+    
+    func configureToolBar() {
+        guard var toolBarItems = self.toolbarItems else {return}
+        toolBarItems[1] = messageButton
+        configureMessage()
+        setToolbarItems(toolBarItems, animated: false)
+    }
+    
+    func configureMessage() {
+        guard let count = fetchedResultController.fetchedObjects?.count else {return}
+        let localizedString = String.localizedStringWithFormat(NSLocalizedString("%d download tasks", comment: "Book Library, book downloader message"), count)
+        messageButton.text = localizedString
     }
     
     // MARK: - Fetched Results Controller
@@ -215,5 +231,6 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
+        configureToolBar()
     }
 }

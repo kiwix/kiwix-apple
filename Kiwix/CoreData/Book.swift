@@ -118,6 +118,21 @@ class Book: NSManagedObject {
         return descriptions.joinWithSeparator(", ")
     }
     
+    var detailedDescription1 : String? {
+        var descriptions = [String]()
+        if let description = detailedDescription {descriptions.append(description)}
+        if let bookDescription = desc {descriptions.append(bookDescription)}
+        return descriptions.joinWithSeparator("\n")
+    }
+    
+    var detailedDescription2 : String? {
+        var descriptions = [String]()
+        if let description = detailedDescription {descriptions.append(description)}
+        if let bookDescription = desc {descriptions.append(bookDescription)}
+        if let creatorAndPublisherDescription = creatorAndPublisherDescription {descriptions.append(creatorAndPublisherDescription)}
+        return descriptions.joinWithSeparator("\n")
+    }
+    
     private var creatorAndPublisherDescription: String? {
         if let creator = self.creator, publisher = self.publisher {
             if creator == publisher {
@@ -134,13 +149,7 @@ class Book: NSManagedObject {
         }
     }
     
-    var veryDetailedDescription : String? {
-        var descriptions = [String]()
-        if let description = detailedDescription {descriptions.append(description)}
-        if let bookDescription = desc {descriptions.append(bookDescription)}
-        if let creatorAndPublisherDescription = creatorAndPublisherDescription {descriptions.append(creatorAndPublisherDescription)}
-        return descriptions.joinWithSeparator("\n")
-    }
+    
     
     // MARK: - States
     

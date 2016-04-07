@@ -100,6 +100,7 @@
 		97C020151C3A023800D010E5 /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = 97C020141C3A023800D010E5 /* about.html */; };
 		97C11F961C6D1F120048C867 /* LibraryTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C11F951C6D1F120048C867 /* LibraryTabBarController.swift */; };
 		97CCC4E81C1F0D970041DAEE /* BarButtonItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CCC4E71C1F0D970041DAEE /* BarButtonItems.swift */; };
+		97DA06C71CB6DA3400EBA609 /* LibraryLocalBookDetailTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DA06C61CB6DA3400EBA609 /* LibraryLocalBookDetailTBVC.swift */; };
 		97E067241C52980F0079C13C /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E067231C52980F0079C13C /* MainVC.swift */; };
 		97E067261C52AA000079C13C /* MainVCWebViewD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E067251C52AA000079C13C /* MainVCWebViewD.swift */; };
 		97E067281C52AC360079C13C /* MainVCOtherD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E067271C52AC360079C13C /* MainVCOtherD.swift */; };
@@ -283,6 +284,7 @@
 		97C020141C3A023800D010E5 /* about.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = about.html; sourceTree = "<group>"; };
 		97C11F951C6D1F120048C867 /* LibraryTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryTabBarController.swift; sourceTree = "<group>"; };
 		97CCC4E71C1F0D970041DAEE /* BarButtonItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarButtonItems.swift; sourceTree = "<group>"; };
+		97DA06C61CB6DA3400EBA609 /* LibraryLocalBookDetailTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryLocalBookDetailTBVC.swift; sourceTree = "<group>"; };
 		97E067231C52980F0079C13C /* MainVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
 		97E067251C52AA000079C13C /* MainVCWebViewD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainVCWebViewD.swift; sourceTree = "<group>"; };
 		97E067271C52AC360079C13C /* MainVCOtherD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainVCOtherD.swift; sourceTree = "<group>"; };
@@ -610,6 +612,7 @@
 				970104051C69293000DC48F6 /* LibraryOnlineTBVC.swift */,
 				973E99C61C6D405200FBCA28 /* LibraryDownloadTBVC.swift */,
 				973E99C81C6D405B00FBCA28 /* LibraryLocalTBVC.swift */,
+				97DA06C61CB6DA3400EBA609 /* LibraryLocalBookDetailTBVC.swift */,
 				978C58831C1CCE4D0077AE47 /* LanguageTBVC.swift */,
 			);
 			name = LibraryTBVC;
@@ -1092,6 +1095,7 @@
 				97E5710E1CA0500400FF4F1D /* LocationCapability-tvOS.swift in Sources */,
 				973E99C91C6D405B00FBCA28 /* LibraryLocalTBVC.swift in Sources */,
 				97C01FD11C39BF4B00D010E5 /* FontSizeTBVC.swift in Sources */,
+				97DA06C71CB6DA3400EBA609 /* LibraryLocalBookDetailTBVC.swift in Sources */,
 				973381611C331D530016CEFB /* SearchResultTBVC.swift in Sources */,
 				9779986D1C1E0A5F00B1DD5E /* LibraryRefresherXMLParser.swift in Sources */,
 				97A7140A1C274FCB00951244 /* DirectoryMonitor.swift in Sources */,

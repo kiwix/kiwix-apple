@@ -18,11 +18,21 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.tableFooterView = UIView()
+        configureToolBar()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         segmentedControl.selectedSegmentIndex = 2
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        guard segue.identifier == "showBookDetail" else {return}
+        guard let controller = segue.destinationViewController as? LibraryLocalBookDetailTBVC,
+              let cell = sender as? UITableViewCell,
+              let indexPath = tableView.indexPathForCell(cell),
+              let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
+        controller.book = book
     }
     
     // MARK: - ToolBar Button Actions
@@ -33,6 +43,22 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
     }
     @IBAction func dismissSelf(sender: UIBarButtonItem) {
         dismissViewControllerAnimated(true, completion: nil)
+    }
+    var messageButton = MessageBarButtonItem()
+    
+    func configureToolBar() {
+        guard var toolBarItems = self.toolbarItems else {return}
+        toolBarItems[1] = messageButton
+        configureMessage()
+        setToolbarItems(toolBarItems, animated: false)
+    }
+    
+    func configureMessage() {
+        guard let books = fetchedResultController.fetchedObjects as? [Book] else {return}
+        let totalSize = books.reduce(0) {$0 + ($1.fileSize?.longLongValue ?? 0)}
+        let spaceString = Utilities.formattedFileSizeStringFromByteCount(totalSize)
+        let localizedString = String.localizedStringWithFormat(NSLocalizedString("Taking up %@ in total", comment: "Book Library, local book message"), spaceString)
+        messageButton.text = localizedString
     }
     
     // MARK: - Fetched Results Controller
@@ -74,7 +100,7 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
         cell.titleLabel.text = book.title
         cell.hasPicIndicator.backgroundColor = (book.isNoPic?.boolValue ?? true) ? UIColor.lightGrayColor() : UIColor.havePicTintColor
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
-        cell.subtitleLabel.text = book.veryDetailedDescription
+        cell.subtitleLabel.text = book.detailedDescription1
     }
     
     // MARK: Other Data Source
@@ -162,5 +188,6 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
+        configureMessage()
     }
 }

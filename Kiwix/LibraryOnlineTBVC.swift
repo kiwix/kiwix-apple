@@ -76,7 +76,7 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
         configureMessage(isRefreshing: false)
     }
     
-    // MARK: - ToolBar Button Actions
+    // MARK: - ToolBar Button
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBAction func segmentedControlValueChanged(sender: UISegmentedControl) {
@@ -104,7 +104,7 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
     func configureMessage(isRefreshing isRefreshing: Bool) {
         if !isRefreshing {
             if let count = fetchedResultController.fetchedObjects?.count {
-                let localizedString = String.localizedStringWithFormat(NSLocalizedString("%d book(s) available for download", comment: "Book Library, not downloaded book count"), count)
+                let localizedString = String.localizedStringWithFormat(NSLocalizedString("%d book(s) available for download", comment: "Book Library, online book catalogue message"), count)
                 messageButton.text = localizedString
             } else {
                 messageButton.text = nil
@@ -177,7 +177,7 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
         cell.hasPicIndicator.backgroundColor = (book.isNoPic?.boolValue ?? true) ? UIColor.lightGrayColor() : UIColor.havePicTintColor
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
         cell.delegate = self
-        cell.subtitleLabel.text = booksShowingDetail.contains(book) ? book.veryDetailedDescription : book.detailedDescription
+        cell.subtitleLabel.text = booksShowingDetail.contains(book) ? book.detailedDescription2 : book.detailedDescription
         
         switch book.spaceState {
         case .Enough:
