@@ -8,7 +8,40 @@
 
 import UIKit
 
-// MARK:- Table Cells
+// MARK: - Normal Cells
+
+class ScopeBookCell: UITableViewCell {
+    
+    override func awakeFromNib() {
+        hasPicIndicator.layer.cornerRadius = 2.0
+        hasIndexIndicator.layer.cornerRadius = 2.0
+        hasPicIndicator.layer.masksToBounds = true
+        hasIndexIndicator.layer.masksToBounds = true
+        print(hasPicIndicator.backgroundColor)
+        print(hasIndexIndicator.backgroundColor)
+    }
+    
+    @IBOutlet weak var favIcon: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var hasPicIndicator: UILabel!
+    @IBOutlet weak var hasIndexIndicator: UILabel!
+    
+    var hasPic: Bool = false {
+        didSet {
+            
+        }
+    }
+}
+
+class LocalBookCell: UITableViewCell {
+    @IBOutlet weak var favIcon: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var hasPicIndicator: UIView!
+}
+
+// MARK:- Book Table Cells
 
 class CloudBookCell: BookTableCell {
     
@@ -25,13 +58,6 @@ class DownloadBookCell: BookTableCell {
         dateLabel.text = nil
         progressView.progress = 0.0
     }
-}
-
-class LocalBookCell: UITableViewCell {
-    @IBOutlet weak var favIcon: UIImageView!
-    @IBOutlet weak var hasPicIndicator: UIView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subtitleLabel: UILabel!
 }
 
 class BookTableCell: UITableViewCell {

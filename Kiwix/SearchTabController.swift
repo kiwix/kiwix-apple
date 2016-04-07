@@ -17,7 +17,7 @@ class SearchTabController: UIViewController, UIScrollViewDelegate {
     let swipeGestureRecognizer = UISwipeGestureRecognizer()
     let controllers = [UIStoryboard.main.initViewController(SearchLocalBooksCVC.self)!,
         UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("Controller1"),
-        UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("Controller2")]
+        UIStoryboard.main.initViewController(SearchScopeSelectTBVC.self)!]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,10 +32,6 @@ class SearchTabController: UIViewController, UIScrollViewDelegate {
         tabsContainer.layer.shadowOffset = CGSizeMake(0, 0)
         tabsContainer.layer.shadowOpacity = 0.5
         tabsContainer.layer.shadowRadius = 2.0
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
     }
     
     override func viewDidLayoutSubviews() {
@@ -106,4 +102,19 @@ class SearchTabController: UIViewController, UIScrollViewDelegate {
         let frame = controllers[index].view.frame
         scrollView.scrollRectToVisible(frame, animated: true)
     }
+    
+    // MARK: - Actions
+    
+    @IBAction func mainPageButtonTapped(sender: UIButton) {
+        scrollToControllerAtIndex(0)
+    }
+    
+    @IBAction func historyButtonTapped(sender: UIButton) {
+        scrollToControllerAtIndex(1)
+    }
+    
+    @IBAction func scopeButtonTapped(sender: UIButton) {
+        scrollToControllerAtIndex(2)
+    }
+    
 }
