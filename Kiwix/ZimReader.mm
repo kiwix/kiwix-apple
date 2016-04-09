@@ -31,7 +31,6 @@
         
         try {
             _db = new Xapian::Database([[url URLByAppendingPathExtension:@"idx"] fileSystemRepresentation]);
-            [self searchInIndex:@"test"];
         } catch (const Xapian::DatabaseOpeningError &e) {}
         
         self.fileURL = url;
@@ -41,54 +40,72 @@
 }
 
 #pragma mark - search
+
+//- (NSArray *)search:(NSString *)searchTerm {
+//    if(_db == nil) {
+//        return [self searchSuggestionsSmart:searchTerm];
+//    } else {
+//        return [self searchUsingIndex:searchTerm];
+//    }
+//}
+
 - (NSArray *)searchSuggestionsSmart:(NSString *)searchTerm {
     string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];
     int count = SEARCH_SUGGESTIONS_COUNT;
-    NSMutableArray *searchSuggestionsArray = [[NSMutableArray alloc] init];
+    NSString *bookID = [self getID];
+    NSMutableArray *results = [[NSMutableArray alloc] init];
     
     if(_reader->searchSuggestionsSmart(searchTermC, count)) {
-        //NSLog(@"%s, %d", searchTermC.c_str(), count);
         string titleC;
         while (_reader->getNextSuggestion(titleC)) {
             NSString *title = [NSString stringWithUTF8String:titleC.c_str()];
-            [searchSuggestionsArray addObject:title];
+            [results addObject:@{@"title": title, @"bookID": bookID}];
         }
     }
-    //NSLog(@"count = %lu", (unsigned long)[searchSuggestionsArray count]);
-    return searchSuggestionsArray;
+    return results;
 }
 
-- (void)searchInIndex:(NSString *)searchTerm {
+- (NSArray *)searchUsingIndex:(NSString *)searchTerm {
     try {
-        
+        NSArray *searchTerms = [searchTerm componentsSeparatedByString:@" "];
+        NSString *bookID = [self getID];
         Xapian::Enquire enquire(*_db);
+        NSMutableArray *results = [[NSMutableArray alloc] init];
         
         vector<string> queryTerms;
-        string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];
-        queryTerms.push_back(searchTermC);
-        
+        for (NSString *searchTerm in searchTerms) {
+            string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];
+            queryTerms.push_back(searchTermC);
+        }
         
         Xapian::Query query(Xapian::Query::OP_OR, queryTerms.begin(), queryTerms.end());
-        cout << "Performing query `" << query.get_description() << "'" << endl;
-        
         enquire.set_query(query);
         
-        Xapian::MSet matches = enquire.get_mset(0, 10);
+        
+        Xapian::MSet matches = enquire.get_mset(0, SEARCH_SUGGESTIONS_COUNT);
         Xapian::MSetIterator i;
         for (i = matches.begin(); i != matches.end(); ++i) {
-            cout << "Document ID " << *i << "\t";
-            cout << i.get_percent() << "% ";
             Xapian::Document doc = i.get_document();
             
+            NSNumber *percent = [[NSNumber alloc] initWithInt:i.get_percent()];
             NSString *path = [NSString stringWithUTF8String:doc.get_data().c_str()];
             NSString *title = [NSString stringWithUTF8String:doc.get_value(0).c_str()];
             NSString *snippet = [NSString stringWithUTF8String:doc.get_value(1).c_str()];
             
-            NSLog([NSString stringWithFormat:@"%@, %@", path, title]);
+            NSDictionary *result = @{@"percent": percent, @"path": path, @"title": title, @"snippet": snippet, @"bookID": bookID};
+            [results addObject:result];
         }
+        return results;
     } catch(const Xapian::Error &error) {
         cout << "Xapian Exception: "  << error.get_msg() << endl;
+        return  nil;
     }
+}
+
+#pragma mark - index
+
+- (BOOL)hasIndex {
+    return _db != nil;
 }
 
 #pragma mark - validation

@@ -20,9 +20,9 @@
 		972C3D851C32139C00D3A3B0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 972C3D841C32139C00D3A3B0 /* Main.storyboard */; };
 		973381611C331D530016CEFB /* SearchResultTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973381601C331D530016CEFB /* SearchResultTBVC.swift */; };
 		973381631C331D660016CEFB /* ArticleCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973381621C331D660016CEFB /* ArticleCells.swift */; };
-		973381651C331DE50016CEFB /* SearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973381641C331DE50016CEFB /* SearchEngine.swift */; };
 		973381691C343F2C0016CEFB /* Logo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973381681C343F2C0016CEFB /* Logo.swift */; };
 		9734BC061CB2BF0D00F56052 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9734BC051CB2BF0D00F56052 /* libz.tbd */; };
+		973970ED1CB9A04C00350507 /* SearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973970EC1CB9A04C00350507 /* SearchOperation.swift */; };
 		973C8D5C1C25F945007272F9 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973C8D5B1C25F945007272F9 /* Preference.swift */; };
 		973D30611C43481200F20CBC /* adjustlayoutiPad.js in Resources */ = {isa = PBXBuildFile; fileRef = 973D305F1C43481200F20CBC /* adjustlayoutiPad.js */; };
 		973D30621C43481200F20CBC /* adjustlayoutiPhone.js in Resources */ = {isa = PBXBuildFile; fileRef = 973D30601C43481200F20CBC /* adjustlayoutiPhone.js */; };
@@ -194,6 +194,7 @@
 		973381641C331DE50016CEFB /* SearchEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchEngine.swift; sourceTree = "<group>"; };
 		973381681C343F2C0016CEFB /* Logo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logo.swift; sourceTree = "<group>"; };
 		9734BC051CB2BF0D00F56052 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		973970EC1CB9A04C00350507 /* SearchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchOperation.swift; sourceTree = "<group>"; };
 		973C8D5B1C25F945007272F9 /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		973D305F1C43481200F20CBC /* adjustlayoutiPad.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = adjustlayoutiPad.js; path = JavaScripts/adjustlayoutiPad.js; sourceTree = "<group>"; };
 		973D30601C43481200F20CBC /* adjustlayoutiPhone.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = adjustlayoutiPhone.js; path = JavaScripts/adjustlayoutiPhone.js; sourceTree = "<group>"; };
@@ -819,6 +820,7 @@
 			children = (
 				970103F91C6824FA00DC48F6 /* RefreshLibraryOperation.swift */,
 				97B50C7E1CA1E4810010BD79 /* AlertOperations.swift */,
+				973970EC1CB9A04C00350507 /* SearchOperation.swift */,
 			);
 			name = Operation;
 			sourceTree = "<group>";
@@ -994,11 +996,11 @@
 			files = (
 				9764026E1C2794FE004E31B5 /* reader.cpp in Sources */,
 				97E571101CA0500400FF4F1D /* LocationOperation.swift in Sources */,
+				973970ED1CB9A04C00350507 /* SearchOperation.swift in Sources */,
 				97E571261CA0500400FF4F1D /* UIUserNotifications+Operations.swift in Sources */,
 				97E067241C52980F0079C13C /* MainVC.swift in Sources */,
 				97E108241C5D5A4200E27FD3 /* SearchLocalBooksCVC.swift in Sources */,
 				97E571151CA0500400FF4F1D /* NSLock+Operations.swift in Sources */,
-				973381651C331DE50016CEFB /* SearchEngine.swift in Sources */,
 				97E571291CA0500400FF4F1D /* UserNotificationCondition.swift in Sources */,
 				97E067261C52AA000079C13C /* MainVCWebViewD.swift in Sources */,
 				97E571021CA0500400FF4F1D /* CKContainer+Operations.swift in Sources */,

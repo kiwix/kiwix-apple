@@ -38,7 +38,7 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
     // MARK: - Refresh
     
     func rescan() {
-        let newZimURLs = Set(NSFileManager.zimFilesInDocDir())
+        let newZimURLs = Set(zimFileURLsInDocDir)
         zimAdded = newZimURLs.subtract(zimURLs)
         zimRemoved = zimURLs.subtract(newZimURLs)
         removeOld()
@@ -74,6 +74,27 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
             }()
             book?.isLocal = true
         }
+    }
+    
+    var zimFileURLsInDocDir: [NSURL] {
+        let fileURLs = FileManager.contentsOfDirectory(FileManager.docDirURL) ?? [NSURL]()
+        var zimURLs = [NSURL]()
+        for url in fileURLs {
+            do {
+                var isDirectory: AnyObject? = nil
+                try url.getResourceValue(&isDirectory, forKey: NSURLIsDirectoryKey)
+                if let isDirectory = (isDirectory as? NSNumber)?.boolValue {
+                    if !isDirectory {
+                        guard let pathExtension = url.pathExtension?.lowercaseString else {continue}
+                        guard pathExtension.containsString("zim") else {continue}
+                        zimURLs.append(url)
+                    }
+                }
+            } catch {
+                continue
+            }
+        }
+        return zimURLs
     }
 }
 
@@ -112,5 +133,24 @@ extension ZimReader {
         if let langCode = getLanguage() {metadata["language"] = langCode}
         
         return metadata
+    }
+}
+
+class SearchResult {
+    let bookID: String
+    let title: String
+    let percent: Double?
+    let path: String?
+    let snippet: String?
+    
+    init?(rawResult: [String: AnyObject]) {
+        self.bookID = (rawResult["bookID"] as? String) ?? ""
+        self.title = (rawResult["title"] as? String) ?? ""
+        self.percent = (rawResult["percent"] as? NSNumber)?.doubleValue
+        self.path = rawResult["path"] as? String
+        self.snippet = rawResult["snippet"] as? String
+        
+        if bookID == "" {return nil}
+        if title == "" {return nil}
     }
 }

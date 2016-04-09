@@ -123,24 +123,5 @@ extension NSFileManager {
         }
     }
     
-    class func zimFilesInDocDir() -> [NSURL] {
-        let contents = contentsOfDirectoryAtURL(docDirURL) ?? [NSURL]()
-        var zimFiles = [NSURL]()
-        for url in contents {
-            do {
-                var isDirectory: AnyObject? = nil
-                try url.getResourceValue(&isDirectory, forKey: NSURLIsDirectoryKey)
-                if let isDirectory = (isDirectory as? NSNumber)?.boolValue {
-                    if !isDirectory {
-                        guard let pathExtension = url.pathExtension?.lowercaseString else {continue}
-                        guard pathExtension.containsString("zim") else {continue}
-                        zimFiles.append(url)
-                    }
-                }
-            } catch {
-                continue
-            }
-        }
-        return zimFiles
-    }
+    
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDelegate, SortOperationDelegate {
+class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     var searchResults = [(id: String, articleTitle: String)]()
@@ -100,30 +100,33 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
     // MARK: - Search Result Updater
     
     func startSearch(searchText: String) {
-        UIApplication.searchEngine.searchQueue.cancelAllOperations()
-        UIApplication.searchEngine.searchInProgress.removeAll()
-        searchResults.removeAll()
         
-        guard searchText != "" else {tableView.reloadData(); return}
         
-        let sortOperation = SortOperation()
-        let sortOperationIdentifier = searchText + "_Sort"
-        sortOperation.delegate = self
-        sortOperation.completionBlock = {
-            UIApplication.searchEngine.searchInProgress.removeAll()
-        }
-        UIApplication.searchEngine.searchInProgress[sortOperationIdentifier] = sortOperation
         
-        let zimFileIDs = Array(UIApplication.multiReader.readers.keys)
-        for id in zimFileIDs {
-            let identifier = searchText + "_" + id
-            let searchOperation = SearchOperation(searchTerm: searchText, zimFileID: id)
-            sortOperation.addDependency(searchOperation)
-            UIApplication.searchEngine.searchInProgress[identifier] = searchOperation
-            UIApplication.searchEngine.searchQueue.addOperation(searchOperation)
-        }
-        
-        UIApplication.searchEngine.searchQueue.addOperation(sortOperation)
+//        UIApplication.searchEngine.searchQueue.cancelAllOperations()
+//        UIApplication.searchEngine.searchInProgress.removeAll()
+//        searchResults.removeAll()
+//        
+//        guard searchText != "" else {tableView.reloadData(); return}
+//        
+//        let sortOperation = SortOperation()
+//        let sortOperationIdentifier = searchText + "_Sort"
+//        sortOperation.delegate = self
+//        sortOperation.completionBlock = {
+//            UIApplication.searchEngine.searchInProgress.removeAll()
+//        }
+//        UIApplication.searchEngine.searchInProgress[sortOperationIdentifier] = sortOperation
+//        
+//        let zimFileIDs = Array(UIApplication.multiReader.readers.keys)
+//        for id in zimFileIDs {
+//            let identifier = searchText + "_" + id
+//            let searchOperation = SearchOperation(searchTerm: searchText, zimFileID: id)
+//            sortOperation.addDependency(searchOperation)
+//            UIApplication.searchEngine.searchInProgress[identifier] = searchOperation
+//            UIApplication.searchEngine.searchQueue.addOperation(searchOperation)
+//        }
+//        
+//        UIApplication.searchEngine.searchQueue.addOperation(sortOperation)
     }
     
     // MARK: - SortOperationDelegate

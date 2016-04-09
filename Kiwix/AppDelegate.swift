@@ -15,7 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {
     var window: UIWindow?
     private(set) lazy var libraryRefresher = LibraryRefresher()
     private(set) lazy var downloader = Downloader()
-    private(set) lazy var searchEngine = SearchEngine()
     let globalOperationQueue = OperationQueue()
     
     var networkTaskCount = 0 {

@@ -98,8 +98,6 @@ class DirectoryMonitor {
         if let previousDirectoryHash = previousDirectoryHash, let currentDirectoryHash = currentDirectoryHash {
             if previousDirectoryHash == currentDirectoryHash {
                 hashEqualCheck += 1
-                //print("equal check")
-                //print(currentDirectoryHash)
                 if hashEqualCheck > 2 {
                     hashEqualCheck = 0
                     isCheckingChanges = false

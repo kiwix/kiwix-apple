@@ -14,8 +14,10 @@
 - (instancetype)initWithZIMFileURL:(NSURL *)url;
 @property NSURL *fileURL;
 
-#pragma mark - validation
+#pragma mark - index
+- (BOOL)hasIndex;
 
+#pragma mark - validation
 - (BOOL)isCorrupted;
 
 #pragma mark - getData
@@ -28,6 +30,7 @@
 
 #pragma mark - search
 - (NSArray *)searchSuggestionsSmart:(NSString *)searchTerm;
+- (NSArray *)searchUsingIndex:(NSString *)searchTerm;
 
 #pragma mark - get meta data
 - (NSString *)getArticleCount;
