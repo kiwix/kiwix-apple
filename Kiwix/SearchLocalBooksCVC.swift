@@ -133,9 +133,9 @@ class SearchLocalBooksCVC: UIViewController, UICollectionViewDataSource, UIColle
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         let predicate = NSPredicate(format: "isLocal = true")
         fetchRequest.sortDescriptors = [titleDescriptor]
-        //fetchRequest.predicate = predicate
-        fetchRequest.fetchLimit = 100
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "MasterFRC")
+        fetchRequest.predicate = predicate
+        //fetchRequest.fetchLimit = 100
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "LocalMainPageFRC")
         fetchedResultsController.delegate = self
         fetchedResultsController.performFetch(deleteCache: false)
         return fetchedResultsController
