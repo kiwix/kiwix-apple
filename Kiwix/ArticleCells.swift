@@ -13,3 +13,7 @@ class ArticleCell: UITableViewCell {
     @IBOutlet weak var hasPicIndicator: UIView!
     @IBOutlet weak var titleLabel: UILabel!
 }
+
+class ArticleSnippetCell: ArticleCell {
+    @IBOutlet weak var snippetLabel: UILabel!
+}

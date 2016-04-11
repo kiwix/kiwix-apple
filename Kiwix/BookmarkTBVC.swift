@@ -63,7 +63,7 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
     }
     
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-        guard let cell = cell as? ArticleCell else {return}
+        guard let cell = cell as? ArticleSnippetCell else {return}
         guard let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
         guard let book = article.book else {return}
         

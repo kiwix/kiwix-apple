@@ -75,17 +75,25 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ArticleCell", forIndexPath: indexPath) as! ArticleCell
-        
         let result = searchResults[indexPath.row]
-        guard let book = Book.fetch(result.bookID, context: UIApplication.appDelegate.managedObjectContext) else {return cell}
-        let articleTitle = result.title
         
-        cell.titleLabel.text = articleTitle
+        if result.snippet == nil {
+            let cell = tableView.dequeueReusableCellWithIdentifier("ArticleCell", forIndexPath: indexPath) as! ArticleCell
+            configureArticleCell(cell, result: result)
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCellWithIdentifier("ArticleSnippetCell", forIndexPath: indexPath) as! ArticleSnippetCell
+            configureArticleCell(cell, result: result)
+            cell.snippetLabel.text = result.snippet
+            return cell
+        }
+    }
+    
+    func configureArticleCell(cell: ArticleCell, result: SearchResult) {
+        guard let book = Book.fetch(result.bookID, context: UIApplication.appDelegate.managedObjectContext) else {return}
+        cell.titleLabel.text = result.title
         cell.hasPicIndicator.backgroundColor = book.isNoPic!.boolValue ? UIColor.lightGrayColor() : UIColor.havePicTintColor
         cell.favIcon.image = book.favIcon != nil ? UIImage(data: book.favIcon!) : nil
-        
-        return cell
     }
     
     // MARK: Table view delegate
