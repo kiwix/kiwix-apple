@@ -11,7 +11,7 @@ import UIKit
 class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
-    var searchResults = [(id: String, articleTitle: String)]()
+    var searchResults = [SearchResult]()
     
     var shouldClipRoundCorner: Bool {
         return traitCollection.verticalSizeClass == .Regular && traitCollection.horizontalSizeClass == .Regular
@@ -32,12 +32,14 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        tableView.reloadData()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SearchResultTBVC.keyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SearchResultTBVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        searchResults.removeAll()
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
     }
@@ -76,8 +78,8 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
         let cell = tableView.dequeueReusableCellWithIdentifier("ArticleCell", forIndexPath: indexPath) as! ArticleCell
         
         let result = searchResults[indexPath.row]
-        guard let book = Book.fetch(result.id, context: UIApplication.appDelegate.managedObjectContext) else {return cell}
-        let articleTitle = result.articleTitle
+        guard let book = Book.fetch(result.bookID, context: UIApplication.appDelegate.managedObjectContext) else {return cell}
+        let articleTitle = result.title
         
         cell.titleLabel.text = articleTitle
         cell.hasPicIndicator.backgroundColor = book.isNoPic!.boolValue ? UIColor.lightGrayColor() : UIColor.havePicTintColor
@@ -92,51 +94,26 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         guard let mainVC = parentViewController?.parentViewController as? MainVC else {return}
         let result = searchResults[indexPath.row]
-        let url = NSURL.kiwixURLWithZimFileid(result.id, articleTitle: result.articleTitle)
+        let url = NSURL.kiwixURLWithZimFileid(result.bookID, articleTitle: result.title)
         mainVC.load(url)
         mainVC.hideSearch()
     }
 
-    // MARK: - Search Result Updater
+    // MARK: - Search
     
     func startSearch(searchText: String) {
-        
-        
-        
-//        UIApplication.searchEngine.searchQueue.cancelAllOperations()
-//        UIApplication.searchEngine.searchInProgress.removeAll()
-//        searchResults.removeAll()
-//        
-//        guard searchText != "" else {tableView.reloadData(); return}
-//        
-//        let sortOperation = SortOperation()
-//        let sortOperationIdentifier = searchText + "_Sort"
-//        sortOperation.delegate = self
-//        sortOperation.completionBlock = {
-//            UIApplication.searchEngine.searchInProgress.removeAll()
-//        }
-//        UIApplication.searchEngine.searchInProgress[sortOperationIdentifier] = sortOperation
-//        
-//        let zimFileIDs = Array(UIApplication.multiReader.readers.keys)
-//        for id in zimFileIDs {
-//            let identifier = searchText + "_" + id
-//            let searchOperation = SearchOperation(searchTerm: searchText, zimFileID: id)
-//            sortOperation.addDependency(searchOperation)
-//            UIApplication.searchEngine.searchInProgress[identifier] = searchOperation
-//            UIApplication.searchEngine.searchQueue.addOperation(searchOperation)
-//        }
-//        
-//        UIApplication.searchEngine.searchQueue.addOperation(sortOperation)
-    }
-    
-    // MARK: - SortOperationDelegate
-    
-    func sortFinishedWithResults(results: [(id: String, articleTitle: String)]) {
-        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+        guard searchText != "" else {
+            searchResults.removeAll()
+            tableView.reloadData()
+            return
+        }
+        ZIMMultiReader.sharedInstance.searchQueue.cancelAllOperations()
+        let operation = SearchOperation(searchTerm: searchText) { (results) in
             self.searchResults = results
             self.tableView.reloadData()
             self.tableView.setContentOffset(CGPointMake(0, 0 - self.tableView.contentInset.top), animated: true)
         }
+        ZIMMultiReader.sharedInstance.searchQueue.addOperation(operation)
     }
 }
 

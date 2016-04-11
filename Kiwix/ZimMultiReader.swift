@@ -11,12 +11,13 @@ import UIKit
 class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
     
     static let sharedInstance = ZIMMultiReader()
+    private(set) var readers = [String: ZimReader]()
+    let searchQueue = OperationQueue()
     
     private let monitor = DirectoryMonitor(URL: NSFileManager.docDirURL)
     private var zimURLs = Set<NSURL>()
     private var zimAdded = Set<NSURL>()
     private var zimRemoved = Set<NSURL>()
-    var readers = [String: ZimReader]()
     
     override init() {
         super.init()
@@ -139,13 +140,14 @@ extension ZimReader {
 class SearchResult {
     let bookID: String
     let title: String
-    let percent: Double?
+    let percent: Double? // range: 0-100
     let path: String?
     let snippet: String?
     
     init?(rawResult: [String: AnyObject]) {
         self.bookID = (rawResult["bookID"] as? String) ?? ""
         self.title = (rawResult["title"] as? String) ?? ""
+        
         self.percent = (rawResult["percent"] as? NSNumber)?.doubleValue
         self.path = rawResult["path"] as? String
         self.snippet = rawResult["snippet"] as? String

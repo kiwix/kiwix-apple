@@ -41,13 +41,13 @@
 
 #pragma mark - search
 
-//- (NSArray *)search:(NSString *)searchTerm {
-//    if(_db == nil) {
-//        return [self searchSuggestionsSmart:searchTerm];
-//    } else {
-//        return [self searchUsingIndex:searchTerm];
-//    }
-//}
+- (NSArray *)search:(NSString *)searchTerm {
+    if(_db == nil) {
+        return [self searchSuggestionsSmart:searchTerm];
+    } else {
+        return [self searchUsingIndex:searchTerm];
+    }
+}
 
 - (NSArray *)searchSuggestionsSmart:(NSString *)searchTerm {
     string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];

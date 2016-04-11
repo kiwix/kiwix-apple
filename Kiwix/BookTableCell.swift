@@ -17,8 +17,8 @@ class ScopeBookCell: UITableViewCell {
         hasIndexIndicator.layer.cornerRadius = 2.0
         hasPicIndicator.layer.masksToBounds = true
         hasIndexIndicator.layer.masksToBounds = true
-        print(hasPicIndicator.backgroundColor)
-        print(hasIndexIndicator.backgroundColor)
+//        print(hasPicIndicator.backgroundColor)
+//        print(hasIndexIndicator.backgroundColor)
     }
     
     @IBOutlet weak var favIcon: UIImageView!
