@@ -91,7 +91,7 @@ class SearchLocalBooksCVC: UIViewController, UICollectionViewDataSource, UIColle
     // MARK: - CollectionView Delegate
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        guard let mainVC = parentViewController?.parentViewController as? MainVC else {return}
+        guard let mainVC = parentViewController?.parentViewController?.parentViewController as? MainVC else {return}
         guard let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
         mainVC.hideSearch()
         mainVC.loadMainPage(book)
@@ -148,7 +148,6 @@ class SearchLocalBooksCVC: UIViewController, UICollectionViewDataSource, UIColle
     }
     
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-        
         switch type {
         case .Insert:
             addFetchedResultsProcessingBlock {self.collectionView.insertItemsAtIndexPaths([newIndexPath!])}
@@ -159,11 +158,9 @@ class SearchLocalBooksCVC: UIViewController, UICollectionViewDataSource, UIColle
         case .Delete:
             addFetchedResultsProcessingBlock {self.collectionView.deleteItemsAtIndexPaths([indexPath!])}
         }
-        
     }
     
     func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
-        
         switch type {
         case .Insert:
             addFetchedResultsProcessingBlock {self.collectionView.insertSections(NSIndexSet(index: sectionIndex))}
@@ -174,7 +171,6 @@ class SearchLocalBooksCVC: UIViewController, UICollectionViewDataSource, UIColle
         case .Move:
             break
         }
-        
     }
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {

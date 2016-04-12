@@ -367,13 +367,13 @@
         <scene sceneID="Wgu-t0-KNH">
             <objects>
                 <tableViewController storyboardIdentifier="SearchScopeSelectTBVC" id="IL6-Ab-aEj" customClass="SearchScopeSelectTBVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="5uZ-E9-jau">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="5uZ-E9-jau">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" id="QXK-je-ISm" customClass="ScopeBookCell" customModule="Kiwix" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="49.5" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QXK-je-ISm" id="bj5-Xo-SR6">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -403,7 +403,7 @@
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="P" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TmV-G9-g51">
                                             <rect key="frame" x="42" y="6.5" width="13" height="13"/>
-                                            <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="13" id="TX0-hy-6dI"/>
                                                 <constraint firstAttribute="width" constant="13" id="z1e-H2-gJk"/>
@@ -414,7 +414,7 @@
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9y6-m2-QTb">
                                             <rect key="frame" x="42" y="23.5" width="13" height="13"/>
-                                            <color key="backgroundColor" red="0.30470559508689443" green="0.47158043358308266" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="13" id="UWv-F1-PPl"/>
                                                 <constraint firstAttribute="width" constant="13" id="WsT-Dy-qw2"/>
@@ -961,22 +961,22 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="42o-HC-ALL">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AGB-HN-tQ6">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AGB-HN-tQ6">
                                                 <rect key="frame" x="0.0" y="7" width="200" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="IJN-Sq-wew"/>
                                                 </constraints>
-                                                <state key="normal" title="Main Pages"/>
+                                                <state key="normal" image="Home"/>
                                                 <connections>
                                                     <action selector="mainPageButtonTapped:" destination="9gZ-CS-CgY" eventType="touchUpInside" id="eP8-f4-PRQ"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ROJ-fp-z79">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ROJ-fp-z79">
                                                 <rect key="frame" x="200" y="7" width="200" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="cGZ-7B-WEw"/>
                                                 </constraints>
-                                                <state key="normal" title="History"/>
+                                                <state key="normal" image="History"/>
                                                 <connections>
                                                     <action selector="historyButtonTapped:" destination="9gZ-CS-CgY" eventType="touchUpInside" id="30S-Er-EhC"/>
                                                 </connections>
@@ -986,7 +986,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="Og5-rG-bp2"/>
                                                 </constraints>
-                                                <state key="normal" image="LanguageFilter"/>
+                                                <state key="normal" image="Setting2"/>
                                                 <connections>
                                                     <action selector="scopeButtonTapped:" destination="9gZ-CS-CgY" eventType="touchUpInside" id="x4W-PG-nzJ"/>
                                                 </connections>
@@ -1081,7 +1081,9 @@
     </scenes>
     <resources>
         <image name="DownArrow" width="21" height="21"/>
-        <image name="LanguageFilter" width="21" height="21"/>
+        <image name="History" width="21" height="21"/>
+        <image name="Home" width="21" height="21"/>
+        <image name="Setting2" width="21" height="21"/>
         <image name="Star" width="21" height="20"/>
         <image name="StarHighlighted" width="21" height="20"/>
     </resources>

@@ -11,14 +11,14 @@ import UIKit
 // MARK: - Normal Cells
 
 class ScopeBookCell: UITableViewCell {
+    private let hasPicIndicatorOrange = UIColor(red: 1, green: 0.5, blue: 0, alpha: 1)
+    private let hasIndexIndicatorBlue = UIColor(red: 0.304706, green: 0.47158, blue: 1, alpha: 1)
     
     override func awakeFromNib() {
         hasPicIndicator.layer.cornerRadius = 2.0
         hasIndexIndicator.layer.cornerRadius = 2.0
         hasPicIndicator.layer.masksToBounds = true
         hasIndexIndicator.layer.masksToBounds = true
-//        print(hasPicIndicator.backgroundColor)
-//        print(hasIndexIndicator.backgroundColor)
     }
     
     @IBOutlet weak var favIcon: UIImageView!
@@ -29,8 +29,19 @@ class ScopeBookCell: UITableViewCell {
     
     var hasPic: Bool = false {
         didSet {
-            
+            hasPicIndicator.backgroundColor = hasPic ? hasPicIndicatorOrange : UIColor.lightGrayColor()
         }
+    }
+    
+    var hasIndex: Bool = false {
+        didSet {
+            hasIndexIndicator.backgroundColor = hasPic ? hasIndexIndicatorBlue : UIColor.lightGrayColor()
+        }
+    }
+    
+    override func prepareForReuse() {
+        hasPic = false
+        hasIndex = false
     }
 }
 

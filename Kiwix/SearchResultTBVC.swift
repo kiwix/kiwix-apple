@@ -21,6 +21,7 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
         super.viewDidLoad()
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.keyboardDismissMode = .OnDrag
     }
     
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
@@ -119,7 +120,11 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
         let operation = SearchOperation(searchTerm: searchText) { (results) in
             self.searchResults = results
             self.tableView.reloadData()
-            self.tableView.setContentOffset(CGPointMake(0, 0 - self.tableView.contentInset.top), animated: true)
+            if results.count > 0 {
+                self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+            }
+            // This line below works prefectly if tableview doesn't hide keyboard on drag
+            //self.tableView.setContentOffset(CGPointMake(0, 0 - self.tableView.contentInset.top), animated: true)
         }
         ZIMMultiReader.sharedInstance.searchQueue.addOperation(operation)
     }
