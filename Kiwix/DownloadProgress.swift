@@ -20,7 +20,7 @@ class DownloadProgress: NSProgress {
         self.book = book
         super.init(parent: nil, userInfo: [NSProgressFileOperationKindKey: NSProgressFileOperationKindDownloading])
         self.kind = NSProgressKindFile
-        self.totalUnitCount = book.fileSize?.longLongValue ?? 0
+        self.totalUnitCount = book.fileSize
         self.completedUnitCount = book.downloadTask?.totalBytesWritten ?? 0
     }
     
@@ -31,7 +31,7 @@ class DownloadProgress: NSProgress {
     func downloadStarted(task: NSURLSessionDownloadTask) {
         self.task = task
         recordSpeed()
-        timer = NSTimer.scheduledTimerWithTimeInterval(sampleFrequency, target: self, selector: "recordSpeed", userInfo: nil, repeats: true)
+        timer = NSTimer.scheduledTimerWithTimeInterval(sampleFrequency, target: self, selector: #selector(DownloadProgress.recordSpeed), userInfo: nil, repeats: true)
     }
     
     func downloadTerminated() {

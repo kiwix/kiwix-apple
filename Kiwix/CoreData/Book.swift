@@ -27,11 +27,11 @@ class Book: NSManagedObject {
         if let articleCount = metadata["articleCount"] as? String, mediaCount = metadata["mediaCount"] as? String, fileSize = metadata["size"] as? String {
             let numberFormatter = NSNumberFormatter()
             numberFormatter.numberStyle = NSNumberFormatterStyle.DecimalStyle
-            book.articleCount = numberFormatter.numberFromString(articleCount)
-            book.mediaCount = numberFormatter.numberFromString(mediaCount)
+            book.articleCount = numberFormatter.numberFromString(articleCount)?.longLongValue ?? 0
+            book.mediaCount = numberFormatter.numberFromString(mediaCount)?.longLongValue ?? 0
             
             if let fileSize = numberFormatter.numberFromString(fileSize) {
-                book.fileSize = NSNumber(longLong: fileSize.longLongValue * Int64(1024.0))
+                book.fileSize = NSNumber(longLong: fileSize.longLongValue * Int64(1024.0)).longLongValue
             }
         }
         
@@ -97,12 +97,10 @@ class Book: NSManagedObject {
     }
     
     var fileSizeFormatted: String? {
-        guard let fileSize = fileSize?.longLongValue else {return nil}
         return Utilities.formattedFileSizeStringFromByteCount(fileSize)
     }
     
     var articleCountFormatted: String? {
-        guard let articleCount = articleCount?.longLongValue else {return nil}
         return Utilities.formattedNumberStringFromDouble(Double(articleCount)) + (articleCount >= 1 ? " articles" : " article")
     }
     
@@ -154,7 +152,6 @@ class Book: NSManagedObject {
     // MARK: - States
     
     var spaceState: BookSpaceState {
-        guard let fileSize = fileSize?.longLongValue else {return .Enough}
         let freeSpaceInBytes = Utilities.availableDiskspaceInBytes() ?? INT64_MAX
         if (0.8 * Double(freeSpaceInBytes)) > Double(fileSize) {
             return .Enough

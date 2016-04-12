@@ -68,7 +68,7 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
         guard let book = article.book else {return}
         
         cell.titleLabel.text = article.title
-        cell.hasPicIndicator.backgroundColor = book.isNoPic!.boolValue ? UIColor.lightGrayColor() : UIColor.havePicTintColor
+        cell.hasPicIndicator.backgroundColor = book.isNoPic ? UIColor.lightGrayColor() : UIColor.havePicTintColor
         cell.favIcon.image = book.favIcon != nil ? UIImage(data: book.favIcon!) : nil
     }
     

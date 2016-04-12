@@ -55,7 +55,7 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
     
     func configureMessage() {
         guard let books = fetchedResultController.fetchedObjects as? [Book] else {return}
-        let totalSize = books.reduce(0) {$0 + ($1.fileSize?.longLongValue ?? 0)}
+        let totalSize = books.reduce(0) {$0 + ($1.fileSize)}
         let spaceString = Utilities.formattedFileSizeStringFromByteCount(totalSize)
         let localizedString = String.localizedStringWithFormat(NSLocalizedString("Taking up %@ in total", comment: "Book Library, local book message"), spaceString)
         messageButton.text = localizedString
@@ -98,7 +98,7 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
         guard let cell = cell as? LocalBookCell else {return}
         
         cell.titleLabel.text = book.title
-        cell.hasPicIndicator.backgroundColor = (book.isNoPic?.boolValue ?? true) ? UIColor.lightGrayColor() : UIColor.havePicTintColor
+        cell.hasPicIndicator.backgroundColor = book.isNoPic ? UIColor.lightGrayColor() : UIColor.havePicTintColor
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
         cell.subtitleLabel.text = book.detailedDescription1
     }

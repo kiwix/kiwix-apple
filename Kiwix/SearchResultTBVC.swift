@@ -93,7 +93,7 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
     func configureArticleCell(cell: ArticleCell, result: SearchResult) {
         guard let book = Book.fetch(result.bookID, context: UIApplication.appDelegate.managedObjectContext) else {return}
         cell.titleLabel.text = result.title
-        cell.hasPicIndicator.backgroundColor = book.isNoPic!.boolValue ? UIColor.lightGrayColor() : UIColor.havePicTintColor
+        cell.hasPicIndicator.backgroundColor = book.isNoPic ? UIColor.lightGrayColor() : UIColor.havePicTintColor
         cell.favIcon.image = book.favIcon != nil ? UIImage(data: book.favIcon!) : nil
     }
     

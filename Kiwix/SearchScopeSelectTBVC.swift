@@ -59,7 +59,7 @@ class SearchScopeSelectTBVC: UITableViewController, NSFetchedResultsControllerDe
         cell.subtitleLabel.text = book.detailedDescription
 
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
-        cell.hasPic = book.isNoPic?.boolValue ?? true
+        cell.hasPic = book.isNoPic
     }
     
     // MARK: - Fetched Result Controller Delegate

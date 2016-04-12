@@ -20,7 +20,7 @@ class BookDownloadProgress: NSProgress {
         self.book = book
         super.init(parent: nil, userInfo: [NSProgressFileOperationKindKey: NSProgressFileOperationKindDownloading])
         self.kind = NSProgressKindFile
-        self.totalUnitCount = book.fileSize?.longLongValue ?? 0
+        self.totalUnitCount = book.fileSize ?? 0
         self.completedUnitCount = {
             if let completedUnitCount = book.downloadTask?.totalBytesWritten {
                 return completedUnitCount

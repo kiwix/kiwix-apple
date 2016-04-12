@@ -2,7 +2,7 @@
 //  Book+CoreDataProperties.swift
 //  Kiwix
 //
-//  Created by Chris on 1/10/16.
+//  Created by Chris Li on 4/12/16.
 //  Copyright © 2016 Chris. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -14,17 +14,17 @@ import CoreData
 
 extension Book {
 
-    @NSManaged var articleCount: NSNumber?
+    @NSManaged var articleCount: Int64
     @NSManaged var creator: String?
     @NSManaged var date: NSDate?
     @NSManaged var desc: String?
     @NSManaged var favIcon: NSData?
-    @NSManaged var fileSize: NSNumber?
-    @NSManaged var globalCount: NSNumber?
+    @NSManaged var fileSize: Int64
+    @NSManaged var globalCount: Int64
     @NSManaged var id: String?
     @NSManaged var isLocal: NSNumber?
-    @NSManaged var isNoPic: NSNumber?
-    @NSManaged var mediaCount: NSNumber?
+    @NSManaged var isNoPic: Bool
+    @NSManaged var mediaCount: Int64
     @NSManaged var meta4URL: String?
     @NSManaged var publisher: String?
     @NSManaged var title: String?
