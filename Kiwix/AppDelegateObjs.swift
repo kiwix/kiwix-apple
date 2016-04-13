@@ -15,10 +15,6 @@ extension UIApplication {
         get {return appDelegate.libraryRefresher}
     }
     
-    class var downloader: Downloader {
-        get {return appDelegate.downloader}
-    }
-    
     class var multiReader: ZIMMultiReader {
         get {return ZIMMultiReader.sharedInstance}
     }
@@ -37,7 +33,7 @@ extension UIApplication {
     class func updateApplicationIconBadgeNumber() {
         guard let settings = UIApplication.sharedApplication().currentUserNotificationSettings() else {return}
         guard settings.types.contains(UIUserNotificationType.Badge) else {return}
-        UIApplication.sharedApplication().applicationIconBadgeNumber = downloader.taskCount ?? 0
+        //UIApplication.sharedApplication().applicationIconBadgeNumber = downloader.taskCount ?? 0
     }
     
     // MARK: - App Delegate Accessor

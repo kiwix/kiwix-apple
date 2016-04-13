@@ -14,7 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {
 
     var window: UIWindow?
     private(set) lazy var libraryRefresher = LibraryRefresher()
-    private(set) lazy var downloader = Downloader()
     let globalOperationQueue = OperationQueue()
     
     var networkTaskCount = 0 {
@@ -76,7 +75,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {
     }
     
     func application(application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: () -> Void) {
-        downloader.rejoinSessionWithIdentifier(identifier, completionHandler: completionHandler)
+        //downloader.rejoinSessionWithIdentifier(identifier, completionHandler: completionHandler)
     }
 
     // MARK: - Core Data stack

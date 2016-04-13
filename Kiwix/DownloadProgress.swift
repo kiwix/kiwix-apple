@@ -117,3 +117,12 @@ class DownloadProgress: NSProgress {
         }
     }
 }
+
+extension LocalizedStrings {
+    class var starting: String {return NSLocalizedString("Starting", comment: "Library: Download task description")}
+    class var resuming: String {return NSLocalizedString("Resuming", comment: "Library: Download task description")}
+    class var paused: String {return NSLocalizedString("Paused", comment: "Library: Download task description")}
+    class var downloadError: String {return NSLocalizedString("Download Error", comment: "Library: Download task description")}
+    class var queued: String {return NSLocalizedString("Queued", comment: "Library: Download task description")}
+    class var estimatingSpeedAndRemainingTime: String {return NSLocalizedString("Estimating speed and remaining time", comment: "Library: Download task description")}
+}
