@@ -11,6 +11,7 @@
 		970104061C69293000DC48F6 /* LibraryOnlineTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970104051C69293000DC48F6 /* LibraryOnlineTBVC.swift */; };
 		9703489C1C613D9F00EF8B7F /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9703489B1C613D9F00EF8B7F /* SearchVC.swift */; };
 		9705D6881CAACB2D005A943B /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 9705D68A1CAACB2D005A943B /* Localizable.stringsdict */; };
+		970C3DCA1CBD79450026A240 /* MigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C3DC91CBD79450026A240 /* MigrationPolicy.swift */; };
 		9711460F1C722B0500510707 /* getTableOfContents.js in Resources */ = {isa = PBXBuildFile; fileRef = 9711460E1C722B0500510707 /* getTableOfContents.js */; };
 		9712FB4B1C51F6C60011EA52 /* unicode in Resources */ = {isa = PBXBuildFile; fileRef = 9712FB4A1C51F6C60011EA52 /* unicode */; };
 		9714D8D71C6E5C2600AABCA7 /* LTBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9714D8D61C6E5C2600AABCA7 /* LTBarButtonItem.swift */; };
@@ -48,6 +49,7 @@
 		9764028D1C2795A1004E31B5 /* ZimReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9764028C1C2795A1004E31B5 /* ZimReader.mm */; };
 		976402911C2795E8004E31B5 /* zim in Resources */ = {isa = PBXBuildFile; fileRef = 976402901C2795E8004E31B5 /* zim */; };
 		9768957C1CB6A7D300F02686 /* SearchScopeSelectTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768957B1CB6A7D300F02686 /* SearchScopeSelectTBVC.swift */; };
+		976AB2671CBD8B3D00B06EB0 /* 1.5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 976AB2661CBD8B3D00B06EB0 /* 1.5.xcmappingmodel */; };
 		976FEDD41C22079500AE0874 /* DownloaderD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976FEDD31C22079500AE0874 /* DownloaderD.swift */; };
 		976FEDD61C224D4200AE0874 /* Map.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 976FEDD51C224D4200AE0874 /* Map.storyboard */; };
 		976FEDD81C224DE100AE0874 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 976FEDD71C224DE100AE0874 /* MapKit.framework */; };
@@ -182,6 +184,8 @@
 		970104051C69293000DC48F6 /* LibraryOnlineTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryOnlineTBVC.swift; sourceTree = "<group>"; };
 		9703489B1C613D9F00EF8B7F /* SearchVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 		9705D6891CAACB2D005A943B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		970C3DC41CBD78EC0026A240 /* 1.5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.5.xcdatamodel; sourceTree = "<group>"; };
+		970C3DC91CBD79450026A240 /* MigrationPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MigrationPolicy.swift; path = CoreData/Migration/MigrationPolicy.swift; sourceTree = "<group>"; };
 		9711460E1C722B0500510707 /* getTableOfContents.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = getTableOfContents.js; path = JavaScripts/getTableOfContents.js; sourceTree = "<group>"; };
 		9712FB4A1C51F6C60011EA52 /* unicode */ = {isa = PBXFileReference; lastKnownFileType = folder; name = unicode; path = libkiwix/unicode; sourceTree = "<group>"; };
 		9714D8D61C6E5C2600AABCA7 /* LTBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LTBarButtonItem.swift; sourceTree = "<group>"; };
@@ -228,6 +232,7 @@
 		9764028C1C2795A1004E31B5 /* ZimReader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ZimReader.mm; sourceTree = "<group>"; };
 		976402901C2795E8004E31B5 /* zim */ = {isa = PBXFileReference; lastKnownFileType = folder; name = zim; path = libkiwix/zim; sourceTree = "<group>"; };
 		9768957B1CB6A7D300F02686 /* SearchScopeSelectTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchScopeSelectTBVC.swift; sourceTree = "<group>"; };
+		976AB2661CBD8B3D00B06EB0 /* 1.5.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = 1.5.xcmappingmodel; path = CoreData/Migration/1.5.xcmappingmodel; sourceTree = "<group>"; };
 		976FEDD31C22079500AE0874 /* DownloaderD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloaderD.swift; sourceTree = "<group>"; };
 		976FEDD51C224D4200AE0874 /* Map.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Map.storyboard; sourceTree = "<group>"; };
 		976FEDD71C224DE100AE0874 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -568,6 +573,8 @@
 				977998701C1E0B7900B1DD5E /* DownloadTask.swift */,
 				978C58941C1CD86E0077AE47 /* Article.swift */,
 				97A2AB921C1B80FF00052E74 /* Kiwix.xcdatamodeld */,
+				976AB2661CBD8B3D00B06EB0 /* 1.5.xcmappingmodel */,
+				970C3DC91CBD79450026A240 /* MigrationPolicy.swift */,
 			);
 			name = Coredata;
 			sourceTree = "<group>";
@@ -995,6 +1002,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9764026E1C2794FE004E31B5 /* reader.cpp in Sources */,
+				976AB2671CBD8B3D00B06EB0 /* 1.5.xcmappingmodel in Sources */,
 				97E571101CA0500400FF4F1D /* LocationOperation.swift in Sources */,
 				973970ED1CB9A04C00350507 /* SearchOperation.swift in Sources */,
 				97E571261CA0500400FF4F1D /* UIUserNotifications+Operations.swift in Sources */,
@@ -1054,6 +1062,7 @@
 				977998741C1E0B7900B1DD5E /* Book+CoreDataProperties.swift in Sources */,
 				9764028D1C2795A1004E31B5 /* ZimReader.mm in Sources */,
 				977998751C1E0B7900B1DD5E /* DownloadTask+CoreDataProperties.swift in Sources */,
+				970C3DCA1CBD79450026A240 /* MigrationPolicy.swift in Sources */,
 				97E891691CA976E90001CA32 /* FileManager.swift in Sources */,
 				974570F41C2DABB500680E43 /* ZIMMultiReaderAPI.swift in Sources */,
 				97E571201CA0500400FF4F1D /* PushCapability-iOS.swift in Sources */,
@@ -1397,9 +1406,10 @@
 		97A2AB921C1B80FF00052E74 /* Kiwix.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				970C3DC41CBD78EC0026A240 /* 1.5.xcdatamodel */,
 				97A2AB931C1B80FF00052E74 /* Kiwix.xcdatamodel */,
 			);
-			currentVersion = 97A2AB931C1B80FF00052E74 /* Kiwix.xcdatamodel */;
+			currentVersion = 970C3DC41CBD78EC0026A240 /* 1.5.xcdatamodel */;
 			path = Kiwix.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

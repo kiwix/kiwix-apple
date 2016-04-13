@@ -23,7 +23,9 @@ extension Book {
     @NSManaged var globalCount: Int64
     @NSManaged var id: String?
     @NSManaged var isLocal: NSNumber?
-    @NSManaged var isNoPic: Bool
+    @NSManaged var hasPic: Bool
+    @NSManaged var hasIndex: Bool
+    @NSManaged var includeInSearch: Bool
     @NSManaged var mediaCount: Int64
     @NSManaged var meta4URL: String?
     @NSManaged var publisher: String?

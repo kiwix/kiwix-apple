@@ -35,7 +35,7 @@ class ScopeBookCell: UITableViewCell {
     
     var hasIndex: Bool = false {
         didSet {
-            hasIndexIndicator.backgroundColor = hasPic ? hasIndexIndicatorBlue : UIColor.lightGrayColor()
+            hasIndexIndicator.backgroundColor = hasIndex ? hasIndexIndicatorBlue : UIColor.lightGrayColor()
         }
     }
     

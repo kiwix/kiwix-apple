@@ -48,11 +48,7 @@ class Book: NSManagedObject {
         }
         
         if let meta4url = book.meta4URL {
-            if meta4url.rangeOfString("nopic") != nil {
-                book.isNoPic = true
-            } else {
-                book.isNoPic = false
-            }
+            book.hasPic = !meta4url.containsString("nopic")
         }
         
         if let languageCode = metadata["language"] as? String {

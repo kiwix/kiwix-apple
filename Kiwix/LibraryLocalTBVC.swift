@@ -98,7 +98,7 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
         guard let cell = cell as? LocalBookCell else {return}
         
         cell.titleLabel.text = book.title
-        cell.hasPicIndicator.backgroundColor = book.isNoPic ? UIColor.lightGrayColor() : UIColor.havePicTintColor
+        cell.hasPicIndicator.backgroundColor = book.hasPic ? UIColor.havePicTintColor : UIColor.lightGrayColor()
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
         cell.subtitleLabel.text = book.detailedDescription1
     }

@@ -66,7 +66,7 @@ class SearchLocalBooksCVC: UIViewController, UICollectionViewDataSource, UIColle
     // MARK: - CollectionView Data Source
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
+        return fetchedResultController.sections?.count ?? 0
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

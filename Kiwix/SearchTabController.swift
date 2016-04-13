@@ -26,7 +26,7 @@ class SearchTabController: UIViewController, UIScrollViewDelegate {
         scrollView.decelerationRate = UIScrollViewDecelerationRateFast
 
         tabsContainer.addSubview(indicatorView)
-        indicatorView.backgroundColor = UIColor.greenColor()
+        indicatorView.backgroundColor = UIColor(red: 71.0 / 255.0, green: 128.0 / 255.0, blue: 182.0 / 255.0, alpha: 1.0)
         
         tabsContainer.layer.masksToBounds = false
         tabsContainer.layer.shadowOffset = CGSizeMake(0, 0)
@@ -83,7 +83,7 @@ class SearchTabController: UIViewController, UIScrollViewDelegate {
     
     func setIndicatorViewFrame() {
         let percentage = scrollView.contentOffset.x / scrollView.contentSize.width
-        let height: CGFloat = 4
+        let height: CGFloat = 2
         let width = tabsContainer.frame.width / 3
         let x = tabsContainer.frame.width * percentage
         let y = tabsContainer.frame.height - height

@@ -18,6 +18,7 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
     private var zimURLs = Set<NSURL>()
     private var zimAdded = Set<NSURL>()
     private var zimRemoved = Set<NSURL>()
+    private var indexFolders = Set<NSURL>()
     
     override init() {
         super.init()
@@ -39,6 +40,15 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
     // MARK: - Refresh
     
     func rescan() {
+        // If list of idx folder changed, remove all items in zimURLs
+        // It is equivalent to reinitialize all ZimReader for every zim file.
+        let newIndexFolders = Set(indexFolderURLsInDocDir)
+        if newIndexFolders != indexFolders {
+            zimURLs.removeAll()
+        }
+        indexFolders = newIndexFolders
+        
+        // Below are the lines required when not considering idx folders, aka only detect zim files
         let newZimURLs = Set(zimFileURLsInDocDir)
         zimAdded = newZimURLs.subtract(zimURLs)
         zimRemoved = zimURLs.subtract(newZimURLs)
@@ -74,10 +84,11 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
                 return book ?? Book.add(reader.metaData, context: UIApplication.appDelegate.managedObjectContext)
             }()
             book?.isLocal = true
+            book?.hasIndex = reader.hasIndex()
         }
     }
     
-    var zimFileURLsInDocDir: [NSURL] {
+    private var zimFileURLsInDocDir: [NSURL] {
         let fileURLs = FileManager.contentsOfDirectory(FileManager.docDirURL) ?? [NSURL]()
         var zimURLs = [NSURL]()
         for url in fileURLs {
@@ -96,6 +107,27 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
             }
         }
         return zimURLs
+    }
+    
+    private var indexFolderURLsInDocDir: [NSURL] {
+        let fileURLs = FileManager.contentsOfDirectory(FileManager.docDirURL) ?? [NSURL]()
+        var folderURLs = [NSURL]()
+        for url in fileURLs {
+            do {
+                var isDirectory: AnyObject? = nil
+                try url.getResourceValue(&isDirectory, forKey: NSURLIsDirectoryKey)
+                if let isDirectory = (isDirectory as? NSNumber)?.boolValue {
+                    if isDirectory {
+                        guard let pathExtension = url.pathExtension?.lowercaseString else {continue}
+                        guard pathExtension == "idx" else {continue}
+                        folderURLs.append(url)
+                    }
+                }
+            } catch {
+                continue
+            }
+        }
+        return folderURLs
     }
 }
 

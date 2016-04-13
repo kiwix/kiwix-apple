@@ -21,6 +21,9 @@ class SearchOperation: GroupOperation {
         }
         
         for (id, zimReader) in ZIMMultiReader.sharedInstance.readers {
+            let managedObjectContext = UIApplication.appDelegate.managedObjectContext
+            guard let book = Book.fetch(id, context: managedObjectContext) else {continue}
+            guard book.includeInSearch else {continue}
             let operation = SingleBookSearchOperation(zimReader: zimReader, searchTerm: searchTerm, completionHandler: { [unowned sortOperation] (results) in
                 sortOperation.results += results
             })

@@ -24,7 +24,7 @@ class SearchScopeSelectTBVC: UITableViewController, NSFetchedResultsControllerDe
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
         fetchRequest.predicate = NSPredicate(format: "isLocal == true")
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "language.name", cacheName: "LocalFRC")
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "language.name", cacheName: "ScopeFRC")
         fetchedResultsController.delegate = self
         fetchedResultsController.performFetch(deleteCache: false)
         return fetchedResultsController
@@ -33,7 +33,7 @@ class SearchScopeSelectTBVC: UITableViewController, NSFetchedResultsControllerDe
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return fetchedResultController.sections?.count ?? 0
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -59,7 +59,38 @@ class SearchScopeSelectTBVC: UITableViewController, NSFetchedResultsControllerDe
         cell.subtitleLabel.text = book.detailedDescription
 
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
-        cell.hasPic = book.isNoPic
+        cell.hasPic = book.hasPic
+        cell.hasIndex = book.hasIndex
+        
+        cell.accessoryType = book.includeInSearch ? .Checkmark : .None
+    }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 0 {
+            return NSLocalizedString("Books included in search", comment: "Search Scope Control")
+        } else {
+            return ""
+        }
+    }
+    
+    // MARK: Table view delegate
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        //guard tableView.numberOfSections > 1 else {return 0.0}
+        guard let headerText = self.tableView(tableView, titleForHeaderInSection: section) else {return 0.0}
+        guard headerText != "" else {return 0.0}
+        return 20.0
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard let header = view as? UITableViewHeaderFooterView else {return}
+        header.textLabel?.font = UIFont.boldSystemFontOfSize(14)
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        guard let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
+        book.includeInSearch = !book.includeInSearch
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     // MARK: - Fetched Result Controller Delegate
