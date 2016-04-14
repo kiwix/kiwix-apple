@@ -38,11 +38,6 @@ class ScopeBookCell: UITableViewCell {
             hasIndexIndicator.backgroundColor = hasIndex ? hasIndexIndicatorBlue : UIColor.lightGrayColor()
         }
     }
-    
-    override func prepareForReuse() {
-        hasPic = false
-        hasIndex = false
-    }
 }
 
 class LocalBookCell: UITableViewCell {

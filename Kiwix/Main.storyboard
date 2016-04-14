@@ -372,7 +372,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" id="QXK-je-ISm" customClass="ScopeBookCell" customModule="Kiwix" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="Cell" id="QXK-je-ISm" customClass="ScopeBookCell" customModule="Kiwix" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QXK-je-ISm" id="bj5-Xo-SR6">
@@ -1039,7 +1039,10 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="historyButton" destination="ROJ-fp-z79" id="Gga-WH-idC"/>
+                        <outlet property="mainPageButton" destination="AGB-HN-tQ6" id="e4D-HL-0mE"/>
                         <outlet property="scrollView" destination="pYo-r0-bj4" id="5uf-XS-gWK"/>
+                        <outlet property="settingButton" destination="C2A-Wh-7aK" id="pN1-9B-5WS"/>
                         <outlet property="tabsContainer" destination="IhM-7L-w7W" id="PLg-qS-ecM"/>
                     </connections>
                 </viewController>
