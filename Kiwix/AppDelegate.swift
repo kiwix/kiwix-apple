@@ -13,7 +13,6 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {
 
     var window: UIWindow?
-    private(set) lazy var libraryRefresher = LibraryRefresher()
     let globalOperationQueue = OperationQueue()
     
     var networkTaskCount = 0 {

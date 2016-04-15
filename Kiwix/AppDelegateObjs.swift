@@ -11,10 +11,7 @@ import UIKit
 extension UIApplication {
     
     // MARK: - Class Accessor
-    class var libraryRefresher: LibraryRefresher {
-        get {return appDelegate.libraryRefresher}
-    }
-    
+
     class var multiReader: ZIMMultiReader {
         get {return ZIMMultiReader.sharedInstance}
     }
