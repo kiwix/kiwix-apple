@@ -46,7 +46,11 @@ class SearchTabController: UIViewController, UIScrollViewDelegate {
         historyButton.setImage(UIImage(named: "History")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
         historyButton.setImage(UIImage(named: "History_filled")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Highlighted)
         historyButton.tintColor = UIColor.grayColor()
+        settingButton.setImage(UIImage(named: "SearchSetting")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+        settingButton.setImage(UIImage(named: "SearchSetting_filled")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Highlighted)
+        settingButton.tintColor = UIColor.grayColor()
         buttons[currentHighlightedButtonIndex].highlighted = true
+        buttons[currentHighlightedButtonIndex].tintColor = appColor
     }
     
     override func viewDidLayoutSubviews() {

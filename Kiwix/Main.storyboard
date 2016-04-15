@@ -986,7 +986,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="Og5-rG-bp2"/>
                                                 </constraints>
-                                                <state key="normal" image="Setting2"/>
+                                                <state key="normal" image="SearchSetting"/>
                                                 <connections>
                                                     <action selector="scopeButtonTapped:" destination="9gZ-CS-CgY" eventType="touchUpInside" id="x4W-PG-nzJ"/>
                                                 </connections>
@@ -1086,7 +1086,7 @@
         <image name="DownArrow" width="21" height="21"/>
         <image name="History" width="21" height="21"/>
         <image name="Home" width="21" height="21"/>
-        <image name="Setting2" width="21" height="21"/>
+        <image name="SearchSetting" width="21" height="21"/>
         <image name="Star" width="21" height="20"/>
         <image name="StarHighlighted" width="21" height="20"/>
     </resources>
