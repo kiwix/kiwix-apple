@@ -34,7 +34,7 @@ class BookmarkHUDVC: UIViewController {
             self.stackView.transform = CGAffineTransformIdentity
             self.dimView.alpha = 0.6
             }) { (completed) -> Void in
-                NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "hide", userInfo: nil, repeats: false)
+                NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(BookmarkHUDVC.hide), userInfo: nil, repeats: false)
         }
     }
     

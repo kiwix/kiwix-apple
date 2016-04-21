@@ -16,7 +16,7 @@ class LibraryUseCellularDataTBVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = LocalizedStrings.libraryUseCellularData
-        libraryrefreshAllowCellularDataSwitch.addTarget(self, action: "switcherValueChanged:", forControlEvents: .ValueChanged)
+        libraryrefreshAllowCellularDataSwitch.addTarget(self, action: #selector(LibraryUseCellularDataTBVC.switcherValueChanged(_:)), forControlEvents: .ValueChanged)
         libraryrefreshAllowCellularDataSwitch.on = libraryRefreshAllowCellularData
     }
     

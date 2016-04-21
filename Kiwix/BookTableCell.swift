@@ -95,7 +95,7 @@ class BookTableCell: UITableViewCell {
     }
     
     override func awakeFromNib() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleTap")
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(BookTableCell.handleTap))
         accessoryImageView.addGestureRecognizer(tapGestureRecognizer)
     }
     

@@ -158,8 +158,7 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sectionInfo = fetchedResultController.sections?[section] else {return 0}
-        return sectionInfo.numberOfObjects
+        return fetchedResultController.sections?[section].numberOfObjects ?? 0
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

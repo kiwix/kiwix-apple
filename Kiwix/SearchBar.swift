@@ -64,7 +64,7 @@ class CustomSearchBar: UISearchBar, UITextFieldDelegate {
         customSearchField.autocorrectionType = .No
         customSearchField.spellCheckingType = .No
         customSearchField.delegate = self
-        customSearchField.addTarget(self, action: "textFieldDidChange:", forControlEvents: .EditingChanged)
+        customSearchField.addTarget(self, action: #selector(CustomSearchBar.textFieldDidChange(_:)), forControlEvents: .EditingChanged)
         addSubview(customSearchField)
         
         placeholder = nil

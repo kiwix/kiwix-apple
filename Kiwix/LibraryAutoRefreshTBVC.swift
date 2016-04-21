@@ -34,7 +34,7 @@ class LibraryAutoRefreshTBVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = LocalizedStrings.libraryAutoRefresh
-        enableAutoRefreshSwitch.addTarget(self, action: "switcherValueChanged:", forControlEvents: .ValueChanged)
+        enableAutoRefreshSwitch.addTarget(self, action: #selector(LibraryAutoRefreshTBVC.switcherValueChanged(_:)), forControlEvents: .ValueChanged)
         enableAutoRefreshSwitch.on = !libraryAutoRefreshDisabled
     }
     

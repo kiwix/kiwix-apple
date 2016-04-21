@@ -16,7 +16,7 @@ class AdjustLayoutTBVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = LocalizedStrings.adjustLayout
-        adjustPageLayoutSwitch.addTarget(self, action: "switcherValueChanged:", forControlEvents: .ValueChanged)
+        adjustPageLayoutSwitch.addTarget(self, action: #selector(AdjustLayoutTBVC.switcherValueChanged(_:)), forControlEvents: .ValueChanged)
         adjustPageLayoutSwitch.on = adjustPageLayout
     }
     

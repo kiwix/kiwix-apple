@@ -54,6 +54,7 @@
 		976FEDD81C224DE100AE0874 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 976FEDD71C224DE100AE0874 /* MapKit.framework */; };
 		976FEDE11C2336C400AE0874 /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976FEDE01C2336C400AE0874 /* MapVC.swift */; };
 		9771DC0D1C371572009ECFF0 /* Help.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9771DC0C1C371572009ECFF0 /* Help.storyboard */; };
+		9772140C1CC1939F0060CE75 /* SearchHistoryTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9772140B1CC1939F0060CE75 /* SearchHistoryTBVC.swift */; };
 		977998741C1E0B7900B1DD5E /* Book+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779986E1C1E0B7900B1DD5E /* Book+CoreDataProperties.swift */; };
 		977998751C1E0B7900B1DD5E /* DownloadTask+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779986F1C1E0B7900B1DD5E /* DownloadTask+CoreDataProperties.swift */; };
 		977998761C1E0B7900B1DD5E /* DownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977998701C1E0B7900B1DD5E /* DownloadTask.swift */; };
@@ -230,6 +231,7 @@
 		976FEDD71C224DE100AE0874 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		976FEDE01C2336C400AE0874 /* MapVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
 		9771DC0C1C371572009ECFF0 /* Help.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Help.storyboard; sourceTree = "<group>"; };
+		9772140B1CC1939F0060CE75 /* SearchHistoryTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchHistoryTBVC.swift; sourceTree = "<group>"; };
 		9779986C1C1E0A5F00B1DD5E /* LibraryRefresherXMLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryRefresherXMLParser.swift; sourceTree = "<group>"; };
 		9779986E1C1E0B7900B1DD5E /* Book+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Book+CoreDataProperties.swift"; path = "Kiwix/CoreData/Book+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9779986F1C1E0B7900B1DD5E /* DownloadTask+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = "DownloadTask+CoreDataProperties.swift"; path = "Kiwix/CoreData/DownloadTask+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -468,6 +470,7 @@
 			children = (
 				97546E951CAEBC2C002FE3FD /* SearchTabController.swift */,
 				97E108231C5D5A4200E27FD3 /* SearchLocalBooksCVC.swift */,
+				9772140B1CC1939F0060CE75 /* SearchHistoryTBVC.swift */,
 				9768957B1CB6A7D300F02686 /* SearchScopeSelectTBVC.swift */,
 			);
 			name = Dashboard;
@@ -1026,6 +1029,7 @@
 				97E571271CA0500400FF4F1D /* URLSessionTaskOperation.swift in Sources */,
 				9703489C1C613D9F00EF8B7F /* SearchVC.swift in Sources */,
 				9749A1B11C43064A000F2D1E /* BookmarkTBVC.swift in Sources */,
+				9772140C1CC1939F0060CE75 /* SearchHistoryTBVC.swift in Sources */,
 				973E99C71C6D405200FBCA28 /* LibraryDownloadTBVC.swift in Sources */,
 				978C58AD1C1CFF700077AE47 /* PreferenceLibrary.swift in Sources */,
 				973381691C343F2C0016CEFB /* Logo.swift in Sources */,

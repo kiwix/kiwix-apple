@@ -44,8 +44,8 @@ class LTBarButtonItem: UIBarButtonItem {
         
         self.delegate = configure.delegate
         self.customImageView = customImageView
-        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPressGesture:")
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "handleTapGesture:")
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(LTBarButtonItem.handleLongPressGesture(_:)))
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(LTBarButtonItem.handleTapGesture(_:)))
         containerView.addGestureRecognizer(longPressGestureRecognizer)
         containerView.addGestureRecognizer(tapGestureRecognizer)
     }

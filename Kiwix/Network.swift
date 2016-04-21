@@ -103,7 +103,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
         guard operationQueue.operationCount == 0 else {return}
         shouldReportProgress = true
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-            self.timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "resetProgressReportingFlag", userInfo: nil, repeats: true)
+            self.timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(Network.resetProgressReportingFlag), userInfo: nil, repeats: true)
         }
     }
     

@@ -15,11 +15,11 @@ class SearchTabController: UIViewController, UIScrollViewDelegate {
     
     private let indicatorView = UIView()
     private let controllers = [UIStoryboard.main.initViewController(SearchLocalBooksCVC.self)!,
-        UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("Controller1"),
+        UIStoryboard.main.initViewController(SearchHistoryTBVC.self)!,
         UIStoryboard.main.initViewController(SearchScopeSelectTBVC.self)!]
     private let appColor = UIColor(red: 71.0 / 255.0, green: 128.0 / 255.0, blue: 182.0 / 255.0, alpha: 1.0)
     
-    private var currentHighlightedButtonIndex: Int = 0
+    private var currentSelectedButtonIndex: Int = 0
     private var buttons = [UIButton]()
     @IBOutlet weak var mainPageButton: UIButton!
     @IBOutlet weak var historyButton: UIButton!
@@ -41,16 +41,16 @@ class SearchTabController: UIViewController, UIScrollViewDelegate {
         
         buttons = [mainPageButton, historyButton, settingButton]
         mainPageButton.setImage(UIImage(named: "MainPage")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
-        mainPageButton.setImage(UIImage(named: "MainPage_filled")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Highlighted)
+        mainPageButton.setImage(UIImage(named: "MainPage_filled")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Selected)
         mainPageButton.tintColor = UIColor.grayColor()
         historyButton.setImage(UIImage(named: "History")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
-        historyButton.setImage(UIImage(named: "History_filled")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Highlighted)
+        historyButton.setImage(UIImage(named: "History_filled")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Selected)
         historyButton.tintColor = UIColor.grayColor()
         settingButton.setImage(UIImage(named: "SearchSetting")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
-        settingButton.setImage(UIImage(named: "SearchSetting_filled")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Highlighted)
+        settingButton.setImage(UIImage(named: "SearchSetting_filled")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Selected)
         settingButton.tintColor = UIColor.grayColor()
-        buttons[currentHighlightedButtonIndex].highlighted = true
-        buttons[currentHighlightedButtonIndex].tintColor = appColor
+        buttons[currentSelectedButtonIndex].selected = true
+        buttons[currentSelectedButtonIndex].tintColor = appColor
     }
     
     override func viewDidLayoutSubviews() {
@@ -73,7 +73,7 @@ class SearchTabController: UIViewController, UIScrollViewDelegate {
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         setIndicatorViewFrame()
-        setButtonHighlightingStatus()
+        setButtonSelectedStatus()
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
@@ -110,19 +110,19 @@ class SearchTabController: UIViewController, UIScrollViewDelegate {
         indicatorView.frame = CGRectMake(x, y, width, height)
     }
     
-    func setButtonHighlightingStatus() {
+    func setButtonSelectedStatus() {
         let indexOfButtonShouldBeHighlighted: Int = {
             let currentPosition = currentControllerPosition
             let index = currentPosition.index
             let percentage = currentPosition.percentage
             return percentage > 0.5 ? index + 1 : index
         }()
-        guard indexOfButtonShouldBeHighlighted != currentHighlightedButtonIndex else {return}
-        buttons[currentHighlightedButtonIndex].highlighted = false
-        buttons[currentHighlightedButtonIndex].tintColor = UIColor.grayColor()
-        buttons[indexOfButtonShouldBeHighlighted].highlighted = true
+        guard indexOfButtonShouldBeHighlighted != currentSelectedButtonIndex else {return}
+        buttons[currentSelectedButtonIndex].selected = false
+        buttons[currentSelectedButtonIndex].tintColor = UIColor.grayColor()
+        buttons[indexOfButtonShouldBeHighlighted].selected = true
         buttons[indexOfButtonShouldBeHighlighted].tintColor = appColor
-        currentHighlightedButtonIndex = indexOfButtonShouldBeHighlighted
+        currentSelectedButtonIndex = indexOfButtonShouldBeHighlighted
     }
     
     func scrollViewAnimateIntoPosition() {
