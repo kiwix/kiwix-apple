@@ -5,6 +5,8 @@
 
 target 'Kiwix' do
 
+pod 'DateTools'
+
 end
 
 target 'KiwixTests' do

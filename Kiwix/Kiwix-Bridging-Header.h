@@ -3,3 +3,4 @@
 //
 
 #import "ZimReader.h"
+#import "NSDate+DateTools.h"

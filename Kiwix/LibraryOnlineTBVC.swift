@@ -103,12 +103,12 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
     
     func configureMessage(isRefreshing isRefreshing: Bool) {
         if !isRefreshing {
-            if let count = fetchedResultController.fetchedObjects?.count {
-                let localizedString = String.localizedStringWithFormat(NSLocalizedString("%d book(s) available for download", comment: "Book Library, online book catalogue message"), count)
-                messageButton.text = localizedString
-            } else {
-                messageButton.text = nil
-            }
+            guard let count = fetchedResultController.fetchedObjects?.count else {messageButton.text = nil; return}
+            let localizedBookCountString = String.localizedStringWithFormat(NSLocalizedString("%d book(s) available for download", comment: "Book Library, online book catalogue message"), count)
+            guard count > 0 else {messageButton.text = localizedBookCountString; return}
+            guard let lastRefreshTime = Preference.libraryLastRefreshTime else {messageButton.text = localizedBookCountString; return}
+            let localizedRefreshTimeString = NSLocalizedString("Last Refresh: ", comment: "Book Library, online book catalogue message") + lastRefreshTime.timeAgoSinceNow()
+            messageButton.text = localizedBookCountString + "\n" + localizedRefreshTimeString
         } else {
             messageButton.text = LocalizedStrings.refreshing
         }
