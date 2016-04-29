@@ -92,12 +92,6 @@ extension NSManagedObject {
         }
     }
     
-    class func fetchAll<T:NSManagedObject>(context: NSManagedObjectContext) -> [T]? {
-        let className = String(T)
-        let fetchRequest = NSFetchRequest(entityName: className)
-        return fetch(fetchRequest, type: T.self, context: context)
-    }
-    
     class func insert<T:NSManagedObject>(type: T.Type, context: NSManagedObjectContext) -> T? {
         let className = String(T)
         guard let obj = NSEntityDescription.insertNewObjectForEntityForName(className, inManagedObjectContext: context) as? T else {return nil}

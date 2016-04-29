@@ -74,6 +74,10 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
     func refreshDidFinish() {
         refreshLibButton.stopRotating()
         configureMessage(isRefreshing: false)
+        
+        guard !Preference.libraryHasShownPreferredLanguagePrompt else {return}
+        let langFilterOperation = LanguageFilterAlert(libraryOnlineTBVC: self)
+        UIApplication.appDelegate.globalOperationQueue.addOperation(langFilterOperation)
     }
     
     // MARK: - ToolBar Button

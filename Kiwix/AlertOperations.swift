@@ -34,3 +34,57 @@ class SpaceNotEnoughAlert: AlertOperation {
         addAction(LocalizedStrings.ok)
     }
 }
+
+class LanguageFilterAlert: AlertOperation {
+    init(libraryOnlineTBVC: LibraryOnlineTBVC) {
+        super.init(presentationContext: libraryOnlineTBVC)
+        
+        var preferredLanguageCodes = [String]()
+        var preferredLanguageNames = [String]()
+        
+        for code in NSLocale.preferredLanguages() {
+            guard let code = code.componentsSeparatedByString("-").first else {continue}
+            guard let name = NSLocale.currentLocale().displayNameForKey(NSLocaleIdentifier, value: code) else {continue}
+            preferredLanguageCodes.append(code)
+            preferredLanguageNames.append(name)
+        }
+        print(preferredLanguageCodes)
+        
+        let languageString: String = {
+            switch preferredLanguageNames.count {
+            case 0:
+                return ""
+            case 1:
+                return preferredLanguageNames[0]
+            case 2:
+                return andJoinedString(preferredLanguageNames[0], b: preferredLanguageNames[1])
+            default:
+                let last = preferredLanguageNames.popLast()!
+                let secondToLast = preferredLanguageNames.popLast()!
+                return preferredLanguageNames.joinWithSeparator(", ") + ", " + andJoinedString(secondToLast, b: last)
+            }
+        }()
+        
+        let comment = "Library: Language Filter Alert"
+        
+        title = NSLocalizedString("Only Show Preferred Language?", comment: comment)
+        message = NSLocalizedString("We have found you may know \(languageString), would you like to filter the library by these languages?", comment: comment)
+        addAction(LocalizedStrings.ok, style: .Default) { (action) in
+            let languages = Language.fetchAll(UIApplication.appDelegate.managedObjectContext)
+            for language in languages {
+                guard let code = language.code else {continue}
+                language.isDisplayed = preferredLanguageCodes.contains(code)
+            }
+            libraryOnlineTBVC.refreshFetchedResultController()
+        }
+        addAction(LocalizedStrings.cancel)
+    }
+    
+    override func finished(errors: [NSError]) {
+        Preference.libraryHasShownPreferredLanguagePrompt = true
+    }
+    
+    func andJoinedString(a: String, b: String) -> String {
+        return a + " " + LocalizedStrings.and + " " + b
+    }
+}

@@ -12,8 +12,8 @@ import CoreData
 
 class Language: NSManagedObject {
 
-    class func fetchOrAdd(var code: String, context: NSManagedObjectContext) -> Language? {
-        code = NSLocale.canonicalLanguageIdentifierFromString(code)
+    class func fetchOrAdd(code: String, context: NSManagedObjectContext) -> Language? {
+        let code = NSLocale.canonicalLanguageIdentifierFromString(code)
 
         if let language = fetch(code, context: context) {
             return language
@@ -34,6 +34,11 @@ class Language: NSManagedObject {
     class func fetch(displayed displayed: Bool, context: NSManagedObjectContext) -> [Language] {
         let fetchRequest = NSFetchRequest(entityName: "Language")
         fetchRequest.predicate = NSPredicate(format: "isDisplayed == %@ AND name != nil", displayed)
+        return fetch(fetchRequest, type: Language.self, context: context) ?? [Language]()
+    }
+    
+    class func fetchAll(context: NSManagedObjectContext) -> [Language] {
+        let fetchRequest = NSFetchRequest(entityName: "Language")
         return fetch(fetchRequest, type: Language.self, context: context) ?? [Language]()
     }
 }
