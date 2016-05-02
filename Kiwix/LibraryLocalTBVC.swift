@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
+class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // MARK: - Override
     
@@ -18,6 +18,10 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.tableFooterView = UIView()
+        
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
+        
         configureToolBar()
     }
     
@@ -33,6 +37,47 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
               let indexPath = tableView.indexPathForCell(cell),
               let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
         controller.book = book
+    }
+    
+    // MARK: - Empty table datasource & delegate
+    
+    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
+        return UIImage(named: "FolderColor")
+    }
+    
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let text = NSLocalizedString("No Book on Device", comment: "Book Library, book local, no book center title")
+        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(18.0),
+                          NSForegroundColorAttributeName: UIColor.darkGrayColor()]
+        return NSAttributedString(string: text, attributes: attributes)
+    }
+    
+    func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let text = NSLocalizedString("Download a book or import using iTunes File Sharing. They will show up here automatically", comment: "Book Library, book local, no book center description")
+        let style = NSMutableParagraphStyle()
+        style.lineBreakMode = .ByWordWrapping
+        style.alignment = .Center
+        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(14.0),
+                          NSForegroundColorAttributeName: UIColor.lightGrayColor(),
+                          NSParagraphStyleAttributeName: style]
+        return NSAttributedString(string: text, attributes: attributes)
+    }
+    
+    func buttonTitleForEmptyDataSet(scrollView: UIScrollView!, forState state: UIControlState) -> NSAttributedString! {
+        let text = NSLocalizedString("Learn more", comment: "Book Library, book downloader, learn more button text")
+        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(17.0), NSForegroundColorAttributeName: segmentedControl.tintColor]
+        return NSAttributedString(string: text, attributes: attributes)
+    }
+    
+    func spaceHeightForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+        return 30.0
+    }
+    
+    func emptyDataSetDidTapButton(scrollView: UIScrollView!) {
+        guard let navController = UIStoryboard.setting.instantiateViewControllerWithIdentifier("WebViewNav") as? UINavigationController,
+            let controller = navController.topViewController as? WebViewVC else {return}
+        controller.page = .LocalBookLearnMore
+        presentViewController(navController, animated: true, completion: nil)
     }
     
     // MARK: - ToolBar Button Actions
@@ -51,6 +96,11 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
         toolBarItems[1] = messageButton
         configureMessage()
         setToolbarItems(toolBarItems, animated: false)
+    }
+    
+    func configureToolBarVisibility(animated animated: Bool) {
+        print(fetchedResultController.fetchedObjects?.count)
+        navigationController?.setToolbarHidden(fetchedResultController.fetchedObjects?.count == 0, animated: animated)
     }
     
     func configureMessage() {
@@ -150,6 +200,9 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
                 } else {
                     self.managedObjectContext.deleteObject(book)
                 }
+                
+                guard let id = book.id, let zimURL = ZIMMultiReader.sharedInstance.readers[id]?.fileURL else {return}
+                FileManager.removeItem(atURL: zimURL)
             })
         }
         return [delete]
@@ -188,6 +241,7 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
+        configureToolBarVisibility(animated: true)
         configureMessage()
     }
 }

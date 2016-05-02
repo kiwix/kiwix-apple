@@ -20,7 +20,7 @@ extension MainVC {
     
     func loadMainPage(book: Book) {
         guard let id = book.id else {return}
-        guard let reader = UIApplication.multiReader.readers[id] else {return}
+        guard let reader = ZIMMultiReader.sharedInstance.readers[id] else {return}
         let mainPageURLString = reader.mainPageURL()
         let mainPageURL = NSURL.kiwixURLWithZimFileid(id, contentURLString: mainPageURLString)
         load(mainPageURL)

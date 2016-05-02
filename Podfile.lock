@@ -1,10 +1,13 @@
 PODS:
   - DateTools (1.7.0)
+  - DZNEmptyDataSet (1.8)
 
 DEPENDENCIES:
   - DateTools
+  - DZNEmptyDataSet
 
 SPEC CHECKSUMS:
   DateTools: 53288ee8b905fdc75897a1e6b5cc0144b14cba60
+  DZNEmptyDataSet: d2351b2e8daefa40433ef292e246e21f6be31a7b
 
 COCOAPODS: 0.39.0

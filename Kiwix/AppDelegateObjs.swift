@@ -11,21 +11,13 @@ import UIKit
 extension UIApplication {
     
     // MARK: - Class Accessor
-
-    class var multiReader: ZIMMultiReader {
-        get {return ZIMMultiReader.sharedInstance}
-    }
     
     class var globalOperationQueue: OperationQueue {
         get {return appDelegate.globalOperationQueue}
     }
     
     // MARK: - 
-    
-    class var networkTaskCount: Int {
-        get {return appDelegate.networkTaskCount}
-        set {appDelegate.networkTaskCount = newValue}
-    }
+
     
     class func updateApplicationIconBadgeNumber() {
         guard let settings = UIApplication.sharedApplication().currentUserNotificationSettings() else {return}

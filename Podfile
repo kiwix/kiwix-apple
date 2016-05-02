@@ -6,6 +6,7 @@
 target 'Kiwix' do
 
 pod 'DateTools'
+pod 'DZNEmptyDataSet'
 
 end
 

@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDelegate, BookTableCellDelegate, DownloadProgressReporting {
+class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDelegate, BookTableCellDelegate, DownloadProgressReporting, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // MARK: - Override
     
@@ -18,6 +18,10 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.tableFooterView = UIView()
+        
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
+        
         configureToolBar()
     }
     
@@ -31,6 +35,47 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         Network.sharedInstance.delegate = nil
+    }
+    
+    // MARK: - Empty table datasource & delegate
+    
+    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
+        return UIImage(named: "DownloadColor")
+    }
+    
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let text = NSLocalizedString("No Download Task", comment: "Book Library, book downloader, no book center title")
+        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(18.0),
+                          NSForegroundColorAttributeName: UIColor.darkGrayColor()]
+        return NSAttributedString(string: text, attributes: attributes)
+    }
+    
+    func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let text = NSLocalizedString("After starting a download task, minimize the app to continue the task in the background.", comment: "Book Library, book downloader, no book center description")
+        let style = NSMutableParagraphStyle()
+        style.lineBreakMode = .ByWordWrapping
+        style.alignment = .Center
+        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(14.0),
+                          NSForegroundColorAttributeName: UIColor.lightGrayColor(),
+                          NSParagraphStyleAttributeName: style]
+        return NSAttributedString(string: text, attributes: attributes)
+    }
+    
+    func buttonTitleForEmptyDataSet(scrollView: UIScrollView!, forState state: UIControlState) -> NSAttributedString! {
+        let text = NSLocalizedString("Learn more", comment: "Book Library, book downloader, learn more button text")
+        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(17.0), NSForegroundColorAttributeName: segmentedControl.tintColor]
+        return NSAttributedString(string: text, attributes: attributes)
+    }
+    
+    func spaceHeightForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+        return 30.0
+    }
+    
+    func emptyDataSetDidTapButton(scrollView: UIScrollView!) {
+        guard let navController = UIStoryboard.setting.instantiateViewControllerWithIdentifier("WebViewNav") as? UINavigationController,
+              let controller = navController.topViewController as? WebViewVC else {return}
+        controller.page = .DownloaderLearnMore
+        presentViewController(navController, animated: true, completion: nil)
     }
     
     // MARK: - BookTableCellDelegate
@@ -76,8 +121,15 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
     func configureToolBar() {
         guard var toolBarItems = self.toolbarItems else {return}
         toolBarItems[1] = messageButton
+        configureToolBarVisibility(animated: false)
+        
         configureMessage()
         setToolbarItems(toolBarItems, animated: false)
+        configureToolBarVisibility(animated: false)
+    }
+    
+    func configureToolBarVisibility(animated animated: Bool) {
+        navigationController?.setToolbarHidden(fetchedResultController.fetchedObjects?.count == 0, animated: animated)
     }
     
     func configureMessage() {
@@ -231,6 +283,7 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
-        configureToolBar()
+        configureToolBarVisibility(animated: true)
+        configureMessage()
     }
 }
