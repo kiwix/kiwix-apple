@@ -15,14 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {
     var window: UIWindow?
     let globalOperationQueue = OperationQueue()
     
-    var networkTaskCount = 0 {
-        didSet {
-            NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = self.networkTaskCount > 0 ? true : false
-            }
-        }
-    }
-    
     func recordActiveSession() {
         Preference.activeUseHistory.append(NSDate()) 
     }
@@ -30,19 +22,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {
     func operationQueue(operationQueue: OperationQueue, operationDidFinish operation: NSOperation, withErrors errors: [NSError]) {
         print(globalOperationQueue.operationCount)
     }
-    
-    func setupNotification() {
-        let bookDownloadFinishCategory = UIMutableUserNotificationCategory()
-        bookDownloadFinishCategory.identifier = "KIWIX_BOOK_DOWNLOAD_FINISH"
-        let settings = UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: Set(arrayLiteral: bookDownloadFinishCategory))
-        UIApplication.sharedApplication().registerUserNotificationSettings(settings)
-    }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         NSURLProtocol.registerClass(KiwixURLProtocol)
-        setupNotification()
         Network.sharedInstance.restoreProgresses()
+        
+        // Register notification
+        let settings = UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: nil) // Here are the notification permission the app wants
+        application.registerUserNotificationSettings(settings)
+        
         return true
+    }
+    
+    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
+        // Here we get what notification permission user currently allows
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -63,7 +56,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         NSTimer.scheduledTimerWithTimeInterval(60.0, target: self, selector: #selector(AppDelegate.recordActiveSession), userInfo: nil, repeats: false)
-        
         ZIMMultiReader.sharedInstance.rescan()
     }
 
@@ -74,7 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {
     }
     
     func application(application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: () -> Void) {
-        //downloader.rejoinSessionWithIdentifier(identifier, completionHandler: completionHandler)
+        Network.sharedInstance.rejoinSessionWithIdentifier(identifier, completionHandler: completionHandler)
     }
 
     // MARK: - Core Data stack

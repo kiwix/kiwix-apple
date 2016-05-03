@@ -37,6 +37,67 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
         Network.sharedInstance.delegate = nil
     }
     
+    // MARK: - BookTableCellDelegate
+    
+    func didTapOnAccessoryViewForCell(cell: BookTableCell) {
+        guard let indexPath = tableView.indexPathForCell(cell),
+            let downloadTask = fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask,
+            let book = downloadTask.book else {return}
+        switch downloadTask.state {
+        case .Downloading:
+            Network.sharedInstance.pause(book)
+        case .Paused, .Error:
+            Network.sharedInstance.resume(book)
+        default:
+            break
+        }
+    }
+    
+    // MARK: -  DownloadProgressReporting
+    
+    func refreshProgress(animated animated: Bool) {
+        guard let downloadTasks = fetchedResultController.fetchedObjects as? [DownloadTask] else {return}
+        for downloadTask in downloadTasks {
+            guard let id = downloadTask.book?.id,
+                let indexPath = fetchedResultController.indexPathForObject(downloadTask),
+                let cell = tableView.cellForRowAtIndexPath(indexPath) as? DownloadBookCell,
+                let progress = Network.sharedInstance.progresses[id] else {return}
+            cell.progressView.setProgress(Float(progress.fractionCompleted), animated: animated)
+            cell.subtitleLabel.text = progress.description
+        }
+    }
+    
+    // MARK: - ToolBar Button
+    
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBAction func segmentedControlValueChanged(sender: UISegmentedControl) {
+        tabBarController?.selectedIndex = sender.selectedSegmentIndex
+    }
+    @IBAction func dismissSelf(sender: UIBarButtonItem) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    var messageButton = MessageBarButtonItem()
+    
+    func configureToolBar() {
+        guard var toolBarItems = self.toolbarItems else {return}
+        toolBarItems[1] = messageButton
+        setToolbarItems(toolBarItems, animated: false)
+        
+        configureToolBarVisibility(animated: false)
+        configureMessage()
+    }
+    
+    func configureToolBarVisibility(animated animated: Bool) {
+        navigationController?.setToolbarHidden(fetchedResultController.fetchedObjects?.count == 0, animated: animated)
+    }
+    
+    func configureMessage() {
+        guard let count = fetchedResultController.fetchedObjects?.count else {return}
+        let localizedString = String.localizedStringWithFormat(NSLocalizedString("%d download tasks", comment: "Book Library, book downloader message"), count)
+        messageButton.text = localizedString
+    }
+    
     // MARK: - Empty table datasource & delegate
     
     func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
@@ -73,84 +134,10 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
     
     func emptyDataSetDidTapButton(scrollView: UIScrollView!) {
         guard let navController = UIStoryboard.setting.instantiateViewControllerWithIdentifier("WebViewNav") as? UINavigationController,
-              let controller = navController.topViewController as? WebViewVC else {return}
+            let controller = navController.topViewController as? WebViewVC else {return}
         controller.page = .DownloaderLearnMore
         presentViewController(navController, animated: true, completion: nil)
     }
-    
-    // MARK: - BookTableCellDelegate
-    
-    func didTapOnAccessoryViewForCell(cell: BookTableCell) {
-        guard let indexPath = tableView.indexPathForCell(cell),
-              let downloadTask = fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask,
-              let book = downloadTask.book else {return}
-        switch downloadTask.state {
-        case .Downloading:
-            Network.sharedInstance.pause(book)
-        case .Paused, .Error:
-            Network.sharedInstance.resume(book)
-        default:
-            break
-        }
-    }
-    
-    func refreshProgress(animated animated: Bool) {
-        guard let downloadTasks = fetchedResultController.fetchedObjects as? [DownloadTask] else {return}
-        for downloadTask in downloadTasks {
-            guard let id = downloadTask.book?.id,
-                  let indexPath = fetchedResultController.indexPathForObject(downloadTask),
-                  let cell = tableView.cellForRowAtIndexPath(indexPath) as? DownloadBookCell,
-                  let progress = Network.sharedInstance.progresses[id] else {return}
-            cell.progressView.setProgress(Float(progress.fractionCompleted), animated: animated)
-            cell.subtitleLabel.text = progress.description
-        }
-    }
-    
-    // MARK: - ToolBar Button
-    
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
-    @IBAction func segmentedControlValueChanged(sender: UISegmentedControl) {
-        tabBarController?.selectedIndex = sender.selectedSegmentIndex
-    }
-    @IBAction func dismissSelf(sender: UIBarButtonItem) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    var messageButton = MessageBarButtonItem()
-    
-    func configureToolBar() {
-        guard var toolBarItems = self.toolbarItems else {return}
-        toolBarItems[1] = messageButton
-        configureToolBarVisibility(animated: false)
-        
-        configureMessage()
-        setToolbarItems(toolBarItems, animated: false)
-        configureToolBarVisibility(animated: false)
-    }
-    
-    func configureToolBarVisibility(animated animated: Bool) {
-        navigationController?.setToolbarHidden(fetchedResultController.fetchedObjects?.count == 0, animated: animated)
-    }
-    
-    func configureMessage() {
-        guard let count = fetchedResultController.fetchedObjects?.count else {return}
-        let localizedString = String.localizedStringWithFormat(NSLocalizedString("%d download tasks", comment: "Book Library, book downloader message"), count)
-        messageButton.text = localizedString
-    }
-    
-    // MARK: - Fetched Results Controller
-    
-    let managedObjectContext = UIApplication.appDelegate.managedObjectContext
-    lazy var fetchedResultController: NSFetchedResultsController = {
-        let fetchRequest = NSFetchRequest(entityName: "DownloadTask")
-        let creationTimeDescriptor = NSSortDescriptor(key: "creationTime", ascending: true)
-        fetchRequest.sortDescriptors = [creationTimeDescriptor]
-        
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "DownloadFRC")
-        fetchedResultsController.delegate = self
-        fetchedResultsController.performFetch(deleteCache: false)
-        return fetchedResultsController
-    }()
     
     // MARK: - TableView Data Source
     
@@ -249,6 +236,20 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
         }
         return [remove]
     }
+    
+    // MARK: - Fetched Results Controller
+    
+    let managedObjectContext = UIApplication.appDelegate.managedObjectContext
+    lazy var fetchedResultController: NSFetchedResultsController = {
+        let fetchRequest = NSFetchRequest(entityName: "DownloadTask")
+        let creationTimeDescriptor = NSSortDescriptor(key: "creationTime", ascending: true)
+        fetchRequest.sortDescriptors = [creationTimeDescriptor]
+        
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "DownloadFRC")
+        fetchedResultsController.delegate = self
+        fetchedResultsController.performFetch(deleteCache: false)
+        return fetchedResultsController
+    }()
     
     // MARK: - Fetched Result Controller Delegate
     

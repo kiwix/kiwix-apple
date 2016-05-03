@@ -9,10 +9,11 @@
 import UIKit
 import CoreData
 
-class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelegate, BookTableCellDelegate, LTBarButtonItemDelegate, RefreshLibraryOperationDelegate {
+class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelegate, BookTableCellDelegate, LTBarButtonItemDelegate, RefreshLibraryOperationDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     var booksShowingDetail = Set<Book>()
     weak var refreshOperation: RefreshLibraryOperation?
+    var messsageLabelConfigTimer: NSTimer?
     
     // MARK: - Override
     
@@ -21,6 +22,12 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.tableFooterView = UIView()
+        
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
+        
+        reconnectToExistingRefreshOperation()
+        refreshLibraryForTheFirstTime()
         configureToolBar()
     }
     
@@ -28,15 +35,14 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
         super.viewWillAppear(animated)
         segmentedControl.selectedSegmentIndex = 0
         configureRefreshStatus()
+        messsageLabelConfigTimer = NSTimer.scheduledTimerWithTimeInterval(60.0, target: self, selector: #selector(configureMessage), userInfo: nil, repeats: true)
     }
     
-    func configureRefreshStatus() {
-        guard let operation = refreshOperation ?? UIApplication.globalOperationQueue.operation(String(RefreshLibraryOperation)) as? RefreshLibraryOperation else {return}
-        refreshOperation = operation
-        operation.delegate = self
-        operation.executing ? refreshLibButton.startRotating() : refreshLibButton.stopRotating()
-        configureMessage(isRefreshing: operation.executing)
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        messsageLabelConfigTimer?.invalidate()
     }
+    
     
     // MARK: - BookTableCellDelegate
     
@@ -59,25 +65,45 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
     
     func barButtonTapped(sender: LTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
         guard sender === refreshLibButton else {return}
-        let refreshOperation = RefreshLibraryOperation(invokedAutomatically: false)
-        refreshOperation.delegate = self
-        UIApplication.globalOperationQueue.addOperation(refreshOperation)
+        startRefresh(invokedAutomatically: false)
     }
     
     // MARK: - RefreshLibraryOperationDelegate
     
     func refreshDidStart() {
-        refreshLibButton.startRotating()
-        configureMessage(isRefreshing: true)
+        configureRefreshStatus()
+        configureToolBarVisibility(animated: true)
     }
     
     func refreshDidFinish() {
-        refreshLibButton.stopRotating()
-        configureMessage(isRefreshing: false)
+        configureRefreshStatus()
+        configureToolBarVisibility(animated: true)
         
         guard !Preference.libraryHasShownPreferredLanguagePrompt else {return}
         let langFilterOperation = LanguageFilterAlert(libraryOnlineTBVC: self)
         UIApplication.appDelegate.globalOperationQueue.addOperation(langFilterOperation)
+    }
+    
+    // MARK: - Others
+    
+    func reconnectToExistingRefreshOperation() {
+        guard let operation = refreshOperation ??
+            UIApplication.globalOperationQueue.operation(String(RefreshLibraryOperation)) as? RefreshLibraryOperation
+            else {return}
+        refreshOperation = operation
+        operation.delegate = self
+    }
+    
+    func refreshLibraryForTheFirstTime() {
+        guard Preference.libraryLastRefreshTime == nil else {return}
+        startRefresh(invokedAutomatically: true)
+    }
+    
+    func startRefresh(invokedAutomatically invokedAutomatically: Bool) {
+        let refreshOperation = RefreshLibraryOperation(invokedAutomatically: invokedAutomatically)
+        refreshOperation.delegate = self
+        UIApplication.globalOperationQueue.addOperation(refreshOperation)
+        self.refreshOperation = refreshOperation
     }
     
     // MARK: - ToolBar Button
@@ -97,62 +123,95 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
         guard var toolBarItems = self.toolbarItems else {return}
         toolBarItems[0] = refreshLibButton
         toolBarItems[2] = messageButton
-        configureMessage(isRefreshing: false)
         
         let negativeSpace = UIBarButtonItem(barButtonSystemItem: .FixedSpace)
         negativeSpace.width = -10
         toolBarItems.insert(negativeSpace, atIndex: 0)
         setToolbarItems(toolBarItems, animated: false)
+        
+        configureToolBarVisibility(animated: false)
+        configureMessage(isRefreshing: false)
     }
     
-    func configureMessage(isRefreshing isRefreshing: Bool) {
+    func configureToolBarVisibility(animated animated: Bool) {
+        navigationController?.setToolbarHidden(fetchedResultController.fetchedObjects?.count == 0, animated: animated)
+    }
+    
+    func configureMessage(isRefreshing isRefreshing: Bool = false) {
         if !isRefreshing {
             guard let count = fetchedResultController.fetchedObjects?.count else {messageButton.text = nil; return}
             let localizedBookCountString = String.localizedStringWithFormat(NSLocalizedString("%d book(s) available for download", comment: "Book Library, online book catalogue message"), count)
             guard count > 0 else {messageButton.text = localizedBookCountString; return}
             guard let lastRefreshTime = Preference.libraryLastRefreshTime else {messageButton.text = localizedBookCountString; return}
-            let localizedRefreshTimeString = NSLocalizedString("Last Refresh: ", comment: "Book Library, online book catalogue message") + lastRefreshTime.timeAgoSinceNow()
+            let localizedRefreshTimeString: String = {
+                var string = NSLocalizedString("Last Refresh: ", comment: "Book Library, online book catalogue refresh time")
+                if NSDate().timeIntervalSinceDate(lastRefreshTime) > 60.0 {
+                    string += lastRefreshTime.timeAgoSinceNow()
+                } else {
+                    string += NSLocalizedString("just now", comment: "Book Library, online book catalogue refresh time")
+                }
+                return string
+            }()
             messageButton.text = localizedBookCountString + "\n" + localizedRefreshTimeString
         } else {
             messageButton.text = LocalizedStrings.refreshing
         }
     }
     
-    // MARK: - Fetched Results Controller
-    
-    let managedObjectContext = UIApplication.appDelegate.managedObjectContext
-    lazy var fetchedResultController: NSFetchedResultsController = {
-        let fetchRequest = NSFetchRequest(entityName: "Book")
-        let langDescriptor = NSSortDescriptor(key: "language.name", ascending: true)
-        let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
-        fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
-        fetchRequest.predicate = self.onlineCompoundPredicate
-        
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "language.name", cacheName: "OnlineFRC")
-        fetchedResultsController.delegate = self
-        fetchedResultsController.performFetch(deleteCache: false)
-        return fetchedResultsController
-    }()
-    
-    func refreshFetchedResultController() {
-        fetchedResultController.fetchRequest.predicate = onlineCompoundPredicate
-        fetchedResultController.performFetch(deleteCache: true)
-        tableView.reloadData()
-        configureMessage(isRefreshing: false)
+    func configureRefreshStatus() {
+        let executing = refreshOperation?.executing ?? false
+        executing ? refreshLibButton.startRotating() : refreshLibButton.stopRotating()
+        configureMessage(isRefreshing: executing)
+        tableView.reloadEmptyDataSet()
     }
     
-    private var langPredicate: NSPredicate {
-        let displayedLanguages = Language.fetch(displayed: true, context: managedObjectContext)
-        if displayedLanguages.count > 0 {
-            return NSPredicate(format: "language IN %@", displayedLanguages)
+    // MARK: - Empty table datasource & delegate
+    
+    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
+        return UIImage(named: "CloudColor")
+    }
+    
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let text = NSLocalizedString("There are some books in the cloud", comment: "Book Library, book online catalogue, no book center title")
+        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(18.0),
+                          NSForegroundColorAttributeName: UIColor.darkGrayColor()]
+        return NSAttributedString(string: text, attributes: attributes)
+    }
+    
+    func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let text = NSLocalizedString("Refresh the library to show all books available for download.", comment: "Book Library, book online catalogue, no book center description")
+        let style = NSMutableParagraphStyle()
+        style.lineBreakMode = .ByWordWrapping
+        style.alignment = .Center
+        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(14.0),
+                          NSForegroundColorAttributeName: UIColor.lightGrayColor(),
+                          NSParagraphStyleAttributeName: style]
+        return NSAttributedString(string: text, attributes: attributes)
+    }
+    
+    func buttonTitleForEmptyDataSet(scrollView: UIScrollView!, forState state: UIControlState) -> NSAttributedString! {
+        if let _ = refreshOperation {
+            let text = NSLocalizedString("Refreshing...", comment: "Book Library, book downloader, refreshing button text")
+            let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(17.0), NSForegroundColorAttributeName: UIColor.darkGrayColor()]
+            return NSAttributedString(string: text, attributes: attributes)
         } else {
-            return NSPredicate(format: "language.name != nil")
+            let text = NSLocalizedString("Refresh Now", comment: "Book Library, book downloader, refresh now button text")
+            let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(17.0), NSForegroundColorAttributeName: segmentedControl.tintColor]
+            return NSAttributedString(string: text, attributes: attributes)
         }
     }
     
-    private var onlineCompoundPredicate: NSCompoundPredicate {
-        let isCloudPredicate = NSPredicate(format: "isLocal == false")
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [langPredicate, isCloudPredicate])
+    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+        return -64.0
+    }
+    
+    func spaceHeightForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+        return 30.0
+    }
+    
+    func emptyDataSetDidTapButton(scrollView: UIScrollView!) {
+        guard self.refreshOperation == nil else {return}
+        startRefresh(invokedAutomatically: false)
     }
     
     // MARK: - TableView Data Source
@@ -232,6 +291,43 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else {return}
         header.textLabel?.font = UIFont.boldSystemFontOfSize(14)
+    }
+    
+    // MARK: - Fetched Results Controller
+    
+    let managedObjectContext = UIApplication.appDelegate.managedObjectContext
+    lazy var fetchedResultController: NSFetchedResultsController = {
+        let fetchRequest = NSFetchRequest(entityName: "Book")
+        let langDescriptor = NSSortDescriptor(key: "language.name", ascending: true)
+        let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
+        fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
+        fetchRequest.predicate = self.onlineCompoundPredicate
+        
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "language.name", cacheName: "OnlineFRC")
+        fetchedResultsController.delegate = self
+        fetchedResultsController.performFetch(deleteCache: false)
+        return fetchedResultsController
+    }()
+    
+    func refreshFetchedResultController() {
+        fetchedResultController.fetchRequest.predicate = onlineCompoundPredicate
+        fetchedResultController.performFetch(deleteCache: true)
+        tableView.reloadData()
+        configureMessage(isRefreshing: false)
+    }
+    
+    private var langPredicate: NSPredicate {
+        let displayedLanguages = Language.fetch(displayed: true, context: managedObjectContext)
+        if displayedLanguages.count > 0 {
+            return NSPredicate(format: "language IN %@", displayedLanguages)
+        } else {
+            return NSPredicate(format: "language.name != nil")
+        }
+    }
+    
+    private var onlineCompoundPredicate: NSCompoundPredicate {
+        let isCloudPredicate = NSPredicate(format: "isLocal == false")
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [langPredicate, isCloudPredicate])
     }
     
     // MARK: - Fetched Result Controller Delegate

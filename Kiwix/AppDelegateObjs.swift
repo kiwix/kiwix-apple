@@ -16,9 +16,6 @@ extension UIApplication {
         get {return appDelegate.globalOperationQueue}
     }
     
-    // MARK: - 
-
-    
     class func updateApplicationIconBadgeNumber() {
         guard let settings = UIApplication.sharedApplication().currentUserNotificationSettings() else {return}
         guard settings.types.contains(UIUserNotificationType.Badge) else {return}

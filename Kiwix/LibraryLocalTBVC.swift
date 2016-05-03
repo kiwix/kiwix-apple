@@ -39,6 +39,38 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
         controller.book = book
     }
     
+    // MARK: - ToolBar Button Actions
+    
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBAction func segmentedControlValueChanged(sender: UISegmentedControl) {
+        tabBarController?.selectedIndex = sender.selectedSegmentIndex
+    }
+    @IBAction func dismissSelf(sender: UIBarButtonItem) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    var messageButton = MessageBarButtonItem()
+    
+    func configureToolBar() {
+        guard var toolBarItems = self.toolbarItems else {return}
+        toolBarItems[1] = messageButton
+        setToolbarItems(toolBarItems, animated: false)
+        
+        configureToolBarVisibility(animated: false)
+        configureMessage()
+    }
+    
+    func configureToolBarVisibility(animated animated: Bool) {
+        navigationController?.setToolbarHidden(fetchedResultController.fetchedObjects?.count == 0, animated: animated)
+    }
+    
+    func configureMessage() {
+        guard let books = fetchedResultController.fetchedObjects as? [Book] else {return}
+        let totalSize = books.reduce(0) {$0 + ($1.fileSize)}
+        let spaceString = Utilities.formattedFileSizeStringFromByteCount(totalSize)
+        let localizedString = String.localizedStringWithFormat(NSLocalizedString("Taking up %@ in total", comment: "Book Library, local book message"), spaceString)
+        messageButton.text = localizedString
+    }
+    
     // MARK: - Empty table datasource & delegate
     
     func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
@@ -69,6 +101,10 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
         return NSAttributedString(string: text, attributes: attributes)
     }
     
+    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+        return -64.0
+    }
+    
     func spaceHeightForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
         return 30.0
     }
@@ -79,52 +115,6 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
         controller.page = .LocalBookLearnMore
         presentViewController(navController, animated: true, completion: nil)
     }
-    
-    // MARK: - ToolBar Button Actions
-    
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
-    @IBAction func segmentedControlValueChanged(sender: UISegmentedControl) {
-        tabBarController?.selectedIndex = sender.selectedSegmentIndex
-    }
-    @IBAction func dismissSelf(sender: UIBarButtonItem) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
-    var messageButton = MessageBarButtonItem()
-    
-    func configureToolBar() {
-        guard var toolBarItems = self.toolbarItems else {return}
-        toolBarItems[1] = messageButton
-        configureMessage()
-        setToolbarItems(toolBarItems, animated: false)
-    }
-    
-    func configureToolBarVisibility(animated animated: Bool) {
-        print(fetchedResultController.fetchedObjects?.count)
-        navigationController?.setToolbarHidden(fetchedResultController.fetchedObjects?.count == 0, animated: animated)
-    }
-    
-    func configureMessage() {
-        guard let books = fetchedResultController.fetchedObjects as? [Book] else {return}
-        let totalSize = books.reduce(0) {$0 + ($1.fileSize)}
-        let spaceString = Utilities.formattedFileSizeStringFromByteCount(totalSize)
-        let localizedString = String.localizedStringWithFormat(NSLocalizedString("Taking up %@ in total", comment: "Book Library, local book message"), spaceString)
-        messageButton.text = localizedString
-    }
-    
-    // MARK: - Fetched Results Controller
-    
-    let managedObjectContext = UIApplication.appDelegate.managedObjectContext
-    lazy var fetchedResultController: NSFetchedResultsController = {
-        let fetchRequest = NSFetchRequest(entityName: "Book")
-        let langDescriptor = NSSortDescriptor(key: "language.name", ascending: true)
-        let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
-        fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
-        fetchRequest.predicate = NSPredicate(format: "isLocal == true")
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "language.name", cacheName: "LocalFRC")
-        fetchedResultsController.delegate = self
-        fetchedResultsController.performFetch(deleteCache: false)
-        return fetchedResultsController
-    }()
     
     // MARK: - TableView Data Source
     
@@ -195,18 +185,34 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
         let delete = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.delete) { (action, indexPath) -> Void in
             guard let book = self.fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
             self.managedObjectContext.performBlock({ () -> Void in
+                if let id = book.id, let zimURL = ZIMMultiReader.sharedInstance.readers[id]?.fileURL {
+                    FileManager.removeItem(atURL: zimURL)
+                }
+                
                 if let _ = book.url {
                     book.isLocal = false
                 } else {
                     self.managedObjectContext.deleteObject(book)
                 }
-                
-                guard let id = book.id, let zimURL = ZIMMultiReader.sharedInstance.readers[id]?.fileURL else {return}
-                FileManager.removeItem(atURL: zimURL)
             })
         }
         return [delete]
     }
+    
+    // MARK: - Fetched Results Controller
+    
+    let managedObjectContext = UIApplication.appDelegate.managedObjectContext
+    lazy var fetchedResultController: NSFetchedResultsController = {
+        let fetchRequest = NSFetchRequest(entityName: "Book")
+        let langDescriptor = NSSortDescriptor(key: "language.name", ascending: true)
+        let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
+        fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
+        fetchRequest.predicate = NSPredicate(format: "isLocal == true")
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "language.name", cacheName: "LocalFRC")
+        fetchedResultsController.delegate = self
+        fetchedResultsController.performFetch(deleteCache: false)
+        return fetchedResultsController
+    }()
     
     // MARK: - Fetched Result Controller Delegate
     

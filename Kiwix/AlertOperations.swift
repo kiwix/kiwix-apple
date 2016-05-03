@@ -36,6 +36,7 @@ class SpaceNotEnoughAlert: AlertOperation {
 }
 
 class LanguageFilterAlert: AlertOperation {
+    let context = UIApplication.appDelegate.managedObjectContext
     init(libraryOnlineTBVC: LibraryOnlineTBVC) {
         super.init(presentationContext: libraryOnlineTBVC)
         
@@ -70,12 +71,14 @@ class LanguageFilterAlert: AlertOperation {
         title = NSLocalizedString("Only Show Preferred Language?", comment: comment)
         message = NSLocalizedString("We have found you may know \(languageString), would you like to filter the library by these languages?", comment: comment)
         addAction(LocalizedStrings.ok, style: .Default) { (action) in
-            let languages = Language.fetchAll(UIApplication.appDelegate.managedObjectContext)
-            for language in languages {
-                guard let code = language.code else {continue}
-                language.isDisplayed = preferredLanguageCodes.contains(code)
-            }
-            libraryOnlineTBVC.refreshFetchedResultController()
+            self.context.performBlock({
+                let languages = Language.fetchAll(self.context)
+                for language in languages {
+                    guard let code = language.code else {continue}
+                    language.isDisplayed = preferredLanguageCodes.contains(code)
+                }
+                libraryOnlineTBVC.refreshFetchedResultController()
+            })
         }
         addAction(LocalizedStrings.cancel)
     }

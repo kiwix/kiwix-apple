@@ -12,12 +12,13 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
     static let sharedInstance = Network()
     weak var delegate: DownloadProgressReporting?
     
-    let context = UIApplication.appDelegate.managedObjectContext
+    private let context = UIApplication.appDelegate.managedObjectContext
     let operationQueue = OperationQueue()
     
-    var timer: NSTimer?
     var progresses = [String: DownloadProgress]()
-    var shouldReportProgress = false
+    private var timer: NSTimer?
+    private var shouldReportProgress = false
+    private var completionHandler: (()-> Void)?
     
     lazy var session: NSURLSession = {
         let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier("org.kiwix.www")
@@ -45,6 +46,11 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
                 self.operationQueue.addOperation(operation)
             }
         }
+    }
+    
+    func rejoinSessionWithIdentifier(identifier: String, completionHandler: ()-> Void) {
+        guard identifier == session.configuration.identifier else {return}
+        self.completionHandler = completionHandler
     }
     
     func resetProgressReportingFlag() {shouldReportProgress = true}
@@ -112,6 +118,20 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
             self.timer?.invalidate()
             self.shouldReportProgress = false
+        }
+    }
+    
+    // MARK: - NSURLSessionDelegate
+    
+    func URLSessionDidFinishEventsForBackgroundURLSession(session: NSURLSession) {
+        NSOperationQueue.mainQueue().addOperationWithBlock {
+            self.completionHandler?()
+            
+            let notification = UILocalNotification()
+            notification.alertTitle = NSLocalizedString("Book download finished", comment: "Notification: Book download finished")
+            notification.alertBody = NSLocalizedString("All download tasks are finished.", comment: "Notification: Book download finished")
+            notification.soundName = UILocalNotificationDefaultSoundName
+            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
         }
     }
     
