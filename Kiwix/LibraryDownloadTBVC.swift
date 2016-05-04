@@ -93,7 +93,8 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
     }
     
     func configureMessage() {
-        guard let count = fetchedResultController.fetchedObjects?.count else {return}
+        guard let sectionInfos = fetchedResultController.sections else {messageButton.text = nil; return}
+        let count = sectionInfos.reduce(0) {$0 + $1.numberOfObjects}
         let localizedString = String.localizedStringWithFormat(NSLocalizedString("%d download tasks", comment: "Book Library, book downloader message"), count)
         messageButton.text = localizedString
     }
@@ -227,12 +228,12 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
                   let book = downloadTask.book else {return}
             Network.sharedInstance.cancel(book)
             book.isLocal = false
+            FileManager.removeResumeData(book)
             let context = UIApplication.appDelegate.managedObjectContext
             context.performBlockAndWait({ () -> Void in
                 book.isLocal = false
                 context.deleteObject(downloadTask)
             })
-            
         }
         return [remove]
     }

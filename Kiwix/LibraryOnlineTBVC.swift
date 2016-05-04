@@ -78,10 +78,6 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
     func refreshDidFinish() {
         configureRefreshStatus()
         configureToolBarVisibility(animated: true)
-        
-        guard !Preference.libraryHasShownPreferredLanguagePrompt else {return}
-        let langFilterOperation = LanguageFilterAlert(libraryOnlineTBVC: self)
-        UIApplication.appDelegate.globalOperationQueue.addOperation(langFilterOperation)
     }
     
     // MARK: - Others
@@ -139,7 +135,8 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
     
     func configureMessage(isRefreshing isRefreshing: Bool = false) {
         if !isRefreshing {
-            guard let count = fetchedResultController.fetchedObjects?.count else {messageButton.text = nil; return}
+            guard let sectionInfos = fetchedResultController.sections else {messageButton.text = nil; return}
+            let count = sectionInfos.reduce(0) {$0 + $1.numberOfObjects}
             let localizedBookCountString = String.localizedStringWithFormat(NSLocalizedString("%d book(s) available for download", comment: "Book Library, online book catalogue message"), count)
             guard count > 0 else {messageButton.text = localizedBookCountString; return}
             guard let lastRefreshTime = Preference.libraryLastRefreshTime else {messageButton.text = localizedBookCountString; return}

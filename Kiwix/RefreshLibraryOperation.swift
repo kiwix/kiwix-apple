@@ -12,8 +12,10 @@ import CoreData
 class RefreshLibraryOperation: GroupOperation {
     
     weak var delegate: RefreshLibraryOperationDelegate?
+    weak var presentationContext: LibraryOnlineTBVC?
     var completionHandler: (() -> Void)?
-    init(invokedAutomatically: Bool = true, completionHandler: (() -> Void)? = nil) {
+    
+    init(invokedAutomatically: Bool, presentationContext: LibraryOnlineTBVC? = nil, completionHandler: (() -> Void)? = nil) {
         super.init(operations: [])
         
         name = String(RefreshLibraryOperation)
@@ -48,6 +50,7 @@ class RefreshLibraryOperation: GroupOperation {
         if invokedAutomatically {
             addCondition(AllowAutoRefreshCondition())
             addCondition(LibraryIsOldCondition())
+            addCondition(ReachabilityCondition(host: url, allowCellular: Preference.libraryRefreshAllowCellularData))
         }
         
         addOperation(fetchOperation)
@@ -56,7 +59,14 @@ class RefreshLibraryOperation: GroupOperation {
     }
     
     override func finished(errors: [NSError]) {
-        
+        if let firstError = errors.first {
+            if firstError.code == .NetworkError {
+                produceOperation(RefreshLibraryInternetRequiredAlert(presentationContext: presentationContext))
+            }
+        } else {
+            guard !Preference.libraryHasShownPreferredLanguagePrompt else {return}
+            produceOperation(RefreshLibraryLanguageFilterAlert(libraryOnlineTBVC: presentationContext))
+        }
     }
 }
 

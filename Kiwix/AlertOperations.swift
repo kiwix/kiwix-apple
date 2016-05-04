@@ -35,9 +35,9 @@ class SpaceNotEnoughAlert: AlertOperation {
     }
 }
 
-class LanguageFilterAlert: AlertOperation {
+class RefreshLibraryLanguageFilterAlert: AlertOperation {
     let context = UIApplication.appDelegate.managedObjectContext
-    init(libraryOnlineTBVC: LibraryOnlineTBVC) {
+    init(libraryOnlineTBVC: LibraryOnlineTBVC?) {
         super.init(presentationContext: libraryOnlineTBVC)
         
         var preferredLanguageCodes = [String]()
@@ -77,7 +77,7 @@ class LanguageFilterAlert: AlertOperation {
                     guard let code = language.code else {continue}
                     language.isDisplayed = preferredLanguageCodes.contains(code)
                 }
-                libraryOnlineTBVC.refreshFetchedResultController()
+                libraryOnlineTBVC?.refreshFetchedResultController()
             })
         }
         addAction(LocalizedStrings.cancel)
@@ -89,5 +89,17 @@ class LanguageFilterAlert: AlertOperation {
     
     func andJoinedString(a: String, b: String) -> String {
         return a + " " + LocalizedStrings.and + " " + b
+    }
+}
+
+class RefreshLibraryInternetRequiredAlert: AlertOperation {
+    override init(presentationContext: UIViewController?) {
+        super.init(presentationContext: presentationContext)
+        
+        let comment = "Library: Internet Required Alert"
+        
+        title = NSLocalizedString("Internet Connection Required", comment: comment)
+        message = NSLocalizedString("You need to connect to the Internet to refresh the library.", comment: comment)
+        addAction(LocalizedStrings.ok)
     }
 }

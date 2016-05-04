@@ -24,7 +24,7 @@ class SearchScopeSelectTBVC: UITableViewController, NSFetchedResultsControllerDe
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
         fetchRequest.predicate = NSPredicate(format: "isLocal == true")
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "language.name", cacheName: "ScopeFRC")
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "ScopeFRC")
         fetchedResultsController.delegate = self
         fetchedResultsController.performFetch(deleteCache: false)
         return fetchedResultsController
@@ -37,12 +37,8 @@ class SearchScopeSelectTBVC: UITableViewController, NSFetchedResultsControllerDe
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            guard let sectionInfo = fetchedResultController.sections?[section] else {return 0}
-            return sectionInfo.numberOfObjects
-        } else {
-            return 0
-        }
+        guard let sectionInfo = fetchedResultController.sections?[section] else {return 0}
+        return sectionInfo.numberOfObjects
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -53,7 +49,7 @@ class SearchScopeSelectTBVC: UITableViewController, NSFetchedResultsControllerDe
     
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         guard let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
-        guard let cell = cell as? ScopeBookCell else {return}
+        guard let cell = cell as? BasicBookCell else {return}
         
         cell.titleLabel.text = book.title
         cell.subtitleLabel.text = book.detailedDescription
@@ -76,7 +72,6 @@ class SearchScopeSelectTBVC: UITableViewController, NSFetchedResultsControllerDe
     // MARK: Table view delegate
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        //guard tableView.numberOfSections > 1 else {return 0.0}
         guard let headerText = self.tableView(tableView, titleForHeaderInSection: section) else {return 0.0}
         guard headerText != "" else {return 0.0}
         return 20.0

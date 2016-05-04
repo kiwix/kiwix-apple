@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - Normal Cells
 
-class ScopeBookCell: UITableViewCell {
+class BasicBookCell: UITableViewCell {
     private let hasPicIndicatorOrange = UIColor(red: 1, green: 0.5, blue: 0, alpha: 1)
     private let hasIndexIndicatorBlue = UIColor(red: 0.304706, green: 0.47158, blue: 1, alpha: 1)
     

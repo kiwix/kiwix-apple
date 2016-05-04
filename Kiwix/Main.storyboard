@@ -372,7 +372,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="Cell" id="QXK-je-ISm" customClass="ScopeBookCell" customModule="Kiwix" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" id="QXK-je-ISm" customClass="BasicBookCell" customModule="Kiwix">
                                 <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QXK-je-ISm" id="bj5-Xo-SR6">
@@ -402,7 +402,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="P" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TmV-G9-g51">
-                                            <rect key="frame" x="42" y="6.5" width="13" height="13"/>
+                                            <rect key="frame" x="42" y="6" width="13" height="13"/>
                                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="13" id="TX0-hy-6dI"/>
@@ -413,7 +413,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9y6-m2-QTb">
-                                            <rect key="frame" x="42" y="23.5" width="13" height="13"/>
+                                            <rect key="frame" x="42" y="23" width="13" height="13"/>
                                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="13" id="UWv-F1-PPl"/>
@@ -424,18 +424,24 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PGj-Uz-NTF">
-                                            <rect key="frame" x="42" y="19.5" width="10" height="4"/>
+                                            <rect key="frame" x="42" y="19" width="10" height="4"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="10" id="JY1-4a-Im0"/>
                                                 <constraint firstAttribute="height" constant="4" id="O29-j7-kSU"/>
                                             </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="O29-j7-kSU"/>
+                                                </mask>
+                                            </variation>
                                         </view>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="PGj-Uz-NTF" firstAttribute="leading" secondItem="bxk-BM-3An" secondAttribute="trailing" constant="4" id="3B6-jN-jbK"/>
                                         <constraint firstItem="g8b-RO-czj" firstAttribute="top" secondItem="bj5-Xo-SR6" secondAttribute="topMargin" constant="-2" id="3wG-Wf-uAm"/>
                                         <constraint firstItem="9y6-m2-QTb" firstAttribute="leading" secondItem="bxk-BM-3An" secondAttribute="trailing" constant="4" id="6va-XC-chZ"/>
+                                        <constraint firstItem="PGj-Uz-NTF" firstAttribute="height" secondItem="bj5-Xo-SR6" secondAttribute="height" multiplier="0.09" id="9ds-vD-nqD"/>
                                         <constraint firstItem="TmV-G9-g51" firstAttribute="top" secondItem="g8b-RO-czj" secondAttribute="top" id="AcV-0E-WGd"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="Lna-QC-TaS" secondAttribute="bottom" constant="-2.5" id="BQQ-R5-5fd"/>
                                         <constraint firstItem="9y6-m2-QTb" firstAttribute="top" secondItem="PGj-Uz-NTF" secondAttribute="bottom" id="LrR-7P-oLk"/>
@@ -506,7 +512,7 @@
                                             <rect key="frame" x="15" y="0.0" width="570" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -1005,7 +1011,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="IJN-Sq-wew"/>
                                                 </constraints>
-                                                <state key="normal" image="Home"/>
+                                                <state key="normal" image="MainPage"/>
                                                 <connections>
                                                     <action selector="mainPageButtonTapped:" destination="9gZ-CS-CgY" eventType="touchUpInside" id="eP8-f4-PRQ"/>
                                                 </connections>
@@ -1089,42 +1095,11 @@
             </objects>
             <point key="canvasLocation" x="1852" y="-1015"/>
         </scene>
-        <!--Item-->
-        <scene sceneID="IL6-vK-0b0">
-            <objects>
-                <viewController storyboardIdentifier="Controller1" id="gyW-Ny-9yk" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="dkW-zK-ilF"/>
-                        <viewControllerLayoutGuide type="bottom" id="tnO-qA-Knc"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="qYz-v0-7vl">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This page will show search history" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k23-fr-Mg5">
-                                <rect key="frame" x="169.5" y="289" width="261" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="0.59999999999999998" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstItem="k23-fr-Mg5" firstAttribute="centerY" secondItem="qYz-v0-7vl" secondAttribute="centerY" id="N6j-d1-r3Z"/>
-                            <constraint firstItem="k23-fr-Mg5" firstAttribute="centerX" secondItem="qYz-v0-7vl" secondAttribute="centerX" id="nCE-sd-G7m"/>
-                        </constraints>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="Y8H-9B-SVJ"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="OGe-hz-Hkf" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="203" y="-619"/>
-        </scene>
     </scenes>
     <resources>
         <image name="DownArrow" width="21" height="21"/>
         <image name="History" width="21" height="21"/>
-        <image name="Home" width="21" height="21"/>
+        <image name="MainPage" width="21" height="21"/>
         <image name="SearchSetting" width="21" height="21"/>
         <image name="Star" width="21" height="20"/>
         <image name="StarHighlighted" width="21" height="20"/>

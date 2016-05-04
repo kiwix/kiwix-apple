@@ -135,12 +135,14 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
     
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         guard let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
-        guard let cell = cell as? LocalBookCell else {return}
+        guard let cell = cell as? BasicBookCell else {return}
         
         cell.titleLabel.text = book.title
-        cell.hasPicIndicator.backgroundColor = book.hasPic ? UIColor.havePicTintColor : UIColor.lightGrayColor()
-        cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
         cell.subtitleLabel.text = book.detailedDescription1
+
+        cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
+        cell.hasPic = book.hasPic
+        cell.hasIndex = book.hasIndex
     }
     
     // MARK: Other Data Source
@@ -187,6 +189,9 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
             self.managedObjectContext.performBlock({ () -> Void in
                 if let id = book.id, let zimURL = ZIMMultiReader.sharedInstance.readers[id]?.fileURL {
                     FileManager.removeItem(atURL: zimURL)
+                    
+                    let indexFolderURL = zimURL.URLByAppendingPathExtension("idx")
+                    FileManager.removeItem(atURL: indexFolderURL)
                 }
                 
                 if let _ = book.url {

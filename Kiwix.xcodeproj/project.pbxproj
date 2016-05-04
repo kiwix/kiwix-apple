@@ -539,7 +539,6 @@
 				9714D8D61C6E5C2600AABCA7 /* LTBarButtonItem.swift */,
 				9787E87B1C3D696E0000F529 /* RefreshHUD.swift */,
 				973381681C343F2C0016CEFB /* Logo.swift */,
-				97999D881C52D27D003CAFF3 /* SearchBar.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -582,6 +581,7 @@
 		978C587B1C1CCCA30077AE47 /* Coredata */ = {
 			isa = PBXGroup;
 			children = (
+				97999D881C52D27D003CAFF3 /* SearchBar.swift */,
 				978C589D1C1CD8750077AE47 /* Properties */,
 				978C58901C1CD86E0077AE47 /* Book.swift */,
 				978C588E1C1CD86E0077AE47 /* Language.swift */,

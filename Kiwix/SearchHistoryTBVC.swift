@@ -14,8 +14,6 @@ class SearchHistoryTBVC: UITableViewController, NSFetchedResultsControllerDelega
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-
-    
     
     // MARK: - Fetched Results Controller
     
@@ -51,6 +49,17 @@ class SearchHistoryTBVC: UITableViewController, NSFetchedResultsControllerDelega
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         guard let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
         cell.textLabel?.text = article.title
+    }
+    
+     // MARK: - Table view delegates
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        guard let mainVC = parentViewController?.parentViewController?.parentViewController as? MainVC,
+              let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
+        mainVC.hideSearch()
+        mainVC.load(article.url)
+        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     // MARK: - Fetched Result Controller Delegate

@@ -30,7 +30,7 @@ class MainVC: UIViewController {
         super.viewDidLoad()
         
         webView.delegate = self
-        webView.scrollView.delegate = self
+        webView.scrollView.delegate = nil
         
         navigationItem.titleView = searchBar
         searchBar.delegate = self
