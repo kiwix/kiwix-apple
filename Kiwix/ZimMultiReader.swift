@@ -85,6 +85,7 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
             }()
             book?.isLocal = true
             book?.hasIndex = reader.hasIndex()
+            book?.hasPic = !reader.fileURL.absoluteString.containsString("nopic")
         }
     }
     

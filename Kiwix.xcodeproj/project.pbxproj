@@ -241,7 +241,6 @@
 		976FEDD71C224DE100AE0874 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		976FEDE01C2336C400AE0874 /* MapVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
 		9772140B1CC1939F0060CE75 /* SearchHistoryTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchHistoryTBVC.swift; sourceTree = "<group>"; };
-		9779986C1C1E0A5F00B1DD5E /* LibraryRefresherXMLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryRefresherXMLParser.swift; sourceTree = "<group>"; };
 		9779986E1C1E0B7900B1DD5E /* Book+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Book+CoreDataProperties.swift"; path = "Kiwix/CoreData/Book+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9779986F1C1E0B7900B1DD5E /* DownloadTask+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = "DownloadTask+CoreDataProperties.swift"; path = "Kiwix/CoreData/DownloadTask+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		977998701C1E0B7900B1DD5E /* DownloadTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = DownloadTask.swift; path = CoreData/DownloadTask.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -263,7 +262,6 @@
 		978C58901C1CD86E0077AE47 /* Book.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = Book.swift; path = CoreData/Book.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		978C58941C1CD86E0077AE47 /* Article.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Article.swift; path = CoreData/Article.swift; sourceTree = "<group>"; };
 		978C58A11C1CFD850077AE47 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
-		978C58A61C1CFE7A0077AE47 /* LibraryRefresher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryRefresher.swift; sourceTree = "<group>"; };
 		978C58AC1C1CFF700077AE47 /* PreferenceLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferenceLibrary.swift; sourceTree = "<group>"; };
 		978C58AE1C1CFFE30077AE47 /* SwiftyUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyUserDefaults.swift; sourceTree = "<group>"; };
 		978C58B01C1E02970077AE47 /* AppDelegateObjs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateObjs.swift; sourceTree = "<group>"; };
@@ -526,15 +524,6 @@
 			name = Setting;
 			sourceTree = "<group>";
 		};
-		9779986B1C1E0A4E00B1DD5E /* LibraryRefresher */ = {
-			isa = PBXGroup;
-			children = (
-				978C58A61C1CFE7A0077AE47 /* LibraryRefresher.swift */,
-				9779986C1C1E0A5F00B1DD5E /* LibraryRefresherXMLParser.swift */,
-			);
-			name = LibraryRefresher;
-			sourceTree = "<group>";
-		};
 		977998821C1E2A5C00B1DD5E /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -619,7 +608,6 @@
 				978C587B1C1CCCA30077AE47 /* Coredata */,
 				97EE24EF1C2078A400DFC672 /* Extension */,
 				97E891681CA976E90001CA32 /* FileManager.swift */,
-				9779986B1C1E0A4E00B1DD5E /* LibraryRefresher */,
 				978C58891C1CD1DB0077AE47 /* LocalizedStrings.swift */,
 				974570F71C2DE67A00680E43 /* KiwixURLProtocol.swift */,
 				971904A41CA3204B002E9CFF /* Network */,
