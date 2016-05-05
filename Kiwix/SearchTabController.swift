@@ -24,6 +24,10 @@ class SearchTabController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var historyButton: UIButton!
     @IBOutlet weak var settingButton: UIButton!
     
+    var shouldClipRoundCorner: Bool {
+        return traitCollection.verticalSizeClass == .Regular && traitCollection.horizontalSizeClass == .Regular
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.delegate = self
@@ -66,6 +70,11 @@ class SearchTabController: UIViewController, UIScrollViewDelegate {
         }
         scrollView.contentSize = CGSizeMake(x, height)
         setIndicatorViewFrame()
+    }
+    
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        view.layer.cornerRadius = shouldClipRoundCorner ? 10.0 : 0.0
+        view.layer.masksToBounds = shouldClipRoundCorner
     }
     
     // MARK: - UIScrollViewDelegate

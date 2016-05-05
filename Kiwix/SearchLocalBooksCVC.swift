@@ -27,8 +27,6 @@ class SearchLocalBooksCVC: UIViewController, UICollectionViewDataSource, UIColle
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         collectionView.contentInset = UIEdgeInsetsMake(0.0, 0, 0, 0)
         collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0, 0, 0, 0)
-        collectionView.layer.cornerRadius = shouldClipRoundCorner ? 10.0 : 0.0
-        collectionView.layer.masksToBounds = shouldClipRoundCorner
     }
     
     override func viewWillLayoutSubviews() {

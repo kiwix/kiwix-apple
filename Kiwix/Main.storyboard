@@ -154,7 +154,7 @@
                                 </connections>
                             </containerView>
                         </subviews>
-                        <color key="backgroundColor" red="0.93282541006039355" green="0.93282541006039355" blue="0.93282541006039355" alpha="0.5" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="0.49568965517241381" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="x9y-hU-87q" firstAttribute="top" secondItem="Nn6-QD-Iko" secondAttribute="bottom" constant="10" id="3sP-eF-PDp"/>
