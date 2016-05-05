@@ -11,21 +11,20 @@ import CoreData
 
 class RefreshLibraryOperation: GroupOperation {
     
-    weak var delegate: RefreshLibraryOperationDelegate?
-    weak var presentationContext: LibraryOnlineTBVC?
-    var completionHandler: (() -> Void)?
+    var completionHandler: ((errorCode: Int?) -> Void)?
     
-    init(invokedAutomatically: Bool, presentationContext: LibraryOnlineTBVC? = nil, completionHandler: (() -> Void)? = nil) {
+    init(invokedAutomatically: Bool, completionHandler: ((errorCode: Int?) -> Void)?) {
         super.init(operations: [])
         
         name = String(RefreshLibraryOperation)
+        self.completionHandler = completionHandler
         
         // 1.Parse
         let parseOperation = ParseLibraryOperation()
         
         // 0.Download library
         let url = NSURL(string: "http://www.kiwix.org/library.xml")!
-        let task = NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) -> Void in
+        let task = NSURLSession.sharedSession().dataTaskWithURL(url) { [unowned parseOperation] (data, response, error) -> Void in
             if let error = error {self.aggregateError(error)}
             parseOperation.xmlData = data
         }
@@ -33,24 +32,9 @@ class RefreshLibraryOperation: GroupOperation {
         fetchOperation.addObserver(NetworkObserver())
         fetchOperation.addCondition(ReachabilityCondition(host: url, allowCellular: Preference.libraryRefreshAllowCellularData))
         
-        let stateObserver = BlockObserver(
-            startHandler: { (operation) -> Void in
-                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                    self.delegate?.refreshDidStart()
-                })
-            },
-            produceHandler: nil) { (operation, errors) -> Void in
-                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                    self.delegate?.refreshDidFinish()
-                })
-        }
-        addObserver(stateObserver)
-        
-        addCondition(MutuallyExclusive<RefreshLibraryOperation>())
         if invokedAutomatically {
             addCondition(AllowAutoRefreshCondition())
             addCondition(LibraryIsOldCondition())
-            addCondition(ReachabilityCondition(host: url, allowCellular: Preference.libraryRefreshAllowCellularData))
         }
         
         addOperation(fetchOperation)
@@ -59,20 +43,8 @@ class RefreshLibraryOperation: GroupOperation {
     }
     
     override func finished(errors: [NSError]) {
-        if let firstError = errors.first {
-            if firstError.code == .NetworkError {
-                produceOperation(RefreshLibraryInternetRequiredAlert(presentationContext: presentationContext))
-            }
-        } else {
-            guard !Preference.libraryHasShownPreferredLanguagePrompt else {return}
-            produceOperation(RefreshLibraryLanguageFilterAlert(libraryOnlineTBVC: presentationContext))
-        }
+        completionHandler?(errorCode: errors.first?.code)
     }
-}
-
-protocol RefreshLibraryOperationDelegate: class {
-    func refreshDidStart()
-    func refreshDidFinish()
 }
 
 class ParseLibraryOperation: Operation, NSXMLParserDelegate {
@@ -91,7 +63,7 @@ class ParseLibraryOperation: Operation, NSXMLParserDelegate {
     }
     
     override func execute() {
-        guard let data = xmlData else {return}
+        guard let data = xmlData else {finish(); return}
         let xmlParser = NSXMLParser(data: data)
         xmlParser.delegate = self
         xmlParser.parse()
@@ -106,7 +78,7 @@ class ParseLibraryOperation: Operation, NSXMLParserDelegate {
         }
     }
     
-    @objc internal func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, var attributes attributeDict: [String : String]) {
+    @objc internal func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
         guard elementName == "book" else {return}
         guard let id = attributeDict["id"] else {return}
         
