@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SCLAlertView
 
 class MainVC: UIViewController {
 
