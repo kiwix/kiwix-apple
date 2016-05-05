@@ -16,5 +16,5 @@ A: All outstanding download tasks will be paused, but they can be resumed.
 
 > Q: I cannot download on my device. What should I do?
 
-A: Browse our [online zim file catalogue](http://www.kiwix.org/wiki/Content_in_all_languages#zimtable). Download a zim file using your favorite http download and torrent client.
+A: Browse our [online zim file catalogue](http://www.kiwix.org/wiki/Content_in_all_languages#zimtable). Download a zim file using your favorite http downloader or torrent client.
 
