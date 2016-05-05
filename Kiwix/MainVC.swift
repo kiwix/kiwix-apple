@@ -38,7 +38,6 @@ class MainVC: UIViewController {
         NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "webViewNotInjectJavascriptToAdjustPageLayout", options: .New, context: context)
         NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "webViewZoomScale", options: .New, context: context)
         configureButtonColor()
-        
     }
     
     deinit {
@@ -93,6 +92,7 @@ class MainVC: UIViewController {
         configureNavigationButtonTint()
         libraryButton.tintColor = UIColor.grayColor()
         settingButton.tintColor = UIColor.grayColor()
+        UIBarButtonItem.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self]).tintColor = UIColor.themeColor
     }
     
     func configureNavigationButtonTint() {

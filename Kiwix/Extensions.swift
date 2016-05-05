@@ -35,6 +35,10 @@ extension UIColor {
     class var havePicTintColor: UIColor {
         return UIColor(red: 255.0/255.0, green: 153.0/255.0, blue: 51.0/255.0, alpha: 1.0)
     }
+    
+    class var themeColor: UIColor {
+        return UIColor(red: 71.0 / 255.0, green: 128.0 / 255.0, blue: 182.0 / 255.0, alpha: 1.0)
+    }
 }
 
 extension UITableView {

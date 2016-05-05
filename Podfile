@@ -7,6 +7,7 @@ target 'Kiwix' do
 
 pod 'DateTools'
 pod 'DZNEmptyDataSet'
+pod 'SCLAlertView'
 
 end
 

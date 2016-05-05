@@ -24,10 +24,10 @@ class WebViewVC: UIViewController, UIWebViewDelegate {
             guard let url = NSBundle.mainBundle().URLForResource(page.rawValue, withExtension: "html") else {return}
             webView.loadRequest(NSURLRequest(URL: url))
             title = NSLocalizedString("Help: Downloader", comment: "Help page title")
-        case .LocalBookLearnMore:
+        case .ImportBookLearnMore:
             guard let url = NSBundle.mainBundle().URLForResource(page.rawValue, withExtension: "html") else {return}
             webView.loadRequest(NSURLRequest(URL: url))
-            title = NSLocalizedString("Help: Local Books", comment: "Help page title")
+            title = NSLocalizedString("Help: Import Books", comment: "Help page title")
         }
     }
     
@@ -47,5 +47,5 @@ class WebViewVC: UIViewController, UIWebViewDelegate {
 }
 
 enum WebViewVCHTML: String {
-    case DownloaderLearnMore, LocalBookLearnMore
+    case DownloaderLearnMore, ImportBookLearnMore
 }

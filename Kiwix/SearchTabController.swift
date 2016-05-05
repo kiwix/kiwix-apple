@@ -17,7 +17,6 @@ class SearchTabController: UIViewController, UIScrollViewDelegate {
     private let controllers = [UIStoryboard.main.initViewController(SearchLocalBooksCVC.self)!,
         UIStoryboard.main.initViewController(SearchHistoryTBVC.self)!,
         UIStoryboard.main.initViewController(SearchScopeSelectTBVC.self)!]
-    private let appColor = UIColor(red: 71.0 / 255.0, green: 128.0 / 255.0, blue: 182.0 / 255.0, alpha: 1.0)
     
     private var currentSelectedButtonIndex: Int = 0
     private var buttons = [UIButton]()
@@ -32,7 +31,7 @@ class SearchTabController: UIViewController, UIScrollViewDelegate {
         scrollView.decelerationRate = UIScrollViewDecelerationRateFast
 
         tabsContainer.addSubview(indicatorView)
-        indicatorView.backgroundColor = appColor
+        indicatorView.backgroundColor = UIColor.themeColor
         
         tabsContainer.layer.masksToBounds = false
         tabsContainer.layer.shadowOffset = CGSizeMake(0, 0)
@@ -50,7 +49,7 @@ class SearchTabController: UIViewController, UIScrollViewDelegate {
         settingButton.setImage(UIImage(named: "SearchSetting_filled")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Selected)
         settingButton.tintColor = UIColor.grayColor()
         buttons[currentSelectedButtonIndex].selected = true
-        buttons[currentSelectedButtonIndex].tintColor = appColor
+        buttons[currentSelectedButtonIndex].tintColor = UIColor.themeColor
     }
     
     override func viewDidLayoutSubviews() {
@@ -121,7 +120,7 @@ class SearchTabController: UIViewController, UIScrollViewDelegate {
         buttons[currentSelectedButtonIndex].selected = false
         buttons[currentSelectedButtonIndex].tintColor = UIColor.grayColor()
         buttons[indexOfButtonShouldBeHighlighted].selected = true
-        buttons[indexOfButtonShouldBeHighlighted].tintColor = appColor
+        buttons[indexOfButtonShouldBeHighlighted].tintColor = UIColor.themeColor
         currentSelectedButtonIndex = indexOfButtonShouldBeHighlighted
     }
     
