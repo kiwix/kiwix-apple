@@ -12,7 +12,7 @@ class WebViewVC: UIViewController, UIWebViewDelegate {
 
     @IBOutlet weak var webView: UIWebView!
     
-    var page: WebViewVCHTML?
+    var page: WebViewVCContentType?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +46,6 @@ class WebViewVC: UIViewController, UIWebViewDelegate {
     }
 }
 
-enum WebViewVCHTML: String {
+enum WebViewVCContentType: String {
     case DownloaderLearnMore, ImportBookLearnMore
 }

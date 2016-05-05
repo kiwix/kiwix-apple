@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SCLAlertView
 
 class MainVC: UIViewController {
 
@@ -38,6 +39,7 @@ class MainVC: UIViewController {
         NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "webViewNotInjectJavascriptToAdjustPageLayout", options: .New, context: context)
         NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "webViewZoomScale", options: .New, context: context)
         configureButtonColor()
+        showGetStartedAlert()
     }
     
     deinit {
@@ -63,6 +65,15 @@ class MainVC: UIViewController {
         configureUIElements(self.traitCollection)
     }
     
+    // MARK: - First Time Launch Alert
+    
+    func showGetStartedAlert() {
+        guard !Preference.hasShowGetStartedAlert else {return}
+        let operation = GetStartedAlert(mainController: self)
+        UIApplication.appDelegate.globalOperationQueue.addOperation(operation)
+        Preference.hasShowGetStartedAlert = true
+    }
+    
     // MARK: - Configure
     
     func configureUIElements(traitCollection: UITraitCollection) {
@@ -85,7 +96,6 @@ class MainVC: UIViewController {
             break
         }
         configureWebViewInsets()
-        
     }
     
     func configureButtonColor() {
@@ -124,10 +134,6 @@ class MainVC: UIViewController {
         } else {
             searchBar.placeholder = LocalizedStrings.search
         }
-    }
-    
-    func configureSearchBarCancelButton() {
-        
     }
     
     // MARK: - UIViewAnimations

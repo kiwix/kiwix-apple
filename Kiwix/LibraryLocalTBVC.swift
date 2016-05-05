@@ -110,10 +110,8 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
     }
     
     func emptyDataSetDidTapButton(scrollView: UIScrollView!) {
-        guard let navController = UIStoryboard.setting.instantiateViewControllerWithIdentifier("WebViewNav") as? UINavigationController,
-            let controller = navController.topViewController as? WebViewVC else {return}
-        controller.page = .ImportBookLearnMore
-        presentViewController(navController, animated: true, completion: nil)
+        let operation = ShowHelpPageOperation(type: .ImportBookLearnMore, presentationContext: self)
+        UIApplication.appDelegate.globalOperationQueue.addOperation(operation)
     }
     
     // MARK: - TableView Data Source

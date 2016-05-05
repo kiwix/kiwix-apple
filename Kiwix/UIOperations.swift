@@ -1,5 +1,5 @@
 //
-//  AlertOperations.swift
+//  UIOperations.swift
 //  Kiwix
 //
 //  Created by Chris Li on 3/22/16.
@@ -7,6 +7,8 @@
 //
 
 import UIKit
+
+// MARK: - Alerts
 
 class SpaceCautionAlert: AlertOperation {
     init(book: Book, presentationContext: UIViewController?) {
@@ -101,5 +103,45 @@ class RefreshLibraryInternetRequiredAlert: AlertOperation {
         title = NSLocalizedString("Internet Connection Required", comment: comment)
         message = NSLocalizedString("You need to connect to the Internet to refresh the library.", comment: comment)
         addAction(LocalizedStrings.ok)
+    }
+}
+
+class GetStartedAlert: AlertOperation {
+    init(mainController: MainVC?) {
+        super.init(presentationContext: mainController)
+        
+        let comment = "First Time Launch Message"
+        
+        title = NSLocalizedString("Welcome to Kiwix", comment: comment)
+        message = NSLocalizedString("Add a Book to Get Started", comment: comment)
+        addAction(NSLocalizedString("Download", comment: comment), style: .Default) { (alert) in
+            mainController?.showLibraryButtonTapped()
+        }
+        addAction(NSLocalizedString("Import", comment: comment), style: .Default) { (alert) in
+            let operation = ShowHelpPageOperation(type: .ImportBookLearnMore, presentationContext: mainController)
+            UIApplication.appDelegate.globalOperationQueue.addOperation(operation)
+        }
+        addAction(NSLocalizedString("Dismiss", comment: comment))
+    }
+}
+
+// MARK: - Help Pages
+
+class ShowHelpPageOperation: Operation {
+    private let type: WebViewVCContentType
+    private weak var presentationContext: UIViewController?
+    
+    init(type: WebViewVCContentType, presentationContext: UIViewController?) {
+        self.type = type
+        self.presentationContext = presentationContext
+    }
+    
+    override func execute() {
+        NSOperationQueue.mainQueue().addOperationWithBlock { 
+            guard let navController = UIStoryboard.setting.instantiateViewControllerWithIdentifier("WebViewNav") as? UINavigationController,
+                let controller = navController.topViewController as? WebViewVC else {return}
+            controller.page = self.type
+            self.presentationContext?.presentViewController(navController, animated: true, completion: nil)
+        }
     }
 }
