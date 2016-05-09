@@ -238,15 +238,18 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         switch type {
         case .Insert:
-            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+            guard let newIndexPath = newIndexPath else {return}
+            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Fade)
         case .Delete:
-            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+            guard let indexPath = indexPath else {return}
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         case .Update:
             guard let indexPath = indexPath, let cell = tableView.cellForRowAtIndexPath(indexPath) else {return}
             configureCell(cell, atIndexPath: indexPath)
         case .Move:
-            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+            guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Fade)
         }
     }
     
