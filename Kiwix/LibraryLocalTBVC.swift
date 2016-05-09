@@ -97,7 +97,7 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
     }
     
     func buttonTitleForEmptyDataSet(scrollView: UIScrollView!, forState state: UIControlState) -> NSAttributedString! {
-        let text = NSLocalizedString("Learn more about inporting books", comment: "Book Library, book downloader, learn more button text")
+        let text = NSLocalizedString("Learn more about importing books", comment: "Book Library, book downloader, learn more button text")
         let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(17.0), NSForegroundColorAttributeName: segmentedControl.tintColor]
         return NSAttributedString(string: text, attributes: attributes)
     }
