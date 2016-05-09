@@ -358,7 +358,8 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
         case .Delete:
             tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
         case .Update:
-            self.configureCell(tableView.cellForRowAtIndexPath(indexPath!)!, atIndexPath: indexPath!)
+            guard let indexPath = indexPath, let cell = tableView.cellForRowAtIndexPath(indexPath) else {return}
+            configureCell(cell, atIndexPath: indexPath)
         case .Move:
             tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
             tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
