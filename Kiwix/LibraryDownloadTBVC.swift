@@ -130,6 +130,10 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
         return NSAttributedString(string: text, attributes: attributes)
     }
     
+    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+        return 0.0
+    }
+    
     func spaceHeightForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
         return 30.0
     }

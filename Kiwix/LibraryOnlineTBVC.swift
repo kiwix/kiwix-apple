@@ -29,17 +29,13 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
         tableView.emptyDataSetDelegate = self
         
         configureToolBar()
+        refreshLibraryForTheFirstTime()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         segmentedControl.selectedSegmentIndex = 0
         messsageLabelConfigTimer = NSTimer.scheduledTimerWithTimeInterval(60.0, target: self, selector: #selector(configureMessage), userInfo: nil, repeats: true)
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        refreshLibraryForTheFirstTime()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -80,7 +76,7 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
     }
     
     func startRefresh(invokedAutomatically invokedAutomatically: Bool) {
-        let refreshOperation = RefreshLibraryOperation(invokedAutomatically: invokedAutomatically) { (errorCode) in
+        let refreshOperation = RefreshLibraryOperation(invokedAutomatically: invokedAutomatically) { (errors) in
             defer {
                 NSOperationQueue.mainQueue().addOperationWithBlock({
                     self.refreshing = false
@@ -89,8 +85,9 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
                     self.configureEmptyTableBackground()
                 })
             }
-            if let errorCode = errorCode {
-                if errorCode == .NetworkError {
+            if errors.count > 0 {
+                let codes = errors.map() {$0.code}
+                if codes.contains(OperationErrorCode.NetworkError.rawValue) {
                     let alertOperation = RefreshLibraryInternetRequiredAlert(presentationContext: self)
                     UIApplication.appDelegate.globalOperationQueue.addOperation(alertOperation)
                 }

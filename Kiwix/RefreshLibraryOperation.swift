@@ -11,9 +11,9 @@ import CoreData
 
 class RefreshLibraryOperation: GroupOperation {
     
-    var completionHandler: ((errorCode: Int?) -> Void)?
+    var completionHandler: ((errors: [NSError]) -> Void)?
     
-    init(invokedAutomatically: Bool, completionHandler: ((errorCode: Int?) -> Void)?) {
+    init(invokedAutomatically: Bool, completionHandler: ((errors: [NSError]) -> Void)?) {
         super.init(operations: [])
         
         name = String(RefreshLibraryOperation)
@@ -43,7 +43,7 @@ class RefreshLibraryOperation: GroupOperation {
     }
     
     override func finished(errors: [NSError]) {
-        completionHandler?(errorCode: errors.first?.code)
+        completionHandler?(errors: errors)
     }
 }
 
