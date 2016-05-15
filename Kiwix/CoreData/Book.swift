@@ -12,7 +12,7 @@ import UIKit
 
 class Book: NSManagedObject {
 
-    // MARK: - Add/Update Book
+    // MARK: - Add Book
     
     class func add(metadata: [String: AnyObject], context: NSManagedObjectContext) -> Book? {
         guard let book = insert(Book.self, context: context) else {return nil}
@@ -44,7 +44,7 @@ class Book: NSManagedObject {
         if let favIcon = metadata["favicon"] as? NSData {
             book.favIcon = favIcon
         } else if let favIcon = metadata["favicon"] as? String {
-            book.favIcon = NSData(base64EncodedString: favIcon, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
+            book.favIcon = NSData(base64EncodedString: favIcon, options: .IgnoreUnknownCharacters)
         }
         
         if let meta4url = book.meta4URL {
@@ -89,14 +89,33 @@ class Book: NSManagedObject {
     
     var dateFormatted: String? {
         guard let date = date else {return nil}
-        return Utilities.formattedDateStringFromDate(date)
+        
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "MM-dd-yyyy"
+        formatter.dateStyle = .MediumStyle
+        return formatter.stringFromDate(date)
     }
     
     var fileSizeFormatted: String? {
-        return Utilities.formattedFileSizeStringFromByteCount(fileSize)
+        return NSByteCountFormatter.stringFromByteCount(fileSize, countStyle: .File)
     }
     
     var articleCountFormatted: String? {
+        func formattedNumberStringFromDouble(num: Double) -> String {
+            let sign = ((num < 0) ? "-" : "" )
+            let abs = fabs(num)
+            guard abs >= 1000.0 else {
+                if abs - Double(Int(abs)) == 0 {
+                    return "\(sign)\(Int(abs))"
+                } else {
+                    return "\(sign)\(abs)"
+                }
+            }
+            let exp: Int = Int(log10(abs) / log10(1000))
+            let units: [String] = ["K","M","G","T","P","E"]
+            let roundedNum: Double = round(10 * abs / pow(1000.0,Double(exp))) / 10;
+            return "\(sign)\(roundedNum)\(units[exp-1])"
+        }
         return Utilities.formattedNumberStringFromDouble(Double(articleCount)) + (articleCount >= 1 ? " articles" : " article")
     }
     
@@ -142,8 +161,6 @@ class Book: NSManagedObject {
             return nil
         }
     }
-    
-    
     
     // MARK: - States
     

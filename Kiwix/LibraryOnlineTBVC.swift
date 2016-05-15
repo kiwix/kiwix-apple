@@ -102,7 +102,7 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
         configureMessage()
         configureRotatingStatus()
         configureEmptyTableBackground()
-        UIApplication.globalOperationQueue.addOperation(refreshOperation)
+        GlobalOperationQueue.sharedInstance.addOperation(refreshOperation)
     }
     
     // MARK: - ToolBar Button

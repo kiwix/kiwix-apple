@@ -10,6 +10,14 @@ import Foundation
 import CoreData
 import UIKit
 
+// MARK: - App Delegate Accessor
+
+extension UIApplication {
+    class var appDelegate: AppDelegate {
+        return UIApplication.sharedApplication().delegate as! AppDelegate
+    }
+}
+
 // MARK: - UI
 
 extension UIStoryboard {

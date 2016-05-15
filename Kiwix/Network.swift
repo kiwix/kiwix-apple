@@ -23,7 +23,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
     lazy var session: NSURLSession = {
         let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier("org.kiwix.www")
         configuration.allowsCellularAccess = false
-        configuration.discretionary = true
+        configuration.discretionary = false
         return NSURLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }()
     

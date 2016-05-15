@@ -45,5 +45,23 @@
                 <string>%d download tasks</string>
             </dict>
         </dict>
+        <key>%d articles</key>
+        <dict>
+            <key>NSStringLocalizedFormatKey</key>
+            <string>%#@articles@</string>
+            <key>articles</key>
+            <dict>
+                <key>NSStringFormatSpecTypeKey</key>
+                <string>NSStringPluralRuleType</string>
+                <key>NSStringFormatValueTypeKey</key>
+                <string>d</string>
+                <key>zero</key>
+                <string>No download task</string>
+                <key>one</key>
+                <string>%d download task</string>
+                <key>other</key>
+                <string>%d download tasks</string>
+            </dict>
+        </dict>
     </dict>
 </plist>

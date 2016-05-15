@@ -103,6 +103,8 @@
 		97C11F961C6D1F120048C867 /* LibraryTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C11F951C6D1F120048C867 /* LibraryTabBarController.swift */; };
 		97CCC4E81C1F0D970041DAEE /* BarButtonItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CCC4E71C1F0D970041DAEE /* BarButtonItems.swift */; };
 		97DA06C71CB6DA3400EBA609 /* LibraryLocalBookDetailTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DA06C61CB6DA3400EBA609 /* LibraryLocalBookDetailTBVC.swift */; };
+		97DF23551CE807A1003E1E5A /* GlobalOperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DF23541CE807A1003E1E5A /* GlobalOperationQueue.swift */; };
+		97DF23571CE8083C003E1E5A /* LibraryScanOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DF23561CE8083C003E1E5A /* LibraryScanOperation.swift */; };
 		97E067241C52980F0079C13C /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E067231C52980F0079C13C /* MainVC.swift */; };
 		97E067261C52AA000079C13C /* MainVCWebViewD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E067251C52AA000079C13C /* MainVCWebViewD.swift */; };
 		97E067281C52AC360079C13C /* MainVCOtherD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E067271C52AC360079C13C /* MainVCOtherD.swift */; };
@@ -289,6 +291,8 @@
 		97C11F951C6D1F120048C867 /* LibraryTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryTabBarController.swift; sourceTree = "<group>"; };
 		97CCC4E71C1F0D970041DAEE /* BarButtonItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarButtonItems.swift; sourceTree = "<group>"; };
 		97DA06C61CB6DA3400EBA609 /* LibraryLocalBookDetailTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryLocalBookDetailTBVC.swift; sourceTree = "<group>"; };
+		97DF23541CE807A1003E1E5A /* GlobalOperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalOperationQueue.swift; sourceTree = "<group>"; };
+		97DF23561CE8083C003E1E5A /* LibraryScanOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryScanOperation.swift; sourceTree = "<group>"; };
 		97E067231C52980F0079C13C /* MainVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
 		97E067251C52AA000079C13C /* MainVCWebViewD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainVCWebViewD.swift; sourceTree = "<group>"; };
 		97E067271C52AC360079C13C /* MainVCOtherD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainVCOtherD.swift; sourceTree = "<group>"; };
@@ -822,9 +826,11 @@
 		97E5712A1CA0525300FF4F1D /* Operation */ = {
 			isa = PBXGroup;
 			children = (
+				97DF23541CE807A1003E1E5A /* GlobalOperationQueue.swift */,
 				970103F91C6824FA00DC48F6 /* RefreshLibraryOperation.swift */,
 				97B50C7E1CA1E4810010BD79 /* UIOperations.swift */,
 				973970EC1CB9A04C00350507 /* SearchOperation.swift */,
+				97DF23561CE8083C003E1E5A /* LibraryScanOperation.swift */,
 			);
 			name = Operation;
 			sourceTree = "<group>";
@@ -1073,6 +1079,7 @@
 				97E570FC1CA0500400FF4F1D /* AlertOperation.swift in Sources */,
 				97E5710C1CA0500400FF4F1D /* LocationCapability-iOS.swift in Sources */,
 				97E571001CA0500400FF4F1D /* CalendarCondition.swift in Sources */,
+				97DF23551CE807A1003E1E5A /* GlobalOperationQueue.swift in Sources */,
 				97E571121CA0500400FF4F1D /* NegatedCondition.swift in Sources */,
 				97E571251CA0500400FF4F1D /* TimeoutObserver.swift in Sources */,
 				970103FB1C6824FA00DC48F6 /* RefreshLibraryOperation.swift in Sources */,
@@ -1140,6 +1147,7 @@
 				9714D8D71C6E5C2600AABCA7 /* LTBarButtonItem.swift in Sources */,
 				97E571221CA0500400FF4F1D /* ReachabilityCondition.swift in Sources */,
 				97E570FE1CA0500400FF4F1D /* BlockOperation.swift in Sources */,
+				97DF23571CE8083C003E1E5A /* LibraryScanOperation.swift in Sources */,
 				973381631C331D660016CEFB /* ArticleCells.swift in Sources */,
 				97E571211CA0500400FF4F1D /* PushCapability-OSX.swift in Sources */,
 				97E571241CA0500400FF4F1D /* SilentCondition.swift in Sources */,

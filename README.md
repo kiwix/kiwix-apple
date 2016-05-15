@@ -11,6 +11,10 @@ What you need:
 1. Make sure Xcode is at least launched once and commnad line tool is installed
 2. Install Macports 
 3. sudo port install autoconf automake libtool
+	
+<!--HomeBrew:
+*  brew install autoconf automake libtool gettext
+*  brew link --force gettext-->
 
 ### Compile xz-5.2.2  
 1. Download xz-5.2.2

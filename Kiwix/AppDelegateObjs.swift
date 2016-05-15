@@ -21,11 +21,5 @@ extension UIApplication {
         guard settings.types.contains(UIUserNotificationType.Badge) else {return}
         //UIApplication.sharedApplication().applicationIconBadgeNumber = downloader.taskCount ?? 0
     }
-    
-    // MARK: - App Delegate Accessor
-    
-    class var appDelegate: AppDelegate {
-        return UIApplication.sharedApplication().delegate as! AppDelegate
-    }
 }
 
