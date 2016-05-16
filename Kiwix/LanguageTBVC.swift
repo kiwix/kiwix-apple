@@ -59,8 +59,8 @@ class LanguageTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
         }
     }
     
-    func sortByCountDesc(var languages: [Language]) -> [Language] {
-        languages.sortInPlace { (language1, language2) -> Bool in
+    func sortByCountDesc(languages: [Language]) -> [Language] {
+        return languages.sort { (language1, language2) -> Bool in
             guard let count1 = language1.books?.count else {return false}
             guard let count2 = language2.books?.count else {return false}
             if count1 == count2 {
@@ -71,7 +71,6 @@ class LanguageTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
                 return count1 > count2
             }
         }
-        return languages
     }
     
     // MARK: - Table view data source

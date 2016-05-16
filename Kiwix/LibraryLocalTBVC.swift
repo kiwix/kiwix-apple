@@ -112,7 +112,7 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
     
     func emptyDataSetDidTapButton(scrollView: UIScrollView!) {
         let operation = ShowHelpPageOperation(type: .ImportBookLearnMore, presentationContext: self)
-        UIApplication.appDelegate.globalOperationQueue.addOperation(operation)
+        GlobalOperationQueue.sharedInstance.addOperation(operation)
     }
     
     // MARK: - TableView Data Source

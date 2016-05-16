@@ -69,7 +69,7 @@ class MainVC: UIViewController {
     func showGetStartedAlert() {
         guard !Preference.hasShowGetStartedAlert else {return}
         let operation = GetStartedAlert(mainController: self)
-        UIApplication.appDelegate.globalOperationQueue.addOperation(operation)
+        GlobalOperationQueue.sharedInstance.addOperation(operation)
         Preference.hasShowGetStartedAlert = true
     }
     

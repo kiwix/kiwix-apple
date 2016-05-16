@@ -89,12 +89,12 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
                 let codes = errors.map() {$0.code}
                 if codes.contains(OperationErrorCode.NetworkError.rawValue) {
                     let alertOperation = RefreshLibraryInternetRequiredAlert(presentationContext: self)
-                    UIApplication.appDelegate.globalOperationQueue.addOperation(alertOperation)
+                    GlobalOperationQueue.sharedInstance.addOperation(alertOperation)
                 }
             } else {
                 guard !Preference.libraryHasShownPreferredLanguagePrompt else {return}
                 let operation = RefreshLibraryLanguageFilterAlert(libraryOnlineTBVC: self)
-                UIApplication.appDelegate.globalOperationQueue.addOperation(operation)
+                GlobalOperationQueue.sharedInstance.addOperation(operation)
             }
         }
         

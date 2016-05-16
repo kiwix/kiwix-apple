@@ -34,7 +34,7 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
     
     func directoryMonitorDidObserveChange() {
         let operation = RescanZimMultiReaderOperation()
-        UIApplication.globalOperationQueue.addOperation(operation)
+        GlobalOperationQueue.sharedInstance.addOperation(operation)
     }
     
     // MARK: - Refresh
