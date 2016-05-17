@@ -13,7 +13,9 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        let url = NSURL(fileURLWithPath: "/Volumes/Data/ZIM Files/wikipedia_en_simple_all_2015-10.zim")
+        let reader = ZimReader(ZIMFileURL: url)
+        print(reader.getID())
     }
 
     override var representedObject: AnyObject? {
