@@ -6,8 +6,6 @@
 //  Copyright © 2016 Chris. All rights reserved.
 //
 
-import UIKit
-
 class FileManager {
     
     // MARK: - Path Utilities

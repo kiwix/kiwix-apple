@@ -1,20 +1,21 @@
-# Uncomment this line to define a global platform for your project
-platform :ios, '9.0'
 # Uncomment this line if you're using Swift
 use_frameworks!
 
-target 'Kiwix' do
+target 'Kiwix-iOS' do
+
+platform :ios, '9.0'
 
 pod 'DateTools'
 pod 'DZNEmptyDataSet'
+pod 'SwiftyUserDefaults'
 
 end
 
-target 'KiwixTests' do
+target 'Kiwix-OSX' do
+
+platform :osx, '10.10'
+
+pod 'DateTools'
+pod 'SwiftyUserDefaults'
 
 end
-
-target 'KiwixUITests' do
-
-end
-

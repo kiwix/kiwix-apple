@@ -6,7 +6,7 @@
 //  Copyright © 2015 Chris. All rights reserved.
 //
 
-import UIKit
+import CoreData
 
 class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
     
@@ -14,7 +14,7 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
     private(set) var readers = [String: ZimReader]()
     let searchQueue = OperationQueue()
     
-    private let monitor = DirectoryMonitor(URL: NSFileManager.docDirURL)
+    private let monitor = DirectoryMonitor(URL: FileManager.docDirURL)
     private var zimURLs = Set<NSURL>()
     private var zimAdded = Set<NSURL>()
     private var zimRemoved = Set<NSURL>()
@@ -64,11 +64,11 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
             guard zimRemoved.contains(reader.fileURL) else {continue}
             readers[id] = nil
             
-            guard let book = Book.fetch(id, context: UIApplication.appDelegate.managedObjectContext) else {return}
+            guard let book = Book.fetch(id, context: NSManagedObjectContext.mainQueueContext) else {return}
             if let _ = book.meta4URL {
                 book.isLocal = false
             } else {
-                UIApplication.appDelegate.managedObjectContext.deleteObject(book)
+                NSManagedObjectContext.mainQueueContext.deleteObject(book)
             }
         }
     }
@@ -80,8 +80,8 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
             readers[id] = reader
             
             let book: Book? = {
-                let book = Book.fetch(id, context: UIApplication.appDelegate.managedObjectContext)
-                return book ?? Book.add(reader.metaData, context: UIApplication.appDelegate.managedObjectContext)
+                let book = Book.fetch(id, context: NSManagedObjectContext.mainQueueContext)
+                return book ?? Book.add(reader.metaData, context: NSManagedObjectContext.mainQueueContext)
             }()
             book?.isLocal = true
             book?.hasIndex = reader.hasIndex()
@@ -140,7 +140,7 @@ class RescanZimMultiReaderOperation: Operation {
     }
     
     override func execute() {
-        let context = UIApplication.appDelegate.managedObjectContext
+        let context = NSManagedObjectContext.mainQueueContext
         context.performBlockAndWait { () -> Void in
             // rescan() needs to read from Coredata, ZIMMultiReader use a Main Queue ManagedObjectContext
             ZIMMultiReader.sharedInstance.rescan()

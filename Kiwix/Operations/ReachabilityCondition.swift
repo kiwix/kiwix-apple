@@ -100,11 +100,16 @@ private class ReachabilityController {
             such as whether or not the connection would require
             VPN, a cellular connection, etc.
             */
-            if allowCellular {
-                reachable = flags.contains(.Reachable)
-            } else {
-                reachable = flags.contains(.Reachable) && !flags.contains(.IsWWAN)
-            }
+            #if os(iOS) || os(watchOS) || os(tvOS)
+                if allowCellular {
+                    reachable = flags.contains(.Reachable)
+                } else {
+                    reachable = flags.contains(.Reachable) && !flags.contains(.IsWWAN)
+                }
+            #elseif os(OSX)
+                return flags.contains(.Reachable)
+            #endif
+            
         }
         return reachable
     }

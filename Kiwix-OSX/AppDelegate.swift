@@ -24,10 +24,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // MARK: - Core Data stack
 
     lazy var applicationDocumentsDirectory: NSURL = {
-        // The directory the application uses to store the Core Data store file. This code uses a directory named "org.kiwix.Kiwix_OSX" in the user's Application Support directory.
+        // The directory the application uses to store the Core Data store file. This code uses a directory named "org.kiwix.OSX" in the user's Application Support directory.
         let urls = NSFileManager.defaultManager().URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask)
         let appSupportURL = urls[urls.count - 1]
-        return appSupportURL.URLByAppendingPathComponent("org.kiwix.Kiwix_OSX")
+        return appSupportURL.URLByAppendingPathComponent("org.kiwix.OSX")
     }()
 
     lazy var managedObjectModel: NSManagedObjectModel = {

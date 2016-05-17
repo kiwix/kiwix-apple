@@ -67,5 +67,5 @@ class LocalizedStrings {
     // MARK: - OS X
     class var General: String {return NSLocalizedString("General", comment: "OS X, Preference")}
     class var Library: String {return NSLocalizedString("Library", comment: "OS X, Preference")}
-    
+    class var ZimFiles: String {return NSLocalizedString("Zim Files", comment: "OS X, Preference")}
 }

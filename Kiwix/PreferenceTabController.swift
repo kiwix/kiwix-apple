@@ -18,6 +18,7 @@ class PreferenceTabController: NSTabViewController {
         super.viewWillAppear()
         tabViewItems[0].label = LocalizedStrings.General
         tabViewItems[1].label = LocalizedStrings.Library
+        tabViewItems[2].label = LocalizedStrings.ZimFiles
     }
     
 }

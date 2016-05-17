@@ -6,8 +6,6 @@
 //  Copyright © 2015 Chris. All rights reserved.
 //
 
-import UIKit
-
 extension ZIMMultiReader {
     
     // MARK: - Search
