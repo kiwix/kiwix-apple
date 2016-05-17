@@ -4,7 +4,12 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Kiwix.xcscheme</key>
+		<key>Kiwix-OSX.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>Kiwix-iOS.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,6 +17,21 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>973BCCE81CEB3FA400F10B44</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>973BCCFB1CEB3FA400F10B44</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>973BCD061CEB3FA500F10B44</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>97A2AB871C1B80FF00052E74</key>
 		<dict>
 			<key>primary</key>
