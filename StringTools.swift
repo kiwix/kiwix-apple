@@ -48,3 +48,24 @@ extension String {
     }
 }
 
+class LocalizedStrings {
+    // Basic
+    class var yes: String {return NSLocalizedString("Yes", comment: "Basic")}
+    class var no: String {return NSLocalizedString("No", comment: "Basic")}
+    class var on: String {return NSLocalizedString("On", comment: "Basic")}
+    class var off: String {return NSLocalizedString("Off", comment: "Basic")}
+    class var and: String {return NSLocalizedString("and", comment: "Basic")}
+    class var ok: String {return NSLocalizedString("OK", comment: "Basic")}
+    class var cancel: String {return NSLocalizedString("Cancel", comment: "Basic")}
+    class var others: String {return NSLocalizedString("Others", comment: "Basic")}
+    class var unknown: String {return NSLocalizedString("Unknown", comment: "Basic")}
+    class var disabled: String {return NSLocalizedString("Disabled", comment: "Basic")}
+    class var remove: String {return NSLocalizedString("Remove", comment: "Basic")}
+    class var delete: String {return NSLocalizedString("Delete", comment: "Basic")}
+    class var refreshing: String {return NSLocalizedString("Refreshing...", comment: "Basic")}
+    
+    // MARK: - OS X
+    class var General: String {return NSLocalizedString("General", comment: "OS X, Preference")}
+    class var Library: String {return NSLocalizedString("Library", comment: "OS X, Preference")}
+    
+}
