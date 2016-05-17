@@ -19,7 +19,6 @@ extension SettingTBVC {
         return cellTextlabels[section].count
     }
     
-    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         
@@ -35,7 +34,7 @@ extension SettingTBVC {
             case NSIndexPath(forRow: 1, inSection: 0):
                 return Preference.libraryRefreshAllowCellularData ? LocalizedStrings.on : LocalizedStrings.off
             case NSIndexPath(forRow: 0, inSection: 1):
-                return Utilities.formattedPercentString(NSNumber(double: Preference.webViewZoomScale / 100))
+                return String.formattedPercentString(Preference.webViewZoomScale / 100)
             case NSIndexPath(forRow: 1, inSection: 1):
                 return Preference.webViewInjectJavascriptToAdjustPageLayout ? LocalizedStrings.on : LocalizedStrings.off
             default:

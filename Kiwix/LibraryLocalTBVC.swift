@@ -67,7 +67,7 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
     func configureMessage() {
         guard let books = fetchedResultController.fetchedObjects as? [Book] else {return}
         let totalSize = books.reduce(0) {$0 + ($1.fileSize)}
-        let spaceString = Utilities.formattedFileSizeStringFromByteCount(totalSize)
+        let spaceString = String.formattedFileSizeString(totalSize)
         let localizedString = String.localizedStringWithFormat(NSLocalizedString("Taking up %@ in total", comment: "Book Library, local book message"), spaceString)
         messageButton.text = localizedString
     }

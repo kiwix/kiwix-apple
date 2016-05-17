@@ -6,9 +6,7 @@
 //  Copyright © 2015 Chris. All rights reserved.
 //
 
-import UIKit
-
-class LocalizedStrings: NSObject {
+class LocalizedStrings {
     // Basic
     class var yes: String {return NSLocalizedString("Yes", comment: "Basic")}
     class var no: String {return NSLocalizedString("No", comment: "Basic")}

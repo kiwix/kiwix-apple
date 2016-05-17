@@ -8,7 +8,13 @@
 
 import Foundation
 import CoreData
-import UIKit
+#if os(iOS) || os(watchOS) || os(tvOS)
+    import UIKit
+#elseif os(OSX)
+    import AppKit
+#endif
+
+
 
 class Book: NSManagedObject {
 
@@ -67,10 +73,17 @@ class Book: NSManagedObject {
         return NSURL(string: meta4URL.stringByReplacingOccurrencesOfString(".meta4", withString: ""))
     }
     
-    var favIconImage: UIImage? {
-        guard let favIcon = favIcon else {return nil}
-        return UIImage(data: favIcon)
-    }
+    #if os(iOS) || os(watchOS) || os(tvOS)
+        var favIconImage: UIImage? {
+            guard let favIcon = favIcon else {return nil}
+            return UIImage(data: favIcon)
+        }
+    #elseif os(OSX)
+        var favIconImage: NSImage? {
+            guard let favIcon = favIcon else {return nil}
+            return NSImage(data: favIcon)
+        }
+    #endif
     
     // MARK: - Fetch
     
@@ -116,7 +129,7 @@ class Book: NSManagedObject {
             let roundedNum: Double = round(10 * abs / pow(1000.0,Double(exp))) / 10;
             return "\(sign)\(roundedNum)\(units[exp-1])"
         }
-        return Utilities.formattedNumberStringFromDouble(Double(articleCount)) + (articleCount >= 1 ? " articles" : " article")
+        return formattedNumberStringFromDouble(Double(articleCount)) + (articleCount >= 1 ? " articles" : " article")
     }
     
     // MARK: - Description Label
@@ -165,14 +178,18 @@ class Book: NSManagedObject {
     // MARK: - States
     
     var spaceState: BookSpaceState {
-        let freeSpaceInBytes = Utilities.availableDiskspaceInBytes() ?? INT64_MAX
-        if (0.8 * Double(freeSpaceInBytes)) > Double(fileSize) {
+        #if os(iOS) || os(watchOS) || os(tvOS)
+            let freeSpaceInBytes = Utilities.availableDiskspaceInBytes() ?? INT64_MAX
+            if (0.8 * Double(freeSpaceInBytes)) > Double(fileSize) {
+                return .Enough
+            } else if freeSpaceInBytes < fileSize{
+                return .NotEnough
+            } else {
+                return .Caution
+            }
+        #elseif os(OSX)
             return .Enough
-        } else if freeSpaceInBytes < fileSize{
-            return .NotEnough
-        } else {
-            return .Caution
-        }
+        #endif
     }
 }
 

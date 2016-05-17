@@ -1,28 +1,28 @@
 //
-//  UtilitiesString.swift
+//  StringTools.swift
 //  Kiwix
 //
-//  Created by Chris on 12/13/15.
-//  Copyright © 2015 Chris. All rights reserved.
+//  Created by Chris Li on 5/17/16.
+//  Copyright © 2016 Chris. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-extension Utilities {
-    
-    class func formattedDateStringFromDate(date: NSDate) -> String {
+extension String {
+    static func formattedDateString(date: NSDate) -> String {
         let formatter = NSDateFormatter()
         formatter.dateFormat = "MM-dd-yyyy"
         formatter.dateStyle = .MediumStyle
         return formatter.stringFromDate(date)
     }
     
-    class func formattedFileSizeStringFromByteCount(fileBytes: Int64?) -> String {
+    static func formattedFileSizeString(fileBytes: Int64?) -> String {
         guard let fileBytes = fileBytes else {return LocalizedStrings.unknown}
         return NSByteCountFormatter.stringFromByteCount(fileBytes, countStyle: .File)
     }
     
-    class func formattedPercentString(number: NSNumber) -> String? {
+    static func formattedPercentString(double: Double) -> String? {
+        let number = NSNumber(double: double)
         let formatter = NSNumberFormatter()
         formatter.numberStyle = .PercentStyle
         formatter.maximumIntegerDigits = 3
@@ -31,9 +31,9 @@ extension Utilities {
         return formatter.stringFromNumber(number)
     }
     
-    class func formattedNumberStringFromDouble(num: Double) -> String {
-        let sign = ((num < 0) ? "-" : "" )
-        let abs = fabs(num)
+    static func formattedNumberString(double: Double) -> String {
+        let sign = ((double < 0) ? "-" : "" )
+        let abs = fabs(double)
         guard abs >= 1000.0 else {
             if abs - Double(Int(abs)) == 0 {
                 return "\(sign)\(Int(abs))"
@@ -46,5 +46,5 @@ extension Utilities {
         let roundedNum: Double = round(10 * abs / pow(1000.0,Double(exp))) / 10;
         return "\(sign)\(roundedNum)\(units[exp-1])"
     }
-    
 }
+
