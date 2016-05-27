@@ -192,8 +192,8 @@
 		979C51531CECA9AF001707F2 /* StringTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979C51511CECA9AF001707F2 /* StringTools.swift */; };
 		979C518D1CECAE4C001707F2 /* PreferenceWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979C518B1CECAE4C001707F2 /* PreferenceWindowController.swift */; };
 		97A2AB8C1C1B80FF00052E74 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A2AB8B1C1B80FF00052E74 /* AppDelegate.swift */; };
-		97A2AB961C1B80FF00052E74 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97A2AB951C1B80FF00052E74 /* Assets.xcassets */; };
 		97A2AB991C1B80FF00052E74 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97A2AB971C1B80FF00052E74 /* LaunchScreen.storyboard */; };
+		97A4D7E51CF8CA0E006C731E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97A4D7E41CF8CA0E006C731E /* Assets.xcassets */; };
 		97A7140A1C274FCB00951244 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A714091C274FCB00951244 /* DirectoryMonitor.swift */; };
 		97B50C7F1CA1E4810010BD79 /* UIOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B50C7E1CA1E4810010BD79 /* UIOperations.swift */; };
 		97BA32A51CEBC36300339A47 /* RootWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BA32A31CEBC29500339A47 /* RootWindowController.swift */; };
@@ -435,11 +435,11 @@
 		979C518B1CECAE4C001707F2 /* PreferenceWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferenceWindowController.swift; path = "Kiwix-OSX/Controllers/PreferenceWindowController.swift"; sourceTree = SOURCE_ROOT; };
 		97A2AB881C1B80FF00052E74 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A2AB8B1C1B80FF00052E74 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = AppDelegate.swift; path = Kiwix/AppDelegate.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		97A2AB951C1B80FF00052E74 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97A2AB981C1B80FF00052E74 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97A2AB9A1C1B80FF00052E74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97A2AB9F1C1B80FF00052E74 /* Kiwix-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kiwix-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A2ABAA1C1B810000052E74 /* Kiwix-iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kiwix-iOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		97A4D7E41CF8CA0E006C731E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97A714091C274FCB00951244 /* DirectoryMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryMonitor.swift; sourceTree = "<group>"; };
 		97B50C7E1CA1E4810010BD79 /* UIOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIOperations.swift; sourceTree = "<group>"; };
 		97BA32A31CEBC29500339A47 /* RootWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RootWindowController.swift; path = "Kiwix-OSX/Controllers/RootWindowController.swift"; sourceTree = SOURCE_ROOT; };
@@ -929,9 +929,9 @@
 				973D30631C43481900F20CBC /* JavaScripts */,
 				97C020141C3A023800D010E5 /* about.html */,
 				97163D321CD7E79F008BE2D6 /* Help Docs */,
+				97A4D7E41CF8CA0E006C731E /* Assets.xcassets */,
 				9705D68A1CAACB2D005A943B /* Localizable.stringsdict */,
 				97A2AB971C1B80FF00052E74 /* LaunchScreen.storyboard */,
-				97A2AB951C1B80FF00052E74 /* Assets.xcassets */,
 				97A2AB9A1C1B80FF00052E74 /* Info.plist */,
 			);
 			name = Supporting;
@@ -1204,6 +1204,7 @@
 				971187211CEB4E6900B9909D /* CopyFiles */,
 				6A54D44911BF3FD6B4D6B8BC /* Embed Pods Frameworks */,
 				BE28BFF3CC54843446BB8F2E /* Copy Pods Resources */,
+				97A4D7E31CF8C479006C731E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1260,6 +1261,7 @@
 				97A2AB861C1B80FF00052E74 /* Resources */,
 				A0BA34333D8534C017C21288 /* Embed Pods Frameworks */,
 				0DCB994930DA1CBACABC8118 /* Copy Pods Resources */,
+				97A4D7E21CF8C318006C731E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1400,9 +1402,9 @@
 			files = (
 				971C12351CDBC9EF005CD5C0 /* Pic_I.png in Resources */,
 				97A2AB991C1B80FF00052E74 /* LaunchScreen.storyboard in Resources */,
-				97A2AB961C1B80FF00052E74 /* Assets.xcassets in Resources */,
 				978C58861C1CD08F0077AE47 /* Setting.storyboard in Resources */,
 				978C587D1C1CCD380077AE47 /* Library.storyboard in Resources */,
+				97A4D7E51CF8CA0E006C731E /* Assets.xcassets in Resources */,
 				973D30611C43481200F20CBC /* adjustlayoutiPad.js in Resources */,
 				971C12361CDBC9EF005CD5C0 /* Pic_P.png in Resources */,
 				9705D6881CAACB2D005A943B /* Localizable.stringsdict in Resources */,
@@ -1494,6 +1496,32 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		97A4D7E21CF8C318006C731E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
+		};
+		97A4D7E31CF8C479006C731E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
 		};
 		A0BA34333D8534C017C21288 /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
