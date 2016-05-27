@@ -18,7 +18,7 @@ class PreferenceWindowController: NSWindowController {
         let screenRect = screen.visibleFrame
         print(screenRect)
         
-        let frame = CGRectMake(screenRect.width * 0.25, screenRect.height * 0.25, screenRect.width * 0.5, screenRect.height * 0.5)
+        let frame = CGRectMake(screenRect.width * 0.3, screenRect.height * 0.3, screenRect.width * 0.4, screenRect.height * 0.4)
         
         window.setFrame(frame, display: false)
         

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		795858BC94704BA8DA5F8A08 /* Pods_Kiwix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6693AC18F86E44ABA71C3201 /* Pods_Kiwix.framework */; };
 		970103FB1C6824FA00DC48F6 /* RefreshLibraryOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970103F91C6824FA00DC48F6 /* RefreshLibraryOperation.swift */; };
 		970104061C69293000DC48F6 /* LibraryOnlineTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970104051C69293000DC48F6 /* LibraryOnlineTBVC.swift */; };
 		9703489C1C613D9F00EF8B7F /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9703489B1C613D9F00EF8B7F /* SearchVC.swift */; };
@@ -126,8 +125,6 @@
 		975B910B1CEB987200D13906 /* Dictionary+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E570D71CA0500400FF4F1D /* Dictionary+Operations.swift */; };
 		975B910C1CEB987200D13906 /* ExclusivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E570D81CA0500400FF4F1D /* ExclusivityController.swift */; };
 		975B910D1CEB987200D13906 /* GroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E570D91CA0500400FF4F1D /* GroupOperation.swift */; };
-		975B910E1CEB987200D13906 /* HealthCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E570DA1CA0500400FF4F1D /* HealthCapability.swift */; };
-		975B910F1CEB987200D13906 /* HealthCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E570DB1CA0500400FF4F1D /* HealthCondition.swift */; };
 		975B91101CEB987200D13906 /* iCloudContainerCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E570DC1CA0500400FF4F1D /* iCloudContainerCapability.swift */; };
 		975B91111CEB987200D13906 /* LocationCapability-iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E570DE1CA0500400FF4F1D /* LocationCapability-iOS.swift */; };
 		975B91121CEB987200D13906 /* LocationCapability-OSX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E570DF1CA0500400FF4F1D /* LocationCapability-OSX.swift */; };
@@ -194,7 +191,6 @@
 		979C51521CECA9AF001707F2 /* StringTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979C51511CECA9AF001707F2 /* StringTools.swift */; };
 		979C51531CECA9AF001707F2 /* StringTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979C51511CECA9AF001707F2 /* StringTools.swift */; };
 		979C518D1CECAE4C001707F2 /* PreferenceWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979C518B1CECAE4C001707F2 /* PreferenceWindowController.swift */; };
-		979C518E1CECAE4C001707F2 /* PreferenceWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 979C518C1CECAE4C001707F2 /* PreferenceWindowController.xib */; };
 		97A2AB8C1C1B80FF00052E74 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A2AB8B1C1B80FF00052E74 /* AppDelegate.swift */; };
 		97A2AB961C1B80FF00052E74 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97A2AB951C1B80FF00052E74 /* Assets.xcassets */; };
 		97A2AB991C1B80FF00052E74 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97A2AB971C1B80FF00052E74 /* LaunchScreen.storyboard */; };
@@ -228,8 +224,6 @@
 		97E571051CA0500400FF4F1D /* Dictionary+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E570D71CA0500400FF4F1D /* Dictionary+Operations.swift */; };
 		97E571061CA0500400FF4F1D /* ExclusivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E570D81CA0500400FF4F1D /* ExclusivityController.swift */; };
 		97E571071CA0500400FF4F1D /* GroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E570D91CA0500400FF4F1D /* GroupOperation.swift */; };
-		97E571081CA0500400FF4F1D /* HealthCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E570DA1CA0500400FF4F1D /* HealthCapability.swift */; };
-		97E571091CA0500400FF4F1D /* HealthCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E570DB1CA0500400FF4F1D /* HealthCondition.swift */; };
 		97E5710A1CA0500400FF4F1D /* iCloudContainerCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E570DC1CA0500400FF4F1D /* iCloudContainerCapability.swift */; };
 		97E5710C1CA0500400FF4F1D /* LocationCapability-iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E570DE1CA0500400FF4F1D /* LocationCapability-iOS.swift */; };
 		97E5710D1CA0500400FF4F1D /* LocationCapability-OSX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E570DF1CA0500400FF4F1D /* LocationCapability-OSX.swift */; };
@@ -439,7 +433,6 @@
 		97999D881C52D27D003CAFF3 /* SearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		979C51511CECA9AF001707F2 /* StringTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringTools.swift; path = Kiwix/StringTools.swift; sourceTree = "<group>"; };
 		979C518B1CECAE4C001707F2 /* PreferenceWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferenceWindowController.swift; path = "Kiwix-OSX/Controllers/PreferenceWindowController.swift"; sourceTree = SOURCE_ROOT; };
-		979C518C1CECAE4C001707F2 /* PreferenceWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PreferenceWindowController.xib; path = "Kiwix-OSX/Controllers/PreferenceWindowController.xib"; sourceTree = SOURCE_ROOT; };
 		97A2AB881C1B80FF00052E74 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A2AB8B1C1B80FF00052E74 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = AppDelegate.swift; path = Kiwix/AppDelegate.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		97A2AB951C1B80FF00052E74 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -569,7 +562,6 @@
 				9711874D1CEB512D00B9909D /* libicuuc.a in Frameworks */,
 				9711874C1CEB512D00B9909D /* libicutu.a in Frameworks */,
 				976FEDD81C224DE100AE0874 /* MapKit.framework in Frameworks */,
-				795858BC94704BA8DA5F8A08 /* Pods_Kiwix.framework in Frameworks */,
 				9711874B1CEB512D00B9909D /* libicutest.a in Frameworks */,
 				9711874E1CEB512D00B9909D /* liblzma.a in Frameworks */,
 				BECDBCEF4720E3E86FE63989 /* Pods_Kiwix_iOS.framework in Frameworks */,
@@ -871,7 +863,6 @@
 				975334CF1CEB6AE3007ED50B /* PreferenceGeneralController.swift */,
 				975334D11CEB6B01007ED50B /* LibraryController.swift */,
 				975B90F81CEB75CB00D13906 /* ZimFilesController.swift */,
-				979C518C1CECAE4C001707F2 /* PreferenceWindowController.xib */,
 			);
 			name = Preference;
 			sourceTree = "<group>";
@@ -1385,7 +1376,6 @@
 			files = (
 				973BCCF31CEB3FA400F10B44 /* Assets.xcassets in Resources */,
 				975334C91CEB6A3D007ED50B /* Main.storyboard in Resources */,
-				979C518E1CECAE4C001707F2 /* PreferenceWindowController.xib in Resources */,
 				975334CB1CEB6A43007ED50B /* Preference.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1557,7 +1547,6 @@
 				975334D41CEB6EED007ED50B /* PreferenceTabController.swift in Sources */,
 				975B91211CEB987200D13906 /* PassbookCapability.swift in Sources */,
 				975B91221CEB987200D13906 /* PassbookCondition.swift in Sources */,
-				975B910E1CEB987200D13906 /* HealthCapability.swift in Sources */,
 				975B90F91CEB75CB00D13906 /* ZimFilesController.swift in Sources */,
 				975B91241CEB987200D13906 /* PhotosCondition.swift in Sources */,
 				975B91131CEB987200D13906 /* LocationCapability-tvOS.swift in Sources */,
@@ -1596,7 +1585,6 @@
 				973BCCEC1CEB3FA400F10B44 /* AppDelegate.swift in Sources */,
 				971187311CEB50FC00B9909D /* ZimReader.mm in Sources */,
 				9763A6291CEB9E55008A2718 /* OSXExtensions.swift in Sources */,
-				975B910F1CEB987200D13906 /* HealthCondition.swift in Sources */,
 				975B91151CEB987200D13906 /* LocationOperation.swift in Sources */,
 				975B91271CEB987200D13906 /* ReachabilityCondition.swift in Sources */,
 				975B90FF1CEB909900D13906 /* Extensions.swift in Sources */,
@@ -1655,7 +1643,6 @@
 				97E571021CA0500400FF4F1D /* CKContainer+Operations.swift in Sources */,
 				97163D2B1CD7CEFA008BE2D6 /* WebViewVC.swift in Sources */,
 				97E571011CA0500400FF4F1D /* Capability.swift in Sources */,
-				97E571091CA0500400FF4F1D /* HealthCondition.swift in Sources */,
 				971904A61CA32062002E9CFF /* DownloadProgress.swift in Sources */,
 				9787E87E1C3D6B810000F529 /* BookmarkHUDVC.swift in Sources */,
 				97C01FCD1C39BC8D00D010E5 /* LibraryUseCellularDataTBVC.swift in Sources */,
@@ -1738,7 +1725,6 @@
 				97E067281C52AC360079C13C /* MainVCOtherD.swift in Sources */,
 				97C020131C3A021D00D010E5 /* AboutVC.swift in Sources */,
 				97E571191CA0500400FF4F1D /* OperationErrors.swift in Sources */,
-				97E571081CA0500400FF4F1D /* HealthCapability.swift in Sources */,
 				977998771C1E0B7900B1DD5E /* Article+CoreDataProperties.swift in Sources */,
 				971187301CEB50FC00B9909D /* ZimReader.mm in Sources */,
 				97E5710E1CA0500400FF4F1D /* LocationCapability-tvOS.swift in Sources */,

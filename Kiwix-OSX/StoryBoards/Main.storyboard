@@ -759,13 +759,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>
                             </visualEffectView>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Kb-Gd-oW1">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="301"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="lIV-Nv-pAC">
-                                    <rect key="frame" x="1" y="1" width="318" height="298"/>
+                                    <rect key="frame" x="1" y="1" width="318" height="299"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="TeC-hJ-1bi">
-                                            <rect key="frame" x="0.0" y="0.0" width="318" height="298"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="318" height="299"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -824,7 +824,7 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="3Kb-Gd-oW1" secondAttribute="trailing" id="C2p-fW-mNs"/>
                             <constraint firstAttribute="trailing" secondItem="pja-8A-h4U" secondAttribute="trailing" id="FTQ-g0-FFD"/>
-                            <constraint firstItem="3Kb-Gd-oW1" firstAttribute="top" secondItem="kg5-l3-cuF" secondAttribute="top" id="I6i-jZ-MbO"/>
+                            <constraint firstItem="3Kb-Gd-oW1" firstAttribute="top" secondItem="kg5-l3-cuF" secondAttribute="top" constant="-1" id="I6i-jZ-MbO"/>
                             <constraint firstItem="pja-8A-h4U" firstAttribute="top" secondItem="kg5-l3-cuF" secondAttribute="top" id="Ue8-xD-Pjp"/>
                             <constraint firstAttribute="bottom" secondItem="pja-8A-h4U" secondAttribute="bottom" id="Zm3-E7-X2q"/>
                             <constraint firstItem="pja-8A-h4U" firstAttribute="leading" secondItem="kg5-l3-cuF" secondAttribute="leading" id="frE-KQ-MVM"/>
