@@ -17,12 +17,6 @@
 		9711871E1CEB449A00B9909D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711871D1CEB449A00B9909D /* libz.tbd */; };
 		971187301CEB50FC00B9909D /* ZimReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9711872F1CEB50FC00B9909D /* ZimReader.mm */; };
 		971187311CEB50FC00B9909D /* ZimReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9711872F1CEB50FC00B9909D /* ZimReader.mm */; };
-		971187351CEB510900B9909D /* pathTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 971187321CEB510900B9909D /* pathTools.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
-		971187361CEB510900B9909D /* pathTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 971187321CEB510900B9909D /* pathTools.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
-		971187371CEB510900B9909D /* reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 971187331CEB510900B9909D /* reader.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
-		971187381CEB510900B9909D /* reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 971187331CEB510900B9909D /* reader.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
-		971187391CEB510900B9909D /* stringTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 971187341CEB510900B9909D /* stringTools.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
-		9711873A1CEB510900B9909D /* stringTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 971187341CEB510900B9909D /* stringTools.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
 		971187461CEB512D00B9909D /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711873B1CEB512D00B9909D /* libicudata.a */; };
 		971187471CEB512D00B9909D /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711873C1CEB512D00B9909D /* libicui18n.a */; };
 		971187481CEB512D00B9909D /* libicuio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711873D1CEB512D00B9909D /* libicuio.a */; };
@@ -80,7 +74,6 @@
 		971C12381CDBCD3B005CD5C0 /* ImportBookLearnMore.html in Resources */ = {isa = PBXBuildFile; fileRef = 971C12371CDBCD3B005CD5C0 /* ImportBookLearnMore.html */; };
 		97254FDF1C2644560056950B /* ZIMMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97254FDE1C2644560056950B /* ZIMMultiReader.swift */; };
 		9726E48A1CA1DDB900CA69D9 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9726E4891CA1DDB900CA69D9 /* Network.swift */; };
-		972C3D851C32139C00D3A3B0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 972C3D841C32139C00D3A3B0 /* Main.storyboard */; };
 		973381611C331D530016CEFB /* SearchResultTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973381601C331D530016CEFB /* SearchResultTBVC.swift */; };
 		973381631C331D660016CEFB /* ArticleCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973381621C331D660016CEFB /* ArticleCells.swift */; };
 		973381691C343F2C0016CEFB /* Logo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973381681C343F2C0016CEFB /* Logo.swift */; };
@@ -102,6 +95,26 @@
 		974570F41C2DABB500680E43 /* ZIMMultiReaderAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974570F31C2DABB500680E43 /* ZIMMultiReaderAPI.swift */; };
 		974570F81C2DE67A00680E43 /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974570F71C2DE67A00680E43 /* KiwixURLProtocol.swift */; };
 		9749A1B11C43064A000F2D1E /* BookmarkTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9749A1B01C43064A000F2D1E /* BookmarkTBVC.swift */; };
+		975227821D020560001D1DDE /* Indexer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227811D020560001D1DDE /* Indexer.storyboard */; };
+		975227991D020C00001D1DDE /* indexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227921D020C00001D1DDE /* indexer.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
+		9752279B1D020C00001D1DDE /* otherTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227931D020C00001D1DDE /* otherTools.cpp */; };
+		9752279C1D020C00001D1DDE /* pathTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227941D020C00001D1DDE /* pathTools.cpp */; };
+		9752279D1D020C00001D1DDE /* pathTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227941D020C00001D1DDE /* pathTools.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
+		9752279E1D020C00001D1DDE /* reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227951D020C00001D1DDE /* reader.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
+		9752279F1D020C00001D1DDE /* reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227951D020C00001D1DDE /* reader.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
+		975227A01D020C00001D1DDE /* resourceTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227961D020C00001D1DDE /* resourceTools.cpp */; };
+		975227A11D020C00001D1DDE /* resourceTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227961D020C00001D1DDE /* resourceTools.cpp */; };
+		975227A21D020C00001D1DDE /* stringTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227971D020C00001D1DDE /* stringTools.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
+		975227A31D020C00001D1DDE /* stringTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227971D020C00001D1DDE /* stringTools.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
+		975227A81D020C2E001D1DDE /* htmlparse.cc in Sources */ = {isa = PBXBuildFile; fileRef = 975227A61D020C2E001D1DDE /* htmlparse.cc */; };
+		975227A91D020C2E001D1DDE /* myhtmlparse.cc in Sources */ = {isa = PBXBuildFile; fileRef = 975227A71D020C2E001D1DDE /* myhtmlparse.cc */; };
+		975227AC1D020D83001D1DDE /* ZimIndexer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 975227AB1D020D83001D1DDE /* ZimIndexer.mm */; };
+		975227AE1D0213D3001D1DDE /* xapianIndexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227AD1D0213D3001D1DDE /* xapianIndexer.cpp */; };
+		975227B01D021539001D1DDE /* IndexerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975227AF1D021539001D1DDE /* IndexerController.swift */; };
+		975227B21D0222C3001D1DDE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227B11D0222C3001D1DDE /* LaunchScreen.storyboard */; };
+		975227B71D0222E1001D1DDE /* Library.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227B31D0222E1001D1DDE /* Library.storyboard */; };
+		975227B81D0222E1001D1DDE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227B41D0222E1001D1DDE /* Main.storyboard */; };
+		975227BA1D0222E1001D1DDE /* Setting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227B61D0222E1001D1DDE /* Setting.storyboard */; };
 		975334C91CEB6A3D007ED50B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975334C81CEB6A3D007ED50B /* Main.storyboard */; };
 		975334CB1CEB6A43007ED50B /* Preference.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975334CA1CEB6A43007ED50B /* Preference.storyboard */; };
 		975334D01CEB6AE3007ED50B /* PreferenceGeneralController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975334CF1CEB6AE3007ED50B /* PreferenceGeneralController.swift */; };
@@ -164,7 +177,6 @@
 		9763A62D1CEBA524008A2718 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E891681CA976E90001CA32 /* FileManager.swift */; };
 		9768957C1CB6A7D300F02686 /* SearchScopeSelectTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768957B1CB6A7D300F02686 /* SearchScopeSelectTBVC.swift */; };
 		976AB2671CBD8B3D00B06EB0 /* 1.5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 976AB2661CBD8B3D00B06EB0 /* 1.5.xcmappingmodel */; };
-		976FEDD61C224D4200AE0874 /* Map.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 976FEDD51C224D4200AE0874 /* Map.storyboard */; };
 		976FEDD81C224DE100AE0874 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 976FEDD71C224DE100AE0874 /* MapKit.framework */; };
 		976FEDE11C2336C400AE0874 /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976FEDE01C2336C400AE0874 /* MapVC.swift */; };
 		9772140C1CC1939F0060CE75 /* SearchHistoryTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9772140B1CC1939F0060CE75 /* SearchHistoryTBVC.swift */; };
@@ -179,9 +191,7 @@
 		9779988D1C1E53A800B1DD5E /* NSFileManager+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779988C1C1E53A800B1DD5E /* NSFileManager+.swift */; };
 		9787E87C1C3D696E0000F529 /* RefreshHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9787E87B1C3D696E0000F529 /* RefreshHUD.swift */; };
 		9787E87E1C3D6B810000F529 /* BookmarkHUDVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9787E87D1C3D6B810000F529 /* BookmarkHUDVC.swift */; };
-		978C587D1C1CCD380077AE47 /* Library.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 978C587C1C1CCD380077AE47 /* Library.storyboard */; };
 		978C58841C1CCE4D0077AE47 /* LanguageTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978C58831C1CCE4D0077AE47 /* LanguageTBVC.swift */; };
-		978C58861C1CD08F0077AE47 /* Setting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 978C58851C1CD08F0077AE47 /* Setting.storyboard */; };
 		978C58881C1CD0F50077AE47 /* SettingTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978C58871C1CD0F50077AE47 /* SettingTBVC.swift */; };
 		978C58961C1CD86E0077AE47 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978C588E1C1CD86E0077AE47 /* Language.swift */; };
 		978C58981C1CD86E0077AE47 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978C58901C1CD86E0077AE47 /* Book.swift */; };
@@ -192,7 +202,6 @@
 		979C51531CECA9AF001707F2 /* StringTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979C51511CECA9AF001707F2 /* StringTools.swift */; };
 		979C518D1CECAE4C001707F2 /* PreferenceWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979C518B1CECAE4C001707F2 /* PreferenceWindowController.swift */; };
 		97A2AB8C1C1B80FF00052E74 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A2AB8B1C1B80FF00052E74 /* AppDelegate.swift */; };
-		97A2AB991C1B80FF00052E74 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97A2AB971C1B80FF00052E74 /* LaunchScreen.storyboard */; };
 		97A4D7E51CF8CA0E006C731E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97A4D7E41CF8CA0E006C731E /* Assets.xcassets */; };
 		97A7140A1C274FCB00951244 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A714091C274FCB00951244 /* DirectoryMonitor.swift */; };
 		97B50C7F1CA1E4810010BD79 /* UIOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B50C7E1CA1E4810010BD79 /* UIOperations.swift */; };
@@ -329,9 +338,6 @@
 		9711871D1CEB449A00B9909D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		9711872E1CEB50FC00B9909D /* ZimReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZimReader.h; path = Kiwix/libkiwix/ZimReader.h; sourceTree = "<group>"; };
 		9711872F1CEB50FC00B9909D /* ZimReader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ZimReader.mm; path = Kiwix/libkiwix/ZimReader.mm; sourceTree = "<group>"; };
-		971187321CEB510900B9909D /* pathTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pathTools.cpp; path = Kiwix/libkiwix/pathTools.cpp; sourceTree = "<group>"; };
-		971187331CEB510900B9909D /* reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = reader.cpp; path = Kiwix/libkiwix/reader.cpp; sourceTree = "<group>"; };
-		971187341CEB510900B9909D /* stringTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = stringTools.cpp; path = Kiwix/libkiwix/stringTools.cpp; sourceTree = "<group>"; };
 		9711873B1CEB512D00B9909D /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicudata.a; path = Kiwix/libkiwix/static/libicudata.a; sourceTree = "<group>"; };
 		9711873C1CEB512D00B9909D /* libicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicui18n.a; path = Kiwix/libkiwix/static/libicui18n.a; sourceTree = "<group>"; };
 		9711873D1CEB512D00B9909D /* libicuio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuio.a; path = Kiwix/libkiwix/static/libicuio.a; sourceTree = "<group>"; };
@@ -367,7 +373,6 @@
 		971C12371CDBCD3B005CD5C0 /* ImportBookLearnMore.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = ImportBookLearnMore.html; path = HelpDocuments/ImportBookLearnMore.html; sourceTree = "<group>"; };
 		97254FDE1C2644560056950B /* ZIMMultiReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZIMMultiReader.swift; sourceTree = "<group>"; };
 		9726E4891CA1DDB900CA69D9 /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
-		972C3D841C32139C00D3A3B0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		973381601C331D530016CEFB /* SearchResultTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultTBVC.swift; sourceTree = "<group>"; };
 		973381621C331D660016CEFB /* ArticleCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleCells.swift; sourceTree = "<group>"; };
 		973381681C343F2C0016CEFB /* Logo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logo.swift; sourceTree = "<group>"; };
@@ -395,6 +400,23 @@
 		974570F31C2DABB500680E43 /* ZIMMultiReaderAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZIMMultiReaderAPI.swift; sourceTree = "<group>"; };
 		974570F71C2DE67A00680E43 /* KiwixURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KiwixURLProtocol.swift; sourceTree = "<group>"; };
 		9749A1B01C43064A000F2D1E /* BookmarkTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkTBVC.swift; sourceTree = "<group>"; };
+		975227811D020560001D1DDE /* Indexer.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Indexer.storyboard; path = "Kiwix-OSX/StoryBoards/Indexer.storyboard"; sourceTree = SOURCE_ROOT; };
+		975227921D020C00001D1DDE /* indexer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = indexer.cpp; path = "Kiwix/libkiwix/C&C++/indexer.cpp"; sourceTree = "<group>"; };
+		975227931D020C00001D1DDE /* otherTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = otherTools.cpp; path = "Kiwix/libkiwix/C&C++/otherTools.cpp"; sourceTree = "<group>"; };
+		975227941D020C00001D1DDE /* pathTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pathTools.cpp; path = "Kiwix/libkiwix/C&C++/pathTools.cpp"; sourceTree = "<group>"; };
+		975227951D020C00001D1DDE /* reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = reader.cpp; path = "Kiwix/libkiwix/C&C++/reader.cpp"; sourceTree = "<group>"; };
+		975227961D020C00001D1DDE /* resourceTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = resourceTools.cpp; path = "Kiwix/libkiwix/C&C++/resourceTools.cpp"; sourceTree = "<group>"; };
+		975227971D020C00001D1DDE /* stringTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = stringTools.cpp; path = "Kiwix/libkiwix/C&C++/stringTools.cpp"; sourceTree = "<group>"; };
+		975227A61D020C2E001D1DDE /* htmlparse.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = htmlparse.cc; path = "Kiwix/libkiwix/C&C++/xapian/htmlparse.cc"; sourceTree = "<group>"; };
+		975227A71D020C2E001D1DDE /* myhtmlparse.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = myhtmlparse.cc; path = "Kiwix/libkiwix/C&C++/xapian/myhtmlparse.cc"; sourceTree = "<group>"; };
+		975227AA1D020D83001D1DDE /* ZimIndexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZimIndexer.h; path = Kiwix/libkiwix/ZimIndexer.h; sourceTree = "<group>"; };
+		975227AB1D020D83001D1DDE /* ZimIndexer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ZimIndexer.mm; path = Kiwix/libkiwix/ZimIndexer.mm; sourceTree = "<group>"; };
+		975227AD1D0213D3001D1DDE /* xapianIndexer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = xapianIndexer.cpp; path = "Kiwix/libkiwix/C&C++/xapianIndexer.cpp"; sourceTree = "<group>"; };
+		975227AF1D021539001D1DDE /* IndexerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IndexerController.swift; path = "Kiwix-OSX/Controllers/IndexerController.swift"; sourceTree = SOURCE_ROOT; };
+		975227B11D0222C3001D1DDE /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		975227B31D0222E1001D1DDE /* Library.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Library.storyboard; sourceTree = "<group>"; };
+		975227B41D0222E1001D1DDE /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		975227B61D0222E1001D1DDE /* Setting.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Setting.storyboard; sourceTree = "<group>"; };
 		975334C81CEB6A3D007ED50B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "Kiwix-OSX/StoryBoards/Main.storyboard"; sourceTree = SOURCE_ROOT; };
 		975334CA1CEB6A43007ED50B /* Preference.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Preference.storyboard; path = "Kiwix-OSX/StoryBoards/Preference.storyboard"; sourceTree = SOURCE_ROOT; };
 		975334CF1CEB6AE3007ED50B /* PreferenceGeneralController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferenceGeneralController.swift; path = "Kiwix-OSX/Controllers/PreferenceGeneralController.swift"; sourceTree = SOURCE_ROOT; };
@@ -407,7 +429,6 @@
 		9763A6281CEB9E55008A2718 /* OSXExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OSXExtensions.swift; path = "Kiwix-OSX/OSXExtensions.swift"; sourceTree = SOURCE_ROOT; };
 		9768957B1CB6A7D300F02686 /* SearchScopeSelectTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchScopeSelectTBVC.swift; sourceTree = "<group>"; };
 		976AB2661CBD8B3D00B06EB0 /* 1.5.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = 1.5.xcmappingmodel; path = CoreData/Migration/1.5.xcmappingmodel; sourceTree = "<group>"; };
-		976FEDD51C224D4200AE0874 /* Map.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Map.storyboard; sourceTree = "<group>"; };
 		976FEDD71C224DE100AE0874 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		976FEDE01C2336C400AE0874 /* MapVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
 		9772140B1CC1939F0060CE75 /* SearchHistoryTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchHistoryTBVC.swift; sourceTree = "<group>"; };
@@ -422,9 +443,7 @@
 		9779988C1C1E53A800B1DD5E /* NSFileManager+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSFileManager+.swift"; sourceTree = "<group>"; };
 		9787E87B1C3D696E0000F529 /* RefreshHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshHUD.swift; sourceTree = "<group>"; };
 		9787E87D1C3D6B810000F529 /* BookmarkHUDVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkHUDVC.swift; sourceTree = "<group>"; };
-		978C587C1C1CCD380077AE47 /* Library.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Library.storyboard; sourceTree = "<group>"; };
 		978C58831C1CCE4D0077AE47 /* LanguageTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageTBVC.swift; sourceTree = "<group>"; };
-		978C58851C1CD08F0077AE47 /* Setting.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Setting.storyboard; sourceTree = "<group>"; };
 		978C58871C1CD0F50077AE47 /* SettingTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingTBVC.swift; sourceTree = "<group>"; };
 		978C588E1C1CD86E0077AE47 /* Language.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Language.swift; path = Kiwix/CoreData/Language.swift; sourceTree = "<group>"; };
 		978C58901C1CD86E0077AE47 /* Book.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = Book.swift; path = Kiwix/CoreData/Book.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -435,7 +454,6 @@
 		979C518B1CECAE4C001707F2 /* PreferenceWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferenceWindowController.swift; path = "Kiwix-OSX/Controllers/PreferenceWindowController.swift"; sourceTree = SOURCE_ROOT; };
 		97A2AB881C1B80FF00052E74 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A2AB8B1C1B80FF00052E74 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = AppDelegate.swift; path = Kiwix/AppDelegate.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		97A2AB981C1B80FF00052E74 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97A2AB9A1C1B80FF00052E74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97A2AB9F1C1B80FF00052E74 /* Kiwix-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kiwix-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A2ABAA1C1B810000052E74 /* Kiwix-iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kiwix-iOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -655,6 +673,8 @@
 			children = (
 				9711872E1CEB50FC00B9909D /* ZimReader.h */,
 				9711872F1CEB50FC00B9909D /* ZimReader.mm */,
+				975227AA1D020D83001D1DDE /* ZimIndexer.h */,
+				975227AB1D020D83001D1DDE /* ZimIndexer.mm */,
 				9711870C1CEB42FA00B9909D /* C++ */,
 				971187041CEB426300B9909D /* static */,
 				971186ED1CEB424800B9909D /* shared */,
@@ -665,9 +685,8 @@
 		9711870C1CEB42FA00B9909D /* C++ */ = {
 			isa = PBXGroup;
 			children = (
-				971187321CEB510900B9909D /* pathTools.cpp */,
-				971187331CEB510900B9909D /* reader.cpp */,
-				971187341CEB510900B9909D /* stringTools.cpp */,
+				975227A41D020C0F001D1DDE /* indexer */,
+				975227A51D020C16001D1DDE /* reader */,
 			);
 			name = "C++";
 			sourceTree = "<group>";
@@ -709,6 +728,7 @@
 			isa = PBXGroup;
 			children = (
 				97BA32A31CEBC29500339A47 /* RootWindowController.swift */,
+				975227AF1D021539001D1DDE /* IndexerController.swift */,
 				975334CE1CEB6AB0007ED50B /* Preference */,
 			);
 			name = Controllers;
@@ -718,6 +738,7 @@
 			isa = PBXGroup;
 			children = (
 				975334C81CEB6A3D007ED50B /* Main.storyboard */,
+				975227811D020560001D1DDE /* Indexer.storyboard */,
 				975334CA1CEB6A43007ED50B /* Preference.storyboard */,
 			);
 			name = StoryBoards;
@@ -833,6 +854,29 @@
 			name = Bookmark;
 			sourceTree = "<group>";
 		};
+		975227A41D020C0F001D1DDE /* indexer */ = {
+			isa = PBXGroup;
+			children = (
+				975227A61D020C2E001D1DDE /* htmlparse.cc */,
+				975227A71D020C2E001D1DDE /* myhtmlparse.cc */,
+				975227921D020C00001D1DDE /* indexer.cpp */,
+				975227AD1D0213D3001D1DDE /* xapianIndexer.cpp */,
+				975227931D020C00001D1DDE /* otherTools.cpp */,
+			);
+			name = indexer;
+			sourceTree = "<group>";
+		};
+		975227A51D020C16001D1DDE /* reader */ = {
+			isa = PBXGroup;
+			children = (
+				975227941D020C00001D1DDE /* pathTools.cpp */,
+				975227951D020C00001D1DDE /* reader.cpp */,
+				975227961D020C00001D1DDE /* resourceTools.cpp */,
+				975227971D020C00001D1DDE /* stringTools.cpp */,
+			);
+			name = reader;
+			sourceTree = "<group>";
+		};
 		975334CC1CEB6A4D007ED50B /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
@@ -930,8 +974,8 @@
 				97C020141C3A023800D010E5 /* about.html */,
 				97163D321CD7E79F008BE2D6 /* Help Docs */,
 				97A4D7E41CF8CA0E006C731E /* Assets.xcassets */,
+				975227B11D0222C3001D1DDE /* LaunchScreen.storyboard */,
 				9705D68A1CAACB2D005A943B /* Localizable.stringsdict */,
-				97A2AB971C1B80FF00052E74 /* LaunchScreen.storyboard */,
 				97A2AB9A1C1B80FF00052E74 /* Info.plist */,
 			);
 			name = Supporting;
@@ -941,10 +985,9 @@
 		978C587A1C1CCC9C0077AE47 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				972C3D841C32139C00D3A3B0 /* Main.storyboard */,
-				978C587C1C1CCD380077AE47 /* Library.storyboard */,
-				976FEDD51C224D4200AE0874 /* Map.storyboard */,
-				978C58851C1CD08F0077AE47 /* Setting.storyboard */,
+				975227B31D0222E1001D1DDE /* Library.storyboard */,
+				975227B41D0222E1001D1DDE /* Main.storyboard */,
+				975227B61D0222E1001D1DDE /* Setting.storyboard */,
 			);
 			name = Storyboards;
 			path = Kiwix;
@@ -1376,6 +1419,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				975227821D020560001D1DDE /* Indexer.storyboard in Resources */,
 				973BCCF31CEB3FA400F10B44 /* Assets.xcassets in Resources */,
 				975334C91CEB6A3D007ED50B /* Main.storyboard in Resources */,
 				975334CB1CEB6A43007ED50B /* Preference.storyboard in Resources */,
@@ -1401,19 +1445,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				971C12351CDBC9EF005CD5C0 /* Pic_I.png in Resources */,
-				97A2AB991C1B80FF00052E74 /* LaunchScreen.storyboard in Resources */,
-				978C58861C1CD08F0077AE47 /* Setting.storyboard in Resources */,
-				978C587D1C1CCD380077AE47 /* Library.storyboard in Resources */,
+				975227BA1D0222E1001D1DDE /* Setting.storyboard in Resources */,
 				97A4D7E51CF8CA0E006C731E /* Assets.xcassets in Resources */,
 				973D30611C43481200F20CBC /* adjustlayoutiPad.js in Resources */,
 				971C12361CDBC9EF005CD5C0 /* Pic_P.png in Resources */,
 				9705D6881CAACB2D005A943B /* Localizable.stringsdict in Resources */,
 				9711460F1C722B0500510707 /* getTableOfContents.js in Resources */,
 				97C020151C3A023800D010E5 /* about.html in Resources */,
-				976FEDD61C224D4200AE0874 /* Map.storyboard in Resources */,
-				972C3D851C32139C00D3A3B0 /* Main.storyboard in Resources */,
+				975227B81D0222E1001D1DDE /* Main.storyboard in Resources */,
 				971C12381CDBCD3B005CD5C0 /* ImportBookLearnMore.html in Resources */,
 				973D30621C43481200F20CBC /* adjustlayoutiPhone.js in Resources */,
+				975227B21D0222C3001D1DDE /* LaunchScreen.storyboard in Resources */,
+				975227B71D0222E1001D1DDE /* Library.storyboard in Resources */,
 				97163D2F1CD7DF1A008BE2D6 /* DownloaderLearnMore.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1560,12 +1603,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9752279B1D020C00001D1DDE /* otherTools.cpp in Sources */,
 				975B912F1CEB9B0F00D13906 /* Preference.swift in Sources */,
 				975B911C1CEB987200D13906 /* Operation.swift in Sources */,
 				975B91171CEB987200D13906 /* NegatedCondition.swift in Sources */,
 				971187941CEB541A00B9909D /* Article.swift in Sources */,
 				9763A62B1CEBA4F9008A2718 /* ZIMMultiReaderAPI.swift in Sources */,
 				975B91061CEB987200D13906 /* CalendarCondition.swift in Sources */,
+				9752279D1D020C00001D1DDE /* pathTools.cpp in Sources */,
+				975227A91D020C2E001D1DDE /* myhtmlparse.cc in Sources */,
+				975227B01D021539001D1DDE /* IndexerController.swift in Sources */,
 				975B911B1CEB987200D13906 /* NSOperation+Operations.swift in Sources */,
 				975B91031CEB987200D13906 /* BlockObserver.swift in Sources */,
 				975B91041CEB987200D13906 /* BlockOperation.swift in Sources */,
@@ -1580,28 +1627,30 @@
 				975B91131CEB987200D13906 /* LocationCapability-tvOS.swift in Sources */,
 				971187981CEB542500B9909D /* Language+CoreDataProperties.swift in Sources */,
 				975B91201CEB987200D13906 /* OperationQueue.swift in Sources */,
+				9752279F1D020C00001D1DDE /* reader.cpp in Sources */,
 				97BA32A51CEBC36300339A47 /* RootWindowController.swift in Sources */,
 				9711878E1CEB541100B9909D /* Kiwix.xcdatamodeld in Sources */,
-				9711873A1CEB510900B9909D /* stringTools.cpp in Sources */,
 				971187961CEB542500B9909D /* DownloadTask+CoreDataProperties.swift in Sources */,
 				975334D21CEB6B01007ED50B /* LibraryController.swift in Sources */,
 				975B91091CEB987200D13906 /* CloudCondition.swift in Sources */,
 				975B91071CEB987200D13906 /* Capability.swift in Sources */,
+				975227AC1D020D83001D1DDE /* ZimIndexer.mm in Sources */,
+				975227A11D020C00001D1DDE /* resourceTools.cpp in Sources */,
 				975B91281CEB987200D13906 /* RemoteNotificationCondition.swift in Sources */,
 				975B91121CEB987200D13906 /* LocationCapability-OSX.swift in Sources */,
 				975B911E1CEB987200D13906 /* OperationErrors.swift in Sources */,
 				975B910B1CEB987200D13906 /* Dictionary+Operations.swift in Sources */,
+				975227A81D020C2E001D1DDE /* htmlparse.cc in Sources */,
 				971187971CEB542500B9909D /* Article+CoreDataProperties.swift in Sources */,
 				975B91291CEB987200D13906 /* SilentCondition.swift in Sources */,
+				975227A31D020C00001D1DDE /* stringTools.cpp in Sources */,
 				9763A62A1CEBA4F9008A2718 /* ZIMMultiReader.swift in Sources */,
 				975B91051CEB987200D13906 /* CalendarCapability.swift in Sources */,
 				979C518D1CECAE4C001707F2 /* PreferenceWindowController.swift in Sources */,
 				975B912C1CEB987200D13906 /* URLSessionTaskOperation.swift in Sources */,
 				975B91301CEB9B1200D13906 /* PreferenceLibrary.swift in Sources */,
 				975B912D1CEB987200D13906 /* UserNotificationCapability.swift in Sources */,
-				971187381CEB510900B9909D /* reader.cpp in Sources */,
 				9763A62C1CEBA4F9008A2718 /* DirectoryMonitor.swift in Sources */,
-				971187361CEB510900B9909D /* pathTools.cpp in Sources */,
 				975B910C1CEB987200D13906 /* ExclusivityController.swift in Sources */,
 				9711879B1CEB546C00B9909D /* CoreDataExtension.swift in Sources */,
 				979C51531CECA9AF001707F2 /* StringTools.swift in Sources */,
@@ -1617,6 +1666,7 @@
 				975B91271CEB987200D13906 /* ReachabilityCondition.swift in Sources */,
 				975B90FF1CEB909900D13906 /* Extensions.swift in Sources */,
 				975B910D1CEB987200D13906 /* GroupOperation.swift in Sources */,
+				975227AE1D0213D3001D1DDE /* xapianIndexer.cpp in Sources */,
 				975B910A1CEB987200D13906 /* DelayOperation.swift in Sources */,
 				975B912A1CEB987200D13906 /* TimeoutObserver.swift in Sources */,
 				975B91081CEB987200D13906 /* CKContainer+Operations.swift in Sources */,
@@ -1631,6 +1681,7 @@
 				975B91251CEB987200D13906 /* PushCapability-iOS.swift in Sources */,
 				975B91101CEB987200D13906 /* iCloudContainerCapability.swift in Sources */,
 				975B91001CEB983E00D13906 /* RefreshLibraryOperation.swift in Sources */,
+				975227991D020C00001D1DDE /* indexer.cpp in Sources */,
 				975B912B1CEB987200D13906 /* UIUserNotifications+Operations.swift in Sources */,
 				971187921CEB541A00B9909D /* Language.swift in Sources */,
 				975B912E1CEB987200D13906 /* UserNotificationCondition.swift in Sources */,
@@ -1658,7 +1709,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				971187371CEB510900B9909D /* reader.cpp in Sources */,
 				976AB2671CBD8B3D00B06EB0 /* 1.5.xcmappingmodel in Sources */,
 				97E571101CA0500400FF4F1D /* LocationOperation.swift in Sources */,
 				973970ED1CB9A04C00350507 /* SearchOperation.swift in Sources */,
@@ -1681,6 +1731,7 @@
 				979C51521CECA9AF001707F2 /* StringTools.swift in Sources */,
 				97E571001CA0500400FF4F1D /* CalendarCondition.swift in Sources */,
 				9711878D1CEB541100B9909D /* Kiwix.xcdatamodeld in Sources */,
+				9752279E1D020C00001D1DDE /* reader.cpp in Sources */,
 				97DF23551CE807A1003E1E5A /* GlobalOperationQueue.swift in Sources */,
 				97E571121CA0500400FF4F1D /* NegatedCondition.swift in Sources */,
 				97E571251CA0500400FF4F1D /* TimeoutObserver.swift in Sources */,
@@ -1699,7 +1750,6 @@
 				9768957C1CB6A7D300F02686 /* SearchScopeSelectTBVC.swift in Sources */,
 				978C58981C1CD86E0077AE47 /* Book.swift in Sources */,
 				97E571031CA0500400FF4F1D /* CloudCondition.swift in Sources */,
-				971187351CEB510900B9909D /* pathTools.cpp in Sources */,
 				97E571131CA0500400FF4F1D /* NetworkObserver.swift in Sources */,
 				978C58961C1CD86E0077AE47 /* Language.swift in Sources */,
 				97999D891C52D27D003CAFF3 /* SearchBar.swift in Sources */,
@@ -1723,6 +1773,7 @@
 				97E0672A1C52AD050079C13C /* MainVCLoading.swift in Sources */,
 				977998761C1E0B7900B1DD5E /* DownloadTask.swift in Sources */,
 				97E570FD1CA0500400FF4F1D /* BlockObserver.swift in Sources */,
+				9752279C1D020C00001D1DDE /* pathTools.cpp in Sources */,
 				975952EA1C5EA47B004F7E76 /* BookCollectionCell.swift in Sources */,
 				97E5711A1CA0500400FF4F1D /* OperationObserver.swift in Sources */,
 				9726E48A1CA1DDB900CA69D9 /* Network.swift in Sources */,
@@ -1758,12 +1809,13 @@
 				97E5710E1CA0500400FF4F1D /* LocationCapability-tvOS.swift in Sources */,
 				973E99C91C6D405B00FBCA28 /* LibraryLocalTBVC.swift in Sources */,
 				97C01FD11C39BF4B00D010E5 /* FontSizeTBVC.swift in Sources */,
-				971187391CEB510900B9909D /* stringTools.cpp in Sources */,
 				97DA06C71CB6DA3400EBA609 /* LibraryLocalBookDetailTBVC.swift in Sources */,
 				973381611C331D530016CEFB /* SearchResultTBVC.swift in Sources */,
+				975227A21D020C00001D1DDE /* stringTools.cpp in Sources */,
 				9711879A1CEB546C00B9909D /* CoreDataExtension.swift in Sources */,
 				97A7140A1C274FCB00951244 /* DirectoryMonitor.swift in Sources */,
 				978C58841C1CCE4D0077AE47 /* LanguageTBVC.swift in Sources */,
+				975227A01D020C00001D1DDE /* resourceTools.cpp in Sources */,
 				97E571071CA0500400FF4F1D /* GroupOperation.swift in Sources */,
 				97E5711E1CA0500400FF4F1D /* PhotosCapability.swift in Sources */,
 				97E5711C1CA0500400FF4F1D /* PassbookCapability.swift in Sources */,
@@ -1825,14 +1877,6 @@
 			path = Localization;
 			sourceTree = "<group>";
 		};
-		97A2AB971C1B80FF00052E74 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				97A2AB981C1B80FF00052E74 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -1849,6 +1893,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Kiwix/libkiwix/include",
+					"$(PROJECT_DIR)/Kiwix/libkiwix/C&C++",
 					"$(PROJECT_DIR)/Kiwix/libkiwix/",
 				);
 				INFOPLIST_FILE = "Kiwix-OSX/Info.plist";
@@ -1879,6 +1924,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Kiwix/libkiwix/include",
+					"$(PROJECT_DIR)/Kiwix/libkiwix/C&C++",
 					"$(PROJECT_DIR)/Kiwix/libkiwix/",
 				);
 				INFOPLIST_FILE = "Kiwix-OSX/Info.plist";
@@ -2059,6 +2105,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Kiwix/libkiwix/include",
+					"$(PROJECT_DIR)/Kiwix/libkiwix/C&C++",
 					"$(PROJECT_DIR)/Kiwix/libkiwix/",
 				);
 				INFOPLIST_FILE = Kiwix/Info.plist;
@@ -2091,6 +2138,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Kiwix/libkiwix/include",
+					"$(PROJECT_DIR)/Kiwix/libkiwix/C&C++",
 					"$(PROJECT_DIR)/Kiwix/libkiwix/",
 				);
 				INFOPLIST_FILE = Kiwix/Info.plist;

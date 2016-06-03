@@ -628,6 +628,19 @@
                                     </items>
                                 </menu>
                             </menuItem>
+                            <menuItem title="Tools" id="Qcn-Pu-urr">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Tools" id="P7x-6J-ukc">
+                                    <items>
+                                        <menuItem title="Indexer" id="cNq-GB-Vok" userLabel="Indexer">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <segue destination="mEu-ID-MW1" kind="show" id="or4-K2-Cey"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
                             <menuItem title="Help" id="wpr-3q-Mcd">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
@@ -718,13 +731,21 @@
             </objects>
             <point key="canvasLocation" x="-747" y="504"/>
         </scene>
+        <!--Indexer-->
+        <scene sceneID="81V-80-fnS">
+            <objects>
+                <controllerPlaceholder storyboardName="Indexer" id="mEu-ID-MW1" sceneMemberID="viewController"/>
+                <customObject id="Pfl-os-EKv" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="622.5" y="7"/>
+        </scene>
         <!--Preference-->
         <scene sceneID="OeB-C7-dy8">
             <objects>
                 <controllerPlaceholder storyboardName="Preference" id="0uS-zt-hL7" sceneMemberID="viewController"/>
                 <customObject id="KIZ-as-t5e" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="545.5" y="-205"/>
+            <point key="canvasLocation" x="432.5" y="7"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="HY0-Co-pxT">
@@ -765,7 +786,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="TeC-hJ-1bi">
-                                            <rect key="frame" x="0.0" y="0.0" width="318" height="299"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="318" height="0.0"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
