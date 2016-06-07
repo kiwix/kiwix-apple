@@ -10,7 +10,6 @@ class GlobalOperationQueue: OperationQueue {
     static let sharedInstance = GlobalOperationQueue()
     
     var isRefreshingLibrary: Bool {
-        let op = operation(String(RefreshLibraryOperation))
-        return op != nil
+        return getOperation(String(RefreshLibraryOperation)) != nil
     }
 }

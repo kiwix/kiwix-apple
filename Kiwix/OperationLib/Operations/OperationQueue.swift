@@ -145,7 +145,7 @@ public class OperationQueue: NSOperationQueue {
 }
 
 extension OperationQueue {
-    func operation(name: String) -> Operation? {
+    func getOperation(name: String) -> Operation? {
         for operation in operations {
             guard let operation  = operation as? Operation else {continue}
             guard operation.name == name else {continue}

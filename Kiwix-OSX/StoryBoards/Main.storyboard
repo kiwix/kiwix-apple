@@ -662,7 +662,7 @@
                 <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Kiwix" customModuleProvider="target"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="161" y="-192"/>
+            <point key="canvasLocation" x="629.5" y="-200"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
@@ -680,50 +680,33 @@
                                 <toolbarItem implicitItemIdentifier="NSToolbarPrintItem" id="Nxe-kg-ySK"/>
                                 <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="Inx-jV-T8w"/>
                                 <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="UiJ-66-hzs"/>
-                                <toolbarItem implicitItemIdentifier="978E9A3F-E84E-4CD0-8462-2C48C4F736B8" label="Custom View" paletteLabel="Custom View" id="JQ8-Bq-dbN">
+                                <toolbarItem implicitItemIdentifier="893F4CD1-421C-479F-BFF6-9EABA4CFF4FB" label="Search" paletteLabel="Search" id="UdL-qA-UbS">
                                     <nil key="toolTip"/>
-                                    <size key="minSize" width="29" height="26"/>
-                                    <size key="maxSize" width="29" height="26"/>
-                                    <button key="view" horizontalHuggingPriority="750" verticalHuggingPriority="750" id="PmV-SK-CA7">
-                                        <rect key="frame" x="24" y="14" width="29" height="26"/>
+                                    <size key="minSize" width="96" height="22"/>
+                                    <size key="maxSize" width="600" height="22"/>
+                                    <searchField key="view" wantsLayer="YES" verticalHuggingPriority="750" id="UQh-aL-WL5">
+                                        <rect key="frame" x="0.0" y="14" width="300" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="disclosure" bezelStyle="roundedDisclosure" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ban-L4-R58">
-                                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                                        <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Search Wiki" usesSingleLineMode="YES" bezelStyle="round" id="uSA-ka-0ML">
                                             <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                    </button>
-                                </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="458A7AE5-8428-40D4-8620-9FC8C164549B" label="Custom Viewffff" paletteLabel="Custom Viewff" image="BlankImage" selectable="YES" id="PrM-pt-ikj">
-                                    <nil key="toolTip"/>
-                                    <size key="minSize" width="104" height="24"/>
-                                    <size key="maxSize" width="104" height="24"/>
-                                    <segmentedControl key="view" verticalHuggingPriority="750" id="suM-XS-sKa">
-                                        <rect key="frame" x="0.0" y="14" width="104" height="24"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="KPh-QT-QVB">
-                                            <font key="font" metaFont="system"/>
-                                            <segments>
-                                                <segment width="32"/>
-                                                <segment width="32" selected="YES" tag="1"/>
-                                                <segment width="32">
-                                                    <nil key="label"/>
-                                                </segment>
-                                            </segments>
-                                        </segmentedCell>
-                                    </segmentedControl>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </searchFieldCell>
+                                        <connections>
+                                            <action selector="searchFieldTextDidChange:" target="B8D-0N-5wS" id="khU-Es-9nG"/>
+                                        </connections>
+                                    </searchField>
                                 </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
-                                <toolbarItem reference="kh9-eD-fiN"/>
-                                <toolbarItem reference="CUM-if-SZ3"/>
                                 <toolbarItem reference="UiJ-66-hzs"/>
-                                <toolbarItem reference="JQ8-Bq-dbN"/>
-                                <toolbarItem reference="PrM-pt-ikj"/>
-                                <toolbarItem reference="Nxe-kg-ySK"/>
+                                <toolbarItem reference="UdL-qA-UbS"/>
+                                <toolbarItem reference="UiJ-66-hzs"/>
                             </defaultToolbarItems>
                         </toolbar>
                     </window>
                     <connections>
+                        <outlet property="searchField" destination="UQh-aL-WL5" id="j68-E1-dsG"/>
                         <segue destination="Bc3-Gr-z7B" kind="relationship" relationship="window.shadowedContentViewController" id="x58-mz-pzK"/>
                     </connections>
                 </windowController>
@@ -752,7 +735,6 @@
             <objects>
                 <splitViewController id="Bc3-Gr-z7B" sceneMemberID="viewController">
                     <splitViewItems>
-                        <splitViewItem id="9PM-o2-vvO"/>
                         <splitViewItem id="RaI-Bd-zBZ"/>
                     </splitViewItems>
                     <splitView key="splitView" dividerStyle="thin" vertical="YES" id="lbj-dX-v7L">
@@ -760,7 +742,6 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </splitView>
                     <connections>
-                        <segue destination="tfg-Zj-pd1" kind="relationship" relationship="splitItems" id="m15-3C-jnA"/>
                         <segue destination="VDf-Vd-Z3l" kind="relationship" relationship="splitItems" id="6Lr-Vq-N3C"/>
                     </connections>
                 </splitViewController>
@@ -768,10 +749,10 @@
             </objects>
             <point key="canvasLocation" x="389" y="504"/>
         </scene>
-        <!--View Controller-->
+        <!--Search Result Controller-->
         <scene sceneID="gz5-Y2-oEU">
             <objects>
-                <viewController id="tfg-Zj-pd1" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchResultController" id="tfg-Zj-pd1" customClass="SearchResultController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="kg5-l3-cuF">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -833,7 +814,7 @@
                                     <constraint firstAttribute="width" constant="320" id="oFJ-3j-nSF"/>
                                 </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="1AM-jb-mIA">
-                                    <rect key="frame" x="1" y="283" width="318" height="16"/>
+                                    <rect key="frame" x="1" y="284" width="318" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="6fz-oA-Ygk">
@@ -853,15 +834,18 @@
                             <constraint firstItem="3Kb-Gd-oW1" firstAttribute="leading" secondItem="kg5-l3-cuF" secondAttribute="leading" id="lCr-td-29P"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="TeC-hJ-1bi" id="uxb-J2-8kQ"/>
+                    </connections>
                 </viewController>
                 <customObject id="Fe4-pm-CxO" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1186" y="259"/>
+            <point key="canvasLocation" x="74" y="-118"/>
         </scene>
-        <!--View Controller-->
+        <!--Web View Controller-->
         <scene sceneID="Ks8-tQ-UPW">
             <objects>
-                <viewController id="VDf-Vd-Z3l" sceneMemberID="viewController">
+                <viewController id="VDf-Vd-Z3l" customClass="WebViewController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="nhu-gs-rmS">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -884,13 +868,13 @@
                             <constraint firstAttribute="trailing" secondItem="ATx-nW-erd" secondAttribute="trailing" id="eLW-Qn-ZTD"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="webView" destination="ATx-nW-erd" id="BQa-Gl-tVz"/>
+                    </connections>
                 </viewController>
                 <customObject id="m7P-Hs-Oe6" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1326" y="689"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="BlankImage" width="128" height="128"/>
-    </resources>
 </document>

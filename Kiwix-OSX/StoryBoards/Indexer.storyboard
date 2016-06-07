@@ -79,7 +79,7 @@
                                     <action selector="startButtonPushed:" target="MOt-d2-D0d" id="Lbt-jt-cvC"/>
                                 </connections>
                             </button>
-                            <progressIndicator wantsLayer="YES" maxValue="100" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="5Qp-fl-jyS">
+                            <progressIndicator wantsLayer="YES" maxValue="1" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="5Qp-fl-jyS">
                                 <rect key="frame" x="77" y="50" width="460" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="460" id="8mX-RP-OsN"/>
@@ -129,6 +129,7 @@
                     </view>
                     <connections>
                         <outlet property="indexFolderTextField" destination="rkm-RA-XSO" id="6z8-AB-XX2"/>
+                        <outlet property="progressIndicator" destination="5Qp-fl-jyS" id="0hW-Eu-sNE"/>
                         <outlet property="zimTextField" destination="6fa-SB-Ua7" id="cz8-ig-Uuj"/>
                     </connections>
                 </viewController>
