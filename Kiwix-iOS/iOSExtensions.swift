@@ -10,10 +10,9 @@ import Foundation
 import CoreData
 import UIKit
 
-// MARK: -
+// MARK: - CoreData
 
 extension NSFetchedResultsController {
-    
     func performFetch(deleteCache deleteCache: Bool) {
         do {
             if deleteCache {
@@ -25,6 +24,12 @@ extension NSFetchedResultsController {
         } catch let error as NSError {
             print("FetchedResultController performFetch failed: \(error.localizedDescription)")
         }
+    }
+}
+
+extension NSManagedObjectContext {
+    class var mainQueueContext: NSManagedObjectContext {
+        return (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
     }
 }
 
@@ -78,11 +83,5 @@ extension UIAlertController {
     convenience init(title: String, message: String, style: UIAlertControllerStyle = .Alert, actions:[UIAlertAction]) {
         self.init(title: title, message: message , preferredStyle: style)
         for action in actions {addAction(action)}
-    }
-}
-
-extension NSManagedObjectContext {
-    class var mainQueueContext: NSManagedObjectContext {
-        return (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
     }
 }

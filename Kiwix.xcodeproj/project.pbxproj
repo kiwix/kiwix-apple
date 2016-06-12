@@ -105,7 +105,6 @@
 		971A106F1D022E62007FC62C /* DownloadProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A106D1D022E62007FC62C /* DownloadProgress.swift */; };
 		971A10701D022E62007FC62C /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A106E1D022E62007FC62C /* Network.swift */; };
 		971A10721D022E74007FC62C /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10711D022E74007FC62C /* KiwixURLProtocol.swift */; };
-		971A10741D022E80007FC62C /* NSFileManager+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10731D022E80007FC62C /* NSFileManager+.swift */; };
 		971A10771D022F05007FC62C /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 971A10791D022F05007FC62C /* Localizable.stringsdict */; };
 		971A107E1D022F74007FC62C /* DownloaderLearnMore.html in Resources */ = {isa = PBXBuildFile; fileRef = 971A107A1D022F74007FC62C /* DownloaderLearnMore.html */; };
 		971A107F1D022F74007FC62C /* ImportBookLearnMore.html in Resources */ = {isa = PBXBuildFile; fileRef = 971A107B1D022F74007FC62C /* ImportBookLearnMore.html */; };
@@ -160,6 +159,7 @@
 		9763A62C1CEBA4F9008A2718 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A714091C274FCB00951244 /* DirectoryMonitor.swift */; };
 		9763A62D1CEBA524008A2718 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E891681CA976E90001CA32 /* FileManager.swift */; };
 		976AB2671CBD8B3D00B06EB0 /* 1.5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 976AB2661CBD8B3D00B06EB0 /* 1.5.xcmappingmodel */; };
+		977305361D0DFD110081B8F0 /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10711D022E74007FC62C /* KiwixURLProtocol.swift */; };
 		977998741C1E0B7900B1DD5E /* Book+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779986E1C1E0B7900B1DD5E /* Book+CoreDataProperties.swift */; };
 		977998751C1E0B7900B1DD5E /* DownloadTask+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779986F1C1E0B7900B1DD5E /* DownloadTask+CoreDataProperties.swift */; };
 		977998761C1E0B7900B1DD5E /* DownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977998701C1E0B7900B1DD5E /* DownloadTask.swift */; };
@@ -407,7 +407,6 @@
 		971A106D1D022E62007FC62C /* DownloadProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DownloadProgress.swift; path = "Kiwix-iOS/Model/DownloadProgress.swift"; sourceTree = SOURCE_ROOT; };
 		971A106E1D022E62007FC62C /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Network.swift; path = "Kiwix-iOS/Model/Network.swift"; sourceTree = SOURCE_ROOT; };
 		971A10711D022E74007FC62C /* KiwixURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KiwixURLProtocol.swift; path = "Kiwix-iOS/Model/KiwixURLProtocol.swift"; sourceTree = SOURCE_ROOT; };
-		971A10731D022E80007FC62C /* NSFileManager+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSFileManager+.swift"; path = "Kiwix-iOS/Model/NSFileManager+.swift"; sourceTree = SOURCE_ROOT; };
 		971A10781D022F05007FC62C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		971A107A1D022F74007FC62C /* DownloaderLearnMore.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = DownloaderLearnMore.html; path = Kiwix/HelpDocuments/DownloaderLearnMore.html; sourceTree = SOURCE_ROOT; };
 		971A107B1D022F74007FC62C /* ImportBookLearnMore.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = ImportBookLearnMore.html; path = Kiwix/HelpDocuments/ImportBookLearnMore.html; sourceTree = SOURCE_ROOT; };
@@ -867,6 +866,7 @@
 				9779987A1C1E1C9600B1DD5E /* Extensions.swift */,
 				97E891681CA976E90001CA32 /* FileManager.swift */,
 				979C51511CECA9AF001707F2 /* StringTools.swift */,
+				971A10711D022E74007FC62C /* KiwixURLProtocol.swift */,
 				97254FDD1C26442F0056950B /* ZIMMultiReader */,
 			);
 			name = Shared;
@@ -966,14 +966,6 @@
 			name = Setting;
 			sourceTree = "<group>";
 		};
-		977998851C1E2C2600B1DD5E /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-				971A106B1D022E50007FC62C /* Utilities.swift */,
-			);
-			name = Utilities;
-			sourceTree = "<group>";
-		};
 		978C58791C1CCC920077AE47 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
@@ -1015,10 +1007,9 @@
 		978C588B1C1CD1E30077AE47 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				97EE24EF1C2078A400DFC672 /* Extension */,
-				971A10711D022E74007FC62C /* KiwixURLProtocol.swift */,
+				975B90FD1CEB909100D13906 /* iOSExtensions.swift */,
 				971904A41CA3204B002E9CFF /* Network */,
-				977998851C1E2C2600B1DD5E /* Utilities */,
+				971A106B1D022E50007FC62C /* Utilities.swift */,
 			);
 			name = Model;
 			path = Kiwix;
@@ -1247,15 +1238,6 @@
 			);
 			name = Operation;
 			path = Kiwix;
-			sourceTree = "<group>";
-		};
-		97EE24EF1C2078A400DFC672 /* Extension */ = {
-			isa = PBXGroup;
-			children = (
-				975B90FD1CEB909100D13906 /* iOSExtensions.swift */,
-				971A10731D022E80007FC62C /* NSFileManager+.swift */,
-			);
-			name = Extension;
 			sourceTree = "<group>";
 		};
 		CFDF64EC6F9DB861DEEB91A0 /* Frameworks */ = {
@@ -1679,6 +1661,7 @@
 				979CB6741D05C44F005E1BA1 /* UserNotificationCondition.swift in Sources */,
 				975227A31D020C00001D1DDE /* stringTools.cpp in Sources */,
 				979CB6601D05C44F005E1BA1 /* HealthCondition.swift in Sources */,
+				977305361D0DFD110081B8F0 /* KiwixURLProtocol.swift in Sources */,
 				979CB6721D05C44F005E1BA1 /* SilentCondition.swift in Sources */,
 				979CB65A1D05C44F005E1BA1 /* UserNotificationCapability.swift in Sources */,
 				979CB6B21D05C520005E1BA1 /* DelayOperation.swift in Sources */,
@@ -1853,7 +1836,6 @@
 				979CB6B31D05C520005E1BA1 /* Dictionary+Operations.swift in Sources */,
 				979CB64B1D05C44F005E1BA1 /* LocationCapability-iOS.swift in Sources */,
 				979CB6611D05C44F005E1BA1 /* LocationCondition.swift in Sources */,
-				971A10741D022E80007FC62C /* NSFileManager+.swift in Sources */,
 				971A102D1D022AD5007FC62C /* BookCollectionCell.swift in Sources */,
 				971A10601D022DF2007FC62C /* LanguageTBVC.swift in Sources */,
 				971A106A1D022E15007FC62C /* BookmarkHUDVC.swift in Sources */,

@@ -11,7 +11,7 @@ import CoreData
 
 class LanguageTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
     
-    let managedObjectContext = UIApplication.appDelegate.managedObjectContext
+    let managedObjectContext = NSManagedObjectContext.mainQueueContext
     var showLanguageSet = Set<Language>()
     var showLanguages = [Language]()
     var hideLanguages = [Language]()
@@ -19,7 +19,7 @@ class LanguageTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Languages"
+        title = NSLocalizedString("Languages", comment: "Language selection: Title")
         
         showLanguages = Language.fetch(displayed: true, context: managedObjectContext)
         hideLanguages = Language.fetch(displayed: false, context: managedObjectContext)
@@ -97,9 +97,9 @@ class LanguageTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if showLanguages.count == 0 {
-            return section == 0 ? "" : "ALL       "
+            return section == 0 ? "" : NSLocalizedString("ALL", comment: "Language selection: table section title") + "       "
         } else {
-            return section == 0 ? "SHOWING" : "HIDING"
+            return section == 0 ? NSLocalizedString("SHOWING", comment: "Language selection: table section title") : NSLocalizedString("HIDING", comment: "Language selection: table section title")
         }
     }
     

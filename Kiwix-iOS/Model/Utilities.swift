@@ -11,7 +11,8 @@ import UIKit
 class Utilities: NSObject {
     class func availableDiskspaceInBytes() -> Int64? {
         do {
-            let systemAttributes = try NSFileManager.defaultManager().attributesOfFileSystemForPath(NSFileManager.docDirPath)
+            let docDirPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).first!
+            let systemAttributes = try NSFileManager.defaultManager().attributesOfFileSystemForPath(docDirPath)
             guard let freeSize = systemAttributes[NSFileSystemFreeSize] as? NSNumber else {return nil}
             return freeSize.longLongValue
         } catch let error as NSError {

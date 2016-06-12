@@ -14,7 +14,7 @@ import DateTools
 class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelegate, BookTableCellDelegate, LTBarButtonItemDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     var booksShowingDetail = Set<Book>()
-    var messsageLabelConfigTimer: NSTimer?
+    var messsageLabelRefreshTimer: NSTimer?
     var refreshing = false
     
     // MARK: - Override
@@ -35,12 +35,12 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         segmentedControl.selectedSegmentIndex = 0
-        messsageLabelConfigTimer = NSTimer.scheduledTimerWithTimeInterval(60.0, target: self, selector: #selector(configureMessage), userInfo: nil, repeats: true)
+        messsageLabelRefreshTimer = NSTimer.scheduledTimerWithTimeInterval(60.0, target: self, selector: #selector(configureMessage), userInfo: nil, repeats: true)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        messsageLabelConfigTimer?.invalidate()
+        messsageLabelRefreshTimer?.invalidate()
     }
     
     
