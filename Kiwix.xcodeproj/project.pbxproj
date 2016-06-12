@@ -431,8 +431,13 @@
 		973BCD1C1CEB403700F10B44 /* KiwixUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KiwixUITests.swift; path = "Kiwix-iOSUITests/KiwixUITests.swift"; sourceTree = SOURCE_ROOT; };
 		973C8D5B1C25F945007272F9 /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		974570F31C2DABB500680E43 /* ZIMMultiReaderAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZIMMultiReaderAPI.swift; sourceTree = "<group>"; };
+		97497B5A1D07487000ECD691 /* indexer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = indexer.h; path = "Kiwix/libkiwix/C&C++/indexer.h"; sourceTree = "<group>"; };
+		97497B5B1D07487000ECD691 /* resourceTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = resourceTools.h; path = "Kiwix/libkiwix/C&C++/resourceTools.h"; sourceTree = "<group>"; };
+		97497B5C1D074FB800ECD691 /* htmlparse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = htmlparse.h; path = "Kiwix/libkiwix/C&C++/xapian/htmlparse.h"; sourceTree = "<group>"; };
+		97497B5D1D074FB800ECD691 /* myhtmlparse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = myhtmlparse.h; path = "Kiwix/libkiwix/C&C++/xapian/myhtmlparse.h"; sourceTree = "<group>"; };
+		97497B5E1D07584100ECD691 /* xapianIndexer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = xapianIndexer.h; path = "Kiwix/libkiwix/C&C++/xapianIndexer.h"; sourceTree = "<group>"; };
 		975227811D020560001D1DDE /* Indexer.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Indexer.storyboard; path = "Kiwix-OSX/StoryBoards/Indexer.storyboard"; sourceTree = SOURCE_ROOT; };
-		975227921D020C00001D1DDE /* indexer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = indexer.cpp; path = "Kiwix/libkiwix/C&C++/indexer.cpp"; sourceTree = "<group>"; };
+		975227921D020C00001D1DDE /* indexer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; name = indexer.cpp; path = "Kiwix/libkiwix/C&C++/indexer.cpp"; sourceTree = "<group>"; tabWidth = 2; };
 		975227931D020C00001D1DDE /* otherTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = otherTools.cpp; path = "Kiwix/libkiwix/C&C++/otherTools.cpp"; sourceTree = "<group>"; };
 		975227941D020C00001D1DDE /* pathTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pathTools.cpp; path = "Kiwix/libkiwix/C&C++/pathTools.cpp"; sourceTree = "<group>"; };
 		975227951D020C00001D1DDE /* reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = reader.cpp; path = "Kiwix/libkiwix/C&C++/reader.cpp"; sourceTree = "<group>"; };
@@ -442,7 +447,7 @@
 		975227A71D020C2E001D1DDE /* myhtmlparse.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = myhtmlparse.cc; path = "Kiwix/libkiwix/C&C++/xapian/myhtmlparse.cc"; sourceTree = "<group>"; };
 		975227AA1D020D83001D1DDE /* ZimIndexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZimIndexer.h; path = Kiwix/libkiwix/ZimIndexer.h; sourceTree = "<group>"; };
 		975227AB1D020D83001D1DDE /* ZimIndexer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ZimIndexer.mm; path = Kiwix/libkiwix/ZimIndexer.mm; sourceTree = "<group>"; };
-		975227AD1D0213D3001D1DDE /* xapianIndexer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = xapianIndexer.cpp; path = "Kiwix/libkiwix/C&C++/xapianIndexer.cpp"; sourceTree = "<group>"; };
+		975227AD1D0213D3001D1DDE /* xapianIndexer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; name = xapianIndexer.cpp; path = "Kiwix/libkiwix/C&C++/xapianIndexer.cpp"; sourceTree = "<group>"; tabWidth = 2; };
 		975227AF1D021539001D1DDE /* IndexerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IndexerController.swift; path = "Kiwix-OSX/Controllers/IndexerController.swift"; sourceTree = SOURCE_ROOT; };
 		975227C91D0227E8001D1DDE /* Library.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Library.storyboard; path = "Kiwix-iOS/Storyboard/Library.storyboard"; sourceTree = SOURCE_ROOT; };
 		975227CA1D0227E8001D1DDE /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "Kiwix-iOS/Storyboard/Main.storyboard"; sourceTree = SOURCE_ROOT; };
@@ -878,10 +883,14 @@
 		975227A41D020C0F001D1DDE /* indexer */ = {
 			isa = PBXGroup;
 			children = (
-				975227A61D020C2E001D1DDE /* htmlparse.cc */,
-				975227A71D020C2E001D1DDE /* myhtmlparse.cc */,
+				97497B5A1D07487000ECD691 /* indexer.h */,
 				975227921D020C00001D1DDE /* indexer.cpp */,
+				97497B5E1D07584100ECD691 /* xapianIndexer.h */,
 				975227AD1D0213D3001D1DDE /* xapianIndexer.cpp */,
+				97497B5C1D074FB800ECD691 /* htmlparse.h */,
+				975227A61D020C2E001D1DDE /* htmlparse.cc */,
+				97497B5D1D074FB800ECD691 /* myhtmlparse.h */,
+				975227A71D020C2E001D1DDE /* myhtmlparse.cc */,
 				975227931D020C00001D1DDE /* otherTools.cpp */,
 			);
 			name = indexer;
@@ -890,9 +899,10 @@
 		975227A51D020C16001D1DDE /* reader */ = {
 			isa = PBXGroup;
 			children = (
+				97497B5B1D07487000ECD691 /* resourceTools.h */,
+				975227961D020C00001D1DDE /* resourceTools.cpp */,
 				975227941D020C00001D1DDE /* pathTools.cpp */,
 				975227951D020C00001D1DDE /* reader.cpp */,
-				975227961D020C00001D1DDE /* resourceTools.cpp */,
 				975227971D020C00001D1DDE /* stringTools.cpp */,
 			);
 			name = reader;
