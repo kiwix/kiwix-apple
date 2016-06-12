@@ -36,6 +36,10 @@ class DirectoryMonitor {
         self.URL = URL
     }
     
+    deinit {
+        stopMonitoring()
+    }
+    
     // MARK: Monitoring
     
     func startMonitoring() {
@@ -83,14 +87,14 @@ class DirectoryMonitor {
     var currentDirectoryHash: [String]? = nil
     var hashEqualCheck = 0
     
-    func directoryContentDidChange() {
+    private func directoryContentDidChange() {
         hashEqualCheck = 0
         if isCheckingChanges == false {
             checkDirectoryChanges()
         }
     }
     
-    func checkDirectoryChanges() {
+    private func checkDirectoryChanges() {
         isCheckingChanges = true
         
         previousDirectoryHash = currentDirectoryHash
@@ -116,13 +120,13 @@ class DirectoryMonitor {
         }
     }
     
-    func directoryDidReachStasis() {
+    private func directoryDidReachStasis() {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(NSEC_PER_SEC/10)) , dispatch_get_main_queue(), { () -> Void in
             self.delegate?.directoryMonitorDidObserveChange()
         })
     }
     
-    func waitAndCheckAgain() {
+    private func waitAndCheckAgain() {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(NSEC_PER_SEC/2)) , directoryMonitorQueue, { () -> Void in
             self.checkDirectoryChanges()
         })
@@ -130,7 +134,7 @@ class DirectoryMonitor {
     
     // MARK: - Generate directory file info array
     
-    func directoryHashes() -> [String] {
+    private func directoryHashes() -> [String] {
         var hashes = [String]()
         if let path = self.URL.path {
             do {
@@ -148,7 +152,7 @@ class DirectoryMonitor {
         return hashes
     }
     
-    func fileHash(fileName: String) -> String? {
+    private func fileHash(fileName: String) -> String? {
         if let fileSize = fileSize(fileName) {
             return fileName + "_\(fileSize)"
         } else {
@@ -156,7 +160,7 @@ class DirectoryMonitor {
         }
     }
     
-    func fileSize(fileName: String) -> Int64? {
+    private func fileSize(fileName: String) -> Int64? {
         if let path = self.URL.URLByAppendingPathComponent(fileName).path {
             if NSFileManager.defaultManager().fileExistsAtPath(path) {
                 do {

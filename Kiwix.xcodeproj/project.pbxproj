@@ -160,6 +160,8 @@
 		9763A62D1CEBA524008A2718 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E891681CA976E90001CA32 /* FileManager.swift */; };
 		976AB2671CBD8B3D00B06EB0 /* 1.5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 976AB2661CBD8B3D00B06EB0 /* 1.5.xcmappingmodel */; };
 		977305361D0DFD110081B8F0 /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10711D022E74007FC62C /* KiwixURLProtocol.swift */; };
+		9773053B1D0DFF6A0081B8F0 /* DirScanOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9773053A1D0DFF6A0081B8F0 /* DirScanOperation.swift */; };
+		9773053C1D0DFF6A0081B8F0 /* DirScanOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9773053A1D0DFF6A0081B8F0 /* DirScanOperation.swift */; };
 		977998741C1E0B7900B1DD5E /* Book+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779986E1C1E0B7900B1DD5E /* Book+CoreDataProperties.swift */; };
 		977998751C1E0B7900B1DD5E /* DownloadTask+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779986F1C1E0B7900B1DD5E /* DownloadTask+CoreDataProperties.swift */; };
 		977998761C1E0B7900B1DD5E /* DownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977998701C1E0B7900B1DD5E /* DownloadTask.swift */; };
@@ -460,6 +462,7 @@
 		975B90FD1CEB909100D13906 /* iOSExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = iOSExtensions.swift; path = "Kiwix-iOS/iOSExtensions.swift"; sourceTree = SOURCE_ROOT; };
 		9763A6281CEB9E55008A2718 /* OSXExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OSXExtensions.swift; path = "Kiwix-OSX/OSXExtensions.swift"; sourceTree = SOURCE_ROOT; };
 		976AB2661CBD8B3D00B06EB0 /* 1.5.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = 1.5.xcmappingmodel; path = CoreData/Migration/1.5.xcmappingmodel; sourceTree = "<group>"; };
+		9773053A1D0DFF6A0081B8F0 /* DirScanOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DirScanOperation.swift; path = Operations/DirScanOperation.swift; sourceTree = "<group>"; };
 		9779986E1C1E0B7900B1DD5E /* Book+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Book+CoreDataProperties.swift"; path = "Kiwix/CoreData/Book+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9779986F1C1E0B7900B1DD5E /* DownloadTask+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = "DownloadTask+CoreDataProperties.swift"; path = "Kiwix/CoreData/DownloadTask+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		977998701C1E0B7900B1DD5E /* DownloadTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = DownloadTask.swift; path = Kiwix/CoreData/DownloadTask.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -1235,6 +1238,7 @@
 				970103F91C6824FA00DC48F6 /* RefreshLibraryOperation.swift */,
 				97B50C7E1CA1E4810010BD79 /* UIOperations.swift */,
 				973970EC1CB9A04C00350507 /* SearchOperation.swift */,
+				9773053A1D0DFF6A0081B8F0 /* DirScanOperation.swift */,
 			);
 			name = Operation;
 			path = Kiwix;
@@ -1635,6 +1639,7 @@
 				975227A91D020C2E001D1DDE /* myhtmlparse.cc in Sources */,
 				975227B01D021539001D1DDE /* IndexerController.swift in Sources */,
 				975334D01CEB6AE3007ED50B /* PreferenceGeneralController.swift in Sources */,
+				9773053C1D0DFF6A0081B8F0 /* DirScanOperation.swift in Sources */,
 				979CB6C81D05CF37005E1BA1 /* SearchResultController.swift in Sources */,
 				975B90F91CEB75CB00D13906 /* ZimFilesController.swift in Sources */,
 				971187981CEB542500B9909D /* Language+CoreDataProperties.swift in Sources */,
@@ -1773,6 +1778,7 @@
 				978C58981C1CD86E0077AE47 /* Book.swift in Sources */,
 				978C58961C1CD86E0077AE47 /* Language.swift in Sources */,
 				971A10701D022E62007FC62C /* Network.swift in Sources */,
+				9773053B1D0DFF6A0081B8F0 /* DirScanOperation.swift in Sources */,
 				971A104A1D022CBE007FC62C /* SearchResultTBVC.swift in Sources */,
 				971A105B1D022DAD007FC62C /* LibraryOnlineTBVC.swift in Sources */,
 				971A10321D022AD5007FC62C /* SearchBar.swift in Sources */,

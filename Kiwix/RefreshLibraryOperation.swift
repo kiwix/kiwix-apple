@@ -95,7 +95,7 @@ class ParseLibraryOperation: Operation, NSXMLParserDelegate {
     @objc internal func parserDidEndDocument(parser: NSXMLParser) {
         var booksToDelete = oldBookIDs.subtract(newBookIDs)
         booksToDelete = booksToDelete.subtract(ZIMMultiReader.sharedInstance.readers.keys)
-        print("About to delete \(booksToDelete.count) book(s)")
+//        print("About to delete \(booksToDelete.count) book(s)")
         for id in booksToDelete {
             context.performBlockAndWait({ () -> Void in
                 guard let book = Book.fetch(id, context: self.context) else {return}
@@ -106,7 +106,7 @@ class ParseLibraryOperation: Operation, NSXMLParserDelegate {
         saveManagedObjectContexts()
         Preference.libraryLastRefreshTime = NSDate()
         cleanUpAfterParse()
-        print("Parse finished successfully")
+//        print("Parse finished successfully")
     }
     
     @objc internal func parser(parser: NSXMLParser, parseErrorOccurred parseError: NSError) {
