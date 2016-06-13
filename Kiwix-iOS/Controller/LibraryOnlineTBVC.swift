@@ -29,11 +29,11 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
         tableView.emptyDataSetDelegate = self
         
         configureToolBar()
-        refreshLibraryForTheFirstTime()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        startRefresh(invokedAutomatically: true)
         segmentedControl.selectedSegmentIndex = 0
         messsageLabelRefreshTimer = NSTimer.scheduledTimerWithTimeInterval(60.0, target: self, selector: #selector(configureMessage), userInfo: nil, repeats: true)
     }

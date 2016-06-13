@@ -36,10 +36,6 @@ class DirectoryMonitor {
         self.URL = URL
     }
     
-    deinit {
-        stopMonitoring()
-    }
-    
     // MARK: Monitoring
     
     func startMonitoring() {

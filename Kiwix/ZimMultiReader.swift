@@ -33,17 +33,25 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
     // MARK: - DirectoryMonitorDelegate
     
     func directoryMonitorDidObserveChange() {
-        let operation = RescanZimMultiReaderOperation()
-        GlobalOperationQueue.sharedInstance.addOperation(operation)
+        rescan()
     }
     
     // MARK: - Refresh
     
     func rescan() {
-        // If list of idx folder changed, remove all items in zimURLs
-        // It is equivalent to reinitialize all ZimReader for every zim file.
+        /*
+         If list of idx folders changes, reinitialize all zim readers, 
+         because currently ZIMMultiReader cannot find out which ZimReader's index folder is added or deleted
+         
+         Note: when a idx folder is added, the content of that idx folder will not finish copying, which makes it meanless to detect idx folder addition. 
+         Because, with a incompletely copied idx folder, the xapian initializer is guranteed to fail. So here only check for idx folder deletion. 
+         If user added a idx folder, he or she needs to manaually call rescan.
+         */
         let newIndexFolders = Set(indexFolderURLsInDocDir)
-        if newIndexFolders != indexFolders {
+        let deletedIdxFolder = indexFolders.subtract(newIndexFolders)
+        
+        // Check for idx folder deletion
+        if deletedIdxFolder.count > 0 {
             zimURLs.removeAll()
         }
         indexFolders = newIndexFolders
@@ -129,24 +137,6 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
             }
         }
         return folderURLs
-    }
-}
-
-// This class is unfinished
-class RescanZimMultiReaderOperation: Operation {
-    override init() {
-        super.init()
-        addCondition(MutuallyExclusive<ZIMMultiReader>())
-    }
-    
-    override func execute() {
-        let context = NSManagedObjectContext.mainQueueContext
-        context.performBlockAndWait { () -> Void in
-            // rescan() needs to read from Coredata, ZIMMultiReader use a Main Queue ManagedObjectContext
-            ZIMMultiReader.sharedInstance.rescan()
-            print("number of readers: \(ZIMMultiReader.sharedInstance.readers.count)")
-        }
-        finish()
     }
 }
 

@@ -6,8 +6,6 @@
 //  Copyright © 2015 Chris Li. All rights reserved.
 //  http://www.raywenderlich.com/76735/using-nsurlprotocol-swift
 
-import UIKit
-
 class KiwixURLProtocol: NSURLProtocol {
     override class func canInitWithRequest(request: NSURLRequest) -> Bool {
         return request.URL?.scheme.caseInsensitiveCompare("Kiwix") == .OrderedSame ? true : false
