@@ -82,7 +82,6 @@
 		971A103F1D022C42007FC62C /* LibraryAutoRefreshTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A103D1D022C42007FC62C /* LibraryAutoRefreshTBVC.swift */; };
 		971A10401D022C42007FC62C /* LibraryUseCellularDataTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A103E1D022C42007FC62C /* LibraryUseCellularDataTBVC.swift */; };
 		971A10431D022C54007FC62C /* SettingTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10411D022C54007FC62C /* SettingTBVC.swift */; };
-		971A10441D022C54007FC62C /* SettingTBVCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10421D022C54007FC62C /* SettingTBVCD.swift */; };
 		971A10461D022CB2007FC62C /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10451D022CB2007FC62C /* SearchVC.swift */; };
 		971A104A1D022CBE007FC62C /* SearchResultTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10471D022CBE007FC62C /* SearchResultTBVC.swift */; };
 		971A104B1D022CBE007FC62C /* SearchScopeSelectTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10481D022CBE007FC62C /* SearchScopeSelectTBVC.swift */; };
@@ -271,6 +270,7 @@
 		97E609F71D103DED00EBCB9D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97E609F51D103DED00EBCB9D /* MainInterface.storyboard */; };
 		97E609FB1D103DED00EBCB9D /* Kiwix-iOSWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 97E609EF1D103DED00EBCB9D /* Kiwix-iOSWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		97E60A021D10423A00EBCB9D /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E60A011D10423A00EBCB9D /* ShadowView.swift */; };
+		97E60A061D10504000EBCB9D /* LibraryBackupTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E60A051D10504000EBCB9D /* LibraryBackupTBVC.swift */; };
 		97E891691CA976E90001CA32 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E891681CA976E90001CA32 /* FileManager.swift */; };
 		AEFF409D8D5B53BC90700424 /* Pods_Kiwix_OSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAF14EE0505901A1570F23F /* Pods_Kiwix_OSX.framework */; };
 		BECDBCEF4720E3E86FE63989 /* Pods_Kiwix_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CEA715EBFC96C75E73447A7 /* Pods_Kiwix_iOS.framework */; };
@@ -400,7 +400,6 @@
 		971A103D1D022C42007FC62C /* LibraryAutoRefreshTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryAutoRefreshTBVC.swift; path = "Kiwix-iOS/Controller/LibraryAutoRefreshTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A103E1D022C42007FC62C /* LibraryUseCellularDataTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryUseCellularDataTBVC.swift; path = "Kiwix-iOS/Controller/LibraryUseCellularDataTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10411D022C54007FC62C /* SettingTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingTBVC.swift; path = "Kiwix-iOS/Controller/SettingTBVC.swift"; sourceTree = SOURCE_ROOT; };
-		971A10421D022C54007FC62C /* SettingTBVCD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingTBVCD.swift; path = "Kiwix-iOS/Controller/SettingTBVCD.swift"; sourceTree = SOURCE_ROOT; };
 		971A10451D022CB2007FC62C /* SearchVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchVC.swift; path = "Kiwix-iOS/Controller/SearchVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10471D022CBE007FC62C /* SearchResultTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchResultTBVC.swift; path = "Kiwix-iOS/Controller/SearchResultTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10481D022CBE007FC62C /* SearchScopeSelectTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchScopeSelectTBVC.swift; path = "Kiwix-iOS/Controller/SearchScopeSelectTBVC.swift"; sourceTree = SOURCE_ROOT; };
@@ -549,6 +548,7 @@
 		97E609F61D103DED00EBCB9D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		97E609F81D103DED00EBCB9D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97E60A011D10423A00EBCB9D /* ShadowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
+		97E60A051D10504000EBCB9D /* LibraryBackupTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryBackupTBVC.swift; path = "Kiwix-iOS/Controller/LibraryBackupTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		97E891681CA976E90001CA32 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileManager.swift; path = Kiwix/FileManager.swift; sourceTree = "<group>"; };
 		B14E5F8A97964014F99EAD4E /* Pods-Kiwix-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		B3B41D59F4B010C559B18D3D /* Pods-Kiwix-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -989,7 +989,6 @@
 			isa = PBXGroup;
 			children = (
 				971A10411D022C54007FC62C /* SettingTBVC.swift */,
-				971A10421D022C54007FC62C /* SettingTBVCD.swift */,
 				97C01FCA1C39B7F100D010E5 /* Library */,
 				97C01FD21C39BF4E00D010E5 /* Reading */,
 				971A10351D022B02007FC62C /* AboutVC.swift */,
@@ -1239,6 +1238,7 @@
 			children = (
 				971A103D1D022C42007FC62C /* LibraryAutoRefreshTBVC.swift */,
 				971A103E1D022C42007FC62C /* LibraryUseCellularDataTBVC.swift */,
+				97E60A051D10504000EBCB9D /* LibraryBackupTBVC.swift */,
 			);
 			name = Library;
 			sourceTree = "<group>";
@@ -1845,7 +1845,6 @@
 				971A105A1D022DAD007FC62C /* LibraryLocalTBVC.swift in Sources */,
 				97E60A021D10423A00EBCB9D /* ShadowView.swift in Sources */,
 				979CB6BD1D05C520005E1BA1 /* Operation.swift in Sources */,
-				971A10441D022C54007FC62C /* SettingTBVCD.swift in Sources */,
 				971A10671D022E0A007FC62C /* MainVCOtherD.swift in Sources */,
 				978C58981C1CD86E0077AE47 /* Book.swift in Sources */,
 				978C58961C1CD86E0077AE47 /* Language.swift in Sources */,
@@ -1867,6 +1866,7 @@
 				979CB6771D05C44F005E1BA1 /* MutuallyExclusive.swift in Sources */,
 				970C3DCA1CBD79450026A240 /* MigrationPolicy.swift in Sources */,
 				97E891691CA976E90001CA32 /* FileManager.swift in Sources */,
+				97E60A061D10504000EBCB9D /* LibraryBackupTBVC.swift in Sources */,
 				974570F41C2DABB500680E43 /* ZIMMultiReaderAPI.swift in Sources */,
 				979CB6511D05C44F005E1BA1 /* PassbookCapability.swift in Sources */,
 				971A104C1D022CBE007FC62C /* SearchTabController.swift in Sources */,

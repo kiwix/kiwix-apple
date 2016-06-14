@@ -11,7 +11,7 @@ import UIKit
 class SettingTBVC: UITableViewController {
 
     let sectionHeader = [LocalizedStrings.library, LocalizedStrings.reading, LocalizedStrings.misc]
-    let cellTextlabels = [[LocalizedStrings.libraryAutoRefresh, LocalizedStrings.libraryUseCellularData],
+    let cellTextlabels = [[LocalizedStrings.libraryAutoRefresh, LocalizedStrings.libraryUseCellularData, LocalizedStrings.libraryBackup],
                           [LocalizedStrings.fontSize, LocalizedStrings.adjustLayout],
                           [LocalizedStrings.rateKiwix, LocalizedStrings.about]]
     
@@ -31,6 +31,87 @@ class SettingTBVC: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
+    }
+    
+    // MARK: - Table view data source
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return sectionHeader.count
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return cellTextlabels[section].count
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+        
+        cell.textLabel?.text = cellTextlabels[indexPath.section][indexPath.row]
+        cell.detailTextLabel?.text = {
+            switch indexPath {
+            case NSIndexPath(forRow: 0, inSection: 0):
+                return Preference.libraryAutoRefreshDisabled ? LocalizedStrings.disabled :
+                    dateComponentsFormatter.stringFromTimeInterval(Preference.libraryRefreshInterval)
+            case NSIndexPath(forRow: 1, inSection: 0):
+                return Preference.libraryRefreshAllowCellularData ? LocalizedStrings.on : LocalizedStrings.off
+            case NSIndexPath(forRow: 2, inSection: 0):
+                guard let skipBackup = FileManager.getSkipBackupAttribute(item: FileManager.docDirURL) else {return ""}
+                return skipBackup ? LocalizedStrings.off: LocalizedStrings.on
+            case NSIndexPath(forRow: 0, inSection: 1):
+                return String.formattedPercentString(Preference.webViewZoomScale / 100)
+            case NSIndexPath(forRow: 1, inSection: 1):
+                return Preference.webViewInjectJavascriptToAdjustPageLayout ? LocalizedStrings.on : LocalizedStrings.off
+            default:
+                return nil
+            }
+        }()
+        
+        return cell
+    }
+    
+    // MARK: - Table View Delegate
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sectionHeader[section]
+    }
+    
+    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if section == tableView.numberOfSections - 1 {
+            return String(format: LocalizedStrings.versionString, NSBundle.shortVersionString)
+        } else {
+            return nil
+        }
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        guard section == tableView.numberOfSections - 1 else {return}
+        if let view = view as? UITableViewHeaderFooterView {
+            view.textLabel?.textAlignment = .Center
+        }
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        defer {tableView.deselectRowAtIndexPath(indexPath, animated: true)}
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        guard let text = cell?.textLabel?.text else {return}
+        switch text {
+        case LocalizedStrings.libraryAutoRefresh:
+            performSegueWithIdentifier("LibraryAutoRefresh", sender: self)
+        case LocalizedStrings.libraryUseCellularData:
+            performSegueWithIdentifier("LibraryUseCellularData", sender: self)
+        case LocalizedStrings.libraryBackup:
+            performSegueWithIdentifier("LibraryBackup", sender: self)
+        case LocalizedStrings.fontSize:
+            performSegueWithIdentifier("ReadingFontSize", sender: self)
+        case LocalizedStrings.adjustLayout:
+            performSegueWithIdentifier("AdjustLayout", sender: self)
+        case LocalizedStrings.rateKiwix:
+            showRateKiwixAlert(showRemindLater: false)
+        case LocalizedStrings.about:
+            performSegueWithIdentifier("MiscAbout", sender: self)
+        default:
+            break
+        }
     }
     
     // MARK: - Rate Kiwix
@@ -97,6 +178,7 @@ extension LocalizedStrings {
     //MARK: -  Table Cell Text
     class var libraryAutoRefresh: String {return NSLocalizedString("Auto Refresh", comment: "Setting: Library Auto Refresh")}
     class var libraryUseCellularData: String {return NSLocalizedString("Refresh Using Cellular Data", comment: "Setting: Library Use Cellular Data")}
+    class var libraryBackup: String {return NSLocalizedString("Backup Local Files", comment: "Setting: Backup Local Files")}
     class var fontSize: String {return NSLocalizedString("Font Size", comment: "Setting: Font Size")}
     class var adjustLayout: String {return NSLocalizedString("Adjust Layout", comment: "Setting: Adjust Layout")}
     class var booksToInclude: String {return NSLocalizedString("Books To Include", comment: "Setting: Books To Include")}
