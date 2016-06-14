@@ -268,7 +268,6 @@
 		97E609F11D103DED00EBCB9D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E609F01D103DED00EBCB9D /* NotificationCenter.framework */; };
 		97E609F41D103DED00EBCB9D /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E609F31D103DED00EBCB9D /* TodayViewController.swift */; };
 		97E609F71D103DED00EBCB9D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97E609F51D103DED00EBCB9D /* MainInterface.storyboard */; };
-		97E609FB1D103DED00EBCB9D /* Kiwix-iOSWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 97E609EF1D103DED00EBCB9D /* Kiwix-iOSWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		97E60A021D10423A00EBCB9D /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E60A011D10423A00EBCB9D /* ShadowView.swift */; };
 		97E60A061D10504000EBCB9D /* LibraryBackupTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E60A051D10504000EBCB9D /* LibraryBackupTBVC.swift */; };
 		97E891691CA976E90001CA32 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E891681CA976E90001CA32 /* FileManager.swift */; };
@@ -334,7 +333,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				97E609FB1D103DED00EBCB9D /* Kiwix-iOSWidget.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
