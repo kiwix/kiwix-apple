@@ -266,6 +266,10 @@
 		97B50C7F1CA1E4810010BD79 /* UIOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B50C7E1CA1E4810010BD79 /* UIOperations.swift */; };
 		97BA32A51CEBC36300339A47 /* RootWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BA32A31CEBC29500339A47 /* RootWindowController.swift */; };
 		97DF23551CE807A1003E1E5A /* GlobalOperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DF23541CE807A1003E1E5A /* GlobalOperationQueue.swift */; };
+		97E609F11D103DED00EBCB9D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E609F01D103DED00EBCB9D /* NotificationCenter.framework */; };
+		97E609F41D103DED00EBCB9D /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E609F31D103DED00EBCB9D /* TodayViewController.swift */; };
+		97E609F71D103DED00EBCB9D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97E609F51D103DED00EBCB9D /* MainInterface.storyboard */; };
+		97E609FB1D103DED00EBCB9D /* Kiwix-iOSWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 97E609EF1D103DED00EBCB9D /* Kiwix-iOSWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		97E891691CA976E90001CA32 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E891681CA976E90001CA32 /* FileManager.swift */; };
 		AEFF409D8D5B53BC90700424 /* Pods_Kiwix_OSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAF14EE0505901A1570F23F /* Pods_Kiwix_OSX.framework */; };
 		BECDBCEF4720E3E86FE63989 /* Pods_Kiwix_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CEA715EBFC96C75E73447A7 /* Pods_Kiwix_iOS.framework */; };
@@ -300,6 +304,13 @@
 			remoteGlobalIDString = 97A2AB871C1B80FF00052E74;
 			remoteInfo = Kiwix;
 		};
+		97E609F91D103DED00EBCB9D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97A2AB801C1B80FF00052E74 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 97E609EE1D103DED00EBCB9D;
+			remoteInfo = "Kiwix-iOSWidget";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -321,6 +332,17 @@
 				971187861CEB515000B9909D /* libxapian.22.dylib in CopyFiles */,
 				971187871CEB515000B9909D /* libzim.0.dylib in CopyFiles */,
 			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		97E609FF1D103DED00EBCB9D /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				97E609FB1D103DED00EBCB9D /* Kiwix-iOSWidget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -527,6 +549,11 @@
 		97B50C7E1CA1E4810010BD79 /* UIOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIOperations.swift; sourceTree = "<group>"; };
 		97BA32A31CEBC29500339A47 /* RootWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RootWindowController.swift; path = "Kiwix-OSX/Controllers/RootWindowController.swift"; sourceTree = SOURCE_ROOT; };
 		97DF23541CE807A1003E1E5A /* GlobalOperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalOperationQueue.swift; sourceTree = "<group>"; };
+		97E609EF1D103DED00EBCB9D /* Kiwix-iOSWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Kiwix-iOSWidget.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		97E609F01D103DED00EBCB9D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		97E609F31D103DED00EBCB9D /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		97E609F61D103DED00EBCB9D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		97E609F81D103DED00EBCB9D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97E891681CA976E90001CA32 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileManager.swift; path = Kiwix/FileManager.swift; sourceTree = "<group>"; };
 		B14E5F8A97964014F99EAD4E /* Pods-Kiwix-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		B3B41D59F4B010C559B18D3D /* Pods-Kiwix-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -605,6 +632,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		97E609EC1D103DED00EBCB9D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97E609F11D103DED00EBCB9D /* NotificationCenter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -622,6 +657,7 @@
 			children = (
 				DBAF14EE0505901A1570F23F /* Pods_Kiwix_OSX.framework */,
 				6CEA715EBFC96C75E73447A7 /* Pods_Kiwix_iOS.framework */,
+				97E609F01D103DED00EBCB9D /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1148,6 +1184,7 @@
 				973BCD1F1CEB412E00F10B44 /* Shared */,
 				97A2AB8A1C1B80FF00052E74 /* OS X */,
 				973BCCE41CEB3EDE00F10B44 /* iOS */,
+				97E609F21D103DED00EBCB9D /* iOSWidget */,
 				975334CD1CEB6A78007ED50B /* Others */,
 				9675A05DC9EAC986274652A8 /* Pods */,
 				931D277C156AE671D3F9EADA /* Frameworks */,
@@ -1163,6 +1200,7 @@
 				973BCCE91CEB3FA400F10B44 /* Kiwix.app */,
 				973BCCFC1CEB3FA400F10B44 /* Kiwix-OSXTests.xctest */,
 				973BCD071CEB3FA500F10B44 /* Kiwix-OSXUITests.xctest */,
+				97E609EF1D103DED00EBCB9D /* Kiwix-iOSWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1238,6 +1276,17 @@
 			);
 			name = Operation;
 			path = Kiwix;
+			sourceTree = "<group>";
+		};
+		97E609F21D103DED00EBCB9D /* iOSWidget */ = {
+			isa = PBXGroup;
+			children = (
+				97E609F31D103DED00EBCB9D /* TodayViewController.swift */,
+				97E609F51D103DED00EBCB9D /* MainInterface.storyboard */,
+				97E609F81D103DED00EBCB9D /* Info.plist */,
+			);
+			name = iOSWidget;
+			path = "Kiwix-iOSWidget";
 			sourceTree = "<group>";
 		};
 		CFDF64EC6F9DB861DEEB91A0 /* Frameworks */ = {
@@ -1323,10 +1372,12 @@
 				A0BA34333D8534C017C21288 /* Embed Pods Frameworks */,
 				0DCB994930DA1CBACABC8118 /* Copy Pods Resources */,
 				97A4D7E21CF8C318006C731E /* ShellScript */,
+				97E609FF1D103DED00EBCB9D /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				97E609FA1D103DED00EBCB9D /* PBXTargetDependency */,
 			);
 			name = "Kiwix-iOS";
 			productName = Kiwix;
@@ -1369,6 +1420,23 @@
 			productReference = 97A2ABAA1C1B810000052E74 /* Kiwix-iOSUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		97E609EE1D103DED00EBCB9D /* Kiwix-iOSWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 97E609FE1D103DED00EBCB9D /* Build configuration list for PBXNativeTarget "Kiwix-iOSWidget" */;
+			buildPhases = (
+				97E609EB1D103DED00EBCB9D /* Sources */,
+				97E609EC1D103DED00EBCB9D /* Frameworks */,
+				97E609ED1D103DED00EBCB9D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Kiwix-iOSWidget";
+			productName = "Kiwix-iOSWidget";
+			productReference = 97E609EF1D103DED00EBCB9D /* Kiwix-iOSWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1407,6 +1475,10 @@
 						CreatedOnToolsVersion = 7.2;
 						TestTargetID = 97A2AB871C1B80FF00052E74;
 					};
+					97E609EE1D103DED00EBCB9D = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = L7HWM3SP3L;
+					};
 				};
 			};
 			buildConfigurationList = 97A2AB831C1B80FF00052E74 /* Build configuration list for PBXProject "Kiwix" */;
@@ -1428,6 +1500,7 @@
 				973BCCE81CEB3FA400F10B44 /* Kiwix-OSX */,
 				973BCCFB1CEB3FA400F10B44 /* Kiwix-OSXTests */,
 				973BCD061CEB3FA500F10B44 /* Kiwix-OSXUITests */,
+				97E609EE1D103DED00EBCB9D /* Kiwix-iOSWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -1492,6 +1565,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				973BCD1D1CEB403700F10B44 /* Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		97E609ED1D103DED00EBCB9D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97E609F71D103DED00EBCB9D /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1863,6 +1944,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		97E609EB1D103DED00EBCB9D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97E609F41D103DED00EBCB9D /* TodayViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1886,6 +1975,11 @@
 			target = 97A2AB871C1B80FF00052E74 /* Kiwix-iOS */;
 			targetProxy = 97A2ABAB1C1B810000052E74 /* PBXContainerItemProxy */;
 		};
+		97E609FA1D103DED00EBCB9D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 97E609EE1D103DED00EBCB9D /* Kiwix-iOSWidget */;
+			targetProxy = 97E609F91D103DED00EBCB9D /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1897,6 +1991,14 @@
 			name = Localizable.stringsdict;
 			path = "Kiwix-iOS";
 			sourceTree = SOURCE_ROOT;
+		};
+		97E609F51D103DED00EBCB9D /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				97E609F61D103DED00EBCB9D /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
 
@@ -2122,6 +2224,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2155,6 +2258,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2230,6 +2334,36 @@
 			};
 			name = Release;
 		};
+		97E609FC1D103DED00EBCB9D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "Kiwix-iOSWidget/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.iOSWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		97E609FD1D103DED00EBCB9D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "Kiwix-iOSWidget/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.iOSWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2295,6 +2429,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		97E609FE1D103DED00EBCB9D /* Build configuration list for PBXNativeTarget "Kiwix-iOSWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97E609FC1D103DED00EBCB9D /* Debug */,
+				97E609FD1D103DED00EBCB9D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 
