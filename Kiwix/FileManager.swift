@@ -72,7 +72,7 @@ class FileManager {
         }
     }
     
-    // MARK: - General File Operations
+    // MARK: - Item Operations
     
     class func fileExistAtURL(url: NSURL) -> Bool {
         guard let path = url.path else {return false}
@@ -106,6 +106,8 @@ class FileManager {
         return succeed
     }
     
+    // MARK: - Dir Operations
+    
     class func createDirectory(url: NSURL, includeInICloudBackup: Bool) {
         guard let path = url.path else {return}
         do {
@@ -128,5 +130,34 @@ class FileManager {
         for fileURL in contentsOfDirectory(url) {
             removeItem(atURL: fileURL)
         }
+    }
+    
+    // MARK: - Backup Attribute
+    
+    class func setSkipBackupAttribute(skipBackup: Bool, url: NSURL) {
+        guard let path = url.path else {return}
+        guard NSFileManager.defaultManager().fileExistsAtPath(path) else {return}
+        
+        do {
+            try url.setResourceValues([NSURLIsExcludedFromBackupKey: skipBackup])
+        } catch let error as NSError {
+            print("Set skip backup attribute for item \(url) failed, error: \(error.localizedDescription)")
+        }
+    }
+    
+    class func getSkipBackupAttribute(item url: NSURL) -> Bool? {
+        guard let path = url.path else {return nil}
+        guard NSFileManager.defaultManager().fileExistsAtPath(path) else {return nil}
+        
+        var skipBackup: AnyObject? = nil
+        
+        do {
+            try url.getResourceValue(&skipBackup, forKey: NSURLIsExcludedFromBackupKey)
+        } catch let error as NSError {
+            print("Get skip backup attribute for item \(url) failed, error: \(error.localizedDescription)")
+        }
+        
+        guard let number = skipBackup as? NSNumber else {return nil}
+        return number.boolValue
     }
 }
