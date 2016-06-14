@@ -117,8 +117,7 @@
 		973BCD0C1CEB3FA500F10B44 /* Kiwix_OSXUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCD0B1CEB3FA500F10B44 /* Kiwix_OSXUITests.swift */; };
 		973BCD191CEB402900F10B44 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 973BCD171CEB402900F10B44 /* Info.plist */; };
 		973BCD1A1CEB402900F10B44 /* KiwixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCD181CEB402900F10B44 /* KiwixTests.swift */; };
-		973BCD1D1CEB403700F10B44 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 973BCD1B1CEB403700F10B44 /* Info.plist */; };
-		973BCD1E1CEB403700F10B44 /* KiwixUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCD1C1CEB403700F10B44 /* KiwixUITests.swift */; };
+		973BCD1E1CEB403700F10B44 /* SnapshotAutomation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCD1C1CEB403700F10B44 /* SnapshotAutomation.swift */; };
 		973C8D5C1C25F945007272F9 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973C8D5B1C25F945007272F9 /* Preference.swift */; };
 		974570F41C2DABB500680E43 /* ZIMMultiReaderAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974570F31C2DABB500680E43 /* ZIMMultiReaderAPI.swift */; };
 		975227821D020560001D1DDE /* Indexer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227811D020560001D1DDE /* Indexer.storyboard */; };
@@ -145,6 +144,7 @@
 		975334CB1CEB6A43007ED50B /* Preference.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975334CA1CEB6A43007ED50B /* Preference.storyboard */; };
 		975334D01CEB6AE3007ED50B /* PreferenceGeneralController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975334CF1CEB6AE3007ED50B /* PreferenceGeneralController.swift */; };
 		975334D21CEB6B01007ED50B /* LibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975334D11CEB6B01007ED50B /* LibraryController.swift */; };
+		97587A961D1061C0006EE1AA /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97587A951D1061C0006EE1AA /* SnapshotHelper.swift */; };
 		975B90F91CEB75CB00D13906 /* ZimFilesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975B90F81CEB75CB00D13906 /* ZimFilesController.swift */; };
 		975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975B90FD1CEB909100D13906 /* iOSExtensions.swift */; };
 		975B90FF1CEB909900D13906 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779987A1C1E1C9600B1DD5E /* Extensions.swift */; };
@@ -440,7 +440,7 @@
 		973BCD171CEB402900F10B44 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Kiwix-iOSTests/Info.plist"; sourceTree = SOURCE_ROOT; };
 		973BCD181CEB402900F10B44 /* KiwixTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KiwixTests.swift; path = "Kiwix-iOSTests/KiwixTests.swift"; sourceTree = SOURCE_ROOT; };
 		973BCD1B1CEB403700F10B44 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Kiwix-iOSUITests/Info.plist"; sourceTree = SOURCE_ROOT; };
-		973BCD1C1CEB403700F10B44 /* KiwixUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KiwixUITests.swift; path = "Kiwix-iOSUITests/KiwixUITests.swift"; sourceTree = SOURCE_ROOT; };
+		973BCD1C1CEB403700F10B44 /* SnapshotAutomation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotAutomation.swift; path = "Kiwix-iOSUITests/SnapshotAutomation.swift"; sourceTree = SOURCE_ROOT; };
 		973C8D5B1C25F945007272F9 /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		974570F31C2DABB500680E43 /* ZIMMultiReaderAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZIMMultiReaderAPI.swift; sourceTree = "<group>"; };
 		97497B5A1D07487000ECD691 /* indexer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = indexer.h; path = "Kiwix/libkiwix/C&C++/indexer.h"; sourceTree = "<group>"; };
@@ -469,6 +469,7 @@
 		975334CA1CEB6A43007ED50B /* Preference.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Preference.storyboard; path = "Kiwix-OSX/StoryBoards/Preference.storyboard"; sourceTree = SOURCE_ROOT; };
 		975334CF1CEB6AE3007ED50B /* PreferenceGeneralController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferenceGeneralController.swift; path = "Kiwix-OSX/Controllers/PreferenceGeneralController.swift"; sourceTree = SOURCE_ROOT; };
 		975334D11CEB6B01007ED50B /* LibraryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryController.swift; path = "Kiwix-OSX/Controllers/LibraryController.swift"; sourceTree = SOURCE_ROOT; };
+		97587A951D1061C0006EE1AA /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = "Kiwix-iOSUITests/SnapshotHelper.swift"; sourceTree = SOURCE_ROOT; };
 		975B90F81CEB75CB00D13906 /* ZimFilesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ZimFilesController.swift; path = "Kiwix-OSX/Controllers/ZimFilesController.swift"; sourceTree = SOURCE_ROOT; };
 		975B90FD1CEB909100D13906 /* iOSExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = iOSExtensions.swift; path = "Kiwix-iOS/iOSExtensions.swift"; sourceTree = SOURCE_ROOT; };
 		9763A6281CEB9E55008A2718 /* OSXExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OSXExtensions.swift; path = "Kiwix-OSX/OSXExtensions.swift"; sourceTree = SOURCE_ROOT; };
@@ -1225,7 +1226,8 @@
 			isa = PBXGroup;
 			children = (
 				973BCD1B1CEB403700F10B44 /* Info.plist */,
-				973BCD1C1CEB403700F10B44 /* KiwixUITests.swift */,
+				973BCD1C1CEB403700F10B44 /* SnapshotAutomation.swift */,
+				97587A951D1061C0006EE1AA /* SnapshotHelper.swift */,
 			);
 			name = "Kiwix-iOSUITests";
 			path = KiwixUITests;
@@ -1557,7 +1559,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				973BCD1D1CEB403700F10B44 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1934,7 +1935,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				973BCD1E1CEB403700F10B44 /* KiwixUITests.swift in Sources */,
+				973BCD1E1CEB403700F10B44 /* SnapshotAutomation.swift in Sources */,
+				97587A961D1061C0006EE1AA /* SnapshotHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2274,7 +2276,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
-				INFOPLIST_FILE = KiwixTests/Info.plist;
+				INFOPLIST_FILE = "Kiwix-iOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = self.KiwixTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2288,7 +2290,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
-				INFOPLIST_FILE = KiwixTests/Info.plist;
+				INFOPLIST_FILE = "Kiwix-iOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = self.KiwixTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2300,12 +2302,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				INFOPLIST_FILE = KiwixUITests/Info.plist;
+				INFOPLIST_FILE = "Kiwix-iOSUITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = self.KiwixUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TEST_TARGET_NAME = Kiwix;
+				TEST_TARGET_NAME = "Kiwix-iOS";
 				USES_XCTRUNNER = YES;
 			};
 			name = Debug;
@@ -2314,11 +2317,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				INFOPLIST_FILE = KiwixUITests/Info.plist;
+				INFOPLIST_FILE = "Kiwix-iOSUITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = self.KiwixUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = Kiwix;
+				PROVISIONING_PROFILE = "";
+				TEST_TARGET_NAME = "Kiwix-iOS";
 				USES_XCTRUNNER = YES;
 			};
 			name = Release;
@@ -2426,6 +2430,7 @@
 				97E609FD1D103DED00EBCB9D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
