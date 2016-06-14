@@ -6,6 +6,7 @@ Kiwix for iOS is an offline reader for wikipedia. Our mission is to give people 
 ## What's to come in version 1.6
 - Table of contents
 - Some iPad search interface design changes
+- Spotlight search integration (will index opened / read articles)
 
 ### Stuff may be added in 1.6
 - Library enhancement

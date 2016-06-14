@@ -10,7 +10,7 @@ import UIKit
 
 class SearchTabController: UIViewController, UIScrollViewDelegate {
     
-    @IBOutlet weak var tabsContainer: UIView!
+    @IBOutlet weak var tabsContainer: TabsContainerView!
     @IBOutlet weak var scrollView: UIScrollView!
     
     private let indicatorView = UIView()
@@ -36,11 +36,6 @@ class SearchTabController: UIViewController, UIScrollViewDelegate {
 
         tabsContainer.addSubview(indicatorView)
         indicatorView.backgroundColor = UIColor.themeColor
-        
-        tabsContainer.layer.masksToBounds = false
-        tabsContainer.layer.shadowOffset = CGSizeMake(0, 0)
-        tabsContainer.layer.shadowOpacity = 0.5
-        tabsContainer.layer.shadowRadius = 2.0
         
         buttons = [mainPageButton, historyButton, settingButton]
         mainPageButton.setImage(UIImage(named: "MainPage")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
