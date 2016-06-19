@@ -25,7 +25,8 @@ class KiwixURLProtocol: NSURLProtocol {
                 data = dataDic["data"] as? NSData,
                 mimeType = dataDic["mime"] as? String,
                 dataLength = dataDic["length"]?.integerValue {
-                    let response = NSURLResponse(URL: self.request.URL!, MIMEType: mimeType, expectedContentLength: dataLength, textEncodingName: nil)
+                //print(String(data: data, encoding: NSUTF8StringEncoding))
+                let response = NSURLResponse(URL: self.request.URL!, MIMEType: mimeType, expectedContentLength: dataLength, textEncodingName: nil)
                 self.client?.URLProtocol(self, didReceiveResponse: response, cacheStoragePolicy: .Allowed)
                 self.client?.URLProtocol(self, didLoadData: data)
                 self.client?.URLProtocolDidFinishLoading(self)

@@ -126,7 +126,7 @@
                                     </mask>
                                 </variation>
                                 <connections>
-                                    <segue destination="9gZ-CS-CgY" kind="embed" id="U05-qH-vWi"/>
+                                    <segue destination="IL6-Ab-aEj" kind="embed" id="NpK-nG-Zi3"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x9y-hU-87q">
@@ -361,7 +361,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ja4-Ik-XIR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2607" y="-1015"/>
+            <point key="canvasLocation" x="3985" y="-979"/>
         </scene>
         <!--Search Scope SelectTBVC-->
         <scene sceneID="Wgu-t0-KNH">
@@ -370,10 +370,17 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="5uZ-E9-jau">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <containerView key="tableHeaderView" opaque="NO" contentMode="scaleToFill" id="pjd-fK-JNs">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <connections>
+                                <segue destination="x8e-ps-NUY" kind="embed" id="4Hi-ul-aCg"/>
+                            </connections>
+                        </containerView>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" id="QXK-je-ISm" customClass="BasicBookCell" customModule="Kiwix">
-                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="72" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QXK-je-ISm" id="bj5-Xo-SR6">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -490,7 +497,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2GN-4A-8Fk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3921" y="-1015"/>
+            <point key="canvasLocation" x="1853" y="-979"/>
         </scene>
         <!--Search HistoryTBVC-->
         <scene sceneID="9Nv-K7-Ksi">
@@ -528,7 +535,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gge-hI-22O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3265" y="-1015"/>
+            <point key="canvasLocation" x="4643" y="-979"/>
         </scene>
         <!--BookmarkHUDVC-->
         <scene sceneID="PBK-Zl-kOY">
@@ -980,11 +987,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pYo-r0-bj4">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pYo-r0-bj4">
                                 <rect key="frame" x="0.0" y="44" width="600" height="556"/>
                                 <color key="backgroundColor" red="0.97946714743589747" green="0.97946714743589747" blue="0.97946714743589747" alpha="1" colorSpace="calibratedRGB"/>
                             </scrollView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IhM-7L-w7W" customClass="TabsContainerView" customModule="Kiwix" customModuleProvider="target">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IhM-7L-w7W" customClass="TabsContainerView" customModule="Kiwix" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                 <subviews>
                                     <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lcU-Sh-nVA">
@@ -1093,7 +1100,70 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wva-Fk-hmb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1852" y="-1015"/>
+            <point key="canvasLocation" x="3329" y="-979"/>
+        </scene>
+        <!--Lang LocalCVC-->
+        <scene sceneID="jLU-Rv-hcv">
+            <objects>
+                <viewController id="x8e-ps-NUY" customClass="LangLocalCVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="HQ0-6h-SSN">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="oLp-jV-WAb">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="SEj-84-HqB">
+                                    <size key="itemSize" width="102" height="42"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="yvP-cy-f4q" customClass="LocalLangCell" customModule="Kiwix" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="1" width="102" height="42"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="102" height="42"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PEx-jc-RoI">
+                                                    <rect key="frame" x="8" y="10" width="86" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailingMargin" secondItem="PEx-jc-RoI" secondAttribute="trailing" id="16y-Ff-TeD"/>
+                                            <constraint firstAttribute="leadingMargin" secondItem="PEx-jc-RoI" secondAttribute="leading" id="5S0-5o-wlC"/>
+                                            <constraint firstItem="PEx-jc-RoI" firstAttribute="centerY" secondItem="yvP-cy-f4q" secondAttribute="centerY" id="NLl-0r-15q"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="label" destination="PEx-jc-RoI" id="97Y-ZM-sNz"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="oLp-jV-WAb" secondAttribute="trailing" id="Kav-h8-re2"/>
+                            <constraint firstAttribute="bottom" secondItem="oLp-jV-WAb" secondAttribute="bottom" id="ejK-QK-YVR"/>
+                            <constraint firstItem="oLp-jV-WAb" firstAttribute="leading" secondItem="HQ0-6h-SSN" secondAttribute="leading" id="l5H-9W-Dze"/>
+                            <constraint firstItem="oLp-jV-WAb" firstAttribute="top" secondItem="HQ0-6h-SSN" secondAttribute="top" id="sCF-0y-fVJ"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="oLp-jV-WAb" id="7Gi-bJ-DHW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8l6-By-GDL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2594" y="-979"/>
         </scene>
     </scenes>
     <resources>
