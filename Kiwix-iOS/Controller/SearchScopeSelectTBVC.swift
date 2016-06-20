@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SearchScopeSelectTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
+class SearchScopeSelectTBVC: UITableViewController, TableCellDelegate, NSFetchedResultsControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,11 +24,19 @@ class SearchScopeSelectTBVC: UITableViewController, NSFetchedResultsControllerDe
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
         fetchRequest.predicate = NSPredicate(format: "isLocal == true")
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "ScopeFRC")
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "language.name", cacheName: "ScopeFRC")
         fetchedResultsController.delegate = self
         fetchedResultsController.performFetch(deleteCache: false)
         return fetchedResultsController
     }()
+    
+    // MARK: - Table Cell Delegate
+    
+    func didTapOnAccessoryViewForCell(cell: UITableViewCell) {
+        guard let indexPath = tableView.indexPathForCell(cell),
+            let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
+        book.includeInSearch = !book.includeInSearch
+    }
 
     // MARK: - Table view data source
 
@@ -49,24 +57,22 @@ class SearchScopeSelectTBVC: UITableViewController, NSFetchedResultsControllerDe
     
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         guard let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
-        guard let cell = cell as? BasicBookCell else {return}
+        guard let cell = cell as? CheckMarkBookCell else {return}
         
+        cell.delegate = self
         cell.titleLabel.text = book.title
         cell.subtitleLabel.text = book.detailedDescription
 
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
         cell.hasPic = book.hasPic
         cell.hasIndex = book.hasIndex
-        
-        cell.accessoryType = book.includeInSearch ? .Checkmark : .None
+        cell.isChecked = book.includeInSearch
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return NSLocalizedString("Books included in search", comment: "Search Scope Control")
-        } else {
-            return ""
-        }
+        guard tableView.numberOfSections > 1 else {return nil}
+        guard let languageName = fetchedResultController.sections?[section].name else {return nil}
+        return languageName
     }
     
     // MARK: Table view delegate
@@ -83,8 +89,10 @@ class SearchScopeSelectTBVC: UITableViewController, NSFetchedResultsControllerDe
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        guard let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
-        book.includeInSearch = !book.includeInSearch
+        guard let mainVC = parentViewController?.parentViewController as? MainVC,
+              let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
+        mainVC.hideSearch()
+        mainVC.loadMainPage(book)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     

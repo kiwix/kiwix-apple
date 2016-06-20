@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import DZNEmptyDataSet
 
-class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDelegate, BookTableCellDelegate, DownloadProgressReporting, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDelegate, TableCellDelegate, DownloadProgressReporting, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // MARK: - Override
     
@@ -38,9 +38,9 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
         Network.sharedInstance.delegate = nil
     }
     
-    // MARK: - BookTableCellDelegate
+    // MARK: - TableCellDelegate
     
-    func didTapOnAccessoryViewForCell(cell: BookTableCell) {
+    func didTapOnAccessoryViewForCell(cell: UITableViewCell) {
         guard let indexPath = tableView.indexPathForCell(cell),
             let downloadTask = fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask,
             let book = downloadTask.book else {return}

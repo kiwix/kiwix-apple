@@ -17,3 +17,16 @@ class LocalLangCell: UICollectionViewCell {
         backgroundColor = UIColor.themeColor
     }
 }
+
+class BookCollectionCell: UICollectionViewCell, UIGestureRecognizerDelegate {
+    
+    @IBOutlet weak var favIcon: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var languageLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    
+    override func awakeFromNib() {
+        favIcon.layer.cornerRadius = 4.0
+        favIcon.layer.masksToBounds = true
+    }
+}

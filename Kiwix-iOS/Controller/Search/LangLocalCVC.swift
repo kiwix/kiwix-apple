@@ -55,17 +55,35 @@ class LangLocalCVC: UIViewController, UICollectionViewDataSource, UICollectionVi
         return CGSizeMake(size.width + 30, height)
     }
     
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        let numberOfItems = collectionView.numberOfItemsInSection(section)
+        
+        var width: CGFloat = 0
+        for item in 0..<numberOfItems {
+            let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forItem: item, inSection: section))
+            width += size.width
+        }
+        width += 10.0 * CGFloat(numberOfItems - 1)
+        
+        let hInset = max((collectionView.frame.width - width) / 2, 0)
+        return UIEdgeInsetsMake(0, hInset, 0, hInset)
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 10
+    }
+    
     // MARK: - Fetched Result Controller
     
     var blockOperation = NSBlockOperation()
     let managedObjectContext = (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
     lazy var fetchedResultController: NSFetchedResultsController = {
         let fetchRequest = NSFetchRequest(entityName: "Language")
-        fetchRequest.fetchBatchSize = 20
         let descriptor = NSSortDescriptor(key: "name", ascending: true)
         let predicate = NSPredicate(format: "books.isLocal CONTAINS true")
         fetchRequest.sortDescriptors = [descriptor]
         fetchRequest.predicate = predicate
+        fetchRequest.fetchBatchSize = 20
         fetchRequest.fetchLimit = 5
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "LangLocalFRC")
         fetchedResultsController.delegate = self

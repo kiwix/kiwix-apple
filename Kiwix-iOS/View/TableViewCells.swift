@@ -8,8 +8,9 @@
 
 import UIKit
 
-// MARK: - Normal Cells
+// MARK: - Book Cells
 
+/* Book Cell With P & I indicator */
 class BasicBookCell: UITableViewCell {
     private let hasPicIndicatorOrange = UIColor(red: 1, green: 0.5, blue: 0, alpha: 1)
     private let hasIndexIndicatorBlue = UIColor(red: 0.304706, green: 0.47158, blue: 1, alpha: 1)
@@ -37,6 +38,28 @@ class BasicBookCell: UITableViewCell {
         didSet {
             hasIndexIndicator.backgroundColor = hasIndex ? hasIndexIndicatorBlue : UIColor.lightGrayColor()
         }
+    }
+}
+
+/* Book Cell With P & I indicator, a check mark on the right */
+class CheckMarkBookCell: BasicBookCell {
+    @IBOutlet weak var accessoryImageView: LargeHitZoneImageView!
+    weak var delegate: TableCellDelegate?
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(CheckMarkBookCell.handleTap))
+        accessoryImageView.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    var isChecked: Bool = false {
+        didSet {
+            accessoryImageView.highlighted = isChecked
+        }
+    }
+    
+    func handleTap() {
+        self.delegate?.didTapOnAccessoryViewForCell(self)
     }
 }
 
@@ -72,7 +95,7 @@ class BookTableCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var accessoryImageView: LargeHitZoneImageView!
-    weak var delegate: BookTableCellDelegate?
+    weak var delegate: TableCellDelegate?
     
     var accessoryImageTintColor: UIColor? {
         didSet {
@@ -113,8 +136,20 @@ class BookTableCell: UITableViewCell {
     }
 }
 
+// MARK: - Article Cell
+
+class ArticleCell: UITableViewCell {
+    @IBOutlet weak var favIcon: UIImageView!
+    @IBOutlet weak var hasPicIndicator: UIView!
+    @IBOutlet weak var titleLabel: UILabel!
+}
+
+class ArticleSnippetCell: ArticleCell {
+    @IBOutlet weak var snippetLabel: UILabel!
+}
+
 // MARK: - Protocol
 
-protocol BookTableCellDelegate: class {
-    func didTapOnAccessoryViewForCell(cell: BookTableCell)
+protocol TableCellDelegate: class {
+    func didTapOnAccessoryViewForCell(cell: UITableViewCell)
 }

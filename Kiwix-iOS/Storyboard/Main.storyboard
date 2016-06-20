@@ -255,6 +255,7 @@
         <!--Search Local BooksCVC-->
         <scene sceneID="tv8-MB-WTH">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ja4-Ik-XIR" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="SearchLocalBooksCVC" id="AuN-RP-iDn" customClass="SearchLocalBooksCVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Tky-oO-aD1"/>
@@ -359,7 +360,6 @@
                         <outlet property="collectionView" destination="E2T-US-f5Z" id="DgE-V1-W8m"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ja4-Ik-XIR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3985" y="-979"/>
         </scene>
@@ -370,24 +370,17 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="5uZ-E9-jau">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
-                        <containerView key="tableHeaderView" opaque="NO" contentMode="scaleToFill" id="pjd-fK-JNs">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                            <connections>
-                                <segue destination="x8e-ps-NUY" kind="embed" id="4Hi-ul-aCg"/>
-                            </connections>
-                        </containerView>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" id="QXK-je-ISm" customClass="BasicBookCell" customModule="Kiwix">
-                                <rect key="frame" x="0.0" y="72" width="600" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" id="QXK-je-ISm" customClass="CheckMarkBookCell" customModule="Kiwix">
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QXK-je-ISm" id="bj5-Xo-SR6">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g8b-RO-czj">
-                                            <rect key="frame" x="59" y="6" width="533" height="20"/>
+                                            <rect key="frame" x="59" y="6" width="501" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="19.5" id="Q5R-Kr-GZZ"/>
                                             </constraints>
@@ -403,7 +396,7 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lna-QC-TaS">
-                                            <rect key="frame" x="59" y="26" width="533" height="12"/>
+                                            <rect key="frame" x="59" y="26" width="501" height="12"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -443,6 +436,14 @@
                                                 </mask>
                                             </variation>
                                         </view>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Check" highlightedImage="CheckBlue" translatesAutoresizingMaskIntoConstraints="NO" id="DBc-uZ-XJ7" customClass="LargeHitZoneImageView" customModule="Kiwix" customModuleProvider="target">
+                                            <rect key="frame" x="568" y="10" width="24" height="24"/>
+                                            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="24" id="1cX-LF-tWy"/>
+                                                <constraint firstAttribute="width" constant="24" id="EiB-qo-N6J"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="PGj-Uz-NTF" firstAttribute="leading" secondItem="bxk-BM-3An" secondAttribute="trailing" constant="4" id="3B6-jN-jbK"/>
@@ -451,16 +452,20 @@
                                         <constraint firstItem="PGj-Uz-NTF" firstAttribute="height" secondItem="bj5-Xo-SR6" secondAttribute="height" multiplier="0.09" id="9ds-vD-nqD"/>
                                         <constraint firstItem="TmV-G9-g51" firstAttribute="top" secondItem="g8b-RO-czj" secondAttribute="top" id="AcV-0E-WGd"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="Lna-QC-TaS" secondAttribute="bottom" constant="-2.5" id="BQQ-R5-5fd"/>
+                                        <constraint firstItem="DBc-uZ-XJ7" firstAttribute="leading" secondItem="g8b-RO-czj" secondAttribute="trailing" constant="8" id="HIF-JG-enG"/>
                                         <constraint firstItem="9y6-m2-QTb" firstAttribute="top" secondItem="PGj-Uz-NTF" secondAttribute="bottom" id="LrR-7P-oLk"/>
                                         <constraint firstItem="TmV-G9-g51" firstAttribute="leading" secondItem="bxk-BM-3An" secondAttribute="trailing" constant="4" id="RKY-EX-UIm"/>
                                         <constraint firstItem="bxk-BM-3An" firstAttribute="leading" secondItem="bj5-Xo-SR6" secondAttribute="leadingMargin" constant="-2" id="TaI-4N-dRQ"/>
                                         <constraint firstItem="bxk-BM-3An" firstAttribute="centerY" secondItem="bj5-Xo-SR6" secondAttribute="centerY" id="ZNz-3g-dex"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="DBc-uZ-XJ7" secondAttribute="trailing" id="cJt-JY-sHw"/>
                                         <constraint firstItem="PGj-Uz-NTF" firstAttribute="centerY" secondItem="bj5-Xo-SR6" secondAttribute="centerY" id="fAh-oJ-ziK"/>
                                         <constraint firstItem="PGj-Uz-NTF" firstAttribute="top" secondItem="TmV-G9-g51" secondAttribute="bottom" id="jK9-II-eaW"/>
                                         <constraint firstItem="Lna-QC-TaS" firstAttribute="leading" secondItem="9y6-m2-QTb" secondAttribute="trailing" constant="4" id="kfr-yj-Ics"/>
                                         <constraint firstItem="Lna-QC-TaS" firstAttribute="top" secondItem="g8b-RO-czj" secondAttribute="bottom" id="oog-7o-e6U"/>
+                                        <constraint firstItem="DBc-uZ-XJ7" firstAttribute="centerY" secondItem="bj5-Xo-SR6" secondAttribute="centerY" id="sDT-gW-28b"/>
                                         <constraint firstItem="g8b-RO-czj" firstAttribute="leading" secondItem="TmV-G9-g51" secondAttribute="trailing" constant="4" id="sRF-jC-X66"/>
                                         <constraint firstItem="9y6-m2-QTb" firstAttribute="top" secondItem="Lna-QC-TaS" secondAttribute="top" id="uBT-QM-ups"/>
+                                        <constraint firstItem="DBc-uZ-XJ7" firstAttribute="leading" secondItem="Lna-QC-TaS" secondAttribute="trailing" constant="8" id="zBV-hr-nJW"/>
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
@@ -472,15 +477,18 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="bxk-BM-3An" firstAttribute="top" secondItem="QXK-je-ISm" secondAttribute="top" constant="6" id="NHP-qf-G8F"/>
-                                    <constraint firstAttribute="trailing" secondItem="Lna-QC-TaS" secondAttribute="trailing" constant="8" id="RP5-NQ-eSs"/>
-                                    <constraint firstAttribute="trailing" secondItem="g8b-RO-czj" secondAttribute="trailing" constant="8" id="ij7-SU-k1Q"/>
+                                    <constraint firstAttribute="trailing" secondItem="Lna-QC-TaS" secondAttribute="trailing" constant="30" id="RP5-NQ-eSs"/>
+                                    <constraint firstAttribute="trailing" secondItem="g8b-RO-czj" secondAttribute="trailing" constant="30" id="ij7-SU-k1Q"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="NHP-qf-G8F"/>
+                                        <exclude reference="ij7-SU-k1Q"/>
+                                        <exclude reference="RP5-NQ-eSs"/>
                                     </mask>
                                 </variation>
                                 <connections>
+                                    <outlet property="accessoryImageView" destination="DBc-uZ-XJ7" id="Il3-71-PF9"/>
                                     <outlet property="favIcon" destination="bxk-BM-3An" id="iHS-PU-xLX"/>
                                     <outlet property="hasIndexIndicator" destination="9y6-m2-QTb" id="7MF-et-ko3"/>
                                     <outlet property="hasPicIndicator" destination="TmV-G9-g51" id="kKT-Lj-Ze1"/>
@@ -502,6 +510,7 @@
         <!--Search HistoryTBVC-->
         <scene sceneID="9Nv-K7-Ksi">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Gge-hI-22O" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController storyboardIdentifier="SearchHistoryTBVC" id="c60-LS-VO8" customClass="SearchHistoryTBVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="JbJ-2B-1Mr">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
@@ -533,7 +542,6 @@
                         </connections>
                     </tableView>
                 </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Gge-hI-22O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4643" y="-979"/>
         </scene>
@@ -978,6 +986,7 @@
         <!--Search Tab Controller-->
         <scene sceneID="ELM-OI-Gks">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wva-Fk-hmb" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="9gZ-CS-CgY" customClass="SearchTabController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="X4e-wR-a2C"/>
@@ -1098,7 +1107,6 @@
                         <outlet property="tabsContainer" destination="IhM-7L-w7W" id="PLg-qS-ecM"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="wva-Fk-hmb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3329" y="-979"/>
         </scene>
@@ -1107,11 +1115,11 @@
             <objects>
                 <viewController id="x8e-ps-NUY" customClass="LangLocalCVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HQ0-6h-SSN">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="oLp-jV-WAb">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="SEj-84-HqB">
                                     <size key="itemSize" width="102" height="42"/>
@@ -1121,7 +1129,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="yvP-cy-f4q" customClass="LocalLangCell" customModule="Kiwix" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="1" width="102" height="42"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="102" height="42"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="102" height="42"/>
@@ -1167,6 +1175,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Check" width="21" height="21"/>
+        <image name="CheckBlue" width="21" height="21"/>
         <image name="DownArrow" width="21" height="21"/>
         <image name="History" width="21" height="21"/>
         <image name="MainPage" width="21" height="21"/>
