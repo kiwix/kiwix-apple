@@ -24,7 +24,7 @@ class SearchOperation: GroupOperation {
             let managedObjectContext = UIApplication.appDelegate.managedObjectContext
             guard let book = Book.fetch(id, context: managedObjectContext) else {continue}
             guard book.includeInSearch else {continue}
-            let operation = SingleBookSearchOperation(zimReader: zimReader, searchTerm: searchTerm, completionHandler: { [unowned sortOperation] (results) in
+            let operation = SingleBookSearchOperation(zimReader: zimReader, searchTerm: searchTerm.lowercaseString, completionHandler: { [unowned sortOperation] (results) in
                 sortOperation.results += results
             })
             
@@ -61,6 +61,7 @@ private class SingleBookSearchOperation: Operation {
         var results = [SearchResult]()
         for dic in resultDics {
             guard let result = SearchResult(rawResult: dic) else {continue}
+            print(result)
             results.append(result)
         }
         completionHandler(results)
@@ -77,7 +78,7 @@ private class SortSearchResultsOperation: Operation {
     }
     
     override private func execute() {
-        sortBySearchMethod()
+        sort()
         completionHandler(results)
         finish()
     }
@@ -87,7 +88,7 @@ private class SortSearchResultsOperation: Operation {
      2. Among Xapian results: sort by percent, then title case insensitive compare
      3. Among searchSuggestionSmart results: sort by title case insensitive compare
     */
-    private func sortBySearchMethod() {
+    private func sort() {
         results.sortInPlace { (result0, result1) -> Bool in
             let result0Percent = result0.percent ?? -1
             let result1Percent = result1.percent ?? -1

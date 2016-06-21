@@ -160,10 +160,11 @@ extension ZimReader {
     }
 }
 
-class SearchResult {
+class SearchResult: CustomStringConvertible {
     let bookID: String
     let title: String
     let percent: Double? // range: 0-100
+    let distance: Int64 // Levenshtein distance, non negative integer
     let path: String?
     let snippet: String?
     
@@ -172,10 +173,18 @@ class SearchResult {
         self.title = (rawResult["title"] as? String) ?? ""
         
         self.percent = (rawResult["percent"] as? NSNumber)?.doubleValue
+        self.distance = (rawResult["distance"]as? NSNumber)?.longLongValue ?? 0
         self.path = rawResult["path"] as? String
         self.snippet = rawResult["snippet"] as? String
         
         if bookID == "" {return nil}
         if title == "" {return nil}
+    }
+    
+    var description: String {
+        var parts = [bookID, title]
+        if let percent = percent {parts.append("\(percent)%")}
+        parts.append("dist: \(distance)")
+        return parts.joinWithSeparator(", ")
     }
 }

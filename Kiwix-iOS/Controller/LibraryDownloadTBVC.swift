@@ -45,7 +45,7 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
             let downloadTask = fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask,
             let book = downloadTask.book else {return}
         switch downloadTask.state {
-        case .Downloading:
+        case .Downloading, .Queued:
             Network.sharedInstance.pause(book)
         case .Paused, .Error:
             Network.sharedInstance.resume(book)

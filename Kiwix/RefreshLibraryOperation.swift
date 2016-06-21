@@ -28,6 +28,7 @@ class RefreshLibraryOperation: GroupOperation {
             parseOperation.xmlData = data
         }
         let fetchOperation = URLSessionTaskOperation(task: task)
+        fetchOperation.name = "Library XML download operation"
         
         #if os(iOS) || os(watchOS) || os(tvOS)
             fetchOperation.addObserver(NetworkObserver())

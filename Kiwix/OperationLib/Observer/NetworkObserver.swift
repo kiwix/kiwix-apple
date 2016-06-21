@@ -18,6 +18,7 @@ struct NetworkObserver: OperationObserver {
     init() { }
     
     func operationDidStart(operation: Operation) {
+        print("NetworkObserver: \(operation.name ?? "Unknown") operation did start")
         dispatch_async(dispatch_get_main_queue()) {
             // Increment the network indicator's "reference count"
             NetworkIndicatorController.sharedIndicatorController.networkActivityDidStart()
@@ -27,13 +28,19 @@ struct NetworkObserver: OperationObserver {
     func operation(operation: Operation, didProduceOperation newOperation: NSOperation) { }
     
     func operationDidFinish(operation: Operation, errors: [NSError]) {
+        // If an op is cancelled, operationDidStart will not be called
+        print("NetworkObserver: \(operation.name ?? "Unknown") operation did finish")
+        guard !operation.cancelled else {return}
+        
         dispatch_async(dispatch_get_main_queue()) {
             // Decrement the network indicator's "reference count".
             NetworkIndicatorController.sharedIndicatorController.networkActivityDidEnd()
         }
     }
     
-    func operationDidCancel(operation: Operation) { }
+    func operationDidCancel(operation: Operation) {
+        print("NetworkObserver: \(operation.name ?? "Unknown") operation did cancel")
+    }
     
 }
 
