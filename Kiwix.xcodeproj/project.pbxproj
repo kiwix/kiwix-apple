@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		970103FB1C6824FA00DC48F6 /* RefreshLibraryOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970103F91C6824FA00DC48F6 /* RefreshLibraryOperation.swift */; };
 		970C3DCA1CBD79450026A240 /* MigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C3DC91CBD79450026A240 /* MigrationPolicy.swift */; };
+		971046321D19B96E002141C0 /* XapianSearcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = 971046311D19B96E002141C0 /* XapianSearcher.mm */; };
 		9711871C1CEB448400B9909D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711871B1CEB448400B9909D /* libz.tbd */; };
 		9711871E1CEB449A00B9909D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711871D1CEB449A00B9909D /* libz.tbd */; };
 		971187301CEB50FC00B9909D /* ZimReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9711872F1CEB50FC00B9909D /* ZimReader.mm */; };
@@ -82,7 +83,7 @@
 		971A10431D022C54007FC62C /* SettingTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10411D022C54007FC62C /* SettingTBVC.swift */; };
 		971A10461D022CB2007FC62C /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10451D022CB2007FC62C /* SearchVC.swift */; };
 		971A104A1D022CBE007FC62C /* SearchResultTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10471D022CBE007FC62C /* SearchResultTBVC.swift */; };
-		971A104B1D022CBE007FC62C /* SearchScopeSelectTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10481D022CBE007FC62C /* SearchScopeSelectTBVC.swift */; };
+		971A104B1D022CBE007FC62C /* SearchScopeSelectVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10481D022CBE007FC62C /* SearchScopeSelectVC.swift */; };
 		971A10521D022D9D007FC62C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10511D022D9D007FC62C /* AppDelegate.swift */; };
 		971A10581D022DAD007FC62C /* LibraryDownloadTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10531D022DAD007FC62C /* LibraryDownloadTBVC.swift */; };
 		971A10591D022DAD007FC62C /* LibraryLocalBookDetailTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10541D022DAD007FC62C /* LibraryLocalBookDetailTBVC.swift */; };
@@ -342,6 +343,8 @@
 		86340F4A23677DE4554AE94B /* Pods-Kiwix-OSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-OSX.release.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-OSX/Pods-Kiwix-OSX.release.xcconfig"; sourceTree = "<group>"; };
 		970103F91C6824FA00DC48F6 /* RefreshLibraryOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshLibraryOperation.swift; sourceTree = "<group>"; };
 		970C3DC91CBD79450026A240 /* MigrationPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MigrationPolicy.swift; path = CoreData/Migration/MigrationPolicy.swift; sourceTree = "<group>"; };
+		971046301D19B96E002141C0 /* XapianSearcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XapianSearcher.h; path = Kiwix/libkiwix/XapianSearcher.h; sourceTree = "<group>"; };
+		971046311D19B96E002141C0 /* XapianSearcher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = XapianSearcher.mm; path = Kiwix/libkiwix/XapianSearcher.mm; sourceTree = "<group>"; };
 		9711871B1CEB448400B9909D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		9711871D1CEB449A00B9909D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		9711872E1CEB50FC00B9909D /* ZimReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZimReader.h; path = Kiwix/libkiwix/ZimReader.h; sourceTree = "<group>"; };
@@ -394,7 +397,7 @@
 		971A10411D022C54007FC62C /* SettingTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingTBVC.swift; path = "Kiwix-iOS/Controller/SettingTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10451D022CB2007FC62C /* SearchVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchVC.swift; path = "Kiwix-iOS/Controller/SearchVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10471D022CBE007FC62C /* SearchResultTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchResultTBVC.swift; path = "Kiwix-iOS/Controller/SearchResultTBVC.swift"; sourceTree = SOURCE_ROOT; };
-		971A10481D022CBE007FC62C /* SearchScopeSelectTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchScopeSelectTBVC.swift; path = "Kiwix-iOS/Controller/SearchScopeSelectTBVC.swift"; sourceTree = SOURCE_ROOT; };
+		971A10481D022CBE007FC62C /* SearchScopeSelectVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchScopeSelectVC.swift; path = "Kiwix-iOS/Controller/SearchScopeSelectVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10511D022D9D007FC62C /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		971A10531D022DAD007FC62C /* LibraryDownloadTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryDownloadTBVC.swift; path = "Kiwix-iOS/Controller/LibraryDownloadTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10541D022DAD007FC62C /* LibraryLocalBookDetailTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryLocalBookDetailTBVC.swift; path = "Kiwix-iOS/Controller/LibraryLocalBookDetailTBVC.swift"; sourceTree = SOURCE_ROOT; };
@@ -706,6 +709,8 @@
 				9711872F1CEB50FC00B9909D /* ZimReader.mm */,
 				975227AA1D020D83001D1DDE /* ZimIndexer.h */,
 				975227AB1D020D83001D1DDE /* ZimIndexer.mm */,
+				971046301D19B96E002141C0 /* XapianSearcher.h */,
+				971046311D19B96E002141C0 /* XapianSearcher.mm */,
 				9711870C1CEB42FA00B9909D /* C++ */,
 				971187041CEB426300B9909D /* static */,
 				971186ED1CEB424800B9909D /* shared */,
@@ -1251,7 +1256,7 @@
 			isa = PBXGroup;
 			children = (
 				971A10451D022CB2007FC62C /* SearchVC.swift */,
-				971A10481D022CBE007FC62C /* SearchScopeSelectTBVC.swift */,
+				971A10481D022CBE007FC62C /* SearchScopeSelectVC.swift */,
 				971A10471D022CBE007FC62C /* SearchResultTBVC.swift */,
 				9768957A1CB6A35E00F02686 /* Old */,
 			);
@@ -1874,6 +1879,7 @@
 				979CB6671D05C44F005E1BA1 /* OperationCondition.swift in Sources */,
 				9752279C1D020C00001D1DDE /* pathTools.cpp in Sources */,
 				971A10381D022C15007FC62C /* WebViewVC.swift in Sources */,
+				971046321D19B96E002141C0 /* XapianSearcher.mm in Sources */,
 				979CB6AF1D05C520005E1BA1 /* CKContainer+Operations.swift in Sources */,
 				979CB6431D05C44F005E1BA1 /* CalendarCapability.swift in Sources */,
 				979CB6AD1D05C520005E1BA1 /* BlockOperation.swift in Sources */,
@@ -1891,7 +1897,7 @@
 				979CB6B71D05C520005E1BA1 /* LocationOperation.swift in Sources */,
 				971A102F1D022AD5007FC62C /* Logo.swift in Sources */,
 				979CB6451D05C44F005E1BA1 /* Capability.swift in Sources */,
-				971A104B1D022CBE007FC62C /* SearchScopeSelectTBVC.swift in Sources */,
+				971A104B1D022CBE007FC62C /* SearchScopeSelectVC.swift in Sources */,
 				977998771C1E0B7900B1DD5E /* Article+CoreDataProperties.swift in Sources */,
 				971187301CEB50FC00B9909D /* ZimReader.mm in Sources */,
 				979CB6491D05C44F005E1BA1 /* iCloudContainerCapability.swift in Sources */,

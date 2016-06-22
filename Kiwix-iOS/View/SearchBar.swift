@@ -106,7 +106,6 @@ class SearchBar: UISearchBar {
         self.autocapitalizationType = .None
         self.placeholder = LocalizedStrings.search
         self.returnKeyType = .Go
-        //listSubviewOfView(self)
     }
     
     func listSubviewOfView(view: UIView) {

@@ -37,5 +37,3 @@ adjustThumbLayout(document.getElementsByClassName("thumb tright"));
 adjustThumbLayout(document.getElementsByClassName("thumb tleft"));
 adjustThumbLayout(document.getElementsByClassName("thumb tmulti tright"));
 adjustThumbLayout(document.getElementsByClassName("thumb tmulti tleft"));
-
-

@@ -92,6 +92,7 @@ private class SortSearchResultsOperation: Operation {
         results.sortInPlace { (result0, result1) -> Bool in
             let result0Percent = result0.percent ?? -1
             let result1Percent = result1.percent ?? -1
+            
             if result0Percent == result1Percent {
                 return titleCaseInsensitiveCompare(result0, result1: result1)
             } else {

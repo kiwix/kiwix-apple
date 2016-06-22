@@ -1,5 +1,5 @@
 //
-//  SearchScopeSelectTBVC.swift
+//  SearchScopeSelectVC.swift
 //  Kiwix
 //
 //  Created by Chris Li on 4/7/16.
@@ -9,10 +9,21 @@
 import UIKit
 import CoreData
 
-class SearchScopeSelectTBVC: UITableViewController, TableCellDelegate, NSFetchedResultsControllerDelegate {
+class SearchScopeSelectVC: UIViewController, UITableViewDelegate, UITableViewDataSource, TableCellDelegate, NSFetchedResultsControllerDelegate {
 
+    @IBOutlet weak var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.tableHeaderView = UIView()
+    }
+    
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        let topInset: CGFloat = traitCollection.verticalSizeClass == .Regular ? 64.0 : 44.0
+        tableView.contentInset = UIEdgeInsetsMake(topInset, 0, 0, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(topInset, 0, 0, 0)
     }
     
     // MARK: - Fetched Results Controller
@@ -40,22 +51,36 @@ class SearchScopeSelectTBVC: UITableViewController, TableCellDelegate, NSFetched
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return fetchedResultController.sections?.count ?? 0
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return (fetchedResultController.sections?.count ?? 0) + 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sectionInfo = fetchedResultController.sections?[section] else {return 0}
-        return sectionInfo.numberOfObjects
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == tableView.numberOfSections - 1 {
+            return 5
+        } else {
+            guard let sectionInfo = fetchedResultController.sections?[section] else {return 0}
+            return sectionInfo.numberOfObjects
+        }
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-        self.configureCell(cell, atIndexPath: indexPath)
-        return cell
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if indexPath.section == tableView.numberOfSections - 1 {
+            let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+            self.configureRecentSearchCell(cell, atIndexPath: indexPath)
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCellWithIdentifier("CheckMarkBookCell", forIndexPath: indexPath)
+            self.configureBookCell(cell, atIndexPath: indexPath)
+            return cell
+        }
     }
     
-    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+    func configureRecentSearchCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+        cell.textLabel?.text = "placeholder"
+    }
+    
+    func configureBookCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         guard let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
         guard let cell = cell as? CheckMarkBookCell else {return}
         
@@ -69,26 +94,30 @@ class SearchScopeSelectTBVC: UITableViewController, TableCellDelegate, NSFetched
         cell.isChecked = book.includeInSearch
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        guard tableView.numberOfSections > 1 else {return nil}
-        guard let languageName = fetchedResultController.sections?[section].name else {return nil}
-        return languageName
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == tableView.numberOfSections - 1 {
+            return "Recent Searches"
+        } else {
+            guard tableView.numberOfSections > 1 else {return nil}
+            guard let languageName = fetchedResultController.sections?[section].name else {return nil}
+            return languageName
+        }
     }
     
     // MARK: Table view delegate
     
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard let headerText = self.tableView(tableView, titleForHeaderInSection: section) else {return 0.0}
         guard headerText != "" else {return 0.0}
         return 20.0
     }
     
-    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else {return}
         header.textLabel?.font = UIFont.boldSystemFontOfSize(14)
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         guard let mainVC = parentViewController?.parentViewController as? MainVC,
               let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
         mainVC.hideSearch()
@@ -120,7 +149,7 @@ class SearchScopeSelectTBVC: UITableViewController, TableCellDelegate, NSFetched
         case .Delete:
             tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
         case .Update:
-            self.configureCell(tableView.cellForRowAtIndexPath(indexPath!)!, atIndexPath: indexPath!)
+            self.configureBookCell(tableView.cellForRowAtIndexPath(indexPath!)!, atIndexPath: indexPath!)
         case .Move:
             tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
             tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
