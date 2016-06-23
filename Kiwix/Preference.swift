@@ -15,9 +15,18 @@ class Preference {
         set{Defaults[.hasShowGetStartedAlert] = newValue}
     }
     
+    // MARK: - Recent Search
+    
+    class func addRecentSearchTerm(searchTerm: String) {
+        recentSearchTerms.insert(searchTerm, atIndex: 0)
+    }
+    
     class var recentSearchTerms: [String] {
         get{return Defaults[.recentSearchTerms]}
-        set{Defaults[.recentSearchTerms] = newValue}
+        set{
+            let searchTerms = NSOrderedSet(array: newValue).array as! [String]
+            Defaults[.recentSearchTerms] = searchTerms.count > 20 ? Array(searchTerms[0..<20]) : searchTerms
+        }
     }
     
     // MARK: - Reading

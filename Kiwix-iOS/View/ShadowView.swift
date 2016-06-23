@@ -8,15 +8,13 @@
 
 import UIKit
 
-class TabsContainerView: UIView {
+class DropShadowView: UIView {
 
     override func drawRect(rect: CGRect) {
         layer.masksToBounds = false
-        
         layer.shadowOffset = CGSizeMake(0, 0)
-        layer.shadowRadius = 4.0
-        layer.shadowOpacity = 0.5
         layer.shadowRadius = 2.0
+        layer.shadowOpacity = 0.5
     }
     
     override func layoutSubviews() {

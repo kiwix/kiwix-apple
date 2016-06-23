@@ -29,7 +29,6 @@
 - (NSString *)getRandomPageUrl;
 
 #pragma mark - search
-- (NSArray *)search:(NSString *)searchTerm;
 - (NSArray *)searchSuggestionsSmart:(NSString *)searchTerm;
 - (NSArray *)searchUsingIndex:(NSString *)searchTerm;
 

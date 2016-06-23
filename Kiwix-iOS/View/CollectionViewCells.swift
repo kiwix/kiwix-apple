@@ -12,7 +12,7 @@ class LocalLangCell: UICollectionViewCell {
     @IBOutlet weak var label: UILabel!
     
     override func awakeFromNib() {
-        layer.cornerRadius = 10.0
+        layer.cornerRadius = 15.0
         layer.masksToBounds = true
         backgroundColor = UIColor.themeColor
     }

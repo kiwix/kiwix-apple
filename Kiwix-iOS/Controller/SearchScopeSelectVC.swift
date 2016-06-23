@@ -12,6 +12,7 @@ import CoreData
 class SearchScopeSelectVC: UIViewController, UITableViewDelegate, UITableViewDataSource, TableCellDelegate, NSFetchedResultsControllerDelegate {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var toolBar: UIToolbar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,10 +21,9 @@ class SearchScopeSelectVC: UIViewController, UITableViewDelegate, UITableViewDat
         tableView.tableHeaderView = UIView()
     }
     
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
-        let topInset: CGFloat = traitCollection.verticalSizeClass == .Regular ? 64.0 : 44.0
-        tableView.contentInset = UIEdgeInsetsMake(topInset, 0, 0, 0)
-        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(topInset, 0, 0, 0)
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
     }
     
     // MARK: - Fetched Results Controller
@@ -52,32 +52,18 @@ class SearchScopeSelectVC: UIViewController, UITableViewDelegate, UITableViewDat
     // MARK: - Table view data source
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return (fetchedResultController.sections?.count ?? 0) + 1
+        return fetchedResultController.sections?.count ?? 0
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == tableView.numberOfSections - 1 {
-            return 5
-        } else {
-            guard let sectionInfo = fetchedResultController.sections?[section] else {return 0}
-            return sectionInfo.numberOfObjects
-        }
+        guard let sectionInfo = fetchedResultController.sections?[section] else {return 0}
+        return sectionInfo.numberOfObjects
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if indexPath.section == tableView.numberOfSections - 1 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-            self.configureRecentSearchCell(cell, atIndexPath: indexPath)
-            return cell
-        } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("CheckMarkBookCell", forIndexPath: indexPath)
-            self.configureBookCell(cell, atIndexPath: indexPath)
-            return cell
-        }
-    }
-    
-    func configureRecentSearchCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-        cell.textLabel?.text = "placeholder"
+        let cell = tableView.dequeueReusableCellWithIdentifier("CheckMarkBookCell", forIndexPath: indexPath)
+        self.configureBookCell(cell, atIndexPath: indexPath)
+        return cell
     }
     
     func configureBookCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
@@ -95,13 +81,9 @@ class SearchScopeSelectVC: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == tableView.numberOfSections - 1 {
-            return "Recent Searches"
-        } else {
-            guard tableView.numberOfSections > 1 else {return nil}
-            guard let languageName = fetchedResultController.sections?[section].name else {return nil}
-            return languageName
-        }
+        guard tableView.numberOfSections > 1 else {return nil}
+        guard let languageName = fetchedResultController.sections?[section].name else {return nil}
+        return languageName
     }
     
     // MARK: Table view delegate
@@ -119,7 +101,7 @@ class SearchScopeSelectVC: UIViewController, UITableViewDelegate, UITableViewDat
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         guard let mainVC = parentViewController?.parentViewController as? MainVC,
-              let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
+            let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
         mainVC.hideSearch()
         mainVC.loadMainPage(book)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)

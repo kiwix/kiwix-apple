@@ -45,14 +45,6 @@
 
 #pragma mark - search
 
-- (NSArray *)search:(NSString *)searchTerm {
-    if(_db == nil) {
-        return [self searchSuggestionsSmart:searchTerm];
-    } else {
-        return [self searchUsingIndex:searchTerm];
-    }
-}
-
 - (NSArray *)searchSuggestionsSmart:(NSString *)searchTerm {
     string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];
     int count = SEARCH_SUGGESTIONS_COUNT;
@@ -63,7 +55,7 @@
         string titleC;
         while (_reader->getNextSuggestion(titleC)) {
             NSString *title = [NSString stringWithUTF8String:titleC.c_str()];
-            NSNumber *distance = [NSNumber numberWithInteger:[self levenshteinDistance:searchTerm andString:title]];
+            NSNumber *distance = [NSNumber numberWithInteger:[self levenshteinDistance:searchTerm andString:title.lowercaseString]];
             [results addObject:@{@"title": title,
                                  @"bookID": bookID,
                                  @"distance": distance}];
@@ -73,6 +65,7 @@
 }
 
 - (NSArray *)searchUsingIndex:(NSString *)searchTerm {
+    if(_db == nil) {return @[];}
     try {
         NSArray *searchTerms = [searchTerm componentsSeparatedByString:@" "];
         NSString *bookID = [self getID];
@@ -98,7 +91,7 @@
             NSString *path = [NSString stringWithUTF8String:doc.get_data().c_str()];
             NSString *title = [NSString stringWithUTF8String:doc.get_value(0).c_str()];
             NSString *snippet = [NSString stringWithUTF8String:doc.get_value(1).c_str()];
-            NSNumber *distance = [NSNumber numberWithInteger:[self levenshteinDistance:searchTerm andString:title]];
+            NSNumber *distance = [NSNumber numberWithInteger:[self levenshteinDistance:searchTerm andString:title.lowercaseString]];
             
             NSDictionary *result = @{@"percent": percent,
                                      @"path": path,

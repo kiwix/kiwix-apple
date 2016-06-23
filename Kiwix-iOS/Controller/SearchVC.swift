@@ -35,6 +35,8 @@ class SearchVC: UIViewController, UISearchBarDelegate, UIGestureRecognizerDelega
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        guard searchText != "" else {return}
+        Preference.recentSearchTerms.insert(searchText, atIndex: 0)
         searchText = ""
     }
     

@@ -366,7 +366,7 @@
         <!--Search Scope SelectVC-->
         <scene sceneID="D7X-oq-0zg">
             <objects>
-                <viewController id="6mg-ey-R4I" customClass="SearchScopeSelectVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="6mg-ey-R4I" customClass="SearchScopeSelectVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="zo0-tg-4E4"/>
                         <viewControllerLayoutGuide type="bottom" id="Tmc-y1-RDA"/>
@@ -376,11 +376,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="N78-0h-zb7">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <rect key="frame" x="0.0" y="108" width="600" height="492"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="CheckMarkBookCell" id="QXK-je-ISm" customClass="CheckMarkBookCell" customModule="Kiwix">
-                                        <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QXK-je-ISm" id="bj5-Xo-SR6">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -504,7 +504,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="ff0-K9-MIu" style="IBUITableViewCellStyleDefault" id="mws-kS-13l">
-                                        <rect key="frame" x="0.0" y="136" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="72" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mws-kS-13l" id="kHF-OB-kpr">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
@@ -522,13 +522,26 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xsY-LL-2as" customClass="DropShadowView" customModule="Kiwix" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="64" width="600" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="6A0-j8-csD"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="x8e-ps-NUY" kind="embed" id="1G1-dy-u1M"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="xsY-LL-2as" secondAttribute="trailing" id="0Y8-BQ-wxl"/>
+                            <constraint firstItem="N78-0h-zb7" firstAttribute="top" secondItem="xsY-LL-2as" secondAttribute="bottom" id="4XG-Av-G6S"/>
                             <constraint firstItem="Tmc-y1-RDA" firstAttribute="top" secondItem="N78-0h-zb7" secondAttribute="bottom" id="7NT-cy-Kqp"/>
-                            <constraint firstItem="N78-0h-zb7" firstAttribute="top" secondItem="zo0-tg-4E4" secondAttribute="bottom" constant="-64" id="C1c-FJ-IFr"/>
+                            <constraint firstItem="N78-0h-zb7" firstAttribute="top" secondItem="zo0-tg-4E4" secondAttribute="bottom" constant="44" id="C1c-FJ-IFr"/>
                             <constraint firstAttribute="trailing" secondItem="N78-0h-zb7" secondAttribute="trailing" id="CPN-ym-DCz"/>
                             <constraint firstItem="N78-0h-zb7" firstAttribute="top" secondItem="xId-x3-dwx" secondAttribute="top" id="T0d-Ah-Ztr"/>
+                            <constraint firstItem="xsY-LL-2as" firstAttribute="leading" secondItem="xId-x3-dwx" secondAttribute="leading" id="UBV-XT-6uX"/>
+                            <constraint firstItem="xsY-LL-2as" firstAttribute="top" secondItem="zo0-tg-4E4" secondAttribute="bottom" id="gDO-1F-hDx"/>
                             <constraint firstItem="N78-0h-zb7" firstAttribute="leading" secondItem="xId-x3-dwx" secondAttribute="leading" id="tov-n3-ofO"/>
                         </constraints>
                         <variation key="default">
@@ -1150,21 +1163,21 @@
             </objects>
             <point key="canvasLocation" x="3329" y="-979"/>
         </scene>
-        <!--Lang LocalCVC-->
+        <!--Recent SearchCVC-->
         <scene sceneID="jLU-Rv-hcv">
             <objects>
-                <viewController id="x8e-ps-NUY" customClass="LangLocalCVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="x8e-ps-NUY" customClass="RecentSearchCVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="cm9-Ho-8rR"/>
                         <viewControllerLayoutGuide type="bottom" id="M4a-gw-9IU"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="HQ0-6h-SSN">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="oLp-jV-WAb">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="SEj-84-HqB">
                                     <size key="itemSize" width="102" height="42"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -1173,7 +1186,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="yvP-cy-f4q" customClass="LocalLangCell" customModule="Kiwix" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="102" height="42"/>
+                                        <rect key="frame" x="0.0" y="1" width="102" height="42"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="102" height="42"/>
@@ -1215,7 +1228,20 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8l6-By-GDL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2594" y="-979"/>
+            <point key="canvasLocation" x="2600" y="-1129"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="iOA-8v-xbz">
+            <objects>
+                <viewController id="pJE-0z-aFb" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9AO-X6-IxZ">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kua-SW-WKF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
     <resources>

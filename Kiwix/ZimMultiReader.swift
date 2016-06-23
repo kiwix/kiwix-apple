@@ -163,22 +163,41 @@ extension ZimReader {
 class SearchResult: CustomStringConvertible {
     let bookID: String
     let title: String
-    let percent: Double? // range: 0-100
-    let distance: Int64 // Levenshtein distance, non negative integer
     let path: String?
     let snippet: String?
     
+    let percent: Double? // range: 0-100
+    let distance: Int // Levenshtein distance, non negative integer
+    let score: Double
+    
     init?(rawResult: [String: AnyObject]) {
+        let title = (rawResult["title"] as? String) ?? ""
         self.bookID = (rawResult["bookID"] as? String) ?? ""
-        self.title = (rawResult["title"] as? String) ?? ""
-        
-        self.percent = (rawResult["percent"] as? NSNumber)?.doubleValue
-        self.distance = (rawResult["distance"]as? NSNumber)?.longLongValue ?? 0
+        self.title = title
         self.path = rawResult["path"] as? String
         self.snippet = rawResult["snippet"] as? String
         
+        let percent = (rawResult["percent"] as? NSNumber)?.doubleValue
+        let distance = (rawResult["distance"]as? NSNumber)?.integerValue ?? title.characters.count
+        let score: Double = {
+            if let percent = percent {
+                return SearchResult.calculateScore(percent / 100) * Double(distance)
+            } else {
+                return Double(distance)
+            }
+        }()
+        self.percent = percent
+        self.distance = distance
+        self.score = score
+        
         if bookID == "" {return nil}
         if title == "" {return nil}
+    }
+    
+    class func calculateScore(prob: Double) -> Double {
+        let m = 1.9709635999
+        let n = 2.2255409285
+        return log(m * (1-prob) + n) / log(2.71828)
     }
     
     var description: String {
