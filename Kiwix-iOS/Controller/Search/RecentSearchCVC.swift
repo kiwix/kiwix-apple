@@ -25,6 +25,7 @@ class RecentSearchCVC: UIViewController, UICollectionViewDataSource, UICollectio
         super.viewWillAppear(animated)
         collectionView.reloadData()
         collectionView.collectionViewLayout.invalidateLayout()
+        collectionView.contentOffset = CGPointZero
     }
     
     override func viewDidLayoutSubviews() {

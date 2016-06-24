@@ -10,6 +10,7 @@
 		970103FB1C6824FA00DC48F6 /* RefreshLibraryOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970103F91C6824FA00DC48F6 /* RefreshLibraryOperation.swift */; };
 		970C3DCA1CBD79450026A240 /* MigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C3DC91CBD79450026A240 /* MigrationPolicy.swift */; };
 		971046321D19B96E002141C0 /* XapianSearcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = 971046311D19B96E002141C0 /* XapianSearcher.mm */; };
+		971046341D1C830C002141C0 /* SearchTuneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971046331D1C830C002141C0 /* SearchTuneController.swift */; };
 		9711871C1CEB448400B9909D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711871B1CEB448400B9909D /* libz.tbd */; };
 		9711871E1CEB449A00B9909D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711871D1CEB449A00B9909D /* libz.tbd */; };
 		971187301CEB50FC00B9909D /* ZimReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9711872F1CEB50FC00B9909D /* ZimReader.mm */; };
@@ -343,6 +344,7 @@
 		970C3DC91CBD79450026A240 /* MigrationPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MigrationPolicy.swift; path = CoreData/Migration/MigrationPolicy.swift; sourceTree = "<group>"; };
 		971046301D19B96E002141C0 /* XapianSearcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XapianSearcher.h; path = Kiwix/libkiwix/XapianSearcher.h; sourceTree = "<group>"; };
 		971046311D19B96E002141C0 /* XapianSearcher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = XapianSearcher.mm; path = Kiwix/libkiwix/XapianSearcher.mm; sourceTree = "<group>"; };
+		971046331D1C830C002141C0 /* SearchTuneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchTuneController.swift; path = "Kiwix-iOS/Controller/Setting/SearchTuneController.swift"; sourceTree = SOURCE_ROOT; };
 		9711871B1CEB448400B9909D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		9711871D1CEB449A00B9909D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		9711872E1CEB50FC00B9909D /* ZimReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZimReader.h; path = Kiwix/libkiwix/ZimReader.h; sourceTree = "<group>"; };
@@ -987,6 +989,7 @@
 				97C01FCA1C39B7F100D010E5 /* Library */,
 				97C01FD21C39BF4E00D010E5 /* Reading */,
 				971A10351D022B02007FC62C /* AboutVC.swift */,
+				971046331D1C830C002141C0 /* SearchTuneController.swift */,
 				971A10371D022C15007FC62C /* WebViewVC.swift */,
 			);
 			name = Setting;
@@ -1835,6 +1838,7 @@
 				978C58961C1CD86E0077AE47 /* Language.swift in Sources */,
 				971A10701D022E62007FC62C /* Network.swift in Sources */,
 				971A104A1D022CBE007FC62C /* SearchResultTBVC.swift in Sources */,
+				971046341D1C830C002141C0 /* SearchTuneController.swift in Sources */,
 				971A105B1D022DAD007FC62C /* LibraryOnlineTBVC.swift in Sources */,
 				971A10321D022AD5007FC62C /* SearchBar.swift in Sources */,
 				979CB65D1D05C44F005E1BA1 /* CloudCondition.swift in Sources */,

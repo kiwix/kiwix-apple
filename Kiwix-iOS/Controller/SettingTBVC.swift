@@ -9,11 +9,14 @@
 import UIKit
 
 class SettingTBVC: UITableViewController {
+    
+    let alpha = true
 
-    let sectionHeader = [LocalizedStrings.library, LocalizedStrings.reading, LocalizedStrings.misc]
+    let sectionHeader = [LocalizedStrings.library, LocalizedStrings.reading,LocalizedStrings.misc, "Search"]
     let cellTextlabels = [[LocalizedStrings.libraryAutoRefresh, LocalizedStrings.libraryUseCellularData, LocalizedStrings.libraryBackup],
                           [LocalizedStrings.fontSize, LocalizedStrings.adjustLayout],
-                          [LocalizedStrings.rateKiwix, LocalizedStrings.about]]
+                          [LocalizedStrings.rateKiwix, LocalizedStrings.about],
+                          ["Boost Factor 🚀"]]
     
     let dateComponentsFormatter: NSDateComponentsFormatter = {
         let formatter = NSDateComponentsFormatter()
@@ -77,7 +80,10 @@ class SettingTBVC: UITableViewController {
     
     override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == tableView.numberOfSections - 1 {
-            return String(format: LocalizedStrings.versionString, NSBundle.shortVersionString)
+            let versionString = String(format: LocalizedStrings.versionString, NSBundle.shortVersionString) + (alpha ? " Alpha" : "")
+            let buildVersion = (NSBundle.mainBundle().objectForInfoDictionaryKey(kCFBundleVersionKey as String) as? String) ?? "Unknown"
+            let buildNumString = "Build " + buildVersion
+            return [versionString, buildNumString].joinWithSeparator("\n")
         } else {
             return nil
         }
@@ -109,6 +115,8 @@ class SettingTBVC: UITableViewController {
             showRateKiwixAlert(showRemindLater: false)
         case LocalizedStrings.about:
             performSegueWithIdentifier("MiscAbout", sender: self)
+        case "Boost Factor Tune 🤓":
+            performSegueWithIdentifier("SearchTune", sender: self)
         default:
             break
         }

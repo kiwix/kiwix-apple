@@ -181,7 +181,7 @@ class SearchResult: CustomStringConvertible {
         let distance = (rawResult["distance"]as? NSNumber)?.integerValue ?? title.characters.count
         let score: Double = {
             if let percent = percent {
-                return SearchResult.calculateScore(percent / 100) * Double(distance)
+                return (WeightFactor.calculate(percent / 100) ?? 1) * Double(distance)
             } else {
                 return Double(distance)
             }
