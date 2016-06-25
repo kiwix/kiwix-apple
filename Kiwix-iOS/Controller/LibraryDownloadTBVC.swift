@@ -229,14 +229,14 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
     
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let remove = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.remove) { (action, indexPath) -> Void in
-            guard let downloadTask = self.fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask,
-                  let book = downloadTask.book else {return}
-            Network.sharedInstance.cancel(book)
-            book.isLocal = false
-            FileManager.removeResumeData(book)
+            guard let downloadTask = self.fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask else {return}
             let context = UIApplication.appDelegate.managedObjectContext
+            if let book = downloadTask.book {
+                Network.sharedInstance.cancel(book)
+                FileManager.removeResumeData(book)
+            }
             context.performBlockAndWait({ () -> Void in
-                book.isLocal = false
+                downloadTask.book?.isLocal = false
                 context.deleteObject(downloadTask)
             })
         }

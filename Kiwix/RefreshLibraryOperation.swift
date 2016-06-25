@@ -94,25 +94,26 @@ class ParseLibraryOperation: Operation, NSXMLParserDelegate {
     }
     
     @objc internal func parserDidEndDocument(parser: NSXMLParser) {
-        var booksToDelete = oldBookIDs.subtract(newBookIDs)
-        booksToDelete = booksToDelete.subtract(ZIMMultiReader.sharedInstance.readers.keys)
-//        print("About to delete \(booksToDelete.count) book(s)")
-        for id in booksToDelete {
+        // ID of Books on device but no longer in library.xml
+        let ids = oldBookIDs.subtract(newBookIDs)
+        
+        for id in ids {
             context.performBlockAndWait({ () -> Void in
                 guard let book = Book.fetch(id, context: self.context) else {return}
+                
+                // Delete Book object only if book is online, i.e., is not associated with a download task or is not local
+                guard book.isLocal == false else {return}
                 self.context.deleteObject(book)
             })
         }
 
         saveManagedObjectContexts()
         Preference.libraryLastRefreshTime = NSDate()
-        cleanUpAfterParse()
-//        print("Parse finished successfully")
+        //print("Parse finished successfully")
     }
     
     @objc internal func parser(parser: NSXMLParser, parseErrorOccurred parseError: NSError) {
         saveManagedObjectContexts()
-        cleanUpAfterParse()
     }
     
     // MARK: - Tools
@@ -124,11 +125,6 @@ class ParseLibraryOperation: Operation, NSXMLParserDelegate {
         context.parentContext?.performBlockAndWait({ () -> Void in
             self.context.parentContext?.saveIfNeeded()
         })
-    }
-    
-    func cleanUpAfterParse() {
-        newBookIDs.removeAll()
-        oldBookIDs.removeAll()
     }
 }
 
