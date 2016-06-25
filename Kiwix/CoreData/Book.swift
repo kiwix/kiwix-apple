@@ -8,11 +8,17 @@
 
 import Foundation
 import CoreData
-import UIKit
+#if os(iOS) || os(watchOS) || os(tvOS)
+    import UIKit
+#elseif os(OSX)
+    import AppKit
+#endif
+
+
 
 class Book: NSManagedObject {
 
-    // MARK: - Add/Update Book
+    // MARK: - Add Book
     
     class func add(metadata: [String: AnyObject], context: NSManagedObjectContext) -> Book? {
         guard let book = insert(Book.self, context: context) else {return nil}
@@ -44,7 +50,7 @@ class Book: NSManagedObject {
         if let favIcon = metadata["favicon"] as? NSData {
             book.favIcon = favIcon
         } else if let favIcon = metadata["favicon"] as? String {
-            book.favIcon = NSData(base64EncodedString: favIcon, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
+            book.favIcon = NSData(base64EncodedString: favIcon, options: .IgnoreUnknownCharacters)
         }
         
         if let meta4url = book.meta4URL {
@@ -67,10 +73,17 @@ class Book: NSManagedObject {
         return NSURL(string: meta4URL.stringByReplacingOccurrencesOfString(".meta4", withString: ""))
     }
     
-    var favIconImage: UIImage? {
-        guard let favIcon = favIcon else {return nil}
-        return UIImage(data: favIcon)
-    }
+    #if os(iOS) || os(watchOS) || os(tvOS)
+        var favIconImage: UIImage? {
+            guard let favIcon = favIcon else {return nil}
+            return UIImage(data: favIcon)
+        }
+    #elseif os(OSX)
+        var favIconImage: NSImage? {
+            guard let favIcon = favIcon else {return nil}
+            return NSImage(data: favIcon)
+        }
+    #endif
     
     // MARK: - Fetch
     
@@ -89,15 +102,34 @@ class Book: NSManagedObject {
     
     var dateFormatted: String? {
         guard let date = date else {return nil}
-        return Utilities.formattedDateStringFromDate(date)
+        
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "MM-dd-yyyy"
+        formatter.dateStyle = .MediumStyle
+        return formatter.stringFromDate(date)
     }
     
     var fileSizeFormatted: String? {
-        return Utilities.formattedFileSizeStringFromByteCount(fileSize)
+        return NSByteCountFormatter.stringFromByteCount(fileSize, countStyle: .File)
     }
     
     var articleCountFormatted: String? {
-        return Utilities.formattedNumberStringFromDouble(Double(articleCount)) + (articleCount >= 1 ? " articles" : " article")
+        func formattedNumberStringFromDouble(num: Double) -> String {
+            let sign = ((num < 0) ? "-" : "" )
+            let abs = fabs(num)
+            guard abs >= 1000.0 else {
+                if abs - Double(Int(abs)) == 0 {
+                    return "\(sign)\(Int(abs))"
+                } else {
+                    return "\(sign)\(abs)"
+                }
+            }
+            let exp: Int = Int(log10(abs) / log10(1000))
+            let units: [String] = ["K","M","G","T","P","E"]
+            let roundedNum: Double = round(10 * abs / pow(1000.0,Double(exp))) / 10;
+            return "\(sign)\(roundedNum)\(units[exp-1])"
+        }
+        return formattedNumberStringFromDouble(Double(articleCount)) + (articleCount >= 1 ? " articles" : " article")
     }
     
     // MARK: - Description Label
@@ -143,19 +175,21 @@ class Book: NSManagedObject {
         }
     }
     
-    
-    
     // MARK: - States
     
     var spaceState: BookSpaceState {
-        let freeSpaceInBytes = Utilities.availableDiskspaceInBytes() ?? INT64_MAX
-        if (0.8 * Double(freeSpaceInBytes)) > Double(fileSize) {
+        #if os(iOS) || os(watchOS) || os(tvOS)
+            let freeSpaceInBytes = Utilities.availableDiskspaceInBytes() ?? INT64_MAX
+            if (0.8 * Double(freeSpaceInBytes)) > Double(fileSize) {
+                return .Enough
+            } else if freeSpaceInBytes < fileSize{
+                return .NotEnough
+            } else {
+                return .Caution
+            }
+        #elseif os(OSX)
             return .Enough
-        } else if freeSpaceInBytes < fileSize{
-            return .NotEnough
-        } else {
-            return .Caution
-        }
+        #endif
     }
 }
 

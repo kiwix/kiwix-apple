@@ -6,7 +6,7 @@
 //  Copyright © 2015 Chris. All rights reserved.
 //
 
-import UIKit
+import SwiftyUserDefaults
 
 class Preference {
     

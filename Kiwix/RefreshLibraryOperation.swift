@@ -6,14 +6,13 @@
 //  Copyright © 2016 Chris Li. All rights reserved.
 //
 
-import UIKit
 import CoreData
 
 class RefreshLibraryOperation: GroupOperation {
     
-    var completionHandler: ((errorCode: Int?) -> Void)?
+    var completionHandler: ((errors: [NSError]) -> Void)?
     
-    init(invokedAutomatically: Bool, completionHandler: ((errorCode: Int?) -> Void)?) {
+    init(invokedAutomatically: Bool, completionHandler: ((errors: [NSError]) -> Void)?) {
         super.init(operations: [])
         
         name = String(RefreshLibraryOperation)
@@ -29,7 +28,10 @@ class RefreshLibraryOperation: GroupOperation {
             parseOperation.xmlData = data
         }
         let fetchOperation = URLSessionTaskOperation(task: task)
-        fetchOperation.addObserver(NetworkObserver())
+        
+        #if os(iOS) || os(watchOS) || os(tvOS)
+            fetchOperation.addObserver(NetworkObserver())
+        #endif
         fetchOperation.addCondition(ReachabilityCondition(host: url, allowCellular: Preference.libraryRefreshAllowCellularData))
         
         if invokedAutomatically {
@@ -43,7 +45,7 @@ class RefreshLibraryOperation: GroupOperation {
     }
     
     override func finished(errors: [NSError]) {
-        completionHandler?(errorCode: errors.first?.code)
+        completionHandler?(errors: errors)
     }
 }
 
@@ -56,7 +58,7 @@ class ParseLibraryOperation: Operation, NSXMLParserDelegate {
     
     override init() {
         self.context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        context.parentContext = UIApplication.appDelegate.managedObjectContext
+        context.parentContext = NSManagedObjectContext.mainQueueContext
         context.mergePolicy = NSOverwriteMergePolicy
         super.init()
         name = String(ParseLibraryOperation)
@@ -93,7 +95,7 @@ class ParseLibraryOperation: Operation, NSXMLParserDelegate {
     @objc internal func parserDidEndDocument(parser: NSXMLParser) {
         var booksToDelete = oldBookIDs.subtract(newBookIDs)
         booksToDelete = booksToDelete.subtract(ZIMMultiReader.sharedInstance.readers.keys)
-        print("About to delete \(booksToDelete.count) book(s)")
+//        print("About to delete \(booksToDelete.count) book(s)")
         for id in booksToDelete {
             context.performBlockAndWait({ () -> Void in
                 guard let book = Book.fetch(id, context: self.context) else {return}
@@ -104,7 +106,7 @@ class ParseLibraryOperation: Operation, NSXMLParserDelegate {
         saveManagedObjectContexts()
         Preference.libraryLastRefreshTime = NSDate()
         cleanUpAfterParse()
-        print("Parse finished successfully")
+//        print("Parse finished successfully")
     }
     
     @objc internal func parser(parser: NSXMLParser, parseErrorOccurred parseError: NSError) {

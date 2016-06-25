@@ -3,3 +3,5 @@
 //
 
 #import "ZimReader.h"
+#import "ZimIndexer.h"
+
