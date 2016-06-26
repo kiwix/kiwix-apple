@@ -4,10 +4,8 @@ ROOT=$(pwd)
 
 ########################  XAPIAN  ########################
 
-XAPIANPATH=$ROOT/xapian-core-1.2.23
+XAPIANPATH=$ROOT/xapian-core-1.4.0
 cd $XAPIANPATH
-
-# ./autogen.sh
 
 build_iOS()
 {
@@ -21,7 +19,7 @@ build_iOS()
 	fi
 
 	export CC="$(xcrun -sdk iphoneos -find clang)"
-	export CFLAGS="-fembed-bitcode -isysroot $SDKROOT -arch ${ARCH} -miphoneos-version-min=9.0 -I$LZMAHEADERPATH"
+	export CFLAGS="-fembed-bitcode -isysroot $SDKROOT -arch ${ARCH} -miphoneos-version-min=9.0"
 
 	export CPP="$CC -E"
 	export CPPFLAGS="$CFLAGS"
@@ -49,11 +47,8 @@ build_OSX()
 	export CC="$(xcrun -sdk macosx10.11 -find clang)"
 	export CFLAGS="-fembed-bitcode -isysroot $SDKROOT -arch ${ARCH} -mmacosx-version-min=10.10"
 
-	# export CPP="$CC -E"
-	# export CPPFLAGS="$CFLAGS -stdlib=libc++ -std=c++11"
-
-	export CXX="$(xcrun -sdk iphoneos -find clang++)"
-	export CXXFLAGS="$CFLAGS -stdlib=libc++ -std=gnu++11"
+	export CXX="$(xcrun -sdk macosx10.11 -find clang++)"
+	export CXXFLAGS="$CFLAGS -stdlib=libc++ -std=c++11"
 
 	export LDFLAGS="-arch ${ARCH} -isysroot $SDKROOT"
 
@@ -67,12 +62,12 @@ distribute() {
 	mkdir -p Universal/iOS/lib
 	mkdir -p Universal/OSX/lib
 
-	# cd iOS/armv7/lib
-	# for file in *.a
-	# do
-	# 	cd $XAPIANPATH/build
-	# 	lipo -create iOS/armv7/lib/$file iOS/armv7s/lib/$file iOS/arm64/lib/$file iOS/x86_64/lib/$file iOS/i386/lib/$file -output Universal/iOS/lib/$file
-	# done
+	cd iOS/armv7/lib
+	for file in *.a
+	do
+		cd $XAPIANPATH/build
+		lipo -create iOS/armv7/lib/$file iOS/armv7s/lib/$file iOS/arm64/lib/$file iOS/x86_64/lib/$file iOS/i386/lib/$file -output Universal/iOS/lib/$file
+	done
 
 	cd OSX/i386/lib
 	for file in *.dylib
@@ -81,9 +76,9 @@ distribute() {
 		lipo -create OSX/x86_64/lib/$file OSX/i386/lib/$file -output Universal/OSX/lib/$file
 	done
 	
-	# cd $XAPIANPATH/build
-	# mkdir -p Universal/include
-	# cp -r iOS/armv7/include Universal
+	cd $XAPIANPATH/build
+	mkdir -p Universal/include
+	cp -r iOS/armv7/include Universal
 }
 
 # build_iOS i386
@@ -92,7 +87,7 @@ distribute() {
 # build_iOS armv7s
 # build_iOS arm64
 
-build_OSX i386
+# build_OSX i386
 # build_OSX x86_64
 
 distribute
