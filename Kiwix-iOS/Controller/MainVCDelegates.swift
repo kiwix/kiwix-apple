@@ -1,5 +1,5 @@
 //
-//  MainVCWebViewD.swift
+//  MainVCOtherD.swift
 //  Kiwix
 //
 //  Created by Chris Li on 1/22/16.
@@ -8,7 +8,54 @@
 
 import UIKit
 
-extension MainVC: UIWebViewDelegate, UIScrollViewDelegate {
+extension MainVC: LPTBarButtonItemDelegate, UISearchBarDelegate, UIPopoverPresentationControllerDelegate, UIWebViewDelegate, UIScrollViewDelegate {
+    
+    // MARK: - LPTBarButtonItemDelegate
+    
+    func barButtonTapped(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
+        guard sender == bookmarkButton else {return}
+        
+        guard let controller = bookmarkController ?? UIStoryboard.main.initViewController("BookmarkNav", type: UINavigationController.self) else {return}
+        bookmarkController = controller
+        controller.modalPresentationStyle = .FormSheet
+        presentViewController(controller, animated: true, completion: nil)
+    }
+    
+    func barButtonLongPressedStart(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
+        guard sender == bookmarkButton else {return}
+        guard !webView.hidden else {return}
+        guard let article = article else {return}
+        guard let bookmarkHUDVC = UIStoryboard.main.initViewController(BookmarkHUDVC.self) else {return}
+        UIApplication.appDelegate.window?.addSubview(bookmarkHUDVC.view)
+        article.isBookmarked = !article.isBookmarked
+        bookmarkHUDVC.show(article.isBookmarked)
+        configureBookmarkButton()
+    }
+    
+    // MARK: - UISearchBarDelegate
+    
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        showSearch()
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        hideSearch()
+        configureSearchBarPlaceHolder()
+    }
+
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        searchVC?.searchText = searchText
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        searchVC?.searchResultTBVC?.selectFirstResultIfPossible()
+    }
+    
+    // MARK: -  UIPopoverPresentationControllerDelegate
+    
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .None
+    }
     
     // MARK: - UIWebViewDelegate
     
@@ -132,4 +179,5 @@ extension MainVC: UIWebViewDelegate, UIScrollViewDelegate {
             }
         }
     }
+    
 }

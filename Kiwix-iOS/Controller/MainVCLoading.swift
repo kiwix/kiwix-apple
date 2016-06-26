@@ -29,10 +29,34 @@ extension MainVC {
     // MARK: - JS
     
     func getTOC(webView: UIWebView) {
-        guard let context = webView.valueForKeyPath("documentView.webView.mainFrame.javaScriptContext") as? JSContext else {return}
-        guard let path = NSBundle.mainBundle().pathForResource("getTableOfContents", ofType: "js") else {return}
-        guard let jString = Utilities.contentOfFileAtPath(path) else {return}
-        let value: JSValue = context.evaluateScript(jString)
-        print(value.toArray())
+        guard let context = webView.valueForKeyPath("documentView.webView.mainFrame.javaScriptContext") as? JSContext,
+              let path = NSBundle.mainBundle().pathForResource("getTableOfContents", ofType: "js"),
+              let jString = Utilities.contentOfFileAtPath(path),
+              let elements = context.evaluateScript(jString).toArray() as? [[String: String]] else {return}
+        var headings = [HTMLHeading]()
+        for element in elements {
+            guard let heading = HTMLHeading(rawValue: element) else {continue}
+            headings.append(heading)
+        }
+    }
+}
+
+class HTMLHeading {
+    let id: String
+    let tagName: String
+    let textContent: String
+    let level: Int
+    
+    init?(rawValue: [String: String]) {
+        let tagName = rawValue["tagName"] ?? ""
+        self.id = rawValue["id"] ?? ""
+        self.textContent = rawValue["textContent"] ?? ""
+        self.tagName = tagName
+        self.level = Int(tagName.stringByReplacingOccurrencesOfString("H", withString: "")) ?? -1
+        
+        if id == "" {return nil}
+        if tagName == "" {return nil}
+        if textContent == "" {return nil}
+        if level == -1 {return nil}
     }
 }

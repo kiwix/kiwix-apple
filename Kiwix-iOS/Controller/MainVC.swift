@@ -1,5 +1,5 @@
 //
-//  MainVC2.swift
+//  MainVC.swift
 //  Kiwix
 //
 //  Created by Chris Li on 1/22/16.
@@ -11,9 +11,10 @@ import UIKit
 class MainVC: UIViewController {
 
     @IBOutlet weak var webView: UIWebView!
-    var bookmarkVC: UIViewController?
-    var libraryVC: UIViewController?
-    var settingVC: UIViewController?
+    var tableOfContentController: TableOfContentController?
+    var bookmarkController: UIViewController?
+    var libraryController: UIViewController?
+    var settingController: UIViewController?
     var searchVC: SearchVC?
     let searchBar = SearchBar()
     
@@ -53,15 +54,18 @@ class MainVC: UIViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        bookmarkVC = nil
-        libraryVC = nil
-        settingVC = nil
+        tableOfContentController = nil
+        bookmarkController = nil
+        libraryController = nil
+        settingController = nil
         searchVC = nil
     }
     
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        configureUIElements(self.traitCollection)
+        if previousTraitCollection?.horizontalSizeClass != traitCollection.horizontalSizeClass {
+            configureUIElements(traitCollection.horizontalSizeClass)
+        }
     }
     
     // MARK: - First Time Launch Alert
@@ -75,19 +79,19 @@ class MainVC: UIViewController {
     
     // MARK: - Configure
     
-    func configureUIElements(traitCollection: UITraitCollection) {
-        switch traitCollection.horizontalSizeClass {
+    func configureUIElements(horizontalSizeClass: UIUserInterfaceSizeClass) {
+        switch horizontalSizeClass {
         case .Regular:
             navigationController?.toolbarHidden = true
             toolbarItems?.removeAll()
-            navigationItem.leftBarButtonItems = [navigateLeftButton, navigateRightButton, blankButton]
+            navigationItem.leftBarButtonItems = [navigateLeftButton, navigateRightButton, tableOfContentButton]
             navigationItem.rightBarButtonItems = [settingButton, libraryButton, bookmarkButton]
         case .Compact:
             if !searchBar.isFirstResponder() {navigationController?.toolbarHidden = false}
             navigationItem.leftBarButtonItems?.removeAll()
             navigationItem.rightBarButtonItems?.removeAll()
             let spaceButton = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-            toolbarItems = [navigateLeftButton, spaceButton, navigateRightButton, spaceButton, bookmarkButton, spaceButton, libraryButton, spaceButton, settingButton]
+            toolbarItems = [navigateLeftButton, spaceButton, navigateRightButton, spaceButton, tableOfContentButton, spaceButton, bookmarkButton, spaceButton, libraryButton, spaceButton, settingButton]
             if UIDevice.currentDevice().userInterfaceIdiom == .Pad && searchBar.isFirstResponder() {
                 navigationItem.setRightBarButtonItem(cancelButton, animated: true)
             }
@@ -99,6 +103,7 @@ class MainVC: UIViewController {
     
     func configureButtonColor() {
         configureNavigationButtonTint()
+        tableOfContentButton.tintColor = UIColor.grayColor()
         libraryButton.tintColor = UIColor.grayColor()
         settingButton.tintColor = UIColor.grayColor()
         UIBarButtonItem.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self]).tintColor = UIColor.themeColor
@@ -198,10 +203,10 @@ class MainVC: UIViewController {
 
     lazy var navigateLeftButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "LeftArrow", target: self, action: #selector(MainVC.navigateLeftButtonTapped))
     lazy var navigateRightButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "RightArrow", target: self, action: #selector(MainVC.navigateRightButtonTapped))
+    lazy var tableOfContentButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "TableOfContent", target: self, action: #selector(MainVC.showTableOfContentButtonTapped))
     lazy var bookmarkButton: LPTBarButtonItem = LPTBarButtonItem(imageName: "Star", highlightedImageName: "StarHighlighted", delegate: self)
     lazy var libraryButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "Library", target: self, action: #selector(MainVC.showLibraryButtonTapped))
     lazy var settingButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "Setting", target: self, action: #selector(MainVC.showSettingButtonTapped))
-    lazy var blankButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "BlankImage", target: nil, action: nil)
     lazy var cancelButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(MainVC.cancelButtonTapped))
     
     // MARK: - Actions
@@ -214,19 +219,26 @@ class MainVC: UIViewController {
         webView.goForward()
     }
     
+    func showTableOfContentButtonTapped(sender: UIBarButtonItem) {
+        guard let controller = tableOfContentController ?? UIStoryboard.main.initViewController(TableOfContentController.self) else {return}
+        controller.modalPresentationStyle = .Popover
+        controller.popoverPresentationController?.barButtonItem = sender
+        controller.popoverPresentationController?.permittedArrowDirections = [.Up, .Down]
+        controller.popoverPresentationController?.delegate = self
+        presentViewController(controller, animated: true, completion: nil)
+    }
+    
     func showLibraryButtonTapped() {
-        guard let viewController = libraryVC ?? UIStoryboard.library.instantiateInitialViewController() else {return}
-        //let viewController = UITabBarController()
-        //viewController.viewControllers = [UITableViewController(), UITableViewController(), UITableViewController()]
+        guard let viewController = libraryController ?? UIStoryboard.library.instantiateInitialViewController() else {return}
         viewController.modalPresentationStyle = .FormSheet
-        libraryVC = viewController
+        libraryController = viewController
         presentViewController(viewController, animated: true, completion: nil)
     }
     
     func showSettingButtonTapped() {
-        guard let viewController = settingVC ?? UIStoryboard.setting.instantiateInitialViewController() else {return}
+        guard let viewController = settingController ?? UIStoryboard.setting.instantiateInitialViewController() else {return}
         viewController.modalPresentationStyle = .FormSheet
-        settingVC = viewController
+        settingController = viewController
         presentViewController(viewController, animated: true, completion: nil)
     }
     
@@ -234,5 +246,4 @@ class MainVC: UIViewController {
         hideSearch()
         navigationItem.setRightBarButtonItem(nil, animated: true)
     }
-    
 }
