@@ -225,6 +225,8 @@ class MainVC: UIViewController {
         controller.popoverPresentationController?.barButtonItem = sender
         controller.popoverPresentationController?.permittedArrowDirections = [.Up, .Down]
         controller.popoverPresentationController?.delegate = self
+        controller.headings = getTableOfContents(webView)
+        controller.delegate = self
         presentViewController(controller, animated: true, completion: nil)
     }
     

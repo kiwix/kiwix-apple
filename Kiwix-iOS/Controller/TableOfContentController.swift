@@ -11,8 +11,16 @@ import DZNEmptyDataSet
 
 class TableOfContentController: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    var headings = [String]()
-
+    weak var delegate: TableOfContentsDelegate?
+    private var headinglevelMin = 0
+    var headings = [HTMLHeading]() {
+        didSet {
+            configurePreferredContentSize()
+            headinglevelMin = headings.map({$0.level}).minElement() ?? 0
+            tableView.reloadData()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.emptyDataSetSource = self
@@ -20,14 +28,10 @@ class TableOfContentController: UITableViewController, DZNEmptyDataSetSource, DZ
         tableView.tableFooterView = UIView()
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        configurePreferredContentSize()
-    }
-    
     func configurePreferredContentSize() {
         let count = headings.count
-        preferredContentSize = CGSizeMake(300, count == 0 ? 350 : CGFloat(count) * 44.0)
+        let width = traitCollection.horizontalSizeClass == .Regular ? 300 : (UIScreen.mainScreen().bounds.width)
+        preferredContentSize = CGSizeMake(width, count == 0 ? 350 : min(CGFloat(count) * 44.0, UIScreen.mainScreen().bounds.height * 0.8))
     }
 
     // MARK: - Table view data source
@@ -37,17 +41,21 @@ class TableOfContentController: UITableViewController, DZNEmptyDataSetSource, DZ
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return headings.count
     }
-
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-
-
+        cell.textLabel?.text = headings[indexPath.row].textContent
+        cell.indentationLevel = (headings[indexPath.row].level - headinglevelMin) * 2
         return cell
     }
- 
+    
+    // MARK: - Table view delegate
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        delegate?.scrollTo(headings[indexPath.row])
+    }
     
     // MARK: - Empty table datasource & delegate
     
@@ -70,4 +78,8 @@ class TableOfContentController: UITableViewController, DZNEmptyDataSetSource, DZ
         return 30.0
     }
     
+}
+
+protocol TableOfContentsDelegate: class {
+    func scrollTo(heading: HTMLHeading)
 }

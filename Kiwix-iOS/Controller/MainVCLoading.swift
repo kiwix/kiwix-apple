@@ -10,7 +10,7 @@ import UIKit
 import JavaScriptCore
 
 extension MainVC {
-    
+       
     func load(url: NSURL?) {
         guard let url = url else {return}
         webView.hidden = false
@@ -28,16 +28,17 @@ extension MainVC {
     
     // MARK: - JS
     
-    func getTOC(webView: UIWebView) {
+    func getTableOfContents(webView: UIWebView) -> [HTMLHeading] {
         guard let context = webView.valueForKeyPath("documentView.webView.mainFrame.javaScriptContext") as? JSContext,
               let path = NSBundle.mainBundle().pathForResource("getTableOfContents", ofType: "js"),
               let jString = Utilities.contentOfFileAtPath(path),
-              let elements = context.evaluateScript(jString).toArray() as? [[String: String]] else {return}
+              let elements = context.evaluateScript(jString).toArray() as? [[String: String]] else {return [HTMLHeading]()}
         var headings = [HTMLHeading]()
         for element in elements {
             guard let heading = HTMLHeading(rawValue: element) else {continue}
             headings.append(heading)
         }
+        return headings
     }
 }
 
@@ -58,5 +59,10 @@ class HTMLHeading {
         if tagName == "" {return nil}
         if textContent == "" {return nil}
         if level == -1 {return nil}
+    }
+    
+    var scrollToJavaScript: String {
+        return "document.getElementById('\(id)').scrollIntoView();"
+//        return "window.location.hash='#\(id)'"
     }
 }

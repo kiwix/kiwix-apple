@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension MainVC: LPTBarButtonItemDelegate, UISearchBarDelegate, UIPopoverPresentationControllerDelegate, UIWebViewDelegate, UIScrollViewDelegate {
+extension MainVC: LPTBarButtonItemDelegate, TableOfContentsDelegate, UISearchBarDelegate, UIPopoverPresentationControllerDelegate, UIWebViewDelegate, UIScrollViewDelegate {
     
     // MARK: - LPTBarButtonItemDelegate
     
@@ -30,6 +30,12 @@ extension MainVC: LPTBarButtonItemDelegate, UISearchBarDelegate, UIPopoverPresen
         article.isBookmarked = !article.isBookmarked
         bookmarkHUDVC.show(article.isBookmarked)
         configureBookmarkButton()
+    }
+    
+    // MARK: - TableOfContentsDelegate
+    
+    func scrollTo(heading: HTMLHeading) {
+        webView.stringByEvaluatingJavaScriptFromString(heading.scrollToJavaScript)
     }
     
     // MARK: - UISearchBarDelegate
@@ -75,7 +81,6 @@ extension MainVC: LPTBarButtonItemDelegate, UISearchBarDelegate, UIPopoverPresen
         adjustFontSizeIfNeeded()
         configureNavigationButtonTint()
         configureBookmarkButton()
-        getTOC(webView)
     }
     
     func injectTableWrappingJavaScriptIfNeeded() {
