@@ -13,6 +13,7 @@ class SearchScopeSelectVC: UIViewController, UITableViewDelegate, UITableViewDat
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var toolBar: UIToolbar!
+    @IBOutlet weak var recentSearchBarHeight: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +25,7 @@ class SearchScopeSelectVC: UIViewController, UITableViewDelegate, UITableViewDat
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
+        recentSearchBarHeight.constant = Preference.recentSearchTerms.count == 0 ? 0.0 : 44.0
     }
     
     // MARK: - Fetched Results Controller

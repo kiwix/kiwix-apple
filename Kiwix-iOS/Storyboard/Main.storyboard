@@ -546,6 +546,7 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="C1c-FJ-IFr"/>
                                 <exclude reference="T0d-Ah-Ztr"/>
                             </mask>
                         </variation>
@@ -553,6 +554,7 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="recentSearchBarHeight" destination="6A0-j8-csD" id="kFa-pn-cRm"/>
                         <outlet property="tableView" destination="N78-0h-zb7" id="KTs-h1-wNo"/>
                     </connections>
                 </viewController>

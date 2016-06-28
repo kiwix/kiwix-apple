@@ -179,7 +179,7 @@ class Book: NSManagedObject {
     
     var spaceState: BookSpaceState {
         #if os(iOS) || os(watchOS) || os(tvOS)
-            let freeSpaceInBytes = Utilities.availableDiskspaceInBytes() ?? INT64_MAX
+            let freeSpaceInBytes = UIDevice.availableDiskSpace ?? INT64_MAX
             if (0.8 * Double(freeSpaceInBytes)) > Double(fileSize) {
                 return .Enough
             } else if freeSpaceInBytes < fileSize{
