@@ -1,5 +1,5 @@
 //
-//  SearchScopeSelectVC.swift
+//  SearchBooksVC.swift
 //  Kiwix
 //
 //  Created by Chris Li on 4/7/16.
@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class SearchScopeSelectVC: UIViewController, UITableViewDelegate, UITableViewDataSource, TableCellDelegate, NSFetchedResultsControllerDelegate {
+class SearchBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSource, TableCellDelegate, NSFetchedResultsControllerDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var toolBar: UIToolbar!

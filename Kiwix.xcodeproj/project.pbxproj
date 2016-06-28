@@ -84,7 +84,7 @@
 		971A10431D022C54007FC62C /* SettingTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10411D022C54007FC62C /* SettingTBVC.swift */; };
 		971A10461D022CB2007FC62C /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10451D022CB2007FC62C /* SearchVC.swift */; };
 		971A104A1D022CBE007FC62C /* SearchResultTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10471D022CBE007FC62C /* SearchResultTBVC.swift */; };
-		971A104B1D022CBE007FC62C /* SearchScopeSelectVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10481D022CBE007FC62C /* SearchScopeSelectVC.swift */; };
+		971A104B1D022CBE007FC62C /* SearchBooksVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10481D022CBE007FC62C /* SearchBooksVC.swift */; };
 		971A10521D022D9D007FC62C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10511D022D9D007FC62C /* AppDelegate.swift */; };
 		971A10581D022DAD007FC62C /* LibraryDownloadTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10531D022DAD007FC62C /* LibraryDownloadTBVC.swift */; };
 		971A10591D022DAD007FC62C /* LibraryLocalBookDetailTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10541D022DAD007FC62C /* LibraryLocalBookDetailTBVC.swift */; };
@@ -397,7 +397,7 @@
 		971A10411D022C54007FC62C /* SettingTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingTBVC.swift; path = "Kiwix-iOS/Controller/SettingTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10451D022CB2007FC62C /* SearchVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchVC.swift; path = "Kiwix-iOS/Controller/SearchVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10471D022CBE007FC62C /* SearchResultTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchResultTBVC.swift; path = "Kiwix-iOS/Controller/SearchResultTBVC.swift"; sourceTree = SOURCE_ROOT; };
-		971A10481D022CBE007FC62C /* SearchScopeSelectVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchScopeSelectVC.swift; path = "Kiwix-iOS/Controller/SearchScopeSelectVC.swift"; sourceTree = SOURCE_ROOT; };
+		971A10481D022CBE007FC62C /* SearchBooksVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchBooksVC.swift; path = "Kiwix-iOS/Controller/SearchBooksVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10511D022D9D007FC62C /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		971A10531D022DAD007FC62C /* LibraryDownloadTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryDownloadTBVC.swift; path = "Kiwix-iOS/Controller/LibraryDownloadTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10541D022DAD007FC62C /* LibraryLocalBookDetailTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryLocalBookDetailTBVC.swift; path = "Kiwix-iOS/Controller/LibraryLocalBookDetailTBVC.swift"; sourceTree = SOURCE_ROOT; };
@@ -1246,7 +1246,7 @@
 			children = (
 				971A10451D022CB2007FC62C /* SearchVC.swift */,
 				97D452BB1D16FF010033666F /* RecentSearchCVC.swift */,
-				971A10481D022CBE007FC62C /* SearchScopeSelectVC.swift */,
+				971A10481D022CBE007FC62C /* SearchBooksVC.swift */,
 				971A10471D022CBE007FC62C /* SearchResultTBVC.swift */,
 				9768957A1CB6A35E00F02686 /* Old */,
 			);
@@ -1886,7 +1886,7 @@
 				971A102F1D022AD5007FC62C /* Logo.swift in Sources */,
 				979CB6451D05C44F005E1BA1 /* Capability.swift in Sources */,
 				97D55EF61D2075180081B523 /* TableOfContentController.swift in Sources */,
-				971A104B1D022CBE007FC62C /* SearchScopeSelectVC.swift in Sources */,
+				971A104B1D022CBE007FC62C /* SearchBooksVC.swift in Sources */,
 				977998771C1E0B7900B1DD5E /* Article+CoreDataProperties.swift in Sources */,
 				971187301CEB50FC00B9909D /* ZimReader.mm in Sources */,
 				979CB6491D05C44F005E1BA1 /* iCloudContainerCapability.swift in Sources */,

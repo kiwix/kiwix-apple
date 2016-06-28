@@ -363,10 +363,10 @@
             </objects>
             <point key="canvasLocation" x="3985" y="-979"/>
         </scene>
-        <!--Search Scope SelectVC-->
+        <!--Search BooksVC-->
         <scene sceneID="D7X-oq-0zg">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="6mg-ey-R4I" customClass="SearchScopeSelectVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="6mg-ey-R4I" customClass="SearchBooksVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="zo0-tg-4E4"/>
                         <viewControllerLayoutGuide type="bottom" id="Tmc-y1-RDA"/>
