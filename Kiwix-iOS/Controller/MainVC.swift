@@ -15,7 +15,7 @@ class MainVC: UIViewController {
     var bookmarkController: UIViewController?
     var libraryController: UIViewController?
     var settingController: UIViewController?
-    var searchVC: SearchVC?
+    var searchController: SearchController?
     let searchBar = SearchBar()
     
     var context: UnsafeMutablePointer<Void> = nil
@@ -58,7 +58,7 @@ class MainVC: UIViewController {
         bookmarkController = nil
         libraryController = nil
         settingController = nil
-        searchVC = nil
+        searchController = nil
     }
     
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
@@ -143,28 +143,28 @@ class MainVC: UIViewController {
     // MARK: - UIViewAnimations
     
     func animateInSearchResultController() {
-        guard let searchVC = self.searchVC ?? UIStoryboard.main.initViewController(SearchVC.self) else {return}
-        self.searchVC = searchVC
-        guard !childViewControllers.contains(searchVC) else {return}
-        addChildViewController(searchVC)
-        searchVC.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(searchVC.view)
-        searchVC.didMoveToParentViewController(self)
-        searchVC.view.alpha = 0.5
-        searchVC.view.transform = CGAffineTransformMakeScale(0.94, 0.94)
+        guard let searchController = searchController ?? UIStoryboard.search.instantiateInitialViewController() as? SearchController else {return}
+        self.searchController = searchController
+        guard !childViewControllers.contains(searchController) else {return}
+        addChildViewController(searchController)
+        searchController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(searchController.view)
+        searchController.didMoveToParentViewController(self)
+        searchController.view.alpha = 0.5
+        searchController.view.transform = CGAffineTransformMakeScale(0.94, 0.94)
         
-        let views = ["searchVC": searchVC.view]
-        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[searchVC]|", options: .AlignAllCenterY, metrics: nil, views: views))
-        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[searchVC]|", options: .AlignAllCenterX, metrics: nil, views: views))
+        let views = ["SearchController": searchController.view]
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[SearchController]|", options: .AlignAllCenterY, metrics: nil, views: views))
+        self.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[SearchController]|", options: .AlignAllCenterX, metrics: nil, views: views))
         
         UIView.animateWithDuration(0.15, delay: 0.0, options: .CurveEaseOut, animations: { () -> Void in
-            searchVC.view.alpha = 1.0
-            searchVC.view.transform = CGAffineTransformIdentity
+            searchController.view.alpha = 1.0
+            searchController.view.transform = CGAffineTransformIdentity
             }, completion: nil)
     }
     
     func animateOutSearchResultController() {
-        guard let searchResultVC = searchVC else {return}
+        guard let searchResultVC = searchController else {return}
         UIView.animateWithDuration(0.15, delay: 0.0, options: .BeginFromCurrentState, animations: { () -> Void in
             searchResultVC.view.alpha = 0.0
             searchResultVC.view.transform = CGAffineTransformMakeScale(0.96, 0.96)

@@ -42,7 +42,6 @@ extension UIStoryboard {
     class var setting: UIStoryboard {get {return UIStoryboard(name: "Setting", bundle: nil)}}
     class var help: UIStoryboard {get {return UIStoryboard(name: "Help", bundle: nil)}}
     
-    // @available(*, deprecated=1.7, obsoleted=2.0, message="Use newer API")
     func initViewController<T:UIViewController>(type: T.Type) -> T? {
         guard let className = NSStringFromClass(T).componentsSeparatedByString(".").last else {
             print("NSManagedObjectExtension: Unable to get class name")
@@ -58,7 +57,6 @@ extension UIStoryboard {
     func controller<T:UIViewController>(type: T.Type) -> T? {
         return instantiateViewControllerWithIdentifier(String(T)) as? T
     }
-    
 }
 
 extension UIColor {

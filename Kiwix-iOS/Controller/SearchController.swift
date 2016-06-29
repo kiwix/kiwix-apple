@@ -1,5 +1,5 @@
 //
-//  SearchVC.swift
+//  SearchController.swift
 //  Kiwix
 //
 //  Created by Chris Li on 1/30/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SearchVC: UIViewController, UISearchBarDelegate, UIGestureRecognizerDelegate {
+class SearchController: UIViewController, UISearchBarDelegate, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var tabControllerContainer: UIView!
     @IBOutlet weak var searchResultTBVCContainer: UIView!
@@ -24,7 +24,7 @@ class SearchVC: UIViewController, UISearchBarDelegate, UIGestureRecognizerDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tapGestureRecognizer.addTarget(self, action: #selector(SearchVC.handleTap(_:)))
+        tapGestureRecognizer.addTarget(self, action: #selector(SearchController.handleTap(_:)))
         tapGestureRecognizer.delegate = self
     }
     

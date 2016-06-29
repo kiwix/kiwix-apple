@@ -50,11 +50,11 @@ extension MainVC: LPTBarButtonItemDelegate, TableOfContentsDelegate, UISearchBar
     }
 
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        searchVC?.searchText = searchText
+        searchController?.searchText = searchText
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        searchVC?.searchResultTBVC?.selectFirstResultIfPossible()
+        searchController?.searchResultTBVC?.selectFirstResultIfPossible()
     }
     
     // MARK: -  UIPopoverPresentationControllerDelegate

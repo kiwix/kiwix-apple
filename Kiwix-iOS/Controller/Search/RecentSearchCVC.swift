@@ -59,11 +59,11 @@ class RecentSearchCVC: UIViewController, UICollectionViewDataSource, UICollectio
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         guard let mainVC = parentViewController?.parentViewController?.parentViewController as? MainVC,
-            let searchVC = parentViewController?.parentViewController as? SearchVC,
+            let SearchController = parentViewController?.parentViewController as? SearchController,
             let cell = collectionView.cellForItemAtIndexPath(indexPath) as? LocalLangCell,
             let text = cell.label.text else {return}
         mainVC.searchBar.text = text
-        searchVC.searchText = text
+        SearchController.searchText = text
         collectionView.deselectItemAtIndexPath(indexPath, animated: true)
     }
     
