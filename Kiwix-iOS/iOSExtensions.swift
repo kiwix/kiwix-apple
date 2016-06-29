@@ -36,11 +36,13 @@ extension NSManagedObjectContext {
 // MARK: - UI
 
 extension UIStoryboard {
-    class var main: UIStoryboard {get {return UIStoryboard(name: "Main", bundle: nil)}}
     class var library: UIStoryboard {get {return UIStoryboard(name: "Library", bundle: nil)}}
+    class var main: UIStoryboard {get {return UIStoryboard(name: "Main", bundle: nil)}}
+    class var search: UIStoryboard {get {return UIStoryboard(name: "Search", bundle: nil)}}
     class var setting: UIStoryboard {get {return UIStoryboard(name: "Setting", bundle: nil)}}
     class var help: UIStoryboard {get {return UIStoryboard(name: "Help", bundle: nil)}}
     
+    // @available(*, deprecated=1.7, obsoleted=2.0, message="Use newer API")
     func initViewController<T:UIViewController>(type: T.Type) -> T? {
         guard let className = NSStringFromClass(T).componentsSeparatedByString(".").last else {
             print("NSManagedObjectExtension: Unable to get class name")
@@ -52,6 +54,11 @@ extension UIStoryboard {
     func initViewController<T:UIViewController>(identifier: String, type: T.Type) -> T? {
         return instantiateViewControllerWithIdentifier(identifier) as? T
     }
+    
+    func controller<T:UIViewController>(type: T.Type) -> T? {
+        return instantiateViewControllerWithIdentifier(String(T)) as? T
+    }
+    
 }
 
 extension UIColor {
