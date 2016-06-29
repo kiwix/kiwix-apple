@@ -82,7 +82,7 @@
 		971A103F1D022C42007FC62C /* LibraryAutoRefreshTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A103D1D022C42007FC62C /* LibraryAutoRefreshTBVC.swift */; };
 		971A10401D022C42007FC62C /* LibraryUseCellularDataTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A103E1D022C42007FC62C /* LibraryUseCellularDataTBVC.swift */; };
 		971A10431D022C54007FC62C /* SettingTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10411D022C54007FC62C /* SettingTBVC.swift */; };
-		971A10461D022CB2007FC62C /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10451D022CB2007FC62C /* SearchVC.swift */; };
+		971A10461D022CB2007FC62C /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10451D022CB2007FC62C /* SearchController.swift */; };
 		971A104A1D022CBE007FC62C /* SearchResultTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10471D022CBE007FC62C /* SearchResultTBVC.swift */; };
 		971A104B1D022CBE007FC62C /* SearchBooksVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10481D022CBE007FC62C /* SearchBooksVC.swift */; };
 		971A10521D022D9D007FC62C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10511D022D9D007FC62C /* AppDelegate.swift */; };
@@ -267,6 +267,7 @@
 		97E60A021D10423A00EBCB9D /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E60A011D10423A00EBCB9D /* ShadowView.swift */; };
 		97E60A061D10504000EBCB9D /* LibraryBackupTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E60A051D10504000EBCB9D /* LibraryBackupTBVC.swift */; };
 		97E891691CA976E90001CA32 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E891681CA976E90001CA32 /* FileManager.swift */; };
+		97F03CE21D2440470040D26E /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97F03CE11D2440470040D26E /* Search.storyboard */; };
 		AEFF409D8D5B53BC90700424 /* Pods_Kiwix_OSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAF14EE0505901A1570F23F /* Pods_Kiwix_OSX.framework */; };
 		BECDBCEF4720E3E86FE63989 /* Pods_Kiwix_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CEA715EBFC96C75E73447A7 /* Pods_Kiwix_iOS.framework */; };
 /* End PBXBuildFile section */
@@ -395,7 +396,7 @@
 		971A103D1D022C42007FC62C /* LibraryAutoRefreshTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryAutoRefreshTBVC.swift; path = "Kiwix-iOS/Controller/LibraryAutoRefreshTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A103E1D022C42007FC62C /* LibraryUseCellularDataTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryUseCellularDataTBVC.swift; path = "Kiwix-iOS/Controller/LibraryUseCellularDataTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10411D022C54007FC62C /* SettingTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingTBVC.swift; path = "Kiwix-iOS/Controller/SettingTBVC.swift"; sourceTree = SOURCE_ROOT; };
-		971A10451D022CB2007FC62C /* SearchVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchVC.swift; path = "Kiwix-iOS/Controller/SearchVC.swift"; sourceTree = SOURCE_ROOT; };
+		971A10451D022CB2007FC62C /* SearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchController.swift; path = "Kiwix-iOS/Controller/SearchController.swift"; sourceTree = SOURCE_ROOT; };
 		971A10471D022CBE007FC62C /* SearchResultTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchResultTBVC.swift; path = "Kiwix-iOS/Controller/SearchResultTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10481D022CBE007FC62C /* SearchBooksVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchBooksVC.swift; path = "Kiwix-iOS/Controller/SearchBooksVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10511D022D9D007FC62C /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -534,7 +535,6 @@
 		97BA32A31CEBC29500339A47 /* RootWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RootWindowController.swift; path = "Kiwix-OSX/Controllers/RootWindowController.swift"; sourceTree = SOURCE_ROOT; };
 		97D452BB1D16FF010033666F /* RecentSearchCVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecentSearchCVC.swift; path = "Kiwix-iOS/Controller/Search/RecentSearchCVC.swift"; sourceTree = SOURCE_ROOT; };
 		97D452BD1D1723FF0033666F /* CollectionViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCells.swift; sourceTree = "<group>"; };
-		97D452BF1D1871E70033666F /* SearchHistoryTBVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchHistoryTBVC.swift; path = "Kiwix-iOS/Controller/Search/SearchHistoryTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		97D452C01D1871E70033666F /* SearchLocalBooksCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchLocalBooksCVC.swift; path = "Kiwix-iOS/Controller/Search/SearchLocalBooksCVC.swift"; sourceTree = SOURCE_ROOT; };
 		97D452C11D1871E70033666F /* SearchTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchTabController.swift; path = "Kiwix-iOS/Controller/Search/SearchTabController.swift"; sourceTree = SOURCE_ROOT; };
 		97D55EF51D2075180081B523 /* TableOfContentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableOfContentController.swift; path = "Kiwix-iOS/Controller/TableOfContentController.swift"; sourceTree = SOURCE_ROOT; };
@@ -547,6 +547,7 @@
 		97E60A011D10423A00EBCB9D /* ShadowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
 		97E60A051D10504000EBCB9D /* LibraryBackupTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryBackupTBVC.swift; path = "Kiwix-iOS/Controller/LibraryBackupTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		97E891681CA976E90001CA32 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileManager.swift; path = Kiwix/FileManager.swift; sourceTree = "<group>"; };
+		97F03CE11D2440470040D26E /* Search.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Search.storyboard; path = "Kiwix-iOS/Storyboard/Search.storyboard"; sourceTree = SOURCE_ROOT; };
 		B14E5F8A97964014F99EAD4E /* Pods-Kiwix-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		B3B41D59F4B010C559B18D3D /* Pods-Kiwix-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		DBAF14EE0505901A1570F23F /* Pods_Kiwix_OSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Kiwix_OSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -853,6 +854,7 @@
 			isa = PBXGroup;
 			children = (
 				971A10511D022D9D007FC62C /* AppDelegate.swift */,
+				975B90FD1CEB909100D13906 /* iOSExtensions.swift */,
 				978C587A1C1CCC9C0077AE47 /* Storyboards */,
 				978C58821C1CCDAF0077AE47 /* Controllers */,
 				971A10221D022AD5007FC62C /* View */,
@@ -973,7 +975,6 @@
 		9768957A1CB6A35E00F02686 /* Old */ = {
 			isa = PBXGroup;
 			children = (
-				97D452BF1D1871E70033666F /* SearchHistoryTBVC.swift */,
 				97D452C01D1871E70033666F /* SearchLocalBooksCVC.swift */,
 				97D452C11D1871E70033666F /* SearchTabController.swift */,
 			);
@@ -1012,6 +1013,7 @@
 			children = (
 				975227C91D0227E8001D1DDE /* Library.storyboard */,
 				975227CA1D0227E8001D1DDE /* Main.storyboard */,
+				97F03CE11D2440470040D26E /* Search.storyboard */,
 				975227CB1D0227E8001D1DDE /* Setting.storyboard */,
 			);
 			name = Storyboards;
@@ -1036,7 +1038,6 @@
 		978C588B1C1CD1E30077AE47 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				975B90FD1CEB909100D13906 /* iOSExtensions.swift */,
 				971904A41CA3204B002E9CFF /* Network */,
 				971A106B1D022E50007FC62C /* Utilities.swift */,
 			);
@@ -1244,7 +1245,7 @@
 		97E108221C5D5A0D00E27FD3 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				971A10451D022CB2007FC62C /* SearchVC.swift */,
+				971A10451D022CB2007FC62C /* SearchController.swift */,
 				97D452BB1D16FF010033666F /* RecentSearchCVC.swift */,
 				971A10481D022CBE007FC62C /* SearchBooksVC.swift */,
 				971A10471D022CBE007FC62C /* SearchResultTBVC.swift */,
@@ -1525,6 +1526,7 @@
 				971A10811D022F74007FC62C /* Pic_P.png in Resources */,
 				971A101D1D0228E8007FC62C /* adjustlayoutiPad.js in Resources */,
 				975227D01D022814001D1DDE /* LaunchScreen.storyboard in Resources */,
+				97F03CE21D2440470040D26E /* Search.storyboard in Resources */,
 				971A10181D0228E0007FC62C /* about.html in Resources */,
 				971A10161D022872007FC62C /* Assets.xcassets in Resources */,
 				971A10771D022F05007FC62C /* Localizable.stringsdict in Resources */,
@@ -1856,7 +1858,7 @@
 				974570F41C2DABB500680E43 /* ZIMMultiReaderAPI.swift in Sources */,
 				979CB6511D05C44F005E1BA1 /* PassbookCapability.swift in Sources */,
 				971A105C1D022DAD007FC62C /* LibraryTabBarController.swift in Sources */,
-				971A10461D022CB2007FC62C /* SearchVC.swift in Sources */,
+				971A10461D022CB2007FC62C /* SearchController.swift in Sources */,
 				9779987B1C1E1C9600B1DD5E /* Extensions.swift in Sources */,
 				979CB6551D05C44F005E1BA1 /* PushCapability-iOS.swift in Sources */,
 				979CB6831D05C44F005E1BA1 /* OperationObserver.swift in Sources */,
