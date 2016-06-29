@@ -75,7 +75,9 @@
                             <constraint firstItem="l6w-E8-vrr" firstAttribute="centerX" secondItem="anA-WQ-694" secondAttribute="centerX" id="10b-5k-B8a"/>
                             <constraint firstItem="wyO-bR-owd" firstAttribute="centerX" secondItem="anA-WQ-694" secondAttribute="centerX" id="2D4-7f-Usz"/>
                             <constraint firstItem="l6w-E8-vrr" firstAttribute="leading" secondItem="anA-WQ-694" secondAttribute="leading" id="3Hc-So-OgY"/>
-                            <constraint firstItem="M3E-Ei-iG0" firstAttribute="top" secondItem="l6w-E8-vrr" secondAttribute="bottom" priority="750" constant="100" id="3Ye-Dy-tJA"/>
+                            <constraint firstItem="M3E-Ei-iG0" firstAttribute="top" secondItem="l6w-E8-vrr" secondAttribute="bottom" priority="750" constant="100" id="3Ye-Dy-tJA">
+                                <variation key="widthClass=regular" constant="50"/>
+                            </constraint>
                             <constraint firstAttribute="trailingMargin" secondItem="l6w-E8-vrr" secondAttribute="trailing" constant="-20" id="4DW-to-Vk5"/>
                             <constraint firstItem="l6w-E8-vrr" firstAttribute="centerX" secondItem="anA-WQ-694" secondAttribute="centerX" id="5Mc-cX-eMg"/>
                             <constraint firstAttribute="trailing" secondItem="wyO-bR-owd" secondAttribute="trailing" id="8yE-Hw-hmZ"/>
@@ -112,7 +114,9 @@
                             </constraint>
                             <constraint firstItem="M3E-Ei-iG0" firstAttribute="top" secondItem="wyO-bR-owd" secondAttribute="bottom" id="i5e-7F-ctC"/>
                             <constraint firstItem="vCx-YB-CHS" firstAttribute="width" secondItem="wyO-bR-owd" secondAttribute="width" id="itt-a3-Qgu"/>
-                            <constraint firstItem="M3E-Ei-iG0" firstAttribute="top" secondItem="wyO-bR-owd" secondAttribute="bottom" priority="750" constant="100" id="kf7-tp-XAe"/>
+                            <constraint firstItem="M3E-Ei-iG0" firstAttribute="top" secondItem="wyO-bR-owd" secondAttribute="bottom" priority="750" constant="100" id="kf7-tp-XAe">
+                                <variation key="widthClass=regular" constant="50"/>
+                            </constraint>
                             <constraint firstItem="l6w-E8-vrr" firstAttribute="centerX" secondItem="anA-WQ-694" secondAttribute="centerX" id="krr-dd-vSg"/>
                             <constraint firstItem="l6w-E8-vrr" firstAttribute="top" secondItem="Bhr-Sz-DsQ" secondAttribute="bottom" id="m88-tH-cDI"/>
                             <constraint firstItem="l6w-E8-vrr" firstAttribute="leading" secondItem="anA-WQ-694" secondAttribute="leadingMargin" constant="-20" id="q0V-ks-SF7"/>
@@ -938,7 +942,7 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="gmD-FQ-6K1">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="UGg-ww-zQ6">
                                     <size key="itemSize" width="102" height="42"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -975,7 +979,7 @@
                                 </cells>
                             </collectionView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="gmD-FQ-6K1" firstAttribute="top" secondItem="kCv-em-FrJ" secondAttribute="top" id="4zb-nY-Vnl"/>
                             <constraint firstItem="gmD-FQ-6K1" firstAttribute="leading" secondItem="kCv-em-FrJ" secondAttribute="leading" id="8kQ-H7-VUS"/>
