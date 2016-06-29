@@ -8,8 +8,9 @@
 
 import UIKit
 import CoreData
+import DZNEmptyDataSet
 
-class SearchBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSource, TableCellDelegate, NSFetchedResultsControllerDelegate {
+class SearchBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, TableCellDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var toolBar: UIToolbar!
@@ -19,13 +20,42 @@ class SearchBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
         tableView.tableHeaderView = UIView()
+        tableView.tableFooterView = UIView()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
         recentSearchBarHeight.constant = Preference.recentSearchTerms.count == 0 ? 0.0 : 44.0
+    }
+    
+    // MARK: - Empty table datasource & delegate
+    
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let text = NSLocalizedString("No Book Available", comment: "Book Library, book downloader, no book center title")
+        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(18.0),
+                          NSForegroundColorAttributeName: UIColor.darkGrayColor()]
+        return NSAttributedString(string: text, attributes: attributes)
+    }
+    
+    func buttonTitleForEmptyDataSet(scrollView: UIScrollView!, forState state: UIControlState) -> NSAttributedString! {
+        let text = NSLocalizedString("Download A Book", comment: "Book Library, book downloader, learn more button text")
+        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(17.0), NSForegroundColorAttributeName: UIButton().tintColor]
+        return NSAttributedString(string: text, attributes: attributes)
+    }
+    
+    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+        return -64.0
+    }
+    
+    func spaceHeightForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+        return 0.0
+    }
+    
+    func emptyDataSetDidTapButton(scrollView: UIScrollView!) {
     }
     
     // MARK: - Fetched Results Controller
@@ -64,11 +94,11 @@ class SearchBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("CheckMarkBookCell", forIndexPath: indexPath)
-        self.configureBookCell(cell, atIndexPath: indexPath)
+        self.configureCell(cell, atIndexPath: indexPath)
         return cell
     }
     
-    func configureBookCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         guard let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
         guard let cell = cell as? CheckMarkBookCell else {return}
         
@@ -111,6 +141,8 @@ class SearchBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     // MARK: - Fetched Result Controller Delegate
     
+    // MARK: - Fetched Result Controller Delegate
+    
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
         tableView.beginUpdates()
     }
@@ -129,14 +161,18 @@ class SearchBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         switch type {
         case .Insert:
-            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+            guard let newIndexPath = newIndexPath else {return}
+            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Fade)
         case .Delete:
-            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+            guard let indexPath = indexPath else {return}
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         case .Update:
-            self.configureBookCell(tableView.cellForRowAtIndexPath(indexPath!)!, atIndexPath: indexPath!)
+            guard let indexPath = indexPath, let cell = tableView.cellForRowAtIndexPath(indexPath) else {return}
+            configureCell(cell, atIndexPath: indexPath)
         case .Move:
-            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+            guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Fade)
         }
     }
     

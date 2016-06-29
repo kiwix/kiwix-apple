@@ -49,8 +49,6 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
             Network.sharedInstance.pause(book)
         case .Paused, .Error:
             Network.sharedInstance.resume(book)
-        default:
-            break
         }
     }
     
