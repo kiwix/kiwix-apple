@@ -1,9 +1,12 @@
 ## [1.6.0] - 2016-06-25
 ### New
-- save and reperform recent search
+- recently performed search terms
 - search system now fetch result from both title search and index search and use a new ranking system to sort them
 - table of content
 - enhanced layout javascript on iPhone
+- Use SafariViewController to handle external links
+- access download.kiwix.org using https
+- enhanced UI when hSizeClass is regular
 
 ### Fixed
 - downloading / paused book purged when they are removed from online library

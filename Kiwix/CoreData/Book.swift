@@ -72,6 +72,8 @@ class Book: NSManagedObject {
         guard let meta4URL = meta4URL else {return nil}
         // return url = NSURL(string: meta4URL.stringByReplacingOccurrencesOfString(".meta4", withString: ""))
         let urlComponents = NSURLComponents(string: meta4URL.stringByReplacingOccurrencesOfString(".meta4", withString: ""))
+        urlComponents?.scheme = "https"
+        return urlComponents?.URL
     }
     
     #if os(iOS) || os(watchOS) || os(tvOS)
