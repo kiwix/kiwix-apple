@@ -72,6 +72,7 @@ class MainVC: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         if previousTraitCollection?.horizontalSizeClass != traitCollection.horizontalSizeClass {
             configureUIElements(traitCollection.horizontalSizeClass)
+            if let _ = previousTraitCollection {configureTOCViewConstraints()}
         }
     }
     
@@ -228,14 +229,7 @@ class MainVC: UIViewController {
         dimView.alpha = 0.0
         view.layoutIfNeeded()
         tableOfContentsController?.headings = getTableOfContents(webView)
-        let tocHeight: CGFloat = {
-            guard let controller = tableOfContentsController else {return floor(view.frame.height * 0.4)}
-            let preferredHeight = controller.preferredContentSize.height
-            guard controller.headings.count != 0 else {return floor(view.frame.height * 0.4)}
-            return min(preferredHeight + 44, floor(view.frame.height * 0.65))
-        }()
-        tocHeightConstraint.constant = tocHeight
-        tocTopToSuperViewBottomSpacing.constant = tocHeight
+        configureTOCViewConstraints()
         UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: .CurveEaseOut, animations: {
             self.view.layoutIfNeeded()
             self.dimView.alpha = 0.5
@@ -254,6 +248,18 @@ class MainVC: UIViewController {
             self.dimView.hidden = true
             self.isShowingTableOfContents = false
         }
+    }
+    
+    func configureTOCViewConstraints() {
+        let tocHeight: CGFloat = {
+            guard let controller = tableOfContentsController else {return floor(view.frame.height * 0.4)}
+            let preferredHeight = controller.preferredContentSize.height
+            guard controller.headings.count != 0 else {return floor(view.frame.height * 0.4)}
+            let toolBarHeight: CGFloat = traitCollection.horizontalSizeClass == .Regular ? 0.0 : (traitCollection.verticalSizeClass == .Compact ? 32.0 : 44.0)
+            return min(preferredHeight + toolBarHeight, floor(view.frame.height * 0.65))
+        }()
+        tocHeightConstraint.constant = tocHeight
+        tocTopToSuperViewBottomSpacing.constant = tocHeight
     }
 
     // MARK: - Buttons
