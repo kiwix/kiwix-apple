@@ -297,24 +297,14 @@
                                     <constraint firstAttribute="width" secondItem="Awp-Ns-lUK" secondAttribute="height" multiplier="1:1" id="bBa-xx-uby"/>
                                 </constraints>
                             </view>
-                            <webView hidden="YES" opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hIy-lu-2F6">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="m3f-nC-KTZ" firstAttribute="centerX" secondItem="7Jb-Dc-6wF" secondAttribute="centerX" id="0s8-4m-29E"/>
                             <constraint firstItem="Awp-Ns-lUK" firstAttribute="centerX" secondItem="7Jb-Dc-6wF" secondAttribute="centerX" id="5RC-qW-gNn"/>
                             <constraint firstItem="XK0-T9-9mJ" firstAttribute="width" secondItem="hld-ok-XDr" secondAttribute="width" id="G27-Ci-s8E"/>
-                            <constraint firstAttribute="trailing" secondItem="hIy-lu-2F6" secondAttribute="trailing" id="LAN-QP-X8j"/>
-                            <constraint firstItem="hIy-lu-2F6" firstAttribute="top" secondItem="ocV-Az-RtU" secondAttribute="bottom" constant="-64" id="T9y-kR-wLJ"/>
                             <constraint firstItem="hld-ok-XDr" firstAttribute="centerX" secondItem="7Jb-Dc-6wF" secondAttribute="centerX" id="U3e-qe-Qpb"/>
-                            <constraint firstItem="hIy-lu-2F6" firstAttribute="leading" secondItem="7Jb-Dc-6wF" secondAttribute="leading" id="cFC-fe-XwM"/>
                             <constraint firstItem="m3f-nC-KTZ" firstAttribute="centerY" secondItem="7Jb-Dc-6wF" secondAttribute="centerY" id="gTS-W9-dn2"/>
-                            <constraint firstItem="5Xw-lR-3MK" firstAttribute="top" secondItem="hIy-lu-2F6" secondAttribute="bottom" constant="-44" id="j8C-Uh-Aph">
-                                <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
-                            </constraint>
                             <constraint firstItem="hld-ok-XDr" firstAttribute="top" secondItem="XK0-T9-9mJ" secondAttribute="bottom" constant="8" id="r4P-rJ-1Ua">
                                 <variation key="heightClass=regular-widthClass=regular" constant="12"/>
                             </constraint>
@@ -329,13 +319,57 @@
                     </view>
                     <navigationItem key="navigationItem" id="m9E-zG-TJl"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <connections>
-                        <outlet property="webView" destination="hIy-lu-2F6" id="hJQ-tG-U7r"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ysx-az-10y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1852" y="432"/>
+            <point key="canvasLocation" x="2916" y="178.5"/>
+        </scene>
+        <!--MainVC-->
+        <scene sceneID="nEL-IB-dp3">
+            <objects>
+                <viewController id="vVc-as-aAx" customClass="MainVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="HS5-a8-H6G"/>
+                        <viewControllerLayoutGuide type="bottom" id="fXQ-NS-gMx"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="BDO-xK-ZEa">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hIy-lu-2F6">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="fXQ-NS-gMx" firstAttribute="top" secondItem="hIy-lu-2F6" secondAttribute="bottom" constant="-44" id="3bA-ye-yIU">
+                                <variation key="heightClass=compact" constant="-44"/>
+                                <variation key="widthClass=regular" constant="0.0"/>
+                                <variation key="heightClass=compact-widthClass=compact" constant="-32"/>
+                            </constraint>
+                            <constraint firstItem="hIy-lu-2F6" firstAttribute="top" secondItem="HS5-a8-H6G" secondAttribute="bottom" constant="-64" id="6ak-gZ-Hzq">
+                                <variation key="heightClass=compact" constant="-44"/>
+                                <variation key="heightClass=compact-widthClass=compact" constant="-32"/>
+                            </constraint>
+                            <constraint firstAttribute="trailing" secondItem="hIy-lu-2F6" secondAttribute="trailing" id="eC3-6r-itc"/>
+                            <constraint firstAttribute="bottom" secondItem="hIy-lu-2F6" secondAttribute="bottom" id="xEp-oq-phK"/>
+                            <constraint firstItem="hIy-lu-2F6" firstAttribute="leading" secondItem="BDO-xK-ZEa" secondAttribute="leading" id="y3g-CI-q82"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="xEp-oq-phK"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" id="kQs-hp-Q5P"/>
+                    <connections>
+                        <outlet property="webView" destination="hIy-lu-2F6" id="77z-Ea-aVH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Gtk-Xb-X35" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1853" y="433"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="eEd-4G-vNS">
@@ -352,7 +386,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
-                        <segue destination="gRa-Kx-dUX" kind="relationship" relationship="rootViewController" id="COb-gy-vpb"/>
+                        <segue destination="vVc-as-aAx" kind="relationship" relationship="rootViewController" id="0KU-IZ-wYa"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V34-QA-xew" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -86,19 +86,21 @@ class MainVC: UIViewController {
             toolbarItems?.removeAll()
             navigationItem.leftBarButtonItems = [navigateLeftButton, navigateRightButton, tableOfContentButton]
             navigationItem.rightBarButtonItems = [settingButton, libraryButton, bookmarkButton]
+            searchBar.setShowsCancelButton(false, animated: true)
         case .Compact:
             if !searchBar.isFirstResponder() {navigationController?.toolbarHidden = false}
+            if searchBar.isFirstResponder() {searchBar.setShowsCancelButton(true, animated: true)}
             navigationItem.leftBarButtonItems?.removeAll()
             navigationItem.rightBarButtonItems?.removeAll()
             let spaceButton = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-            toolbarItems = [navigateLeftButton, spaceButton, navigateRightButton, spaceButton, tableOfContentButton, spaceButton, bookmarkButton, spaceButton, libraryButton, spaceButton, settingButton]
+            toolbarItems = [navigateLeftButton, spaceButton, navigateRightButton, spaceButton, tableOfContentButton, spaceButton, bookmarkButton, spaceButton, libraryButton, spaceButton, settingButton]            
             if UIDevice.currentDevice().userInterfaceIdiom == .Pad && searchBar.isFirstResponder() {
                 navigationItem.setRightBarButtonItem(cancelButton, animated: true)
             }
         case .Unspecified:
             break
         }
-        configureWebViewInsets()
+//        configureWebViewInsets()
     }
     
     func configureButtonColor() {
@@ -127,6 +129,7 @@ class MainVC: UIViewController {
             guard let toolbar = navigationController?.toolbar else {return 0.0}
             return traitCollection.horizontalSizeClass == .Compact ? view.frame.height - toolbar.frame.origin.y : 0.0
         }()
+        print(topInset)
         webView.scrollView.contentInset = UIEdgeInsetsMake(topInset, 0, bottomInset, 0)
         webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(topInset, 0, bottomInset, 0)
     }
@@ -182,8 +185,10 @@ class MainVC: UIViewController {
     func showSearch() {
         navigationController?.toolbarHidden = true
         animateInSearchResultController()
-        searchBar.setShowsCancelButton(true, animated: true)
         searchBar.placeholder = LocalizedStrings.search
+        if traitCollection.horizontalSizeClass == .Compact {
+            searchBar.setShowsCancelButton(true, animated: true)
+        }
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad && traitCollection.horizontalSizeClass == .Compact {
             navigationItem.setRightBarButtonItem(cancelButton, animated: true)
         }

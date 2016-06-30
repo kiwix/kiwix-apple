@@ -70,7 +70,8 @@ class Book: NSManagedObject {
     
     var url: NSURL? {
         guard let meta4URL = meta4URL else {return nil}
-        return NSURL(string: meta4URL.stringByReplacingOccurrencesOfString(".meta4", withString: ""))
+        // return url = NSURL(string: meta4URL.stringByReplacingOccurrencesOfString(".meta4", withString: ""))
+        let urlComponents = NSURLComponents(string: meta4URL.stringByReplacingOccurrencesOfString(".meta4", withString: ""))
     }
     
     #if os(iOS) || os(watchOS) || os(tvOS)

@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SafariServices
 
-extension MainVC: LPTBarButtonItemDelegate, TableOfContentsDelegate, UISearchBarDelegate, UIPopoverPresentationControllerDelegate, UIWebViewDelegate, UIScrollViewDelegate {
+extension MainVC: LPTBarButtonItemDelegate, TableOfContentsDelegate, UISearchBarDelegate, UIPopoverPresentationControllerDelegate, UIWebViewDelegate, SFSafariViewControllerDelegate, UIScrollViewDelegate {
     
     // MARK: - LPTBarButtonItemDelegate
     
@@ -65,6 +66,18 @@ extension MainVC: LPTBarButtonItemDelegate, TableOfContentsDelegate, UISearchBar
     
     // MARK: - UIWebViewDelegate
     
+    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        guard let url = request.URL else {return true}
+        if url.scheme == "kiwix" {
+            return true
+        } else {
+            let svc = SFSafariViewController(URL: url)
+            svc.delegate = self
+            presentViewController(svc, animated: true, completion: nil)
+            return false
+        }
+    }
+    
     func webViewDidFinishLoad(webView: UIWebView) {
         guard let url = webView.request?.URL else {return}
         guard url.scheme.caseInsensitiveCompare("Kiwix") == .OrderedSame else {return}
@@ -102,6 +115,12 @@ extension MainVC: LPTBarButtonItemDelegate, TableOfContentsDelegate, UISearchBar
         guard zoomScale != 100.0 else {return}
         let jString = String(format: "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%.0f%%'", zoomScale)
         webView.stringByEvaluatingJavaScriptFromString(jString)
+    }
+    
+    // MARK: - UIPopoverPresentationControllerDelegate
+    
+    func safariViewControllerDidFinish(controller: SFSafariViewController) {
+        controller.dismissViewControllerAnimated(true, completion: nil)
     }
     
     // MARK: - UIScrollViewDelegate

@@ -24,6 +24,7 @@ class SearchBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         tableView.emptyDataSetDelegate = self
         tableView.tableHeaderView = UIView()
         tableView.tableFooterView = UIView()
+        tableView.keyboardDismissMode = .OnDrag
     }
     
     override func viewWillAppear(animated: Bool) {
