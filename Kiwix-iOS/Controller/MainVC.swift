@@ -9,9 +9,12 @@
 import UIKit
 
 class MainVC: UIViewController {
-
+    
     @IBOutlet weak var webView: UIWebView!
-    var tableOfContentController: TableOfContentController?
+    @IBOutlet weak var tocControllerBottomSpacing: NSLayoutConstraint!
+    @IBOutlet weak var tocControllerHeight: NSLayoutConstraint!
+    
+    var tableOfContentsController: TableOfContentsController?
     var bookmarkController: UIViewController?
     var libraryController: UIViewController?
     var settingController: UIViewController?
@@ -40,6 +43,8 @@ class MainVC: UIViewController {
         NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "webViewZoomScale", options: .New, context: context)
         configureButtonColor()
         showGetStartedAlert()
+        
+        tocControllerBottomSpacing.constant = -tocControllerHeight.constant
     }
     
     deinit {
@@ -54,7 +59,7 @@ class MainVC: UIViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        tableOfContentController = nil
+        tableOfContentsController = nil
         bookmarkController = nil
         libraryController = nil
         settingController = nil
@@ -65,6 +70,14 @@ class MainVC: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         if previousTraitCollection?.horizontalSizeClass != traitCollection.horizontalSizeClass {
             configureUIElements(traitCollection.horizontalSizeClass)
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "EmbeddedTOCController" {
+            guard let destinationViewController = segue.destinationViewController as? TableOfContentsController else {return}
+            tableOfContentsController = destinationViewController
+            tableOfContentsController?.delegate = self
         }
     }
     
@@ -100,7 +113,6 @@ class MainVC: UIViewController {
         case .Unspecified:
             break
         }
-//        configureWebViewInsets()
     }
     
     func configureButtonColor() {
@@ -225,14 +237,7 @@ class MainVC: UIViewController {
     }
     
     func showTableOfContentButtonTapped(sender: UIBarButtonItem) {
-        guard let controller = tableOfContentController ?? UIStoryboard.main.initViewController(TableOfContentController.self) else {return}
-        controller.modalPresentationStyle = .Popover
-        controller.popoverPresentationController?.barButtonItem = sender
-        controller.popoverPresentationController?.permittedArrowDirections = [.Up, .Down]
-        controller.popoverPresentationController?.delegate = self
-        controller.headings = getTableOfContents(webView)
-        controller.delegate = self
-        presentViewController(controller, animated: true, completion: nil)
+        toggleTableOfContents()
     }
     
     func showLibraryButtonTapped() {
@@ -252,5 +257,23 @@ class MainVC: UIViewController {
     func cancelButtonTapped() {
         hideSearch()
         navigationItem.setRightBarButtonItem(nil, animated: true)
+    }
+    
+    // MARK: - TOC 
+    
+    func toggleTableOfContents() {
+        let tocIsShowing = tocControllerBottomSpacing.constant == 0
+        let option: UIViewAnimationOptions = tocIsShowing ? .CurveEaseIn : .CurveEaseOut
+        
+        if (!tocIsShowing) {
+            tableOfContentsController?.headings = getTableOfContents(webView)
+        }
+        
+        view.layoutIfNeeded()
+        tocControllerBottomSpacing.constant = tocIsShowing ? -tocControllerHeight.constant : 0.0
+        
+        UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: option, animations: {
+            self.view.layoutIfNeeded()
+            }, completion: nil)
     }
 }

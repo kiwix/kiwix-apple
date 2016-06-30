@@ -204,35 +204,52 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mm8-aW-1rt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2607" y="433"/>
+            <point key="canvasLocation" x="3459" y="495"/>
         </scene>
-        <!--Table Of Content Controller-->
-        <scene sceneID="iw2-hs-BiG">
+        <!--Table Of Contents Controller-->
+        <scene sceneID="sFA-xU-ByH">
             <objects>
-                <tableViewController storyboardIdentifier="TableOfContentController" id="p5i-v1-okn" customClass="TableOfContentController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="2on-Ss-GkQ">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                <viewController id="H9F-uX-e8a" customClass="TableOfContentsController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="m5m-JG-xST"/>
+                        <viewControllerLayoutGuide type="bottom" id="4FP-XB-FlM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ckI-RJ-vNm">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="400"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="au4-iz-tLz">
-                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="au4-iz-tLz" id="3UD-lZ-hs0">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="p5i-v1-okn" id="Khv-9C-1Wx"/>
-                            <outlet property="delegate" destination="p5i-v1-okn" id="8sr-CM-fnw"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="coI-7Y-cLO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xpu-sV-k1z">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="400"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="au4-iz-tLz">
+                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="au4-iz-tLz" id="3UD-lZ-hs0">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="xpu-sV-k1z" firstAttribute="top" secondItem="ckI-RJ-vNm" secondAttribute="top" id="0Ke-XJ-1X0"/>
+                            <constraint firstAttribute="trailing" secondItem="xpu-sV-k1z" secondAttribute="trailing" id="FgY-e7-gFD"/>
+                            <constraint firstItem="xpu-sV-k1z" firstAttribute="leading" secondItem="ckI-RJ-vNm" secondAttribute="leading" id="IeC-i9-2HS"/>
+                            <constraint firstItem="4FP-XB-FlM" firstAttribute="top" secondItem="xpu-sV-k1z" secondAttribute="bottom" id="Q6R-R3-tdi"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="xpu-sV-k1z" id="LF3-XM-mfa"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Hel-4c-ecd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3393" y="432"/>
+            <point key="canvasLocation" x="2604" y="433"/>
         </scene>
         <!--MainVC-->
         <scene sceneID="WWO-2R-Y9G">
@@ -322,7 +339,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ysx-az-10y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2916" y="178.5"/>
+            <point key="canvasLocation" x="3307.5" y="-208.5"/>
         </scene>
         <!--MainVC-->
         <scene sceneID="nEL-IB-dp3">
@@ -340,6 +357,39 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </webView>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r0g-Y2-P3v">
+                                <rect key="frame" x="0.0" y="200" width="600" height="400"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="duR-pa-KCb">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="400"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U3d-ZH-PNu">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="400"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="251" id="nFo-X7-vto"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="nFo-X7-vto"/>
+                                                </mask>
+                                            </variation>
+                                            <connections>
+                                                <segue destination="H9F-uX-e8a" kind="embed" identifier="EmbeddedTOCController" id="s9S-4d-udJ"/>
+                                            </connections>
+                                        </containerView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="U3d-ZH-PNu" firstAttribute="leading" secondItem="duR-pa-KCb" secondAttribute="leading" id="8c6-E8-By5"/>
+                                        <constraint firstAttribute="trailing" secondItem="U3d-ZH-PNu" secondAttribute="trailing" id="f1a-tb-w1I"/>
+                                        <constraint firstItem="U3d-ZH-PNu" firstAttribute="top" secondItem="duR-pa-KCb" secondAttribute="top" id="jvW-5k-AmY"/>
+                                        <constraint firstAttribute="bottom" secondItem="U3d-ZH-PNu" secondAttribute="bottom" id="mMH-dq-wY7"/>
+                                    </constraints>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="400" id="VXd-q8-RBO"/>
+                                </constraints>
+                                <blurEffect style="extraLight"/>
+                            </visualEffectView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -352,9 +402,12 @@
                                 <variation key="heightClass=compact" constant="-44"/>
                                 <variation key="heightClass=compact-widthClass=compact" constant="-32"/>
                             </constraint>
+                            <constraint firstItem="r0g-Y2-P3v" firstAttribute="leading" secondItem="BDO-xK-ZEa" secondAttribute="leading" id="WBN-rf-d3q"/>
                             <constraint firstAttribute="trailing" secondItem="hIy-lu-2F6" secondAttribute="trailing" id="eC3-6r-itc"/>
+                            <constraint firstAttribute="bottom" secondItem="r0g-Y2-P3v" secondAttribute="bottom" id="sK5-ow-uEI"/>
                             <constraint firstAttribute="bottom" secondItem="hIy-lu-2F6" secondAttribute="bottom" id="xEp-oq-phK"/>
                             <constraint firstItem="hIy-lu-2F6" firstAttribute="leading" secondItem="BDO-xK-ZEa" secondAttribute="leading" id="y3g-CI-q82"/>
+                            <constraint firstAttribute="trailing" secondItem="r0g-Y2-P3v" secondAttribute="trailing" id="y3n-UO-dan"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -364,6 +417,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="kQs-hp-Q5P"/>
                     <connections>
+                        <outlet property="tocControllerBottomSpacing" destination="sK5-ow-uEI" id="qAG-X5-AcT"/>
+                        <outlet property="tocControllerHeight" destination="VXd-q8-RBO" id="B9b-3a-quc"/>
                         <outlet property="webView" destination="hIy-lu-2F6" id="77z-Ea-aVH"/>
                     </connections>
                 </viewController>

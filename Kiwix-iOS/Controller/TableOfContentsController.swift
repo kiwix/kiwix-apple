@@ -1,5 +1,5 @@
 //
-//  TableOfContentController.swift
+//  TableOfContentsController.swift
 //  Kiwix
 //
 //  Created by Chris Li on 6/26/16.
@@ -9,10 +9,12 @@
 import UIKit
 import DZNEmptyDataSet
 
-class TableOfContentController: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class TableOfContentsController: UIViewController, UITableViewDelegate, UITableViewDataSource ,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
+    @IBOutlet weak var tableView: UITableView!
     weak var delegate: TableOfContentsDelegate?
     private var headinglevelMin = 0
+    
     var headings = [HTMLHeading]() {
         didSet {
             configurePreferredContentSize()
@@ -23,6 +25,8 @@ class TableOfContentController: UITableViewController, DZNEmptyDataSetSource, DZ
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.delegate = self
+        tableView.dataSource = self
         tableView.emptyDataSetSource = self
         tableView.emptyDataSetDelegate = self
         tableView.tableFooterView = UIView()
@@ -33,18 +37,34 @@ class TableOfContentController: UITableViewController, DZNEmptyDataSetSource, DZ
         let width = traitCollection.horizontalSizeClass == .Regular ? 300 : (UIScreen.mainScreen().bounds.width)
         preferredContentSize = CGSizeMake(width, count == 0 ? 350 : min(CGFloat(count) * 44.0, UIScreen.mainScreen().bounds.height * 0.8))
     }
+    
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        guard previousTraitCollection != traitCollection else {return}
+        let bottomInset: CGFloat = {
+            switch (traitCollection.horizontalSizeClass, traitCollection.verticalSizeClass) {
+            case (.Compact, .Regular):
+                return 44.0
+            case (.Compact, .Compact):
+                return 32.0
+            default:
+                return 0.0
+            }
+        }()
+        tableView.contentInset = UIEdgeInsetsMake(0, 0, bottomInset, 0)
+        tableView.scrollIndicatorInsets = tableView.contentInset
+    }
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return headings.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         cell.textLabel?.text = headings[indexPath.row].textContent
         cell.indentationLevel = (headings[indexPath.row].level - headinglevelMin) * 2
@@ -53,7 +73,7 @@ class TableOfContentController: UITableViewController, DZNEmptyDataSetSource, DZ
     
     // MARK: - Table view delegate
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         delegate?.scrollTo(headings[indexPath.row])
     }
     
@@ -71,7 +91,7 @@ class TableOfContentController: UITableViewController, DZNEmptyDataSetSource, DZ
     }
     
     func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
-        return 0
+        return -10.0
     }
     
     func spaceHeightForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {

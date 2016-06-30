@@ -350,9 +350,9 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="fDA-LM-lcf"/>
-                                <exclude reference="8lb-a8-xTs"/>
                                 <exclude reference="3S1-5g-X0w"/>
+                                <exclude reference="8lb-a8-xTs"/>
+                                <exclude reference="fDA-LM-lcf"/>
                             </mask>
                         </variation>
                     </view>
@@ -908,11 +908,11 @@
                             <mask key="constraints">
                                 <exclude reference="2rE-mi-bUD"/>
                                 <exclude reference="jIE-XR-rHH"/>
-                                <exclude reference="NfO-bn-5dt"/>
                                 <exclude reference="F2r-2c-fkA"/>
-                                <exclude reference="zU7-ob-SeR"/>
+                                <exclude reference="NfO-bn-5dt"/>
                                 <exclude reference="Z8p-xl-SLH"/>
                                 <exclude reference="rgv-ga-dhh"/>
+                                <exclude reference="zU7-ob-SeR"/>
                             </mask>
                         </variation>
                     </view>
