@@ -11,8 +11,10 @@ import UIKit
 class MainVC: UIViewController {
     
     @IBOutlet weak var webView: UIWebView!
-    @IBOutlet weak var tocControllerBottomSpacing: NSLayoutConstraint!
-    @IBOutlet weak var tocControllerHeight: NSLayoutConstraint!
+    @IBOutlet weak var dimView: UIView!
+    @IBOutlet weak var visiualEffectView: UIVisualEffectView!
+    @IBOutlet weak var tocTopToSuperViewBottomSpacing: NSLayoutConstraint!
+    @IBOutlet weak var tocHeightConstraint: NSLayoutConstraint!
     
     var tableOfContentsController: TableOfContentsController?
     var bookmarkController: UIViewController?
@@ -27,6 +29,8 @@ class MainVC: UIViewController {
     var navBarOriginalHeight: CGFloat = 0.0
     let navBarMinHeight: CGFloat = 10.0
     var previousScrollViewYOffset: CGFloat = 0.0
+    
+    var isShowingTableOfContents = false
     
     // MARK: - Override
     
@@ -43,8 +47,6 @@ class MainVC: UIViewController {
         NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "webViewZoomScale", options: .New, context: context)
         configureButtonColor()
         showGetStartedAlert()
-        
-        tocControllerBottomSpacing.constant = -tocControllerHeight.constant
     }
     
     deinit {
@@ -204,6 +206,9 @@ class MainVC: UIViewController {
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad && traitCollection.horizontalSizeClass == .Compact {
             navigationItem.setRightBarButtonItem(cancelButton, animated: true)
         }
+        if isShowingTableOfContents {
+            animateOutTableOfContentsController()
+        }
     }
     
     func hideSearch() {
@@ -213,6 +218,41 @@ class MainVC: UIViewController {
         searchBar.text = nil
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad && traitCollection.horizontalSizeClass == .Compact {
             navigationItem.setRightBarButtonItem(nil, animated: true)
+        }
+    }
+    
+    // MARK: - TOC
+    
+    func animateInTableOfContentsController() {
+        dimView.hidden = false
+        dimView.alpha = 0.0
+        view.layoutIfNeeded()
+        tableOfContentsController?.headings = getTableOfContents(webView)
+        let tocHeight: CGFloat = {
+            guard let controller = tableOfContentsController else {return floor(view.frame.height * 0.4)}
+            let preferredHeight = controller.preferredContentSize.height
+            guard controller.headings.count != 0 else {return floor(view.frame.height * 0.4)}
+            return min(preferredHeight + 44, floor(view.frame.height * 0.65))
+        }()
+        tocHeightConstraint.constant = tocHeight
+        tocTopToSuperViewBottomSpacing.constant = tocHeight
+        UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: .CurveEaseOut, animations: {
+            self.view.layoutIfNeeded()
+            self.dimView.alpha = 0.5
+        }) { (completed) in
+            self.isShowingTableOfContents = true
+        }
+    }
+    
+    func animateOutTableOfContentsController() {
+        view.layoutIfNeeded()
+        tocTopToSuperViewBottomSpacing.constant = 0.0
+        UIView.animateWithDuration(0.2, delay: 0.0, options: .CurveEaseIn, animations: {
+            self.view.layoutIfNeeded()
+            self.dimView.alpha = 0.0
+        }) { (completed) in
+            self.dimView.hidden = true
+            self.isShowingTableOfContents = false
         }
     }
 
@@ -237,7 +277,11 @@ class MainVC: UIViewController {
     }
     
     func showTableOfContentButtonTapped(sender: UIBarButtonItem) {
-        toggleTableOfContents()
+        if isShowingTableOfContents {
+            animateOutTableOfContentsController()
+        } else {
+            animateInTableOfContentsController()
+        }
     }
     
     func showLibraryButtonTapped() {
@@ -259,21 +303,7 @@ class MainVC: UIViewController {
         navigationItem.setRightBarButtonItem(nil, animated: true)
     }
     
-    // MARK: - TOC 
-    
-    func toggleTableOfContents() {
-        let tocIsShowing = tocControllerBottomSpacing.constant == 0
-        let option: UIViewAnimationOptions = tocIsShowing ? .CurveEaseIn : .CurveEaseOut
-        
-        if (!tocIsShowing) {
-            tableOfContentsController?.headings = getTableOfContents(webView)
-        }
-        
-        view.layoutIfNeeded()
-        tocControllerBottomSpacing.constant = tocIsShowing ? -tocControllerHeight.constant : 0.0
-        
-        UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: option, animations: {
-            self.view.layoutIfNeeded()
-            }, completion: nil)
+    @IBAction func dimViewTapGestureRecognizer(sender: UITapGestureRecognizer) {
+        animateOutTableOfContentsController()
     }
 }

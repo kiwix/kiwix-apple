@@ -37,22 +37,6 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
         let width = traitCollection.horizontalSizeClass == .Regular ? 300 : (UIScreen.mainScreen().bounds.width)
         preferredContentSize = CGSizeMake(width, count == 0 ? 350 : min(CGFloat(count) * 44.0, UIScreen.mainScreen().bounds.height * 0.8))
     }
-    
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
-        guard previousTraitCollection != traitCollection else {return}
-        let bottomInset: CGFloat = {
-            switch (traitCollection.horizontalSizeClass, traitCollection.verticalSizeClass) {
-            case (.Compact, .Regular):
-                return 44.0
-            case (.Compact, .Compact):
-                return 32.0
-            default:
-                return 0.0
-            }
-        }()
-        tableView.contentInset = UIEdgeInsetsMake(0, 0, bottomInset, 0)
-        tableView.scrollIndicatorInsets = tableView.contentInset
-    }
 
     // MARK: - Table view data source
 
@@ -91,7 +75,7 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
-        return -10.0
+        return 0.0
     }
     
     func spaceHeightForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {

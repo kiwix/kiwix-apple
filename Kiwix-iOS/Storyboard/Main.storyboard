@@ -215,11 +215,11 @@
                         <viewControllerLayoutGuide type="bottom" id="4FP-XB-FlM"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ckI-RJ-vNm">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="400"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="390"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xpu-sV-k1z">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="400"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="390"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="au4-iz-tLz">
@@ -358,15 +358,15 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </webView>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r0g-Y2-P3v">
-                                <rect key="frame" x="0.0" y="200" width="600" height="400"/>
+                                <rect key="frame" x="0.0" y="600" width="600" height="390"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="duR-pa-KCb">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="400"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="390"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U3d-ZH-PNu">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="400"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="390"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="251" id="nFo-X7-vto"/>
+                                                <constraint firstAttribute="height" constant="390" id="nFo-X7-vto"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
@@ -380,16 +380,30 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="U3d-ZH-PNu" firstAttribute="leading" secondItem="duR-pa-KCb" secondAttribute="leading" id="8c6-E8-By5"/>
+                                        <constraint firstItem="U3d-ZH-PNu" firstAttribute="top" secondItem="duR-pa-KCb" secondAttribute="top" id="elW-FU-Z0i"/>
                                         <constraint firstAttribute="trailing" secondItem="U3d-ZH-PNu" secondAttribute="trailing" id="f1a-tb-w1I"/>
-                                        <constraint firstItem="U3d-ZH-PNu" firstAttribute="top" secondItem="duR-pa-KCb" secondAttribute="top" id="jvW-5k-AmY"/>
+                                        <constraint firstItem="U3d-ZH-PNu" firstAttribute="top" secondItem="duR-pa-KCb" secondAttribute="top" constant="20" id="jvW-5k-AmY"/>
                                         <constraint firstAttribute="bottom" secondItem="U3d-ZH-PNu" secondAttribute="bottom" id="mMH-dq-wY7"/>
                                     </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="jvW-5k-AmY"/>
+                                        </mask>
+                                    </variation>
                                 </view>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="400" id="VXd-q8-RBO"/>
+                                    <constraint firstAttribute="height" constant="390" id="X1f-JB-uri"/>
                                 </constraints>
                                 <blurEffect style="extraLight"/>
                             </visualEffectView>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K9J-LG-g2K">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="NUn-UO-p8Y" appends="YES" id="hSH-Mi-4Ly"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -402,9 +416,14 @@
                                 <variation key="heightClass=compact" constant="-44"/>
                                 <variation key="heightClass=compact-widthClass=compact" constant="-32"/>
                             </constraint>
+                            <constraint firstItem="r0g-Y2-P3v" firstAttribute="height" secondItem="BDO-xK-ZEa" secondAttribute="height" multiplier="0.65" id="9Qh-Ws-5gd"/>
                             <constraint firstItem="r0g-Y2-P3v" firstAttribute="leading" secondItem="BDO-xK-ZEa" secondAttribute="leading" id="WBN-rf-d3q"/>
+                            <constraint firstItem="r0g-Y2-P3v" firstAttribute="top" secondItem="K9J-LG-g2K" secondAttribute="bottom" id="WP1-fu-IuX"/>
+                            <constraint firstItem="K9J-LG-g2K" firstAttribute="top" secondItem="HS5-a8-H6G" secondAttribute="bottom" id="Wpw-OR-Ofa"/>
+                            <constraint firstAttribute="trailing" secondItem="K9J-LG-g2K" secondAttribute="trailing" id="alM-Gg-T8c"/>
+                            <constraint firstItem="K9J-LG-g2K" firstAttribute="leading" secondItem="BDO-xK-ZEa" secondAttribute="leading" id="bVa-pl-EO9"/>
                             <constraint firstAttribute="trailing" secondItem="hIy-lu-2F6" secondAttribute="trailing" id="eC3-6r-itc"/>
-                            <constraint firstAttribute="bottom" secondItem="r0g-Y2-P3v" secondAttribute="bottom" id="sK5-ow-uEI"/>
+                            <constraint firstAttribute="bottom" secondItem="r0g-Y2-P3v" secondAttribute="top" id="sK5-ow-uEI"/>
                             <constraint firstAttribute="bottom" secondItem="hIy-lu-2F6" secondAttribute="bottom" id="xEp-oq-phK"/>
                             <constraint firstItem="hIy-lu-2F6" firstAttribute="leading" secondItem="BDO-xK-ZEa" secondAttribute="leading" id="y3g-CI-q82"/>
                             <constraint firstAttribute="trailing" secondItem="r0g-Y2-P3v" secondAttribute="trailing" id="y3n-UO-dan"/>
@@ -412,17 +431,25 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="xEp-oq-phK"/>
+                                <exclude reference="9Qh-Ws-5gd"/>
                             </mask>
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="kQs-hp-Q5P"/>
                     <connections>
-                        <outlet property="tocControllerBottomSpacing" destination="sK5-ow-uEI" id="qAG-X5-AcT"/>
-                        <outlet property="tocControllerHeight" destination="VXd-q8-RBO" id="B9b-3a-quc"/>
+                        <outlet property="dimView" destination="K9J-LG-g2K" id="bzI-ba-gkm"/>
+                        <outlet property="tocHeightConstraint" destination="X1f-JB-uri" id="F32-oZ-Fr4"/>
+                        <outlet property="tocTopToSuperViewBottomSpacing" destination="sK5-ow-uEI" id="7rL-4K-I5d"/>
+                        <outlet property="visiualEffectView" destination="r0g-Y2-P3v" id="vdu-4l-9t5"/>
                         <outlet property="webView" destination="hIy-lu-2F6" id="77z-Ea-aVH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gtk-Xb-X35" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="NUn-UO-p8Y">
+                    <connections>
+                        <action selector="dimViewTapGestureRecognizer:" destination="vVc-as-aAx" id="9Rr-IW-Grc"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1853" y="433"/>
         </scene>
