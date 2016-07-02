@@ -37,6 +37,9 @@ extension MainVC: LPTBarButtonItemDelegate, TableOfContentsDelegate, UISearchBar
     
     func scrollTo(heading: HTMLHeading) {
         webView.stringByEvaluatingJavaScriptFromString(heading.scrollToJavaScript)
+        if traitCollection.horizontalSizeClass == .Compact {
+            animateOutTableOfContentsController()
+        }
     }
     
     // MARK: - UISearchBarDelegate
@@ -94,6 +97,10 @@ extension MainVC: LPTBarButtonItemDelegate, TableOfContentsDelegate, UISearchBar
         adjustFontSizeIfNeeded()
         configureNavigationButtonTint()
         configureBookmarkButton()
+        
+        if traitCollection.horizontalSizeClass == .Regular && isShowingTableOfContents {
+            tableOfContentsController?.headings = getTableOfContents(webView)
+        }
     }
     
     func injectTableWrappingJavaScriptIfNeeded() {

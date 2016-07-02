@@ -12,9 +12,10 @@ class MainVC: UIViewController {
     
     @IBOutlet weak var webView: UIWebView!
     @IBOutlet weak var dimView: UIView!
-    @IBOutlet weak var visiualEffectView: UIVisualEffectView!
+    @IBOutlet weak var tocVisiualEffectView: UIVisualEffectView!
     @IBOutlet weak var tocTopToSuperViewBottomSpacing: NSLayoutConstraint!
     @IBOutlet weak var tocHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tocLeadSpacing: NSLayoutConstraint!
     
     var tableOfContentsController: TableOfContentsController?
     var bookmarkController: UIViewController?
@@ -72,8 +73,8 @@ class MainVC: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         if previousTraitCollection?.horizontalSizeClass != traitCollection.horizontalSizeClass {
             configureUIElements(traitCollection.horizontalSizeClass)
-            if let _ = previousTraitCollection {configureTOCViewConstraints()}
         }
+        configureTOCViewConstraints()
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -207,7 +208,7 @@ class MainVC: UIViewController {
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad && traitCollection.horizontalSizeClass == .Compact {
             navigationItem.setRightBarButtonItem(cancelButton, animated: true)
         }
-        if isShowingTableOfContents {
+        if isShowingTableOfContents && traitCollection.horizontalSizeClass == .Compact {
             animateOutTableOfContentsController()
         }
     }
@@ -225,6 +226,8 @@ class MainVC: UIViewController {
     // MARK: - TOC
     
     func animateInTableOfContentsController() {
+        isShowingTableOfContents = true
+        tocVisiualEffectView.hidden = false
         dimView.hidden = false
         dimView.alpha = 0.0
         view.layoutIfNeeded()
@@ -234,32 +237,41 @@ class MainVC: UIViewController {
             self.view.layoutIfNeeded()
             self.dimView.alpha = 0.5
         }) { (completed) in
-            self.isShowingTableOfContents = true
+            
         }
     }
     
     func animateOutTableOfContentsController() {
+        isShowingTableOfContents = false
         view.layoutIfNeeded()
-        tocTopToSuperViewBottomSpacing.constant = 0.0
+        configureTOCViewConstraints()
         UIView.animateWithDuration(0.2, delay: 0.0, options: .CurveEaseIn, animations: {
             self.view.layoutIfNeeded()
             self.dimView.alpha = 0.0
         }) { (completed) in
             self.dimView.hidden = true
-            self.isShowingTableOfContents = false
+            self.tocVisiualEffectView.hidden = true
         }
     }
     
     func configureTOCViewConstraints() {
-        let tocHeight: CGFloat = {
-            guard let controller = tableOfContentsController else {return floor(view.frame.height * 0.4)}
-            let preferredHeight = controller.preferredContentSize.height
-            guard controller.headings.count != 0 else {return floor(view.frame.height * 0.4)}
-            let toolBarHeight: CGFloat = traitCollection.horizontalSizeClass == .Regular ? 0.0 : (traitCollection.verticalSizeClass == .Compact ? 32.0 : 44.0)
-            return min(preferredHeight + toolBarHeight, floor(view.frame.height * 0.65))
-        }()
-        tocHeightConstraint.constant = tocHeight
-        tocTopToSuperViewBottomSpacing.constant = tocHeight
+        switch traitCollection.horizontalSizeClass {
+        case .Compact:
+            let tocHeight: CGFloat = {
+                guard let controller = tableOfContentsController else {return floor(view.frame.height * 0.4)}
+                let tocContentHeight = controller.tableView.contentSize.height
+                guard controller.headings.count != 0 else {return floor(view.frame.height * 0.4)}
+                let toolBarHeight: CGFloat = traitCollection.horizontalSizeClass == .Regular ? 0.0 : (traitCollection.verticalSizeClass == .Compact ? 32.0 : 44.0)
+                return min(tocContentHeight + toolBarHeight, floor(view.frame.height * 0.65))
+            }()
+            tocHeightConstraint.constant = tocHeight
+            tocTopToSuperViewBottomSpacing.constant = isShowingTableOfContents ? tocHeight : 0.0
+        case .Regular:
+            tocLeadSpacing.constant = isShowingTableOfContents ? 0.0 : 270
+            break
+        default:
+            break
+        }
     }
 
     // MARK: - Buttons
