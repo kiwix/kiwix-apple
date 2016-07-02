@@ -38,6 +38,7 @@ class SearchOperation: GroupOperation {
     }
     
     override func finished(errors: [NSError]) {
+        print(cancelled)
         NSOperationQueue.mainQueue().addOperationWithBlock { 
             self.completionHandler(self.results)
         }

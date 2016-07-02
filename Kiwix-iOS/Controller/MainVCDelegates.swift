@@ -54,7 +54,7 @@ extension MainVC: LPTBarButtonItemDelegate, TableOfContentsDelegate, UISearchBar
     }
 
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        searchController?.searchText = searchText
+        searchController?.startSearch(searchText, delayed: true)
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {

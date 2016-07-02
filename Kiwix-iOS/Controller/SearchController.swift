@@ -15,10 +15,9 @@ class SearchController: UIViewController, UISearchBarDelegate, UIGestureRecogniz
     @IBOutlet var tapGestureRecognizer: UITapGestureRecognizer!
     var searchResultTBVC: SearchResultTBVC?
     
-    var searchText = "" {
+    private var searchText = "" {
         didSet {
             configureViewVisibility()
-            searchResultTBVC?.startSearch(searchText)
         }
     }
     
@@ -54,6 +53,22 @@ class SearchController: UIViewController, UISearchBarDelegate, UIGestureRecogniz
         } else {
             searchResultTBVCContainer.hidden = false
             tabControllerContainer.hidden = true
+        }
+    }
+    
+    // MARK: - Search
+    
+    func startSearch(searchText: String, delayed: Bool) {
+        self.searchText = searchText
+        if delayed {
+            let previousSearchText = searchText
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(275 * USEC_PER_SEC)), dispatch_get_main_queue()) {
+                print("\(previousSearchText), \(self.searchText)")
+                guard previousSearchText == self.searchText else {return}
+                self.searchResultTBVC?.startSearch(self.searchText)
+            }
+        } else {
+            searchResultTBVC?.startSearch(self.searchText)
         }
     }
     

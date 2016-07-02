@@ -168,7 +168,13 @@ class SearchResult: CustomStringConvertible {
     
     let probability: Double? // range: 0.0 - 1.0
     let distance: Int // Levenshtein distance, non negative integer
-    let score: Double
+    private(set)  lazy var score: Double = {
+        if let probability = self.probability {
+            return WeightFactor.calculate(probability) * Double(self.distance)
+        } else {
+            return Double(self.distance)
+        }
+    }()
     
     init?(rawResult: [String: AnyObject]) {
         let title = (rawResult["title"] as? String) ?? ""
@@ -184,7 +190,6 @@ class SearchResult: CustomStringConvertible {
                 return nil
             }
         }()
-        let score = WeightFactor.calculate(probability ?? 1) * Double(distance)
         
         self.title = title
         self.path = path
@@ -192,7 +197,6 @@ class SearchResult: CustomStringConvertible {
         self.snippet = snippet
         self.probability = probability
         self.distance = distance
-        self.score = score
         
         if title == "" || path == "" || bookID == "" {return nil}
     }
