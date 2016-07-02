@@ -95,12 +95,12 @@
             NSString *snippet = [NSString stringWithUTF8String:doc.get_value(1).c_str()];
             NSNumber *distance = [NSNumber numberWithInteger:[self levenshteinDistance:searchTerm andString:title.lowercaseString]];
             
-            NSDictionary *result = @{@"percent": percent,
+            NSDictionary *result = @{@"title": title,
                                      @"path": path,
-                                     @"title": title,
-                                     @"snippet": snippet,
                                      @"bookID": bookID,
-                                     @"distance": distance};
+                                     @"probability": percent,
+                                     @"distance": distance,
+                                     @"snippet": snippet};
             [results addObject:result];
         }
         return results;

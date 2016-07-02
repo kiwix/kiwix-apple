@@ -161,42 +161,45 @@ extension ZimReader {
 }
 
 class SearchResult: CustomStringConvertible {
-    let bookID: String
     let title: String
-    let path: String?
+    let path: String
+    let bookID: String
     let snippet: String?
     
-    let percent: Double? // range: 0-100
+    let probability: Double? // range: 0.0 - 1.0
     let distance: Int // Levenshtein distance, non negative integer
     let score: Double
     
     init?(rawResult: [String: AnyObject]) {
         let title = (rawResult["title"] as? String) ?? ""
-        self.bookID = (rawResult["bookID"] as? String) ?? ""
-        self.title = title
-        self.path = rawResult["path"] as? String
-        self.snippet = rawResult["snippet"] as? String
+        let path = (rawResult["path"] as? String) ?? ""
+        let bookID = (rawResult["bookID"] as? String) ?? ""
+        let snippet = rawResult["snippet"] as? String
         
-        let percent = (rawResult["percent"] as? NSNumber)?.doubleValue
         let distance = (rawResult["distance"]as? NSNumber)?.integerValue ?? title.characters.count
-        let score: Double = {
-            if let percent = percent {
-                return (WeightFactor.calculate(percent / 100) ?? 1) * Double(distance)
+        let probability: Double? = {
+            if let probability = (rawResult["probability"] as? NSNumber)?.doubleValue {
+                return probability / 100.0
             } else {
-                return Double(distance)
+                return nil
             }
         }()
-        self.percent = percent
+        let score = WeightFactor.calculate(probability ?? 1) * Double(distance)
+        
+        self.title = title
+        self.path = path
+        self.bookID = bookID
+        self.snippet = snippet
+        self.probability = probability
         self.distance = distance
         self.score = score
         
-        if bookID == "" {return nil}
-        if title == "" {return nil}
+        if title == "" || path == "" || bookID == "" {return nil}
     }
     
     var description: String {
         var parts = [bookID, title]
-        if let percent = percent {parts.append("\(percent)%")}
+        if let probability = probability {parts.append("\(probability)%")}
         parts.append("dist: \(distance)")
         return parts.joinWithSeparator(", ")
     }

@@ -98,9 +98,9 @@ class SearchTuneController: UIViewController, UITableViewDataSource {
 }
 
 class WeightFactor {
-    class func calculate(prob: Double) -> Double? {
+    class func calculate(prob: Double) -> Double {
         let e = 2.718281828459
-        guard let m = Defaults[.m], let n = Defaults[.n] else {return nil}
+        guard let m = Defaults[.m], let n = Defaults[.n] else {return 1}
         return log(n - m * prob) / log(e)
     }
 }
