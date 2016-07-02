@@ -9,9 +9,15 @@
 import UIKit
 
 class MainVC: UIViewController {
-
+    
     @IBOutlet weak var webView: UIWebView!
-    var tableOfContentController: TableOfContentController?
+    @IBOutlet weak var dimView: UIView!
+    @IBOutlet weak var tocVisiualEffectView: UIVisualEffectView!
+    @IBOutlet weak var tocTopToSuperViewBottomSpacing: NSLayoutConstraint!
+    @IBOutlet weak var tocHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tocLeadSpacing: NSLayoutConstraint!
+    
+    var tableOfContentsController: TableOfContentsController?
     var bookmarkController: UIViewController?
     var libraryController: UIViewController?
     var settingController: UIViewController?
@@ -24,6 +30,8 @@ class MainVC: UIViewController {
     var navBarOriginalHeight: CGFloat = 0.0
     let navBarMinHeight: CGFloat = 10.0
     var previousScrollViewYOffset: CGFloat = 0.0
+    
+    var isShowingTableOfContents = false
     
     // MARK: - Override
     
@@ -54,7 +62,7 @@ class MainVC: UIViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        tableOfContentController = nil
+        tableOfContentsController = nil
         bookmarkController = nil
         libraryController = nil
         settingController = nil
@@ -65,6 +73,15 @@ class MainVC: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         if previousTraitCollection?.horizontalSizeClass != traitCollection.horizontalSizeClass {
             configureUIElements(traitCollection.horizontalSizeClass)
+        }
+        configureTOCViewConstraints()
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "EmbeddedTOCController" {
+            guard let destinationViewController = segue.destinationViewController as? TableOfContentsController else {return}
+            tableOfContentsController = destinationViewController
+            tableOfContentsController?.delegate = self
         }
     }
     
@@ -100,7 +117,6 @@ class MainVC: UIViewController {
         case .Unspecified:
             break
         }
-//        configureWebViewInsets()
     }
     
     func configureButtonColor() {
@@ -192,6 +208,9 @@ class MainVC: UIViewController {
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad && traitCollection.horizontalSizeClass == .Compact {
             navigationItem.setRightBarButtonItem(cancelButton, animated: true)
         }
+        if isShowingTableOfContents && traitCollection.horizontalSizeClass == .Compact {
+            animateOutTableOfContentsController()
+        }
     }
     
     func hideSearch() {
@@ -201,6 +220,57 @@ class MainVC: UIViewController {
         searchBar.text = nil
         if UIDevice.currentDevice().userInterfaceIdiom == .Pad && traitCollection.horizontalSizeClass == .Compact {
             navigationItem.setRightBarButtonItem(nil, animated: true)
+        }
+    }
+    
+    // MARK: - TOC
+    
+    func animateInTableOfContentsController() {
+        isShowingTableOfContents = true
+        tocVisiualEffectView.hidden = false
+        dimView.hidden = false
+        dimView.alpha = 0.0
+        view.layoutIfNeeded()
+        tableOfContentsController?.headings = getTableOfContents(webView)
+        configureTOCViewConstraints()
+        UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: .CurveEaseOut, animations: {
+            self.view.layoutIfNeeded()
+            self.dimView.alpha = 0.5
+        }) { (completed) in
+            
+        }
+    }
+    
+    func animateOutTableOfContentsController() {
+        isShowingTableOfContents = false
+        view.layoutIfNeeded()
+        configureTOCViewConstraints()
+        UIView.animateWithDuration(0.2, delay: 0.0, options: .CurveEaseIn, animations: {
+            self.view.layoutIfNeeded()
+            self.dimView.alpha = 0.0
+        }) { (completed) in
+            self.dimView.hidden = true
+            self.tocVisiualEffectView.hidden = true
+        }
+    }
+    
+    func configureTOCViewConstraints() {
+        switch traitCollection.horizontalSizeClass {
+        case .Compact:
+            let tocHeight: CGFloat = {
+                guard let controller = tableOfContentsController else {return floor(view.frame.height * 0.4)}
+                let tocContentHeight = controller.tableView.contentSize.height
+                guard controller.headings.count != 0 else {return floor(view.frame.height * 0.4)}
+                let toolBarHeight: CGFloat = traitCollection.horizontalSizeClass == .Regular ? 0.0 : (traitCollection.verticalSizeClass == .Compact ? 32.0 : 44.0)
+                return min(tocContentHeight + toolBarHeight, floor(view.frame.height * 0.65))
+            }()
+            tocHeightConstraint.constant = tocHeight
+            tocTopToSuperViewBottomSpacing.constant = isShowingTableOfContents ? tocHeight : 0.0
+        case .Regular:
+            tocLeadSpacing.constant = isShowingTableOfContents ? 0.0 : 270
+            break
+        default:
+            break
         }
     }
 
@@ -225,14 +295,11 @@ class MainVC: UIViewController {
     }
     
     func showTableOfContentButtonTapped(sender: UIBarButtonItem) {
-        guard let controller = tableOfContentController ?? UIStoryboard.main.initViewController(TableOfContentController.self) else {return}
-        controller.modalPresentationStyle = .Popover
-        controller.popoverPresentationController?.barButtonItem = sender
-        controller.popoverPresentationController?.permittedArrowDirections = [.Up, .Down]
-        controller.popoverPresentationController?.delegate = self
-        controller.headings = getTableOfContents(webView)
-        controller.delegate = self
-        presentViewController(controller, animated: true, completion: nil)
+        if isShowingTableOfContents {
+            animateOutTableOfContentsController()
+        } else {
+            animateInTableOfContentsController()
+        }
     }
     
     func showLibraryButtonTapped() {
@@ -252,5 +319,9 @@ class MainVC: UIViewController {
     func cancelButtonTapped() {
         hideSearch()
         navigationItem.setRightBarButtonItem(nil, animated: true)
+    }
+    
+    @IBAction func dimViewTapGestureRecognizer(sender: UITapGestureRecognizer) {
+        animateOutTableOfContentsController()
     }
 }

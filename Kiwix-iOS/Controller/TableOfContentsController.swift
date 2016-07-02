@@ -1,5 +1,5 @@
 //
-//  TableOfContentController.swift
+//  TableOfContentsController.swift
 //  Kiwix
 //
 //  Created by Chris Li on 6/26/16.
@@ -9,10 +9,12 @@
 import UIKit
 import DZNEmptyDataSet
 
-class TableOfContentController: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class TableOfContentsController: UIViewController, UITableViewDelegate, UITableViewDataSource ,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
+    @IBOutlet weak var tableView: UITableView!
     weak var delegate: TableOfContentsDelegate?
     private var headinglevelMin = 0
+    
     var headings = [HTMLHeading]() {
         didSet {
             configurePreferredContentSize()
@@ -23,6 +25,8 @@ class TableOfContentController: UITableViewController, DZNEmptyDataSetSource, DZ
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.delegate = self
+        tableView.dataSource = self
         tableView.emptyDataSetSource = self
         tableView.emptyDataSetDelegate = self
         tableView.tableFooterView = UIView()
@@ -36,15 +40,15 @@ class TableOfContentController: UITableViewController, DZNEmptyDataSetSource, DZ
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return headings.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         cell.textLabel?.text = headings[indexPath.row].textContent
         cell.indentationLevel = (headings[indexPath.row].level - headinglevelMin) * 2
@@ -53,7 +57,7 @@ class TableOfContentController: UITableViewController, DZNEmptyDataSetSource, DZ
     
     // MARK: - Table view delegate
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         delegate?.scrollTo(headings[indexPath.row])
     }
     
@@ -71,7 +75,7 @@ class TableOfContentController: UITableViewController, DZNEmptyDataSetSource, DZ
     }
     
     func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
-        return 0
+        return 0.0
     }
     
     func spaceHeightForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
