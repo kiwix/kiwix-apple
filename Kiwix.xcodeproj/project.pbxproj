@@ -178,8 +178,6 @@
 		979CB64E1D05C44F005E1BA1 /* LocationCapability-OSX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6171D05C44F005E1BA1 /* LocationCapability-OSX.swift */; };
 		979CB64F1D05C44F005E1BA1 /* LocationCapability-tvOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6181D05C44F005E1BA1 /* LocationCapability-tvOS.swift */; };
 		979CB6501D05C44F005E1BA1 /* LocationCapability-tvOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6181D05C44F005E1BA1 /* LocationCapability-tvOS.swift */; };
-		979CB6511D05C44F005E1BA1 /* PassbookCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6191D05C44F005E1BA1 /* PassbookCapability.swift */; };
-		979CB6521D05C44F005E1BA1 /* PassbookCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6191D05C44F005E1BA1 /* PassbookCapability.swift */; };
 		979CB6531D05C44F005E1BA1 /* PhotosCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB61A1D05C44F005E1BA1 /* PhotosCapability.swift */; };
 		979CB6541D05C44F005E1BA1 /* PhotosCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB61A1D05C44F005E1BA1 /* PhotosCapability.swift */; };
 		979CB6551D05C44F005E1BA1 /* PushCapability-iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB61B1D05C44F005E1BA1 /* PushCapability-iOS.swift */; };
@@ -1758,7 +1756,6 @@
 				9763A6291CEB9E55008A2718 /* OSXExtensions.swift in Sources */,
 				979CB6841D05C44F005E1BA1 /* OperationObserver.swift in Sources */,
 				975B90FF1CEB909900D13906 /* Extensions.swift in Sources */,
-				979CB6521D05C44F005E1BA1 /* PassbookCapability.swift in Sources */,
 				975227AE1D0213D3001D1DDE /* xapianIndexer.cpp in Sources */,
 				979CB6B01D05C520005E1BA1 /* CKContainer+Operations.swift in Sources */,
 				971187911CEB541A00B9909D /* Book.swift in Sources */,
@@ -1859,7 +1856,6 @@
 				97E891691CA976E90001CA32 /* FileManager.swift in Sources */,
 				97E60A061D10504000EBCB9D /* LibraryBackupTBVC.swift in Sources */,
 				974570F41C2DABB500680E43 /* ZIMMultiReaderAPI.swift in Sources */,
-				979CB6511D05C44F005E1BA1 /* PassbookCapability.swift in Sources */,
 				971A105C1D022DAD007FC62C /* LibraryTabBarController.swift in Sources */,
 				971A10461D022CB2007FC62C /* SearchController.swift in Sources */,
 				9779987B1C1E1C9600B1DD5E /* Extensions.swift in Sources */,

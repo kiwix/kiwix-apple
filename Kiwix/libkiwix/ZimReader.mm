@@ -11,7 +11,8 @@
 #include <numeric>
 #import "ZimReader.h"
 
-#define SEARCH_SUGGESTIONS_COUNT 10
+#define TITLE_SEARCH_COUNT 10
+#define XAPIAN_SEARCH_COUNT 18
 
 @interface ZimReader () {
     kiwix::Reader *_reader;
@@ -47,7 +48,7 @@
 
 - (NSArray *)searchSuggestionsSmart:(NSString *)searchTerm {
     string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];
-    int count = SEARCH_SUGGESTIONS_COUNT;
+    int count = TITLE_SEARCH_COUNT;
     NSString *bookID = [self getID];
     NSMutableArray *results = [[NSMutableArray alloc] init];
     
@@ -75,6 +76,11 @@
         NSMutableArray *results = [[NSMutableArray alloc] init];
         
         vector<string> queryTerms;
+        
+        // Use the whole search term as query, didn't work. If searchTerm contain space, like "new yor", will get zero results
+        // string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];
+        // queryTerms.push_back(searchTermC);
+        
         for (NSString *searchTerm in searchTerms) {
             string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];
             queryTerms.push_back(searchTermC);
@@ -84,7 +90,7 @@
         enquire.set_query(query);
         
         
-        Xapian::MSet matches = enquire.get_mset(0, SEARCH_SUGGESTIONS_COUNT);
+        Xapian::MSet matches = enquire.get_mset(0, XAPIAN_SEARCH_COUNT);
         Xapian::MSetIterator i;
         for (i = matches.begin(); i != matches.end(); ++i) {
             Xapian::Document doc = i.get_document();

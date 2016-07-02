@@ -48,7 +48,6 @@ private class SingleBookSearchOperation: Operation {
     let zimReader: ZimReader
     let searchTerm: String
     let completionHandler: ([SearchResult]) -> Void
-    private var results = [String: SearchResult]()
     
     init(zimReader: ZimReader, searchTerm: String, completionHandler: ([SearchResult]) -> Void) {
         self.zimReader = zimReader
@@ -57,12 +56,13 @@ private class SingleBookSearchOperation: Operation {
     }
     
     override private func execute() {
+        var results = [String: SearchResult]()
         let indexedDics = zimReader.searchUsingIndex(searchTerm) as? [[String: AnyObject]] ?? [[String: AnyObject]]()
         let titleDics = zimReader.searchSuggestionsSmart(searchTerm) as? [[String: AnyObject]] ?? [[String: AnyObject]]()
         let mixedDics = titleDics + indexedDics // It is important we process the title search result first, so that we always keep the indexed search result
         for dic in mixedDics {
             guard let result = SearchResult (rawResult: dic) else {continue}
-            results[result.title] = result
+            results[result.path] = result
         }
         completionHandler(Array(results.values))
         finish()
