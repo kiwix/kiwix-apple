@@ -194,12 +194,6 @@ class SearchResult: CustomStringConvertible {
         if title == "" {return nil}
     }
     
-    class func calculateScore(prob: Double) -> Double {
-        let m = 1.9709635999
-        let n = 2.2255409285
-        return log(m * (1-prob) + n) / log(2.71828)
-    }
-    
     var description: String {
         var parts = [bookID, title]
         if let percent = percent {parts.append("\(percent)%")}

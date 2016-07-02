@@ -55,8 +55,10 @@
         string titleC;
         while (_reader->getNextSuggestion(titleC)) {
             NSString *title = [NSString stringWithUTF8String:titleC.c_str()];
+            NSString *path = [self pageURLFromTitle:title];
             NSNumber *distance = [NSNumber numberWithInteger:[self levenshteinDistance:searchTerm andString:title.lowercaseString]];
             [results addObject:@{@"title": title,
+                                 @"path": path,
                                  @"bookID": bookID,
                                  @"distance": distance}];
         }
