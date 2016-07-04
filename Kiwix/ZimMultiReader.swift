@@ -160,15 +160,17 @@ extension ZimReader {
     }
 }
 
+typealias ZIMID = String
+
 class SearchResult: CustomStringConvertible {
     let title: String
     let path: String
-    let bookID: String
+    let bookID: ZIMID
     let snippet: String?
     
     let probability: Double? // range: 0.0 - 1.0
     let distance: Int // Levenshtein distance, non negative integer
-    private(set)  lazy var score: Double = {
+    private(set) lazy var score: Double = {
         if let probability = self.probability {
             return WeightFactor.calculate(probability) * Double(self.distance)
         } else {
@@ -179,7 +181,7 @@ class SearchResult: CustomStringConvertible {
     init?(rawResult: [String: AnyObject]) {
         let title = (rawResult["title"] as? String) ?? ""
         let path = (rawResult["path"] as? String) ?? ""
-        let bookID = (rawResult["bookID"] as? String) ?? ""
+        let bookID = (rawResult["bookID"] as? ZIMID) ?? ""
         let snippet = rawResult["snippet"] as? String
         
         let distance = (rawResult["distance"]as? NSNumber)?.integerValue ?? title.characters.count

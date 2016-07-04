@@ -106,6 +106,7 @@
 		971A10801D022F74007FC62C /* Pic_I.png in Resources */ = {isa = PBXBuildFile; fileRef = 971A107C1D022F74007FC62C /* Pic_I.png */; };
 		971A10811D022F74007FC62C /* Pic_P.png in Resources */ = {isa = PBXBuildFile; fileRef = 971A107D1D022F74007FC62C /* Pic_P.png */; };
 		97254FDF1C2644560056950B /* ZIMMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97254FDE1C2644560056950B /* ZIMMultiReader.swift */; };
+		9734E54E1D289D060061C39B /* Welcome.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9734E54D1D289D060061C39B /* Welcome.storyboard */; };
 		973970ED1CB9A04C00350507 /* SearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973970EC1CB9A04C00350507 /* SearchOperation.swift */; };
 		973BCCEC1CEB3FA400F10B44 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCCEB1CEB3FA400F10B44 /* AppDelegate.swift */; };
 		973BCCF31CEB3FA400F10B44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 973BCCF21CEB3FA400F10B44 /* Assets.xcassets */; };
@@ -418,6 +419,7 @@
 		971A107C1D022F74007FC62C /* Pic_I.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Pic_I.png; path = Kiwix/HelpDocuments/Pic_I.png; sourceTree = SOURCE_ROOT; };
 		971A107D1D022F74007FC62C /* Pic_P.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Pic_P.png; path = Kiwix/HelpDocuments/Pic_P.png; sourceTree = SOURCE_ROOT; };
 		97254FDE1C2644560056950B /* ZIMMultiReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZIMMultiReader.swift; sourceTree = "<group>"; };
+		9734E54D1D289D060061C39B /* Welcome.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Welcome.storyboard; path = "Kiwix-iOS/Storyboard/Welcome.storyboard"; sourceTree = SOURCE_ROOT; };
 		973970EC1CB9A04C00350507 /* SearchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchOperation.swift; sourceTree = "<group>"; };
 		973BCCE91CEB3FA400F10B44 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		973BCCEB1CEB3FA400F10B44 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = "Kiwix-OSX/AppDelegate.swift"; sourceTree = SOURCE_ROOT; };
@@ -1013,6 +1015,7 @@
 				975227CA1D0227E8001D1DDE /* Main.storyboard */,
 				97F03CE11D2440470040D26E /* Search.storyboard */,
 				975227CB1D0227E8001D1DDE /* Setting.storyboard */,
+				9734E54D1D289D060061C39B /* Welcome.storyboard */,
 			);
 			name = Storyboards;
 			path = Kiwix;
@@ -1528,6 +1531,7 @@
 				971A101D1D0228E8007FC62C /* adjustlayoutiPad.js in Resources */,
 				975227D01D022814001D1DDE /* LaunchScreen.storyboard in Resources */,
 				97F03CE21D2440470040D26E /* Search.storyboard in Resources */,
+				9734E54E1D289D060061C39B /* Welcome.storyboard in Resources */,
 				971A10181D0228E0007FC62C /* about.html in Resources */,
 				971A10161D022872007FC62C /* Assets.xcassets in Resources */,
 				971A10771D022F05007FC62C /* Localizable.stringsdict in Resources */,
