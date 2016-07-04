@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--MainVC-->
@@ -18,12 +17,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wikipedia Anywhere" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="786-cr-yay">
-                                <rect key="frame" x="235" y="313" width="130" height="21"/>
+                                <rect key="frame" x="235" y="326" width="130" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="d8d-mP-41p"/>
-                                    <constraint firstAttribute="width" constant="130" id="mgt-4j-KFp">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="150"/>
-                                    </constraint>
+                                    <constraint firstAttribute="width" constant="130" id="NIm-me-EN7"/>
+                                    <constraint firstAttribute="height" constant="21" id="c7K-v2-oGV"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -36,9 +33,10 @@
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KIWIX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="heM-Vx-A7u">
-                                <rect key="frame" x="235" y="269" width="130" height="36"/>
+                                <rect key="frame" x="235" y="282" width="130" height="36"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="36" id="by9-RC-ps3"/>
+                                    <constraint firstAttribute="width" constant="130" id="Zbh-Kq-ZDe"/>
+                                    <constraint firstAttribute="height" constant="36" id="md1-oa-sOt"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="49"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -50,42 +48,35 @@
                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="58"/>
                                 </variation>
                             </label>
-                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="872-je-x52">
-                                <rect key="frame" x="295" y="295" width="10" height="10"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="10" id="Wml-mu-eyv"/>
-                                    <constraint firstAttribute="width" constant="10" id="tlq-eJ-96o"/>
-                                </constraints>
-                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A8X-2q-GbC">
+                                <rect key="frame" x="240" y="361" width="121" height="30"/>
+                                <state key="normal" title="Download A Book"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A6y-hb-WUh">
+                                <rect key="frame" x="251" y="390" width="98" height="30"/>
+                                <state key="normal" title="Import A Book"/>
+                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nWg-4h-oN7" customClass="Logo" customModule="Kiwix" customModuleProvider="target">
-                                <rect key="frame" x="270" y="201" width="60" height="60"/>
+                                <rect key="frame" x="270" y="206" width="60" height="60"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="nWg-4h-oN7" secondAttribute="height" multiplier="1:1" id="J7s-1D-1kX"/>
-                                    <constraint firstAttribute="width" constant="60" id="gdC-sS-WkA">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="90"/>
-                                    </constraint>
+                                    <constraint firstAttribute="width" constant="60" id="J1t-fs-gnK"/>
+                                    <constraint firstAttribute="height" constant="60" id="p45-0q-dKw"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="heM-Vx-A7u" firstAttribute="centerX" secondItem="NVS-td-RHS" secondAttribute="centerX" id="0L4-YB-qca"/>
-                            <constraint firstItem="872-je-x52" firstAttribute="centerY" secondItem="NVS-td-RHS" secondAttribute="centerY" id="6zX-Lq-uFI"/>
-                            <constraint firstItem="786-cr-yay" firstAttribute="centerX" secondItem="NVS-td-RHS" secondAttribute="centerX" id="K6I-qN-A74"/>
-                            <constraint firstItem="heM-Vx-A7u" firstAttribute="top" secondItem="nWg-4h-oN7" secondAttribute="bottom" constant="8" id="NzQ-tK-Nhh">
-                                <variation key="heightClass=regular-widthClass=regular" constant="24"/>
-                            </constraint>
-                            <constraint firstItem="786-cr-yay" firstAttribute="top" secondItem="872-je-x52" secondAttribute="bottom" constant="8" id="PHr-7P-VDR">
-                                <variation key="heightClass=compact" constant="40"/>
-                            </constraint>
-                            <constraint firstItem="872-je-x52" firstAttribute="centerX" secondItem="NVS-td-RHS" secondAttribute="centerX" id="WBf-Nr-52k"/>
-                            <constraint firstItem="heM-Vx-A7u" firstAttribute="width" secondItem="786-cr-yay" secondAttribute="width" id="dT5-YR-gRM"/>
-                            <constraint firstItem="nWg-4h-oN7" firstAttribute="centerX" secondItem="NVS-td-RHS" secondAttribute="centerX" id="jbt-fg-Dxj"/>
-                            <constraint firstItem="786-cr-yay" firstAttribute="top" secondItem="heM-Vx-A7u" secondAttribute="bottom" constant="8" id="uBl-kl-hSo">
-                                <variation key="heightClass=regular-widthClass=regular" constant="12"/>
-                            </constraint>
+                            <constraint firstItem="heM-Vx-A7u" firstAttribute="centerY" secondItem="NVS-td-RHS" secondAttribute="centerY" id="4Na-Pg-67L"/>
+                            <constraint firstItem="A6y-hb-WUh" firstAttribute="centerX" secondItem="NVS-td-RHS" secondAttribute="centerX" id="8ZA-Uo-Ptn"/>
+                            <constraint firstItem="heM-Vx-A7u" firstAttribute="top" secondItem="nWg-4h-oN7" secondAttribute="bottom" constant="16" id="8gT-H8-CXp"/>
+                            <constraint firstItem="A6y-hb-WUh" firstAttribute="top" secondItem="A8X-2q-GbC" secondAttribute="bottom" constant="-1" id="BFN-Ui-z0W"/>
+                            <constraint firstItem="786-cr-yay" firstAttribute="top" secondItem="heM-Vx-A7u" secondAttribute="bottom" constant="8" id="CU4-Lo-Cxs"/>
+                            <constraint firstItem="heM-Vx-A7u" firstAttribute="centerX" secondItem="NVS-td-RHS" secondAttribute="centerX" id="Kjs-NP-6cQ"/>
+                            <constraint firstItem="A8X-2q-GbC" firstAttribute="centerX" secondItem="NVS-td-RHS" secondAttribute="centerX" id="aVx-uV-IfL"/>
+                            <constraint firstItem="A8X-2q-GbC" firstAttribute="top" secondItem="786-cr-yay" secondAttribute="bottom" constant="14" id="gdK-X9-QDX"/>
+                            <constraint firstItem="786-cr-yay" firstAttribute="centerX" secondItem="NVS-td-RHS" secondAttribute="centerX" id="okf-kX-tsv"/>
+                            <constraint firstItem="nWg-4h-oN7" firstAttribute="centerX" secondItem="NVS-td-RHS" secondAttribute="centerX" id="paN-oe-UEg"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="CRN-GU-Pfx"/>

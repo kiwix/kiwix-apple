@@ -13,6 +13,7 @@ extension MainVC {
        
     func load(url: NSURL?) {
         guard let url = url else {return}
+        webView.hidden = false
         let request = NSURLRequest(URL: url)
         webView.loadRequest(request)
     }

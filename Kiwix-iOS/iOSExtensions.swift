@@ -40,7 +40,7 @@ extension UIStoryboard {
     class var main: UIStoryboard {get {return UIStoryboard(name: "Main", bundle: nil)}}
     class var search: UIStoryboard {get {return UIStoryboard(name: "Search", bundle: nil)}}
     class var setting: UIStoryboard {get {return UIStoryboard(name: "Setting", bundle: nil)}}
-    class var help: UIStoryboard {get {return UIStoryboard(name: "Help", bundle: nil)}}
+    class var welcome: UIStoryboard {get {return UIStoryboard(name: "Welcome", bundle: nil)}}
     
     func initViewController<T:UIViewController>(type: T.Type) -> T? {
         guard let className = NSStringFromClass(T).componentsSeparatedByString(".").last else {

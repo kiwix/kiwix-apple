@@ -218,7 +218,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="390"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xpu-sV-k1z">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xpu-sV-k1z">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="390"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -275,9 +275,11 @@
                             <constraint firstItem="tZq-RO-dRD" firstAttribute="top" secondItem="m5m-JG-xST" secondAttribute="bottom" id="Cl3-Kl-nY0"/>
                             <constraint firstAttribute="trailing" secondItem="xpu-sV-k1z" secondAttribute="trailing" id="FgY-e7-gFD"/>
                             <constraint firstItem="xpu-sV-k1z" firstAttribute="leading" secondItem="ckI-RJ-vNm" secondAttribute="leading" id="IeC-i9-2HS"/>
+                            <constraint firstItem="4FP-XB-FlM" firstAttribute="top" secondItem="xpu-sV-k1z" secondAttribute="bottom" id="XDC-Ei-kbw"/>
                             <constraint firstAttribute="trailing" secondItem="tZq-RO-dRD" secondAttribute="trailing" id="olA-XZ-0EX"/>
                             <constraint firstItem="xpu-sV-k1z" firstAttribute="bottom" secondItem="ckI-RJ-vNm" secondAttribute="bottomMargin" id="qdY-qI-Wxp"/>
                             <constraint firstItem="4FP-XB-FlM" firstAttribute="top" secondItem="tZq-RO-dRD" secondAttribute="bottom" id="qhd-h1-qMQ"/>
+                            <constraint firstAttribute="trailing" secondItem="xpu-sV-k1z" secondAttribute="trailing" id="xGK-V4-BpV"/>
                             <constraint firstItem="4FP-XB-FlM" firstAttribute="top" secondItem="xpu-sV-k1z" secondAttribute="bottom" id="xwq-xw-Eg3"/>
                             <constraint firstAttribute="bottom" secondItem="tZq-RO-dRD" secondAttribute="bottom" id="y5a-P4-Smx"/>
                         </constraints>
@@ -300,6 +302,8 @@
                             <mask key="constraints">
                                 <include reference="FgY-e7-gFD"/>
                                 <exclude reference="qdY-qI-Wxp"/>
+                                <exclude reference="xGK-V4-BpV"/>
+                                <exclude reference="XDC-Ei-kbw"/>
                                 <include reference="xwq-xw-Eg3"/>
                             </mask>
                         </variation>
@@ -314,6 +318,8 @@
                                 <include reference="y5a-P4-Smx"/>
                                 <exclude reference="FgY-e7-gFD"/>
                                 <include reference="qdY-qI-Wxp"/>
+                                <exclude reference="xGK-V4-BpV"/>
+                                <exclude reference="XDC-Ei-kbw"/>
                                 <exclude reference="qhd-h1-qMQ"/>
                             </mask>
                         </variation>
@@ -339,7 +345,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hIy-lu-2F6">
+                            <webView hidden="YES" opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hIy-lu-2F6">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </webView>
