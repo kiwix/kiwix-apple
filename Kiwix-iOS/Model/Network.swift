@@ -189,3 +189,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
 protocol DownloadProgressReporting: class {
     func refreshProgress(animated animated: Bool)
 }
+
+//protocol DownloadFinishedReporting: class {
+//    func 
+//}

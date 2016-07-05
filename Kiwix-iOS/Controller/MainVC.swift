@@ -22,6 +22,7 @@ class MainVC: UIViewController {
     var libraryController: UIViewController?
     var settingController: UIViewController?
     var searchController: SearchController?
+    var welcomeController: UIViewController?
     let searchBar = SearchBar()
     
     var context: UnsafeMutablePointer<Void> = nil
@@ -48,6 +49,7 @@ class MainVC: UIViewController {
         NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "webViewZoomScale", options: .New, context: context)
         configureButtonColor()
         showGetStartedAlert()
+        showWelcome()
     }
     
     deinit {
@@ -67,6 +69,7 @@ class MainVC: UIViewController {
         libraryController = nil
         settingController = nil
         searchController = nil
+        welcomeController = nil
     }
     
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
@@ -117,6 +120,7 @@ class MainVC: UIViewController {
         case .Unspecified:
             break
         }
+        configureWebViewInsets()
     }
     
     func configureButtonColor() {
@@ -145,7 +149,6 @@ class MainVC: UIViewController {
             guard let toolbar = navigationController?.toolbar else {return 0.0}
             return traitCollection.horizontalSizeClass == .Compact ? view.frame.height - toolbar.frame.origin.y : 0.0
         }()
-        print(topInset)
         webView.scrollView.contentInset = UIEdgeInsetsMake(topInset, 0, bottomInset, 0)
         webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(topInset, 0, bottomInset, 0)
     }
@@ -196,7 +199,7 @@ class MainVC: UIViewController {
         }
     }
     
-    // MARK: - Show/hide Search
+    // MARK: - Show/Hide Search
     
     func showSearch() {
         navigationController?.toolbarHidden = true
@@ -223,7 +226,7 @@ class MainVC: UIViewController {
         }
     }
     
-    // MARK: - TOC
+    // MARK: - Show/Hide TOC
     
     func animateInTableOfContentsController() {
         isShowingTableOfContents = true
@@ -272,6 +275,28 @@ class MainVC: UIViewController {
         default:
             break
         }
+    }
+    
+    // MARK: - Show/Hide Welcome
+    
+    func showWelcome() {
+        guard let controller = welcomeController ?? UIStoryboard.welcome.instantiateInitialViewController() else {return}
+        welcomeController = controller
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        guard let index = view.subviews.indexOf(webView) else {return}
+        addChildViewController(controller)
+        view.insertSubview(controller.view, atIndex: index)
+        
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllTop, metrics: nil, views: ["view": controller.view]))
+        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllLeft, metrics: nil, views: ["view": controller.view]))
+        
+        controller.didMoveToParentViewController(self)
+    }
+    
+    func hideWelcome() {
+        guard let controller = welcomeController else {return}
+        controller.removeFromParentViewController()
+        controller.view.removeFromSuperview()
     }
 
     // MARK: - Buttons

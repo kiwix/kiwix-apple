@@ -336,7 +336,7 @@
         <!--MainVC-->
         <scene sceneID="nEL-IB-dp3">
             <objects>
-                <viewController id="vVc-as-aAx" customClass="MainVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="vVc-as-aAx" customClass="MainVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="HS5-a8-H6G"/>
                         <viewControllerLayoutGuide type="bottom" id="fXQ-NS-gMx"/>
@@ -431,11 +431,13 @@
                             <constraint firstItem="hIy-lu-2F6" firstAttribute="leading" secondItem="BDO-xK-ZEa" secondAttribute="leading" id="Gde-Fa-kB8"/>
                             <constraint firstItem="r0g-Y2-P3v" firstAttribute="top" secondItem="HS5-a8-H6G" secondAttribute="bottom" id="JwF-38-cyF"/>
                             <constraint firstItem="hIy-lu-2F6" firstAttribute="top" secondItem="HS5-a8-H6G" secondAttribute="bottom" constant="-64" id="Ooa-c6-8q6">
+                                <variation key="widthClass=regular" constant="-64"/>
                                 <variation key="heightClass=compact-widthClass=compact" constant="-32"/>
                                 <variation key="heightClass=compact-widthClass=regular" constant="-44"/>
                             </constraint>
                             <constraint firstItem="r0g-Y2-P3v" firstAttribute="top" secondItem="K9J-LG-g2K" secondAttribute="bottom" id="V1f-UR-jH8"/>
                             <constraint firstItem="fXQ-NS-gMx" firstAttribute="top" secondItem="hIy-lu-2F6" secondAttribute="bottom" constant="-44" id="WOB-MJ-B5Z">
+                                <variation key="widthClass=regular" constant="0.0"/>
                                 <variation key="heightClass=compact-widthClass=compact" constant="-32"/>
                                 <variation key="heightClass=compact-widthClass=regular" constant="0.0"/>
                             </constraint>
