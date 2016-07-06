@@ -128,19 +128,19 @@ class GetStartedAlert: AlertOperation {
 // MARK: - Help Pages
 
 class ShowHelpPageOperation: Operation {
-    private let type: WebViewVCContentType
+    private let type: WebViewControllerContentType
     private weak var presentationContext: UIViewController?
     
-    init(type: WebViewVCContentType, presentationContext: UIViewController?) {
+    init(type: WebViewControllerContentType, presentationContext: UIViewController?) {
         self.type = type
         self.presentationContext = presentationContext
     }
     
     override func execute() {
         NSOperationQueue.mainQueue().addOperationWithBlock { 
-            guard let navController = UIStoryboard.setting.instantiateViewControllerWithIdentifier("WebViewNav") as? UINavigationController,
-                let controller = navController.topViewController as? WebViewVC else {return}
+            guard let controller = UIStoryboard.setting.instantiateViewControllerWithIdentifier("WebViewController") as? WebViewController else {return}
             controller.page = self.type
+            let navController = UINavigationController(rootViewController: controller)
             self.presentationContext?.presentViewController(navController, animated: true, completion: nil)
         }
     }

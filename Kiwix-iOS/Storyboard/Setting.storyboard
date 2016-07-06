@@ -484,10 +484,10 @@
             </objects>
             <point key="canvasLocation" x="1097" y="2438"/>
         </scene>
-        <!--AboutVC-->
+        <!--Web View Controller-->
         <scene sceneID="ovP-iw-7D0">
             <objects>
-                <viewController id="Ua4-kV-xc7" customClass="AboutVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WebViewController" id="Ua4-kV-xc7" customClass="WebViewController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="0oM-Rx-OPo"/>
                         <viewControllerLayoutGuide type="bottom" id="Dof-V3-6P5"/>

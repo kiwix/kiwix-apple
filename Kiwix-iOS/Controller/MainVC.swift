@@ -44,6 +44,7 @@ class MainVC: UIViewController {
         
         navigationItem.titleView = searchBar
         searchBar.delegate = self
+        ZIMMultiReader.sharedInstance.delegate = self
         
         NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "webViewNotInjectJavascriptToAdjustPageLayout", options: .New, context: context)
         NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "webViewZoomScale", options: .New, context: context)

@@ -141,10 +141,8 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
     }
     
     func emptyDataSetDidTapButton(scrollView: UIScrollView!) {
-        guard let navController = UIStoryboard.setting.instantiateViewControllerWithIdentifier("WebViewNav") as? UINavigationController,
-            let controller = navController.topViewController as? WebViewVC else {return}
-        controller.page = .DownloaderLearnMore
-        presentViewController(navController, animated: true, completion: nil)
+        let operation = ShowHelpPageOperation(type: .DownloaderLearnMore, presentationContext: self)
+        GlobalOperationQueue.sharedInstance.addOperation(operation)
     }
     
     // MARK: - TableView Data Source

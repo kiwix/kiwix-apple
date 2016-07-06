@@ -37,6 +37,13 @@ class SettingTBVC: UITableViewController {
         tableView.reloadData()
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "MiscAbout" {
+            guard let controller = segue.destinationViewController as? WebViewController else {return}
+            controller.page = .About
+        }
+    }
+    
     // MARK: - Table view data source
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {

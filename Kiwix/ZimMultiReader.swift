@@ -11,8 +11,16 @@ import CoreData
 class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
     
     static let sharedInstance = ZIMMultiReader()
-    private(set) var readers = [String: ZimReader]()
+    private(set) var readers = [ZIMID: ZimReader]() {
+        didSet {
+            if readers.count == 1 {
+                guard let id = readers.keys.first else {return}
+                delegate?.firstBookAdded(id)
+            }
+        }
+    }
     let searchQueue = OperationQueue()
+    weak var delegate: ZimMultiReaderDelegate?
     
     private let monitor = DirectoryMonitor(URL: FileManager.docDirURL)
     private var zimURLs = Set<NSURL>()

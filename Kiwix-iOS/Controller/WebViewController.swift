@@ -1,5 +1,5 @@
 //
-//  WebViewVC.swift
+//  WebViewController.swift
 //  Kiwix
 //
 //  Created by Chris Li on 5/2/16.
@@ -8,11 +8,11 @@
 
 import UIKit
 
-class WebViewVC: UIViewController, UIWebViewDelegate {
+class WebViewController: UIViewController, UIWebViewDelegate {
 
     @IBOutlet weak var webView: UIWebView!
     
-    var page: WebViewVCContentType?
+    var page: WebViewControllerContentType?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +28,20 @@ class WebViewVC: UIViewController, UIWebViewDelegate {
             guard let url = NSBundle.mainBundle().URLForResource(page.rawValue, withExtension: "html") else {return}
             webView.loadRequest(NSURLRequest(URL: url))
             title = NSLocalizedString("Help: Import Books", comment: "Help page title")
+        case .About:
+            guard let url = NSBundle.mainBundle().URLForResource(page.rawValue, withExtension: "html") else {return}
+            webView.loadRequest(NSURLRequest(URL: url))
+            title = NSLocalizedString("About", comment: "About page title")
         }
+        
+        guard let rootController = navigationController?.viewControllers.first else {return}
+        if rootController == self {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(WebViewController.dismissSelf))
+        }
+    }
+    
+    func dismissSelf() {
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func downButtonTapped(sender: UIBarButtonItem) {
@@ -46,6 +59,6 @@ class WebViewVC: UIViewController, UIWebViewDelegate {
     }
 }
 
-enum WebViewVCContentType: String {
-    case DownloaderLearnMore, ImportBookLearnMore
+enum WebViewControllerContentType: String {
+    case DownloaderLearnMore, ImportBookLearnMore, About
 }

@@ -10,7 +10,7 @@ import UIKit
 import SafariServices
 import DZNEmptyDataSet
 
-extension MainVC: LPTBarButtonItemDelegate, TableOfContentsDelegate, UISearchBarDelegate, UIPopoverPresentationControllerDelegate, UIWebViewDelegate, SFSafariViewControllerDelegate, UIScrollViewDelegate {
+extension MainVC: LPTBarButtonItemDelegate, TableOfContentsDelegate, ZimMultiReaderDelegate, UISearchBarDelegate, UIPopoverPresentationControllerDelegate, UIWebViewDelegate, SFSafariViewControllerDelegate, UIScrollViewDelegate {
     
     // MARK: - LPTBarButtonItemDelegate
     
@@ -41,6 +41,12 @@ extension MainVC: LPTBarButtonItemDelegate, TableOfContentsDelegate, UISearchBar
         if traitCollection.horizontalSizeClass == .Compact {
             animateOutTableOfContentsController()
         }
+    }
+    
+    // MARK: - ZimMultiReaderDelegate
+    
+    func firstBookAdded(id: ZIMID) {
+        loadMainPage(id)
     }
     
     // MARK: - UISearchBarDelegate
