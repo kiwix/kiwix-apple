@@ -92,7 +92,11 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
     
     func configureArticleCell(cell: ArticleCell, result: SearchResult) {
         guard let book = Book.fetch(result.bookID, context: UIApplication.appDelegate.managedObjectContext) else {return}
-        cell.titleLabel.text = result.title + "(\(result.distance), \(result.probability ?? -1), \(String(format: "%.4f", result.score)))"
+        if UIApplication.buildStatus == .Alpha {
+            cell.titleLabel.text = result.title + result.rankInfo
+        } else {
+            cell.titleLabel.text = result.title
+        }
         cell.hasPicIndicator.backgroundColor = book.hasPic ? UIColor.havePicTintColor : UIColor.lightGrayColor()
         cell.favIcon.image = book.favIcon != nil ? UIImage(data: book.favIcon!) : nil
     }

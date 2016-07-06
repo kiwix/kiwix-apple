@@ -9,14 +9,10 @@
 import UIKit
 
 class SettingTBVC: UITableViewController {
-    
-    let alpha = true
-
-    let sectionHeader = [LocalizedStrings.library, LocalizedStrings.reading,LocalizedStrings.misc, "Search"]
-    let cellTextlabels = [[LocalizedStrings.libraryAutoRefresh, LocalizedStrings.libraryUseCellularData, LocalizedStrings.libraryBackup],
+    private(set) var sectionHeader = [LocalizedStrings.library, LocalizedStrings.reading,LocalizedStrings.misc]
+    private(set) var cellTextlabels = [[LocalizedStrings.libraryAutoRefresh, LocalizedStrings.libraryUseCellularData, LocalizedStrings.libraryBackup],
                           [LocalizedStrings.fontSize, LocalizedStrings.adjustLayout],
-                          [LocalizedStrings.rateKiwix, LocalizedStrings.about],
-                          ["Boost Factor 🚀"]]
+                          [LocalizedStrings.rateKiwix, LocalizedStrings.about]]
     
     let dateComponentsFormatter: NSDateComponentsFormatter = {
         let formatter = NSDateComponentsFormatter()
@@ -29,6 +25,11 @@ class SettingTBVC: UITableViewController {
         title = LocalizedStrings.settings
         clearsSelectionOnViewWillAppear = true
         showRateKiwixIfNeeded()
+        
+        if UIApplication.buildStatus == .Alpha {
+            sectionHeader.append("Search")
+            cellTextlabels.append(["Boost Factor 🚀"])
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -79,12 +80,16 @@ class SettingTBVC: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        if section == tableView.numberOfSections - 1 {
-            let versionString = String(format: LocalizedStrings.versionString, NSBundle.appShortVersion) + (alpha ? " Alpha" : "")
-            let buildNumString = "Build " + NSBundle.buildVersion
-            return [versionString, buildNumString].joinWithSeparator("\n")
-        } else {
-            return nil
+        guard section == tableView.numberOfSections - 1 else {return nil}
+        var footnote = String(format: LocalizedStrings.versionString, NSBundle.appShortVersion)
+        switch UIApplication.buildStatus {
+        case .Alpha, .Beta:
+            footnote += (UIApplication.buildStatus == .Alpha ? " Alpha" : " Beta")
+            footnote += "\n"
+            footnote += "Build " + NSBundle.buildVersion
+            return footnote
+        case .Release:
+            return footnote
         }
     }
     

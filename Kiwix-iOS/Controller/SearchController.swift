@@ -63,12 +63,12 @@ class SearchController: UIViewController, UISearchBarDelegate, UIGestureRecogniz
         if delayed {
             let previousSearchText = searchText
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(275 * USEC_PER_SEC)), dispatch_get_main_queue()) {
-                print("\(previousSearchText), \(self.searchText)")
+                //print("\(previousSearchText), \(self.searchText)")
                 guard previousSearchText == self.searchText else {return}
                 self.searchResultTBVC?.startSearch(self.searchText)
             }
         } else {
-            searchResultTBVC?.startSearch(self.searchText)
+            searchResultTBVC?.startSearch(searchText)
         }
     }
     

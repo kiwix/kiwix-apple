@@ -209,4 +209,8 @@ class SearchResult: CustomStringConvertible {
         parts.append("dist: \(distance)")
         return parts.joinWithSeparator(", ")
     }
+    
+    var rankInfo: String {
+        return "(\(distance), \(probability ?? -1), \(String(format: "%.4f", score)))"
+    }
 }

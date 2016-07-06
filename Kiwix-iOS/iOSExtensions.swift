@@ -35,14 +35,14 @@ extension NSManagedObjectContext {
 
 // MARK: - UI
 
-enum BuildType {
+enum BuildStatus {
     case Alpha, Beta, Release
 }
 
 extension UIApplication {
-    var buildType: BuildType {
+    class var buildStatus: BuildStatus {
         get {
-            return .Alpha
+            return .Beta
         }
     }
 }
