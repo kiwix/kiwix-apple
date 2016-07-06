@@ -89,10 +89,11 @@ class SearchLocalBooksCVC: UIViewController, UICollectionViewDataSource, UIColle
     // MARK: - CollectionView Delegate
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        guard let mainVC = parentViewController?.parentViewController?.parentViewController as? MainVC else {return}
-        guard let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
+        guard let mainVC = parentViewController?.parentViewController?.parentViewController as? MainVC,
+              let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book,
+              let bookID = book.id else {return}
         mainVC.hideSearch()
-        mainVC.loadMainPage(book)
+        mainVC.loadMainPage(bookID)
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
