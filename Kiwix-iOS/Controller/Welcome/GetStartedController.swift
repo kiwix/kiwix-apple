@@ -12,8 +12,7 @@ class GetStartedController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        preferredContentSize = CGSizeMake(400, 400)
     }
 
     override func didReceiveMemoryWarning() {
@@ -22,6 +21,9 @@ class GetStartedController: UIViewController {
     }
     
 
+    @IBAction func dismissButtonTapped(sender: UIButton) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
     /*
     // MARK: - Navigation
 

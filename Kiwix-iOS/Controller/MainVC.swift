@@ -52,6 +52,11 @@ class MainVC: UIViewController {
         showWelcome()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+//        showGetStarted()
+    }
+    
     deinit {
         NSUserDefaults.standardUserDefaults().removeObserver(self, forKeyPath: "webViewNotInjectJavascriptToAdjustPageLayout")
         NSUserDefaults.standardUserDefaults().removeObserver(self, forKeyPath: "webViewZoomScale")
@@ -120,7 +125,6 @@ class MainVC: UIViewController {
         case .Unspecified:
             break
         }
-        configureWebViewInsets()
     }
     
     func configureButtonColor() {
@@ -285,7 +289,8 @@ class MainVC: UIViewController {
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         guard let index = view.subviews.indexOf(webView) else {return}
         addChildViewController(controller)
-        view.insertSubview(controller.view, atIndex: index)
+//        view.insertSubview(controller.view, atIndex: index)
+        view.addSubview(controller.view)
         
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllTop, metrics: nil, views: ["view": controller.view]))
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllLeft, metrics: nil, views: ["view": controller.view]))
@@ -297,6 +302,14 @@ class MainVC: UIViewController {
         guard let controller = welcomeController else {return}
         controller.removeFromParentViewController()
         controller.view.removeFromSuperview()
+    }
+    
+    // MARK: - Show/Hide Get Started
+    
+    func showGetStarted() {
+        guard let controller = UIStoryboard.welcome.initViewController(GetStartedController.self) else {return}
+        controller.modalPresentationStyle = .FormSheet
+        presentViewController(controller, animated: true, completion: nil)
     }
 
     // MARK: - Buttons
@@ -320,6 +333,7 @@ class MainVC: UIViewController {
     }
     
     func showTableOfContentButtonTapped(sender: UIBarButtonItem) {
+        guard let _ = article else {return}
         if isShowingTableOfContents {
             animateOutTableOfContentsController()
         } else {

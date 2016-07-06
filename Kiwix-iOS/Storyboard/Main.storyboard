@@ -336,7 +336,7 @@
         <!--MainVC-->
         <scene sceneID="nEL-IB-dp3">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="vVc-as-aAx" customClass="MainVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="vVc-as-aAx" customClass="MainVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="HS5-a8-H6G"/>
                         <viewControllerLayoutGuide type="bottom" id="fXQ-NS-gMx"/>
