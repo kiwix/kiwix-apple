@@ -35,6 +35,18 @@ extension NSManagedObjectContext {
 
 // MARK: - UI
 
+enum BuildType {
+    case Alpha, Beta, Release
+}
+
+extension UIApplication {
+    var buildType: BuildType {
+        get {
+            return .Alpha
+        }
+    }
+}
+
 extension UIStoryboard {
     class var library: UIStoryboard {get {return UIStoryboard(name: "Library", bundle: nil)}}
     class var main: UIStoryboard {get {return UIStoryboard(name: "Main", bundle: nil)}}
