@@ -14,6 +14,7 @@ class SearchBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var toolBar: UIToolbar!
+    @IBOutlet weak var recentSearchContainer: DropShadowView!
     @IBOutlet weak var recentSearchBarHeight: NSLayoutConstraint!
     
     override func viewDidLoad() {
@@ -30,7 +31,15 @@ class SearchBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
-        recentSearchBarHeight.constant = Preference.recentSearchTerms.count == 0 ? 0.0 : 44.0
+        configureRecentSearchBarHeight()
+    }
+    
+    func configureRecentSearchBarHeight() {
+        let previousHeight = recentSearchBarHeight.constant
+        let newHeight: CGFloat = Preference.recentSearchTerms.count == 0 ? 0.0 : 44.0
+        guard previousHeight != newHeight else {return}
+        recentSearchBarHeight.constant = newHeight
+        recentSearchContainer.setNeedsDisplay()
     }
     
     // MARK: - Empty table datasource & delegate

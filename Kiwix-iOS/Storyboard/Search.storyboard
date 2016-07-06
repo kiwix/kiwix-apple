@@ -565,6 +565,7 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="recentSearchBarHeight" destination="4d0-gR-IwP" id="fQJ-bP-1bi"/>
+                        <outlet property="recentSearchContainer" destination="H44-bK-YA5" id="RaD-Wt-pW8"/>
                         <outlet property="tableView" destination="nDJ-c8-oj6" id="txz-zE-CsZ"/>
                     </connections>
                 </viewController>
