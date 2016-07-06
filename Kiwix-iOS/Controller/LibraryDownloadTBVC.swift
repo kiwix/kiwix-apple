@@ -54,7 +54,11 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
     
     // MARK: -  DownloadProgressReporting
     
-    func refreshProgress(animated animated: Bool) {
+    func refreshProgress() {
+        refreshProgress(animated: true)
+    }
+    
+    private func refreshProgress(animated animated: Bool) {
         guard let downloadTasks = fetchedResultController.fetchedObjects as? [DownloadTask] else {return}
         for downloadTask in downloadTasks {
             guard let id = downloadTask.book?.id,

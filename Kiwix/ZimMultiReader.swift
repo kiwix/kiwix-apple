@@ -140,6 +140,10 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
     }
 }
 
+protocol ZimMultiReaderDelegate: class {
+    func firstBookAdded(id: ZIMID)
+}
+
 extension ZimReader {
     var metaData: [String: AnyObject] {
         var metadata = [String: AnyObject]()

@@ -20,8 +20,8 @@ class SearchBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.emptyDataSetSource = self
-        tableView.emptyDataSetDelegate = self
+//        tableView.emptyDataSetSource = self
+//        tableView.emptyDataSetDelegate = self
         tableView.tableHeaderView = UIView()
         tableView.tableFooterView = UIView()
         tableView.keyboardDismissMode = .OnDrag

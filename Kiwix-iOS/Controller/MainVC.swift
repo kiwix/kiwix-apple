@@ -287,9 +287,7 @@ class MainVC: UIViewController {
         guard let controller = welcomeController ?? UIStoryboard.welcome.instantiateInitialViewController() else {return}
         welcomeController = controller
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        guard let index = view.subviews.indexOf(webView) else {return}
         addChildViewController(controller)
-//        view.insertSubview(controller.view, atIndex: index)
         view.addSubview(controller.view)
         
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllTop, metrics: nil, views: ["view": controller.view]))
