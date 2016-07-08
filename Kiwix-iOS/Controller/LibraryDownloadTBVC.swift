@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import DZNEmptyDataSet
 
-class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDelegate, BookTableCellDelegate, DownloadProgressReporting, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDelegate, TableCellDelegate, DownloadProgressReporting, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // MARK: - Override
     
@@ -38,25 +38,27 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
         Network.sharedInstance.delegate = nil
     }
     
-    // MARK: - BookTableCellDelegate
+    // MARK: - TableCellDelegate
     
-    func didTapOnAccessoryViewForCell(cell: BookTableCell) {
+    func didTapOnAccessoryViewForCell(cell: UITableViewCell) {
         guard let indexPath = tableView.indexPathForCell(cell),
             let downloadTask = fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask,
             let book = downloadTask.book else {return}
         switch downloadTask.state {
-        case .Downloading:
+        case .Downloading, .Queued:
             Network.sharedInstance.pause(book)
         case .Paused, .Error:
             Network.sharedInstance.resume(book)
-        default:
-            break
         }
     }
     
     // MARK: -  DownloadProgressReporting
     
-    func refreshProgress(animated animated: Bool) {
+    func refreshProgress() {
+        refreshProgress(animated: true)
+    }
+    
+    private func refreshProgress(animated animated: Bool) {
         guard let downloadTasks = fetchedResultController.fetchedObjects as? [DownloadTask] else {return}
         for downloadTask in downloadTasks {
             guard let id = downloadTask.book?.id,
@@ -139,10 +141,8 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
     }
     
     func emptyDataSetDidTapButton(scrollView: UIScrollView!) {
-        guard let navController = UIStoryboard.setting.instantiateViewControllerWithIdentifier("WebViewNav") as? UINavigationController,
-            let controller = navController.topViewController as? WebViewVC else {return}
-        controller.page = .DownloaderLearnMore
-        presentViewController(navController, animated: true, completion: nil)
+        let operation = ShowHelpPageOperation(type: .DownloaderLearnMore, presentationContext: self)
+        GlobalOperationQueue.sharedInstance.addOperation(operation)
     }
     
     // MARK: - TableView Data Source
@@ -229,14 +229,14 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
     
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let remove = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.remove) { (action, indexPath) -> Void in
-            guard let downloadTask = self.fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask,
-                  let book = downloadTask.book else {return}
-            Network.sharedInstance.cancel(book)
-            book.isLocal = false
-            FileManager.removeResumeData(book)
+            guard let downloadTask = self.fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask else {return}
             let context = UIApplication.appDelegate.managedObjectContext
+            if let book = downloadTask.book {
+                Network.sharedInstance.cancel(book)
+                FileManager.removeResumeData(book)
+            }
             context.performBlockAndWait({ () -> Void in
-                book.isLocal = false
+                downloadTask.book?.isLocal = false
                 context.deleteObject(downloadTask)
             })
         }

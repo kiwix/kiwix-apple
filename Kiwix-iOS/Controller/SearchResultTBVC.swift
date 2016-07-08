@@ -92,7 +92,11 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
     
     func configureArticleCell(cell: ArticleCell, result: SearchResult) {
         guard let book = Book.fetch(result.bookID, context: UIApplication.appDelegate.managedObjectContext) else {return}
-        cell.titleLabel.text = result.title
+        if UIApplication.buildStatus == .Alpha {
+            cell.titleLabel.text = result.title + result.rankInfo
+        } else {
+            cell.titleLabel.text = result.title
+        }
         cell.hasPicIndicator.backgroundColor = book.hasPic ? UIColor.havePicTintColor : UIColor.lightGrayColor()
         cell.favIcon.image = book.favIcon != nil ? UIImage(data: book.favIcon!) : nil
     }
@@ -123,8 +127,6 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
             if results.count > 0 {
                 self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
             }
-            // This line below works prefectly if tableview doesn't hide keyboard on drag
-            //self.tableView.setContentOffset(CGPointMake(0, 0 - self.tableView.contentInset.top), animated: true)
         }
         ZIMMultiReader.sharedInstance.searchQueue.addOperation(operation)
     }

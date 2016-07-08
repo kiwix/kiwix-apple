@@ -11,8 +11,16 @@ import CoreData
 class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
     
     static let sharedInstance = ZIMMultiReader()
-    private(set) var readers = [String: ZimReader]()
+    private(set) var readers = [ZIMID: ZimReader]() {
+        didSet {
+            if readers.count == 1 {
+                guard let id = readers.keys.first else {return}
+                delegate?.firstBookAdded(id)
+            }
+        }
+    }
     let searchQueue = OperationQueue()
+    weak var delegate: ZimMultiReaderDelegate?
     
     private let monitor = DirectoryMonitor(URL: FileManager.docDirURL)
     private var zimURLs = Set<NSURL>()
@@ -140,6 +148,10 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
     }
 }
 
+protocol ZimMultiReaderDelegate: class {
+    func firstBookAdded(id: ZIMID)
+}
+
 extension ZimReader {
     var metaData: [String: AnyObject] {
         var metadata = [String: AnyObject]()
@@ -160,22 +172,57 @@ extension ZimReader {
     }
 }
 
-class SearchResult {
-    let bookID: String
+typealias ZIMID = String
+
+class SearchResult: CustomStringConvertible {
     let title: String
-    let percent: Double? // range: 0-100
-    let path: String?
+    let path: String
+    let bookID: ZIMID
     let snippet: String?
     
+    let probability: Double? // range: 0.0 - 1.0
+    let distance: Int // Levenshtein distance, non negative integer
+    private(set) lazy var score: Double = {
+        if let probability = self.probability {
+            return WeightFactor.calculate(probability) * Double(self.distance)
+        } else {
+            return Double(self.distance)
+        }
+    }()
+    
     init?(rawResult: [String: AnyObject]) {
-        self.bookID = (rawResult["bookID"] as? String) ?? ""
-        self.title = (rawResult["title"] as? String) ?? ""
+        let title = (rawResult["title"] as? String) ?? ""
+        let path = (rawResult["path"] as? String) ?? ""
+        let bookID = (rawResult["bookID"] as? ZIMID) ?? ""
+        let snippet = rawResult["snippet"] as? String
         
-        self.percent = (rawResult["percent"] as? NSNumber)?.doubleValue
-        self.path = rawResult["path"] as? String
-        self.snippet = rawResult["snippet"] as? String
+        let distance = (rawResult["distance"]as? NSNumber)?.integerValue ?? title.characters.count
+        let probability: Double? = {
+            if let probability = (rawResult["probability"] as? NSNumber)?.doubleValue {
+                return probability / 100.0
+            } else {
+                return nil
+            }
+        }()
         
-        if bookID == "" {return nil}
-        if title == "" {return nil}
+        self.title = title
+        self.path = path
+        self.bookID = bookID
+        self.snippet = snippet
+        self.probability = probability
+        self.distance = distance
+        
+        if title == "" || path == "" || bookID == "" {return nil}
+    }
+    
+    var description: String {
+        var parts = [bookID, title]
+        if let probability = probability {parts.append("\(probability)%")}
+        parts.append("dist: \(distance)")
+        return parts.joinWithSeparator(", ")
+    }
+    
+    var rankInfo: String {
+        return "(\(distance), \(probability ?? -1), \(String(format: "%.4f", score)))"
     }
 }

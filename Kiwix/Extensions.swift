@@ -45,8 +45,12 @@ extension NSLocale {
 }
 
 extension NSBundle {
-    class var shortVersionString: String {
+    class var appShortVersion: String {
         return (NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as? String) ?? ""
+    }
+    
+    class var buildVersion: String {
+        return (NSBundle.mainBundle().objectForInfoDictionaryKey(kCFBundleVersionKey as String) as? String) ?? "Unknown"
     }
 }
 

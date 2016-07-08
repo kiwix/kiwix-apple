@@ -70,7 +70,10 @@ class Book: NSManagedObject {
     
     var url: NSURL? {
         guard let meta4URL = meta4URL else {return nil}
-        return NSURL(string: meta4URL.stringByReplacingOccurrencesOfString(".meta4", withString: ""))
+        // return url = NSURL(string: meta4URL.stringByReplacingOccurrencesOfString(".meta4", withString: ""))
+        let urlComponents = NSURLComponents(string: meta4URL.stringByReplacingOccurrencesOfString(".meta4", withString: ""))
+        urlComponents?.scheme = "https"
+        return urlComponents?.URL
     }
     
     #if os(iOS) || os(watchOS) || os(tvOS)
@@ -179,7 +182,7 @@ class Book: NSManagedObject {
     
     var spaceState: BookSpaceState {
         #if os(iOS) || os(watchOS) || os(tvOS)
-            let freeSpaceInBytes = Utilities.availableDiskspaceInBytes() ?? INT64_MAX
+            let freeSpaceInBytes = UIDevice.availableDiskSpace ?? INT64_MAX
             if (0.8 * Double(freeSpaceInBytes)) > Double(fileSize) {
                 return .Enough
             } else if freeSpaceInBytes < fileSize{

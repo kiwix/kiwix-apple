@@ -10,16 +10,16 @@ import UIKit
 import JavaScriptCore
 
 extension MainVC {
-    
+       
     func load(url: NSURL?) {
         guard let url = url else {return}
         webView.hidden = false
+        hideWelcome()
         let request = NSURLRequest(URL: url)
         webView.loadRequest(request)
     }
     
-    func loadMainPage(book: Book) {
-        guard let id = book.id else {return}
+    func loadMainPage(id: ZIMID) {
         guard let reader = ZIMMultiReader.sharedInstance.readers[id] else {return}
         let mainPageURLString = reader.mainPageURL()
         let mainPageURL = NSURL.kiwixURLWithZimFileid(id, contentURLString: mainPageURLString)
@@ -28,11 +28,40 @@ extension MainVC {
     
     // MARK: - JS
     
-    func getTOC(webView: UIWebView) {
-        guard let context = webView.valueForKeyPath("documentView.webView.mainFrame.javaScriptContext") as? JSContext else {return}
-        guard let path = NSBundle.mainBundle().pathForResource("getTableOfContents", ofType: "js") else {return}
-        guard let jString = Utilities.contentOfFileAtPath(path) else {return}
-        let value: JSValue = context.evaluateScript(jString)
-        print(value.toArray())
+    func getTableOfContents(webView: UIWebView) -> [HTMLHeading] {
+        guard let context = webView.valueForKeyPath("documentView.webView.mainFrame.javaScriptContext") as? JSContext,
+              let path = NSBundle.mainBundle().pathForResource("getTableOfContents", ofType: "js"),
+              let jString = Utilities.contentOfFileAtPath(path),
+              let elements = context.evaluateScript(jString).toArray() as? [[String: String]] else {return [HTMLHeading]()}
+        var headings = [HTMLHeading]()
+        for element in elements {
+            guard let heading = HTMLHeading(rawValue: element) else {continue}
+            headings.append(heading)
+        }
+        return headings
+    }
+}
+
+class HTMLHeading {
+    let id: String
+    let tagName: String
+    let textContent: String
+    let level: Int
+    
+    init?(rawValue: [String: String]) {
+        let tagName = rawValue["tagName"] ?? ""
+        self.id = rawValue["id"] ?? ""
+        self.textContent = rawValue["textContent"] ?? ""
+        self.tagName = tagName
+        self.level = Int(tagName.stringByReplacingOccurrencesOfString("H", withString: "")) ?? -1
+        
+        if id == "" {return nil}
+        if tagName == "" {return nil}
+        if textContent == "" {return nil}
+        if level == -1 {return nil}
+    }
+    
+    var scrollToJavaScript: String {
+        return "document.getElementById('\(id)').scrollIntoView();"
     }
 }

@@ -180,12 +180,12 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
         
         guard shouldReportProgress else {return}
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
-            self.delegate?.refreshProgress(animated: true)
+            self.delegate?.refreshProgress()
         }
         shouldReportProgress = false
     }
 }
 
 protocol DownloadProgressReporting: class {
-    func refreshProgress(animated animated: Bool)
+    func refreshProgress()
 }

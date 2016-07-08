@@ -35,11 +35,24 @@ extension NSManagedObjectContext {
 
 // MARK: - UI
 
+enum BuildStatus {
+    case Alpha, Beta, Release
+}
+
+extension UIApplication {
+    class var buildStatus: BuildStatus {
+        get {
+            return .Release
+        }
+    }
+}
+
 extension UIStoryboard {
-    class var main: UIStoryboard {get {return UIStoryboard(name: "Main", bundle: nil)}}
     class var library: UIStoryboard {get {return UIStoryboard(name: "Library", bundle: nil)}}
+    class var main: UIStoryboard {get {return UIStoryboard(name: "Main", bundle: nil)}}
+    class var search: UIStoryboard {get {return UIStoryboard(name: "Search", bundle: nil)}}
     class var setting: UIStoryboard {get {return UIStoryboard(name: "Setting", bundle: nil)}}
-    class var help: UIStoryboard {get {return UIStoryboard(name: "Help", bundle: nil)}}
+    class var welcome: UIStoryboard {get {return UIStoryboard(name: "Welcome", bundle: nil)}}
     
     func initViewController<T:UIViewController>(type: T.Type) -> T? {
         guard let className = NSStringFromClass(T).componentsSeparatedByString(".").last else {
@@ -51,6 +64,10 @@ extension UIStoryboard {
     
     func initViewController<T:UIViewController>(identifier: String, type: T.Type) -> T? {
         return instantiateViewControllerWithIdentifier(identifier) as? T
+    }
+    
+    func controller<T:UIViewController>(type: T.Type) -> T? {
+        return instantiateViewControllerWithIdentifier(String(T)) as? T
     }
 }
 
@@ -74,6 +91,58 @@ extension UITableView {
         label.numberOfLines = 0
         label.textColor = UIColor.grayColor()
         backgroundView = label
+    }
+}
+
+extension UINavigationBar {
+    func hideBottomHairline() {
+        let navigationBarImageView = hairlineImageViewInNavigationBar(self)
+        navigationBarImageView!.hidden = true
+    }
+    
+    func showBottomHairline() {
+        let navigationBarImageView = hairlineImageViewInNavigationBar(self)
+        navigationBarImageView!.hidden = false
+    }
+    
+    private func hairlineImageViewInNavigationBar(view: UIView) -> UIImageView? {
+        if view.isKindOfClass(UIImageView) && view.bounds.height <= 1.0 {
+            return (view as! UIImageView)
+        }
+        
+        let subviews = (view.subviews as [UIView])
+        for subview: UIView in subviews {
+            if let imageView: UIImageView = hairlineImageViewInNavigationBar(subview) {
+                return imageView
+            }
+        }
+        return nil
+    }
+}
+
+extension UIToolbar {
+    func hideHairline() {
+        let navigationBarImageView = hairlineImageViewInToolbar(self)
+        navigationBarImageView!.hidden = true
+    }
+    
+    func showHairline() {
+        let navigationBarImageView = hairlineImageViewInToolbar(self)
+        navigationBarImageView!.hidden = false
+    }
+    
+    private func hairlineImageViewInToolbar(view: UIView) -> UIImageView? {
+        if view.isKindOfClass(UIImageView) && view.bounds.height <= 1.0 {
+            return (view as! UIImageView)
+        }
+        
+        let subviews = (view.subviews as [UIView])
+        for subview: UIView in subviews {
+            if let imageView: UIImageView = hairlineImageViewInToolbar(subview) {
+                return imageView
+            }
+        }
+        return nil
     }
 }
 

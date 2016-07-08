@@ -11,7 +11,7 @@ import CoreData
 import DZNEmptyDataSet
 import DateTools
 
-class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelegate, BookTableCellDelegate, LTBarButtonItemDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelegate, TableCellDelegate, LTBarButtonItemDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     var booksShowingDetail = Set<Book>()
     var messsageLabelRefreshTimer: NSTimer?
@@ -44,9 +44,9 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
     }
     
     
-    // MARK: - BookTableCellDelegate
+    // MARK: - TableCellDelegate
     
-    func didTapOnAccessoryViewForCell(cell: BookTableCell) {
+    func didTapOnAccessoryViewForCell(cell: UITableViewCell) {
         guard let indexPath = tableView.indexPathForCell(cell),
               let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
         switch book.spaceState {

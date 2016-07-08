@@ -106,19 +106,5 @@ class SearchBar: UISearchBar {
         self.autocapitalizationType = .None
         self.placeholder = LocalizedStrings.search
         self.returnKeyType = .Go
-        //listSubviewOfView(self)
-    }
-    
-    func listSubviewOfView(view: UIView) {
-        for subView in view.subviews {
-            print(subviews.description)
-            listSubviewOfView(subView)
-        }
-    }
-    
-    // MARK: - 
-    
-    func setScale(scale: CGFloat) {
-        layer.transform = CATransform3DMakeScale(scale, scale, 1.0)
     }
 }
