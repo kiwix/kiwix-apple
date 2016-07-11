@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PSOperations
 
 class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSURLSessionTaskDelegate, OperationQueueDelegate {
     static let sharedInstance = Network()
@@ -40,7 +41,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
         }
         session.getTasksWithCompletionHandler { (dataTasks, uploadTasks, downloadTasks) -> Void in
             for task in downloadTasks {
-                let operation = URLSessionTaskOperation(task: task, produceResumeDataWhenCancel: true)
+                let operation = URLSessionDownloadTaskOperation(task: task, produceResumeData: true)
                 operation.name = task.taskDescription
                 operation.addObserver(NetworkObserver())
                 self.operationQueue.addOperation(operation)
@@ -81,8 +82,8 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
     }
     
     func cancel(book: Book) {
-        guard let id = book.id, let operation = operationQueue.getOperation(id) as? URLSessionTaskOperation else {return}
-        operation.produceResumeDataWhenCancel = false
+        guard let id = book.id, let operation = operationQueue.getOperation(id) as? URLSessionDownloadTaskOperation else {return}
+        operation.produceResumeData = false
         operation.cancel()
     }
     
@@ -93,7 +94,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
         let downloadTask = DownloadTask.addOrUpdate(book, context: context)
         downloadTask?.state = .Queued
         
-        let operation = URLSessionTaskOperation(task: task, produceResumeDataWhenCancel: true)
+        let operation = URLSessionDownloadTaskOperation(task: task, produceResumeData: true)
         operation.name = id
         operation.addObserver(NetworkObserver())
         operationQueue.addOperation(operation)

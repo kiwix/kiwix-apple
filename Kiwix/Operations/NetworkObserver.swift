@@ -7,6 +7,7 @@ Contains the code to manage the visibility of the network activity indicator
 */
 
 import UIKit
+import PSOperations
 
 /**
     An `OperationObserver` that will cause the network activity indicator to appear

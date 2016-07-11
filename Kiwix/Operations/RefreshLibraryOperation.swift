@@ -7,6 +7,7 @@
 //
 
 import CoreData
+import PSOperations
 
 class RefreshLibraryOperation: GroupOperation {
     

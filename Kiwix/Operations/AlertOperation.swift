@@ -7,6 +7,7 @@ This file shows how to present an alert as part of an operation.
 */
 
 import UIKit
+import PSOperations
 
 class AlertOperation: Operation {
     // MARK: Properties
