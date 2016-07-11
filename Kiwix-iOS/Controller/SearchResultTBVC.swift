@@ -120,7 +120,7 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
             tableView.reloadData()
             return
         }
-        ZIMMultiReader.sharedInstance.searchQueue.cancelAllOperations()
+        ZimMultiReader.sharedInstance.searchQueue.cancelAllOperations()
         let operation = SearchOperation(searchTerm: searchText) { (results) in
             self.searchResults = results
             self.tableView.reloadData()
@@ -128,7 +128,7 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
                 self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
             }
         }
-        ZIMMultiReader.sharedInstance.searchQueue.addOperation(operation)
+        ZimMultiReader.sharedInstance.searchQueue.addOperation(operation)
     }
 }
 

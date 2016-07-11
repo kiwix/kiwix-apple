@@ -19,8 +19,8 @@ extension MainVC {
         webView.loadRequest(request)
     }
     
-    func loadMainPage(id: ZIMID) {
-        guard let reader = ZIMMultiReader.sharedInstance.readers[id] else {return}
+    func loadMainPage(id: ZimID) {
+        guard let reader = ZimMultiReader.sharedInstance.readers[id] else {return}
         let mainPageURLString = reader.mainPageURL()
         let mainPageURL = NSURL.kiwixURLWithZimFileid(id, contentURLString: mainPageURLString)
         load(mainPageURL)

@@ -1,5 +1,5 @@
 //
-//  ZIMMultiReader.swift
+//  ZimMultiReader.swift
 //  Kiwix
 //
 //  Created by Chris on 12/19/15.
@@ -9,10 +9,10 @@
 import CoreData
 import PSOperations
 
-class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
+class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     
-    static let sharedInstance = ZIMMultiReader()
-    private(set) var readers = [ZIMID: ZimReader]() {
+    static let sharedInstance = ZimMultiReader()
+    private(set) var readers = [ZimID: ZimReader]() {
         didSet {
             if readers.count == 1 {
                 guard let id = readers.keys.first else {return}
@@ -42,15 +42,15 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
     // MARK: - DirectoryMonitorDelegate
     
     func directoryMonitorDidObserveChange() {
-        rescan()
+        scan()
     }
     
-    // MARK: - Refresh
+    // MARK: - Scan
     
-    func rescan() {
+    func scan() {
         /*
          If list of idx folders changes, reinitialize all zim readers, 
-         because currently ZIMMultiReader cannot find out which ZimReader's index folder is added or deleted
+         because currently ZimMultiReader cannot find out which ZimReader's index folder is added or deleted
          
          Note: when a idx folder is added, the content of that idx folder will not finish copying, which makes it meanless to detect idx folder addition. 
          Because, with a incompletely copied idx folder, the xapian initializer is guranteed to fail. So here only check for idx folder deletion. 
@@ -147,83 +147,59 @@ class ZIMMultiReader: NSObject, DirectoryMonitorDelegate {
         }
         return folderURLs
     }
+    
+    // MARK: - Search
+    
+    func search(searchTerm: String, zimFileID: String) -> [(id: String, articleTitle: String)] {
+        var resultTuples = [(id: String, articleTitle: String)]()
+        let firstCharRange = searchTerm.startIndex...searchTerm.startIndex
+        let firstLetterCapitalisedSearchTerm = searchTerm.stringByReplacingCharactersInRange(firstCharRange, withString: searchTerm.substringWithRange(firstCharRange).capitalizedString)
+        let searchTermVariations = Set([searchTerm, searchTerm.uppercaseString, searchTerm.lowercaseString, searchTerm.capitalizedString, firstLetterCapitalisedSearchTerm])
+        
+        let reader = readers[zimFileID]
+        var results = Set<String>()
+        for searchTermVariation in searchTermVariations {
+            guard let result = reader?.searchSuggestionsSmart(searchTermVariation) as? [String] else {continue}
+            results.unionInPlace(result)
+        }
+        
+        for result in results {
+            resultTuples.append((id: zimFileID, articleTitle: result))
+        }
+        
+        return resultTuples
+    }
+    
+    // MARK: - Loading System
+    
+    func data(id: String, contentURLString: String) -> [String: AnyObject]? {
+        guard let reader = readers[id] else {return nil}
+        return reader.dataWithContentURLString(contentURLString) as? [String: AnyObject]
+    }
+    
+    func pageURLString(articleTitle: String, bookid id: String) -> String? {
+        guard let reader = readers[id] else {return nil}
+        return reader.pageURLFromTitle(articleTitle)
+    }
+    
+    func mainPageURLString(bookid id: String) -> String? {
+        guard let reader = readers[id] else {return nil}
+        return reader.mainPageURL()
+    }
+    
+    func randomPageURLString() -> (id: String, contentURLString: String)? {
+        var randomPageURLs = [(String, String)]()
+        for (id, reader) in readers{
+            randomPageURLs.append((id, reader.getRandomPageUrl()))
+        }
+        
+        guard randomPageURLs.count > 0 else {return nil}
+        let index = arc4random_uniform(UInt32(randomPageURLs.count))
+        return randomPageURLs[Int(index)]
+    }
 }
 
 protocol ZimMultiReaderDelegate: class {
-    func firstBookAdded(id: ZIMID)
+    func firstBookAdded(id: ZimID)
 }
 
-extension ZimReader {
-    var metaData: [String: AnyObject] {
-        var metadata = [String: AnyObject]()
-        
-        if let id = getID() {metadata["id"] = id}
-        if let title = getTitle() {metadata["title"] = title}
-        if let description = getDesc() {metadata["description"] = description}
-        if let creator = getCreator() {metadata["creator"] = creator}
-        if let publisher = getPublisher() {metadata["publisher"] = publisher}
-        if let favicon = getFavicon() {metadata["favicon"] = favicon}
-        if let date = getDate() {metadata["date"] = date}
-        if let articleCount = getArticleCount() {metadata["articleCount"] = articleCount}
-        if let mediaCount = getMediaCount() {metadata["mediaCount"] = mediaCount}
-        if let fileSize = getFileSize() {metadata["size"] = fileSize}
-        if let langCode = getLanguage() {metadata["language"] = langCode}
-        
-        return metadata
-    }
-}
-
-typealias ZIMID = String
-
-class SearchResult: CustomStringConvertible {
-    let title: String
-    let path: String
-    let bookID: ZIMID
-    let snippet: String?
-    
-    let probability: Double? // range: 0.0 - 1.0
-    let distance: Int // Levenshtein distance, non negative integer
-    private(set) lazy var score: Double = {
-        if let probability = self.probability {
-            return WeightFactor.calculate(probability) * Double(self.distance)
-        } else {
-            return Double(self.distance)
-        }
-    }()
-    
-    init?(rawResult: [String: AnyObject]) {
-        let title = (rawResult["title"] as? String) ?? ""
-        let path = (rawResult["path"] as? String) ?? ""
-        let bookID = (rawResult["bookID"] as? ZIMID) ?? ""
-        let snippet = rawResult["snippet"] as? String
-        
-        let distance = (rawResult["distance"]as? NSNumber)?.integerValue ?? title.characters.count
-        let probability: Double? = {
-            if let probability = (rawResult["probability"] as? NSNumber)?.doubleValue {
-                return probability / 100.0
-            } else {
-                return nil
-            }
-        }()
-        
-        self.title = title
-        self.path = path
-        self.bookID = bookID
-        self.snippet = snippet
-        self.probability = probability
-        self.distance = distance
-        
-        if title == "" || path == "" || bookID == "" {return nil}
-    }
-    
-    var description: String {
-        var parts = [bookID, title]
-        if let probability = probability {parts.append("\(probability)%")}
-        parts.append("dist: \(distance)")
-        return parts.joinWithSeparator(", ")
-    }
-    
-    var rankInfo: String {
-        return "(\(distance), \(probability ?? -1), \(String(format: "%.4f", score)))"
-    }
-}

@@ -45,7 +45,7 @@ extension MainVC: LPTBarButtonItemDelegate, TableOfContentsDelegate, ZimMultiRea
     
     // MARK: - ZimMultiReaderDelegate
     
-    func firstBookAdded(id: ZIMID) {
+    func firstBookAdded(id: ZimID) {
         loadMainPage(id)
     }
     

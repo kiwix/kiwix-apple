@@ -21,7 +21,7 @@ class SearchOperation: GroupOperation {
             self.results = results
         }
         
-        for (id, zimReader) in ZIMMultiReader.sharedInstance.readers {
+        for (id, zimReader) in ZimMultiReader.sharedInstance.readers {
             let managedObjectContext = UIApplication.appDelegate.managedObjectContext
             guard let book = Book.fetch(id, context: managedObjectContext) else {continue}
             guard book.includeInSearch else {continue}
