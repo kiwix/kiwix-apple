@@ -38,7 +38,6 @@ class RefreshLibraryOperation: GroupOperation {
         
         if invokedAutomatically {
             addCondition(AllowAutoRefreshCondition())
-            addCondition(LibraryIsOldCondition())
         }
         
         addOperation(fetchOperation)
@@ -126,31 +125,6 @@ class ParseLibraryOperation: Operation, NSXMLParserDelegate {
         context.parentContext?.performBlockAndWait({ () -> Void in
             self.context.parentContext?.saveIfNeeded()
         })
-    }
-}
-
-private struct LibraryIsOldCondition: OperationCondition {
-    static let name = "LibraryIsOld"
-    static let isMutuallyExclusive = false
-    
-    init() {}
-    
-    func dependencyForOperation(operation: Operation) -> NSOperation? {
-        return nil
-    }
-    
-    func evaluateForOperation(operation: Operation, completion: OperationConditionResult -> Void) {
-        let libraryIsOld: Bool = {
-            guard let lastLibraryRefreshTime = Preference.libraryLastRefreshTime else {return true}
-            return -lastLibraryRefreshTime.timeIntervalSinceNow > Preference.libraryRefreshInterval
-        }()
-        
-        if libraryIsOld {
-            completion(.Satisfied)
-        } else {
-            let error = NSError(code: .ConditionFailed, userInfo: [OperationConditionKey: self.dynamicType.name])
-            completion(.Failed(error))
-        }
     }
 }
 
