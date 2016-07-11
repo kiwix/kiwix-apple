@@ -47,7 +47,7 @@ class KiwixURLProtocol: NSURLProtocol {
 
 extension NSURL {
     class func kiwixURLWithZimFileid(id: String, contentURLString: String) -> NSURL? {
-        guard let escapedContentURLString = contentURLString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet()) else {return nil}
+        guard let escapedContentURLString = contentURLString.stringByAddingPercentEncodingWithAllowedCharacters(.URLPathAllowedCharacterSet()) else {return nil}
         let baseURLString = "kiwix://" + id
         return NSURL(string: escapedContentURLString, relativeToURL: NSURL(string: baseURLString))
     }
@@ -58,5 +58,11 @@ extension NSURL {
             return nil
         }
         return NSURL.kiwixURLWithZimFileid(id, contentURLString: contentURLString)
+    }
+    
+    convenience init?(id: ZIMID, contentURLString: String) {
+        guard let escapedContentURLString = contentURLString.stringByAddingPercentEncodingWithAllowedCharacters(.URLPathAllowedCharacterSet()) else {return nil}
+        let baseURLString = "kiwix://" + id
+        self.init(string: escapedContentURLString, relativeToURL: NSURL(string: baseURLString))
     }
 }

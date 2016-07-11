@@ -199,8 +199,6 @@
 		979CB6661D05C44F005E1BA1 /* NoCancelledDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6241D05C44F005E1BA1 /* NoCancelledDependencies.swift */; };
 		979CB6671D05C44F005E1BA1 /* OperationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6251D05C44F005E1BA1 /* OperationCondition.swift */; };
 		979CB6681D05C44F005E1BA1 /* OperationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6251D05C44F005E1BA1 /* OperationCondition.swift */; };
-		979CB6691D05C44F005E1BA1 /* PassbookCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6261D05C44F005E1BA1 /* PassbookCondition.swift */; };
-		979CB66A1D05C44F005E1BA1 /* PassbookCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6261D05C44F005E1BA1 /* PassbookCondition.swift */; };
 		979CB66B1D05C44F005E1BA1 /* PhotosCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6271D05C44F005E1BA1 /* PhotosCondition.swift */; };
 		979CB66C1D05C44F005E1BA1 /* PhotosCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6271D05C44F005E1BA1 /* PhotosCondition.swift */; };
 		979CB66D1D05C44F005E1BA1 /* ReachabilityCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6281D05C44F005E1BA1 /* ReachabilityCondition.swift */; };
@@ -1715,7 +1713,6 @@
 				979CB64C1D05C44F005E1BA1 /* LocationCapability-iOS.swift in Sources */,
 				979CB6541D05C44F005E1BA1 /* PhotosCapability.swift in Sources */,
 				979CB6CA1D05D26E005E1BA1 /* WebViewController.swift in Sources */,
-				979CB66A1D05C44F005E1BA1 /* PassbookCondition.swift in Sources */,
 				9711878E1CEB541100B9909D /* Kiwix.xcdatamodeld in Sources */,
 				971187961CEB542500B9909D /* DownloadTask+CoreDataProperties.swift in Sources */,
 				979CB64A1D05C44F005E1BA1 /* iCloudContainerCapability.swift in Sources */,
@@ -1802,7 +1799,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				976AB2671CBD8B3D00B06EB0 /* 1.5.xcmappingmodel in Sources */,
-				979CB6691D05C44F005E1BA1 /* PassbookCondition.swift in Sources */,
 				971A10311D022AD5007FC62C /* RefreshHUD.swift in Sources */,
 				973970ED1CB9A04C00350507 /* SearchOperation.swift in Sources */,
 				979CB6BB1D05C520005E1BA1 /* NSOperation+Operations.swift in Sources */,
