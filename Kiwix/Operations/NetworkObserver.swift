@@ -7,6 +7,7 @@ Contains the code to manage the visibility of the network activity indicator
 */
 
 import UIKit
+import PSOperations
 
 /**
     An `OperationObserver` that will cause the network activity indicator to appear
@@ -28,20 +29,14 @@ struct NetworkObserver: OperationObserver {
     func operation(operation: Operation, didProduceOperation newOperation: NSOperation) { }
     
     func operationDidFinish(operation: Operation, errors: [NSError]) {
-        // If an op is cancelled, operationDidStart will not be called
         print("NetworkObserver: \(operation.name ?? "Unknown") operation did finish")
-        guard !operation.cancelled else {return}
-        
         dispatch_async(dispatch_get_main_queue()) {
             // Decrement the network indicator's "reference count".
             NetworkIndicatorController.sharedIndicatorController.networkActivityDidEnd()
         }
     }
     
-    func operationDidCancel(operation: Operation) {
-        print("NetworkObserver: \(operation.name ?? "Unknown") operation did cancel")
-    }
-    
+    func operationDidCancel(operation: Operation) { }
 }
 
 /// A singleton to manage a visual "reference count" on the network activity indicator.

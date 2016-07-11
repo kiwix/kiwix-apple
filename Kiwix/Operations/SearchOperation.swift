@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PSOperations
 
 class SearchOperation: GroupOperation {
     let completionHandler: ([SearchResult]) -> Void

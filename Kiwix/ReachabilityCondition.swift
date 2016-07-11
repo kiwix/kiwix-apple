@@ -8,6 +8,7 @@ This file shows an example of implementing the OperationCondition protocol.
 
 import Foundation
 import SystemConfiguration
+import PSOperations
 
 /**
     This is a condition that performs a very high-level reachability check.
@@ -39,7 +40,7 @@ struct ReachabilityCondition: OperationCondition {
             else {
                 let userInfo = ["title": "Network Error",
                     "message": "Unable connecting to the internet. Please check your connection."]
-                let error = NSError(code: .NetworkError, userInfo: userInfo)
+                let error = NSError(code: .ConditionFailed, userInfo: userInfo)
                 completion(.Failed(error))
             }
         }
@@ -73,8 +74,6 @@ private class ReachabilityController {
                 }
             }
         } else {
-            // completionHandler(false)
-            
             // Test for general internet connectibility
             dispatch_async(reachabilityQueue) {
                 var zeroAddress = sockaddr_in()
