@@ -31,6 +31,7 @@ class ScanLocalBookOperation: Operation {
         
         self.completionHandler = completionHandler
         super.init()
+        addCondition(MutuallyExclusive<ZimMultiReader>())
         name = String(self)
     }
     
