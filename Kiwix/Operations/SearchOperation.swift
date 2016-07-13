@@ -36,6 +36,8 @@ class SearchOperation: GroupOperation {
         }
         
         addOperation(sortOperation)
+        
+        addCondition(MutuallyExclusive<ZimMultiReader>())
     }
     
     override func finished(errors: [NSError]) {
