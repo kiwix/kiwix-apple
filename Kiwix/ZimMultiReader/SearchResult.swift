@@ -10,7 +10,7 @@ import UIKit
 
 class SearchResult: CustomStringConvertible {
     let title: String
-    let path: String
+    let path: ArticlePath
     let bookID: ZimID
     let snippet: String?
     

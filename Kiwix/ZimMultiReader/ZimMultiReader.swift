@@ -10,8 +10,10 @@ import CoreData
 import PSOperations
 
 class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
-    
     static let sharedInstance = ZimMultiReader()
+    let searchQueue = OperationQueue()
+    weak var delegate: ZimMultiReaderDelegate?
+    
     private(set) var readers = [ZimID: ZimReader]() {
         didSet {
             if readers.count == 1 {
@@ -20,8 +22,6 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
             }
         }
     }
-    let searchQueue = OperationQueue()
-    weak var delegate: ZimMultiReaderDelegate?
     
     private let monitor = DirectoryMonitor(URL: FileManager.docDirURL)
     private var zimURLs = Set<NSURL>()
