@@ -14,8 +14,9 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     
     weak var delegate: ZimMultiReaderDelegate?
     private weak var scanOperation: ScanLocalBookOperation?
+    private weak var searchOperation: SearchOperation?
     
-    let searchQueue = OperationQueue()
+    private let searchQueue = OperationQueue()
     private(set) var isScanning = false
     private(set) var readers = [ZimID: ZimReader]()
     private let monitor = DirectoryMonitor(URL: FileManager.docDirURL)
@@ -77,7 +78,12 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
         if let scanOperation = scanOperation {
             searchOperation.addDependency(scanOperation)
         }
+        
+        if let searchOperation = self.searchOperation {
+            searchOperation.cancel()
+        }
         searchQueue.addOperation(searchOperation)
+        self.searchOperation = searchOperation
     }
     
     // MARK: Search (Old)

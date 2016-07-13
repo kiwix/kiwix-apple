@@ -10,10 +10,10 @@ import UIKit
 import PSOperations
 
 class SearchOperation: GroupOperation {
-    let completionHandler: ([SearchResult]) -> Void
+    let completionHandler: ([SearchResult]?) -> Void
     private(set) var results = [SearchResult]()
     
-    init(searchTerm: String, completionHandler: ([SearchResult]) -> Void) {
+    init(searchTerm: String, completionHandler: ([SearchResult]?) -> Void) {
         self.completionHandler = completionHandler
         super.init(operations: [NSOperation]())
         
@@ -39,9 +39,9 @@ class SearchOperation: GroupOperation {
     }
     
     override func finished(errors: [NSError]) {
-        print(cancelled)
-        NSOperationQueue.mainQueue().addOperationWithBlock { 
-            self.completionHandler(self.results)
+//        print("Search Operation finished, status \(cancelled ? "Canceled" : "Not Canceled")")
+        NSOperationQueue.mainQueue().addOperationWithBlock {
+            self.completionHandler(self.cancelled ? nil : self.results)
         }
     }
 }

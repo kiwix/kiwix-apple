@@ -120,15 +120,15 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
             tableView.reloadData()
             return
         }
-        ZimMultiReader.sharedInstance.searchQueue.cancelAllOperations()
         let operation = SearchOperation(searchTerm: searchText) { (results) in
+            guard let results = results else {return}
             self.searchResults = results
             self.tableView.reloadData()
             if results.count > 0 {
                 self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
             }
         }
-        ZimMultiReader.sharedInstance.searchQueue.addOperation(operation)
+        ZimMultiReader.sharedInstance.startSearch(operation)
     }
 }
 
