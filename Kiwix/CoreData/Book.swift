@@ -14,8 +14,6 @@ import CoreData
     import AppKit
 #endif
 
-
-
 class Book: NSManagedObject {
 
     // MARK: - Add Book
@@ -93,6 +91,20 @@ class Book: NSManagedObject {
     class func fetchAll(context: NSManagedObjectContext) -> [Book] {
         let fetchRequest = NSFetchRequest(entityName: "Book")
         return fetch(fetchRequest, type: Book.self, context: context) ?? [Book]()
+    }
+    
+    class func fetchLocal(context: NSManagedObjectContext) -> [ZimID: Book] {
+        let fetchRequest = NSFetchRequest(entityName: "Book")
+        let predicate = NSPredicate(format: "isLocal = true")
+        fetchRequest.predicate = predicate
+        let localBooks = fetch(fetchRequest, type: Book.self, context: context) ?? [Book]()
+        
+        var books = [ZimID: Book]()
+        for book in localBooks {
+            guard let id = book.id else {continue}
+            books[id] = book
+        }
+        return books
     }
     
     class func fetch(id: String, context: NSManagedObjectContext) -> Book? {

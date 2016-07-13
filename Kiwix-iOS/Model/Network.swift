@@ -163,7 +163,6 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
               let bookDownloadTask = book.downloadTask else {return}
         
         context.performBlockAndWait { () -> Void in
-            book.isLocal = true
             self.context.deleteObject(bookDownloadTask)
         }
         
