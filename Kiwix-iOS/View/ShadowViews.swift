@@ -24,10 +24,10 @@ class DropShadowView: UIView {
                     let border = CALayer()
                     bottomBorder = border
                     border.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.75).CGColor
-                    border.frame = CGRectMake(0, rect.height - 0.5, rect.width, 0.5)
                     return border
                 }
             }()
+            border.frame = CGRectMake(0, rect.height - 0.5, rect.width, 0.5)
             layer.addSublayer(border)
         case .Compact:
             layer.shadowRadius = 2.0
@@ -47,10 +47,6 @@ class DropShadowView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         layer.shadowPath = UIBezierPath(rect: bounds).CGPath
-    }
-    
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
-        guard previousTraitCollection != traitCollection else {return}
         setNeedsDisplay()
     }
 }
