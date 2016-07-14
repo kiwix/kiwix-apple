@@ -88,16 +88,13 @@ private class SortSearchResultsOperation: Operation {
         finish()
     }
     
-    /*
-     1. Xapian results before searchSuggestionSmart results
-     2. Among Xapian results: sort by percent, then title case insensitive compare
-     3. Among searchSuggestionSmart results: sort by title case insensitive compare
-    */
     private func sort() {
         results.sortInPlace { (result0, result1) -> Bool in
             if result0.score != result1.score {
                 return result0.score < result1.score
             } else {
+                if result0.snippet != nil {return true}
+                if result1.snippet != nil {return false}
                 return titleCaseInsensitiveCompare(result0, result1: result1)
             }
         }
