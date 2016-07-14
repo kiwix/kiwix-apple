@@ -122,12 +122,14 @@ class SettingTBVC: UITableViewController {
             performSegueWithIdentifier("ReadingFontSize", sender: self)
         case LocalizedStrings.adjustLayout:
             performSegueWithIdentifier("AdjustLayout", sender: self)
+        case LocalizedStrings.history:
+            performSegueWithIdentifier("SearchHistory", sender: self)
+        case "Boost Factor 🚀":
+            performSegueWithIdentifier("SearchTune", sender: self)
         case LocalizedStrings.rateKiwix:
             showRateKiwixAlert(showRemindLater: false)
         case LocalizedStrings.about:
             performSegueWithIdentifier("MiscAbout", sender: self)
-        case "Boost Factor 🚀":
-            performSegueWithIdentifier("SearchTune", sender: self)
         default:
             break
         }

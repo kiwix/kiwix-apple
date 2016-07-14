@@ -21,6 +21,44 @@
             </objects>
             <point key="canvasLocation" x="-693" y="1223"/>
         </scene>
+        <!--Setting Search HistoryTBVC-->
+        <scene sceneID="8dd-QG-z4D">
+            <objects>
+                <tableViewController id="lA5-ta-PUI" customClass="SettingSearchHistoryTBVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="im8-qO-eaU">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="VaR-0o-AqR" style="IBUITableViewCellStyleDefault" id="ekd-Aa-GLY">
+                                <rect key="frame" x="0.0" y="113.5" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ekd-Aa-GLY" id="jZI-Gp-OCh">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VaR-0o-AqR">
+                                            <rect key="frame" x="15" y="0.0" width="570" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                            <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="lA5-ta-PUI" id="SbZ-wD-Hbb"/>
+                            <outlet property="delegate" destination="lA5-ta-PUI" id="Rym-Tu-cqH"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pva-nX-fuk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1097" y="1698"/>
+        </scene>
         <!--SettingTBVC-->
         <scene sceneID="AlF-dM-FGj">
             <objects>
@@ -75,6 +113,7 @@
                         <segue destination="wed-Gd-0Tc" kind="show" identifier="AdjustLayout" id="gfS-dL-oh5"/>
                         <segue destination="cXQ-cR-uO9" kind="show" identifier="LibraryBackup" id="wMK-ai-X9p"/>
                         <segue destination="EDV-vq-3pR" kind="show" identifier="SearchTune" id="fPh-da-uXe"/>
+                        <segue destination="lA5-ta-PUI" kind="show" identifier="SearchHistory" id="uJK-HK-z5P"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h5i-dV-ulp" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -321,10 +360,10 @@
             </objects>
             <point key="canvasLocation" x="1747" y="1007"/>
         </scene>
-        <!--Search Tune Controller-->
+        <!--Setting Search Tune Controller-->
         <scene sceneID="TuT-Er-AH1">
             <objects>
-                <viewController id="EDV-vq-3pR" customClass="SearchTuneController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="EDV-vq-3pR" customClass="SettingSearchTuneController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="arK-4A-p3J"/>
                         <viewControllerLayoutGuide type="bottom" id="UWy-AB-pcE"/>
@@ -482,7 +521,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yBn-lE-pLn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1097" y="2438"/>
+            <point key="canvasLocation" x="1747" y="1698"/>
         </scene>
         <!--Web View Controller-->
         <scene sceneID="ovP-iw-7D0">
@@ -515,7 +554,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oLJ-aA-Gy7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1097" y="1704"/>
+            <point key="canvasLocation" x="1097" y="2388"/>
         </scene>
     </scenes>
     <resources>

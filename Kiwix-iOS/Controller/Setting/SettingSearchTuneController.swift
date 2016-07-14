@@ -9,7 +9,7 @@
 import UIKit
 import SwiftyUserDefaults
 
-class SearchTuneController: UIViewController, UITableViewDataSource {
+class SettingSearchTuneController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var y1Value: UITextField!
     @IBOutlet weak var y2Value: UITextField!
     @IBOutlet weak var x1Value: UITextField!
@@ -26,7 +26,7 @@ class SearchTuneController: UIViewController, UITableViewDataSource {
         super.viewDidLoad()
         title = "y=ln(n-mx) 🤓"
         
-        let button = UIBarButtonItem(title: "Calculate", style: .Plain, target: self, action: #selector(SearchTuneController.calculate))
+        let button = UIBarButtonItem(title: "Calculate", style: .Plain, target: self, action: #selector(SettingSearchTuneController.calculate))
         navigationItem.rightBarButtonItem = button
         
         tableView.dataSource = self

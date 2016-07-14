@@ -11,8 +11,9 @@
 		970C3DCA1CBD79450026A240 /* MigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C3DC91CBD79450026A240 /* MigrationPolicy.swift */; };
 		970C61971D34243600087758 /* URLSessionDownloadTaskOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C61961D34243600087758 /* URLSessionDownloadTaskOperation.swift */; };
 		970C61991D3429E400087758 /* ReachabilityCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C61981D3429E400087758 /* ReachabilityCondition.swift */; };
+		970E68B21D37E1DD001E8514 /* SettingSearchTuneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B11D37E1DD001E8514 /* SettingSearchTuneController.swift */; };
+		970E68B61D37E224001E8514 /* SettingSearchHistoryTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B51D37E224001E8514 /* SettingSearchHistoryTBVC.swift */; };
 		971046321D19B96E002141C0 /* XapianSearcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = 971046311D19B96E002141C0 /* XapianSearcher.mm */; };
-		971046341D1C830C002141C0 /* SearchTuneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971046331D1C830C002141C0 /* SearchTuneController.swift */; };
 		9711871C1CEB448400B9909D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711871B1CEB448400B9909D /* libz.tbd */; };
 		9711871E1CEB449A00B9909D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711871D1CEB449A00B9909D /* libz.tbd */; };
 		971187301CEB50FC00B9909D /* ZimReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9711872F1CEB50FC00B9909D /* ZimReader.mm */; };
@@ -261,9 +262,10 @@
 		970C3DC91CBD79450026A240 /* MigrationPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MigrationPolicy.swift; path = CoreData/Migration/MigrationPolicy.swift; sourceTree = "<group>"; };
 		970C61961D34243600087758 /* URLSessionDownloadTaskOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = URLSessionDownloadTaskOperation.swift; path = Operations/URLSessionDownloadTaskOperation.swift; sourceTree = "<group>"; };
 		970C61981D3429E400087758 /* ReachabilityCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityCondition.swift; sourceTree = "<group>"; };
+		970E68B11D37E1DD001E8514 /* SettingSearchTuneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSearchTuneController.swift; path = "Kiwix-iOS/Controller/Setting/SettingSearchTuneController.swift"; sourceTree = SOURCE_ROOT; };
+		970E68B51D37E224001E8514 /* SettingSearchHistoryTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSearchHistoryTBVC.swift; path = "Kiwix-iOS/Controller/Setting/SettingSearchHistoryTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971046301D19B96E002141C0 /* XapianSearcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XapianSearcher.h; path = Kiwix/libkiwix/XapianSearcher.h; sourceTree = "<group>"; };
 		971046311D19B96E002141C0 /* XapianSearcher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = XapianSearcher.mm; path = Kiwix/libkiwix/XapianSearcher.mm; sourceTree = "<group>"; };
-		971046331D1C830C002141C0 /* SearchTuneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchTuneController.swift; path = "Kiwix-iOS/Controller/Setting/SearchTuneController.swift"; sourceTree = SOURCE_ROOT; };
 		9711871B1CEB448400B9909D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		9711871D1CEB449A00B9909D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		9711872E1CEB50FC00B9909D /* ZimReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZimReader.h; path = Kiwix/libkiwix/ZimReader.h; sourceTree = "<group>"; };
@@ -543,6 +545,24 @@
 				EC884ACBBA260AF741C4C4FE /* Pods_Kiwix_iOS.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		970E68B31D37E1E0001E8514 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				970E68B51D37E224001E8514 /* SettingSearchHistoryTBVC.swift */,
+				970E68B11D37E1DD001E8514 /* SettingSearchTuneController.swift */,
+			);
+			name = Search;
+			sourceTree = "<group>";
+		};
+		970E68B41D37E1EF001E8514 /* Generic */ = {
+			isa = PBXGroup;
+			children = (
+				973DD4271D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift */,
+				971A10371D022C15007FC62C /* WebViewController.swift */,
+			);
+			name = Generic;
 			sourceTree = "<group>";
 		};
 		971186ED1CEB424800B9909D /* shared */ = {
@@ -883,11 +903,10 @@
 			isa = PBXGroup;
 			children = (
 				971A10411D022C54007FC62C /* SettingTBVC.swift */,
-				973DD4271D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift */,
+				970E68B41D37E1EF001E8514 /* Generic */,
 				97C01FCA1C39B7F100D010E5 /* Library */,
 				97C01FD21C39BF4E00D010E5 /* Reading */,
-				971046331D1C830C002141C0 /* SearchTuneController.swift */,
-				971A10371D022C15007FC62C /* WebViewController.swift */,
+				970E68B31D37E1E0001E8514 /* Search */,
 			);
 			name = Setting;
 			sourceTree = "<group>";
@@ -1578,6 +1597,7 @@
 				971A102C1D022AD5007FC62C /* BarButtonItems.swift in Sources */,
 				971A10301D022AD5007FC62C /* LTBarButtonItem.swift in Sources */,
 				971A103F1D022C42007FC62C /* LibraryAutoRefreshTBVC.swift in Sources */,
+				970E68B61D37E224001E8514 /* SettingSearchHistoryTBVC.swift in Sources */,
 				971A10721D022E74007FC62C /* KiwixURLProtocol.swift in Sources */,
 				971A10581D022DAD007FC62C /* LibraryDownloadTBVC.swift in Sources */,
 				973DD4231D3443A3009D45DB /* ExtensionAndTypealias.swift in Sources */,
@@ -1597,8 +1617,8 @@
 				978C58981C1CD86E0077AE47 /* Book.swift in Sources */,
 				978C58961C1CD86E0077AE47 /* Language.swift in Sources */,
 				971A10701D022E62007FC62C /* Network.swift in Sources */,
+				970E68B21D37E1DD001E8514 /* SettingSearchTuneController.swift in Sources */,
 				971A104A1D022CBE007FC62C /* SearchResultTBVC.swift in Sources */,
-				971046341D1C830C002141C0 /* SearchTuneController.swift in Sources */,
 				971A105B1D022DAD007FC62C /* LibraryOnlineTBVC.swift in Sources */,
 				9779A1CB1D34225E0071EFAB /* RefreshLibraryOperation.swift in Sources */,
 				971A10321D022AD5007FC62C /* SearchBar.swift in Sources */,
