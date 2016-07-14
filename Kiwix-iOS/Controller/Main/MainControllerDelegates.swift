@@ -1,5 +1,5 @@
 //
-//  MainVCOtherD.swift
+//  MainControllerOtherD.swift
 //  Kiwix
 //
 //  Created by Chris Li on 1/22/16.
@@ -10,7 +10,7 @@ import UIKit
 import SafariServices
 import DZNEmptyDataSet
 
-extension MainVC: LPTBarButtonItemDelegate, TableOfContentsDelegate, ZimMultiReaderDelegate, UISearchBarDelegate, UIPopoverPresentationControllerDelegate, UIWebViewDelegate, SFSafariViewControllerDelegate, UIScrollViewDelegate {
+extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, ZimMultiReaderDelegate, UISearchBarDelegate, UIPopoverPresentationControllerDelegate, UIWebViewDelegate, SFSafariViewControllerDelegate, UIScrollViewDelegate {
     
     // MARK: - LPTBarButtonItemDelegate
     

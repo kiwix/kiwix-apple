@@ -89,7 +89,7 @@ class SearchLocalBooksCVC: UIViewController, UICollectionViewDataSource, UIColle
     // MARK: - CollectionView Delegate
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        guard let mainVC = parentViewController?.parentViewController?.parentViewController as? MainVC,
+        guard let mainVC = parentViewController?.parentViewController?.parentViewController as? MainController,
               let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book,
               let bookID = book.id else {return}
         mainVC.hideSearch()

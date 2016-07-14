@@ -1,5 +1,5 @@
 //
-//  MainVCLoading.swift
+//  MainControllerLoading.swift
 //  Kiwix
 //
 //  Created by Chris Li on 1/22/16.
@@ -9,7 +9,7 @@
 import UIKit
 import JavaScriptCore
 
-extension MainVC {
+extension MainController {
        
     func load(url: NSURL?) {
         guard let url = url else {return}

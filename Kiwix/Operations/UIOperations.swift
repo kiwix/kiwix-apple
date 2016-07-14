@@ -108,7 +108,7 @@ class RefreshLibraryInternetRequiredAlert: AlertOperation {
 }
 
 class GetStartedAlert: AlertOperation {
-    init(mainController: MainVC?) {
+    init(mainController: MainController?) {
         super.init(presentationContext: mainController)
         
         let comment = "First Time Launch Message"

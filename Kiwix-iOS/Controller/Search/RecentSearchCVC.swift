@@ -58,7 +58,7 @@ class RecentSearchCVC: UIViewController, UICollectionViewDataSource, UICollectio
     // MARK: - CollectionView Delegate
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        guard let mainVC = parentViewController?.parentViewController?.parentViewController as? MainVC,
+        guard let mainVC = parentViewController?.parentViewController?.parentViewController as? MainController,
             let searchController = parentViewController?.parentViewController as? SearchController,
             let cell = collectionView.cellForItemAtIndexPath(indexPath) as? LocalLangCell,
             let text = cell.label.text else {return}

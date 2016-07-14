@@ -1,5 +1,5 @@
 //
-//  MainVC.swift
+//  MainController.swift
 //  Kiwix
 //
 //  Created by Chris Li on 1/22/16.
@@ -9,7 +9,7 @@
 import UIKit
 import PSOperations
 
-class MainVC: UIViewController {
+class MainController: UIViewController {
     
     @IBOutlet weak var webView: UIWebView!
     @IBOutlet weak var dimView: UIView!
@@ -315,13 +315,13 @@ class MainVC: UIViewController {
 
     // MARK: - Buttons
 
-    lazy var navigateLeftButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "LeftArrow", target: self, action: #selector(MainVC.navigateLeftButtonTapped))
-    lazy var navigateRightButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "RightArrow", target: self, action: #selector(MainVC.navigateRightButtonTapped))
-    lazy var tableOfContentButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "TableOfContent", target: self, action: #selector(MainVC.showTableOfContentButtonTapped))
+    lazy var navigateLeftButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "LeftArrow", target: self, action: #selector(MainController.navigateLeftButtonTapped))
+    lazy var navigateRightButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "RightArrow", target: self, action: #selector(MainController.navigateRightButtonTapped))
+    lazy var tableOfContentButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "TableOfContent", target: self, action: #selector(MainController.showTableOfContentButtonTapped))
     lazy var bookmarkButton: LPTBarButtonItem = LPTBarButtonItem(imageName: "Star", highlightedImageName: "StarHighlighted", delegate: self)
-    lazy var libraryButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "Library", target: self, action: #selector(MainVC.showLibraryButtonTapped))
-    lazy var settingButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "Setting", target: self, action: #selector(MainVC.showSettingButtonTapped))
-    lazy var cancelButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(MainVC.cancelButtonTapped))
+    lazy var libraryButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "Library", target: self, action: #selector(MainController.showLibraryButtonTapped))
+    lazy var settingButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "Setting", target: self, action: #selector(MainController.showSettingButtonTapped))
+    lazy var cancelButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(MainController.cancelButtonTapped))
     
     // MARK: - Actions
     

@@ -142,7 +142,7 @@ class SearchBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        guard let mainVC = parentViewController?.parentViewController as? MainVC,
+        guard let mainVC = parentViewController?.parentViewController as? MainController,
             let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book,
             let bookID = book.id else {return}
         mainVC.hideSearch()

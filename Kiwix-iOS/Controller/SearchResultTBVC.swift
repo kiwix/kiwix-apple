@@ -105,7 +105,7 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        guard let mainVC = parentViewController?.parentViewController as? MainVC else {return}
+        guard let mainVC = parentViewController?.parentViewController as? MainController else {return}
         let result = searchResults[indexPath.row]
         let url = NSURL.kiwixURLWithZimFileid(result.bookID, articleTitle: result.title)
         mainVC.load(url)

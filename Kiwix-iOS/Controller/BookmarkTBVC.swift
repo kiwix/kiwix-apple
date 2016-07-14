@@ -81,7 +81,7 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         defer {dismissViewControllerAnimated(true, completion: nil)}
         guard let navigationController = navigationController?.presentingViewController as? UINavigationController else {return}
-        guard let mainVC = navigationController.topViewController as? MainVC else {return}
+        guard let mainVC = navigationController.topViewController as? MainController else {return}
         guard let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
         mainVC.load(article.url)
     }
