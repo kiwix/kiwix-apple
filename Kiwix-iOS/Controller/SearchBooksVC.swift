@@ -70,7 +70,7 @@ class SearchBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     // MARK: - Fetched Results Controller
     
-    let managedObjectContext = UIApplication.appDelegate.managedObjectContext
+    let managedObjectContext = NSManagedObjectContext.mainQueueContext
     lazy var fetchedResultController: NSFetchedResultsController = {
         let fetchRequest = NSFetchRequest(entityName: "Book")
         let langDescriptor = NSSortDescriptor(key: "language.name", ascending: true)

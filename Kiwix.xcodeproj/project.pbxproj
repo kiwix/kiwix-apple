@@ -118,6 +118,7 @@
 		973DD4211D34434C009D45DB /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD4201D34434C009D45DB /* SearchResult.swift */; };
 		973DD4231D3443A3009D45DB /* ExtensionAndTypealias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD4221D3443A3009D45DB /* ExtensionAndTypealias.swift */; };
 		973DD4251D344558009D45DB /* ScanLocalBookOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD4241D344558009D45DB /* ScanLocalBookOperation.swift */; };
+		973DD4281D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD4271D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift */; };
 		975227821D020560001D1DDE /* Indexer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227811D020560001D1DDE /* Indexer.storyboard */; };
 		975227991D020C00001D1DDE /* indexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227921D020C00001D1DDE /* indexer.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
 		9752279B1D020C00001D1DDE /* otherTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227931D020C00001D1DDE /* otherTools.cpp */; };
@@ -366,6 +367,7 @@
 		973DD4201D34434C009D45DB /* SearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchResult.swift; path = ZimMultiReader/SearchResult.swift; sourceTree = "<group>"; };
 		973DD4221D3443A3009D45DB /* ExtensionAndTypealias.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExtensionAndTypealias.swift; path = ZimMultiReader/ExtensionAndTypealias.swift; sourceTree = "<group>"; };
 		973DD4241D344558009D45DB /* ScanLocalBookOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScanLocalBookOperation.swift; path = Operations/ScanLocalBookOperation.swift; sourceTree = "<group>"; };
+		973DD4271D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSingleSwitchTBVC.swift; path = "Kiwix-iOS/Controller/Setting/SettingSingleSwitchTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		97497B5A1D07487000ECD691 /* indexer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = indexer.h; path = "Kiwix/libkiwix/C&C++/indexer.h"; sourceTree = "<group>"; };
 		97497B5B1D07487000ECD691 /* resourceTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = resourceTools.h; path = "Kiwix/libkiwix/C&C++/resourceTools.h"; sourceTree = "<group>"; };
 		97497B5C1D074FB800ECD691 /* htmlparse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = htmlparse.h; path = "Kiwix/libkiwix/C&C++/xapian/htmlparse.h"; sourceTree = "<group>"; };
@@ -766,15 +768,12 @@
 		973BCD1F1CEB412E00F10B44 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				97163D321CD7E79F008BE2D6 /* Help Docs */,
-				97E5712A1CA0525300FF4F1D /* Operation */,
 				9711872D1CEB507600B9909D /* CoreData */,
-				971187051CEB426E00B9909D /* libkiwix */,
 				9779987A1C1E1C9600B1DD5E /* Extensions.swift */,
-				97E891681CA976E90001CA32 /* FileManager.swift */,
-				971A10711D022E74007FC62C /* KiwixURLProtocol.swift */,
-				973C8D5B1C25F945007272F9 /* Preference.swift */,
-				979C51511CECA9AF001707F2 /* StringTools.swift */,
+				97163D321CD7E79F008BE2D6 /* Help Docs */,
+				971187051CEB426E00B9909D /* libkiwix */,
+				97E5712A1CA0525300FF4F1D /* Operation */,
+				973DD4261D36E395009D45DB /* Tools */,
 				97254FDD1C26442F0056950B /* ZimMultiReader */,
 			);
 			name = Shared;
@@ -789,6 +788,17 @@
 				9779A1C71D34225E0071EFAB /* UIOperations.swift */,
 			);
 			name = Basic;
+			sourceTree = "<group>";
+		};
+		973DD4261D36E395009D45DB /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				97E891681CA976E90001CA32 /* FileManager.swift */,
+				971A10711D022E74007FC62C /* KiwixURLProtocol.swift */,
+				973C8D5B1C25F945007272F9 /* Preference.swift */,
+				979C51511CECA9AF001707F2 /* StringTools.swift */,
+			);
+			name = Tools;
 			sourceTree = "<group>";
 		};
 		9749A1B21C430653000F2D1E /* Bookmark */ = {
@@ -873,6 +883,7 @@
 			isa = PBXGroup;
 			children = (
 				971A10411D022C54007FC62C /* SettingTBVC.swift */,
+				973DD4271D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift */,
 				97C01FCA1C39B7F100D010E5 /* Library */,
 				97C01FD21C39BF4E00D010E5 /* Reading */,
 				971046331D1C830C002141C0 /* SearchTuneController.swift */,
@@ -1423,16 +1434,16 @@
 		};
 		97A4D7E21CF8C318006C731E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
 			);
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
+			shellScript = "#!/bin/bash\nbuildNumString=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nversionNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"$INFOPLIST_FILE\")\nIFS='.'; arr=($buildNumString)\nlastIndex=$((${#arr[@]} - 1))\nbuildNumber=$((${arr[lastIndex]} + 1))\nbuildNumString=\"${arr[0]}.${arr[1]}.$buildNumber\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumString\" \"$INFOPLIST_FILE\"";
 		};
 		97A4D7E31CF8C479006C731E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1628,6 +1639,7 @@
 				971A10601D022DF2007FC62C /* LanguageTBVC.swift in Sources */,
 				971A106A1D022E15007FC62C /* BookmarkHUDVC.swift in Sources */,
 				971A106C1D022E50007FC62C /* Utilities.swift in Sources */,
+				973DD4281D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift in Sources */,
 				971A10591D022DAD007FC62C /* LibraryLocalBookDetailTBVC.swift in Sources */,
 				971A10431D022C54007FC62C /* SettingTBVC.swift in Sources */,
 				973DD4211D34434C009D45DB /* SearchResult.swift in Sources */,

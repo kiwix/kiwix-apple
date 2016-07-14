@@ -487,7 +487,7 @@
         <!--Web View Controller-->
         <scene sceneID="ovP-iw-7D0">
             <objects>
-                <viewController storyboardIdentifier="WebViewController" id="Ua4-kV-xc7" customClass="WebViewController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WebViewController" automaticallyAdjustsScrollViewInsets="NO" id="Ua4-kV-xc7" customClass="WebViewController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="0oM-Rx-OPo"/>
                         <viewControllerLayoutGuide type="bottom" id="Dof-V3-6P5"/>
@@ -496,15 +496,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xHD-1m-bRe">
-                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
+                            <webView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xHD-1m-bRe">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="xHD-1m-bRe" firstAttribute="leading" secondItem="IWt-pE-0vK" secondAttribute="leadingMargin" constant="-20" id="8GP-7p-Bvn"/>
-                            <constraint firstItem="xHD-1m-bRe" firstAttribute="top" secondItem="0oM-Rx-OPo" secondAttribute="bottom" constant="-44" id="dBS-LZ-3KV"/>
+                            <constraint firstItem="xHD-1m-bRe" firstAttribute="top" secondItem="0oM-Rx-OPo" secondAttribute="bottom" id="dBS-LZ-3KV"/>
                             <constraint firstAttribute="trailingMargin" secondItem="xHD-1m-bRe" secondAttribute="trailing" constant="-20" id="xNI-H4-PXu"/>
                             <constraint firstItem="Dof-V3-6P5" firstAttribute="top" secondItem="xHD-1m-bRe" secondAttribute="bottom" id="xcW-R6-o8D"/>
                         </constraints>
