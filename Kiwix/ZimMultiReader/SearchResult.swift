@@ -9,13 +9,18 @@
 import UIKit
 
 class SearchResult: CustomStringConvertible {
+    let lowerCaseSearchTerm: String
     let title: String
     let path: ArticlePath
     let bookID: ZimID
     let snippet: String?
     
     let probability: Double? // range: 0.0 - 1.0
-    let distance: Int // Levenshtein distance, non negative integer
+    private(set) lazy var distance: Int = {
+        // Here we dont use the swift version of levenshtein, because it is slower than the C++ implementation
+        //return self.title.lowercaseString.levenshtein(string: self.lowerCaseSearchTerm)
+        return ZimReader.levenshtein(self.title.lowercaseString, anotherString: self.lowerCaseSearchTerm)
+    }()
     private(set) lazy var score: Double = {
         if let probability = self.probability {
             return WeightFactor.calculate(probability) * Double(self.distance)
@@ -24,13 +29,13 @@ class SearchResult: CustomStringConvertible {
         }
     }()
     
-    init?(rawResult: [String: AnyObject]) {
+    init?(rawResult: [String: AnyObject], lowerCaseSearchTerm: String) {
+        self.lowerCaseSearchTerm = lowerCaseSearchTerm
         let title = (rawResult["title"] as? String) ?? ""
         let path = (rawResult["path"] as? String) ?? ""
         let bookID = (rawResult["bookID"] as? ZimID) ?? ""
         let snippet = rawResult["snippet"] as? String
         
-        let distance = (rawResult["distance"]as? NSNumber)?.integerValue ?? title.characters.count
         let probability: Double? = {
             if let probability = (rawResult["probability"] as? NSNumber)?.doubleValue {
                 return probability / 100.0
@@ -44,7 +49,6 @@ class SearchResult: CustomStringConvertible {
         self.bookID = bookID
         self.snippet = snippet
         self.probability = probability
-        self.distance = distance
         
         if title == "" || path == "" || bookID == "" {return nil}
     }

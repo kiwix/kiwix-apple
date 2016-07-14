@@ -9,9 +9,10 @@
 import UIKit
 
 class SettingTBVC: UITableViewController {
-    private(set) var sectionHeader = [LocalizedStrings.library, LocalizedStrings.reading,LocalizedStrings.misc]
+    private(set) var sectionHeader = [LocalizedStrings.library, LocalizedStrings.reading, LocalizedStrings.search, LocalizedStrings.misc]
     private(set) var cellTextlabels = [[LocalizedStrings.libraryAutoRefresh, LocalizedStrings.libraryUseCellularData, LocalizedStrings.libraryBackup],
                           [LocalizedStrings.fontSize, LocalizedStrings.adjustLayout],
+                          [LocalizedStrings.history],
                           [LocalizedStrings.rateKiwix, LocalizedStrings.about]]
     
     let dateComponentsFormatter: NSDateComponentsFormatter = {
@@ -27,8 +28,7 @@ class SettingTBVC: UITableViewController {
         showRateKiwixIfNeeded()
         
         if UIApplication.buildStatus == .Alpha {
-            sectionHeader.append("Search")
-            cellTextlabels.append(["Boost Factor 🚀"])
+            cellTextlabels[2].append("Boost Factor 🚀")
         }
     }
     

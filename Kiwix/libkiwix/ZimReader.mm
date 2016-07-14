@@ -57,11 +57,9 @@
         while (_reader->getNextSuggestion(titleC)) {
             NSString *title = [NSString stringWithUTF8String:titleC.c_str()];
             NSString *path = [self pageURLFromTitle:title];
-            NSNumber *distance = [NSNumber numberWithInteger:[self levenshteinDistance:searchTerm andString:title.lowercaseString]];
             [results addObject:@{@"title": title,
                                  @"path": path,
-                                 @"bookID": bookID,
-                                 @"distance": distance}];
+                                 @"bookID": bookID}];
         }
     }
     return results;
@@ -99,13 +97,11 @@
             NSString *path = [NSString stringWithUTF8String:doc.get_data().c_str()];
             NSString *title = [NSString stringWithUTF8String:doc.get_value(0).c_str()];
             NSString *snippet = [NSString stringWithUTF8String:doc.get_value(1).c_str()];
-            NSNumber *distance = [NSNumber numberWithInteger:[self levenshteinDistance:searchTerm andString:title.lowercaseString]];
             
             NSDictionary *result = @{@"title": title,
                                      @"path": path,
                                      @"bookID": bookID,
                                      @"probability": percent,
-                                     @"distance": distance,
                                      @"snippet": snippet};
             [results addObject:result];
         }
@@ -341,6 +337,12 @@ int levenshtein_distance(const std::string &s1, const std::string &s2)
     if (_db != NULL) {
         _db->~Database();
     }
+}
+
++ (NSInteger)levenshtein:(NSString *)strA anotherString:(NSString *)strB {
+    const string str1 = [strA cStringUsingEncoding:NSUTF8StringEncoding];
+    const string str2 = [strB cStringUsingEncoding:NSUTF8StringEncoding];
+    return levenshtein_distance(str1, str2);
 }
 
 @end

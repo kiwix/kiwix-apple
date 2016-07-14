@@ -12,6 +12,7 @@ import PSOperations
 class SearchOperation: GroupOperation {
     let completionHandler: ([SearchResult]?) -> Void
     private(set) var results = [SearchResult]()
+    //private let startTime = NSDate()
     
     init(searchTerm: String, completionHandler: ([SearchResult]?) -> Void) {
         self.completionHandler = completionHandler
@@ -26,7 +27,7 @@ class SearchOperation: GroupOperation {
             guard let book = Book.fetch(id, context: managedObjectContext) else {continue}
             guard book.includeInSearch else {continue}
             let operation = SingleBookSearchOperation(zimReader: zimReader,
-                                                      searchTerm: searchTerm.lowercaseString,
+                                                      lowerCaseSearchTerm: searchTerm.lowercaseString,
                                                       completionHandler: { [unowned sortOperation] (results) in
                 sortOperation.results += results
             })
@@ -41,7 +42,7 @@ class SearchOperation: GroupOperation {
     }
     
     override func finished(errors: [NSError]) {
-//        print("Search Operation finished, status \(cancelled ? "Canceled" : "Not Canceled")")
+        //print("Search Operation finished, status \(cancelled ? "Canceled" : "Not Canceled"), \(NSDate().timeIntervalSinceDate(startTime))")
         NSOperationQueue.mainQueue().addOperationWithBlock {
             self.completionHandler(self.cancelled ? nil : self.results)
         }
@@ -50,22 +51,22 @@ class SearchOperation: GroupOperation {
 
 private class SingleBookSearchOperation: Operation {
     let zimReader: ZimReader
-    let searchTerm: String
+    let lowerCaseSearchTerm: String
     let completionHandler: ([SearchResult]) -> Void
     
-    init(zimReader: ZimReader, searchTerm: String, completionHandler: ([SearchResult]) -> Void) {
+    init(zimReader: ZimReader, lowerCaseSearchTerm: String, completionHandler: ([SearchResult]) -> Void) {
         self.zimReader = zimReader
-        self.searchTerm = searchTerm
+        self.lowerCaseSearchTerm = lowerCaseSearchTerm
         self.completionHandler = completionHandler
     }
     
     override private func execute() {
         var results = [String: SearchResult]()
-        let indexedDics = zimReader.searchUsingIndex(searchTerm) as? [[String: AnyObject]] ?? [[String: AnyObject]]()
-        let titleDics = zimReader.searchSuggestionsSmart(searchTerm) as? [[String: AnyObject]] ?? [[String: AnyObject]]()
+        let indexedDics = zimReader.searchUsingIndex(lowerCaseSearchTerm) as? [[String: AnyObject]] ?? [[String: AnyObject]]()
+        let titleDics = zimReader.searchSuggestionsSmart(lowerCaseSearchTerm) as? [[String: AnyObject]] ?? [[String: AnyObject]]()
         let mixedDics = titleDics + indexedDics // It is important we process the title search result first, so that we always keep the indexed search result
         for dic in mixedDics {
-            guard let result = SearchResult (rawResult: dic) else {continue}
+            guard let result = SearchResult (rawResult: dic, lowerCaseSearchTerm: lowerCaseSearchTerm) else {continue}
             results[result.path] = result
         }
         completionHandler(Array(results.values))

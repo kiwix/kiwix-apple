@@ -63,6 +63,7 @@ class LocalizedStrings {
     class var remove: String {return NSLocalizedString("Remove", comment: "Basic")}
     class var delete: String {return NSLocalizedString("Delete", comment: "Basic")}
     class var refreshing: String {return NSLocalizedString("Refreshing...", comment: "Basic")}
+    class var history: String {return NSLocalizedString("History", comment: "Basic")}
     
     // MARK: - OS X
     class var General: String {return NSLocalizedString("General", comment: "OS X, Preference")}
