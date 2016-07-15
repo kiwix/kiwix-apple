@@ -22,6 +22,7 @@ class DownloadProgress: NSProgress {
         self.kind = NSProgressKindFile
         self.totalUnitCount = book.fileSize
         self.completedUnitCount = book.downloadTask?.totalBytesWritten ?? 0
+        print("totalBytesWritten: \(book.downloadTask?.totalBytesWritten)")
     }
     
     deinit {
