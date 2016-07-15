@@ -93,6 +93,84 @@
             </objects>
             <point key="canvasLocation" x="1853" y="1137"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Chb-d5-QuK">
+            <objects>
+                <navigationController storyboardIdentifier="BookmarkNav" id="SC6-zc-FOI" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="FzZ-aO-kFH">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="vlo-nI-613" kind="relationship" relationship="rootViewController" id="5Zh-cj-wka"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uPL-Lf-MgT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1004" y="1965"/>
+        </scene>
+        <!--Bookmark Controller-->
+        <scene sceneID="Qye-hd-NOR">
+            <objects>
+                <viewController storyboardIdentifier="BookmarkController" id="vlo-nI-613" customClass="BookmarkController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="kOf-Ud-GNI"/>
+                        <viewControllerLayoutGuide type="bottom" id="C7M-9M-S7W"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Val-Tj-vas">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dz0-vV-4AE">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="aU0-bx-DMr">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Zs-gY-I9Y">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" id="u4m-4I-wHl">
+                                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            </view>
+                                            <vibrancyEffect>
+                                                <blurEffect style="extraLight"/>
+                                            </vibrancyEffect>
+                                        </visualEffectView>
+                                    </subviews>
+                                </view>
+                                <blurEffect style="extraLight"/>
+                            </visualEffectView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Dz0-vV-4AE" firstAttribute="leading" secondItem="Val-Tj-vas" secondAttribute="leading" id="I8A-e3-7mJ"/>
+                            <constraint firstItem="C7M-9M-S7W" firstAttribute="top" secondItem="Dz0-vV-4AE" secondAttribute="bottom" id="UKb-1o-FRG"/>
+                            <constraint firstAttribute="trailing" secondItem="Dz0-vV-4AE" secondAttribute="trailing" id="itR-Ic-9FK"/>
+                            <constraint firstItem="Dz0-vV-4AE" firstAttribute="top" secondItem="Val-Tj-vas" secondAttribute="top" id="y17-gp-ASx"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="gjE-9o-dTy">
+                        <nil key="title"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="YCr-Jf-R0R">
+                            <rect key="frame" x="180" y="7" width="240" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="First"/>
+                                <segment title="Second"/>
+                            </segments>
+                        </segmentedControl>
+                        <barButtonItem key="rightBarButtonItem" title="dismiss" id="Eeg-5m-aLE">
+                            <connections>
+                                <action selector="dismissSelf:" destination="vlo-nI-613" id="b2f-yh-ctB"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bpe-1x-s38" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1661" y="1965"/>
+        </scene>
         <!--BookmarkHUDVC-->
         <scene sceneID="PBK-Zl-kOY">
             <objects>
@@ -543,7 +621,7 @@
         <!--Navigation Controller-->
         <scene sceneID="TmE-cH-Z0r">
             <objects>
-                <navigationController storyboardIdentifier="BookmarkNav" automaticallyAdjustsScrollViewInsets="NO" id="7So-3x-feX" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7So-3x-feX" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="liO-Vk-25p">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

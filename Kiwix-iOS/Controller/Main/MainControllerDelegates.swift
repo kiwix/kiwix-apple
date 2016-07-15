@@ -19,7 +19,8 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
         
         guard let controller = bookmarkController ?? UIStoryboard.main.initViewController("BookmarkNav", type: UINavigationController.self) else {return}
         bookmarkController = controller
-        controller.modalPresentationStyle = .FormSheet
+        controller.modalPresentationStyle = .OverFullScreen
+        controller.modalTransitionStyle = .CrossDissolve
         presentViewController(controller, animated: true, completion: nil)
     }
     
