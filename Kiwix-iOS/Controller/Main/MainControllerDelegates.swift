@@ -10,17 +10,17 @@ import UIKit
 import SafariServices
 import DZNEmptyDataSet
 
-extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, ZimMultiReaderDelegate, UISearchBarDelegate, UIPopoverPresentationControllerDelegate, UIWebViewDelegate, SFSafariViewControllerDelegate, UIScrollViewDelegate {
+extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, ZimMultiReaderDelegate, UISearchBarDelegate, UIPopoverPresentationControllerDelegate, UIWebViewDelegate, SFSafariViewControllerDelegate, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
     
     // MARK: - LPTBarButtonItemDelegate
     
     func barButtonTapped(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
         guard sender == bookmarkButton else {return}
         
-        guard let controller = bookmarkController ?? UIStoryboard.main.initViewController("BookmarkNav", type: UINavigationController.self) else {return}
+        guard let controller = bookmarkController ?? UIStoryboard.main.initViewController("BookmarkController", type: BookmarkController.self) else {return}
         bookmarkController = controller
+        controller.transitioningDelegate = self
         controller.modalPresentationStyle = .OverFullScreen
-        controller.modalTransitionStyle = .CrossDissolve
         presentViewController(controller, animated: true, completion: nil)
     }
     
@@ -33,6 +33,16 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
         article.isBookmarked = !article.isBookmarked
         bookmarkHUDVC.show(article.isBookmarked)
         configureBookmarkButton()
+    }
+    
+    // MARK: - UIViewControllerTransitioningDelegate
+    
+    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return BookmarkControllerAnimator(animateIn: true)
+    }
+    
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return BookmarkControllerAnimator(animateIn: false)
     }
     
     // MARK: - TableOfContentsDelegate

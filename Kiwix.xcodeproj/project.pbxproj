@@ -11,6 +11,7 @@
 		970C3DCA1CBD79450026A240 /* MigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C3DC91CBD79450026A240 /* MigrationPolicy.swift */; };
 		970C61971D34243600087758 /* URLSessionDownloadTaskOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C61961D34243600087758 /* URLSessionDownloadTaskOperation.swift */; };
 		970C61991D3429E400087758 /* ReachabilityCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C61981D3429E400087758 /* ReachabilityCondition.swift */; };
+		970C65501D398D5A007032F8 /* BookmarkControllerAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C654F1D398D5A007032F8 /* BookmarkControllerAnimator.swift */; };
 		970E68B21D37E1DD001E8514 /* SettingSearchTuneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B11D37E1DD001E8514 /* SettingSearchTuneController.swift */; };
 		970E68B61D37E224001E8514 /* SettingSearchHistoryTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B51D37E224001E8514 /* SettingSearchHistoryTBVC.swift */; };
 		970E68BA1D3809A3001E8514 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B71D3809A3001E8514 /* MainController.swift */; };
@@ -263,6 +264,7 @@
 		970C3DC91CBD79450026A240 /* MigrationPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MigrationPolicy.swift; path = CoreData/Migration/MigrationPolicy.swift; sourceTree = "<group>"; };
 		970C61961D34243600087758 /* URLSessionDownloadTaskOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = URLSessionDownloadTaskOperation.swift; path = Operations/URLSessionDownloadTaskOperation.swift; sourceTree = "<group>"; };
 		970C61981D3429E400087758 /* ReachabilityCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityCondition.swift; sourceTree = "<group>"; };
+		970C654F1D398D5A007032F8 /* BookmarkControllerAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookmarkControllerAnimator.swift; path = "Kiwix-iOS/Controller/Bookmark/BookmarkControllerAnimator.swift"; sourceTree = SOURCE_ROOT; };
 		970E68B11D37E1DD001E8514 /* SettingSearchTuneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSearchTuneController.swift; path = "Kiwix-iOS/Controller/Setting/SettingSearchTuneController.swift"; sourceTree = SOURCE_ROOT; };
 		970E68B51D37E224001E8514 /* SettingSearchHistoryTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSearchHistoryTBVC.swift; path = "Kiwix-iOS/Controller/Setting/SettingSearchHistoryTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		970E68B71D3809A3001E8514 /* MainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainController.swift; path = "Kiwix-iOS/Controller/Main/MainController.swift"; sourceTree = SOURCE_ROOT; };
@@ -828,6 +830,7 @@
 			children = (
 				971A10331D022AEC007FC62C /* BookmarkTBVC.swift */,
 				97219DBC1D383A00009FDFF1 /* BookmarkController.swift */,
+				970C654F1D398D5A007032F8 /* BookmarkControllerAnimator.swift */,
 			);
 			name = Bookmark;
 			sourceTree = "<group>";
@@ -1616,6 +1619,7 @@
 				97E60A021D10423A00EBCB9D /* ShadowViews.swift in Sources */,
 				9779A1CC1D34225E0071EFAB /* SearchOperation.swift in Sources */,
 				970E68BA1D3809A3001E8514 /* MainController.swift in Sources */,
+				970C65501D398D5A007032F8 /* BookmarkControllerAnimator.swift in Sources */,
 				978C58981C1CD86E0077AE47 /* Book.swift in Sources */,
 				978C58961C1CD86E0077AE47 /* Language.swift in Sources */,
 				971A10701D022E62007FC62C /* Network.swift in Sources */,
