@@ -93,119 +93,6 @@
             </objects>
             <point key="canvasLocation" x="1853" y="1137"/>
         </scene>
-        <!--BookmarkHUDVC-->
-        <scene sceneID="PBK-Zl-kOY">
-            <objects>
-                <viewController storyboardIdentifier="BookmarkHUDVC" id="tjC-SA-XHM" customClass="BookmarkHUDVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="uB6-Td-Hg2"/>
-                        <viewControllerLayoutGuide type="bottom" id="JAv-Yv-juz"/>
-                    </layoutGuides>
-                    <view key="view" userInteractionEnabled="NO" contentMode="scaleToFill" id="4UF-cV-U0r">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sko-5a-blt">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wP8-9U-0HN">
-                                <rect key="frame" x="276" y="198" width="47" height="42"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Zeh-zn-rD9">
-                                    <rect key="frame" x="0.0" y="0.0" width="47" height="42"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <subviews>
-                                        <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lxd-sP-jhH">
-                                            <rect key="frame" x="0.0" y="0.0" width="47" height="42"/>
-                                            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="BUM-P2-Nel">
-                                                <rect key="frame" x="0.0" y="0.0" width="47" height="42"/>
-                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            </view>
-                                            <vibrancyEffect>
-                                                <blurEffect style="light"/>
-                                            </vibrancyEffect>
-                                        </visualEffectView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="lxd-sP-jhH" firstAttribute="leading" secondItem="Zeh-zn-rD9" secondAttribute="leading" id="2F1-sU-0Xf"/>
-                                        <constraint firstAttribute="bottom" secondItem="lxd-sP-jhH" secondAttribute="bottom" id="UDt-iG-8BW"/>
-                                        <constraint firstAttribute="trailing" secondItem="lxd-sP-jhH" secondAttribute="trailing" id="goK-40-JHI"/>
-                                        <constraint firstItem="lxd-sP-jhH" firstAttribute="top" secondItem="Zeh-zn-rD9" secondAttribute="top" id="x5P-2b-K18"/>
-                                    </constraints>
-                                </view>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="240" id="lTb-76-sqh"/>
-                                    <constraint firstAttribute="height" constant="128" id="vPM-2q-Z8u"/>
-                                </constraints>
-                                <blurEffect style="extraLight"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="10"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="lTb-76-sqh"/>
-                                        <exclude reference="vPM-2q-Z8u"/>
-                                    </mask>
-                                </variation>
-                            </visualEffectView>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Eyz-t1-ycg">
-                                <rect key="frame" x="280.5" y="204" width="39" height="30"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Star" highlightedImage="StarHighlighted" translatesAutoresizingMaskIntoConstraints="NO" id="Mi8-s2-8u5">
-                                        <rect key="frame" x="0.0" y="3" width="24" height="24"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="24" id="AdX-U6-c4z"/>
-                                            <constraint firstAttribute="width" secondItem="Mi8-s2-8u5" secondAttribute="height" multiplier="1:1" id="z6D-p6-X7U"/>
-                                        </constraints>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wu8-QM-pzh">
-                                        <rect key="frame" x="34" y="0.0" width="5" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="1JQ-pm-adG"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                            </stackView>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="wP8-9U-0HN" firstAttribute="bottom" secondItem="JAv-Yv-juz" secondAttribute="top" multiplier="0.4" id="3OF-Wl-1dY"/>
-                            <constraint firstItem="wP8-9U-0HN" firstAttribute="top" secondItem="Eyz-t1-ycg" secondAttribute="bottom" constant="16" id="79p-2m-KJs"/>
-                            <constraint firstItem="Eyz-t1-ycg" firstAttribute="top" secondItem="wP8-9U-0HN" secondAttribute="top" id="9jk-M8-StF"/>
-                            <constraint firstItem="wP8-9U-0HN" firstAttribute="height" secondItem="Eyz-t1-ycg" secondAttribute="height" multiplier="1.4" id="Ary-Lx-WO2"/>
-                            <constraint firstItem="JAv-Yv-juz" firstAttribute="top" secondItem="sko-5a-blt" secondAttribute="bottom" id="CVc-ka-PsW"/>
-                            <constraint firstItem="sko-5a-blt" firstAttribute="leading" secondItem="4UF-cV-U0r" secondAttribute="leadingMargin" constant="-20" id="T9k-li-0gP"/>
-                            <constraint firstItem="wP8-9U-0HN" firstAttribute="width" secondItem="Eyz-t1-ycg" secondAttribute="width" multiplier="1.2" id="ZTx-iy-irF"/>
-                            <constraint firstItem="sko-5a-blt" firstAttribute="top" secondItem="uB6-Td-Hg2" secondAttribute="bottom" constant="-20" id="eVR-at-Hwa"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="sko-5a-blt" secondAttribute="trailing" constant="-20" id="gPq-08-6AX"/>
-                            <constraint firstItem="Eyz-t1-ycg" firstAttribute="centerX" secondItem="4UF-cV-U0r" secondAttribute="centerX" id="hef-sh-bTu"/>
-                            <constraint firstItem="Eyz-t1-ycg" firstAttribute="centerY" secondItem="wP8-9U-0HN" secondAttribute="centerY" id="wTZ-6h-6BO"/>
-                            <constraint firstItem="wP8-9U-0HN" firstAttribute="centerX" secondItem="4UF-cV-U0r" secondAttribute="centerX" id="y5g-lX-szS"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="79p-2m-KJs"/>
-                                <exclude reference="9jk-M8-StF"/>
-                            </mask>
-                        </variation>
-                    </view>
-                    <connections>
-                        <outlet property="blurView" destination="wP8-9U-0HN" id="4wa-xA-wFE"/>
-                        <outlet property="dimView" destination="sko-5a-blt" id="DHu-Vy-BrI"/>
-                        <outlet property="label" destination="wu8-QM-pzh" id="6AU-IY-4Ow"/>
-                        <outlet property="stackView" destination="Eyz-t1-ycg" id="dta-TC-oH9"/>
-                        <outlet property="starImageView" destination="Mi8-s2-8u5" id="pPa-PP-KKL"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mm8-aW-1rt" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3519" y="723"/>
-        </scene>
         <!--Table Of Contents Controller-->
         <scene sceneID="sFA-xU-ByH">
             <objects>
@@ -681,7 +568,5 @@
         <image name="BookmarkAdded" width="348" height="331"/>
         <image name="BookmarkRemoved" width="348" height="331"/>
         <image name="DownArrow" width="21" height="21"/>
-        <image name="Star" width="21" height="20"/>
-        <image name="StarHighlighted" width="21" height="20"/>
     </resources>
 </document>

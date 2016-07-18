@@ -86,7 +86,6 @@
 		971A105B1D022DAD007FC62C /* LibraryOnlineTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10561D022DAD007FC62C /* LibraryOnlineTBVC.swift */; };
 		971A105C1D022DAD007FC62C /* LibraryTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10571D022DAD007FC62C /* LibraryTabBarController.swift */; };
 		971A10601D022DF2007FC62C /* LanguageTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A105F1D022DF2007FC62C /* LanguageTBVC.swift */; };
-		971A106A1D022E15007FC62C /* BookmarkHUDVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10691D022E15007FC62C /* BookmarkHUDVC.swift */; };
 		971A106C1D022E50007FC62C /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A106B1D022E50007FC62C /* Utilities.swift */; };
 		971A106F1D022E62007FC62C /* DownloadProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A106D1D022E62007FC62C /* DownloadProgress.swift */; };
 		971A10701D022E62007FC62C /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A106E1D022E62007FC62C /* Network.swift */; };
@@ -330,7 +329,6 @@
 		971A10561D022DAD007FC62C /* LibraryOnlineTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryOnlineTBVC.swift; path = "Kiwix-iOS/Controller/LibraryOnlineTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10571D022DAD007FC62C /* LibraryTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryTabBarController.swift; path = "Kiwix-iOS/Controller/LibraryTabBarController.swift"; sourceTree = SOURCE_ROOT; };
 		971A105F1D022DF2007FC62C /* LanguageTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LanguageTBVC.swift; path = "Kiwix-iOS/Controller/LanguageTBVC.swift"; sourceTree = SOURCE_ROOT; };
-		971A10691D022E15007FC62C /* BookmarkHUDVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookmarkHUDVC.swift; path = "Kiwix-iOS/Controller/BookmarkHUDVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A106B1D022E50007FC62C /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utilities.swift; path = "Kiwix-iOS/Model/Utilities.swift"; sourceTree = SOURCE_ROOT; };
 		971A106D1D022E62007FC62C /* DownloadProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DownloadProgress.swift; path = "Kiwix-iOS/Model/DownloadProgress.swift"; sourceTree = SOURCE_ROOT; };
 		971A106E1D022E62007FC62C /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Network.swift; path = "Kiwix-iOS/Model/Network.swift"; sourceTree = SOURCE_ROOT; };
@@ -952,7 +950,6 @@
 				97E108221C5D5A0D00E27FD3 /* Search */,
 				9771DC4B1C37278E009ECFF0 /* Setting */,
 				97D55EF51D2075180081B523 /* TableOfContentsController.swift */,
-				971A10691D022E15007FC62C /* BookmarkHUDVC.swift */,
 				97A7017E1D2C59CA00AAE2D8 /* GetStartedController.swift */,
 			);
 			name = Controllers;
@@ -1663,7 +1660,6 @@
 				971A10341D022AEC007FC62C /* BookmarkTBVC.swift in Sources */,
 				975227A01D020C00001D1DDE /* resourceTools.cpp in Sources */,
 				971A10601D022DF2007FC62C /* LanguageTBVC.swift in Sources */,
-				971A106A1D022E15007FC62C /* BookmarkHUDVC.swift in Sources */,
 				971A106C1D022E50007FC62C /* Utilities.swift in Sources */,
 				970E68BC1D3809A3001E8514 /* MainControllerLoading.swift in Sources */,
 				973DD4281D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift in Sources */,
