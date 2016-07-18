@@ -17,22 +17,28 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
     func barButtonTapped(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
         guard sender == bookmarkButton else {return}
         
-        guard let controller = bookmarkController ?? UIStoryboard.main.initViewController("BookmarkController", type: BookmarkController.self) else {return}
-        bookmarkController = controller
-        controller.transitioningDelegate = self
-        controller.modalPresentationStyle = .OverFullScreen
-        presentViewController(controller, animated: true, completion: nil)
+        
     }
     
     func barButtonLongPressedStart(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
         guard sender == bookmarkButton else {return}
         guard !webView.hidden else {return}
         guard let article = article else {return}
-        guard let bookmarkHUDVC = UIStoryboard.main.initViewController(BookmarkHUDVC.self) else {return}
-        UIApplication.appDelegate.window?.addSubview(bookmarkHUDVC.view)
         article.isBookmarked = !article.isBookmarked
-        bookmarkHUDVC.show(article.isBookmarked)
+        
+        guard let controller = bookmarkController ?? UIStoryboard.main.initViewController("BookmarkController", type: BookmarkController.self) else {return}
+        bookmarkController = controller
+        controller.bookmarkAdded = article.isBookmarked
+        controller.transitioningDelegate = self
+        controller.modalPresentationStyle = .OverFullScreen
+        presentViewController(controller, animated: true, completion: nil)
+        
         configureBookmarkButton()
+        
+//        guard let bookmarkHUDVC = UIStoryboard.main.initViewController(BookmarkHUDVC.self) else {return}
+//        UIApplication.appDelegate.window?.addSubview(bookmarkHUDVC.view)
+//        bookmarkHUDVC.show(article.isBookmarked)
+        
     }
     
     // MARK: - UIViewControllerTransitioningDelegate

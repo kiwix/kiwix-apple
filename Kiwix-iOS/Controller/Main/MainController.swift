@@ -19,7 +19,7 @@ class MainController: UIViewController {
     @IBOutlet weak var tocLeadSpacing: NSLayoutConstraint!
     
     var tableOfContentsController: TableOfContentsController?
-    var bookmarkController: UIViewController?
+    var bookmarkController: BookmarkController?
     var libraryController: UIViewController?
     var settingController: UIViewController?
     var searchController: SearchController?

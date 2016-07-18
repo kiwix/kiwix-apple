@@ -582,24 +582,53 @@
                                                 <constraint firstAttribute="height" constant="40" id="WkO-03-8rL"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vSr-Oq-CpV">
-                                            <rect key="frame" x="295.5" y="275" width="10" height="50"/>
+                                            <rect key="frame" x="295" y="275" width="10" height="50"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="10" id="7HX-KD-7MX"/>
                                                 <constraint firstAttribute="height" constant="50" id="QdU-Ja-3C6"/>
                                             </constraints>
                                         </view>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StarColor" translatesAutoresizingMaskIntoConstraints="NO" id="jkm-VL-oUY">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BookmarkAdded" highlightedImage="BookmarkRemoved" translatesAutoresizingMaskIntoConstraints="NO" id="jkm-VL-oUY">
                                             <rect key="frame" x="236" y="147" width="128" height="128"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="jkm-VL-oUY" secondAttribute="height" multiplier="1:1" id="eeI-5C-9Zu"/>
                                                 <constraint firstAttribute="width" relation="lessThanOrEqual" constant="128" id="ffS-qM-pff"/>
                                             </constraints>
                                         </imageView>
+                                        <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jpt-94-dyR">
+                                            <rect key="frame" x="8" y="538" width="584" height="18"/>
+                                            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="OzL-eb-rw9">
+                                                <rect key="frame" x="0.0" y="0.0" width="584" height="18"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap anywhere to dismiss" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O3v-jF-pbe">
+                                                        <rect key="frame" x="0.0" y="0.0" width="584" height="18"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="18" id="qsI-OI-ZxO"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="O3v-jF-pbe" firstAttribute="centerY" secondItem="OzL-eb-rw9" secondAttribute="centerY" id="MP1-U0-I9C"/>
+                                                    <constraint firstItem="O3v-jF-pbe" firstAttribute="centerX" secondItem="OzL-eb-rw9" secondAttribute="centerX" id="dzo-Zq-o5c"/>
+                                                </constraints>
+                                            </view>
+                                            <constraints>
+                                                <constraint firstAttribute="height" secondItem="O3v-jF-pbe" secondAttribute="height" id="LNY-Tv-pD2"/>
+                                                <constraint firstItem="O3v-jF-pbe" firstAttribute="width" secondItem="jpt-94-dyR" secondAttribute="width" id="aKL-KY-Vtb"/>
+                                            </constraints>
+                                            <vibrancyEffect>
+                                                <blurEffect style="extraLight"/>
+                                            </vibrancyEffect>
+                                        </visualEffectView>
                                     </subviews>
                                     <gestureRecognizers/>
                                     <constraints>
@@ -608,7 +637,10 @@
                                         <constraint firstItem="jkm-VL-oUY" firstAttribute="centerX" secondItem="wEb-nz-fFr" secondAttribute="centerX" id="HNo-D9-9BG"/>
                                         <constraint firstItem="wkJ-9t-x7m" firstAttribute="leading" secondItem="wEb-nz-fFr" secondAttribute="leading" constant="8" id="IPd-Bg-xN8"/>
                                         <constraint firstItem="wkJ-9t-x7m" firstAttribute="top" secondItem="vSr-Oq-CpV" secondAttribute="bottom" id="Pjg-WY-NZK"/>
+                                        <constraint firstAttribute="trailing" secondItem="jpt-94-dyR" secondAttribute="trailing" constant="8" id="RTK-Op-le4"/>
                                         <constraint firstItem="vSr-Oq-CpV" firstAttribute="top" secondItem="jkm-VL-oUY" secondAttribute="bottom" id="TgI-uO-cwc"/>
+                                        <constraint firstAttribute="bottom" secondItem="jpt-94-dyR" secondAttribute="bottom" constant="44" id="aMK-IU-b0c"/>
+                                        <constraint firstItem="jpt-94-dyR" firstAttribute="leading" secondItem="wEb-nz-fFr" secondAttribute="leading" constant="8" id="eot-le-WHz"/>
                                         <constraint firstItem="vSr-Oq-CpV" firstAttribute="centerX" secondItem="wEb-nz-fFr" secondAttribute="centerX" id="vCd-xx-Yfr"/>
                                         <constraint firstItem="vSr-Oq-CpV" firstAttribute="centerY" secondItem="wEb-nz-fFr" secondAttribute="centerY" id="yd0-Fs-Z3H"/>
                                     </constraints>
@@ -632,6 +664,7 @@
                         <outlet property="centerViewYOffset" destination="yd0-Fs-Z3H" id="Kqp-sE-uST"/>
                         <outlet property="imageView" destination="jkm-VL-oUY" id="bGN-UZ-D4U"/>
                         <outlet property="label" destination="wkJ-9t-x7m" id="0P1-Gz-r8a"/>
+                        <outlet property="messageLabel" destination="O3v-jF-pbe" id="6qi-2E-uC5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nEo-6P-S71" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -645,9 +678,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="BookmarkAdded" width="348" height="331"/>
+        <image name="BookmarkRemoved" width="348" height="331"/>
         <image name="DownArrow" width="21" height="21"/>
         <image name="Star" width="21" height="20"/>
-        <image name="StarColor" width="85" height="85"/>
         <image name="StarHighlighted" width="21" height="20"/>
     </resources>
 </document>
