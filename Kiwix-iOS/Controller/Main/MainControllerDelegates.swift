@@ -32,13 +32,7 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
         controller.transitioningDelegate = self
         controller.modalPresentationStyle = .OverFullScreen
         presentViewController(controller, animated: true, completion: nil)
-        
         configureBookmarkButton()
-        
-//        guard let bookmarkHUDVC = UIStoryboard.main.initViewController(BookmarkHUDVC.self) else {return}
-//        UIApplication.appDelegate.window?.addSubview(bookmarkHUDVC.view)
-//        bookmarkHUDVC.show(article.isBookmarked)
-        
     }
     
     // MARK: - UIViewControllerTransitioningDelegate
@@ -106,6 +100,10 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
         }
     }
     
+    func webViewDidStartLoad(webView: UIWebView) {
+        PacketAnalyzer.sharedInstance.startListening()
+    }
+    
     func webViewDidFinishLoad(webView: UIWebView) {
         guard let url = webView.request?.URL else {return}
         guard url.scheme.caseInsensitiveCompare("Kiwix") == .OrderedSame else {return}
@@ -117,6 +115,10 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
         guard let article = Article.addOrUpdate(title, url: url, book: book, context: managedObjectContext) else {return}
         
         self.article = article
+        if let imageData = PacketAnalyzer.sharedInstance.chooseImage() {
+            print(imageData.length)
+        }
+        
         configureSearchBarPlaceHolder()
         injectTableWrappingJavaScriptIfNeeded()
         adjustFontSizeIfNeeded()
@@ -126,6 +128,8 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
         if traitCollection.horizontalSizeClass == .Regular && isShowingTableOfContents {
             tableOfContentsController?.headings = getTableOfContents(webView)
         }
+        
+        PacketAnalyzer.sharedInstance.stopListening()
     }
     
     func injectTableWrappingJavaScriptIfNeeded() {

@@ -20,24 +20,28 @@ class KiwixURLProtocol: NSURLProtocol {
     }
     
     override func startLoading() {
-        if let id = self.request.URL?.host, let contentURLString = self.request.URL?.path?.stringByRemovingPercentEncoding {
-            if let dataDic = ZimMultiReader.sharedInstance.data(id, contentURLString: contentURLString),
-                data = dataDic["data"] as? NSData,
-                mimeType = dataDic["mime"] as? String,
-                dataLength = dataDic["length"]?.integerValue {
-                //print(String(data: data, encoding: NSUTF8StringEncoding))
-                let response = NSURLResponse(URL: self.request.URL!, MIMEType: mimeType, expectedContentLength: dataLength, textEncodingName: nil)
-                self.client?.URLProtocol(self, didReceiveResponse: response, cacheStoragePolicy: .Allowed)
-                self.client?.URLProtocol(self, didLoadData: data)
-                self.client?.URLProtocolDidFinishLoading(self)
-            } else {
-                let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable, userInfo: nil)
-                self.client?.URLProtocol(self, didFailWithError: error)
-            }
-        } else {
+        guard let id = request.URL?.host, let contentURLString = request.URL?.path?.stringByRemovingPercentEncoding else {
             let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorUnsupportedURL, userInfo: nil)
-            self.client?.URLProtocol(self, didFailWithError: error)
+            client?.URLProtocol(self, didFailWithError: error)
+            return
         }
+        guard let dataDic = ZimMultiReader.sharedInstance.data(id, contentURLString: contentURLString),
+            let data = dataDic["data"] as? NSData,
+            let mimeType = dataDic["mime"] as? String,
+            let dataLength = dataDic["length"]?.integerValue else {
+                let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable, userInfo: nil)
+                client?.URLProtocol(self, didFailWithError: error)
+                return
+        }
+        
+        if mimeType.containsString("image") {
+            PacketAnalyzer.sharedInstance.addImage(data)
+        }
+        
+        let response = NSURLResponse(URL: self.request.URL!, MIMEType: mimeType, expectedContentLength: dataLength, textEncodingName: nil)
+        client?.URLProtocol(self, didReceiveResponse: response, cacheStoragePolicy: .Allowed)
+        client?.URLProtocol(self, didLoadData: data)
+        client?.URLProtocolDidFinishLoading(self)
     }
     
     override func stopLoading() {
