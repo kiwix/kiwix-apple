@@ -8,8 +8,9 @@
 
 import UIKit
 import CoreData
+import DZNEmptyDataSet
 
-class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
+class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,6 +18,9 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
         title = LocalizedStrings.bookmarks
         tableView.estimatedRowHeight = 66.0
         tableView.rowHeight = UITableViewAutomaticDimension
+        
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -25,6 +29,34 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+    }
+    
+    // MARK: - Empty table datasource & delegate
+    
+    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
+        return UIImage(named: "BookmarkColor")
+    }
+    
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let text = NSLocalizedString("Bookmarks", comment: "Bookmarks view title")
+        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(18.0),
+                          NSForegroundColorAttributeName: UIColor.darkGrayColor()]
+        return NSAttributedString(string: text, attributes: attributes)
+    }
+    
+    func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let text = NSLocalizedString("To add a bookmark, long press the star button when reading an article", comment: "Bookmarks view message")
+        let style = NSMutableParagraphStyle()
+        style.lineBreakMode = .ByWordWrapping
+        style.alignment = .Center
+        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(14.0),
+                          NSForegroundColorAttributeName: UIColor.lightGrayColor(),
+                          NSParagraphStyleAttributeName: style]
+        return NSAttributedString(string: text, attributes: attributes)
+    }
+    
+    func spaceHeightForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+        return 30.0
     }
 
     // MARK: - Table view data source
