@@ -1,21 +1,13 @@
 PODS:
   - DateTools (1.7.0)
   - DZNEmptyDataSet (1.8)
-  - PSOperations (2.3.0):
-    - PSOperations/Core (= 2.3.0)
-    - PSOperations/Health (= 2.3.0)
-    - PSOperations/Passbook (= 2.3.0)
   - PSOperations/Core (2.3.0)
-  - PSOperations/Health (2.3.0):
-    - PSOperations/Core
-  - PSOperations/Passbook (2.3.0):
-    - PSOperations/Core
   - SwiftyUserDefaults (2.2.0)
 
 DEPENDENCIES:
   - DateTools
   - DZNEmptyDataSet
-  - PSOperations (~> 2.3)
+  - PSOperations/Core (~> 2.3)
   - SwiftyUserDefaults
 
 SPEC CHECKSUMS:
@@ -24,6 +16,6 @@ SPEC CHECKSUMS:
   PSOperations: 81a4d50a4efe96f6d090dc0e7eb45d9fef79ff45
   SwiftyUserDefaults: e7c8197a9d4068702e7f2406a968cae413b8de27
 
-PODFILE CHECKSUM: 6fb3df3215e86292ba3af103a30d0553a9f49e94
+PODFILE CHECKSUM: b9d1499b8e98a823777c72ddb35e782d499bac14
 
 COCOAPODS: 1.0.1
