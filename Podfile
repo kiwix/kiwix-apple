@@ -8,7 +8,7 @@ platform :ios, '9.0'
 pod 'DateTools'
 pod 'DZNEmptyDataSet'
 pod 'SwiftyUserDefaults'
-pod 'PSOperations', '~> 2.3'
+pod 'PSOperations/Core', '~> 2.3'
 
 end
 
