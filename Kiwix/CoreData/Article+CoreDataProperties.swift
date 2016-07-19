@@ -24,5 +24,5 @@ extension Article {
     @NSManaged var urlString: String?
     @NSManaged var book: Book?
     @NSManaged var tags: NSSet?
-    @NSManaged var thumbImageData: NSData?
+    @NSManaged var thumbImageURL: String?
 }

@@ -96,8 +96,11 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate, D
         guard let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
         
         cell.thumbImageView.image = {
-            if let articleImageData = article.thumbImageData {
-                return UIImage(data: articleImageData)
+            if let urlString = article.thumbImageURL,
+                let url = NSURL(string: urlString),
+                let data = NSData(contentsOfURL: url),
+                let image = UIImage(data: data) {
+                return image
             } else if let bookFavIconImageData = article.book?.favIcon {
                 return UIImage(data: bookFavIconImageData)
             } else {

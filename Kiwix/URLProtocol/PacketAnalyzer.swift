@@ -11,7 +11,7 @@ import UIKit
 class PacketAnalyzer {
     static let sharedInstance = PacketAnalyzer()
     private var listening = false
-    private var images = [NSData]()
+    private var images = [(data: NSData, url: NSURL)]()
     
     func startListening() {
         listening = true
@@ -22,12 +22,12 @@ class PacketAnalyzer {
         images.removeAll()
     }
     
-    func addImage(data: NSData) {
+    func addImage(data: NSData, url: NSURL) {
         guard listening else {return}
-        images.append(data)
+        images.append((data, url))
     }
     
-    func chooseImage() -> NSData? {
+    func chooseImage() -> (data: NSData, url: NSURL)? {
         return images.first
     }
 }

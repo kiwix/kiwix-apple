@@ -20,7 +20,7 @@ class KiwixURLProtocol: NSURLProtocol {
     }
     
     override func startLoading() {
-        guard let id = request.URL?.host, let contentURLString = request.URL?.path?.stringByRemovingPercentEncoding else {
+        guard let url = request.URL, let id = url.host, let contentURLString = url.path?.stringByRemovingPercentEncoding else {
             let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorUnsupportedURL, userInfo: nil)
             client?.URLProtocol(self, didFailWithError: error)
             return
@@ -35,7 +35,7 @@ class KiwixURLProtocol: NSURLProtocol {
         }
         
         if mimeType.containsString("image") {
-            PacketAnalyzer.sharedInstance.addImage(data)
+            PacketAnalyzer.sharedInstance.addImage(data, url: url)
         }
         
         let response = NSURLResponse(URL: self.request.URL!, MIMEType: mimeType, expectedContentLength: dataLength, textEncodingName: nil)

@@ -7,7 +7,7 @@
         <attribute name="lastPosition" optional="YES" attributeType="Double" syncable="YES"/>
         <attribute name="lastReadDate" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
         <attribute name="snippet" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="thumbImageData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="thumbImageURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
         <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="book" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Book" inverseName="articles" inverseEntity="Book" syncable="YES"/>

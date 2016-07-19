@@ -122,8 +122,8 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
         guard let article = Article.addOrUpdate(title, url: url, book: book, context: managedObjectContext) else {return}
         
         self.article = article
-        if let data = PacketAnalyzer.sharedInstance.chooseImage() {
-            article.thumbImageData = data
+        if let image = PacketAnalyzer.sharedInstance.chooseImage() {
+            article.thumbImageURL = image.url.absoluteString
         }
         
         configureSearchBarPlaceHolder()
