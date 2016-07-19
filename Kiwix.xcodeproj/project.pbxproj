@@ -276,17 +276,6 @@
 		9711871D1CEB449A00B9909D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		9711872E1CEB50FC00B9909D /* ZimReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZimReader.h; path = Kiwix/libkiwix/ZimReader.h; sourceTree = "<group>"; };
 		9711872F1CEB50FC00B9909D /* ZimReader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ZimReader.mm; path = Kiwix/libkiwix/ZimReader.mm; sourceTree = "<group>"; };
-		9711873B1CEB512D00B9909D /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicudata.a; path = Kiwix/libkiwix/static/libicudata.a; sourceTree = "<group>"; };
-		9711873C1CEB512D00B9909D /* libicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicui18n.a; path = Kiwix/libkiwix/static/libicui18n.a; sourceTree = "<group>"; };
-		9711873D1CEB512D00B9909D /* libicuio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuio.a; path = Kiwix/libkiwix/static/libicuio.a; sourceTree = "<group>"; };
-		9711873E1CEB512D00B9909D /* libicule.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicule.a; path = Kiwix/libkiwix/static/libicule.a; sourceTree = "<group>"; };
-		9711873F1CEB512D00B9909D /* libiculx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiculx.a; path = Kiwix/libkiwix/static/libiculx.a; sourceTree = "<group>"; };
-		971187401CEB512D00B9909D /* libicutest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicutest.a; path = Kiwix/libkiwix/static/libicutest.a; sourceTree = "<group>"; };
-		971187411CEB512D00B9909D /* libicutu.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicutu.a; path = Kiwix/libkiwix/static/libicutu.a; sourceTree = "<group>"; };
-		971187421CEB512D00B9909D /* libicuuc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuuc.a; path = Kiwix/libkiwix/static/libicuuc.a; sourceTree = "<group>"; };
-		971187431CEB512D00B9909D /* liblzma.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblzma.a; path = Kiwix/libkiwix/static/liblzma.a; sourceTree = "<group>"; };
-		971187441CEB512D00B9909D /* libxapian.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxapian.a; path = Kiwix/libkiwix/static/libxapian.a; sourceTree = "<group>"; };
-		971187451CEB512D00B9909D /* libzim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzim.a; path = Kiwix/libkiwix/static/libzim.a; sourceTree = "<group>"; };
 		971187511CEB512F00B9909D /* libicudata.55.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicudata.55.dylib; path = Kiwix/libkiwix/shared/libicudata.55.dylib; sourceTree = "<group>"; };
 		971187521CEB512F00B9909D /* libicui18n.55.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicui18n.55.dylib; path = Kiwix/libkiwix/shared/libicui18n.55.dylib; sourceTree = "<group>"; };
 		971187531CEB512F00B9909D /* libicuio.55.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicuio.55.dylib; path = Kiwix/libkiwix/shared/libicuio.55.dylib; sourceTree = "<group>"; };
@@ -381,7 +370,7 @@
 		975227921D020C00001D1DDE /* indexer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; name = indexer.cpp; path = "Kiwix/libkiwix/C&C++/indexer.cpp"; sourceTree = "<group>"; tabWidth = 2; };
 		975227931D020C00001D1DDE /* otherTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = otherTools.cpp; path = "Kiwix/libkiwix/C&C++/otherTools.cpp"; sourceTree = "<group>"; };
 		975227941D020C00001D1DDE /* pathTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pathTools.cpp; path = "Kiwix/libkiwix/C&C++/pathTools.cpp"; sourceTree = "<group>"; };
-		975227951D020C00001D1DDE /* reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = reader.cpp; path = "Kiwix/libkiwix/C&C++/reader.cpp"; sourceTree = "<group>"; };
+		975227951D020C00001D1DDE /* reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; name = reader.cpp; path = "Kiwix/libkiwix/C&C++/reader.cpp"; sourceTree = "<group>"; tabWidth = 2; };
 		975227961D020C00001D1DDE /* resourceTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = resourceTools.cpp; path = "Kiwix/libkiwix/C&C++/resourceTools.cpp"; sourceTree = "<group>"; };
 		975227971D020C00001D1DDE /* stringTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = stringTools.cpp; path = "Kiwix/libkiwix/C&C++/stringTools.cpp"; sourceTree = "<group>"; };
 		975227A61D020C2E001D1DDE /* htmlparse.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = htmlparse.cc; path = "Kiwix/libkiwix/C&C++/xapian/htmlparse.cc"; sourceTree = "<group>"; };
@@ -589,24 +578,6 @@
 			name = shared;
 			sourceTree = "<group>";
 		};
-		971187041CEB426300B9909D /* static */ = {
-			isa = PBXGroup;
-			children = (
-				9711873B1CEB512D00B9909D /* libicudata.a */,
-				9711873C1CEB512D00B9909D /* libicui18n.a */,
-				9711873D1CEB512D00B9909D /* libicuio.a */,
-				9711873E1CEB512D00B9909D /* libicule.a */,
-				9711873F1CEB512D00B9909D /* libiculx.a */,
-				971187401CEB512D00B9909D /* libicutest.a */,
-				971187411CEB512D00B9909D /* libicutu.a */,
-				971187421CEB512D00B9909D /* libicuuc.a */,
-				971187431CEB512D00B9909D /* liblzma.a */,
-				971187441CEB512D00B9909D /* libxapian.a */,
-				971187451CEB512D00B9909D /* libzim.a */,
-			);
-			name = static;
-			sourceTree = "<group>";
-		};
 		971187051CEB426E00B9909D /* libkiwix */ = {
 			isa = PBXGroup;
 			children = (
@@ -617,7 +588,6 @@
 				971046301D19B96E002141C0 /* XapianSearcher.h */,
 				971046311D19B96E002141C0 /* XapianSearcher.mm */,
 				9711870C1CEB42FA00B9909D /* C++ */,
-				971187041CEB426300B9909D /* static */,
 				971186ED1CEB424800B9909D /* shared */,
 			);
 			name = libkiwix;
