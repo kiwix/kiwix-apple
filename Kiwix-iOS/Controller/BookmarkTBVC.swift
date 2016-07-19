@@ -18,6 +18,7 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate, D
         title = LocalizedStrings.bookmarks
         tableView.estimatedRowHeight = 66.0
         tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.allowsMultipleSelectionDuringEditing = true
         
         tableView.emptyDataSetSource = self
         tableView.emptyDataSetDelegate = self
@@ -29,6 +30,13 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate, D
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        setEditing(false, animated: false)
+    }
+    
+    override func setEditing(editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        tableView.setEditing(editing, animated: animated)
+        navigationController?.setToolbarHidden(!editing, animated: animated)
     }
     
     // MARK: - Empty table datasource & delegate
@@ -111,11 +119,29 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate, D
     // MARK: - Table view delegate
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        guard !tableView.editing else {return}
         defer {dismissViewControllerAnimated(true, completion: nil)}
         guard let navigationController = navigationController?.presentingViewController as? UINavigationController else {return}
         guard let mainVC = navigationController.topViewController as? MainController else {return}
         guard let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
         mainVC.load(article.url)
+    }
+    
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {}
+    
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let remove = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.remove) { (action, indexPath) -> Void in
+            guard let article = self.fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
+            let context = NSManagedObjectContext.mainQueueContext
+            context.performBlockAndWait({ () -> Void in
+                context.deleteObject(article)
+            })
+        }
+        return [remove]
     }
     
     // MARK: - Fetched Result Controller Delegate
@@ -174,6 +200,23 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate, D
     }
 
     // MARK: - Action
+    
+    @IBAction func editingButtonTapped(sender: UIBarButtonItem) {
+        setEditing(!editing, animated: true)
+    }
+    
+    @IBAction func removeBookmarkButtonTapped(sender: UIBarButtonItem) {
+        guard editing else {return}
+        guard let selectedIndexPathes = tableView.indexPathsForSelectedRows else {return}
+        let artiicles = selectedIndexPathes.flatMap() {fetchedResultController.objectAtIndexPath($0) as? Article}
+        let context = NSManagedObjectContext.mainQueueContext
+        context.performBlock { 
+            artiicles.forEach() {
+                $0.isBookmarked = false
+                $0.bookmarkDate = nil
+            }
+        }
+    }
     
     @IBAction func dismissButtonTapped(sender: UIBarButtonItem) {
         dismissViewControllerAnimated(true, completion: nil)

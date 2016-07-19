@@ -30,13 +30,13 @@
                                                 <constraint firstAttribute="height" constant="22" id="jS6-tO-mfx"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fG8-KY-O8H">
                                             <rect key="frame" x="66" y="36" width="526" height="19.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="a8w-h5-qXQ">
@@ -78,7 +78,7 @@
                                                 <constraint firstAttribute="height" constant="22" id="J7B-2l-svg"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l55-kI-Ig5">
@@ -87,7 +87,7 @@
                                                 <constraint firstAttribute="height" constant="19.5" id="H4O-Fl-fMr"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fjC-I2-EvF">
@@ -100,7 +100,7 @@
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wb6-do-Jvs">
                                             <rect key="frame" x="8" y="66" width="584" height="74.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -138,10 +138,23 @@
                             <outlet property="delegate" destination="FmQ-kS-9xq" id="Ge9-9m-6Uz"/>
                         </connections>
                     </tableView>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Z1G-0A-26t"/>
+                        <barButtonItem image="StarRemoved" id="j6g-X2-Pte">
+                            <connections>
+                                <action selector="removeBookmarkButtonTapped:" destination="FmQ-kS-9xq" id="Ssy-s0-9my"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" id="Mu9-Fa-bI7">
                         <barButtonItem key="leftBarButtonItem" image="DownArrow" id="gcp-jo-kFP">
                             <connections>
                                 <action selector="dismissButtonTapped:" destination="FmQ-kS-9xq" id="E2b-fg-15n"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="o5l-d8-2hL">
+                            <connections>
+                                <action selector="editingButtonTapped:" destination="FmQ-kS-9xq" id="3tT-Df-zmE"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -487,13 +500,17 @@
         <!--Navigation Controller-->
         <scene sceneID="TmE-cH-Z0r">
             <objects>
-                <navigationController storyboardIdentifier="BookmarkNav" automaticallyAdjustsScrollViewInsets="NO" id="7So-3x-feX" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="BookmarkNav" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="7So-3x-feX" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="liO-Vk-25p">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="lf3-4t-a4k">
+                        <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="FmQ-kS-9xq" kind="relationship" relationship="rootViewController" id="aTC-tp-9EX"/>
                     </connections>
@@ -623,5 +640,6 @@
         <image name="BookmarkAdded" width="348" height="331"/>
         <image name="BookmarkRemoved" width="348" height="331"/>
         <image name="DownArrow" width="21" height="21"/>
+        <image name="StarRemoved" width="21" height="21"/>
     </resources>
 </document>
