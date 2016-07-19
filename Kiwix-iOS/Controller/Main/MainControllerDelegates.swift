@@ -8,6 +8,7 @@
 
 import UIKit
 import SafariServices
+import JavaScriptCore
 import DZNEmptyDataSet
 
 extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, ZimMultiReaderDelegate, UISearchBarDelegate, UIPopoverPresentationControllerDelegate, UIWebViewDelegate, SFSafariViewControllerDelegate, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
@@ -16,15 +17,21 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
     
     func barButtonTapped(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
         guard sender == bookmarkButton else {return}
-        
-        
+        guard let controller = bookmarkNav ?? UIStoryboard.main.initViewController("BookmarkNav", type: UINavigationController.self) else {return}
+        bookmarkNav = controller
+        controller.modalPresentationStyle = .FormSheet
+        presentViewController(controller, animated: true, completion: nil)
     }
     
     func barButtonLongPressedStart(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
         guard sender == bookmarkButton else {return}
         guard !webView.hidden else {return}
         guard let article = article else {return}
+        
         article.isBookmarked = !article.isBookmarked
+        if article.isBookmarked {article.bookmarkDate = NSDate()}
+//        if article.snippet == nil {article.snippet = getSnippet(webView)}
+        article.snippet = getSnippet(webView)
         
         guard let controller = bookmarkController ?? UIStoryboard.main.initViewController("BookmarkController", type: BookmarkController.self) else {return}
         bookmarkController = controller
@@ -115,8 +122,8 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
         guard let article = Article.addOrUpdate(title, url: url, book: book, context: managedObjectContext) else {return}
         
         self.article = article
-        if let imageData = PacketAnalyzer.sharedInstance.chooseImage() {
-            print(imageData.length)
+        if let data = PacketAnalyzer.sharedInstance.chooseImage() {
+            article.thumbImageData = data
         }
         
         configureSearchBarPlaceHolder()
@@ -131,6 +138,8 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
         
         PacketAnalyzer.sharedInstance.stopListening()
     }
+    
+    // MARK: - Javascript
     
     func injectTableWrappingJavaScriptIfNeeded() {
         if Preference.webViewInjectJavascriptToAdjustPageLayout {
@@ -151,6 +160,27 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
         guard zoomScale != 100.0 else {return}
         let jString = String(format: "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%.0f%%'", zoomScale)
         webView.stringByEvaluatingJavaScriptFromString(jString)
+    }
+    
+    func getTableOfContents(webView: UIWebView) -> [HTMLHeading] {
+        guard let context = webView.valueForKeyPath("documentView.webView.mainFrame.javaScriptContext") as? JSContext,
+            let path = NSBundle.mainBundle().pathForResource("getTableOfContents", ofType: "js"),
+            let jString = Utilities.contentOfFileAtPath(path),
+            let elements = context.evaluateScript(jString).toArray() as? [[String: String]] else {return [HTMLHeading]()}
+        var headings = [HTMLHeading]()
+        for element in elements {
+            guard let heading = HTMLHeading(rawValue: element) else {continue}
+            headings.append(heading)
+        }
+        return headings
+    }
+    
+    func getSnippet(webView: UIWebView) -> String? {
+        guard let context = webView.valueForKeyPath("documentView.webView.mainFrame.javaScriptContext") as? JSContext,
+            let path = NSBundle.mainBundle().pathForResource("getSnippet", ofType: "js"),
+            let jString = Utilities.contentOfFileAtPath(path),
+            let snippet = context.evaluateScript(jString).toString() else {return nil}
+        return snippet
     }
     
     // MARK: - UIPopoverPresentationControllerDelegate
@@ -240,4 +270,28 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
         }
     }
     
+}
+
+class HTMLHeading {
+    let id: String
+    let tagName: String
+    let textContent: String
+    let level: Int
+    
+    init?(rawValue: [String: String]) {
+        let tagName = rawValue["tagName"] ?? ""
+        self.id = rawValue["id"] ?? ""
+        self.textContent = rawValue["textContent"] ?? ""
+        self.tagName = tagName
+        self.level = Int(tagName.stringByReplacingOccurrencesOfString("H", withString: "")) ?? -1
+        
+        if id == "" {return nil}
+        if tagName == "" {return nil}
+        if textContent == "" {return nil}
+        if level == -1 {return nil}
+    }
+    
+    var scrollToJavaScript: String {
+        return "document.getElementById('\(id)').scrollIntoView();"
+    }
 }

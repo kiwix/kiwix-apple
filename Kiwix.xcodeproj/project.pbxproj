@@ -188,6 +188,7 @@
 		97E850CB1D2DA5B300A9F688 /* About.html in Resources */ = {isa = PBXBuildFile; fileRef = 97E850CA1D2DA5B300A9F688 /* About.html */; };
 		97E891691CA976E90001CA32 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E891681CA976E90001CA32 /* FileManager.swift */; };
 		97F03CE21D2440470040D26E /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97F03CE11D2440470040D26E /* Search.storyboard */; };
+		97FD5CE71D3D90B7001C74A2 /* getSnippet.js in Resources */ = {isa = PBXBuildFile; fileRef = 97FD5CE61D3D90B7001C74A2 /* getSnippet.js */; };
 		EB1C0984A03359CD5CDC011C /* Pods_Kiwix_OSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 198ECFA618CDD6B29CD462A0 /* Pods_Kiwix_OSX.framework */; };
 /* End PBXBuildFile section */
 
@@ -445,6 +446,7 @@
 		97E850CA1D2DA5B300A9F688 /* About.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = About.html; path = Kiwix/HelpDocuments/About.html; sourceTree = SOURCE_ROOT; };
 		97E891681CA976E90001CA32 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileManager.swift; path = Kiwix/FileManager.swift; sourceTree = "<group>"; };
 		97F03CE11D2440470040D26E /* Search.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Search.storyboard; path = "Kiwix-iOS/Storyboard/Search.storyboard"; sourceTree = SOURCE_ROOT; };
+		97FD5CE61D3D90B7001C74A2 /* getSnippet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = getSnippet.js; sourceTree = "<group>"; };
 		DA0AB5D61F19BE37BD0AFA0A /* Pods-Kiwix-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		EC884ACBBA260AF741C4C4FE /* Pods_Kiwix_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Kiwix_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -713,6 +715,7 @@
 				971A101A1D0228E8007FC62C /* adjustlayoutiPad.js */,
 				971A101B1D0228E8007FC62C /* adjustlayoutiPhone.js */,
 				971A101C1D0228E8007FC62C /* getTableOfContents.js */,
+				97FD5CE61D3D90B7001C74A2 /* getSnippet.js */,
 			);
 			name = JavaScripts;
 			path = "Kiwix-iOS/JavaScripts";
@@ -1378,6 +1381,7 @@
 			files = (
 				971A101F1D0228E8007FC62C /* getTableOfContents.js in Resources */,
 				971A10811D022F74007FC62C /* Pic_P.png in Resources */,
+				97FD5CE71D3D90B7001C74A2 /* getSnippet.js in Resources */,
 				971A101D1D0228E8007FC62C /* adjustlayoutiPad.js in Resources */,
 				975227D01D022814001D1DDE /* LaunchScreen.storyboard in Resources */,
 				97F03CE21D2440470040D26E /* Search.storyboard in Resources */,

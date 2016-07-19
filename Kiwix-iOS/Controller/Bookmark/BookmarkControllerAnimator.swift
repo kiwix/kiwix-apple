@@ -72,6 +72,13 @@ class BookmarkControllerAnimator: NSObject, UIViewControllerAnimatedTransitionin
             fromController.centerViewYOffset.constant = fromController.bookmarkAdded ? halfHeight + fromController.topHalfHeight : -(halfHeight + fromController.bottomHalfHeight)
             fromController.view.layoutIfNeeded()
             }, completion: nil)
+        
+        if fromController.bookmarkAdded {
+            UIView.animateWithDuration(duration * 0.3, delay: 0.0, options: .CurveLinear, animations: {
+                fromController.messageLabel.alpha = 0.0
+                }, completion: nil)
+        }
+        
     }
     
     func animationEnded(transitionCompleted: Bool) {

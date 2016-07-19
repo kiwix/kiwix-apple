@@ -15,35 +15,17 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
         super.viewDidLoad()
         clearsSelectionOnViewWillAppear = true
         title = LocalizedStrings.bookmarks
+        tableView.estimatedRowHeight = 66.0
+        tableView.rowHeight = UITableViewAutomaticDimension
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        let numberOfArticles = fetchedResultController.fetchedObjects?.count ?? 0
-        tableView.setBackgroundText(numberOfArticles == 0 ? LocalizedStrings.bookmarkAddGuide : nil)
-        isOnScreen = true
-        tableView.reloadData()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        isOnScreen = false
     }
-    
-    var isOnScreen = false
-    let managedObjectContext = UIApplication.appDelegate.managedObjectContext
-    
-    lazy var fetchedResultController: NSFetchedResultsController = {
-        let fetchRequest = NSFetchRequest(entityName: "Article")
-        let dateDescriptor = NSSortDescriptor(key: "lastReadDate", ascending: false)
-        let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
-        fetchRequest.sortDescriptors = [dateDescriptor, titleDescriptor]
-        fetchRequest.predicate = NSPredicate(format: "isBookmarked == true")
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "BookmarkFRC")
-        fetchedResultsController.delegate = self
-        fetchedResultsController.performFetch(deleteCache: false)
-        return fetchedResultsController
-    }()
 
     // MARK: - Table view data source
 
@@ -57,26 +39,44 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ArticleCell", forIndexPath: indexPath)
-        configureCell(cell, atIndexPath: indexPath)
-        return cell
+        let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article
+        if let _ = article?.snippet {
+            let cell = tableView.dequeueReusableCellWithIdentifier("BookmarkSnippetCell", forIndexPath: indexPath)
+            configureSnippetCell(cell, atIndexPath: indexPath)
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCellWithIdentifier("BookmarkCell", forIndexPath: indexPath)
+            configureCell(cell, atIndexPath: indexPath)
+            return cell
+        }
     }
     
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-        guard let cell = cell as? ArticleCell else {return}
+        guard let cell = cell as? BookmarkCell else {return}
         guard let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
-        guard let book = article.book else {return}
         
+        cell.thumbImageView.image = {
+            if let articleImageData = article.thumbImageData {
+                return UIImage(data: articleImageData)
+            } else if let bookFavIconImageData = article.book?.favIcon {
+                return UIImage(data: bookFavIconImageData)
+            } else {
+                return nil
+            }
+        }()
         cell.titleLabel.text = article.title
-        cell.hasPicIndicator.backgroundColor = book.hasPic ? UIColor.havePicTintColor : UIColor.lightGrayColor()
-        cell.favIcon.image = book.favIcon != nil ? UIImage(data: book.favIcon!) : nil
+        cell.subtitleLabel.text = article.book?.title
+    }
+    
+    func configureSnippetCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+        configureCell(cell, atIndexPath: indexPath)
+        
+        guard let cell = cell as? BookmarkSnippetCell else {return}
+        guard let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
+        cell.snippetLabel.text = article.snippet
     }
     
     // MARK: - Table view delegate
-    
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat.min
-    }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         defer {dismissViewControllerAnimated(true, completion: nil)}
@@ -85,6 +85,22 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
         guard let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
         mainVC.load(article.url)
     }
+    
+    // MARK: - Fetched Result Controller Delegate
+    
+    let managedObjectContext = UIApplication.appDelegate.managedObjectContext
+    
+    lazy var fetchedResultController: NSFetchedResultsController = {
+        let fetchRequest = NSFetchRequest(entityName: "Article")
+        let dateDescriptor = NSSortDescriptor(key: "bookmarkDate", ascending: false)
+        let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
+        fetchRequest.sortDescriptors = [dateDescriptor, titleDescriptor]
+        fetchRequest.predicate = NSPredicate(format: "isBookmarked == true")
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "BookmarkFRC")
+        fetchedResultsController.delegate = self
+        fetchedResultsController.performFetch(deleteCache: false)
+        return fetchedResultsController
+    }()
 
     // MARK: - Fetched Result Controller Delegate
     
@@ -95,9 +111,9 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
     func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
         switch type {
         case .Insert:
-            self.tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+            tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
         case .Delete:
-            self.tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+            tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
         default:
             return
         }
@@ -106,14 +122,18 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate {
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         switch type {
         case .Insert:
-            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+            guard let newIndexPath = newIndexPath else {return}
+            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Fade)
         case .Delete:
-            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
+            guard let indexPath = indexPath else {return}
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         case .Update:
-            self.configureCell(tableView.cellForRowAtIndexPath(indexPath!)!, atIndexPath: indexPath!)
+            guard let indexPath = indexPath, let cell = tableView.cellForRowAtIndexPath(indexPath) else {return}
+            configureCell(cell, atIndexPath: indexPath)
         case .Move:
-            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
-            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
+            guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Fade)
         }
     }
     

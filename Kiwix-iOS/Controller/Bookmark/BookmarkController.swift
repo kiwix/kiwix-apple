@@ -24,6 +24,7 @@ class BookmarkController: UIViewController {
         setNeedsStatusBarAppearanceUpdate()
         label.text = bookmarkAdded ? NSLocalizedString("Bookmarked", comment: "Bookmark Overlay") : NSLocalizedString("Removed", comment: "Bookmark Overlay")
         messageLabel.text = NSLocalizedString("Tap anywhere to dismiss", comment: "Bookmark Overlay")
+        messageLabel.alpha = 1.0
         imageView.highlighted = !bookmarkAdded
     }
     override func viewDidAppear(animated: Bool) {

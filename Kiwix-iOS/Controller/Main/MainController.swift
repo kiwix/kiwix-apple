@@ -20,6 +20,7 @@ class MainController: UIViewController {
     
     var tableOfContentsController: TableOfContentsController?
     var bookmarkController: BookmarkController?
+    var bookmarkNav: UIViewController?
     var libraryController: UIViewController?
     var settingController: UIViewController?
     var searchController: SearchController?
@@ -74,6 +75,7 @@ class MainController: UIViewController {
         super.didReceiveMemoryWarning()
         tableOfContentsController = nil
         bookmarkController = nil
+        bookmarkNav = nil
         libraryController = nil
         settingController = nil
         searchController = nil
