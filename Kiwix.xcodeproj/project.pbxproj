@@ -95,6 +95,11 @@
 		971A10801D022F74007FC62C /* Pic_I.png in Resources */ = {isa = PBXBuildFile; fileRef = 971A107C1D022F74007FC62C /* Pic_I.png */; };
 		971A10811D022F74007FC62C /* Pic_P.png in Resources */ = {isa = PBXBuildFile; fileRef = 971A107D1D022F74007FC62C /* Pic_P.png */; };
 		97219DBD1D383A00009FDFF1 /* BookmarkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97219DBC1D383A00009FDFF1 /* BookmarkController.swift */; };
+		9722121C1D3ECCFE00C0DCF2 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E609F01D103DED00EBCB9D /* NotificationCenter.framework */; };
+		9722121F1D3ECCFE00C0DCF2 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9722121E1D3ECCFE00C0DCF2 /* TodayViewController.swift */; };
+		972212221D3ECCFE00C0DCF2 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 972212201D3ECCFE00C0DCF2 /* MainInterface.storyboard */; };
+		972212261D3ECCFE00C0DCF2 /* Articles.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9722121B1D3ECCFE00C0DCF2 /* Articles.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9722122B1D3FCCE200C0DCF2 /* MainControllerShowHide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9722122A1D3FCCE200C0DCF2 /* MainControllerShowHide.swift */; };
 		9734E54E1D289D060061C39B /* Welcome.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9734E54D1D289D060061C39B /* Welcome.storyboard */; };
 		973BCCEC1CEB3FA400F10B44 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCCEB1CEB3FA400F10B44 /* AppDelegate.swift */; };
 		973BCCF31CEB3FA400F10B44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 973BCCF21CEB3FA400F10B44 /* Assets.xcassets */; };
@@ -180,9 +185,6 @@
 		97D452BC1D16FF010033666F /* RecentSearchCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D452BB1D16FF010033666F /* RecentSearchCVC.swift */; };
 		97D452BE1D1723FF0033666F /* CollectionViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D452BD1D1723FF0033666F /* CollectionViewCells.swift */; };
 		97D55EF61D2075180081B523 /* TableOfContentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D55EF51D2075180081B523 /* TableOfContentsController.swift */; };
-		97E609F11D103DED00EBCB9D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E609F01D103DED00EBCB9D /* NotificationCenter.framework */; };
-		97E609F41D103DED00EBCB9D /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E609F31D103DED00EBCB9D /* TodayViewController.swift */; };
-		97E609F71D103DED00EBCB9D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97E609F51D103DED00EBCB9D /* MainInterface.storyboard */; };
 		97E60A021D10423A00EBCB9D /* ShadowViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E60A011D10423A00EBCB9D /* ShadowViews.swift */; };
 		97E60A061D10504000EBCB9D /* LibraryBackupTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E60A051D10504000EBCB9D /* LibraryBackupTBVC.swift */; };
 		97E850CB1D2DA5B300A9F688 /* About.html in Resources */ = {isa = PBXBuildFile; fileRef = 97E850CA1D2DA5B300A9F688 /* About.html */; };
@@ -193,6 +195,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		972212241D3ECCFE00C0DCF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97A2AB801C1B80FF00052E74 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9722121A1D3ECCFE00C0DCF2;
+			remoteInfo = Article;
+		};
 		973BCCFD1CEB3FA500F10B44 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 97A2AB801C1B80FF00052E74 /* Project object */;
@@ -250,6 +259,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				972212261D3ECCFE00C0DCF2 /* Articles.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -328,6 +338,11 @@
 		971A107C1D022F74007FC62C /* Pic_I.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Pic_I.png; path = Kiwix/HelpDocuments/Pic_I.png; sourceTree = SOURCE_ROOT; };
 		971A107D1D022F74007FC62C /* Pic_P.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Pic_P.png; path = Kiwix/HelpDocuments/Pic_P.png; sourceTree = SOURCE_ROOT; };
 		97219DBC1D383A00009FDFF1 /* BookmarkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookmarkController.swift; path = "Kiwix-iOS/Controller/Bookmark/BookmarkController.swift"; sourceTree = SOURCE_ROOT; };
+		9722121B1D3ECCFE00C0DCF2 /* Articles.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Articles.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		9722121E1D3ECCFE00C0DCF2 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		972212211D3ECCFE00C0DCF2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		972212231D3ECCFE00C0DCF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9722122A1D3FCCE200C0DCF2 /* MainControllerShowHide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainControllerShowHide.swift; path = "Kiwix-iOS/Controller/Main/MainControllerShowHide.swift"; sourceTree = SOURCE_ROOT; };
 		9734E54D1D289D060061C39B /* Welcome.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Welcome.storyboard; path = "Kiwix-iOS/Storyboard/Welcome.storyboard"; sourceTree = SOURCE_ROOT; };
 		973BCCE91CEB3FA400F10B44 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		973BCCEB1CEB3FA400F10B44 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = "Kiwix-OSX/AppDelegate.swift"; sourceTree = SOURCE_ROOT; };
@@ -425,11 +440,7 @@
 		97D452C01D1871E70033666F /* SearchLocalBooksCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchLocalBooksCVC.swift; path = "Kiwix-iOS/Controller/Search/SearchLocalBooksCVC.swift"; sourceTree = SOURCE_ROOT; };
 		97D452C11D1871E70033666F /* SearchTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchTabController.swift; path = "Kiwix-iOS/Controller/Search/SearchTabController.swift"; sourceTree = SOURCE_ROOT; };
 		97D55EF51D2075180081B523 /* TableOfContentsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableOfContentsController.swift; path = "Kiwix-iOS/Controller/TableOfContentsController.swift"; sourceTree = SOURCE_ROOT; };
-		97E609EF1D103DED00EBCB9D /* Kiwix-iOSWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Kiwix-iOSWidget.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		97E609F01D103DED00EBCB9D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
-		97E609F31D103DED00EBCB9D /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
-		97E609F61D103DED00EBCB9D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
-		97E609F81D103DED00EBCB9D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97E60A011D10423A00EBCB9D /* ShadowViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowViews.swift; sourceTree = "<group>"; };
 		97E60A051D10504000EBCB9D /* LibraryBackupTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryBackupTBVC.swift; path = "Kiwix-iOS/Controller/LibraryBackupTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		97E850CA1D2DA5B300A9F688 /* About.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = About.html; path = Kiwix/HelpDocuments/About.html; sourceTree = SOURCE_ROOT; };
@@ -441,6 +452,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		972212181D3ECCFE00C0DCF2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9722121C1D3ECCFE00C0DCF2 /* NotificationCenter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		973BCCE61CEB3FA400F10B44 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -507,14 +526,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		97E609EC1D103DED00EBCB9D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				97E609F11D103DED00EBCB9D /* NotificationCenter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -706,6 +717,16 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		9722121D1D3ECCFE00C0DCF2 /* Articles */ = {
+			isa = PBXGroup;
+			children = (
+				9722121E1D3ECCFE00C0DCF2 /* TodayViewController.swift */,
+				972212201D3ECCFE00C0DCF2 /* MainInterface.storyboard */,
+				972212231D3ECCFE00C0DCF2 /* Info.plist */,
+			);
+			path = Articles;
+			sourceTree = "<group>";
+		};
 		97254FDD1C26442F0056950B /* ZimMultiReader */ = {
 			isa = PBXGroup;
 			children = (
@@ -722,6 +743,7 @@
 			isa = PBXGroup;
 			children = (
 				970E68B71D3809A3001E8514 /* MainController.swift */,
+				9722122A1D3FCCE200C0DCF2 /* MainControllerShowHide.swift */,
 				970E68B81D3809A3001E8514 /* MainControllerDelegates.swift */,
 				970E68B91D3809A3001E8514 /* MainControllerLoading.swift */,
 			);
@@ -971,7 +993,7 @@
 				973BCD1F1CEB412E00F10B44 /* Shared */,
 				97A2AB8A1C1B80FF00052E74 /* OS X */,
 				973BCCE41CEB3EDE00F10B44 /* iOS */,
-				97E609F21D103DED00EBCB9D /* iOSWidget */,
+				97E609F21D103DED00EBCB9D /* iOSWidgets */,
 				975334CD1CEB6A78007ED50B /* Others */,
 				931D277C156AE671D3F9EADA /* Frameworks */,
 				F544A4E4357A6D33CF234C6B /* Pods */,
@@ -987,7 +1009,7 @@
 				973BCCE91CEB3FA400F10B44 /* Kiwix.app */,
 				973BCCFC1CEB3FA400F10B44 /* Kiwix-OSXTests.xctest */,
 				973BCD071CEB3FA500F10B44 /* Kiwix-OSXUITests.xctest */,
-				97E609EF1D103DED00EBCB9D /* Kiwix-iOSWidget.appex */,
+				9722121B1D3ECCFE00C0DCF2 /* Articles.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1080,15 +1102,13 @@
 			path = Kiwix;
 			sourceTree = "<group>";
 		};
-		97E609F21D103DED00EBCB9D /* iOSWidget */ = {
+		97E609F21D103DED00EBCB9D /* iOSWidgets */ = {
 			isa = PBXGroup;
 			children = (
-				97E609F31D103DED00EBCB9D /* TodayViewController.swift */,
-				97E609F51D103DED00EBCB9D /* MainInterface.storyboard */,
-				97E609F81D103DED00EBCB9D /* Info.plist */,
+				9722121D1D3ECCFE00C0DCF2 /* Articles */,
 			);
-			name = iOSWidget;
-			path = "Kiwix-iOSWidget";
+			name = iOSWidgets;
+			path = "Kiwix-iOSWidgets";
 			sourceTree = "<group>";
 		};
 		CFDF64EC6F9DB861DEEB91A0 /* Frameworks */ = {
@@ -1115,6 +1135,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		9722121A1D3ECCFE00C0DCF2 /* Articles */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 972212271D3ECCFE00C0DCF2 /* Build configuration list for PBXNativeTarget "Articles" */;
+			buildPhases = (
+				972212171D3ECCFE00C0DCF2 /* Sources */,
+				972212181D3ECCFE00C0DCF2 /* Frameworks */,
+				972212191D3ECCFE00C0DCF2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Articles;
+			productName = Article;
+			productReference = 9722121B1D3ECCFE00C0DCF2 /* Articles.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		973BCCE81CEB3FA400F10B44 /* Kiwix-OSX */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 973BCD0E1CEB3FA500F10B44 /* Build configuration list for PBXNativeTarget "Kiwix-OSX" */;
@@ -1189,6 +1226,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				972212251D3ECCFE00C0DCF2 /* PBXTargetDependency */,
 			);
 			name = "Kiwix-iOS";
 			productName = Kiwix;
@@ -1231,23 +1269,6 @@
 			productReference = 97A2ABAA1C1B810000052E74 /* Kiwix-iOSUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		97E609EE1D103DED00EBCB9D /* Kiwix-iOSWidget */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 97E609FE1D103DED00EBCB9D /* Build configuration list for PBXNativeTarget "Kiwix-iOSWidget" */;
-			buildPhases = (
-				97E609EB1D103DED00EBCB9D /* Sources */,
-				97E609EC1D103DED00EBCB9D /* Frameworks */,
-				97E609ED1D103DED00EBCB9D /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Kiwix-iOSWidget";
-			productName = "Kiwix-iOSWidget";
-			productReference = 97E609EF1D103DED00EBCB9D /* Kiwix-iOSWidget.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1258,6 +1279,10 @@
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = Chris;
 				TargetAttributes = {
+					9722121A1D3ECCFE00C0DCF2 = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = L7HWM3SP3L;
+					};
 					973BCCE81CEB3FA400F10B44 = {
 						CreatedOnToolsVersion = 7.3.1;
 					};
@@ -1289,10 +1314,6 @@
 						CreatedOnToolsVersion = 7.2;
 						TestTargetID = 97A2AB871C1B80FF00052E74;
 					};
-					97E609EE1D103DED00EBCB9D = {
-						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = L7HWM3SP3L;
-					};
 				};
 			};
 			buildConfigurationList = 97A2AB831C1B80FF00052E74 /* Build configuration list for PBXProject "Kiwix" */;
@@ -1314,12 +1335,20 @@
 				973BCCE81CEB3FA400F10B44 /* Kiwix-OSX */,
 				973BCCFB1CEB3FA400F10B44 /* Kiwix-OSXTests */,
 				973BCD061CEB3FA500F10B44 /* Kiwix-OSXUITests */,
-				97E609EE1D103DED00EBCB9D /* Kiwix-iOSWidget */,
+				9722121A1D3ECCFE00C0DCF2 /* Articles */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		972212191D3ECCFE00C0DCF2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				972212221D3ECCFE00C0DCF2 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		973BCCE71CEB3FA400F10B44 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1380,14 +1409,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		97E609ED1D103DED00EBCB9D /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				97E609F71D103DED00EBCB9D /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1513,6 +1534,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		972212171D3ECCFE00C0DCF2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9722121F1D3ECCFE00C0DCF2 /* TodayViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		973BCCE51CEB3FA400F10B44 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1632,6 +1661,7 @@
 				97D452BE1D1723FF0033666F /* CollectionViewCells.swift in Sources */,
 				971A102F1D022AD5007FC62C /* Logo.swift in Sources */,
 				97D55EF61D2075180081B523 /* TableOfContentsController.swift in Sources */,
+				9722122B1D3FCCE200C0DCF2 /* MainControllerShowHide.swift in Sources */,
 				9779A1C81D34225E0071EFAB /* AlertOperation.swift in Sources */,
 				971A104B1D022CBE007FC62C /* SearchBooksVC.swift in Sources */,
 				977998771C1E0B7900B1DD5E /* Article+CoreDataProperties.swift in Sources */,
@@ -1676,17 +1706,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		97E609EB1D103DED00EBCB9D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				97E609F41D103DED00EBCB9D /* TodayViewController.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		972212251D3ECCFE00C0DCF2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9722121A1D3ECCFE00C0DCF2 /* Articles */;
+			targetProxy = 972212241D3ECCFE00C0DCF2 /* PBXContainerItemProxy */;
+		};
 		973BCCFE1CEB3FA500F10B44 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 973BCCE81CEB3FA400F10B44 /* Kiwix-OSX */;
@@ -1719,10 +1746,10 @@
 			path = "Kiwix-iOS";
 			sourceTree = SOURCE_ROOT;
 		};
-		97E609F51D103DED00EBCB9D /* MainInterface.storyboard */ = {
+		972212201D3ECCFE00C0DCF2 /* MainInterface.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				97E609F61D103DED00EBCB9D /* Base */,
+				972212211D3ECCFE00C0DCF2 /* Base */,
 			);
 			name = MainInterface.storyboard;
 			sourceTree = "<group>";
@@ -1730,6 +1757,36 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		972212281D3ECCFE00C0DCF2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "Kiwix-iOSWidgets/Articles/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.Articles;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		972212291D3ECCFE00C0DCF2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "Kiwix-iOSWidgets/Articles/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.Articles;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		973BCD0F1CEB3FA500F10B44 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6DCB0E958A1083CA248C5A12 /* Pods-Kiwix-OSX.debug.xcconfig */;
@@ -2064,39 +2121,17 @@
 			};
 			name = Release;
 		};
-		97E609FC1D103DED00EBCB9D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = "Kiwix-iOSWidget/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.iOSWidget;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		97E609FD1D103DED00EBCB9D /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = "Kiwix-iOSWidget/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.iOSWidget;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		972212271D3ECCFE00C0DCF2 /* Build configuration list for PBXNativeTarget "Articles" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				972212281D3ECCFE00C0DCF2 /* Debug */,
+				972212291D3ECCFE00C0DCF2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		973BCD0E1CEB3FA500F10B44 /* Build configuration list for PBXNativeTarget "Kiwix-OSX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2156,15 +2191,6 @@
 			buildConfigurations = (
 				97A2ABBA1C1B810000052E74 /* Debug */,
 				97A2ABBB1C1B810000052E74 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		97E609FE1D103DED00EBCB9D /* Build configuration list for PBXNativeTarget "Kiwix-iOSWidget" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				97E609FC1D103DED00EBCB9D /* Debug */,
-				97E609FD1D103DED00EBCB9D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

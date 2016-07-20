@@ -11,8 +11,13 @@ import PSOperations
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {
-
+    
     var window: UIWindow?
+    var mainController: MainController? {
+        return (window?.rootViewController as? UINavigationController)?.topViewController as? MainController
+    }
+    
+    private let recentShortcutTypeString = "org.kiwix.recent"
     
     func recordActiveSession() {
         Preference.activeUseHistory.append(NSDate()) 
@@ -29,14 +34,51 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {
         return true
     }
     
+    func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
+        switch shortcutItem.type {
+        case "org.kiwix.search":
+            mainController?.showSearch()
+            completionHandler(true)
+        case "org.kiwix.bookmarks":
+            mainController?.showBookmarkTBVC()
+            completionHandler(true)
+        case recentShortcutTypeString:
+            guard let urlString = shortcutItem.userInfo?["URL"] as? String else {completionHandler(false); return}
+            mainController?.load(NSURL(string: urlString))
+            completionHandler(true)
+        default:
+            completionHandler(false)
+            return
+        }
+    }
+    
     func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
         // Here we get what notification permission user currently allows
+    }
+    
+    func applicationWillTerminate(application: UIApplication) {
+        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        // Saves changes in the application's managed object context before the application terminates.
+        self.saveContext()
+    }
+    
+    // MARK: - Active
+    
+    func applicationDidBecomeActive(application: UIApplication) {
+        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        NSTimer.scheduledTimerWithTimeInterval(60.0, target: self, selector: #selector(AppDelegate.recordActiveSession), userInfo: nil, repeats: false)
+        removeAllDynamicShortcutItems()
     }
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-//        UIApplication.updateApplicationIconBadgeNumber()
+        
+        //UIApplication.updateApplicationIconBadgeNumber()
+        
+        if let article = mainController?.article {
+            addRecentArticleShortCutItem(article)
+        }
     }
     
     //    class func updateApplicationIconBadgeNumber() {
@@ -44,7 +86,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {
     //        guard settings.types.contains(UIUserNotificationType.Badge) else {return}
     //        //UIApplication.sharedApplication().applicationIconBadgeNumber = downloader.taskCount ?? 0
     //    }
+    
+    // MARK: - Shotcut Items 
+    
+    func removeAllDynamicShortcutItems() {
+        guard let items = UIApplication.sharedApplication().shortcutItems?.filter({$0.type == recentShortcutTypeString}) else {return}
+        for item in items {
+            guard let index = UIApplication.sharedApplication().shortcutItems?.indexOf(item) else {continue}
+            UIApplication.sharedApplication().shortcutItems?.removeAtIndex(index)
+        }
+    }
+    
+    func addRecentArticleShortCutItem(article: Article) {
+        guard let title = article.title, let url = article.urlString else {return}
+        let icon = UIApplicationShortcutIcon(templateImageName: "Recent")
+        let item = UIMutableApplicationShortcutItem(type: recentShortcutTypeString, localizedTitle: title, localizedSubtitle: "", icon: icon, userInfo: ["URL": url])
+        UIApplication.sharedApplication().shortcutItems?.append(item)
+    }
 
+    // MARK: - Background
+    
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
@@ -52,17 +113,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {
 
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    }
-
-    func applicationDidBecomeActive(application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        NSTimer.scheduledTimerWithTimeInterval(60.0, target: self, selector: #selector(AppDelegate.recordActiveSession), userInfo: nil, repeats: false)
-    }
-
-    func applicationWillTerminate(application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        // Saves changes in the application's managed object context before the application terminates.
-        self.saveContext()
     }
     
     func application(application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: () -> Void) {

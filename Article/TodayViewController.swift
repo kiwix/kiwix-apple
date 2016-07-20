@@ -1,8 +1,8 @@
 //
 //  TodayViewController.swift
-//  Kiwix-iOSWidget
+//  Article
 //
-//  Created by Chris Li on 6/14/16.
+//  Created by Chris Li on 7/19/16.
 //  Copyright © 2016 Chris. All rights reserved.
 //
 

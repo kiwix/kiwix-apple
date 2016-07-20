@@ -17,10 +17,7 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
     
     func barButtonTapped(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
         guard sender == bookmarkButton else {return}
-        guard let controller = bookmarkNav ?? UIStoryboard.main.initViewController("BookmarkNav", type: UINavigationController.self) else {return}
-        bookmarkNav = controller
-        controller.modalPresentationStyle = .FormSheet
-        presentViewController(controller, animated: true, completion: nil)
+        showBookmarkTBVC()
     }
     
     func barButtonLongPressedStart(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
@@ -30,8 +27,7 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
         
         article.isBookmarked = !article.isBookmarked
         if article.isBookmarked {article.bookmarkDate = NSDate()}
-//        if article.snippet == nil {article.snippet = getSnippet(webView)}
-        article.snippet = getSnippet(webView)
+        if article.snippet == nil {article.snippet = getSnippet(webView)}
         
         guard let controller = bookmarkController ?? UIStoryboard.main.initViewController("BookmarkController", type: BookmarkController.self) else {return}
         bookmarkController = controller
