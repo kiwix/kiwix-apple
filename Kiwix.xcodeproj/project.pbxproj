@@ -16,7 +16,6 @@
 		970E68B61D37E224001E8514 /* SettingSearchHistoryTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B51D37E224001E8514 /* SettingSearchHistoryTBVC.swift */; };
 		970E68BA1D3809A3001E8514 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B71D3809A3001E8514 /* MainController.swift */; };
 		970E68BB1D3809A3001E8514 /* MainControllerDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B81D3809A3001E8514 /* MainControllerDelegates.swift */; };
-		970E68BC1D3809A3001E8514 /* MainControllerLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B91D3809A3001E8514 /* MainControllerLoading.swift */; };
 		971046321D19B96E002141C0 /* XapianSearcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = 971046311D19B96E002141C0 /* XapianSearcher.mm */; };
 		9711871C1CEB448400B9909D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711871B1CEB448400B9909D /* libz.tbd */; };
 		9711871E1CEB449A00B9909D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711871D1CEB449A00B9909D /* libz.tbd */; };
@@ -279,7 +278,6 @@
 		970E68B51D37E224001E8514 /* SettingSearchHistoryTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSearchHistoryTBVC.swift; path = "Kiwix-iOS/Controller/Setting/SettingSearchHistoryTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		970E68B71D3809A3001E8514 /* MainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainController.swift; path = "Kiwix-iOS/Controller/Main/MainController.swift"; sourceTree = SOURCE_ROOT; };
 		970E68B81D3809A3001E8514 /* MainControllerDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainControllerDelegates.swift; path = "Kiwix-iOS/Controller/Main/MainControllerDelegates.swift"; sourceTree = SOURCE_ROOT; };
-		970E68B91D3809A3001E8514 /* MainControllerLoading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainControllerLoading.swift; path = "Kiwix-iOS/Controller/Main/MainControllerLoading.swift"; sourceTree = SOURCE_ROOT; };
 		971046301D19B96E002141C0 /* XapianSearcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XapianSearcher.h; path = Kiwix/libkiwix/XapianSearcher.h; sourceTree = "<group>"; };
 		971046311D19B96E002141C0 /* XapianSearcher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = XapianSearcher.mm; path = Kiwix/libkiwix/XapianSearcher.mm; sourceTree = "<group>"; };
 		9711871B1CEB448400B9909D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
@@ -745,7 +743,6 @@
 				970E68B71D3809A3001E8514 /* MainController.swift */,
 				9722122A1D3FCCE200C0DCF2 /* MainControllerShowHide.swift */,
 				970E68B81D3809A3001E8514 /* MainControllerDelegates.swift */,
-				970E68B91D3809A3001E8514 /* MainControllerLoading.swift */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -1676,7 +1673,6 @@
 				975227A01D020C00001D1DDE /* resourceTools.cpp in Sources */,
 				971A10601D022DF2007FC62C /* LanguageTBVC.swift in Sources */,
 				971A106C1D022E50007FC62C /* Utilities.swift in Sources */,
-				970E68BC1D3809A3001E8514 /* MainControllerLoading.swift in Sources */,
 				973DD4281D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift in Sources */,
 				971A10591D022DAD007FC62C /* LibraryLocalBookDetailTBVC.swift in Sources */,
 				971A10431D022C54007FC62C /* SettingTBVC.swift in Sources */,
@@ -2131,6 +2127,7 @@
 				972212291D3ECCFE00C0DCF2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		973BCD0E1CEB3FA500F10B44 /* Build configuration list for PBXNativeTarget "Kiwix-OSX" */ = {
 			isa = XCConfigurationList;

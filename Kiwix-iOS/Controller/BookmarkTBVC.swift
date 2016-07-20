@@ -26,10 +26,6 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate, D
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
         setEditing(false, animated: false)
     }
     
