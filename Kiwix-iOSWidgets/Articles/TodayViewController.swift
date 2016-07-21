@@ -14,7 +14,11 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
     @IBOutlet weak var collectionView: UICollectionView!
     
     private var rowHeight: CGFloat = 110.0
-    private let hSpacing: CGFloat = 15.0
+    private let hInset: CGFloat = 15.0
+    private let vInset: CGFloat = 10.0
+    private var itemHeight: CGFloat = 0.0
+    private var itemWidth: CGFloat = 0.0
+    
     private var titles = [String]()
     private var thumbDatas = [NSData]()
     
@@ -22,20 +26,16 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
         super.viewDidLoad()
         collectionView.dataSource = self
         collectionView.delegate = self
-        preferredContentSize = CGSizeMake(0,  rowHeight)
+        
         updateData()
+        updateUI()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         updateData()
+        updateUI()
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     
     // MARK: - NCWidgetProviding
     
@@ -51,7 +51,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
         // If there's an update, use NCUpdateResult.NewData
 
         updateData()
-        
+        updateUI()
         completionHandler(NCUpdateResult.NewData)
     }
     
@@ -62,6 +62,16 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
             let thumbDatas = bookmarks["thumbDatas"] as? [NSData] else {return}
         self.titles = titles
         self.thumbDatas = thumbDatas
+    }
+    
+    func updateUI() {
+        itemWidth = (collectionView.frame.width - 6 * hInset) / 5
+        
+        let labelHeights = titles.map({$0.heightWithConstrainedWidth(itemWidth, font: UIFont.systemFontOfSize(10.0, weight: UIFontWeightMedium))})
+        let labelMaxHeight = max(12.0, min((labelHeights.maxElement() ?? 12.0), 24.0))
+        itemHeight = itemWidth + 2.0 + labelMaxHeight // itemHeight (1:1 ration) + label top spacing + label height
+        
+        preferredContentSize = CGSizeMake(collectionView.frame.width,  itemHeight + 2 * vInset)
         collectionView.reloadData()
     }
     
@@ -90,9 +100,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let sectionInset = self.collectionView(collectionView, layout: collectionViewLayout, insetForSectionAtIndex: indexPath.section)
-        let itemWidth = (collectionView.frame.width - 6 * hSpacing) / 5.0
-        return CGSizeMake(itemWidth, rowHeight - sectionInset.top - sectionInset.bottom)
+        return CGSizeMake(itemWidth, itemHeight)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
@@ -100,6 +108,14 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(10, hSpacing, 10, hSpacing)
+        return UIEdgeInsetsMake(vInset, hInset, vInset, hInset)
+    }
+}
+
+private extension String {
+    func heightWithConstrainedWidth(width: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: width, height: CGFloat.max)
+        let boundingBox = self.boundingRectWithSize(constraintRect, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
+        return boundingBox.height
     }
 }
