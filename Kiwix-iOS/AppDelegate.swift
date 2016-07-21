@@ -37,11 +37,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {
     func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
         switch shortcutItem.type {
         case "org.kiwix.search":
-            mainController?.showSearch()
-            completionHandler(true)
+            mainController?.hidePresentedController(true, completion: { 
+                self.mainController?.showSearch()
+                completionHandler(true)
+            })
         case "org.kiwix.bookmarks":
-            mainController?.showBookmarkTBVC()
-            completionHandler(true)
+            mainController?.hidePresentedController(true, completion: {
+                self.mainController?.hideSearch()
+                self.mainController?.showBookmarkTBVC()
+                completionHandler(true)
+            })
         case recentShortcutTypeString:
             guard let urlString = shortcutItem.userInfo?["URL"] as? String else {completionHandler(false); return}
             mainController?.load(NSURL(string: urlString))

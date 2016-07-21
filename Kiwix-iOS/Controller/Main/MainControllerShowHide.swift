@@ -10,6 +10,11 @@ import UIKit
 
 extension MainController {
     
+    func hidePresentedController(animated: Bool, completion: (() -> Void)? = nil) {
+        guard let controller = presentedViewController else {return}
+        controller.dismissViewControllerAnimated(animated, completion: completion)
+    }
+    
     // MARK: - Show/Hide Search
     
     func showSearch() {
