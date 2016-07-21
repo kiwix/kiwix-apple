@@ -29,6 +29,9 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
         if article.isBookmarked {article.bookmarkDate = NSDate()}
         if article.snippet == nil {article.snippet = getSnippet(webView)}
         
+        let operation = UpdateWidgetDataSourceOperation()
+        GlobalOperationQueue.sharedInstance.addOperation(operation)
+        
         guard let controller = bookmarkController ?? UIStoryboard.main.initViewController("BookmarkController", type: BookmarkController.self) else {return}
         bookmarkController = controller
         controller.bookmarkAdded = article.isBookmarked

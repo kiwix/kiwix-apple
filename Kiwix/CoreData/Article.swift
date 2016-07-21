@@ -24,9 +24,31 @@ class Article: NSManagedObject {
         return article
     }
     
+    class func fetchRecentFiveBookmarks(context: NSManagedObjectContext) -> [Article] {
+        let fetchRequest = NSFetchRequest(entityName: "Article")
+        let dateDescriptor = NSSortDescriptor(key: "bookmarkDate", ascending: false)
+        let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
+        fetchRequest.sortDescriptors = [dateDescriptor, titleDescriptor]
+        fetchRequest.predicate = NSPredicate(format: "isBookmarked == true")
+        fetchRequest.fetchLimit = 5
+        return fetch(fetchRequest, type: Article.self, context: context) ?? [Article]()
+    }
+    
+    // MARK: - Helper
+    
     var url: NSURL? {
         guard let urlString = urlString else {return nil}
         return NSURL(string: urlString)
+    }
+    
+    var thumbImageData: NSData? {
+        if let urlString = thumbImageURL,
+            let url = NSURL(string: urlString),
+            let data = NSData(contentsOfURL: url) {
+            return data
+        } else {
+            return book?.favIcon
+        }
     }
 
 }

@@ -35,6 +35,11 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate, D
         navigationController?.setToolbarHidden(!editing, animated: animated)
     }
     
+    func updateWidgetData() {
+        let operation = UpdateWidgetDataSourceOperation()
+        GlobalOperationQueue.sharedInstance.addOperation(operation)
+    }
+    
     // MARK: - Empty table datasource & delegate
     
     func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
@@ -92,16 +97,8 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate, D
         guard let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
         
         cell.thumbImageView.image = {
-            if let urlString = article.thumbImageURL,
-                let url = NSURL(string: urlString),
-                let data = NSData(contentsOfURL: url),
-                let image = UIImage(data: data) {
-                return image
-            } else if let bookFavIconImageData = article.book?.favIcon {
-                return UIImage(data: bookFavIconImageData)
-            } else {
-                return nil
-            }
+            guard let data = article.thumbImageData else {return nil}
+            return UIImage(data: data)
         }()
         cell.titleLabel.text = article.title
         cell.subtitleLabel.text = article.book?.title
@@ -135,6 +132,7 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate, D
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let remove = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.remove) { (action, indexPath) -> Void in
             guard let article = self.fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
+            self.updateWidgetData()
             let context = NSManagedObjectContext.mainQueueContext
             context.performBlockAndWait({ () -> Void in
                 context.deleteObject(article)
@@ -208,6 +206,11 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate, D
         guard editing else {return}
         guard let selectedIndexPathes = tableView.indexPathsForSelectedRows else {return}
         let artiicles = selectedIndexPathes.flatMap() {fetchedResultController.objectAtIndexPath($0) as? Article}
+        
+        if artiicles.count > 0 {
+            updateWidgetData()
+        }
+        
         let context = NSManagedObjectContext.mainQueueContext
         context.performBlock { 
             artiicles.forEach() {

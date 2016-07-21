@@ -93,6 +93,10 @@
 		971A107F1D022F74007FC62C /* ImportBookLearnMore.html in Resources */ = {isa = PBXBuildFile; fileRef = 971A107B1D022F74007FC62C /* ImportBookLearnMore.html */; };
 		971A10801D022F74007FC62C /* Pic_I.png in Resources */ = {isa = PBXBuildFile; fileRef = 971A107C1D022F74007FC62C /* Pic_I.png */; };
 		971A10811D022F74007FC62C /* Pic_P.png in Resources */ = {isa = PBXBuildFile; fileRef = 971A107D1D022F74007FC62C /* Pic_P.png */; };
+		971C4F0E1D400F010027B7D2 /* UpdateWidgetDataSourceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971C4F0D1D400F010027B7D2 /* UpdateWidgetDataSourceOperation.swift */; };
+		971C4F121D4020E90027B7D2 /* BookmarkWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971C4F111D4020E90027B7D2 /* BookmarkWidgetCell.swift */; };
+		971C4F141D411DC00027B7D2 /* ArticleDataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971C4F131D411DC00027B7D2 /* ArticleDataContainer.swift */; };
+		971C4F151D411DC00027B7D2 /* ArticleDataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971C4F131D411DC00027B7D2 /* ArticleDataContainer.swift */; };
 		97219DBD1D383A00009FDFF1 /* BookmarkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97219DBC1D383A00009FDFF1 /* BookmarkController.swift */; };
 		9722121C1D3ECCFE00C0DCF2 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E609F01D103DED00EBCB9D /* NotificationCenter.framework */; };
 		9722121F1D3ECCFE00C0DCF2 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9722121E1D3ECCFE00C0DCF2 /* TodayViewController.swift */; };
@@ -335,6 +339,11 @@
 		971A107B1D022F74007FC62C /* ImportBookLearnMore.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = ImportBookLearnMore.html; path = Kiwix/HelpDocuments/ImportBookLearnMore.html; sourceTree = SOURCE_ROOT; };
 		971A107C1D022F74007FC62C /* Pic_I.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Pic_I.png; path = Kiwix/HelpDocuments/Pic_I.png; sourceTree = SOURCE_ROOT; };
 		971A107D1D022F74007FC62C /* Pic_P.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Pic_P.png; path = Kiwix/HelpDocuments/Pic_P.png; sourceTree = SOURCE_ROOT; };
+		971C4F0B1D3FFFA60027B7D2 /* Kiwix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Kiwix.entitlements; path = "Kiwix-iOS/Kiwix.entitlements"; sourceTree = SOURCE_ROOT; };
+		971C4F0C1D3FFFFF0027B7D2 /* Articles.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Articles.entitlements; path = ../../Articles.entitlements; sourceTree = "<group>"; };
+		971C4F0D1D400F010027B7D2 /* UpdateWidgetDataSourceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UpdateWidgetDataSourceOperation.swift; path = Operations/UpdateWidgetDataSourceOperation.swift; sourceTree = "<group>"; };
+		971C4F111D4020E90027B7D2 /* BookmarkWidgetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkWidgetCell.swift; sourceTree = "<group>"; };
+		971C4F131D411DC00027B7D2 /* ArticleDataContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ArticleDataContainer.swift; path = Kiwix/Tools/ArticleDataContainer.swift; sourceTree = "<group>"; };
 		97219DBC1D383A00009FDFF1 /* BookmarkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookmarkController.swift; path = "Kiwix-iOS/Controller/Bookmark/BookmarkController.swift"; sourceTree = SOURCE_ROOT; };
 		9722121B1D3ECCFE00C0DCF2 /* Articles.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Articles.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		9722121E1D3ECCFE00C0DCF2 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -718,8 +727,10 @@
 		9722121D1D3ECCFE00C0DCF2 /* Articles */ = {
 			isa = PBXGroup;
 			children = (
-				9722121E1D3ECCFE00C0DCF2 /* TodayViewController.swift */,
+				971C4F0C1D3FFFFF0027B7D2 /* Articles.entitlements */,
 				972212201D3ECCFE00C0DCF2 /* MainInterface.storyboard */,
+				9722121E1D3ECCFE00C0DCF2 /* TodayViewController.swift */,
+				971C4F111D4020E90027B7D2 /* BookmarkWidgetCell.swift */,
 				972212231D3ECCFE00C0DCF2 /* Info.plist */,
 			);
 			path = Articles;
@@ -813,6 +824,7 @@
 				97E891681CA976E90001CA32 /* FileManager.swift */,
 				973C8D5B1C25F945007272F9 /* Preference.swift */,
 				979C51511CECA9AF001707F2 /* StringTools.swift */,
+				971C4F131D411DC00027B7D2 /* ArticleDataContainer.swift */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -912,6 +924,7 @@
 		978C58791C1CCC920077AE47 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
+				971C4F0B1D3FFFA60027B7D2 /* Kiwix.entitlements */,
 				971A10791D022F05007FC62C /* Localizable.stringsdict */,
 				971A10191D0228E8007FC62C /* JavaScripts */,
 				975227CF1D022814001D1DDE /* LaunchScreen.storyboard */,
@@ -1093,6 +1106,7 @@
 				9779A1C51D34225E0071EFAB /* RefreshLibraryOperation.swift */,
 				973DD4241D344558009D45DB /* ScanLocalBookOperation.swift */,
 				9779A1C61D34225E0071EFAB /* SearchOperation.swift */,
+				971C4F0D1D400F010027B7D2 /* UpdateWidgetDataSourceOperation.swift */,
 				970C61961D34243600087758 /* URLSessionDownloadTaskOperation.swift */,
 			);
 			name = Operation;
@@ -1279,6 +1293,11 @@
 					9722121A1D3ECCFE00C0DCF2 = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = L7HWM3SP3L;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					973BCCE81CEB3FA400F10B44 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -1295,6 +1314,9 @@
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = L7HWM3SP3L;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.BackgroundModes = {
 								enabled = 0;
 							};
@@ -1535,7 +1557,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				971C4F121D4020E90027B7D2 /* BookmarkWidgetCell.swift in Sources */,
 				9722121F1D3ECCFE00C0DCF2 /* TodayViewController.swift in Sources */,
+				971C4F151D411DC00027B7D2 /* ArticleDataContainer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1626,6 +1650,7 @@
 				9779A1CC1D34225E0071EFAB /* SearchOperation.swift in Sources */,
 				97BAA8EC1D3D2D7B0038F57F /* PacketAnalyzer.swift in Sources */,
 				970E68BA1D3809A3001E8514 /* MainController.swift in Sources */,
+				971C4F141D411DC00027B7D2 /* ArticleDataContainer.swift in Sources */,
 				970C65501D398D5A007032F8 /* BookmarkControllerAnimator.swift in Sources */,
 				978C58981C1CD86E0077AE47 /* Book.swift in Sources */,
 				978C58961C1CD86E0077AE47 /* Language.swift in Sources */,
@@ -1662,6 +1687,7 @@
 				9779A1C81D34225E0071EFAB /* AlertOperation.swift in Sources */,
 				971A104B1D022CBE007FC62C /* SearchBooksVC.swift in Sources */,
 				977998771C1E0B7900B1DD5E /* Article+CoreDataProperties.swift in Sources */,
+				971C4F0E1D400F010027B7D2 /* UpdateWidgetDataSourceOperation.swift in Sources */,
 				971187301CEB50FC00B9909D /* ZimReader.mm in Sources */,
 				971A103C1D022C2C007FC62C /* FontSizeTBVC.swift in Sources */,
 				971A103B1D022C2C007FC62C /* AdjustLayoutTBVC.swift in Sources */,
@@ -1757,6 +1783,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_ENTITLEMENTS = Articles.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Kiwix-iOSWidgets/Articles/Info.plist";
@@ -1772,6 +1799,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_ENTITLEMENTS = Articles.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Kiwix-iOSWidgets/Articles/Info.plist";
@@ -2002,6 +2030,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "Kiwix-iOS/Kiwix.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -2036,6 +2065,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "Kiwix-iOS/Kiwix.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
