@@ -15,9 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9722121A1D3ECCFE00C0DCF2"
-               BuildableName = "Articles.appex"
-               BlueprintName = "Articles"
+               BlueprintIdentifier = "97CF3EEA1D428F9600AE82FE"
+               BuildableName = "Bookmarks.appex"
+               BlueprintName = "Bookmarks"
                ReferencedContainer = "container:Kiwix.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -47,9 +47,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9722121A1D3ECCFE00C0DCF2"
-            BuildableName = "Articles.appex"
-            BlueprintName = "Articles"
+            BlueprintIdentifier = "97CF3EEA1D428F9600AE82FE"
+            BuildableName = "Bookmarks.appex"
+            BlueprintName = "Bookmarks"
             ReferencedContainer = "container:Kiwix.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

@@ -50,5 +50,17 @@ class Article: NSManagedObject {
             return book?.favIcon
         }
     }
+    
+    func dictionarySerilization() -> NSDictionary? {
+        guard let title = title,
+            let data = thumbImageData,
+            let url = url else {return nil}
+        return [
+            "title": title,
+            "thumbImageData": data,
+            "url": url.absoluteString,
+            "isMainPage": NSNumber(bool: isMainPage)
+        ]
+    }
 
 }

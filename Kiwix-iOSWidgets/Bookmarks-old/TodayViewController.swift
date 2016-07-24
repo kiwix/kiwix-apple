@@ -19,8 +19,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
     private var itemHeight: CGFloat = 0.0
     private var itemWidth: CGFloat = 0.0
     
-    private var titles = [String]()
-    private var thumbDatas = [NSData]()
+    private var bookmarks = [NSDictionary]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,16 +56,14 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
     
     func updateData() {
         let defaults = NSUserDefaults(suiteName: "group.kiwix")
-        guard let bookmarks = defaults?.objectForKey("bookmarks") as? [String: NSArray],
-            let titles = bookmarks["titles"] as? [String],
-            let thumbDatas = bookmarks["thumbDatas"] as? [NSData] else {return}
-        self.titles = titles
-        self.thumbDatas = thumbDatas
+        guard let bookmarks = defaults?.objectForKey("bookmarks") as? [NSDictionary] else {return}
+        self.bookmarks = bookmarks
     }
     
     func updateUI() {
         itemWidth = (collectionView.frame.width - 6 * hInset) / 5
         
+        let titles = bookmarks.flatMap({$0.objectForKey("title") as? String})
         let labelHeights = titles.map({$0.heightWithConstrainedWidth(itemWidth, font: UIFont.systemFontOfSize(10.0, weight: UIFontWeightMedium))})
         let labelMaxHeight = max(12.0, min((labelHeights.maxElement() ?? 12.0), 24.0))
         itemHeight = itemWidth + 2.0 + labelMaxHeight // itemHeight (1:1 ration) + label top spacing + label height
@@ -75,14 +72,14 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
         collectionView.reloadData()
     }
     
-    // MARK: - UICollectionView
+    // MARK: - UICollectionViewDataSource
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return titles.count
+        return bookmarks.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -93,8 +90,25 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
     
     func configureCell(cell: UICollectionViewCell, atIndexPath indexPath: NSIndexPath) {
         guard let cell = cell as? BookmarkWidgetCell else {return}
-        cell.label.text = titles[indexPath.item]
-        cell.imageView.image = UIImage(data: thumbDatas[indexPath.item])
+        let bookmark = bookmarks[indexPath.item]
+        guard let title = bookmark["title"] as? String,
+            let thumbImageData = bookmark["thumbImageData"] as? NSData else {return}
+        
+        cell.label.text = title
+        cell.imageView.image = UIImage(data: thumbImageData)
+        
+    }
+    
+    // MARK: - UICollectionViewDelegate
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        let bookmark = bookmarks[indexPath.item]
+        guard let urlString = bookmark["url"] as? String,
+            let url = NSURL(string: urlString) else {return}
+        extensionContext?.openURL(url, completionHandler: { (completed) in
+            collectionView.deselectItemAtIndexPath(indexPath, animated: true)
+        })
+        
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout

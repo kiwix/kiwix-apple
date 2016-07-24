@@ -22,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {
     func recordActiveSession() {
         Preference.activeUseHistory.append(NSDate()) 
     }
+    
+    // MARK: -
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         NSURLProtocol.registerClass(KiwixURLProtocol)
@@ -65,6 +67,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
         self.saveContext()
+    }
+    
+    func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
+        guard url.scheme.caseInsensitiveCompare("kiwix") == .OrderedSame else {return false}
+        mainController?.load(url)
+        return true
     }
     
     // MARK: - Active

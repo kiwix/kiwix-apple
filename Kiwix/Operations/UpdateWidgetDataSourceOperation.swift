@@ -28,15 +28,11 @@ class UpdateWidgetDataSourceOperation: Operation {
             articles = Article.fetchRecentFiveBookmarks(self.context)
         }
         
-        var titles = [String]()
-        var thumbDatas = [NSData]()
+        var bookmarks = [NSDictionary]()
         for article in articles {
-            guard let title = article.title,
-                let data = article.thumbImageData else {continue}
-            titles.append(title)
-            thumbDatas.append(data)
+            guard let articleData = article.dictionarySerilization() else {continue}
+            bookmarks.append(articleData)
         }
-        let bookmarks = ["titles": titles, "thumbDatas": thumbDatas]
         defaults?.setObject(bookmarks, forKey: "bookmarks")
         
         finish()

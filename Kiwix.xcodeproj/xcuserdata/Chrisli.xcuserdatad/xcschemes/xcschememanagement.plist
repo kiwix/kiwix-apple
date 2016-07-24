@@ -4,10 +4,10 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Article.xcscheme</key>
+		<key>Bookmarks.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>11</integer>
+			<integer>2</integer>
 		</dict>
 		<key>Kiwix-OSX.xcscheme</key>
 		<dict>
@@ -42,6 +42,16 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>9779C2FD1D4574280064CC8E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9779C3121D4575AD0064CC8E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>97A2AB871C1B80FF00052E74</key>
 		<dict>
 			<key>primary</key>
@@ -53,6 +63,11 @@
 			<true/>
 		</dict>
 		<key>97A2ABA91C1B810000052E74</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>97CF3EEA1D428F9600AE82FE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
