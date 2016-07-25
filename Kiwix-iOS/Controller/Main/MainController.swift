@@ -29,7 +29,12 @@ class MainController: UIViewController {
     let searchBar = SearchBar()
     
     var context: UnsafeMutablePointer<Void> = nil
-    var article: Article?
+    var article: Article? {
+        willSet(newArticle) {
+            article?.removeObserver(self, forKeyPath: "isBookmarked")
+            newArticle?.addObserver(self, forKeyPath: "isBookmarked", options: .New, context: context)
+        }
+    }
     
     private var webViewInitialURL: NSURL?
     
@@ -65,8 +70,15 @@ class MainController: UIViewController {
     }
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        guard context == self.context else {return}
-        webView.reload()
+        guard context == self.context, let keyPath = keyPath else {return}
+        switch keyPath {
+        case "webViewZoomScale", "webViewNotInjectJavascriptToAdjustPageLayout":
+            webView.reload()
+        case "isBookmarked":
+            configureBookmarkButton()
+        default:
+            return
+        }
     }
     
     override func didReceiveMemoryWarning() {
