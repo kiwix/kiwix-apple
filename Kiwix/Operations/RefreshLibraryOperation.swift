@@ -60,7 +60,7 @@ class ParseLibraryOperation: Operation, NSXMLParserDelegate {
     override init() {
         self.context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         context.parentContext = NSManagedObjectContext.mainQueueContext
-        context.mergePolicy = NSOverwriteMergePolicy
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         super.init()
         name = String(ParseLibraryOperation)
     }
