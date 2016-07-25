@@ -132,11 +132,11 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate, D
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let remove = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.remove) { (action, indexPath) -> Void in
             guard let article = self.fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
-            self.updateWidgetData()
             let context = NSManagedObjectContext.mainQueueContext
             context.performBlockAndWait({ () -> Void in
-                context.deleteObject(article)
+                article.isBookmarked = false
             })
+            self.updateWidgetData()
         }
         return [remove]
     }
