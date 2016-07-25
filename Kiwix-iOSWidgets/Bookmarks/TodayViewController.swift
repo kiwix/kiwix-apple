@@ -19,6 +19,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
     private var itemHeight: CGFloat = 0.0
     private var itemWidth: CGFloat = 0.0
     
+    private var hasUpdate = false
     private var bookmarks = [NSDictionary]()
     
     override func viewDidLoad() {
@@ -43,32 +44,29 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
     }
     
     func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void)) {
-        // Perform any setup necessary in order to update the view.
-
-        // If an error is encountered, use NCUpdateResult.Failed
-        // If there's no update required, use NCUpdateResult.NoData
-        // If there's an update, use NCUpdateResult.NewData
-
         updateData()
         updateUI()
-        completionHandler(NCUpdateResult.NewData)
+        completionHandler(hasUpdate ? .NewData : .NoData)
+        hasUpdate = false
     }
     
     func updateData() {
         let defaults = NSUserDefaults(suiteName: "group.kiwix")
         guard let bookmarks = defaults?.objectForKey("bookmarks") as? [NSDictionary] else {return}
+        hasUpdate = self.bookmarks != bookmarks
         self.bookmarks = bookmarks
     }
     
     func updateUI() {
         itemWidth = (collectionView.frame.width - 6 * hInset) / 5
-        
         let titles = bookmarks.flatMap({$0.objectForKey("title") as? String})
         let labelHeights = titles.map({$0.heightWithConstrainedWidth(itemWidth, font: UIFont.systemFontOfSize(10.0, weight: UIFontWeightMedium))})
         let labelMaxHeight = max(12.0, min((labelHeights.maxElement() ?? 12.0), 24.0))
         itemHeight = itemWidth + 2.0 + labelMaxHeight // itemHeight (1:1 ration) + label top spacing + label height
         
-        preferredContentSize = CGSizeMake(collectionView.frame.width,  itemHeight + 2 * vInset)
+        let rowCount: CGFloat = ceil(CGFloat(bookmarks.count) / 5)
+        let collectionViewHeight = rowCount * itemHeight + vInset * (rowCount + 1)
+        preferredContentSize = CGSizeMake(collectionView.frame.width,  collectionViewHeight)
         collectionView.reloadData()
     }
     
@@ -96,7 +94,6 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
         
         cell.label.text = title
         cell.imageView.image = UIImage(data: thumbImageData)
-        
     }
     
     // MARK: - UICollectionViewDelegate
@@ -108,7 +105,6 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
         extensionContext?.openURL(url, completionHandler: { (completed) in
             collectionView.deselectItemAtIndexPath(indexPath, animated: true)
         })
-        
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
@@ -118,7 +114,11 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
-        return 0.0
+        return hInset
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return vInset
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {

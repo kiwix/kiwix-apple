@@ -152,8 +152,6 @@ class SearchBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     // MARK: - Fetched Result Controller Delegate
     
-    // MARK: - Fetched Result Controller Delegate
-    
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
         tableView.beginUpdates()
     }

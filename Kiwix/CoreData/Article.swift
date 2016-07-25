@@ -24,13 +24,13 @@ class Article: NSManagedObject {
         return article
     }
     
-    class func fetchRecentFiveBookmarks(context: NSManagedObjectContext) -> [Article] {
+    class func fetchRecentBookmarks(count: Int, context: NSManagedObjectContext) -> [Article] {
         let fetchRequest = NSFetchRequest(entityName: "Article")
         let dateDescriptor = NSSortDescriptor(key: "bookmarkDate", ascending: false)
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [dateDescriptor, titleDescriptor]
         fetchRequest.predicate = NSPredicate(format: "isBookmarked == true")
-        fetchRequest.fetchLimit = 5
+        fetchRequest.fetchLimit = count
         return fetch(fetchRequest, type: Article.self, context: context) ?? [Article]()
     }
     

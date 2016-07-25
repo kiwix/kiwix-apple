@@ -1795,7 +1795,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Kiwix/libkiwix/shared",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.osx;
 				PRODUCT_NAME = Kiwix;
 				SDKROOT = macosx;
@@ -1826,7 +1826,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Kiwix/libkiwix/shared",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.osx;
 				PRODUCT_NAME = Kiwix;
 				SDKROOT = macosx;
