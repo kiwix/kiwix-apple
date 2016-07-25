@@ -27,12 +27,7 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate, D
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         setEditing(false, animated: false)
-    }
-    
-    override func setEditing(editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-        tableView.setEditing(editing, animated: animated)
-        navigationController?.setToolbarHidden(!editing, animated: animated)
+        navigationController?.setToolbarHidden(true, animated: true)
     }
     
     func updateWidgetData() {
@@ -200,6 +195,7 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate, D
     
     @IBAction func editingButtonTapped(sender: UIBarButtonItem) {
         setEditing(!editing, animated: true)
+        navigationController?.setToolbarHidden(!editing, animated: true)
     }
     
     @IBAction func removeBookmarkButtonTapped(sender: UIBarButtonItem) {
