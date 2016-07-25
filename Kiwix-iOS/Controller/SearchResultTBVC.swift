@@ -109,7 +109,7 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
         let result = searchResults[indexPath.row]
         let url = NSURL.kiwixURLWithZimFileid(result.bookID, articleTitle: result.title)
         mainVC.load(url)
-        mainVC.hideSearch()
+        mainVC.hideSearch(animated: true)
     }
 
     // MARK: - Search

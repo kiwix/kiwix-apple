@@ -225,7 +225,7 @@ class MainController: UIViewController {
     }
     
     func cancelButtonTapped() {
-        hideSearch()
+        hideSearch(animated: true)
         navigationItem.setRightBarButtonItem(nil, animated: true)
     }
     

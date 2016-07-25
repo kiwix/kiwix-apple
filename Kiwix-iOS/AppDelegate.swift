@@ -39,13 +39,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {
     func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
         switch shortcutItem.type {
         case "org.kiwix.search":
-            mainController?.hidePresentedController(true, completion: { 
-                self.mainController?.showSearch()
+            mainController?.hidePresentedController(false, completion: {
+                self.mainController?.showSearch(animated: false)
                 completionHandler(true)
             })
         case "org.kiwix.bookmarks":
-            mainController?.hidePresentedController(true, completion: {
-                self.mainController?.hideSearch()
+            mainController?.hidePresentedController(false, completion: {
+                self.mainController?.hideSearch(animated: false)
                 self.mainController?.showBookmarkTBVC()
                 completionHandler(true)
             })

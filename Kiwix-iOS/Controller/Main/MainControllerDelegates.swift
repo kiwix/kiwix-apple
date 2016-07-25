@@ -70,11 +70,11 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
     // MARK: - UISearchBarDelegate
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        showSearch()
+        showSearch(animated: true)
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        hideSearch()
+        hideSearch(animated: true)
         configureSearchBarPlaceHolder()
     }
 
