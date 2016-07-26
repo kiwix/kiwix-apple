@@ -16,6 +16,9 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
     private let hInset: CGFloat = 15.0
     private let vInset: CGFloat = 10.0
     private var itemSize = CGSizeZero
+    private var itemsPerRow: CGFloat = 5
+    private var rowCount: CGFloat = 1
+    private var maxRowCount: CGFloat = 1
     
     private var hasUpdate = true
     private var bookmarks = [NSDictionary]()
@@ -46,10 +49,11 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
     // MARK: - Update & Calculation
     
     func updateData() {
-        let defaults = NSUserDefaults(suiteName: "group.kiwix")
-        guard let bookmarks = defaults?.objectForKey("bookmarks") as? [NSDictionary] else {return}
+        guard let defaults = NSUserDefaults(suiteName: "group.kiwix") else {return}
+        guard let bookmarks = defaults.objectForKey("bookmarks") as? [NSDictionary] else {return}
         hasUpdate = self.bookmarks != bookmarks
         self.bookmarks = bookmarks
+        maxRowCount = CGFloat(max(1, min(defaults.integerForKey("BookmarkWidgetMaxRowCount"), 3)))
     }
     
     func updateUI() {
@@ -59,7 +63,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
     }
     
     func calculateItemSize(collectionViewWidth collectionViewWidth: CGFloat) {
-        let itemsPerRow = max(5, min(round(collectionViewWidth / 70), 10))
+        itemsPerRow = max(5, min(round(collectionViewWidth / 70), 10))
         let itemWidth = (collectionViewWidth - (itemsPerRow + 1) * hInset) / itemsPerRow
         let titles = bookmarks.flatMap({$0.objectForKey("title") as? String})
         let labelHeights = titles.map({$0.heightWithConstrainedWidth(itemWidth, font: UIFont.systemFontOfSize(10.0, weight: UIFontWeightMedium))})
@@ -67,7 +71,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
         let itemHeight = itemWidth + 2.0 + labelMaxHeight // itemHeight (1:1 ration) + label top spacing + label height
         itemSize = CGSizeMake(itemWidth, itemHeight)
         
-        let rowCount = ceil(CGFloat(bookmarks.count) / CGFloat(itemsPerRow))
+        rowCount = min(ceil(CGFloat(bookmarks.count) / CGFloat(itemsPerRow)), maxRowCount)
         let collectionViewHeight = itemHeight * rowCount + hInset * rowCount
         preferredContentSize = CGSizeMake(0, max(1, collectionViewHeight))
     }
@@ -93,7 +97,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return bookmarks.count
+        return min(bookmarks.count, Int(itemsPerRow * rowCount))
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

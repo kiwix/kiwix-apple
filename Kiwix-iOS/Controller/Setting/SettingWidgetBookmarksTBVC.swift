@@ -9,7 +9,13 @@
 import UIKit
 
 class SettingWidgetBookmarksTBVC: UITableViewController {
-    private var rowCount = 1 // widget row count
+    // widget row count
+    private var rowCount = 1 {
+        didSet {
+            let defaults = NSUserDefaults(suiteName: "group.kiwix")
+            defaults?.setInteger(rowCount ?? 1, forKey: "BookmarkWidgetMaxRowCount")
+        }
+    }
     
     let options = [NSLocalizedString("One Row", comment: "Setting: Bookmark Widget"),
                    NSLocalizedString("Two Rows", comment: "Setting: Bookmark Widget"),
@@ -20,14 +26,8 @@ class SettingWidgetBookmarksTBVC: UITableViewController {
         
         title = LocalizedStrings.bookmarks
         if let defaults = NSUserDefaults(suiteName: "group.kiwix") {
-            rowCount = max(1, min(defaults.integerForKey("BookmarkWidgetRowCount"), 3))
+            rowCount = max(1, min(defaults.integerForKey("BookmarkWidgetMaxRowCount"), 3))
         }
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        let defaults = NSUserDefaults(suiteName: "group.kiwix")
-        defaults?.setInteger(rowCount ?? 1, forKey: "BookmarkWidgetRowCount")
     }
 
     // MARK: - Table view data source
