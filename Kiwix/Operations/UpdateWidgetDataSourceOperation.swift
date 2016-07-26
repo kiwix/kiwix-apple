@@ -8,6 +8,7 @@
 
 import CoreData
 import PSOperations
+import NotificationCenter
 
 class UpdateWidgetDataSourceOperation: Operation {
     let context: NSManagedObjectContext
@@ -34,7 +35,7 @@ class UpdateWidgetDataSourceOperation: Operation {
             bookmarks.append(articleData)
         }
         defaults?.setObject(bookmarks, forKey: "bookmarks")
-        
+        NCWidgetController.widgetController().setHasContent(bookmarks.count > 0, forWidgetWithBundleIdentifier: "self.Kiwix.Bookmarks")
         finish()
     }
 }

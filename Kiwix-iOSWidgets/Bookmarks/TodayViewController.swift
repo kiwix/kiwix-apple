@@ -13,13 +13,11 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
         
     @IBOutlet weak var collectionView: UICollectionView!
     
-    private var rowHeight: CGFloat = 110.0
     private let hInset: CGFloat = 15.0
     private let vInset: CGFloat = 10.0
-    private var itemHeight: CGFloat = 0.0
-    private var itemWidth: CGFloat = 0.0
+    private var itemSize = CGSizeZero
     
-    private var hasUpdate = false
+    private var hasUpdate = true
     private var bookmarks = [NSDictionary]()
     
     override func viewDidLoad() {
@@ -28,13 +26,50 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
         collectionView.delegate = self
         
         updateData()
+        calculateItemSize(collectionViewWidth: collectionView.frame.width)
         updateUI()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         updateData()
+        calculateItemSize(collectionViewWidth: collectionView.frame.width)
         updateUI()
+    }
+    
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        calculateItemSize(collectionViewWidth: size.width)
+        updateUI()
+    }
+    
+    // MARK: - Update & Calculation
+    
+    func updateData() {
+        let defaults = NSUserDefaults(suiteName: "group.kiwix")
+        guard let bookmarks = defaults?.objectForKey("bookmarks") as? [NSDictionary] else {return}
+        hasUpdate = self.bookmarks != bookmarks
+        self.bookmarks = bookmarks
+    }
+    
+    func updateUI() {
+        collectionView.reloadData()
+        collectionView.collectionViewLayout.invalidateLayout()
+        NCWidgetController.widgetController().setHasContent(bookmarks.count > 0, forWidgetWithBundleIdentifier: "self.Kiwix.Bookmarks")
+    }
+    
+    func calculateItemSize(collectionViewWidth collectionViewWidth: CGFloat) {
+        let itemsPerRow = max(5, min(round(collectionViewWidth / 70), 10))
+        let itemWidth = (collectionViewWidth - (itemsPerRow + 1) * hInset) / itemsPerRow
+        let titles = bookmarks.flatMap({$0.objectForKey("title") as? String})
+        let labelHeights = titles.map({$0.heightWithConstrainedWidth(itemWidth, font: UIFont.systemFontOfSize(10.0, weight: UIFontWeightMedium))})
+        let labelMaxHeight = max(12.0, min((labelHeights.maxElement() ?? 12.0), 24.0))
+        let itemHeight = itemWidth + 2.0 + labelMaxHeight // itemHeight (1:1 ration) + label top spacing + label height
+        itemSize = CGSizeMake(itemWidth, itemHeight)
+        
+        let rowCount = ceil(CGFloat(bookmarks.count) / CGFloat(itemsPerRow))
+        let collectionViewHeight = itemHeight * rowCount + hInset * rowCount
+        preferredContentSize = CGSizeMake(0, max(1, collectionViewHeight))
     }
     
     // MARK: - NCWidgetProviding
@@ -45,29 +80,10 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
     
     func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void)) {
         updateData()
+        calculateItemSize(collectionViewWidth: collectionView.frame.width)
         updateUI()
         completionHandler(hasUpdate ? .NewData : .NoData)
         hasUpdate = false
-    }
-    
-    func updateData() {
-        let defaults = NSUserDefaults(suiteName: "group.kiwix")
-        guard let bookmarks = defaults?.objectForKey("bookmarks") as? [NSDictionary] else {return}
-        hasUpdate = self.bookmarks != bookmarks
-        self.bookmarks = bookmarks
-    }
-    
-    func updateUI() {
-        itemWidth = (collectionView.frame.width - 6 * hInset) / 5
-        let titles = bookmarks.flatMap({$0.objectForKey("title") as? String})
-        let labelHeights = titles.map({$0.heightWithConstrainedWidth(itemWidth, font: UIFont.systemFontOfSize(10.0, weight: UIFontWeightMedium))})
-        let labelMaxHeight = max(12.0, min((labelHeights.maxElement() ?? 12.0), 24.0))
-        itemHeight = itemWidth + 2.0 + labelMaxHeight // itemHeight (1:1 ration) + label top spacing + label height
-        
-        let rowCount: CGFloat = ceil(CGFloat(bookmarks.count) / 5)
-        let collectionViewHeight = rowCount * itemHeight + vInset * (rowCount + 1)
-        preferredContentSize = CGSizeMake(collectionView.frame.width,  collectionViewHeight)
-        collectionView.reloadData()
     }
     
     // MARK: - UICollectionViewDataSource
@@ -110,7 +126,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSizeMake(itemWidth, itemHeight)
+        return itemSize
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
