@@ -121,6 +121,7 @@
 		973DD4231D3443A3009D45DB /* ExtensionAndTypealias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD4221D3443A3009D45DB /* ExtensionAndTypealias.swift */; };
 		973DD4251D344558009D45DB /* ScanLocalBookOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD4241D344558009D45DB /* ScanLocalBookOperation.swift */; };
 		973DD4281D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD4271D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift */; };
+		974F42821D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974F42811D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift */; };
 		975227821D020560001D1DDE /* Indexer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227811D020560001D1DDE /* Indexer.storyboard */; };
 		975227991D020C00001D1DDE /* indexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227921D020C00001D1DDE /* indexer.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
 		9752279B1D020C00001D1DDE /* otherTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227931D020C00001D1DDE /* otherTools.cpp */; };
@@ -379,6 +380,7 @@
 		97497B5C1D074FB800ECD691 /* htmlparse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = htmlparse.h; path = "Kiwix/libkiwix/C&C++/xapian/htmlparse.h"; sourceTree = "<group>"; };
 		97497B5D1D074FB800ECD691 /* myhtmlparse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = myhtmlparse.h; path = "Kiwix/libkiwix/C&C++/xapian/myhtmlparse.h"; sourceTree = "<group>"; };
 		97497B5E1D07584100ECD691 /* xapianIndexer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = xapianIndexer.h; path = "Kiwix/libkiwix/C&C++/xapianIndexer.h"; sourceTree = "<group>"; };
+		974F42811D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingWidgetBookmarksTBVC.swift; path = "Kiwix-iOS/Controller/Setting/SettingWidgetBookmarksTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		975227811D020560001D1DDE /* Indexer.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Indexer.storyboard; path = "Kiwix-OSX/StoryBoards/Indexer.storyboard"; sourceTree = SOURCE_ROOT; };
 		975227921D020C00001D1DDE /* indexer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; name = indexer.cpp; path = "Kiwix/libkiwix/C&C++/indexer.cpp"; sourceTree = "<group>"; tabWidth = 2; };
 		975227931D020C00001D1DDE /* otherTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = otherTools.cpp; path = "Kiwix/libkiwix/C&C++/otherTools.cpp"; sourceTree = "<group>"; };
@@ -824,6 +826,14 @@
 			name = Bookmark;
 			sourceTree = "<group>";
 		};
+		974F42801D47E15400F8074C /* Widget */ = {
+			isa = PBXGroup;
+			children = (
+				974F42811D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift */,
+			);
+			name = Widget;
+			sourceTree = "<group>";
+		};
 		975227A41D020C0F001D1DDE /* indexer */ = {
 			isa = PBXGroup;
 			children = (
@@ -902,6 +912,7 @@
 				97C01FCA1C39B7F100D010E5 /* Library */,
 				97C01FD21C39BF4E00D010E5 /* Reading */,
 				970E68B31D37E1E0001E8514 /* Search */,
+				974F42801D47E15400F8074C /* Widget */,
 			);
 			name = Setting;
 			sourceTree = "<group>";
@@ -1649,6 +1660,7 @@
 				978C58981C1CD86E0077AE47 /* Book.swift in Sources */,
 				978C58961C1CD86E0077AE47 /* Language.swift in Sources */,
 				971A10701D022E62007FC62C /* Network.swift in Sources */,
+				974F42821D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift in Sources */,
 				970E68B21D37E1DD001E8514 /* SettingSearchTuneController.swift in Sources */,
 				971A104A1D022CBE007FC62C /* SearchResultTBVC.swift in Sources */,
 				971A105B1D022DAD007FC62C /* LibraryOnlineTBVC.swift in Sources */,
