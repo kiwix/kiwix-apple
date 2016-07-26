@@ -1218,6 +1218,7 @@
 				9779C30F1D4575AD0064CC8E /* Sources */,
 				9779C3101D4575AD0064CC8E /* Frameworks */,
 				9779C3111D4575AD0064CC8E /* Resources */,
+				974F42831D47F61B00F8074C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1485,6 +1486,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		974F42831D47F61B00F8074C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\nbuildNumString=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nversionNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"$INFOPLIST_FILE\")\nIFS='.'; arr=($buildNumString)\nlastIndex=$((${#arr[@]} - 1))\nbuildNumber=$((${arr[lastIndex]} + 1))\nbuildNumString=\"${arr[0]}.${arr[1]}.$buildNumber\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumString\" \"$INFOPLIST_FILE\"";
 		};
 		97A4D7E21CF8C318006C731E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
