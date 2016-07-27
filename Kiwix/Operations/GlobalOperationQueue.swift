@@ -10,10 +10,6 @@ import PSOperations
 
 class GlobalOperationQueue: OperationQueue {
     static let sharedInstance = GlobalOperationQueue()
-    
-//    var isRefreshingLibrary: Bool {
-//        return getOperation(String(RefreshLibraryOperation)) != nil
-//    }
 }
 
 public enum OperationErrorCode: Int {

@@ -24,7 +24,7 @@ class ScanLocalBookOperation: Operation {
          completionHandler: ((currentZimFileURLSnapshot: Set<NSURL>, currentIndexFolderURLSnapshot: Set<NSURL>, firstBookAdded: Bool) -> Void)) {
         self.context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         context.parentContext = NSManagedObjectContext.mainQueueContext
-        context.mergePolicy = NSOverwriteMergePolicy
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         
         self.lastZimFileURLSnapshot = lastZimFileURLSnapshot
         self.lastIndexFolderURLSnapshot = lastIndexFolderURLSnapshot
@@ -41,10 +41,10 @@ class ScanLocalBookOperation: Operation {
         currentZimFileURLSnapshot = ScanLocalBookOperation.getCurrentZimFileURLsInDocDir()
         currentIndexFolderURLSnapshot = ScanLocalBookOperation.getCurrentIndexFolderURLsInDocDir()
         
-        let zimFileHasChanges = lastZimFileURLSnapshot != currentZimFileURLSnapshot
+//        let zimFileHasChanges = lastZimFileURLSnapshot != currentZimFileURLSnapshot
         let indexFolderHasDeletions = lastIndexFolderURLSnapshot.subtract(currentIndexFolderURLSnapshot).count > 0
         
-        guard zimFileHasChanges || indexFolderHasDeletions else {return}
+//        guard zimFileHasChanges || indexFolderHasDeletions else {return}
         
         if indexFolderHasDeletions {
             lastZimFileURLSnapshot.removeAll()
