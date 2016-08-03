@@ -6,7 +6,7 @@
 //  Copyright © 2016 Chris. All rights reserved.
 //
 
-import PSOperations
+import Operations
 
 private var URLSessionTaskOperationKVOContext = 0
 

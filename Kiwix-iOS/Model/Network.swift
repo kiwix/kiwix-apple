@@ -7,7 +7,7 @@
 //
 
 import CoreData
-import PSOperations
+import Operations
 
 class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSURLSessionTaskDelegate, OperationQueueDelegate {
     static let sharedInstance = Network()

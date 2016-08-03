@@ -8,7 +8,7 @@ This file shows an example of implementing the OperationCondition protocol.
 
 import Foundation
 import SystemConfiguration
-import PSOperations
+import Operations
 
 /**
     This is a condition that performs a very high-level reachability check.

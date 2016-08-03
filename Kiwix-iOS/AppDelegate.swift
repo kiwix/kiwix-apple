@@ -7,7 +7,7 @@
 
 import UIKit
 import CoreData
-import PSOperations
+import Operations
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {

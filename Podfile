@@ -8,7 +8,7 @@ platform :ios, '9.0'
 pod 'DateTools'
 pod 'DZNEmptyDataSet'
 pod 'SwiftyUserDefaults'
-pod 'PSOperations/Core', '~> 2.3'
+pod 'Operations'
 
 end
 
@@ -17,6 +17,6 @@ target 'Kiwix-OSX' do
 platform :osx, '10.10'
 
 pod 'DateTools'
-pod 'SwiftyUserDefaults'
+pod 'Operations'
 
 end

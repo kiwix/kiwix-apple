@@ -7,7 +7,7 @@
 //
 
 import CoreData
-import PSOperations
+import Operations
 
 class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     static let sharedInstance = ZimMultiReader()

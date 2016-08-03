@@ -101,7 +101,7 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
                 }
             } else {
                 guard !Preference.libraryHasShownPreferredLanguagePrompt else {return}
-                let operation = RefreshLibraryLanguageFilterAlert(libraryOnlineTBVC: self)
+                let operation = RefreshLibraryLanguageFilterAlert(presentationContext: self)
                 GlobalOperationQueue.sharedInstance.addOperation(operation)
             }
         }

@@ -8,7 +8,7 @@
 //
 
 import UIKit
-import PSOperations
+import Operations
 
 class MainController: UIViewController {
     
