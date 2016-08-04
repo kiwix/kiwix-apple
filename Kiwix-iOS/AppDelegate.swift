@@ -10,7 +10,7 @@ import CoreData
 import Operations
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     var mainController: MainController? {

@@ -54,10 +54,10 @@ class ScanLocalBookOperation: Operation {
         updateCoreData()
     }
     
-    override func finished(errors: [NSError]) {
+    override func operationDidFinish(errors: [ErrorType]) {
         context.performBlockAndWait {self.context.saveIfNeeded()}
         NSManagedObjectContext.mainQueueContext.performBlockAndWait {NSManagedObjectContext.mainQueueContext.saveIfNeeded()}
-        NSOperationQueue.mainQueue().addOperationWithBlock { 
+        NSOperationQueue.mainQueue().addOperationWithBlock {
             self.completionHandler(currentZimFileURLSnapshot: self.currentZimFileURLSnapshot,
                 currentIndexFolderURLSnapshot: self.currentIndexFolderURLSnapshot, firstBookAdded: self.firstBookAdded)
         }

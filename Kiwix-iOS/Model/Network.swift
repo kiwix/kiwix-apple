@@ -106,7 +106,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
     
     // MARK: - OperationQueueDelegate
     
-    func operationQueue(operationQueue: OperationQueue, willAddOperation operation: NSOperation) {
+    func operationQueue(queue: OperationQueue, willAddOperation operation: NSOperation) {
         guard operationQueue.operationCount == 0 else {return}
         shouldReportProgress = true
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
@@ -114,13 +114,17 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
         }
     }
     
-    func operationQueue(operationQueue: OperationQueue, operationDidFinish operation: NSOperation, withErrors errors: [NSError]) {
+    func operationQueue(queue: OperationQueue, willFinishOperation operation: NSOperation, withErrors errors: [ErrorType]) {}
+    
+    func operationQueue(queue: OperationQueue, didFinishOperation operation: NSOperation, withErrors errors: [ErrorType]) {
         guard operationQueue.operationCount == 1 else {return}
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
             self.timer?.invalidate()
             self.shouldReportProgress = false
         }
     }
+    
+    func operationQueue(queue: OperationQueue, willProduceOperation operation: NSOperation) {}
     
     // MARK: - NSURLSessionDelegate
     

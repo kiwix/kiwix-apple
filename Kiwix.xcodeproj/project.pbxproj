@@ -10,7 +10,6 @@
 		7356F9FACBB84380CFC8F68F /* Pods_Kiwix_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC884ACBBA260AF741C4C4FE /* Pods_Kiwix_iOS.framework */; };
 		970C3DCA1CBD79450026A240 /* MigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C3DC91CBD79450026A240 /* MigrationPolicy.swift */; };
 		970C61971D34243600087758 /* URLSessionDownloadTaskOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C61961D34243600087758 /* URLSessionDownloadTaskOperation.swift */; };
-		970C61991D3429E400087758 /* ReachabilityCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C61981D3429E400087758 /* ReachabilityCondition.swift */; };
 		970C65501D398D5A007032F8 /* BookmarkControllerAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C654F1D398D5A007032F8 /* BookmarkControllerAnimator.swift */; };
 		970E68B21D37E1DD001E8514 /* SettingSearchTuneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B11D37E1DD001E8514 /* SettingSearchTuneController.swift */; };
 		970E68B61D37E224001E8514 /* SettingSearchHistoryTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B51D37E224001E8514 /* SettingSearchHistoryTBVC.swift */; };
@@ -273,7 +272,6 @@
 		6DCB0E958A1083CA248C5A12 /* Pods-Kiwix-OSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-OSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-OSX/Pods-Kiwix-OSX.debug.xcconfig"; sourceTree = "<group>"; };
 		970C3DC91CBD79450026A240 /* MigrationPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MigrationPolicy.swift; path = CoreData/Migration/MigrationPolicy.swift; sourceTree = "<group>"; };
 		970C61961D34243600087758 /* URLSessionDownloadTaskOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = URLSessionDownloadTaskOperation.swift; path = Operations/URLSessionDownloadTaskOperation.swift; sourceTree = "<group>"; };
-		970C61981D3429E400087758 /* ReachabilityCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityCondition.swift; sourceTree = "<group>"; };
 		970C654F1D398D5A007032F8 /* BookmarkControllerAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookmarkControllerAnimator.swift; path = "Kiwix-iOS/Controller/Bookmark/BookmarkControllerAnimator.swift"; sourceTree = SOURCE_ROOT; };
 		970E68B11D37E1DD001E8514 /* SettingSearchTuneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSearchTuneController.swift; path = "Kiwix-iOS/Controller/Setting/SettingSearchTuneController.swift"; sourceTree = SOURCE_ROOT; };
 		970E68B51D37E224001E8514 /* SettingSearchHistoryTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSearchHistoryTBVC.swift; path = "Kiwix-iOS/Controller/Setting/SettingSearchHistoryTBVC.swift"; sourceTree = SOURCE_ROOT; };
@@ -412,9 +410,7 @@
 		977998711C1E0B7900B1DD5E /* Article+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Article+CoreDataProperties.swift"; path = "Kiwix/CoreData/Article+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		977998721C1E0B7900B1DD5E /* Language+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Language+CoreDataProperties.swift"; path = "Kiwix/CoreData/Language+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9779987A1C1E1C9600B1DD5E /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = Kiwix/Extensions.swift; sourceTree = "<group>"; };
-		9779A1C21D34225E0071EFAB /* AlertOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlertOperation.swift; path = Operations/AlertOperation.swift; sourceTree = "<group>"; };
 		9779A1C31D34225E0071EFAB /* GlobalOperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GlobalOperationQueue.swift; path = Operations/GlobalOperationQueue.swift; sourceTree = "<group>"; };
-		9779A1C41D34225E0071EFAB /* NetworkObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NetworkObserver.swift; path = Operations/NetworkObserver.swift; sourceTree = "<group>"; };
 		9779A1C51D34225E0071EFAB /* RefreshLibraryOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefreshLibraryOperation.swift; path = Operations/RefreshLibraryOperation.swift; sourceTree = "<group>"; };
 		9779A1C61D34225E0071EFAB /* SearchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchOperation.swift; path = Operations/SearchOperation.swift; sourceTree = "<group>"; };
 		9779A1C71D34225E0071EFAB /* UIOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIOperations.swift; path = Operations/UIOperations.swift; sourceTree = "<group>"; };
@@ -793,17 +789,6 @@
 			name = Shared;
 			sourceTree = "<group>";
 		};
-		973DD4031D343F09009D45DB /* Basic */ = {
-			isa = PBXGroup;
-			children = (
-				9779A1C21D34225E0071EFAB /* AlertOperation.swift */,
-				9779A1C41D34225E0071EFAB /* NetworkObserver.swift */,
-				970C61981D3429E400087758 /* ReachabilityCondition.swift */,
-				9779A1C71D34225E0071EFAB /* UIOperations.swift */,
-			);
-			name = Basic;
-			sourceTree = "<group>";
-		};
 		973DD4261D36E395009D45DB /* Tools */ = {
 			isa = PBXGroup;
 			children = (
@@ -1106,11 +1091,11 @@
 		97E5712A1CA0525300FF4F1D /* Operation */ = {
 			isa = PBXGroup;
 			children = (
-				973DD4031D343F09009D45DB /* Basic */,
 				9779A1C31D34225E0071EFAB /* GlobalOperationQueue.swift */,
 				9779A1C51D34225E0071EFAB /* RefreshLibraryOperation.swift */,
 				973DD4241D344558009D45DB /* ScanLocalBookOperation.swift */,
 				9779A1C61D34225E0071EFAB /* SearchOperation.swift */,
+				9779A1C71D34225E0071EFAB /* UIOperations.swift */,
 				971C4F0D1D400F010027B7D2 /* UpdateWidgetDataSourceOperation.swift */,
 				970C61961D34243600087758 /* URLSessionDownloadTaskOperation.swift */,
 			);
@@ -1721,7 +1706,6 @@
 				970E68BB1D3809A3001E8514 /* MainControllerDelegates.swift in Sources */,
 				973DD4211D34434C009D45DB /* SearchResult.swift in Sources */,
 				9779A1C91D34225E0071EFAB /* GlobalOperationQueue.swift in Sources */,
-				970C61991D3429E400087758 /* ReachabilityCondition.swift in Sources */,
 				978C589C1C1CD86E0077AE47 /* Article.swift in Sources */,
 				973DD41E1D34428F009D45DB /* ZimMultiReader.swift in Sources */,
 			);
