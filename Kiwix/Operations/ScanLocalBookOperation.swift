@@ -112,7 +112,7 @@ class ScanLocalBookOperation: Operation {
     // MARK: - Helper
     
     private class func getCurrentZimFileURLsInDocDir() -> Set<NSURL> {
-        let fileURLs = FileManager.contentsOfDirectory(FileManager.docDirURL) ?? [NSURL]()
+        let fileURLs = FileManager.contentsOfDirectory(NSFileManager.docDirURL) ?? [NSURL]()
         var zimURLs = Set<NSURL>()
         for url in fileURLs {
             do {
@@ -133,7 +133,7 @@ class ScanLocalBookOperation: Operation {
     }
     
     private class func getCurrentIndexFolderURLsInDocDir() -> Set<NSURL> {
-        let fileURLs = FileManager.contentsOfDirectory(FileManager.docDirURL) ?? [NSURL]()
+        let fileURLs = FileManager.contentsOfDirectory(NSFileManager.docDirURL) ?? [NSURL]()
         var folderURLs = Set<NSURL>()
         for url in fileURLs {
             do {

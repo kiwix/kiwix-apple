@@ -30,8 +30,6 @@ import Foundation
     }
 #endif
 
-// MARK: - Model
-
 extension NSLocale {
     class var preferredLangCodes: [String] {
         let preferredLangNames = self.preferredLanguages()
@@ -51,6 +49,18 @@ extension NSBundle {
     
     class var buildVersion: String {
         return (NSBundle.mainBundle().objectForInfoDictionaryKey(kCFBundleVersionKey as String) as? String) ?? "Unknown"
+    }
+}
+
+extension NSFileManager {
+    class var docDirURL: NSURL {
+        let url = try? NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
+        return url!
+    }
+    
+    class var libDirURL: NSURL {
+        let url = try? NSFileManager.defaultManager().URLForDirectory(.LibraryDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
+        return url!
     }
 }
 

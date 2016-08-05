@@ -778,7 +778,6 @@
 			isa = PBXGroup;
 			children = (
 				9711872D1CEB507600B9909D /* CoreData */,
-				9779987A1C1E1C9600B1DD5E /* Extensions.swift */,
 				97163D321CD7E79F008BE2D6 /* Help Docs */,
 				971187051CEB426E00B9909D /* libkiwix */,
 				97E5712A1CA0525300FF4F1D /* Operation */,
@@ -792,6 +791,7 @@
 		973DD4261D36E395009D45DB /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				9779987A1C1E1C9600B1DD5E /* Extensions.swift */,
 				97E891681CA976E90001CA32 /* FileManager.swift */,
 				973C8D5B1C25F945007272F9 /* Preference.swift */,
 				979C51511CECA9AF001707F2 /* StringTools.swift */,
