@@ -33,7 +33,7 @@ class SnapshotAutomation: XCTestCase {
             snapshot("02LibraryScreen")
         } else {
             // iPad
-            app.navigationBars["Kiwix.MainVC"].childrenMatchingType(.Button).elementBoundByIndex(4).tap()
+            app.navigationBars["Kiwix.MainController"].childrenMatchingType(.Button).elementBoundByIndex(4).tap()
             sleep(4)
             if app.alerts.count > 0 {
                 app.alerts["Only Show Preferred Language?"].collectionViews.buttons["OK"].tap()

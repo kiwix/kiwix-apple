@@ -7,25 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		970103FB1C6824FA00DC48F6 /* RefreshLibraryOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970103F91C6824FA00DC48F6 /* RefreshLibraryOperation.swift */; };
+		7356F9FACBB84380CFC8F68F /* Pods_Kiwix_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC884ACBBA260AF741C4C4FE /* Pods_Kiwix_iOS.framework */; };
 		970C3DCA1CBD79450026A240 /* MigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C3DC91CBD79450026A240 /* MigrationPolicy.swift */; };
+		970C61971D34243600087758 /* URLSessionDownloadTaskOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C61961D34243600087758 /* URLSessionDownloadTaskOperation.swift */; };
+		970C61991D3429E400087758 /* ReachabilityCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C61981D3429E400087758 /* ReachabilityCondition.swift */; };
+		970C65501D398D5A007032F8 /* BookmarkControllerAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C654F1D398D5A007032F8 /* BookmarkControllerAnimator.swift */; };
+		970E68B21D37E1DD001E8514 /* SettingSearchTuneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B11D37E1DD001E8514 /* SettingSearchTuneController.swift */; };
+		970E68B61D37E224001E8514 /* SettingSearchHistoryTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B51D37E224001E8514 /* SettingSearchHistoryTBVC.swift */; };
+		970E68BA1D3809A3001E8514 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B71D3809A3001E8514 /* MainController.swift */; };
+		970E68BB1D3809A3001E8514 /* MainControllerDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B81D3809A3001E8514 /* MainControllerDelegates.swift */; };
 		971046321D19B96E002141C0 /* XapianSearcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = 971046311D19B96E002141C0 /* XapianSearcher.mm */; };
-		971046341D1C830C002141C0 /* SearchTuneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971046331D1C830C002141C0 /* SearchTuneController.swift */; };
 		9711871C1CEB448400B9909D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711871B1CEB448400B9909D /* libz.tbd */; };
 		9711871E1CEB449A00B9909D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711871D1CEB449A00B9909D /* libz.tbd */; };
 		971187301CEB50FC00B9909D /* ZimReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9711872F1CEB50FC00B9909D /* ZimReader.mm */; };
 		971187311CEB50FC00B9909D /* ZimReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9711872F1CEB50FC00B9909D /* ZimReader.mm */; };
-		971187461CEB512D00B9909D /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711873B1CEB512D00B9909D /* libicudata.a */; };
-		971187471CEB512D00B9909D /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711873C1CEB512D00B9909D /* libicui18n.a */; };
-		971187481CEB512D00B9909D /* libicuio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711873D1CEB512D00B9909D /* libicuio.a */; };
-		971187491CEB512D00B9909D /* libicule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711873E1CEB512D00B9909D /* libicule.a */; };
-		9711874A1CEB512D00B9909D /* libiculx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711873F1CEB512D00B9909D /* libiculx.a */; };
-		9711874B1CEB512D00B9909D /* libicutest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 971187401CEB512D00B9909D /* libicutest.a */; };
-		9711874C1CEB512D00B9909D /* libicutu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 971187411CEB512D00B9909D /* libicutu.a */; };
-		9711874D1CEB512D00B9909D /* libicuuc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 971187421CEB512D00B9909D /* libicuuc.a */; };
-		9711874E1CEB512D00B9909D /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 971187431CEB512D00B9909D /* liblzma.a */; };
-		9711874F1CEB512D00B9909D /* libxapian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 971187441CEB512D00B9909D /* libxapian.a */; };
-		971187501CEB512D00B9909D /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 971187451CEB512D00B9909D /* libzim.a */; };
 		9711875C1CEB512F00B9909D /* libicudata.55.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 971187511CEB512F00B9909D /* libicudata.55.dylib */; };
 		9711875D1CEB512F00B9909D /* libicui18n.55.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 971187521CEB512F00B9909D /* libicui18n.55.dylib */; };
 		9711875E1CEB512F00B9909D /* libicuio.55.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 971187531CEB512F00B9909D /* libicuio.55.dylib */; };
@@ -90,22 +85,18 @@
 		971A105B1D022DAD007FC62C /* LibraryOnlineTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10561D022DAD007FC62C /* LibraryOnlineTBVC.swift */; };
 		971A105C1D022DAD007FC62C /* LibraryTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10571D022DAD007FC62C /* LibraryTabBarController.swift */; };
 		971A10601D022DF2007FC62C /* LanguageTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A105F1D022DF2007FC62C /* LanguageTBVC.swift */; };
-		971A10651D022E0A007FC62C /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10611D022E0A007FC62C /* MainVC.swift */; };
-		971A10661D022E0A007FC62C /* MainVCLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10621D022E0A007FC62C /* MainVCLoading.swift */; };
-		971A10671D022E0A007FC62C /* MainVCDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10631D022E0A007FC62C /* MainVCDelegates.swift */; };
-		971A106A1D022E15007FC62C /* BookmarkHUDVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10691D022E15007FC62C /* BookmarkHUDVC.swift */; };
 		971A106C1D022E50007FC62C /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A106B1D022E50007FC62C /* Utilities.swift */; };
 		971A106F1D022E62007FC62C /* DownloadProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A106D1D022E62007FC62C /* DownloadProgress.swift */; };
 		971A10701D022E62007FC62C /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A106E1D022E62007FC62C /* Network.swift */; };
-		971A10721D022E74007FC62C /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10711D022E74007FC62C /* KiwixURLProtocol.swift */; };
 		971A10771D022F05007FC62C /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 971A10791D022F05007FC62C /* Localizable.stringsdict */; };
 		971A107E1D022F74007FC62C /* DownloaderLearnMore.html in Resources */ = {isa = PBXBuildFile; fileRef = 971A107A1D022F74007FC62C /* DownloaderLearnMore.html */; };
 		971A107F1D022F74007FC62C /* ImportBookLearnMore.html in Resources */ = {isa = PBXBuildFile; fileRef = 971A107B1D022F74007FC62C /* ImportBookLearnMore.html */; };
 		971A10801D022F74007FC62C /* Pic_I.png in Resources */ = {isa = PBXBuildFile; fileRef = 971A107C1D022F74007FC62C /* Pic_I.png */; };
 		971A10811D022F74007FC62C /* Pic_P.png in Resources */ = {isa = PBXBuildFile; fileRef = 971A107D1D022F74007FC62C /* Pic_P.png */; };
-		97254FDF1C2644560056950B /* ZIMMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97254FDE1C2644560056950B /* ZIMMultiReader.swift */; };
+		971C4F0E1D400F010027B7D2 /* UpdateWidgetDataSourceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971C4F0D1D400F010027B7D2 /* UpdateWidgetDataSourceOperation.swift */; };
+		97219DBD1D383A00009FDFF1 /* BookmarkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97219DBC1D383A00009FDFF1 /* BookmarkController.swift */; };
+		9722122B1D3FCCE200C0DCF2 /* MainControllerShowHide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9722122A1D3FCCE200C0DCF2 /* MainControllerShowHide.swift */; };
 		9734E54E1D289D060061C39B /* Welcome.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9734E54D1D289D060061C39B /* Welcome.storyboard */; };
-		973970ED1CB9A04C00350507 /* SearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973970EC1CB9A04C00350507 /* SearchOperation.swift */; };
 		973BCCEC1CEB3FA400F10B44 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCCEB1CEB3FA400F10B44 /* AppDelegate.swift */; };
 		973BCCF31CEB3FA400F10B44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 973BCCF21CEB3FA400F10B44 /* Assets.xcassets */; };
 		973BCD011CEB3FA500F10B44 /* Kiwix_OSXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCD001CEB3FA500F10B44 /* Kiwix_OSXTests.swift */; };
@@ -113,7 +104,24 @@
 		973BCD1A1CEB402900F10B44 /* KiwixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCD181CEB402900F10B44 /* KiwixTests.swift */; };
 		973BCD1E1CEB403700F10B44 /* SnapshotAutomation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCD1C1CEB403700F10B44 /* SnapshotAutomation.swift */; };
 		973C8D5C1C25F945007272F9 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973C8D5B1C25F945007272F9 /* Preference.swift */; };
-		974570F41C2DABB500680E43 /* ZIMMultiReaderAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974570F31C2DABB500680E43 /* ZIMMultiReaderAPI.swift */; };
+		973DD40F1D343F2F009D45DB /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD4041D343F2F009D45DB /* libicudata.a */; };
+		973DD4101D343F2F009D45DB /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD4051D343F2F009D45DB /* libicui18n.a */; };
+		973DD4111D343F2F009D45DB /* libicuio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD4061D343F2F009D45DB /* libicuio.a */; };
+		973DD4121D343F2F009D45DB /* libicule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD4071D343F2F009D45DB /* libicule.a */; };
+		973DD4131D343F2F009D45DB /* libiculx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD4081D343F2F009D45DB /* libiculx.a */; };
+		973DD4141D343F2F009D45DB /* libicutest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD4091D343F2F009D45DB /* libicutest.a */; };
+		973DD4151D343F2F009D45DB /* libicutu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40A1D343F2F009D45DB /* libicutu.a */; };
+		973DD4161D343F2F009D45DB /* libicuuc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40B1D343F2F009D45DB /* libicuuc.a */; };
+		973DD4171D343F2F009D45DB /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40C1D343F2F009D45DB /* liblzma.a */; };
+		973DD4181D343F2F009D45DB /* libxapian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40D1D343F2F009D45DB /* libxapian.a */; };
+		973DD4191D343F2F009D45DB /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40E1D343F2F009D45DB /* libzim.a */; };
+		973DD41D1D34428F009D45DB /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD41A1D34428F009D45DB /* DirectoryMonitor.swift */; };
+		973DD41E1D34428F009D45DB /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD41B1D34428F009D45DB /* ZimMultiReader.swift */; };
+		973DD4211D34434C009D45DB /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD4201D34434C009D45DB /* SearchResult.swift */; };
+		973DD4231D3443A3009D45DB /* ExtensionAndTypealias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD4221D3443A3009D45DB /* ExtensionAndTypealias.swift */; };
+		973DD4251D344558009D45DB /* ScanLocalBookOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD4241D344558009D45DB /* ScanLocalBookOperation.swift */; };
+		973DD4281D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD4271D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift */; };
+		974F42821D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974F42811D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift */; };
 		975227821D020560001D1DDE /* Indexer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227811D020560001D1DDE /* Indexer.storyboard */; };
 		975227991D020C00001D1DDE /* indexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227921D020C00001D1DDE /* indexer.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
 		9752279B1D020C00001D1DDE /* otherTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227931D020C00001D1DDE /* otherTools.cpp */; };
@@ -142,22 +150,26 @@
 		975B90F91CEB75CB00D13906 /* ZimFilesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975B90F81CEB75CB00D13906 /* ZimFilesController.swift */; };
 		975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975B90FD1CEB909100D13906 /* iOSExtensions.swift */; };
 		975B90FF1CEB909900D13906 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779987A1C1E1C9600B1DD5E /* Extensions.swift */; };
-		975B91001CEB983E00D13906 /* RefreshLibraryOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970103F91C6824FA00DC48F6 /* RefreshLibraryOperation.swift */; };
-		975B91011CEB984C00D13906 /* GlobalOperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DF23541CE807A1003E1E5A /* GlobalOperationQueue.swift */; };
 		975B912F1CEB9B0F00D13906 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973C8D5B1C25F945007272F9 /* Preference.swift */; };
 		9763A6291CEB9E55008A2718 /* OSXExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9763A6281CEB9E55008A2718 /* OSXExtensions.swift */; };
-		9763A62A1CEBA4F9008A2718 /* ZIMMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97254FDE1C2644560056950B /* ZIMMultiReader.swift */; };
-		9763A62B1CEBA4F9008A2718 /* ZIMMultiReaderAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974570F31C2DABB500680E43 /* ZIMMultiReaderAPI.swift */; };
-		9763A62C1CEBA4F9008A2718 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A714091C274FCB00951244 /* DirectoryMonitor.swift */; };
 		9763A62D1CEBA524008A2718 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E891681CA976E90001CA32 /* FileManager.swift */; };
 		976AB2671CBD8B3D00B06EB0 /* 1.5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 976AB2661CBD8B3D00B06EB0 /* 1.5.xcmappingmodel */; };
-		977305361D0DFD110081B8F0 /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10711D022E74007FC62C /* KiwixURLProtocol.swift */; };
 		977998741C1E0B7900B1DD5E /* Book+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779986E1C1E0B7900B1DD5E /* Book+CoreDataProperties.swift */; };
 		977998751C1E0B7900B1DD5E /* DownloadTask+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779986F1C1E0B7900B1DD5E /* DownloadTask+CoreDataProperties.swift */; };
 		977998761C1E0B7900B1DD5E /* DownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977998701C1E0B7900B1DD5E /* DownloadTask.swift */; };
 		977998771C1E0B7900B1DD5E /* Article+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977998711C1E0B7900B1DD5E /* Article+CoreDataProperties.swift */; };
 		977998781C1E0B7900B1DD5E /* Language+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977998721C1E0B7900B1DD5E /* Language+CoreDataProperties.swift */; };
 		9779987B1C1E1C9600B1DD5E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779987A1C1E1C9600B1DD5E /* Extensions.swift */; };
+		9779A1C81D34225E0071EFAB /* AlertOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A1C21D34225E0071EFAB /* AlertOperation.swift */; };
+		9779A1C91D34225E0071EFAB /* GlobalOperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A1C31D34225E0071EFAB /* GlobalOperationQueue.swift */; };
+		9779A1CA1D34225E0071EFAB /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A1C41D34225E0071EFAB /* NetworkObserver.swift */; };
+		9779A1CB1D34225E0071EFAB /* RefreshLibraryOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A1C51D34225E0071EFAB /* RefreshLibraryOperation.swift */; };
+		9779A1CC1D34225E0071EFAB /* SearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A1C61D34225E0071EFAB /* SearchOperation.swift */; };
+		9779A1CD1D34225E0071EFAB /* UIOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A1C71D34225E0071EFAB /* UIOperations.swift */; };
+		9779C3141D4575AD0064CC8E /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E609F01D103DED00EBCB9D /* NotificationCenter.framework */; };
+		9779C3171D4575AE0064CC8E /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779C3161D4575AE0064CC8E /* TodayViewController.swift */; };
+		9779C31A1D4575AE0064CC8E /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9779C3181D4575AE0064CC8E /* MainInterface.storyboard */; };
+		9779C31E1D4575AE0064CC8E /* Bookmarks.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9779C3131D4575AD0064CC8E /* Bookmarks.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		978C58961C1CD86E0077AE47 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978C588E1C1CD86E0077AE47 /* Language.swift */; };
 		978C58981C1CD86E0077AE47 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978C58901C1CD86E0077AE47 /* Book.swift */; };
 		978C589C1C1CD86E0077AE47 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978C58941C1CD86E0077AE47 /* Article.swift */; };
@@ -165,110 +177,23 @@
 		979C51531CECA9AF001707F2 /* StringTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979C51511CECA9AF001707F2 /* StringTools.swift */; };
 		979C518D1CECAE4C001707F2 /* PreferenceWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979C518B1CECAE4C001707F2 /* PreferenceWindowController.swift */; };
 		979CB60F1D04AD04005E1BA1 /* PreferenceTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB60E1D04AD04005E1BA1 /* PreferenceTabController.swift */; };
-		979CB6431D05C44F005E1BA1 /* CalendarCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6121D05C44F005E1BA1 /* CalendarCapability.swift */; };
-		979CB6441D05C44F005E1BA1 /* CalendarCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6121D05C44F005E1BA1 /* CalendarCapability.swift */; };
-		979CB6451D05C44F005E1BA1 /* Capability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6131D05C44F005E1BA1 /* Capability.swift */; };
-		979CB6461D05C44F005E1BA1 /* Capability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6131D05C44F005E1BA1 /* Capability.swift */; };
-		979CB6491D05C44F005E1BA1 /* iCloudContainerCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6151D05C44F005E1BA1 /* iCloudContainerCapability.swift */; };
-		979CB64A1D05C44F005E1BA1 /* iCloudContainerCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6151D05C44F005E1BA1 /* iCloudContainerCapability.swift */; };
-		979CB64B1D05C44F005E1BA1 /* LocationCapability-iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6161D05C44F005E1BA1 /* LocationCapability-iOS.swift */; };
-		979CB64C1D05C44F005E1BA1 /* LocationCapability-iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6161D05C44F005E1BA1 /* LocationCapability-iOS.swift */; };
-		979CB64D1D05C44F005E1BA1 /* LocationCapability-OSX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6171D05C44F005E1BA1 /* LocationCapability-OSX.swift */; };
-		979CB64E1D05C44F005E1BA1 /* LocationCapability-OSX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6171D05C44F005E1BA1 /* LocationCapability-OSX.swift */; };
-		979CB64F1D05C44F005E1BA1 /* LocationCapability-tvOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6181D05C44F005E1BA1 /* LocationCapability-tvOS.swift */; };
-		979CB6501D05C44F005E1BA1 /* LocationCapability-tvOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6181D05C44F005E1BA1 /* LocationCapability-tvOS.swift */; };
-		979CB6531D05C44F005E1BA1 /* PhotosCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB61A1D05C44F005E1BA1 /* PhotosCapability.swift */; };
-		979CB6541D05C44F005E1BA1 /* PhotosCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB61A1D05C44F005E1BA1 /* PhotosCapability.swift */; };
-		979CB6551D05C44F005E1BA1 /* PushCapability-iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB61B1D05C44F005E1BA1 /* PushCapability-iOS.swift */; };
-		979CB6561D05C44F005E1BA1 /* PushCapability-iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB61B1D05C44F005E1BA1 /* PushCapability-iOS.swift */; };
-		979CB6571D05C44F005E1BA1 /* PushCapability-OSX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB61C1D05C44F005E1BA1 /* PushCapability-OSX.swift */; };
-		979CB6581D05C44F005E1BA1 /* PushCapability-OSX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB61C1D05C44F005E1BA1 /* PushCapability-OSX.swift */; };
-		979CB6591D05C44F005E1BA1 /* UserNotificationCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB61D1D05C44F005E1BA1 /* UserNotificationCapability.swift */; };
-		979CB65A1D05C44F005E1BA1 /* UserNotificationCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB61D1D05C44F005E1BA1 /* UserNotificationCapability.swift */; };
-		979CB65B1D05C44F005E1BA1 /* CalendarCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB61F1D05C44F005E1BA1 /* CalendarCondition.swift */; };
-		979CB65C1D05C44F005E1BA1 /* CalendarCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB61F1D05C44F005E1BA1 /* CalendarCondition.swift */; };
-		979CB65D1D05C44F005E1BA1 /* CloudCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6201D05C44F005E1BA1 /* CloudCondition.swift */; };
-		979CB65E1D05C44F005E1BA1 /* CloudCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6201D05C44F005E1BA1 /* CloudCondition.swift */; };
-		979CB65F1D05C44F005E1BA1 /* HealthCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6211D05C44F005E1BA1 /* HealthCondition.swift */; };
-		979CB6601D05C44F005E1BA1 /* HealthCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6211D05C44F005E1BA1 /* HealthCondition.swift */; };
-		979CB6611D05C44F005E1BA1 /* LocationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6221D05C44F005E1BA1 /* LocationCondition.swift */; };
-		979CB6621D05C44F005E1BA1 /* LocationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6221D05C44F005E1BA1 /* LocationCondition.swift */; };
-		979CB6631D05C44F005E1BA1 /* NegatedCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6231D05C44F005E1BA1 /* NegatedCondition.swift */; };
-		979CB6641D05C44F005E1BA1 /* NegatedCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6231D05C44F005E1BA1 /* NegatedCondition.swift */; };
-		979CB6651D05C44F005E1BA1 /* NoCancelledDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6241D05C44F005E1BA1 /* NoCancelledDependencies.swift */; };
-		979CB6661D05C44F005E1BA1 /* NoCancelledDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6241D05C44F005E1BA1 /* NoCancelledDependencies.swift */; };
-		979CB6671D05C44F005E1BA1 /* OperationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6251D05C44F005E1BA1 /* OperationCondition.swift */; };
-		979CB6681D05C44F005E1BA1 /* OperationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6251D05C44F005E1BA1 /* OperationCondition.swift */; };
-		979CB6691D05C44F005E1BA1 /* PassbookCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6261D05C44F005E1BA1 /* PassbookCondition.swift */; };
-		979CB66A1D05C44F005E1BA1 /* PassbookCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6261D05C44F005E1BA1 /* PassbookCondition.swift */; };
-		979CB66B1D05C44F005E1BA1 /* PhotosCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6271D05C44F005E1BA1 /* PhotosCondition.swift */; };
-		979CB66C1D05C44F005E1BA1 /* PhotosCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6271D05C44F005E1BA1 /* PhotosCondition.swift */; };
-		979CB66D1D05C44F005E1BA1 /* ReachabilityCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6281D05C44F005E1BA1 /* ReachabilityCondition.swift */; };
-		979CB66E1D05C44F005E1BA1 /* ReachabilityCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6281D05C44F005E1BA1 /* ReachabilityCondition.swift */; };
-		979CB66F1D05C44F005E1BA1 /* RemoteNotificationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6291D05C44F005E1BA1 /* RemoteNotificationCondition.swift */; };
-		979CB6701D05C44F005E1BA1 /* RemoteNotificationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6291D05C44F005E1BA1 /* RemoteNotificationCondition.swift */; };
-		979CB6711D05C44F005E1BA1 /* SilentCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB62A1D05C44F005E1BA1 /* SilentCondition.swift */; };
-		979CB6721D05C44F005E1BA1 /* SilentCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB62A1D05C44F005E1BA1 /* SilentCondition.swift */; };
-		979CB6731D05C44F005E1BA1 /* UserNotificationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB62B1D05C44F005E1BA1 /* UserNotificationCondition.swift */; };
-		979CB6741D05C44F005E1BA1 /* UserNotificationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB62B1D05C44F005E1BA1 /* UserNotificationCondition.swift */; };
-		979CB6751D05C44F005E1BA1 /* ExclusivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB62D1D05C44F005E1BA1 /* ExclusivityController.swift */; };
-		979CB6761D05C44F005E1BA1 /* ExclusivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB62D1D05C44F005E1BA1 /* ExclusivityController.swift */; };
-		979CB6771D05C44F005E1BA1 /* MutuallyExclusive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB62E1D05C44F005E1BA1 /* MutuallyExclusive.swift */; };
-		979CB6781D05C44F005E1BA1 /* MutuallyExclusive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB62E1D05C44F005E1BA1 /* MutuallyExclusive.swift */; };
-		979CB6791D05C44F005E1BA1 /* BlockObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6301D05C44F005E1BA1 /* BlockObserver.swift */; };
-		979CB67A1D05C44F005E1BA1 /* BlockObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6301D05C44F005E1BA1 /* BlockObserver.swift */; };
-		979CB67F1D05C44F005E1BA1 /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6331D05C44F005E1BA1 /* NetworkObserver.swift */; };
-		979CB6831D05C44F005E1BA1 /* OperationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6351D05C44F005E1BA1 /* OperationObserver.swift */; };
-		979CB6841D05C44F005E1BA1 /* OperationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6351D05C44F005E1BA1 /* OperationObserver.swift */; };
-		979CB6871D05C44F005E1BA1 /* TimeoutObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6371D05C44F005E1BA1 /* TimeoutObserver.swift */; };
-		979CB6881D05C44F005E1BA1 /* TimeoutObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6371D05C44F005E1BA1 /* TimeoutObserver.swift */; };
-		979CB6AB1D05C520005E1BA1 /* AlertOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB69D1D05C520005E1BA1 /* AlertOperation.swift */; };
-		979CB6AD1D05C520005E1BA1 /* BlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB69E1D05C520005E1BA1 /* BlockOperation.swift */; };
-		979CB6AE1D05C520005E1BA1 /* BlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB69E1D05C520005E1BA1 /* BlockOperation.swift */; };
-		979CB6AF1D05C520005E1BA1 /* CKContainer+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB69F1D05C520005E1BA1 /* CKContainer+Operations.swift */; };
-		979CB6B01D05C520005E1BA1 /* CKContainer+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB69F1D05C520005E1BA1 /* CKContainer+Operations.swift */; };
-		979CB6B11D05C520005E1BA1 /* DelayOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6A01D05C520005E1BA1 /* DelayOperation.swift */; };
-		979CB6B21D05C520005E1BA1 /* DelayOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6A01D05C520005E1BA1 /* DelayOperation.swift */; };
-		979CB6B31D05C520005E1BA1 /* Dictionary+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6A11D05C520005E1BA1 /* Dictionary+Operations.swift */; };
-		979CB6B41D05C520005E1BA1 /* Dictionary+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6A11D05C520005E1BA1 /* Dictionary+Operations.swift */; };
-		979CB6B51D05C520005E1BA1 /* GroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6A21D05C520005E1BA1 /* GroupOperation.swift */; };
-		979CB6B61D05C520005E1BA1 /* GroupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6A21D05C520005E1BA1 /* GroupOperation.swift */; };
-		979CB6B71D05C520005E1BA1 /* LocationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6A31D05C520005E1BA1 /* LocationOperation.swift */; };
-		979CB6B81D05C520005E1BA1 /* LocationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6A31D05C520005E1BA1 /* LocationOperation.swift */; };
-		979CB6B91D05C520005E1BA1 /* NSLock+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6A41D05C520005E1BA1 /* NSLock+Operations.swift */; };
-		979CB6BA1D05C520005E1BA1 /* NSLock+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6A41D05C520005E1BA1 /* NSLock+Operations.swift */; };
-		979CB6BB1D05C520005E1BA1 /* NSOperation+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6A51D05C520005E1BA1 /* NSOperation+Operations.swift */; };
-		979CB6BC1D05C520005E1BA1 /* NSOperation+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6A51D05C520005E1BA1 /* NSOperation+Operations.swift */; };
-		979CB6BD1D05C520005E1BA1 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6A61D05C520005E1BA1 /* Operation.swift */; };
-		979CB6BE1D05C520005E1BA1 /* Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6A61D05C520005E1BA1 /* Operation.swift */; };
-		979CB6BF1D05C520005E1BA1 /* OperationErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6A71D05C520005E1BA1 /* OperationErrors.swift */; };
-		979CB6C01D05C520005E1BA1 /* OperationErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6A71D05C520005E1BA1 /* OperationErrors.swift */; };
-		979CB6C11D05C520005E1BA1 /* OperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6A81D05C520005E1BA1 /* OperationQueue.swift */; };
-		979CB6C21D05C520005E1BA1 /* OperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6A81D05C520005E1BA1 /* OperationQueue.swift */; };
-		979CB6C31D05C520005E1BA1 /* UIUserNotifications+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6A91D05C520005E1BA1 /* UIUserNotifications+Operations.swift */; };
-		979CB6C41D05C520005E1BA1 /* UIUserNotifications+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6A91D05C520005E1BA1 /* UIUserNotifications+Operations.swift */; };
-		979CB6C51D05C520005E1BA1 /* URLSessionTaskOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6AA1D05C520005E1BA1 /* URLSessionTaskOperation.swift */; };
-		979CB6C61D05C520005E1BA1 /* URLSessionTaskOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6AA1D05C520005E1BA1 /* URLSessionTaskOperation.swift */; };
 		979CB6C81D05CF37005E1BA1 /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6C71D05CF37005E1BA1 /* SearchResultController.swift */; };
 		979CB6CA1D05D26E005E1BA1 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6C91D05D26E005E1BA1 /* WebViewController.swift */; };
 		97A7017F1D2C59CA00AAE2D8 /* GetStartedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A7017E1D2C59CA00AAE2D8 /* GetStartedController.swift */; };
-		97A7140A1C274FCB00951244 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A714091C274FCB00951244 /* DirectoryMonitor.swift */; };
-		97B50C7F1CA1E4810010BD79 /* UIOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B50C7E1CA1E4810010BD79 /* UIOperations.swift */; };
 		97BA32A51CEBC36300339A47 /* RootWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BA32A31CEBC29500339A47 /* RootWindowController.swift */; };
+		97BAA8EC1D3D2D7B0038F57F /* PacketAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BAA8EB1D3D2D7B0038F57F /* PacketAnalyzer.swift */; };
+		97BAA8EE1D3D2D9B0038F57F /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BAA8ED1D3D2D9B0038F57F /* KiwixURLProtocol.swift */; };
 		97D452BC1D16FF010033666F /* RecentSearchCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D452BB1D16FF010033666F /* RecentSearchCVC.swift */; };
 		97D452BE1D1723FF0033666F /* CollectionViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D452BD1D1723FF0033666F /* CollectionViewCells.swift */; };
 		97D55EF61D2075180081B523 /* TableOfContentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D55EF51D2075180081B523 /* TableOfContentsController.swift */; };
-		97DF23551CE807A1003E1E5A /* GlobalOperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DF23541CE807A1003E1E5A /* GlobalOperationQueue.swift */; };
-		97E609F11D103DED00EBCB9D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E609F01D103DED00EBCB9D /* NotificationCenter.framework */; };
-		97E609F41D103DED00EBCB9D /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E609F31D103DED00EBCB9D /* TodayViewController.swift */; };
-		97E609F71D103DED00EBCB9D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97E609F51D103DED00EBCB9D /* MainInterface.storyboard */; };
-		97E60A021D10423A00EBCB9D /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E60A011D10423A00EBCB9D /* ShadowView.swift */; };
+		97DB65DA1D4576B600A2CC42 /* BookmarkWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */; };
+		97E60A021D10423A00EBCB9D /* ShadowViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E60A011D10423A00EBCB9D /* ShadowViews.swift */; };
 		97E60A061D10504000EBCB9D /* LibraryBackupTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E60A051D10504000EBCB9D /* LibraryBackupTBVC.swift */; };
 		97E850CB1D2DA5B300A9F688 /* About.html in Resources */ = {isa = PBXBuildFile; fileRef = 97E850CA1D2DA5B300A9F688 /* About.html */; };
 		97E891691CA976E90001CA32 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E891681CA976E90001CA32 /* FileManager.swift */; };
 		97F03CE21D2440470040D26E /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97F03CE11D2440470040D26E /* Search.storyboard */; };
-		AEFF409D8D5B53BC90700424 /* Pods_Kiwix_OSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAF14EE0505901A1570F23F /* Pods_Kiwix_OSX.framework */; };
-		BECDBCEF4720E3E86FE63989 /* Pods_Kiwix_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CEA715EBFC96C75E73447A7 /* Pods_Kiwix_iOS.framework */; };
+		97FD5CE71D3D90B7001C74A2 /* getSnippet.js in Resources */ = {isa = PBXBuildFile; fileRef = 97FD5CE61D3D90B7001C74A2 /* getSnippet.js */; };
+		EB1C0984A03359CD5CDC011C /* Pods_Kiwix_OSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 198ECFA618CDD6B29CD462A0 /* Pods_Kiwix_OSX.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -285,6 +210,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 973BCCE81CEB3FA400F10B44;
 			remoteInfo = "Kiwix-OSX";
+		};
+		9779C31C1D4575AE0064CC8E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97A2AB801C1B80FF00052E74 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9779C3121D4575AD0064CC8E;
+			remoteInfo = Bookmarks;
 		};
 		97A2ABA01C1B80FF00052E74 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -329,6 +261,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				9779C31E1D4575AE0064CC8E /* Bookmarks.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -336,30 +269,24 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0A4169C595E811A386A7FC63 /* Pods-Kiwix.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix.release.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix/Pods-Kiwix.release.xcconfig"; sourceTree = "<group>"; };
-		6693AC18F86E44ABA71C3201 /* Pods_Kiwix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Kiwix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6CEA715EBFC96C75E73447A7 /* Pods_Kiwix_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Kiwix_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		86340F4A23677DE4554AE94B /* Pods-Kiwix-OSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-OSX.release.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-OSX/Pods-Kiwix-OSX.release.xcconfig"; sourceTree = "<group>"; };
-		970103F91C6824FA00DC48F6 /* RefreshLibraryOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshLibraryOperation.swift; sourceTree = "<group>"; };
+		198ECFA618CDD6B29CD462A0 /* Pods_Kiwix_OSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Kiwix_OSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B9300794E7F4EFE5B3E8F19 /* Pods-Kiwix-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		69E75DFE2EF83272AC5B02BA /* Pods-Kiwix-OSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-OSX.release.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-OSX/Pods-Kiwix-OSX.release.xcconfig"; sourceTree = "<group>"; };
+		6DCB0E958A1083CA248C5A12 /* Pods-Kiwix-OSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-OSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-OSX/Pods-Kiwix-OSX.debug.xcconfig"; sourceTree = "<group>"; };
 		970C3DC91CBD79450026A240 /* MigrationPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MigrationPolicy.swift; path = CoreData/Migration/MigrationPolicy.swift; sourceTree = "<group>"; };
+		970C61961D34243600087758 /* URLSessionDownloadTaskOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = URLSessionDownloadTaskOperation.swift; path = Operations/URLSessionDownloadTaskOperation.swift; sourceTree = "<group>"; };
+		970C61981D3429E400087758 /* ReachabilityCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityCondition.swift; sourceTree = "<group>"; };
+		970C654F1D398D5A007032F8 /* BookmarkControllerAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookmarkControllerAnimator.swift; path = "Kiwix-iOS/Controller/Bookmark/BookmarkControllerAnimator.swift"; sourceTree = SOURCE_ROOT; };
+		970E68B11D37E1DD001E8514 /* SettingSearchTuneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSearchTuneController.swift; path = "Kiwix-iOS/Controller/Setting/SettingSearchTuneController.swift"; sourceTree = SOURCE_ROOT; };
+		970E68B51D37E224001E8514 /* SettingSearchHistoryTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSearchHistoryTBVC.swift; path = "Kiwix-iOS/Controller/Setting/SettingSearchHistoryTBVC.swift"; sourceTree = SOURCE_ROOT; };
+		970E68B71D3809A3001E8514 /* MainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainController.swift; path = "Kiwix-iOS/Controller/Main/MainController.swift"; sourceTree = SOURCE_ROOT; };
+		970E68B81D3809A3001E8514 /* MainControllerDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainControllerDelegates.swift; path = "Kiwix-iOS/Controller/Main/MainControllerDelegates.swift"; sourceTree = SOURCE_ROOT; };
 		971046301D19B96E002141C0 /* XapianSearcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XapianSearcher.h; path = Kiwix/libkiwix/XapianSearcher.h; sourceTree = "<group>"; };
 		971046311D19B96E002141C0 /* XapianSearcher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = XapianSearcher.mm; path = Kiwix/libkiwix/XapianSearcher.mm; sourceTree = "<group>"; };
-		971046331D1C830C002141C0 /* SearchTuneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchTuneController.swift; path = "Kiwix-iOS/Controller/Setting/SearchTuneController.swift"; sourceTree = SOURCE_ROOT; };
 		9711871B1CEB448400B9909D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		9711871D1CEB449A00B9909D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		9711872E1CEB50FC00B9909D /* ZimReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZimReader.h; path = Kiwix/libkiwix/ZimReader.h; sourceTree = "<group>"; };
 		9711872F1CEB50FC00B9909D /* ZimReader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ZimReader.mm; path = Kiwix/libkiwix/ZimReader.mm; sourceTree = "<group>"; };
-		9711873B1CEB512D00B9909D /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicudata.a; path = Kiwix/libkiwix/static/libicudata.a; sourceTree = "<group>"; };
-		9711873C1CEB512D00B9909D /* libicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicui18n.a; path = Kiwix/libkiwix/static/libicui18n.a; sourceTree = "<group>"; };
-		9711873D1CEB512D00B9909D /* libicuio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuio.a; path = Kiwix/libkiwix/static/libicuio.a; sourceTree = "<group>"; };
-		9711873E1CEB512D00B9909D /* libicule.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicule.a; path = Kiwix/libkiwix/static/libicule.a; sourceTree = "<group>"; };
-		9711873F1CEB512D00B9909D /* libiculx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiculx.a; path = Kiwix/libkiwix/static/libiculx.a; sourceTree = "<group>"; };
-		971187401CEB512D00B9909D /* libicutest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicutest.a; path = Kiwix/libkiwix/static/libicutest.a; sourceTree = "<group>"; };
-		971187411CEB512D00B9909D /* libicutu.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicutu.a; path = Kiwix/libkiwix/static/libicutu.a; sourceTree = "<group>"; };
-		971187421CEB512D00B9909D /* libicuuc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuuc.a; path = Kiwix/libkiwix/static/libicuuc.a; sourceTree = "<group>"; };
-		971187431CEB512D00B9909D /* liblzma.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblzma.a; path = Kiwix/libkiwix/static/liblzma.a; sourceTree = "<group>"; };
-		971187441CEB512D00B9909D /* libxapian.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxapian.a; path = Kiwix/libkiwix/static/libxapian.a; sourceTree = "<group>"; };
-		971187451CEB512D00B9909D /* libzim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzim.a; path = Kiwix/libkiwix/static/libzim.a; sourceTree = "<group>"; };
 		971187511CEB512F00B9909D /* libicudata.55.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicudata.55.dylib; path = Kiwix/libkiwix/shared/libicudata.55.dylib; sourceTree = "<group>"; };
 		971187521CEB512F00B9909D /* libicui18n.55.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicui18n.55.dylib; path = Kiwix/libkiwix/shared/libicui18n.55.dylib; sourceTree = "<group>"; };
 		971187531CEB512F00B9909D /* libicuio.55.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicuio.55.dylib; path = Kiwix/libkiwix/shared/libicuio.55.dylib; sourceTree = "<group>"; };
@@ -403,22 +330,19 @@
 		971A10561D022DAD007FC62C /* LibraryOnlineTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryOnlineTBVC.swift; path = "Kiwix-iOS/Controller/LibraryOnlineTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10571D022DAD007FC62C /* LibraryTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryTabBarController.swift; path = "Kiwix-iOS/Controller/LibraryTabBarController.swift"; sourceTree = SOURCE_ROOT; };
 		971A105F1D022DF2007FC62C /* LanguageTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LanguageTBVC.swift; path = "Kiwix-iOS/Controller/LanguageTBVC.swift"; sourceTree = SOURCE_ROOT; };
-		971A10611D022E0A007FC62C /* MainVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainVC.swift; path = "Kiwix-iOS/Controller/MainVC.swift"; sourceTree = SOURCE_ROOT; };
-		971A10621D022E0A007FC62C /* MainVCLoading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainVCLoading.swift; path = "Kiwix-iOS/Controller/MainVCLoading.swift"; sourceTree = SOURCE_ROOT; };
-		971A10631D022E0A007FC62C /* MainVCDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainVCDelegates.swift; path = "Kiwix-iOS/Controller/MainVCDelegates.swift"; sourceTree = SOURCE_ROOT; };
-		971A10691D022E15007FC62C /* BookmarkHUDVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookmarkHUDVC.swift; path = "Kiwix-iOS/Controller/BookmarkHUDVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A106B1D022E50007FC62C /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utilities.swift; path = "Kiwix-iOS/Model/Utilities.swift"; sourceTree = SOURCE_ROOT; };
 		971A106D1D022E62007FC62C /* DownloadProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DownloadProgress.swift; path = "Kiwix-iOS/Model/DownloadProgress.swift"; sourceTree = SOURCE_ROOT; };
 		971A106E1D022E62007FC62C /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Network.swift; path = "Kiwix-iOS/Model/Network.swift"; sourceTree = SOURCE_ROOT; };
-		971A10711D022E74007FC62C /* KiwixURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KiwixURLProtocol.swift; path = "Kiwix-iOS/Model/KiwixURLProtocol.swift"; sourceTree = SOURCE_ROOT; };
 		971A10781D022F05007FC62C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		971A107A1D022F74007FC62C /* DownloaderLearnMore.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = DownloaderLearnMore.html; path = Kiwix/HelpDocuments/DownloaderLearnMore.html; sourceTree = SOURCE_ROOT; };
 		971A107B1D022F74007FC62C /* ImportBookLearnMore.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = ImportBookLearnMore.html; path = Kiwix/HelpDocuments/ImportBookLearnMore.html; sourceTree = SOURCE_ROOT; };
 		971A107C1D022F74007FC62C /* Pic_I.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Pic_I.png; path = Kiwix/HelpDocuments/Pic_I.png; sourceTree = SOURCE_ROOT; };
 		971A107D1D022F74007FC62C /* Pic_P.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Pic_P.png; path = Kiwix/HelpDocuments/Pic_P.png; sourceTree = SOURCE_ROOT; };
-		97254FDE1C2644560056950B /* ZIMMultiReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZIMMultiReader.swift; sourceTree = "<group>"; };
+		971C4F0B1D3FFFA60027B7D2 /* Kiwix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Kiwix.entitlements; path = "Kiwix-iOS/Kiwix.entitlements"; sourceTree = SOURCE_ROOT; };
+		971C4F0D1D400F010027B7D2 /* UpdateWidgetDataSourceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UpdateWidgetDataSourceOperation.swift; path = Operations/UpdateWidgetDataSourceOperation.swift; sourceTree = "<group>"; };
+		97219DBC1D383A00009FDFF1 /* BookmarkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookmarkController.swift; path = "Kiwix-iOS/Controller/Bookmark/BookmarkController.swift"; sourceTree = SOURCE_ROOT; };
+		9722122A1D3FCCE200C0DCF2 /* MainControllerShowHide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainControllerShowHide.swift; path = "Kiwix-iOS/Controller/Main/MainControllerShowHide.swift"; sourceTree = SOURCE_ROOT; };
 		9734E54D1D289D060061C39B /* Welcome.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Welcome.storyboard; path = "Kiwix-iOS/Storyboard/Welcome.storyboard"; sourceTree = SOURCE_ROOT; };
-		973970EC1CB9A04C00350507 /* SearchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchOperation.swift; sourceTree = "<group>"; };
 		973BCCE91CEB3FA400F10B44 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		973BCCEB1CEB3FA400F10B44 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = "Kiwix-OSX/AppDelegate.swift"; sourceTree = SOURCE_ROOT; };
 		973BCCF21CEB3FA400F10B44 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Kiwix-OSX/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
@@ -434,17 +358,34 @@
 		973BCD1B1CEB403700F10B44 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Kiwix-iOSUITests/Info.plist"; sourceTree = SOURCE_ROOT; };
 		973BCD1C1CEB403700F10B44 /* SnapshotAutomation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotAutomation.swift; path = "Kiwix-iOSUITests/SnapshotAutomation.swift"; sourceTree = SOURCE_ROOT; };
 		973C8D5B1C25F945007272F9 /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Preference.swift; path = Kiwix/Preference.swift; sourceTree = "<group>"; };
-		974570F31C2DABB500680E43 /* ZIMMultiReaderAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZIMMultiReaderAPI.swift; sourceTree = "<group>"; };
+		973DD4041D343F2F009D45DB /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicudata.a; path = Kiwix/libkiwix/iOS/libicudata.a; sourceTree = "<group>"; };
+		973DD4051D343F2F009D45DB /* libicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicui18n.a; path = Kiwix/libkiwix/iOS/libicui18n.a; sourceTree = "<group>"; };
+		973DD4061D343F2F009D45DB /* libicuio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuio.a; path = Kiwix/libkiwix/iOS/libicuio.a; sourceTree = "<group>"; };
+		973DD4071D343F2F009D45DB /* libicule.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicule.a; path = Kiwix/libkiwix/iOS/libicule.a; sourceTree = "<group>"; };
+		973DD4081D343F2F009D45DB /* libiculx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libiculx.a; path = Kiwix/libkiwix/iOS/libiculx.a; sourceTree = "<group>"; };
+		973DD4091D343F2F009D45DB /* libicutest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicutest.a; path = Kiwix/libkiwix/iOS/libicutest.a; sourceTree = "<group>"; };
+		973DD40A1D343F2F009D45DB /* libicutu.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicutu.a; path = Kiwix/libkiwix/iOS/libicutu.a; sourceTree = "<group>"; };
+		973DD40B1D343F2F009D45DB /* libicuuc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuuc.a; path = Kiwix/libkiwix/iOS/libicuuc.a; sourceTree = "<group>"; };
+		973DD40C1D343F2F009D45DB /* liblzma.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblzma.a; path = Kiwix/libkiwix/iOS/liblzma.a; sourceTree = "<group>"; };
+		973DD40D1D343F2F009D45DB /* libxapian.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxapian.a; path = Kiwix/libkiwix/iOS/libxapian.a; sourceTree = "<group>"; };
+		973DD40E1D343F2F009D45DB /* libzim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzim.a; path = Kiwix/libkiwix/iOS/libzim.a; sourceTree = "<group>"; };
+		973DD41A1D34428F009D45DB /* DirectoryMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DirectoryMonitor.swift; path = ZimMultiReader/DirectoryMonitor.swift; sourceTree = "<group>"; };
+		973DD41B1D34428F009D45DB /* ZimMultiReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ZimMultiReader.swift; path = ZimMultiReader/ZimMultiReader.swift; sourceTree = "<group>"; };
+		973DD4201D34434C009D45DB /* SearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchResult.swift; path = ZimMultiReader/SearchResult.swift; sourceTree = "<group>"; };
+		973DD4221D3443A3009D45DB /* ExtensionAndTypealias.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExtensionAndTypealias.swift; path = ZimMultiReader/ExtensionAndTypealias.swift; sourceTree = "<group>"; };
+		973DD4241D344558009D45DB /* ScanLocalBookOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScanLocalBookOperation.swift; path = Operations/ScanLocalBookOperation.swift; sourceTree = "<group>"; };
+		973DD4271D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSingleSwitchTBVC.swift; path = "Kiwix-iOS/Controller/Setting/SettingSingleSwitchTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		97497B5A1D07487000ECD691 /* indexer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = indexer.h; path = "Kiwix/libkiwix/C&C++/indexer.h"; sourceTree = "<group>"; };
 		97497B5B1D07487000ECD691 /* resourceTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = resourceTools.h; path = "Kiwix/libkiwix/C&C++/resourceTools.h"; sourceTree = "<group>"; };
 		97497B5C1D074FB800ECD691 /* htmlparse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = htmlparse.h; path = "Kiwix/libkiwix/C&C++/xapian/htmlparse.h"; sourceTree = "<group>"; };
 		97497B5D1D074FB800ECD691 /* myhtmlparse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = myhtmlparse.h; path = "Kiwix/libkiwix/C&C++/xapian/myhtmlparse.h"; sourceTree = "<group>"; };
 		97497B5E1D07584100ECD691 /* xapianIndexer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = xapianIndexer.h; path = "Kiwix/libkiwix/C&C++/xapianIndexer.h"; sourceTree = "<group>"; };
+		974F42811D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingWidgetBookmarksTBVC.swift; path = "Kiwix-iOS/Controller/Setting/SettingWidgetBookmarksTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		975227811D020560001D1DDE /* Indexer.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Indexer.storyboard; path = "Kiwix-OSX/StoryBoards/Indexer.storyboard"; sourceTree = SOURCE_ROOT; };
 		975227921D020C00001D1DDE /* indexer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; name = indexer.cpp; path = "Kiwix/libkiwix/C&C++/indexer.cpp"; sourceTree = "<group>"; tabWidth = 2; };
 		975227931D020C00001D1DDE /* otherTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = otherTools.cpp; path = "Kiwix/libkiwix/C&C++/otherTools.cpp"; sourceTree = "<group>"; };
 		975227941D020C00001D1DDE /* pathTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pathTools.cpp; path = "Kiwix/libkiwix/C&C++/pathTools.cpp"; sourceTree = "<group>"; };
-		975227951D020C00001D1DDE /* reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = reader.cpp; path = "Kiwix/libkiwix/C&C++/reader.cpp"; sourceTree = "<group>"; };
+		975227951D020C00001D1DDE /* reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; name = reader.cpp; path = "Kiwix/libkiwix/C&C++/reader.cpp"; sourceTree = "<group>"; tabWidth = 2; };
 		975227961D020C00001D1DDE /* resourceTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = resourceTools.cpp; path = "Kiwix/libkiwix/C&C++/resourceTools.cpp"; sourceTree = "<group>"; };
 		975227971D020C00001D1DDE /* stringTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = stringTools.cpp; path = "Kiwix/libkiwix/C&C++/stringTools.cpp"; sourceTree = "<group>"; };
 		975227A61D020C2E001D1DDE /* htmlparse.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = htmlparse.cc; path = "Kiwix/libkiwix/C&C++/xapian/htmlparse.cc"; sourceTree = "<group>"; };
@@ -465,6 +406,7 @@
 		975B90F81CEB75CB00D13906 /* ZimFilesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ZimFilesController.swift; path = "Kiwix-OSX/Controllers/ZimFilesController.swift"; sourceTree = SOURCE_ROOT; };
 		975B90FD1CEB909100D13906 /* iOSExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = iOSExtensions.swift; path = "Kiwix-iOS/iOSExtensions.swift"; sourceTree = SOURCE_ROOT; };
 		9763A6281CEB9E55008A2718 /* OSXExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OSXExtensions.swift; path = "Kiwix-OSX/OSXExtensions.swift"; sourceTree = SOURCE_ROOT; };
+		976A0C801D41619C0006A742 /* DZNEmptyDataSet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DZNEmptyDataSet.framework; path = "../../../../Users/chrisli/Library/Developer/Xcode/DerivedData/Kiwix-ayxrfhaqnfxzendihdolvkklkmhk/Build/Products/Debug-iphoneos/DZNEmptyDataSet/DZNEmptyDataSet.framework"; sourceTree = "<group>"; };
 		976AB2661CBD8B3D00B06EB0 /* 1.5.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = 1.5.xcmappingmodel; path = CoreData/Migration/1.5.xcmappingmodel; sourceTree = "<group>"; };
 		9779986E1C1E0B7900B1DD5E /* Book+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Book+CoreDataProperties.swift"; path = "Kiwix/CoreData/Book+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9779986F1C1E0B7900B1DD5E /* DownloadTask+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = "DownloadTask+CoreDataProperties.swift"; path = "Kiwix/CoreData/DownloadTask+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -472,87 +414,47 @@
 		977998711C1E0B7900B1DD5E /* Article+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Article+CoreDataProperties.swift"; path = "Kiwix/CoreData/Article+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		977998721C1E0B7900B1DD5E /* Language+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Language+CoreDataProperties.swift"; path = "Kiwix/CoreData/Language+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		9779987A1C1E1C9600B1DD5E /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = Kiwix/Extensions.swift; sourceTree = "<group>"; };
+		9779A1C21D34225E0071EFAB /* AlertOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlertOperation.swift; path = Operations/AlertOperation.swift; sourceTree = "<group>"; };
+		9779A1C31D34225E0071EFAB /* GlobalOperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GlobalOperationQueue.swift; path = Operations/GlobalOperationQueue.swift; sourceTree = "<group>"; };
+		9779A1C41D34225E0071EFAB /* NetworkObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NetworkObserver.swift; path = Operations/NetworkObserver.swift; sourceTree = "<group>"; };
+		9779A1C51D34225E0071EFAB /* RefreshLibraryOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefreshLibraryOperation.swift; path = Operations/RefreshLibraryOperation.swift; sourceTree = "<group>"; };
+		9779A1C61D34225E0071EFAB /* SearchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchOperation.swift; path = Operations/SearchOperation.swift; sourceTree = "<group>"; };
+		9779A1C71D34225E0071EFAB /* UIOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIOperations.swift; path = Operations/UIOperations.swift; sourceTree = "<group>"; };
+		9779C3131D4575AD0064CC8E /* Bookmarks.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Bookmarks.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		9779C3161D4575AE0064CC8E /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		9779C3191D4575AE0064CC8E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		9779C31B1D4575AE0064CC8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		978C588E1C1CD86E0077AE47 /* Language.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Language.swift; path = Kiwix/CoreData/Language.swift; sourceTree = "<group>"; };
 		978C58901C1CD86E0077AE47 /* Book.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = Book.swift; path = Kiwix/CoreData/Book.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		978C58941C1CD86E0077AE47 /* Article.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Article.swift; path = Kiwix/CoreData/Article.swift; sourceTree = "<group>"; };
 		979C51511CECA9AF001707F2 /* StringTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StringTools.swift; path = Kiwix/StringTools.swift; sourceTree = "<group>"; };
 		979C518B1CECAE4C001707F2 /* PreferenceWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferenceWindowController.swift; path = "Kiwix-OSX/Controllers/PreferenceWindowController.swift"; sourceTree = SOURCE_ROOT; };
 		979CB60E1D04AD04005E1BA1 /* PreferenceTabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferenceTabController.swift; path = Controllers/PreferenceTabController.swift; sourceTree = "<group>"; };
-		979CB6121D05C44F005E1BA1 /* CalendarCapability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCapability.swift; sourceTree = "<group>"; };
-		979CB6131D05C44F005E1BA1 /* Capability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Capability.swift; sourceTree = "<group>"; };
-		979CB6141D05C44F005E1BA1 /* HealthCapability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthCapability.swift; sourceTree = "<group>"; };
-		979CB6151D05C44F005E1BA1 /* iCloudContainerCapability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iCloudContainerCapability.swift; sourceTree = "<group>"; };
-		979CB6161D05C44F005E1BA1 /* LocationCapability-iOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LocationCapability-iOS.swift"; sourceTree = "<group>"; };
-		979CB6171D05C44F005E1BA1 /* LocationCapability-OSX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LocationCapability-OSX.swift"; sourceTree = "<group>"; };
-		979CB6181D05C44F005E1BA1 /* LocationCapability-tvOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LocationCapability-tvOS.swift"; sourceTree = "<group>"; };
-		979CB6191D05C44F005E1BA1 /* PassbookCapability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassbookCapability.swift; sourceTree = "<group>"; };
-		979CB61A1D05C44F005E1BA1 /* PhotosCapability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosCapability.swift; sourceTree = "<group>"; };
-		979CB61B1D05C44F005E1BA1 /* PushCapability-iOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PushCapability-iOS.swift"; sourceTree = "<group>"; };
-		979CB61C1D05C44F005E1BA1 /* PushCapability-OSX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PushCapability-OSX.swift"; sourceTree = "<group>"; };
-		979CB61D1D05C44F005E1BA1 /* UserNotificationCapability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserNotificationCapability.swift; sourceTree = "<group>"; };
-		979CB61F1D05C44F005E1BA1 /* CalendarCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCondition.swift; sourceTree = "<group>"; };
-		979CB6201D05C44F005E1BA1 /* CloudCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudCondition.swift; sourceTree = "<group>"; };
-		979CB6211D05C44F005E1BA1 /* HealthCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthCondition.swift; sourceTree = "<group>"; };
-		979CB6221D05C44F005E1BA1 /* LocationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationCondition.swift; sourceTree = "<group>"; };
-		979CB6231D05C44F005E1BA1 /* NegatedCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NegatedCondition.swift; sourceTree = "<group>"; };
-		979CB6241D05C44F005E1BA1 /* NoCancelledDependencies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoCancelledDependencies.swift; sourceTree = "<group>"; };
-		979CB6251D05C44F005E1BA1 /* OperationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationCondition.swift; sourceTree = "<group>"; };
-		979CB6261D05C44F005E1BA1 /* PassbookCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PassbookCondition.swift; sourceTree = "<group>"; };
-		979CB6271D05C44F005E1BA1 /* PhotosCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosCondition.swift; sourceTree = "<group>"; };
-		979CB6281D05C44F005E1BA1 /* ReachabilityCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityCondition.swift; sourceTree = "<group>"; };
-		979CB6291D05C44F005E1BA1 /* RemoteNotificationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteNotificationCondition.swift; sourceTree = "<group>"; };
-		979CB62A1D05C44F005E1BA1 /* SilentCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SilentCondition.swift; sourceTree = "<group>"; };
-		979CB62B1D05C44F005E1BA1 /* UserNotificationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserNotificationCondition.swift; sourceTree = "<group>"; };
-		979CB62D1D05C44F005E1BA1 /* ExclusivityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExclusivityController.swift; sourceTree = "<group>"; };
-		979CB62E1D05C44F005E1BA1 /* MutuallyExclusive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutuallyExclusive.swift; sourceTree = "<group>"; };
-		979CB6301D05C44F005E1BA1 /* BlockObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockObserver.swift; sourceTree = "<group>"; };
-		979CB6331D05C44F005E1BA1 /* NetworkObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkObserver.swift; sourceTree = "<group>"; };
-		979CB6351D05C44F005E1BA1 /* OperationObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationObserver.swift; sourceTree = "<group>"; };
-		979CB6371D05C44F005E1BA1 /* TimeoutObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeoutObserver.swift; sourceTree = "<group>"; };
-		979CB69D1D05C520005E1BA1 /* AlertOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertOperation.swift; sourceTree = "<group>"; };
-		979CB69E1D05C520005E1BA1 /* BlockOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockOperation.swift; sourceTree = "<group>"; };
-		979CB69F1D05C520005E1BA1 /* CKContainer+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CKContainer+Operations.swift"; sourceTree = "<group>"; };
-		979CB6A01D05C520005E1BA1 /* DelayOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayOperation.swift; sourceTree = "<group>"; };
-		979CB6A11D05C520005E1BA1 /* Dictionary+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Operations.swift"; sourceTree = "<group>"; };
-		979CB6A21D05C520005E1BA1 /* GroupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupOperation.swift; sourceTree = "<group>"; };
-		979CB6A31D05C520005E1BA1 /* LocationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationOperation.swift; sourceTree = "<group>"; };
-		979CB6A41D05C520005E1BA1 /* NSLock+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLock+Operations.swift"; sourceTree = "<group>"; };
-		979CB6A51D05C520005E1BA1 /* NSOperation+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOperation+Operations.swift"; sourceTree = "<group>"; };
-		979CB6A61D05C520005E1BA1 /* Operation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operation.swift; sourceTree = "<group>"; };
-		979CB6A71D05C520005E1BA1 /* OperationErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationErrors.swift; sourceTree = "<group>"; };
-		979CB6A81D05C520005E1BA1 /* OperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationQueue.swift; sourceTree = "<group>"; };
-		979CB6A91D05C520005E1BA1 /* UIUserNotifications+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIUserNotifications+Operations.swift"; sourceTree = "<group>"; };
-		979CB6AA1D05C520005E1BA1 /* URLSessionTaskOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLSessionTaskOperation.swift; sourceTree = "<group>"; };
 		979CB6C71D05CF37005E1BA1 /* SearchResultController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchResultController.swift; path = Controllers/SearchResultController.swift; sourceTree = "<group>"; };
 		979CB6C91D05D26E005E1BA1 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebViewController.swift; path = Controllers/WebViewController.swift; sourceTree = "<group>"; };
 		97A2AB881C1B80FF00052E74 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A2AB9F1C1B80FF00052E74 /* Kiwix-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kiwix-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A2ABAA1C1B810000052E74 /* Kiwix-iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kiwix-iOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A7017E1D2C59CA00AAE2D8 /* GetStartedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GetStartedController.swift; path = "Kiwix-iOS/Controller/Welcome/GetStartedController.swift"; sourceTree = SOURCE_ROOT; };
-		97A714091C274FCB00951244 /* DirectoryMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryMonitor.swift; sourceTree = "<group>"; };
-		97B50C7E1CA1E4810010BD79 /* UIOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIOperations.swift; sourceTree = "<group>"; };
 		97BA32A31CEBC29500339A47 /* RootWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RootWindowController.swift; path = "Kiwix-OSX/Controllers/RootWindowController.swift"; sourceTree = SOURCE_ROOT; };
+		97BAA8EB1D3D2D7B0038F57F /* PacketAnalyzer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PacketAnalyzer.swift; path = Kiwix/URLProtocol/PacketAnalyzer.swift; sourceTree = "<group>"; };
+		97BAA8ED1D3D2D9B0038F57F /* KiwixURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KiwixURLProtocol.swift; path = Kiwix/URLProtocol/KiwixURLProtocol.swift; sourceTree = "<group>"; };
+		97BAA8EF1D3D32770038F57F /* 1.7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.7.xcdatamodel; sourceTree = "<group>"; };
 		97D452BB1D16FF010033666F /* RecentSearchCVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecentSearchCVC.swift; path = "Kiwix-iOS/Controller/Search/RecentSearchCVC.swift"; sourceTree = SOURCE_ROOT; };
 		97D452BD1D1723FF0033666F /* CollectionViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCells.swift; sourceTree = "<group>"; };
 		97D452C01D1871E70033666F /* SearchLocalBooksCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchLocalBooksCVC.swift; path = "Kiwix-iOS/Controller/Search/SearchLocalBooksCVC.swift"; sourceTree = SOURCE_ROOT; };
 		97D452C11D1871E70033666F /* SearchTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchTabController.swift; path = "Kiwix-iOS/Controller/Search/SearchTabController.swift"; sourceTree = SOURCE_ROOT; };
 		97D55EF51D2075180081B523 /* TableOfContentsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableOfContentsController.swift; path = "Kiwix-iOS/Controller/TableOfContentsController.swift"; sourceTree = SOURCE_ROOT; };
-		97DF23541CE807A1003E1E5A /* GlobalOperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalOperationQueue.swift; sourceTree = "<group>"; };
-		97E609EF1D103DED00EBCB9D /* Kiwix-iOSWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Kiwix-iOSWidget.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkWidgetCell.swift; sourceTree = "<group>"; };
 		97E609F01D103DED00EBCB9D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
-		97E609F31D103DED00EBCB9D /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
-		97E609F61D103DED00EBCB9D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
-		97E609F81D103DED00EBCB9D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		97E60A011D10423A00EBCB9D /* ShadowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
+		97E60A011D10423A00EBCB9D /* ShadowViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowViews.swift; sourceTree = "<group>"; };
 		97E60A051D10504000EBCB9D /* LibraryBackupTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryBackupTBVC.swift; path = "Kiwix-iOS/Controller/LibraryBackupTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		97E850CA1D2DA5B300A9F688 /* About.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = About.html; path = Kiwix/HelpDocuments/About.html; sourceTree = SOURCE_ROOT; };
 		97E891681CA976E90001CA32 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FileManager.swift; path = Kiwix/FileManager.swift; sourceTree = "<group>"; };
 		97F03CE11D2440470040D26E /* Search.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Search.storyboard; path = "Kiwix-iOS/Storyboard/Search.storyboard"; sourceTree = SOURCE_ROOT; };
-		B14E5F8A97964014F99EAD4E /* Pods-Kiwix-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		B3B41D59F4B010C559B18D3D /* Pods-Kiwix-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS.release.xcconfig"; sourceTree = "<group>"; };
-		DBAF14EE0505901A1570F23F /* Pods_Kiwix_OSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Kiwix_OSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E0C40F7192D36BEA96D12C9C /* Pods-Kiwix-OSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-OSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-OSX/Pods-Kiwix-OSX.debug.xcconfig"; sourceTree = "<group>"; };
-		E46C279B8DE7F234682956CD /* Pods-Kiwix.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix/Pods-Kiwix.debug.xcconfig"; sourceTree = "<group>"; };
+		97FD5CE61D3D90B7001C74A2 /* getSnippet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = getSnippet.js; sourceTree = "<group>"; };
+		DA0AB5D61F19BE37BD0AFA0A /* Pods-Kiwix-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		EC884ACBBA260AF741C4C4FE /* Pods_Kiwix_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Kiwix_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -573,7 +475,7 @@
 				971187661CEB512F00B9909D /* libzim.0.dylib in Frameworks */,
 				9711875E1CEB512F00B9909D /* libicuio.55.dylib in Frameworks */,
 				971187601CEB512F00B9909D /* libiculx.55.dylib in Frameworks */,
-				AEFF409D8D5B53BC90700424 /* Pods_Kiwix_OSX.framework in Frameworks */,
+				EB1C0984A03359CD5CDC011C /* Pods_Kiwix_OSX.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -591,23 +493,31 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9779C3101D4575AD0064CC8E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9779C3141D4575AD0064CC8E /* NotificationCenter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		97A2AB851C1B80FF00052E74 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				971187491CEB512D00B9909D /* libicule.a in Frameworks */,
+				973DD40F1D343F2F009D45DB /* libicudata.a in Frameworks */,
+				973DD4101D343F2F009D45DB /* libicui18n.a in Frameworks */,
+				973DD4111D343F2F009D45DB /* libicuio.a in Frameworks */,
+				973DD4121D343F2F009D45DB /* libicule.a in Frameworks */,
+				973DD4131D343F2F009D45DB /* libiculx.a in Frameworks */,
+				973DD4141D343F2F009D45DB /* libicutest.a in Frameworks */,
+				973DD4151D343F2F009D45DB /* libicutu.a in Frameworks */,
+				973DD4161D343F2F009D45DB /* libicuuc.a in Frameworks */,
+				973DD4171D343F2F009D45DB /* liblzma.a in Frameworks */,
+				973DD4181D343F2F009D45DB /* libxapian.a in Frameworks */,
+				973DD4191D343F2F009D45DB /* libzim.a in Frameworks */,
 				9711871E1CEB449A00B9909D /* libz.tbd in Frameworks */,
-				971187501CEB512D00B9909D /* libzim.a in Frameworks */,
-				971187461CEB512D00B9909D /* libicudata.a in Frameworks */,
-				971187471CEB512D00B9909D /* libicui18n.a in Frameworks */,
-				971187481CEB512D00B9909D /* libicuio.a in Frameworks */,
-				9711874A1CEB512D00B9909D /* libiculx.a in Frameworks */,
-				9711874F1CEB512D00B9909D /* libxapian.a in Frameworks */,
-				9711874D1CEB512D00B9909D /* libicuuc.a in Frameworks */,
-				9711874C1CEB512D00B9909D /* libicutu.a in Frameworks */,
-				9711874B1CEB512D00B9909D /* libicutest.a in Frameworks */,
-				9711874E1CEB512D00B9909D /* liblzma.a in Frameworks */,
-				BECDBCEF4720E3E86FE63989 /* Pods_Kiwix_iOS.framework in Frameworks */,
+				7356F9FACBB84380CFC8F68F /* Pods_Kiwix_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -625,45 +535,47 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		97E609EC1D103DED00EBCB9D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				97E609F11D103DED00EBCB9D /* NotificationCenter.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		784457131AE044F91977B64B /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				E46C279B8DE7F234682956CD /* Pods-Kiwix.debug.xcconfig */,
-				0A4169C595E811A386A7FC63 /* Pods-Kiwix.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		931D277C156AE671D3F9EADA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DBAF14EE0505901A1570F23F /* Pods_Kiwix_OSX.framework */,
-				6CEA715EBFC96C75E73447A7 /* Pods_Kiwix_iOS.framework */,
+				976A0C801D41619C0006A742 /* DZNEmptyDataSet.framework */,
+				973DD4041D343F2F009D45DB /* libicudata.a */,
+				973DD4051D343F2F009D45DB /* libicui18n.a */,
+				973DD4061D343F2F009D45DB /* libicuio.a */,
+				973DD4071D343F2F009D45DB /* libicule.a */,
+				973DD4081D343F2F009D45DB /* libiculx.a */,
+				973DD4091D343F2F009D45DB /* libicutest.a */,
+				973DD40A1D343F2F009D45DB /* libicutu.a */,
+				973DD40B1D343F2F009D45DB /* libicuuc.a */,
+				973DD40C1D343F2F009D45DB /* liblzma.a */,
+				973DD40D1D343F2F009D45DB /* libxapian.a */,
+				973DD40E1D343F2F009D45DB /* libzim.a */,
 				97E609F01D103DED00EBCB9D /* NotificationCenter.framework */,
+				198ECFA618CDD6B29CD462A0 /* Pods_Kiwix_OSX.framework */,
+				EC884ACBBA260AF741C4C4FE /* Pods_Kiwix_iOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		9675A05DC9EAC986274652A8 /* Pods */ = {
+		970E68B31D37E1E0001E8514 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				E0C40F7192D36BEA96D12C9C /* Pods-Kiwix-OSX.debug.xcconfig */,
-				86340F4A23677DE4554AE94B /* Pods-Kiwix-OSX.release.xcconfig */,
-				B14E5F8A97964014F99EAD4E /* Pods-Kiwix-iOS.debug.xcconfig */,
-				B3B41D59F4B010C559B18D3D /* Pods-Kiwix-iOS.release.xcconfig */,
+				970E68B51D37E224001E8514 /* SettingSearchHistoryTBVC.swift */,
+				970E68B11D37E1DD001E8514 /* SettingSearchTuneController.swift */,
 			);
-			name = Pods;
+			name = Search;
+			sourceTree = "<group>";
+		};
+		970E68B41D37E1EF001E8514 /* Generic */ = {
+			isa = PBXGroup;
+			children = (
+				973DD4271D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift */,
+				971A10371D022C15007FC62C /* WebViewController.swift */,
+			);
+			name = Generic;
 			sourceTree = "<group>";
 		};
 		971186ED1CEB424800B9909D /* shared */ = {
@@ -684,24 +596,6 @@
 			name = shared;
 			sourceTree = "<group>";
 		};
-		971187041CEB426300B9909D /* static */ = {
-			isa = PBXGroup;
-			children = (
-				9711873B1CEB512D00B9909D /* libicudata.a */,
-				9711873C1CEB512D00B9909D /* libicui18n.a */,
-				9711873D1CEB512D00B9909D /* libicuio.a */,
-				9711873E1CEB512D00B9909D /* libicule.a */,
-				9711873F1CEB512D00B9909D /* libiculx.a */,
-				971187401CEB512D00B9909D /* libicutest.a */,
-				971187411CEB512D00B9909D /* libicutu.a */,
-				971187421CEB512D00B9909D /* libicuuc.a */,
-				971187431CEB512D00B9909D /* liblzma.a */,
-				971187441CEB512D00B9909D /* libxapian.a */,
-				971187451CEB512D00B9909D /* libzim.a */,
-			);
-			name = static;
-			sourceTree = "<group>";
-		};
 		971187051CEB426E00B9909D /* libkiwix */ = {
 			isa = PBXGroup;
 			children = (
@@ -712,7 +606,6 @@
 				971046301D19B96E002141C0 /* XapianSearcher.h */,
 				971046311D19B96E002141C0 /* XapianSearcher.mm */,
 				9711870C1CEB42FA00B9909D /* C++ */,
-				971187041CEB426300B9909D /* static */,
 				971186ED1CEB424800B9909D /* shared */,
 			);
 			name = libkiwix;
@@ -810,6 +703,7 @@
 				971A101A1D0228E8007FC62C /* adjustlayoutiPad.js */,
 				971A101B1D0228E8007FC62C /* adjustlayoutiPhone.js */,
 				971A101C1D0228E8007FC62C /* getTableOfContents.js */,
+				97FD5CE61D3D90B7001C74A2 /* getSnippet.js */,
 			);
 			name = JavaScripts;
 			path = "Kiwix-iOS/JavaScripts";
@@ -825,30 +719,31 @@
 				971A10281D022AD5007FC62C /* LTBarButtonItem.swift */,
 				971A10291D022AD5007FC62C /* RefreshHUD.swift */,
 				971A102A1D022AD5007FC62C /* SearchBar.swift */,
-				97E60A011D10423A00EBCB9D /* ShadowView.swift */,
+				97E60A011D10423A00EBCB9D /* ShadowViews.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
 		};
-		97254FDD1C26442F0056950B /* ZIMMultiReader */ = {
+		97254FDD1C26442F0056950B /* ZimMultiReader */ = {
 			isa = PBXGroup;
 			children = (
-				97254FDE1C2644560056950B /* ZIMMultiReader.swift */,
-				974570F31C2DABB500680E43 /* ZIMMultiReaderAPI.swift */,
-				97A714091C274FCB00951244 /* DirectoryMonitor.swift */,
+				973DD41B1D34428F009D45DB /* ZimMultiReader.swift */,
+				973DD4201D34434C009D45DB /* SearchResult.swift */,
+				973DD4221D3443A3009D45DB /* ExtensionAndTypealias.swift */,
+				973DD41A1D34428F009D45DB /* DirectoryMonitor.swift */,
 			);
-			name = ZIMMultiReader;
+			name = ZimMultiReader;
 			path = Kiwix;
 			sourceTree = "<group>";
 		};
-		972B007D1C35DBAB00B5FDC5 /* MainVC */ = {
+		972B007D1C35DBAB00B5FDC5 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				971A10611D022E0A007FC62C /* MainVC.swift */,
-				971A10621D022E0A007FC62C /* MainVCLoading.swift */,
-				971A10631D022E0A007FC62C /* MainVCDelegates.swift */,
+				970E68B71D3809A3001E8514 /* MainController.swift */,
+				9722122A1D3FCCE200C0DCF2 /* MainControllerShowHide.swift */,
+				970E68B81D3809A3001E8514 /* MainControllerDelegates.swift */,
 			);
-			name = MainVC;
+			name = Main;
 			sourceTree = "<group>";
 		};
 		973BCCE41CEB3EDE00F10B44 /* iOS */ = {
@@ -888,27 +783,55 @@
 		973BCD1F1CEB412E00F10B44 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				979CB6101D05C44F005E1BA1 /* OperationLib */,
-				97163D321CD7E79F008BE2D6 /* Help Docs */,
-				97E5712A1CA0525300FF4F1D /* Operation */,
 				9711872D1CEB507600B9909D /* CoreData */,
-				971187051CEB426E00B9909D /* libkiwix */,
 				9779987A1C1E1C9600B1DD5E /* Extensions.swift */,
-				97E891681CA976E90001CA32 /* FileManager.swift */,
-				971A10711D022E74007FC62C /* KiwixURLProtocol.swift */,
-				973C8D5B1C25F945007272F9 /* Preference.swift */,
-				979C51511CECA9AF001707F2 /* StringTools.swift */,
-				97254FDD1C26442F0056950B /* ZIMMultiReader */,
+				97163D321CD7E79F008BE2D6 /* Help Docs */,
+				971187051CEB426E00B9909D /* libkiwix */,
+				97E5712A1CA0525300FF4F1D /* Operation */,
+				973DD4261D36E395009D45DB /* Tools */,
+				97BAA8EA1D3D2D0A0038F57F /* URLProtocol */,
+				97254FDD1C26442F0056950B /* ZimMultiReader */,
 			);
 			name = Shared;
+			sourceTree = "<group>";
+		};
+		973DD4031D343F09009D45DB /* Basic */ = {
+			isa = PBXGroup;
+			children = (
+				9779A1C21D34225E0071EFAB /* AlertOperation.swift */,
+				9779A1C41D34225E0071EFAB /* NetworkObserver.swift */,
+				970C61981D3429E400087758 /* ReachabilityCondition.swift */,
+				9779A1C71D34225E0071EFAB /* UIOperations.swift */,
+			);
+			name = Basic;
+			sourceTree = "<group>";
+		};
+		973DD4261D36E395009D45DB /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				97E891681CA976E90001CA32 /* FileManager.swift */,
+				973C8D5B1C25F945007272F9 /* Preference.swift */,
+				979C51511CECA9AF001707F2 /* StringTools.swift */,
+			);
+			name = Tools;
 			sourceTree = "<group>";
 		};
 		9749A1B21C430653000F2D1E /* Bookmark */ = {
 			isa = PBXGroup;
 			children = (
 				971A10331D022AEC007FC62C /* BookmarkTBVC.swift */,
+				97219DBC1D383A00009FDFF1 /* BookmarkController.swift */,
+				970C654F1D398D5A007032F8 /* BookmarkControllerAnimator.swift */,
 			);
 			name = Bookmark;
+			sourceTree = "<group>";
+		};
+		974F42801D47E15400F8074C /* Widget */ = {
+			isa = PBXGroup;
+			children = (
+				974F42811D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift */,
+			);
+			name = Widget;
 			sourceTree = "<group>";
 		};
 		975227A41D020C0F001D1DDE /* indexer */ = {
@@ -955,7 +878,6 @@
 				973BCD0A1CEB3FA500F10B44 /* Kiwix-OSXUITests */,
 				97A2ABA21C1B80FF00052E74 /* Kiwix-iOSTests */,
 				97A2ABAD1C1B810000052E74 /* Kiwix-iOSUITests */,
-				784457131AE044F91977B64B /* Pods */,
 				CFDF64EC6F9DB861DEEB91A0 /* Frameworks */,
 			);
 			name = Others;
@@ -986,17 +908,30 @@
 			isa = PBXGroup;
 			children = (
 				971A10411D022C54007FC62C /* SettingTBVC.swift */,
+				970E68B41D37E1EF001E8514 /* Generic */,
 				97C01FCA1C39B7F100D010E5 /* Library */,
 				97C01FD21C39BF4E00D010E5 /* Reading */,
-				971046331D1C830C002141C0 /* SearchTuneController.swift */,
-				971A10371D022C15007FC62C /* WebViewController.swift */,
+				970E68B31D37E1E0001E8514 /* Search */,
+				974F42801D47E15400F8074C /* Widget */,
 			);
 			name = Setting;
+			sourceTree = "<group>";
+		};
+		9779C3151D4575AD0064CC8E /* Bookmarks */ = {
+			isa = PBXGroup;
+			children = (
+				9779C3161D4575AE0064CC8E /* TodayViewController.swift */,
+				97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */,
+				9779C3181D4575AE0064CC8E /* MainInterface.storyboard */,
+				9779C31B1D4575AE0064CC8E /* Info.plist */,
+			);
+			path = Bookmarks;
 			sourceTree = "<group>";
 		};
 		978C58791C1CCC920077AE47 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
+				971C4F0B1D3FFFA60027B7D2 /* Kiwix.entitlements */,
 				971A10791D022F05007FC62C /* Localizable.stringsdict */,
 				971A10191D0228E8007FC62C /* JavaScripts */,
 				975227CF1D022814001D1DDE /* LaunchScreen.storyboard */,
@@ -1010,8 +945,8 @@
 		978C587A1C1CCC9C0077AE47 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				975227C91D0227E8001D1DDE /* Library.storyboard */,
 				975227CA1D0227E8001D1DDE /* Main.storyboard */,
+				975227C91D0227E8001D1DDE /* Library.storyboard */,
 				97F03CE11D2440470040D26E /* Search.storyboard */,
 				975227CB1D0227E8001D1DDE /* Setting.storyboard */,
 				9734E54D1D289D060061C39B /* Welcome.storyboard */,
@@ -1025,11 +960,10 @@
 			children = (
 				9749A1B21C430653000F2D1E /* Bookmark */,
 				978C588C1C1CD5080077AE47 /* LibraryTBVC */,
-				972B007D1C35DBAB00B5FDC5 /* MainVC */,
+				972B007D1C35DBAB00B5FDC5 /* Main */,
 				97E108221C5D5A0D00E27FD3 /* Search */,
 				9771DC4B1C37278E009ECFF0 /* Setting */,
 				97D55EF51D2075180081B523 /* TableOfContentsController.swift */,
-				971A10691D022E15007FC62C /* BookmarkHUDVC.swift */,
 				97A7017E1D2C59CA00AAE2D8 /* GetStartedController.swift */,
 			);
 			name = Controllers;
@@ -1070,109 +1004,16 @@
 			name = Properties;
 			sourceTree = "<group>";
 		};
-		979CB6101D05C44F005E1BA1 /* OperationLib */ = {
-			isa = PBXGroup;
-			children = (
-				979CB6111D05C44F005E1BA1 /* Capability */,
-				979CB61E1D05C44F005E1BA1 /* Conditions */,
-				979CB62C1D05C44F005E1BA1 /* Exclusive */,
-				979CB62F1D05C44F005E1BA1 /* Observer */,
-				979CB63A1D05C44F005E1BA1 /* Operations */,
-			);
-			name = OperationLib;
-			path = Kiwix/OperationLib;
-			sourceTree = "<group>";
-		};
-		979CB6111D05C44F005E1BA1 /* Capability */ = {
-			isa = PBXGroup;
-			children = (
-				979CB6121D05C44F005E1BA1 /* CalendarCapability.swift */,
-				979CB6131D05C44F005E1BA1 /* Capability.swift */,
-				979CB6141D05C44F005E1BA1 /* HealthCapability.swift */,
-				979CB6151D05C44F005E1BA1 /* iCloudContainerCapability.swift */,
-				979CB6161D05C44F005E1BA1 /* LocationCapability-iOS.swift */,
-				979CB6171D05C44F005E1BA1 /* LocationCapability-OSX.swift */,
-				979CB6181D05C44F005E1BA1 /* LocationCapability-tvOS.swift */,
-				979CB6191D05C44F005E1BA1 /* PassbookCapability.swift */,
-				979CB61A1D05C44F005E1BA1 /* PhotosCapability.swift */,
-				979CB61B1D05C44F005E1BA1 /* PushCapability-iOS.swift */,
-				979CB61C1D05C44F005E1BA1 /* PushCapability-OSX.swift */,
-				979CB61D1D05C44F005E1BA1 /* UserNotificationCapability.swift */,
-			);
-			path = Capability;
-			sourceTree = "<group>";
-		};
-		979CB61E1D05C44F005E1BA1 /* Conditions */ = {
-			isa = PBXGroup;
-			children = (
-				979CB61F1D05C44F005E1BA1 /* CalendarCondition.swift */,
-				979CB6201D05C44F005E1BA1 /* CloudCondition.swift */,
-				979CB6211D05C44F005E1BA1 /* HealthCondition.swift */,
-				979CB6221D05C44F005E1BA1 /* LocationCondition.swift */,
-				979CB6231D05C44F005E1BA1 /* NegatedCondition.swift */,
-				979CB6241D05C44F005E1BA1 /* NoCancelledDependencies.swift */,
-				979CB6251D05C44F005E1BA1 /* OperationCondition.swift */,
-				979CB6261D05C44F005E1BA1 /* PassbookCondition.swift */,
-				979CB6271D05C44F005E1BA1 /* PhotosCondition.swift */,
-				979CB6281D05C44F005E1BA1 /* ReachabilityCondition.swift */,
-				979CB6291D05C44F005E1BA1 /* RemoteNotificationCondition.swift */,
-				979CB62A1D05C44F005E1BA1 /* SilentCondition.swift */,
-				979CB62B1D05C44F005E1BA1 /* UserNotificationCondition.swift */,
-			);
-			path = Conditions;
-			sourceTree = "<group>";
-		};
-		979CB62C1D05C44F005E1BA1 /* Exclusive */ = {
-			isa = PBXGroup;
-			children = (
-				979CB62D1D05C44F005E1BA1 /* ExclusivityController.swift */,
-				979CB62E1D05C44F005E1BA1 /* MutuallyExclusive.swift */,
-			);
-			path = Exclusive;
-			sourceTree = "<group>";
-		};
-		979CB62F1D05C44F005E1BA1 /* Observer */ = {
-			isa = PBXGroup;
-			children = (
-				979CB6301D05C44F005E1BA1 /* BlockObserver.swift */,
-				979CB6331D05C44F005E1BA1 /* NetworkObserver.swift */,
-				979CB6351D05C44F005E1BA1 /* OperationObserver.swift */,
-				979CB6371D05C44F005E1BA1 /* TimeoutObserver.swift */,
-			);
-			path = Observer;
-			sourceTree = "<group>";
-		};
-		979CB63A1D05C44F005E1BA1 /* Operations */ = {
-			isa = PBXGroup;
-			children = (
-				979CB69D1D05C520005E1BA1 /* AlertOperation.swift */,
-				979CB69E1D05C520005E1BA1 /* BlockOperation.swift */,
-				979CB69F1D05C520005E1BA1 /* CKContainer+Operations.swift */,
-				979CB6A01D05C520005E1BA1 /* DelayOperation.swift */,
-				979CB6A11D05C520005E1BA1 /* Dictionary+Operations.swift */,
-				979CB6A21D05C520005E1BA1 /* GroupOperation.swift */,
-				979CB6A31D05C520005E1BA1 /* LocationOperation.swift */,
-				979CB6A41D05C520005E1BA1 /* NSLock+Operations.swift */,
-				979CB6A51D05C520005E1BA1 /* NSOperation+Operations.swift */,
-				979CB6A61D05C520005E1BA1 /* Operation.swift */,
-				979CB6A71D05C520005E1BA1 /* OperationErrors.swift */,
-				979CB6A81D05C520005E1BA1 /* OperationQueue.swift */,
-				979CB6A91D05C520005E1BA1 /* UIUserNotifications+Operations.swift */,
-				979CB6AA1D05C520005E1BA1 /* URLSessionTaskOperation.swift */,
-			);
-			path = Operations;
-			sourceTree = "<group>";
-		};
 		97A2AB7F1C1B80FF00052E74 = {
 			isa = PBXGroup;
 			children = (
 				973BCD1F1CEB412E00F10B44 /* Shared */,
 				97A2AB8A1C1B80FF00052E74 /* OS X */,
 				973BCCE41CEB3EDE00F10B44 /* iOS */,
-				97E609F21D103DED00EBCB9D /* iOSWidget */,
+				97E609F21D103DED00EBCB9D /* iOSWidgets */,
 				975334CD1CEB6A78007ED50B /* Others */,
-				9675A05DC9EAC986274652A8 /* Pods */,
 				931D277C156AE671D3F9EADA /* Frameworks */,
+				F544A4E4357A6D33CF234C6B /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1185,7 +1026,7 @@
 				973BCCE91CEB3FA400F10B44 /* Kiwix.app */,
 				973BCCFC1CEB3FA400F10B44 /* Kiwix-OSXTests.xctest */,
 				973BCD071CEB3FA500F10B44 /* Kiwix-OSXUITests.xctest */,
-				97E609EF1D103DED00EBCB9D /* Kiwix-iOSWidget.appex */,
+				9779C3131D4575AD0064CC8E /* Bookmarks.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1224,6 +1065,15 @@
 			path = KiwixUITests;
 			sourceTree = "<group>";
 		};
+		97BAA8EA1D3D2D0A0038F57F /* URLProtocol */ = {
+			isa = PBXGroup;
+			children = (
+				97BAA8ED1D3D2D9B0038F57F /* KiwixURLProtocol.swift */,
+				97BAA8EB1D3D2D7B0038F57F /* PacketAnalyzer.swift */,
+			);
+			name = URLProtocol;
+			sourceTree = "<group>";
+		};
 		97C01FCA1C39B7F100D010E5 /* Library */ = {
 			isa = PBXGroup;
 			children = (
@@ -1258,24 +1108,25 @@
 		97E5712A1CA0525300FF4F1D /* Operation */ = {
 			isa = PBXGroup;
 			children = (
-				97DF23541CE807A1003E1E5A /* GlobalOperationQueue.swift */,
-				970103F91C6824FA00DC48F6 /* RefreshLibraryOperation.swift */,
-				97B50C7E1CA1E4810010BD79 /* UIOperations.swift */,
-				973970EC1CB9A04C00350507 /* SearchOperation.swift */,
+				973DD4031D343F09009D45DB /* Basic */,
+				9779A1C31D34225E0071EFAB /* GlobalOperationQueue.swift */,
+				9779A1C51D34225E0071EFAB /* RefreshLibraryOperation.swift */,
+				973DD4241D344558009D45DB /* ScanLocalBookOperation.swift */,
+				9779A1C61D34225E0071EFAB /* SearchOperation.swift */,
+				971C4F0D1D400F010027B7D2 /* UpdateWidgetDataSourceOperation.swift */,
+				970C61961D34243600087758 /* URLSessionDownloadTaskOperation.swift */,
 			);
 			name = Operation;
 			path = Kiwix;
 			sourceTree = "<group>";
 		};
-		97E609F21D103DED00EBCB9D /* iOSWidget */ = {
+		97E609F21D103DED00EBCB9D /* iOSWidgets */ = {
 			isa = PBXGroup;
 			children = (
-				97E609F31D103DED00EBCB9D /* TodayViewController.swift */,
-				97E609F51D103DED00EBCB9D /* MainInterface.storyboard */,
-				97E609F81D103DED00EBCB9D /* Info.plist */,
+				9779C3151D4575AD0064CC8E /* Bookmarks */,
 			);
-			name = iOSWidget;
-			path = "Kiwix-iOSWidget";
+			name = iOSWidgets;
+			path = "Kiwix-iOSWidgets";
 			sourceTree = "<group>";
 		};
 		CFDF64EC6F9DB861DEEB91A0 /* Frameworks */ = {
@@ -1284,9 +1135,19 @@
 				971187A81CEB694400B9909D /* WebKit.framework */,
 				9711871D1CEB449A00B9909D /* libz.tbd */,
 				9711871B1CEB448400B9909D /* libz.tbd */,
-				6693AC18F86E44ABA71C3201 /* Pods_Kiwix.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F544A4E4357A6D33CF234C6B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6DCB0E958A1083CA248C5A12 /* Pods-Kiwix-OSX.debug.xcconfig */,
+				69E75DFE2EF83272AC5B02BA /* Pods-Kiwix-OSX.release.xcconfig */,
+				DA0AB5D61F19BE37BD0AFA0A /* Pods-Kiwix-iOS.debug.xcconfig */,
+				5B9300794E7F4EFE5B3E8F19 /* Pods-Kiwix-iOS.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1296,14 +1157,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 973BCD0E1CEB3FA500F10B44 /* Build configuration list for PBXNativeTarget "Kiwix-OSX" */;
 			buildPhases = (
-				7C9B30F13CC8E5C60BDDB904 /* Check Pods Manifest.lock */,
+				99B6C5B82907BC9766F6107C /* [CP] Check Pods Manifest.lock */,
 				973BCCE51CEB3FA400F10B44 /* Sources */,
 				973BCCE61CEB3FA400F10B44 /* Frameworks */,
 				973BCCE71CEB3FA400F10B44 /* Resources */,
 				971187211CEB4E6900B9909D /* CopyFiles */,
-				6A54D44911BF3FD6B4D6B8BC /* Embed Pods Frameworks */,
-				BE28BFF3CC54843446BB8F2E /* Copy Pods Resources */,
 				97A4D7E31CF8C479006C731E /* ShellScript */,
+				6386DDFA463FC9F4EBE2E419 /* [CP] Embed Pods Frameworks */,
+				CB1EEC1866DA4DFDA47B796E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1350,22 +1211,41 @@
 			productReference = 973BCD071CEB3FA500F10B44 /* Kiwix-OSXUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		97A2AB871C1B80FF00052E74 /* Kiwix-iOS */ = {
+		9779C3121D4575AD0064CC8E /* Bookmarks */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 97A2ABB31C1B810000052E74 /* Build configuration list for PBXNativeTarget "Kiwix-iOS" */;
+			buildConfigurationList = 9779C31F1D4575AE0064CC8E /* Build configuration list for PBXNativeTarget "Bookmarks" */;
 			buildPhases = (
-				631D6CA2AC2D4ECC158B9734 /* Check Pods Manifest.lock */,
-				97A2AB841C1B80FF00052E74 /* Sources */,
-				97A2AB851C1B80FF00052E74 /* Frameworks */,
-				97A2AB861C1B80FF00052E74 /* Resources */,
-				A0BA34333D8534C017C21288 /* Embed Pods Frameworks */,
-				0DCB994930DA1CBACABC8118 /* Copy Pods Resources */,
-				97A4D7E21CF8C318006C731E /* ShellScript */,
-				97E609FF1D103DED00EBCB9D /* Embed App Extensions */,
+				9779C30F1D4575AD0064CC8E /* Sources */,
+				9779C3101D4575AD0064CC8E /* Frameworks */,
+				9779C3111D4575AD0064CC8E /* Resources */,
+				974F42831D47F61B00F8074C /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+			);
+			name = Bookmarks;
+			productName = Bookmarks;
+			productReference = 9779C3131D4575AD0064CC8E /* Bookmarks.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		97A2AB871C1B80FF00052E74 /* Kiwix-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 97A2ABB31C1B810000052E74 /* Build configuration list for PBXNativeTarget "Kiwix-iOS" */;
+			buildPhases = (
+				CDD21917A84F651D4CEFF569 /* [CP] Check Pods Manifest.lock */,
+				97A2AB841C1B80FF00052E74 /* Sources */,
+				97A2AB851C1B80FF00052E74 /* Frameworks */,
+				97A2AB861C1B80FF00052E74 /* Resources */,
+				97A4D7E21CF8C318006C731E /* ShellScript */,
+				97E609FF1D103DED00EBCB9D /* Embed App Extensions */,
+				7D32C417880EE3A4FFF4017C /* [CP] Embed Pods Frameworks */,
+				20E4CC4E024923B9E858CC06 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9779C31D1D4575AE0064CC8E /* PBXTargetDependency */,
 			);
 			name = "Kiwix-iOS";
 			productName = Kiwix;
@@ -1408,23 +1288,6 @@
 			productReference = 97A2ABAA1C1B810000052E74 /* Kiwix-iOSUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		97E609EE1D103DED00EBCB9D /* Kiwix-iOSWidget */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 97E609FE1D103DED00EBCB9D /* Build configuration list for PBXNativeTarget "Kiwix-iOSWidget" */;
-			buildPhases = (
-				97E609EB1D103DED00EBCB9D /* Sources */,
-				97E609EC1D103DED00EBCB9D /* Frameworks */,
-				97E609ED1D103DED00EBCB9D /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Kiwix-iOSWidget";
-			productName = "Kiwix-iOSWidget";
-			productReference = 97E609EF1D103DED00EBCB9D /* Kiwix-iOSWidget.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1446,10 +1309,22 @@
 						CreatedOnToolsVersion = 7.3.1;
 						TestTargetID = 973BCCE81CEB3FA400F10B44;
 					};
+					9779C3121D4575AD0064CC8E = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = L7HWM3SP3L;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
 					97A2AB871C1B80FF00052E74 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = L7HWM3SP3L;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.BackgroundModes = {
 								enabled = 0;
 							};
@@ -1465,10 +1340,6 @@
 					97A2ABA91C1B810000052E74 = {
 						CreatedOnToolsVersion = 7.2;
 						TestTargetID = 97A2AB871C1B80FF00052E74;
-					};
-					97E609EE1D103DED00EBCB9D = {
-						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = L7HWM3SP3L;
 					};
 				};
 			};
@@ -1491,7 +1362,7 @@
 				973BCCE81CEB3FA400F10B44 /* Kiwix-OSX */,
 				973BCCFB1CEB3FA400F10B44 /* Kiwix-OSXTests */,
 				973BCD061CEB3FA500F10B44 /* Kiwix-OSXUITests */,
-				97E609EE1D103DED00EBCB9D /* Kiwix-iOSWidget */,
+				9779C3121D4575AD0064CC8E /* Bookmarks */,
 			);
 		};
 /* End PBXProject section */
@@ -1522,12 +1393,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9779C3111D4575AD0064CC8E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9779C31A1D4575AE0064CC8E /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		97A2AB861C1B80FF00052E74 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				971A101F1D0228E8007FC62C /* getTableOfContents.js in Resources */,
 				971A10811D022F74007FC62C /* Pic_P.png in Resources */,
+				97FD5CE71D3D90B7001C74A2 /* getSnippet.js in Resources */,
 				971A101D1D0228E8007FC62C /* adjustlayoutiPad.js in Resources */,
 				975227D01D022814001D1DDE /* LaunchScreen.storyboard in Resources */,
 				97F03CE21D2440470040D26E /* Search.storyboard in Resources */,
@@ -1559,25 +1439,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		97E609ED1D103DED00EBCB9D /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				97E609F71D103DED00EBCB9D /* MainInterface.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0DCB994930DA1CBACABC8118 /* Copy Pods Resources */ = {
+		20E4CC4E024923B9E858CC06 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1585,29 +1457,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		631D6CA2AC2D4ECC158B9734 /* Check Pods Manifest.lock */ = {
+		6386DDFA463FC9F4EBE2E419 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		6A54D44911BF3FD6B4D6B8BC /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1615,20 +1472,33 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Kiwix-OSX/Pods-Kiwix-OSX-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7C9B30F13CC8E5C60BDDB904 /* Check Pods Manifest.lock */ = {
+		7D32C417880EE3A4FFF4017C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		974F42831D47F61B00F8074C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\nbuildNumString=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nversionNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"$INFOPLIST_FILE\")\nIFS='.'; arr=($buildNumString)\nlastIndex=$((${#arr[@]} - 1))\nbuildNumber=$((${arr[lastIndex]} + 1))\nbuildNumString=\"${arr[0]}.${arr[1]}.$buildNumber\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumString\" \"$INFOPLIST_FILE\"";
 		};
 		97A4D7E21CF8C318006C731E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1641,7 +1511,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
+			shellScript = "#!/bin/bash\nbuildNumString=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nversionNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"$INFOPLIST_FILE\")\nIFS='.'; arr=($buildNumString)\nlastIndex=$((${#arr[@]} - 1))\nbuildNumber=$((${arr[lastIndex]} + 1))\nbuildNumString=\"${arr[0]}.${arr[1]}.$buildNumber\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumString\" \"$INFOPLIST_FILE\"";
 		};
 		97A4D7E31CF8C479006C731E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1656,34 +1526,49 @@
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
 		};
-		A0BA34333D8534C017C21288 /* Embed Pods Frameworks */ = {
+		99B6C5B82907BC9766F6107C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		BE28BFF3CC54843446BB8F2E /* Copy Pods Resources */ = {
+		CB1EEC1866DA4DFDA47B796E /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Kiwix-OSX/Pods-Kiwix-OSX-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CDD21917A84F651D4CEFF569 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1695,14 +1580,7 @@
 			files = (
 				9752279B1D020C00001D1DDE /* otherTools.cpp in Sources */,
 				975B912F1CEB9B0F00D13906 /* Preference.swift in Sources */,
-				979CB6681D05C44F005E1BA1 /* OperationCondition.swift in Sources */,
-				979CB6441D05C44F005E1BA1 /* CalendarCapability.swift in Sources */,
 				971187941CEB541A00B9909D /* Article.swift in Sources */,
-				979CB6881D05C44F005E1BA1 /* TimeoutObserver.swift in Sources */,
-				9763A62B1CEBA4F9008A2718 /* ZIMMultiReaderAPI.swift in Sources */,
-				979CB6AE1D05C520005E1BA1 /* BlockOperation.swift in Sources */,
-				979CB66C1D05C44F005E1BA1 /* PhotosCondition.swift in Sources */,
-				979CB65E1D05C44F005E1BA1 /* CloudCondition.swift in Sources */,
 				9752279D1D020C00001D1DDE /* pathTools.cpp in Sources */,
 				975227A91D020C2E001D1DDE /* myhtmlparse.cc in Sources */,
 				975227B01D021539001D1DDE /* IndexerController.swift in Sources */,
@@ -1712,71 +1590,31 @@
 				971187981CEB542500B9909D /* Language+CoreDataProperties.swift in Sources */,
 				9752279F1D020C00001D1DDE /* reader.cpp in Sources */,
 				97BA32A51CEBC36300339A47 /* RootWindowController.swift in Sources */,
-				979CB64C1D05C44F005E1BA1 /* LocationCapability-iOS.swift in Sources */,
-				979CB6541D05C44F005E1BA1 /* PhotosCapability.swift in Sources */,
 				979CB6CA1D05D26E005E1BA1 /* WebViewController.swift in Sources */,
-				979CB66A1D05C44F005E1BA1 /* PassbookCondition.swift in Sources */,
 				9711878E1CEB541100B9909D /* Kiwix.xcdatamodeld in Sources */,
 				971187961CEB542500B9909D /* DownloadTask+CoreDataProperties.swift in Sources */,
-				979CB64A1D05C44F005E1BA1 /* iCloudContainerCapability.swift in Sources */,
-				979CB6C01D05C520005E1BA1 /* OperationErrors.swift in Sources */,
 				975334D21CEB6B01007ED50B /* LibraryController.swift in Sources */,
 				975227AC1D020D83001D1DDE /* ZimIndexer.mm in Sources */,
-				979CB6461D05C44F005E1BA1 /* Capability.swift in Sources */,
-				979CB6581D05C44F005E1BA1 /* PushCapability-OSX.swift in Sources */,
 				975227A11D020C00001D1DDE /* resourceTools.cpp in Sources */,
-				979CB6701D05C44F005E1BA1 /* RemoteNotificationCondition.swift in Sources */,
-				979CB6B61D05C520005E1BA1 /* GroupOperation.swift in Sources */,
 				975227A81D020C2E001D1DDE /* htmlparse.cc in Sources */,
-				979CB67A1D05C44F005E1BA1 /* BlockObserver.swift in Sources */,
 				971187971CEB542500B9909D /* Article+CoreDataProperties.swift in Sources */,
-				979CB6741D05C44F005E1BA1 /* UserNotificationCondition.swift in Sources */,
 				975227A31D020C00001D1DDE /* stringTools.cpp in Sources */,
-				979CB6601D05C44F005E1BA1 /* HealthCondition.swift in Sources */,
-				977305361D0DFD110081B8F0 /* KiwixURLProtocol.swift in Sources */,
-				979CB6721D05C44F005E1BA1 /* SilentCondition.swift in Sources */,
-				979CB65A1D05C44F005E1BA1 /* UserNotificationCapability.swift in Sources */,
-				979CB6B21D05C520005E1BA1 /* DelayOperation.swift in Sources */,
-				979CB6761D05C44F005E1BA1 /* ExclusivityController.swift in Sources */,
-				9763A62A1CEBA4F9008A2718 /* ZIMMultiReader.swift in Sources */,
-				979CB64E1D05C44F005E1BA1 /* LocationCapability-OSX.swift in Sources */,
-				979CB6BC1D05C520005E1BA1 /* NSOperation+Operations.swift in Sources */,
 				979C518D1CECAE4C001707F2 /* PreferenceWindowController.swift in Sources */,
-				979CB6C21D05C520005E1BA1 /* OperationQueue.swift in Sources */,
-				979CB6561D05C44F005E1BA1 /* PushCapability-iOS.swift in Sources */,
-				979CB6BE1D05C520005E1BA1 /* Operation.swift in Sources */,
-				9763A62C1CEBA4F9008A2718 /* DirectoryMonitor.swift in Sources */,
 				9711879B1CEB546C00B9909D /* CoreDataExtension.swift in Sources */,
 				979C51531CECA9AF001707F2 /* StringTools.swift in Sources */,
 				971187931CEB541A00B9909D /* DownloadTask.swift in Sources */,
 				9711878F1CEB541600B9909D /* 1.5.xcmappingmodel in Sources */,
-				979CB65C1D05C44F005E1BA1 /* CalendarCondition.swift in Sources */,
 				9763A62D1CEBA524008A2718 /* FileManager.swift in Sources */,
-				979CB6B81D05C520005E1BA1 /* LocationOperation.swift in Sources */,
 				973BCCEC1CEB3FA400F10B44 /* AppDelegate.swift in Sources */,
 				971187311CEB50FC00B9909D /* ZimReader.mm in Sources */,
-				979CB66E1D05C44F005E1BA1 /* ReachabilityCondition.swift in Sources */,
-				979CB6641D05C44F005E1BA1 /* NegatedCondition.swift in Sources */,
 				9763A6291CEB9E55008A2718 /* OSXExtensions.swift in Sources */,
-				979CB6841D05C44F005E1BA1 /* OperationObserver.swift in Sources */,
 				975B90FF1CEB909900D13906 /* Extensions.swift in Sources */,
 				975227AE1D0213D3001D1DDE /* xapianIndexer.cpp in Sources */,
-				979CB6B01D05C520005E1BA1 /* CKContainer+Operations.swift in Sources */,
 				971187911CEB541A00B9909D /* Book.swift in Sources */,
-				979CB6C61D05C520005E1BA1 /* URLSessionTaskOperation.swift in Sources */,
 				971187901CEB541600B9909D /* MigrationPolicy.swift in Sources */,
-				979CB6661D05C44F005E1BA1 /* NoCancelledDependencies.swift in Sources */,
-				975B91011CEB984C00D13906 /* GlobalOperationQueue.swift in Sources */,
-				979CB6781D05C44F005E1BA1 /* MutuallyExclusive.swift in Sources */,
 				971187951CEB542500B9909D /* Book+CoreDataProperties.swift in Sources */,
-				979CB6621D05C44F005E1BA1 /* LocationCondition.swift in Sources */,
 				979CB60F1D04AD04005E1BA1 /* PreferenceTabController.swift in Sources */,
-				979CB6B41D05C520005E1BA1 /* Dictionary+Operations.swift in Sources */,
-				979CB6BA1D05C520005E1BA1 /* NSLock+Operations.swift in Sources */,
-				975B91001CEB983E00D13906 /* RefreshLibraryOperation.swift in Sources */,
 				975227991D020C00001D1DDE /* indexer.cpp in Sources */,
-				979CB6C41D05C520005E1BA1 /* UIUserNotifications+Operations.swift in Sources */,
-				979CB6501D05C44F005E1BA1 /* LocationCapability-tvOS.swift in Sources */,
 				971187921CEB541A00B9909D /* Language.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1797,121 +1635,99 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9779C30F1D4575AD0064CC8E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9779C3171D4575AE0064CC8E /* TodayViewController.swift in Sources */,
+				97DB65DA1D4576B600A2CC42 /* BookmarkWidgetCell.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		97A2AB841C1B80FF00052E74 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				973DD41D1D34428F009D45DB /* DirectoryMonitor.swift in Sources */,
 				976AB2671CBD8B3D00B06EB0 /* 1.5.xcmappingmodel in Sources */,
-				979CB6691D05C44F005E1BA1 /* PassbookCondition.swift in Sources */,
 				971A10311D022AD5007FC62C /* RefreshHUD.swift in Sources */,
-				973970ED1CB9A04C00350507 /* SearchOperation.swift in Sources */,
-				979CB6BB1D05C520005E1BA1 /* NSOperation+Operations.swift in Sources */,
-				979CB6AB1D05C520005E1BA1 /* AlertOperation.swift in Sources */,
-				979CB6C31D05C520005E1BA1 /* UIUserNotifications+Operations.swift in Sources */,
 				971A102C1D022AD5007FC62C /* BarButtonItems.swift in Sources */,
 				971A10301D022AD5007FC62C /* LTBarButtonItem.swift in Sources */,
 				971A103F1D022C42007FC62C /* LibraryAutoRefreshTBVC.swift in Sources */,
-				979CB67F1D05C44F005E1BA1 /* NetworkObserver.swift in Sources */,
-				979CB6C51D05C520005E1BA1 /* URLSessionTaskOperation.swift in Sources */,
-				979CB65B1D05C44F005E1BA1 /* CalendarCondition.swift in Sources */,
-				971A10721D022E74007FC62C /* KiwixURLProtocol.swift in Sources */,
+				970E68B61D37E224001E8514 /* SettingSearchHistoryTBVC.swift in Sources */,
 				971A10581D022DAD007FC62C /* LibraryDownloadTBVC.swift in Sources */,
+				973DD4231D3443A3009D45DB /* ExtensionAndTypealias.swift in Sources */,
 				97A7017F1D2C59CA00AAE2D8 /* GetStartedController.swift in Sources */,
 				979C51521CECA9AF001707F2 /* StringTools.swift in Sources */,
+				9779A1CD1D34225E0071EFAB /* UIOperations.swift in Sources */,
 				9711878D1CEB541100B9909D /* Kiwix.xcdatamodeld in Sources */,
-				979CB6731D05C44F005E1BA1 /* UserNotificationCondition.swift in Sources */,
-				979CB66F1D05C44F005E1BA1 /* RemoteNotificationCondition.swift in Sources */,
-				979CB66D1D05C44F005E1BA1 /* ReachabilityCondition.swift in Sources */,
 				9752279E1D020C00001D1DDE /* reader.cpp in Sources */,
-				979CB6C11D05C520005E1BA1 /* OperationQueue.swift in Sources */,
-				97DF23551CE807A1003E1E5A /* GlobalOperationQueue.swift in Sources */,
-				979CB6711D05C44F005E1BA1 /* SilentCondition.swift in Sources */,
 				97D452BC1D16FF010033666F /* RecentSearchCVC.swift in Sources */,
-				979CB6651D05C44F005E1BA1 /* NoCancelledDependencies.swift in Sources */,
-				970103FB1C6824FA00DC48F6 /* RefreshLibraryOperation.swift in Sources */,
-				971A10651D022E0A007FC62C /* MainVC.swift in Sources */,
 				971A106F1D022E62007FC62C /* DownloadProgress.swift in Sources */,
 				971A102E1D022AD5007FC62C /* TableViewCells.swift in Sources */,
-				979CB64F1D05C44F005E1BA1 /* LocationCapability-tvOS.swift in Sources */,
-				979CB6591D05C44F005E1BA1 /* UserNotificationCapability.swift in Sources */,
-				97254FDF1C2644560056950B /* ZIMMultiReader.swift in Sources */,
 				971A105A1D022DAD007FC62C /* LibraryLocalTBVC.swift in Sources */,
-				97E60A021D10423A00EBCB9D /* ShadowView.swift in Sources */,
-				979CB6BD1D05C520005E1BA1 /* Operation.swift in Sources */,
-				971A10671D022E0A007FC62C /* MainVCDelegates.swift in Sources */,
+				97E60A021D10423A00EBCB9D /* ShadowViews.swift in Sources */,
+				9779A1CC1D34225E0071EFAB /* SearchOperation.swift in Sources */,
+				97BAA8EC1D3D2D7B0038F57F /* PacketAnalyzer.swift in Sources */,
+				970E68BA1D3809A3001E8514 /* MainController.swift in Sources */,
+				970C65501D398D5A007032F8 /* BookmarkControllerAnimator.swift in Sources */,
 				978C58981C1CD86E0077AE47 /* Book.swift in Sources */,
 				978C58961C1CD86E0077AE47 /* Language.swift in Sources */,
 				971A10701D022E62007FC62C /* Network.swift in Sources */,
+				974F42821D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift in Sources */,
+				970E68B21D37E1DD001E8514 /* SettingSearchTuneController.swift in Sources */,
 				971A104A1D022CBE007FC62C /* SearchResultTBVC.swift in Sources */,
-				971046341D1C830C002141C0 /* SearchTuneController.swift in Sources */,
 				971A105B1D022DAD007FC62C /* LibraryOnlineTBVC.swift in Sources */,
+				9779A1CB1D34225E0071EFAB /* RefreshLibraryOperation.swift in Sources */,
 				971A10321D022AD5007FC62C /* SearchBar.swift in Sources */,
-				979CB65D1D05C44F005E1BA1 /* CloudCondition.swift in Sources */,
-				979CB65F1D05C44F005E1BA1 /* HealthCondition.swift in Sources */,
-				979CB6B51D05C520005E1BA1 /* GroupOperation.swift in Sources */,
-				97B50C7F1CA1E4810010BD79 /* UIOperations.swift in Sources */,
 				977998741C1E0B7900B1DD5E /* Book+CoreDataProperties.swift in Sources */,
-				979CB6871D05C44F005E1BA1 /* TimeoutObserver.swift in Sources */,
-				971A10661D022E0A007FC62C /* MainVCLoading.swift in Sources */,
 				977998751C1E0B7900B1DD5E /* DownloadTask+CoreDataProperties.swift in Sources */,
-				979CB6531D05C44F005E1BA1 /* PhotosCapability.swift in Sources */,
-				979CB6771D05C44F005E1BA1 /* MutuallyExclusive.swift in Sources */,
 				970C3DCA1CBD79450026A240 /* MigrationPolicy.swift in Sources */,
 				97E891691CA976E90001CA32 /* FileManager.swift in Sources */,
 				97E60A061D10504000EBCB9D /* LibraryBackupTBVC.swift in Sources */,
-				974570F41C2DABB500680E43 /* ZIMMultiReaderAPI.swift in Sources */,
+				9779A1CA1D34225E0071EFAB /* NetworkObserver.swift in Sources */,
 				971A105C1D022DAD007FC62C /* LibraryTabBarController.swift in Sources */,
 				971A10461D022CB2007FC62C /* SearchController.swift in Sources */,
 				9779987B1C1E1C9600B1DD5E /* Extensions.swift in Sources */,
-				979CB6551D05C44F005E1BA1 /* PushCapability-iOS.swift in Sources */,
-				979CB6831D05C44F005E1BA1 /* OperationObserver.swift in Sources */,
-				979CB6791D05C44F005E1BA1 /* BlockObserver.swift in Sources */,
-				979CB6571D05C44F005E1BA1 /* PushCapability-OSX.swift in Sources */,
 				971A10401D022C42007FC62C /* LibraryUseCellularDataTBVC.swift in Sources */,
 				977998761C1E0B7900B1DD5E /* DownloadTask.swift in Sources */,
-				979CB6671D05C44F005E1BA1 /* OperationCondition.swift in Sources */,
 				9752279C1D020C00001D1DDE /* pathTools.cpp in Sources */,
 				971A10381D022C15007FC62C /* WebViewController.swift in Sources */,
 				971046321D19B96E002141C0 /* XapianSearcher.mm in Sources */,
-				979CB6AF1D05C520005E1BA1 /* CKContainer+Operations.swift in Sources */,
-				979CB6431D05C44F005E1BA1 /* CalendarCapability.swift in Sources */,
-				979CB6AD1D05C520005E1BA1 /* BlockOperation.swift in Sources */,
-				979CB6B11D05C520005E1BA1 /* DelayOperation.swift in Sources */,
 				973C8D5C1C25F945007272F9 /* Preference.swift in Sources */,
-				979CB6B91D05C520005E1BA1 /* NSLock+Operations.swift in Sources */,
+				97BAA8EE1D3D2D9B0038F57F /* KiwixURLProtocol.swift in Sources */,
 				975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */,
-				979CB66B1D05C44F005E1BA1 /* PhotosCondition.swift in Sources */,
-				979CB6751D05C44F005E1BA1 /* ExclusivityController.swift in Sources */,
+				973DD4251D344558009D45DB /* ScanLocalBookOperation.swift in Sources */,
 				971A10521D022D9D007FC62C /* AppDelegate.swift in Sources */,
-				979CB6BF1D05C520005E1BA1 /* OperationErrors.swift in Sources */,
-				979CB6631D05C44F005E1BA1 /* NegatedCondition.swift in Sources */,
 				977998781C1E0B7900B1DD5E /* Language+CoreDataProperties.swift in Sources */,
 				97D452BE1D1723FF0033666F /* CollectionViewCells.swift in Sources */,
-				979CB6B71D05C520005E1BA1 /* LocationOperation.swift in Sources */,
 				971A102F1D022AD5007FC62C /* Logo.swift in Sources */,
-				979CB6451D05C44F005E1BA1 /* Capability.swift in Sources */,
 				97D55EF61D2075180081B523 /* TableOfContentsController.swift in Sources */,
+				9722122B1D3FCCE200C0DCF2 /* MainControllerShowHide.swift in Sources */,
+				9779A1C81D34225E0071EFAB /* AlertOperation.swift in Sources */,
 				971A104B1D022CBE007FC62C /* SearchBooksVC.swift in Sources */,
 				977998771C1E0B7900B1DD5E /* Article+CoreDataProperties.swift in Sources */,
+				971C4F0E1D400F010027B7D2 /* UpdateWidgetDataSourceOperation.swift in Sources */,
 				971187301CEB50FC00B9909D /* ZimReader.mm in Sources */,
-				979CB6491D05C44F005E1BA1 /* iCloudContainerCapability.swift in Sources */,
 				971A103C1D022C2C007FC62C /* FontSizeTBVC.swift in Sources */,
 				971A103B1D022C2C007FC62C /* AdjustLayoutTBVC.swift in Sources */,
 				975227A21D020C00001D1DDE /* stringTools.cpp in Sources */,
+				97219DBD1D383A00009FDFF1 /* BookmarkController.swift in Sources */,
 				9711879A1CEB546C00B9909D /* CoreDataExtension.swift in Sources */,
-				97A7140A1C274FCB00951244 /* DirectoryMonitor.swift in Sources */,
+				970C61971D34243600087758 /* URLSessionDownloadTaskOperation.swift in Sources */,
 				971A10341D022AEC007FC62C /* BookmarkTBVC.swift in Sources */,
 				975227A01D020C00001D1DDE /* resourceTools.cpp in Sources */,
-				979CB6B31D05C520005E1BA1 /* Dictionary+Operations.swift in Sources */,
-				979CB64B1D05C44F005E1BA1 /* LocationCapability-iOS.swift in Sources */,
-				979CB6611D05C44F005E1BA1 /* LocationCondition.swift in Sources */,
 				971A10601D022DF2007FC62C /* LanguageTBVC.swift in Sources */,
-				971A106A1D022E15007FC62C /* BookmarkHUDVC.swift in Sources */,
 				971A106C1D022E50007FC62C /* Utilities.swift in Sources */,
+				973DD4281D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift in Sources */,
 				971A10591D022DAD007FC62C /* LibraryLocalBookDetailTBVC.swift in Sources */,
-				979CB64D1D05C44F005E1BA1 /* LocationCapability-OSX.swift in Sources */,
 				971A10431D022C54007FC62C /* SettingTBVC.swift in Sources */,
+				970E68BB1D3809A3001E8514 /* MainControllerDelegates.swift in Sources */,
+				973DD4211D34434C009D45DB /* SearchResult.swift in Sources */,
+				9779A1C91D34225E0071EFAB /* GlobalOperationQueue.swift in Sources */,
+				970C61991D3429E400087758 /* ReachabilityCondition.swift in Sources */,
 				978C589C1C1CD86E0077AE47 /* Article.swift in Sources */,
+				973DD41E1D34428F009D45DB /* ZimMultiReader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1932,14 +1748,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		97E609EB1D103DED00EBCB9D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				97E609F41D103DED00EBCB9D /* TodayViewController.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1952,6 +1760,11 @@
 			isa = PBXTargetDependency;
 			target = 973BCCE81CEB3FA400F10B44 /* Kiwix-OSX */;
 			targetProxy = 973BCD081CEB3FA500F10B44 /* PBXContainerItemProxy */;
+		};
+		9779C31D1D4575AE0064CC8E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9779C3121D4575AD0064CC8E /* Bookmarks */;
+			targetProxy = 9779C31C1D4575AE0064CC8E /* PBXContainerItemProxy */;
 		};
 		97A2ABA11C1B80FF00052E74 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1975,10 +1788,10 @@
 			path = "Kiwix-iOS";
 			sourceTree = SOURCE_ROOT;
 		};
-		97E609F51D103DED00EBCB9D /* MainInterface.storyboard */ = {
+		9779C3181D4575AE0064CC8E /* MainInterface.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				97E609F61D103DED00EBCB9D /* Base */,
+				9779C3191D4575AE0064CC8E /* Base */,
 			);
 			name = MainInterface.storyboard;
 			sourceTree = "<group>";
@@ -1988,7 +1801,7 @@
 /* Begin XCBuildConfiguration section */
 		973BCD0F1CEB3FA500F10B44 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E0C40F7192D36BEA96D12C9C /* Pods-Kiwix-OSX.debug.xcconfig */;
+			baseConfigurationReference = 6DCB0E958A1083CA248C5A12 /* Pods-Kiwix-OSX.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2008,7 +1821,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Kiwix/libkiwix/shared",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.osx;
 				PRODUCT_NAME = Kiwix;
 				SDKROOT = macosx;
@@ -2019,7 +1832,7 @@
 		};
 		973BCD101CEB3FA500F10B44 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 86340F4A23677DE4554AE94B /* Pods-Kiwix-OSX.release.xcconfig */;
+			baseConfigurationReference = 69E75DFE2EF83272AC5B02BA /* Pods-Kiwix-OSX.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2039,7 +1852,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Kiwix/libkiwix/shared",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.osx;
 				PRODUCT_NAME = Kiwix;
 				SDKROOT = macosx;
@@ -2110,6 +1923,38 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				TEST_TARGET_NAME = "Kiwix-OSX";
+			};
+			name = Release;
+		};
+		9779C3201D4575AE0064CC8E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_ENTITLEMENTS = "Kiwix-iOSWidgets/Bookmarks/Bookmarks.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "Kiwix-iOSWidgets/Bookmarks/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.Bookmarks;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		9779C3211D4575AE0064CC8E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CODE_SIGN_ENTITLEMENTS = "Kiwix-iOSWidgets/Bookmarks/Bookmarks.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "Kiwix-iOSWidgets/Bookmarks/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.Bookmarks;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
@@ -2198,13 +2043,14 @@
 		};
 		97A2ABB41C1B810000052E74 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B14E5F8A97964014F99EAD4E /* Pods-Kiwix-iOS.debug.xcconfig */;
+			baseConfigurationReference = DA0AB5D61F19BE37BD0AFA0A /* Pods-Kiwix-iOS.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "Kiwix-iOS/Kiwix.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -2220,7 +2066,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Kiwix/libkiwix/static",
+					"$(PROJECT_DIR)/Kiwix/libkiwix/iOS",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix;
 				PRODUCT_NAME = Kiwix;
@@ -2232,13 +2078,14 @@
 		};
 		97A2ABB51C1B810000052E74 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B3B41D59F4B010C559B18D3D /* Pods-Kiwix-iOS.release.xcconfig */;
+			baseConfigurationReference = 5B9300794E7F4EFE5B3E8F19 /* Pods-Kiwix-iOS.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "Kiwix-iOS/Kiwix.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -2254,7 +2101,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Kiwix/libkiwix/static",
+					"$(PROJECT_DIR)/Kiwix/libkiwix/iOS",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix;
 				PRODUCT_NAME = Kiwix;
@@ -2320,36 +2167,6 @@
 			};
 			name = Release;
 		};
-		97E609FC1D103DED00EBCB9D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = "Kiwix-iOSWidget/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.iOSWidget;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		97E609FD1D103DED00EBCB9D /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = "Kiwix-iOSWidget/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.iOSWidget;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2376,6 +2193,15 @@
 			buildConfigurations = (
 				973BCD151CEB3FA500F10B44 /* Debug */,
 				973BCD161CEB3FA500F10B44 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9779C31F1D4575AE0064CC8E /* Build configuration list for PBXNativeTarget "Bookmarks" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9779C3201D4575AE0064CC8E /* Debug */,
+				9779C3211D4575AE0064CC8E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2416,25 +2242,17 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		97E609FE1D103DED00EBCB9D /* Build configuration list for PBXNativeTarget "Kiwix-iOSWidget" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				97E609FC1D103DED00EBCB9D /* Debug */,
-				97E609FD1D103DED00EBCB9D /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
 		9711878A1CEB541100B9909D /* Kiwix.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				97BAA8EF1D3D32770038F57F /* 1.7.xcdatamodel */,
 				9711878B1CEB541100B9909D /* 1.5.xcdatamodel */,
 				9711878C1CEB541100B9909D /* Kiwix.xcdatamodel */,
 			);
-			currentVersion = 9711878B1CEB541100B9909D /* 1.5.xcdatamodel */;
+			currentVersion = 97BAA8EF1D3D32770038F57F /* 1.7.xcdatamodel */;
 			name = Kiwix.xcdatamodeld;
 			path = Kiwix/CoreData/Kiwix.xcdatamodeld;
 			sourceTree = "<group>";

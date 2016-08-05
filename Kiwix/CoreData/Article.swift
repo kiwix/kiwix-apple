@@ -24,9 +24,43 @@ class Article: NSManagedObject {
         return article
     }
     
+    class func fetchRecentBookmarks(count: Int, context: NSManagedObjectContext) -> [Article] {
+        let fetchRequest = NSFetchRequest(entityName: "Article")
+        let dateDescriptor = NSSortDescriptor(key: "bookmarkDate", ascending: false)
+        let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
+        fetchRequest.sortDescriptors = [dateDescriptor, titleDescriptor]
+        fetchRequest.predicate = NSPredicate(format: "isBookmarked == true")
+        fetchRequest.fetchLimit = count
+        return fetch(fetchRequest, type: Article.self, context: context) ?? [Article]()
+    }
+    
+    // MARK: - Helper
+    
     var url: NSURL? {
         guard let urlString = urlString else {return nil}
         return NSURL(string: urlString)
+    }
+    
+    var thumbImageData: NSData? {
+        if let urlString = thumbImageURL,
+            let url = NSURL(string: urlString),
+            let data = NSData(contentsOfURL: url) {
+            return data
+        } else {
+            return book?.favIcon
+        }
+    }
+    
+    func dictionarySerilization() -> NSDictionary? {
+        guard let title = title,
+            let data = thumbImageData,
+            let url = url else {return nil}
+        return [
+            "title": title,
+            "thumbImageData": data,
+            "url": url.absoluteString,
+            "isMainPage": NSNumber(bool: isMainPage)
+        ]
     }
 
 }

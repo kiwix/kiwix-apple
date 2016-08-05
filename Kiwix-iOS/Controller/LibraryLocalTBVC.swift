@@ -186,7 +186,7 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
         let delete = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.delete) { (action, indexPath) -> Void in
             guard let book = self.fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
             self.managedObjectContext.performBlock({ () -> Void in
-                if let id = book.id, let zimURL = ZIMMultiReader.sharedInstance.readers[id]?.fileURL {
+                if let id = book.id, let zimURL = ZimMultiReader.sharedInstance.readers[id]?.fileURL {
                     FileManager.removeItem(atURL: zimURL)
                     
                     let indexFolderURL = zimURL.URLByAppendingPathExtension("idx")

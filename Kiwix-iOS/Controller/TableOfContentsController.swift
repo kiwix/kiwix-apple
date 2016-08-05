@@ -9,7 +9,7 @@
 import UIKit
 import DZNEmptyDataSet
 
-class TableOfContentsController: UIViewController, UITableViewDelegate, UITableViewDataSource ,DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class TableOfContentsController: UIViewController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     weak var delegate: TableOfContentsDelegate?

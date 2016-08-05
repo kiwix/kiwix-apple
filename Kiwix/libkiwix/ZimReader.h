@@ -54,4 +54,6 @@
 
 - (NSURL *)fileURL;
 
++ (NSInteger)levenshtein:(NSString *)string anotherString:(NSString *)anotherString;
+
 @end

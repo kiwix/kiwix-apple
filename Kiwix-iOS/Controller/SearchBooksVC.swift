@@ -70,7 +70,7 @@ class SearchBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     
     // MARK: - Fetched Results Controller
     
-    let managedObjectContext = UIApplication.appDelegate.managedObjectContext
+    let managedObjectContext = NSManagedObjectContext.mainQueueContext
     lazy var fetchedResultController: NSFetchedResultsController = {
         let fetchRequest = NSFetchRequest(entityName: "Book")
         let langDescriptor = NSSortDescriptor(key: "language.name", ascending: true)
@@ -142,15 +142,13 @@ class SearchBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        guard let mainVC = parentViewController?.parentViewController as? MainVC,
+        guard let mainVC = parentViewController?.parentViewController as? MainController,
             let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book,
             let bookID = book.id else {return}
-        mainVC.hideSearch()
+        mainVC.hideSearch(animated: true)
         mainVC.loadMainPage(bookID)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
-    
-    // MARK: - Fetched Result Controller Delegate
     
     // MARK: - Fetched Result Controller Delegate
     

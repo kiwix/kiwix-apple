@@ -75,8 +75,8 @@ class SearchController: UIViewController, UISearchBarDelegate, UIGestureRecogniz
     // MARK: - Handle Gesture
     
     func handleTap(tapGestureRecognizer: UIGestureRecognizer) {
-        guard let mainVC = parentViewController as? MainVC else {return}
-        mainVC.hideSearch()
+        guard let mainVC = parentViewController as? MainController else {return}
+        mainVC.hideSearch(animated: true)
     }
     
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {

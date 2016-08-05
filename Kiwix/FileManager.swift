@@ -72,9 +72,15 @@ class FileManager {
         }
     }
     
+    // MARK: - Contents of Doc Folder
+    
+    class var zimFileURLsInDocDir: [NSURL] {
+        return [NSURL]()
+    }
+    
     // MARK: - Item Operations
     
-    class func fileExistAtURL(url: NSURL) -> Bool {
+    class func itemExistAtURL(url: NSURL) -> Bool {
         guard let path = url.path else {return false}
         return NSFileManager.defaultManager().fileExistsAtPath(path)
     }

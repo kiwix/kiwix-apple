@@ -6,13 +6,14 @@
 //  Copyright © 2016 Chris. All rights reserved.
 //
 
-import UIKit
+import CoreData
+import PSOperations
 
 class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSURLSessionTaskDelegate, OperationQueueDelegate {
     static let sharedInstance = Network()
     weak var delegate: DownloadProgressReporting?
     
-    private let context = UIApplication.appDelegate.managedObjectContext
+    private let context = NSManagedObjectContext.mainQueueContext
     let operationQueue = OperationQueue()
     
     var progresses = [String: DownloadProgress]()
@@ -40,7 +41,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
         }
         session.getTasksWithCompletionHandler { (dataTasks, uploadTasks, downloadTasks) -> Void in
             for task in downloadTasks {
-                let operation = URLSessionTaskOperation(task: task, produceResumeDataWhenCancel: true)
+                let operation = URLSessionDownloadTaskOperation(downloadTask: task)
                 operation.name = task.taskDescription
                 operation.addObserver(NetworkObserver())
                 self.operationQueue.addOperation(operation)
@@ -75,15 +76,15 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
     }
     
     func pause(book: Book) {
-        guard let id = book.id else {return}
-        let operation = operationQueue.getOperation(id)
-        operation?.cancel()
+        guard let id = book.id,
+            let operation = operationQueue.getOperation(id) as? URLSessionDownloadTaskOperation else {return}
+        operation.cancel(produceResumeData: true)
     }
     
     func cancel(book: Book) {
-        guard let id = book.id, let operation = operationQueue.getOperation(id) as? URLSessionTaskOperation else {return}
-        operation.produceResumeDataWhenCancel = false
-        operation.cancel()
+        guard let id = book.id,
+            let operation = operationQueue.getOperation(id) as? URLSessionDownloadTaskOperation else {return}
+        operation.cancel(produceResumeData: false)
     }
     
     private func startTask(task: NSURLSessionDownloadTask, book: Book) {
@@ -93,7 +94,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
         let downloadTask = DownloadTask.addOrUpdate(book, context: context)
         downloadTask?.state = .Queued
         
-        let operation = URLSessionTaskOperation(task: task, produceResumeDataWhenCancel: true)
+        let operation = URLSessionDownloadTaskOperation(downloadTask: task)
         operation.name = id
         operation.addObserver(NetworkObserver())
         operationQueue.addOperation(operation)
@@ -149,6 +150,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
                     return
                 }
                 downloadTask.totalBytesWritten = Int64(task.countOfBytesReceived)
+                progress.completedUnitCount = Int64(task.countOfBytesReceived)
                 FileManager.saveResumeData(resumeData, book: progress.book)
             })
         }
@@ -162,7 +164,6 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
               let bookDownloadTask = book.downloadTask else {return}
         
         context.performBlockAndWait { () -> Void in
-            book.isLocal = true
             self.context.deleteObject(bookDownloadTask)
         }
         

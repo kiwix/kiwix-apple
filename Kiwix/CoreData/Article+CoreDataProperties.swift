@@ -17,10 +17,12 @@ extension Article {
     @NSManaged var isBookmarked: Bool
     @NSManaged var isMainPage: Bool
     @NSManaged var lastPosition: Float
-    @NSManaged var lastReadDate: NSTimeInterval
+    @NSManaged var lastReadDate: NSDate?
+    @NSManaged var bookmarkDate: NSDate?
     @NSManaged var title: String?
+    @NSManaged var snippet: String?
     @NSManaged var urlString: String?
     @NSManaged var book: Book?
     @NSManaged var tags: NSSet?
-
+    @NSManaged var thumbImageURL: String?
 }

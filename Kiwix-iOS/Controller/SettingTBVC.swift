@@ -9,9 +9,11 @@
 import UIKit
 
 class SettingTBVC: UITableViewController {
-    private(set) var sectionHeader = [LocalizedStrings.library, LocalizedStrings.reading,LocalizedStrings.misc]
+    private(set) var sectionHeader = [LocalizedStrings.library, LocalizedStrings.reading, LocalizedStrings.search, LocalizedStrings.widget, LocalizedStrings.misc]
     private(set) var cellTextlabels = [[LocalizedStrings.libraryAutoRefresh, LocalizedStrings.libraryUseCellularData, LocalizedStrings.libraryBackup],
                           [LocalizedStrings.fontSize, LocalizedStrings.adjustLayout],
+                          [LocalizedStrings.history],
+                          [LocalizedStrings.bookmarks],
                           [LocalizedStrings.rateKiwix, LocalizedStrings.about]]
     
     let dateComponentsFormatter: NSDateComponentsFormatter = {
@@ -27,8 +29,7 @@ class SettingTBVC: UITableViewController {
         showRateKiwixIfNeeded()
         
         if UIApplication.buildStatus == .Alpha {
-            sectionHeader.append("Search")
-            cellTextlabels.append(["Boost Factor 🚀"])
+            cellTextlabels[2].append("Boost Factor 🚀")
         }
     }
     
@@ -122,12 +123,16 @@ class SettingTBVC: UITableViewController {
             performSegueWithIdentifier("ReadingFontSize", sender: self)
         case LocalizedStrings.adjustLayout:
             performSegueWithIdentifier("AdjustLayout", sender: self)
+        case LocalizedStrings.history:
+            performSegueWithIdentifier("SearchHistory", sender: self)
+        case LocalizedStrings.bookmarks:
+            performSegueWithIdentifier("SettingWidgetBookmarksTBVC", sender: self)
+        case "Boost Factor 🚀":
+            performSegueWithIdentifier("SearchTune", sender: self)
         case LocalizedStrings.rateKiwix:
             showRateKiwixAlert(showRemindLater: false)
         case LocalizedStrings.about:
             performSegueWithIdentifier("MiscAbout", sender: self)
-        case "Boost Factor 🚀":
-            performSegueWithIdentifier("SearchTune", sender: self)
         default:
             break
         }
@@ -192,6 +197,7 @@ extension LocalizedStrings {
     class var library: String {return NSLocalizedString("Library ", comment: "Setting: Section Header")}
     class var reading: String {return NSLocalizedString("Reading", comment: "Setting: Section Header")}
     class var search: String {return NSLocalizedString("Search", comment: "Setting: Section Header")}
+    class var widget: String {return NSLocalizedString("Widget", comment: "Setting: Section Header")}
     class var misc: String {return NSLocalizedString("Misc", comment: "Setting: Section Header")}
     
     //MARK: -  Table Cell Text
@@ -200,7 +206,6 @@ extension LocalizedStrings {
     class var libraryBackup: String {return NSLocalizedString("Backup Local Files", comment: "Setting: Backup Local Files")}
     class var fontSize: String {return NSLocalizedString("Font Size", comment: "Setting: Font Size")}
     class var adjustLayout: String {return NSLocalizedString("Adjust Layout", comment: "Setting: Adjust Layout")}
-    class var booksToInclude: String {return NSLocalizedString("Books To Include", comment: "Setting: Books To Include")}
     class var rateKiwix: String {return NSLocalizedString("Please Rate Kiwix", comment: "Setting: Others")}
     class var emailFeedback: String {return NSLocalizedString("Send Email Feedback", comment: "Setting: Others")}
     class var about: String {return NSLocalizedString("About", comment: "Setting: Others")}

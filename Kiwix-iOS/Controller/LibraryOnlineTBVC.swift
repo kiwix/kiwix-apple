@@ -76,6 +76,14 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
     }
     
     func startRefresh(invokedAutomatically invokedAutomatically: Bool) {
+        if invokedAutomatically {
+            let libraryIsOld: Bool = {
+                guard let lastLibraryRefreshTime = Preference.libraryLastRefreshTime else {return true}
+                return -lastLibraryRefreshTime.timeIntervalSinceNow > Preference.libraryRefreshInterval
+            }()
+            guard libraryIsOld else {return}
+        }
+        
         let refreshOperation = RefreshLibraryOperation(invokedAutomatically: invokedAutomatically) { (errors) in
             defer {
                 NSOperationQueue.mainQueue().addOperationWithBlock({

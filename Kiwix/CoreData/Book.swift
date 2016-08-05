@@ -14,8 +14,6 @@ import CoreData
     import AppKit
 #endif
 
-
-
 class Book: NSManagedObject {
 
     // MARK: - Add Book
@@ -76,23 +74,25 @@ class Book: NSManagedObject {
         return urlComponents?.URL
     }
     
-    #if os(iOS) || os(watchOS) || os(tvOS)
-        var favIconImage: UIImage? {
-            guard let favIcon = favIcon else {return nil}
-            return UIImage(data: favIcon)
-        }
-    #elseif os(OSX)
-        var favIconImage: NSImage? {
-            guard let favIcon = favIcon else {return nil}
-            return NSImage(data: favIcon)
-        }
-    #endif
-    
     // MARK: - Fetch
     
     class func fetchAll(context: NSManagedObjectContext) -> [Book] {
         let fetchRequest = NSFetchRequest(entityName: "Book")
         return fetch(fetchRequest, type: Book.self, context: context) ?? [Book]()
+    }
+    
+    class func fetchLocal(context: NSManagedObjectContext) -> [ZimID: Book] {
+        let fetchRequest = NSFetchRequest(entityName: "Book")
+        let predicate = NSPredicate(format: "isLocal = true")
+        fetchRequest.predicate = predicate
+        let localBooks = fetch(fetchRequest, type: Book.self, context: context) ?? [Book]()
+        
+        var books = [ZimID: Book]()
+        for book in localBooks {
+            guard let id = book.id else {continue}
+            books[id] = book
+        }
+        return books
     }
     
     class func fetch(id: String, context: NSManagedObjectContext) -> Book? {
@@ -137,7 +137,7 @@ class Book: NSManagedObject {
     
     // MARK: - Description Label
     
-    var detailedDescription : String? {
+    var detailedDescription: String? {
         var descriptions = [String]()
         if let dateFormatted = dateFormatted {descriptions.append(dateFormatted)}
         if let fileSizeFormatted = fileSizeFormatted {descriptions.append(fileSizeFormatted)}
@@ -147,14 +147,14 @@ class Book: NSManagedObject {
         return descriptions.joinWithSeparator(", ")
     }
     
-    var detailedDescription1 : String? {
+    var detailedDescription1: String? {
         var descriptions = [String]()
         if let description = detailedDescription {descriptions.append(description)}
         if let bookDescription = desc {descriptions.append(bookDescription)}
         return descriptions.joinWithSeparator("\n")
     }
     
-    var detailedDescription2 : String? {
+    var detailedDescription2: String? {
         var descriptions = [String]()
         if let description = detailedDescription {descriptions.append(description)}
         if let bookDescription = desc {descriptions.append(bookDescription)}

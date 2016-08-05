@@ -105,11 +105,11 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        guard let mainVC = parentViewController?.parentViewController as? MainVC else {return}
+        guard let mainVC = parentViewController?.parentViewController as? MainController else {return}
         let result = searchResults[indexPath.row]
         let url = NSURL.kiwixURLWithZimFileid(result.bookID, articleTitle: result.title)
         mainVC.load(url)
-        mainVC.hideSearch()
+        mainVC.hideSearch(animated: true)
     }
 
     // MARK: - Search
@@ -120,15 +120,15 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
             tableView.reloadData()
             return
         }
-        ZIMMultiReader.sharedInstance.searchQueue.cancelAllOperations()
         let operation = SearchOperation(searchTerm: searchText) { (results) in
+            guard let results = results else {return}
             self.searchResults = results
             self.tableView.reloadData()
             if results.count > 0 {
                 self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
             }
         }
-        ZIMMultiReader.sharedInstance.searchQueue.addOperation(operation)
+        ZimMultiReader.sharedInstance.startSearch(operation)
     }
 }
 

@@ -80,7 +80,7 @@ class SearchLocalBooksCVC: UIViewController, UICollectionViewDataSource, UIColle
     func configureCell(cell: UICollectionViewCell, atIndexPath indexPath: NSIndexPath) {
         guard let cell = cell as? BookCollectionCell else {return}
         guard let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
-        cell.favIcon.image = book.favIconImage
+        cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
         cell.titleLabel.text = book.title
         cell.languageLabel.text = book.language?.name
         cell.dateLabel.text = book.dateFormatted
@@ -89,7 +89,7 @@ class SearchLocalBooksCVC: UIViewController, UICollectionViewDataSource, UIColle
     // MARK: - CollectionView Delegate
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        guard let mainVC = parentViewController?.parentViewController?.parentViewController as? MainVC,
+        guard let mainVC = parentViewController?.parentViewController?.parentViewController as? MainController,
               let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book,
               let bookID = book.id else {return}
         mainVC.hideSearch()
