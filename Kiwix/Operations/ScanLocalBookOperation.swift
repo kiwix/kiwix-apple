@@ -111,15 +111,8 @@ class ScanLocalBookOperation: Operation {
     
     // MARK: - Helper
     
-    private class func getContentsOfDocDir() -> [NSURL] {
-        let keys = [NSURLIsDirectoryKey]
-        let options: NSDirectoryEnumerationOptions = [.SkipsHiddenFiles, .SkipsPackageDescendants, .SkipsHiddenFiles]
-        let urls = try? NSFileManager.defaultManager().contentsOfDirectoryAtURL(NSFileManager.docDirURL, includingPropertiesForKeys: keys, options: options)
-        return urls ?? [NSURL]()
-    }
-    
     private class func getCurrentZimFileURLsInDocDir() -> Set<NSURL> {
-        var urls = getContentsOfDocDir()
+        var urls = NSFileManager.getContents(dir: NSFileManager.docDirURL)
         let keys = [NSURLIsDirectoryKey]
         urls = urls.filter { (url) -> Bool in
             guard let values = try? url.resourceValuesForKeys(keys),
@@ -131,7 +124,7 @@ class ScanLocalBookOperation: Operation {
     }
     
     private class func getCurrentIndexFolderURLsInDocDir() -> Set<NSURL> {
-        var urls = getContentsOfDocDir()
+        var urls = NSFileManager.getContents(dir: NSFileManager.docDirURL)
         let keys = [NSURLIsDirectoryKey]
         urls = urls.filter { (url) -> Bool in
             guard let values = try? url.resourceValuesForKeys(keys),
