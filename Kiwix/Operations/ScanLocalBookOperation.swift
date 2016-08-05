@@ -111,46 +111,35 @@ class ScanLocalBookOperation: Operation {
     
     // MARK: - Helper
     
+    private class func getContentsOfDocDir() -> [NSURL] {
+        let keys = [NSURLIsDirectoryKey]
+        let options: NSDirectoryEnumerationOptions = [.SkipsHiddenFiles, .SkipsPackageDescendants, .SkipsHiddenFiles]
+        let urls = try? NSFileManager.defaultManager().contentsOfDirectoryAtURL(NSFileManager.docDirURL, includingPropertiesForKeys: keys, options: options)
+        return urls ?? [NSURL]()
+    }
+    
     private class func getCurrentZimFileURLsInDocDir() -> Set<NSURL> {
-        let fileURLs = FileManager.contentsOfDirectory(NSFileManager.docDirURL) ?? [NSURL]()
-        var zimURLs = Set<NSURL>()
-        for url in fileURLs {
-            do {
-                var isDirectory: AnyObject? = nil
-                try url.getResourceValue(&isDirectory, forKey: NSURLIsDirectoryKey)
-                if let isDirectory = (isDirectory as? NSNumber)?.boolValue {
-                    if !isDirectory {
-                        guard let pathExtension = url.pathExtension?.lowercaseString else {continue}
-                        guard pathExtension.containsString("zim") else {continue}
-                        zimURLs.insert(url)
-                    }
-                }
-            } catch {
-                continue
-            }
+        var urls = getContentsOfDocDir()
+        let keys = [NSURLIsDirectoryKey]
+        urls = urls.filter { (url) -> Bool in
+            guard let values = try? url.resourceValuesForKeys(keys),
+                let isDirectory = (values[NSURLIsDirectoryKey] as? NSNumber)?.boolValue where isDirectory == false else {return false}
+            guard let pathExtension = url.pathExtension?.lowercaseString where pathExtension.containsString("zim") else {return false}
+            return true
         }
-        return zimURLs
+        return Set(urls)
     }
     
     private class func getCurrentIndexFolderURLsInDocDir() -> Set<NSURL> {
-        let fileURLs = FileManager.contentsOfDirectory(NSFileManager.docDirURL) ?? [NSURL]()
-        var folderURLs = Set<NSURL>()
-        for url in fileURLs {
-            do {
-                var isDirectory: AnyObject? = nil
-                try url.getResourceValue(&isDirectory, forKey: NSURLIsDirectoryKey)
-                if let isDirectory = (isDirectory as? NSNumber)?.boolValue {
-                    if isDirectory {
-                        guard let pathExtension = url.pathExtension?.lowercaseString else {continue}
-                        guard pathExtension == "idx" else {continue}
-                        folderURLs.insert(url)
-                    }
-                }
-            } catch {
-                continue
-            }
+        var urls = getContentsOfDocDir()
+        let keys = [NSURLIsDirectoryKey]
+        urls = urls.filter { (url) -> Bool in
+            guard let values = try? url.resourceValuesForKeys(keys),
+                let isDirectory = (values[NSURLIsDirectoryKey] as? NSNumber)?.boolValue where isDirectory == true else {return false}
+            guard let pathExtension = url.pathExtension?.lowercaseString where pathExtension == "idx" else {return false}
+            return true
         }
-        return folderURLs
+        return Set(urls)
     }
 
 }
