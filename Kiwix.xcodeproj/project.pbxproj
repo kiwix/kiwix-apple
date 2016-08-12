@@ -132,8 +132,6 @@
 		975227A11D020C00001D1DDE /* resourceTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227961D020C00001D1DDE /* resourceTools.cpp */; };
 		975227A21D020C00001D1DDE /* stringTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227971D020C00001D1DDE /* stringTools.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
 		975227A31D020C00001D1DDE /* stringTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227971D020C00001D1DDE /* stringTools.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
-		975227A81D020C2E001D1DDE /* htmlparse.cc in Sources */ = {isa = PBXBuildFile; fileRef = 975227A61D020C2E001D1DDE /* htmlparse.cc */; };
-		975227A91D020C2E001D1DDE /* myhtmlparse.cc in Sources */ = {isa = PBXBuildFile; fileRef = 975227A71D020C2E001D1DDE /* myhtmlparse.cc */; };
 		975227AC1D020D83001D1DDE /* ZimIndexer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 975227AB1D020D83001D1DDE /* ZimIndexer.mm */; };
 		975227AE1D0213D3001D1DDE /* xapianIndexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227AD1D0213D3001D1DDE /* xapianIndexer.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
 		975227B01D021539001D1DDE /* IndexerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975227AF1D021539001D1DDE /* IndexerController.swift */; };
@@ -373,8 +371,6 @@
 		973DD4271D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSingleSwitchTBVC.swift; path = "Kiwix-iOS/Controller/Setting/SettingSingleSwitchTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		97497B5A1D07487000ECD691 /* indexer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = indexer.h; path = "Kiwix/libkiwix/C&C++/indexer.h"; sourceTree = "<group>"; };
 		97497B5B1D07487000ECD691 /* resourceTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = resourceTools.h; path = "Kiwix/libkiwix/C&C++/resourceTools.h"; sourceTree = "<group>"; };
-		97497B5C1D074FB800ECD691 /* htmlparse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = htmlparse.h; path = "Kiwix/libkiwix/C&C++/xapian/htmlparse.h"; sourceTree = "<group>"; };
-		97497B5D1D074FB800ECD691 /* myhtmlparse.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = myhtmlparse.h; path = "Kiwix/libkiwix/C&C++/xapian/myhtmlparse.h"; sourceTree = "<group>"; };
 		97497B5E1D07584100ECD691 /* xapianIndexer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = xapianIndexer.h; path = "Kiwix/libkiwix/C&C++/xapianIndexer.h"; sourceTree = "<group>"; };
 		974F42811D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingWidgetBookmarksTBVC.swift; path = "Kiwix-iOS/Controller/Setting/SettingWidgetBookmarksTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		975227811D020560001D1DDE /* Indexer.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Indexer.storyboard; path = "Kiwix-OSX/StoryBoards/Indexer.storyboard"; sourceTree = SOURCE_ROOT; };
@@ -384,8 +380,6 @@
 		975227951D020C00001D1DDE /* reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; name = reader.cpp; path = "Kiwix/libkiwix/C&C++/reader.cpp"; sourceTree = "<group>"; tabWidth = 2; };
 		975227961D020C00001D1DDE /* resourceTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = resourceTools.cpp; path = "Kiwix/libkiwix/C&C++/resourceTools.cpp"; sourceTree = "<group>"; };
 		975227971D020C00001D1DDE /* stringTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = stringTools.cpp; path = "Kiwix/libkiwix/C&C++/stringTools.cpp"; sourceTree = "<group>"; };
-		975227A61D020C2E001D1DDE /* htmlparse.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = htmlparse.cc; path = "Kiwix/libkiwix/C&C++/xapian/htmlparse.cc"; sourceTree = "<group>"; };
-		975227A71D020C2E001D1DDE /* myhtmlparse.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = myhtmlparse.cc; path = "Kiwix/libkiwix/C&C++/xapian/myhtmlparse.cc"; sourceTree = "<group>"; };
 		975227AA1D020D83001D1DDE /* ZimIndexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZimIndexer.h; path = Kiwix/libkiwix/ZimIndexer.h; sourceTree = "<group>"; };
 		975227AB1D020D83001D1DDE /* ZimIndexer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ZimIndexer.mm; path = Kiwix/libkiwix/ZimIndexer.mm; sourceTree = "<group>"; };
 		975227AD1D0213D3001D1DDE /* xapianIndexer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; name = xapianIndexer.cpp; path = "Kiwix/libkiwix/C&C++/xapianIndexer.cpp"; sourceTree = "<group>"; tabWidth = 2; };
@@ -824,10 +818,6 @@
 				975227921D020C00001D1DDE /* indexer.cpp */,
 				97497B5E1D07584100ECD691 /* xapianIndexer.h */,
 				975227AD1D0213D3001D1DDE /* xapianIndexer.cpp */,
-				97497B5C1D074FB800ECD691 /* htmlparse.h */,
-				975227A61D020C2E001D1DDE /* htmlparse.cc */,
-				97497B5D1D074FB800ECD691 /* myhtmlparse.h */,
-				975227A71D020C2E001D1DDE /* myhtmlparse.cc */,
 				975227931D020C00001D1DDE /* otherTools.cpp */,
 			);
 			name = indexer;
@@ -1565,7 +1555,6 @@
 				975B912F1CEB9B0F00D13906 /* Preference.swift in Sources */,
 				971187941CEB541A00B9909D /* Article.swift in Sources */,
 				9752279D1D020C00001D1DDE /* pathTools.cpp in Sources */,
-				975227A91D020C2E001D1DDE /* myhtmlparse.cc in Sources */,
 				975227B01D021539001D1DDE /* IndexerController.swift in Sources */,
 				975334D01CEB6AE3007ED50B /* PreferenceGeneralController.swift in Sources */,
 				979CB6C81D05CF37005E1BA1 /* SearchResultController.swift in Sources */,
@@ -1579,7 +1568,6 @@
 				975334D21CEB6B01007ED50B /* LibraryController.swift in Sources */,
 				975227AC1D020D83001D1DDE /* ZimIndexer.mm in Sources */,
 				975227A11D020C00001D1DDE /* resourceTools.cpp in Sources */,
-				975227A81D020C2E001D1DDE /* htmlparse.cc in Sources */,
 				971187971CEB542500B9909D /* Article+CoreDataProperties.swift in Sources */,
 				975227A31D020C00001D1DDE /* stringTools.cpp in Sources */,
 				979C518D1CECAE4C001707F2 /* PreferenceWindowController.swift in Sources */,

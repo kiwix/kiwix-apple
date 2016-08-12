@@ -1,6 +1,6 @@
 PODS:
   - DateTools (1.7.0)
-  - DZNEmptyDataSet (1.8)
+  - DZNEmptyDataSet (1.8.1)
   - Operations (3.0.0):
     - Operations/Standard (= 3.0.0)
   - Operations/Standard (3.0.0)
@@ -14,7 +14,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   DateTools: 53288ee8b905fdc75897a1e6b5cc0144b14cba60
-  DZNEmptyDataSet: d2351b2e8daefa40433ef292e246e21f6be31a7b
+  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Operations: c05cc4b2ad060201ab98cbacd5217876658b5f2c
   SwiftyUserDefaults: e7c8197a9d4068702e7f2406a968cae413b8de27
 
