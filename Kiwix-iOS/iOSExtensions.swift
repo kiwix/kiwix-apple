@@ -42,7 +42,7 @@ enum BuildStatus {
 extension UIApplication {
     class var buildStatus: BuildStatus {
         get {
-            return .Release
+            return .Beta
         }
     }
 }
