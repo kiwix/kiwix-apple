@@ -148,6 +148,7 @@
 		975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975B90FD1CEB909100D13906 /* iOSExtensions.swift */; };
 		975B90FF1CEB909900D13906 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779987A1C1E1C9600B1DD5E /* Extensions.swift */; };
 		975B912F1CEB9B0F00D13906 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973C8D5B1C25F945007272F9 /* Preference.swift */; };
+		9763275E1D64FE0F0034F120 /* BookDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9763275D1D64FE0F0034F120 /* BookDetailController.swift */; };
 		9763A6291CEB9E55008A2718 /* OSXExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9763A6281CEB9E55008A2718 /* OSXExtensions.swift */; };
 		9763A62D1CEBA524008A2718 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E891681CA976E90001CA32 /* FileManager.swift */; };
 		976AB2671CBD8B3D00B06EB0 /* 1.5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 976AB2661CBD8B3D00B06EB0 /* 1.5.xcmappingmodel */; };
@@ -178,6 +179,9 @@
 		97BA32A51CEBC36300339A47 /* RootWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BA32A31CEBC29500339A47 /* RootWindowController.swift */; };
 		97BAA8EC1D3D2D7B0038F57F /* PacketAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BAA8EB1D3D2D7B0038F57F /* PacketAnalyzer.swift */; };
 		97BAA8EE1D3D2D9B0038F57F /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BAA8ED1D3D2D9B0038F57F /* KiwixURLProtocol.swift */; };
+		97C005D61D64B3B0004352E8 /* LibraryNew.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C005D51D64B3B0004352E8 /* LibraryNew.storyboard */; };
+		97C005D81D64B99E004352E8 /* LibrarySplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C005D71D64B99E004352E8 /* LibrarySplitViewController.swift */; };
+		97C005DC1D64BEFE004352E8 /* CloudBooksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C005DB1D64BEFE004352E8 /* CloudBooksController.swift */; };
 		97D452BC1D16FF010033666F /* RecentSearchCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D452BB1D16FF010033666F /* RecentSearchCVC.swift */; };
 		97D452BE1D1723FF0033666F /* CollectionViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D452BD1D1723FF0033666F /* CollectionViewCells.swift */; };
 		97D55EF61D2075180081B523 /* TableOfContentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D55EF51D2075180081B523 /* TableOfContentsController.swift */; };
@@ -395,6 +399,7 @@
 		97587A951D1061C0006EE1AA /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = "Kiwix-iOSUITests/SnapshotHelper.swift"; sourceTree = SOURCE_ROOT; };
 		975B90F81CEB75CB00D13906 /* ZimFilesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ZimFilesController.swift; path = "Kiwix-OSX/Controllers/ZimFilesController.swift"; sourceTree = SOURCE_ROOT; };
 		975B90FD1CEB909100D13906 /* iOSExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = iOSExtensions.swift; path = "Kiwix-iOS/iOSExtensions.swift"; sourceTree = SOURCE_ROOT; };
+		9763275D1D64FE0F0034F120 /* BookDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookDetailController.swift; sourceTree = "<group>"; };
 		9763A6281CEB9E55008A2718 /* OSXExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OSXExtensions.swift; path = "Kiwix-OSX/OSXExtensions.swift"; sourceTree = SOURCE_ROOT; };
 		976A0C801D41619C0006A742 /* DZNEmptyDataSet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DZNEmptyDataSet.framework; path = "../../../../Users/chrisli/Library/Developer/Xcode/DerivedData/Kiwix-ayxrfhaqnfxzendihdolvkklkmhk/Build/Products/Debug-iphoneos/DZNEmptyDataSet/DZNEmptyDataSet.framework"; sourceTree = "<group>"; };
 		976AB2661CBD8B3D00B06EB0 /* 1.5.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = 1.5.xcmappingmodel; path = CoreData/Migration/1.5.xcmappingmodel; sourceTree = "<group>"; };
@@ -428,6 +433,9 @@
 		97BAA8EB1D3D2D7B0038F57F /* PacketAnalyzer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PacketAnalyzer.swift; path = Kiwix/URLProtocol/PacketAnalyzer.swift; sourceTree = "<group>"; };
 		97BAA8ED1D3D2D9B0038F57F /* KiwixURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KiwixURLProtocol.swift; path = Kiwix/URLProtocol/KiwixURLProtocol.swift; sourceTree = "<group>"; };
 		97BAA8EF1D3D32770038F57F /* 1.7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.7.xcdatamodel; sourceTree = "<group>"; };
+		97C005D51D64B3B0004352E8 /* LibraryNew.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LibraryNew.storyboard; path = "Kiwix-iOS/Storyboard/LibraryNew.storyboard"; sourceTree = SOURCE_ROOT; };
+		97C005D71D64B99E004352E8 /* LibrarySplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibrarySplitViewController.swift; path = "Kiwix-iOS/Controller/Library/LibrarySplitViewController.swift"; sourceTree = SOURCE_ROOT; };
+		97C005DB1D64BEFE004352E8 /* CloudBooksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudBooksController.swift; sourceTree = "<group>"; };
 		97D452BB1D16FF010033666F /* RecentSearchCVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecentSearchCVC.swift; path = "Kiwix-iOS/Controller/Search/RecentSearchCVC.swift"; sourceTree = SOURCE_ROOT; };
 		97D452BD1D1723FF0033666F /* CollectionViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCells.swift; sourceTree = "<group>"; };
 		97D452C01D1871E70033666F /* SearchLocalBooksCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchLocalBooksCVC.swift; path = "Kiwix-iOS/Controller/Search/SearchLocalBooksCVC.swift"; sourceTree = SOURCE_ROOT; };
@@ -920,6 +928,7 @@
 			children = (
 				975227CA1D0227E8001D1DDE /* Main.storyboard */,
 				975227C91D0227E8001D1DDE /* Library.storyboard */,
+				97C005D51D64B3B0004352E8 /* LibraryNew.storyboard */,
 				97F03CE11D2440470040D26E /* Search.storyboard */,
 				975227CB1D0227E8001D1DDE /* Setting.storyboard */,
 				9734E54D1D289D060061C39B /* Welcome.storyboard */,
@@ -932,6 +941,7 @@
 			isa = PBXGroup;
 			children = (
 				9749A1B21C430653000F2D1E /* Bookmark */,
+				97C005D41D64B369004352E8 /* Library */,
 				978C588C1C1CD5080077AE47 /* LibraryTBVC */,
 				972B007D1C35DBAB00B5FDC5 /* Main */,
 				97E108221C5D5A0D00E27FD3 /* Search */,
@@ -940,7 +950,7 @@
 				97A7017E1D2C59CA00AAE2D8 /* GetStartedController.swift */,
 			);
 			name = Controllers;
-			path = Kiwix;
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		978C588B1C1CD1E30077AE47 /* Model */ = {
@@ -1045,6 +1055,16 @@
 				97BAA8EB1D3D2D7B0038F57F /* PacketAnalyzer.swift */,
 			);
 			name = URLProtocol;
+			sourceTree = "<group>";
+		};
+		97C005D41D64B369004352E8 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				97C005D71D64B99E004352E8 /* LibrarySplitViewController.swift */,
+				97C005DB1D64BEFE004352E8 /* CloudBooksController.swift */,
+				9763275D1D64FE0F0034F120 /* BookDetailController.swift */,
+			);
+			path = Library;
 			sourceTree = "<group>";
 		};
 		97C01FCA1C39B7F100D010E5 /* Library */ = {
@@ -1393,6 +1413,7 @@
 				971A10801D022F74007FC62C /* Pic_I.png in Resources */,
 				971A101E1D0228E8007FC62C /* adjustlayoutiPhone.js in Resources */,
 				975227CC1D0227E8001D1DDE /* Library.storyboard in Resources */,
+				97C005D61D64B3B0004352E8 /* LibraryNew.storyboard in Resources */,
 				971A107F1D022F74007FC62C /* ImportBookLearnMore.html in Resources */,
 				971A107E1D022F74007FC62C /* DownloaderLearnMore.html in Resources */,
 			);
@@ -1627,6 +1648,7 @@
 				971A103F1D022C42007FC62C /* LibraryAutoRefreshTBVC.swift in Sources */,
 				970E68B61D37E224001E8514 /* SettingSearchHistoryTBVC.swift in Sources */,
 				971A10581D022DAD007FC62C /* LibraryDownloadTBVC.swift in Sources */,
+				97C005D81D64B99E004352E8 /* LibrarySplitViewController.swift in Sources */,
 				973DD4231D3443A3009D45DB /* ExtensionAndTypealias.swift in Sources */,
 				97A7017F1D2C59CA00AAE2D8 /* GetStartedController.swift in Sources */,
 				979C51521CECA9AF001707F2 /* StringTools.swift in Sources */,
@@ -1647,6 +1669,7 @@
 				971A10701D022E62007FC62C /* Network.swift in Sources */,
 				974F42821D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift in Sources */,
 				970E68B21D37E1DD001E8514 /* SettingSearchTuneController.swift in Sources */,
+				97C005DC1D64BEFE004352E8 /* CloudBooksController.swift in Sources */,
 				971A104A1D022CBE007FC62C /* SearchResultTBVC.swift in Sources */,
 				971A105B1D022DAD007FC62C /* LibraryOnlineTBVC.swift in Sources */,
 				9779A1CB1D34225E0071EFAB /* RefreshLibraryOperation.swift in Sources */,
@@ -1688,6 +1711,7 @@
 				975227A01D020C00001D1DDE /* resourceTools.cpp in Sources */,
 				971A10601D022DF2007FC62C /* LanguageTBVC.swift in Sources */,
 				971A106C1D022E50007FC62C /* Utilities.swift in Sources */,
+				9763275E1D64FE0F0034F120 /* BookDetailController.swift in Sources */,
 				973DD4281D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift in Sources */,
 				971A10591D022DAD007FC62C /* LibraryLocalBookDetailTBVC.swift in Sources */,
 				971A10431D022C54007FC62C /* SettingTBVC.swift in Sources */,
@@ -2036,6 +2060,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Kiwix/libkiwix/iOS",
 				);
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix;
 				PRODUCT_NAME = Kiwix;
 				PROVISIONING_PROFILE = "";
@@ -2071,6 +2096,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Kiwix/libkiwix/iOS",
 				);
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix;
 				PRODUCT_NAME = Kiwix;
 				PROVISIONING_PROFILE = "";

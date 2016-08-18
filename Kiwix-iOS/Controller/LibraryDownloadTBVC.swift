@@ -169,7 +169,7 @@ class LibraryDownloadTBVC: UITableViewController, NSFetchedResultsControllerDele
               let cell = cell as? DownloadBookCell else {return}
         
         cell.titleLabel.text = book.title
-        cell.hasPicIndicator.backgroundColor = book.hasPic ? UIColor.havePicTintColor : UIColor.lightGrayColor()
+        cell.hasPicIndicator.backgroundColor = book.hasPic ? AppColors.hasPicTintColor : UIColor.lightGrayColor()
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
         cell.dateLabel.text = book.dateFormatted
         cell.articleCountLabel.text = book.articleCountFormatted

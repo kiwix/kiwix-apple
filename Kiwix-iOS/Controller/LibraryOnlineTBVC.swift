@@ -245,7 +245,7 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
         guard let cell = cell as? CloudBookCell else {return}
         
         cell.titleLabel.text = book.title
-        cell.hasPicIndicator.backgroundColor = book.hasPic ? UIColor.havePicTintColor : UIColor.lightGrayColor()
+        cell.hasPicIndicator.backgroundColor = book.hasPic ? AppColors.hasPicTintColor : UIColor.lightGrayColor()
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
         cell.delegate = self
         cell.subtitleLabel.text = booksShowingDetail.contains(book) ? book.detailedDescription2 : book.detailedDescription

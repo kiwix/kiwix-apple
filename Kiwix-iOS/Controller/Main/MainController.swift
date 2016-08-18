@@ -23,6 +23,7 @@ class MainController: UIViewController {
     var bookmarkController: BookmarkController?
     var bookmarkNav: UIViewController?
     var libraryController: UIViewController?
+    var libraryNewController: UIViewController?
     var settingController: UIViewController?
     var searchController: SearchController?
     var welcomeController: UIViewController?
@@ -223,9 +224,9 @@ class MainController: UIViewController {
     }
     
     func showLibraryButtonTapped() {
-        guard let viewController = libraryController ?? UIStoryboard.library.instantiateInitialViewController() else {return}
-        viewController.modalPresentationStyle = .FormSheet
-        libraryController = viewController
+        guard let viewController = libraryNewController ?? UIStoryboard.libraryNew.instantiateInitialViewController() else {return}
+        viewController.modalPresentationStyle = .OverFullScreen
+        libraryNewController = viewController
         presentViewController(viewController, animated: true, completion: nil)
     }
     
