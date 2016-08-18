@@ -26,7 +26,7 @@
             </objects>
             <point key="canvasLocation" x="2177" y="51"/>
         </scene>
-        <!--Root View Controller-->
+        <!--Cloud Books Controller-->
         <scene sceneID="x2g-Rm-HUS">
             <objects>
                 <tableViewController clearsSelectionOnViewWillAppear="NO" id="NBP-9l-DA2" customClass="CloudBooksController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
@@ -151,7 +151,13 @@
                             <outlet property="delegate" destination="NBP-9l-DA2" id="sqX-J8-zlB"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="JNh-sG-ihV"/>
+                    <navigationItem key="navigationItem" id="JNh-sG-ihV">
+                        <barButtonItem key="leftBarButtonItem" image="Cross" id="D4H-l5-1nf">
+                            <connections>
+                                <action selector="dismissSelf:" destination="NBP-9l-DA2" id="h1L-7d-KgQ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TMf-0g-nhn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -374,7 +380,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SrR-CP-faE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2177" y="-642"/>
+            <point key="canvasLocation" x="2185" y="-642"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="kCG-vK-1nx">
@@ -453,7 +459,10 @@
             <point key="canvasLocation" x="3121" y="-463"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Cross" width="21" height="21"/>
+    </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Sog-cN-G9P"/>
+        <segue reference="N3M-rH-rAM"/>
     </inferredMetricsTieBreakers>
 </document>

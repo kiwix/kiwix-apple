@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class CloudBooksController: UITableViewController, NSFetchedResultsControllerDelegate, TableCellDelegate{
+class CloudBooksController: UITableViewController, NSFetchedResultsControllerDelegate {
     
     var bookDetailController = UIStoryboard.libraryNew.initViewController(BookDetailController.self)!
 
@@ -17,7 +17,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         super.viewDidLoad()
         title = ""
         navigationController?.view.backgroundColor = UIColor.whiteColor()
-        splitViewController?.tabBarItem.title = "Cloud"
+        tabBarItem.title = "Cloud"
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -36,23 +36,8 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         
     }
     
-    // MARK: - TableCellDelegate
-    
-    func didTapOnAccessoryViewForCell(cell: UITableViewCell) {
-        guard let indexPath = tableView.indexPathForCell(cell),
-            let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
-        switch book.spaceState {
-        case .Enough:
-            Network.sharedInstance.download(book)
-        //case .Caution:
-            // TODO: - Switch to a global op queue
-            //Network.sharedInstance.operationQueue.addOperation(SpaceCautionAlert(book: book, presentationContext: self))
-        //case .NotEnough:
-            // TODO: - Switch to a global op queue
-            //Network.sharedInstance.operationQueue.addOperation(SpaceNotEnoughAlert(book: book, presentationContext: self))
-        default:
-            break
-        }
+    @IBAction func dismissSelf(sender: UIBarButtonItem) {
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     // MARK: - TableView Data Source
@@ -101,10 +86,6 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     }
     
     // MARK: - Table View Delegate
-    
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        guard let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
-    }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard tableView.numberOfSections > 1 else {return 0.0}

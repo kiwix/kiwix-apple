@@ -225,7 +225,7 @@ class MainController: UIViewController {
     
     func showLibraryButtonTapped() {
         guard let viewController = libraryNewController ?? UIStoryboard.libraryNew.instantiateInitialViewController() else {return}
-        viewController.modalPresentationStyle = .OverFullScreen
+        viewController.modalPresentationStyle = .FullScreen
         libraryNewController = viewController
         presentViewController(viewController, animated: true, completion: nil)
     }

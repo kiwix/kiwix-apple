@@ -35,17 +35,3 @@ class Utilities: NSObject {
         }
     }
 }
-
-extension UIDevice {
-    class var availableDiskSpace: Int64? {
-        do {
-            let docDirPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).first!
-            let systemAttributes = try NSFileManager.defaultManager().attributesOfFileSystemForPath(docDirPath)
-            guard let freeSize = systemAttributes[NSFileSystemFreeSize] as? NSNumber else {return nil}
-            return freeSize.longLongValue
-        } catch let error as NSError {
-            print("Fetch system disk free space failed, error: \(error.localizedDescription)")
-            return nil
-        }
-    }
-}

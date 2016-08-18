@@ -70,4 +70,13 @@ extension NSFileManager {
     }
 }
 
+extension UIDevice {
+    class var availableDiskSpace: (freeSize: Int64, totalSize: Int64)? {
+        let docDirPath = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).first!
+        guard let systemAttributes = try? NSFileManager.defaultManager().attributesOfFileSystemForPath(docDirPath) else {return nil}
+        guard let freeSize = systemAttributes[NSFileSystemFreeSize] as? Int64,
+            let totalSize = systemAttributes[NSFileSystemSize] as? Int64 else {return nil}
+        return (freeSize, totalSize)
+    }
+}
 
