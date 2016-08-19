@@ -25,10 +25,11 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         switch identifier {
         case "ShowBookDetail":
             guard let navController = segue.destinationViewController as? UINavigationController,
+                let bookDetailController = navController.topViewController as? BookDetailController,
                 let cell = sender as? UITableViewCell,
                 let indexPath = tableView.indexPathForCell(cell),
                 let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
-            navController.setViewControllers([bookDetailController], animated: false)
+//            navController.setViewControllers([bookDetailController], animated: false)
             bookDetailController.book = book
         default:
             break

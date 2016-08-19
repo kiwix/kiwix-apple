@@ -1,4 +1,7 @@
 PODS:
+  - Charts (2.2.5):
+    - Charts/Core (= 2.2.5)
+  - Charts/Core (2.2.5)
   - DateTools (1.7.0)
   - DZNEmptyDataSet (1.8.1)
   - Operations (3.0.0):
@@ -7,17 +10,19 @@ PODS:
   - SwiftyUserDefaults (2.2.0)
 
 DEPENDENCIES:
+  - Charts
   - DateTools
   - DZNEmptyDataSet
   - Operations
   - SwiftyUserDefaults
 
 SPEC CHECKSUMS:
+  Charts: b48fcc8d7190de910ff9e9748f5360c8ea7856e5
   DateTools: 53288ee8b905fdc75897a1e6b5cc0144b14cba60
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Operations: c05cc4b2ad060201ab98cbacd5217876658b5f2c
   SwiftyUserDefaults: e7c8197a9d4068702e7f2406a968cae413b8de27
 
-PODFILE CHECKSUM: 272d9b2fa769891c415d6d95e406cd5808b07b27
+PODFILE CHECKSUM: 817a8fbec5912cc9123925b4d431b45fcc87901e
 
 COCOAPODS: 1.0.1

@@ -709,13 +709,13 @@
 			isa = PBXGroup;
 			children = (
 				971A10241D022AD5007FC62C /* BarButtonItems.swift */,
-				971A10261D022AD5007FC62C /* TableViewCells.swift */,
 				97D452BD1D1723FF0033666F /* CollectionViewCells.swift */,
 				971A10271D022AD5007FC62C /* Logo.swift */,
 				971A10281D022AD5007FC62C /* LTBarButtonItem.swift */,
 				971A10291D022AD5007FC62C /* RefreshHUD.swift */,
 				971A102A1D022AD5007FC62C /* SearchBar.swift */,
 				97E60A011D10423A00EBCB9D /* ShadowViews.swift */,
+				971A10261D022AD5007FC62C /* TableViewCells.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";

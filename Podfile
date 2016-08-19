@@ -9,6 +9,7 @@ pod 'DateTools'
 pod 'DZNEmptyDataSet'
 pod 'SwiftyUserDefaults'
 pod 'Operations'
+pod 'Charts'
 
 end
 
