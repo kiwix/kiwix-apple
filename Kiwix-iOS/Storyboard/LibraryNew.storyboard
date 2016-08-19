@@ -7,7 +7,26 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--Cloud Books Controller-->
+        <!--Item-->
+        <scene sceneID="Z94-UE-SvI">
+            <objects>
+                <viewController id="p0I-zU-5qV" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nu8-CK-H36"/>
+                        <viewControllerLayoutGuide type="bottom" id="p6q-cA-WGU"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="oMN-bs-dxj">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="5Bd-ZA-ldb"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZlT-CK-dem" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1269" y="-3073"/>
+        </scene>
+        <!--Item-->
         <scene sceneID="x2g-Rm-HUS">
             <objects>
                 <tableViewController clearsSelectionOnViewWillAppear="NO" id="NBP-9l-DA2" customClass="CloudBooksController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
@@ -132,15 +151,29 @@
                             <outlet property="delegate" destination="NBP-9l-DA2" id="sqX-J8-zlB"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="JNh-sG-ihV">
-                        <barButtonItem key="leftBarButtonItem" image="Cross" id="D4H-l5-1nf">
-                            <connections>
-                                <action selector="dismissSelf:" destination="NBP-9l-DA2" id="h1L-7d-KgQ"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <tabBarItem key="tabBarItem" title="Item" id="f2P-kQ-k9n"/>
+                    <navigationItem key="navigationItem" id="JNh-sG-ihV"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TMf-0g-nhn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1302" y="-2382"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="agT-3o-3JF">
+            <objects>
+                <tabBarController id="3ak-pB-UJc" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="S1d-mX-z4c"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="dzD-NJ-YZo">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="NBP-9l-DA2" kind="relationship" relationship="viewControllers" id="Zb0-fu-dUz"/>
+                        <segue destination="p0I-zU-5qV" kind="relationship" relationship="viewControllers" id="RKJ-7Q-QsH"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fdG-uk-I8F" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="549" y="-2382"/>
         </scene>
@@ -301,11 +334,12 @@
         <scene sceneID="iPB-M6-tf1">
             <objects>
                 <navigationController title="Master" id="aoH-fG-6vF" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="7ri-BN-A3S"/>
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="ZxN-DM-Axu">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="NBP-9l-DA2" kind="relationship" relationship="rootViewController" id="nHF-I8-OHT"/>
+                        <segue destination="3ak-pB-UJc" kind="relationship" relationship="rootViewController" id="SAi-fH-E9p"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Otv-ep-Zn3" sceneMemberID="firstResponder"/>
@@ -350,8 +384,8 @@
                 <splitViewController id="NKc-wz-xqy" customClass="LibrarySplitViewController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <connections>
-                        <segue destination="aoH-fG-6vF" kind="relationship" relationship="masterViewController" id="zLO-fk-Yq7"/>
                         <segue destination="5Sz-gR-dgz" kind="relationship" relationship="detailViewController" id="hUB-db-MDL"/>
+                        <segue destination="aoH-fG-6vF" kind="relationship" relationship="masterViewController" id="DQx-ad-mEu"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="169-23-fJy" sceneMemberID="firstResponder"/>
@@ -359,10 +393,7 @@
             <point key="canvasLocation" x="-1016" y="-2082"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="Cross" width="21" height="21"/>
-    </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="hUB-db-MDL"/>
+        <segue reference="N3M-rH-rAM"/>
     </inferredMetricsTieBreakers>
 </document>

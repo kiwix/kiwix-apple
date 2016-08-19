@@ -10,14 +10,13 @@ import UIKit
 import CoreData
 
 class CloudBooksController: UITableViewController, NSFetchedResultsControllerDelegate {
-    
-    var bookDetailController = UIStoryboard.libraryNew.initViewController(BookDetailController.self)!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = ""
-        navigationController?.view.backgroundColor = UIColor.whiteColor()
         tabBarItem.title = "Cloud"
+        tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add)
+        
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -29,16 +28,10 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
                 let cell = sender as? UITableViewCell,
                 let indexPath = tableView.indexPathForCell(cell),
                 let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
-//            navController.setViewControllers([bookDetailController], animated: false)
             bookDetailController.book = book
         default:
             break
         }
-        
-    }
-    
-    @IBAction func dismissSelf(sender: UIBarButtonItem) {
-        dismissViewControllerAnimated(true, completion: nil)
     }
     
     // MARK: - TableView Data Source

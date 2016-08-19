@@ -9,6 +9,8 @@
 import UIKit
 
 class LibraryTabBarController: UITabBarController {
+    @IBAction func dismissSelf(sender: UIBarButtonItem) {
+    }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
