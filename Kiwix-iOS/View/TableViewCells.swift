@@ -180,3 +180,10 @@ class BookmarkSnippetCell: BookmarkCell {
 protocol TableCellDelegate: class {
     func didTapOnAccessoryViewForCell(cell: UITableViewCell)
 }
+
+// MARK: - General
+
+class TextSwitchCell: UITableViewCell {
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var switchControl: UISwitch!
+}

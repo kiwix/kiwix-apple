@@ -53,17 +53,54 @@ class BookDetailController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        switch section {
+        case 0: return 3
+        case 1: return 3
+        default: return 0
+        }
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-        
-        
-        
-        return cell
+        switch (indexPath.section, indexPath.row) {
+        case (0, 0):
+            let cell = tableView.dequeueReusableCellWithIdentifier("CenterTextCell", forIndexPath: indexPath)
+            cell.textLabel?.text = NSLocalizedString("Download Now", comment: LocalizedStrings.BookDetail.comment)
+            cell.textLabel?.textColor = UIColor.blueColor()
+            return cell
+        case (0, 1):
+            let cell = tableView.dequeueReusableCellWithIdentifier("CenterTextCell", forIndexPath: indexPath)
+            cell.textLabel?.text = NSLocalizedString("Schedule Download", comment: LocalizedStrings.BookDetail.comment)
+            cell.textLabel?.textColor = UIColor.blueColor()
+            return cell
+        case (0,2):
+            let cell = tableView.dequeueReusableCellWithIdentifier("TextSwitchCell", forIndexPath: indexPath) as! TextSwitchCell
+            cell.titleLabel.text = NSLocalizedString("Download Updates Automatically", comment: LocalizedStrings.BookDetail.comment)
+            return cell
+        case (1, 0):
+            let cell = tableView.dequeueReusableCellWithIdentifier("RightDetailCell", forIndexPath: indexPath)
+            cell.textLabel?.text = NSLocalizedString("Size", comment: LocalizedStrings.BookDetail.comment)
+            cell.detailTextLabel?.text = book?.fileSizeFormatted
+            return cell
+        case (1, 1):
+            let cell = tableView.dequeueReusableCellWithIdentifier("RightDetailCell", forIndexPath: indexPath)
+            cell.textLabel?.text = NSLocalizedString("Creation Date", comment: LocalizedStrings.BookDetail.comment)
+            cell.detailTextLabel?.text = book?.dateFormatted
+            return cell
+        case (1, 2):
+            let cell = tableView.dequeueReusableCellWithIdentifier("RightDetailCell", forIndexPath: indexPath)
+            cell.textLabel?.text = NSLocalizedString("Article Count", comment: LocalizedStrings.BookDetail.comment)
+            cell.detailTextLabel?.text = book?.articleCountFormatted
+            return cell
+        default:
+            let cell = tableView.dequeueReusableCellWithIdentifier("RightDetailCell", forIndexPath: indexPath)
+            return cell
+        }
     }
-
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {return 25.0}
+        return super.tableView(tableView, heightForHeaderInSection: section)
+    }
 }
 
 extension LocalizedStrings {
@@ -73,5 +110,7 @@ extension LocalizedStrings {
         static let hasPic = NSLocalizedString("Pictures", comment: comment)
         static let noIndex = NSLocalizedString("No Index", comment: comment)
         static let noPic = NSLocalizedString("No Picture", comment: comment)
+        
+//        static let noPic = NSLocalizedString("No Picture", comment: comment)
     }
 }

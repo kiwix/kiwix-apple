@@ -15,7 +15,10 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         super.viewDidLoad()
         title = ""
         tabBarItem.title = "Cloud"
+        tabBarItem.image = UIImage(named: "Cloud")
+        tabBarItem.selectedImage = UIImage(named: "CloudFilled")
         tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add)
+        clearsSelectionOnViewWillAppear = true
         
     }
     
