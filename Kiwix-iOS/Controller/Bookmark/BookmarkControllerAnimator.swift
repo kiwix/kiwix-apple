@@ -28,9 +28,9 @@ class BookmarkControllerAnimator: NSObject, UIViewControllerAnimatedTransitionin
     }
     
     private func animateInTransition(transitionContext: UIViewControllerContextTransitioning) {
-        guard let containerView = transitionContext.containerView(),
-            let toController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) as? BookmarkController,
+        guard let toController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) as? BookmarkController,
             let toView = transitionContext.viewForKey(UITransitionContextToViewKey) else {return}
+        let containerView = transitionContext.containerView()
         let duration = transitionDuration(transitionContext)
         
         containerView.addSubview(toView)
@@ -54,9 +54,9 @@ class BookmarkControllerAnimator: NSObject, UIViewControllerAnimatedTransitionin
     }
     
     private func animateOutTransition(transitionContext: UIViewControllerContextTransitioning) {
-        guard let containerView = transitionContext.containerView(),
-            let fromController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) as? BookmarkController,
+        guard let fromController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) as? BookmarkController,
             let fromView = transitionContext.viewForKey(UITransitionContextFromViewKey) else {return}
+        let containerView = transitionContext.containerView()
         let duration = transitionDuration(transitionContext)
         
         let halfHeight = containerView.frame.height / 2

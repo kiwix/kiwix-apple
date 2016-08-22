@@ -101,7 +101,6 @@
 		973BCD011CEB3FA500F10B44 /* Kiwix_OSXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCD001CEB3FA500F10B44 /* Kiwix_OSXTests.swift */; };
 		973BCD0C1CEB3FA500F10B44 /* Kiwix_OSXUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCD0B1CEB3FA500F10B44 /* Kiwix_OSXUITests.swift */; };
 		973BCD1A1CEB402900F10B44 /* KiwixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCD181CEB402900F10B44 /* KiwixTests.swift */; };
-		973BCD1E1CEB403700F10B44 /* SnapshotAutomation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCD1C1CEB403700F10B44 /* SnapshotAutomation.swift */; };
 		973C8D5C1C25F945007272F9 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973C8D5B1C25F945007272F9 /* Preference.swift */; };
 		973DD40F1D343F2F009D45DB /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD4041D343F2F009D45DB /* libicudata.a */; };
 		973DD4101D343F2F009D45DB /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD4051D343F2F009D45DB /* libicui18n.a */; };
@@ -143,7 +142,6 @@
 		975334CB1CEB6A43007ED50B /* Preference.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975334CA1CEB6A43007ED50B /* Preference.storyboard */; };
 		975334D01CEB6AE3007ED50B /* PreferenceGeneralController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975334CF1CEB6AE3007ED50B /* PreferenceGeneralController.swift */; };
 		975334D21CEB6B01007ED50B /* LibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975334D11CEB6B01007ED50B /* LibraryController.swift */; };
-		97587A961D1061C0006EE1AA /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97587A951D1061C0006EE1AA /* SnapshotHelper.swift */; };
 		975B90F91CEB75CB00D13906 /* ZimFilesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975B90F81CEB75CB00D13906 /* ZimFilesController.swift */; };
 		975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975B90FD1CEB909100D13906 /* iOSExtensions.swift */; };
 		975B90FF1CEB909900D13906 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779987A1C1E1C9600B1DD5E /* Extensions.swift */; };
@@ -354,7 +352,6 @@
 		973BCD171CEB402900F10B44 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Kiwix-iOSTests/Info.plist"; sourceTree = SOURCE_ROOT; };
 		973BCD181CEB402900F10B44 /* KiwixTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KiwixTests.swift; path = "Kiwix-iOSTests/KiwixTests.swift"; sourceTree = SOURCE_ROOT; };
 		973BCD1B1CEB403700F10B44 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Kiwix-iOSUITests/Info.plist"; sourceTree = SOURCE_ROOT; };
-		973BCD1C1CEB403700F10B44 /* SnapshotAutomation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotAutomation.swift; path = "Kiwix-iOSUITests/SnapshotAutomation.swift"; sourceTree = SOURCE_ROOT; };
 		973C8D5B1C25F945007272F9 /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Preference.swift; path = Kiwix/Preference.swift; sourceTree = "<group>"; };
 		973DD4041D343F2F009D45DB /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicudata.a; path = Kiwix/libkiwix/iOS/libicudata.a; sourceTree = "<group>"; };
 		973DD4051D343F2F009D45DB /* libicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicui18n.a; path = Kiwix/libkiwix/iOS/libicui18n.a; sourceTree = "<group>"; };
@@ -396,7 +393,6 @@
 		975334CA1CEB6A43007ED50B /* Preference.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Preference.storyboard; path = "Kiwix-OSX/StoryBoards/Preference.storyboard"; sourceTree = SOURCE_ROOT; };
 		975334CF1CEB6AE3007ED50B /* PreferenceGeneralController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferenceGeneralController.swift; path = "Kiwix-OSX/Controllers/PreferenceGeneralController.swift"; sourceTree = SOURCE_ROOT; };
 		975334D11CEB6B01007ED50B /* LibraryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryController.swift; path = "Kiwix-OSX/Controllers/LibraryController.swift"; sourceTree = SOURCE_ROOT; };
-		97587A951D1061C0006EE1AA /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = "Kiwix-iOSUITests/SnapshotHelper.swift"; sourceTree = SOURCE_ROOT; };
 		975B90F81CEB75CB00D13906 /* ZimFilesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ZimFilesController.swift; path = "Kiwix-OSX/Controllers/ZimFilesController.swift"; sourceTree = SOURCE_ROOT; };
 		975B90FD1CEB909100D13906 /* iOSExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = iOSExtensions.swift; path = "Kiwix-iOS/iOSExtensions.swift"; sourceTree = SOURCE_ROOT; };
 		9763275D1D64FE0F0034F120 /* BookDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookDetailController.swift; sourceTree = "<group>"; };
@@ -1041,8 +1037,6 @@
 			isa = PBXGroup;
 			children = (
 				973BCD1B1CEB403700F10B44 /* Info.plist */,
-				973BCD1C1CEB403700F10B44 /* SnapshotAutomation.swift */,
-				97587A951D1061C0006EE1AA /* SnapshotHelper.swift */,
 			);
 			name = "Kiwix-iOSUITests";
 			path = KiwixUITests;
@@ -1288,7 +1282,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = Chris;
 				TargetAttributes = {
 					973BCCE81CEB3FA400F10B44 = {
@@ -1305,6 +1299,7 @@
 					9779C3121D4575AD0064CC8E = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = L7HWM3SP3L;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -1314,6 +1309,7 @@
 					97A2AB871C1B80FF00052E74 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = L7HWM3SP3L;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -1328,10 +1324,12 @@
 					};
 					97A2AB9E1C1B80FF00052E74 = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0800;
 						TestTargetID = 97A2AB871C1B80FF00052E74;
 					};
 					97A2ABA91C1B810000052E74 = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0800;
 						TestTargetID = 97A2AB871C1B80FF00052E74;
 					};
 				};
@@ -1735,8 +1733,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				973BCD1E1CEB403700F10B44 /* SnapshotAutomation.swift in Sources */,
-				97587A961D1061C0006EE1AA /* SnapshotHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1795,6 +1791,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6DCB0E958A1083CA248C5A12 /* Pods-Kiwix-OSX.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
@@ -1826,6 +1823,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 69E75DFE2EF83272AC5B02BA /* Pods-Kiwix-OSX.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
@@ -1931,6 +1929,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.Bookmarks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -1947,6 +1946,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.Bookmarks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
@@ -1963,8 +1963,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -2008,8 +2010,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -2028,6 +2032,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -2037,6 +2042,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DA0AB5D61F19BE37BD0AFA0A /* Pods-Kiwix-iOS.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
@@ -2045,7 +2051,6 @@
 				CODE_SIGN_ENTITLEMENTS = "Kiwix-iOS/Kiwix.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = "$(inherited)";
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2066,6 +2071,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Kiwix/Kiwix-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -2073,6 +2079,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5B9300794E7F4EFE5B3E8F19 /* Pods-Kiwix-iOS.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
@@ -2081,7 +2088,6 @@
 				CODE_SIGN_ENTITLEMENTS = "Kiwix-iOS/Kiwix.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = "$(inherited)";
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2102,6 +2108,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Kiwix/Kiwix-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
@@ -2115,6 +2122,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = self.KiwixTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kiwix.app/Kiwix";
 			};
 			name = Debug;
@@ -2128,6 +2136,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = self.KiwixTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kiwix.app/Kiwix";
 			};
 			name = Release;
@@ -2142,6 +2151,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = "Kiwix-iOS";
 				USES_XCTRUNNER = YES;
 			};
@@ -2156,6 +2166,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = self.KiwixUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = "Kiwix-iOS";
 				USES_XCTRUNNER = YES;
 			};

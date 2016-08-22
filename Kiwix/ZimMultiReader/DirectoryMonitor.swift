@@ -157,7 +157,7 @@ class DirectoryMonitor {
     }
     
     private func fileSize(fileName: String) -> Int64? {
-        if let path = self.URL.URLByAppendingPathComponent(fileName).path {
+        if let path = self.URL.URLByAppendingPathComponent(fileName)!.path {
             if NSFileManager.defaultManager().fileExistsAtPath(path) {
                 do {
                     let attributes = try NSFileManager.defaultManager().attributesOfItemAtPath(path)

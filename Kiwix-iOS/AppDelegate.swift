@@ -70,7 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
-        guard url.scheme.caseInsensitiveCompare("kiwix") == .OrderedSame else {return false}
+        guard url.scheme!.caseInsensitiveCompare("kiwix") == .OrderedSame else {return false}
         mainController?.load(url)
         return true
     }

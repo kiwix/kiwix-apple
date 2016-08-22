@@ -8,8 +8,7 @@ platform :ios, '9.0'
 pod 'DateTools'
 pod 'DZNEmptyDataSet'
 pod 'SwiftyUserDefaults'
-pod 'Operations'
-pod 'Charts'
+pod 'Operations', :git => 'https://github.com/ProcedureKit/ProcedureKit.git', :branch => 'swift/2.3'
 
 end
 
@@ -18,6 +17,6 @@ target 'Kiwix-OSX' do
 platform :osx, '10.10'
 
 pod 'DateTools'
-pod 'Operations'
+pod 'Operations', :git => 'https://github.com/ProcedureKit/ProcedureKit.git', :branch => 'swift/2.3'
 
 end
