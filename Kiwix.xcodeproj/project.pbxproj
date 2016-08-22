@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7356F9FACBB84380CFC8F68F /* Pods_Kiwix_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC884ACBBA260AF741C4C4FE /* Pods_Kiwix_iOS.framework */; };
+		970722AA1D6B4D1700A45620 /* LanguageFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970722A91D6B4D1700A45620 /* LanguageFilterController.swift */; };
 		970C3DCA1CBD79450026A240 /* MigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C3DC91CBD79450026A240 /* MigrationPolicy.swift */; };
 		970C61971D34243600087758 /* URLSessionDownloadTaskOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C61961D34243600087758 /* URLSessionDownloadTaskOperation.swift */; };
 		970C65501D398D5A007032F8 /* BookmarkControllerAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C654F1D398D5A007032F8 /* BookmarkControllerAnimator.swift */; };
@@ -83,7 +84,6 @@
 		971A105A1D022DAD007FC62C /* LibraryLocalTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10551D022DAD007FC62C /* LibraryLocalTBVC.swift */; };
 		971A105B1D022DAD007FC62C /* LibraryOnlineTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10561D022DAD007FC62C /* LibraryOnlineTBVC.swift */; };
 		971A105C1D022DAD007FC62C /* LibraryTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10571D022DAD007FC62C /* LibraryTabBarController.swift */; };
-		971A10601D022DF2007FC62C /* LanguageTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A105F1D022DF2007FC62C /* LanguageTBVC.swift */; };
 		971A106C1D022E50007FC62C /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A106B1D022E50007FC62C /* Utilities.swift */; };
 		971A106F1D022E62007FC62C /* DownloadProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A106D1D022E62007FC62C /* DownloadProgress.swift */; };
 		971A10701D022E62007FC62C /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A106E1D022E62007FC62C /* Network.swift */; };
@@ -270,6 +270,7 @@
 		5B9300794E7F4EFE5B3E8F19 /* Pods-Kiwix-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		69E75DFE2EF83272AC5B02BA /* Pods-Kiwix-OSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-OSX.release.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-OSX/Pods-Kiwix-OSX.release.xcconfig"; sourceTree = "<group>"; };
 		6DCB0E958A1083CA248C5A12 /* Pods-Kiwix-OSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-OSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-OSX/Pods-Kiwix-OSX.debug.xcconfig"; sourceTree = "<group>"; };
+		970722A91D6B4D1700A45620 /* LanguageFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageFilterController.swift; sourceTree = "<group>"; };
 		970C3DC91CBD79450026A240 /* MigrationPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MigrationPolicy.swift; path = CoreData/Migration/MigrationPolicy.swift; sourceTree = "<group>"; };
 		970C61961D34243600087758 /* URLSessionDownloadTaskOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = URLSessionDownloadTaskOperation.swift; path = Operations/URLSessionDownloadTaskOperation.swift; sourceTree = "<group>"; };
 		970C654F1D398D5A007032F8 /* BookmarkControllerAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookmarkControllerAnimator.swift; path = "Kiwix-iOS/Controller/Bookmark/BookmarkControllerAnimator.swift"; sourceTree = SOURCE_ROOT; };
@@ -325,7 +326,6 @@
 		971A10551D022DAD007FC62C /* LibraryLocalTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryLocalTBVC.swift; path = "Kiwix-iOS/Controller/LibraryLocalTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10561D022DAD007FC62C /* LibraryOnlineTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryOnlineTBVC.swift; path = "Kiwix-iOS/Controller/LibraryOnlineTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10571D022DAD007FC62C /* LibraryTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryTabBarController.swift; path = "Kiwix-iOS/Controller/LibraryTabBarController.swift"; sourceTree = SOURCE_ROOT; };
-		971A105F1D022DF2007FC62C /* LanguageTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LanguageTBVC.swift; path = "Kiwix-iOS/Controller/LanguageTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A106B1D022E50007FC62C /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utilities.swift; path = "Kiwix-iOS/Model/Utilities.swift"; sourceTree = SOURCE_ROOT; };
 		971A106D1D022E62007FC62C /* DownloadProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DownloadProgress.swift; path = "Kiwix-iOS/Model/DownloadProgress.swift"; sourceTree = SOURCE_ROOT; };
 		971A106E1D022E62007FC62C /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Network.swift; path = "Kiwix-iOS/Model/Network.swift"; sourceTree = SOURCE_ROOT; };
@@ -967,7 +967,6 @@
 				971A10531D022DAD007FC62C /* LibraryDownloadTBVC.swift */,
 				971A10551D022DAD007FC62C /* LibraryLocalTBVC.swift */,
 				971A10541D022DAD007FC62C /* LibraryLocalBookDetailTBVC.swift */,
-				971A105F1D022DF2007FC62C /* LanguageTBVC.swift */,
 			);
 			name = LibraryTBVC;
 			sourceTree = "<group>";
@@ -1057,6 +1056,7 @@
 				97C005D71D64B99E004352E8 /* LibrarySplitViewController.swift */,
 				97C005DB1D64BEFE004352E8 /* CloudBooksController.swift */,
 				9763275D1D64FE0F0034F120 /* BookDetailController.swift */,
+				970722A91D6B4D1700A45620 /* LanguageFilterController.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -1695,6 +1695,7 @@
 				971A102F1D022AD5007FC62C /* Logo.swift in Sources */,
 				97D55EF61D2075180081B523 /* TableOfContentsController.swift in Sources */,
 				9722122B1D3FCCE200C0DCF2 /* MainControllerShowHide.swift in Sources */,
+				970722AA1D6B4D1700A45620 /* LanguageFilterController.swift in Sources */,
 				971A104B1D022CBE007FC62C /* SearchBooksVC.swift in Sources */,
 				977998771C1E0B7900B1DD5E /* Article+CoreDataProperties.swift in Sources */,
 				971C4F0E1D400F010027B7D2 /* UpdateWidgetDataSourceOperation.swift in Sources */,
@@ -1707,7 +1708,6 @@
 				970C61971D34243600087758 /* URLSessionDownloadTaskOperation.swift in Sources */,
 				971A10341D022AEC007FC62C /* BookmarkTBVC.swift in Sources */,
 				975227A01D020C00001D1DDE /* resourceTools.cpp in Sources */,
-				971A10601D022DF2007FC62C /* LanguageTBVC.swift in Sources */,
 				971A106C1D022E50007FC62C /* Utilities.swift in Sources */,
 				9763275E1D64FE0F0034F120 /* BookDetailController.swift in Sources */,
 				973DD4281D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift in Sources */,

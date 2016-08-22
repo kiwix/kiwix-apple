@@ -41,4 +41,16 @@ class Language: NSManagedObject {
         let fetchRequest = NSFetchRequest(entityName: "Language")
         return fetch(fetchRequest, type: Language.self, context: context) ?? [Language]()
     }
+    
+    // MARK: - Computed Properties
+    
+    var nameInCurrentLocale: String? {
+        guard let code = code else {return nil}
+        return NSLocale.currentLocale().displayNameForKey(NSLocaleIdentifier, value: code)
+    }
+    
+    var nameInOriginalLocale: String? {
+        guard let code = code else {return nil}
+        return NSLocale(localeIdentifier: code).displayNameForKey(NSLocaleIdentifier, value: code)
+    }
 }

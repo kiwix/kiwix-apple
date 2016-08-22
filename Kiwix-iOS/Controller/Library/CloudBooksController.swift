@@ -10,6 +10,8 @@ import UIKit
 import CoreData
 
 class CloudBooksController: UITableViewController, NSFetchedResultsControllerDelegate {
+    
+    // MARK: - Override
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,9 +19,8 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         tabBarItem.title = "Cloud"
         tabBarItem.image = UIImage(named: "Cloud")
         tabBarItem.selectedImage = UIImage(named: "CloudFilled")
-        tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add)
+        tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(imageNamed: "LanguageFilter", target: self, action: #selector(CloudBooksController.showLanguageFilter))
         clearsSelectionOnViewWillAppear = true
-        
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -35,6 +36,14 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         default:
             break
         }
+    }
+    
+    // MARK: - 
+    
+    func showLanguageFilter() {
+        guard let controller = UIStoryboard.libraryNew.initViewController(LanguageFilterController.self) else {return}
+        let navController = UINavigationController(rootViewController: controller)
+        showDetailViewController(navController, sender: self)
     }
     
     // MARK: - TableView Data Source

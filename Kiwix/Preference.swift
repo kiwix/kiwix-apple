@@ -79,6 +79,18 @@ class Preference {
         get{return Defaults[.libraryHasShownPreferredLanguagePrompt]}
         set{Defaults[.libraryHasShownPreferredLanguagePrompt] = newValue}
     }
+    
+    class LangFilter {
+        class var sortByAlphabeticalAsc: Bool {
+            get{return Defaults[.langFilterSortByAlphabeticalAsc]}
+            set{Defaults[.langFilterSortByAlphabeticalAsc] = newValue}
+        }
+        
+        class var displayInOriginalLocale: Bool {
+            get{return Defaults[.langFilterNameDisplayInOriginalLocale]}
+            set{Defaults[.langFilterNameDisplayInOriginalLocale] = newValue}
+        }
+    }
 }
 
 extension DefaultsKeys {
@@ -94,4 +106,6 @@ extension DefaultsKeys {
     static let libraryLastRefreshTime = DefaultsKey<NSDate?>("libraryLastRefreshTime")
     static let libraryRefreshInterval = DefaultsKey<Double?>("libraryRefreshInterval")
     static let libraryHasShownPreferredLanguagePrompt = DefaultsKey<Bool>("libraryHasShownPreferredLanguagePrompt")
+    static let langFilterSortByAlphabeticalAsc = DefaultsKey<Bool>("langFilterSortByAlphabeticalAsc")
+    static let langFilterNameDisplayInOriginalLocale = DefaultsKey<Bool>("langFilterNameDisplayInOriginalLocale")
 }
