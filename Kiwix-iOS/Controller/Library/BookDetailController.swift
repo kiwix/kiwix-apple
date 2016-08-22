@@ -37,6 +37,7 @@ class BookDetailController: UITableViewController {
     func configureViews() {
         guard let book = book else {return}
         
+        title = book.title
         favIconImageView.image = UIImage(data: book.favIcon ?? NSData())
         titleLabel.text = book.title
         
@@ -49,13 +50,15 @@ class BookDetailController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        return 4
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0: return 3
         case 1: return 3
+        case 2: return 2
+        case 3: return 1
         default: return 0
         }
     }
@@ -91,10 +94,29 @@ class BookDetailController: UITableViewController {
             cell.textLabel?.text = NSLocalizedString("Article Count", comment: LocalizedStrings.BookDetail.comment)
             cell.detailTextLabel?.text = book?.articleCountFormatted
             return cell
+        case (2, 0):
+            let cell = tableView.dequeueReusableCellWithIdentifier("RightDetailCell", forIndexPath: indexPath)
+            cell.textLabel?.text = NSLocalizedString("Creator", comment: LocalizedStrings.BookDetail.comment)
+            cell.detailTextLabel?.text = book?.creator
+            return cell
+        case (2, 1):
+            let cell = tableView.dequeueReusableCellWithIdentifier("RightDetailCell", forIndexPath: indexPath)
+            cell.textLabel?.text = NSLocalizedString("Publisher", comment: LocalizedStrings.BookDetail.comment)
+            cell.detailTextLabel?.text = book?.publisher
+            return cell
+        case (3, 0):
+            let cell = tableView.dequeueReusableCellWithIdentifier("DescCell", forIndexPath: indexPath)
+            cell.textLabel?.text = book?.desc
+            return cell
         default:
             let cell = tableView.dequeueReusableCellWithIdentifier("RightDetailCell", forIndexPath: indexPath)
             return cell
         }
+    }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard section == 3 else {return nil}
+        return NSLocalizedString("Description", comment: LocalizedStrings.BookDetail.comment)
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

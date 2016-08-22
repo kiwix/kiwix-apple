@@ -41,7 +41,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     // MARK: - Actions
     
     func showLanguageFilter() {
-        guard let splitViewController = splitViewController as? LibrarySplitViewController where splitViewController.isShowingLangFilter else {return}
+        guard let splitViewController = splitViewController as? LibrarySplitViewController where !splitViewController.isShowingLangFilter else {return}
         guard let controller = UIStoryboard.libraryNew.initViewController(LanguageFilterController.self) else {return}
         controller.delegate = self
         let navController = UINavigationController(rootViewController: controller)

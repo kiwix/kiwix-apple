@@ -159,7 +159,7 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if showLanguages.count == 0 {
-            return section == 0 ? "" : NSLocalizedString("All", comment: "Language selection: table section title") + "       "
+            return section == 0 ? "" : NSLocalizedString("ALL", comment: "Language selection: table section title") + "       "
         } else {
             return section == 0 ? NSLocalizedString("SHOWING", comment: "Language selection: table section title") : NSLocalizedString("HIDING", comment: "Language selection: table section title")
         }

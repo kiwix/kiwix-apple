@@ -33,12 +33,12 @@ import Foundation
 extension NSLocale {
     class var preferredLangCodes: [String] {
         let preferredLangNames = self.preferredLanguages()
-        var preferredLangCodes = Set<String>()
+        var preferredLangCodes = NSMutableOrderedSet()
         for lang in preferredLangNames {
             guard let code = lang.componentsSeparatedByString("-").first else {continue}
-            preferredLangCodes.insert(NSLocale.canonicalLanguageIdentifierFromString(code))
+            preferredLangCodes.addObject(NSLocale.canonicalLanguageIdentifierFromString(code))
         }
-        return Array(preferredLangCodes)
+        return preferredLangCodes.flatMap({ $0 as? String})
     }
 }
 

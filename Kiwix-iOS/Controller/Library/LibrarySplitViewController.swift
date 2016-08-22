@@ -35,6 +35,6 @@ class LibrarySplitViewController: UISplitViewController, UISplitViewControllerDe
     }
     
     var isShowingLangFilter: Bool {
-        return !((viewControllers[safe: 1] as? UINavigationController)?.topViewController is LanguageFilterController)
+        return ((viewControllers[safe: 1] as? UINavigationController)?.topViewController is LanguageFilterController)
     }
 }
