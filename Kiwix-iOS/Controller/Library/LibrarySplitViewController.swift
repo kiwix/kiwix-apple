@@ -30,6 +30,11 @@ class LibrarySplitViewController: UISplitViewController, UISplitViewControllerDe
     }
     
     func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
+        guard !isShowingLangFilter else {return false}
         return true
+    }
+    
+    var isShowingLangFilter: Bool {
+        return !((viewControllers[safe: 1] as? UINavigationController)?.topViewController is LanguageFilterController)
     }
 }

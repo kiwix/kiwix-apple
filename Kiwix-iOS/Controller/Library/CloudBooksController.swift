@@ -38,12 +38,16 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         }
     }
     
-    // MARK: - 
+    // MARK: - Actions
     
     func showLanguageFilter() {
+        guard let splitViewController = splitViewController as? LibrarySplitViewController where splitViewController.isShowingLangFilter else {return}
         guard let controller = UIStoryboard.libraryNew.initViewController(LanguageFilterController.self) else {return}
         let navController = UINavigationController(rootViewController: controller)
         showDetailViewController(navController, sender: self)
+        
+        guard let indexPath = tableView.indexPathForSelectedRow else {return}
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     // MARK: - TableView Data Source

@@ -54,6 +54,11 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
     func configureSegmentedControls() {
         sortSegmentedControl.selectedSegmentIndex = Preference.LangFilter.sortByAlphabeticalAsc == true ? 1: 0
         langNameSegmentedControl.selectedSegmentIndex = Preference.LangFilter.displayInOriginalLocale == true ? 1 : 0
+        
+        sortSegmentedControl.setTitle(LocalizedStrings.LangFilter.count, forSegmentAtIndex: 0)
+        sortSegmentedControl.setTitle(LocalizedStrings.LangFilter.a_z, forSegmentAtIndex: 1)
+        langNameSegmentedControl.setTitle(NSLocale.currentLocale().displayNameForKey(NSLocaleIdentifier, value: NSLocale.preferredLangCodes[0]), forSegmentAtIndex: 0)
+        langNameSegmentedControl.setTitle(LocalizedStrings.LangFilter.original, forSegmentAtIndex: 1)
     }
     
     func sort() {
@@ -155,7 +160,7 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if showLanguages.count == 0 {
-            return section == 0 ? "" : NSLocalizedString("ALL", comment: "Language selection: table section title") + "       "
+            return section == 0 ? "" : NSLocalizedString("All", comment: "Language selection: table section title") + "       "
         } else {
             return section == 0 ? NSLocalizedString("SHOWING", comment: "Language selection: table section title") : NSLocalizedString("HIDING", comment: "Language selection: table section title")
         }
@@ -212,5 +217,9 @@ extension LocalizedStrings {
         class var oneLangSelected: String {return NSLocalizedString("%@ is selected", comment: comment)}
         class var twoLangSelected: String {return NSLocalizedString("%@ and %@ are selected", comment: comment)}
         class var someLangSelected: String {return NSLocalizedString("%d languages are selected", comment: comment)}
+        
+        class var count: String {return NSLocalizedString("Count", comment: comment)}
+        class var a_z: String {return NSLocalizedString("A-Z", comment: comment)}
+        class var original: String {return NSLocalizedString("Original", comment: comment)}
     }
 }
