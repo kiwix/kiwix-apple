@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class CloudBooksController: UITableViewController, NSFetchedResultsControllerDelegate {
+class CloudBooksController: UITableViewController, NSFetchedResultsControllerDelegate, LanguageFilterUpdating {
     
     // MARK: - Override
 
@@ -43,11 +43,24 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     func showLanguageFilter() {
         guard let splitViewController = splitViewController as? LibrarySplitViewController where splitViewController.isShowingLangFilter else {return}
         guard let controller = UIStoryboard.libraryNew.initViewController(LanguageFilterController.self) else {return}
+        controller.delegate = self
         let navController = UINavigationController(rootViewController: controller)
         showDetailViewController(navController, sender: self)
         
         guard let indexPath = tableView.indexPathForSelectedRow else {return}
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    // MARK: - LanguageFilterUpdating
+    
+    func languageFilterChanged() {
+        guard isViewLoaded() && view.window != nil else {return}
+        refreshFetchedResultController()
+    }
+    
+    func languageFilterFinsihEditing(hasChanges: Bool) {
+        guard hasChanges else {return}
+        refreshFetchedResultController()
     }
     
     // MARK: - TableView Data Source
@@ -129,7 +142,6 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         fetchedResultController.fetchRequest.predicate = onlineCompoundPredicate
         fetchedResultController.performFetch(deleteCache: true)
         tableView.reloadData()
-//        configureMessage()
     }
     
     private var langPredicate: NSPredicate {

@@ -14,12 +14,13 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
     @IBOutlet weak var sortSegmentedControl: UISegmentedControl!
     @IBOutlet weak var langNameSegmentedControl: UISegmentedControl!
     
-    let managedObjectContext = NSManagedObjectContext.mainQueueContext
+    private let managedObjectContext = NSManagedObjectContext.mainQueueContext
     
-    var initialShowLanguageSet = Set<Language>()
-    var showLanguages = [Language]()
-    var hideLanguages = [Language]()
-    var messageBarButtonItem = MessageBarButtonItem()
+    weak var delegate: LanguageFilterUpdating?
+    private var initialShowLanguageSet = Set<Language>()
+    private var showLanguages = [Language]()
+    private var hideLanguages = [Language]()
+    private var messageBarButtonItem = MessageBarButtonItem()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,9 +38,7 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
     
     override func viewWillDisappear(animated: Bool) {
         let hasChange = initialShowLanguageSet != Set(showLanguages)
-        guard hasChange else {return}
-        guard let libraryOnlineTBVC = self.navigationController?.topViewController as? LibraryOnlineTBVC else {return}
-        libraryOnlineTBVC.refreshFetchedResultController()
+        delegate?.languageFilterFinsihEditing(hasChange)
     }
     
     // MARK: - Configure
@@ -201,12 +200,18 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
         }
         
         messageBarButtonItem.text = messageLabelText
+        delegate?.languageFilterChanged()
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if showLanguages.count == 0 && section == 0 {return CGFloat.min}
         return tableView.sectionHeaderHeight
     }
+}
+
+protocol LanguageFilterUpdating: class {
+    func languageFilterChanged()
+    func languageFilterFinsihEditing(hasChanges: Bool)
 }
 
 extension LocalizedStrings {
