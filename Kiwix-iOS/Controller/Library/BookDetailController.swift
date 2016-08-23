@@ -77,7 +77,7 @@ class BookDetailController: UITableViewController {
             return cell
         case (0,2):
             let cell = tableView.dequeueReusableCellWithIdentifier("TextSwitchCell", forIndexPath: indexPath) as! TextSwitchCell
-            cell.titleLabel.text = NSLocalizedString("Download Updates Automatically", comment: LocalizedStrings.BookDetail.comment)
+            cell.titleLabel.text = NSLocalizedString("Updates Automatically", comment: LocalizedStrings.BookDetail.comment)
             return cell
         case (1, 0):
             let cell = tableView.dequeueReusableCellWithIdentifier("RightDetailCell", forIndexPath: indexPath)
@@ -132,7 +132,5 @@ extension LocalizedStrings {
         static let hasPic = NSLocalizedString("Pictures", comment: comment)
         static let noIndex = NSLocalizedString("No Index", comment: comment)
         static let noPic = NSLocalizedString("No Picture", comment: comment)
-        
-//        static let noPic = NSLocalizedString("No Picture", comment: comment)
     }
 }

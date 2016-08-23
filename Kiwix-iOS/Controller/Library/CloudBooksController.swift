@@ -8,19 +8,30 @@
 
 import UIKit
 import CoreData
+import Operations
 
 class CloudBooksController: UITableViewController, NSFetchedResultsControllerDelegate, LanguageFilterUpdating {
     
     // MARK: - Override
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        title = ""
+        tabBarItem.title = LocalizedStrings.LibraryTabTitle.cloud
+        tabBarItem.image = UIImage(named: "Cloud")
+        tabBarItem.selectedImage = UIImage(named: "CloudFilled")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = ""
-        tabBarItem.title = "Cloud"
-        tabBarItem.image = UIImage(named: "Cloud")
-        tabBarItem.selectedImage = UIImage(named: "CloudFilled")
+        
+        refreshControl = RefreshLibControl()
+        refreshControl?.addTarget(self, action: #selector(CloudBooksController.refresh), forControlEvents: .ValueChanged)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(imageNamed: "LanguageFilter", target: self, action: #selector(CloudBooksController.showLanguageFilter))
-        clearsSelectionOnViewWillAppear = true
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -49,6 +60,16 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         
         guard let indexPath = tableView.indexPathForSelectedRow else {return}
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    func refresh() {
+        let operation = RefreshLibraryOperation()
+        operation.addObserver(DidFinishObserver { operation in
+            NSOperationQueue.mainQueue().addOperationWithBlock({
+                self.refreshControl?.endRefreshing()
+            })
+        })
+        GlobalOperationQueue.sharedInstance.addOperation(operation)
     }
     
     // MARK: - LanguageFilterUpdating
@@ -195,7 +216,30 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
-//        configureMessage()
+    }
+}
+
+class RefreshLibControl: UIRefreshControl {
+    
+    static let pullDownToRefresh = NSLocalizedString("Pull Down To Refresh", comment: "Refresh Library Control")
+    static let lastRefresh = NSLocalizedString("Last Refresh", comment: "Refresh Library Control")
+    
+    override var hidden: Bool {
+        didSet {
+            guard hidden != oldValue && hidden == false else {return}
+            updateTitle()
+        }
+    }
+    
+    private func updateTitle() {
+        let string: String = {
+            guard let lastRefreshTime = Preference.libraryLastRefreshTime else {return RefreshLibControl.pullDownToRefresh}
+            let formatter = NSDateFormatter()
+            formatter.dateFormat = "MMM d, h:mm a"
+            return "Last Refresh" + ": " + formatter.stringFromDate(lastRefreshTime)
+        }()
+        let attributes = [NSForegroundColorAttributeName: UIColor.blackColor()]
+        attributedTitle = NSAttributedString(string: string, attributes: attributes)
     }
 }
 

@@ -84,33 +84,33 @@ class LibraryOnlineTBVC: UITableViewController, NSFetchedResultsControllerDelega
             guard libraryIsOld else {return}
         }
         
-        let refreshOperation = RefreshLibraryOperation(invokedAutomatically: invokedAutomatically) { (errors) in
-            defer {
-                NSOperationQueue.mainQueue().addOperationWithBlock({
-                    self.refreshing = false
-                    self.configureMessage()
-                    self.configureRotatingStatus()
-                    self.configureEmptyTableBackground()
-                })
-            }
-            if errors.count > 0 {
-                let codes = errors.map() {$0.code}
-                if codes.contains(OperationErrorCode.NetworkError.rawValue) {
-                    let alertOperation = RefreshLibraryInternetRequiredAlert(presentationContext: self)
-                    GlobalOperationQueue.sharedInstance.addOperation(alertOperation)
-                }
-            } else {
-                guard !Preference.libraryHasShownPreferredLanguagePrompt else {return}
-                let operation = RefreshLibraryLanguageFilterAlert(presentationContext: self)
-                GlobalOperationQueue.sharedInstance.addOperation(operation)
-            }
-        }
+//        let refreshOperation = RefreshLibraryOperation(invokedAutomatically: invokedAutomatically) { (errors) in
+//            defer {
+//                NSOperationQueue.mainQueue().addOperationWithBlock({
+//                    self.refreshing = false
+//                    self.configureMessage()
+//                    self.configureRotatingStatus()
+//                    self.configureEmptyTableBackground()
+//                })
+//            }
+//            if errors.count > 0 {
+//                let codes = errors.map() {$0.code}
+//                if codes.contains(OperationErrorCode.NetworkError.rawValue) {
+//                    let alertOperation = RefreshLibraryInternetRequiredAlert(presentationContext: self)
+//                    GlobalOperationQueue.sharedInstance.addOperation(alertOperation)
+//                }
+//            } else {
+//                guard !Preference.libraryHasShownPreferredLanguagePrompt else {return}
+//                let operation = RefreshLibraryLanguageFilterAlert(presentationContext: self)
+//                GlobalOperationQueue.sharedInstance.addOperation(operation)
+//            }
+//        }
         
         refreshing = true
         configureMessage()
         configureRotatingStatus()
         configureEmptyTableBackground()
-        GlobalOperationQueue.sharedInstance.addOperation(refreshOperation)
+//        GlobalOperationQueue.sharedInstance.addOperation(refreshOperation)
     }
     
     // MARK: - ToolBar Button

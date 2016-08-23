@@ -157,7 +157,6 @@
 		977998781C1E0B7900B1DD5E /* Language+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977998721C1E0B7900B1DD5E /* Language+CoreDataProperties.swift */; };
 		9779987B1C1E1C9600B1DD5E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779987A1C1E1C9600B1DD5E /* Extensions.swift */; };
 		9779A1C91D34225E0071EFAB /* GlobalOperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A1C31D34225E0071EFAB /* GlobalOperationQueue.swift */; };
-		9779A1CB1D34225E0071EFAB /* RefreshLibraryOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A1C51D34225E0071EFAB /* RefreshLibraryOperation.swift */; };
 		9779A1CC1D34225E0071EFAB /* SearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A1C61D34225E0071EFAB /* SearchOperation.swift */; };
 		9779A1CD1D34225E0071EFAB /* UIOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A1C71D34225E0071EFAB /* UIOperations.swift */; };
 		9779C3141D4575AD0064CC8E /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E609F01D103DED00EBCB9D /* NotificationCenter.framework */; };
@@ -174,6 +173,8 @@
 		979CB6C81D05CF37005E1BA1 /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6C71D05CF37005E1BA1 /* SearchResultController.swift */; };
 		979CB6CA1D05D26E005E1BA1 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6C91D05D26E005E1BA1 /* WebViewController.swift */; };
 		97A7017F1D2C59CA00AAE2D8 /* GetStartedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A7017E1D2C59CA00AAE2D8 /* GetStartedController.swift */; };
+		97A8AD841D6C951A00584ED1 /* LocalBooksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A8AD831D6C951A00584ED1 /* LocalBooksController.swift */; };
+		97A8AD851D6CA39F00584ED1 /* RefreshLibraryOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A1C51D34225E0071EFAB /* RefreshLibraryOperation.swift */; };
 		97BA32A51CEBC36300339A47 /* RootWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BA32A31CEBC29500339A47 /* RootWindowController.swift */; };
 		97BAA8EC1D3D2D7B0038F57F /* PacketAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BAA8EB1D3D2D7B0038F57F /* PacketAnalyzer.swift */; };
 		97BAA8EE1D3D2D9B0038F57F /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BAA8ED1D3D2D9B0038F57F /* KiwixURLProtocol.swift */; };
@@ -425,6 +426,7 @@
 		97A2AB9F1C1B80FF00052E74 /* Kiwix-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kiwix-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A2ABAA1C1B810000052E74 /* Kiwix-iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kiwix-iOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A7017E1D2C59CA00AAE2D8 /* GetStartedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GetStartedController.swift; path = "Kiwix-iOS/Controller/Welcome/GetStartedController.swift"; sourceTree = SOURCE_ROOT; };
+		97A8AD831D6C951A00584ED1 /* LocalBooksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalBooksController.swift; sourceTree = "<group>"; };
 		97BA32A31CEBC29500339A47 /* RootWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RootWindowController.swift; path = "Kiwix-OSX/Controllers/RootWindowController.swift"; sourceTree = SOURCE_ROOT; };
 		97BAA8EB1D3D2D7B0038F57F /* PacketAnalyzer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PacketAnalyzer.swift; path = Kiwix/URLProtocol/PacketAnalyzer.swift; sourceTree = "<group>"; };
 		97BAA8ED1D3D2D9B0038F57F /* KiwixURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KiwixURLProtocol.swift; path = Kiwix/URLProtocol/KiwixURLProtocol.swift; sourceTree = "<group>"; };
@@ -1055,6 +1057,7 @@
 			children = (
 				97C005D71D64B99E004352E8 /* LibrarySplitViewController.swift */,
 				97C005DB1D64BEFE004352E8 /* CloudBooksController.swift */,
+				97A8AD831D6C951A00584ED1 /* LocalBooksController.swift */,
 				9763275D1D64FE0F0034F120 /* BookDetailController.swift */,
 				970722A91D6B4D1700A45620 /* LanguageFilterController.swift */,
 			);
@@ -1644,6 +1647,7 @@
 				971A102C1D022AD5007FC62C /* BarButtonItems.swift in Sources */,
 				971A10301D022AD5007FC62C /* LTBarButtonItem.swift in Sources */,
 				971A103F1D022C42007FC62C /* LibraryAutoRefreshTBVC.swift in Sources */,
+				97A8AD851D6CA39F00584ED1 /* RefreshLibraryOperation.swift in Sources */,
 				970E68B61D37E224001E8514 /* SettingSearchHistoryTBVC.swift in Sources */,
 				971A10581D022DAD007FC62C /* LibraryDownloadTBVC.swift in Sources */,
 				97C005D81D64B99E004352E8 /* LibrarySplitViewController.swift in Sources */,
@@ -1670,7 +1674,6 @@
 				97C005DC1D64BEFE004352E8 /* CloudBooksController.swift in Sources */,
 				971A104A1D022CBE007FC62C /* SearchResultTBVC.swift in Sources */,
 				971A105B1D022DAD007FC62C /* LibraryOnlineTBVC.swift in Sources */,
-				9779A1CB1D34225E0071EFAB /* RefreshLibraryOperation.swift in Sources */,
 				971A10321D022AD5007FC62C /* SearchBar.swift in Sources */,
 				977998741C1E0B7900B1DD5E /* Book+CoreDataProperties.swift in Sources */,
 				977998751C1E0B7900B1DD5E /* DownloadTask+CoreDataProperties.swift in Sources */,
@@ -1691,6 +1694,7 @@
 				973DD4251D344558009D45DB /* ScanLocalBookOperation.swift in Sources */,
 				971A10521D022D9D007FC62C /* AppDelegate.swift in Sources */,
 				977998781C1E0B7900B1DD5E /* Language+CoreDataProperties.swift in Sources */,
+				97A8AD841D6C951A00584ED1 /* LocalBooksController.swift in Sources */,
 				97D452BE1D1723FF0033666F /* CollectionViewCells.swift in Sources */,
 				971A102F1D022AD5007FC62C /* Logo.swift in Sources */,
 				97D55EF61D2075180081B523 /* TableOfContentsController.swift in Sources */,
