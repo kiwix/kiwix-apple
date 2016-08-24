@@ -117,6 +117,10 @@ class Book: NSManagedObject {
     }
     
     var articleCountFormatted: String? {
+        return articleCountString + (articleCount > 1 ? " articles" : " article")
+    }
+    
+    var articleCountString: String {
         func formattedNumberStringFromDouble(num: Double) -> String {
             let sign = ((num < 0) ? "-" : "" )
             let abs = fabs(num)
@@ -132,7 +136,7 @@ class Book: NSManagedObject {
             let roundedNum: Double = round(10 * abs / pow(1000.0,Double(exp))) / 10;
             return "\(sign)\(roundedNum)\(units[exp-1])"
         }
-        return formattedNumberStringFromDouble(Double(articleCount)) + (articleCount >= 1 ? " articles" : " article")
+        return formattedNumberStringFromDouble(Double(articleCount))
     }
     
     // MARK: - Description Label

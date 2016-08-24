@@ -46,12 +46,13 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate {
         hasIndexIndicator.backgroundColor = book.hasIndex ? AppColors.hasIndexTintColor : UIColor.lightGrayColor()
         hasIndexLabel.text = book.hasIndex ? LocalizedStrings.BookDetail.hasIndex : LocalizedStrings.BookDetail.noIndex
         
+        cellTitles.append([String]())
         if book.isLocal?.boolValue == false {
             cellTitles.append([Strings.downloadNow, Strings.downloadSchedule])
         } else {
             cellTitles.append([Strings.remove])
         }
-        cellTitles.append([Strings.size, Strings.createDate, Strings.arcitleCount, Strings.creator, Strings.publisher])
+        cellTitles.append([Strings.size, Strings.createDate, Strings.arcitleCount, Strings.language, Strings.creator, Strings.publisher])
     }
     
     // MARK: - Delegates
@@ -80,6 +81,7 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate {
             let cell = tableView.dequeueReusableCellWithIdentifier("CenterButtonCell", forIndexPath: indexPath) as! CenterButtonCell
             cell.button.setTitle(title, forState: .Normal)
             cell.delegate = self
+            
             if title == Strings.remove { cell.button.tintColor = UIColor.redColor() }
             return cell
         default:
@@ -91,7 +93,9 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate {
             case Strings.createDate:
                 cell.detailTextLabel?.text = book?.dateFormatted
             case Strings.arcitleCount:
-                cell.detailTextLabel?.text = book?.articleCountFormatted
+                cell.detailTextLabel?.text = book?.articleCountString
+            case Strings.language:
+                cell.detailTextLabel?.text = book?.language?.nameInCurrentLocale
             case Strings.creator:
                 cell.detailTextLabel?.text = book?.creator
             case Strings.publisher:
@@ -109,30 +113,30 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate {
 
     }
     
-//    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        switch section {
-//        case 0:
-//            return "You probably already know that Facebook shows you ads based on what it thinks you like and dislike, but you might not be aware that it also labels your political preferences — even if you don't state them yourself. "
-//        case 1:
-//            return NSLocalizedString("Book Info", comment: LocalizedStrings.BookDetail.comment)
-//        default:
-//            return nil
-//        }
-//    }
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 1:
+            return Strings.download
+        case 2:
+            return Strings.bookInfo
+        default:
+            return nil
+        }
+    }
     
-//    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-//        guard section == 0 else {return nil}
-//        let button = UIButton()
-//        button.titleLabel?.font = UIFont.systemFontOfSize(12.0)
-//        button.tintColor = UIColor.greenColor()
-//        button.setTitle("What is this?", forState: .Normal)
-//        return button
-//    }
+    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return book?.desc
+        default:
+            return nil
+        }
+    }
     
-//    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        if section == 0 {return 25.0}
-//        return super.tableView(tableView, heightForHeaderInSection: section)
-//    }
+    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        guard let view = view as? UITableViewHeaderFooterView where section == 0 else {return}
+        view.textLabel?.textAlignment = .Center
+    }
 }
 
 extension LocalizedStrings {
@@ -143,6 +147,9 @@ extension LocalizedStrings {
         static let noIndex = NSLocalizedString("No Index", comment: comment)
         static let noPic = NSLocalizedString("No Picture", comment: comment)
         
+        static let download = NSLocalizedString("Download", comment: comment)
+        static let bookInfo = NSLocalizedString("Book Info", comment: comment)
+        
         static let downloadNow = NSLocalizedString("Download Now", comment: comment)
         static let downloadSchedule = NSLocalizedString("Schedule Download", comment: comment)
         static let remove = NSLocalizedString("Remove", comment: comment)
@@ -150,7 +157,7 @@ extension LocalizedStrings {
         static let size = NSLocalizedString("Size", comment: comment)
         static let createDate = NSLocalizedString("Creation Date", comment: comment)
         static let arcitleCount = NSLocalizedString("Article Count", comment: comment)
-        
+        static let language = NSLocalizedString("Language", comment: comment)
         static let creator = NSLocalizedString("Creator", comment: comment)
         static let publisher = NSLocalizedString("Publisher", comment: comment)
     }
