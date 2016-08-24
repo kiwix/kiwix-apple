@@ -64,7 +64,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     
     func refresh() {
         let operation = RefreshLibraryOperation()
-        operation.addObserver(DidFinishObserver { operation in
+        operation.addObserver(DidFinishObserver { (operation, errors) in
             NSOperationQueue.mainQueue().addOperationWithBlock({
                 self.refreshControl?.endRefreshing()
             })

@@ -33,6 +33,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let settings = UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: nil) // Here are the notification permission the app wants
         application.registerUserNotificationSettings(settings)
         
+        // Set background refresh interval
+        application.setMinimumBackgroundFetchInterval(60 * 60 * 24)
+        
         return true
     }
     
@@ -130,6 +133,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: () -> Void) {
         Network.sharedInstance.rejoinSessionWithIdentifier(identifier, completionHandler: completionHandler)
+    }
+    
+    // MARK: Background Refresh
+    
+    func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        let operation = RefreshLibraryOperation()
+        operation.addObserver(DidFinishObserver { (operation, errors) in
+            guard let operation = operation as? RefreshLibraryOperation else {
+                completionHandler(.NoData)
+                return
+            }
+            completionHandler(operation.hasUpdate ? .NewData : .NoData)
+        })
+        GlobalOperationQueue.sharedInstance.addOperation(operation)
     }
 
     // MARK: - Core Data stack

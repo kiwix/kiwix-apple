@@ -11,13 +11,19 @@ import Operations
 
 class RefreshLibraryOperation: GroupOperation {
     
+    private(set) var hasUpdate = false
+    
     init() {
         let retrive = Retrive()
         let process = Process()
         process.injectResultFromDependency(retrive)
         super.init(operations: [retrive, process])
+        
+        process.addObserver(DidFinishObserver { (operation, errors) in
+            guard let operation = operation as? Process else {return}
+            self.hasUpdate = operation.hasUpdate
+        })
     }
-
 }
 
 private class Retrive: Operation, ResultOperationType {
@@ -41,6 +47,7 @@ private class Retrive: Operation, ResultOperationType {
 
 private class Process: Operation, NSXMLParserDelegate, AutomaticInjectionOperationType {
     var requirement: NSData?
+    private(set) var hasUpdate = false
     private let context: NSManagedObjectContext
     private var oldBookIDs = Set<String>()
     private var newBookIDs = Set<String>()
@@ -78,6 +85,7 @@ private class Process: Operation, NSXMLParserDelegate, AutomaticInjectionOperati
             let id = attributeDict["id"] else {return}
         
         if !oldBookIDs.contains(id) {
+            hasUpdate = true
             context.performBlockAndWait({ () -> Void in
                 Book.add(attributeDict, context: self.context)
             })
@@ -95,6 +103,7 @@ private class Process: Operation, NSXMLParserDelegate, AutomaticInjectionOperati
                 // Delete Book object only if book is online, i.e., is not associated with a download task or is not local
                 guard book.isLocal == false else {return}
                 self.context.deleteObject(book)
+                self.hasUpdate = true
             })
         })
         
