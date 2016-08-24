@@ -19,7 +19,7 @@ class BasicBookCell: UITableViewCell {
     @IBOutlet weak private var hasPicIndicator: UILabel!
     @IBOutlet weak private var hasIndexIndicator: UILabel!
     
-    // MARK: - Override
+    // MARK: Override
     
     override func awakeFromNib() {
         hasPicIndicator.layer.cornerRadius = 2.0
@@ -36,7 +36,7 @@ class BasicBookCell: UITableViewCell {
         highlighted = false
     }
     
-    // MARK: - Shorthand properties
+    // MARK: Shorthand properties
     
     var hasPic: Bool = false {
         didSet {
@@ -186,4 +186,17 @@ protocol TableCellDelegate: class {
 class TextSwitchCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var switchControl: UISwitch!
+}
+
+class CenterButtonCell: UITableViewCell {
+    weak var delegate: CenterButtonCellDelegate?
+    @IBOutlet weak var button: UIButton!
+    
+    @IBAction func buttonTapped(sender: UIButton) {
+        delegate?.buttonTapped(self)
+    }
+}
+
+protocol CenterButtonCellDelegate: class {
+    func buttonTapped(cell: CenterButtonCell)
 }

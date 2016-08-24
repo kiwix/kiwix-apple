@@ -106,7 +106,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         
         cell.titleLabel.text = book.title
         cell.hasPic = book.hasPic
-        cell.hasIndex = false
+        cell.hasIndex = book.hasIndex
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
         cell.subtitleLabel.text = book.detailedDescription
     }
@@ -145,7 +145,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     
     // MARK: - Fetched Results Controller
     
-    let managedObjectContext = UIApplication.appDelegate.managedObjectContext
+    let managedObjectContext = NSManagedObjectContext.mainQueueContext
     lazy var fetchedResultController: NSFetchedResultsController = {
         let fetchRequest = NSFetchRequest(entityName: "Book")
         let langDescriptor = NSSortDescriptor(key: "language.name", ascending: true)
@@ -153,7 +153,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
         fetchRequest.predicate = self.onlineCompoundPredicate
         
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "language.name", cacheName: "OnlineFRC")
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "language.name", cacheName: "OnlineFRC" + NSBundle.buildVersion)
         fetchedResultsController.delegate = self
         fetchedResultsController.performFetch(deleteCache: false)
         return fetchedResultsController
