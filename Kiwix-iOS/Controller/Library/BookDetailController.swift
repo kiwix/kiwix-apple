@@ -42,6 +42,7 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
     func configureViews() {
         guard let book = book else {return}
         
+        // Config static UI
         title = book.title
         favIconImageView.image = UIImage(data: book.favIcon ?? NSData())
         titleLabel.text = book.title
@@ -57,9 +58,14 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
         hasIndexIndicator.hidden = false
         hasIndexLabel.hidden = false
         
+        // Generate table structure
         cellTitles.append([String]())
         if book.isLocal?.boolValue == false {
-            cellTitles.append([Strings.downloadNow, Strings.downloadSchedule])
+            if book.spaceState == .NotEnough {
+                cellTitles.append([Strings.spaceNotEnough])
+            } else {
+                cellTitles.append([Strings.downloadNow])
+            }
         } else {
             cellTitles.append([Strings.remove])
         }
@@ -69,11 +75,23 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
     // MARK: - Delegates
     
     func buttonTapped(cell: CenterButtonCell) {
-        guard let title = cell.button.titleLabel?.text else {return}
+        guard let title = cell.button.titleLabel?.text,
+            let book = book else {return}
+        
         switch title {
         case Strings.downloadNow:
-            print("download now tapped")
-            
+            if book.spaceState == .Caution {
+                let cancel = UIAlertAction(title: Strings.cancel, style: .Cancel, handler: nil)
+                let download = UIAlertAction(title: Strings.SpaceAlert.downloadAnyway, style: .Destructive, handler: { (alert) in
+                    
+                })
+                let alertController = UIAlertController(title: Strings.SpaceAlert.spaceAlert, message: Strings.SpaceAlert.message, actions: [download, cancel])
+                presentViewController(alertController, animated: true, completion: nil)
+            } else {
+                
+            }
+//            guard let download = DownloadBookOperation(book: book) else {return}
+//            GlobalOperationQueue.sharedInstance.addOperation(download)
         default:
             return
         }
@@ -92,12 +110,19 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let title = cellTitles[indexPath.section][indexPath.row]
         switch title {
-        case Strings.downloadNow, Strings.downloadSchedule, Strings.remove:
+        case Strings.downloadNow, Strings.spaceNotEnough, Strings.remove:
             let cell = tableView.dequeueReusableCellWithIdentifier("CenterButtonCell", forIndexPath: indexPath) as! CenterButtonCell
             cell.button.setTitle(title, forState: .Normal)
             cell.delegate = self
             
-            if title == Strings.remove { cell.button.tintColor = UIColor.redColor() }
+            switch title {
+            case Strings.spaceNotEnough:
+                cell.button.tintColor = UIColor.grayColor()
+            case Strings.remove:
+                cell.button.tintColor = UIColor.redColor()
+            default:
+                if book?.spaceState == .Caution { cell.button.tintColor = UIColor.orangeColor() }
+            }
             return cell
         default:
             let cell = tableView.dequeueReusableCellWithIdentifier("RightDetailCell", forIndexPath: indexPath)
@@ -166,7 +191,9 @@ extension LocalizedStrings {
         static let bookInfo = NSLocalizedString("Book Info", comment: comment)
         
         static let downloadNow = NSLocalizedString("Download Now", comment: comment)
-        static let downloadSchedule = NSLocalizedString("Schedule Download", comment: comment)
+        static let spaceNotEnough = NSLocalizedString("Space Not Enough", comment: comment)
+        static let pause = NSLocalizedString("Pause", comment: comment)
+        static let cancel = NSLocalizedString("Cancel", comment: comment)
         static let remove = NSLocalizedString("Remove", comment: comment)
         
         static let size = NSLocalizedString("Size", comment: comment)
@@ -175,5 +202,12 @@ extension LocalizedStrings {
         static let language = NSLocalizedString("Language", comment: comment)
         static let creator = NSLocalizedString("Creator", comment: comment)
         static let publisher = NSLocalizedString("Publisher", comment: comment)
+        
+        class SpaceAlert {
+            private static let comment = "Library, Book Detail, Space Alert"
+            static let downloadAnyway = NSLocalizedString("Download Anyway", comment: comment)
+            static let spaceAlert = NSLocalizedString("Space Alert", comment: comment)
+            static let message = NSLocalizedString("This book will take up more than 80% of your free space after downloaded", comment: comment)
+        }
     }
 }
