@@ -148,6 +148,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 completionHandler(.NoData)
                 return
             }
+            
+            let notification = UILocalNotification()
+            notification.alertTitle = "[debug] Library was refreshed"
+            notification.alertBody = NSDate().description
+            notification.soundName = UILocalNotificationDefaultSoundName
+            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+            
             completionHandler(operation.hasUpdate ? .NewData : .NoData)
         })
         GlobalOperationQueue.sharedInstance.addOperation(operation)
