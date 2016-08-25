@@ -11,9 +11,9 @@ import Operations
 
 // MARK: - Alerts
 
-class SpaceCautionAlert: AlertOperation<LibraryOnlineTBVC> {
+class SpaceCautionAlert: AlertOperation<CloudBooksController> {
     let comment = "Library: Download Space Caution Alert"
-    init(book: Book, presentationContext: LibraryOnlineTBVC) {
+    init(book: Book, presentationContext: CloudBooksController) {
         super.init(presentAlertFrom: presentationContext)
         
         title = NSLocalizedString("Space Caution", comment: comment)
@@ -25,9 +25,9 @@ class SpaceCautionAlert: AlertOperation<LibraryOnlineTBVC> {
     }
 }
 
-class SpaceNotEnoughAlert: AlertOperation<LibraryOnlineTBVC> {
+class SpaceNotEnoughAlert: AlertOperation<CloudBooksController> {
     let comment = "Library: Download Space Not Enough Alert"
-    init(book: Book, presentationContext: LibraryOnlineTBVC) {
+    init(book: Book, presentationContext: CloudBooksController) {
         super.init(presentAlertFrom: presentationContext)
         
         title = NSLocalizedString("Space Not Enough", comment: comment)
@@ -36,11 +36,11 @@ class SpaceNotEnoughAlert: AlertOperation<LibraryOnlineTBVC> {
     }
 }
 
-class RefreshLibraryLanguageFilterAlert: AlertOperation<LibraryOnlineTBVC> {
+class RefreshLibraryLanguageFilterAlert: AlertOperation<CloudBooksController> {
     let comment = "Library: Language Filter Alert"
     let context = UIApplication.appDelegate.managedObjectContext
-    init(presentationContext libraryOnlineTBVC: LibraryOnlineTBVC) {
-        super.init(presentAlertFrom: libraryOnlineTBVC)
+    init(presentationContext controller: CloudBooksController) {
+        super.init(presentAlertFrom: controller)
         
         var preferredLanguageCodes = [String]()
         var preferredLanguageNames = [String]()
@@ -77,7 +77,7 @@ class RefreshLibraryLanguageFilterAlert: AlertOperation<LibraryOnlineTBVC> {
                     guard let code = language.code else {continue}
                     language.isDisplayed = preferredLanguageCodes.contains(code)
                 }
-                libraryOnlineTBVC.refreshFetchedResultController()
+                controller.refreshFetchedResultController()
             })
         }
         addActionWithTitle(LocalizedStrings.cancel)
@@ -92,9 +92,9 @@ class RefreshLibraryLanguageFilterAlert: AlertOperation<LibraryOnlineTBVC> {
     }
 }
 
-class RefreshLibraryInternetRequiredAlert: AlertOperation<LibraryOnlineTBVC> {
+class RefreshLibraryInternetRequiredAlert: AlertOperation<CloudBooksController> {
     let comment = "Library: Internet Required Alert"
-    init(presentationContext: LibraryOnlineTBVC) {
+    init(presentationContext: CloudBooksController) {
         super.init(presentAlertFrom: presentationContext)
         
         title = NSLocalizedString("Internet Connection Required", comment: comment)

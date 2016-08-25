@@ -79,11 +79,6 @@
 		971A104A1D022CBE007FC62C /* SearchResultTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10471D022CBE007FC62C /* SearchResultTBVC.swift */; };
 		971A104B1D022CBE007FC62C /* SearchBooksVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10481D022CBE007FC62C /* SearchBooksVC.swift */; };
 		971A10521D022D9D007FC62C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10511D022D9D007FC62C /* AppDelegate.swift */; };
-		971A10581D022DAD007FC62C /* LibraryDownloadTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10531D022DAD007FC62C /* LibraryDownloadTBVC.swift */; };
-		971A10591D022DAD007FC62C /* LibraryLocalBookDetailTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10541D022DAD007FC62C /* LibraryLocalBookDetailTBVC.swift */; };
-		971A105A1D022DAD007FC62C /* LibraryLocalTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10551D022DAD007FC62C /* LibraryLocalTBVC.swift */; };
-		971A105B1D022DAD007FC62C /* LibraryOnlineTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10561D022DAD007FC62C /* LibraryOnlineTBVC.swift */; };
-		971A105C1D022DAD007FC62C /* LibraryTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10571D022DAD007FC62C /* LibraryTabBarController.swift */; };
 		971A106C1D022E50007FC62C /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A106B1D022E50007FC62C /* Utilities.swift */; };
 		971A106F1D022E62007FC62C /* DownloadProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A106D1D022E62007FC62C /* DownloadProgress.swift */; };
 		971A10701D022E62007FC62C /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A106E1D022E62007FC62C /* Network.swift */; };
@@ -134,7 +129,6 @@
 		975227AC1D020D83001D1DDE /* ZimIndexer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 975227AB1D020D83001D1DDE /* ZimIndexer.mm */; };
 		975227AE1D0213D3001D1DDE /* xapianIndexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 975227AD1D0213D3001D1DDE /* xapianIndexer.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
 		975227B01D021539001D1DDE /* IndexerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975227AF1D021539001D1DDE /* IndexerController.swift */; };
-		975227CC1D0227E8001D1DDE /* Library.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227C91D0227E8001D1DDE /* Library.storyboard */; };
 		975227CD1D0227E8001D1DDE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227CA1D0227E8001D1DDE /* Main.storyboard */; };
 		975227CE1D0227E8001D1DDE /* Setting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227CB1D0227E8001D1DDE /* Setting.storyboard */; };
 		975227D01D022814001D1DDE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227CF1D022814001D1DDE /* LaunchScreen.storyboard */; };
@@ -179,7 +173,7 @@
 		97BA32A51CEBC36300339A47 /* RootWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BA32A31CEBC29500339A47 /* RootWindowController.swift */; };
 		97BAA8EC1D3D2D7B0038F57F /* PacketAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BAA8EB1D3D2D7B0038F57F /* PacketAnalyzer.swift */; };
 		97BAA8EE1D3D2D9B0038F57F /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BAA8ED1D3D2D9B0038F57F /* KiwixURLProtocol.swift */; };
-		97C005D61D64B3B0004352E8 /* LibraryNew.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C005D51D64B3B0004352E8 /* LibraryNew.storyboard */; };
+		97C005D61D64B3B0004352E8 /* Library.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C005D51D64B3B0004352E8 /* Library.storyboard */; };
 		97C005D81D64B99E004352E8 /* LibrarySplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C005D71D64B99E004352E8 /* LibrarySplitViewController.swift */; };
 		97C005DC1D64BEFE004352E8 /* CloudBooksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C005DB1D64BEFE004352E8 /* CloudBooksController.swift */; };
 		97D452BC1D16FF010033666F /* RecentSearchCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D452BB1D16FF010033666F /* RecentSearchCVC.swift */; };
@@ -324,11 +318,6 @@
 		971A10471D022CBE007FC62C /* SearchResultTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchResultTBVC.swift; path = "Kiwix-iOS/Controller/SearchResultTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10481D022CBE007FC62C /* SearchBooksVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchBooksVC.swift; path = "Kiwix-iOS/Controller/SearchBooksVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10511D022D9D007FC62C /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		971A10531D022DAD007FC62C /* LibraryDownloadTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryDownloadTBVC.swift; path = "Kiwix-iOS/Controller/LibraryDownloadTBVC.swift"; sourceTree = SOURCE_ROOT; };
-		971A10541D022DAD007FC62C /* LibraryLocalBookDetailTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryLocalBookDetailTBVC.swift; path = "Kiwix-iOS/Controller/LibraryLocalBookDetailTBVC.swift"; sourceTree = SOURCE_ROOT; };
-		971A10551D022DAD007FC62C /* LibraryLocalTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryLocalTBVC.swift; path = "Kiwix-iOS/Controller/LibraryLocalTBVC.swift"; sourceTree = SOURCE_ROOT; };
-		971A10561D022DAD007FC62C /* LibraryOnlineTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryOnlineTBVC.swift; path = "Kiwix-iOS/Controller/LibraryOnlineTBVC.swift"; sourceTree = SOURCE_ROOT; };
-		971A10571D022DAD007FC62C /* LibraryTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryTabBarController.swift; path = "Kiwix-iOS/Controller/LibraryTabBarController.swift"; sourceTree = SOURCE_ROOT; };
 		971A106B1D022E50007FC62C /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utilities.swift; path = "Kiwix-iOS/Model/Utilities.swift"; sourceTree = SOURCE_ROOT; };
 		971A106D1D022E62007FC62C /* DownloadProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DownloadProgress.swift; path = "Kiwix-iOS/Model/DownloadProgress.swift"; sourceTree = SOURCE_ROOT; };
 		971A106E1D022E62007FC62C /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Network.swift; path = "Kiwix-iOS/Model/Network.swift"; sourceTree = SOURCE_ROOT; };
@@ -388,7 +377,6 @@
 		975227AB1D020D83001D1DDE /* ZimIndexer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ZimIndexer.mm; path = Kiwix/libkiwix/ZimIndexer.mm; sourceTree = "<group>"; };
 		975227AD1D0213D3001D1DDE /* xapianIndexer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; name = xapianIndexer.cpp; path = "Kiwix/libkiwix/C&C++/xapianIndexer.cpp"; sourceTree = "<group>"; tabWidth = 2; };
 		975227AF1D021539001D1DDE /* IndexerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IndexerController.swift; path = "Kiwix-OSX/Controllers/IndexerController.swift"; sourceTree = SOURCE_ROOT; };
-		975227C91D0227E8001D1DDE /* Library.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Library.storyboard; path = "Kiwix-iOS/Storyboard/Library.storyboard"; sourceTree = SOURCE_ROOT; };
 		975227CA1D0227E8001D1DDE /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "Kiwix-iOS/Storyboard/Main.storyboard"; sourceTree = SOURCE_ROOT; };
 		975227CB1D0227E8001D1DDE /* Setting.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Setting.storyboard; path = "Kiwix-iOS/Storyboard/Setting.storyboard"; sourceTree = SOURCE_ROOT; };
 		975227CF1D022814001D1DDE /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "Kiwix-iOS/Storyboard/LaunchScreen.storyboard"; sourceTree = SOURCE_ROOT; };
@@ -434,7 +422,7 @@
 		97BAA8EB1D3D2D7B0038F57F /* PacketAnalyzer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PacketAnalyzer.swift; path = Kiwix/URLProtocol/PacketAnalyzer.swift; sourceTree = "<group>"; };
 		97BAA8ED1D3D2D9B0038F57F /* KiwixURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KiwixURLProtocol.swift; path = Kiwix/URLProtocol/KiwixURLProtocol.swift; sourceTree = "<group>"; };
 		97BAA8EF1D3D32770038F57F /* 1.7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.7.xcdatamodel; sourceTree = "<group>"; };
-		97C005D51D64B3B0004352E8 /* LibraryNew.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LibraryNew.storyboard; path = "Kiwix-iOS/Storyboard/LibraryNew.storyboard"; sourceTree = SOURCE_ROOT; };
+		97C005D51D64B3B0004352E8 /* Library.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Library.storyboard; path = "Kiwix-iOS/Storyboard/Library.storyboard"; sourceTree = SOURCE_ROOT; };
 		97C005D71D64B99E004352E8 /* LibrarySplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibrarySplitViewController.swift; path = "Kiwix-iOS/Controller/Library/LibrarySplitViewController.swift"; sourceTree = SOURCE_ROOT; };
 		97C005DB1D64BEFE004352E8 /* CloudBooksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudBooksController.swift; sourceTree = "<group>"; };
 		97D452BB1D16FF010033666F /* RecentSearchCVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecentSearchCVC.swift; path = "Kiwix-iOS/Controller/Search/RecentSearchCVC.swift"; sourceTree = SOURCE_ROOT; };
@@ -929,8 +917,7 @@
 			isa = PBXGroup;
 			children = (
 				975227CA1D0227E8001D1DDE /* Main.storyboard */,
-				975227C91D0227E8001D1DDE /* Library.storyboard */,
-				97C005D51D64B3B0004352E8 /* LibraryNew.storyboard */,
+				97C005D51D64B3B0004352E8 /* Library.storyboard */,
 				97F03CE11D2440470040D26E /* Search.storyboard */,
 				975227CB1D0227E8001D1DDE /* Setting.storyboard */,
 				9734E54D1D289D060061C39B /* Welcome.storyboard */,
@@ -944,7 +931,6 @@
 			children = (
 				9749A1B21C430653000F2D1E /* Bookmark */,
 				97C005D41D64B369004352E8 /* Library */,
-				978C588C1C1CD5080077AE47 /* LibraryTBVC */,
 				972B007D1C35DBAB00B5FDC5 /* Main */,
 				97E108221C5D5A0D00E27FD3 /* Search */,
 				9771DC4B1C37278E009ECFF0 /* Setting */,
@@ -963,18 +949,6 @@
 			);
 			name = Model;
 			path = Kiwix;
-			sourceTree = "<group>";
-		};
-		978C588C1C1CD5080077AE47 /* LibraryTBVC */ = {
-			isa = PBXGroup;
-			children = (
-				971A10571D022DAD007FC62C /* LibraryTabBarController.swift */,
-				971A10561D022DAD007FC62C /* LibraryOnlineTBVC.swift */,
-				971A10531D022DAD007FC62C /* LibraryDownloadTBVC.swift */,
-				971A10551D022DAD007FC62C /* LibraryLocalTBVC.swift */,
-				971A10541D022DAD007FC62C /* LibraryLocalBookDetailTBVC.swift */,
-			);
-			name = LibraryTBVC;
 			sourceTree = "<group>";
 		};
 		978C589D1C1CD8750077AE47 /* Properties */ = {
@@ -1419,8 +1393,7 @@
 				975227CE1D0227E8001D1DDE /* Setting.storyboard in Resources */,
 				971A10801D022F74007FC62C /* Pic_I.png in Resources */,
 				971A101E1D0228E8007FC62C /* adjustlayoutiPhone.js in Resources */,
-				975227CC1D0227E8001D1DDE /* Library.storyboard in Resources */,
-				97C005D61D64B3B0004352E8 /* LibraryNew.storyboard in Resources */,
+				97C005D61D64B3B0004352E8 /* Library.storyboard in Resources */,
 				971A107F1D022F74007FC62C /* ImportBookLearnMore.html in Resources */,
 				971A107E1D022F74007FC62C /* DownloaderLearnMore.html in Resources */,
 			);
@@ -1655,7 +1628,6 @@
 				971A103F1D022C42007FC62C /* LibraryAutoRefreshTBVC.swift in Sources */,
 				97A8AD851D6CA39F00584ED1 /* RefreshLibraryOperation.swift in Sources */,
 				970E68B61D37E224001E8514 /* SettingSearchHistoryTBVC.swift in Sources */,
-				971A10581D022DAD007FC62C /* LibraryDownloadTBVC.swift in Sources */,
 				97C005D81D64B99E004352E8 /* LibrarySplitViewController.swift in Sources */,
 				973DD4231D3443A3009D45DB /* ExtensionAndTypealias.swift in Sources */,
 				97A7017F1D2C59CA00AAE2D8 /* GetStartedController.swift in Sources */,
@@ -1667,7 +1639,6 @@
 				97D452BC1D16FF010033666F /* RecentSearchCVC.swift in Sources */,
 				971A106F1D022E62007FC62C /* DownloadProgress.swift in Sources */,
 				971A102E1D022AD5007FC62C /* TableViewCells.swift in Sources */,
-				971A105A1D022DAD007FC62C /* LibraryLocalTBVC.swift in Sources */,
 				97E60A021D10423A00EBCB9D /* ShadowViews.swift in Sources */,
 				9779A1CC1D34225E0071EFAB /* SearchOperation.swift in Sources */,
 				97BAA8EC1D3D2D7B0038F57F /* PacketAnalyzer.swift in Sources */,
@@ -1680,14 +1651,12 @@
 				970E68B21D37E1DD001E8514 /* SettingSearchTuneController.swift in Sources */,
 				97C005DC1D64BEFE004352E8 /* CloudBooksController.swift in Sources */,
 				971A104A1D022CBE007FC62C /* SearchResultTBVC.swift in Sources */,
-				971A105B1D022DAD007FC62C /* LibraryOnlineTBVC.swift in Sources */,
 				971A10321D022AD5007FC62C /* SearchBar.swift in Sources */,
 				977998741C1E0B7900B1DD5E /* Book+CoreDataProperties.swift in Sources */,
 				977998751C1E0B7900B1DD5E /* DownloadTask+CoreDataProperties.swift in Sources */,
 				970C3DCA1CBD79450026A240 /* MigrationPolicy.swift in Sources */,
 				97E891691CA976E90001CA32 /* FileManager.swift in Sources */,
 				97E60A061D10504000EBCB9D /* LibraryBackupTBVC.swift in Sources */,
-				971A105C1D022DAD007FC62C /* LibraryTabBarController.swift in Sources */,
 				971A10461D022CB2007FC62C /* SearchController.swift in Sources */,
 				9779987B1C1E1C9600B1DD5E /* Extensions.swift in Sources */,
 				971A10401D022C42007FC62C /* LibraryUseCellularDataTBVC.swift in Sources */,
@@ -1723,7 +1692,6 @@
 				971A106C1D022E50007FC62C /* Utilities.swift in Sources */,
 				9763275E1D64FE0F0034F120 /* BookDetailController.swift in Sources */,
 				973DD4281D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift in Sources */,
-				971A10591D022DAD007FC62C /* LibraryLocalBookDetailTBVC.swift in Sources */,
 				971A10431D022C54007FC62C /* SettingTBVC.swift in Sources */,
 				970E68BB1D3809A3001E8514 /* MainControllerDelegates.swift in Sources */,
 				973DD4211D34434C009D45DB /* SearchResult.swift in Sources */,

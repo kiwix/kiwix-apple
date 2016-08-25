@@ -73,77 +73,16 @@ class CheckMarkBookCell: BasicBookCell {
     }
 }
 
-class LocalBookCell: UITableViewCell {
+/* Book Cell With progress bar and 2 line detail label */
+class DownloadBookCell: UITableViewCell {
     @IBOutlet weak var favIcon: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subtitleLabel: UILabel!
-    @IBOutlet weak var hasPicIndicator: UIView!
-}
-
-// MARK:- Book Table Cells
-
-class CloudBookCell: BookTableCell {
     
-}
-
-class DownloadBookCell: BookTableCell {
-    @IBOutlet weak var articleCountLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
+    
     @IBOutlet weak var progressView: UIProgressView!
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        articleCountLabel.text = nil
-        dateLabel.text = nil
-        progressView.progress = 0.0
-    }
-}
-
-class BookTableCell: UITableViewCell {
-    @IBOutlet weak var favIcon: UIImageView!
-    @IBOutlet weak var hasPicIndicator: UIView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subtitleLabel: UILabel!
-    @IBOutlet weak var accessoryImageView: LargeHitZoneImageView!
-    weak var delegate: TableCellDelegate?
+    @IBOutlet weak var detailLabel: UILabel!
     
-    var accessoryImageTintColor: UIColor? {
-        didSet {
-            guard let imageRenderingMode = accessoryImageView.image?.renderingMode else {return}
-            if imageRenderingMode != .AlwaysTemplate {
-                accessoryImageView.image = accessoryImageView.image?.imageWithRenderingMode(.AlwaysTemplate)
-            }
-            accessoryImageView.tintColor = accessoryImageTintColor
-        }
-    }
-    
-    var accessoryHighlightedImageTintColor: UIColor? {
-        didSet {
-            guard let imageRenderingMode = accessoryImageView.highlightedImage?.renderingMode else {return}
-            if imageRenderingMode != .AlwaysTemplate {
-                accessoryImageView.highlightedImage = accessoryImageView.highlightedImage?.imageWithRenderingMode(.AlwaysTemplate)
-            }
-            accessoryImageView.tintColor = accessoryHighlightedImageTintColor
-        }
-    }
-    
-    override func awakeFromNib() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(BookTableCell.handleTap))
-        accessoryImageView.addGestureRecognizer(tapGestureRecognizer)
-    }
-    
-    func handleTap() {
-        self.delegate?.didTapOnAccessoryViewForCell(self)
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        favIcon.image = nil
-        hasPicIndicator.backgroundColor = UIColor.lightGrayColor()
-        titleLabel.text = nil
-        subtitleLabel.text = nil
-        accessoryImageView.highlighted = false
-    }
 }
 
 // MARK: - Article Cell

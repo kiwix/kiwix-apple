@@ -49,7 +49,6 @@ extension UIApplication {
 
 extension UIStoryboard {
     class var library: UIStoryboard {get {return UIStoryboard(name: "Library", bundle: nil)}}
-    class var libraryNew: UIStoryboard {get {return UIStoryboard(name: "LibraryNew", bundle: nil)}}
     class var main: UIStoryboard {get {return UIStoryboard(name: "Main", bundle: nil)}}
     class var search: UIStoryboard {get {return UIStoryboard(name: "Search", bundle: nil)}}
     class var setting: UIStoryboard {get {return UIStoryboard(name: "Setting", bundle: nil)}}
