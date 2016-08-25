@@ -10,7 +10,7 @@ import CoreData
 import Operations
 
 class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSURLSessionTaskDelegate, OperationQueueDelegate {
-    static let sharedInstance = Network()
+    static let shared = Network()
     weak var delegate: DownloadProgressReporting?
     
     private let context = NSManagedObjectContext.mainQueueContext

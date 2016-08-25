@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         NSURLProtocol.registerClass(KiwixURLProtocol)
-        Network.sharedInstance.restoreProgresses()
+        Network.shared.restoreProgresses()
         
         // Register notification
         let settings = UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: nil) // Here are the notification permission the app wants
@@ -132,7 +132,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: () -> Void) {
-        Network.sharedInstance.rejoinSessionWithIdentifier(identifier, completionHandler: completionHandler)
+        Network.shared.rejoinSessionWithIdentifier(identifier, completionHandler: completionHandler)
     }
     
     // MARK: Background Refresh

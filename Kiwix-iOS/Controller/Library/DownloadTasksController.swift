@@ -61,7 +61,7 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
         cell.titleLabel.text = book.title
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
         
-        guard let progress = Network.sharedInstance.progresses[id] else {return}
+        guard let progress = Network.shared.progresses[id] else {return}
         cell.progressView.progress = Float(progress.fractionCompleted)
         
 //        switch downloadTask.state {
