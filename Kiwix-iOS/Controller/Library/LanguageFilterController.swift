@@ -8,8 +8,9 @@
 
 import UIKit
 import CoreData
+import DZNEmptyDataSet
 
-class LanguageFilterController: UITableViewController, NSFetchedResultsControllerDelegate {
+class LanguageFilterController: UITableViewController, NSFetchedResultsControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     @IBOutlet weak var sortSegmentedControl: UISegmentedControl!
     @IBOutlet weak var langNameSegmentedControl: UISegmentedControl!
@@ -25,6 +26,10 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
     override func viewDidLoad() {
         super.viewDidLoad()
         title = LocalizedStrings.LangFilter.languages
+        
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
+        tableView.tableFooterView = UIView()
         
         showLanguages = Language.fetch(displayed: true, context: managedObjectContext)
         hideLanguages = Language.fetch(displayed: false, context: managedObjectContext)

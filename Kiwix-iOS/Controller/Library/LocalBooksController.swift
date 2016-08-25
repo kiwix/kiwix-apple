@@ -9,8 +9,9 @@
 import UIKit
 import CoreData
 import Operations
+import DZNEmptyDataSet
 
-class LocalBooksController: UITableViewController, NSFetchedResultsControllerDelegate {
+class LocalBooksController: UITableViewController, NSFetchedResultsControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // MARK: - Override
     
@@ -24,6 +25,10 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
+        tableView.tableFooterView = UIView()
     }
 
     override func viewWillAppear(animated: Bool) {

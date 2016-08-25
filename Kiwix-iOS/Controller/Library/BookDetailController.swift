@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import DZNEmptyDataSet
 
-class BookDetailController: UITableViewController, CenterButtonCellDelegate {
+class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     @IBOutlet weak var favIconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -25,6 +26,10 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
+        tableView.tableFooterView = UIView()
         
         hasPicIndicator.layer.cornerRadius = 2.0
         hasIndexIndicator.layer.cornerRadius = 2.0

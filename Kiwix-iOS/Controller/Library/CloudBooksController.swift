@@ -9,8 +9,9 @@
 import UIKit
 import CoreData
 import Operations
+import DZNEmptyDataSet
 
-class CloudBooksController: UITableViewController, NSFetchedResultsControllerDelegate, LanguageFilterUpdating {
+class CloudBooksController: UITableViewController, NSFetchedResultsControllerDelegate, LanguageFilterUpdating, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // MARK: - Override
     
@@ -24,6 +25,10 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
+        tableView.tableFooterView = UIView()
         
         refreshControl = RefreshLibControl()
         refreshControl?.addTarget(self, action: #selector(CloudBooksController.refresh), forControlEvents: .ValueChanged)

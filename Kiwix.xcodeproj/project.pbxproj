@@ -185,7 +185,7 @@
 		97D452BC1D16FF010033666F /* RecentSearchCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D452BB1D16FF010033666F /* RecentSearchCVC.swift */; };
 		97D452BE1D1723FF0033666F /* CollectionViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D452BD1D1723FF0033666F /* CollectionViewCells.swift */; };
 		97D55EF61D2075180081B523 /* TableOfContentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D55EF51D2075180081B523 /* TableOfContentsController.swift */; };
-		97D6811B1D6E2A7100E5FA99 /* DownloadController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6811A1D6E2A7100E5FA99 /* DownloadController.swift */; };
+		97D6811B1D6E2A7100E5FA99 /* DownloadTasksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6811A1D6E2A7100E5FA99 /* DownloadTasksController.swift */; };
 		97DB65DA1D4576B600A2CC42 /* BookmarkWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */; };
 		97E60A021D10423A00EBCB9D /* ShadowViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E60A011D10423A00EBCB9D /* ShadowViews.swift */; };
 		97E60A061D10504000EBCB9D /* LibraryBackupTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E60A051D10504000EBCB9D /* LibraryBackupTBVC.swift */; };
@@ -442,7 +442,7 @@
 		97D452C01D1871E70033666F /* SearchLocalBooksCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchLocalBooksCVC.swift; path = "Kiwix-iOS/Controller/Search/SearchLocalBooksCVC.swift"; sourceTree = SOURCE_ROOT; };
 		97D452C11D1871E70033666F /* SearchTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchTabController.swift; path = "Kiwix-iOS/Controller/Search/SearchTabController.swift"; sourceTree = SOURCE_ROOT; };
 		97D55EF51D2075180081B523 /* TableOfContentsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableOfContentsController.swift; path = "Kiwix-iOS/Controller/TableOfContentsController.swift"; sourceTree = SOURCE_ROOT; };
-		97D6811A1D6E2A7100E5FA99 /* DownloadController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadController.swift; sourceTree = "<group>"; };
+		97D6811A1D6E2A7100E5FA99 /* DownloadTasksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadTasksController.swift; sourceTree = "<group>"; };
 		97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkWidgetCell.swift; sourceTree = "<group>"; };
 		97E609F01D103DED00EBCB9D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		97E60A011D10423A00EBCB9D /* ShadowViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowViews.swift; sourceTree = "<group>"; };
@@ -1061,8 +1061,8 @@
 			children = (
 				97C005D71D64B99E004352E8 /* LibrarySplitViewController.swift */,
 				97C005DB1D64BEFE004352E8 /* CloudBooksController.swift */,
+				97D6811A1D6E2A7100E5FA99 /* DownloadTasksController.swift */,
 				97A8AD831D6C951A00584ED1 /* LocalBooksController.swift */,
-				97D6811A1D6E2A7100E5FA99 /* DownloadController.swift */,
 				9763275D1D64FE0F0034F120 /* BookDetailController.swift */,
 				970722A91D6B4D1700A45620 /* LanguageFilterController.swift */,
 				97A8AD861D6CF38000584ED1 /* EmptyTableConfigExtension.swift */,
@@ -1693,7 +1693,7 @@
 				971A10401D022C42007FC62C /* LibraryUseCellularDataTBVC.swift in Sources */,
 				977998761C1E0B7900B1DD5E /* DownloadTask.swift in Sources */,
 				9752279C1D020C00001D1DDE /* pathTools.cpp in Sources */,
-				97D6811B1D6E2A7100E5FA99 /* DownloadController.swift in Sources */,
+				97D6811B1D6E2A7100E5FA99 /* DownloadTasksController.swift in Sources */,
 				971A10381D022C15007FC62C /* WebViewController.swift in Sources */,
 				971046321D19B96E002141C0 /* XapianSearcher.mm in Sources */,
 				973C8D5C1C25F945007272F9 /* Preference.swift in Sources */,

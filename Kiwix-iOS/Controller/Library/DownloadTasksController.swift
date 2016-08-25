@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import DZNEmptyDataSet
 
-class DownloadController: UITableViewController {
+class DownloadTasksController: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
     // MARK: - Override
     
@@ -18,6 +19,14 @@ class DownloadController: UITableViewController {
         tabBarItem.title = LocalizedStrings.LibraryTabTitle.download
         tabBarItem.image = UIImage(named: "Download")
         tabBarItem.selectedImage = UIImage(named: "DownloadFilled")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
+        tableView.tableFooterView = UIView()
     }
     
 }

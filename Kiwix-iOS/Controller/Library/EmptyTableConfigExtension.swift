@@ -7,3 +7,62 @@
 //
 
 import UIKit
+import DZNEmptyDataSet
+
+extension CloudBooksController {
+    
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = NSLocalizedString("", comment: "")
+        let attributes = [NSFontAttributeName: UIFont.systemFontOfSize(18), NSForegroundColorAttributeName: UIColor.darkGrayColor()]
+        return NSAttributedString(string: string, attributes: attributes)
+    }
+    
+}
+
+extension DownloadTasksController {
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = NSLocalizedString("No task", comment: "")
+        let attributes = [NSFontAttributeName: UIFont.systemFontOfSize(18), NSForegroundColorAttributeName: UIColor.darkGrayColor()]
+        return NSAttributedString(string: string, attributes: attributes)
+    }
+    
+    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+        return scrollView.contentInset.top - 64
+    }
+}
+
+extension LocalBooksController {
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = NSLocalizedString("No Local Books", comment: "")
+        let attributes = [NSFontAttributeName: UIFont.systemFontOfSize(18), NSForegroundColorAttributeName: UIColor.darkGrayColor()]
+        return NSAttributedString(string: string, attributes: attributes)
+    }
+    
+    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+        return scrollView.contentInset.top - 64
+    }
+}
+
+extension BookDetailController {
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = NSLocalizedString("Choose A Book", comment: "")
+        let attributes = [NSFontAttributeName: UIFont.systemFontOfSize(18), NSForegroundColorAttributeName: UIColor.darkGrayColor()]
+        return NSAttributedString(string: string, attributes: attributes)
+    }
+    
+    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+        return scrollView.contentInset.top - 64
+    }
+}
+
+extension LanguageFilterController {
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = NSLocalizedString("No Lang Available", comment: "")
+        let attributes = [NSFontAttributeName: UIFont.systemFontOfSize(18), NSForegroundColorAttributeName: UIColor.darkGrayColor()]
+        return NSAttributedString(string: string, attributes: attributes)
+    }
+    
+    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+        return scrollView.contentInset.top - 64
+    }
+}
