@@ -51,6 +51,12 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
         hasIndexIndicator.backgroundColor = book.hasIndex ? AppColors.hasIndexTintColor : UIColor.lightGrayColor()
         hasIndexLabel.text = book.hasIndex ? LocalizedStrings.BookDetail.hasIndex : LocalizedStrings.BookDetail.noIndex
         
+        titleLabel.hidden = false
+        hasPicIndicator.hidden = false
+        hasPicLabel.hidden = false
+        hasIndexIndicator.hidden = false
+        hasIndexLabel.hidden = false
+        
         cellTitles.append([String]())
         if book.isLocal?.boolValue == false {
             cellTitles.append([Strings.downloadNow, Strings.downloadSchedule])
@@ -63,7 +69,11 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
     // MARK: - Delegates
     
     func buttonTapped(cell: CenterButtonCell) {
-        switch cell.button.titleLabel?.text {
+        guard let title = cell.button.titleLabel?.text else {return}
+        switch title {
+        case Strings.downloadNow:
+            print("download now tapped")
+            
         default:
             return
         }

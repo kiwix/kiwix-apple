@@ -185,8 +185,25 @@ class MainController: UIViewController {
     }
     
     func configureSearchBarPlaceHolder() {
+        func truncatedPlaceHolderString(string: String?, searchBar: UISearchBar) -> String? {
+            guard let string = string else {return nil}
+            guard let label = searchBar.valueForKey("_searchField") as? UITextField else {return nil}
+            guard let labelFont = label.font else {return nil}
+            let preferredSize = CGSizeMake(searchBar.frame.width - 45.0, 1000)
+            var rect = (string as NSString).boundingRectWithSize(preferredSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName: labelFont], context: nil)
+            
+            var truncatedString = string as NSString
+            var istruncated = false
+            while rect.height > label.frame.height {
+                istruncated = true
+                truncatedString = truncatedString.substringToIndex(truncatedString.length - 2)
+                rect = truncatedString.boundingRectWithSize(preferredSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName: labelFont], context: nil)
+            }
+            return truncatedString as String + (istruncated ? "..." : "")
+        }
+        
         if let title = article?.title {
-            let placeHolder =  Utilities.truncatedPlaceHolderString(title, searchBar: searchBar)
+            let placeHolder =  truncatedPlaceHolderString(title, searchBar: searchBar)
             searchBar.placeholder = placeHolder
         } else {
             searchBar.placeholder = LocalizedStrings.search

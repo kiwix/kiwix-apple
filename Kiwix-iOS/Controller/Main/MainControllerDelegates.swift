@@ -144,11 +144,11 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
         if Preference.webViewInjectJavascriptToAdjustPageLayout {
             if traitCollection.horizontalSizeClass == .Compact {
                 guard let path = NSBundle.mainBundle().pathForResource("adjustlayoutiPhone", ofType: "js") else {return}
-                guard let jString = Utilities.contentOfFileAtPath(path) else {return}
+                guard let jString = try? String(contentsOfFile: path) else {return}
                 webView.stringByEvaluatingJavaScriptFromString(jString)
             } else {
                 guard let path = NSBundle.mainBundle().pathForResource("adjustlayoutiPad", ofType: "js") else {return}
-                guard let jString = Utilities.contentOfFileAtPath(path) else {return}
+                guard let jString = try? String(contentsOfFile: path) else {return}
                 webView.stringByEvaluatingJavaScriptFromString(jString)
             }
         }
@@ -164,7 +164,7 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
     func getTableOfContents(webView: UIWebView) -> [HTMLHeading] {
         guard let context = webView.valueForKeyPath("documentView.webView.mainFrame.javaScriptContext") as? JSContext,
             let path = NSBundle.mainBundle().pathForResource("getTableOfContents", ofType: "js"),
-            let jString = Utilities.contentOfFileAtPath(path),
+            let jString = try? String(contentsOfFile: path),
             let elements = context.evaluateScript(jString).toArray() as? [[String: String]] else {return [HTMLHeading]()}
         var headings = [HTMLHeading]()
         for element in elements {
@@ -177,7 +177,7 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
     func getSnippet(webView: UIWebView) -> String? {
         guard let context = webView.valueForKeyPath("documentView.webView.mainFrame.javaScriptContext") as? JSContext,
             let path = NSBundle.mainBundle().pathForResource("getSnippet", ofType: "js"),
-            let jString = Utilities.contentOfFileAtPath(path),
+            let jString = try? String(contentsOfFile: path),
             let snippet = context.evaluateScript(jString).toString() else {return nil}
         return snippet
     }
