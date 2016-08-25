@@ -140,6 +140,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         let operation = RefreshLibraryOperation()
         operation.addObserver(DidFinishObserver { (operation, errors) in
+            guard errors.count == 0 else {
+                completionHandler(.Failed)
+                return
+            }
             guard let operation = operation as? RefreshLibraryOperation else {
                 completionHandler(.NoData)
                 return

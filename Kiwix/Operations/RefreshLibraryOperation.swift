@@ -33,7 +33,9 @@ private class Retrive: Operation, ResultOperationType {
     override init() {
         super.init()
         addObserver(NetworkObserver())
-        addCondition(ReachabilityCondition(url: Retrive.url, connectivity: .AnyConnectionKind))
+        if UIApplication.sharedApplication().applicationState == .Active {
+            addCondition(ReachabilityCondition(url: Retrive.url))
+        }
     }
     
     private override func execute() {
