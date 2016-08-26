@@ -83,7 +83,7 @@ class SearchLocalBooksCVC: UIViewController, UICollectionViewDataSource, UIColle
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
         cell.titleLabel.text = book.title
         cell.languageLabel.text = book.language?.name
-        cell.dateLabel.text = book.dateFormatted
+        cell.dateLabel.text = book.dateDescription
     }
     
     // MARK: - CollectionView Delegate

@@ -103,7 +103,7 @@ class Book: NSManagedObject {
     
     // MARK: - Properties Description
     
-    var dateFormatted: String? {
+    var dateDescription: String? {
         guard let date = date else {return nil}
         
         let formatter = NSDateFormatter()
@@ -112,11 +112,11 @@ class Book: NSManagedObject {
         return formatter.stringFromDate(date)
     }
     
-    var fileSizeFormatted: String? {
+    var fileSizeDescription: String? {
         return NSByteCountFormatter.stringFromByteCount(fileSize, countStyle: .File)
     }
     
-    var articleCountFormatted: String? {
+    var articleCountDescription: String? {
         return articleCountString + (articleCount > 1 ? " articles" : " article")
     }
     
@@ -143,9 +143,9 @@ class Book: NSManagedObject {
     
     var detailedDescription: String? {
         var descriptions = [String]()
-        if let dateFormatted = dateFormatted {descriptions.append(dateFormatted)}
-        if let fileSizeFormatted = fileSizeFormatted {descriptions.append(fileSizeFormatted)}
-        if let articleCountFormatted = articleCountFormatted {descriptions.append(articleCountFormatted)}
+        if let dateDescription = dateDescription {descriptions.append(dateDescription)}
+        if let fileSizeDescription = fileSizeDescription {descriptions.append(fileSizeDescription)}
+        if let articleCountDescription = articleCountDescription {descriptions.append(articleCountDescription)}
         
         guard descriptions.count != 0 else {return nil}
         return descriptions.joinWithSeparator(", ")

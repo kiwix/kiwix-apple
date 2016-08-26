@@ -133,9 +133,9 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
             cell.textLabel?.text = title
             switch title {
             case Strings.size:
-                cell.detailTextLabel?.text = book?.fileSizeFormatted
+                cell.detailTextLabel?.text = book?.fileSizeDescription
             case Strings.createDate:
-                cell.detailTextLabel?.text = book?.dateFormatted
+                cell.detailTextLabel?.text = book?.dateDescription
             case Strings.arcitleCount:
                 cell.detailTextLabel?.text = book?.articleCountString
             case Strings.language:
