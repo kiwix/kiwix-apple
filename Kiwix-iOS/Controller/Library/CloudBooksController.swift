@@ -117,11 +117,28 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         guard let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
         guard let cell = cell as? BasicBookCell else {return}
         
-        cell.titleLabel.text = book.title
+        let textColor: UIColor = {
+            switch book.spaceState {
+            case .Enough:
+                return UIColor.blackColor()
+            case .Caution:
+                return UIColor.orangeColor()
+            case .NotEnough:
+                return UIColor.grayColor()
+            }
+        }()
+        
         cell.hasPic = book.hasPic
         cell.hasIndex = book.hasIndex
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
-        cell.subtitleLabel.text = book.detailedDescription
+        cell.titleLabel.text = book.title
+        cell.subtitleLabel.text = [
+            book.dateDescription,
+            book.fileSizeDescription,
+            book.articleCountDescription
+        ].flatMap({$0}).joinWithSeparator("  ")
+        cell.titleLabel.textColor = textColor
+        cell.subtitleLabel.textColor = textColor
     }
     
     // MARK: Other Data Source
