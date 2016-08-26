@@ -47,8 +47,7 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cellIdentifier = "Cell"
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         self.configureCell(cell, atIndexPath: indexPath)
         return cell
     }
@@ -60,9 +59,9 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
         
         cell.titleLabel.text = book.title
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
-        
-        guard let progress = Network.shared.progresses[id] else {return}
-        cell.progressView.progress = Float(progress.fractionCompleted)
+//        
+//        guard let progress = Network.shared.progresses[id] else {return}
+//        cell.progressView.progress = Float(progress.fractionCompleted)
         
 //        switch downloadTask.state {
 //        case .Queued, .Downloading:

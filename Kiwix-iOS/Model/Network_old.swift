@@ -14,7 +14,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
     weak var delegate: DownloadProgressReporting?
     
     private let context = NSManagedObjectContext.mainQueueContext
-    let operationQueue = OperationQueue()
+    let queue = OperationQueue()
     
     var progresses = [String: DownloadProgress]()
     private var timer: NSTimer?
@@ -30,7 +30,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
     
     override init() {
         super.init()
-        operationQueue.delegate = self
+        queue.delegate = self
     }
     
     func restoreProgresses() {
@@ -44,7 +44,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
                 let operation = URLSessionDownloadTaskOperation(downloadTask: task)
                 operation.name = task.taskDescription
                 operation.addObserver(NetworkObserver())
-                self.operationQueue.addOperation(operation)
+                self.queue.addOperation(operation)
             }
         }
     }
@@ -77,13 +77,13 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
     
     func pause(book: Book) {
         guard let id = book.id,
-            let operation = operationQueue.getOperation(id) as? URLSessionDownloadTaskOperation else {return}
+            let operation = queue.getOperation(id) as? URLSessionDownloadTaskOperation else {return}
         operation.cancel(produceResumeData: true)
     }
     
     func cancel(book: Book) {
         guard let id = book.id,
-            let operation = operationQueue.getOperation(id) as? URLSessionDownloadTaskOperation else {return}
+            let operation = queue.getOperation(id) as? URLSessionDownloadTaskOperation else {return}
         operation.cancel(produceResumeData: false)
     }
     
@@ -97,7 +97,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
         let operation = URLSessionDownloadTaskOperation(downloadTask: task)
         operation.name = id
         operation.addObserver(NetworkObserver())
-        operationQueue.addOperation(operation)
+        queue.addOperation(operation)
         
         let progress = DownloadProgress(book: book)
         progress.downloadStarted(task)
@@ -107,7 +107,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
     // MARK: - OperationQueueDelegate
     
     func operationQueue(queue: OperationQueue, willAddOperation operation: NSOperation) {
-        guard operationQueue.operationCount == 0 else {return}
+        guard queue.operationCount == 0 else {return}
         shouldReportProgress = true
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
             self.timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(Network.resetProgressReportingFlag), userInfo: nil, repeats: true)
@@ -117,7 +117,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
     func operationQueue(queue: OperationQueue, willFinishOperation operation: NSOperation, withErrors errors: [ErrorType]) {}
     
     func operationQueue(queue: OperationQueue, didFinishOperation operation: NSOperation, withErrors errors: [ErrorType]) {
-        guard operationQueue.operationCount == 1 else {return}
+        guard queue.operationCount == 1 else {return}
         NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
             self.timer?.invalidate()
             self.shouldReportProgress = false

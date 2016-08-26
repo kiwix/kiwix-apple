@@ -11,20 +11,6 @@ import Operations
 
 // MARK: - Alerts
 
-class SpaceCautionAlert: AlertOperation<CloudBooksController> {
-    let comment = "Library: Download Space Caution Alert"
-    init(book: Book, presentationContext: CloudBooksController) {
-        super.init(presentAlertFrom: presentationContext)
-        
-        title = NSLocalizedString("Space Caution", comment: comment)
-        message = NSLocalizedString("This book takes up more than 80% of the remaining space on your device. Are you sure you want to download it?", comment: comment)
-        addActionWithTitle(NSLocalizedString("Download Anyway", comment: comment), style: .Default) { (alert) in
-            Network.shared.download(book)
-        }
-        addActionWithTitle(LocalizedStrings.cancel)
-    }
-}
-
 class SpaceNotEnoughAlert: AlertOperation<CloudBooksController> {
     let comment = "Library: Download Space Not Enough Alert"
     init(book: Book, presentationContext: CloudBooksController) {

@@ -8,22 +8,26 @@
 
 import Operations
 
-private var URLSessionTaskOperationKVOContext = 0
-
-public class URLSessionDownloadTaskOperation: Operation {
-    let task: NSURLSessionDownloadTask
-    private var produceResumeData = false
-    private var observerRemoved = false
-    private let stateLock = NSLock()
+class URLSessionDownloadTaskOperation: Operation {
     
-    public init(downloadTask: NSURLSessionDownloadTask) {
+    enum KeyPath: String {
+        case State = "state"
+    }
+    
+    let task: NSURLSessionTask
+    
+    private var produceResumeData = false
+    private var removedObserved = false
+    private let lock = NSLock()
+    
+    init(downloadTask: NSURLSessionDownloadTask) {
         self.task = downloadTask
         super.init()
         
+        addObserver(NetworkObserver())
         addObserver(DidCancelObserver { _ in
             if self.produceResumeData {
-                downloadTask.cancelByProducingResumeData({ (data) in
-                })
+                downloadTask.cancelByProducingResumeData({ (data) in })
             } else {
                 downloadTask.cancel()
             }
@@ -31,12 +35,12 @@ public class URLSessionDownloadTaskOperation: Operation {
         )
     }
     
-    public func cancel(produceResumeData produceResumeData: Bool) {
+    func cancel(produceResumeData produceResumeData: Bool) {
         self.produceResumeData = produceResumeData
         cancel()
     }
     
-    override public func execute() {
+    override func execute() {
         guard task.state == .Suspended || task.state == .Running else {
             finish()
             return
@@ -47,28 +51,34 @@ public class URLSessionDownloadTaskOperation: Operation {
         }
     }
     
-    override public func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         guard context == &URLSessionTaskOperationKVOContext else { return }
         
-        stateLock.withCriticalScope {
-            if object === task && keyPath == "state" && !observerRemoved {
+        lock.withCriticalScope {
+            if object === task && keyPath == KeyPath.State.rawValue && !removedObserved {
+                
+                if case .Completed = task.state {
+                    finish(task.error)
+                }
+                
                 switch task.state {
-                case .Completed:
-                    finish()
-                    fallthrough
-                case .Canceling:
-                    observerRemoved = true
-                    task.removeObserver(self, forKeyPath: "state")
+                case .Completed, .Canceling:
+                    task.removeObserver(self, forKeyPath: KeyPath.State.rawValue)
+                    removedObserved = true
                 default:
-                    return
+                    break
                 }
             }
         }
     }
 }
 
-private extension NSLock {
-    func withCriticalScope<T>(@noescape block: Void -> T) -> T {
+// swiftlint:disable variable_name
+private var URLSessionTaskOperationKVOContext = 0
+// swiftlint:enable variable_name
+
+extension NSLock {
+    func withCriticalScope<T>(@noescape block: () -> T) -> T {
         lock()
         let value = block()
         unlock()

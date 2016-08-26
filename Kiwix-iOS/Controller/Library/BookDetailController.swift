@@ -80,19 +80,23 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
         
         switch title {
         case Strings.downloadNow:
+            func startDownload() {
+                guard let bookID = book.id,
+                    let download = DownloadBookOperation(bookID: bookID) else {return}
+                Network.shared.queue.addOperation(download)
+            }
+            
             if book.spaceState == .Caution {
                 let cancel = UIAlertAction(title: Strings.cancel, style: .Cancel, handler: nil)
                 let download = UIAlertAction(title: Strings.SpaceAlert.downloadAnyway, style: .Destructive, handler: { (alert) in
-                    
+                    startDownload()
                 })
                 let alertController = UIAlertController(title: Strings.SpaceAlert.spaceAlert, message: Strings.SpaceAlert.message, actions: [download, cancel])
                 presentViewController(alertController, animated: true, completion: nil)
             } else {
-                
+                startDownload()
             }
-//            guard let download = DownloadBookOperation(book: book) else {return}
-//            GlobalOperationQueue.sharedInstance.addOperation(download)
-        default:
+       default:
             return
         }
     }
