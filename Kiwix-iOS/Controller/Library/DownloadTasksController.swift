@@ -73,7 +73,7 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
     func refreshProgress() {
         tableView.visibleCells.forEach { (cell) in
             guard let indexPath = tableView.indexPathForCell(cell) else {return}
-            configureCell(cell, atIndexPath: indexPath)
+            configureCell(cell, atIndexPath: indexPath, animated: true)
         }
     }
     
@@ -94,7 +94,7 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
         return cell
     }
     
-    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath, animated: Bool = false) {
         guard let downloadTask = fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask,
             let book = downloadTask.book, let id = book.id,
             let cell = cell as? DownloadBookCell else {return}
@@ -103,7 +103,7 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
         
         guard let progress = Network.shared.operations[id]?.progress else {return}
-        cell.progressView.progress = Float(progress.fractionCompleted)
+        cell.progressView.setProgress(Float(progress.fractionCompleted), animated: animated)
         cell.detailLabel.text = progress.localizedAdditionalDescription.stringByReplacingOccurrencesOfString(" – ", withString: "\n")
     }
     

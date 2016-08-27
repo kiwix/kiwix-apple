@@ -36,6 +36,15 @@ class DownloadBookOperation: URLSessionDownloadTaskOperation {
         progress.totalUnitCount = book.fileSize
     }
     
+    override func operationDidFinish(errors: [ErrorType]) {
+        let context = NSManagedObjectContext.mainQueueContext
+        guard let bookID = name else {return}
+        context.performBlockAndWait { 
+            guard let downloadTask = Book.fetch(bookID, context: context)?.downloadTask else {return}
+            context.deleteObject(downloadTask)
+        }
+    }
+    
 }
 
 class CancelBookDownloadOperation: Operation {

@@ -30,7 +30,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, Ope
     // MARK: - OperationQueueDelegate
     
     func operationQueue(queue: OperationQueue, willAddOperation operation: NSOperation) {
-        print("DEBUG: Network Queue will add" + (operation.name ?? "Unknown OP"))
+        print("DEBUG: Network Queue will add " + (operation.name ?? "Unknown OP"))
         guard let bookID = operation.name,
             let operation = operation as? DownloadBookOperation else {return}
         operations[bookID] = operation
@@ -39,7 +39,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, Ope
     func operationQueue(queue: OperationQueue, willFinishOperation operation: NSOperation, withErrors errors: [ErrorType]) {}
     
     func operationQueue(queue: OperationQueue, didFinishOperation operation: NSOperation, withErrors errors: [ErrorType]) {
-        print("DEBUG: Network Queue did finish" + (operation.name ?? "Unknown OP"))
+        print("DEBUG: Network Queue did finish " + (operation.name ?? "Unknown OP"))
         guard let bookID = operation.name else {return}
         operations[bookID] = nil
     }
@@ -55,6 +55,9 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, Ope
     }
     
     func URLSession(session: NSURLSession, downloadTask: NSURLSessionDownloadTask, didFinishDownloadingToURL location: NSURL) {
-        
+        var fileName: String = downloadTask.response?.suggestedFilename ?? downloadTask.taskDescription ?? NSDate().description
+        if !fileName.hasSuffix(".zim") {fileName += ".zim"}
+        guard let destination = NSFileManager.docDirURL.URLByAppendingPathComponent(fileName) else {return}
+        _ = try? NSFileManager.defaultManager().moveItemAtURL(location, toURL: destination)
     }
 }
