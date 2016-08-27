@@ -469,7 +469,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" rowHeight="100" id="ekT-ed-PU9" customClass="DownloadBookCell" customModule="Kiwix" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="100" id="ekT-ed-PU9" customClass="DownloadBookCell" customModule="Kiwix" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ekT-ed-PU9" id="oM4-Hy-Mkf">
@@ -515,6 +515,7 @@
                                     <outlet property="favIcon" destination="Too-68-SzG" id="nfU-AD-1Ji"/>
                                     <outlet property="progressView" destination="g0o-rT-qxm" id="Jaw-Zr-uJY"/>
                                     <outlet property="titleLabel" destination="Hji-3G-yaJ" id="mZ2-S6-XEO"/>
+                                    <segue destination="5Sz-gR-dgz" kind="showDetail" identifier="ShowBookDetail" id="eUy-Zq-fkw"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -686,6 +687,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="N3M-rH-rAM"/>
+        <segue reference="eUy-Zq-fkw"/>
     </inferredMetricsTieBreakers>
 </document>

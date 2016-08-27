@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.registerUserNotificationSettings(settings)
         
         // Set background refresh interval
-        application.setMinimumBackgroundFetchInterval(60 * 60 * 24)
+        application.setMinimumBackgroundFetchInterval(86400)
         
         return true
     }
@@ -150,7 +150,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             
             let notification = UILocalNotification()
-            notification.alertTitle = "[debug] Library was refreshed"
+            notification.alertTitle = "[DEBUG] Library was refreshed"
             notification.alertBody = NSDate().description
             notification.soundName = UILocalNotificationDefaultSoundName
             UIApplication.sharedApplication().presentLocalNotificationNow(notification)

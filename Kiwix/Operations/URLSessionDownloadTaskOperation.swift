@@ -16,7 +16,7 @@ class URLSessionDownloadTaskOperation: Operation {
     
     let task: NSURLSessionTask
     
-    private var produceResumeData = false
+    private(set) var produceResumeData = false
     private var removedObserved = false
     private let lock = NSLock()
     

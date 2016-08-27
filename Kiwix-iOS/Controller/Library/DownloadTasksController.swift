@@ -12,6 +12,8 @@ import DZNEmptyDataSet
 
 class DownloadTasksController: UITableViewController, NSFetchedResultsControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
+    var timer: NSTimer?
+    
     // MARK: - Override
     
     required init?(coder aDecoder: NSCoder) {
@@ -33,6 +35,29 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.navigationItem.rightBarButtonItem = nil
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(DownloadTasksController.refreshProgress), userInfo: nil, repeats: true)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        timer?.invalidate()
+        timer = nil
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        guard let identifier = segue.identifier else {return}
+        switch identifier {
+        case "ShowBookDetail":
+            guard let navController = segue.destinationViewController as? UINavigationController,
+                let bookDetailController = navController.topViewController as? BookDetailController,
+                let cell = sender as? UITableViewCell,
+                let indexPath = tableView.indexPathForCell(cell),
+                let downloadTask = fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask,
+                let book = downloadTask.book else {return}
+            bookDetailController.book = book
+        default:
+            break
+        }
     }
     
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
@@ -41,6 +66,15 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
         let inset = UIEdgeInsetsMake(tableView.contentInset.top, 0, tabbarHeight, 0)
         tableView.contentInset = inset
         tableView.scrollIndicatorInsets = inset
+    }
+    
+    // MARK: - Methods
+    
+    func refreshProgress() {
+        tableView.visibleCells.forEach { (cell) in
+            guard let indexPath = tableView.indexPathForCell(cell) else {return}
+            configureCell(cell, atIndexPath: indexPath)
+        }
     }
     
     // MARK: - TableView Data Source
@@ -67,19 +101,10 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
         
         cell.titleLabel.text = book.title
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
-//        
-//        guard let progress = Network.shared.progresses[id] else {return}
-//        cell.progressView.progress = Float(progress.fractionCompleted)
         
-//        switch downloadTask.state {
-//        case .Queued, .Downloading:
-//            cell.accessoryImageView.highlighted = false
-//            cell.accessoryImageTintColor = UIColor.orangeColor().colorWithAlphaComponent(0.75)
-//        case .Paused, .Error:
-//            cell.accessoryImageView.highlighted = true
-//            cell.accessoryHighlightedImageTintColor = UIColor.greenColor().colorWithAlphaComponent(0.75)
-//        }
-//        cell.subtitleLabel.text = progress.description
+        guard let progress = Network.shared.operations[id]?.progress else {return}
+        cell.progressView.progress = Float(progress.fractionCompleted)
+        cell.detailLabel.text = progress.localizedAdditionalDescription.stringByReplacingOccurrencesOfString(" – ", withString: "\n")
     }
     
     // MARK: Other Data Source
@@ -114,27 +139,21 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
 //        header.textLabel?.font = UIFont.boldSystemFontOfSize(14)
 //    }
 //    
-//    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-//        return true
-//    }
-//    
-//    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {}
-//    
-//    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-//        let remove = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.remove) { (action, indexPath) -> Void in
-//            guard let downloadTask = self.fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask else {return}
-//            let context = UIApplication.appDelegate.managedObjectContext
-//            if let book = downloadTask.book {
-//                Network.sharedInstance.cancel(book)
-//                FileManager.removeResumeData(book)
-//            }
-//            context.performBlockAndWait({ () -> Void in
-//                downloadTask.book?.isLocal = false
-//                context.deleteObject(downloadTask)
-//            })
-//        }
-//        return [remove]
-//    }
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {}
+    
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let remove = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.remove) { (action, indexPath) -> Void in
+            guard let downloadTask = self.fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask,
+                let bookID = downloadTask.book?.id else {return}
+            let operation = CancelBookDownloadOperation(bookID: bookID)
+            GlobalOperationQueue.sharedInstance.addOperation(operation)
+        }
+        return [remove]
+    }
     
     // MARK: - Fetched Results Controller
     
