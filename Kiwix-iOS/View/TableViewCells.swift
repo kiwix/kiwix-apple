@@ -76,13 +76,10 @@ class CheckMarkBookCell: BasicBookCell {
 /* Book Cell With progress bar and 2 line detail label */
 class DownloadBookCell: UITableViewCell {
     @IBOutlet weak var favIcon: UIImageView!
-    
     @IBOutlet weak var titleLabel: UILabel!
-    
-    @IBOutlet weak var progressView: UIProgressView!
-    
     @IBOutlet weak var detailLabel: UILabel!
-    
+    @IBOutlet weak var progressLabel: UILabel!
+    @IBOutlet weak var progressView: UIProgressView!
 }
 
 // MARK: - Article Cell

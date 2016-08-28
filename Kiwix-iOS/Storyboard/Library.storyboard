@@ -469,11 +469,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="100" id="ekT-ed-PU9" customClass="DownloadBookCell" customModule="Kiwix" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="375" height="100"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="92" id="ekT-ed-PU9" customClass="DownloadBookCell" customModule="Kiwix" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="375" height="92"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ekT-ed-PU9" id="oM4-Hy-Mkf">
-                                    <frame key="frameInset" width="375" height="99.5"/>
+                                    <frame key="frameInset" width="375" height="91"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hji-3G-yaJ">
@@ -493,26 +493,38 @@
                                             <color key="textColor" red="0.33333333329999998" green="0.33333333329999998" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Zg-Xf-xgS">
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="50" id="7Tn-he-LJu"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="6Zg-Xf-xgS" firstAttribute="leading" secondItem="Hji-3G-yaJ" secondAttribute="trailing" constant="2" id="5lO-Sp-t2G"/>
                                         <constraint firstItem="v8H-ZV-HNV" firstAttribute="leading" secondItem="oM4-Hy-Mkf" secondAttribute="leadingMargin" id="7FW-0t-ljT"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="Too-68-SzG" secondAttribute="leading" constant="-2" id="9Vd-3e-m5f"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="v8H-ZV-HNV" secondAttribute="bottom" id="9ac-Vl-xk9"/>
-                                        <constraint firstItem="g0o-rT-qxm" firstAttribute="top" secondItem="Too-68-SzG" secondAttribute="bottom" constant="8" id="IJR-yJ-4xs"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="6Zg-Xf-xgS" secondAttribute="trailing" id="D9Q-Dz-SXA"/>
+                                        <constraint firstItem="g0o-rT-qxm" firstAttribute="top" secondItem="Too-68-SzG" secondAttribute="bottom" constant="4" id="IJR-yJ-4xs"/>
                                         <constraint firstItem="g0o-rT-qxm" firstAttribute="trailing" secondItem="oM4-Hy-Mkf" secondAttribute="trailingMargin" id="OFh-b3-2bf"/>
                                         <constraint firstAttribute="topMargin" secondItem="Hji-3G-yaJ" secondAttribute="top" id="U1i-uZ-le4"/>
+                                        <constraint firstItem="6Zg-Xf-xgS" firstAttribute="centerY" secondItem="Hji-3G-yaJ" secondAttribute="centerY" id="YMh-ny-Ldi"/>
+                                        <constraint firstItem="6Zg-Xf-xgS" firstAttribute="height" secondItem="Hji-3G-yaJ" secondAttribute="height" id="b9b-x4-38M"/>
                                         <constraint firstAttribute="topMargin" secondItem="Too-68-SzG" secondAttribute="top" id="d1d-HJ-OWT"/>
                                         <constraint firstItem="g0o-rT-qxm" firstAttribute="leading" secondItem="oM4-Hy-Mkf" secondAttribute="leadingMargin" id="egX-0j-bnY"/>
                                         <constraint firstItem="Hji-3G-yaJ" firstAttribute="height" secondItem="Too-68-SzG" secondAttribute="height" id="fh9-1t-9il"/>
                                         <constraint firstItem="Hji-3G-yaJ" firstAttribute="leading" secondItem="Too-68-SzG" secondAttribute="trailing" constant="6" id="u7a-MC-Z6U"/>
-                                        <constraint firstItem="v8H-ZV-HNV" firstAttribute="top" secondItem="g0o-rT-qxm" secondAttribute="bottom" constant="8" id="ybT-oZ-V6L"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="Hji-3G-yaJ" secondAttribute="trailing" id="zaA-h9-gj0"/>
+                                        <constraint firstItem="v8H-ZV-HNV" firstAttribute="top" secondItem="g0o-rT-qxm" secondAttribute="bottom" constant="4" id="ybT-oZ-V6L"/>
                                         <constraint firstItem="v8H-ZV-HNV" firstAttribute="trailing" secondItem="oM4-Hy-Mkf" secondAttribute="trailingMargin" id="zdf-lg-EBb"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="detailLabel" destination="v8H-ZV-HNV" id="nxi-1k-SWg"/>
                                     <outlet property="favIcon" destination="Too-68-SzG" id="nfU-AD-1Ji"/>
+                                    <outlet property="progressLabel" destination="6Zg-Xf-xgS" id="9Tf-0y-Ix7"/>
                                     <outlet property="progressView" destination="g0o-rT-qxm" id="Jaw-Zr-uJY"/>
                                     <outlet property="titleLabel" destination="Hji-3G-yaJ" id="mZ2-S6-XEO"/>
                                     <segue destination="5Sz-gR-dgz" kind="showDetail" identifier="ShowBookDetail" id="eUy-Zq-fkw"/>

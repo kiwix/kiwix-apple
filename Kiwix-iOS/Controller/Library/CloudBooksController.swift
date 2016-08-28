@@ -37,6 +37,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(imageNamed: "LanguageFilter", target: self, action: #selector(CloudBooksController.showLanguageFilter))
+        refreshAutomatically()
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -73,6 +74,15 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         
         guard let indexPath = tableView.indexPathForSelectedRow else {return}
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    func refreshAutomatically() {
+        guard let date = Preference.libraryLastRefreshTime else {
+            refresh()
+            return
+        }
+        guard date.timeIntervalSinceNow < -86400 else {return}
+        refresh()
     }
     
     func refresh() {

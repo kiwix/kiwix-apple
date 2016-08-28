@@ -103,6 +103,7 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
         
         guard let progress = Network.shared.operations[id]?.progress else {return}
+        cell.progressLabel.text = progress.fractionCompletedDescription
         cell.progressView.setProgress(Float(progress.fractionCompleted), animated: animated)
         cell.detailLabel.text = progress.localizedAdditionalDescription.stringByReplacingOccurrencesOfString(" – ", withString: "\n")
     }

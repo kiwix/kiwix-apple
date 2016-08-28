@@ -47,6 +47,29 @@ class DownloadBookOperation: URLSessionDownloadTaskOperation {
     
 }
 
+class DownloadProgress: NSProgress {
+    init(completedUnitCount: Int64, totalUnitCount: Int64) {
+        super.init(parent: nil, userInfo: [NSProgressFileOperationKindKey: NSProgressFileOperationKindDownloading])
+        self.kind = NSProgressKindFile
+        self.totalUnitCount = totalUnitCount
+        self.completedUnitCount = completedUnitCount
+    }
+    
+    private lazy var percentFormatter: NSNumberFormatter = {
+        let formatter = NSNumberFormatter()
+        formatter.numberStyle = .PercentStyle
+        formatter.minimumFractionDigits = 1
+        formatter.maximumIntegerDigits = 3
+        formatter.minimumFractionDigits = 2
+        formatter.maximumIntegerDigits = 2
+        return formatter
+    }()
+    
+    var fractionCompletedDescription: String? {
+        return percentFormatter.stringFromNumber(NSNumber(double: fractionCompleted))
+    }
+}
+
 class CancelBookDownloadOperation: Operation {
     
     let bookID: String
@@ -75,11 +98,15 @@ class CancelBookDownloadOperation: Operation {
     }
 }
 
-class DownloadProgress: NSProgress {
-    init(completedUnitCount: Int64, totalUnitCount: Int64) {
-        super.init(parent: nil, userInfo: [NSProgressFileOperationKindKey: NSProgressFileOperationKindDownloading])
-        self.kind = NSProgressKindFile
-        self.totalUnitCount = totalUnitCount
-        self.completedUnitCount = completedUnitCount
+class DeleteBookOperation: Operation {
+    
+    let bookID: String
+    
+    init(bookID: String) {
+        self.bookID = bookID
+        super.init()
     }
+    
+    
 }
+
