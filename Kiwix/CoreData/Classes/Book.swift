@@ -101,6 +101,14 @@ class Book: NSManagedObject {
         return fetch(fetchRequest, type: Book.self, context: context)?.first
     }
     
+    // MARK: - Manage
+    
+    func removeCache() {
+        guard let bookID = id,
+            let cacheFileURL = NSFileManager.cacheDirURL.URLByAppendingPathComponent(bookID) else {return}
+        _ = try? NSFileManager.defaultManager().removeItemAtURL(cacheFileURL)
+    }
+    
     // MARK: - Properties Description
     
     var dateDescription: String? {

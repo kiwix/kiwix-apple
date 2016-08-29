@@ -63,6 +63,11 @@ extension NSFileManager {
         return url!
     }
     
+    class var cacheDirURL: NSURL {
+        let url = try? NSFileManager.defaultManager().URLForDirectory(.CachesDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
+        return url!
+    }
+    
     class func getContents(dir dir: NSURL) -> [NSURL] {
         let options: NSDirectoryEnumerationOptions = [.SkipsHiddenFiles, .SkipsPackageDescendants, .SkipsSubdirectoryDescendants]
         let urls = try? NSFileManager.defaultManager().contentsOfDirectoryAtURL(NSFileManager.docDirURL, includingPropertiesForKeys: nil, options: options)

@@ -22,7 +22,6 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
         tabBarItem.title = LocalizedStrings.LibraryTabTitle.download
         tabBarItem.image = UIImage(named: "Download")
         tabBarItem.selectedImage = UIImage(named: "DownloadFilled")
-        refreshTabBarBadgeCount()
     }
     
     override func viewDidLoad() {
@@ -160,13 +159,27 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {}
     
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let cancel = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.Common.cancel) { (action, indexPath) -> Void in
-            guard let downloadTask = self.fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask,
-                let bookID = downloadTask.book?.id else {return}
-            let operation = CancelBookDownloadOperation(bookID: bookID)
-            GlobalOperationQueue.sharedInstance.addOperation(operation)
+        let pause = UITableViewRowAction(style: .Normal, title: "Pause") { (action, indexPath) in
+            guard let downloadTask = self.fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask else {return}
+            self.managedObjectContext.performBlock({
+                downloadTask.state = .Paused
+            })
+            guard let bookID = downloadTask.book?.id else {return}
+            Network.shared.operations[bookID]?.cancel(produceResumeData: true)
         }
-        return [cancel]
+        let cancel = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.Common.cancel) { (action, indexPath) -> Void in
+            guard let downloadTask = self.fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask else {return}
+            if let bookID = downloadTask.book?.id {
+                // Cancel the download operation, did cancel observer will do the rest
+                Network.shared.operations[bookID]?.cancel(produceResumeData: false)
+            } else {
+                // In case of something goes wrong, and cannot find the book related to a download task, allow user to delete the row
+                self.managedObjectContext.performBlock({
+                    self.managedObjectContext.deleteObject(downloadTask)
+                })
+            }
+        }
+        return [cancel, pause]
     }
     
     // MARK: - Fetched Results Controller

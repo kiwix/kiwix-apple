@@ -7,10 +7,10 @@
 //
 
 import UIKit
+import CoreData
 import Operations
 
-// , NSURLSessionTaskDelegate
-class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, OperationQueueDelegate  {
+class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDownloadDelegate, OperationQueueDelegate  {
     static let shared = Network()
     let queue = OperationQueue()
     private(set) var operations = [String: DownloadBookOperation]()
@@ -46,6 +46,14 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, Ope
     
     func operationQueue(queue: OperationQueue, willProduceOperation operation: NSOperation) {}
     
+    // MARK: - NSURLSessionTaskDelegate
+    
+    func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
+        print(error?.code)
+        print(error?.localizedDescription)
+        print(error?.userInfo.keys)
+    }
+    
     // MARK: - NSURLSessionDownloadDelegate
     
     func URLSession(session: NSURLSession, downloadTask: NSURLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
@@ -55,9 +63,22 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, Ope
     }
     
     func URLSession(session: NSURLSession, downloadTask: NSURLSessionDownloadTask, didFinishDownloadingToURL location: NSURL) {
-        var fileName: String = downloadTask.response?.suggestedFilename ?? downloadTask.taskDescription ?? NSDate().description
+        guard let bookID = downloadTask.taskDescription else {return}
+        
+        // Save downloaded zim file
+        // Book object status will be updated by dir scanner
+        var fileName: String = downloadTask.response?.suggestedFilename ?? bookID
         if !fileName.hasSuffix(".zim") {fileName += ".zim"}
         guard let destination = NSFileManager.docDirURL.URLByAppendingPathComponent(fileName) else {return}
         _ = try? NSFileManager.defaultManager().moveItemAtURL(location, toURL: destination)
+        
+        // Perform clean up (remove cache and delete download task)
+        let context = NSManagedObjectContext.mainQueueContext
+        context.performBlock { 
+            guard let book = Book.fetch(bookID, context: context) else {return}
+            book.removeCache()
+            guard let downloadTask = book.downloadTask else {return}
+            context.deleteObject(downloadTask)
+        }
     }
 }

@@ -100,6 +100,7 @@
 		97A1FD431D6F728200A80EE2 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD3E1D6F728200A80EE2 /* FileManager.swift */; };
 		97A1FD441D6F728200A80EE2 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD401D6F728200A80EE2 /* Preference.swift */; };
 		97A1FD451D6F728200A80EE2 /* StringTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD411D6F728200A80EE2 /* StringTools.swift */; };
+		97A461B71D74819000AC3DED /* DownloadProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A461B61D74819000AC3DED /* DownloadProgress.swift */; };
 		97A7017F1D2C59CA00AAE2D8 /* GetStartedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A7017E1D2C59CA00AAE2D8 /* GetStartedController.swift */; };
 		97A8AD841D6C951A00584ED1 /* LocalBooksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A8AD831D6C951A00584ED1 /* LocalBooksController.swift */; };
 		97A8AD871D6CF38000584ED1 /* EmptyTableConfigExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A8AD861D6CF38000584ED1 /* EmptyTableConfigExtension.swift */; };
@@ -320,6 +321,7 @@
 		97A2AB881C1B80FF00052E74 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A2AB9F1C1B80FF00052E74 /* Kiwix-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kiwix-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A2ABAA1C1B810000052E74 /* Kiwix-iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kiwix-iOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		97A461B61D74819000AC3DED /* DownloadProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadProgress.swift; sourceTree = "<group>"; };
 		97A7017E1D2C59CA00AAE2D8 /* GetStartedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GetStartedController.swift; path = "Kiwix-iOS/Controller/Welcome/GetStartedController.swift"; sourceTree = SOURCE_ROOT; };
 		97A8AD831D6C951A00584ED1 /* LocalBooksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalBooksController.swift; sourceTree = "<group>"; };
 		97A8AD861D6CF38000584ED1 /* EmptyTableConfigExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyTableConfigExtension.swift; sourceTree = "<group>"; };
@@ -834,6 +836,7 @@
 		97A1FD3C1D6F728200A80EE2 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				97A461B61D74819000AC3DED /* DownloadProgress.swift */,
 				97A1FD3D1D6F728200A80EE2 /* Extensions.swift */,
 				97A1FD3E1D6F728200A80EE2 /* FileManager.swift */,
 				97A1FD401D6F728200A80EE2 /* Preference.swift */,
@@ -1546,6 +1549,7 @@
 				971A103B1D022C2C007FC62C /* AdjustLayoutTBVC.swift in Sources */,
 				97219DBD1D383A00009FDFF1 /* BookmarkController.swift in Sources */,
 				97D6812E1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld in Sources */,
+				97A461B71D74819000AC3DED /* DownloadProgress.swift in Sources */,
 				971A10341D022AEC007FC62C /* BookmarkTBVC.swift in Sources */,
 				97A1FD1D1D6F71D800A80EE2 /* PacketAnalyzer.swift in Sources */,
 				97A1FD441D6F728200A80EE2 /* Preference.swift in Sources */,
