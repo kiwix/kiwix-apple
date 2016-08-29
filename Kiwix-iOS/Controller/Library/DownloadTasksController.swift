@@ -22,6 +22,7 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
         tabBarItem.title = LocalizedStrings.LibraryTabTitle.download
         tabBarItem.image = UIImage(named: "Download")
         tabBarItem.selectedImage = UIImage(named: "DownloadFilled")
+        refreshTabBarBadgeCount()
     }
     
     override func viewDidLoad() {
@@ -75,6 +76,11 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
             guard let indexPath = tableView.indexPathForCell(cell) else {return}
             configureCell(cell, atIndexPath: indexPath, animated: true)
         }
+    }
+    
+    func refreshTabBarBadgeCount() {
+        guard let count = fetchedResultController.fetchedObjects?.count else {return}
+        tabBarItem.badgeValue = count > 0 ? "\(count)" : nil
     }
     
     // MARK: - TableView Data Source
@@ -214,6 +220,7 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
+        refreshTabBarBadgeCount()
     }
     
 }
