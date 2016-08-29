@@ -74,6 +74,16 @@ class Book: NSManagedObject {
         return urlComponents?.URL
     }
     
+    var resumeDataURL: NSURL? {
+        guard let id = id,
+            let folderURL = NSURL(fileURLWithPath: NSFileManager.libDirURL.path!).URLByAppendingPathComponent("DownloadTemp", isDirectory: true),
+            let folderPath = folderURL.path else {return nil}
+        if !NSFileManager.defaultManager().fileExistsAtPath(folderPath) {
+            _ = try? NSFileManager.defaultManager().createDirectoryAtURL(folderURL, withIntermediateDirectories: true, attributes: [NSURLIsExcludedFromBackupKey: true])
+        }
+        return folderURL.URLByAppendingPathComponent(id)
+    }
+    
     // MARK: - Fetch
     
     class func fetchAll(context: NSManagedObjectContext) -> [Book] {
@@ -103,10 +113,9 @@ class Book: NSManagedObject {
     
     // MARK: - Manage
     
-    func removeCache() {
-        guard let bookID = id,
-            let cacheFileURL = NSFileManager.cacheDirURL.URLByAppendingPathComponent(bookID) else {return}
-        _ = try? NSFileManager.defaultManager().removeItemAtURL(cacheFileURL)
+    func removeResumeData() {
+        guard let id = id else {return}
+        Preference.resumeData[id] = nil
     }
     
     // MARK: - Properties Description
@@ -120,7 +129,7 @@ class Book: NSManagedObject {
         return formatter.stringFromDate(date)
     }
     
-    var fileSizeDescription: String? {
+    var fileSizeDescription: String {
         return NSByteCountFormatter.stringFromByteCount(fileSize, countStyle: .File)
     }
     
@@ -152,7 +161,7 @@ class Book: NSManagedObject {
     var detailedDescription: String? {
         var descriptions = [String]()
         if let dateDescription = dateDescription {descriptions.append(dateDescription)}
-        if let fileSizeDescription = fileSizeDescription {descriptions.append(fileSizeDescription)}
+        descriptions.append(fileSizeDescription)
         if let articleCountDescription = articleCountDescription {descriptions.append(articleCountDescription)}
         
         guard descriptions.count != 0 else {return nil}

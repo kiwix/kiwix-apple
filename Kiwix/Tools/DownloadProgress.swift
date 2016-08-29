@@ -14,16 +14,6 @@ class DownloadProgress: NSProgress {
     private let timePointMinCount: Int = 20
     private let timePointMaxCount: Int = 200
     
-    private lazy var percentFormatter: NSNumberFormatter = {
-        let formatter = NSNumberFormatter()
-        formatter.numberStyle = .PercentStyle
-        formatter.minimumFractionDigits = 1
-        formatter.maximumIntegerDigits = 3
-        formatter.minimumFractionDigits = 2
-        formatter.maximumIntegerDigits = 2
-        return formatter
-    }()
-    
     init(completedUnitCount: Int64 = 0, totalUnitCount: Int64) {
         super.init(parent: nil, userInfo: [NSProgressFileOperationKindKey: NSProgressFileOperationKindDownloading])
         self.kind = NSProgressKindFile
@@ -40,7 +30,7 @@ class DownloadProgress: NSProgress {
     // MARK: - Descriptions
     
     var fractionCompletedDescription: String? {
-        return percentFormatter.stringFromNumber(NSNumber(double: fractionCompleted))
+        return DownloadTask.percentFormatter.stringFromNumber(NSNumber(double: fractionCompleted))
     }
     
     var progressAndSpeedDescription: String! {

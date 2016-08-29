@@ -40,6 +40,16 @@ class DownloadTask: NSManagedObject {
             stateRaw = Int16(newValue.rawValue)
         }
     }
+    
+    static let percentFormatter: NSNumberFormatter = {
+        let formatter = NSNumberFormatter()
+        formatter.numberStyle = .PercentStyle
+        formatter.minimumFractionDigits = 1
+        formatter.maximumIntegerDigits = 3
+        formatter.minimumFractionDigits = 2
+        formatter.maximumIntegerDigits = 2
+        return formatter
+    }()
 
 }
 

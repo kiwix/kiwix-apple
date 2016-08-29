@@ -91,6 +91,12 @@ class Preference {
             set{Defaults[.langFilterNameDisplayInOriginalLocale] = newValue}
         }
     }
+    
+    // MARK: - Resume Data
+    
+    class var resumeData: [String: NSData] {
+        get{return Defaults[.resumeData] as? [String: NSData] ?? [String: NSData]()}
+        set{Defaults[.resumeData] = newValue}}
 }
 
 extension DefaultsKeys {
@@ -108,4 +114,6 @@ extension DefaultsKeys {
     static let libraryHasShownPreferredLanguagePrompt = DefaultsKey<Bool>("libraryHasShownPreferredLanguagePrompt")
     static let langFilterSortByAlphabeticalAsc = DefaultsKey<Bool>("langFilterSortByAlphabeticalAsc")
     static let langFilterNameDisplayInOriginalLocale = DefaultsKey<Bool>("langFilterNameDisplayInOriginalLocale")
+    
+    static let resumeData = DefaultsKey<[String: AnyObject]>("resumeData")
 }

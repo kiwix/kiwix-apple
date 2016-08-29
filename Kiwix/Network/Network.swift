@@ -13,7 +13,9 @@ import Operations
 class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDownloadDelegate, OperationQueueDelegate  {
     static let shared = Network()
     let queue = OperationQueue()
+    let context = NSManagedObjectContext.mainQueueContext
     private(set) var operations = [String: DownloadBookOperation]()
+    var data: NSData?
     
     private override init() {
         super.init()
@@ -49,9 +51,30 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
     // MARK: - NSURLSessionTaskDelegate
     
     func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
-        print(error?.code)
-        print(error?.localizedDescription)
-        print(error?.userInfo.keys)
+        guard let error = error, let bookID = task.taskDescription else {return}
+        self.context.performBlockAndWait {
+            guard let book = Book.fetch(bookID, context: self.context) else {return}
+            if error.code == NSURLErrorCancelled {
+                // If download task doesnt exist, it must mean download is cancelled by user
+                // DownloadTask object will have been deleted when user tap Cancel button / table row action
+                guard let downloadTask = book.downloadTask else {return}
+                downloadTask.totalBytesWritten = task.countOfBytesReceived
+                downloadTask.state = .Paused
+                
+                // Save resue data to disk
+                guard let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? NSData else {return}
+                let task = Network.shared.session.downloadTaskWithResumeData(resumeData)
+                task.resume()
+                guard let book = downloadTask.book else {return}
+                
+                self.data = resumeData
+//                guard let resumeDataPath = book.resumeDataURL?.path,
+//                    let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? NSData else {return}
+//                resumeData.writeToFile(resumeDataPath, atomically: true)
+            } else {
+                // Handle other errors
+            }
+        }
     }
     
     // MARK: - NSURLSessionDownloadDelegate
@@ -60,6 +83,11 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
         guard let bookID = downloadTask.taskDescription,
             let operation = operations[bookID] else {return}
         operation.progress.completedUnitCount = totalBytesWritten
+        
+        context.performBlock { 
+            guard let downloadTask = Book.fetch(bookID, context: self.context)?.downloadTask where downloadTask.state == .Queued else {return}
+            downloadTask.state = .Downloading
+        }
     }
     
     func URLSession(session: NSURLSession, downloadTask: NSURLSessionDownloadTask, didFinishDownloadingToURL location: NSURL) {
@@ -73,12 +101,11 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
         _ = try? NSFileManager.defaultManager().moveItemAtURL(location, toURL: destination)
         
         // Perform clean up (remove cache and delete download task)
-        let context = NSManagedObjectContext.mainQueueContext
         context.performBlock { 
-            guard let book = Book.fetch(bookID, context: context) else {return}
-            book.removeCache()
+            guard let book = Book.fetch(bookID, context: self.context) else {return}
+            book.removeResumeData()
             guard let downloadTask = book.downloadTask else {return}
-            context.deleteObject(downloadTask)
+            self.context.deleteObject(downloadTask)
         }
     }
 }

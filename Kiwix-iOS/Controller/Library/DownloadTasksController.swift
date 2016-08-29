@@ -107,17 +107,32 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
         cell.titleLabel.text = book.title
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
         
-        guard let progress = Network.shared.operations[id]?.progress else {return}
-        cell.progressLabel.text = progress.fractionCompletedDescription
-        cell.progressView.setProgress(Float(progress.fractionCompleted), animated: animated)
-        cell.detailLabel.text = {
-            let string = progress.progressAndSpeedDescription
-            if string.containsString(" — ") {
-                return string.stringByReplacingOccurrencesOfString(" — ", withString: "\n")
-            } else {
-                return string + "\n" + NSLocalizedString("Estimating Speed and Remaining Time", comment: "")
-            }
-        }()
+        if let progress = Network.shared.operations[id]?.progress {
+            cell.progressLabel.text = progress.fractionCompletedDescription
+            cell.progressView.setProgress(Float(progress.fractionCompleted), animated: animated)
+            cell.detailLabel.text = {
+                let string = progress.progressAndSpeedDescription
+                if downloadTask.state == .Downloading {
+                    if string.containsString(" — ") {
+                        return string.stringByReplacingOccurrencesOfString(" — ", withString: "\n")
+                    } else {
+                        return string + "\n" + "Estimating"
+                    }
+                } else {
+                    return string + "\n" + String(downloadTask.state)
+                }
+            }()
+        } else {
+            let progress = Double(downloadTask.totalBytesWritten) / Double(book.fileSize)
+            cell.progressLabel.text = DownloadTask.percentFormatter.stringFromNumber(NSNumber(double: progress))
+            cell.progressView.setProgress(Float(progress), animated: animated)
+            cell.detailLabel.text = {
+                let downloadedSize = NSByteCountFormatter.stringFromByteCount(downloadTask.totalBytesWritten, countStyle: .File)
+                let fileSize = book.fileSizeDescription
+                return String(format: "%@ of %@ completed", downloadedSize, fileSize) + "\n" + String(downloadTask.state)
+            }()
+        }
+        
     }
     
     // MARK: Other Data Source
@@ -159,27 +174,67 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {}
     
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let pause = UITableViewRowAction(style: .Normal, title: "Pause") { (action, indexPath) in
-            guard let downloadTask = self.fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask else {return}
-            self.managedObjectContext.performBlock({
+        guard let downloadTask = self.fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask else {return nil}
+        
+        var actions = [UITableViewRowAction]()
+        switch downloadTask.state {
+        case .Downloading:
+            let pause = UITableViewRowAction(style: .Normal, title: "Pause") { (action, indexPath) in
                 downloadTask.state = .Paused
-            })
-            guard let bookID = downloadTask.book?.id else {return}
-            Network.shared.operations[bookID]?.cancel(produceResumeData: true)
+                
+                guard let bookID = downloadTask.book?.id else {return}
+                Network.shared.operations[bookID]?.cancel(produceResumeData: true)
+                tableView.setEditing(false, animated: true)
+            }
+            actions.insert(pause, atIndex: 0)
+        case .Paused:
+            
+            if let book = downloadTask.book,
+                let resumeData = Network.shared.data {
+                let resume = UITableViewRowAction(style: .Normal, title: "Resume") { (action, indexPath) in
+                    let task = Network.shared.session.downloadTaskWithResumeData(resumeData)
+                    let operation = DownloadBookOperation(downloadTask: task)
+                    Network.shared.queue.addOperation(operation)
+                    tableView.setEditing(false, animated: true)
+                }
+                actions.insert(resume, atIndex: 0)
+            } else {
+                let restart = UITableViewRowAction(style: .Normal, title: "Restart") { (action, indexPath) in
+                    guard let bookID = downloadTask.book?.id,
+                        let operation = DownloadBookOperation(bookID: bookID) else {return}
+                    Network.shared.queue.addOperation(operation)
+                    tableView.setEditing(false, animated: true)
+                }
+                actions.insert(restart, atIndex: 0)
+            }
+        default:
+            break
         }
+        
         let cancel = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.Common.cancel) { (action, indexPath) -> Void in
-            guard let downloadTask = self.fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask else {return}
             if let bookID = downloadTask.book?.id {
-                // Cancel the download operation, did cancel observer will do the rest
-                Network.shared.operations[bookID]?.cancel(produceResumeData: false)
+                if let operation = Network.shared.operations[bookID] {
+                    // When download is ongoing
+                    // Cancel the download operation
+                    // URLSessionTaskDelegate will update coredata and do clean up
+                    operation.cancel(produceResumeData: false)
+                } else {
+                    // When download is paused
+                    // Remove resume data
+                    // Delete downloadTask object and set book to not local
+                    downloadTask.book?.removeResumeData()
+                    downloadTask.book?.isLocal = NSNumber(bool: false)
+                    self.managedObjectContext.deleteObject(downloadTask)
+                }
             } else {
                 // In case of something goes wrong, and cannot find the book related to a download task, allow user to delete the row
-                self.managedObjectContext.performBlock({
-                    self.managedObjectContext.deleteObject(downloadTask)
-                })
+                self.managedObjectContext.deleteObject(downloadTask)
             }
+            tableView.setEditing(false, animated: true)
         }
-        return [cancel, pause]
+        actions.insert(cancel, atIndex: 0)
+        
+        return actions
     }
     
     // MARK: - Fetched Results Controller
