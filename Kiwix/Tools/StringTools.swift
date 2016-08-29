@@ -70,6 +70,11 @@ class LocalizedStrings {
     class var Library: String {return NSLocalizedString("Library", comment: "OS X, Preference")}
     class var ZimFiles: String {return NSLocalizedString("Zim Files", comment: "OS X, Preference")}
     
+    class Common {
+        private static let comment = "Common"
+        static let cancel = "Cancel"
+    }
+    
     class LibraryTabTitle {
         private static let comment = "Library Tab Titles"
         static let cloud = "Cloud"

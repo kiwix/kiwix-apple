@@ -105,7 +105,14 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
         guard let progress = Network.shared.operations[id]?.progress else {return}
         cell.progressLabel.text = progress.fractionCompletedDescription
         cell.progressView.setProgress(Float(progress.fractionCompleted), animated: animated)
-        cell.detailLabel.text = progress.localizedAdditionalDescription.stringByReplacingOccurrencesOfString(" – ", withString: "\n")
+        cell.detailLabel.text = {
+            let string = progress.progressAndSpeedDescription
+            if string.containsString(" — ") {
+                return string.stringByReplacingOccurrencesOfString(" — ", withString: "\n")
+            } else {
+                return string + "\n" + NSLocalizedString("Estimating Speed and Remaining Time", comment: "")
+            }
+        }()
     }
     
     // MARK: Other Data Source
@@ -147,13 +154,13 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {}
     
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let remove = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.remove) { (action, indexPath) -> Void in
+        let cancel = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.Common.cancel) { (action, indexPath) -> Void in
             guard let downloadTask = self.fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask,
                 let bookID = downloadTask.book?.id else {return}
             let operation = CancelBookDownloadOperation(bookID: bookID)
             GlobalOperationQueue.sharedInstance.addOperation(operation)
         }
-        return [remove]
+        return [cancel]
     }
     
     // MARK: - Fetched Results Controller

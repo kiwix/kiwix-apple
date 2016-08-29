@@ -469,11 +469,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="92" id="ekT-ed-PU9" customClass="DownloadBookCell" customModule="Kiwix" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="375" height="92"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="82" id="ekT-ed-PU9" customClass="DownloadBookCell" customModule="Kiwix" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="375" height="82"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ekT-ed-PU9" id="oM4-Hy-Mkf">
-                                    <frame key="frameInset" width="375" height="91"/>
+                                    <frame key="frameInset" width="375" height="81.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hji-3G-yaJ">
@@ -506,7 +506,7 @@
                                         <constraint firstItem="6Zg-Xf-xgS" firstAttribute="leading" secondItem="Hji-3G-yaJ" secondAttribute="trailing" constant="2" id="5lO-Sp-t2G"/>
                                         <constraint firstItem="v8H-ZV-HNV" firstAttribute="leading" secondItem="oM4-Hy-Mkf" secondAttribute="leadingMargin" id="7FW-0t-ljT"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="Too-68-SzG" secondAttribute="leading" constant="-2" id="9Vd-3e-m5f"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="v8H-ZV-HNV" secondAttribute="bottom" id="9ac-Vl-xk9"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="v8H-ZV-HNV" secondAttribute="bottom" constant="-8" id="9ac-Vl-xk9"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="6Zg-Xf-xgS" secondAttribute="trailing" id="D9Q-Dz-SXA"/>
                                         <constraint firstItem="g0o-rT-qxm" firstAttribute="top" secondItem="Too-68-SzG" secondAttribute="bottom" constant="4" id="IJR-yJ-4xs"/>
                                         <constraint firstItem="g0o-rT-qxm" firstAttribute="trailing" secondItem="oM4-Hy-Mkf" secondAttribute="trailingMargin" id="OFh-b3-2bf"/>
