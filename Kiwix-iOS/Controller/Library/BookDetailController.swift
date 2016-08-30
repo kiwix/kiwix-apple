@@ -30,6 +30,8 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
         tableView.emptyDataSetSource = self
         tableView.emptyDataSetDelegate = self
         tableView.tableFooterView = UIView()
+        tableView.estimatedRowHeight = 44.0
+        tableView.rowHeight = UITableViewAutomaticDimension
         
         hasPicIndicator.layer.cornerRadius = 2.0
         hasIndexIndicator.layer.cornerRadius = 2.0
@@ -70,11 +72,14 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
             cellTitles.append([Strings.remove])
         }
         cellTitles.append([Strings.size, Strings.createDate, Strings.arcitleCount, Strings.language, Strings.creator, Strings.publisher])
+        
+        if let _ = book.url { cellTitles.append([Strings.copyURL]) }
     }
     
     // MARK: - Delegates
     
     func buttonTapped(cell: CenterButtonCell) {
+        
         guard let title = cell.button.titleLabel?.text,
             let book = book else {return}
         
@@ -96,7 +101,13 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
             } else {
                 startDownload()
             }
-       default:
+        case Strings.copyURL:
+            guard let url = book.url else {return}
+            UIPasteboard.generalPasteboard().string = url.absoluteString
+            let action = UIAlertAction(title: LocalizedStrings.Common.ok, style: .Cancel, handler: nil)
+            let alert = UIAlertController(title: Strings.CopyURLAlert.succeed, message: "", actions: [action])
+            presentViewController(alert, animated: true, completion: nil)
+        default:
             return
         }
     }
@@ -128,6 +139,11 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
                 if book?.spaceState == .Caution { cell.button.tintColor = UIColor.orangeColor() }
             }
             return cell
+        case Strings.copyURL:
+            let cell = tableView.dequeueReusableCellWithIdentifier("CenterButtonCell", forIndexPath: indexPath) as! CenterButtonCell
+            cell.button.setTitle(title, forState: .Normal)
+            cell.delegate = self
+            return cell
         default:
             let cell = tableView.dequeueReusableCellWithIdentifier("RightDetailCell", forIndexPath: indexPath)
             cell.textLabel?.text = title
@@ -148,13 +164,7 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
                 break
             }
             return cell
-}
-
-//        case (0,2):
-//            let cell = tableView.dequeueReusableCellWithIdentifier("TextSwitchCell", forIndexPath: indexPath) as! TextSwitchCell
-//            cell.titleLabel.text = NSLocalizedString("Updates Automatically", comment: LocalizedStrings.BookDetail.comment)
-//            return cell
-
+        }
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -206,6 +216,13 @@ extension LocalizedStrings {
         static let language = NSLocalizedString("Language", comment: comment)
         static let creator = NSLocalizedString("Creator", comment: comment)
         static let publisher = NSLocalizedString("Publisher", comment: comment)
+        
+        static let copyURL = NSLocalizedString("Copy URL", comment: comment)
+        
+        class CopyURLAlert {
+            private static let comment = "Library, Book Detail, Copy URL Alert"
+            static let succeed = NSLocalizedString("URL Copied Successfully", comment: comment)
+        }
         
         class SpaceAlert {
             private static let comment = "Library, Book Detail, Space Alert"

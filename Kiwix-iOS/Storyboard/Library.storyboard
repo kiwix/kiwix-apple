@@ -219,7 +219,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="RightDetailCell" textLabel="iyO-rf-lDN" detailTextLabel="iHv-oK-qrR" style="IBUITableViewCellStyleValue1" id="eB8-dt-BPR">
-                                <rect key="frame" x="0.0" y="184.5" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="185" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eB8-dt-BPR" id="KR4-kV-SZd">
                                     <frame key="frameInset" width="375" height="43.5"/>
@@ -243,13 +243,16 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="CenterButtonCell" id="B0D-Hu-sVM" customClass="CenterButtonCell" customModule="Kiwix" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="228.5" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="229" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="B0D-Hu-sVM" id="Fhf-jb-Urf">
-                                    <frame key="frameInset" width="375" height="43.5"/>
+                                    <frame key="frameInset" width="375" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TLs-eg-B0R">
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="44" id="K1j-tL-2bu"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                             <state key="normal" title="Button"/>
                                             <connections>
@@ -268,7 +271,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TextSwitchCell" id="c4v-9p-eEF" customClass="TextSwitchCell" customModule="Kiwix" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="272.5" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="273" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c4v-9p-eEF" id="Lt6-0C-r4i">
                                     <frame key="frameInset" width="375" height="43.5"/>
@@ -293,23 +296,6 @@
                                     <outlet property="switchControl" destination="FPz-ra-fdx" id="wbZ-os-Ab4"/>
                                     <outlet property="titleLabel" destination="Ksx-E1-lZ2" id="2c2-zU-Ekv"/>
                                 </connections>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="DescCell" textLabel="noJ-ab-bVV" style="IBUITableViewCellStyleDefault" id="J0v-iU-gZ5">
-                                <rect key="frame" x="0.0" y="316.5" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="J0v-iU-gZ5" id="bXv-ic-E7x">
-                                    <frame key="frameInset" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="noJ-ab-bVV">
-                                            <frame key="frameInset" minX="15" width="345" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -699,6 +685,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="eUy-Zq-fkw"/>
+        <segue reference="G7C-gQ-hOd"/>
     </inferredMetricsTieBreakers>
 </document>
