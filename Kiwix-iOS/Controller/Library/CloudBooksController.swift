@@ -26,8 +26,8 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.emptyDataSetSource = self
-        tableView.emptyDataSetDelegate = self
+//        tableView.emptyDataSetSource = self
+//        tableView.emptyDataSetDelegate = self
         tableView.tableFooterView = UIView()
         
         refreshControl = RefreshLibControl()
@@ -91,6 +91,10 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
             NSOperationQueue.mainQueue().addOperationWithBlock({
                 self.refreshControl?.endRefreshing()
             })
+            let t = ReachabilityCondition.Error.NotReachable
+//            if let error = errors.first {
+//                guard error == ReachabilityCondition.Error.NotReachable else {return}
+//            }
         })
         GlobalOperationQueue.sharedInstance.addOperation(operation)
     }

@@ -12,7 +12,7 @@ import DZNEmptyDataSet
 extension CloudBooksController {
     
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
-        let string = NSLocalizedString("", comment: "")
+        let string = NSLocalizedString("Library is Empty", comment: "")
         let attributes = [NSFontAttributeName: UIFont.systemFontOfSize(18), NSForegroundColorAttributeName: UIColor.darkGrayColor()]
         return NSAttributedString(string: string, attributes: attributes)
     }
@@ -21,7 +21,7 @@ extension CloudBooksController {
 
 extension DownloadTasksController {
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
-        let string = NSLocalizedString("No task", comment: "")
+        let string = NSLocalizedString("No Download Tasks", comment: "")
         let attributes = [NSFontAttributeName: UIFont.systemFontOfSize(18), NSForegroundColorAttributeName: UIColor.darkGrayColor()]
         return NSAttributedString(string: string, attributes: attributes)
     }
@@ -33,7 +33,7 @@ extension DownloadTasksController {
 
 extension LocalBooksController {
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
-        let string = NSLocalizedString("No Local Books", comment: "")
+        let string = NSLocalizedString("No Local Books on Device", comment: "")
         let attributes = [NSFontAttributeName: UIFont.systemFontOfSize(18), NSForegroundColorAttributeName: UIColor.darkGrayColor()]
         return NSAttributedString(string: string, attributes: attributes)
     }

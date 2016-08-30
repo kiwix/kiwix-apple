@@ -219,7 +219,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="RightDetailCell" textLabel="iyO-rf-lDN" detailTextLabel="iHv-oK-qrR" style="IBUITableViewCellStyleValue1" id="eB8-dt-BPR">
-                                <rect key="frame" x="0.0" y="185" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="184.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eB8-dt-BPR" id="KR4-kV-SZd">
                                     <frame key="frameInset" width="375" height="43.5"/>
@@ -243,10 +243,10 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="CenterButtonCell" id="B0D-Hu-sVM" customClass="CenterButtonCell" customModule="Kiwix" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="229" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="228.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="B0D-Hu-sVM" id="Fhf-jb-Urf">
-                                    <frame key="frameInset" width="375" height="43"/>
+                                    <frame key="frameInset" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TLs-eg-B0R">
@@ -271,7 +271,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TextSwitchCell" id="c4v-9p-eEF" customClass="TextSwitchCell" customModule="Kiwix" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="273" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="272.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c4v-9p-eEF" id="Lt6-0C-r4i">
                                     <frame key="frameInset" width="375" height="43.5"/>
@@ -315,7 +315,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mqT-2V-BJm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1644" y="-1203"/>
+            <point key="canvasLocation" x="1644" y="-1203.1484257871066"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="gvc-DO-J6G">
