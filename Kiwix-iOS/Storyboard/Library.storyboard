@@ -126,8 +126,8 @@
                     </tabBar>
                     <connections>
                         <segue destination="NBP-9l-DA2" kind="relationship" relationship="viewControllers" id="Zb0-fu-dUz"/>
-                        <segue destination="1jT-pv-sMM" kind="relationship" relationship="viewControllers" id="eOM-f9-s2e"/>
-                        <segue destination="UgF-wM-QR2" kind="relationship" relationship="viewControllers" id="kZ4-B0-PCm"/>
+                        <segue destination="1jT-pv-sMM" kind="relationship" relationship="viewControllers" id="qHz-6T-Iyf"/>
+                        <segue destination="UgF-wM-QR2" kind="relationship" relationship="viewControllers" id="gII-bh-8JM"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fdG-uk-I8F" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -431,7 +431,7 @@
                                     <outlet property="hasPicIndicator" destination="m78-6c-sND" id="zXy-t3-J7w"/>
                                     <outlet property="subtitleLabel" destination="z2j-6z-goy" id="XKA-Il-WMq"/>
                                     <outlet property="titleLabel" destination="oQE-dD-h38" id="LXS-i7-i1M"/>
-                                    <segue destination="5Sz-gR-dgz" kind="showDetail" identifier="ShowBookDetail" action="showViewController:sender:" id="G7C-gQ-hOd"/>
+                                    <segue destination="5Sz-gR-dgz" kind="showDetail" identifier="ShowBookDetail" id="YBq-US-fwE"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -685,6 +685,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="G7C-gQ-hOd"/>
+        <segue reference="YBq-US-fwE"/>
     </inferredMetricsTieBreakers>
 </document>
