@@ -26,9 +26,6 @@ extension DownloadTasksController {
         return NSAttributedString(string: string, attributes: attributes)
     }
     
-    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
-        return scrollView.contentInset.top - 64
-    }
 }
 
 extension LocalBooksController {
@@ -37,10 +34,6 @@ extension LocalBooksController {
         let attributes = [NSFontAttributeName: UIFont.systemFontOfSize(18), NSForegroundColorAttributeName: UIColor.darkGrayColor()]
         return NSAttributedString(string: string, attributes: attributes)
     }
-    
-    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
-        return scrollView.contentInset.top - 64
-    }
 }
 
 extension BookDetailController {
@@ -48,10 +41,6 @@ extension BookDetailController {
         let string = NSLocalizedString("Choose A Book", comment: "")
         let attributes = [NSFontAttributeName: UIFont.systemFontOfSize(18), NSForegroundColorAttributeName: UIColor.darkGrayColor()]
         return NSAttributedString(string: string, attributes: attributes)
-    }
-    
-    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
-        return scrollView.contentInset.top - 64
     }
 }
 
@@ -62,7 +51,7 @@ extension LanguageFilterController {
         return NSAttributedString(string: string, attributes: attributes)
     }
     
-    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
-        return scrollView.contentInset.top - 64
-    }
+//    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+//        return scrollView.contentInset.top - 64
+//    }
 }

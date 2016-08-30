@@ -11,17 +11,6 @@ import Operations
 
 // MARK: - Alerts
 
-class SpaceNotEnoughAlert: AlertOperation<CloudBooksController> {
-    let comment = "Library: Download Space Not Enough Alert"
-    init(book: Book, presentationContext: CloudBooksController) {
-        super.init(presentAlertFrom: presentationContext)
-        
-        title = NSLocalizedString("Space Not Enough", comment: comment)
-        message = NSLocalizedString("You don't have enough remaining space to download this book.", comment: comment)
-        addActionWithTitle(LocalizedStrings.ok)
-    }
-}
-
 class RefreshLibraryLanguageFilterAlert: AlertOperation<CloudBooksController> {
     let comment = "Library: Language Filter Alert"
     let context = UIApplication.appDelegate.managedObjectContext
@@ -79,13 +68,13 @@ class RefreshLibraryLanguageFilterAlert: AlertOperation<CloudBooksController> {
 }
 
 class RefreshLibraryInternetRequiredAlert: AlertOperation<CloudBooksController> {
-    let comment = "Library: Internet Required Alert"
+    let comment = "Library, Internet Required Alert"
     init(presentationContext: CloudBooksController) {
         super.init(presentAlertFrom: presentationContext)
         
-        title = NSLocalizedString("Internet Connection Required", comment: comment)
-        message = NSLocalizedString("You need to connect to the Internet to refresh the library.", comment: comment)
-        addActionWithTitle(LocalizedStrings.ok)
+        title = NSLocalizedString("Internet Required", comment: comment)
+        message = NSLocalizedString("Please connect to the Internet to refresh library.", comment: comment)
+        addActionWithTitle(LocalizedStrings.Common.ok)
     }
 }
 

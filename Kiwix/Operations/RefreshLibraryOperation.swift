@@ -12,6 +12,7 @@ import Operations
 class RefreshLibraryOperation: GroupOperation {
     
     private(set) var hasUpdate = false
+    private(set) var firstTime = false
     
     init() {
         let retrive = Retrive()
@@ -22,6 +23,7 @@ class RefreshLibraryOperation: GroupOperation {
         process.addObserver(DidFinishObserver { (operation, errors) in
             guard let operation = operation as? Process else {return}
             self.hasUpdate = operation.hasUpdate
+            self.firstTime = operation.firstTime
         })
     }
 }
@@ -50,6 +52,7 @@ private class Retrive: Operation, ResultOperationType {
 private class Process: Operation, NSXMLParserDelegate, AutomaticInjectionOperationType {
     var requirement: NSData?
     private(set) var hasUpdate = false
+    private(set) var firstTime = false
     private let context: NSManagedObjectContext
     private var oldBookIDs = Set<String>()
     private var newBookIDs = Set<String>()
@@ -110,6 +113,7 @@ private class Process: Operation, NSXMLParserDelegate, AutomaticInjectionOperati
         })
         
         saveManagedObjectContexts()
+        firstTime = Preference.libraryLastRefreshTime == nil
         Preference.libraryLastRefreshTime = NSDate()
     }
     

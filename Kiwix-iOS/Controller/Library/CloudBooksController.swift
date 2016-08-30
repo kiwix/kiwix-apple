@@ -26,8 +26,8 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        tableView.emptyDataSetSource = self
-//        tableView.emptyDataSetDelegate = self
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
         tableView.tableFooterView = UIView()
         
         refreshControl = RefreshLibControl()
