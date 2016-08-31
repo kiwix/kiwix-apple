@@ -79,11 +79,11 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
     }
 
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        searchController?.startSearch(searchText, delayed: true)
+        ControllerRetainer.shared.search.startSearch(searchText, delayed: true)
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        searchController?.searchResultTBVC?.selectFirstResultIfPossible()
+        ControllerRetainer.shared.search.searchResultTBVC?.selectFirstResultIfPossible()
     }
     
     // MARK: -  UIPopoverPresentationControllerDelegate

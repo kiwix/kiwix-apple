@@ -23,7 +23,6 @@ class MainController: UIViewController {
     var bookmarkController: BookmarkController?
     var bookmarkNav: UIViewController?
     var settingController: UIViewController?
-    var searchController: SearchController?
     var welcomeController: UIViewController?
     let searchBar = SearchBar()
     
@@ -86,7 +85,6 @@ class MainController: UIViewController {
         bookmarkController = nil
         bookmarkNav = nil
         settingController = nil
-        searchController = nil
         welcomeController = nil
     }
     

@@ -51,36 +51,34 @@ extension MainController {
     }
     
     private func showSearchResultController(animated animated: Bool) {
-        guard let searchController = searchController ?? UIStoryboard.search.instantiateInitialViewController() as? SearchController else {return}
-        self.searchController = searchController
-        guard !childViewControllers.contains(searchController) else {return}
-        addChildViewController(searchController)
-        searchController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(searchController.view)
+        let controller = ControllerRetainer.shared.search
+        guard !childViewControllers.contains(controller) else {return}
+        addChildViewController(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(controller.view)
         
-        let views = ["SearchController": searchController.view]
+        let views = ["SearchController": controller.view]
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[SearchController]|", options: .AlignAllCenterY, metrics: nil, views: views))
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[SearchController]|", options: .AlignAllCenterX, metrics: nil, views: views))
         
         if animated {
-            searchController.view.alpha = 0.5
-            searchController.view.transform = CGAffineTransformMakeScale(0.94, 0.94)
+            controller.view.alpha = 0.5
+            controller.view.transform = CGAffineTransformMakeScale(0.94, 0.94)
             UIView.animateWithDuration(0.15, delay: 0.0, options: .CurveEaseOut, animations: { () -> Void in
-                searchController.view.alpha = 1.0
-                searchController.view.transform = CGAffineTransformIdentity
-            }) { (completed) -> Void in
-                searchController.didMoveToParentViewController(self)
-            }
+                controller.view.alpha = 1.0
+                controller.view.transform = CGAffineTransformIdentity
+            }, completion: nil)
         } else {
-            searchController.view.alpha = 1.0
-            searchController.view.transform = CGAffineTransformIdentity
-            searchController.didMoveToParentViewController(self)
+            controller.view.alpha = 1.0
+            controller.view.transform = CGAffineTransformIdentity
         }
+        controller.didMoveToParentViewController(self)
     }
     
     private func hideSearchResultController(animated animated: Bool) {
         guard let searchController = childViewControllers.flatMap({$0 as? SearchController}).first else {return}
         let completion = { (complete: Bool) -> Void in
+            guard complete else {return}
             searchController.view.removeFromSuperview()
             searchController.removeFromParentViewController()
             guard self.traitCollection.horizontalSizeClass == .Compact else {return}
