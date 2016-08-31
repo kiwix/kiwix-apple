@@ -85,6 +85,7 @@
 		979CB60F1D04AD04005E1BA1 /* PreferenceTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB60E1D04AD04005E1BA1 /* PreferenceTabController.swift */; };
 		979CB6C81D05CF37005E1BA1 /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6C71D05CF37005E1BA1 /* SearchResultController.swift */; };
 		979CB6CA1D05D26E005E1BA1 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6C91D05D26E005E1BA1 /* WebViewController.swift */; };
+		97A127C41D774C9900FB204D /* ControllerRetainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C31D774C9900FB204D /* ControllerRetainer.swift */; };
 		97A1FD161D6F71CE00A80EE2 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD121D6F71CE00A80EE2 /* DirectoryMonitor.swift */; };
 		97A1FD171D6F71CE00A80EE2 /* ExtensionAndTypealias.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD131D6F71CE00A80EE2 /* ExtensionAndTypealias.swift */; };
 		97A1FD181D6F71CE00A80EE2 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD141D6F71CE00A80EE2 /* SearchResult.swift */; };
@@ -297,6 +298,7 @@
 		979CB60E1D04AD04005E1BA1 /* PreferenceTabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferenceTabController.swift; path = Controllers/PreferenceTabController.swift; sourceTree = "<group>"; };
 		979CB6C71D05CF37005E1BA1 /* SearchResultController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchResultController.swift; path = Controllers/SearchResultController.swift; sourceTree = "<group>"; };
 		979CB6C91D05D26E005E1BA1 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebViewController.swift; path = Controllers/WebViewController.swift; sourceTree = "<group>"; };
+		97A127C31D774C9900FB204D /* ControllerRetainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerRetainer.swift; sourceTree = "<group>"; };
 		97A1FD121D6F71CE00A80EE2 /* DirectoryMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryMonitor.swift; sourceTree = "<group>"; };
 		97A1FD131D6F71CE00A80EE2 /* ExtensionAndTypealias.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionAndTypealias.swift; sourceTree = "<group>"; };
 		97A1FD141D6F71CE00A80EE2 /* SearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
@@ -817,6 +819,7 @@
 				9771DC4B1C37278E009ECFF0 /* Setting */,
 				97D55EF51D2075180081B523 /* TableOfContentsController.swift */,
 				97A7017E1D2C59CA00AAE2D8 /* GetStartedController.swift */,
+				97A127C31D774C9900FB204D /* ControllerRetainer.swift */,
 			);
 			name = Controllers;
 			path = Controller;
@@ -1526,6 +1529,7 @@
 				971A10401D022C42007FC62C /* LibraryUseCellularDataTBVC.swift in Sources */,
 				97D681411D6F712800E5FA99 /* DownloadTask+CoreDataProperties.swift in Sources */,
 				97D681391D6F711A00E5FA99 /* DownloadTask.swift in Sources */,
+				97A127C41D774C9900FB204D /* ControllerRetainer.swift in Sources */,
 				97D681321D6F70EC00E5FA99 /* MigrationPolicy.swift in Sources */,
 				97D6811B1D6E2A7100E5FA99 /* DownloadTasksController.swift in Sources */,
 				97D681261D6F70AC00E5FA99 /* SearchOperation.swift in Sources */,

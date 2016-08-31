@@ -22,7 +22,6 @@ class MainController: UIViewController {
     var tableOfContentsController: TableOfContentsController?
     var bookmarkController: BookmarkController?
     var bookmarkNav: UIViewController?
-    var libraryController: UIViewController?
     var settingController: UIViewController?
     var searchController: SearchController?
     var welcomeController: UIViewController?
@@ -86,7 +85,6 @@ class MainController: UIViewController {
         tableOfContentsController = nil
         bookmarkController = nil
         bookmarkNav = nil
-        libraryController = nil
         settingController = nil
         searchController = nil
         welcomeController = nil
@@ -240,10 +238,9 @@ class MainController: UIViewController {
     }
     
     func showLibraryButtonTapped() {
-        guard let viewController = libraryController ?? UIStoryboard.library.instantiateInitialViewController() else {return}
-        viewController.modalPresentationStyle = .FullScreen
-        libraryController = viewController
-        presentViewController(viewController, animated: true, completion: nil)
+        let controller = ControllerRetainer.shared.library
+        controller.modalPresentationStyle = .FullScreen
+        presentViewController(controller, animated: true, completion: nil)
     }
     
     func showSettingButtonTapped() {

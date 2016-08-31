@@ -26,8 +26,12 @@ class LibrarySplitViewController: UISplitViewController, UISplitViewControllerDe
     }
     
     func dismiss() {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismissViewControllerAnimated(true) { 
+            ControllerRetainer.shared.didDismissLibrary()
+        }
     }
+    
+    // MARK: - UISplitViewControllerDelegate
     
     func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
         guard !isShowingLangFilter else {return false}
