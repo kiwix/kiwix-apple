@@ -11,7 +11,7 @@ import CoreData
 import Operations
 import DZNEmptyDataSet
 
-class LocalBooksController: UIViewController, NSFetchedResultsControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class LocalBooksController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -30,6 +30,8 @@ class LocalBooksController: UIViewController, NSFetchedResultsControllerDelegate
         
         tableView.emptyDataSetSource = self
         tableView.emptyDataSetDelegate = self
+        tableView.delegate = self
+        tableView.dataSource = self
         tableView.tableFooterView = UIView()
     }
 

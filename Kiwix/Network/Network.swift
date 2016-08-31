@@ -15,7 +15,6 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
     let queue = OperationQueue()
     let context = NSManagedObjectContext.mainQueueContext
     private(set) var operations = [String: DownloadBookOperation]()
-    var data: NSData?
     
     private override init() {
         super.init()
@@ -63,14 +62,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
                 
                 // Save resue data to disk
                 guard let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? NSData else {return}
-                let task = Network.shared.session.downloadTaskWithResumeData(resumeData)
-                task.resume()
-                guard let book = downloadTask.book else {return}
-                
-                self.data = resumeData
-//                guard let resumeDataPath = book.resumeDataURL?.path,
-//                    let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? NSData else {return}
-//                resumeData.writeToFile(resumeDataPath, atomically: true)
+                Preference.resumeData[bookID] = resumeData
             } else {
                 // Handle other errors
             }

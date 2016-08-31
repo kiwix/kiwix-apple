@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import DZNEmptyDataSet
 
-class DownloadTasksController: UIViewController, NSFetchedResultsControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class DownloadTasksController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     var timer: NSTimer?
@@ -30,6 +30,8 @@ class DownloadTasksController: UIViewController, NSFetchedResultsControllerDeleg
         
         tableView.emptyDataSetSource = self
         tableView.emptyDataSetDelegate = self
+        tableView.delegate = self
+        tableView.dataSource = self
         tableView.tableFooterView = UIView()
     }
     
@@ -190,8 +192,8 @@ class DownloadTasksController: UIViewController, NSFetchedResultsControllerDeleg
             actions.insert(pause, atIndex: 0)
         case .Paused:
             
-            if let book = downloadTask.book,
-                let resumeData = Network.shared.data {
+            if let book = downloadTask.book, let bookID = book.id,
+                let resumeData = Preference.resumeData[bookID] {
                 let resume = UITableViewRowAction(style: .Normal, title: "Resume") { (action, indexPath) in
                     let task = Network.shared.session.downloadTaskWithResumeData(resumeData)
                     let operation = DownloadBookOperation(downloadTask: task)
