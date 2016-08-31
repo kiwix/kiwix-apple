@@ -28,11 +28,14 @@ class DownloadTasksController: UIViewController, UITableViewDelegate, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.emptyDataSetSource = self
-        tableView.emptyDataSetDelegate = self
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
+        tableView.estimatedRowHeight = 90.0
+        tableView.rowHeight = UITableViewAutomaticDimension
+        
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
     }
     
     override func viewWillAppear(animated: Bool) {

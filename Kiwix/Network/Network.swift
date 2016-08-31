@@ -52,11 +52,11 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
     func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
         guard let error = error, let bookID = task.taskDescription else {return}
         self.context.performBlockAndWait {
-            guard let book = Book.fetch(bookID, context: self.context) else {return}
+            guard let book = Book.fetch(bookID, context: self.context),
+                let downloadTask = book.downloadTask else {return}
             if error.code == NSURLErrorCancelled {
                 // If download task doesnt exist, it must mean download is cancelled by user
                 // DownloadTask object will have been deleted when user tap Cancel button / table row action
-                guard let downloadTask = book.downloadTask else {return}
                 downloadTask.totalBytesWritten = task.countOfBytesReceived
                 downloadTask.state = .Paused
                 
@@ -64,7 +64,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
                 guard let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? NSData else {return}
                 Preference.resumeData[bookID] = resumeData
             } else {
-                // Handle other errors
+                downloadTask.state = .Error
             }
         }
     }
