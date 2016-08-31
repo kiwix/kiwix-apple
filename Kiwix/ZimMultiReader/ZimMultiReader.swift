@@ -45,7 +45,7 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
                 self.delegate?.firstBookAdded()
             }
         }
-        GlobalOperationQueue.sharedInstance.addOperation(scanOperation)
+        GlobalQueue.shared.addOperation(scanOperation)
         self.scanOperation = scanOperation
     }
     

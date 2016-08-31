@@ -90,7 +90,7 @@ class GetStartedAlert: AlertOperation<MainController> {
         }
         addActionWithTitle(NSLocalizedString("Import", comment: comment), style: .Default) { (alert) in
             let operation = ShowHelpPageOperation(type: .ImportBookLearnMore, presentationContext: mainController)
-            GlobalOperationQueue.sharedInstance.addOperation(operation)
+            GlobalQueue.shared.addOperation(operation)
         }
         addActionWithTitle(NSLocalizedString("Dismiss", comment: comment))
     }

@@ -96,7 +96,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
 //                guard error == ReachabilityCondition.Error.NotReachable else {return}
 //            }
         })
-        GlobalOperationQueue.sharedInstance.addOperation(operation)
+        GlobalQueue.shared.addOperation(operation)
     }
     
     // MARK: - LanguageFilterUpdating

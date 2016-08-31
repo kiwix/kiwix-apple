@@ -157,7 +157,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             completionHandler(operation.hasUpdate ? .NewData : .NoData)
         })
-        GlobalOperationQueue.sharedInstance.addOperation(operation)
+        GlobalQueue.shared.addOperation(operation)
     }
 
     // MARK: - Core Data stack

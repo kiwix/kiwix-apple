@@ -14,7 +14,7 @@ class LibraryController: NSViewController {
     @IBOutlet weak var refresh: NSButton!
     @IBAction func refresh(sender: NSButton) {
         let operation = RefreshLibraryOperation(invokedAutomatically: false, completionHandler: nil)
-        GlobalOperationQueue.sharedInstance.addOperation(operation)
+        GlobalQueue.shared.addOperation(operation)
     }
     let managedObjectContext = NSApplication.appDelegate.managedObjectContext
     

@@ -32,7 +32,7 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate, D
     
     func updateWidgetData() {
         let operation = UpdateWidgetDataSourceOperation()
-        GlobalOperationQueue.sharedInstance.addOperation(operation)
+        GlobalQueue.shared.addOperation(operation)
     }
     
     // MARK: - Empty table datasource & delegate

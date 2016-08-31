@@ -1,5 +1,5 @@
 //
-//  GlobalOperationQueue.swift
+//  GlobalQueue.swift
 //  Kiwix
 //
 //  Created by Chris Li on 5/14/16.
@@ -8,8 +8,8 @@
 
 import Operations
 
-class GlobalOperationQueue: OperationQueue {
-    static let sharedInstance = GlobalOperationQueue()
+class GlobalQueue: OperationQueue {
+    static let shared = GlobalQueue()
 }
 
 public enum OperationErrorCode: Int {

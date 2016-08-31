@@ -113,7 +113,7 @@
 		97D452BE1D1723FF0033666F /* CollectionViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D452BD1D1723FF0033666F /* CollectionViewCells.swift */; };
 		97D55EF61D2075180081B523 /* TableOfContentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D55EF51D2075180081B523 /* TableOfContentsController.swift */; };
 		97D6811B1D6E2A7100E5FA99 /* DownloadTasksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6811A1D6E2A7100E5FA99 /* DownloadTasksController.swift */; };
-		97D681231D6F70AC00E5FA99 /* GlobalOperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6811C1D6F70AC00E5FA99 /* GlobalOperationQueue.swift */; };
+		97D681231D6F70AC00E5FA99 /* GlobalQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6811C1D6F70AC00E5FA99 /* GlobalQueue.swift */; };
 		97D681241D6F70AC00E5FA99 /* RefreshLibraryOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6811D1D6F70AC00E5FA99 /* RefreshLibraryOperation.swift */; };
 		97D681251D6F70AC00E5FA99 /* ScanLocalBookOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6811E1D6F70AC00E5FA99 /* ScanLocalBookOperation.swift */; };
 		97D681261D6F70AC00E5FA99 /* SearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6811F1D6F70AC00E5FA99 /* SearchOperation.swift */; };
@@ -337,7 +337,7 @@
 		97D452C11D1871E70033666F /* SearchTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchTabController.swift; path = "Kiwix-iOS/Controller/Search/SearchTabController.swift"; sourceTree = SOURCE_ROOT; };
 		97D55EF51D2075180081B523 /* TableOfContentsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableOfContentsController.swift; path = "Kiwix-iOS/Controller/TableOfContentsController.swift"; sourceTree = SOURCE_ROOT; };
 		97D6811A1D6E2A7100E5FA99 /* DownloadTasksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadTasksController.swift; sourceTree = "<group>"; };
-		97D6811C1D6F70AC00E5FA99 /* GlobalOperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalOperationQueue.swift; sourceTree = "<group>"; };
+		97D6811C1D6F70AC00E5FA99 /* GlobalQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalQueue.swift; sourceTree = "<group>"; };
 		97D6811D1D6F70AC00E5FA99 /* RefreshLibraryOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshLibraryOperation.swift; sourceTree = "<group>"; };
 		97D6811E1D6F70AC00E5FA99 /* ScanLocalBookOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanLocalBookOperation.swift; sourceTree = "<group>"; };
 		97D6811F1D6F70AC00E5FA99 /* SearchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchOperation.swift; sourceTree = "<group>"; };
@@ -973,7 +973,7 @@
 			isa = PBXGroup;
 			children = (
 				97DF259B1D6F7612001648A3 /* BookOperation.swift */,
-				97D6811C1D6F70AC00E5FA99 /* GlobalOperationQueue.swift */,
+				97D6811C1D6F70AC00E5FA99 /* GlobalQueue.swift */,
 				97D6811D1D6F70AC00E5FA99 /* RefreshLibraryOperation.swift */,
 				97D6811E1D6F70AC00E5FA99 /* ScanLocalBookOperation.swift */,
 				97D6811F1D6F70AC00E5FA99 /* SearchOperation.swift */,
@@ -1519,7 +1519,7 @@
 				97D681421D6F712800E5FA99 /* Language+CoreDataProperties.swift in Sources */,
 				97D681371D6F711A00E5FA99 /* Article.swift in Sources */,
 				971A104A1D022CBE007FC62C /* SearchResultTBVC.swift in Sources */,
-				97D681231D6F70AC00E5FA99 /* GlobalOperationQueue.swift in Sources */,
+				97D681231D6F70AC00E5FA99 /* GlobalQueue.swift in Sources */,
 				97A1FD3B1D6F724E00A80EE2 /* stringTools.cpp in Sources */,
 				97A1FD321D6F723D00A80EE2 /* resourceTools.cpp in Sources */,
 				971A10321D022AD5007FC62C /* SearchBar.swift in Sources */,
