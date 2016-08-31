@@ -17,7 +17,6 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     private weak var searchOperation: SearchOperation?
     
     private let searchQueue = OperationQueue()
-    private(set) var isScanning = false
     private(set) var readers = [ZimID: ZimReader]()
     private let monitor = DirectoryMonitor(URL: NSFileManager.docDirURL)
     private var lastZimFileURLSnapshot = Set<NSURL>()
@@ -36,11 +35,9 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     }
     
     func startScan() {
-        isScanning = true
         let scanOperation = ScanLocalBookOperation(lastZimFileURLSnapshot: lastZimFileURLSnapshot, lastIndexFolderURLSnapshot: lastIndexFolderURLSnapshot) { (currentZimFileURLSnapshot, currentIndexFolderURLSnapshot, firstBookAdded) in
             self.lastZimFileURLSnapshot = currentZimFileURLSnapshot
             self.lastIndexFolderURLSnapshot = currentIndexFolderURLSnapshot
-            self.isScanning = false
             if firstBookAdded {
                 self.delegate?.firstBookAdded()
             }
@@ -84,28 +81,6 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
         }
         searchQueue.addOperation(searchOperation)
         self.searchOperation = searchOperation
-    }
-    
-    // MARK: Search (Old)
-    
-    func search(searchTerm: String, zimFileID: String) -> [(id: String, articleTitle: String)] {
-        var resultTuples = [(id: String, articleTitle: String)]()
-        let firstCharRange = searchTerm.startIndex...searchTerm.startIndex
-        let firstLetterCapitalisedSearchTerm = searchTerm.stringByReplacingCharactersInRange(firstCharRange, withString: searchTerm.substringWithRange(firstCharRange).capitalizedString)
-        let searchTermVariations = Set([searchTerm, searchTerm.uppercaseString, searchTerm.lowercaseString, searchTerm.capitalizedString, firstLetterCapitalisedSearchTerm])
-        
-        let reader = readers[zimFileID]
-        var results = Set<String>()
-        for searchTermVariation in searchTermVariations {
-            guard let result = reader?.searchSuggestionsSmart(searchTermVariation) as? [String] else {continue}
-            results.unionInPlace(result)
-        }
-        
-        for result in results {
-            resultTuples.append((id: zimFileID, articleTitle: result))
-        }
-        
-        return resultTuples
     }
     
     // MARK: - Loading System
