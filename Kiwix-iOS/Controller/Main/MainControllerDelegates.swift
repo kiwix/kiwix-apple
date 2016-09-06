@@ -32,8 +32,7 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
         let operation = UpdateWidgetDataSourceOperation()
         GlobalQueue.shared.addOperation(operation)
         
-        guard let controller = bookmarkController ?? UIStoryboard.main.initViewController("BookmarkController", type: BookmarkController.self) else {return}
-        bookmarkController = controller
+        let controller = ControllerRetainer.bookmarkStar
         controller.bookmarkAdded = article.isBookmarked
         controller.transitioningDelegate = self
         controller.modalPresentationStyle = .OverFullScreen
@@ -79,11 +78,11 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
     }
 
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        ControllerRetainer.shared.search.startSearch(searchText, delayed: true)
+        ControllerRetainer.search.startSearch(searchText, delayed: true)
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        ControllerRetainer.shared.search.searchResultTBVC?.selectFirstResultIfPossible()
+        ControllerRetainer.search.searchResultTBVC?.selectFirstResultIfPossible()
     }
     
     // MARK: -  UIPopoverPresentationControllerDelegate

@@ -19,6 +19,7 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
     @IBOutlet weak var hasIndexIndicator: UILabel!
     @IBOutlet weak var hasIndexLabel: UILabel!
     
+    var context: UnsafeMutablePointer<Void> = nil
     typealias Strings = LocalizedStrings.BookDetail
     
     var book: Book?
@@ -37,8 +38,22 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
         hasIndexIndicator.layer.cornerRadius = 2.0
         hasPicIndicator.layer.masksToBounds = true
         hasIndexIndicator.layer.masksToBounds = true
-        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         configureViews()
+        book?.downloadTask?.addObserver(self, forKeyPath: "stateRaw", options: .New, context: context)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        book?.downloadTask?.removeObserver(self, forKeyPath: "stateRaw", context: context)
+    }
+    
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        guard context == self.context else {return}
+        
     }
     
     func configureViews() {

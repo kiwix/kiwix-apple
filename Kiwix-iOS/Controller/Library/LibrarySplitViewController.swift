@@ -26,9 +26,7 @@ class LibrarySplitViewController: UISplitViewController, UISplitViewControllerDe
     }
     
     func dismiss() {
-        dismissViewControllerAnimated(true) { 
-            ControllerRetainer.shared.didDismissLibrary()
-        }
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     // MARK: - UISplitViewControllerDelegate

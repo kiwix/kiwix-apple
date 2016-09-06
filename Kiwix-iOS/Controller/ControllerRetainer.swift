@@ -10,37 +10,54 @@ import UIKit
 
 class ControllerRetainer {
     static let shared = ControllerRetainer()
-    private init() {}
+    private init() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ControllerRetainer.removeStrongReference), name: UIApplicationDidReceiveMemoryWarningNotification, object: nil)
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidReceiveMemoryWarningNotification, object: nil)
+    }
+    
+    @objc func removeStrongReference() {
+        search = nil
+        bookmark = nil
+    }
     
     // MARK: -  Search
     
-    var searchStore: SearchController?
-    var search: SearchController {
-        let controller = searchStore ?? UIStoryboard.search.instantiateInitialViewController() as? SearchController
-        searchStore = controller
-        return controller!
+    private var search: SearchController?
+    
+    class var search: SearchController {
+        let controller = ControllerRetainer.shared.search ?? UIStoryboard(name: "Search", bundle: nil).instantiateInitialViewController() as! SearchController
+        ControllerRetainer.shared.search = controller
+        return controller
     }
     
+    // MARK: - Bookmark
+    
+    private var bookmark: UINavigationController?
+    
+    class var bookmark: UINavigationController {
+        let controller = ControllerRetainer.shared.bookmark ?? UIStoryboard(name: "Bookmark", bundle: nil).instantiateInitialViewController() as! UINavigationController
+        ControllerRetainer.shared.bookmark = controller
+        return controller
+    }
+    
+    private var bookmarkStar: BookmarkController?
+    
+    class var bookmarkStar: BookmarkController {
+        let controller = ControllerRetainer.shared.bookmarkStar ?? UIStoryboard(name: "Bookmark", bundle: nil).instantiateViewControllerWithIdentifier("BookmarkController") as! BookmarkController
+        ControllerRetainer.shared.bookmarkStar = controller
+        return controller
+    }
     
     // MARK: - Library
     
-    private var libraryStore: UIViewController?
-    private func releaseLibrary() {libraryStore = nil}
+    private var library: UIViewController?
     
-    var library: UIViewController {
-        let controller = libraryStore ?? UIStoryboard.library.instantiateInitialViewController()
-        libraryStore = controller
+    class var library: UIViewController {
+        let controller = ControllerRetainer.shared.bookmarkStar ?? UIStoryboard(name: "Library", bundle: nil).instantiateInitialViewController()
+        ControllerRetainer.shared.library = controller!
         return controller!
     }
-    
-    func didDismissLibrary() {
-        if #available(iOS 10, *) {
-            NSTimer.scheduledTimerWithTimeInterval(120.0, repeats: false, block: { (timer) in
-                self.libraryStore = nil
-            })
-        } else {
-            NSTimer.scheduledTimerWithTimeInterval(120.0, target: self, selector: Selector("releaseLibrary"), userInfo: nil, repeats: false)
-        }
-    }
-    
 }

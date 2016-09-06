@@ -20,8 +20,6 @@ class MainController: UIViewController {
     @IBOutlet weak var tocLeadSpacing: NSLayoutConstraint!
     
     var tableOfContentsController: TableOfContentsController?
-    var bookmarkController: BookmarkController?
-    var bookmarkNav: UIViewController?
     var settingController: UIViewController?
     var welcomeController: UIViewController?
     let searchBar = SearchBar()
@@ -82,8 +80,6 @@ class MainController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         tableOfContentsController = nil
-        bookmarkController = nil
-        bookmarkNav = nil
         settingController = nil
         welcomeController = nil
     }
@@ -236,7 +232,7 @@ class MainController: UIViewController {
     }
     
     func showLibraryButtonTapped() {
-        let controller = ControllerRetainer.shared.library
+        let controller = ControllerRetainer.library
         controller.modalPresentationStyle = .FullScreen
         presentViewController(controller, animated: true, completion: nil)
     }

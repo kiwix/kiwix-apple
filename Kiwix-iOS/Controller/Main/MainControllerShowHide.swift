@@ -51,7 +51,7 @@ extension MainController {
     }
     
     private func showSearchResultController(animated animated: Bool) {
-        let controller = ControllerRetainer.shared.search
+        let controller = ControllerRetainer.search
         guard !childViewControllers.contains(controller) else {return}
         addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
@@ -150,8 +150,7 @@ extension MainController {
     // MARK: - Show Bookmark
     
     func showBookmarkTBVC() {
-        guard let controller = bookmarkNav ?? UIStoryboard.main.initViewController("BookmarkNav", type: UINavigationController.self) else {return}
-        bookmarkNav = controller
+        let controller = ControllerRetainer.bookmark
         controller.modalPresentationStyle = .FormSheet
         presentViewController(controller, animated: true, completion: nil)
     }
