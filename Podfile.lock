@@ -1,5 +1,6 @@
 PODS:
   - DZNEmptyDataSet (1.8.1)
+  - MBProgressHUD (1.0.0)
   - Operations (3.2.0):
     - Operations/Standard (= 3.2.0)
   - Operations/Standard (3.2.0)
@@ -7,6 +8,7 @@ PODS:
 
 DEPENDENCIES:
   - DZNEmptyDataSet
+  - MBProgressHUD (~> 1.0.0)
   - Operations (from `https://github.com/ProcedureKit/ProcedureKit.git`, branch `swift/2.3`)
   - SwiftyUserDefaults
 
@@ -22,9 +24,10 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   Operations: 4c5f06d7328f1b097d5dac5c0d614917ecbc96e7
   SwiftyUserDefaults: 7abdba50a50ea0c18ee8903af3c88e4c1cb8448d
 
-PODFILE CHECKSUM: 385ab6f80e54cf2d2a029ad39e3ce32eaa738fcc
+PODFILE CHECKSUM: 7fce2ab788d4fea2728405e44965e38a852f02db
 
 COCOAPODS: 1.0.1

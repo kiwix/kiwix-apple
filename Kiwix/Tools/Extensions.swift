@@ -33,9 +33,9 @@ import Foundation
 extension NSLocale {
     class var preferredLangCodes: [String] {
         let preferredLangNames = self.preferredLanguages()
-        var preferredLangCodes = NSMutableOrderedSet()
-        for lang in preferredLangNames {
-            guard let code = lang.componentsSeparatedByString("-").first else {continue}
+        let preferredLangCodes = NSMutableOrderedSet()
+        for name in preferredLangNames {
+            guard let code = name.componentsSeparatedByString("-").first else {continue}
             preferredLangCodes.addObject(NSLocale.canonicalLanguageIdentifierFromString(code))
         }
         return preferredLangCodes.flatMap({ $0 as? String})

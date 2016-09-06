@@ -7,6 +7,7 @@ platform :ios, '9.0'
 
 pod 'DZNEmptyDataSet'
 pod 'SwiftyUserDefaults'
+pod 'MBProgressHUD', '~> 1.0.0'
 pod 'Operations', :git => 'https://github.com/ProcedureKit/ProcedureKit.git', :branch => 'swift/2.3'
 
 end
