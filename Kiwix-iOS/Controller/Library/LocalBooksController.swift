@@ -133,7 +133,7 @@ class LocalBooksController: UIViewController, UITableViewDelegate, UITableViewDa
         let delete = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.delete) { (action, indexPath) -> Void in
             guard let book = self.fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
             self.managedObjectContext.performBlock({ () -> Void in
-                if let id = book.id, let zimURL = ZimMultiReader.sharedInstance.readers[id]?.fileURL {
+                if let zimURL = ZimMultiReader.sharedInstance.readers[book.id]?.fileURL {
                     FileManager.removeItem(atURL: zimURL)
                     
                     let indexFolderURL = zimURL.URLByAppendingPathExtension("idx")

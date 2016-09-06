@@ -101,8 +101,7 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
         switch title {
         case Strings.downloadNow:
             func startDownload() {
-                guard let bookID = book.id,
-                    let download = DownloadBookOperation(bookID: bookID) else {return}
+                guard let download = DownloadBookOperation(bookID: book.id) else {return}
                 Network.shared.queue.addOperation(download)
             }
             

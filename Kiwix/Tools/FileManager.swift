@@ -13,8 +13,7 @@ class FileManager {
     class func move(book: Book, fromURL: NSURL, suggestedFileName: String?) {
         let fileName: String = {
             if let suggestedFileName = suggestedFileName {return suggestedFileName}
-            if let id = book.id {return "\(id).zim"}
-            return NSDate().description + ".zim"
+            return book.id
         }()
         let directory = NSFileManager.docDirURL
         createDirectory(directory, includeInICloudBackup: false)

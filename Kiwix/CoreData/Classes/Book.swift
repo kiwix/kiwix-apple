@@ -19,9 +19,10 @@ class Book: NSManagedObject {
     // MARK: - Add Book
     
     class func add(metadata: [String: AnyObject], context: NSManagedObjectContext) -> Book? {
+        guard let id = metadata["id"] as? String else {return nil}
         guard let book = insert(Book.self, context: context) else {return nil}
         
-        book.id = metadata["id"] as? String
+        book.id = id
         book.title = metadata["title"] as? String
         book.creator = metadata["creator"] as? String
         book.publisher = metadata["publisher"] as? String
@@ -75,8 +76,7 @@ class Book: NSManagedObject {
     }
     
     var resumeDataURL: NSURL? {
-        guard let id = id,
-            let folderURL = NSURL(fileURLWithPath: NSFileManager.libDirURL.path!).URLByAppendingPathComponent("DownloadTemp", isDirectory: true),
+        guard let folderURL = NSURL(fileURLWithPath: NSFileManager.libDirURL.path!).URLByAppendingPathComponent("DownloadTemp", isDirectory: true),
             let folderPath = folderURL.path else {return nil}
         if !NSFileManager.defaultManager().fileExistsAtPath(folderPath) {
             _ = try? NSFileManager.defaultManager().createDirectoryAtURL(folderURL, withIntermediateDirectories: true, attributes: [NSURLIsExcludedFromBackupKey: true])
@@ -99,8 +99,7 @@ class Book: NSManagedObject {
         
         var books = [ZimID: Book]()
         for book in localBooks {
-            guard let id = book.id else {continue}
-            books[id] = book
+            books[book.id] = book
         }
         return books
     }
@@ -114,7 +113,6 @@ class Book: NSManagedObject {
     // MARK: - Manage
     
     func removeResumeData() {
-        guard let id = id else {return}
         Preference.resumeData[id] = nil
     }
     

@@ -21,7 +21,7 @@ extension Book {
     @NSManaged var favIcon: NSData?
     @NSManaged var fileSize: Int64
     @NSManaged var globalCount: Int64
-    @NSManaged var id: String?
+    @NSManaged var id: String
     @NSManaged var isLocal: NSNumber?
     @NSManaged var hasPic: Bool
     @NSManaged var hasIndex: Bool

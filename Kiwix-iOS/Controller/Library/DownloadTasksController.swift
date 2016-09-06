@@ -107,13 +107,13 @@ class DownloadTasksController: UIViewController, UITableViewDelegate, UITableVie
     
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath, animated: Bool = false) {
         guard let downloadTask = fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask,
-            let book = downloadTask.book, let id = book.id,
+            let book = downloadTask.book,
             let cell = cell as? DownloadBookCell else {return}
         
         cell.titleLabel.text = book.title
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
         
-        if let progress = Network.shared.operations[id]?.progress {
+        if let progress = Network.shared.operations[book.id]?.progress {
             cell.progressLabel.text = progress.fractionCompletedDescription
             cell.progressView.setProgress(Float(progress.fractionCompleted), animated: animated)
             cell.detailLabel.text = {
@@ -195,8 +195,8 @@ class DownloadTasksController: UIViewController, UITableViewDelegate, UITableVie
             actions.insert(pause, atIndex: 0)
         case .Paused:
             
-            if let book = downloadTask.book, let bookID = book.id,
-                let resumeData = Preference.resumeData[bookID] {
+            if let book = downloadTask.book,
+                let resumeData = Preference.resumeData[book.id] {
                 let resume = UITableViewRowAction(style: .Normal, title: "Resume") { (action, indexPath) in
                     let task = Network.shared.session.downloadTaskWithResumeData(resumeData)
                     let operation = DownloadBookOperation(downloadTask: task)

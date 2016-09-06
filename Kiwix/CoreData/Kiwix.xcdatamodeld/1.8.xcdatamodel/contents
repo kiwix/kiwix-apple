@@ -21,10 +21,10 @@
         <attribute name="favIcon" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="fileSize" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="globalCount" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="hasIndex" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="hasPic" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="hasIndex" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="hasPic" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="id" attributeType="String" defaultValueString="Unknown" syncable="YES"/>
-        <attribute name="includeInSearch" optional="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="includeInSearch" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isLocal" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="mediaCount" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="meta4URL" optional="YES" attributeType="String" syncable="YES"/>
@@ -79,10 +79,10 @@
     <fetchRequest name="AllArticlesBookmarked" entity="Article" predicateString="isBookmarked == 1 AND book.downloadStateRaw == 1"/>
     <elements>
         <element name="Article" positionX="-108" positionY="-136" width="128" height="210"/>
-        <element name="Book" positionX="-405" positionY="-129" width="128" height="343"/>
+        <element name="Book" positionX="-405" positionY="-129" width="128" height="345"/>
+        <element name="Collection" positionX="-144" positionY="63" width="128" height="75"/>
         <element name="DownloadTask" positionX="-108" positionY="84" width="128" height="105"/>
         <element name="Language" positionX="-110" positionY="199" width="128" height="103"/>
         <element name="Tag" positionX="124" positionY="-126" width="128" height="73"/>
-        <element name="Collection" positionX="-144" positionY="63" width="128" height="75"/>
     </elements>
 </model>
