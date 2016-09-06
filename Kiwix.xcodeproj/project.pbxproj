@@ -212,6 +212,7 @@
 		69E75DFE2EF83272AC5B02BA /* Pods-Kiwix-OSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-OSX.release.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-OSX/Pods-Kiwix-OSX.release.xcconfig"; sourceTree = "<group>"; };
 		6DCB0E958A1083CA248C5A12 /* Pods-Kiwix-OSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-OSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-OSX/Pods-Kiwix-OSX.debug.xcconfig"; sourceTree = "<group>"; };
 		970722A91D6B4D1700A45620 /* LanguageFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageFilterController.swift; sourceTree = "<group>"; };
+		970912551D7F452C00BBD5A1 /* 1.8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.8.xcdatamodel; sourceTree = "<group>"; };
 		970C654F1D398D5A007032F8 /* BookmarkControllerAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookmarkControllerAnimator.swift; path = "Kiwix-iOS/Controller/Bookmark/BookmarkControllerAnimator.swift"; sourceTree = SOURCE_ROOT; };
 		970E68B11D37E1DD001E8514 /* SettingSearchTuneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSearchTuneController.swift; path = "Kiwix-iOS/Controller/Setting/SettingSearchTuneController.swift"; sourceTree = SOURCE_ROOT; };
 		970E68B51D37E224001E8514 /* SettingSearchHistoryTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSearchHistoryTBVC.swift; path = "Kiwix-iOS/Controller/Setting/SettingSearchHistoryTBVC.swift"; sourceTree = SOURCE_ROOT; };
@@ -2099,11 +2100,12 @@
 		97D6812A1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				970912551D7F452C00BBD5A1 /* 1.8.xcdatamodel */,
 				97D6812B1D6F70DE00E5FA99 /* 1.5.xcdatamodel */,
 				97D6812C1D6F70DE00E5FA99 /* 1.7.xcdatamodel */,
 				97D6812D1D6F70DE00E5FA99 /* Kiwix.xcdatamodel */,
 			);
-			currentVersion = 97D6812C1D6F70DE00E5FA99 /* 1.7.xcdatamodel */;
+			currentVersion = 970912551D7F452C00BBD5A1 /* 1.8.xcdatamodel */;
 			path = Kiwix.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

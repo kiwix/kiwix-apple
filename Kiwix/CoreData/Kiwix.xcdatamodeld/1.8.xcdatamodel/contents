@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="1.5" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15F34" minimumToolsVersion="Automatic">
+    <entity name="Article" representedClassName=".Article" syncable="YES">
+        <attribute name="bookmarkDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="isBookmarked" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isMainPage" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="lastPosition" optional="YES" attributeType="Double" syncable="YES"/>
+        <attribute name="lastReadDate" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
+        <attribute name="snippet" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thumbImageURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" attributeType="String" syncable="YES"/>
+        <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="book" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Book" inverseName="articles" inverseEntity="Book" syncable="YES"/>
+        <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="articles" inverseEntity="Tag" syncable="YES"/>
+    </entity>
+    <entity name="Book" representedClassName=".Book" syncable="YES">
+        <attribute name="articleCount" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="creator" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="favIcon" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="fileSize" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="globalCount" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="hasIndex" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="hasPic" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="id" attributeType="String" defaultValueString="Unknown" syncable="YES"/>
+        <attribute name="includeInSearch" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="isLocal" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="mediaCount" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" syncable="YES"/>
+        <attribute name="meta4URL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="publisher" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <relationship name="articles" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Article" inverseName="book" inverseEntity="Article" syncable="YES"/>
+        <relationship name="downloadTask" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DownloadTask" inverseName="book" inverseEntity="DownloadTask" syncable="YES"/>
+        <relationship name="language" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Language" inverseName="books" inverseEntity="Language" syncable="YES"/>
+    </entity>
+    <entity name="DownloadTask" representedClassName=".DownloadTask" syncable="YES">
+        <attribute name="creationTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="stateRaw" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="totalBytesWritten" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="book" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Book" inverseName="downloadTask" inverseEntity="Book" syncable="YES"/>
+    </entity>
+    <entity name="Language" representedClassName=".Language" syncable="YES">
+        <attribute name="code" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isDisplayed" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="books" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Book" inverseName="language" inverseEntity="Book" syncable="YES"/>
+    </entity>
+    <entity name="Tag" representedClassName=".Tag" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="articles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Article" inverseName="tags" inverseEntity="Article" syncable="YES"/>
+    </entity>
+    <fetchRequest name="AllArticles" entity="Article" predicateString="book.downloadStateRaw == 1"/>
+    <fetchRequest name="AllArticlesBookmarked" entity="Article" predicateString="isBookmarked == 1 AND book.downloadStateRaw == 1"/>
+    <elements>
+        <element name="Article" positionX="-108" positionY="-136" width="128" height="210"/>
+        <element name="Book" positionX="-405" positionY="-129" width="128" height="330"/>
+        <element name="DownloadTask" positionX="-108" positionY="54" width="128" height="105"/>
+        <element name="Language" positionX="-110" positionY="199" width="128" height="103"/>
+        <element name="Tag" positionX="124" positionY="-126" width="128" height="73"/>
+    </elements>
+</model>
