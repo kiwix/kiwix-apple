@@ -78,23 +78,29 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     
     func refreshAutomatically() {
         guard let date = Preference.libraryLastRefreshTime else {
-            refresh()
+            refresh(invokedByUser: false)
             return
         }
         guard date.timeIntervalSinceNow < -86400 else {return}
-        refresh()
+        refresh(invokedByUser: false)
     }
     
-    func refresh() {
+    func refresh(invokedByUser invokedByUser: Bool) {
         let operation = RefreshLibraryOperation()
         operation.addObserver(DidFinishObserver { (operation, errors) in
             NSOperationQueue.mainQueue().addOperationWithBlock({
                 self.refreshControl?.endRefreshing()
             })
-            let t = ReachabilityCondition.Error.NotReachable
-//            if let error = errors.first {
-//                guard error == ReachabilityCondition.Error.NotReachable else {return}
-//            }
+            
+            if let error = errors.first as? ReachabilityCondition.Error{
+                guard error == ReachabilityCondition.Error.NotReachable && invokedByUser == true else {return}
+                let cancel = UIAlertAction(title: LocalizedStrings.Common.ok, style: .Cancel, handler: nil)
+                let alertController = UIAlertController(title: NSLocalizedString("Network Required", comment: "Network Required Alert"),
+                                                        message: NSLocalizedString("Unable to connect to server. Please check your Internet connection.", comment: "Network Required Alert"),
+                                                        preferredStyle: .Alert)
+                alertController.addAction(cancel)
+                self.presentViewController(alertController, animated: true, completion: nil)
+            }
         })
         GlobalQueue.shared.addOperation(operation)
     }

@@ -11,10 +11,28 @@ import DZNEmptyDataSet
 
 extension CloudBooksController {
     
+    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
+        return UIImage(named: "CloudColor")
+    }
+    
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
-        let string = NSLocalizedString("Library is Empty", comment: "")
+        let string = NSLocalizedString("There are some books in the cloud", comment: "Cloud Book Controller")
         let attributes = [NSFontAttributeName: UIFont.systemFontOfSize(18), NSForegroundColorAttributeName: UIColor.darkGrayColor()]
         return NSAttributedString(string: string, attributes: attributes)
+    }
+    
+    func buttonTitleForEmptyDataSet(scrollView: UIScrollView!, forState state: UIControlState) -> NSAttributedString! {
+        let string = NSLocalizedString("Refresh", comment: "Cloud Book Controller")
+        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(17), NSForegroundColorAttributeName: AppColors.theme]
+        return NSAttributedString(string: string, attributes: attributes)
+    }
+    
+    func emptyDataSetDidTapButton(scrollView: UIScrollView!) {
+        refresh(invokedByUser: true)
+    }
+    
+    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+        return -navigationController!.navigationBar.frame.height
     }
     
 }

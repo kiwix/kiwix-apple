@@ -30,7 +30,7 @@ extension Book {
     @NSManaged var meta4URL: String?
     @NSManaged var publisher: String?
     @NSManaged var title: String?
-    @NSManaged var articles: NSSet?
+    @NSManaged var articles: Set<Article>
     @NSManaged var downloadTask: DownloadTask?
     @NSManaged var language: Language?
 

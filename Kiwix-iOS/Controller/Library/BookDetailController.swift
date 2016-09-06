@@ -110,7 +110,8 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
                 let download = UIAlertAction(title: Strings.SpaceAlert.downloadAnyway, style: .Destructive, handler: { (alert) in
                     startDownload()
                 })
-                let alertController = UIAlertController(title: Strings.SpaceAlert.spaceAlert, message: Strings.SpaceAlert.message, actions: [download, cancel])
+                let alertController = UIAlertController(title: Strings.SpaceAlert.spaceAlert, message: Strings.SpaceAlert.message, preferredStyle: .Alert)
+                [download, cancel].forEach({ alertController.addAction($0) })
                 presentViewController(alertController, animated: true, completion: nil)
             } else {
                 startDownload()
@@ -119,8 +120,9 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
             guard let url = book.url else {return}
             UIPasteboard.generalPasteboard().string = url.absoluteString
             let action = UIAlertAction(title: LocalizedStrings.Common.ok, style: .Cancel, handler: nil)
-            let alert = UIAlertController(title: Strings.CopyURLAlert.succeed, message: "", actions: [action])
-            presentViewController(alert, animated: true, completion: nil)
+            let alertController = UIAlertController(title: Strings.CopyURLAlert.succeed, message: nil, preferredStyle: .Alert)
+            alertController.addAction(action)
+            presentViewController(alertController, animated: true, completion: nil)
         default:
             return
         }

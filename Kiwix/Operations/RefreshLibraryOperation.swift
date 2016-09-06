@@ -14,7 +14,7 @@ class RefreshLibraryOperation: GroupOperation {
     private(set) var hasUpdate = false
     private(set) var firstTime = false
     
-    init() {
+    init(invokedByUser: Bool = false) {
         let retrive = Retrive()
         let process = Process()
         process.injectResultFromDependency(retrive)

@@ -37,14 +37,16 @@ class SettingSearchHistoryTBVC: UITableViewController {
         let delete = UIAlertAction(title: LocalizedStrings.delete, style: .Destructive) { (action) in
             Preference.recentSearchTerms = []
             let ok = UIAlertAction(title: LocalizedStrings.ok, style: .Default, handler: nil)
-            let alert = UIAlertController(title: NSLocalizedString("Your search history has been cleared.", comment: "Setting: Search History"), message: "", actions: [ok])
-            self.presentViewController(alert, animated: true, completion: nil)
+            let alertController = UIAlertController(title: NSLocalizedString("Your search history has been cleared.", comment: "Setting: Search History"), message: nil, preferredStyle: .Alert)
+            alertController.addAction(ok)
+            self.presentViewController(alertController, animated: true, completion: nil)
         }
         let cancel = UIAlertAction(title: LocalizedStrings.cancel, style: .Cancel, handler: nil)
-        let alert = UIAlertController(title: NSLocalizedString("Are you sure?", comment: "Setting: Search History"),
-                                      message: NSLocalizedString("This action is not recoverable.", comment: "Setting: Search History"),
-                                      actions: [delete, cancel])
-        presentViewController(alert, animated: true, completion: nil)
+        let alertController = UIAlertController(title: NSLocalizedString("Are you sure?", comment: "Setting: Search History"),
+                                                message: NSLocalizedString("This action is not recoverable.", comment: "Setting: Search History"),
+                                                preferredStyle: .Alert)
+        [delete, cancel].forEach({ alertController.addAction($0) })
+        presentViewController(alertController, animated: true, completion: nil)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     

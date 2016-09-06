@@ -81,26 +81,5 @@ extension UIColor {
 class AppColors {
     static let hasPicTintColor = UIColor(red: 1, green: 0.5, blue: 0, alpha: 1)
     static let hasIndexTintColor = UIColor(red: 0.304706, green: 0.47158, blue: 1, alpha: 1)
-}
-
-extension UITableView {
-    
-    func setBackgroundText(text: String?) {
-        let label = UILabel()
-        label.textAlignment = .Center
-        label.text = text
-        label.font = UIFont.boldSystemFontOfSize(20.0)
-        label.numberOfLines = 0
-        label.textColor = UIColor.grayColor()
-        backgroundView = label
-    }
-}
-
-// MARK: - View Controller
-
-extension UIAlertController {
-    convenience init(title: String, message: String, style: UIAlertControllerStyle = .Alert, actions:[UIAlertAction]) {
-        self.init(title: title, message: message , preferredStyle: style)
-        for action in actions {addAction(action)}
-    }
+    static let theme = UIColor(red: 71/255, green: 128/255, blue: 182/255, alpha: 1)
 }
