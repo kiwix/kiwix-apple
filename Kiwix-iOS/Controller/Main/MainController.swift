@@ -20,8 +20,6 @@ class MainController: UIViewController {
     @IBOutlet weak var tocLeadSpacing: NSLayoutConstraint!
     
     var tableOfContentsController: TableOfContentsController?
-    var settingController: UIViewController?
-    var welcomeController: UIViewController?
     let searchBar = SearchBar()
     
     var context: UnsafeMutablePointer<Void> = nil
@@ -75,13 +73,6 @@ class MainController: UIViewController {
         default:
             return
         }
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        tableOfContentsController = nil
-        settingController = nil
-        welcomeController = nil
     }
     
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
@@ -238,10 +229,9 @@ class MainController: UIViewController {
     }
     
     func showSettingButtonTapped() {
-        guard let viewController = settingController ?? UIStoryboard.setting.instantiateInitialViewController() else {return}
-        viewController.modalPresentationStyle = .FormSheet
-        settingController = viewController
-        presentViewController(viewController, animated: true, completion: nil)
+        let controller = ControllerRetainer.setting
+        controller.modalPresentationStyle = .FormSheet
+        presentViewController(controller, animated: true, completion: nil)
     }
     
     func cancelButtonTapped() {

@@ -19,18 +19,12 @@ class ControllerRetainer {
     }
     
     @objc func removeStrongReference() {
-        search = nil
         bookmark = nil
-    }
-    
-    // MARK: -  Search
-    
-    private var search: SearchController?
-    
-    class var search: SearchController {
-        let controller = ControllerRetainer.shared.search ?? UIStoryboard(name: "Search", bundle: nil).instantiateInitialViewController() as! SearchController
-        ControllerRetainer.shared.search = controller
-        return controller
+        bookmarkStar = nil
+        library = nil
+        search = nil
+        setting = nil
+        welcome = nil
     }
     
     // MARK: - Bookmark
@@ -56,8 +50,39 @@ class ControllerRetainer {
     private var library: UIViewController?
     
     class var library: UIViewController {
-        let controller = ControllerRetainer.shared.bookmarkStar ?? UIStoryboard(name: "Library", bundle: nil).instantiateInitialViewController()
-        ControllerRetainer.shared.library = controller!
-        return controller!
+        let controller = ControllerRetainer.shared.bookmarkStar ?? UIStoryboard(name: "Library", bundle: nil).instantiateInitialViewController()!
+        ControllerRetainer.shared.library = controller
+        return controller
     }
+    
+    // MARK: -  Search
+    
+    private var search: SearchController?
+    
+    class var search: SearchController {
+        let controller = ControllerRetainer.shared.search ?? UIStoryboard(name: "Search", bundle: nil).instantiateInitialViewController() as! SearchController
+        ControllerRetainer.shared.search = controller
+        return controller
+    }
+    
+    // MARK: - Setting
+    
+    private var setting: UIViewController?
+    
+    class var setting: UIViewController {
+        let controller = ControllerRetainer.shared.setting ?? UIStoryboard(name: "Setting", bundle: nil).instantiateInitialViewController()!
+        ControllerRetainer.shared.setting = controller
+        return controller
+    }
+    
+    // MARK: - Welcome
+    
+    private var welcome: UIViewController?
+    
+    class var welcome: UIViewController {
+        let controller = ControllerRetainer.shared.welcome ?? UIStoryboard(name: "Welcome", bundle: nil).instantiateInitialViewController()!
+        ControllerRetainer.shared.welcome = controller
+        return controller
+    }
+    
 }

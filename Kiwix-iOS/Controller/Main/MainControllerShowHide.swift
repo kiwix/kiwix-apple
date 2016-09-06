@@ -158,8 +158,7 @@ extension MainController {
     // MARK: - Show/Hide Welcome
     
     func showWelcome() {
-        guard let controller = welcomeController ?? UIStoryboard.welcome.instantiateInitialViewController() else {return}
-        welcomeController = controller
+        let controller = ControllerRetainer.welcome
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         addChildViewController(controller)
         view.addSubview(controller.view)
@@ -171,7 +170,7 @@ extension MainController {
     }
     
     func hideWelcome() {
-        guard let controller = welcomeController else {return}
+        let controller = ControllerRetainer.welcome
         controller.removeFromParentViewController()
         controller.view.removeFromSuperview()
     }
