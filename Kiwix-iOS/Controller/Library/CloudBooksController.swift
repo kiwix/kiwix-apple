@@ -152,7 +152,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         let alert = UIAlertController(title: NSLocalizedString("Only Show Preferred Language?", comment: comment),
                                       message: NSLocalizedString(String(format: "Would you like to filter the library by %@?", string), comment: comment),
                                       preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: LocalizedStrings.Common.yes, style: .Default) { (action) in
+        let action = UIAlertAction(title: LocalizedStrings.Common.yes, style: .Default) { (action) in
             self.managedObjectContext.performBlock({
                 let codes = NSLocale.preferredLangCodes
                 Language.fetchAll(self.managedObjectContext).forEach({ (language) in
@@ -161,7 +161,9 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
                 })
                 self.refreshFetchedResultController()
             })
-        })
+        }
+        alert.preferredAction = action
+        alert.addAction(action)
         alert.addAction(UIAlertAction(title: LocalizedStrings.Common.cancel, style: .Cancel, handler: nil))
         presentViewController(alert, animated: true, completion: nil)
     }
@@ -329,31 +331,3 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         tableView.endUpdates()
     }
 }
-
-class RefreshLibControl: UIRefreshControl {
-    
-    static let pullDownToRefresh = NSLocalizedString("Pull Down To Refresh", comment: "Refresh Library Control")
-    static let lastRefresh = NSLocalizedString("Last Refresh: %@ ago", comment: "Refresh Library Control")
-    
-    override var hidden: Bool {
-        didSet {
-            guard hidden != oldValue && hidden == false else {return}
-            updateTitle()
-        }
-    }
-    
-    private func updateTitle() {
-        let string: String = {
-            guard let lastRefreshTime = Preference.libraryLastRefreshTime else {return RefreshLibControl.pullDownToRefresh}
-            let interval = lastRefreshTime.timeIntervalSinceNow * -1
-            let formatter = NSDateComponentsFormatter()
-            formatter.unitsStyle = .Abbreviated
-            formatter.allowedUnits = interval < 60.0 ? [.Second] : [.Day, .Hour, .Minute]
-            let string = formatter.stringFromTimeInterval(interval) ?? ""
-            return String(format: RefreshLibControl.lastRefresh, string)
-        }()
-        let attributes = [NSForegroundColorAttributeName: UIColor.blackColor()]
-        attributedTitle = NSAttributedString(string: string, attributes: attributes)
-    }
-}
-
