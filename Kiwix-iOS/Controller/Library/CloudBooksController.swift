@@ -20,7 +20,6 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        title = ""
         tabBarItem.title = LocalizedStrings.LibraryTabTitle.cloud
         tabBarItem.image = UIImage(named: "Cloud")
         tabBarItem.selectedImage = UIImage(named: "CloudFilled")

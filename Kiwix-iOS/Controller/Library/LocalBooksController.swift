@@ -19,7 +19,6 @@ class LocalBooksController: UIViewController, UITableViewDelegate, UITableViewDa
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        title = "Local"
         tabBarItem.title = LocalizedStrings.LibraryTabTitle.local
         tabBarItem.image = UIImage(named: "Folder")
         tabBarItem.selectedImage = UIImage(named: "FolderFilled")

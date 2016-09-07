@@ -19,7 +19,6 @@ class DownloadTasksController: UIViewController, UITableViewDelegate, UITableVie
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        title = ""
         tabBarItem.title = LocalizedStrings.LibraryTabTitle.download
         tabBarItem.image = UIImage(named: "Download")
         tabBarItem.selectedImage = UIImage(named: "DownloadFilled")
