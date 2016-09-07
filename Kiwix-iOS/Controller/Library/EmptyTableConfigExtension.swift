@@ -22,12 +22,13 @@ extension CloudBooksController {
     }
     
     func buttonTitleForEmptyDataSet(scrollView: UIScrollView!, forState state: UIControlState) -> NSAttributedString! {
-        let string = NSLocalizedString("Refresh", comment: "Cloud Book Controller")
-        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(17), NSForegroundColorAttributeName: AppColors.theme]
+        let string = isRefreshing ? NSLocalizedString("Refreshing...", comment: "Cloud Book Controller") : NSLocalizedString("Refresh", comment: "Cloud Book Controller")
+        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(17), NSForegroundColorAttributeName: isRefreshing ? UIColor.grayColor() : AppColors.theme]
         return NSAttributedString(string: string, attributes: attributes)
     }
     
     func emptyDataSetDidTapButton(scrollView: UIScrollView!) {
+        guard !isRefreshing else {return}
         refresh(invokedByUser: true)
     }
     

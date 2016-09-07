@@ -9,9 +9,12 @@
 import UIKit
 import CoreData
 import Operations
+import MBProgressHUD
 import DZNEmptyDataSet
 
 class CloudBooksController: UITableViewController, NSFetchedResultsControllerDelegate, LanguageFilterUpdating, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+    
+    private(set) var isRefreshing = false
     
     // MARK: - Override
     
@@ -87,20 +90,43 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     
     func refresh(invokedByUser invokedByUser: Bool) {
         let operation = RefreshLibraryOperation()
-        operation.addObserver(DidFinishObserver { (operation, errors) in
+        operation.addObserver(WillExecuteObserver { (operation) in
             NSOperationQueue.mainQueue().addOperationWithBlock({
-                self.refreshControl?.endRefreshing()
+                self.isRefreshing = true
+                self.tableView.reloadEmptyDataSet()
             })
+        })
+        
+        operation.addObserver(DidFinishObserver { (operation, errors) in
             
-            if let error = errors.first as? ReachabilityCondition.Error{
-                guard error == ReachabilityCondition.Error.NotReachable && invokedByUser == true else {return}
+            NSOperationQueue.mainQueue().addOperationWithBlock({
+                defer {
+                    self.refreshControl?.endRefreshing()
+                    self.isRefreshing = false
+                    self.tableView.reloadEmptyDataSet()
+                }
+                
+                // make sure do have error
+                guard errors.count > 0 else {
+                    guard let view = self.splitViewController?.view else {return}
+                    let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
+                    hud.mode = .Text
+                    hud.label.numberOfLines = 0
+                    hud.label.text = NSLocalizedString("Library is refreshed successfully!", comment: "Cloud Book Controller")
+                    hud.hideAnimated(true, afterDelay: 2)
+                    return
+                }
+                
+                // test if is Reachability error
+                guard let error = errors.first as? ReachabilityCondition.Error
+                    where error == ReachabilityCondition.Error.NotReachable && invokedByUser == true else {return}
                 let cancel = UIAlertAction(title: LocalizedStrings.Common.ok, style: .Cancel, handler: nil)
                 let alertController = UIAlertController(title: NSLocalizedString("Network Required", comment: "Network Required Alert"),
-                                                        message: NSLocalizedString("Unable to connect to server. Please check your Internet connection.", comment: "Network Required Alert"),
-                                                        preferredStyle: .Alert)
+                    message: NSLocalizedString("Unable to connect to server. Please check your Internet connection.", comment: "Network Required Alert"),
+                    preferredStyle: .Alert)
                 alertController.addAction(cancel)
                 self.presentViewController(alertController, animated: true, completion: nil)
-            }
+            })
         })
         GlobalQueue.shared.addOperation(operation)
     }
