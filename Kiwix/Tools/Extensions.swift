@@ -32,13 +32,24 @@ import Foundation
 
 extension NSLocale {
     class var preferredLangCodes: [String] {
-        let preferredLangNames = self.preferredLanguages()
-        let preferredLangCodes = NSMutableOrderedSet()
-        for name in preferredLangNames {
-            guard let code = name.componentsSeparatedByString("-").first else {continue}
-            preferredLangCodes.addObject(NSLocale.canonicalLanguageIdentifierFromString(code))
+        // Reason for use NSMutableOrderedSet, there might be slight variation of the same language, e.g. en-US & en-UK, we want en to only appear once
+        let codes = NSMutableOrderedSet()
+        preferredLanguages().forEach { (string) in
+            guard let code = string.componentsSeparatedByString("-").first else {return}
+            codes.addObject(NSLocale.canonicalLanguageIdentifierFromString(code))
         }
-        return preferredLangCodes.flatMap({ $0 as? String})
+        return codes.flatMap({ $0 as? String})
+    }
+    
+    class var preferredLangNames: [String] {
+        // Reason for use NSMutableOrderedSet, there might be slight variation of the same language, e.g. en-US & en-UK, we want en to only appear once 
+        let names = NSMutableOrderedSet()
+        preferredLanguages().forEach { (string) in
+            guard let code = string.componentsSeparatedByString("-").first,
+                let name = NSLocale.currentLocale().displayNameForKey(NSLocaleIdentifier, value: code) else {return}
+            names.addObject(name)
+        }
+        return names.flatMap({ $0 as? String})
     }
 }
 

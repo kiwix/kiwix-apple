@@ -97,7 +97,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         })
         
         operation.addObserver(DidFinishObserver { (operation, errors) in
-            
+            guard let operation = operation as? RefreshLibraryOperation else {return}
             NSOperationQueue.mainQueue().addOperationWithBlock({
                 defer {
                     self.refreshControl?.endRefreshing()
@@ -105,29 +105,65 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
                     self.tableView.reloadEmptyDataSet()
                 }
                 
-                // make sure do have error
-                guard errors.count > 0 else {
-                    guard let view = self.splitViewController?.view else {return}
-                    let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
-                    hud.mode = .Text
-                    hud.label.numberOfLines = 0
-                    hud.label.text = NSLocalizedString("Library is refreshed successfully!", comment: "Cloud Book Controller")
-                    hud.hideAnimated(true, afterDelay: 2)
-                    return
+                if errors.count > 0 {
+                    if let error = errors.first as? ReachabilityCondition.Error
+                        where error == ReachabilityCondition.Error.NotReachable && invokedByUser == true {
+                        self.showReachibilityAlert()
+                    }
+                } else{
+                    if operation.firstTime {
+                        self.showLanguageFilterAlert()
+                    } else {
+                        self.showRefreshSuccessMessage()
+                    }
                 }
-                
-                // test if is Reachability error
-                guard let error = errors.first as? ReachabilityCondition.Error
-                    where error == ReachabilityCondition.Error.NotReachable && invokedByUser == true else {return}
-                let cancel = UIAlertAction(title: LocalizedStrings.Common.ok, style: .Cancel, handler: nil)
-                let alertController = UIAlertController(title: NSLocalizedString("Network Required", comment: "Network Required Alert"),
-                    message: NSLocalizedString("Unable to connect to server. Please check your Internet connection.", comment: "Network Required Alert"),
-                    preferredStyle: .Alert)
-                alertController.addAction(cancel)
-                self.presentViewController(alertController, animated: true, completion: nil)
             })
         })
         GlobalQueue.shared.addOperation(operation)
+    }
+    
+    func showRefreshSuccessMessage() {
+        guard let view = self.splitViewController?.view else {return}
+        let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
+        hud.mode = .Text
+        hud.label.numberOfLines = 0
+        hud.label.text = NSLocalizedString("Library is refreshed successfully!", comment: "Cloud Book Controller")
+        hud.hideAnimated(true, afterDelay: 2)
+    }
+    
+    func showReachibilityAlert() {
+        let cancel = UIAlertAction(title: LocalizedStrings.Common.ok, style: .Cancel, handler: nil)
+        let alertController = UIAlertController(title: NSLocalizedString("Network Required", comment: "Network Required Alert"),
+                                                message: NSLocalizedString("Unable to connect to server. Please check your Internet connection.", comment: "Network Required Alert"),
+                                                preferredStyle: .Alert)
+        alertController.addAction(cancel)
+        self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func showLanguageFilterAlert() {
+        var names = NSLocale.preferredLangNames
+        guard let last = names.popLast() else {return}
+        var parts = [String]()
+        if names.count > 0 { parts.append(names.joinWithSeparator(", ")) }
+        parts.append(last)
+        let string = parts.joinWithSeparator(" and ")
+    
+        let comment = "Library: Language Filter Alert"
+        let alert = UIAlertController(title: NSLocalizedString("Only Show Preferred Language?", comment: comment),
+                                      message: NSLocalizedString(String(format: "Would you like to filter the library by %@?", string), comment: comment),
+                                      preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: LocalizedStrings.Common.yes, style: .Default) { (action) in
+            self.managedObjectContext.performBlock({
+                let codes = NSLocale.preferredLangCodes
+                Language.fetchAll(self.managedObjectContext).forEach({ (language) in
+                    guard let code = language.code else {return}
+                    language.isDisplayed = codes.contains(code)
+                })
+                self.refreshFetchedResultController()
+            })
+        })
+        alert.addAction(UIAlertAction(title: LocalizedStrings.Common.cancel, style: .Cancel, handler: nil))
+        presentViewController(alert, animated: true, completion: nil)
     }
     
     // MARK: - LanguageFilterUpdating
@@ -312,7 +348,7 @@ class RefreshLibControl: UIRefreshControl {
             let interval = lastRefreshTime.timeIntervalSinceNow * -1
             let formatter = NSDateComponentsFormatter()
             formatter.unitsStyle = .Abbreviated
-            formatter.allowedUnits = [.Day, .Hour, .Minute]
+            formatter.allowedUnits = interval < 60.0 ? [.Second] : [.Day, .Hour, .Minute]
             let string = formatter.stringFromTimeInterval(interval) ?? ""
             return String(format: RefreshLibControl.lastRefresh, string)
         }()

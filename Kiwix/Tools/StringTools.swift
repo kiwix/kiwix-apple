@@ -72,8 +72,9 @@ class LocalizedStrings {
     
     class Common {
         private static let comment = "Common"
-        static let cancel = NSLocalizedString("Cancel", comment: "Basic")
-        static let ok = NSLocalizedString("OK", comment: "Basic")
+        static let ok = NSLocalizedString("OK", comment: comment)
+        static let yes = NSLocalizedString("Yes", comment: comment)
+        static let cancel = NSLocalizedString("Cancel", comment: comment)
     }
     
     class LibraryTabTitle {
