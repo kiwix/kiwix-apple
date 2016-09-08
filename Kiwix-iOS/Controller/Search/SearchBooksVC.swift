@@ -13,7 +13,6 @@ import DZNEmptyDataSet
 class SearchBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, TableCellDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var toolBar: UIToolbar!
     @IBOutlet weak var recentSearchContainer: DropShadowView!
     @IBOutlet weak var recentSearchBarHeight: NSLayoutConstraint!
     
