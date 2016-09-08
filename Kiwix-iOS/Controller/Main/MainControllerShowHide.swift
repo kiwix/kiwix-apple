@@ -59,7 +59,13 @@ extension MainController {
         
         let views = ["SearchController": controller.view]
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[SearchController]|", options: .AlignAllCenterY, metrics: nil, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[SearchController]|", options: .AlignAllCenterX, metrics: nil, views: views))
+        
+        // Not working in iOS 10, but work in iOS 9
+        //view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[SearchController]|", options: .AlignAllCenterX, metrics: nil, views: views))
+        
+        // Fix for top layout guide issue in iOS 10
+        view.addConstraint(controller.view.topAnchor.constraintEqualToAnchor(topLayoutGuide.bottomAnchor))
+        view.addConstraint(controller.view.bottomAnchor.constraintEqualToAnchor(bottomLayoutGuide.topAnchor))
         
         if animated {
             controller.view.alpha = 0.5

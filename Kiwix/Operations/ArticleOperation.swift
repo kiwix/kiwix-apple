@@ -7,7 +7,18 @@
 //
 
 import UIKit
+import Operations
 
-class ArticleOperation: NSObject {
-
+class ArticleLoadOperation: Operation {
+    let url: NSURL
+    
+    init?(url: NSURL) {
+        self.url = url
+        super.init()
+    }
+    
+    override func execute() {
+        
+    }
+    
 }
