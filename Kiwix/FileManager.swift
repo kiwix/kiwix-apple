@@ -19,21 +19,21 @@ class FileManager {
         let directory = NSFileManager.docDirURL
         createDirectory(directory, includeInICloudBackup: false)
         let destination = directory.URLByAppendingPathComponent(fileName)
-        moveOrReplaceFile(from: fromURL, to: destination)
+        moveOrReplaceFile(from: fromURL, to: destination!)
     }
     
     // MARK: - Book Resume Data
     
     private class func resumeDataURL(book: Book) -> NSURL {
         let tempDownloadLocation = NSURL(fileURLWithPath: NSFileManager.libDirURL.path!).URLByAppendingPathComponent("DownloadTemp", isDirectory: true)
-        return tempDownloadLocation.URLByAppendingPathComponent(book.id ?? NSDate().description, isDirectory: false)
+        return tempDownloadLocation!.URLByAppendingPathComponent(book.id ?? NSDate().description, isDirectory: false)!
     }
     
     class func saveResumeData(data: NSData, book: Book) {
         let tempDownloadLocation = NSURL(fileURLWithPath: NSFileManager.libDirURL.path!).URLByAppendingPathComponent("DownloadTemp", isDirectory: true)
-        if !NSFileManager.defaultManager().fileExistsAtPath(tempDownloadLocation.path!) {
+        if !NSFileManager.defaultManager().fileExistsAtPath(tempDownloadLocation!.path!) {
             do {
-                try NSFileManager.defaultManager().createDirectoryAtURL(tempDownloadLocation, withIntermediateDirectories: true, attributes: [NSURLIsExcludedFromBackupKey: true])
+                try NSFileManager.defaultManager().createDirectoryAtURL(tempDownloadLocation!, withIntermediateDirectories: true, attributes: [NSURLIsExcludedFromBackupKey: true])
             } catch let error as NSError {
                 print("Create temp download folder failed: \(error.localizedDescription)")
             }

@@ -8,7 +8,7 @@
 
 class KiwixURLProtocol: NSURLProtocol {
     override class func canInitWithRequest(request: NSURLRequest) -> Bool {
-        return request.URL?.scheme.caseInsensitiveCompare("Kiwix") == .OrderedSame ? true : false
+        return request.URL?.scheme!.caseInsensitiveCompare("Kiwix") == .OrderedSame ? true : false
     }
     
     override class func canonicalRequestForRequest(request: NSURLRequest) -> NSURLRequest {

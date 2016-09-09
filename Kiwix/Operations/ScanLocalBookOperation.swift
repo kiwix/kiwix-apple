@@ -95,7 +95,7 @@ class ScanLocalBookOperation: Operation {
             }()
             book?.isLocal = true
             book?.hasIndex = reader.hasIndex()
-            book?.hasPic = !reader.fileURL.absoluteString.containsString("nopic")
+            book?.hasPic = !reader.fileURL.absoluteString!.containsString("nopic")
         }
         
         for (id, book) in localBooks {
