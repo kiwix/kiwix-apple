@@ -56,7 +56,6 @@
 		973DD4141D343F2F009D45DB /* libicutest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD4091D343F2F009D45DB /* libicutest.a */; };
 		973DD4151D343F2F009D45DB /* libicutu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40A1D343F2F009D45DB /* libicutu.a */; };
 		973DD4161D343F2F009D45DB /* libicuuc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40B1D343F2F009D45DB /* libicuuc.a */; };
-		973DD4171D343F2F009D45DB /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40C1D343F2F009D45DB /* liblzma.a */; };
 		973DD4181D343F2F009D45DB /* libxapian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40D1D343F2F009D45DB /* libxapian.a */; };
 		973DD4191D343F2F009D45DB /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40E1D343F2F009D45DB /* libzim.a */; };
 		973DD4281D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD4271D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift */; };
@@ -76,6 +75,8 @@
 		9763A6291CEB9E55008A2718 /* OSXExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9763A6281CEB9E55008A2718 /* OSXExtensions.swift */; };
 		9764CBD11D806AD800072D6A /* RefreshLibControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764CBD01D806AD800072D6A /* RefreshLibControl.swift */; };
 		9764CBD31D8083AA00072D6A /* ArticleOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764CBD21D8083AA00072D6A /* ArticleOperation.swift */; };
+		9764F5931D830EF200E0B1C4 /* liblzma.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9764F5921D830EF200E0B1C4 /* liblzma.tbd */; };
+		9764F5951D832D2000E0B1C4 /* WebViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764F5941D832D2000E0B1C4 /* WebViewDelegate.swift */; };
 		9779C3141D4575AD0064CC8E /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E609F01D103DED00EBCB9D /* NotificationCenter.framework */; };
 		9779C3171D4575AE0064CC8E /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779C3161D4575AE0064CC8E /* TodayViewController.swift */; };
 		9779C31A1D4575AE0064CC8E /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9779C3181D4575AE0064CC8E /* MainInterface.storyboard */; };
@@ -293,6 +294,8 @@
 		9763A6281CEB9E55008A2718 /* OSXExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OSXExtensions.swift; path = "Kiwix-OSX/OSXExtensions.swift"; sourceTree = SOURCE_ROOT; };
 		9764CBD01D806AD800072D6A /* RefreshLibControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshLibControl.swift; sourceTree = "<group>"; };
 		9764CBD21D8083AA00072D6A /* ArticleOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleOperation.swift; sourceTree = "<group>"; };
+		9764F5921D830EF200E0B1C4 /* liblzma.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = liblzma.tbd; path = usr/lib/liblzma.tbd; sourceTree = SDKROOT; };
+		9764F5941D832D2000E0B1C4 /* WebViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebViewDelegate.swift; path = Main/WebViewDelegate.swift; sourceTree = "<group>"; };
 		976A0C801D41619C0006A742 /* DZNEmptyDataSet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DZNEmptyDataSet.framework; path = "../../../../Users/chrisli/Library/Developer/Xcode/DerivedData/Kiwix-ayxrfhaqnfxzendihdolvkklkmhk/Build/Products/Debug-iphoneos/DZNEmptyDataSet/DZNEmptyDataSet.framework"; sourceTree = "<group>"; };
 		9779C3131D4575AD0064CC8E /* Bookmarks.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Bookmarks.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		9779C3161D4575AE0064CC8E /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -415,6 +418,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9764F5931D830EF200E0B1C4 /* liblzma.tbd in Frameworks */,
 				973DD40F1D343F2F009D45DB /* libicudata.a in Frameworks */,
 				973DD4101D343F2F009D45DB /* libicui18n.a in Frameworks */,
 				973DD4111D343F2F009D45DB /* libicuio.a in Frameworks */,
@@ -423,7 +427,6 @@
 				973DD4141D343F2F009D45DB /* libicutest.a in Frameworks */,
 				973DD4151D343F2F009D45DB /* libicutu.a in Frameworks */,
 				973DD4161D343F2F009D45DB /* libicuuc.a in Frameworks */,
-				973DD4171D343F2F009D45DB /* liblzma.a in Frameworks */,
 				973DD4181D343F2F009D45DB /* libxapian.a in Frameworks */,
 				973DD4191D343F2F009D45DB /* libzim.a in Frameworks */,
 				9711871E1CEB449A00B9909D /* libz.tbd in Frameworks */,
@@ -451,6 +454,7 @@
 		931D277C156AE671D3F9EADA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9764F5921D830EF200E0B1C4 /* liblzma.tbd */,
 				976A0C801D41619C0006A742 /* DZNEmptyDataSet.framework */,
 				973DD4041D343F2F009D45DB /* libicudata.a */,
 				973DD4051D343F2F009D45DB /* libicui18n.a */,
@@ -631,6 +635,7 @@
 				970E68B71D3809A3001E8514 /* MainController.swift */,
 				9722122A1D3FCCE200C0DCF2 /* MainControllerShowHide.swift */,
 				970E68B81D3809A3001E8514 /* MainControllerDelegates.swift */,
+				9764F5941D832D2000E0B1C4 /* WebViewDelegate.swift */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -1084,7 +1089,6 @@
 				9779C30F1D4575AD0064CC8E /* Sources */,
 				9779C3101D4575AD0064CC8E /* Frameworks */,
 				9779C3111D4575AD0064CC8E /* Resources */,
-				974F42831D47F61B00F8074C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1358,19 +1362,6 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		974F42831D47F61B00F8074C /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\nbuildNumString=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nversionNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"$INFOPLIST_FILE\")\nIFS='.'; arr=($buildNumString)\nlastIndex=$((${#arr[@]} - 1))\nbuildNumber=$((${arr[lastIndex]} + 1))\nbuildNumString=\"${arr[0]}.${arr[1]}.$buildNumber\"\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumString\" \"$INFOPLIST_FILE\"";
-		};
 		97A4D7E21CF8C318006C731E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 12;
@@ -1562,6 +1553,7 @@
 				97A1FD1D1D6F71D800A80EE2 /* PacketAnalyzer.swift in Sources */,
 				97A1FD441D6F728200A80EE2 /* Preference.swift in Sources */,
 				97D681311D6F70EC00E5FA99 /* 1.5.xcmappingmodel in Sources */,
+				9764F5951D832D2000E0B1C4 /* WebViewDelegate.swift in Sources */,
 				97D681441D6F713200E5FA99 /* CoreDataExtension.swift in Sources */,
 				97DF259C1D6F7613001648A3 /* BookOperation.swift in Sources */,
 				97A1FD181D6F71CE00A80EE2 /* SearchResult.swift in Sources */,

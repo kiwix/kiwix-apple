@@ -12,6 +12,8 @@ import Operations
 
 class MainController: UIViewController {
     
+    // MARK: - IBOutlet
+    
     @IBOutlet weak var webView: UIWebView!
     @IBOutlet weak var dimView: UIView!
     @IBOutlet weak var tocVisiualEffectView: UIVisualEffectView!
@@ -19,10 +21,14 @@ class MainController: UIViewController {
     @IBOutlet weak var tocHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tocLeadSpacing: NSLayoutConstraint!
     
+    // MARK: - Properties
+    
+    let webViewDelegate = WebViewDelegate()
+    
     var tableOfContentsController: TableOfContentsController?
     let searchBar = SearchBar()
     
-    var context: UnsafeMutablePointer<Void> = nil
+    private(set) var context: UnsafeMutablePointer<Void> = nil
     var article: Article? {
         willSet(newArticle) {
             article?.removeObserver(self, forKeyPath: "isBookmarked")
@@ -43,8 +49,10 @@ class MainController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        webView.delegate = self
-        webView.scrollView.delegate = nil
+        webView.delegate = webViewDelegate
+        webViewDelegate.delegate = self
+        
+        
         
         navigationItem.titleView = searchBar
         searchBar.delegate = self

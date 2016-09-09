@@ -181,10 +181,6 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
         return snippet
     }
     
-    // MARK: - UIPopoverPresentationControllerDelegate
     
-    func safariViewControllerDidFinish(controller: SFSafariViewController) {
-        controller.dismissViewControllerAnimated(true, completion: nil)
-    }
     
 }
