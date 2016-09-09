@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0730"
+   LastUpgradeVersion = "0800"
    wasCreatedForAppExtension = "YES"
    version = "2.0">
    <BuildAction
@@ -15,7 +15,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "97CF3EEA1D428F9600AE82FE"
+               BlueprintIdentifier = "9779C3121D4575AD0064CC8E"
                BuildableName = "Bookmarks.appex"
                BlueprintName = "Bookmarks"
                ReferencedContainer = "container:Kiwix.xcodeproj">
@@ -47,7 +47,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "97CF3EEA1D428F9600AE82FE"
+            BlueprintIdentifier = "9779C3121D4575AD0064CC8E"
             BuildableName = "Bookmarks.appex"
             BlueprintName = "Bookmarks"
             ReferencedContainer = "container:Kiwix.xcodeproj">

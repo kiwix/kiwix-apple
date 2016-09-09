@@ -60,7 +60,8 @@ extension MainController {
         
         let views = ["SearchController": searchController.view]
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[SearchController]|", options: .AlignAllCenterY, metrics: nil, views: views))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[SearchController]|", options: .AlignAllCenterX, metrics: nil, views: views))
+        view.addConstraint(searchController.view.topAnchor.constraintEqualToAnchor(topLayoutGuide.bottomAnchor))
+        view.addConstraint(searchController.view.bottomAnchor.constraintEqualToAnchor(bottomLayoutGuide.topAnchor))
         
         if animated {
             searchController.view.alpha = 0.5
