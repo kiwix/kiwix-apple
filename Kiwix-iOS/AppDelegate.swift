@@ -114,7 +114,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func addRecentArticleShortCutItem(article: Article) {
-        guard let title = article.title, let url = article.urlString else {return}
+        guard let title = article.title, let url = NSURL(string: article.url) else {return}
         let icon = UIApplicationShortcutIcon(templateImageName: "Recent")
         let item = UIMutableApplicationShortcutItem(type: recentShortcutTypeString, localizedTitle: title, localizedSubtitle: "", icon: icon, userInfo: ["URL": url])
         UIApplication.sharedApplication().shortcutItems?.append(item)

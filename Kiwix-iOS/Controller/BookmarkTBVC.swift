@@ -115,7 +115,7 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate, D
         guard let navigationController = navigationController?.presentingViewController as? UINavigationController else {return}
         guard let mainVC = navigationController.topViewController as? MainController else {return}
         guard let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
-        mainVC.load(article.url)
+        mainVC.load(NSURL(string: article.url))
     }
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {

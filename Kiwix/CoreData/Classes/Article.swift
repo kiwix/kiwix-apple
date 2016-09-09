@@ -14,11 +14,11 @@ class Article: NSManagedObject {
 
     class func addOrUpdate(title: String? = nil, url: NSURL, book: Book, context: NSManagedObjectContext) -> Article? {
         let fetchRequest = NSFetchRequest(entityName: "Article")
-        fetchRequest.predicate = NSPredicate(format: "urlString = %@", url.absoluteString!)
+        fetchRequest.predicate = NSPredicate(format: "url = %@", url.absoluteString!)
         let article = Article.fetch(fetchRequest, type: Article.self, context: context)?.first ?? insert(Article.self, context: context)
         
         article?.title = title
-        article?.urlString = url.absoluteString
+        article?.url = url.absoluteString!
         article?.book = book
         
         return article
@@ -36,11 +36,6 @@ class Article: NSManagedObject {
     
     // MARK: - Helper
     
-    var url: NSURL? {
-        guard let urlString = urlString else {return nil}
-        return NSURL(string: urlString)
-    }
-    
     var thumbImageData: NSData? {
         if let urlString = thumbImageURL,
             let url = NSURL(string: urlString),
@@ -54,7 +49,7 @@ class Article: NSManagedObject {
     func dictionarySerilization() -> NSDictionary? {
         guard let title = title,
             let data = thumbImageData,
-            let url = url else {return nil}
+            let url = NSURL(string: url) else {return nil}
         return [
             "title": title,
             "thumbImageData": data,

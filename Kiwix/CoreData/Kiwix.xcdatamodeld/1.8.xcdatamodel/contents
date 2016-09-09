@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11224.2" systemVersion="15G1004" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.8">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="16A319" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.8">
     <entity name="Article" representedClassName=".Article" syncable="YES">
         <attribute name="bookmarkDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isBookmarked" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
@@ -9,9 +9,19 @@
         <attribute name="snippet" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbImageURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
-        <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" attributeType="String" syncable="YES"/>
         <relationship name="book" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Book" inverseName="articles" inverseEntity="Book" syncable="YES"/>
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="articles" inverseEntity="Tag" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="url"/>
+            </compoundIndex>
+        </compoundIndexes>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="url"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="Book" representedClassName=".Book" syncable="YES">
         <attribute name="articleCount" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -28,21 +38,21 @@
         <attribute name="isLocal" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="mediaCount" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="meta4URL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="publisher" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="articles" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Article" inverseName="book" inverseEntity="Article" syncable="YES"/>
-        <relationship name="collection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Collection" inverseName="books" inverseEntity="Collection" syncable="YES"/>
+        <relationship name="cachedResponses" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Response" inverseName="book" inverseEntity="Response" syncable="YES"/>
         <relationship name="downloadTask" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DownloadTask" inverseName="book" inverseEntity="DownloadTask" syncable="YES"/>
         <relationship name="language" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Language" inverseName="books" inverseEntity="Language" syncable="YES"/>
-        <uniquenessConstraints>
-            <uniquenessConstraint>
-                <constraint value="id"/>
-            </uniquenessConstraint>
-        </uniquenessConstraints>
-    </entity>
-    <entity name="Collection" syncable="YES">
-        <attribute name="id" attributeType="String" syncable="YES"/>
-        <relationship name="books" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Book" inverseName="collection" inverseEntity="Book" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="id"/>
+            </compoundIndex>
+            <compoundIndex>
+                <index value="pid"/>
+            </compoundIndex>
+        </compoundIndexes>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
@@ -65,9 +75,31 @@
         <attribute name="isDisplayed" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="books" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Book" inverseName="language" inverseEntity="Book" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="code"/>
+            </compoundIndex>
+        </compoundIndexes>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="code"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Response" syncable="YES">
+        <attribute name="data" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="encoding" attributeType="String" syncable="YES"/>
+        <attribute name="mime" attributeType="String" syncable="YES"/>
+        <attribute name="url" attributeType="String" syncable="YES"/>
+        <relationship name="book" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Book" inverseName="cachedResponses" inverseEntity="Book" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="url"/>
+            </compoundIndex>
+        </compoundIndexes>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="url"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
@@ -75,14 +107,12 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="articles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Article" inverseName="tags" inverseEntity="Article" syncable="YES"/>
     </entity>
-    <fetchRequest name="AllArticles" entity="Article" predicateString="book.downloadStateRaw == 1"/>
-    <fetchRequest name="AllArticlesBookmarked" entity="Article" predicateString="isBookmarked == 1 AND book.downloadStateRaw == 1"/>
     <elements>
-        <element name="Article" positionX="-108" positionY="-136" width="128" height="210"/>
-        <element name="Book" positionX="-405" positionY="-129" width="128" height="345"/>
-        <element name="Collection" positionX="-144" positionY="63" width="128" height="75"/>
-        <element name="DownloadTask" positionX="-108" positionY="84" width="128" height="105"/>
-        <element name="Language" positionX="-110" positionY="199" width="128" height="103"/>
-        <element name="Tag" positionX="124" positionY="-126" width="128" height="73"/>
+        <element name="Article" positionX="-657" positionY="-153" width="128" height="208"/>
+        <element name="Book" positionX="-947" positionY="-142" width="128" height="358"/>
+        <element name="DownloadTask" positionX="-657" positionY="273" width="128" height="105"/>
+        <element name="Language" positionX="-938" positionY="288" width="128" height="103"/>
+        <element name="Tag" positionX="-425" positionY="-18" width="128" height="73"/>
+        <element name="Response" positionX="-657" positionY="72" width="128" height="118"/>
     </elements>
 </model>

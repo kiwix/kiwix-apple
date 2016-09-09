@@ -21,7 +21,7 @@ extension Article {
     @NSManaged var bookmarkDate: NSDate?
     @NSManaged var title: String?
     @NSManaged var snippet: String?
-    @NSManaged var urlString: String?
+    @NSManaged var url: String
     @NSManaged var book: Book?
     @NSManaged var tags: NSSet?
     @NSManaged var thumbImageURL: String?
