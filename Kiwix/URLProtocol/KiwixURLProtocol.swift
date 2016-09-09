@@ -50,6 +50,8 @@ class KiwixURLProtocol: NSURLProtocol {
 }
 
 extension NSURL {
+    
+    
     class func kiwixURLWithZimFileid(id: String, contentURLString: String) -> NSURL? {
         guard let escapedContentURLString = contentURLString.stringByAddingPercentEncodingWithAllowedCharacters(.URLPathAllowedCharacterSet()) else {return nil}
         let baseURLString = "kiwix://" + id

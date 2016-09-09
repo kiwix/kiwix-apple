@@ -11,7 +11,34 @@ import SafariServices
 import JavaScriptCore
 import DZNEmptyDataSet
 
-extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, ZimMultiReaderDelegate, UISearchBarDelegate, UIPopoverPresentationControllerDelegate, UIWebViewDelegate, SFSafariViewControllerDelegate, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
+extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate,
+    LPTBarButtonItemDelegate, TableOfContentsDelegate, ZimMultiReaderDelegate, UISearchBarDelegate, UIPopoverPresentationControllerDelegate, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
+    
+    // MARK: - UIWebViewDelegate
+    
+    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        guard let url = request.URL else {return false}
+        guard url.isKiwixURL else {loadExternalResource(url); return false}
+        return true
+    }
+    
+    func webViewDidStartLoad(webView: UIWebView) {
+        
+    }
+    
+    func webViewDidFinishLoad(webView: UIWebView) {
+        
+    }
+    
+    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
+        print(error)
+    }
+    
+    // MARK: - SFSafariViewControllerDelegate
+    
+    func safariViewControllerDidFinish(controller: SFSafariViewController) {
+        controller.dismissViewControllerAnimated(true, completion: nil)
+    }
     
     // MARK: - LPTBarButtonItemDelegate
     
@@ -27,7 +54,7 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
         
         article.isBookmarked = !article.isBookmarked
         if article.isBookmarked {article.bookmarkDate = NSDate()}
-        if article.snippet == nil {article.snippet = getSnippet(webView)}
+        if article.snippet == nil {article.snippet = JSInjection.getSnippet(webView)}
         
         let operation = UpdateWidgetDataSourceOperation()
         GlobalQueue.shared.addOperation(operation)
@@ -91,96 +118,47 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
         return .None
     }
     
-    // MARK: - UIWebViewDelegate
-    
-    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        guard let url = request.URL else {return true}
-        if url.scheme == "kiwix" {
-            return true
-        } else {
-            let svc = SFSafariViewController(URL: url)
-            svc.delegate = self
-            presentViewController(svc, animated: true, completion: nil)
-            return false
-        }
-    }
-    
-    func webViewDidStartLoad(webView: UIWebView) {
-        PacketAnalyzer.sharedInstance.startListening()
-    }
-    
-    func webViewDidFinishLoad(webView: UIWebView) {
-        guard let url = webView.request?.URL else {return}
-        guard url.scheme!.caseInsensitiveCompare("Kiwix") == .OrderedSame else {return}
-        
-        let title = webView.stringByEvaluatingJavaScriptFromString("document.title")
-        let managedObjectContext = UIApplication.appDelegate.managedObjectContext
-        guard let bookID = url.host else {return}
-        guard let book = Book.fetch(bookID, context: managedObjectContext) else {return}
-        guard let article = Article.addOrUpdate(title, url: url, book: book, context: managedObjectContext) else {return}
-        
-        self.article = article
-        if let image = PacketAnalyzer.sharedInstance.chooseImage() {
-            article.thumbImageURL = image.url.absoluteString
-        }
-        
-        configureSearchBarPlaceHolder()
-        injectTableWrappingJavaScriptIfNeeded()
-        adjustFontSizeIfNeeded()
-        configureNavigationButtonTint()
-        configureBookmarkButton()
-        
-        if traitCollection.horizontalSizeClass == .Regular && isShowingTableOfContents {
-            tableOfContentsController?.headings = getTableOfContents(webView)
-        }
-        
-        PacketAnalyzer.sharedInstance.stopListening()
-    }
-    
-    // MARK: - Javascript
-    
-    func injectTableWrappingJavaScriptIfNeeded() {
-        if Preference.webViewInjectJavascriptToAdjustPageLayout {
-            if traitCollection.horizontalSizeClass == .Compact {
-                guard let path = NSBundle.mainBundle().pathForResource("adjustlayoutiPhone", ofType: "js") else {return}
-                guard let jString = try? String(contentsOfFile: path) else {return}
-                webView.stringByEvaluatingJavaScriptFromString(jString)
-            } else {
-                guard let path = NSBundle.mainBundle().pathForResource("adjustlayoutiPad", ofType: "js") else {return}
-                guard let jString = try? String(contentsOfFile: path) else {return}
-                webView.stringByEvaluatingJavaScriptFromString(jString)
-            }
-        }
-    }
-    
-    func adjustFontSizeIfNeeded() {
-        let zoomScale = Preference.webViewZoomScale
-        guard zoomScale != 100.0 else {return}
-        let jString = String(format: "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%.0f%%'", zoomScale)
-        webView.stringByEvaluatingJavaScriptFromString(jString)
-    }
-    
-    func getTableOfContents(webView: UIWebView) -> [HTMLHeading] {
-        guard let context = webView.valueForKeyPath("documentView.webView.mainFrame.javaScriptContext") as? JSContext,
-            let path = NSBundle.mainBundle().pathForResource("getTableOfContents", ofType: "js"),
-            let jString = try? String(contentsOfFile: path),
-            let elements = context.evaluateScript(jString).toArray() as? [[String: String]] else {return [HTMLHeading]()}
-        var headings = [HTMLHeading]()
-        for element in elements {
-            guard let heading = HTMLHeading(rawValue: element) else {continue}
-            headings.append(heading)
-        }
-        return headings
-    }
-    
-    func getSnippet(webView: UIWebView) -> String? {
-        guard let context = webView.valueForKeyPath("documentView.webView.mainFrame.javaScriptContext") as? JSContext,
-            let path = NSBundle.mainBundle().pathForResource("getSnippet", ofType: "js"),
-            let jString = try? String(contentsOfFile: path),
-            let snippet = context.evaluateScript(jString).toString() else {return nil}
-        return snippet
-    }
-    
-    
+//    
+//    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+//        guard let url = request.URL else {return true}
+//        if url.scheme == "kiwix" {
+//            return true
+//        } else {
+//            let svc = SFSafariViewController(URL: url)
+//            svc.delegate = self
+//            presentViewController(svc, animated: true, completion: nil)
+//            return false
+//        }
+//    }
+//    
+//    func webViewDidStartLoad(webView: UIWebView) {
+//        PacketAnalyzer.sharedInstance.startListening()
+//    }
+//    
+//    func webViewDidFinishLoad(webView: UIWebView) {
+//        guard let url = webView.request?.URL else {return}
+//        guard url.scheme!.caseInsensitiveCompare("Kiwix") == .OrderedSame else {return}
+//        
+//        let title = webView.stringByEvaluatingJavaScriptFromString("document.title")
+//        let managedObjectContext = UIApplication.appDelegate.managedObjectContext
+//        guard let bookID = url.host else {return}
+//        guard let book = Book.fetch(bookID, context: managedObjectContext) else {return}
+//        guard let article = Article.addOrUpdate(title, url: url, book: book, context: managedObjectContext) else {return}
+//        
+//        self.article = article
+//        if let image = PacketAnalyzer.sharedInstance.chooseImage() {
+//            article.thumbImageURL = image.url.absoluteString
+//        }
+//        
+//        configureSearchBarPlaceHolder()
+//        injectTableWrappingJavaScriptIfNeeded()
+//        adjustFontSizeIfNeeded()
+//        configureNavigationButtonTint()
+//        configureBookmarkButton()
+//        
+
+//        
+//        PacketAnalyzer.sharedInstance.stopListening()
+//    }
     
 }

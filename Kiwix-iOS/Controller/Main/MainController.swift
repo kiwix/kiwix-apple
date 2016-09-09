@@ -9,6 +9,7 @@
 
 import UIKit
 import Operations
+import SafariServices
 
 class MainController: UIViewController {
     
@@ -23,7 +24,6 @@ class MainController: UIViewController {
     
     // MARK: - Properties
     
-    let webViewDelegate = WebViewDelegate()
     
     var tableOfContentsController: TableOfContentsController?
     let searchBar = SearchBar()
@@ -49,8 +49,7 @@ class MainController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        webView.delegate = webViewDelegate
-        webViewDelegate.delegate = self
+        webView.delegate = self
         
         
         
@@ -118,6 +117,19 @@ class MainController: UIViewController {
         let mainPageURLString = reader.mainPageURL()
         let mainPageURL = NSURL.kiwixURLWithZimFileid(id, contentURLString: mainPageURLString)
         load(mainPageURL)
+    }
+    
+    func loadExternalResource(url: NSURL) {
+        let controller = SFSafariViewController(URL: url)
+        controller.delegate = self
+        presentViewController(controller, animated: true, completion: nil)
+    }
+    
+    // MARK: - Tasks
+    
+    func setTableOfContentIfNeeded() {
+        guard traitCollection.horizontalSizeClass == .Regular && isShowingTableOfContents else {return}
+        tableOfContentsController?.headings = JSInjection.getTableOfContents(webView)
     }
     
     // MARK: - Configure
@@ -223,11 +235,7 @@ class MainController: UIViewController {
     
     func showTableOfContentButtonTapped(sender: UIBarButtonItem) {
         guard let _ = article else {return}
-        if isShowingTableOfContents {
-            animateOutTableOfContentsController()
-        } else {
-            animateInTableOfContentsController()
-        }
+        isShowingTableOfContents ? animateOutTableOfContentsController() :animateInTableOfContentsController()
     }
     
     func showLibraryButtonTapped() {
