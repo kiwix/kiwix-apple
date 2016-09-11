@@ -19,8 +19,8 @@ class Book: NSManagedObject {
     // MARK: - Add Book
     
     class func add(metadata: [String: AnyObject], context: NSManagedObjectContext) -> Book? {
-        guard let id = metadata["id"] as? String else {return nil}
-        guard let book = insert(Book.self, context: context) else {return nil}
+        guard let id = metadata["id"] as? String,
+            let book = insert(Book.self, context: context) else {return nil}
         
         book.id = id
         book.title = metadata["title"] as? String
@@ -28,39 +28,44 @@ class Book: NSManagedObject {
         book.publisher = metadata["publisher"] as? String
         book.desc = metadata["description"] as? String
         book.meta4URL = metadata["url"] as? String
+        book.pid = metadata["name"] as? String
         
-        if let articleCount = metadata["articleCount"] as? String, mediaCount = metadata["mediaCount"] as? String, fileSize = metadata["size"] as? String {
-            let numberFormatter = NSNumberFormatter()
-            numberFormatter.numberStyle = NSNumberFormatterStyle.DecimalStyle
-            book.articleCount = numberFormatter.numberFromString(articleCount)?.longLongValue ?? 0
-            book.mediaCount = numberFormatter.numberFromString(mediaCount)?.longLongValue ?? 0
-            
-            if let fileSize = numberFormatter.numberFromString(fileSize) {
-                book.fileSize = NSNumber(longLong: fileSize.longLongValue * Int64(1024.0)).longLongValue
-            }
-        }
+        book.articleCount = Int64((metadata["articleCount"] as? String) ?? "") ?? 0
+        book.mediaCount = Int64((metadata["mediaCount"] as? String) ?? "") ?? 0
+        book.fileSize = Int64((metadata["size"] as? String) ?? "") ?? 0
         
-        if let date = metadata["date"] as? String {
+        book.date = {
+            guard let date = metadata["date"] as? String else {return nil}
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"
-            book.date = dateFormatter.dateFromString(date)
-        }
+            return dateFormatter.dateFromString(date)
+        }()
         
-        if let favIcon = metadata["favicon"] as? NSData {
-            book.favIcon = favIcon
-        } else if let favIcon = metadata["favicon"] as? String {
-            book.favIcon = NSData(base64EncodedString: favIcon, options: .IgnoreUnknownCharacters)
-        }
-        
-        if let meta4url = book.meta4URL {
-            book.hasPic = !meta4url.containsString("nopic")
-        }
-        
-        if let languageCode = metadata["language"] as? String {
-            if let language = Language.fetchOrAdd(languageCode, context: context) {
-                book.language = language
+        book.favIcon = {
+            if let data = metadata["favicon"] as? NSData {
+                return data
+            } else if let favIcon = metadata["favicon"] as? String {
+                return NSData(base64EncodedString: favIcon, options: .IgnoreUnknownCharacters)
+            } else {
+                return nil
             }
-        }
+        }()
+        
+        book.hasPic = {
+            if let tags = metadata["tags"] as? String where tags.containsString("nopic") {
+                return false
+            } else if let meta4url = book.meta4URL where meta4url.containsString("nopic") {
+                return false
+            } else {
+                return true
+            }
+        }()
+        
+        book.language = {
+            guard let languageCode = metadata["language"] as? String,
+                let language = Language.fetchOrAdd(languageCode, context: context) else {return nil}
+            return language
+        }()
 
         return book
     }
@@ -154,7 +159,7 @@ class Book: NSManagedObject {
         return formattedNumberStringFromDouble(Double(articleCount))
     }
     
-    // MARK: - Description Label
+    // MARK: - Description Label Text
     
     var detailedDescription: String? {
         var descriptions = [String]()
