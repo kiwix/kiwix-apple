@@ -23,7 +23,7 @@ class RefreshLibraryOperation: GroupOperation {
         let parseOperation = ParseLibraryOperation()
         
         // 0.Download library
-        let url = NSURL(string: "http://www.kiwix.org/library.xml")!
+        let url = NSURL(string: "https://download.kiwix.org/library/library.xml")!
         let task = NSURLSession.sharedSession().dataTaskWithURL(url) { [unowned parseOperation] (data, response, error) -> Void in
             if let error = error {self.addFatalError(error)}
             parseOperation.xmlData = data

@@ -49,7 +49,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.7.994</string>
+	<string>1.7.774</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
@@ -69,6 +69,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Kiwix does NOT need to have access your Calendar</string>
 	<key>UIApplicationShortcutItems</key>
 	<array>
 		<dict>

@@ -66,13 +66,74 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionDownloadDelegate, NSU
     }
     
     func resume(book: Book) {
-        guard let resumeData = FileManager.readResumeData(book) else {
-            // TODO: Alert
-            print("Could not resume, data mmissing / damaged")
-            return
+        if #available(iOS 10, *) {
+            func correctResuleData(data: NSData?) -> NSData? {
+                let kResumeCurrentRequest = "NSURLSessionResumeCurrentRequest"
+                let kResumeOriginalRequest = "NSURLSessionResumeOriginalRequest"
+                
+                guard let data = data, let resumeDictionary = (try? NSPropertyListSerialization.propertyListWithData(data, options: [.MutableContainersAndLeaves], format: nil)) as? NSMutableDictionary else {
+                    return nil
+                }
+                
+                resumeDictionary[kResumeCurrentRequest] = correctFuckingRequestData(resumeDictionary[kResumeCurrentRequest] as? NSData)
+                resumeDictionary[kResumeOriginalRequest] = correctFuckingRequestData(resumeDictionary[kResumeOriginalRequest] as? NSData)
+                
+                let result = try? NSPropertyListSerialization.dataWithPropertyList(resumeDictionary, format: NSPropertyListFormat.XMLFormat_v1_0, options: NSPropertyListWriteOptions())
+                return result
+            }
+            func correctFuckingRequestData(data: NSData?) -> NSData? {
+                guard let data = data else {
+                    return nil
+                }
+                guard let archive = (try? NSPropertyListSerialization.propertyListWithData(data, options: [.MutableContainersAndLeaves], format: nil)) as? NSMutableDictionary else {
+                    return nil
+                }
+                // Rectify weird __nsurlrequest_proto_props objects to $number pattern
+                var i = 0
+                while archive["$objects"]?[1].objectForKey("__nsurlrequest_proto_prop_obj_\(i)") != nil {
+                    let arr = archive["$objects"] as? NSMutableArray
+                    if let dic = arr?[1] as? NSMutableDictionary, let obj = dic["__nsurlrequest_proto_prop_obj_\(i)"] {
+                        dic.setObject(obj, forKey: "$\(i + 3)")
+                        dic.removeObjectForKey("__nsurlrequest_proto_prop_obj_\(i)")
+                        arr?[1] = dic
+                        archive["$objects"] = arr
+                    }
+                    i += 1
+                }
+                if archive["$objects"]?[1]["__nsurlrequest_proto_props"] != nil {
+                    let arr = archive["$objects"] as? NSMutableArray
+                    if let dic = arr?[1] as? NSMutableDictionary, let obj = dic["__nsurlrequest_proto_props"] {
+                        dic.setObject(obj, forKey: "$\(i + 3)")
+                        dic.removeObjectForKey("__nsurlrequest_proto_props")
+                        arr?[1] = dic
+                        archive["$objects"] = arr
+                    }
+                }
+                // Rectify weird "NSKeyedArchiveRootObjectKey" top key to NSKeyedArchiveRootObjectKey = "root"
+                if archive["$top"]?["NSKeyedArchiveRootObjectKey"] != nil {
+                    archive["$top"]?.setObject(archive["$top"]?["NSKeyedArchiveRootObjectKey"], forKey: NSKeyedArchiveRootObjectKey)
+                    archive["$top"]?.removeObjectForKey("NSKeyedArchiveRootObjectKey")
+                }
+                // Re-encode archived object
+                let result = try? NSPropertyListSerialization.dataWithPropertyList(archive, format: NSPropertyListFormat.BinaryFormat_v1_0, options: NSPropertyListWriteOptions())
+                return result
+            }
+            guard let resumeData = correctResuleData(FileManager.readResumeData(book)) else {
+                // TODO: Alert
+                print("Could not resume, data mmissing / damaged")
+                return
+            }
+            let task = session.downloadTaskWithResumeData(resumeData)
+            startTask(task, book: book)
+        } else {
+            guard let resumeData = FileManager.readResumeData(book) else {
+                // TODO: Alert
+                print("Could not resume, data mmissing / damaged")
+                return
+            }
+            let task = session.downloadTaskWithResumeData(resumeData)
+            startTask(task, book: book)
         }
-        let task = session.downloadTaskWithResumeData(resumeData)
-        startTask(task, book: book)
     }
     
     func pause(book: Book) {

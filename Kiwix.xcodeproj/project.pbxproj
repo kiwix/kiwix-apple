@@ -57,6 +57,7 @@
 		9711879A1CEB546C00B9909D /* CoreDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971187991CEB546C00B9909D /* CoreDataExtension.swift */; };
 		9711879B1CEB546C00B9909D /* CoreDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971187991CEB546C00B9909D /* CoreDataExtension.swift */; };
 		971187A91CEB694400B9909D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 971187A81CEB694400B9909D /* WebKit.framework */; };
+		971329B21D84F117003676F9 /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 971329B11D84F117003676F9 /* liblzma.a */; };
 		971A10161D022872007FC62C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 971A10151D022872007FC62C /* Assets.xcassets */; };
 		971A101D1D0228E8007FC62C /* adjustlayoutiPad.js in Resources */ = {isa = PBXBuildFile; fileRef = 971A101A1D0228E8007FC62C /* adjustlayoutiPad.js */; };
 		971A101E1D0228E8007FC62C /* adjustlayoutiPhone.js in Resources */ = {isa = PBXBuildFile; fileRef = 971A101B1D0228E8007FC62C /* adjustlayoutiPhone.js */; };
@@ -110,7 +111,6 @@
 		973DD4141D343F2F009D45DB /* libicutest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD4091D343F2F009D45DB /* libicutest.a */; };
 		973DD4151D343F2F009D45DB /* libicutu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40A1D343F2F009D45DB /* libicutu.a */; };
 		973DD4161D343F2F009D45DB /* libicuuc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40B1D343F2F009D45DB /* libicuuc.a */; };
-		973DD4171D343F2F009D45DB /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40C1D343F2F009D45DB /* liblzma.a */; };
 		973DD4181D343F2F009D45DB /* libxapian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40D1D343F2F009D45DB /* libxapian.a */; };
 		973DD4191D343F2F009D45DB /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40E1D343F2F009D45DB /* libzim.a */; };
 		973DD41D1D34428F009D45DB /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD41A1D34428F009D45DB /* DirectoryMonitor.swift */; };
@@ -298,6 +298,7 @@
 		9711878C1CEB541100B9909D /* Kiwix.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Kiwix.xcdatamodel; sourceTree = "<group>"; };
 		971187991CEB546C00B9909D /* CoreDataExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CoreDataExtension.swift; path = Kiwix/CoreData/CoreDataExtension.swift; sourceTree = "<group>"; };
 		971187A81CEB694400B9909D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
+		971329B11D84F117003676F9 /* liblzma.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblzma.a; path = Kiwix/libkiwix/iOS/liblzma.a; sourceTree = "<group>"; };
 		971A10151D022872007FC62C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Kiwix-iOS/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
 		971A101A1D0228E8007FC62C /* adjustlayoutiPad.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjustlayoutiPad.js; sourceTree = "<group>"; };
 		971A101B1D0228E8007FC62C /* adjustlayoutiPhone.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjustlayoutiPhone.js; sourceTree = "<group>"; };
@@ -361,7 +362,6 @@
 		973DD4091D343F2F009D45DB /* libicutest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicutest.a; path = Kiwix/libkiwix/iOS/libicutest.a; sourceTree = "<group>"; };
 		973DD40A1D343F2F009D45DB /* libicutu.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicutu.a; path = Kiwix/libkiwix/iOS/libicutu.a; sourceTree = "<group>"; };
 		973DD40B1D343F2F009D45DB /* libicuuc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuuc.a; path = Kiwix/libkiwix/iOS/libicuuc.a; sourceTree = "<group>"; };
-		973DD40C1D343F2F009D45DB /* liblzma.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblzma.a; path = Kiwix/libkiwix/iOS/liblzma.a; sourceTree = "<group>"; };
 		973DD40D1D343F2F009D45DB /* libxapian.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxapian.a; path = Kiwix/libkiwix/iOS/libxapian.a; sourceTree = "<group>"; };
 		973DD40E1D343F2F009D45DB /* libzim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzim.a; path = Kiwix/libkiwix/iOS/libzim.a; sourceTree = "<group>"; };
 		973DD41A1D34428F009D45DB /* DirectoryMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DirectoryMonitor.swift; path = ZimMultiReader/DirectoryMonitor.swift; sourceTree = "<group>"; };
@@ -436,6 +436,7 @@
 		97D452BD1D1723FF0033666F /* CollectionViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCells.swift; sourceTree = "<group>"; };
 		97D452C01D1871E70033666F /* SearchLocalBooksCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchLocalBooksCVC.swift; path = "Kiwix-iOS/Controller/Search/SearchLocalBooksCVC.swift"; sourceTree = SOURCE_ROOT; };
 		97D452C11D1871E70033666F /* SearchTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchTabController.swift; path = "Kiwix-iOS/Controller/Search/SearchTabController.swift"; sourceTree = SOURCE_ROOT; };
+		97D527451D836116008D6E44 /* liblzma.5.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = liblzma.5.tbd; path = usr/lib/liblzma.5.tbd; sourceTree = SDKROOT; };
 		97D55EF51D2075180081B523 /* TableOfContentsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableOfContentsController.swift; path = "Kiwix-iOS/Controller/TableOfContentsController.swift"; sourceTree = SOURCE_ROOT; };
 		97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkWidgetCell.swift; sourceTree = "<group>"; };
 		97E609F01D103DED00EBCB9D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -497,6 +498,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				971329B21D84F117003676F9 /* liblzma.a in Frameworks */,
 				973DD40F1D343F2F009D45DB /* libicudata.a in Frameworks */,
 				973DD4101D343F2F009D45DB /* libicui18n.a in Frameworks */,
 				973DD4111D343F2F009D45DB /* libicuio.a in Frameworks */,
@@ -505,7 +507,6 @@
 				973DD4141D343F2F009D45DB /* libicutest.a in Frameworks */,
 				973DD4151D343F2F009D45DB /* libicutu.a in Frameworks */,
 				973DD4161D343F2F009D45DB /* libicuuc.a in Frameworks */,
-				973DD4171D343F2F009D45DB /* liblzma.a in Frameworks */,
 				973DD4181D343F2F009D45DB /* libxapian.a in Frameworks */,
 				973DD4191D343F2F009D45DB /* libzim.a in Frameworks */,
 				9711871E1CEB449A00B9909D /* libz.tbd in Frameworks */,
@@ -533,6 +534,7 @@
 		931D277C156AE671D3F9EADA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				97D527451D836116008D6E44 /* liblzma.5.tbd */,
 				976A0C801D41619C0006A742 /* DZNEmptyDataSet.framework */,
 				973DD4041D343F2F009D45DB /* libicudata.a */,
 				973DD4051D343F2F009D45DB /* libicui18n.a */,
@@ -542,8 +544,8 @@
 				973DD4091D343F2F009D45DB /* libicutest.a */,
 				973DD40A1D343F2F009D45DB /* libicutu.a */,
 				973DD40B1D343F2F009D45DB /* libicuuc.a */,
-				973DD40C1D343F2F009D45DB /* liblzma.a */,
 				973DD40D1D343F2F009D45DB /* libxapian.a */,
+				971329B11D84F117003676F9 /* liblzma.a */,
 				973DD40E1D343F2F009D45DB /* libzim.a */,
 				97E609F01D103DED00EBCB9D /* NotificationCenter.framework */,
 				198ECFA618CDD6B29CD462A0 /* Pods_Kiwix_OSX.framework */,
@@ -1923,6 +1925,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Kiwix-iOSWidgets/Bookmarks/Bookmarks.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				INFOPLIST_FILE = "Kiwix-iOSWidgets/Bookmarks/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -1940,6 +1943,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Kiwix-iOSWidgets/Bookmarks/Bookmarks.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				INFOPLIST_FILE = "Kiwix-iOSWidgets/Bookmarks/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
@@ -2051,6 +2055,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Kiwix-iOS/Kiwix.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2088,6 +2093,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Kiwix-iOS/Kiwix.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
