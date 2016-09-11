@@ -112,8 +112,8 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
     
     func sortByCountDesc(languages: [Language]) -> [Language] {
         return languages.sort { (language0, language1) -> Bool in
-            guard let count0 = language0.books?.count,
-                let count1 = language1.books?.count else {return false}
+            let count0 = language0.books.count
+            let count1 = language1.books.count
             guard count0 != count1 else {
                 return alphabeticalAscCompare(language0: language0, language1: language1, byOriginalLocale: Preference.LangFilter.displayInOriginalLocale)
             }
@@ -159,7 +159,7 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
     
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath, language: Language) {
         cell.textLabel?.text = Preference.LangFilter.displayInOriginalLocale ? language.nameInOriginalLocale : language.nameInCurrentLocale
-        cell.detailTextLabel?.text = language.books?.count.description
+        cell.detailTextLabel?.text = language.books.count.description
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

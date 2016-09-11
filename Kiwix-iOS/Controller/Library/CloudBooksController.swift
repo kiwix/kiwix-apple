@@ -156,8 +156,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
             self.managedObjectContext.performBlock({
                 let codes = NSLocale.preferredLangCodes
                 Language.fetchAll(self.managedObjectContext).forEach({ (language) in
-                    guard let code = language.code else {return}
-                    language.isDisplayed = codes.contains(code)
+                    language.isDisplayed = codes.contains(language.code)
                 })
                 self.refreshFetchedResultController()
             })

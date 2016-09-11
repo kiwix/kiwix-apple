@@ -14,9 +14,9 @@ import CoreData
 
 extension Language {
 
-    @NSManaged var code: String?
-    @NSManaged var isDisplayed: NSNumber?
+    @NSManaged var code: String
+    @NSManaged var isDisplayed: Bool
     @NSManaged var name: String?
-    @NSManaged var books: NSSet?
+    @NSManaged var books: Set<Book>
 
 }

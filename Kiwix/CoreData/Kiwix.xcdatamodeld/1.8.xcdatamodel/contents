@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="16A319" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.8">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="16A319" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1.8">
     <entity name="Article" representedClassName=".Article" syncable="YES">
         <attribute name="bookmarkDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isBookmarked" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
@@ -112,7 +112,7 @@
         <element name="Book" positionX="-947" positionY="-142" width="128" height="358"/>
         <element name="DownloadTask" positionX="-657" positionY="273" width="128" height="105"/>
         <element name="Language" positionX="-938" positionY="288" width="128" height="103"/>
-        <element name="Tag" positionX="-425" positionY="-18" width="128" height="73"/>
         <element name="Response" positionX="-657" positionY="72" width="128" height="118"/>
+        <element name="Tag" positionX="-425" positionY="-18" width="128" height="73"/>
     </elements>
 </model>

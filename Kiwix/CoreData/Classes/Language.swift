@@ -45,12 +45,10 @@ class Language: NSManagedObject {
     // MARK: - Computed Properties
     
     var nameInCurrentLocale: String? {
-        guard let code = code else {return nil}
         return NSLocale.currentLocale().displayNameForKey(NSLocaleIdentifier, value: code)
     }
     
     var nameInOriginalLocale: String? {
-        guard let code = code else {return nil}
         return NSLocale(localeIdentifier: code).displayNameForKey(NSLocaleIdentifier, value: code)
     }
 }
