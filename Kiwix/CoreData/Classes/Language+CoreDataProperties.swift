@@ -17,6 +17,7 @@ extension Language {
     @NSManaged var code: String
     @NSManaged var isDisplayed: Bool
     @NSManaged var name: String?
+    
     @NSManaged var books: Set<Book>
 
 }

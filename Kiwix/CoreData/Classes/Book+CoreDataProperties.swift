@@ -21,15 +21,17 @@ extension Book {
     @NSManaged var favIcon: NSData?
     @NSManaged var fileSize: Int64
     @NSManaged var globalCount: Int64
-    @NSManaged var id: String
-    @NSManaged var isLocal: NSNumber?
-    @NSManaged var hasPic: Bool
     @NSManaged var hasIndex: Bool
+    @NSManaged var hasPic: Bool
+    @NSManaged var id: String
     @NSManaged var includeInSearch: Bool
+    @NSManaged var isLocal: NSNumber?
     @NSManaged var mediaCount: Int64
     @NSManaged var meta4URL: String?
+    @NSManaged var pid: String?
     @NSManaged var publisher: String?
     @NSManaged var title: String?
+    
     @NSManaged var articles: Set<Article>
     @NSManaged var downloadTask: DownloadTask?
     @NSManaged var language: Language?
