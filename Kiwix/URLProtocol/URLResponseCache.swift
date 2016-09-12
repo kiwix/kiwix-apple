@@ -15,14 +15,19 @@ class URLResponseCache {
     
     func start() {
         listening = true
+        clear()
     }
     
     func stop() {
         listening = false
+    }
+    
+    func clear() {
         responses.removeAll()
     }
     
     func cache(response response: NSURLResponse) {
+        guard listening else {return}
         guard let url = response.URL else {return}
         responses[url] = response
     }

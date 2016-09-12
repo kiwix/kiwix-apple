@@ -23,15 +23,20 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate,
     }
     
     func webViewDidStartLoad(webView: UIWebView) {
-        
+        URLResponseCache.shared.start()
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {
+        URLResponseCache.shared.stop()
         
     }
     
     func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
+        // handle error
         print(error)
+        
+        article = nil
+        URLResponseCache.shared.stop()
     }
     
     // MARK: - SFSafariViewControllerDelegate

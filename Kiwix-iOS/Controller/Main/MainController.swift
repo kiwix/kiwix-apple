@@ -30,10 +30,14 @@ class MainController: UIViewController {
     private(set) var tableOfContentsController: TableOfContentsController?
     let searchBar = SearchBar()
 
-    private(set) var article: Article? {
+    var article: Article? {
         willSet(newArticle) {
             article?.removeObserver(self, forKeyPath: "isBookmarked")
             newArticle?.addObserver(self, forKeyPath: "isBookmarked", options: .New, context: context)
+        }
+        didSet {
+            // searchbar title
+            // bookmarked or not
         }
     }
     
