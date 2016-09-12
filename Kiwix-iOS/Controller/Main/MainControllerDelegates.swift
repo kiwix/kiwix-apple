@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 import SafariServices
 import JavaScriptCore
 import DZNEmptyDataSet
@@ -29,6 +30,11 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate,
     func webViewDidFinishLoad(webView: UIWebView) {
         URLResponseCache.shared.stop()
         
+        guard let url = webView.request?.URL,
+            let article = Article.addOrUpdate(url: url, context: NSManagedObjectContext.mainQueueContext) else {return}
+        article.title = JSInjection.getTitle(from: webView)
+        article.thumbImageURL = URLResponseCache.shared.firstImage()?.absoluteString
+        self.article = article
     }
     
     func webView(webView: UIWebView, didFailLoadWithError error: NSError) {

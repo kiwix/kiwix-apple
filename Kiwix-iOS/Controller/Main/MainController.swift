@@ -36,8 +36,8 @@ class MainController: UIViewController {
             newArticle?.addObserver(self, forKeyPath: "isBookmarked", options: .New, context: context)
         }
         didSet {
-            // searchbar title
-            // bookmarked or not
+            configureSearchBarPlaceHolder()
+            configureBookmarkButton()
         }
     }
     

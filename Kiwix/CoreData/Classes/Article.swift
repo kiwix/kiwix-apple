@@ -12,15 +12,17 @@ import CoreData
 
 class Article: NSManagedObject {
 
-    class func addOrUpdate(title: String? = nil, url: NSURL, book: Book, context: NSManagedObjectContext) -> Article? {
+    class func addOrUpdate(url url: NSURL, context: NSManagedObjectContext) -> Article? {
+        guard let bookID = url.host,
+            let book = Book.fetch(bookID, context: context),
+            let url = url.absoluteString else {return nil}
+        
         let fetchRequest = NSFetchRequest(entityName: "Article")
-        fetchRequest.predicate = NSPredicate(format: "url = %@", url.absoluteString!)
+        fetchRequest.predicate = NSPredicate(format: "url = %@", url)
+        
         let article = Article.fetch(fetchRequest, type: Article.self, context: context)?.first ?? insert(Article.self, context: context)
-        
-        article?.title = title
-        article?.url = url.absoluteString!
+        article?.url = url
         article?.book = book
-        
         return article
     }
     

@@ -32,6 +32,10 @@ class JSInjection {
         webView.stringByEvaluatingJavaScriptFromString(jString)
     }
     
+    class func  getTitle(from webView: UIWebView) -> String? {
+        return webView.stringByEvaluatingJavaScriptFromString("document.title")
+    }
+    
     class func getTableOfContents(webView: UIWebView) -> [HTMLHeading] {
         guard let context = webView.valueForKeyPath("documentView.webView.mainFrame.javaScriptContext") as? JSContext,
             let path = NSBundle.mainBundle().pathForResource("getTableOfContents", ofType: "js"),
