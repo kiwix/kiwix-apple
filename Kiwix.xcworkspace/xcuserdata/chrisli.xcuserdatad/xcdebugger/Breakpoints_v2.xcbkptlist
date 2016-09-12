@@ -19,53 +19,5 @@
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Kiwix-iOS/AppDelegate.swift"
-            timestampString = "495398189.416709"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
-            landmarkName = "application(application:continueUserActivity:restorationHandler:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Kiwix.AppDelegate.application (__ObjC.UIApplication, continueUserActivity : __ObjC.NSUserActivity, restorationHandler : (Swift.Optional&lt;Swift.Array&lt;Swift.AnyObject&gt;&gt;) -&gt; ()) -&gt; Swift.Bool"
-                  moduleName = "Kiwix"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/Data/Developer/Kiwix/Kiwix-iOS/AppDelegate.swift"
-                  timestampString = "495398559.012676"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "60"
-                  endingLineNumber = "60"
-                  offsetFromSymbolStart = "204">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Kiwix.AppDelegate.application (__ObjC.UIApplication, continueUserActivity : __ObjC.NSUserActivity, restorationHandler : (Swift.Optional&lt;Swift.Array&lt;Swift.AnyObject&gt;&gt;) -&gt; ()) -&gt; Swift.Bool"
-                  moduleName = "Kiwix"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/Data/Developer/Kiwix/Kiwix-iOS/AppDelegate.swift"
-                  timestampString = "495398559.013774"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "60"
-                  endingLineNumber = "60"
-                  offsetFromSymbolStart = "488">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

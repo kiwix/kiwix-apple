@@ -108,8 +108,13 @@ class MainController: UIViewController {
     override func restoreUserActivityState(activity: NSUserActivity) {
         guard activity.activityType == activityType,
             let urlString = activity.userInfo?["ArticleURL"] as? String,
-            let url = NSURL(string: urlString) else {return}
-        load(url)
+            let url = NSURL(string: urlString),
+            let host = url.host else {return}
+        if ZimMultiReader.sharedInstance.readers.keys.contains(host) {
+            load(url)
+        } else {
+            // TODO: - Alert cannot complete hand off
+        }
     }
     
     // MARK: - Load
@@ -232,6 +237,8 @@ class MainController: UIViewController {
         guard let article = article else {return}
         userActivity?.title = article.title
         userActivity?.userInfo = ["ArticleURL": article.url]
+        userActivity?.eligibleForHandoff = true
+        userActivity?.supportsContinuationStreams = true
         userActivity?.becomeCurrent()
     }
 
