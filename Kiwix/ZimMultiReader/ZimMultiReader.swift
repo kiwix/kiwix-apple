@@ -10,7 +10,7 @@ import CoreData
 import Operations
 
 class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
-    static let sharedInstance = ZimMultiReader()
+    static let shared = ZimMultiReader()
     
     weak var delegate: ZimMultiReaderDelegate?
     private let monitor = DirectoryMonitor(URL: NSFileManager.docDirURL)

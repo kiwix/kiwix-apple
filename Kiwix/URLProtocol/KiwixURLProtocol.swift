@@ -27,7 +27,7 @@ class KiwixURLProtocol: NSURLProtocol {
                 client?.URLProtocol(self, didFailWithError: error)
                 return
         }
-        guard let dataDic = ZimMultiReader.sharedInstance.data(id, contentURLString: contentURLString),
+        guard let dataDic = ZimMultiReader.shared.data(id, contentURLString: contentURLString),
             let data = dataDic["data"] as? NSData,
             let mimeType = dataDic["mime"] as? String,
             let dataLength = dataDic["length"]?.integerValue else {
@@ -60,7 +60,7 @@ extension NSURL {
     }
     
     class func kiwixURLWithZimFileid(id: String, articleTitle: String) -> NSURL? {
-        guard let contentURLString = ZimMultiReader.sharedInstance.pageURLString(articleTitle, bookid: id) else {
+        guard let contentURLString = ZimMultiReader.shared.pageURLString(articleTitle, bookid: id) else {
             print("ZimMultiReader cannot get pageURLString from \(articleTitle) in book \(id)")
             return nil
         }

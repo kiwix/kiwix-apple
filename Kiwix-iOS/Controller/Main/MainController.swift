@@ -54,7 +54,7 @@ class MainController: UIViewController {
         
         navigationItem.titleView = searchBar
         searchBar.delegate = self
-        ZimMultiReader.sharedInstance.delegate = self
+        ZimMultiReader.shared.delegate = self
         
         NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "webViewNotInjectJavascriptToAdjustPageLayout", options: .New, context: context)
         NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "webViewZoomScale", options: .New, context: context)
@@ -110,7 +110,7 @@ class MainController: UIViewController {
             let urlString = activity.userInfo?["ArticleURL"] as? String,
             let url = NSURL(string: urlString),
             let host = url.host else {return}
-        if ZimMultiReader.sharedInstance.readers.keys.contains(host) {
+        if ZimMultiReader.shared.readers.keys.contains(host) {
             load(url)
         } else {
             // TODO: - Alert cannot complete hand off
@@ -132,7 +132,7 @@ class MainController: UIViewController {
     }
     
     func loadMainPage(id: ZimID) {
-        guard let reader = ZimMultiReader.sharedInstance.readers[id] else {return}
+        guard let reader = ZimMultiReader.shared.readers[id] else {return}
         let mainPageURLString = reader.mainPageURL()
         let mainPageURL = NSURL.kiwixURLWithZimFileid(id, contentURLString: mainPageURLString)
         load(mainPageURL)

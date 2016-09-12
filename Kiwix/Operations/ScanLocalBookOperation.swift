@@ -57,13 +57,13 @@ class ScanLocalBookOperation: Operation {
         let removedZimFileURLs = lastZimFileURLSnapshot.subtract(currentZimFileURLSnapshot)
         
         guard addedZimFileURLs.count > 0 || removedZimFileURLs.count > 0 else {return}
-        ZimMultiReader.sharedInstance.removeReaders(removedZimFileURLs)
-        ZimMultiReader.sharedInstance.addReaders(addedZimFileURLs)
+        ZimMultiReader.shared.removeReaders(removedZimFileURLs)
+        ZimMultiReader.shared.addReaders(addedZimFileURLs)
     }
     
     private func updateCoreData() {
         let localBooks = Book.fetchLocal(context)
-        let zimReaderIDs = Set(ZimMultiReader.sharedInstance.readers.keys)
+        let zimReaderIDs = Set(ZimMultiReader.shared.readers.keys)
         let addedZimFileIDs = zimReaderIDs.subtract(Set(localBooks.keys))
         let removedZimFileIDs = Set(localBooks.keys).subtract(zimReaderIDs)
         
@@ -77,7 +77,7 @@ class ScanLocalBookOperation: Operation {
         }
         
         for id in addedZimFileIDs {
-            guard let reader = ZimMultiReader.sharedInstance.readers[id] else {return}
+            guard let reader = ZimMultiReader.shared.readers[id] else {return}
             let book: Book? = {
                 let book = Book.fetch(id, context: NSManagedObjectContext.mainQueueContext)
                 return book ?? Book.add(reader.metaData, context: NSManagedObjectContext.mainQueueContext)
@@ -89,7 +89,7 @@ class ScanLocalBookOperation: Operation {
         
         for (id, book) in localBooks {
             guard !context.deletedObjects.contains(book) else {continue}
-            guard let reader = ZimMultiReader.sharedInstance.readers[id] else {return}
+            guard let reader = ZimMultiReader.shared.readers[id] else {return}
             book.hasIndex = reader.hasIndex()
         }
         
