@@ -97,7 +97,7 @@
 		97A1FD181D6F71CE00A80EE2 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD141D6F71CE00A80EE2 /* SearchResult.swift */; };
 		97A1FD191D6F71CE00A80EE2 /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD151D6F71CE00A80EE2 /* ZimMultiReader.swift */; };
 		97A1FD1C1D6F71D800A80EE2 /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD1A1D6F71D800A80EE2 /* KiwixURLProtocol.swift */; };
-		97A1FD1D1D6F71D800A80EE2 /* PacketAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD1B1D6F71D800A80EE2 /* PacketAnalyzer.swift */; };
+		97A1FD1D1D6F71D800A80EE2 /* URLResponseCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD1B1D6F71D800A80EE2 /* URLResponseCache.swift */; };
 		97A1FD261D6F71E200A80EE2 /* ZimReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD231D6F71E200A80EE2 /* ZimReader.mm */; };
 		97A1FD321D6F723D00A80EE2 /* resourceTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD301D6F723D00A80EE2 /* resourceTools.cpp */; };
 		97A1FD391D6F724E00A80EE2 /* pathTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD331D6F724E00A80EE2 /* pathTools.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
@@ -319,7 +319,7 @@
 		97A1FD141D6F71CE00A80EE2 /* SearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		97A1FD151D6F71CE00A80EE2 /* ZimMultiReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZimMultiReader.swift; sourceTree = "<group>"; };
 		97A1FD1A1D6F71D800A80EE2 /* KiwixURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KiwixURLProtocol.swift; sourceTree = "<group>"; };
-		97A1FD1B1D6F71D800A80EE2 /* PacketAnalyzer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PacketAnalyzer.swift; sourceTree = "<group>"; };
+		97A1FD1B1D6F71D800A80EE2 /* URLResponseCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = URLResponseCache.swift; path = ../URLProtocol/URLResponseCache.swift; sourceTree = "<group>"; };
 		97A1FD201D6F71E200A80EE2 /* ZimIndexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZimIndexer.h; sourceTree = "<group>"; };
 		97A1FD211D6F71E200A80EE2 /* ZimIndexer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ZimIndexer.mm; sourceTree = "<group>"; };
 		97A1FD221D6F71E200A80EE2 /* ZimReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZimReader.h; sourceTree = "<group>"; };
@@ -923,7 +923,6 @@
 			children = (
 				97A1FD1A1D6F71D800A80EE2 /* KiwixURLProtocol.swift */,
 				9764F5981D833F2B00E0B1C4 /* KiwixURL.swift */,
-				97A1FD1B1D6F71D800A80EE2 /* PacketAnalyzer.swift */,
 			);
 			path = URLProtocol;
 			sourceTree = "<group>";
@@ -965,6 +964,7 @@
 			isa = PBXGroup;
 			children = (
 				97DF259F1D6F996B001648A3 /* Network.swift */,
+				97A1FD1B1D6F71D800A80EE2 /* URLResponseCache.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -1572,7 +1572,7 @@
 				97D6812E1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld in Sources */,
 				97A461B71D74819000AC3DED /* DownloadProgress.swift in Sources */,
 				971A10341D022AEC007FC62C /* BookmarkTBVC.swift in Sources */,
-				97A1FD1D1D6F71D800A80EE2 /* PacketAnalyzer.swift in Sources */,
+				97A1FD1D1D6F71D800A80EE2 /* URLResponseCache.swift in Sources */,
 				9764F5971D8339D500E0B1C4 /* JSInjection.swift in Sources */,
 				97A1FD441D6F728200A80EE2 /* Preference.swift in Sources */,
 				97D681311D6F70EC00E5FA99 /* 1.5.xcmappingmodel in Sources */,

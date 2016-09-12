@@ -24,25 +24,18 @@ class MainController: UIViewController {
     
     // MARK: - Properties
     
-    
-    var tableOfContentsController: TableOfContentsController?
-    let searchBar = SearchBar()
-    
+    private var webViewInitialURL: NSURL?
     private(set) var context: UnsafeMutablePointer<Void> = nil
-    var article: Article? {
+    var isShowingTableOfContents = false
+    private(set) var tableOfContentsController: TableOfContentsController?
+    let searchBar = SearchBar()
+
+    private(set) var article: Article? {
         willSet(newArticle) {
             article?.removeObserver(self, forKeyPath: "isBookmarked")
             newArticle?.addObserver(self, forKeyPath: "isBookmarked", options: .New, context: context)
         }
     }
-    
-    private var webViewInitialURL: NSURL?
-    
-    var navBarOriginalHeight: CGFloat = 0.0
-    let navBarMinHeight: CGFloat = 10.0
-    var previousScrollViewYOffset: CGFloat = 0.0
-    
-    var isShowingTableOfContents = false
     
     // MARK: - Override
     

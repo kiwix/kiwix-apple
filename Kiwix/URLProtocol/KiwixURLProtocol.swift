@@ -20,10 +20,12 @@ class KiwixURLProtocol: NSURLProtocol {
     }
     
     override func startLoading() {
-        guard let url = request.URL, let id = url.host, let contentURLString = url.path?.stringByRemovingPercentEncoding else {
-            let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorUnsupportedURL, userInfo: nil)
-            client?.URLProtocol(self, didFailWithError: error)
-            return
+        guard let url = request.URL,
+            let id = url.host,
+            let contentURLString = url.path?.stringByRemovingPercentEncoding else {
+                let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorUnsupportedURL, userInfo: nil)
+                client?.URLProtocol(self, didFailWithError: error)
+                return
         }
         guard let dataDic = ZimMultiReader.sharedInstance.data(id, contentURLString: contentURLString),
             let data = dataDic["data"] as? NSData,
@@ -34,11 +36,9 @@ class KiwixURLProtocol: NSURLProtocol {
                 return
         }
         
-        if mimeType.containsString("image") {
-            PacketAnalyzer.sharedInstance.addImage(data, url: url)
-        }
+        let response = NSURLResponse(URL: url, MIMEType: mimeType, expectedContentLength: dataLength, textEncodingName: nil)
+        URLResponseCache.shared.cache(response: response)
         
-        let response = NSURLResponse(URL: self.request.URL!, MIMEType: mimeType, expectedContentLength: dataLength, textEncodingName: nil)
         client?.URLProtocol(self, didReceiveResponse: response, cacheStoragePolicy: .Allowed)
         client?.URLProtocol(self, didLoadData: data)
         client?.URLProtocolDidFinishLoading(self)
@@ -46,6 +46,7 @@ class KiwixURLProtocol: NSURLProtocol {
     
     override func stopLoading() {
         return
+        
     }
 }
 
