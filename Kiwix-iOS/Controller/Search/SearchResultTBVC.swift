@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Operations
 
 class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -120,15 +121,19 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
             tableView.reloadData()
             return
         }
-        let operation = SearchOperation(searchTerm: searchText) { (results) in
-            guard let results = results else {return}
-            self.searchResults = results
-            self.tableView.reloadData()
-            if results.count > 0 {
-                self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
-            }
-        }
-        ZimMultiReader.sharedInstance.startSearch(operation)
+//        let operation = SearchOperation(searchTerm: searchText) { [unowned self] (results) in
+//            guard let results = results else {return}
+//            self.searchResults = results
+//            self.tableView.reloadData()
+//            if results.count > 0 {
+//                self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+//            }
+//        }
+        let operation = SearchOperation(searchTerm: searchText)
+        operation.addObserver(DidFinishObserver {(operation, errors) in
+            print("search op did finish, result injection")
+        })
+        GlobalQueue.shared.add(search: operation)
     }
 }
 

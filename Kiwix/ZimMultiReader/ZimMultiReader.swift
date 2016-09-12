@@ -13,12 +13,9 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     static let sharedInstance = ZimMultiReader()
     
     weak var delegate: ZimMultiReaderDelegate?
-    private weak var scanOperation: ScanLocalBookOperation?
-    private weak var searchOperation: SearchOperation?
-    
-    private let searchQueue = OperationQueue()
-    private(set) var readers = [ZimID: ZimReader]()
     private let monitor = DirectoryMonitor(URL: NSFileManager.docDirURL)
+    
+    private(set) var readers = [ZimID: ZimReader]()
     private var lastZimFileURLSnapshot = Set<NSURL>()
     private var lastIndexFolderURLSnapshot = Set<NSURL>()
     
@@ -35,15 +32,20 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     }
     
     func startScan() {
-        let scanOperation = ScanLocalBookOperation(lastZimFileURLSnapshot: lastZimFileURLSnapshot, lastIndexFolderURLSnapshot: lastIndexFolderURLSnapshot) { (currentZimFileURLSnapshot, currentIndexFolderURLSnapshot, firstBookAdded) in
-            self.lastZimFileURLSnapshot = currentZimFileURLSnapshot
-            self.lastIndexFolderURLSnapshot = currentIndexFolderURLSnapshot
-            if firstBookAdded {
+        let operation = ScanLocalBookOperation(lastZimFileURLSnapshot: lastZimFileURLSnapshot, lastIndexFolderURLSnapshot: lastIndexFolderURLSnapshot)
+        operation.addObserver(DidFinishObserver { (operation, errors) in
+            guard let operation = operation as? ScanLocalBookOperation else {return}
+            NSOperationQueue.mainQueue().addOperationWithBlock({ 
+                self.lastZimFileURLSnapshot = operation.currentZimFileURLSnapshot
+                self.lastIndexFolderURLSnapshot = operation.currentIndexFolderURLSnapshot
+                
+                guard operation.firstBookAdded else {return}
                 self.delegate?.firstBookAdded()
-            }
-        }
-        GlobalQueue.shared.addOperation(scanOperation)
-        self.scanOperation = scanOperation
+            })
+        })
+        operation.queuePriority = .VeryHigh
+        if readers.count == 0 { operation.qualityOfService = .UserInitiated }
+        GlobalQueue.shared.add(scan: operation)
     }
     
     // MARK: - Reader Addition / Deletion
@@ -67,20 +69,6 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     
     func directoryMonitorDidObserveChange() {
         startScan()
-    }
-    
-    // MARK: - Search
-    
-    func startSearch(searchOperation: SearchOperation) {
-        if let scanOperation = scanOperation {
-            searchOperation.addDependency(scanOperation)
-        }
-        
-        if let searchOperation = self.searchOperation {
-            searchOperation.cancel()
-        }
-        searchQueue.addOperation(searchOperation)
-        self.searchOperation = searchOperation
     }
     
     // MARK: - Loading System

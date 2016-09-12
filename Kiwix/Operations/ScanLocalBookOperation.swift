@@ -11,17 +11,14 @@ import Operations
 
 class ScanLocalBookOperation: Operation {
     private let context: NSManagedObjectContext
-    private var firstBookAdded = false
+    private(set) var firstBookAdded = false
     
     private var lastZimFileURLSnapshot: Set<NSURL>
-    private var currentZimFileURLSnapshot = Set<NSURL>()
+    private(set) var currentZimFileURLSnapshot = Set<NSURL>()
     private let lastIndexFolderURLSnapshot: Set<NSURL>
-    private var currentIndexFolderURLSnapshot = Set<NSURL>()
+    private(set) var currentIndexFolderURLSnapshot = Set<NSURL>()
     
-    private var completionHandler: ((currentZimFileURLSnapshot: Set<NSURL>, currentIndexFolderURLSnapshot: Set<NSURL>, firstBookAdded: Bool) -> Void)
-    
-    init(lastZimFileURLSnapshot: Set<NSURL>, lastIndexFolderURLSnapshot: Set<NSURL>,
-         completionHandler: ((currentZimFileURLSnapshot: Set<NSURL>, currentIndexFolderURLSnapshot: Set<NSURL>, firstBookAdded: Bool) -> Void)) {
+    init(lastZimFileURLSnapshot: Set<NSURL>, lastIndexFolderURLSnapshot: Set<NSURL>) {
         self.context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         context.parentContext = NSManagedObjectContext.mainQueueContext
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
@@ -29,7 +26,6 @@ class ScanLocalBookOperation: Operation {
         self.lastZimFileURLSnapshot = lastZimFileURLSnapshot
         self.lastIndexFolderURLSnapshot = lastIndexFolderURLSnapshot
         
-        self.completionHandler = completionHandler
         super.init()
         addCondition(MutuallyExclusive<ZimMultiReader>())
         name = String(self)
@@ -54,10 +50,6 @@ class ScanLocalBookOperation: Operation {
     override func operationDidFinish(errors: [ErrorType]) {
         context.performBlockAndWait {self.context.saveIfNeeded()}
         NSManagedObjectContext.mainQueueContext.performBlockAndWait {NSManagedObjectContext.mainQueueContext.saveIfNeeded()}
-        NSOperationQueue.mainQueue().addOperationWithBlock {
-            self.completionHandler(currentZimFileURLSnapshot: self.currentZimFileURLSnapshot,
-                currentIndexFolderURLSnapshot: self.currentIndexFolderURLSnapshot, firstBookAdded: self.firstBookAdded)
-        }
     }
     
     private func updateReaders() {

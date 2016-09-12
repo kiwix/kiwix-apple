@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         NSURLProtocol.registerClass(KiwixURLProtocol)
-//        Network.shared.restoreProgresses()
+        //Network.shared.restoreProgresses()
         
         // Register notification
         let settings = UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: nil) // Here are the notification permission the app wants
@@ -64,7 +64,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             return false
         }
-        
     }
     
     // MARK: - Active

@@ -10,6 +10,31 @@ import Operations
 
 class GlobalQueue: OperationQueue {
     static let shared = GlobalQueue()
+    
+    private weak var scanOperation: ScanLocalBookOperation?
+    private weak var searchOperation: SearchOperation?
+    
+    func add(scan operation: ScanLocalBookOperation) {
+        addOperation(operation)
+        scanOperation = operation
+    }
+    
+    func add(search operation: SearchOperation) {
+        if let _ = searchOperation {
+            print("search is not released")
+        }
+        
+        if let scanOperation = scanOperation {
+            operation.addDependency(scanOperation)
+            print("scan not finished")
+        }
+        
+        if let searchOperation = self.searchOperation {
+            searchOperation.cancel()
+        }
+        addOperation(operation)
+        searchOperation = operation
+    }
 }
 
 public enum OperationErrorCode: Int {
