@@ -23,6 +23,8 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
     typealias Strings = LocalizedStrings.BookDetail
     
     var book: Book?
+    var sectionHeaders = [String?]()
+    var sectionFooters = [String?]()
     var cellTitles = [[String]]()
     
     override func viewDidLoad() {
@@ -43,12 +45,12 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureViews()
-        book?.downloadTask?.addObserver(self, forKeyPath: "stateRaw", options: .New, context: context)
+        //book?.downloadTask?.addObserver(self, forKeyPath: "stateRaw", options: .New, context: context)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        book?.downloadTask?.removeObserver(self, forKeyPath: "stateRaw", context: context)
+        //book?.downloadTask?.removeObserver(self, forKeyPath: "stateRaw", context: context)
     }
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
@@ -76,7 +78,14 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
         hasIndexLabel.hidden = false
         
         // Generate table structure
+        // Book desc
+        sectionHeaders.append(nil)
+        sectionFooters.append(book.desc)
         cellTitles.append([String]())
+        
+        // Action Cells
+        sectionHeaders.append(nil)
+        sectionFooters.append(nil)
         if book.isLocal?.boolValue == false {
             if book.spaceState == .NotEnough {
                 cellTitles.append([Strings.spaceNotEnough])
@@ -86,9 +95,27 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
         } else {
             cellTitles.append([Strings.remove])
         }
+        
+        // Book Info
+        sectionHeaders.append(Strings.bookInfo)
+        sectionFooters.append(nil)
         cellTitles.append([Strings.size, Strings.createDate, Strings.arcitleCount, Strings.language, Strings.creator, Strings.publisher])
         
-        if let _ = book.url { cellTitles.append([Strings.copyURL]) }
+        // PID
+        if let _ = book.pid {
+            sectionHeaders.append(Strings.pid)
+            sectionFooters.append(Strings.pidNote)
+            cellTitles.append([Strings.pid])
+        }
+        
+        // URL
+        if let _ = book.url {
+            sectionHeaders.append(nil)
+            sectionFooters.append(nil)
+            cellTitles.append([Strings.copyURL])
+        }
+        
+        tableView.reloadEmptyDataSet()
     }
     
     // MARK: - Delegates
@@ -155,6 +182,10 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
                 if book?.spaceState == .Caution { cell.button.tintColor = UIColor.orangeColor() }
             }
             return cell
+        case Strings.pid:
+            let cell = tableView.dequeueReusableCellWithIdentifier("BasicCell", forIndexPath: indexPath)
+            cell.textLabel?.text = book?.pid
+            return cell
         case Strings.copyURL:
             let cell = tableView.dequeueReusableCellWithIdentifier("CenterButtonCell", forIndexPath: indexPath) as! CenterButtonCell
             cell.button.setTitle(title, forState: .Normal)
@@ -184,23 +215,11 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 1:
-            return Strings.download
-        case 2:
-            return Strings.bookInfo
-        default:
-            return nil
-        }
+        return sectionHeaders[section]
     }
     
     override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return book?.desc
-        default:
-            return nil
-        }
+        return sectionFooters[section]
     }
     
     override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
@@ -217,8 +236,10 @@ extension LocalizedStrings {
         static let noIndex = NSLocalizedString("No Index", comment: comment)
         static let noPic = NSLocalizedString("No Picture", comment: comment)
         
-        static let download = NSLocalizedString("Download", comment: comment)
+        static let pid = NSLocalizedString("Persistent ID", comment: comment)
         static let bookInfo = NSLocalizedString("Book Info", comment: comment)
+        
+        static let pidNote = NSLocalizedString("This ID does not change in different versions of the same book.", comment: comment)
         
         static let downloadNow = NSLocalizedString("Download Now", comment: comment)
         static let spaceNotEnough = NSLocalizedString("Space Not Enough", comment: comment)

@@ -161,9 +161,9 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
                 self.refreshFetchedResultController()
             })
         }
-        alert.preferredAction = action
         alert.addAction(action)
         alert.addAction(UIAlertAction(title: LocalizedStrings.Common.cancel, style: .Cancel, handler: nil))
+        alert.preferredAction = action
         presentViewController(alert, animated: true, completion: nil)
     }
     
