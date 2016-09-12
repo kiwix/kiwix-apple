@@ -29,7 +29,7 @@ class RefreshLibraryOperation: GroupOperation {
 }
 
 private class Retrive: Operation, ResultOperationType {
-    private static let url = NSURL(string: "http://www.kiwix.org/library.xml")!
+    private static let url = NSURL(string: "https://download.kiwix.org/library/library.xml")!
     private var result: NSData?
     
     override init() {

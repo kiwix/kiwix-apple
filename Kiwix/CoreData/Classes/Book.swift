@@ -32,7 +32,7 @@ class Book: NSManagedObject {
         
         book.articleCount = Int64((metadata["articleCount"] as? String) ?? "") ?? 0
         book.mediaCount = Int64((metadata["mediaCount"] as? String) ?? "") ?? 0
-        book.fileSize = Int64((metadata["size"] as? String) ?? "") ?? 0
+        book.fileSize = (Int64((metadata["size"] as? String) ?? "") ?? 0) * 1024
         
         book.date = {
             guard let date = metadata["date"] as? String else {return nil}

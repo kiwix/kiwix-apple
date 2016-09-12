@@ -24,12 +24,13 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate,
     }
     
     func webViewDidStartLoad(webView: UIWebView) {
-        URLResponseCache.shared.start()
+//        URLResponseCache.shared.start()
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {
-        URLResponseCache.shared.stop()
+//        URLResponseCache.shared.stop()
         
+        // Create article object
         guard let url = webView.request?.URL,
             let article = Article.addOrUpdate(url: url, context: NSManagedObjectContext.mainQueueContext) else {return}
         article.title = JSInjection.getTitle(from: webView)

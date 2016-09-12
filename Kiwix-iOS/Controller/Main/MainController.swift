@@ -24,6 +24,7 @@ class MainController: UIViewController {
     
     // MARK: - Properties
     
+    let activityType = "org.kiwix.kiwix.article-view"
     private var webViewInitialURL: NSURL?
     private(set) var context: UnsafeMutablePointer<Void> = nil
     var isShowingTableOfContents = false
@@ -38,6 +39,7 @@ class MainController: UIViewController {
         didSet {
             configureSearchBarPlaceHolder()
             configureBookmarkButton()
+            configureUserActivity()
         }
     }
     
@@ -93,6 +95,21 @@ class MainController: UIViewController {
             tableOfContentsController = destinationViewController
             tableOfContentsController?.delegate = self
         }
+    }
+    
+    override func updateUserActivityState(activity: NSUserActivity) {
+        defer { super.updateUserActivityState(activity) }
+        guard let article = article else {return}
+        activity.title = article.title
+        activity.addUserInfoEntriesFromDictionary(["ArticleURL": article.url])
+        super.updateUserActivityState(activity)
+    }
+    
+    override func restoreUserActivityState(activity: NSUserActivity) {
+        guard activity.activityType == activityType,
+            let urlString = activity.userInfo?["ArticleURL"] as? String,
+            let url = NSURL(string: urlString) else {return}
+        load(url)
     }
     
     // MARK: - Load
@@ -208,6 +225,14 @@ class MainController: UIViewController {
         } else {
             searchBar.placeholder = LocalizedStrings.search
         }
+    }
+    
+    func configureUserActivity() {
+        userActivity = userActivity ?? NSUserActivity(activityType: activityType)
+        guard let article = article else {return}
+        userActivity?.title = article.title
+        userActivity?.userInfo = ["ArticleURL": article.url]
+        userActivity?.becomeCurrent()
     }
 
     // MARK: - Buttons

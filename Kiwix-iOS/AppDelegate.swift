@@ -39,29 +39,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
-        switch shortcutItem.type {
-        case "org.kiwix.search":
-            mainController?.hidePresentedController(false, completion: {
-                self.mainController?.showSearch(animated: false)
-                completionHandler(true)
-            })
-        case "org.kiwix.bookmarks":
-            mainController?.hidePresentedController(false, completion: {
-                self.mainController?.hideSearch(animated: false)
-                self.mainController?.showBookmarkTBVC()
-                completionHandler(true)
-            })
-        case recentShortcutTypeString:
-            guard let urlString = shortcutItem.userInfo?["URL"] as? String else {completionHandler(false); return}
-            mainController?.load(NSURL(string: urlString))
-            completionHandler(true)
-        default:
-            completionHandler(false)
-            return
-        }
-    }
-    
     func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
         // Here we get what notification permission user currently allows
     }
@@ -76,6 +53,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard url.scheme!.caseInsensitiveCompare("kiwix") == .OrderedSame else {return false}
         mainController?.load(url)
         return true
+    }
+    
+    func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool {
+        if userActivity.activityType == "org.kiwix.kiwix.article-view" {
+            guard let navController = window?.rootViewController as? UINavigationController,
+                let controller = navController.topViewController as? MainController else {return false}
+            controller.restoreUserActivityState(userActivity)
+            return true
+        } else {
+            return false
+        }
+        
     }
     
     // MARK: - Active
@@ -103,7 +92,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //        //UIApplication.sharedApplication().applicationIconBadgeNumber = downloader.taskCount ?? 0
     //    }
     
-    // MARK: - Shotcut Items 
+    // MARK: - Shotcut Items
+    
+    func addRecentArticleShortCutItem(article: Article) {
+        guard let title = article.title else {return}
+        let icon = UIApplicationShortcutIcon(templateImageName: "Recent")
+        let item = UIMutableApplicationShortcutItem(type: recentShortcutTypeString, localizedTitle: title, localizedSubtitle: "", icon: icon, userInfo: ["URL": article.url])
+        UIApplication.sharedApplication().shortcutItems?.append(item)
+    }
     
     func removeAllDynamicShortcutItems() {
         guard let items = UIApplication.sharedApplication().shortcutItems?.filter({$0.type == recentShortcutTypeString}) else {return}
@@ -113,11 +109,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func addRecentArticleShortCutItem(article: Article) {
-        guard let title = article.title, let url = NSURL(string: article.url) else {return}
-        let icon = UIApplicationShortcutIcon(templateImageName: "Recent")
-        let item = UIMutableApplicationShortcutItem(type: recentShortcutTypeString, localizedTitle: title, localizedSubtitle: "", icon: icon, userInfo: ["URL": url])
-        UIApplication.sharedApplication().shortcutItems?.append(item)
+    func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
+        switch shortcutItem.type {
+        case "org.kiwix.search":
+            mainController?.hidePresentedController(false, completion: {
+                self.mainController?.showSearch(animated: false)
+                completionHandler(true)
+            })
+        case "org.kiwix.bookmarks":
+            mainController?.hidePresentedController(false, completion: {
+                self.mainController?.hideSearch(animated: false)
+                self.mainController?.showBookmarkTBVC()
+                completionHandler(true)
+            })
+        case recentShortcutTypeString:
+            guard let urlString = shortcutItem.userInfo?["URL"] as? String else {completionHandler(false); return}
+            mainController?.load(NSURL(string: urlString))
+            completionHandler(true)
+        default:
+            completionHandler(false)
+            return
+        }
     }
 
     // MARK: - Background
