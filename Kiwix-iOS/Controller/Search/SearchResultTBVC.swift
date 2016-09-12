@@ -121,17 +121,17 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
             tableView.reloadData()
             return
         }
-//        let operation = SearchOperation(searchTerm: searchText) { [unowned self] (results) in
-//            guard let results = results else {return}
-//            self.searchResults = results
-//            self.tableView.reloadData()
-//            if results.count > 0 {
-//                self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
-//            }
-//        }
+
         let operation = SearchOperation(searchTerm: searchText)
         operation.addObserver(DidFinishObserver {(operation, errors) in
-            print("search op did finish, result injection")
+            guard let operation = operation as? SearchOperation else {return}
+            NSOperationQueue.mainQueue().addOperationWithBlock({ 
+                self.searchResults = operation.results
+                self.tableView.reloadData()
+                
+                guard operation.results.count > 0 else {return}
+                self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+            })
         })
         GlobalQueue.shared.add(search: operation)
     }
