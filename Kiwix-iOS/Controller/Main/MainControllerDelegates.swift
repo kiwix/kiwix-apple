@@ -24,11 +24,11 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate,
     }
     
     func webViewDidStartLoad(webView: UIWebView) {
-//        URLResponseCache.shared.start()
+        URLResponseCache.shared.start()
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {
-//        URLResponseCache.shared.stop()
+        URLResponseCache.shared.stop()
         
         // Create article object
         guard let url = webView.request?.URL,
@@ -36,6 +36,9 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate,
         article.title = JSInjection.getTitle(from: webView)
         article.thumbImageURL = URLResponseCache.shared.firstImage()?.absoluteString
         self.article = article
+        
+        // UI Updates
+        configureNavigationButtonTint()
     }
     
     func webView(webView: UIWebView, didFailLoadWithError error: NSError) {

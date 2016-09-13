@@ -50,7 +50,7 @@ class ScanLocalBookOperation: Operation {
     }
     
     override func operationDidFinish(errors: [ErrorType]) {
-        print("Scan finshed, lasted for \(-time.timeIntervalSinceNow)")
+        print("Scan finshed, lasted for \(-time.timeIntervalSinceNow) seconds.")
     }
     
     private func updateReaders() {

@@ -21,8 +21,6 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     
     override init() {
         super.init()
-        
-        startScan()
         monitor.delegate = self
         monitor.startMonitoring()
     }
@@ -44,7 +42,7 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
             })
         })
         operation.queuePriority = .VeryHigh
-        if readers.count == 0 { operation.qualityOfService = .UserInitiated }
+        if readers.count == 0 { operation.qualityOfService = .UserInteractive }
         GlobalQueue.shared.add(scan: operation)
     }
     
