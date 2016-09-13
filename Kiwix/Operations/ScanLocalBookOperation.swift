@@ -34,8 +34,8 @@ class ScanLocalBookOperation: Operation {
     override func execute() {
         defer {finish()}
         
-        currentZimFileURLSnapshot = ScanLocalBookOperation.getCurrentZimFileURLsInDocDir()
-        currentIndexFolderURLSnapshot = ScanLocalBookOperation.getCurrentIndexFolderURLsInDocDir()
+        currentZimFileURLSnapshot = getCurrentZimFileURLsInDocDir()
+        currentIndexFolderURLSnapshot = getCurrentIndexFolderURLsInDocDir()
         
         let indexFolderHasDeletions = lastIndexFolderURLSnapshot.subtract(currentIndexFolderURLSnapshot).count > 0
         
@@ -50,6 +50,7 @@ class ScanLocalBookOperation: Operation {
     override func operationDidFinish(errors: [ErrorType]) {
         context.performBlockAndWait {self.context.saveIfNeeded()}
         NSManagedObjectContext.mainQueueContext.performBlockAndWait {NSManagedObjectContext.mainQueueContext.saveIfNeeded()}
+        print("scan finshed")
     }
     
     private func updateReaders() {
@@ -100,7 +101,7 @@ class ScanLocalBookOperation: Operation {
     
     // MARK: - Helper
     
-    private class func getCurrentZimFileURLsInDocDir() -> Set<NSURL> {
+    private func getCurrentZimFileURLsInDocDir() -> Set<NSURL> {
         var urls = NSFileManager.getContents(dir: NSFileManager.docDirURL)
         let keys = [NSURLIsDirectoryKey]
         urls = urls.filter { (url) -> Bool in
@@ -112,7 +113,7 @@ class ScanLocalBookOperation: Operation {
         return Set(urls)
     }
     
-    private class func getCurrentIndexFolderURLsInDocDir() -> Set<NSURL> {
+    private func getCurrentIndexFolderURLsInDocDir() -> Set<NSURL> {
         var urls = NSFileManager.getContents(dir: NSFileManager.docDirURL)
         let keys = [NSURLIsDirectoryKey]
         urls = urls.filter { (url) -> Bool in
