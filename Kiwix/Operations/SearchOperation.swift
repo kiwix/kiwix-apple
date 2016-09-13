@@ -10,8 +10,14 @@ import Operations
 
 class SearchOperation: GroupOperation {
     private(set) var results = [SearchResult]()
+    let searchTerm: String
     
     init(searchTerm: String) {
+        self.searchTerm = searchTerm
+        super.init(operations: [])
+    }
+    
+    override func execute() {
         let searches: [BookSearch] = ZimMultiReader.shared.readers.keys.map({ BookSearch(zimID: $0, searchTerm: searchTerm) })
         let sort = Sort()
         searches.forEach { (search) in
@@ -19,12 +25,16 @@ class SearchOperation: GroupOperation {
                 operation.requirement += dependency.results
             })
         }
-        super.init(operations: searches + [sort])
         
         sort.addObserver(DidFinishObserver { [unowned self] (operation, errors) in
             guard let operation = operation as? Sort else {return}
             self.results = operation.requirement
-        })
+            })
+        
+        addOperations(searches)
+        addOperation(sort)
+        
+        super.execute()
     }
 }
 
