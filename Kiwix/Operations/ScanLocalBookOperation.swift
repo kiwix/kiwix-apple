@@ -46,7 +46,10 @@ class ScanLocalBookOperation: Operation {
         }
         
         updateReaders()
-        updateCoreData()
+        context.performBlockAndWait {self.updateCoreData()}
+        
+        context.performBlockAndWait {self.context.saveIfNeeded()}
+        NSManagedObjectContext.mainQueueContext.performBlockAndWait {NSManagedObjectContext.mainQueueContext.saveIfNeeded()}
     }
     
     override func operationDidFinish(errors: [ErrorType]) {
@@ -71,6 +74,7 @@ class ScanLocalBookOperation: Operation {
         for id in removedZimFileIDs {
             guard let book = localBooks[id] else {continue}
             if let _ = book.meta4URL {
+                print(book.isLocal)
                 book.isLocal = false
             } else {
                 context.deleteObject(book)
@@ -94,12 +98,9 @@ class ScanLocalBookOperation: Operation {
             book.hasIndex = reader.hasIndex()
         }
         
-        if localBooks.count == 0 && addedZimFileIDs.count == 1 {
+        if localBooks.count == 0 && addedZimFileIDs.count >= 1 {
             firstBookAdded = true
         }
-        
-        context.performBlockAndWait {self.context.saveIfNeeded()}
-        NSManagedObjectContext.mainQueueContext.performBlockAndWait {NSManagedObjectContext.mainQueueContext.saveIfNeeded()}
     }
     
     // MARK: - Helper
