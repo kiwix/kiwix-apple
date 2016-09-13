@@ -40,17 +40,21 @@ private class BookSearch: Operation {
     }
     
     override private func execute() {
+        defer { finish() }
         guard let reader = ZimMultiReader.shared.readers[zimID] else {return}
         
+        guard !cancelled else {return}
         let indexedDics = reader.searchUsingIndex(searchTerm) as? [[String: AnyObject]] ?? [[String: AnyObject]]()
-        let titleDics = reader.searchSuggestionsSmart(searchTerm) as? [[String: AnyObject]] ?? [[String: AnyObject]]()
-        let mixedDics = titleDics + indexedDics // It is important we process the title search result first, so that we always keep the indexed search result
         
+        guard !cancelled else {return}
+        let titleDics = reader.searchSuggestionsSmart(searchTerm) as? [[String: AnyObject]] ?? [[String: AnyObject]]()
+        
+        guard !cancelled else {return}
+        let mixedDics = titleDics + indexedDics // It is important we process the title search result first, so that we always keep the indexed search result
         for dic in mixedDics {
             guard let result = SearchResult (rawResult: dic, lowerCaseSearchTerm: searchTerm) else {continue}
             self.results.append(result)
         }
-        finish()
     }
 }
 
@@ -58,8 +62,9 @@ private class Sort: Operation, AutomaticInjectionOperationType {
     var requirement = [SearchResult]()
     
     private override func execute() {
+        defer { finish() }
+        guard !cancelled else {return}
         sort()
-        finish()
     }
     
     private func sort() {

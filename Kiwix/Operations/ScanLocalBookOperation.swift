@@ -18,6 +18,8 @@ class ScanLocalBookOperation: Operation {
     private let lastIndexFolderURLSnapshot: Set<NSURL>
     private(set) var currentIndexFolderURLSnapshot = Set<NSURL>()
     
+    private let time = NSDate()
+    
     init(lastZimFileURLSnapshot: Set<NSURL>, lastIndexFolderURLSnapshot: Set<NSURL>) {
         self.context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         context.parentContext = NSManagedObjectContext.mainQueueContext
@@ -48,9 +50,7 @@ class ScanLocalBookOperation: Operation {
     }
     
     override func operationDidFinish(errors: [ErrorType]) {
-        context.performBlockAndWait {self.context.saveIfNeeded()}
-        NSManagedObjectContext.mainQueueContext.performBlockAndWait {NSManagedObjectContext.mainQueueContext.saveIfNeeded()}
-        print("scan finshed")
+        print("Scan finshed, lasted for \(-time.timeIntervalSinceNow)")
     }
     
     private func updateReaders() {
@@ -97,6 +97,9 @@ class ScanLocalBookOperation: Operation {
         if localBooks.count == 0 && addedZimFileIDs.count == 1 {
             firstBookAdded = true
         }
+        
+        context.performBlockAndWait {self.context.saveIfNeeded()}
+        NSManagedObjectContext.mainQueueContext.performBlockAndWait {NSManagedObjectContext.mainQueueContext.saveIfNeeded()}
     }
     
     // MARK: - Helper
