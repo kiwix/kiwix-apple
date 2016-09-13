@@ -25,6 +25,13 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate,
     
     func webViewDidStartLoad(webView: UIWebView) {
         URLResponseCache.shared.start()
+        
+        // UI Updates
+        if webView.hidden {
+            webView.hidden = false
+            hideWelcome()
+        }
+        hideSearch(animated: true)
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {

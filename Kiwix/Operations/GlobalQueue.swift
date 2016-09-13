@@ -13,6 +13,7 @@ class GlobalQueue: OperationQueue {
     
     private weak var scanOperation: ScanLocalBookOperation?
     private weak var searchOperation: SearchOperation?
+    private weak var articleLoadOperation: ArticleLoadOperation?
     
     func add(scan operation: ScanLocalBookOperation) {
         addOperation(operation)
@@ -20,13 +21,8 @@ class GlobalQueue: OperationQueue {
     }
     
     func add(search operation: SearchOperation) {
-        if let _ = searchOperation {
-            print("search is not released")
-        }
-        
         if let scanOperation = scanOperation {
             operation.addDependency(scanOperation)
-            print("scan not finished")
         }
         
         if let searchOperation = self.searchOperation {
@@ -34,6 +30,19 @@ class GlobalQueue: OperationQueue {
         }
         addOperation(operation)
         searchOperation = operation
+    }
+    
+    func add(load operation: ArticleLoadOperation) {
+        if let scanOperation = scanOperation {
+            operation.addDependency(scanOperation)
+        }
+        
+        if let articleLoadOperation = self.articleLoadOperation {
+            operation.addDependency(articleLoadOperation)
+        }
+        
+        addOperation(operation)
+        articleLoadOperation = operation
     }
 }
 

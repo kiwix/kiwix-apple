@@ -125,8 +125,6 @@ class MainController: UIViewController {
             return
         }
         guard let url = url else {return}
-        webView.hidden = false
-        hideWelcome()
         let request = NSURLRequest(URL: url)
         webView.loadRequest(request)
     }

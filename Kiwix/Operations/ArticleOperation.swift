@@ -10,15 +10,71 @@ import UIKit
 import Operations
 
 class ArticleLoadOperation: Operation {
-    let url: NSURL
+    let bookID: String?
+    let path: String?
+    let title: String?
+    let url: NSURL?
     
-    init?(url: NSURL) {
+    init(url: NSURL) {
+        self.bookID = nil
+        self.path = nil
+        self.title = nil
         self.url = url
         super.init()
     }
     
-    override func execute() {
-        
+    init(bookID: String) {
+        self.bookID = bookID
+        self.path = nil
+        self.title = nil
+        self.url = nil
+        super.init()
     }
     
+    init(bookID: String, articlePath: String) {
+        self.bookID = bookID
+        self.path = articlePath
+        self.title = nil
+        self.url = nil
+        super.init()
+    }
+    
+    init(bookID: String, articleTitle: String) {
+        self.bookID = bookID
+        self.path = nil
+        self.title = articleTitle
+        self.url = nil
+        super.init()
+    }
+    
+    override func execute() {
+        let controller = ((UIApplication.sharedApplication().delegate as! AppDelegate)
+            .window?.rootViewController as! UINavigationController)
+            .topViewController as! MainController
+        guard let url: NSURL = {
+            if let url = self.url { return url}
+            if let bookID = bookID, let path = path { return NSURL(bookID: bookID, contentPath: path) }
+            if let bookID = bookID, let title = title {
+                guard let path = ZimMultiReader.shared.readers[bookID]?.pageURLFromTitle(title) else {return nil}
+                return NSURL(bookID: bookID, contentPath: path)
+            }
+            if let bookID = bookID {
+                guard let reader = ZimMultiReader.shared.readers[bookID] else {return nil}
+                let path = reader.mainPageURL()
+                return NSURL(bookID: bookID, contentPath: path)
+            }
+            return nil
+        }() else {
+            // TODO - should produce error
+            finish()
+            return
+        }
+
+        let request = NSURLRequest(URL: url)
+        
+        NSOperationQueue.mainQueue().addOperationWithBlock { 
+            controller.webView.loadRequest(request)
+            self.finish()
+        }
+    }
 }
