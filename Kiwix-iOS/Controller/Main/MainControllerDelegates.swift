@@ -111,8 +111,9 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate,
     // MARK: - ZimMultiReaderDelegate
     
     func firstBookAdded() {
-        guard let id = ZimMultiReader.shared.readers.keys.first else {return}
-        loadMainPage(id)
+        guard let bookID = ZimMultiReader.shared.readers.keys.first else {return}
+        let operation = ArticleLoadOperation(bookID: bookID)
+        GlobalQueue.shared.add(load: operation)
     }
     
     // MARK: - UISearchBarDelegate

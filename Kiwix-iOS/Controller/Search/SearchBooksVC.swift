@@ -1,5 +1,5 @@
 //
-//  SearchBooksVC.swift
+//  SearchBooksController.swift
 //  Kiwix
 //
 //  Created by Chris Li on 4/7/16.
@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import DZNEmptyDataSet
 
-class SearchBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, TableCellDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class SearchBooksController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, TableCellDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var recentSearchContainer: DropShadowView!
@@ -141,11 +141,11 @@ class SearchBooksVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        guard let mainVC = parentViewController?.parentViewController as? MainController,
-            let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
-        mainVC.hideSearch(animated: true)
-        mainVC.loadMainPage(book.id)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        guard let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
+        let operation = ArticleLoadOperation(bookID: book.id)
+        GlobalQueue.shared.add(load: operation)
     }
     
     // MARK: - Fetched Result Controller Delegate

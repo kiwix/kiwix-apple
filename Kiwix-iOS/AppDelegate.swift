@@ -51,7 +51,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
         guard url.scheme!.caseInsensitiveCompare("kiwix") == .OrderedSame else {return false}
-        mainController?.load(url)
+        let operation = ArticleLoadOperation(url: url)
+        GlobalQueue.shared.add(load: operation)
         return true
     }
     
@@ -123,8 +124,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 completionHandler(true)
             })
         case recentShortcutTypeString:
-            guard let urlString = shortcutItem.userInfo?["URL"] as? String else {completionHandler(false); return}
-            mainController?.load(NSURL(string: urlString))
+            guard let urlString = shortcutItem.userInfo?["URL"] as? String,
+                let url = NSURL(string: urlString) else {completionHandler(false); return}
+            let operation = ArticleLoadOperation(url: url)
+            GlobalQueue.shared.add(load: operation)
             completionHandler(true)
         default:
             completionHandler(false)

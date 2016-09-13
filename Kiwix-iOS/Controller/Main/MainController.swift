@@ -61,7 +61,7 @@ class MainController: UIViewController {
         configureButtonColor()
         showGetStartedAlert()
         showWelcome()
-        load(webViewInitialURL)
+//        load(webViewInitialURL)
     }
     
     deinit {
@@ -111,7 +111,8 @@ class MainController: UIViewController {
             let url = NSURL(string: urlString),
             let host = url.host else {return}
         if ZimMultiReader.shared.readers.keys.contains(host) {
-            load(url)
+            let operation = ArticleLoadOperation(url: url)
+            GlobalQueue.shared.add(load: operation)
         } else {
             // TODO: - Alert cannot complete hand off
         }
@@ -119,22 +120,15 @@ class MainController: UIViewController {
     
     // MARK: - Load
     
-    func load(url: NSURL?) {
-        if webView == nil {
-            webViewInitialURL = url
-            return
-        }
-        guard let url = url else {return}
-        let request = NSURLRequest(URL: url)
-        webView.loadRequest(request)
-    }
-    
-    func loadMainPage(id: ZimID) {
-        guard let reader = ZimMultiReader.shared.readers[id] else {return}
-        let mainPageURLString = reader.mainPageURL()
-        let mainPageURL = NSURL.kiwixURLWithZimFileid(id, contentURLString: mainPageURLString)
-        load(mainPageURL)
-    }
+//    func load(url: NSURL?) {
+//        if webView == nil {
+//            webViewInitialURL = url
+//            return
+//        }
+//        guard let url = url else {return}
+//        let request = NSURLRequest(URL: url)
+//        webView.loadRequest(request)
+//    }
     
     func loadExternalResource(url: NSURL) {
         let controller = SFSafariViewController(URL: url)
