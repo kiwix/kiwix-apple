@@ -45,17 +45,21 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureViews()
-        //book?.downloadTask?.addObserver(self, forKeyPath: "stateRaw", options: .New, context: context)
+        book?.addObserver(self, forKeyPath: "isLocal", options: .New, context: context)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        //book?.downloadTask?.removeObserver(self, forKeyPath: "stateRaw", context: context)
+        book?.removeObserver(self, forKeyPath: "isLocal", context: context)
     }
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        guard context == self.context else {return}
-        
+        guard let book = object as? Book where context == self.context else {return}
+        NSOperationQueue.mainQueue().addOperationWithBlock {
+            print(book.isLocal)
+            self.configureActionSection(book)
+            self.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .Fade)
+        }
     }
     
     func configureViews() {
@@ -86,15 +90,8 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
         // Action Cells
         sectionHeaders.append(nil)
         sectionFooters.append(nil)
-        if book.isLocal?.boolValue == false {
-            if book.spaceState == .NotEnough {
-                cellTitles.append([Strings.spaceNotEnough])
-            } else {
-                cellTitles.append([Strings.downloadNow])
-            }
-        } else {
-            cellTitles.append([Strings.remove])
-        }
+        cellTitles.append([])
+        configureActionSection(book)
         
         // Book Info
         sectionHeaders.append(Strings.bookInfo)
@@ -116,6 +113,18 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
         }
         
         tableView.reloadEmptyDataSet()
+    }
+    
+    func configureActionSection(book: Book) {
+        if let isLocal = book.isLocal?.boolValue {
+            if isLocal {
+                cellTitles[1] = [Strings.remove]
+            } else {
+                cellTitles[1] = book.spaceState == .NotEnough ? [Strings.spaceNotEnough] : [Strings.downloadNow]
+            }
+        } else {
+            cellTitles[1] = ["Cancel Download"]
+        }
     }
     
     // MARK: - Delegates
