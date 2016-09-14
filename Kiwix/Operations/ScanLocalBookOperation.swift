@@ -7,7 +7,7 @@
 //
 
 import CoreData
-import PSOperations
+import Operations
 
 class ScanLocalBookOperation: Operation {
     private let context: NSManagedObjectContext
@@ -54,10 +54,10 @@ class ScanLocalBookOperation: Operation {
         updateCoreData()
     }
     
-    override func finished(errors: [NSError]) {
+    override func operationDidFinish(errors: [ErrorType]) {
         context.performBlockAndWait {self.context.saveIfNeeded()}
         NSManagedObjectContext.mainQueueContext.performBlockAndWait {NSManagedObjectContext.mainQueueContext.saveIfNeeded()}
-        NSOperationQueue.mainQueue().addOperationWithBlock { 
+        NSOperationQueue.mainQueue().addOperationWithBlock {
             self.completionHandler(currentZimFileURLSnapshot: self.currentZimFileURLSnapshot,
                 currentIndexFolderURLSnapshot: self.currentIndexFolderURLSnapshot, firstBookAdded: self.firstBookAdded)
         }
@@ -95,7 +95,7 @@ class ScanLocalBookOperation: Operation {
             }()
             book?.isLocal = true
             book?.hasIndex = reader.hasIndex()
-            book?.hasPic = !reader.fileURL.absoluteString.containsString("nopic")
+            book?.hasPic = !reader.fileURL.absoluteString!.containsString("nopic")
         }
         
         for (id, book) in localBooks {
@@ -112,45 +112,27 @@ class ScanLocalBookOperation: Operation {
     // MARK: - Helper
     
     private class func getCurrentZimFileURLsInDocDir() -> Set<NSURL> {
-        let fileURLs = FileManager.contentsOfDirectory(FileManager.docDirURL) ?? [NSURL]()
-        var zimURLs = Set<NSURL>()
-        for url in fileURLs {
-            do {
-                var isDirectory: AnyObject? = nil
-                try url.getResourceValue(&isDirectory, forKey: NSURLIsDirectoryKey)
-                if let isDirectory = (isDirectory as? NSNumber)?.boolValue {
-                    if !isDirectory {
-                        guard let pathExtension = url.pathExtension?.lowercaseString else {continue}
-                        guard pathExtension.containsString("zim") else {continue}
-                        zimURLs.insert(url)
-                    }
-                }
-            } catch {
-                continue
-            }
+        var urls = NSFileManager.getContents(dir: NSFileManager.docDirURL)
+        let keys = [NSURLIsDirectoryKey]
+        urls = urls.filter { (url) -> Bool in
+            guard let values = try? url.resourceValuesForKeys(keys),
+                let isDirectory = (values[NSURLIsDirectoryKey] as? NSNumber)?.boolValue where isDirectory == false else {return false}
+            guard let pathExtension = url.pathExtension?.lowercaseString where pathExtension.containsString("zim") else {return false}
+            return true
         }
-        return zimURLs
+        return Set(urls)
     }
     
     private class func getCurrentIndexFolderURLsInDocDir() -> Set<NSURL> {
-        let fileURLs = FileManager.contentsOfDirectory(FileManager.docDirURL) ?? [NSURL]()
-        var folderURLs = Set<NSURL>()
-        for url in fileURLs {
-            do {
-                var isDirectory: AnyObject? = nil
-                try url.getResourceValue(&isDirectory, forKey: NSURLIsDirectoryKey)
-                if let isDirectory = (isDirectory as? NSNumber)?.boolValue {
-                    if isDirectory {
-                        guard let pathExtension = url.pathExtension?.lowercaseString else {continue}
-                        guard pathExtension == "idx" else {continue}
-                        folderURLs.insert(url)
-                    }
-                }
-            } catch {
-                continue
-            }
+        var urls = NSFileManager.getContents(dir: NSFileManager.docDirURL)
+        let keys = [NSURLIsDirectoryKey]
+        urls = urls.filter { (url) -> Bool in
+            guard let values = try? url.resourceValuesForKeys(keys),
+                let isDirectory = (values[NSURLIsDirectoryKey] as? NSNumber)?.boolValue where isDirectory == true else {return false}
+            guard let pathExtension = url.pathExtension?.lowercaseString where pathExtension == "idx" else {return false}
+            return true
         }
-        return folderURLs
+        return Set(urls)
     }
 
 }

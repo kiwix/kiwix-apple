@@ -112,7 +112,7 @@ extension MainController: LPTBarButtonItemDelegate, TableOfContentsDelegate, Zim
     
     func webViewDidFinishLoad(webView: UIWebView) {
         guard let url = webView.request?.URL else {return}
-        guard url.scheme.caseInsensitiveCompare("Kiwix") == .OrderedSame else {return}
+        guard url.scheme!.caseInsensitiveCompare("Kiwix") == .OrderedSame else {return}
         
         let title = webView.stringByEvaluatingJavaScriptFromString("document.title")
         let managedObjectContext = UIApplication.appDelegate.managedObjectContext

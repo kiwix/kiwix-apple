@@ -49,6 +49,7 @@ extension UIApplication {
 
 extension UIStoryboard {
     class var library: UIStoryboard {get {return UIStoryboard(name: "Library", bundle: nil)}}
+    class var libraryNew: UIStoryboard {get {return UIStoryboard(name: "LibraryNew", bundle: nil)}}
     class var main: UIStoryboard {get {return UIStoryboard(name: "Main", bundle: nil)}}
     class var search: UIStoryboard {get {return UIStoryboard(name: "Search", bundle: nil)}}
     class var setting: UIStoryboard {get {return UIStoryboard(name: "Setting", bundle: nil)}}
@@ -72,13 +73,15 @@ extension UIStoryboard {
 }
 
 extension UIColor {
-    class var havePicTintColor: UIColor {
-        return UIColor(red: 255.0/255.0, green: 153.0/255.0, blue: 51.0/255.0, alpha: 1.0)
-    }
     
     class var themeColor: UIColor {
         return UIColor(red: 71.0 / 255.0, green: 128.0 / 255.0, blue: 182.0 / 255.0, alpha: 1.0)
     }
+}
+
+class AppColors {
+    static let hasPicTintColor = UIColor(red: 1, green: 0.5, blue: 0, alpha: 1)
+    static let hasIndexTintColor = UIColor(red: 0.304706, green: 0.47158, blue: 1, alpha: 1)
 }
 
 extension UITableView {
@@ -91,58 +94,6 @@ extension UITableView {
         label.numberOfLines = 0
         label.textColor = UIColor.grayColor()
         backgroundView = label
-    }
-}
-
-extension UINavigationBar {
-    func hideBottomHairline() {
-        let navigationBarImageView = hairlineImageViewInNavigationBar(self)
-        navigationBarImageView!.hidden = true
-    }
-    
-    func showBottomHairline() {
-        let navigationBarImageView = hairlineImageViewInNavigationBar(self)
-        navigationBarImageView!.hidden = false
-    }
-    
-    private func hairlineImageViewInNavigationBar(view: UIView) -> UIImageView? {
-        if view.isKindOfClass(UIImageView) && view.bounds.height <= 1.0 {
-            return (view as! UIImageView)
-        }
-        
-        let subviews = (view.subviews as [UIView])
-        for subview: UIView in subviews {
-            if let imageView: UIImageView = hairlineImageViewInNavigationBar(subview) {
-                return imageView
-            }
-        }
-        return nil
-    }
-}
-
-extension UIToolbar {
-    func hideHairline() {
-        let navigationBarImageView = hairlineImageViewInToolbar(self)
-        navigationBarImageView!.hidden = true
-    }
-    
-    func showHairline() {
-        let navigationBarImageView = hairlineImageViewInToolbar(self)
-        navigationBarImageView!.hidden = false
-    }
-    
-    private func hairlineImageViewInToolbar(view: UIView) -> UIImageView? {
-        if view.isKindOfClass(UIImageView) && view.bounds.height <= 1.0 {
-            return (view as! UIImageView)
-        }
-        
-        let subviews = (view.subviews as [UIView])
-        for subview: UIView in subviews {
-            if let imageView: UIImageView = hairlineImageViewInToolbar(subview) {
-                return imageView
-            }
-        }
-        return nil
     }
 }
 

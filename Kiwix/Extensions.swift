@@ -30,8 +30,6 @@ import Foundation
     }
 #endif
 
-// MARK: - Model
-
 extension NSLocale {
     class var preferredLangCodes: [String] {
         let preferredLangNames = self.preferredLanguages()
@@ -54,4 +52,31 @@ extension NSBundle {
     }
 }
 
+extension NSFileManager {
+    class var docDirURL: NSURL {
+        let url = try? NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
+        return url!
+    }
+    
+    class var libDirURL: NSURL {
+        let url = try? NSFileManager.defaultManager().URLForDirectory(.LibraryDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
+        return url!
+    }
+    
+    class func getContents(dir dir: NSURL) -> [NSURL] {
+        let options: NSDirectoryEnumerationOptions = [.SkipsHiddenFiles, .SkipsPackageDescendants, .SkipsSubdirectoryDescendants]
+        let urls = try? NSFileManager.defaultManager().contentsOfDirectoryAtURL(NSFileManager.docDirURL, includingPropertiesForKeys: nil, options: options)
+        return urls ?? [NSURL]()
+    }
+}
+
+extension UIDevice {
+    class var availableDiskSpace: (freeSize: Int64, totalSize: Int64)? {
+        let docDirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first!
+        guard let systemAttributes = try? NSFileManager.defaultManager().attributesOfFileSystemForPath(docDirPath),
+            let freeSize = (systemAttributes[NSFileSystemFreeSize] as? NSNumber)?.longLongValue,
+            let totalSize = (systemAttributes[NSFileSystemSize] as? NSNumber)?.longLongValue else {return nil}
+        return (freeSize, totalSize)
+    }
+}
 

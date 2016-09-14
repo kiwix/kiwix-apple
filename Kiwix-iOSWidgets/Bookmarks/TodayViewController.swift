@@ -72,7 +72,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
         itemSize = CGSizeMake(itemWidth, itemHeight)
         
         rowCount = min(ceil(CGFloat(bookmarks.count) / CGFloat(itemsPerRow)), maxRowCount)
-        let collectionViewHeight = itemHeight * rowCount + hInset * rowCount
+        let collectionViewHeight = itemHeight * rowCount + hInset * (rowCount - 1)
         preferredContentSize = CGSizeMake(0, max(1, collectionViewHeight))
     }
     
@@ -114,6 +114,9 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
         
         cell.label.text = title
         cell.imageView.image = UIImage(data: thumbImageData)
+        if #available(iOS 10.0, *) {
+            cell.label.textColor = UIColor.darkTextColor()
+        }
     }
     
     // MARK: - UICollectionViewDelegate

@@ -14,7 +14,7 @@ class Article: NSManagedObject {
 
     class func addOrUpdate(title: String? = nil, url: NSURL, book: Book, context: NSManagedObjectContext) -> Article? {
         let fetchRequest = NSFetchRequest(entityName: "Article")
-        fetchRequest.predicate = NSPredicate(format: "urlString = %@", url.absoluteString)
+        fetchRequest.predicate = NSPredicate(format: "urlString = %@", url.absoluteString!)
         let article = Article.fetch(fetchRequest, type: Article.self, context: context)?.first ?? insert(Article.self, context: context)
         
         article?.title = title
@@ -58,7 +58,7 @@ class Article: NSManagedObject {
         return [
             "title": title,
             "thumbImageData": data,
-            "url": url.absoluteString,
+            "url": url.absoluteString!,
             "isMainPage": NSNumber(bool: isMainPage)
         ]
     }

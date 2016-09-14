@@ -7,7 +7,7 @@
 //
 
 import CoreData
-import PSOperations
+import Operations
 import NotificationCenter
 
 class UpdateWidgetDataSourceOperation: Operation {

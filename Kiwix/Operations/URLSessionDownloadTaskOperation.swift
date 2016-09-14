@@ -6,7 +6,7 @@
 //  Copyright © 2016 Chris. All rights reserved.
 //
 
-import PSOperations
+import Operations
 
 private var URLSessionTaskOperationKVOContext = 0
 
@@ -20,14 +20,15 @@ public class URLSessionDownloadTaskOperation: Operation {
         self.task = downloadTask
         super.init()
         
-        addObserver(BlockObserver(cancelHandler: { _ in
+        addObserver(DidCancelObserver { _ in
             if self.produceResumeData {
                 downloadTask.cancelByProducingResumeData({ (data) in
                 })
             } else {
                 downloadTask.cancel()
             }
-        }))
+            }
+        )
     }
     
     public func cancel(produceResumeData produceResumeData: Bool) {

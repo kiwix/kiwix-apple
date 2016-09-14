@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import PSOperations
+import Operations
 
 class SearchOperation: GroupOperation {
     let completionHandler: ([SearchResult]?) -> Void
@@ -41,8 +41,7 @@ class SearchOperation: GroupOperation {
         addCondition(MutuallyExclusive<ZimMultiReader>())
     }
     
-    override func finished(errors: [NSError]) {
-        //print("Search Operation finished, status \(cancelled ? "Canceled" : "Not Canceled"), \(NSDate().timeIntervalSinceDate(startTime))")
+    override func operationDidFinish(errors: [ErrorType]) {
         NSOperationQueue.mainQueue().addOperationWithBlock {
             self.completionHandler(self.cancelled ? nil : self.results)
         }
@@ -58,6 +57,7 @@ private class SingleBookSearchOperation: Operation {
         self.zimReader = zimReader
         self.lowerCaseSearchTerm = lowerCaseSearchTerm
         self.completionHandler = completionHandler
+        super.init()
     }
     
     override private func execute() {
@@ -80,6 +80,7 @@ private class SortSearchResultsOperation: Operation {
     
     init(completionHandler: ([SearchResult]) -> Void) {
         self.completionHandler = completionHandler
+        super.init()
     }
     
     override private func execute() {

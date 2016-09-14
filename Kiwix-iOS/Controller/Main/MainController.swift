@@ -8,7 +8,7 @@
 //
 
 import UIKit
-import PSOperations
+import Operations
 
 class MainController: UIViewController {
     
@@ -23,6 +23,7 @@ class MainController: UIViewController {
     var bookmarkController: BookmarkController?
     var bookmarkNav: UIViewController?
     var libraryController: UIViewController?
+    var libraryNewController: UIViewController?
     var settingController: UIViewController?
     var searchController: SearchController?
     var welcomeController: UIViewController?

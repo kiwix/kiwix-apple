@@ -7,10 +7,10 @@
 
 import UIKit
 import CoreData
-import PSOperations
+import Operations
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     var mainController: MainController? {
@@ -70,7 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OperationQueueDelegate {
     }
     
     func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
-        guard url.scheme.caseInsensitiveCompare("kiwix") == .OrderedSame else {return false}
+        guard url.scheme!.caseInsensitiveCompare("kiwix") == .OrderedSame else {return false}
         mainController?.load(url)
         return true
     }

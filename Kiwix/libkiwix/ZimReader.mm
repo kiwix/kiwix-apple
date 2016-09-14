@@ -32,11 +32,24 @@
         }
         
         try {
-            NSString *zimPath = [url absoluteString];
-            zimPath = [zimPath stringByReplacingOccurrencesOfString:@".zimaa" withString:@".zim"];
-            NSURL *xapianURl = [[NSURL fileURLWithPath:zimPath] URLByAppendingPathExtension:@"idx"];
-            _db = new Xapian::Database([xapianURl fileSystemRepresentation]);
-        } catch (const Xapian::DatabaseOpeningError &e) {}
+            zim::File zimFileHandle = *_reader->getZimFileHandler();
+            zim::Article xapianArticle = zimFileHandle.getArticle('Z', "/Z/fulltextIndex/xapian");
+            if (xapianArticle.good()) {
+                zim::offset_type dbOffset = xapianArticle.getOffset();
+                int databasefd = open([url fileSystemRepresentation], O_RDONLY);
+                lseek(databasefd, dbOffset, SEEK_SET);
+                _db = new Xapian::Database(databasefd);
+            } else {
+                throw "xapian db not in zim";
+            }
+        } catch (...) {
+            try {
+                NSString *zimPath = [url absoluteString];
+                zimPath = [zimPath stringByReplacingOccurrencesOfString:@".zimaa" withString:@".zim"];
+                NSURL *xapianURl = [[NSURL fileURLWithPath:zimPath] URLByAppendingPathExtension:@"idx"];
+                _db = new Xapian::Database([xapianURl fileSystemRepresentation]);
+            } catch (const Xapian::DatabaseOpeningError &e) {}
+        }
         
         self.fileURL = url;
     }

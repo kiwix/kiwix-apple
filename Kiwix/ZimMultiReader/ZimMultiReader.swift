@@ -7,7 +7,7 @@
 //
 
 import CoreData
-import PSOperations
+import Operations
 
 class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     static let sharedInstance = ZimMultiReader()
@@ -19,7 +19,7 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     private let searchQueue = OperationQueue()
     private(set) var isScanning = false
     private(set) var readers = [ZimID: ZimReader]()
-    private let monitor = DirectoryMonitor(URL: FileManager.docDirURL)
+    private let monitor = DirectoryMonitor(URL: NSFileManager.docDirURL)
     private var lastZimFileURLSnapshot = Set<NSURL>()
     private var lastIndexFolderURLSnapshot = Set<NSURL>()
     

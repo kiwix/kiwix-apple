@@ -97,7 +97,7 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
         } else {
             cell.titleLabel.text = result.title
         }
-        cell.hasPicIndicator.backgroundColor = book.hasPic ? UIColor.havePicTintColor : UIColor.lightGrayColor()
+        cell.hasPicIndicator.backgroundColor = book.hasPic ? AppColors.hasPicTintColor : UIColor.lightGrayColor()
         cell.favIcon.image = book.favIcon != nil ? UIImage(data: book.favIcon!) : nil
     }
     

@@ -7,41 +7,40 @@
 //
 
 import UIKit
-import PSOperations
+import Operations
 
 // MARK: - Alerts
 
-class SpaceCautionAlert: AlertOperation {
-    init(book: Book, presentationContext: UIViewController?) {
-        super.init(presentationContext: presentationContext)
-        
-        let comment = "Library: Download Space Caution Alert"
+class SpaceCautionAlert: AlertOperation<LibraryOnlineTBVC> {
+    let comment = "Library: Download Space Caution Alert"
+    init(book: Book, presentationContext: LibraryOnlineTBVC) {
+        super.init(presentAlertFrom: presentationContext)
         
         title = NSLocalizedString("Space Caution", comment: comment)
         message = NSLocalizedString("This book takes up more than 80% of the remaining space on your device. Are you sure you want to download it?", comment: comment)
-        addAction(NSLocalizedString("Download Anyway", comment: comment), style: .Default) { (action) -> Void in
+        addActionWithTitle(NSLocalizedString("Download Anyway", comment: comment), style: .Default) { (alert) in
             Network.sharedInstance.download(book)
         }
-        addAction(LocalizedStrings.cancel)
+        addActionWithTitle(LocalizedStrings.cancel)
     }
 }
 
-class SpaceNotEnoughAlert: AlertOperation {
-    init(book: Book, presentationContext: UIViewController?) {
-        super.init(presentationContext: presentationContext)
-        
-        let comment = "Library: Download Space Not Enough Alert"
+class SpaceNotEnoughAlert: AlertOperation<LibraryOnlineTBVC> {
+    let comment = "Library: Download Space Not Enough Alert"
+    init(book: Book, presentationContext: LibraryOnlineTBVC) {
+        super.init(presentAlertFrom: presentationContext)
         
         title = NSLocalizedString("Space Not Enough", comment: comment)
         message = NSLocalizedString("You don't have enough remaining space to download this book.", comment: comment)
-        addAction(LocalizedStrings.ok)
+        addActionWithTitle(LocalizedStrings.ok)
     }
 }
 
-class RefreshLibraryLanguageFilterAlert: AlertOperation {
+class RefreshLibraryLanguageFilterAlert: AlertOperation<LibraryOnlineTBVC> {
+    let comment = "Library: Language Filter Alert"
     let context = UIApplication.appDelegate.managedObjectContext
-    init(libraryOnlineTBVC: LibraryOnlineTBVC?) {
-        super.init(presentationContext: libraryOnlineTBVC)
+    init(presentationContext libraryOnlineTBVC: LibraryOnlineTBVC) {
+        super.init(presentAlertFrom: libraryOnlineTBVC)
         
         var preferredLanguageCodes = [String]()
         var preferredLanguageNames = [String]()
@@ -69,60 +68,56 @@ class RefreshLibraryLanguageFilterAlert: AlertOperation {
             }
         }()
         
-        let comment = "Library: Language Filter Alert"
-        
         title = NSLocalizedString("Only Show Preferred Language?", comment: comment)
         message = NSLocalizedString("We have found you may know \(languageString), would you like to filter the library by these languages?", comment: comment)
-        addAction(LocalizedStrings.ok, style: .Default) { (action) in
+        addActionWithTitle(LocalizedStrings.ok, style: .Default) { (action) in
             self.context.performBlock({
                 let languages = Language.fetchAll(self.context)
                 for language in languages {
                     guard let code = language.code else {continue}
                     language.isDisplayed = preferredLanguageCodes.contains(code)
                 }
-                libraryOnlineTBVC?.refreshFetchedResultController()
+                libraryOnlineTBVC.refreshFetchedResultController()
             })
         }
-        addAction(LocalizedStrings.cancel)
+        addActionWithTitle(LocalizedStrings.cancel)
     }
     
-    override func finished(errors: [NSError]) {
+    override func operationDidFinish(errors: [ErrorType]) {
         Preference.libraryHasShownPreferredLanguagePrompt = true
     }
     
-    func andJoinedString(a: String, b: String) -> String {
+    private func andJoinedString(a: String, b: String) -> String {
         return a + " " + LocalizedStrings.and + " " + b
     }
 }
 
-class RefreshLibraryInternetRequiredAlert: AlertOperation {
-    override init(presentationContext: UIViewController?) {
-        super.init(presentationContext: presentationContext)
-        
-        let comment = "Library: Internet Required Alert"
+class RefreshLibraryInternetRequiredAlert: AlertOperation<LibraryOnlineTBVC> {
+    let comment = "Library: Internet Required Alert"
+    init(presentationContext: LibraryOnlineTBVC) {
+        super.init(presentAlertFrom: presentationContext)
         
         title = NSLocalizedString("Internet Connection Required", comment: comment)
         message = NSLocalizedString("You need to connect to the Internet to refresh the library.", comment: comment)
-        addAction(LocalizedStrings.ok)
+        addActionWithTitle(LocalizedStrings.ok)
     }
 }
 
-class GetStartedAlert: AlertOperation {
-    init(mainController: MainController?) {
-        super.init(presentationContext: mainController)
-        
-        let comment = "First Time Launch Message"
+class GetStartedAlert: AlertOperation<MainController> {
+    let comment = "First Time Launch Message"
+    init(presentationContext mainController: MainController) {
+        super.init(presentAlertFrom: mainController)
         
         title = NSLocalizedString("Welcome to Kiwix", comment: comment)
         message = NSLocalizedString("Add a Book to Get Started", comment: comment)
-        addAction(NSLocalizedString("Download", comment: comment), style: .Default) { (alert) in
-            mainController?.showLibraryButtonTapped()
+        addActionWithTitle(NSLocalizedString("Download", comment: comment), style: .Default) { (alert) in
+            mainController.showLibraryButtonTapped()
         }
-        addAction(NSLocalizedString("Import", comment: comment), style: .Default) { (alert) in
+        addActionWithTitle(NSLocalizedString("Import", comment: comment), style: .Default) { (alert) in
             let operation = ShowHelpPageOperation(type: .ImportBookLearnMore, presentationContext: mainController)
             GlobalOperationQueue.sharedInstance.addOperation(operation)
         }
-        addAction(NSLocalizedString("Dismiss", comment: comment))
+        addActionWithTitle(NSLocalizedString("Dismiss", comment: comment))
     }
 }
 
@@ -130,19 +125,23 @@ class GetStartedAlert: AlertOperation {
 
 class ShowHelpPageOperation: Operation {
     private let type: WebViewControllerContentType
-    private weak var presentationContext: UIViewController?
+    private let presentationContext: UIViewController
     
-    init(type: WebViewControllerContentType, presentationContext: UIViewController?) {
+    init(type: WebViewControllerContentType, presentationContext: UIViewController) {
         self.type = type
         self.presentationContext = presentationContext
+        super.init()
     }
     
     override func execute() {
-        NSOperationQueue.mainQueue().addOperationWithBlock { 
-            guard let controller = UIStoryboard.setting.instantiateViewControllerWithIdentifier("WebViewController") as? WebViewController else {return}
-            controller.page = self.type
-            let navController = UINavigationController(rootViewController: controller)
-            self.presentationContext?.presentViewController(navController, animated: true, completion: nil)
-        }
+        defer { finish() }
+        guard let controller = UIStoryboard.setting.instantiateViewControllerWithIdentifier("WebViewController") as? WebViewController else {return}
+        controller.page = self.type
+        
+        let operation = UIOperation(controller: UIViewController(),
+                                    displayControllerFrom: .Present(presentationContext),
+                                    inNavigationController: true,
+                                    sender: nil)
+        produceOperation(operation)
     }
 }

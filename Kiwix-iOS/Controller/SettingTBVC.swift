@@ -67,7 +67,7 @@ class SettingTBVC: UITableViewController {
             case NSIndexPath(forRow: 1, inSection: 0):
                 return Preference.libraryRefreshAllowCellularData ? LocalizedStrings.on : LocalizedStrings.off
             case NSIndexPath(forRow: 2, inSection: 0):
-                guard let skipBackup = FileManager.getSkipBackupAttribute(item: FileManager.docDirURL) else {return ""}
+                guard let skipBackup = FileManager.getSkipBackupAttribute(item: NSFileManager.docDirURL) else {return ""}
                 return skipBackup ? LocalizedStrings.off: LocalizedStrings.on
             case NSIndexPath(forRow: 0, inSection: 1):
                 return String.formattedPercentString(Preference.webViewZoomScale / 100)

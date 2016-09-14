@@ -1,11 +1,11 @@
 #!/bin/bash
 
+# regarding export MACOSX_DEPLOYMENT_TARGET="10.4" in build_iOS, see reason why do it like this
+# http://stackoverflow.com/questions/32622284/building-c-static-libraries-using-configure-make-with-fembed-bitcode-fails
+
 ROOT=$(pwd)
 
 ########################  XAPIAN  ########################
-
-XAPIANPATH=$ROOT/xapian-core-1.4.0
-cd $XAPIANPATH
 
 build_iOS()
 {
@@ -18,19 +18,24 @@ build_iOS()
 		SDKROOT="$(xcodebuild -version -sdk iphoneos | grep -E '^Path' | sed 's/Path: //')"
 	fi
 
-	export CC="$(xcrun -sdk iphoneos -find clang)"
+    export MACOSX_DEPLOYMENT_TARGET="10.4"
+
+	export CC="$(xcrun -find clang)"
 	export CFLAGS="-fembed-bitcode -isysroot $SDKROOT -arch ${ARCH} -miphoneos-version-min=9.0"
 
 	export CPP="$CC -E"
 	export CPPFLAGS="$CFLAGS"
 
+	export CXX="$(xcrun -find clang++)"
+	export CXXFLAGS="$CFLAGS -stdlib=libc++ -std=c++11"
+
 	export LDFLAGS="-arch ${ARCH} -isysroot $SDKROOT"
 
 	if [ $ARCH == "i386" ] || [ $ARCH == "x86_64" ];
 	then
-		./configure --prefix=$(pwd)/build/iOS/$ARCH --host=i686-apple-darwin11 --enable-static --disable-shared
+		./configure --prefix=$(pwd)/build/iOS/$ARCH --host=i686-apple-darwin11 --enable-static --enable-shared
 	else
-		./configure --prefix=$(pwd)/build/iOS/$ARCH --host=arm-apple-darwin --enable-static --disable-shared
+		./configure --prefix=$(pwd)/build/iOS/$ARCH --host=arm-apple-darwin --enable-static --enable-shared
 	fi
 
 	make && make install && make clean
@@ -44,10 +49,13 @@ build_OSX()
 
 	export MACOSX_DEPLOYMENT_TARGET="10.10"
 
-	export CC="$(xcrun -sdk macosx10.11 -find clang)"
+	export CC="$(xcrun -find clang)"
 	export CFLAGS="-fembed-bitcode -isysroot $SDKROOT -arch ${ARCH} -mmacosx-version-min=10.10"
 
-	export CXX="$(xcrun -sdk macosx10.11 -find clang++)"
+	export CPP="$CC -E"
+	export CPPFLAGS="$CFLAGS"
+
+	export CXX="$(xcrun -find clang++)"
 	export CXXFLAGS="$CFLAGS -stdlib=libc++ -std=c++11"
 
 	export LDFLAGS="-arch ${ARCH} -isysroot $SDKROOT"
@@ -55,6 +63,28 @@ build_OSX()
 	./configure --prefix=$(pwd)/build/OSX/$ARCH --host=i686-apple-darwin11 --disable-static --enable-shared
 
 	make && make install && make clean
+}
+
+distribute_iOS() {
+	iOSBUILDDir=$(pwd)/build/iOS
+	cd $iOSBUILDDir
+	mkdir -p universal/lib
+
+	cd armv7/lib
+	for file in *.a
+	do
+		cd $iOSBUILDDir
+		lipo -create armv7/lib/$file armv7s/lib/$file arm64/lib/$file x86_64/lib/$file i386/lib/$file -output universal/lib/$file
+	done
+
+	cd armv7/lib
+	for file in *.dylib
+	do
+		cd $iOSBUILDDir
+		lipo -create armv7/lib/$file armv7s/lib/$file arm64/lib/$file x86_64/lib/$file i386/lib/$file -output universal/lib/$file
+	done
+
+	cp -r armv7/include universal
 }
 
 distribute() {
@@ -86,9 +116,10 @@ distribute() {
 # build_iOS armv7
 # build_iOS armv7s
 # build_iOS arm64
+distribute_iOS
 
 # build_OSX i386
 # build_OSX x86_64
 
-distribute
+# distribute
 

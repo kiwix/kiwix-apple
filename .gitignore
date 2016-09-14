@@ -4,9 +4,6 @@ Kiwix/libkiwix/C&C++
 Kiwix/libkiwix/include
 Kiwix/libkiwix/shared
 Kiwix/libkiwix/static
-<<<<<<< HEAD
 *.a
-=======
 Kiwix/libkiwix/iOS
 Kiwix/libkiwix/macOS
->>>>>>> 1.7

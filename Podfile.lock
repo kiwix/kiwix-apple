@@ -1,21 +1,33 @@
 PODS:
   - DateTools (1.7.0)
-  - DZNEmptyDataSet (1.8)
-  - PSOperations/Core (2.3.0)
+  - DZNEmptyDataSet (1.8.1)
+  - Operations (3.3.1):
+    - Operations/Standard (= 3.3.1)
+  - Operations/Standard (3.3.1)
   - SwiftyUserDefaults (2.2.0)
 
 DEPENDENCIES:
   - DateTools
   - DZNEmptyDataSet
-  - PSOperations/Core (~> 2.3)
+  - Operations (from `https://github.com/ProcedureKit/ProcedureKit.git`, branch `swift/2.3`)
   - SwiftyUserDefaults
+
+EXTERNAL SOURCES:
+  Operations:
+    :branch: swift/2.3
+    :git: https://github.com/ProcedureKit/ProcedureKit.git
+
+CHECKOUT OPTIONS:
+  Operations:
+    :commit: e79d22bc32e2e4faad6cdcde31c71187357b1154
+    :git: https://github.com/ProcedureKit/ProcedureKit.git
 
 SPEC CHECKSUMS:
   DateTools: 53288ee8b905fdc75897a1e6b5cc0144b14cba60
-  DZNEmptyDataSet: d2351b2e8daefa40433ef292e246e21f6be31a7b
-  PSOperations: 81a4d50a4efe96f6d090dc0e7eb45d9fef79ff45
+  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
+  Operations: 6a33d325dae88de21b8edc69b9884fce01aea22b
   SwiftyUserDefaults: e7c8197a9d4068702e7f2406a968cae413b8de27
 
-PODFILE CHECKSUM: b9d1499b8e98a823777c72ddb35e782d499bac14
+PODFILE CHECKSUM: dafe7442de9229d78c81ec09646e9230caf12c71
 
 COCOAPODS: 1.0.1

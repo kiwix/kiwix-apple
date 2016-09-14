@@ -7,7 +7,7 @@
 //
 
 import CoreData
-import PSOperations
+import Operations
 
 class RefreshLibraryOperation: GroupOperation {
     
@@ -23,9 +23,9 @@ class RefreshLibraryOperation: GroupOperation {
         let parseOperation = ParseLibraryOperation()
         
         // 0.Download library
-        let url = NSURL(string: "http://www.kiwix.org/library.xml")!
+        let url = NSURL(string: "https://download.kiwix.org/library/library.xml")!
         let task = NSURLSession.sharedSession().dataTaskWithURL(url) { [unowned parseOperation] (data, response, error) -> Void in
-            if let error = error {self.aggregateError(error)}
+            if let error = error {self.addFatalError(error)}
             parseOperation.xmlData = data
         }
         let fetchOperation = URLSessionTaskOperation(task: task)
@@ -34,7 +34,8 @@ class RefreshLibraryOperation: GroupOperation {
         #if os(iOS) || os(watchOS) || os(tvOS)
             fetchOperation.addObserver(NetworkObserver())
         #endif
-        fetchOperation.addCondition(ReachabilityCondition(host: url, allowCellular: Preference.libraryRefreshAllowCellularData))
+        let reachibility = ReachabilityCondition(url: url, connectivity: Preference.libraryRefreshAllowCellularData ? .AnyConnectionKind : .ViaWiFi)
+        fetchOperation.addCondition(reachibility)
         
         if invokedAutomatically {
             addCondition(AllowAutoRefreshCondition())
@@ -45,8 +46,8 @@ class RefreshLibraryOperation: GroupOperation {
         parseOperation.addDependency(fetchOperation)
     }
     
-    override func finished(errors: [NSError]) {
-        completionHandler?(errors: errors)
+    override func operationDidFinish(errors: [ErrorType]) {
+        completionHandler?(errors: [NSError]())
     }
 }
 
@@ -129,22 +130,22 @@ class ParseLibraryOperation: Operation, NSXMLParserDelegate {
 }
 
 private struct AllowAutoRefreshCondition: OperationCondition {
-    static let name = "LibraryAllowAutoRefresh"
-    static let isMutuallyExclusive = false
+    let name = "LibraryAllowAutoRefresh"
+    let isMutuallyExclusive = false
     
     init() {}
     
-    func dependencyForOperation(operation: Operation) -> NSOperation? {
+    private func dependencyForOperation(operation: Operation) -> NSOperation? {
         return nil
     }
     
-    func evaluateForOperation(operation: Operation, completion: OperationConditionResult -> Void) {
+    private func evaluateForOperation(operation: Operation, completion: OperationConditionResult -> Void) {
         let allowAutoRefresh = !Preference.libraryAutoRefreshDisabled
         
         if allowAutoRefresh {
             completion(.Satisfied)
         } else {
-            let error = NSError(code: .ConditionFailed, userInfo: [OperationConditionKey: self.dynamicType.name])
+            let error = NSError(domain: "", code: 1, userInfo: nil)
             completion(.Failed(error))
         }
     }

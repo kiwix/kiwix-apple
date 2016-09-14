@@ -190,7 +190,7 @@ class LibraryLocalTBVC: UITableViewController, NSFetchedResultsControllerDelegat
                     FileManager.removeItem(atURL: zimURL)
                     
                     let indexFolderURL = zimURL.URLByAppendingPathExtension("idx")
-                    FileManager.removeItem(atURL: indexFolderURL)
+                    FileManager.removeItem(atURL: indexFolderURL!)
                 }
                 
                 if let _ = book.url {

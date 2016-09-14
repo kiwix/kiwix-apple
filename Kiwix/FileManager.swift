@@ -8,26 +8,6 @@
 
 class FileManager {
     
-    // MARK: - Path Utilities
-    
-    class var docDirPath: String {
-        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-        return paths.first!
-    }
-    
-    class var docDirURL: NSURL {
-        return NSURL(fileURLWithPath: docDirPath, isDirectory: true)
-    }
-    
-    class var libDirPath: String {
-        let paths = NSSearchPathForDirectoriesInDomains(.LibraryDirectory, .UserDomainMask, true)
-        return paths.first!
-    }
-    
-    class var libDirURL: NSURL {
-        return NSURL(fileURLWithPath: libDirPath, isDirectory: true)
-    }
-    
     // MARK: - Move Book
     
     class func move(book: Book, fromURL: NSURL, suggestedFileName: String?) {
@@ -36,24 +16,24 @@ class FileManager {
             if let id = book.id {return "\(id).zim"}
             return NSDate().description + ".zim"
         }()
-        let directory = docDirURL
+        let directory = NSFileManager.docDirURL
         createDirectory(directory, includeInICloudBackup: false)
         let destination = directory.URLByAppendingPathComponent(fileName)
-        moveOrReplaceFile(from: fromURL, to: destination)
+        moveOrReplaceFile(from: fromURL, to: destination!)
     }
     
     // MARK: - Book Resume Data
     
     private class func resumeDataURL(book: Book) -> NSURL {
-        let tempDownloadLocation = NSURL(fileURLWithPath: libDirPath).URLByAppendingPathComponent("DownloadTemp", isDirectory: true)
-        return tempDownloadLocation.URLByAppendingPathComponent(book.id ?? NSDate().description, isDirectory: false)
+        let tempDownloadLocation = NSURL(fileURLWithPath: NSFileManager.libDirURL.path!).URLByAppendingPathComponent("DownloadTemp", isDirectory: true)
+        return tempDownloadLocation!.URLByAppendingPathComponent(book.id ?? NSDate().description, isDirectory: false)!
     }
     
     class func saveResumeData(data: NSData, book: Book) {
-        let tempDownloadLocation = NSURL(fileURLWithPath: libDirPath).URLByAppendingPathComponent("DownloadTemp", isDirectory: true)
-        if !NSFileManager.defaultManager().fileExistsAtPath(tempDownloadLocation.path!) {
+        let tempDownloadLocation = NSURL(fileURLWithPath: NSFileManager.libDirURL.path!).URLByAppendingPathComponent("DownloadTemp", isDirectory: true)
+        if !NSFileManager.defaultManager().fileExistsAtPath(tempDownloadLocation!.path!) {
             do {
-                try NSFileManager.defaultManager().createDirectoryAtURL(tempDownloadLocation, withIntermediateDirectories: true, attributes: [NSURLIsExcludedFromBackupKey: true])
+                try NSFileManager.defaultManager().createDirectoryAtURL(tempDownloadLocation!, withIntermediateDirectories: true, attributes: [NSURLIsExcludedFromBackupKey: true])
             } catch let error as NSError {
                 print("Create temp download folder failed: \(error.localizedDescription)")
             }

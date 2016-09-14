@@ -8,35 +8,45 @@
 
 import UIKit
 
-// MARK: - Book Cells
+// MARK: - Book Cells (new)
 
 /* Book Cell With P & I indicator */
 class BasicBookCell: UITableViewCell {
-    private let hasPicIndicatorOrange = UIColor(red: 1, green: 0.5, blue: 0, alpha: 1)
-    private let hasIndexIndicatorBlue = UIColor(red: 0.304706, green: 0.47158, blue: 1, alpha: 1)
+    
+    @IBOutlet weak var favIcon: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak private var hasPicIndicator: UILabel!
+    @IBOutlet weak private var hasIndexIndicator: UILabel!
+    
+    // MARK: - Override
     
     override func awakeFromNib() {
         hasPicIndicator.layer.cornerRadius = 2.0
         hasIndexIndicator.layer.cornerRadius = 2.0
         hasPicIndicator.layer.masksToBounds = true
         hasIndexIndicator.layer.masksToBounds = true
+        hasPicIndicator.backgroundColor = UIColor.clearColor()
+        hasIndexIndicator.backgroundColor = UIColor.clearColor()
     }
     
-    @IBOutlet weak var favIcon: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subtitleLabel: UILabel!
-    @IBOutlet weak var hasPicIndicator: UILabel!
-    @IBOutlet weak var hasIndexIndicator: UILabel!
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        selected = false
+        highlighted = false
+    }
+    
+    // MARK: - Shorthand properties
     
     var hasPic: Bool = false {
         didSet {
-            hasPicIndicator.backgroundColor = hasPic ? hasPicIndicatorOrange : UIColor.lightGrayColor()
+            hasPicIndicator.layer.backgroundColor = hasPic ? AppColors.hasPicTintColor.CGColor : UIColor.lightGrayColor().CGColor
         }
     }
     
     var hasIndex: Bool = false {
         didSet {
-            hasIndexIndicator.backgroundColor = hasIndex ? hasIndexIndicatorBlue : UIColor.lightGrayColor()
+            hasIndexIndicator.layer.backgroundColor = hasIndex ? AppColors.hasIndexTintColor.CGColor : UIColor.lightGrayColor().CGColor
         }
     }
 }
@@ -169,4 +179,11 @@ class BookmarkSnippetCell: BookmarkCell {
 
 protocol TableCellDelegate: class {
     func didTapOnAccessoryViewForCell(cell: UITableViewCell)
+}
+
+// MARK: - General
+
+class TextSwitchCell: UITableViewCell {
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var switchControl: UISwitch!
 }
