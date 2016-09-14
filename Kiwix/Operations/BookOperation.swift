@@ -31,6 +31,7 @@ class DownloadBookOperation: URLSessionDownloadTaskOperation {
         
         let downloadTask = DownloadTask.addOrUpdate(book, context: context)
         downloadTask?.state = .Queued
+        book.isLocal = nil
         
         progress.completedUnitCount = book.downloadTask?.totalBytesWritten ?? 0
         progress.totalUnitCount = book.fileSize

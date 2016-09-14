@@ -9,7 +9,7 @@
 import UIKit
 import DZNEmptyDataSet
 
-class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     @IBOutlet weak var favIconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -123,44 +123,7 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
                 cellTitles[1] = book.spaceState == .NotEnough ? [Strings.spaceNotEnough] : [Strings.downloadNow]
             }
         } else {
-            cellTitles[1] = ["Cancel Download"]
-        }
-    }
-    
-    // MARK: - Delegates
-    
-    func buttonTapped(cell: CenterButtonCell) {
-        
-        guard let title = cell.button.titleLabel?.text,
-            let book = book else {return}
-        
-        switch title {
-        case Strings.downloadNow:
-            func startDownload() {
-                guard let download = DownloadBookOperation(bookID: book.id) else {return}
-                Network.shared.queue.addOperation(download)
-            }
-            
-            if book.spaceState == .Caution {
-                let cancel = UIAlertAction(title: Strings.cancel, style: .Cancel, handler: nil)
-                let download = UIAlertAction(title: Strings.SpaceAlert.downloadAnyway, style: .Destructive, handler: { (alert) in
-                    startDownload()
-                })
-                let alertController = UIAlertController(title: Strings.SpaceAlert.spaceAlert, message: Strings.SpaceAlert.message, preferredStyle: .Alert)
-                [download, cancel].forEach({ alertController.addAction($0) })
-                presentViewController(alertController, animated: true, completion: nil)
-            } else {
-                startDownload()
-            }
-        case Strings.copyURL:
-            guard let url = book.url else {return}
-            UIPasteboard.generalPasteboard().string = url.absoluteString
-            let action = UIAlertAction(title: LocalizedStrings.Common.ok, style: .Cancel, handler: nil)
-            let alertController = UIAlertController(title: Strings.CopyURLAlert.succeed, message: nil, preferredStyle: .Alert)
-            alertController.addAction(action)
-            presentViewController(alertController, animated: true, completion: nil)
-        default:
-            return
+            cellTitles[1] = [Strings.cancel]
         }
     }
     
@@ -177,18 +140,19 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let title = cellTitles[indexPath.section][indexPath.row]
         switch title {
-        case Strings.downloadNow, Strings.spaceNotEnough, Strings.remove:
-            let cell = tableView.dequeueReusableCellWithIdentifier("CenterButtonCell", forIndexPath: indexPath) as! CenterButtonCell
-            cell.button.setTitle(title, forState: .Normal)
-            cell.delegate = self
+        case Strings.downloadNow, Strings.spaceNotEnough, Strings.cancel, Strings.remove:
+            let cell = tableView.dequeueReusableCellWithIdentifier("CenterTextCell", forIndexPath: indexPath)
+            cell.textLabel?.text = title
             
             switch title {
+            case Strings.downloadNow:
+                if book?.spaceState == .Caution {cell.textLabel?.textColor = UIColor.orangeColor()}
             case Strings.spaceNotEnough:
-                cell.button.tintColor = UIColor.grayColor()
-            case Strings.remove:
-                cell.button.tintColor = UIColor.redColor()
+                cell.textLabel?.textColor = UIColor.grayColor()
+            case Strings.cancel, Strings.remove:
+                cell.textLabel?.textColor = UIColor.redColor()
             default:
-                if book?.spaceState == .Caution { cell.button.tintColor = UIColor.orangeColor() }
+                break
             }
             return cell
         case Strings.pid:
@@ -196,9 +160,8 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
             cell.textLabel?.text = book?.pid
             return cell
         case Strings.copyURL:
-            let cell = tableView.dequeueReusableCellWithIdentifier("CenterButtonCell", forIndexPath: indexPath) as! CenterButtonCell
-            cell.button.setTitle(title, forState: .Normal)
-            cell.delegate = self
+            let cell = tableView.dequeueReusableCellWithIdentifier("CenterTextCell", forIndexPath: indexPath)
+            cell.textLabel?.text = title
             return cell
         default:
             let cell = tableView.dequeueReusableCellWithIdentifier("RightDetailCell", forIndexPath: indexPath)
@@ -231,9 +194,47 @@ class BookDetailController: UITableViewController, CenterButtonCellDelegate, DZN
         return sectionFooters[section]
     }
     
+    // MARK: - Table view delegate
+    
     override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         guard let view = view as? UITableViewHeaderFooterView where section == 0 else {return}
         view.textLabel?.textAlignment = .Center
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        guard let cell = tableView.cellForRowAtIndexPath(indexPath),
+            let title = cell.textLabel?.text,
+            let book = book else {return}
+        switch title {
+        case Strings.downloadNow:
+            func startDownload() {
+                guard let download = DownloadBookOperation(bookID: book.id) else {return}
+                Network.shared.queue.addOperation(download)
+            }
+            
+            if book.spaceState == .Caution {
+                let cancel = UIAlertAction(title: Strings.cancel, style: .Cancel, handler: nil)
+                let download = UIAlertAction(title: Strings.SpaceAlert.downloadAnyway, style: .Destructive, handler: { (alert) in
+                    startDownload()
+                })
+                let alertController = UIAlertController(title: Strings.SpaceAlert.spaceAlert, message: Strings.SpaceAlert.message, preferredStyle: .Alert)
+                [download, cancel].forEach({ alertController.addAction($0) })
+                presentViewController(alertController, animated: true, completion: nil)
+            } else {
+                startDownload()
+            }
+            
+        case Strings.copyURL:
+            guard let url = book.url else {return}
+            UIPasteboard.generalPasteboard().string = url.absoluteString
+            let action = UIAlertAction(title: LocalizedStrings.Common.ok, style: .Cancel, handler: nil)
+            let alertController = UIAlertController(title: Strings.CopyURLAlert.succeed, message: nil, preferredStyle: .Alert)
+            alertController.addAction(action)
+            presentViewController(alertController, animated: true, completion: nil)
+        default:
+            return
+        }
     }
 }
 

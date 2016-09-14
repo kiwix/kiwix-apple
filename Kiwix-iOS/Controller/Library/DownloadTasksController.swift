@@ -193,7 +193,6 @@ class DownloadTasksController: UIViewController, UITableViewDelegate, UITableVie
             }
             actions.insert(pause, atIndex: 0)
         case .Paused:
-            
             if let book = downloadTask.book,
                 let resumeData = Preference.resumeData[book.id] {
                 let resume = UITableViewRowAction(style: .Normal, title: "Resume") { (action, indexPath) in

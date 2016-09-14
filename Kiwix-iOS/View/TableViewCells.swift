@@ -123,16 +123,3 @@ class TextSwitchCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var switchControl: UISwitch!
 }
-
-class CenterButtonCell: UITableViewCell {
-    weak var delegate: CenterButtonCellDelegate?
-    @IBOutlet weak var button: UIButton!
-    
-    @IBAction func buttonTapped(sender: UIButton) {
-        delegate?.buttonTapped(self)
-    }
-}
-
-protocol CenterButtonCellDelegate: class {
-    func buttonTapped(cell: CenterButtonCell)
-}
