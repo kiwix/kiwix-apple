@@ -72,7 +72,8 @@ class ArticleLoadOperation: Operation {
 
         let request = NSURLRequest(URL: url)
         
-        NSOperationQueue.mainQueue().addOperationWithBlock { 
+        NSOperationQueue.mainQueue().addOperationWithBlock {
+            guard controller.webView.request?.URL != url else {return}
             controller.webView.loadRequest(request)
             self.finish()
         }
