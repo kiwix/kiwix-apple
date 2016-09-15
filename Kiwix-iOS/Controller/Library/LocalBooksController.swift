@@ -54,14 +54,6 @@ class LocalBooksController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        let tabbarHeight = tabBarController?.tabBar.frame.height ?? 50
-        let inset = UIEdgeInsetsMake(tableView.contentInset.top, 0, tabbarHeight, 0)
-        tableView.contentInset = inset
-        tableView.scrollIndicatorInsets = inset
-    }
-    
     // MARK: - TableView Data Source
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

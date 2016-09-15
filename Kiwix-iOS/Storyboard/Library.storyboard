@@ -345,7 +345,7 @@
         <!--Download-->
         <scene sceneID="Dfc-4k-8uO">
             <objects>
-                <viewController id="7U1-44-aEc" customClass="DownloadTasksController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="7U1-44-aEc" customClass="DownloadTasksController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="kxT-1r-Dgp"/>
                         <viewControllerLayoutGuide type="bottom" id="g59-Ou-zU4"/>
@@ -358,7 +358,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="82" id="ekT-ed-PU9" customClass="DownloadBookCell" customModule="Kiwix" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="92" width="375" height="82"/>
+                                        <rect key="frame" x="0.0" y="28" width="375" height="82"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ekT-ed-PU9" id="oM4-Hy-Mkf">
                                             <frame key="frameInset" width="375" height="81"/>
@@ -424,8 +424,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="8u2-KO-TvT" secondAttribute="trailing" id="0KV-wg-nPy"/>
-                            <constraint firstItem="g59-Ou-zU4" firstAttribute="top" secondItem="8u2-KO-TvT" secondAttribute="bottom" constant="-49" id="8Do-5k-TXo"/>
-                            <constraint firstItem="8u2-KO-TvT" firstAttribute="top" secondItem="kxT-1r-Dgp" secondAttribute="bottom" constant="-64" id="lcE-f1-hpD"/>
+                            <constraint firstItem="g59-Ou-zU4" firstAttribute="top" secondItem="8u2-KO-TvT" secondAttribute="bottom" id="N3n-k9-dy1"/>
+                            <constraint firstItem="8u2-KO-TvT" firstAttribute="top" secondItem="kxT-1r-Dgp" secondAttribute="bottom" id="ZgF-fK-J0u"/>
                             <constraint firstItem="8u2-KO-TvT" firstAttribute="leading" secondItem="Lfq-oN-mpU" secondAttribute="leading" id="pQk-Tb-XMY"/>
                         </constraints>
                     </view>
@@ -441,7 +441,7 @@
         <!--Local-->
         <scene sceneID="d9I-Yb-VwG">
             <objects>
-                <viewController id="7F2-9D-s8D" customClass="LocalBooksController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="7F2-9D-s8D" customClass="LocalBooksController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Cko-ed-ceh"/>
                         <viewControllerLayoutGuide type="bottom" id="Drp-Si-aLW"/>
@@ -454,7 +454,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="nka-b0-ZmD" customClass="BasicBookCell" customModule="Kiwix" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="92" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nka-b0-ZmD" id="8e2-Je-FJO">
                                             <frame key="frameInset" width="375" height="43"/>
@@ -548,10 +548,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Drp-Si-aLW" firstAttribute="top" secondItem="Ofc-dk-yGh" secondAttribute="bottom" constant="-49" id="27R-n8-mas"/>
+                            <constraint firstItem="Ofc-dk-yGh" firstAttribute="top" secondItem="Cko-ed-ceh" secondAttribute="bottom" id="6nu-oM-HF0"/>
                             <constraint firstItem="Ofc-dk-yGh" firstAttribute="leading" secondItem="sGb-6r-dsG" secondAttribute="leading" id="DsH-KT-BSc"/>
+                            <constraint firstItem="Drp-Si-aLW" firstAttribute="top" secondItem="Ofc-dk-yGh" secondAttribute="bottom" id="WVQ-ZK-jfy"/>
                             <constraint firstAttribute="trailing" secondItem="Ofc-dk-yGh" secondAttribute="trailing" id="hNG-fK-7Bf"/>
-                            <constraint firstItem="Ofc-dk-yGh" firstAttribute="top" secondItem="Cko-ed-ceh" secondAttribute="bottom" constant="-64" id="kiZ-jv-os8"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Local" id="YcZ-Z5-yVM"/>
@@ -696,7 +696,7 @@
                             <constraint firstItem="5TN-cX-nnn" firstAttribute="top" secondItem="V4P-Uf-1Nc" secondAttribute="top" id="3mP-9w-GCG"/>
                             <constraint firstItem="5TN-cX-nnn" firstAttribute="leading" secondItem="V4P-Uf-1Nc" secondAttribute="leading" id="Obk-2H-EBY"/>
                             <constraint firstAttribute="trailing" secondItem="5TN-cX-nnn" secondAttribute="trailing" id="Wwh-3P-j2v"/>
-                            <constraint firstItem="8U5-aH-rdU" firstAttribute="top" secondItem="5TN-cX-nnn" secondAttribute="bottom" id="daI-K4-zqa"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="5TN-cX-nnn" secondAttribute="bottom" id="zaX-Ff-SQm"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -720,6 +720,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="eUy-Zq-fkw"/>
+        <segue reference="N3M-rH-rAM"/>
     </inferredMetricsTieBreakers>
 </document>

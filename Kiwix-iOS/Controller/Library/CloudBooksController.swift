@@ -59,8 +59,9 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        let tabbarHeight = tabBarController?.tabBar.frame.height ?? 50
-        let inset = UIEdgeInsetsMake(tableView.contentInset.top, 0, tabbarHeight, 0)
+        let top = tabBarController!.navigationController!.navigationBar.frame.maxY
+        let bottom = tabBarController!.tabBar.frame.height
+        let inset = UIEdgeInsets(top: top, left: 0, bottom: bottom, right: 0)
         tableView.contentInset = inset
         tableView.scrollIndicatorInsets = inset
     }
