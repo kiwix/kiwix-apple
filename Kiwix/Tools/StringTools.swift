@@ -53,7 +53,7 @@ class LocalizedStrings {
     static let download = NSLocalizedString("Download", comment: "Common")
     
     class Library {
-        static let spaceNotEnough = NSLocalizedString("Space Not Enough", comment: "Common")
+        static let spaceNotEnough = NSLocalizedString("Space Not Enough", comment: "Library")
     }
     
     

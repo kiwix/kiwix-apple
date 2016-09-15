@@ -273,16 +273,15 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
             return [action]
         case .Caution:
             let action = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: LocalizedStrings.download, handler: { _ in
-                let alert = SpaceCautionAlert(bookID: book.id)
-                self.presentViewController(alert, animated: true, completion: { 
-                    self.tableView.setEditing(false, animated: true)
-                })
+                let alert = SpaceCautionAlert(context: self, bookID: book.id)
+                GlobalQueue.shared.addOperation(alert)
+                self.tableView.setEditing(false, animated: true)
             })
             action.backgroundColor = UIColor.orangeColor()
             return [action]
         case .NotEnough:
             let action = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: LocalizedStrings.Library.spaceNotEnough, handler: { _ in
-                let alert = SpaceNotEnoughAlert(controller: self)
+                let alert = SpaceNotEnoughAlert(context: self)
                 GlobalQueue.shared.addOperation(alert)
                 self.tableView.setEditing(false, animated: true)
             })

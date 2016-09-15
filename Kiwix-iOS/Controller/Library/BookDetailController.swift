@@ -122,7 +122,7 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
             if isLocal {
                 cellTitles[1] = [Strings.remove]
             } else {
-                cellTitles[1] = book.spaceState == .NotEnough ? [Strings.spaceNotEnough] : [Strings.downloadNow]
+                cellTitles[1] = book.spaceState == .NotEnough ? [Strings.spaceNotEnough] : [LocalizedStrings.download]
             }
         } else {
             guard let downloadTask = book.downloadTask else {return}
@@ -147,12 +147,12 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let title = cellTitles[indexPath.section][indexPath.row]
         switch title {
-        case Strings.downloadNow, Strings.spaceNotEnough, Strings.cancel, Strings.remove, Strings.pause, Strings.resume:
+        case LocalizedStrings.download, Strings.spaceNotEnough, Strings.cancel, Strings.remove, Strings.pause, Strings.resume:
             let cell = tableView.dequeueReusableCellWithIdentifier("CenterTextCell", forIndexPath: indexPath)
             cell.textLabel?.text = title
             
             switch title {
-            case Strings.downloadNow:
+            case LocalizedStrings.download:
                 if book?.spaceState == .Caution {cell.textLabel?.textColor = UIColor.orangeColor()}
             case Strings.spaceNotEnough:
                 cell.textLabel?.textColor = UIColor.grayColor()
@@ -214,12 +214,10 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
             let title = cell.textLabel?.text,
             let book = book else {return}
         switch title {
-        case Strings.downloadNow:
+        case LocalizedStrings.download:
             if book.spaceState == .Caution {
-                let alert = SpaceCautionAlert(bookID: book.id)
-                self.presentViewController(alert, animated: true, completion: {
-                    self.tableView.setEditing(false, animated: true)
-                })
+                let alert = SpaceCautionAlert(context: self, bookID: book.id)
+                GlobalQueue.shared.addOperation(alert)
             } else {
                 guard let download = DownloadBookOperation(bookID: book.id) else {return}
                 Network.shared.queue.addOperation(download)
