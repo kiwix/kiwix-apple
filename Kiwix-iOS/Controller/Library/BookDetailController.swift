@@ -62,6 +62,8 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
         }
     }
     
+    // MARK: - Configure
+    
     func configureViews() {
         guard let book = book else {return}
         
@@ -123,7 +125,12 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
                 cellTitles[1] = book.spaceState == .NotEnough ? [Strings.spaceNotEnough] : [Strings.downloadNow]
             }
         } else {
-            cellTitles[1] = [Strings.cancel]
+            guard let downloadTask = book.downloadTask else {return}
+            if downloadTask.state == .Queued || downloadTask.state == .Downloading {
+                cellTitles[1] = [Strings.pause, Strings.cancel]
+            } else {
+                cellTitles[1] = [Strings.resume, Strings.cancel]
+            }
         }
     }
     
@@ -140,7 +147,7 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let title = cellTitles[indexPath.section][indexPath.row]
         switch title {
-        case Strings.downloadNow, Strings.spaceNotEnough, Strings.cancel, Strings.remove:
+        case Strings.downloadNow, Strings.spaceNotEnough, Strings.cancel, Strings.remove, Strings.pause, Strings.resume:
             let cell = tableView.dequeueReusableCellWithIdentifier("CenterTextCell", forIndexPath: indexPath)
             cell.textLabel?.text = title
             
@@ -208,23 +215,15 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
             let book = book else {return}
         switch title {
         case Strings.downloadNow:
-            func startDownload() {
+            if book.spaceState == .Caution {
+                let alert = SpaceCautionAlert(bookID: book.id)
+                self.presentViewController(alert, animated: true, completion: {
+                    self.tableView.setEditing(false, animated: true)
+                })
+            } else {
                 guard let download = DownloadBookOperation(bookID: book.id) else {return}
                 Network.shared.queue.addOperation(download)
             }
-            
-            if book.spaceState == .Caution {
-                let cancel = UIAlertAction(title: Strings.cancel, style: .Cancel, handler: nil)
-                let download = UIAlertAction(title: Strings.SpaceAlert.downloadAnyway, style: .Destructive, handler: { (alert) in
-                    startDownload()
-                })
-                let alertController = UIAlertController(title: Strings.SpaceAlert.spaceAlert, message: Strings.SpaceAlert.message, preferredStyle: .Alert)
-                [download, cancel].forEach({ alertController.addAction($0) })
-                presentViewController(alertController, animated: true, completion: nil)
-            } else {
-                startDownload()
-            }
-            
         case Strings.copyURL:
             guard let url = book.url else {return}
             UIPasteboard.generalPasteboard().string = url.absoluteString
@@ -254,6 +253,7 @@ extension LocalizedStrings {
         static let downloadNow = NSLocalizedString("Download Now", comment: comment)
         static let spaceNotEnough = NSLocalizedString("Space Not Enough", comment: comment)
         static let pause = NSLocalizedString("Pause", comment: comment)
+        static let resume = NSLocalizedString("Resume", comment: comment)
         static let cancel = NSLocalizedString("Cancel", comment: comment)
         static let remove = NSLocalizedString("Remove", comment: comment)
         
@@ -269,13 +269,6 @@ extension LocalizedStrings {
         class CopyURLAlert {
             private static let comment = "Library, Book Detail, Copy URL Alert"
             static let succeed = NSLocalizedString("URL Copied Successfully", comment: comment)
-        }
-        
-        class SpaceAlert {
-            private static let comment = "Library, Book Detail, Space Alert"
-            static let downloadAnyway = NSLocalizedString("Download Anyway", comment: comment)
-            static let spaceAlert = NSLocalizedString("Space Alert", comment: comment)
-            static let message = NSLocalizedString("This book will take up more than 80% of your free space after downloaded", comment: comment)
         }
     }
 }

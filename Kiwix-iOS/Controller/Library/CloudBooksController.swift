@@ -255,6 +255,41 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         header.textLabel?.font = UIFont.boldSystemFontOfSize(14)
     }
     
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {}
+    
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]?{
+        guard let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return nil}
+        switch book.spaceState {
+        case .Enough:
+            let action = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: LocalizedStrings.download, handler: { _ in
+                guard let download = DownloadBookOperation(bookID: book.id) else {return}
+                Network.shared.queue.addOperation(download)
+            })
+            action.backgroundColor = UIColor.defaultTint
+            return [action]
+        case .Caution:
+            let action = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: LocalizedStrings.download, handler: { _ in
+                let alert = SpaceCautionAlert(bookID: book.id)
+                self.presentViewController(alert, animated: true, completion: { 
+                    self.tableView.setEditing(false, animated: true)
+                })
+            })
+            action.backgroundColor = UIColor.orangeColor()
+            return [action]
+        case .NotEnough:
+            let action = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: LocalizedStrings.Library.spaceNotEnough, handler: { _ in
+                let alert = SpaceNotEnoughAlert(controller: self)
+                GlobalQueue.shared.addOperation(alert)
+                self.tableView.setEditing(false, animated: true)
+            })
+            return [action]
+        }
+    }
+    
     // MARK: - Fetched Results Controller
     
     let managedObjectContext = NSManagedObjectContext.mainQueueContext

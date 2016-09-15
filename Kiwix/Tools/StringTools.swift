@@ -49,7 +49,17 @@ extension String {
 }
 
 class LocalizedStrings {
-    // Basic
+    
+    static let download = NSLocalizedString("Download", comment: "Common")
+    
+    class Library {
+        static let spaceNotEnough = NSLocalizedString("Space Not Enough", comment: "Common")
+    }
+    
+    
+    
+    
+    
     class var yes: String {return NSLocalizedString("Yes", comment: "Basic")}
     class var no: String {return NSLocalizedString("No", comment: "Basic")}
     class var on: String {return NSLocalizedString("On", comment: "Basic")}
@@ -66,9 +76,9 @@ class LocalizedStrings {
     class var history: String {return NSLocalizedString("History", comment: "Basic")}
     
     // MARK: - OS X
-    class var General: String {return NSLocalizedString("General", comment: "OS X, Preference")}
-    class var Library: String {return NSLocalizedString("Library", comment: "OS X, Preference")}
-    class var ZimFiles: String {return NSLocalizedString("Zim Files", comment: "OS X, Preference")}
+//    class var General: String {return NSLocalizedString("General", comment: "OS X, Preference")}
+//    class var Library: String {return NSLocalizedString("Library", comment: "OS X, Preference")}
+//    class var ZimFiles: String {return NSLocalizedString("Zim Files", comment: "OS X, Preference")}
     
     class Common {
         private static let comment = "Common"

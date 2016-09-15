@@ -11,7 +11,6 @@ import Operations
 
 // MARK: - Alerts
 
-
 class GetStartedAlert: AlertOperation<MainController> {
     let comment = "First Time Launch Message"
     init(presentationContext mainController: MainController) {
