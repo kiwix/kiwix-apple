@@ -10,9 +10,8 @@ import UIKit
 import CoreData
 import DZNEmptyDataSet
 
-class DownloadTasksController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class DownloadTasksController: UITableViewController, NSFetchedResultsControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
-    @IBOutlet weak var tableView: UITableView!
     var timer: NSTimer?
     
     // MARK: - Override
@@ -26,15 +25,13 @@ class DownloadTasksController: UIViewController, UITableViewDelegate, UITableVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.tableFooterView = UIView()
-        tableView.estimatedRowHeight = 90.0
-        tableView.rowHeight = UITableViewAutomaticDimension
-        
+    
         tableView.emptyDataSetSource = self
         tableView.emptyDataSetDelegate = self
+        tableView.tableFooterView = UIView()
+        
+        tableView.estimatedRowHeight = 90.0
+        tableView.rowHeight = UITableViewAutomaticDimension
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -65,6 +62,15 @@ class DownloadTasksController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        let top = tabBarController!.navigationController!.navigationBar.frame.maxY
+        let bottom = tabBarController!.tabBar.frame.height
+        let inset = UIEdgeInsets(top: top, left: 0, bottom: bottom, right: 0)
+        tableView.contentInset = inset
+        tableView.scrollIndicatorInsets = inset
+    }
+    
     // MARK: - Methods
     
     func refreshProgress() {
@@ -81,16 +87,16 @@ class DownloadTasksController: UIViewController, UITableViewDelegate, UITableVie
     
     // MARK: - TableView Data Source
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return fetchedResultController.sections?.count ?? 0
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let sectionInfo = fetchedResultController.sections?[section] else {return 0}
         return sectionInfo.numberOfObjects
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         self.configureCell(cell, atIndexPath: indexPath)
         return cell
@@ -134,19 +140,19 @@ class DownloadTasksController: UIViewController, UITableViewDelegate, UITableVie
     
     // MARK: Other Data Source
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard tableView.numberOfSections > 1 else {return nil}
         guard let languageName = fetchedResultController.sections?[section].name else {return nil}
         return languageName
     }
     
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
+    override func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
         let sectionIndexTitles = fetchedResultController.sectionIndexTitles
         guard sectionIndexTitles.count > 2 else {return nil}
         return sectionIndexTitles
     }
     
-    func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
+    override func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
         return fetchedResultController.sectionForSectionIndexTitle(title, atIndex: index)
     }
     
@@ -164,13 +170,13 @@ class DownloadTasksController: UIViewController, UITableViewDelegate, UITableVie
 //        header.textLabel?.font = UIFont.boldSystemFontOfSize(14)
 //    }
 //    
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {}
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {}
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         guard let downloadTask = self.fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask else {return nil}
         
         var actions = [UITableViewRowAction]()

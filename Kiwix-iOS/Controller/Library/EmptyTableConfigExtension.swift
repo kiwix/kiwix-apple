@@ -45,6 +45,10 @@ extension DownloadTasksController {
         return NSAttributedString(string: string, attributes: attributes)
     }
     
+    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+        return tabBarController!.navigationController!.navigationBar.frame.maxY
+    }
+    
 }
 
 extension LocalBooksController {
