@@ -12,7 +12,6 @@ import Operations
 class SpaceNotEnoughAlert: AlertOperation<UIViewController> {
     init(context: UIViewController) {
         super.init(presentAlertFrom: context)
-        
         title = LocalizedStrings.Library.spaceNotEnough
         message = NSLocalizedString("Please free up some space and try again.", comment: "Library, Space Alert")
         addActionWithTitle(LocalizedStrings.cancel)
@@ -44,7 +43,16 @@ class RemoveBookConfirmationAlert: AlertOperation<UIViewController> {
             let operation = RemoveBookOperation(bookID: bookID)
             GlobalQueue.shared.addOperation(operation)
         }
-        addActionWithTitle(LocalizedStrings.cancel)
+        addActionWithTitle(LocalizedStrings.ok)
         preferredAction = actions[0]
+    }
+}
+
+class NetworkRequiredAlert: AlertOperation<UIViewController> {
+    init(context: UIViewController) {
+        super.init(presentAlertFrom: context)
+        title = NSLocalizedString("Network Required", comment: "Network Required Alert")
+        message = NSLocalizedString("Unable to connect to server. Please check your Internet connection.", comment: "Network Required Alert")
+        addActionWithTitle(LocalizedStrings.cancel)
     }
 }

@@ -133,12 +133,8 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     }
     
     func showReachibilityAlert() {
-        let cancel = UIAlertAction(title: LocalizedStrings.Common.ok, style: .Cancel, handler: nil)
-        let alertController = UIAlertController(title: NSLocalizedString("Network Required", comment: "Network Required Alert"),
-                                                message: NSLocalizedString("Unable to connect to server. Please check your Internet connection.", comment: "Network Required Alert"),
-                                                preferredStyle: .Alert)
-        alertController.addAction(cancel)
-        self.presentViewController(alertController, animated: true, completion: nil)
+        let operation = NetworkRequiredAlert(context: self)
+        GlobalQueue.shared.addOperation(operation)
     }
     
     func showLanguageFilterAlert() {
