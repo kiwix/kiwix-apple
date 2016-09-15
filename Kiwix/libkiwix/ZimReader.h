@@ -12,7 +12,8 @@
 @interface ZimReader : NSObject
 
 - (instancetype)initWithZIMFileURL:(NSURL *)url;
-@property NSURL *fileURL;
+@property (strong, nonatomic) NSURL *fileURL;
+@property (strong, nonatomic) NSURL *idxFolderURL;
 
 #pragma mark - index
 - (BOOL)hasIndex;

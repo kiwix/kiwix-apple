@@ -74,7 +74,6 @@ class ScanLocalBookOperation: Operation {
         for id in removedZimFileIDs {
             guard let book = localBooks[id] else {continue}
             if let _ = book.meta4URL {
-                print(book.isLocal)
                 book.isLocal = false
             } else {
                 context.deleteObject(book)

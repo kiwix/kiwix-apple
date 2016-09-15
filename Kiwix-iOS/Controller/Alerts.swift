@@ -33,3 +33,18 @@ class SpaceCautionAlert: AlertOperation<UIViewController> {
         preferredAction = actions[0]
     }
 }
+
+class RemoveBookConfirmationAlert: AlertOperation<UIViewController> {
+    init(context: UIViewController, bookID: String) {
+        super.init(presentAlertFrom: context)
+        
+        title = NSLocalizedString("Remove this book?", comment: "Library, Delete Alert")
+        message = NSLocalizedString("This operation is not recoverable. All bookmarks in this book will also be removed!", comment: "Library, Delete Alert")
+        addActionWithTitle(LocalizedStrings.remove, style: .Destructive) { _ in
+            let operation = RemoveBookOperation(bookID: bookID)
+            GlobalQueue.shared.addOperation(operation)
+        }
+        addActionWithTitle(LocalizedStrings.cancel)
+        preferredAction = actions[0]
+    }
+}

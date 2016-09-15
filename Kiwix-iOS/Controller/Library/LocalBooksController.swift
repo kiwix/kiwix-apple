@@ -129,22 +129,11 @@ class LocalBooksController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {}
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let delete = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.delete) { (action, indexPath) -> Void in
+        let delete = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.remove) { (action, indexPath) -> Void in
             guard let book = self.fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
-            self.managedObjectContext.performBlock({ () -> Void in
-                if let zimURL = ZimMultiReader.shared.readers[book.id]?.fileURL {
-                    FileManager.removeItem(atURL: zimURL)
-                    
-                    let indexFolderURL = zimURL.URLByAppendingPathExtension("idx")
-                    FileManager.removeItem(atURL: indexFolderURL!)
-                }
-                
-                if let _ = book.url {
-                    book.isLocal = false
-                } else {
-                    self.managedObjectContext.deleteObject(book)
-                }
-            })
+            let operation = RemoveBookConfirmationAlert(context: self, bookID: book.id)
+            GlobalQueue.shared.addOperation(operation)
+            self.tableView.setEditing(false, animated: true)
         }
         return [delete]
     }

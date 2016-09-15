@@ -222,6 +222,9 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
                 guard let download = DownloadBookOperation(bookID: book.id) else {return}
                 Network.shared.queue.addOperation(download)
             }
+        case Strings.remove:
+            let operation = RemoveBookConfirmationAlert(context: self, bookID: book.id)
+            GlobalQueue.shared.addOperation(operation)
         case Strings.copyURL:
             guard let url = book.url else {return}
             UIPasteboard.generalPasteboard().string = url.absoluteString

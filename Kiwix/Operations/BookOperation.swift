@@ -46,13 +46,28 @@ class DownloadBookOperation: URLSessionDownloadTaskOperation {
     }
 }
 
-class DeleteBookOperation: Operation {
+class RemoveBookOperation: Operation {
     
     let bookID: String
     
     init(bookID: String) {
         self.bookID = bookID
         super.init()
+    }
+    
+    override func execute() {
+        let context = NSManagedObjectContext.mainQueueContext
+        context.performBlockAndWait {
+            guard let zimFileURL = ZimMultiReader.shared.readers[self.bookID]?.fileURL else {return}
+            _ = try? NSFileManager.defaultManager().removeItemAtURL(zimFileURL)
+            
+            // Core data is updated by scan book operation
+            // Article removal is handled by cascade relationship
+            
+            guard let idxFolderURL = ZimMultiReader.shared.readers[self.bookID]?.idxFolderURL else {return}
+            _ = try? NSFileManager.defaultManager().removeItemAtURL(idxFolderURL)
+        }
+        finish()
     }
     
     

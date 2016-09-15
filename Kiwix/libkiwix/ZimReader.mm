@@ -46,8 +46,8 @@
             try {
                 NSString *zimPath = [url absoluteString];
                 zimPath = [zimPath stringByReplacingOccurrencesOfString:@".zimaa" withString:@".zim"];
-                NSURL *xapianURl = [[NSURL fileURLWithPath:zimPath] URLByAppendingPathExtension:@"idx"];
-                _db = new Xapian::Database([xapianURl fileSystemRepresentation]);
+                self.idxFolderURL = [[NSURL fileURLWithPath:zimPath] URLByAppendingPathExtension:@"idx"];
+                _db = new Xapian::Database([self.idxFolderURL fileSystemRepresentation]);
             } catch (const Xapian::DatabaseOpeningError &e) {}
         }
         
