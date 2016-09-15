@@ -183,10 +183,9 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
         switch downloadTask.state {
         case .Downloading:
             let pause = UITableViewRowAction(style: .Normal, title: "Pause") { (action, indexPath) in
-                downloadTask.state = .Paused
-                
                 guard let bookID = downloadTask.book?.id else {return}
-                Network.shared.operations[bookID]?.cancel(produceResumeData: true)
+                let operation = PauseBookDwonloadOperation(bookID: bookID)
+                GlobalQueue.shared.addOperation(operation)
                 tableView.setEditing(false, animated: true)
             }
             actions.insert(pause, atIndex: 0)
