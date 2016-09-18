@@ -177,37 +177,38 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {}
     
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        guard let downloadTask = self.fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask else {return nil}
+        guard let downloadTask = self.fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask,
+            let bookID = downloadTask.book?.id else {return nil}
         
         var actions = [UITableViewRowAction]()
         switch downloadTask.state {
         case .Downloading:
             let pause = UITableViewRowAction(style: .Normal, title: "Pause") { (action, indexPath) in
-                guard let bookID = downloadTask.book?.id else {return}
                 let operation = PauseBookDwonloadOperation(bookID: bookID)
                 GlobalQueue.shared.addOperation(operation)
                 tableView.setEditing(false, animated: true)
             }
             actions.insert(pause, atIndex: 0)
         case .Paused:
-            if let book = downloadTask.book,
-                let resumeData = Preference.resumeData[book.id] {
-                let resume = UITableViewRowAction(style: .Normal, title: "Resume") { (action, indexPath) in
-                    let task = Network.shared.session.downloadTaskWithResumeData(resumeData)
-                    let operation = DownloadBookOperation(downloadTask: task)
-                    Network.shared.queue.addOperation(operation)
-                    tableView.setEditing(false, animated: true)
-                }
-                actions.insert(resume, atIndex: 0)
-            } else {
-                let restart = UITableViewRowAction(style: .Normal, title: "Restart") { (action, indexPath) in
-                    guard let bookID = downloadTask.book?.id,
-                        let operation = DownloadBookOperation(bookID: bookID) else {return}
-                    Network.shared.queue.addOperation(operation)
-                    tableView.setEditing(false, animated: true)
-                }
-                actions.insert(restart, atIndex: 0)
+            let resume = UITableViewRowAction(style: .Normal, title: "Resume") { (action, indexPath) in
+                let operation = ResumeBookDwonloadOperation(bookID: bookID)
+                GlobalQueue.shared.addOperation(operation)
+                tableView.setEditing(false, animated: true)
             }
+            actions.insert(resume, atIndex: 0)
+//            
+//            if let book = downloadTask.book,
+//                let resumeData = Preference.resumeData[book.id] {
+//                
+//            } else {
+//                let restart = UITableViewRowAction(style: .Normal, title: "Restart") { (action, indexPath) in
+//                    guard let bookID = downloadTask.book?.id,
+//                        let operation = DownloadBookOperation(bookID: bookID) else {return}
+//                    Network.shared.queue.addOperation(operation)
+//                    tableView.setEditing(false, animated: true)
+//                }
+//                actions.insert(restart, atIndex: 0)
+//            }
         default:
             break
         }

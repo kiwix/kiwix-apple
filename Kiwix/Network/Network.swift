@@ -74,7 +74,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
     func URLSession(session: NSURLSession, downloadTask: NSURLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
         guard let bookID = downloadTask.taskDescription,
             let operation = operations[bookID] else {return}
-        operation.progress.completedUnitCount = totalBytesWritten
+        operation.progress.addObservation(totalBytesWritten)
         
         context.performBlock { 
             guard let downloadTask = Book.fetch(bookID, context: self.context)?.downloadTask where downloadTask.state == .Queued else {return}

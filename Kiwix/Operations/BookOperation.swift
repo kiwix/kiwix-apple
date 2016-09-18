@@ -11,7 +11,6 @@ import CoreData
 import Operations
 
 class DownloadBookOperation: URLSessionDownloadTaskOperation {
-    
     let bookID: String?
     let progress: DownloadProgress
     
@@ -20,6 +19,33 @@ class DownloadBookOperation: URLSessionDownloadTaskOperation {
         bookID = downloadTask.taskDescription
         super.init(downloadTask: downloadTask)
         name = downloadTask.taskDescription
+        
+        // Update Coredata
+        let context = NSManagedObjectContext.mainQueueContext
+        context.performBlockAndWait {
+            guard let bookID = self.bookID,
+                let book = Book.fetch(bookID, context: context),
+                let downloadTask = DownloadTask.addOrUpdate(book, context: context) else {return}
+            book.isLocal = nil
+            downloadTask.state = .Queued
+            
+            // Overwrite progress
+            self.progress.completedUnitCount = book.downloadTask?.totalBytesWritten ?? 0
+            self.progress.totalUnitCount = book.fileSize
+        }
+    }
+    
+    convenience init?(bookID: String, resumeData: NSData) {
+        if #available(iOS 10.0, *) {
+            guard let data = DownloadBookOperation.correctFuckingResumeData(resumeData) else {return nil}
+            let downloadTask = Network.shared.session.downloadTaskWithResumeData(data)
+            downloadTask.taskDescription = bookID
+            self.init(downloadTask: downloadTask)
+        } else {
+            let downloadTask = Network.shared.session.downloadTaskWithResumeData(resumeData)
+            downloadTask.taskDescription = bookID
+            self.init(downloadTask: downloadTask)
+        }
     }
     
     convenience init?(bookID: String) {
@@ -30,13 +56,6 @@ class DownloadBookOperation: URLSessionDownloadTaskOperation {
         let task = Network.shared.session.downloadTaskWithURL(url)
         task.taskDescription = bookID
         self.init(downloadTask: task)
-        
-        let downloadTask = DownloadTask.addOrUpdate(book, context: context)
-        downloadTask?.state = .Queued
-        book.isLocal = nil
-        
-        progress.completedUnitCount = book.downloadTask?.totalBytesWritten ?? 0
-        progress.totalUnitCount = book.fileSize
     }
     
     override func operationWillCancel(errors: [ErrorType]) {
@@ -45,76 +64,26 @@ class DownloadBookOperation: URLSessionDownloadTaskOperation {
     
     override func operationDidCancel() {
         print("Download Task did cancel")
-        guard let bookID = bookID else {return}
+        
+        // Update CoreData
         let context = NSManagedObjectContext.mainQueueContext
         context.performBlockAndWait {
-            let book = Book.fetch(bookID, context: context)
-            if !self.produceResumeData {book?.isLocal = false}
+            guard let bookID = self.bookID,
+                let book = Book.fetch(bookID, context: context) else {return}
+            if !self.produceResumeData {book.isLocal = false}
             
-            guard let downloadTask = book?.downloadTask else {return}
+            guard let downloadTask = book.downloadTask else {return}
             if self.produceResumeData {
                 downloadTask.state = .Paused
             } else {
                 context.deleteObject(downloadTask)
             }
-            
         }
     }
-}
-
-class RemoveBookOperation: Operation {
     
-    let bookID: String
+    // MARK: - Helper
     
-    init(bookID: String) {
-        self.bookID = bookID
-        super.init()
-    }
-    
-    override func execute() {
-        let context = NSManagedObjectContext.mainQueueContext
-        context.performBlockAndWait {
-            guard let zimFileURL = ZimMultiReader.shared.readers[self.bookID]?.fileURL else {return}
-            _ = try? NSFileManager.defaultManager().removeItemAtURL(zimFileURL)
-            
-            // Core data is updated by scan book operation
-            // Article removal is handled by cascade relationship
-            
-            guard let idxFolderURL = ZimMultiReader.shared.readers[self.bookID]?.idxFolderURL else {return}
-            _ = try? NSFileManager.defaultManager().removeItemAtURL(idxFolderURL)
-        }
-        finish()
-    }
-}
-
-class PauseBookDwonloadOperation: Operation {
-    
-    let bookID: String
-    
-    init(bookID: String) {
-        self.bookID = bookID
-        super.init()
-    }
-    
-    override func execute() {
-        Network.shared.operations[bookID]?.cancel(produceResumeData: true)
-        finish()
-    }
-}
-
-class ResumeBookDwonloadOperation: Operation {
-    let bookID: String
-    
-    init(bookID: String) {
-        self.bookID = bookID
-        super.init()
-    }
-    
-    override func execute() {
-        
-    }
-    
-    private func correctFuckingResumeData(data: NSData?) -> NSData? {
+    private class func correctFuckingResumeData(data: NSData?) -> NSData? {
         let kResumeCurrentRequest = "NSURLSessionResumeCurrentRequest"
         let kResumeOriginalRequest = "NSURLSessionResumeOriginalRequest"
         
@@ -129,7 +98,7 @@ class ResumeBookDwonloadOperation: Operation {
         return result
     }
     
-    private func correctFuckingRequestData(data: NSData?) -> NSData? {
+    private class func correctFuckingRequestData(data: NSData?) -> NSData? {
         guard let data = data else {
             return nil
         }
@@ -172,5 +141,60 @@ class ResumeBookDwonloadOperation: Operation {
         // Re-encode archived object
         let result = try? NSPropertyListSerialization.dataWithPropertyList(archive, format: NSPropertyListFormat.BinaryFormat_v1_0, options: NSPropertyListWriteOptions())
         return result
+    }
+}
+
+class RemoveBookOperation: Operation {
+    let bookID: String
+    
+    init(bookID: String) {
+        self.bookID = bookID
+        super.init()
+    }
+    
+    override func execute() {
+        let context = NSManagedObjectContext.mainQueueContext
+        context.performBlockAndWait {
+            guard let zimFileURL = ZimMultiReader.shared.readers[self.bookID]?.fileURL else {return}
+            _ = try? NSFileManager.defaultManager().removeItemAtURL(zimFileURL)
+            
+            // Core data is updated by scan book operation
+            // Article removal is handled by cascade relationship
+            
+            guard let idxFolderURL = ZimMultiReader.shared.readers[self.bookID]?.idxFolderURL else {return}
+            _ = try? NSFileManager.defaultManager().removeItemAtURL(idxFolderURL)
+        }
+        finish()
+    }
+}
+
+class PauseBookDwonloadOperation: Operation {
+    let bookID: String
+    
+    init(bookID: String) {
+        self.bookID = bookID
+        super.init()
+    }
+    
+    override func execute() {
+        Network.shared.operations[bookID]?.cancel(produceResumeData: true)
+        finish()
+    }
+}
+
+class ResumeBookDwonloadOperation: Operation {
+    let bookID: String
+    
+    init(bookID: String) {
+        self.bookID = bookID
+        super.init()
+        name = "Resume Book Dwonload Operation, bookID = \(bookID)"
+    }
+    
+    override func execute() {
+        guard let data: NSData = Preference.resumeData[bookID],
+            let operation = DownloadBookOperation(bookID: bookID, resumeData: data) else {return}
+        Network.shared.queue.addOperation(operation)
+        finish()
     }
 }

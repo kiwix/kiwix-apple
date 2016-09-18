@@ -14,17 +14,11 @@ class DownloadProgress: NSProgress {
     private let timePointMinCount: Int = 20
     private let timePointMaxCount: Int = 200
     
-    init(completedUnitCount: Int64 = 0, totalUnitCount: Int64) {
+    init(completedUnitCount: Int64, totalUnitCount: Int64) {
         super.init(parent: nil, userInfo: [NSProgressFileOperationKindKey: NSProgressFileOperationKindDownloading])
         self.kind = NSProgressKindFile
         self.totalUnitCount = totalUnitCount
         self.completedUnitCount = completedUnitCount
-    }
-    
-    override var completedUnitCount: Int64 {
-        didSet {
-            add(completedUnitCount)
-        }
     }
     
     // MARK: - Descriptions
@@ -60,7 +54,8 @@ class DownloadProgress: NSProgress {
         setUserInfoObject(NSNumber(double: remainingSeconds), forKey: NSProgressEstimatedTimeRemainingKey)
     }
     
-    private func add(completedUnitCount: Int64) {
+    func addObservation(totalBytesWritten: Int64) {
+        completedUnitCount = totalBytesWritten
         let timeStamp = NSDate().timeIntervalSince1970
         if let lastPoint = timePoints.last {
             guard timeStamp - lastPoint.timeStamp > 0.2 else {return}

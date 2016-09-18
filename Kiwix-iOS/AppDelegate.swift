@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Register notification
         let settings = UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: nil) // Here are the notification permission the app wants
-        application.registerUserNotificationSettings(settings)
+//        application.registerUserNotificationSettings(settings)
         
         // Set background refresh interval
         application.setMinimumBackgroundFetchInterval(86400)
