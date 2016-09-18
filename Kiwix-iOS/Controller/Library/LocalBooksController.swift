@@ -32,7 +32,15 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        tabBarController?.navigationItem.rightBarButtonItem = nil
+        if fetchedResultController.delegate !== self {
+            fetchedResultController.delegate = self
+            tableView.reloadData()
+        }
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        fetchedResultController.delegate = nil
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

@@ -36,14 +36,18 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        tabBarController?.navigationItem.rightBarButtonItem = nil
         timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(DownloadTasksController.refreshProgress), userInfo: nil, repeats: true)
+        if fetchedResultController.delegate !== self {
+            fetchedResultController.delegate = self
+            tableView.reloadData()
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         timer?.invalidate()
         timer = nil
+        fetchedResultController.delegate = nil
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
