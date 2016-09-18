@@ -43,7 +43,7 @@ class RemoveBookConfirmationAlert: AlertOperation<UIViewController> {
             let operation = RemoveBookOperation(bookID: bookID)
             GlobalQueue.shared.addOperation(operation)
         }
-        addActionWithTitle(LocalizedStrings.ok)
+        addActionWithTitle(LocalizedStrings.cancel)
         preferredAction = actions[0]
     }
 }

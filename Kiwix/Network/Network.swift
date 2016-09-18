@@ -19,6 +19,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
     private override init() {
         super.init()
         queue.delegate = self
+        session.getAllTasksWithCompletionHandler { _ in }
     }
     
     lazy var session: NSURLSession = {
@@ -31,25 +32,24 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
     // MARK: - OperationQueueDelegate
     
     func operationQueue(queue: OperationQueue, willAddOperation operation: NSOperation) {
-        print("DEBUG: Network Queue will add " + (operation.name ?? "Unknown OP"))
         guard let bookID = operation.name,
             let operation = operation as? DownloadBookOperation else {return}
         operations[bookID] = operation
     }
     
-    func operationQueue(queue: OperationQueue, willFinishOperation operation: NSOperation, withErrors errors: [ErrorType]) {}
-    
     func operationQueue(queue: OperationQueue, didFinishOperation operation: NSOperation, withErrors errors: [ErrorType]) {
-        print("DEBUG: Network Queue did finish " + (operation.name ?? "Unknown OP"))
         guard let bookID = operation.name else {return}
         operations[bookID] = nil
     }
+    
+    func operationQueue(queue: OperationQueue, willFinishOperation operation: NSOperation, withErrors errors: [ErrorType]) {}
     
     func operationQueue(queue: OperationQueue, willProduceOperation operation: NSOperation) {}
     
     // MARK: - NSURLSessionTaskDelegate
     
     func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
+        if let error = error {print(error.localizedDescription)}
         guard let error = error, let bookID = task.taskDescription else {return}
         self.context.performBlockAndWait {
             guard let book = Book.fetch(bookID, context: self.context),
@@ -60,7 +60,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
                 downloadTask.totalBytesWritten = task.countOfBytesReceived
                 downloadTask.state = .Paused
                 
-                // Save resue data to disk
+                // Save resume data to disk
                 guard let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? NSData else {return}
                 Preference.resumeData[bookID] = resumeData
             } else {
@@ -86,14 +86,16 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
         guard let bookID = downloadTask.taskDescription else {return}
         
         // Save downloaded zim file
-        // Book object status will be updated by dir scanner
         var fileName: String = downloadTask.response?.suggestedFilename ?? bookID
         if !fileName.hasSuffix(".zim") {fileName += ".zim"}
         guard let destination = NSFileManager.docDirURL.URLByAppendingPathComponent(fileName) else {return}
         _ = try? NSFileManager.defaultManager().moveItemAtURL(location, toURL: destination)
         
-        // Perform clean up (remove cache and delete download task)
-        context.performBlock { 
+        // Scanner Operation will updated Book object status
+        
+        // - Remove cache, if any
+        // - Delete Download task Object
+        context.performBlock {
             guard let book = Book.fetch(bookID, context: self.context) else {return}
             book.removeResumeData()
             guard let downloadTask = book.downloadTask else {return}

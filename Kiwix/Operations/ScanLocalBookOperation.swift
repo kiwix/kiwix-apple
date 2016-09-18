@@ -81,14 +81,14 @@ class ScanLocalBookOperation: Operation {
         }
         
         for id in addedZimFileIDs {
-            guard let reader = ZimMultiReader.shared.readers[id] else {return}
-            let book: Book? = {
-                let book = Book.fetch(id, context: NSManagedObjectContext.mainQueueContext)
-                return book ?? Book.add(reader.metaData, context: NSManagedObjectContext.mainQueueContext)
-            }()
-            book?.isLocal = true
-            book?.hasIndex = reader.hasIndex()
-            book?.hasPic = !reader.fileURL.absoluteString!.containsString("nopic")
+            guard let reader = ZimMultiReader.shared.readers[id],
+                let book: Book = {
+                    let book = Book.fetch(id, context: NSManagedObjectContext.mainQueueContext)
+                    return book ?? Book.add(reader.metaData, context: NSManagedObjectContext.mainQueueContext)
+                }() else {return}
+            book.isLocal = true
+            book.hasIndex = reader.hasIndex()
+            book.hasPic = !reader.fileURL.absoluteString!.containsString("nopic")
         }
         
         for (id, book) in localBooks {
