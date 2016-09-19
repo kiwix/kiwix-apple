@@ -16,6 +16,9 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
     let context = NSManagedObjectContext.mainQueueContext
     private(set) var operations = [String: DownloadBookOperation]()
     
+    private var downloadedBookTitle = [String]()
+    private var completionHandler: (()-> Void)?
+    
     private override init() {
         super.init()
         queue.delegate = self
@@ -28,6 +31,11 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
         configuration.discretionary = false
         return NSURLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }()
+    
+    func rejoinSessionWithIdentifier(identifier: String, completionHandler: ()-> Void) {
+        guard identifier == session.configuration.identifier else {return}
+        self.completionHandler = completionHandler
+    }
     
     // MARK: - OperationQueueDelegate
     
@@ -46,6 +54,19 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
     
     func operationQueue(queue: OperationQueue, willProduceOperation operation: NSOperation) {}
     
+    // MARK: - NSURLSessionDelegate
+    
+    func URLSessionDidFinishEventsForBackgroundURLSession(session: NSURLSession) {
+        NSOperationQueue.mainQueue().addOperationWithBlock {
+            self.completionHandler?()
+            
+            let notification = UILocalNotification()
+            notification.alertTitle = NSLocalizedString("Book download finished", comment: "Notification: Book download finished")
+            notification.alertBody = NSLocalizedString("All download tasks are finished.", comment: "Notification: Book download finished")
+            notification.soundName = UILocalNotificationDefaultSoundName
+            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+        }
+    }
     // MARK: - NSURLSessionTaskDelegate
     
     func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {

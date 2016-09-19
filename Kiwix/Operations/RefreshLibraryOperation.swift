@@ -20,6 +20,10 @@ class RefreshLibraryOperation: GroupOperation {
         process.injectResultFromDependency(retrive)
         super.init(operations: [retrive, process])
         
+        addObserver(WillExecuteObserver { _ in
+            (UIApplication.sharedApplication().delegate as! AppDelegate).registerNotification()
+        })
+        
         process.addObserver(DidFinishObserver { [unowned self] (operation, errors) in
             guard let operation = operation as? Process else {return}
             self.hasUpdate = operation.hasUpdate

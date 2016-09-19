@@ -23,6 +23,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Preference.activeUseHistory.append(NSDate()) 
     }
     
+    func registerNotification() {
+        let settings = UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: nil)
+        UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+    }
+    
     // MARK: -
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -30,8 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Network.shared
         
         // Register notification
-//        let settings = UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: nil) // Here are the notification permission the app wants
-//        application.registerUserNotificationSettings(settings)
+        if let _ = Preference.libraryLastRefreshTime { registerNotification() }
         
         // Set background refresh interval
         application.setMinimumBackgroundFetchInterval(86400)
@@ -140,6 +144,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        
+        if #available(iOS 10, *) {
+            let notification = UILocalNotification()
+            notification.alertTitle = NSLocalizedString("Book download finished", comment: "Notification: Book download finished")
+            notification.alertBody = NSLocalizedString("All download tasks are finished.", comment: "Notification: Book download finished")
+            notification.soundName = UILocalNotificationDefaultSoundName
+            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+        }
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
@@ -147,7 +159,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: () -> Void) {
-//        Network.shared.rejoinSessionWithIdentifier(identifier, completionHandler: completionHandler)
+        Network.shared.rejoinSessionWithIdentifier(identifier, completionHandler: completionHandler)
     }
     
     // MARK: Background Refresh
