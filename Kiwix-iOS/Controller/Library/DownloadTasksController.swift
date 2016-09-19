@@ -18,7 +18,7 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        tabBarItem.title = LocalizedStrings.LibraryTabTitle.download
+        tabBarItem.title = LocalizedStrings.download
         tabBarItem.image = UIImage(named: "Download")
         tabBarItem.selectedImage = UIImage(named: "DownloadFilled")
     }
@@ -188,29 +188,29 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
         case .Downloading:
             let pause = UITableViewRowAction(style: .Normal, title: "Pause") { (action, indexPath) in
                 let operation = PauseBookDwonloadOperation(bookID: bookID)
-                GlobalQueue.shared.addOperation(operation)
+                Network.shared.queue.addOperation(operation)
                 tableView.setEditing(false, animated: true)
             }
             actions.insert(pause, atIndex: 0)
         case .Paused:
             let resume = UITableViewRowAction(style: .Normal, title: "Resume") { (action, indexPath) in
                 let operation = ResumeBookDwonloadOperation(bookID: bookID)
-                GlobalQueue.shared.addOperation(operation)
+                Network.shared.queue.addOperation(operation)
                 tableView.setEditing(false, animated: true)
             }
             actions.insert(resume, atIndex: 0)
         case .Error:
-            let retry = UITableViewRowAction(style: .Normal, title: "Restart") { (action, indexPath) in
+            let restart = UITableViewRowAction(style: .Normal, title: "Restart") { (action, indexPath) in
                 let operation = ResumeBookDwonloadOperation(bookID: bookID)
-                GlobalQueue.shared.addOperation(operation)
+                Network.shared.queue.addOperation(operation)
                 tableView.setEditing(false, animated: true)
             }
-            actions.insert(retry, atIndex: 0)
+            actions.insert(restart, atIndex: 0)
         default:
             break
         }
         
-        let cancel = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.Common.cancel) { (action, indexPath) -> Void in
+        let cancel = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.cancel) { (action, indexPath) -> Void in
             if let bookID = downloadTask.book?.id {
                 if let operation = Network.shared.operations[bookID] {
                     // When download is ongoing
@@ -289,4 +289,12 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
         tableView.endUpdates()
         //refreshTabBarBadgeCount()
     }
+    
+    // MARK: - LocalizedStrings
+    
+    class LocalizedStrings {
+        static let download = NSLocalizedString("Download", comment: "Library, download tab")
+    }
+    
+    
 }

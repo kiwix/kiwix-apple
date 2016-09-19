@@ -64,20 +64,32 @@ class DownloadBookOperation: URLSessionDownloadTaskOperation {
     }
     
     override func operationDidCancel() {
-        // Update CoreData
-        let context = NSManagedObjectContext.mainQueueContext
-        context.performBlockAndWait {
-            guard let bookID = self.bookID,
-                let book = Book.fetch(bookID, context: context) else {return}
-            if !self.produceResumeData {book.isLocal = false}
-            
-            guard let downloadTask = book.downloadTask else {return}
-            if self.produceResumeData {
-                downloadTask.state = .Paused
-            } else {
-                context.deleteObject(downloadTask)
-            }
+        // Not Reachable
+        if let error = errors.first as? Operations.ReachabilityCondition.Error where error == .NotReachable {
+            return
         }
+        
+        // Update Core Data
+        if produceResumeData {
+            let context = NSManagedObjectContext.mainQueueContext
+            context.performBlockAndWait({ 
+                guard let bookID = self.bookID,
+                    let book = Book.fetch(bookID, context: context) else {return}
+                book.isLocal = nil
+            })
+        } else {
+            let context = NSManagedObjectContext.mainQueueContext
+            context.performBlockAndWait({
+                guard let bookID = self.bookID,
+                    let book = Book.fetch(bookID, context: context) else {return}
+                book.isLocal = false
+                
+                guard let downloadTask = book.downloadTask else {return}
+                context.deleteObject(downloadTask)
+            })
+        }
+        
+        // URLSessionDelegate save resume data and update downloadTask
     }
     
     // MARK: - Helper
@@ -192,7 +204,14 @@ class ResumeBookDwonloadOperation: Operation {
     
     override func execute() {
         guard let data: NSData = Preference.resumeData[bookID],
-            let operation = DownloadBookOperation(bookID: bookID, resumeData: data) else {return}
+            let operation = DownloadBookOperation(bookID: bookID, resumeData: data) else {
+                if let operation = DownloadBookOperation(bookID: bookID) {
+                    produceOperation(operation)
+                }
+                
+                finish()
+                return
+        }
         Network.shared.queue.addOperation(operation)
         finish()
     }

@@ -27,12 +27,11 @@ class URLSessionDownloadTaskOperation: Operation {
         addObserver(NetworkObserver())
         addObserver(DidCancelObserver { _ in
             if self.produceResumeData {
-                downloadTask.cancelByProducingResumeData({ (data) in })
+                downloadTask.cancelByProducingResumeData({ _ in })
             } else {
                 downloadTask.cancel()
             }
-            }
-        )
+        })
     }
     
     func cancel(produceResumeData produceResumeData: Bool) {
