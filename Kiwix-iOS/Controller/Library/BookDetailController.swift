@@ -140,6 +140,7 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
         configureActionSection(with: book)
         configureBookInfoSection(with: book)
         configurePIDSection(with: book)
+        configureURLSection(with: book)
         tableView.reloadEmptyDataSet()
     }
     

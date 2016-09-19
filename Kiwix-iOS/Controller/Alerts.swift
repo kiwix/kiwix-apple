@@ -23,7 +23,7 @@ class SpaceCautionAlert: AlertOperation<UIViewController> {
         super.init(presentAlertFrom: context)
         
         title = NSLocalizedString("Space Alert", comment: "Library, Space Alert")
-        message = NSLocalizedString("This book will take up more than 80% of your free space after downloaded.", comment: "Library, Space Alert")
+        message = NSLocalizedString("This book will take up more than 80% of your free space.", comment: "Library, Space Alert")
         addActionWithTitle(NSLocalizedString("Download Anyway", comment: "Library, Space Alert"), style: .Destructive) { _ in
             guard let download = DownloadBookOperation(bookID: bookID) else {return}
             Network.shared.queue.addOperation(download)
@@ -62,7 +62,7 @@ class CopyURLAlert: AlertOperation<UIViewController> {
         super.init(presentAlertFrom: context)
         title = NSLocalizedString("URL Copied Successfully", comment: "Copy URL Alert")
         if let absoluteURL = url.absoluteString {
-            message = String(format: NSLocalizedString("The URL was %@", comment: "Copy URL Alert"), absoluteURL)
+            message = String(format: NSLocalizedString("The URL is %@", comment: "Copy URL Alert"), absoluteURL)
         }
         addActionWithTitle(LocalizedStrings.ok)
     }

@@ -146,6 +146,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         
         if #available(iOS 10, *) {
+            
+        } else {
             let notification = UILocalNotification()
             notification.alertTitle = NSLocalizedString("Book download finished", comment: "Notification: Book download finished")
             notification.alertBody = NSLocalizedString("All download tasks are finished.", comment: "Notification: Book download finished")
