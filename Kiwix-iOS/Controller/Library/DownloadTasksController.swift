@@ -37,17 +37,12 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(DownloadTasksController.refreshProgress), userInfo: nil, repeats: true)
-        if fetchedResultController.delegate !== self {
-            fetchedResultController.delegate = self
-            tableView.reloadData()
-        }
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         timer?.invalidate()
         timer = nil
-        fetchedResultController.delegate = nil
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -174,6 +169,10 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
 //        header.textLabel?.font = UIFont.boldSystemFontOfSize(14)
 //    }
 //    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
@@ -200,19 +199,13 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
                 tableView.setEditing(false, animated: true)
             }
             actions.insert(resume, atIndex: 0)
-//            
-//            if let book = downloadTask.book,
-//                let resumeData = Preference.resumeData[book.id] {
-//                
-//            } else {
-//                let restart = UITableViewRowAction(style: .Normal, title: "Restart") { (action, indexPath) in
-//                    guard let bookID = downloadTask.book?.id,
-//                        let operation = DownloadBookOperation(bookID: bookID) else {return}
-//                    Network.shared.queue.addOperation(operation)
-//                    tableView.setEditing(false, animated: true)
-//                }
-//                actions.insert(restart, atIndex: 0)
-//            }
+        case .Error:
+            let retry = UITableViewRowAction(style: .Normal, title: "Restart") { (action, indexPath) in
+                let operation = ResumeBookDwonloadOperation(bookID: bookID)
+                GlobalQueue.shared.addOperation(operation)
+                tableView.setEditing(false, animated: true)
+            }
+            actions.insert(retry, atIndex: 0)
         default:
             break
         }
@@ -294,7 +287,6 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
-        refreshTabBarBadgeCount()
+        //refreshTabBarBadgeCount()
     }
-    
 }

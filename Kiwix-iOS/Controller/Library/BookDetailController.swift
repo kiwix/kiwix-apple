@@ -45,22 +45,22 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureViews()
-        book?.addObserver(self, forKeyPath: "isLocal", options: .New, context: context)
+//        book?.addObserver(self, forKeyPath: "isLocal", options: .New, context: context)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        book?.removeObserver(self, forKeyPath: "isLocal", context: context)
+//        book?.removeObserver(self, forKeyPath: "isLocal", context: context)
     }
     
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        guard let book = object as? Book where context == self.context else {return}
-        NSOperationQueue.mainQueue().addOperationWithBlock {
-            print(book.isLocal)
-            self.configureActionSection(book)
-            self.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .Fade)
-        }
-    }
+//    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+//        guard let book = object as? Book where context == self.context else {return}
+//        NSOperationQueue.mainQueue().addOperationWithBlock {
+//            print(book.isLocal)
+//            self.configureActionSection(book)
+//            self.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .Fade)
+//        }
+//    }
     
     // MARK: - Configure
     
@@ -90,10 +90,10 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
         cellTitles.append([String]())
         
         // Action Cells
-        sectionHeaders.append(nil)
-        sectionFooters.append(nil)
-        cellTitles.append([])
-        configureActionSection(book)
+//        sectionHeaders.append(nil)
+//        sectionFooters.append(nil)
+//        cellTitles.append([])
+//        configureActionSection(book)
         
         // Book Info
         sectionHeaders.append(Strings.bookInfo)

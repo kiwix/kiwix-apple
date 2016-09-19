@@ -54,14 +54,13 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
         self.context.performBlockAndWait {
             guard let book = Book.fetch(bookID, context: self.context),
                 let downloadTask = book.downloadTask else {return}
-            if error.code == NSURLErrorCancelled {
+            if let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? NSData  {
                 // If download task doesnt exist, it must mean download is cancelled by user
                 // DownloadTask object will have been deleted when user tap Cancel button / table row action
                 downloadTask.totalBytesWritten = task.countOfBytesReceived
                 downloadTask.state = .Paused
                 
                 // Save resume data to disk
-                guard let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? NSData else {return}
                 Preference.resumeData[bookID] = resumeData
             } else {
                 downloadTask.state = .Error

@@ -32,15 +32,6 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if fetchedResultController.delegate !== self {
-            fetchedResultController.delegate = self
-            tableView.reloadData()
-        }
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        fetchedResultController.delegate = nil
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -129,6 +120,10 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {}

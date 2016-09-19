@@ -20,6 +20,11 @@ class DownloadBookOperation: URLSessionDownloadTaskOperation {
         super.init(downloadTask: downloadTask)
         name = downloadTask.taskDescription
         
+        if UIApplication.sharedApplication().applicationState == .Active,
+            let url = downloadTask.originalRequest?.URL {
+            addCondition(ReachabilityCondition(url: url, connectivity: .ViaWiFi))
+        }
+        
         // Update Coredata
         let context = NSManagedObjectContext.mainQueueContext
         context.performBlockAndWait {
@@ -58,13 +63,7 @@ class DownloadBookOperation: URLSessionDownloadTaskOperation {
         self.init(downloadTask: task)
     }
     
-    override func operationWillCancel(errors: [ErrorType]) {
-        print("Download Task will cancel")
-    }
-    
     override func operationDidCancel() {
-        print("Download Task did cancel")
-        
         // Update CoreData
         let context = NSManagedObjectContext.mainQueueContext
         context.performBlockAndWait {
