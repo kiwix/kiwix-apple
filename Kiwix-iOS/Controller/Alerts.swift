@@ -56,3 +56,14 @@ class NetworkRequiredAlert: AlertOperation<UIViewController> {
         addActionWithTitle(LocalizedStrings.cancel)
     }
 }
+
+class CopyURLAlert: AlertOperation<UIViewController> {
+    init(url: NSURL, context: UIViewController) {
+        super.init(presentAlertFrom: context)
+        title = NSLocalizedString("URL Copied Successfully", comment: "Copy URL Alert")
+        if let absoluteURL = url.absoluteString {
+            message = String(format: NSLocalizedString("The URL was %@", comment: "Copy URL Alert"), absoluteURL)
+        }
+        addActionWithTitle(LocalizedStrings.ok)
+    }
+}

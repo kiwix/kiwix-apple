@@ -20,7 +20,6 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     @IBOutlet weak var hasIndexLabel: UILabel!
     
     var context: UnsafeMutablePointer<Void> = nil
-    typealias Strings = LocalizedStrings.BookDetail
     
     var book: Book?
     var sectionHeaders = [String?]()
@@ -45,93 +44,103 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureViews()
-//        book?.addObserver(self, forKeyPath: "isLocal", options: .New, context: context)
+        book?.addObserver(self, forKeyPath: "isLocal", options: .New, context: context)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-//        book?.removeObserver(self, forKeyPath: "isLocal", context: context)
+        book?.removeObserver(self, forKeyPath: "isLocal", context: context)
     }
     
-//    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-//        guard let book = object as? Book where context == self.context else {return}
-//        NSOperationQueue.mainQueue().addOperationWithBlock {
-//            print(book.isLocal)
-//            self.configureActionSection(book)
-//            self.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .Fade)
-//        }
-//    }
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        guard let book = object as? Book where context == self.context else {return}
+        NSOperationQueue.mainQueue().addOperationWithBlock {
+            self.configureActionSection(with: book)
+            self.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .Fade)
+        }
+    }
     
     // MARK: - Configure
     
-    func configureViews() {
-        guard let book = book else {return}
-        
-        // Config static UI
+    func configureStaticHeader(with book: Book) {
         title = book.title
         favIconImageView.image = UIImage(data: book.favIcon ?? NSData())
         titleLabel.text = book.title
-        
-        hasPicIndicator.backgroundColor = book.hasPic ? AppColors.hasPicTintColor : UIColor.lightGrayColor()
-        hasPicLabel.text = book.hasPic ? LocalizedStrings.BookDetail.hasPic : LocalizedStrings.BookDetail.noPic
-        hasIndexIndicator.backgroundColor = book.hasIndex ? AppColors.hasIndexTintColor : UIColor.lightGrayColor()
-        hasIndexLabel.text = book.hasIndex ? LocalizedStrings.BookDetail.hasIndex : LocalizedStrings.BookDetail.noIndex
-        
         titleLabel.hidden = false
+    }
+    
+    func configureIndicators(with book: Book) {
+        hasPicIndicator.backgroundColor = book.hasPic ? AppColors.hasPicTintColor : UIColor.lightGrayColor()
+        hasPicLabel.text = book.hasPic ? LocalizedStrings.hasPic : LocalizedStrings.noPic
+        hasIndexIndicator.backgroundColor = book.hasIndex ? AppColors.hasIndexTintColor : UIColor.lightGrayColor()
+        hasIndexLabel.text = book.hasIndex ? LocalizedStrings.hasIndex : LocalizedStrings.noIndex
+        
         hasPicIndicator.hidden = false
         hasPicLabel.hidden = false
         hasIndexIndicator.hidden = false
         hasIndexLabel.hidden = false
-        
-        // Generate table structure
-        // Book desc
+    }
+    
+    func configureDescriptionSection(with book: Book) {
         sectionHeaders.append(nil)
         sectionFooters.append(book.desc)
         cellTitles.append([String]())
-        
-        // Action Cells
-//        sectionHeaders.append(nil)
-//        sectionFooters.append(nil)
-//        cellTitles.append([])
-//        configureActionSection(book)
-        
-        // Book Info
-        sectionHeaders.append(Strings.bookInfo)
-        sectionFooters.append(nil)
-        cellTitles.append([Strings.size, Strings.createDate, Strings.arcitleCount, Strings.language, Strings.creator, Strings.publisher])
-        
-        // PID
-        if let _ = book.pid {
-            sectionHeaders.append(Strings.pid)
-            sectionFooters.append(Strings.pidNote)
-            cellTitles.append([Strings.pid])
-        }
-        
-        // URL
-        if let _ = book.url {
-            sectionHeaders.append(nil)
-            sectionFooters.append(nil)
-            cellTitles.append([Strings.copyURL])
-        }
-        
-        tableView.reloadEmptyDataSet()
     }
     
-    func configureActionSection(book: Book) {
+    func configureActionSection(with book: Book) {
+        if cellTitles.count == 1 {
+            sectionHeaders.append(nil)
+            sectionFooters.append(nil)
+            cellTitles.append([])
+        }
+        
         if let isLocal = book.isLocal?.boolValue {
             if isLocal {
-                cellTitles[1] = [Strings.remove]
+                cellTitles[1] = [LocalizedStrings.remove]
             } else {
-                cellTitles[1] = book.spaceState == .NotEnough ? [Strings.spaceNotEnough] : [LocalizedStrings.download]
+                cellTitles[1] = book.spaceState == .NotEnough ? [LocalizedStrings.spaceNotEnough] : [LocalizedStrings.download]
             }
         } else {
-            guard let downloadTask = book.downloadTask else {return}
-            if downloadTask.state == .Queued || downloadTask.state == .Downloading {
-                cellTitles[1] = [Strings.pause, Strings.cancel]
-            } else {
-                cellTitles[1] = [Strings.resume, Strings.cancel]
-            }
+            cellTitles[1] = [LocalizedStrings.downloading]
         }
+    }
+    
+    func configureBookInfoSection(with book: Book) {
+        sectionHeaders.append(LocalizedStrings.bookInfo)
+        sectionFooters.append(nil)
+        cellTitles.append([
+            LocalizedStrings.size,
+            LocalizedStrings.createDate,
+            LocalizedStrings.arcitleCount,
+            LocalizedStrings.language,
+            LocalizedStrings.creator,
+            LocalizedStrings.publisher
+        ])
+    }
+    
+    func configurePIDSection(with book: Book) {
+        guard let _ = book.pid else {return}
+        sectionHeaders.append(LocalizedStrings.pid)
+        sectionFooters.append(LocalizedStrings.pidNote)
+        cellTitles.append([LocalizedStrings.pid])
+    }
+    
+    func configureURLSection(with book: Book) {
+        guard let _ = book.url else {return}
+        sectionHeaders.append(nil)
+        sectionFooters.append(nil)
+        cellTitles.append([LocalizedStrings.copyURL])
+    }
+    
+    func configureViews() {
+        guard let book = book else {return}
+        configureStaticHeader(with: book)
+        configureIndicators(with: book)
+        configureDescriptionSection(with: book)
+        configureActionSection(with: book)
+        configureBookInfoSection(with: book)
+        configurePIDSection(with: book)
+        tableView.reloadEmptyDataSet()
     }
     
     // MARK: - Table view data source
@@ -147,26 +156,26 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let title = cellTitles[indexPath.section][indexPath.row]
         switch title {
-        case LocalizedStrings.download, Strings.spaceNotEnough, Strings.cancel, Strings.remove, Strings.pause, Strings.resume:
+        case LocalizedStrings.download, LocalizedStrings.downloading, LocalizedStrings.spaceNotEnough, LocalizedStrings.remove:
             let cell = tableView.dequeueReusableCellWithIdentifier("CenterTextCell", forIndexPath: indexPath)
             cell.textLabel?.text = title
             
             switch title {
             case LocalizedStrings.download:
                 if book?.spaceState == .Caution {cell.textLabel?.textColor = UIColor.orangeColor()}
-            case Strings.spaceNotEnough:
+            case LocalizedStrings.downloading, LocalizedStrings.spaceNotEnough:
                 cell.textLabel?.textColor = UIColor.grayColor()
-            case Strings.cancel, Strings.remove:
+            case LocalizedStrings.remove:
                 cell.textLabel?.textColor = UIColor.redColor()
             default:
                 break
             }
             return cell
-        case Strings.pid:
+        case LocalizedStrings.pid:
             let cell = tableView.dequeueReusableCellWithIdentifier("BasicCell", forIndexPath: indexPath)
             cell.textLabel?.text = book?.pid
             return cell
-        case Strings.copyURL:
+        case LocalizedStrings.copyURL:
             let cell = tableView.dequeueReusableCellWithIdentifier("CenterTextCell", forIndexPath: indexPath)
             cell.textLabel?.text = title
             return cell
@@ -174,17 +183,17 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
             let cell = tableView.dequeueReusableCellWithIdentifier("RightDetailCell", forIndexPath: indexPath)
             cell.textLabel?.text = title
             switch title {
-            case Strings.size:
+            case LocalizedStrings.size:
                 cell.detailTextLabel?.text = book?.fileSizeDescription
-            case Strings.createDate:
+            case LocalizedStrings.createDate:
                 cell.detailTextLabel?.text = book?.dateDescription
-            case Strings.arcitleCount:
+            case LocalizedStrings.arcitleCount:
                 cell.detailTextLabel?.text = book?.articleCountString
-            case Strings.language:
+            case LocalizedStrings.language:
                 cell.detailTextLabel?.text = book?.language?.nameInCurrentLocale
-            case Strings.creator:
+            case LocalizedStrings.creator:
                 cell.detailTextLabel?.text = book?.creator
-            case Strings.publisher:
+            case LocalizedStrings.publisher:
                 cell.detailTextLabel?.text = book?.publisher
             default:
                 break
@@ -222,42 +231,35 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
                 guard let download = DownloadBookOperation(bookID: book.id) else {return}
                 Network.shared.queue.addOperation(download)
             }
-        case Strings.remove:
+        case LocalizedStrings.remove:
             let operation = RemoveBookConfirmationAlert(context: self, bookID: book.id)
             GlobalQueue.shared.addOperation(operation)
-        case Strings.copyURL:
+        case LocalizedStrings.copyURL:
             guard let url = book.url else {return}
             UIPasteboard.generalPasteboard().string = url.absoluteString
-            let action = UIAlertAction(title: LocalizedStrings.Common.ok, style: .Cancel, handler: nil)
-            let alertController = UIAlertController(title: Strings.CopyURLAlert.succeed, message: nil, preferredStyle: .Alert)
-            alertController.addAction(action)
-            presentViewController(alertController, animated: true, completion: nil)
+            let operation = CopyURLAlert(url: url, context: self)
+            GlobalQueue.shared.addOperation(operation)
         default:
             return
         }
     }
-}
-
-extension LocalizedStrings {
-    class BookDetail {
+    
+    class LocalizedStrings {
         private static let comment = "Library, Book Detail"
         static let hasIndex = NSLocalizedString("Index", comment: comment)
         static let hasPic = NSLocalizedString("Pictures", comment: comment)
         static let noIndex = NSLocalizedString("No Index", comment: comment)
         static let noPic = NSLocalizedString("No Picture", comment: comment)
         
-        static let pid = NSLocalizedString("Persistent ID", comment: comment)
-        static let bookInfo = NSLocalizedString("Book Info", comment: comment)
-        
-        static let pidNote = NSLocalizedString("This ID does not change in different versions of the same book.", comment: comment)
-        
-        static let downloadNow = NSLocalizedString("Download Now", comment: comment)
+        static let download = NSLocalizedString("Download", comment: comment)
+        static let downloading = NSLocalizedString("Downloading", comment: comment)
         static let spaceNotEnough = NSLocalizedString("Space Not Enough", comment: comment)
-        static let pause = NSLocalizedString("Pause", comment: comment)
-        static let resume = NSLocalizedString("Resume", comment: comment)
-        static let cancel = NSLocalizedString("Cancel", comment: comment)
         static let remove = NSLocalizedString("Remove", comment: comment)
+//        static let pause = NSLocalizedString("Pause", comment: comment)
+//        static let resume = NSLocalizedString("Resume", comment: comment)
+//        static let cancel = NSLocalizedString("Cancel", comment: comment)
         
+        static let bookInfo = NSLocalizedString("Book Info", comment: comment)
         static let size = NSLocalizedString("Size", comment: comment)
         static let createDate = NSLocalizedString("Creation Date", comment: comment)
         static let arcitleCount = NSLocalizedString("Article Count", comment: comment)
@@ -265,11 +267,9 @@ extension LocalizedStrings {
         static let creator = NSLocalizedString("Creator", comment: comment)
         static let publisher = NSLocalizedString("Publisher", comment: comment)
         
-        static let copyURL = NSLocalizedString("Copy URL", comment: comment)
+        static let pid = NSLocalizedString("Persistent ID", comment: comment)
+        static let pidNote = NSLocalizedString("This ID does not change in different versions of the same book.", comment: comment)
         
-        class CopyURLAlert {
-            private static let comment = "Library, Book Detail, Copy URL Alert"
-            static let succeed = NSLocalizedString("URL Copied Successfully", comment: comment)
-        }
+        static let copyURL = NSLocalizedString("Copy URL", comment: comment)
     }
 }
