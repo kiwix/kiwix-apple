@@ -17,7 +17,7 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        tabBarItem.title = LocalizedStrings.LibraryTabTitle.local
+        tabBarItem.title = LocalizedStrings.local
         tabBarItem.image = UIImage(named: "Folder")
         tabBarItem.selectedImage = UIImage(named: "FolderFilled")
     }
@@ -190,5 +190,12 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
+    }
+    
+    // MARK: - LocalizedStrings
+    
+    class LocalizedStrings{
+        static let local = NSLocalizedString("Local", comment: "Library, local tab")
+        static let remove = NSLocalizedString("Remove", comment: "Library, local tab")
     }
 }

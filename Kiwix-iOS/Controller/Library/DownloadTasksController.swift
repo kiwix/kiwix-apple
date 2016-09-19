@@ -118,7 +118,7 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
                     if string.containsString(" — ") {
                         return string.stringByReplacingOccurrencesOfString(" — ", withString: "\n")
                     } else {
-                        return string + "\n" + "Estimating"
+                        return string + "\n" + LocalizedStrings.estimating
                     }
                 } else {
                     return string + "\n" + String(downloadTask.state)
@@ -131,10 +131,9 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
             cell.detailLabel.text = {
                 let downloadedSize = NSByteCountFormatter.stringFromByteCount(downloadTask.totalBytesWritten, countStyle: .File)
                 let fileSize = book.fileSizeDescription
-                return String(format: "%@ of %@ completed", downloadedSize, fileSize) + "\n" + String(downloadTask.state)
+                return String(format: LocalizedStrings.percentCompleted, downloadedSize, fileSize) + "\n" + String(downloadTask.state)
             }()
         }
-        
     }
     
     // MARK: Other Data Source
@@ -186,21 +185,21 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
         var actions = [UITableViewRowAction]()
         switch downloadTask.state {
         case .Downloading:
-            let pause = UITableViewRowAction(style: .Normal, title: "Pause") { (action, indexPath) in
+            let pause = UITableViewRowAction(style: .Normal, title: LocalizedStrings.pause) { (action, indexPath) in
                 let operation = PauseBookDwonloadOperation(bookID: bookID)
                 Network.shared.queue.addOperation(operation)
                 tableView.setEditing(false, animated: true)
             }
             actions.insert(pause, atIndex: 0)
         case .Paused:
-            let resume = UITableViewRowAction(style: .Normal, title: "Resume") { (action, indexPath) in
+            let resume = UITableViewRowAction(style: .Normal, title: LocalizedStrings.resume) { (action, indexPath) in
                 let operation = ResumeBookDwonloadOperation(bookID: bookID)
                 Network.shared.queue.addOperation(operation)
                 tableView.setEditing(false, animated: true)
             }
             actions.insert(resume, atIndex: 0)
         case .Error:
-            let restart = UITableViewRowAction(style: .Normal, title: "Restart") { (action, indexPath) in
+            let restart = UITableViewRowAction(style: .Normal, title: LocalizedStrings.restart) { (action, indexPath) in
                 let operation = ResumeBookDwonloadOperation(bookID: bookID)
                 Network.shared.queue.addOperation(operation)
                 tableView.setEditing(false, animated: true)
@@ -294,6 +293,14 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
     
     class LocalizedStrings {
         static let download = NSLocalizedString("Download", comment: "Library, download tab")
+        
+        static let pause = NSLocalizedString("Pause", comment: "Library, download tab")
+        static let resume = NSLocalizedString("Resume", comment: "Library, download tab")
+        static let restart = NSLocalizedString("Restart", comment: "Library, download tab")
+        static let cancel = NSLocalizedString("Cancel", comment: "Library, download tab")
+        
+        static let estimating = NSLocalizedString("Estimating", comment: "Library, download tab")
+        static let percentCompleted = NSLocalizedString("%@ of %@ completed", comment: "Library, download tab")
     }
     
     

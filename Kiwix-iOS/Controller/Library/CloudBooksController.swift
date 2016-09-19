@@ -20,7 +20,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        tabBarItem.title = LocalizedStrings.LibraryTabTitle.cloud
+        tabBarItem.title = LocalizedStrings.cloud
         tabBarItem.image = UIImage(named: "Cloud")
         tabBarItem.selectedImage = UIImage(named: "CloudFilled")
     }
@@ -133,7 +133,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
         hud.mode = .Text
         hud.label.numberOfLines = 0
-        hud.label.text = NSLocalizedString("Library is refreshed successfully!", comment: "Cloud Book Controller")
+        hud.label.text = LocalizedStrings.libRefreshSuccessMessage
         hud.hideAnimated(true, afterDelay: 2)
     }
     
@@ -154,7 +154,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         let alert = UIAlertController(title: NSLocalizedString("Only Show Preferred Language?", comment: comment),
                                       message: NSLocalizedString(String(format: "Would you like to filter the library by %@?", string), comment: comment),
                                       preferredStyle: .Alert)
-        let action = UIAlertAction(title: LocalizedStrings.Common.yes, style: .Default) { (action) in
+        let action = UIAlertAction(title: "Yes", style: .Default) { (action) in
             self.managedObjectContext.performBlock({
                 let codes = NSLocale.preferredLangCodes
                 Language.fetchAll(self.managedObjectContext).forEach({ (language) in
@@ -164,7 +164,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
             })
         }
         alert.addAction(action)
-        alert.addAction(UIAlertAction(title: LocalizedStrings.Common.cancel, style: .Cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
         alert.preferredAction = action
         presentViewController(alert, animated: true, completion: nil)
     }
@@ -286,7 +286,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
             action.backgroundColor = UIColor.orangeColor()
             return [action]
         case .NotEnough:
-            let action = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: LocalizedStrings.Library.spaceNotEnough, handler: { _ in
+            let action = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: LocalizedStrings.spaceNotEnough, handler: { _ in
                 let alert = SpaceNotEnoughAlert(context: self)
                 GlobalQueue.shared.addOperation(alert)
                 self.tableView.setEditing(false, animated: true)
@@ -368,5 +368,15 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
+    }
+    
+    // MARK: - LocalizedStrings
+    
+    class LocalizedStrings{
+        static let cloud = NSLocalizedString("Cloud", comment: "Library, cloud tab")
+        
+        static let download = NSLocalizedString("Download", comment: "Library, cloud tab")
+        static let spaceNotEnough = NSLocalizedString("Space Not Enough", comment: "Library, cloud tab")
+        static let libRefreshSuccessMessage = NSLocalizedString("Library is refreshed successfully!", comment: "Library, cloud tab")
     }
 }
