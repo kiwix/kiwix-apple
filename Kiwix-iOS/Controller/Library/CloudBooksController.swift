@@ -38,7 +38,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        tabBarController?.navigationItem.rightBarButtonItem = UIBarButtonItem(imageNamed: "LanguageFilter", target: self, action: #selector(CloudBooksController.showLanguageFilter))
+        configureNavBarButtons()
         refreshAutomatically()
     }
     
@@ -119,6 +119,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
                 } else{
                     if operation.firstTime {
                         self.showLanguageFilterAlert()
+                        self.configureNavBarButtons()
                     } else {
                         self.showRefreshSuccessMessage()
                     }
@@ -167,6 +168,11 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
         alert.preferredAction = action
         presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func configureNavBarButtons() {
+        tabBarController?.navigationItem.rightBarButtonItem = Preference.libraryLastRefreshTime == nil ? nil
+            : UIBarButtonItem(imageNamed: "LanguageFilter", target: self, action: #selector(CloudBooksController.showLanguageFilter))
     }
     
     // MARK: - LanguageFilterUpdating
