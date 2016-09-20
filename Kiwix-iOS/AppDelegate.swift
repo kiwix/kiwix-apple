@@ -8,6 +8,7 @@
 import UIKit
 import CoreData
 import Operations
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,8 +25,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func registerNotification() {
-        let settings = UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: nil)
-        UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+        if #available(iOS 10, *) {
+            UNUserNotificationCenter.currentNotificationCenter().requestAuthorizationWithOptions([.Alert, .Badge, .Sound], completionHandler: { _ in })
+        } else {
+            let settings = UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: nil)
+            UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+        }
     }
     
     // MARK: -
@@ -144,16 +149,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        
-        if #available(iOS 10, *) {
-            
-        } else {
-            let notification = UILocalNotification()
-            notification.alertTitle = NSLocalizedString("Book download finished", comment: "Notification: Book download finished")
-            notification.alertBody = NSLocalizedString("All download tasks are finished.", comment: "Notification: Book download finished")
-            notification.soundName = UILocalNotificationDefaultSoundName
-            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
-        }
     }
 
     func applicationWillEnterForeground(application: UIApplication) {

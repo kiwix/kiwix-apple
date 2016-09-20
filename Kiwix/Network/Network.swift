@@ -9,13 +9,14 @@
 import UIKit
 import CoreData
 import Operations
+import UserNotifications
 
 class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDownloadDelegate, OperationQueueDelegate  {
     static let shared = Network()
     let queue = OperationQueue()
     let context = NSManagedObjectContext.mainQueueContext
-    private(set) var operations = [String: DownloadBookOperation]()
     
+    private(set) var operations = [String: DownloadBookOperation]()
     private var downloadedBookTitle = [String]()
     private var completionHandler: (()-> Void)?
     
@@ -60,13 +61,42 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
         NSOperationQueue.mainQueue().addOperationWithBlock {
             self.completionHandler?()
             
-            let notification = UILocalNotification()
-            notification.alertTitle = NSLocalizedString("Book download finished", comment: "Notification: Book download finished")
-            notification.alertBody = NSLocalizedString("All download tasks are finished.", comment: "Notification: Book download finished")
-            notification.soundName = UILocalNotificationDefaultSoundName
-            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+            let title = NSLocalizedString("Book download finished", comment: "Notification: Book download finished")
+            let body: String = {
+                switch self.downloadedBookTitle.count {
+                case 0:
+                    return NSLocalizedString("All download tasks are finished.", comment: "Notification: Book download finished")
+                case 1:
+                    return String(format: NSLocalizedString("%@ has been downloaded", comment: "Notification: Book download finished"), self.downloadedBookTitle[0])
+                case 2:
+                    return String(format: NSLocalizedString("%@ and @% have been downloaded", comment: "Notification: Book download finished"),
+                                  self.downloadedBookTitle[0], self.downloadedBookTitle[1])
+                default:
+                    return String(format: NSLocalizedString("%@ and %d others have been downloaded", comment: "Notification: Book download finished"),
+                                  self.downloadedBookTitle[0], self.downloadedBookTitle.count - 1)
+                }
+            }()
+            
+            if #available(iOS 10, *) {
+                UNUserNotificationCenter.currentNotificationCenter().getNotificationSettingsWithCompletionHandler({ (settings) in
+                    guard settings.alertSetting == .Enabled else {return}
+                    let content = UNMutableNotificationContent()
+                    content.title = title
+                    content.body = body
+                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.1, repeats: false)
+                    let request = UNNotificationRequest(identifier: "org.kiwix.downloadFinished", content: content, trigger: trigger)
+                    UNUserNotificationCenter.currentNotificationCenter().addNotificationRequest(request, withCompletionHandler: nil)
+                })
+            } else {
+                let notification = UILocalNotification()
+                notification.alertTitle = title
+                notification.alertBody = body
+                notification.soundName = UILocalNotificationDefaultSoundName
+                UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+            }
         }
     }
+    
     // MARK: - NSURLSessionTaskDelegate
     
     func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
@@ -112,8 +142,9 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
         
         // - Remove cache, if any
         // - Delete Download task Object
-        context.performBlock {
+        context.performBlockAndWait { 
             guard let book = Book.fetch(bookID, context: self.context) else {return}
+            if let title = book.title {self.downloadedBookTitle.append(title)}
             book.removeResumeData()
             guard let downloadTask = book.downloadTask else {return}
             self.context.deleteObject(downloadTask)

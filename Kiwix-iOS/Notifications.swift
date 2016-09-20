@@ -8,6 +8,8 @@
 
 import UIKit
 
-class DownloadFinishedNotifications:  {
+class DownloadFinishedNotifications: UILocalNotification {
     
 }
+
+//@available(iOS 10, *)
