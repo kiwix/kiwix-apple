@@ -83,6 +83,10 @@ extension BookDetailController {
         let attributes = [NSFontAttributeName: UIFont.systemFontOfSize(18), NSForegroundColorAttributeName: UIColor.darkGrayColor()]
         return NSAttributedString(string: string, attributes: attributes)
     }
+    
+    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+        return -navigationController!.navigationBar.frame.maxY
+    }
 }
 
 extension LanguageFilterController {
