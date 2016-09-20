@@ -15,10 +15,15 @@ class RefreshLibraryOperation: GroupOperation {
     private(set) var firstTime = false
     
     init(invokedByUser: Bool = false) {
-        let retrive = Retrive()
+        let retrieve = Retrieve()
         let process = Process()
-        process.injectResultFromDependency(retrive)
-        super.init(operations: [retrive, process])
+        process.injectResultFromDependency(retrieve)
+        super.init(operations: [retrieve, process])
+        
+        addObserver(NetworkObserver())
+        if UIApplication.sharedApplication().applicationState == .Active {
+            addCondition(ReachabilityCondition(url: Retrieve.url))
+        }
         
         addObserver(WillExecuteObserver { _ in
             (UIApplication.sharedApplication().delegate as! AppDelegate).registerNotification()
@@ -32,20 +37,18 @@ class RefreshLibraryOperation: GroupOperation {
     }
 }
 
-private class Retrive: Operation, ResultOperationType {
+private class Retrieve: Operation, ResultOperationType {
     private static let url = NSURL(string: "https://download.kiwix.org/library/library.xml")!
     private var result: NSData?
     
     override init() {
         super.init()
-        addObserver(NetworkObserver())
-        if UIApplication.sharedApplication().applicationState == .Active {
-            addCondition(ReachabilityCondition(url: Retrive.url))
-        }
+        name = "Library Retrieve"
     }
     
     private override func execute() {
-        let task = NSURLSession.sharedSession().dataTaskWithURL(Retrive.url) { (data, response, error) in
+        guard !cancelled else {return}
+        let task = NSURLSession.sharedSession().dataTaskWithURL(Retrieve.url) { (data, response, error) in
             self.result = data
             self.finish()
         }
@@ -66,6 +69,7 @@ private class Process: Operation, NSXMLParserDelegate, AutomaticInjectionOperati
         context.parentContext = NSManagedObjectContext.mainQueueContext
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         super.init()
+        name = "Library Process"
     }
     
     override private func execute() {
