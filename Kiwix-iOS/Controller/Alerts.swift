@@ -48,6 +48,27 @@ class RemoveBookConfirmationAlert: AlertOperation<UIViewController> {
     }
 }
 
+class LanguageFilterAlert: AlertOperation<UIViewController> {
+    init(context: UIViewController, handler: AlertOperation<UIViewController> -> Void) {
+        super.init(presentAlertFrom: context)
+        
+        title = NSLocalizedString("Only Show Preferred Language?", comment: "Library, Language Filter Alert")
+        message = {
+            var names = NSLocale.preferredLangNames
+            guard let last = names.popLast() else {return nil}
+            var parts = [String]()
+            if names.count > 0 { parts.append(names.joinWithSeparator(", ")) }
+            parts.append(last)
+            let glue = " " + LocalizedStrings.and + " "
+            let string = parts.joinWithSeparator(glue)
+            return NSLocalizedString(String(format: "Would you like to filter the library by %@?", string), comment: "Library, Language Filter Alert")
+        }()
+        addActionWithTitle(LocalizedStrings.yes, style: .Default, handler: handler)
+        addActionWithTitle(LocalizedStrings.cancel)
+        preferredAction = actions[0]
+    }
+}
+
 class NetworkRequiredAlert: AlertOperation<UIViewController> {
     init(context: UIViewController) {
         super.init(presentAlertFrom: context)

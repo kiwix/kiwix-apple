@@ -50,7 +50,7 @@ class ControllerRetainer {
     private var library: UIViewController?
     
     class var library: UIViewController {
-        let controller = ControllerRetainer.shared.bookmarkStar ?? UIStoryboard(name: "Library", bundle: nil).instantiateInitialViewController()!
+        let controller = ControllerRetainer.shared.library ?? UIStoryboard(name: "Library", bundle: nil).instantiateInitialViewController()!
         ControllerRetainer.shared.library = controller
         return controller
     }

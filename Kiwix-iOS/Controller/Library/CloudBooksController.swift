@@ -15,6 +15,8 @@ import DZNEmptyDataSet
 class CloudBooksController: UITableViewController, NSFetchedResultsControllerDelegate, LanguageFilterUpdating, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     private(set) var isRefreshing = false
+    private(set) var isOnScreen = false
+    private(set) var langFilterAlertPending = false
     
     // MARK: - Override
     
@@ -40,11 +42,18 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         super.viewWillAppear(animated)
         configureNavBarButtons()
         refreshAutomatically()
+        isOnScreen = true
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if langFilterAlertPending {showLanguageFilterAlert()}
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarController?.navigationItem.rightBarButtonItem = nil
+        isOnScreen = false
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -73,7 +82,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     
     // MARK: - Actions
     
-    func showLanguageFilter() {
+    func showLanguageFilterController() {
         guard let splitViewController = splitViewController as? LibrarySplitViewController where !splitViewController.isShowingLangFilter else {return}
         guard let controller = UIStoryboard.library.initViewController(LanguageFilterController.self) else {return}
         controller.delegate = self
@@ -144,35 +153,28 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     }
     
     func showLanguageFilterAlert() {
-        var names = NSLocale.preferredLangNames
-        guard let last = names.popLast() else {return}
-        var parts = [String]()
-        if names.count > 0 { parts.append(names.joinWithSeparator(", ")) }
-        parts.append(last)
-        let string = parts.joinWithSeparator(" and ")
-    
-        let comment = "Library: Language Filter Alert"
-        let alert = UIAlertController(title: NSLocalizedString("Only Show Preferred Language?", comment: comment),
-                                      message: NSLocalizedString(String(format: "Would you like to filter the library by %@?", string), comment: comment),
-                                      preferredStyle: .Alert)
-        let action = UIAlertAction(title: "Yes", style: .Default) { (action) in
-            self.managedObjectContext.performBlock({
+        guard isOnScreen else {
+            langFilterAlertPending = true
+            return
+        }
+        let handler: AlertOperation<UIViewController> -> Void = { [weak self] _ in
+            let context = NSManagedObjectContext.mainQueueContext
+            context.performBlock({
                 let codes = NSLocale.preferredLangCodes
-                Language.fetchAll(self.managedObjectContext).forEach({ (language) in
+                Language.fetchAll(context).forEach({ (language) in
                     language.isDisplayed = codes.contains(language.code)
                 })
-                self.refreshFetchedResultController()
+                self?.refreshFetchedResultController()
             })
         }
-        alert.addAction(action)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-        alert.preferredAction = action
-        presentViewController(alert, animated: true, completion: nil)
+        let operation = LanguageFilterAlert(context: self, handler: handler)
+        GlobalQueue.shared.addOperation(operation)
+        langFilterAlertPending = false
     }
     
     func configureNavBarButtons() {
         tabBarController?.navigationItem.rightBarButtonItem = Preference.libraryLastRefreshTime == nil ? nil
-            : UIBarButtonItem(imageNamed: "LanguageFilter", target: self, action: #selector(CloudBooksController.showLanguageFilter))
+            : UIBarButtonItem(imageNamed: "LanguageFilter", target: self, action: #selector(CloudBooksController.showLanguageFilterController))
     }
     
     // MARK: - LanguageFilterUpdating

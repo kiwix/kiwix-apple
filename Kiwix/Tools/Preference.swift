@@ -75,9 +75,9 @@ class Preference {
         set{Defaults[.libraryRefreshInterval] = newValue}
     }
     
-    class var libraryHasShownPreferredLanguagePrompt: Bool {
-        get{return Defaults[.libraryHasShownPreferredLanguagePrompt]}
-        set{Defaults[.libraryHasShownPreferredLanguagePrompt] = newValue}
+    class var preferredLanguageAlertPending: Bool {
+        get{return Defaults[.preferredLanguageAlertPending]}
+        set{Defaults[.preferredLanguageAlertPending] = newValue}
     }
     
     class LangFilter {
@@ -111,7 +111,7 @@ extension DefaultsKeys {
     static let libraryRefreshNotAllowCellularData = DefaultsKey<Bool>("libraryRefreshNotAllowCellularData")
     static let libraryLastRefreshTime = DefaultsKey<NSDate?>("libraryLastRefreshTime")
     static let libraryRefreshInterval = DefaultsKey<Double?>("libraryRefreshInterval")
-    static let libraryHasShownPreferredLanguagePrompt = DefaultsKey<Bool>("libraryHasShownPreferredLanguagePrompt")
+    static let preferredLanguageAlertPending = DefaultsKey<Bool>("preferredLanguageAlertPending")
     static let langFilterSortByAlphabeticalAsc = DefaultsKey<Bool>("langFilterSortByAlphabeticalAsc")
     static let langFilterNameDisplayInOriginalLocale = DefaultsKey<Bool>("langFilterNameDisplayInOriginalLocale")
     
