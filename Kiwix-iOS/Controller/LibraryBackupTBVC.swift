@@ -16,7 +16,7 @@ class LibraryBackupTBVC: UITableViewController {
         super.viewDidLoad()
         title = NSLocalizedString("Backup", comment: "Setting: Backup local files title")
         toggle.addTarget(self, action: #selector(LibraryBackupTBVC.switcherValueChanged(_:)), forControlEvents: .ValueChanged)
-        toggle.on = !(FileManager.getSkipBackupAttribute(item: NSFileManager.docDirURL) ?? false)
+        toggle.on = !(NSFileManager.getSkipBackupAttribute(item: NSFileManager.docDirURL) ?? false)
     }
     
     // MARK: - Table view data source
@@ -48,7 +48,7 @@ class LibraryBackupTBVC: UITableViewController {
     
     func switcherValueChanged(switcher: UISwitch) {
         guard switcher == toggle else {return}
-        FileManager.setSkipBackupAttribute(!switcher.on, url: NSFileManager.docDirURL)
+        NSFileManager.setSkipBackupAttribute(!switcher.on, url: NSFileManager.docDirURL)
     }
 
 }

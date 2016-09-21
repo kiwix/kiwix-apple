@@ -107,7 +107,6 @@
 		97A1FD3A1D6F724E00A80EE2 /* reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD351D6F724E00A80EE2 /* reader.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
 		97A1FD3B1D6F724E00A80EE2 /* stringTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD371D6F724E00A80EE2 /* stringTools.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
 		97A1FD421D6F728200A80EE2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD3D1D6F728200A80EE2 /* Extensions.swift */; };
-		97A1FD431D6F728200A80EE2 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD3E1D6F728200A80EE2 /* FileManager.swift */; };
 		97A1FD441D6F728200A80EE2 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD401D6F728200A80EE2 /* Preference.swift */; };
 		97A1FD451D6F728200A80EE2 /* StringTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD411D6F728200A80EE2 /* StringTools.swift */; };
 		97A7017F1D2C59CA00AAE2D8 /* GetStartedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A7017E1D2C59CA00AAE2D8 /* GetStartedController.swift */; };
@@ -337,7 +336,6 @@
 		97A1FD351D6F724E00A80EE2 /* reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = reader.cpp; path = "C&C++/reader.cpp"; sourceTree = "<group>"; };
 		97A1FD371D6F724E00A80EE2 /* stringTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = stringTools.cpp; path = "C&C++/stringTools.cpp"; sourceTree = "<group>"; };
 		97A1FD3D1D6F728200A80EE2 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		97A1FD3E1D6F728200A80EE2 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		97A1FD401D6F728200A80EE2 /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		97A1FD411D6F728200A80EE2 /* StringTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringTools.swift; sourceTree = "<group>"; };
 		97A2AB881C1B80FF00052E74 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -856,7 +854,6 @@
 			isa = PBXGroup;
 			children = (
 				97A1FD3D1D6F728200A80EE2 /* Extensions.swift */,
-				97A1FD3E1D6F728200A80EE2 /* FileManager.swift */,
 				97C601DD1D7F342100362D4F /* HTMLHeading.swift */,
 				97A1FD401D6F728200A80EE2 /* Preference.swift */,
 				97A1FD411D6F728200A80EE2 /* StringTools.swift */,
@@ -1532,7 +1529,6 @@
 				97D681401D6F712800E5FA99 /* Book+CoreDataProperties.swift in Sources */,
 				9764CBD31D8083AA00072D6A /* ArticleOperation.swift in Sources */,
 				97A1FD421D6F728200A80EE2 /* Extensions.swift in Sources */,
-				97A1FD431D6F728200A80EE2 /* FileManager.swift in Sources */,
 				974F42821D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift in Sources */,
 				97A1FD3A1D6F724E00A80EE2 /* reader.cpp in Sources */,
 				97D681381D6F711A00E5FA99 /* Book.swift in Sources */,

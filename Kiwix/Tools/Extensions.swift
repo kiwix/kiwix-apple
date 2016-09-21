@@ -84,6 +84,35 @@ extension NSFileManager {
         let urls = try? NSFileManager.defaultManager().contentsOfDirectoryAtURL(NSFileManager.docDirURL, includingPropertiesForKeys: nil, options: options)
         return urls ?? [NSURL]()
     }
+    
+    // MARK: - Backup Attribute
+    
+    class func setSkipBackupAttribute(skipBackup: Bool, url: NSURL) {
+        guard let path = url.path else {return}
+        guard NSFileManager.defaultManager().fileExistsAtPath(path) else {return}
+        
+        do {
+            try url.setResourceValues([NSURLIsExcludedFromBackupKey: skipBackup])
+        } catch let error as NSError {
+            print("Set skip backup attribute for item \(url) failed, error: \(error.localizedDescription)")
+        }
+    }
+    
+    class func getSkipBackupAttribute(item url: NSURL) -> Bool? {
+        guard let path = url.path else {return nil}
+        guard NSFileManager.defaultManager().fileExistsAtPath(path) else {return nil}
+        
+        var skipBackup: AnyObject? = nil
+        
+        do {
+            try url.getResourceValue(&skipBackup, forKey: NSURLIsExcludedFromBackupKey)
+        } catch let error as NSError {
+            print("Get skip backup attribute for item \(url) failed, error: \(error.localizedDescription)")
+        }
+        
+        guard let number = skipBackup as? NSNumber else {return nil}
+        return number.boolValue
+    }
 }
 
 extension UIDevice {
