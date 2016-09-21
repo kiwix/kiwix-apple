@@ -18,7 +18,7 @@ extension MainController {
         
         // Hide TOC
         if isShowingTableOfContents && traitCollection.horizontalSizeClass == .Compact {
-            animateOutTableOfContentsController()
+            hideTableOfContentsController()
         }
         
         // Hide ToolBar &
@@ -109,7 +109,7 @@ extension MainController {
     
     // MARK: - Show/Hide TOC
     
-    func animateInTableOfContentsController() {
+    func showTableOfContentsController() {
         isShowingTableOfContents = true
         tocVisiualEffectView.hidden = false
         dimView.hidden = false
@@ -125,7 +125,7 @@ extension MainController {
         }
     }
     
-    func animateOutTableOfContentsController() {
+    func hideTableOfContentsController() {
         isShowingTableOfContents = false
         view.layoutIfNeeded()
         configureTOCViewConstraints()

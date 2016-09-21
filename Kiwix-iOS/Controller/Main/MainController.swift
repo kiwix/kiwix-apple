@@ -49,21 +49,20 @@ class MainController: UIViewController {
         super.viewDidLoad()
         
         webView.delegate = self
-        
-        
-        
-        navigationItem.titleView = searchBar
         searchBar.delegate = self
         ZimMultiReader.shared.delegate = self
+        navigationItem.titleView = searchBar
         
         NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "webViewNotInjectJavascriptToAdjustPageLayout", options: .New, context: context)
         NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "webViewZoomScale", options: .New, context: context)
+        
         configureButtonColor()
         showGetStartedAlert()
         showWelcome()
     }
     
     deinit {
+        article?.removeObserver(self, forKeyPath: "isBookmarked")
         NSUserDefaults.standardUserDefaults().removeObserver(self, forKeyPath: "webViewNotInjectJavascriptToAdjustPageLayout")
         NSUserDefaults.standardUserDefaults().removeObserver(self, forKeyPath: "webViewZoomScale")
     }
@@ -115,12 +114,6 @@ class MainController: UIViewController {
         } else {
             // TODO: - Alert cannot complete hand off
         }
-    }
-    
-    func loadExternalResource(url: NSURL) {
-        let controller = SFSafariViewController(URL: url)
-        controller.delegate = self
-        presentViewController(controller, animated: true, completion: nil)
     }
     
     // MARK: - Tasks
@@ -225,7 +218,7 @@ class MainController: UIViewController {
 
     lazy var navigateLeftButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "LeftArrow", target: self, action: #selector(MainController.navigateLeftButtonTapped))
     lazy var navigateRightButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "RightArrow", target: self, action: #selector(MainController.navigateRightButtonTapped))
-    lazy var tableOfContentButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "TableOfContent", target: self, action: #selector(MainController.showTableOfContentButtonTapped))
+    lazy var tableOfContentButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "TableOfContent", target: self, action: #selector(MainController.tableOfContentButtonTapped))
     lazy var bookmarkButton: LPTBarButtonItem = LPTBarButtonItem(imageName: "Star", highlightedImageName: "StarHighlighted", delegate: self)
     lazy var libraryButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "Library", target: self, action: #selector(MainController.showLibraryButtonTapped))
     lazy var settingButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "Setting", target: self, action: #selector(MainController.showSettingButtonTapped))
@@ -241,9 +234,9 @@ class MainController: UIViewController {
         webView.goForward()
     }
     
-    func showTableOfContentButtonTapped(sender: UIBarButtonItem) {
+    func tableOfContentButtonTapped(sender: UIBarButtonItem) {
         guard let _ = article else {return}
-        isShowingTableOfContents ? animateOutTableOfContentsController() :animateInTableOfContentsController()
+        isShowingTableOfContents ? hideTableOfContentsController() : showTableOfContentsController()
     }
     
     func showLibraryButtonTapped() {
@@ -264,6 +257,6 @@ class MainController: UIViewController {
     }
     
     @IBAction func dimViewTapGestureRecognizer(sender: UITapGestureRecognizer) {
-        animateOutTableOfContentsController()
+        hideTableOfContentsController()
     }
 }

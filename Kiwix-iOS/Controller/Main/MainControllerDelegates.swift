@@ -12,14 +12,18 @@ import SafariServices
 import JavaScriptCore
 import DZNEmptyDataSet
 
-extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate,
-    LPTBarButtonItemDelegate, TableOfContentsDelegate, ZimMultiReaderDelegate, UISearchBarDelegate, UIPopoverPresentationControllerDelegate, UIScrollViewDelegate, UIViewControllerTransitioningDelegate {
+extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPTBarButtonItemDelegate, UIViewControllerTransitioningDelegate, TableOfContentsDelegate, ZimMultiReaderDelegate, UISearchBarDelegate, UIPopoverPresentationControllerDelegate {
     
     // MARK: - UIWebViewDelegate
     
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         guard let url = request.URL else {return false}
-        guard url.isKiwixURL else {loadExternalResource(url); return false}
+        guard url.isKiwixURL else {
+            let controller = SFSafariViewController(URL: url)
+            controller.delegate = self
+            presentViewController(controller, animated: true, completion: nil)
+            return false
+        }
         return true
     }
     
@@ -104,7 +108,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate,
     func scrollTo(heading: HTMLHeading) {
         webView.stringByEvaluatingJavaScriptFromString(heading.scrollToJavaScript)
         if traitCollection.horizontalSizeClass == .Compact {
-            animateOutTableOfContentsController()
+            hideTableOfContentsController()
         }
     }
     
