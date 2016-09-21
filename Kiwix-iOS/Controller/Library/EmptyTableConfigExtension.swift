@@ -95,8 +95,4 @@ extension LanguageFilterController {
         let attributes = [NSFontAttributeName: UIFont.systemFontOfSize(18), NSForegroundColorAttributeName: UIColor.darkGrayColor()]
         return NSAttributedString(string: string, attributes: attributes)
     }
-    
-//    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
-//        return scrollView.contentInset.top - 64
-//    }
 }
