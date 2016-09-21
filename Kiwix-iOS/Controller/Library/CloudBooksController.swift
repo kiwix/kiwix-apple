@@ -164,6 +164,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
                 Language.fetchAll(context).forEach({ (language) in
                     language.isDisplayed = codes.contains(language.code)
                 })
+                _ = try? context.save()
                 self?.refreshFetchedResultController()
             })
         }

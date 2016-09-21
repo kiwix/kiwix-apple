@@ -43,6 +43,7 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
     
     override func viewWillDisappear(animated: Bool) {
         let hasChange = initialShowLanguageSet != Set(showLanguages)
+        if hasChange {_ = try? managedObjectContext.save()}
         delegate?.languageFilterFinsihEditing(hasChange)
     }
     
