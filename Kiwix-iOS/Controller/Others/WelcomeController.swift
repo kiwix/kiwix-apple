@@ -1,18 +1,19 @@
 //
-//  GetStartedController.swift
+//  WelcomeController.swift
 //  Kiwix
 //
-//  Created by Chris Li on 7/5/16.
+//  Created by Chris Li on 9/21/16.
 //  Copyright © 2016 Chris. All rights reserved.
 //
 
 import UIKit
 
-class GetStartedController: UIViewController {
+class WelcomeController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        preferredContentSize = CGSizeMake(400, 400)
+
+        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -21,14 +22,11 @@ class GetStartedController: UIViewController {
     }
     
 
-    @IBAction func dismissButtonTapped(sender: UIButton) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
     /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }

@@ -15,6 +15,8 @@ class ArticleLoadOperation: Operation {
     let title: String?
     let url: NSURL?
     
+    var animated = true
+    
     init(url: NSURL) {
         self.bookID = nil
         self.path = nil
@@ -73,6 +75,10 @@ class ArticleLoadOperation: Operation {
         let request = NSURLRequest(URL: url)
         
         NSOperationQueue.mainQueue().addOperationWithBlock {
+            controller.hideSearch(animated: self.animated)
+            controller.presentingViewController?.dismissViewControllerAnimated(self.animated, completion: nil)
+            // hide toc
+            
             guard controller.webView.request?.URL != url else {return}
             controller.webView.loadRequest(request)
             self.finish()

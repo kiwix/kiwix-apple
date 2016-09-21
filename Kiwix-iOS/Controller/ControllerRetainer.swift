@@ -77,10 +77,10 @@ class ControllerRetainer {
     
     // MARK: - Welcome
     
-    private var welcome: UIViewController?
+    private var welcome: WelcomeController?
     
-    class var welcome: UIViewController {
-        let controller = ControllerRetainer.shared.welcome ?? UIStoryboard(name: "Welcome", bundle: nil).instantiateInitialViewController()!
+    class var welcome: WelcomeController {
+        let controller = ControllerRetainer.shared.welcome ?? UIStoryboard(name: "Welcome", bundle: nil).instantiateInitialViewController() as! WelcomeController
         ControllerRetainer.shared.welcome = controller
         return controller
     }

@@ -88,3 +88,50 @@ class CopyURLAlert: AlertOperation<UIViewController> {
         addActionWithTitle(LocalizedStrings.ok)
     }
 }
+
+class GetStartedAlert: AlertOperation<MainController> {
+    init(context: MainController) {
+        super.init(presentAlertFrom: context)
+        
+        title = NSLocalizedString("Welcome to Kiwix", comment: "First Time Launch Message")
+        message = NSLocalizedString("Add a Book to Get Started", comment: "First Time Launch Message")
+        addActionWithTitle(NSLocalizedString("Download", comment: "First Time Launch Message"), style: .Default) { (alert) in
+            context.showLibraryButtonTapped()
+        }
+        addActionWithTitle(NSLocalizedString("Import", comment: "First Time Launch Message"), style: .Default) { (alert) in
+            let operation = ShowHelpPageOperation(type: .ImportBookLearnMore, context: context)
+            GlobalQueue.shared.addOperation(operation)
+        }
+        addActionWithTitle(NSLocalizedString("Dismiss", comment: "First Time Launch Message"))
+        preferredAction = actions[0]
+    }
+    
+    override func execute() {
+        Preference.hasShowGetStartedAlert = true
+        super.execute()
+    }
+}
+
+class ShowHelpPageOperation: Operation {
+    private let type: WebViewControllerContentType
+    private let context: UIViewController
+    
+    init(type: WebViewControllerContentType, context: UIViewController) {
+        self.type = type
+        self.context = context
+        super.init()
+    }
+    
+    override func execute() {
+        defer { finish() }
+        guard let controller = UIStoryboard.setting.instantiateViewControllerWithIdentifier("WebViewController") as? WebViewController else {return}
+        controller.page = self.type
+        
+        let operation = UIOperation(controller: UIViewController(),
+                                    displayControllerFrom: .Present(context),
+                                    inNavigationController: true,
+                                    sender: nil)
+        produceOperation(operation)
+    }
+}
+

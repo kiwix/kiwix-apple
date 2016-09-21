@@ -61,7 +61,6 @@ class MainController: UIViewController {
         configureButtonColor()
         showGetStartedAlert()
         showWelcome()
-//        load(webViewInitialURL)
     }
     
     deinit {
@@ -117,18 +116,6 @@ class MainController: UIViewController {
             // TODO: - Alert cannot complete hand off
         }
     }
-    
-    // MARK: - Load
-    
-//    func load(url: NSURL?) {
-//        if webView == nil {
-//            webViewInitialURL = url
-//            return
-//        }
-//        guard let url = url else {return}
-//        let request = NSURLRequest(URL: url)
-//        webView.loadRequest(request)
-//    }
     
     func loadExternalResource(url: NSURL) {
         let controller = SFSafariViewController(URL: url)

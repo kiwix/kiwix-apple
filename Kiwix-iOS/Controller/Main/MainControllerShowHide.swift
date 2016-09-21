@@ -10,43 +10,52 @@ import UIKit
 
 extension MainController {
     
-    func hidePresentedController(animated: Bool, completion: (() -> Void)? = nil) {
-        guard let controller = presentedViewController else {
-            completion?()
-            return
-        }
-        controller.dismissViewControllerAnimated(animated, completion: completion)
-    }
-    
     // MARK: - Show/Hide Search
     
     func showSearch(animated animated: Bool) {
-        navigationController?.setToolbarHidden(true, animated: animated)
-        showSearchResultController(animated: animated)
-        searchBar.placeholder = LocalizedStrings.search
-        if !searchBar.isFirstResponder() {
-            searchBar.becomeFirstResponder()
-        }
-        if traitCollection.horizontalSizeClass == .Compact {
-            searchBar.setShowsCancelButton(true, animated: animated)
-        }
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad && traitCollection.horizontalSizeClass == .Compact {
-            navigationItem.setRightBarButtonItem(cancelButton, animated: animated)
-        }
+        // Hide any presenting controller
+        presentedViewController?.dismissViewControllerAnimated(animated, completion: nil)
+        
+        // Hide TOC
         if isShowingTableOfContents && traitCollection.horizontalSizeClass == .Compact {
             animateOutTableOfContentsController()
+        }
+        
+        // Hide ToolBar &
+        navigationController?.setToolbarHidden(true, animated: animated)
+        
+        // Show Search Result Controller
+        showSearchResultController(animated: animated)
+        
+        // SearchBar
+        searchBar.placeholder = LocalizedStrings.search
+        if !searchBar.isFirstResponder() {searchBar.becomeFirstResponder()}
+        
+        // Show Cancel Button If Needed
+        if traitCollection.horizontalSizeClass == .Compact {
+            if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                navigationItem.setRightBarButtonItem(cancelButton, animated: animated)
+            } else if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
+                searchBar.setShowsCancelButton(true, animated: animated)
+            }
         }
     }
     
     func hideSearch(animated animated: Bool) {
+        // Hide Search Result Controller
         hideSearchResultController(animated: true)
-        searchBar.setShowsCancelButton(false, animated: animated)
+        
+        // Search Bar
         searchBar.text = nil
-        if searchBar.isFirstResponder() {
-            searchBar.resignFirstResponder()
-        }
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad && traitCollection.horizontalSizeClass == .Compact {
-            navigationItem.setRightBarButtonItem(nil, animated: animated)
+        if searchBar.isFirstResponder() {searchBar.resignFirstResponder()}
+        
+        // Hide Cancel Button If Needed
+        if traitCollection.horizontalSizeClass == .Compact {
+            if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                navigationItem.setRightBarButtonItem(nil, animated: animated)
+            } else if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
+                searchBar.setShowsCancelButton(false, animated: animated)
+            }
         }
     }
     
@@ -60,10 +69,6 @@ extension MainController {
         let views = ["SearchController": controller.view]
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[SearchController]|", options: .AlignAllCenterY, metrics: nil, views: views))
         
-        // Not working in iOS 10, but work in iOS 9
-        //view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[SearchController]|", options: .AlignAllCenterX, metrics: nil, views: views))
-        
-        // Fix for top layout guide issue in iOS 10
         view.addConstraint(controller.view.topAnchor.constraintEqualToAnchor(topLayoutGuide.bottomAnchor))
         view.addConstraint(controller.view.bottomAnchor.constraintEqualToAnchor(bottomLayoutGuide.topAnchor))
         
@@ -168,33 +173,22 @@ extension MainController {
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         addChildViewController(controller)
         view.addSubview(controller.view)
-        
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[view]|", options: NSLayoutFormatOptions.AlignAllTop, metrics: nil, views: ["view": controller.view]))
         view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllLeft, metrics: nil, views: ["view": controller.view]))
-        
         controller.didMoveToParentViewController(self)
     }
     
     func hideWelcome() {
-        let controller = ControllerRetainer.welcome
+        guard let controller = childViewControllers.flatMap({$0 as? WelcomeController}).first else {return}
         controller.removeFromParentViewController()
         controller.view.removeFromSuperview()
-    }
-    
-    // MARK: - Show/Hide Get Started
-    
-    func showGetStarted() {
-        guard let controller = UIStoryboard.welcome.initViewController(GetStartedController.self) else {return}
-        controller.modalPresentationStyle = .FormSheet
-        presentViewController(controller, animated: true, completion: nil)
     }
     
     // MARK: - Show First Time Launch Alert
     
     func showGetStartedAlert() {
         guard !Preference.hasShowGetStartedAlert else {return}
-        let operation = GetStartedAlert(presentationContext: self)
+        let operation = GetStartedAlert(context: self)
         GlobalQueue.shared.addOperation(operation)
-        Preference.hasShowGetStartedAlert = true
     }
 }
