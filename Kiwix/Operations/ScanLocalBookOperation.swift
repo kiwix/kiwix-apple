@@ -60,9 +60,9 @@ class ScanLocalBookOperation: Operation {
         let addedZimFileURLs = currentZimFileURLSnapshot.subtract(lastZimFileURLSnapshot)
         let removedZimFileURLs = lastZimFileURLSnapshot.subtract(currentZimFileURLSnapshot)
         
-        guard addedZimFileURLs.count > 0 || removedZimFileURLs.count > 0 else {return}
         ZimMultiReader.shared.removeReaders(removedZimFileURLs)
         ZimMultiReader.shared.addReaders(addedZimFileURLs)
+        ZimMultiReader.shared.producePIDMap()
     }
     
     private func updateCoreData() {

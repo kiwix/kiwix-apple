@@ -42,11 +42,13 @@
 - (NSString *)getTitle;
 - (NSString *)getDesc;
 - (NSString *)getLanguage;
+- (NSString *)getName;
+- (NSString *)getTags;
 - (NSString *)getDate;
 - (NSString *)getCreator;
 - (NSString *)getPublisher;
 - (NSString *)getOriginID;
-- (NSString *)getFileSize;
+- (NSNumber *)getFileSize;
 - (NSData *)getFavicon;
 
 - (NSString *)parseURL:(NSString *)urlPath;

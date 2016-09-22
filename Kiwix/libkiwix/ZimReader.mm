@@ -240,85 +240,67 @@ int levenshtein_distance(const std::string &s1, const std::string &s2)
 #pragma mark - get File Attributes
 
 - (NSString *)getID {
-    NSString *id = nil;
-    
     string idC;
     idC = _reader->getId();
-    id = [NSString stringWithCString:idC.c_str() encoding:NSUTF8StringEncoding];
-    
-    return id;
+    return [NSString stringWithCString:idC.c_str() encoding:NSUTF8StringEncoding];
 }
 
 - (NSString *)getTitle {
-    NSString *title = nil;
-    
     string titleC;
     titleC = _reader->getTitle();
-    title = [NSString stringWithCString:titleC.c_str() encoding:NSUTF8StringEncoding];
-    
-    return title;
+    return [NSString stringWithCString:titleC.c_str() encoding:NSUTF8StringEncoding];
 }
 
 - (NSString *)getDesc {
-    NSString *description = nil;
-    
     string descriptionC;
     descriptionC = _reader->getDescription();
-    description = [NSString stringWithCString:descriptionC.c_str() encoding:NSUTF8StringEncoding];
-    
-    return description;
+    return [NSString stringWithCString:descriptionC.c_str() encoding:NSUTF8StringEncoding];
 }
 
 - (NSString *)getLanguage {
-    NSString *language = nil;
-    
     string languageC;
     languageC = _reader->getLanguage();
-    language = [NSString stringWithCString:languageC.c_str() encoding:NSUTF8StringEncoding];
-    
-    return language;
+    return [NSString stringWithCString:languageC.c_str() encoding:NSUTF8StringEncoding];
+}
+
+- (NSString *)getName {
+    string nameC;
+    nameC = _reader->getName();
+    return [NSString stringWithCString:nameC.c_str() encoding:NSUTF8StringEncoding];
+}
+
+- (NSString *)getTags {
+    string tagsC;
+    tagsC = _reader->getTags();
+    return [NSString stringWithCString:tagsC.c_str() encoding:NSUTF8StringEncoding];
 }
 
 - (NSString *)getDate {
     string dateC;
     dateC = _reader->getDate();
-    NSString *dateString = [NSString stringWithCString:dateC.c_str() encoding:NSUTF8StringEncoding];
-    
-    return dateString;
+    return [NSString stringWithCString:dateC.c_str() encoding:NSUTF8StringEncoding];
 }
 
 - (NSString *)getCreator {
-    NSString *creator = nil;
-    
     string creatorC;
     creatorC = _reader->getCreator();
-    creator = [NSString stringWithCString:creatorC.c_str() encoding:NSUTF8StringEncoding];
-    
-    return creator;
+    return [NSString stringWithCString:creatorC.c_str() encoding:NSUTF8StringEncoding];
 }
 
 - (NSString *)getPublisher {
-    NSString *publisher = nil;
-    
     string publisherC;
     publisherC = _reader->getOrigId();
-    publisher = [NSString stringWithCString:publisherC.c_str() encoding:NSUTF8StringEncoding];
-    
-    return publisher;
+    return [NSString stringWithCString:publisherC.c_str() encoding:NSUTF8StringEncoding];
 }
 
 - (NSString *)getOriginID {
-    NSString *originID = nil;
-    
     string originIDC;
     originIDC = _reader->getOrigId();
-    originID = [NSString stringWithCString:originIDC.c_str() encoding:NSUTF8StringEncoding];
-    
-    return originID;
+    return [NSString stringWithCString:originIDC.c_str() encoding:NSUTF8StringEncoding];
 }
 
-- (NSString *)getFileSize {
-    return [NSString stringWithFormat:@"%u", _reader->getFileSize()];
+- (NSNumber *)getFileSize {
+    return [[NSNumber alloc] initWithUnsignedInt:_reader->getFileSize()];
 }
 
 - (NSData *)getFavicon {

@@ -28,11 +28,25 @@ class Book: NSManagedObject {
         book.publisher = metadata["publisher"] as? String
         book.desc = metadata["description"] as? String
         book.meta4URL = metadata["url"] as? String
-        book.pid = metadata["name"] as? String
+        book.pid = {
+            if let pid = metadata["name"] as? String where pid != "" {
+                return pid
+            } else {
+                return nil
+            }
+        }()
         
         book.articleCount = Int64((metadata["articleCount"] as? String) ?? "") ?? 0
         book.mediaCount = Int64((metadata["mediaCount"] as? String) ?? "") ?? 0
-        book.fileSize = (Int64((metadata["size"] as? String) ?? "") ?? 0) * 1024
+        book.fileSize = {
+            if let fileSize = metadata["size"] as? String {
+                return (Int64(fileSize) ?? 0) * 1024
+            } else if let fileSize = metadata["size"] as? NSNumber {
+                return fileSize.longLongValue * 1024
+            } else {
+                return 0
+            }
+        }()
         
         book.date = {
             guard let date = metadata["date"] as? String else {return nil}

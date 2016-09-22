@@ -16,6 +16,7 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     private let monitor = DirectoryMonitor(URL: NSFileManager.docDirURL)
     
     private(set) var readers = [ZimID: ZimReader]()
+    private(set) var pidMap = [String: String]() // PID: ID
     private var lastZimFileURLSnapshot = Set<NSURL>()
     private var lastIndexFolderURLSnapshot = Set<NSURL>()
     
@@ -60,6 +61,22 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
         for (id, reader) in readers {
             guard urls.contains(reader.fileURL) else {continue}
             readers[id] = nil
+        }
+    }
+    
+    func producePIDMap() {
+        pidMap.removeAll()
+        var map = [String: [ZimReader]]() // PID: [ZimReader]
+        for (_, reader) in readers {
+            guard let pid = reader.getName() where pid != "" else {continue}
+            var readers = map[pid] ?? [ZimReader]()
+            readers.append(reader)
+            map[pid] = readers
+        }
+        for (pid, readers) in map {
+            guard let reader = readers.sort({ $0.getDate().caseInsensitiveCompare($1.getDate()) == .OrderedAscending }).first,
+                let id = reader.getID() else {continue}
+            pidMap[pid] = id
         }
     }
     
