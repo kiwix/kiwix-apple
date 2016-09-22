@@ -114,7 +114,7 @@ private class Process: Operation, NSXMLParserDelegate, AutomaticInjectionOperati
                 guard let book = Book.fetch(id, context: self.context) else {return}
                 
                 // Delete Book object only if book is online, i.e., is not associated with a download task or is not local
-                guard book.isLocal == false else {return}
+                guard book.state == .Cloud else {return}
                 self.context.deleteObject(book)
                 self.hasUpdate = true
             })

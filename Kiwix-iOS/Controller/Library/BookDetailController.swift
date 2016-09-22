@@ -94,14 +94,15 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
             cellTitles.append([])
         }
         
-        if let isLocal = book.isLocal?.boolValue {
-            if isLocal {
-                cellTitles[1] = [LocalizedStrings.remove]
-            } else {
-                cellTitles[1] = book.spaceState == .NotEnough ? [LocalizedStrings.spaceNotEnough] : [LocalizedStrings.download]
-            }
-        } else {
+        switch book.state {
+        case .Cloud:
+            cellTitles[1] = book.spaceState == .NotEnough ? [LocalizedStrings.spaceNotEnough] : [LocalizedStrings.download]
+        case .Downloading:
             cellTitles[1] = [LocalizedStrings.downloading]
+        case .Local:
+            cellTitles[1] = [LocalizedStrings.remove]
+        default:
+            break
         }
     }
     

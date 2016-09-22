@@ -25,11 +25,11 @@ extension Book {
     @NSManaged var hasPic: Bool
     @NSManaged var id: String
     @NSManaged var includeInSearch: Bool
-    @NSManaged var isLocal: NSNumber?
     @NSManaged var mediaCount: Int64
     @NSManaged var meta4URL: String?
     @NSManaged var pid: String?
     @NSManaged var publisher: String?
+    @NSManaged var stateRaw: Int16
     @NSManaged var title: String?
     
     @NSManaged var articles: Set<Article>

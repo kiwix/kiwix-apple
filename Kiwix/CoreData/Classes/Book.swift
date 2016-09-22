@@ -112,7 +112,7 @@ class Book: NSManagedObject {
     
     class func fetchLocal(context: NSManagedObjectContext) -> [ZimID: Book] {
         let fetchRequest = NSFetchRequest(entityName: "Book")
-        let predicate = NSPredicate(format: "isLocal = true")
+        let predicate = NSPredicate(format: "stateRaw == 2")
         fetchRequest.predicate = predicate
         let localBooks = fetch(fetchRequest, type: Book.self, context: context) ?? [Book]()
         
@@ -218,6 +218,22 @@ class Book: NSManagedObject {
     
     // MARK: - States
     
+    var state: BookState {
+        get {
+            switch stateRaw {
+            case 0: return .Cloud
+            case 1: return .Downloading
+            case 2: return .Local
+            case 3: return .Retained
+            case 4: return .Purgeable
+            default: return .Cloud
+            }
+        }
+        set {
+            stateRaw = Int16(newValue.rawValue)
+        }
+    }
+    
     var spaceState: BookSpaceState {
         guard let freeSpaceInBytes = UIDevice.availableDiskSpace?.freeSize else {return .Enough}
         if (0.8 * Double(freeSpaceInBytes)) > Double(fileSize) {
@@ -229,6 +245,11 @@ class Book: NSManagedObject {
         }
     }
 }
+
+enum BookState: Int {
+    case Cloud, Downloading, Local, Retained, Purgeable
+}
+
 
 enum BookSpaceState: Int {
     case Enough, Caution, NotEnough

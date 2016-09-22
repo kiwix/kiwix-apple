@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Kiwix/Operations/GlobalQueue.swift"
-            timestampString = "496186011.525439"
+            filePath = "Kiwix/CoreData/Migration/MigrationPolicy.swift"
+            timestampString = "496258633.225782"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
-            landmarkName = "add(load:)"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "bookState(bool:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

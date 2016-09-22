@@ -74,7 +74,7 @@ class ScanLocalBookOperation: Operation {
         for id in removedZimFileIDs {
             guard let book = localBooks[id] else {continue}
             if let _ = book.meta4URL {
-                book.isLocal = false
+                book.state = .Cloud
             } else {
                 context.deleteObject(book)
             }
@@ -86,7 +86,7 @@ class ScanLocalBookOperation: Operation {
                     let book = Book.fetch(id, context: NSManagedObjectContext.mainQueueContext)
                     return book ?? Book.add(reader.metaData, context: NSManagedObjectContext.mainQueueContext)
                 }() else {return}
-            book.isLocal = true
+            book.state = .Local
             book.hasIndex = reader.hasIndex()
             book.hasPic = !reader.fileURL.absoluteString!.containsString("nopic")
             if let downloadTask = book.downloadTask {context.deleteObject(downloadTask)}

@@ -88,7 +88,8 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     
     // MARK: - Loading System
     
-    func data(id: String, contentURLString: String) -> [String: AnyObject]? {
+    func data(host: String, contentURLString: String) -> [String: AnyObject]? {
+        let id = pidMap[host] ?? host
         guard let reader = readers[id] else {return nil}
         return reader.dataWithContentURLString(contentURLString) as? [String: AnyObject]
     }

@@ -31,7 +31,7 @@ class DownloadBookOperation: URLSessionDownloadTaskOperation {
             guard let bookID = self.bookID,
                 let book = Book.fetch(bookID, context: context),
                 let downloadTask = DownloadTask.addOrUpdate(book, context: context) else {return}
-            book.isLocal = nil
+            book.state = .Downloading
             downloadTask.state = .Queued
             
             // Overwrite progress
@@ -75,14 +75,14 @@ class DownloadBookOperation: URLSessionDownloadTaskOperation {
             context.performBlockAndWait({ 
                 guard let bookID = self.bookID,
                     let book = Book.fetch(bookID, context: context) else {return}
-                book.isLocal = nil
+                book.state = .Downloading
             })
         } else {
             let context = NSManagedObjectContext.mainQueueContext
             context.performBlockAndWait({
                 guard let bookID = self.bookID,
                     let book = Book.fetch(bookID, context: context) else {return}
-                book.isLocal = false
+                book.state = .Cloud
                 
                 guard let downloadTask = book.downloadTask else {return}
                 context.deleteObject(downloadTask)

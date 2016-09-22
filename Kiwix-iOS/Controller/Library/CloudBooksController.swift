@@ -336,7 +336,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     }
     
     private var onlineCompoundPredicate: NSCompoundPredicate {
-        let isCloudPredicate = NSPredicate(format: "isLocal == false")
+        let isCloudPredicate = NSPredicate(format: "stateRaw == 0")
         return NSCompoundPredicate(andPredicateWithSubpredicates: [langPredicate, isCloudPredicate])
     }
     

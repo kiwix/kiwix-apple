@@ -14,3 +14,13 @@ class MigrationPolicy1_5: NSEntityMigrationPolicy {
         return !bool
     }
 }
+
+class MigrationPolicy1_8: NSEntityMigrationPolicy {
+    func bookState(bool: NSNumber?) -> NSNumber {
+        if let bool = bool?.boolValue {
+            return bool ? NSNumber(integer: 2) : NSNumber(integer: 0)
+        } else {
+            return NSNumber(integer: 1)
+        }
+    }
+}

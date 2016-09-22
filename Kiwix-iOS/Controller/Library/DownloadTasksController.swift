@@ -221,7 +221,7 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
                     // Remove resume data
                     // Delete downloadTask object and set book to not local
                     downloadTask.book?.removeResumeData()
-                    downloadTask.book?.isLocal = NSNumber(bool: false)
+                    downloadTask.book?.state = .Cloud
                     self.managedObjectContext.deleteObject(downloadTask)
                 }
             } else {
