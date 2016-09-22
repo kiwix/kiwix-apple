@@ -89,27 +89,22 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
     // MARK: Other Data Source
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        guard tableView.numberOfSections > 1 else {return nil}
-        guard let languageName = fetchedResultController.sections?[section].name else {return nil}
-        return languageName
-    }
-    
-    override func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
-        let sectionIndexTitles = fetchedResultController.sectionIndexTitles
-        guard sectionIndexTitles.count > 2 else {return nil}
-        return sectionIndexTitles
-    }
-    
-    override func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
-        return fetchedResultController.sectionForSectionIndexTitle(title, atIndex: index)
+        guard let stateRaw = fetchedResultController.sections?[section].name else {return nil}
+        switch stateRaw {
+        case "2":
+            return LocalizedStrings.local
+        case "3":
+            return LocalizedStrings.retainedByBookmarks
+        case "4":
+            return LocalizedStrings.purgeable
+        default:
+            return nil
+        }
     }
     
     // MARK: - Table View Delegate
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard tableView.numberOfSections > 1 else {return 0.0}
-        guard let headerText = self.tableView(tableView, titleForHeaderInSection: section) else {return 0.0}
-        guard headerText != "" else {return 0.0}
         return 20.0
     }
     
@@ -143,11 +138,11 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
     let managedObjectContext = NSManagedObjectContext.mainQueueContext
     lazy var fetchedResultController: NSFetchedResultsController = {
         let fetchRequest = NSFetchRequest(entityName: "Book")
-        let langDescriptor = NSSortDescriptor(key: "language.name", ascending: true)
+        let stateDescriptor = NSSortDescriptor(key: "stateRaw", ascending: true)
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
-        fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
+        fetchRequest.sortDescriptors = [stateDescriptor, titleDescriptor]
         fetchRequest.predicate = NSPredicate(format: "stateRaw >= 2")
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "language.name", cacheName: "LocalFRC" + NSBundle.buildVersion)
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "stateRaw", cacheName: "LocalFRC" + NSBundle.buildVersion)
         fetchedResultsController.delegate = self
         fetchedResultsController.performFetch(deleteCache: false)
         return fetchedResultsController
@@ -197,5 +192,7 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
     class LocalizedStrings{
         static let local = NSLocalizedString("Local", comment: "Library, local tab")
         static let remove = NSLocalizedString("Remove", comment: "Library, local tab")
+        static let retainedByBookmarks = NSLocalizedString("Retained by Bookmarks", comment: "Library, local tab")
+        static let purgeable = NSLocalizedString("Purgeable", comment: "Library, local tab")
     }
 }

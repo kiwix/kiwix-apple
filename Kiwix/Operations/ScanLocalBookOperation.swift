@@ -73,10 +73,14 @@ class ScanLocalBookOperation: Operation {
         
         for id in removedZimFileIDs {
             guard let book = localBooks[id] else {continue}
-            if let _ = book.meta4URL {
-                book.state = .Cloud
+            if book.articles.filter({ $0.isBookmarked }).count > 0 {
+                book.state = .Retained
             } else {
-                context.deleteObject(book)
+                if let _ = book.meta4URL {
+                    book.state = .Cloud
+                } else {
+                    context.deleteObject(book)
+                }
             }
         }
         

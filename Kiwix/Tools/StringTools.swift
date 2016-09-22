@@ -54,6 +54,7 @@ class LocalizedStrings {
     
     class Library {
         static let spaceNotEnough = NSLocalizedString("Space Not Enough", comment: "Library")
+        
     }
     
     

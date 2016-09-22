@@ -38,7 +38,7 @@ class RemoveBookConfirmationAlert: AlertOperation<UIViewController> {
         super.init(presentAlertFrom: context)
         
         title = NSLocalizedString("Remove this book?", comment: "Library, Delete Alert")
-        message = NSLocalizedString("This operation is not recoverable. All bookmarks in this book will also be removed!", comment: "Library, Delete Alert")
+        message = NSLocalizedString("Only the zim file will be removed. All bookmarks related to this book will still be kept.", comment: "Library, Delete Alert")
         addActionWithTitle(LocalizedStrings.remove, style: .Destructive) { _ in
             let operation = RemoveBookOperation(bookID: bookID)
             GlobalQueue.shared.addOperation(operation)
