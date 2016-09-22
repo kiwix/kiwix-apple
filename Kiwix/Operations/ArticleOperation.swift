@@ -77,10 +77,12 @@ class ArticleLoadOperation: Operation {
         NSOperationQueue.mainQueue().addOperationWithBlock {
             controller.hideSearch(animated: self.animated)
             controller.presentingViewController?.dismissViewControllerAnimated(self.animated, completion: nil)
-            // hide toc
+            if controller.traitCollection.horizontalSizeClass == .Compact {controller.hideTableOfContentsController()}
             
-            guard controller.webView.request?.URL != url else {return}
-            controller.webView.loadRequest(request)
+            if controller.webView.request?.URL != url {
+                controller.webView.loadRequest(request)
+            }
+            
             self.finish()
         }
     }

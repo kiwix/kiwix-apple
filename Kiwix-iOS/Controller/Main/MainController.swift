@@ -112,7 +112,8 @@ class MainController: UIViewController {
             let operation = ArticleLoadOperation(url: url)
             GlobalQueue.shared.add(load: operation)
         } else {
-            // TODO: - Alert cannot complete hand off
+            let operation = CannotFinishHandoffAlert(context: self)
+            GlobalQueue.shared.addOperation(operation)
         }
     }
     

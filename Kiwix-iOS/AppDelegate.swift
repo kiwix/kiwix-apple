@@ -59,7 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
-        guard url.scheme!.caseInsensitiveCompare("kiwix") == .OrderedSame else {return false}
+        guard url.isKiwixURL else {return false}
         let operation = ArticleLoadOperation(url: url)
         GlobalQueue.shared.add(load: operation)
         return true

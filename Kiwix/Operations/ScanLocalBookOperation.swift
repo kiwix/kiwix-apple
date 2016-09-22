@@ -89,6 +89,7 @@ class ScanLocalBookOperation: Operation {
             book.isLocal = true
             book.hasIndex = reader.hasIndex()
             book.hasPic = !reader.fileURL.absoluteString!.containsString("nopic")
+            if let downloadTask = book.downloadTask {context.deleteObject(downloadTask)}
         }
         
         for (id, book) in localBooks {
