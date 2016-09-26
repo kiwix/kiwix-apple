@@ -113,7 +113,7 @@ class BookmarkTBVC: UITableViewController, NSFetchedResultsControllerDelegate, D
         guard !tableView.editing else {return}
         defer {dismissViewControllerAnimated(true, completion: nil)}
         guard let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article,
-            let url = NSURL(string: article.url) else {return}
+            let url = article.url else {return}
         
         let operation = ArticleLoadOperation(url: url)
         GlobalQueue.shared.add(load: operation)

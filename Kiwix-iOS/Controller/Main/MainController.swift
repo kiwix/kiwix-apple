@@ -97,9 +97,9 @@ class MainController: UIViewController {
     
     override func updateUserActivityState(activity: NSUserActivity) {
         defer { super.updateUserActivityState(activity) }
-        guard let article = article else {return}
+        guard let article = article, let url = article.url?.absoluteString else {return}
         activity.title = article.title
-        activity.addUserInfoEntriesFromDictionary(["ArticleURL": article.url])
+        activity.addUserInfoEntriesFromDictionary(["ArticleURL": url])
         super.updateUserActivityState(activity)
     }
     
@@ -207,9 +207,9 @@ class MainController: UIViewController {
     
     func configureUserActivity() {
         userActivity = userActivity ?? NSUserActivity(activityType: activityType)
-        guard let article = article else {return}
-        userActivity?.title = article.title
-        userActivity?.userInfo = ["ArticleURL": article.url]
+        guard let title = article?.title, let url = article?.url?.absoluteString else {return}
+        userActivity?.title = title
+        userActivity?.userInfo = ["ArticleURL": url]
         userActivity?.eligibleForHandoff = true
         userActivity?.supportsContinuationStreams = true
         userActivity?.becomeCurrent()

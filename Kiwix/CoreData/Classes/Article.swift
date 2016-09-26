@@ -11,18 +11,18 @@ import CoreData
 
 
 class Article: NSManagedObject {
-
+    
     class func addOrUpdate(url url: NSURL, context: NSManagedObjectContext) -> Article? {
         guard let bookID = url.host,
             let book = Book.fetch(bookID, context: context),
-            let url = url.absoluteString else {return nil}
+            let path = url.path else {return nil}
         
         let fetchRequest = NSFetchRequest(entityName: "Article")
-        fetchRequest.predicate = NSPredicate(format: "url = %@", url)
+        fetchRequest.predicate = NSPredicate(format: "path = %@ AND book = %@", path, book)
         
-        let article = Article.fetch(fetchRequest, type: Article.self, context: context)?.first ?? insert(Article.self, context: context)
-        article?.url = url
-        article?.book = book
+        guard let article = Article.fetch(fetchRequest, type: Article.self, context: context)?.first ?? insert(Article.self, context: context) else {return nil}
+        article.path = path
+        article.book = book
         return article
     }
     
@@ -38,6 +38,11 @@ class Article: NSManagedObject {
     
     // MARK: - Helper
     
+    var url: NSURL? {
+        guard let bookID = book?.id else {return nil}
+        return NSURL(bookID: bookID, contentPath: path)
+    }
+    
     var thumbImageData: NSData? {
         if let urlString = thumbImageURL,
             let url = NSURL(string: urlString),
@@ -51,7 +56,8 @@ class Article: NSManagedObject {
     func dictionarySerilization() -> NSDictionary? {
         guard let title = title,
             let data = thumbImageData,
-            let url = NSURL(string: url) else {return nil}
+            let bookID = book?.id,
+            let url = NSURL(bookID: bookID, contentPath: path) else {return nil}
         return [
             "title": title,
             "thumbImageData": data,
@@ -59,5 +65,5 @@ class Article: NSManagedObject {
             "isMainPage": NSNumber(bool: isMainPage)
         ]
     }
-
+    
 }
