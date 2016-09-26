@@ -62,6 +62,7 @@
 		973DD4181D343F2F009D45DB /* libxapian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40D1D343F2F009D45DB /* libxapian.a */; };
 		973DD4191D343F2F009D45DB /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40E1D343F2F009D45DB /* libzim.a */; };
 		973DD4281D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD4271D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift */; };
+		974F33C41D99BBEB00879D35 /* 1.8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 974F33C31D99BBEB00879D35 /* 1.8.xcmappingmodel */; };
 		974F42821D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974F42811D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift */; };
 		975227821D020560001D1DDE /* Indexer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227811D020560001D1DDE /* Indexer.storyboard */; };
 		975227B01D021539001D1DDE /* IndexerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975227AF1D021539001D1DDE /* IndexerController.swift */; };
@@ -87,7 +88,6 @@
 		9779C31E1D4575AE0064CC8E /* Bookmarks.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9779C3131D4575AD0064CC8E /* Bookmarks.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9787BC211D9318300030D311 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9787BC201D9318300030D311 /* WelcomeController.swift */; };
 		9787BC231D9318570030D311 /* TableOfContentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9787BC221D9318570030D311 /* TableOfContentsController.swift */; };
-		9787BC271D944E890030D311 /* 1.8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 9787BC261D944E890030D311 /* 1.8.xcmappingmodel */; };
 		979C518D1CECAE4C001707F2 /* PreferenceWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979C518B1CECAE4C001707F2 /* PreferenceWindowController.swift */; };
 		979CB60F1D04AD04005E1BA1 /* PreferenceTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB60E1D04AD04005E1BA1 /* PreferenceTabController.swift */; };
 		979CB6C81D05CF37005E1BA1 /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6C71D05CF37005E1BA1 /* SearchResultController.swift */; };
@@ -283,6 +283,7 @@
 		973DD40D1D343F2F009D45DB /* libxapian.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxapian.a; path = Kiwix/libkiwix/iOS/libxapian.a; sourceTree = "<group>"; };
 		973DD40E1D343F2F009D45DB /* libzim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzim.a; path = Kiwix/libkiwix/iOS/libzim.a; sourceTree = "<group>"; };
 		973DD4271D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSingleSwitchTBVC.swift; path = "Kiwix-iOS/Controller/Setting/SettingSingleSwitchTBVC.swift"; sourceTree = SOURCE_ROOT; };
+		974F33C31D99BBEB00879D35 /* 1.8.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = 1.8.xcmappingmodel; path = Kiwix/CoreData/Migration/1.8.xcmappingmodel; sourceTree = SOURCE_ROOT; };
 		974F42811D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingWidgetBookmarksTBVC.swift; path = "Kiwix-iOS/Controller/Setting/SettingWidgetBookmarksTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		975227811D020560001D1DDE /* Indexer.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Indexer.storyboard; path = "Kiwix-OSX/StoryBoards/Indexer.storyboard"; sourceTree = SOURCE_ROOT; };
 		975227AF1D021539001D1DDE /* IndexerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IndexerController.swift; path = "Kiwix-OSX/Controllers/IndexerController.swift"; sourceTree = SOURCE_ROOT; };
@@ -309,7 +310,6 @@
 		9779C31B1D4575AE0064CC8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9787BC201D9318300030D311 /* WelcomeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WelcomeController.swift; path = Others/WelcomeController.swift; sourceTree = "<group>"; };
 		9787BC221D9318570030D311 /* TableOfContentsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TableOfContentsController.swift; path = Others/TableOfContentsController.swift; sourceTree = "<group>"; };
-		9787BC261D944E890030D311 /* 1.8.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = 1.8.xcmappingmodel; path = Kiwix/CoreData/Migration/1.8.xcmappingmodel; sourceTree = SOURCE_ROOT; };
 		979C518B1CECAE4C001707F2 /* PreferenceWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferenceWindowController.swift; path = "Kiwix-OSX/Controllers/PreferenceWindowController.swift"; sourceTree = SOURCE_ROOT; };
 		979CB60E1D04AD04005E1BA1 /* PreferenceTabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferenceTabController.swift; path = Controllers/PreferenceTabController.swift; sourceTree = "<group>"; };
 		979CB6C71D05CF37005E1BA1 /* SearchResultController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchResultController.swift; path = Controllers/SearchResultController.swift; sourceTree = "<group>"; };
@@ -544,8 +544,8 @@
 			isa = PBXGroup;
 			children = (
 				97D6812F1D6F70EC00E5FA99 /* 1.5.xcmappingmodel */,
+				974F33C31D99BBEB00879D35 /* 1.8.xcmappingmodel */,
 				97D681301D6F70EC00E5FA99 /* MigrationPolicy.swift */,
-				9787BC261D944E890030D311 /* 1.8.xcmappingmodel */,
 			);
 			name = Migration;
 			path = Kiwix;
@@ -1542,7 +1542,7 @@
 				97D681231D6F70AC00E5FA99 /* GlobalQueue.swift in Sources */,
 				97A1FD3B1D6F724E00A80EE2 /* stringTools.cpp in Sources */,
 				97A1FD321D6F723D00A80EE2 /* resourceTools.cpp in Sources */,
-				9787BC271D944E890030D311 /* 1.8.xcmappingmodel in Sources */,
+				974F33C41D99BBEB00879D35 /* 1.8.xcmappingmodel in Sources */,
 				971A10321D022AD5007FC62C /* SearchBar.swift in Sources */,
 				97E60A061D10504000EBCB9D /* LibraryBackupTBVC.swift in Sources */,
 				97A1FD451D6F728200A80EE2 /* StringTools.swift in Sources */,

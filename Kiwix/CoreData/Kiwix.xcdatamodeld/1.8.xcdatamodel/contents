@@ -7,22 +7,12 @@
         <attribute name="lastPosition" optional="YES" attributeType="Double" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="lastReadDate" optional="YES" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="needsUpdate" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="path" attributeType="String" syncable="YES"/>
         <attribute name="snippet" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="thumbImageURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
-        <attribute name="url" attributeType="String" syncable="YES"/>
         <relationship name="book" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Book" inverseName="articles" inverseEntity="Book" syncable="YES"/>
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="articles" inverseEntity="Tag" syncable="YES"/>
-        <compoundIndexes>
-            <compoundIndex>
-                <index value="url"/>
-            </compoundIndex>
-        </compoundIndexes>
-        <uniquenessConstraints>
-            <uniquenessConstraint>
-                <constraint value="url"/>
-            </uniquenessConstraint>
-        </uniquenessConstraints>
     </entity>
     <entity name="Book" representedClassName=".Book" syncable="YES">
         <attribute name="articleCount" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>

@@ -26,13 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Kiwix/CoreData/Migration/MigrationPolicy.swift"
-            timestampString = "496258633.225782"
+            timestampString = "496614888.818509"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "20"
-            endingLineNumber = "20"
-            landmarkName = "bookState(bool:)"
-            landmarkType = "7">
+            startingLineNumber = "37"
+            endingLineNumber = "37">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

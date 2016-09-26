@@ -23,4 +23,8 @@ class MigrationPolicy1_8: NSEntityMigrationPolicy {
             return NSNumber(integer: 1)
         }
     }
+    
+    func articlePath(url: String) -> String {
+        return NSURL(string: url)!.path!
+    }
 }
