@@ -71,7 +71,7 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-        self.configureCell(cell, atIndexPath: indexPath)
+        configureCell(cell, atIndexPath: indexPath)
         return cell
     }
     
@@ -105,7 +105,8 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
     // MARK: - Table View Delegate
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 20.0
+        guard let stateRaw = fetchedResultController.sections?[section].name else {return 0.0}
+        return (section == 0 && stateRaw == "2") ? 0.0 : 20.0
     }
     
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {

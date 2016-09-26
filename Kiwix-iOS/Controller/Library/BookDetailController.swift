@@ -44,12 +44,12 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         configureViews()
-        book?.addObserver(self, forKeyPath: "isLocal", options: .New, context: context)
+        book?.addObserver(self, forKeyPath: "stateRaw", options: .New, context: context)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        book?.removeObserver(self, forKeyPath: "isLocal", context: context)
+        book?.removeObserver(self, forKeyPath: "stateRaw", context: context)
     }
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
@@ -95,8 +95,12 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
         }
         
         switch book.state {
-        case .Cloud:
-            cellTitles[1] = book.spaceState == .NotEnough ? [LocalizedStrings.spaceNotEnough] : [LocalizedStrings.download]
+        case .Cloud, .Retained:
+            if let _ = book.meta4URL {
+                cellTitles[1] = book.spaceState == .NotEnough ? [LocalizedStrings.spaceNotEnough] : [LocalizedStrings.download]
+            } else {
+                cellTitles[1] = [LocalizedStrings.addUsingiTunesFileSharing]
+            }
         case .Downloading:
             cellTitles[1] = [LocalizedStrings.downloading]
         case .Local:
@@ -257,6 +261,7 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
         static let downloading = NSLocalizedString("Downloading", comment: comment)
         static let spaceNotEnough = NSLocalizedString("Space Not Enough", comment: comment)
         static let remove = NSLocalizedString("Remove", comment: comment)
+        static let addUsingiTunesFileSharing = NSLocalizedString("Add using iTunes File Sharing", comment: comment)
 //        static let pause = NSLocalizedString("Pause", comment: comment)
 //        static let resume = NSLocalizedString("Resume", comment: comment)
 //        static let cancel = NSLocalizedString("Cancel", comment: comment)
