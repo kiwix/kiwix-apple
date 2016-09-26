@@ -112,8 +112,7 @@ class Book: NSManagedObject {
     
     class func fetchLocal(context: NSManagedObjectContext) -> [ZimID: Book] {
         let fetchRequest = NSFetchRequest(entityName: "Book")
-        let predicate = NSPredicate(format: "stateRaw == 2")
-        fetchRequest.predicate = predicate
+        fetchRequest.predicate = NSPredicate(format: "stateRaw == 2")
         let localBooks = fetch(fetchRequest, type: Book.self, context: context) ?? [Book]()
         
         var books = [ZimID: Book]()
@@ -126,6 +125,13 @@ class Book: NSManagedObject {
     class func fetch(id: String, context: NSManagedObjectContext) -> Book? {
         let fetchRequest = NSFetchRequest(entityName: "Book")
         fetchRequest.predicate = NSPredicate(format: "id = %@", id)
+        return fetch(fetchRequest, type: Book.self, context: context)?.first
+    }
+    
+    class func fetchMostRecent(with pid: String, context: NSManagedObjectContext) -> Book? {
+        let fetchRequest = NSFetchRequest(entityName: "Book")
+        fetchRequest.predicate = NSPredicate(format: "pid = %@", pid)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         return fetch(fetchRequest, type: Book.self, context: context)?.first
     }
     
