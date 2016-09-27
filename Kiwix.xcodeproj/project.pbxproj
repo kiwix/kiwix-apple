@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		7356F9FACBB84380CFC8F68F /* Pods_Kiwix_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC884ACBBA260AF741C4C4FE /* Pods_Kiwix_iOS.framework */; };
 		970722AA1D6B4D1700A45620 /* LanguageFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970722A91D6B4D1700A45620 /* LanguageFilterController.swift */; };
-		970C65501D398D5A007032F8 /* BookmarkControllerAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970C654F1D398D5A007032F8 /* BookmarkControllerAnimator.swift */; };
 		970E68B21D37E1DD001E8514 /* SettingSearchTuneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B11D37E1DD001E8514 /* SettingSearchTuneController.swift */; };
 		970E68B61D37E224001E8514 /* SettingSearchHistoryTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B51D37E224001E8514 /* SettingSearchHistoryTBVC.swift */; };
 		970E68BA1D3809A3001E8514 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B71D3809A3001E8514 /* MainController.swift */; };
@@ -40,7 +39,7 @@
 		971A107F1D022F74007FC62C /* ImportBookLearnMore.html in Resources */ = {isa = PBXBuildFile; fileRef = 971A107B1D022F74007FC62C /* ImportBookLearnMore.html */; };
 		971A10801D022F74007FC62C /* Pic_I.png in Resources */ = {isa = PBXBuildFile; fileRef = 971A107C1D022F74007FC62C /* Pic_I.png */; };
 		971A10811D022F74007FC62C /* Pic_P.png in Resources */ = {isa = PBXBuildFile; fileRef = 971A107D1D022F74007FC62C /* Pic_P.png */; };
-		97219DBD1D383A00009FDFF1 /* BookmarkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97219DBC1D383A00009FDFF1 /* BookmarkController.swift */; };
+		97219DBD1D383A00009FDFF1 /* BookmarkHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97219DBC1D383A00009FDFF1 /* BookmarkHUD.swift */; };
 		9722122B1D3FCCE200C0DCF2 /* MainControllerShowHide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9722122A1D3FCCE200C0DCF2 /* MainControllerShowHide.swift */; };
 		972659191D8AE4B400D1DFFB /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972659181D8AE4B400D1DFFB /* Alerts.swift */; };
 		9726591B1D8DB91200D1DFFB /* DownloadProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9726591A1D8DB91200D1DFFB /* DownloadProgress.swift */; };
@@ -118,6 +117,7 @@
 		97C005D61D64B3B0004352E8 /* Library.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C005D51D64B3B0004352E8 /* Library.storyboard */; };
 		97C005D81D64B99E004352E8 /* LibrarySplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C005D71D64B99E004352E8 /* LibrarySplitViewController.swift */; };
 		97C005DC1D64BEFE004352E8 /* CloudBooksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C005DB1D64BEFE004352E8 /* CloudBooksController.swift */; };
+		97C5BD4B1D9AF4B5009692CF /* BookmarkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C5BD4A1D9AF4B5009692CF /* BookmarkController.swift */; };
 		97C601DC1D7F15C400362D4F /* Bookmark.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C601DB1D7F15C400362D4F /* Bookmark.storyboard */; };
 		97C601DE1D7F342100362D4F /* HTMLHeading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C601DD1D7F342100362D4F /* HTMLHeading.swift */; };
 		97D452BE1D1723FF0033666F /* CollectionViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D452BD1D1723FF0033666F /* CollectionViewCells.swift */; };
@@ -219,7 +219,6 @@
 		6DCB0E958A1083CA248C5A12 /* Pods-Kiwix-OSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-OSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-OSX/Pods-Kiwix-OSX.debug.xcconfig"; sourceTree = "<group>"; };
 		970722A91D6B4D1700A45620 /* LanguageFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageFilterController.swift; sourceTree = "<group>"; };
 		970912551D7F452C00BBD5A1 /* 1.8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.8.xcdatamodel; sourceTree = "<group>"; };
-		970C654F1D398D5A007032F8 /* BookmarkControllerAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookmarkControllerAnimator.swift; path = "Kiwix-iOS/Controller/Bookmark/BookmarkControllerAnimator.swift"; sourceTree = SOURCE_ROOT; };
 		970E68B11D37E1DD001E8514 /* SettingSearchTuneController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSearchTuneController.swift; path = "Kiwix-iOS/Controller/Setting/SettingSearchTuneController.swift"; sourceTree = SOURCE_ROOT; };
 		970E68B51D37E224001E8514 /* SettingSearchHistoryTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSearchHistoryTBVC.swift; path = "Kiwix-iOS/Controller/Setting/SettingSearchHistoryTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		970E68B71D3809A3001E8514 /* MainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainController.swift; path = "Kiwix-iOS/Controller/Main/MainController.swift"; sourceTree = SOURCE_ROOT; };
@@ -253,7 +252,7 @@
 		971A107C1D022F74007FC62C /* Pic_I.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Pic_I.png; path = Kiwix/HelpDocuments/Pic_I.png; sourceTree = SOURCE_ROOT; };
 		971A107D1D022F74007FC62C /* Pic_P.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Pic_P.png; path = Kiwix/HelpDocuments/Pic_P.png; sourceTree = SOURCE_ROOT; };
 		971C4F0B1D3FFFA60027B7D2 /* Kiwix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Kiwix.entitlements; path = "Kiwix-iOS/Kiwix.entitlements"; sourceTree = SOURCE_ROOT; };
-		97219DBC1D383A00009FDFF1 /* BookmarkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookmarkController.swift; path = "Kiwix-iOS/Controller/Bookmark/BookmarkController.swift"; sourceTree = SOURCE_ROOT; };
+		97219DBC1D383A00009FDFF1 /* BookmarkHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookmarkHUD.swift; path = "Kiwix-iOS/Controller/Bookmark/BookmarkHUD.swift"; sourceTree = SOURCE_ROOT; };
 		9722122A1D3FCCE200C0DCF2 /* MainControllerShowHide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainControllerShowHide.swift; path = "Kiwix-iOS/Controller/Main/MainControllerShowHide.swift"; sourceTree = SOURCE_ROOT; };
 		972659181D8AE4B400D1DFFB /* Alerts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		9726591A1D8DB91200D1DFFB /* DownloadProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadProgress.swift; sourceTree = "<group>"; };
@@ -350,6 +349,7 @@
 		97C005D51D64B3B0004352E8 /* Library.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Library.storyboard; path = "Kiwix-iOS/Storyboard/Library.storyboard"; sourceTree = SOURCE_ROOT; };
 		97C005D71D64B99E004352E8 /* LibrarySplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibrarySplitViewController.swift; path = "Kiwix-iOS/Controller/Library/LibrarySplitViewController.swift"; sourceTree = SOURCE_ROOT; };
 		97C005DB1D64BEFE004352E8 /* CloudBooksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudBooksController.swift; sourceTree = "<group>"; };
+		97C5BD4A1D9AF4B5009692CF /* BookmarkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkController.swift; sourceTree = "<group>"; };
 		97C601DB1D7F15C400362D4F /* Bookmark.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Bookmark.storyboard; sourceTree = "<group>"; };
 		97C601DD1D7F342100362D4F /* HTMLHeading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTMLHeading.swift; sourceTree = "<group>"; };
 		97D452BD1D1723FF0033666F /* CollectionViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCells.swift; sourceTree = "<group>"; };
@@ -702,10 +702,10 @@
 			isa = PBXGroup;
 			children = (
 				971A10331D022AEC007FC62C /* BookmarkTBVC.swift */,
-				97219DBC1D383A00009FDFF1 /* BookmarkController.swift */,
-				970C654F1D398D5A007032F8 /* BookmarkControllerAnimator.swift */,
+				97C5BD4A1D9AF4B5009692CF /* BookmarkController.swift */,
+				97219DBC1D383A00009FDFF1 /* BookmarkHUD.swift */,
 			);
-			name = Bookmark;
+			path = Bookmark;
 			sourceTree = "<group>";
 		};
 		974F42801D47E15400F8074C /* Widget */ = {
@@ -1529,10 +1529,10 @@
 				97A8AD871D6CF38000584ED1 /* EmptyTableConfigExtension.swift in Sources */,
 				971A102E1D022AD5007FC62C /* TableViewCells.swift in Sources */,
 				97DF259D1D6F9053001648A3 /* URLSessionDownloadTaskOperation.swift in Sources */,
+				97C5BD4B1D9AF4B5009692CF /* BookmarkController.swift in Sources */,
 				9726591B1D8DB91200D1DFFB /* DownloadProgress.swift in Sources */,
 				97E60A021D10423A00EBCB9D /* ShadowViews.swift in Sources */,
 				970E68BA1D3809A3001E8514 /* MainController.swift in Sources */,
-				970C65501D398D5A007032F8 /* BookmarkControllerAnimator.swift in Sources */,
 				97D6813A1D6F711A00E5FA99 /* Language.swift in Sources */,
 				97D681401D6F712800E5FA99 /* Book+CoreDataProperties.swift in Sources */,
 				9764CBD31D8083AA00072D6A /* ArticleOperation.swift in Sources */,
@@ -1579,7 +1579,7 @@
 				97A1FD171D6F71CE00A80EE2 /* Extension.swift in Sources */,
 				971A103C1D022C2C007FC62C /* FontSizeTBVC.swift in Sources */,
 				971A103B1D022C2C007FC62C /* AdjustLayoutTBVC.swift in Sources */,
-				97219DBD1D383A00009FDFF1 /* BookmarkController.swift in Sources */,
+				97219DBD1D383A00009FDFF1 /* BookmarkHUD.swift in Sources */,
 				97D6812E1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld in Sources */,
 				971A10341D022AEC007FC62C /* BookmarkTBVC.swift in Sources */,
 				97A1FD1D1D6F71D800A80EE2 /* URLResponseCache.swift in Sources */,

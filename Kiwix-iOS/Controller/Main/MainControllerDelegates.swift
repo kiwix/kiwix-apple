@@ -96,11 +96,11 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
     // MARK: - UIViewControllerTransitioningDelegate
     
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return BookmarkControllerAnimator(animateIn: true)
+        return BookmarkHUDAnimator(animateIn: true)
     }
     
     func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return BookmarkControllerAnimator(animateIn: false)
+        return BookmarkHUDAnimator(animateIn: false)
     }
     
     // MARK: - TableOfContentsDelegate

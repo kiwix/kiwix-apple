@@ -37,10 +37,10 @@ class ControllerRetainer {
         return controller
     }
     
-    private var bookmarkStar: BookmarkController?
+    private var bookmarkStar: BookmarkHUD?
     
-    class var bookmarkStar: BookmarkController {
-        let controller = ControllerRetainer.shared.bookmarkStar ?? UIStoryboard(name: "Bookmark", bundle: nil).instantiateViewControllerWithIdentifier("BookmarkController") as! BookmarkController
+    class var bookmarkStar: BookmarkHUD {
+        let controller = ControllerRetainer.shared.bookmarkStar ?? UIStoryboard(name: "Bookmark", bundle: nil).instantiateViewControllerWithIdentifier("BookmarkHUD") as! BookmarkHUD
         ControllerRetainer.shared.bookmarkStar = controller
         return controller
     }

@@ -1,14 +1,55 @@
 //
-//  BookmarkControllerAnimator.swift
+//  BookmarkHUD.swift
 //  Kiwix
 //
-//  Created by Chris Li on 7/15/16.
+//  Created by Chris Li on 7/14/16.
 //  Copyright © 2016 Chris. All rights reserved.
 //
 
 import UIKit
 
-class BookmarkControllerAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+class BookmarkHUD: UIViewController {
+    
+    var bookmarkAdded = true
+    private var timer: NSTimer?
+    
+    @IBOutlet weak var centerView: UIView!
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var centerViewYOffset: NSLayoutConstraint!
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        setNeedsStatusBarAppearanceUpdate()
+        label.text = bookmarkAdded ? NSLocalizedString("Bookmarked", comment: "Bookmark HUD") : NSLocalizedString("Removed", comment: "Bookmark HUD")
+        messageLabel.text = NSLocalizedString("Tap anywhere to dismiss", comment: "Bookmark HUD")
+        messageLabel.alpha = 1.0
+        imageView.highlighted = !bookmarkAdded
+    }
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(BookmarkHUD.dismissSelf), userInfo: nil, repeats: false)
+    }
+    
+    @IBAction func tapRecognized(sender: UITapGestureRecognizer) {
+        dismissSelf()
+    }
+    
+    func dismissSelf() {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    var topHalfHeight: CGFloat {
+        return centerView.frame.height / 2 + imageView.frame.height
+    }
+    
+    var bottomHalfHeight: CGFloat {
+        return centerView.frame.height / 2 + label.frame.height
+    }
+}
+
+class BookmarkHUDAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     private let animateIn: Bool
     
     init(animateIn: Bool) {
@@ -28,7 +69,7 @@ class BookmarkControllerAnimator: NSObject, UIViewControllerAnimatedTransitionin
     }
     
     private func animateInTransition(transitionContext: UIViewControllerContextTransitioning) {
-        guard let toController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) as? BookmarkController,
+        guard let toController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) as? BookmarkHUD,
             let toView = transitionContext.viewForKey(UITransitionContextToViewKey) else {return}
         let containerView = transitionContext.containerView()
         let duration = transitionDuration(transitionContext)
@@ -54,7 +95,7 @@ class BookmarkControllerAnimator: NSObject, UIViewControllerAnimatedTransitionin
     }
     
     private func animateOutTransition(transitionContext: UIViewControllerContextTransitioning) {
-        guard let fromController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) as? BookmarkController,
+        guard let fromController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) as? BookmarkHUD,
             let fromView = transitionContext.viewForKey(UITransitionContextFromViewKey) else {return}
         let containerView = transitionContext.containerView()
         let duration = transitionDuration(transitionContext)
@@ -64,8 +105,8 @@ class BookmarkControllerAnimator: NSObject, UIViewControllerAnimatedTransitionin
         
         UIView.animateWithDuration(duration * 0.7, delay: duration * 0.3, options: .CurveLinear, animations: {
             fromView.alpha = 0.0
-            }) { (completed) in
-                transitionContext.completeTransition(completed)
+        }) { (completed) in
+            transitionContext.completeTransition(completed)
         }
         
         UIView.animateWithDuration(duration * 0.4, delay: 0.0, options: .CurveEaseIn, animations: {
@@ -81,7 +122,5 @@ class BookmarkControllerAnimator: NSObject, UIViewControllerAnimatedTransitionin
         
     }
     
-    func animationEnded(transitionCompleted: Bool) {
-        
-    }
+    func animationEnded(transitionCompleted: Bool) { }
 }
