@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11198.2" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="CQC-Yj-yBQ">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="CQC-Yj-yBQ">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -19,10 +19,10 @@
                         <color key="sectionIndexBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="BookmarkCell" rowHeight="66" id="HDv-lO-b6r" customClass="BookmarkCell" customModule="Kiwix" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="100" width="375" height="66"/>
+                                <rect key="frame" x="0.0" y="120" width="375" height="66"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HDv-lO-b6r" id="OAl-D1-ec7">
-                                    <frame key="frameInset" width="375" height="65.5"/>
+                                    <frame key="frameInset" width="375" height="65"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U1x-fn-tr7">
@@ -64,10 +64,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="BookmarkSnippetCell" rowHeight="149" id="o5A-Xv-pf5" customClass="BookmarkSnippetCell" customModule="Kiwix" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="166" width="375" height="149"/>
+                                <rect key="frame" x="0.0" y="186" width="375" height="149"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="o5A-Xv-pf5" id="KOC-sh-r2Q">
-                                    <frame key="frameInset" width="375" height="148.5"/>
+                                    <frame key="frameInset" width="375" height="148"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iw0-U5-FqV">
@@ -180,9 +180,37 @@
             <point key="canvasLocation" x="1099" y="1137"/>
         </scene>
         <!--Bookmark Controller-->
+        <scene sceneID="SVz-ni-k6U">
+            <objects>
+                <tableViewController storyboardIdentifier="BookmarkController" id="uLf-Kw-kC4" customClass="BookmarkController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="e97-aT-3rg">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="jws-Kz-Krn">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jws-Kz-Krn" id="l4Q-UL-tNB">
+                                    <frame key="frameInset" width="375" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="uLf-Kw-kC4" id="SZg-nM-2l4"/>
+                            <outlet property="delegate" destination="uLf-Kw-kC4" id="eAm-IZ-3SL"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kQh-IS-Ttn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1455" y="1720"/>
+        </scene>
+        <!--BookmarkHUD-->
         <scene sceneID="eMu-pk-jX5">
             <objects>
-                <viewController storyboardIdentifier="BookmarkController" id="hqG-Qy-2zg" customClass="BookmarkController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BookmarkHUD" id="hqG-Qy-2zg" customClass="BookmarkHUD" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="dJR-6a-lyw"/>
                         <viewControllerLayoutGuide type="bottom" id="4tE-FX-iOW"/>

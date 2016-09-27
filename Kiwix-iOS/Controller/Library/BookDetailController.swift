@@ -256,6 +256,11 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
         case LocalizedStrings.remove:
             let operation = RemoveBookConfirmationAlert(context: self, bookID: book.id)
             GlobalQueue.shared.addOperation(operation)
+        case LocalizedStrings.bookmarks:
+            guard let controller = UIStoryboard(name: "Bookmark", bundle: nil)
+                .instantiateViewControllerWithIdentifier("BookmarkController") as? BookmarkController else {return}
+            controller.book = book
+            navigationController?.pushViewController(controller, animated: true)
         case LocalizedStrings.copyURL:
             guard let url = book.url else {return}
             UIPasteboard.generalPasteboard().string = url.absoluteString
