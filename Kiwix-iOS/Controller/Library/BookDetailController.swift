@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 import DZNEmptyDataSet
 
 class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
@@ -19,12 +20,13 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     @IBOutlet weak var hasIndexIndicator: UILabel!
     @IBOutlet weak var hasIndexLabel: UILabel!
     
-    var context: UnsafeMutablePointer<Void> = nil
+    private(set) var context: UnsafeMutablePointer<Void> = nil
     
     var book: Book?
-    var sectionHeaders = [String?]()
-    var sectionFooters = [String?]()
-    var cellTitles = [[String]]()
+    private(set) var sectionHeaders = [String?]()
+    private(set) var sectionFooters = [String?]()
+    private(set) var cellTitles = [[String]]()
+    private(set) var bookmarkCount = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -110,6 +112,14 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
         }
     }
     
+    func configureBookmarkSection(with book: Book) {
+        bookmarkCount = Article.fetchBookmarked(in: book, with: NSManagedObjectContext.mainQueueContext).count
+        guard bookmarkCount > 0 else {return}
+        sectionHeaders.append(nil)
+        sectionFooters.append(nil)
+        cellTitles.append([LocalizedStrings.bookmarks])
+    }
+    
     func configureBookInfoSection(with book: Book) {
         sectionHeaders.append(LocalizedStrings.bookInfo)
         sectionFooters.append(nil)
@@ -143,6 +153,7 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
         configureIndicators(with: book)
         configureDescriptionSection(with: book)
         configureActionSection(with: book)
+        configureBookmarkSection(with: book)
         configureBookInfoSection(with: book)
         configurePIDSection(with: book)
         configureURLSection(with: book)
@@ -184,6 +195,11 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
         case LocalizedStrings.copyURL:
             let cell = tableView.dequeueReusableCellWithIdentifier("CenterTextCell", forIndexPath: indexPath)
             cell.textLabel?.text = title
+            return cell
+        case LocalizedStrings.bookmarks:
+            let cell = tableView.dequeueReusableCellWithIdentifier("DetailSegueCell", forIndexPath: indexPath)
+            cell.textLabel?.text = title
+            cell.detailTextLabel?.text = "\(bookmarkCount)"
             return cell
         default:
             let cell = tableView.dequeueReusableCellWithIdentifier("RightDetailCell", forIndexPath: indexPath)
@@ -266,6 +282,7 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
 //        static let resume = NSLocalizedString("Resume", comment: comment)
 //        static let cancel = NSLocalizedString("Cancel", comment: comment)
         
+        static let bookmarks = NSLocalizedString("Bookmarks", comment: comment)
         static let bookInfo = NSLocalizedString("Book Info", comment: comment)
         static let size = NSLocalizedString("Size", comment: comment)
         static let createDate = NSLocalizedString("Creation Date", comment: comment)

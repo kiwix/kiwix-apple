@@ -33,5 +33,53 @@
             endingLineNumber = "37">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Kiwix/Operations/BookmarkMigrationOperation.swift"
+            timestampString = "496692057.397729"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "execute()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Kiwix.BookmarkMigrationOperation.(execute () -&gt; ()).(closure #1)"
+                  moduleName = "Kiwix"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/Data/Developer/Kiwix/Kiwix/Operations/BookmarkMigrationOperation.swift"
+                  timestampString = "496693865.757662"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "28">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Kiwix.BookmarkMigrationOperation.(execute () -&gt; ()).(closure #1).(closure #1)"
+                  moduleName = "Kiwix"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/Data/Developer/Kiwix/Kiwix/Operations/BookmarkMigrationOperation.swift"
+                  timestampString = "496693865.758711"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "36">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

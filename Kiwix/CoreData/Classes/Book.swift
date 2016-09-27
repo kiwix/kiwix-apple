@@ -94,15 +94,6 @@ class Book: NSManagedObject {
         return urlComponents?.URL
     }
     
-    var resumeDataURL: NSURL? {
-        guard let folderURL = NSURL(fileURLWithPath: NSFileManager.libDirURL.path!).URLByAppendingPathComponent("DownloadTemp", isDirectory: true),
-            let folderPath = folderURL.path else {return nil}
-        if !NSFileManager.defaultManager().fileExistsAtPath(folderPath) {
-            _ = try? NSFileManager.defaultManager().createDirectoryAtURL(folderURL, withIntermediateDirectories: true, attributes: [NSURLIsExcludedFromBackupKey: true])
-        }
-        return folderURL.URLByAppendingPathComponent(id)
-    }
-    
     // MARK: - Fetch
     
     class func fetchAll(context: NSManagedObjectContext) -> [Book] {

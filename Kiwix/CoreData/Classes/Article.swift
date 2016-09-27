@@ -36,6 +36,13 @@ class Article: NSManagedObject {
         return fetch(fetchRequest, type: Article.self, context: context) ?? [Article]()
     }
     
+    class func fetchBookmarked(in book: Book, with context: NSManagedObjectContext) -> [Article] {
+        let request = NSFetchRequest(entityName: "Article")
+        request.predicate = NSPredicate(format: "book = %@", book)
+        request.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: false)]
+        return fetch(request, type: Article.self, context: context) ?? [Article]()
+    }
+    
     // MARK: - Helper
     
     var url: NSURL? {
