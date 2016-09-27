@@ -12,6 +12,7 @@ import Operations
 class ScanLocalBookOperation: Operation {
     private let context: NSManagedObjectContext
     private(set) var firstBookAdded = false
+    private(set) var shouldMigrateBookmarks = false
     
     private var lastZimFileURLSnapshot: Set<NSURL>
     private(set) var currentZimFileURLSnapshot = Set<NSURL>()
@@ -104,6 +105,10 @@ class ScanLocalBookOperation: Operation {
         
         if localBooks.count == 0 && addedZimFileIDs.count >= 1 {
             firstBookAdded = true
+        }
+        
+        if addedZimFileIDs.count >= 1 {
+            shouldMigrateBookmarks = true
         }
     }
     

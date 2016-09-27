@@ -128,11 +128,11 @@ class Book: NSManagedObject {
         return fetch(fetchRequest, type: Book.self, context: context)?.first
     }
     
-    class func fetchMostRecent(with pid: String, context: NSManagedObjectContext) -> Book? {
+    class func fetch(pid pid: String, context: NSManagedObjectContext) -> [Book] {
         let fetchRequest = NSFetchRequest(entityName: "Book")
         fetchRequest.predicate = NSPredicate(format: "pid = %@", pid)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
-        return fetch(fetchRequest, type: Book.self, context: context)?.first
+        return fetch(fetchRequest, type: Book.self, context: context) ?? [Book]()
     }
     
     // MARK: - Manage
