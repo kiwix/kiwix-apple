@@ -17,8 +17,6 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     
     @IBOutlet weak var hasPicIndicator: UILabel!
     @IBOutlet weak var hasPicLabel: UILabel!
-    @IBOutlet weak var hasIndexIndicator: UILabel!
-    @IBOutlet weak var hasIndexLabel: UILabel!
     
     private(set) var context: UnsafeMutablePointer<Void> = nil
     
@@ -38,9 +36,7 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
         tableView.rowHeight = UITableViewAutomaticDimension
         
         hasPicIndicator.layer.cornerRadius = 2.0
-        hasIndexIndicator.layer.cornerRadius = 2.0
         hasPicIndicator.layer.masksToBounds = true
-        hasIndexIndicator.layer.masksToBounds = true
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -74,13 +70,8 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     func configureIndicators(with book: Book) {
         hasPicIndicator.backgroundColor = book.hasPic ? AppColors.hasPicTintColor : UIColor.lightGrayColor()
         hasPicLabel.text = book.hasPic ? LocalizedStrings.hasPic : LocalizedStrings.noPic
-        hasIndexIndicator.backgroundColor = book.hasIndex ? AppColors.hasIndexTintColor : UIColor.lightGrayColor()
-        hasIndexLabel.text = book.hasIndex ? LocalizedStrings.hasIndex : LocalizedStrings.noIndex
-        
         hasPicIndicator.hidden = false
         hasPicLabel.hidden = false
-        hasIndexIndicator.hidden = false
-        hasIndexLabel.hidden = false
     }
     
     func configureDescriptionSection(with book: Book) {
@@ -123,14 +114,18 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     func configureBookInfoSection(with book: Book) {
         sectionHeaders.append(LocalizedStrings.bookInfo)
         sectionFooters.append(nil)
-        cellTitles.append([
+        var titles = [
             LocalizedStrings.size,
             LocalizedStrings.createDate,
             LocalizedStrings.arcitleCount,
             LocalizedStrings.language,
             LocalizedStrings.creator,
-            LocalizedStrings.publisher
-        ])
+            LocalizedStrings.publisher,
+        ]
+        if let _ = ZimMultiReader.shared.readers[book.id] {
+            titles.append(LocalizedStrings.index)
+        }
+        cellTitles.append(titles)
     }
     
     func configurePIDSection(with book: Book) {
@@ -217,6 +212,19 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
                 cell.detailTextLabel?.text = book?.creator
             case LocalizedStrings.publisher:
                 cell.detailTextLabel?.text = book?.publisher
+            case LocalizedStrings.index:
+                guard let book = book, let reader = ZimMultiReader.shared.readers[book.id] else {break}
+                cell.detailTextLabel?.text = {
+                    if reader.hasIndex() {
+                        if reader.idxFolderURL != nil {
+                            return LocalizedStrings.external
+                        } else {
+                            return LocalizedStrings.embedded
+                        }
+                    } else {
+                        return LocalizedStrings.none
+                    }
+                }()
             default:
                 break
             }
@@ -273,9 +281,7 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     
     class LocalizedStrings {
         private static let comment = "Library, Book Detail"
-        static let hasIndex = NSLocalizedString("Index", comment: comment)
         static let hasPic = NSLocalizedString("Pictures", comment: comment)
-        static let noIndex = NSLocalizedString("No Index", comment: comment)
         static let noPic = NSLocalizedString("No Picture", comment: comment)
         
         static let download = NSLocalizedString("Download", comment: comment)
@@ -295,6 +301,11 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
         static let language = NSLocalizedString("Language", comment: comment)
         static let creator = NSLocalizedString("Creator", comment: comment)
         static let publisher = NSLocalizedString("Publisher", comment: comment)
+        static let index = NSLocalizedString("Index", comment: comment)
+        
+        static let none = NSLocalizedString("None", comment: comment)
+        static let embedded = NSLocalizedString("Embedded", comment: comment)
+        static let external = NSLocalizedString("External", comment: comment)
         
         static let pid = NSLocalizedString("Persistent ID", comment: comment)
         static let pidNote = NSLocalizedString("This ID does not change in different versions of the same book.", comment: comment)
