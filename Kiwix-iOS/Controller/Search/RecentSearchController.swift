@@ -1,5 +1,5 @@
 //
-//  RecentSearchCVC.swift
+//  RecentSearchController.swift
 //  Kiwix
 //
 //  Created by Chris Li on 6/19/16.
@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class RecentSearchCVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
+class RecentSearchController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
 
     @IBOutlet weak var collectionView: UICollectionView!
     

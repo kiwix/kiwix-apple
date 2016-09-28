@@ -76,7 +76,7 @@ class SearchBooksController: UIViewController, UITableViewDelegate, UITableViewD
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
         fetchRequest.predicate = NSPredicate(format: "stateRaw == 2")
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "language.name", cacheName: "ScopeFRC")
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "ScopeFRC" + NSBundle.buildVersion)
         fetchedResultsController.delegate = self
         fetchedResultsController.performFetch(deleteCache: false)
         return fetchedResultsController

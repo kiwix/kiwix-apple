@@ -13,7 +13,7 @@ class SearchController: UIViewController, UISearchBarDelegate, UIGestureRecogniz
     @IBOutlet weak var tabControllerContainer: UIView!
     @IBOutlet weak var searchResultTBVCContainer: UIView!
     @IBOutlet var tapGestureRecognizer: UITapGestureRecognizer!
-    var searchResultTBVC: SearchResultTBVC?
+    var searchResultController: SearchResultController?
     
     private var searchText = "" {
         didSet {
@@ -40,9 +40,9 @@ class SearchController: UIViewController, UISearchBarDelegate, UIGestureRecogniz
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "EmbeddedSearchResultTBVC" {
-            guard let destinationViewController = segue.destinationViewController as? SearchResultTBVC else {return}
-            searchResultTBVC = destinationViewController
+        if segue.identifier == "EmbeddedSearchResultController" {
+            guard let destinationViewController = segue.destinationViewController as? SearchResultController else {return}
+            searchResultController = destinationViewController
         }
     }
     
@@ -64,10 +64,10 @@ class SearchController: UIViewController, UISearchBarDelegate, UIGestureRecogniz
             let previousSearchText = searchText
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(275 * USEC_PER_SEC)), dispatch_get_main_queue()) {
                 guard previousSearchText == self.searchText else {return}
-                self.searchResultTBVC?.startSearch(self.searchText)
+                self.searchResultController?.startSearch(self.searchText)
             }
         } else {
-            searchResultTBVC?.startSearch(searchText)
+            searchResultController?.startSearch(searchText)
         }
     }
     

@@ -136,7 +136,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        ControllerRetainer.search.searchResultTBVC?.selectFirstResultIfPossible()
+        ControllerRetainer.search.searchResultController?.selectFirstResultIfPossible()
     }
     
     // MARK: -  UIPopoverPresentationControllerDelegate

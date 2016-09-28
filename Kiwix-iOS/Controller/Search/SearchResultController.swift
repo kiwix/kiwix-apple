@@ -1,5 +1,5 @@
 //
-//  SearchResultTBVC.swift
+//  SearchResultController.swift
 //  Kiwix
 //
 //  Created by Chris Li on 8/13/15.
@@ -9,7 +9,7 @@
 import UIKit
 import Operations
 
-class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class SearchResultController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     var searchResults = [SearchResult]()
@@ -35,8 +35,8 @@ class SearchResultTBVC: UIViewController, UITableViewDataSource, UITableViewDele
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SearchResultTBVC.keyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SearchResultTBVC.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SearchResultController.keyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SearchResultController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {

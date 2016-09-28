@@ -29,7 +29,7 @@
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l6w-E8-vrr" customClass="SearchRoundedCornerView" customModule="Kiwix" customModuleProvider="target">
                                 <connections>
-                                    <segue destination="fgz-Yy-Pok" kind="embed" identifier="EmbeddedSearchResultTBVC" id="hg6-op-GYf"/>
+                                    <segue destination="fgz-Yy-Pok" kind="embed" identifier="EmbeddedSearchResultController" id="hg6-op-GYf"/>
                                 </connections>
                             </containerView>
                         </subviews>
@@ -160,7 +160,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BZj-UA-kZf" id="QkJ-pZ-dqx">
-                                            <frame key="frameInset" width="375" height="43"/>
+                                            <frame key="frameInset" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GW1-dh-vyc">
@@ -240,23 +240,6 @@
                                             <outlet property="titleLabel" destination="GW1-dh-vyc" id="JfI-I6-Bqn"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="jU7-ZQ-dsg" style="IBUITableViewCellStyleDefault" id="jhQ-Rz-z7y">
-                                        <rect key="frame" x="0.0" y="72" width="375" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jhQ-Rz-z7y" id="0Qp-fj-4c4">
-                                            <frame key="frameInset" width="375" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jU7-ZQ-dsg">
-                                                    <frame key="frameInset" minX="15" width="345" height="43"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                 </prototypes>
                             </tableView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H44-bK-YA5" customClass="DropShadowView" customModule="Kiwix" customModuleProvider="target">
@@ -288,12 +271,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R0s-FA-lXA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1852" y="-1003"/>
+            <point key="canvasLocation" x="1852" y="-1003.4482758620691"/>
         </scene>
-        <!--Search ResultTBVC-->
+        <!--Search Result Controller-->
         <scene sceneID="g1P-db-EbE">
             <objects>
-                <viewController storyboardIdentifier="SearchResultTBVC" id="fgz-Yy-Pok" customClass="SearchResultTBVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchResultController" id="fgz-Yy-Pok" customClass="SearchResultController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="gjd-DF-nun"/>
                         <viewControllerLayoutGuide type="bottom" id="U6y-Va-LE0"/>
@@ -309,7 +292,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="z8v-Ld-3tX" id="PYl-F0-kUl">
-                                            <frame key="frameInset" width="375" height="43"/>
+                                            <frame key="frameInset" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UgG-QR-OX4">
@@ -363,7 +346,7 @@
                                         <rect key="frame" x="0.0" y="72" width="375" height="87"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wBv-ub-ny7" id="fk4-EM-rH7">
-                                            <frame key="frameInset" width="375" height="86"/>
+                                            <frame key="frameInset" width="375" height="86.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ien-Dp-MNO">
@@ -462,12 +445,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oOZ-eA-xq3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1852" y="-305"/>
+            <point key="canvasLocation" x="1852" y="-305.39730134932535"/>
         </scene>
-        <!--Recent SearchCVC-->
+        <!--Recent Search Controller-->
         <scene sceneID="ymK-iU-ozA">
             <objects>
-                <viewController id="yhc-fp-Uja" customClass="RecentSearchCVC" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="yhc-fp-Uja" customClass="RecentSearchController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="gBf-Af-tdE"/>
                         <viewControllerLayoutGuide type="bottom" id="Xnw-As-VGc"/>
@@ -526,7 +509,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RyG-of-G9K" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2759" y="-1004"/>
+            <point key="canvasLocation" x="2785" y="-1004"/>
         </scene>
     </scenes>
     <resources>
