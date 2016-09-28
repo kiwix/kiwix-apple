@@ -94,7 +94,7 @@
 		979CB6CA1D05D26E005E1BA1 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6C91D05D26E005E1BA1 /* WebViewController.swift */; };
 		97A127C41D774C9900FB204D /* ControllerRetainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C31D774C9900FB204D /* ControllerRetainer.swift */; };
 		97A127C91D777CF100FB204D /* RecentSearchCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C51D777CF100FB204D /* RecentSearchCVC.swift */; };
-		97A127CA1D777CF100FB204D /* SearchBooksVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C61D777CF100FB204D /* SearchBooksVC.swift */; };
+		97A127CA1D777CF100FB204D /* SearchBooksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C61D777CF100FB204D /* SearchBooksController.swift */; };
 		97A127CB1D777CF100FB204D /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C71D777CF100FB204D /* SearchController.swift */; };
 		97A127CC1D777CF100FB204D /* SearchResultTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C81D777CF100FB204D /* SearchResultTBVC.swift */; };
 		97A1FD161D6F71CE00A80EE2 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD121D6F71CE00A80EE2 /* DirectoryMonitor.swift */; };
@@ -317,7 +317,7 @@
 		979CB6C91D05D26E005E1BA1 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebViewController.swift; path = Controllers/WebViewController.swift; sourceTree = "<group>"; };
 		97A127C31D774C9900FB204D /* ControllerRetainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerRetainer.swift; sourceTree = "<group>"; };
 		97A127C51D777CF100FB204D /* RecentSearchCVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentSearchCVC.swift; sourceTree = "<group>"; };
-		97A127C61D777CF100FB204D /* SearchBooksVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBooksVC.swift; sourceTree = "<group>"; };
+		97A127C61D777CF100FB204D /* SearchBooksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBooksController.swift; sourceTree = "<group>"; };
 		97A127C71D777CF100FB204D /* SearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		97A127C81D777CF100FB204D /* SearchResultTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultTBVC.swift; sourceTree = "<group>"; };
 		97A1FD121D6F71CE00A80EE2 /* DirectoryMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryMonitor.swift; sourceTree = "<group>"; };
@@ -984,7 +984,7 @@
 			isa = PBXGroup;
 			children = (
 				97A127C71D777CF100FB204D /* SearchController.swift */,
-				97A127C61D777CF100FB204D /* SearchBooksVC.swift */,
+				97A127C61D777CF100FB204D /* SearchBooksController.swift */,
 				97A127C51D777CF100FB204D /* RecentSearchCVC.swift */,
 				97A127C81D777CF100FB204D /* SearchResultTBVC.swift */,
 			);
@@ -1552,7 +1552,7 @@
 				97A1FD451D6F728200A80EE2 /* StringTools.swift in Sources */,
 				971A10401D022C42007FC62C /* LibraryUseCellularDataTBVC.swift in Sources */,
 				97D681411D6F712800E5FA99 /* DownloadTask+CoreDataProperties.swift in Sources */,
-				97A127CA1D777CF100FB204D /* SearchBooksVC.swift in Sources */,
+				97A127CA1D777CF100FB204D /* SearchBooksController.swift in Sources */,
 				97D681391D6F711A00E5FA99 /* DownloadTask.swift in Sources */,
 				97A127C41D774C9900FB204D /* ControllerRetainer.swift in Sources */,
 				97D681321D6F70EC00E5FA99 /* MigrationPolicy.swift in Sources */,
