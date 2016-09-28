@@ -117,7 +117,7 @@ extension MainController {
         view.layoutIfNeeded()
         tableOfContentsController?.headings = JSInjection.getTableOfContents(webView)
         configureTOCViewConstraints()
-        UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: .CurveEaseOut, animations: {
+        UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.0, options: .CurveEaseOut, animations: {
             self.view.layoutIfNeeded()
             self.dimView.alpha = 0.5
         }) { (completed) in
