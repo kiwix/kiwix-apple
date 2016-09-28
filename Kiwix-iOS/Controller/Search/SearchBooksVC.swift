@@ -117,7 +117,6 @@ class SearchBooksController: UIViewController, UITableViewDelegate, UITableViewD
 
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
         cell.hasPic = book.hasPic
-        cell.hasIndex = book.hasIndex
         cell.isChecked = book.includeInSearch
     }
     

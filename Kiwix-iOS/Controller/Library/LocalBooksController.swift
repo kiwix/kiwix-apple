@@ -81,7 +81,6 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
         
         cell.titleLabel.text = book.title
         cell.hasPic = book.hasPic
-        cell.hasIndex = book.hasIndex
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
         cell.subtitleLabel.text = book.detailedDescription
     }

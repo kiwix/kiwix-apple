@@ -10,24 +10,20 @@ import UIKit
 
 // MARK: - Book Cells (new)
 
-/* Book Cell With P & I indicator */
+/* Book Cell With picture indicator */
 class BasicBookCell: UITableViewCell {
     
     @IBOutlet weak var favIcon: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
-    @IBOutlet weak private var hasPicIndicator: UILabel!
-    @IBOutlet weak private var hasIndexIndicator: UILabel!
+    @IBOutlet weak var hasPicIndicator: UIView!
     
     // MARK: Override
     
     override func awakeFromNib() {
-        hasPicIndicator.layer.cornerRadius = 2.0
-        hasIndexIndicator.layer.cornerRadius = 2.0
+        hasPicIndicator.layer.cornerRadius = 1.0
         hasPicIndicator.layer.masksToBounds = true
-        hasIndexIndicator.layer.masksToBounds = true
         hasPicIndicator.backgroundColor = UIColor.clearColor()
-        hasIndexIndicator.backgroundColor = UIColor.clearColor()
     }
     
     override func prepareForReuse() {
@@ -36,18 +32,21 @@ class BasicBookCell: UITableViewCell {
         highlighted = false
     }
     
+    override func setHighlighted(highlighted: Bool, animated: Bool) {
+        super.setHighlighted(highlighted, animated: animated)
+        setHasPicIndicatorColor()
+    }
+    
     // MARK: Shorthand properties
     
     var hasPic: Bool = false {
         didSet {
-            hasPicIndicator.layer.backgroundColor = hasPic ? AppColors.hasPicTintColor.CGColor : UIColor.lightGrayColor().CGColor
+            setHasPicIndicatorColor()
         }
     }
     
-    var hasIndex: Bool = false {
-        didSet {
-            hasIndexIndicator.layer.backgroundColor = hasIndex ? AppColors.hasIndexTintColor.CGColor : UIColor.lightGrayColor().CGColor
-        }
+    private func setHasPicIndicatorColor() {
+        hasPicIndicator.backgroundColor = hasPic ? AppColors.hasPicTintColor : UIColor.lightGrayColor()
     }
 }
 

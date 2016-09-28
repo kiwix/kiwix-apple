@@ -222,7 +222,6 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         }()
         
         cell.hasPic = book.hasPic
-        cell.hasIndex = book.hasIndex
         cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
         cell.titleLabel.text = book.title
         cell.subtitleLabel.text = [
