@@ -245,7 +245,6 @@
 		971A103E1D022C42007FC62C /* LibraryUseCellularDataTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryUseCellularDataTBVC.swift; path = "Kiwix-iOS/Controller/LibraryUseCellularDataTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10411D022C54007FC62C /* SettingTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingTBVC.swift; path = "Kiwix-iOS/Controller/SettingTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10511D022D9D007FC62C /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		971A106E1D022E62007FC62C /* Network_old.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Network_old.swift; path = "Kiwix-iOS/Model/Network_old.swift"; sourceTree = SOURCE_ROOT; };
 		971A10781D022F05007FC62C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		971A107A1D022F74007FC62C /* DownloaderLearnMore.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = DownloaderLearnMore.html; path = Kiwix/HelpDocuments/DownloaderLearnMore.html; sourceTree = SOURCE_ROOT; };
 		971A107B1D022F74007FC62C /* ImportBookLearnMore.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = ImportBookLearnMore.html; path = Kiwix/HelpDocuments/ImportBookLearnMore.html; sourceTree = SOURCE_ROOT; };
@@ -588,15 +587,6 @@
 			path = "Kiwix-iOS/Kiwix";
 			sourceTree = "<group>";
 		};
-		971904A41CA3204B002E9CFF /* Network */ = {
-			isa = PBXGroup;
-			children = (
-				971A106E1D022E62007FC62C /* Network_old.swift */,
-			);
-			name = Network;
-			path = Kiwix;
-			sourceTree = "<group>";
-		};
 		971A10191D0228E8007FC62C /* JavaScripts */ = {
 			isa = PBXGroup;
 			children = (
@@ -656,7 +646,6 @@
 				978C587A1C1CCC9C0077AE47 /* Storyboards */,
 				978C58821C1CCDAF0077AE47 /* Controllers */,
 				971A10221D022AD5007FC62C /* View */,
-				971904A41CA3204B002E9CFF /* Network */,
 				978C58791C1CCC920077AE47 /* Supporting */,
 				97A2AB891C1B80FF00052E74 /* Products */,
 			);
