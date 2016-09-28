@@ -6,6 +6,7 @@
 //  Copyright © 2016 Chris. All rights reserved.
 //
 
+import CoreData
 import Operations
 
 class SearchOperation: GroupOperation {
@@ -18,7 +19,9 @@ class SearchOperation: GroupOperation {
     }
     
     override func execute() {
-        let searches: [BookSearch] = ZimMultiReader.shared.readers.keys.map({ BookSearch(zimID: $0, searchTerm: searchTerm) })
+        let searches = Book.fetchLocal(NSManagedObjectContext.mainQueueContext)
+            .filter({ $1.includeInSearch })
+            .map({ BookSearch(zimID: $1.id, searchTerm: searchTerm) })
         let sort = Sort()
         searches.forEach { (search) in
             sort.injectResultFromDependency(search, block: { (operation, dependency, errors) in
