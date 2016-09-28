@@ -276,7 +276,7 @@
         <!--Search Result Controller-->
         <scene sceneID="g1P-db-EbE">
             <objects>
-                <viewController storyboardIdentifier="SearchResultController" id="fgz-Yy-Pok" customClass="SearchResultController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchResultController" automaticallyAdjustsScrollViewInsets="NO" id="fgz-Yy-Pok" customClass="SearchResultController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="gjd-DF-nun"/>
                         <viewControllerLayoutGuide type="bottom" id="U6y-Va-LE0"/>

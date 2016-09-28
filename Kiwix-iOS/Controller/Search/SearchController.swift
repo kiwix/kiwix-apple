@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DZNEmptyDataSet
 
 class SearchController: UIViewController, UISearchBarDelegate, UIGestureRecognizerDelegate {
     
@@ -81,5 +82,44 @@ class SearchController: UIViewController, UISearchBarDelegate, UIGestureRecogniz
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         return touch.view == view ? true : false
     }
+}
+
+class SearchTableViewController: UIViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+    @IBOutlet weak var tableView: UITableView!
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SearchTableViewController.keyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SearchTableViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        tableView.emptyDataSetSource = nil
+        tableView.emptyDataSetDelegate = nil
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
+    }
+    
+    func keyboardDidShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo as? [String: NSValue],
+            let origin = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue().origin else {return}
+        let point = view.convertPoint(origin, fromView: nil)
+        let buttomInset = view.frame.height - point.y
+        tableView.contentInset = UIEdgeInsetsMake(0.0, 0, buttomInset, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0, 0, buttomInset, 0)
+        tableView.reloadEmptyDataSet()
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        tableView.contentInset = UIEdgeInsetsMake(0.0, 0, 0, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0, 0, 0, 0)
+        tableView.reloadEmptyDataSet()
+    }
 }

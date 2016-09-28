@@ -10,9 +10,8 @@ import UIKit
 import CoreData
 import DZNEmptyDataSet
 
-class SearchBooksController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, TableCellDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class SearchBooksController: SearchTableViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, TableCellDelegate {
 
-    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var recentSearchContainer: DropShadowView!
     @IBOutlet weak var recentSearchBarHeight: NSLayoutConstraint!
     
@@ -20,9 +19,6 @@ class SearchBooksController: UIViewController, UITableViewDelegate, UITableViewD
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-//        tableView.emptyDataSetSource = self
-//        tableView.emptyDataSetDelegate = self
-        tableView.tableHeaderView = UIView()
         tableView.tableFooterView = UIView()
         tableView.keyboardDismissMode = .OnDrag
     }
@@ -34,37 +30,10 @@ class SearchBooksController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func configureRecentSearchBarHeight() {
-        let previousHeight = recentSearchBarHeight.constant
         let newHeight: CGFloat = Preference.recentSearchTerms.count == 0 ? 0.0 : 44.0
-        guard previousHeight != newHeight else {return}
+        guard recentSearchBarHeight.constant != newHeight else {return}
         recentSearchBarHeight.constant = newHeight
         recentSearchContainer.setNeedsDisplay()
-    }
-    
-    // MARK: - Empty table datasource & delegate
-    
-    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
-        let text = NSLocalizedString("No Book Available", comment: "Book Library, book downloader, no book center title")
-        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(18.0),
-                          NSForegroundColorAttributeName: UIColor.darkGrayColor()]
-        return NSAttributedString(string: text, attributes: attributes)
-    }
-    
-    func buttonTitleForEmptyDataSet(scrollView: UIScrollView!, forState state: UIControlState) -> NSAttributedString! {
-        let text = NSLocalizedString("Download A Book", comment: "Book Library, book downloader, learn more button text")
-        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(17.0), NSForegroundColorAttributeName: UIButton().tintColor]
-        return NSAttributedString(string: text, attributes: attributes)
-    }
-    
-    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
-        return -64.0
-    }
-    
-    func spaceHeightForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
-        return 0.0
-    }
-    
-    func emptyDataSetDidTapButton(scrollView: UIScrollView!) {
     }
     
     // MARK: - Fetched Results Controller
@@ -184,5 +153,26 @@ class SearchBooksController: UIViewController, UITableViewDelegate, UITableViewD
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
+    }
+    
+    // MARK: - DZNEmptyDataSet
+    
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = NSLocalizedString("No Books Available", comment: "Search, Book Selector")
+        let attributes = [NSFontAttributeName: UIFont.systemFontOfSize(18), NSForegroundColorAttributeName: UIColor.darkGrayColor()]
+        return NSAttributedString(string: string, attributes: attributes)
+    }
+    
+    func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = NSLocalizedString("Please download or import a book.", comment: "Search, Book Selector")
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineBreakMode = .ByWordWrapping
+        paragraph.alignment = .Center
+        let attributes = [NSFontAttributeName: UIFont.systemFontOfSize(14), NSForegroundColorAttributeName: UIColor.lightGrayColor(), NSParagraphStyleAttributeName: paragraph]
+        return NSAttributedString(string: string, attributes: attributes)
+    }
+    
+    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+        return -(tableView.contentInset.bottom + recentSearchBarHeight.constant) / 2.5
     }
 }
