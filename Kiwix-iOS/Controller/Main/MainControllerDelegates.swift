@@ -85,7 +85,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
         let operation = UpdateWidgetDataSourceOperation()
         GlobalQueue.shared.addOperation(operation)
         
-        let controller = ControllerRetainer.bookmarkStar
+        let controller = Controllers.bookmarkStar
         controller.bookmarkAdded = article.isBookmarked
         controller.transitioningDelegate = self
         controller.modalPresentationStyle = .OverFullScreen
@@ -120,24 +120,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
         GlobalQueue.shared.add(load: operation)
     }
     
-    // MARK: - UISearchBarDelegate
     
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        showSearch(animated: true)
-    }
-    
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        hideSearch(animated: true)
-        configureSearchBarPlaceHolder()
-    }
-
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        ControllerRetainer.search.startSearch(searchText, delayed: true)
-    }
-    
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        ControllerRetainer.search.searchResultController?.selectFirstResultIfPossible()
-    }
     
     // MARK: -  UIPopoverPresentationControllerDelegate
     

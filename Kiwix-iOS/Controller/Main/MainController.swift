@@ -49,7 +49,6 @@ class MainController: UIViewController {
         super.viewDidLoad()
         
         webView.delegate = self
-        searchBar.delegate = self
         ZimMultiReader.shared.delegate = self
         navigationItem.titleView = searchBar
         
@@ -241,13 +240,13 @@ class MainController: UIViewController {
     }
     
     func showLibraryButtonTapped() {
-        let controller = ControllerRetainer.library
+        let controller = Controllers.library
         controller.modalPresentationStyle = .FullScreen
         presentViewController(controller, animated: true, completion: nil)
     }
     
     func showSettingButtonTapped() {
-        let controller = ControllerRetainer.setting
+        let controller = Controllers.setting
         controller.modalPresentationStyle = .FormSheet
         presentViewController(controller, animated: true, completion: nil)
     }

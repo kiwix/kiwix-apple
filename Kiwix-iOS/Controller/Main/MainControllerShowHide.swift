@@ -60,7 +60,7 @@ extension MainController {
     }
     
     private func showSearchResultController(animated animated: Bool) {
-        let controller = ControllerRetainer.search
+        let controller = Controllers.search
         guard !childViewControllers.contains(controller) else {return}
         addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
@@ -161,7 +161,7 @@ extension MainController {
     // MARK: - Show Bookmark
     
     func showBookmarkTBVC() {
-        let controller = ControllerRetainer.bookmark
+        let controller = Controllers.bookmark
         controller.modalPresentationStyle = .FormSheet
         presentViewController(controller, animated: true, completion: nil)
     }
@@ -169,7 +169,7 @@ extension MainController {
     // MARK: - Show/Hide Welcome
     
     func showWelcome() {
-        let controller = ControllerRetainer.welcome
+        let controller = Controllers.welcome
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         addChildViewController(controller)
         view.addSubview(controller.view)

@@ -1,5 +1,5 @@
 //
-//  ControllerRetainer.swift
+//  Controllers.swift
 //  Kiwix
 //
 //  Created by Chris Li on 8/31/16.
@@ -8,10 +8,10 @@
 
 import UIKit
 
-class ControllerRetainer {
-    static let shared = ControllerRetainer()
+class Controllers {
+    static let shared = Controllers()
     private init() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ControllerRetainer.removeStrongReference), name: UIApplicationDidReceiveMemoryWarningNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(Controllers.removeStrongReference), name: UIApplicationDidReceiveMemoryWarningNotification, object: nil)
     }
     
     deinit {
@@ -27,21 +27,27 @@ class ControllerRetainer {
         welcome = nil
     }
     
+    // MARK: - Main
+    
+    var main: MainController {
+        return (UIApplication.appDelegate.window?.rootViewController as! UINavigationController).topViewController as! MainController
+    }
+    
     // MARK: - Bookmark
     
     private var bookmark: UINavigationController?
     
     class var bookmark: UINavigationController {
-        let controller = ControllerRetainer.shared.bookmark ?? UIStoryboard(name: "Bookmark", bundle: nil).instantiateInitialViewController() as! UINavigationController
-        ControllerRetainer.shared.bookmark = controller
+        let controller = Controllers.shared.bookmark ?? UIStoryboard(name: "Bookmark", bundle: nil).instantiateInitialViewController() as! UINavigationController
+        Controllers.shared.bookmark = controller
         return controller
     }
     
     private var bookmarkStar: BookmarkHUD?
     
     class var bookmarkStar: BookmarkHUD {
-        let controller = ControllerRetainer.shared.bookmarkStar ?? UIStoryboard(name: "Bookmark", bundle: nil).instantiateViewControllerWithIdentifier("BookmarkHUD") as! BookmarkHUD
-        ControllerRetainer.shared.bookmarkStar = controller
+        let controller = Controllers.shared.bookmarkStar ?? UIStoryboard(name: "Bookmark", bundle: nil).instantiateViewControllerWithIdentifier("BookmarkHUD") as! BookmarkHUD
+        Controllers.shared.bookmarkStar = controller
         return controller
     }
     
@@ -50,8 +56,8 @@ class ControllerRetainer {
     private var library: UIViewController?
     
     class var library: UIViewController {
-        let controller = ControllerRetainer.shared.library ?? UIStoryboard(name: "Library", bundle: nil).instantiateInitialViewController()!
-        ControllerRetainer.shared.library = controller
+        let controller = Controllers.shared.library ?? UIStoryboard(name: "Library", bundle: nil).instantiateInitialViewController()!
+        Controllers.shared.library = controller
         return controller
     }
     
@@ -60,8 +66,8 @@ class ControllerRetainer {
     private var search: SearchController?
     
     class var search: SearchController {
-        let controller = ControllerRetainer.shared.search ?? UIStoryboard(name: "Search", bundle: nil).instantiateInitialViewController() as! SearchController
-        ControllerRetainer.shared.search = controller
+        let controller = Controllers.shared.search ?? UIStoryboard(name: "Search", bundle: nil).instantiateInitialViewController() as! SearchController
+        Controllers.shared.search = controller
         return controller
     }
     
@@ -70,8 +76,8 @@ class ControllerRetainer {
     private var setting: UIViewController?
     
     class var setting: UIViewController {
-        let controller = ControllerRetainer.shared.setting ?? UIStoryboard(name: "Setting", bundle: nil).instantiateInitialViewController()!
-        ControllerRetainer.shared.setting = controller
+        let controller = Controllers.shared.setting ?? UIStoryboard(name: "Setting", bundle: nil).instantiateInitialViewController()!
+        Controllers.shared.setting = controller
         return controller
     }
     
@@ -80,8 +86,8 @@ class ControllerRetainer {
     private var welcome: WelcomeController?
     
     class var welcome: WelcomeController {
-        let controller = ControllerRetainer.shared.welcome ?? UIStoryboard(name: "Welcome", bundle: nil).instantiateInitialViewController() as! WelcomeController
-        ControllerRetainer.shared.welcome = controller
+        let controller = Controllers.shared.welcome ?? UIStoryboard(name: "Welcome", bundle: nil).instantiateInitialViewController() as! WelcomeController
+        Controllers.shared.welcome = controller
         return controller
     }
     

@@ -16,11 +16,7 @@ class SearchController: UIViewController, UISearchBarDelegate, UIGestureRecogniz
     @IBOutlet var tapGestureRecognizer: UITapGestureRecognizer!
     var searchResultController: SearchResultController?
     
-    private var searchText = "" {
-        didSet {
-            configureViewVisibility()
-        }
-    }
+    private var searchTerm = "" // last searchTerm
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,14 +26,7 @@ class SearchController: UIViewController, UISearchBarDelegate, UIGestureRecogniz
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        configureViewVisibility()
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        guard searchText != "" else {return}
-        Preference.recentSearchTerms.insert(searchText, atIndex: 0)
-        searchText = ""
+        configureViewVisibility(searchTerm)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -47,8 +36,8 @@ class SearchController: UIViewController, UISearchBarDelegate, UIGestureRecogniz
         }
     }
     
-    func configureViewVisibility() {
-        if searchText == "" {
+    func configureViewVisibility(searchTerm: String) {
+        if searchTerm == "" {
             searchResultTBVCContainer.hidden = true
             tabControllerContainer.hidden = false
         } else {
@@ -59,16 +48,17 @@ class SearchController: UIViewController, UISearchBarDelegate, UIGestureRecogniz
     
     // MARK: - Search
     
-    func startSearch(searchText: String, delayed: Bool) {
-        self.searchText = searchText
+    func startSearch(searchTerm: String, delayed: Bool) {
+        guard self.searchTerm != searchTerm else {return}
+        self.searchTerm = searchTerm
+        configureViewVisibility(searchTerm)
         if delayed {
-            let previousSearchText = searchText
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(275 * USEC_PER_SEC)), dispatch_get_main_queue()) {
-                guard previousSearchText == self.searchText else {return}
-                self.searchResultController?.startSearch(self.searchText)
+                guard searchTerm == self.searchTerm else {return}
+                self.searchResultController?.startSearch(self.searchTerm)
             }
         } else {
-            searchResultController?.startSearch(searchText)
+            searchResultController?.startSearch(searchTerm)
         }
     }
     

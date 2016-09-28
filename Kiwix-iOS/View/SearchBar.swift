@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+// not used
 class CustomSearchBar: UISearchBar, UITextFieldDelegate {
 
     override init(frame: CGRect) {
@@ -91,7 +91,13 @@ class CustomSearchBar: UISearchBar, UITextFieldDelegate {
 
 
 // Used in v1.4
-class SearchBar: UISearchBar {
+class SearchBar: UISearchBar, UISearchBarDelegate {
+    var searchTerm: String?
+    
+    private var textField: UITextField {
+        return valueForKey("searchField") as! UITextField
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -106,5 +112,30 @@ class SearchBar: UISearchBar {
         self.autocapitalizationType = .None
         self.placeholder = LocalizedStrings.search
         self.returnKeyType = .Go
+        self.delegate = self
+    }
+    
+    // MARK: - UISearchBarDelegate
+    
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        text = searchTerm
+        Controllers.shared.main.showSearch(animated: true)
+        let dispatchTime: dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(0.05 * Double(NSEC_PER_SEC)))
+        dispatch_after(dispatchTime, dispatch_get_main_queue(), { [unowned self] in
+            self.textField.selectAll(nil)
+        })
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        Controllers.shared.main.hideSearch(animated: true)
+    }
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        searchTerm = searchText
+        Controllers.search.startSearch(searchText, delayed: true)
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        Controllers.search.searchResultController?.selectFirstResultIfPossible()
     }
 }
