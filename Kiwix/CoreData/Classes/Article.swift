@@ -38,7 +38,7 @@ class Article: NSManagedObject {
     
     class func fetchBookmarked(in book: Book, with context: NSManagedObjectContext) -> [Article] {
         let request = NSFetchRequest(entityName: "Article")
-        request.predicate = NSPredicate(format: "book = %@", book)
+        request.predicate = NSPredicate(format: "book = %@ AND isBookmarked == true", book)
         request.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: false)]
         return fetch(request, type: Article.self, context: context) ?? [Article]()
     }

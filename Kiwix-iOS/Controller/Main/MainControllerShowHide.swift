@@ -120,9 +120,7 @@ extension MainController {
         UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.0, options: .CurveEaseOut, animations: {
             self.view.layoutIfNeeded()
             self.dimView.alpha = 0.5
-        }) { (completed) in
-            
-        }
+        }) { (completed) in }
     }
     
     func hideTableOfContentsController() {
