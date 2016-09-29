@@ -103,8 +103,6 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
             cellTitles[1] = [LocalizedStrings.downloading]
         case .Local:
             cellTitles[1] = [LocalizedStrings.remove]
-        default:
-            break
         }
     }
     

@@ -222,7 +222,6 @@ class Book: NSManagedObject {
             case 1: return .Downloading
             case 2: return .Local
             case 3: return .Retained
-            case 4: return .Purgeable
             default: return .Cloud
             }
         }
@@ -244,7 +243,7 @@ class Book: NSManagedObject {
 }
 
 enum BookState: Int {
-    case Cloud, Downloading, Local, Retained, Purgeable
+    case Cloud, Downloading, Local, Retained
 }
 
 

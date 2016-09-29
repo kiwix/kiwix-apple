@@ -114,6 +114,10 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
         
         cell.label.text = title
         cell.imageView.image = UIImage(data: thumbImageData)
+        
+        if #available(iOS 10, *) {
+            cell.label.textColor = UIColor.darkGrayColor()
+        }
     }
     
     // MARK: - UICollectionViewDelegate
