@@ -128,7 +128,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.mainController?.showSearch(animated: false)
             completionHandler(true)
         case "org.kiwix.bookmarks":
-            self.mainController?.showBookmarkTBVC()
+            self.mainController?.showBookmarkController()
             completionHandler(true)
         case recentShortcutTypeString:
             guard let urlString = shortcutItem.userInfo?["URL"] as? String,

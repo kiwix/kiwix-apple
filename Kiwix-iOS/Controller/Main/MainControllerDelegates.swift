@@ -70,7 +70,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
     
     func barButtonTapped(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
         guard sender == bookmarkButton else {return}
-        showBookmarkTBVC()
+        showBookmarkController()
     }
     
     func barButtonLongPressedStart(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {

@@ -158,7 +158,7 @@ extension MainController {
     
     // MARK: - Show Bookmark
     
-    func showBookmarkTBVC() {
+    func showBookmarkController() {
         let controller = Controllers.bookmark
         controller.modalPresentationStyle = .FormSheet
         presentViewController(controller, animated: true, completion: nil)
