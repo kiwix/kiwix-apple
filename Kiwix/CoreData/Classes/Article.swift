@@ -51,8 +51,8 @@ class Article: NSManagedObject {
     }
     
     var thumbImageData: NSData? {
-        if let urlString = thumbImageURL,
-            let url = NSURL(string: urlString),
+        if let bookID = book?.id, let path = thumbImageURL,
+            let url = NSURL(bookID: bookID, contentPath: path),
             let data = NSData(contentsOfURL: url) {
             return data
         } else {

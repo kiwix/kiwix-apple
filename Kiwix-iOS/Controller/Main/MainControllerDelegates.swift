@@ -45,7 +45,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
         guard let url = webView.request?.URL,
             let article = Article.addOrUpdate(url: url, context: NSManagedObjectContext.mainQueueContext) else {return}
         article.title = JSInjection.getTitle(from: webView)
-        article.thumbImageURL = URLResponseCache.shared.firstImage()?.absoluteString
+        article.thumbImageURL = URLResponseCache.shared.firstImage()?.path
         self.article = article
         
         // UI Updates
