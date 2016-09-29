@@ -120,55 +120,10 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
         GlobalQueue.shared.add(load: operation)
     }
     
-    
-    
     // MARK: -  UIPopoverPresentationControllerDelegate
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .None
     }
-    
-//    
-//    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-//        guard let url = request.URL else {return true}
-//        if url.scheme == "kiwix" {
-//            return true
-//        } else {
-//            let svc = SFSafariViewController(URL: url)
-//            svc.delegate = self
-//            presentViewController(svc, animated: true, completion: nil)
-//            return false
-//        }
-//    }
-//    
-//    func webViewDidStartLoad(webView: UIWebView) {
-//        PacketAnalyzer.sharedInstance.startListening()
-//    }
-//    
-//    func webViewDidFinishLoad(webView: UIWebView) {
-//        guard let url = webView.request?.URL else {return}
-//        guard url.scheme!.caseInsensitiveCompare("Kiwix") == .OrderedSame else {return}
-//        
-//        let title = webView.stringByEvaluatingJavaScriptFromString("document.title")
-//        let managedObjectContext = UIApplication.appDelegate.managedObjectContext
-//        guard let bookID = url.host else {return}
-//        guard let book = Book.fetch(bookID, context: managedObjectContext) else {return}
-//        guard let article = Article.addOrUpdate(title, url: url, book: book, context: managedObjectContext) else {return}
-//        
-//        self.article = article
-//        if let image = PacketAnalyzer.sharedInstance.chooseImage() {
-//            article.thumbImageURL = image.url.absoluteString
-//        }
-//        
-//        configureSearchBarPlaceHolder()
-//        injectTableWrappingJavaScriptIfNeeded()
-//        adjustFontSizeIfNeeded()
-//        configureNavigationButtonTint()
-//        configureBookmarkButton()
-//        
-
-//        
-//        PacketAnalyzer.sharedInstance.stopListening()
-//    }
     
 }
