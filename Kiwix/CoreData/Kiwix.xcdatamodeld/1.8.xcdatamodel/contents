@@ -9,7 +9,7 @@
         <attribute name="needsUpdate" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="path" attributeType="String" syncable="YES"/>
         <attribute name="snippet" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="thumbImageURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thumbImagePath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
         <relationship name="book" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Book" inverseName="articles" inverseEntity="Book" syncable="YES"/>
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="articles" inverseEntity="Tag" syncable="YES"/>
@@ -22,7 +22,6 @@
         <attribute name="favIcon" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="fileSize" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="globalCount" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="hasIndex" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="hasPic" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="id" attributeType="String" syncable="YES"/>
         <attribute name="includeInSearch" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
@@ -81,8 +80,8 @@
         <relationship name="articles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Article" inverseName="tags" inverseEntity="Article" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Article" positionX="-657" positionY="-153" width="128" height="225"/>
-        <element name="Book" positionX="-947" positionY="-142" width="128" height="345"/>
+        <element name="Article" positionX="-657" positionY="-153" width="128" height="223"/>
+        <element name="Book" positionX="-947" positionY="-142" width="128" height="328"/>
         <element name="DownloadTask" positionX="-657" positionY="90" width="128" height="105"/>
         <element name="Language" positionX="-657" positionY="216" width="128" height="103"/>
         <element name="Tag" positionX="-425" positionY="-18" width="128" height="73"/>

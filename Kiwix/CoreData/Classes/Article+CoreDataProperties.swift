@@ -25,5 +25,5 @@ extension Article {
     
     @NSManaged var book: Book?
     @NSManaged var tags: NSSet?
-    @NSManaged var thumbImageURL: String?
+    @NSManaged var thumbImagePath: String?
 }

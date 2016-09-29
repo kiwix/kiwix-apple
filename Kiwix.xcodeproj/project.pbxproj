@@ -13,6 +13,7 @@
 		970E68B61D37E224001E8514 /* SettingSearchHistoryTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B51D37E224001E8514 /* SettingSearchHistoryTBVC.swift */; };
 		970E68BA1D3809A3001E8514 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B71D3809A3001E8514 /* MainController.swift */; };
 		970E68BB1D3809A3001E8514 /* MainControllerDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B81D3809A3001E8514 /* MainControllerDelegates.swift */; };
+		970E7F741D9DB0FC00741290 /* 1.8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 970E7F731D9DB0FC00741290 /* 1.8.xcmappingmodel */; };
 		9711871C1CEB448400B9909D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711871B1CEB448400B9909D /* libz.tbd */; };
 		9711871E1CEB449A00B9909D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711871D1CEB449A00B9909D /* libz.tbd */; };
 		971187A91CEB694400B9909D /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 971187A81CEB694400B9909D /* WebKit.framework */; };
@@ -60,7 +61,6 @@
 		973DD4181D343F2F009D45DB /* libxapian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40D1D343F2F009D45DB /* libxapian.a */; };
 		973DD4191D343F2F009D45DB /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40E1D343F2F009D45DB /* libzim.a */; };
 		973DD4281D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD4271D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift */; };
-		974F33C41D99BBEB00879D35 /* 1.8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 974F33C31D99BBEB00879D35 /* 1.8.xcmappingmodel */; };
 		974F33C61D99CAD700879D35 /* BookmarkOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974F33C51D99CAD700879D35 /* BookmarkOperation.swift */; };
 		974F42821D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974F42811D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift */; };
 		975227821D020560001D1DDE /* Indexer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227811D020560001D1DDE /* Indexer.storyboard */; };
@@ -222,6 +222,7 @@
 		970E68B51D37E224001E8514 /* SettingSearchHistoryTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSearchHistoryTBVC.swift; path = "Kiwix-iOS/Controller/Setting/SettingSearchHistoryTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		970E68B71D3809A3001E8514 /* MainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainController.swift; path = "Kiwix-iOS/Controller/Main/MainController.swift"; sourceTree = SOURCE_ROOT; };
 		970E68B81D3809A3001E8514 /* MainControllerDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainControllerDelegates.swift; path = "Kiwix-iOS/Controller/Main/MainControllerDelegates.swift"; sourceTree = SOURCE_ROOT; };
+		970E7F731D9DB0FC00741290 /* 1.8.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = 1.8.xcmappingmodel; path = Kiwix/CoreData/Migration/1.8.xcmappingmodel; sourceTree = SOURCE_ROOT; };
 		9711871B1CEB448400B9909D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		9711871D1CEB449A00B9909D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		971187A81CEB694400B9909D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -280,7 +281,6 @@
 		973DD40D1D343F2F009D45DB /* libxapian.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxapian.a; path = Kiwix/libkiwix/iOS/libxapian.a; sourceTree = "<group>"; };
 		973DD40E1D343F2F009D45DB /* libzim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzim.a; path = Kiwix/libkiwix/iOS/libzim.a; sourceTree = "<group>"; };
 		973DD4271D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSingleSwitchTBVC.swift; path = "Kiwix-iOS/Controller/Setting/SettingSingleSwitchTBVC.swift"; sourceTree = SOURCE_ROOT; };
-		974F33C31D99BBEB00879D35 /* 1.8.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = 1.8.xcmappingmodel; path = Kiwix/CoreData/Migration/1.8.xcmappingmodel; sourceTree = SOURCE_ROOT; };
 		974F33C51D99CAD700879D35 /* BookmarkOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkOperation.swift; sourceTree = "<group>"; };
 		974F42811D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingWidgetBookmarksTBVC.swift; path = "Kiwix-iOS/Controller/Setting/SettingWidgetBookmarksTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		975227811D020560001D1DDE /* Indexer.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Indexer.storyboard; path = "Kiwix-OSX/StoryBoards/Indexer.storyboard"; sourceTree = SOURCE_ROOT; };
@@ -543,7 +543,7 @@
 			isa = PBXGroup;
 			children = (
 				97D6812F1D6F70EC00E5FA99 /* 1.5.xcmappingmodel */,
-				974F33C31D99BBEB00879D35 /* 1.8.xcmappingmodel */,
+				970E7F731D9DB0FC00741290 /* 1.8.xcmappingmodel */,
 				97D681301D6F70EC00E5FA99 /* MigrationPolicy.swift */,
 			);
 			name = Migration;
@@ -1531,8 +1531,8 @@
 				97D681371D6F711A00E5FA99 /* Article.swift in Sources */,
 				97D681231D6F70AC00E5FA99 /* GlobalQueue.swift in Sources */,
 				97A1FD3B1D6F724E00A80EE2 /* stringTools.cpp in Sources */,
+				970E7F741D9DB0FC00741290 /* 1.8.xcmappingmodel in Sources */,
 				97A1FD321D6F723D00A80EE2 /* resourceTools.cpp in Sources */,
-				974F33C41D99BBEB00879D35 /* 1.8.xcmappingmodel in Sources */,
 				971A10321D022AD5007FC62C /* SearchBar.swift in Sources */,
 				97E60A061D10504000EBCB9D /* LibraryBackupTBVC.swift in Sources */,
 				97A1FD451D6F728200A80EE2 /* StringTools.swift in Sources */,

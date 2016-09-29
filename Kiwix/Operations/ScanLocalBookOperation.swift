@@ -95,15 +95,8 @@ class ScanLocalBookOperation: Operation {
                     return book ?? Book.add(reader.metaData, context: NSManagedObjectContext.mainQueueContext)
                 }() else {return}
             book.state = .Local
-            book.hasIndex = reader.hasIndex()
             book.hasPic = !reader.fileURL.absoluteString!.containsString("nopic")
             if let downloadTask = book.downloadTask {context.deleteObject(downloadTask)}
-        }
-        
-        for (id, book) in localBooks {
-            guard !context.deletedObjects.contains(book) else {continue}
-            guard let reader = ZimMultiReader.shared.readers[id] else {return}
-            book.hasIndex = reader.hasIndex()
         }
         
         if localBooks.count == 0 && addedZimFileIDs.count >= 1 {

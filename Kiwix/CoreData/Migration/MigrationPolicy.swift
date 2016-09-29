@@ -24,7 +24,7 @@ class MigrationPolicy1_8: NSEntityMigrationPolicy {
         }
     }
     
-    func articlePath(url: String) -> String {
-        return NSURL(string: url)!.path!
+    func path(url: String) -> String {
+        return NSURL(string: url)?.path ?? ""
     }
 }
