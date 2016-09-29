@@ -26,7 +26,6 @@
 		971A10301D022AD5007FC62C /* LTBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10281D022AD5007FC62C /* LTBarButtonItem.swift */; };
 		971A10311D022AD5007FC62C /* RefreshHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10291D022AD5007FC62C /* RefreshHUD.swift */; };
 		971A10321D022AD5007FC62C /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A102A1D022AD5007FC62C /* SearchBar.swift */; };
-		971A10341D022AEC007FC62C /* BookmarkTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10331D022AEC007FC62C /* BookmarkTBVC.swift */; };
 		971A10381D022C15007FC62C /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10371D022C15007FC62C /* WebViewController.swift */; };
 		971A103B1D022C2C007FC62C /* AdjustLayoutTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10391D022C2C007FC62C /* AdjustLayoutTBVC.swift */; };
 		971A103C1D022C2C007FC62C /* FontSizeTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A103A1D022C2C007FC62C /* FontSizeTBVC.swift */; };
@@ -237,7 +236,6 @@
 		971A10281D022AD5007FC62C /* LTBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LTBarButtonItem.swift; sourceTree = "<group>"; };
 		971A10291D022AD5007FC62C /* RefreshHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshHUD.swift; sourceTree = "<group>"; };
 		971A102A1D022AD5007FC62C /* SearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
-		971A10331D022AEC007FC62C /* BookmarkTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookmarkTBVC.swift; path = "Kiwix-iOS/Controller/BookmarkTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A10371D022C15007FC62C /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebViewController.swift; path = "Kiwix-iOS/Controller/WebViewController.swift"; sourceTree = SOURCE_ROOT; };
 		971A10391D022C2C007FC62C /* AdjustLayoutTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AdjustLayoutTBVC.swift; path = "Kiwix-iOS/Controller/AdjustLayoutTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		971A103A1D022C2C007FC62C /* FontSizeTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FontSizeTBVC.swift; path = "Kiwix-iOS/Controller/FontSizeTBVC.swift"; sourceTree = SOURCE_ROOT; };
@@ -690,7 +688,6 @@
 		9749A1B21C430653000F2D1E /* Bookmark */ = {
 			isa = PBXGroup;
 			children = (
-				971A10331D022AEC007FC62C /* BookmarkTBVC.swift */,
 				97C5BD4A1D9AF4B5009692CF /* BookmarkController.swift */,
 				97219DBC1D383A00009FDFF1 /* BookmarkHUD.swift */,
 			);
@@ -1570,7 +1567,6 @@
 				971A103B1D022C2C007FC62C /* AdjustLayoutTBVC.swift in Sources */,
 				97219DBD1D383A00009FDFF1 /* BookmarkHUD.swift in Sources */,
 				97D6812E1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld in Sources */,
-				971A10341D022AEC007FC62C /* BookmarkTBVC.swift in Sources */,
 				97A1FD1D1D6F71D800A80EE2 /* URLResponseCache.swift in Sources */,
 				9764F5971D8339D500E0B1C4 /* JSInjection.swift in Sources */,
 				9787BC211D9318300030D311 /* WelcomeController.swift in Sources */,

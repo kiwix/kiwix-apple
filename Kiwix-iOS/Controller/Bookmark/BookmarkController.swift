@@ -14,6 +14,9 @@ import DZNEmptyDataSet
 class BookmarkController: UITableViewController, NSFetchedResultsControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     var book: Book?
+    var isTopViewController: Bool {
+        return self == navigationController?.viewControllers.first
+    }
     
     // MARK: - Overrides
 
@@ -26,16 +29,26 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
         tableView.allowsMultipleSelectionDuringEditing = true
         tableView.emptyDataSetSource = self
         tableView.emptyDataSetDelegate = self
+        
+        if isTopViewController {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(imageNamed: "Cross", target: self, action: #selector(BookmarkController.dismissSelf))
+        }
     }
     
     override func setEditing(editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
-        navigationItem.leftBarButtonItem = editing ? UIBarButtonItem(barButtonSystemItem: .Trash) : nil
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: editing ? .Done : .Edit)
-        navigationItem.leftBarButtonItem?.target = self
-        navigationItem.leftBarButtonItem?.action = #selector(BookmarkController.trashButtonTapped(_:))
-        navigationItem.rightBarButtonItem?.target = self
-        navigationItem.rightBarButtonItem?.action = #selector(BookmarkController.editButtonTapped(_:))
+        
+        switch (editing, isTopViewController) {
+        case (true, true), (true, false):
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: #selector(BookmarkController.trashButtonTapped(_:)))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(BookmarkController.editButtonTapped(_:)))
+        case (false, true):
+            navigationItem.leftBarButtonItem = UIBarButtonItem(imageNamed: "Cross", target: self, action: #selector(BookmarkController.dismissSelf))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: #selector(BookmarkController.editButtonTapped(_:)))
+        case (false, false):
+            navigationItem.leftBarButtonItem = nil
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: #selector(BookmarkController.editButtonTapped(_:)))
+        }
     }
     
     // MARK: - Action
@@ -60,6 +73,10 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
     
     @IBAction func editButtonTapped(sender: UIBarButtonItem) {
         setEditing(!editing, animated: true)
+    }
+    
+    func dismissSelf() {
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     // MARK: - Empty table datasource & delegate
@@ -141,7 +158,6 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
         defer {dismissViewControllerAnimated(true, completion: nil)}
         guard let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article,
             let url = article.url else {return}
-        trash(articles: [article])
         
         let operation = ArticleLoadOperation(url: url)
         GlobalQueue.shared.add(load: operation)

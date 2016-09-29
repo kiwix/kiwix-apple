@@ -51,6 +51,7 @@ extension String {
 class LocalizedStrings {
     
     static let download = NSLocalizedString("Download", comment: "Common")
+    static let bookmarks = NSLocalizedString("Bookmarks", comment: "Common")
     
     class Library {
         static let spaceNotEnough = NSLocalizedString("Space Not Enough", comment: "Library")
