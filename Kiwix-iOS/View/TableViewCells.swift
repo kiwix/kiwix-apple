@@ -34,18 +34,23 @@ class BasicBookCell: UITableViewCell {
     
     override func setHighlighted(highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
-        setHasPicIndicatorColor()
+        setIndicatorColor()
+    }
+    
+    override func setSelected(selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        setIndicatorColor()
     }
     
     // MARK: Shorthand properties
     
     var hasPic: Bool = false {
         didSet {
-            setHasPicIndicatorColor()
+            setIndicatorColor()
         }
     }
     
-    private func setHasPicIndicatorColor() {
+    private func setIndicatorColor() {
         hasPicIndicator.backgroundColor = hasPic ? AppColors.hasPicTintColor : UIColor.lightGrayColor()
     }
 }

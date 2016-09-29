@@ -13,7 +13,7 @@ function getSnippet() {
                 }
             }
         }
-
     }
+    return null;
 }
 getSnippet();

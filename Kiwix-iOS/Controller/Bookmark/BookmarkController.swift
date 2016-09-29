@@ -8,8 +8,10 @@
 
 import UIKit
 import CoreData
+import Operations
+import DZNEmptyDataSet
 
-class BookmarkController: UITableViewController, NSFetchedResultsControllerDelegate {
+class BookmarkController: UITableViewController, NSFetchedResultsControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     var book: Book?
     
@@ -17,8 +19,77 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = LocalizedStrings.bookmarks
+        clearsSelectionOnViewWillAppear = true
+        tableView.estimatedRowHeight = 66.0
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.allowsMultipleSelectionDuringEditing = true
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
     }
     
+    override func setEditing(editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        navigationItem.leftBarButtonItem = editing ? UIBarButtonItem(barButtonSystemItem: .Trash) : nil
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: editing ? .Done : .Edit)
+        navigationItem.leftBarButtonItem?.target = self
+        navigationItem.leftBarButtonItem?.action = #selector(BookmarkController.trashButtonTapped(_:))
+        navigationItem.rightBarButtonItem?.target = self
+        navigationItem.rightBarButtonItem?.action = #selector(BookmarkController.editButtonTapped(_:))
+    }
+    
+    // MARK: - Action
+    
+    func trash(articles articles: [Article]) {
+        let operation = BookmarkTrashOperation(articles: articles)
+        operation.addObserver(DidFinishObserver { _ in
+            NSOperationQueue.mainQueue().addOperationWithBlock({ 
+                guard self.fetchedResultController.fetchedObjects?.count == 0 else {return}
+                self.navigationController?.popViewControllerAnimated(true)
+            })
+        })
+        GlobalQueue.shared.addOperation(operation)
+    }
+    
+    func trashButtonTapped(sender: UIBarButtonItem) {
+        guard editing else {return}
+        guard let selectedIndexPathes = tableView.indexPathsForSelectedRows else {return}
+        let articles = selectedIndexPathes.flatMap() {fetchedResultController.objectAtIndexPath($0) as? Article}
+        trash(articles: articles)
+    }
+    
+    @IBAction func editButtonTapped(sender: UIBarButtonItem) {
+        setEditing(!editing, animated: true)
+    }
+    
+    // MARK: - Empty table datasource & delegate
+    
+    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
+        return UIImage(named: "BookmarkColor")
+    }
+    
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let text = NSLocalizedString("Bookmarks", comment: "Bookmarks view title")
+        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(18.0),
+                          NSForegroundColorAttributeName: UIColor.darkGrayColor()]
+        return NSAttributedString(string: text, attributes: attributes)
+    }
+    
+    func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let text = NSLocalizedString("To add a bookmark, long press the star button when reading an article", comment: "Bookmarks view message")
+        let style = NSMutableParagraphStyle()
+        style.lineBreakMode = .ByWordWrapping
+        style.alignment = .Center
+        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(14.0),
+                          NSForegroundColorAttributeName: UIColor.lightGrayColor(),
+                          NSParagraphStyleAttributeName: style]
+        return NSAttributedString(string: text, attributes: attributes)
+    }
+    
+    func spaceHeightForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+        return 30.0
+    }
+
     // MARK: - Table view data source
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -32,9 +103,15 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-        cell.textLabel?.text = article?.title
-        return cell
+        if let _ = article?.snippet {
+            let cell = tableView.dequeueReusableCellWithIdentifier("BookmarkSnippetCell", forIndexPath: indexPath)
+            configureSnippetCell(cell, atIndexPath: indexPath)
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCellWithIdentifier("BookmarkCell", forIndexPath: indexPath)
+            configureCell(cell, atIndexPath: indexPath)
+            return cell
+        }
     }
     
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
@@ -47,6 +124,49 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
         }()
         cell.titleLabel.text = article.title
         cell.subtitleLabel.text = article.book?.title
+    }
+    
+    func configureSnippetCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+        configureCell(cell, atIndexPath: indexPath)
+        
+        guard let cell = cell as? BookmarkSnippetCell else {return}
+        guard let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
+        cell.snippetLabel.text = article.snippet
+    }
+    
+    // MARK: - Table view delegate
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        guard !tableView.editing else {return}
+        defer {dismissViewControllerAnimated(true, completion: nil)}
+        guard let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article,
+            let url = article.url else {return}
+        trash(articles: [article])
+        
+        let operation = ArticleLoadOperation(url: url)
+        GlobalQueue.shared.add(load: operation)
+    }
+    
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {}
+    
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let remove = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.remove) { (action, indexPath) -> Void in
+            guard let article = self.fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
+            let context = NSManagedObjectContext.mainQueueContext
+            context.performBlockAndWait({ () -> Void in
+                article.isBookmarked = false
+            })
+            self.trash(articles: [article])
+        }
+        return [remove]
+    }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat.min
     }
     
     // MARK: - Fetched Result Controller Delegate
@@ -93,17 +213,17 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
         switch type {
         case .Insert:
             guard let newIndexPath = newIndexPath else {return}
-            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Fade)
+            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Left)
         case .Delete:
             guard let indexPath = indexPath else {return}
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Right)
         case .Update:
             guard let indexPath = indexPath, let cell = tableView.cellForRowAtIndexPath(indexPath) else {return}
             configureCell(cell, atIndexPath: indexPath)
         case .Move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Fade)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Right)
+            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Left)
         }
     }
     

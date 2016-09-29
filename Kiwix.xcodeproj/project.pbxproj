@@ -62,7 +62,7 @@
 		973DD4191D343F2F009D45DB /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40E1D343F2F009D45DB /* libzim.a */; };
 		973DD4281D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD4271D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift */; };
 		974F33C41D99BBEB00879D35 /* 1.8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 974F33C31D99BBEB00879D35 /* 1.8.xcmappingmodel */; };
-		974F33C61D99CAD700879D35 /* BookmarkMigrationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974F33C51D99CAD700879D35 /* BookmarkMigrationOperation.swift */; };
+		974F33C61D99CAD700879D35 /* BookmarkOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974F33C51D99CAD700879D35 /* BookmarkOperation.swift */; };
 		974F42821D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974F42811D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift */; };
 		975227821D020560001D1DDE /* Indexer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227811D020560001D1DDE /* Indexer.storyboard */; };
 		975227B01D021539001D1DDE /* IndexerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975227AF1D021539001D1DDE /* IndexerController.swift */; };
@@ -283,7 +283,7 @@
 		973DD40E1D343F2F009D45DB /* libzim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzim.a; path = Kiwix/libkiwix/iOS/libzim.a; sourceTree = "<group>"; };
 		973DD4271D36E3E4009D45DB /* SettingSingleSwitchTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingSingleSwitchTBVC.swift; path = "Kiwix-iOS/Controller/Setting/SettingSingleSwitchTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		974F33C31D99BBEB00879D35 /* 1.8.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = 1.8.xcmappingmodel; path = Kiwix/CoreData/Migration/1.8.xcmappingmodel; sourceTree = SOURCE_ROOT; };
-		974F33C51D99CAD700879D35 /* BookmarkMigrationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkMigrationOperation.swift; sourceTree = "<group>"; };
+		974F33C51D99CAD700879D35 /* BookmarkOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkOperation.swift; sourceTree = "<group>"; };
 		974F42811D47E19A00F8074C /* SettingWidgetBookmarksTBVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingWidgetBookmarksTBVC.swift; path = "Kiwix-iOS/Controller/Setting/SettingWidgetBookmarksTBVC.swift"; sourceTree = SOURCE_ROOT; };
 		975227811D020560001D1DDE /* Indexer.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Indexer.storyboard; path = "Kiwix-OSX/StoryBoards/Indexer.storyboard"; sourceTree = SOURCE_ROOT; };
 		975227AF1D021539001D1DDE /* IndexerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IndexerController.swift; path = "Kiwix-OSX/Controllers/IndexerController.swift"; sourceTree = SOURCE_ROOT; };
@@ -984,7 +984,7 @@
 			isa = PBXGroup;
 			children = (
 				9764CBD21D8083AA00072D6A /* ArticleOperation.swift */,
-				974F33C51D99CAD700879D35 /* BookmarkMigrationOperation.swift */,
+				974F33C51D99CAD700879D35 /* BookmarkOperation.swift */,
 				97DF259B1D6F7612001648A3 /* BookOperation.swift */,
 				97D6811C1D6F70AC00E5FA99 /* GlobalQueue.swift */,
 				97D6811D1D6F70AC00E5FA99 /* RefreshLibraryOperation.swift */,
@@ -1514,7 +1514,7 @@
 				970E68B61D37E224001E8514 /* SettingSearchHistoryTBVC.swift in Sources */,
 				97C005D81D64B99E004352E8 /* LibrarySplitViewController.swift in Sources */,
 				97FDACC41D85A3B300DEDACB /* Language+CoreDataProperties.swift in Sources */,
-				974F33C61D99CAD700879D35 /* BookmarkMigrationOperation.swift in Sources */,
+				974F33C61D99CAD700879D35 /* BookmarkOperation.swift in Sources */,
 				97A8AD871D6CF38000584ED1 /* EmptyTableConfigExtension.swift in Sources */,
 				971A102E1D022AD5007FC62C /* TableViewCells.swift in Sources */,
 				97DF259D1D6F9053001648A3 /* URLSessionDownloadTaskOperation.swift in Sources */,

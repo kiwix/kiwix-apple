@@ -54,6 +54,6 @@ class JSInjection {
             let path = NSBundle.mainBundle().pathForResource("getSnippet", ofType: "js"),
             let jString = try? String(contentsOfFile: path),
             let snippet = context.evaluateScript(jString).toString() else {return nil}
-        return snippet
+        return snippet == "null" ? nil : snippet
     }
 }

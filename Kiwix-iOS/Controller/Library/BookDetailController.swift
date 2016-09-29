@@ -24,7 +24,10 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     private(set) var sectionHeaders = [String?]()
     private(set) var sectionFooters = [String?]()
     private(set) var cellTitles = [[String]]()
-    private(set) var bookmarkCount = 0
+    var bookmarkCount: Int? {
+        guard let book = book else {return nil}
+        return Article.fetchBookmarked(in: book, with: NSManagedObjectContext.mainQueueContext).count
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,8 +44,10 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        configureViews()
         book?.addObserver(self, forKeyPath: "stateRaw", options: .New, context: context)
+        configureViews()
+        tableView.reloadEmptyDataSet()
+        tableView.reloadData()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -104,7 +109,6 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     }
     
     func configureBookmarkSection(with book: Book) {
-        bookmarkCount = Article.fetchBookmarked(in: book, with: NSManagedObjectContext.mainQueueContext).count
         guard bookmarkCount > 0 else {return}
         sectionHeaders.append(nil)
         sectionFooters.append(nil)
@@ -143,6 +147,10 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     }
     
     func configureViews() {
+        sectionHeaders.removeAll()
+        sectionFooters.removeAll()
+        cellTitles.removeAll()
+        
         guard let book = book else {return}
         configureStaticHeader(with: book)
         configureIndicators(with: book)
@@ -152,7 +160,6 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
         configureBookInfoSection(with: book)
         configurePIDSection(with: book)
         configureURLSection(with: book)
-        tableView.reloadEmptyDataSet()
     }
     
     // MARK: - Table view data source
@@ -194,7 +201,7 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
         case LocalizedStrings.bookmarks:
             let cell = tableView.dequeueReusableCellWithIdentifier("DetailSegueCell", forIndexPath: indexPath)
             cell.textLabel?.text = title
-            cell.detailTextLabel?.text = "\(bookmarkCount)"
+            cell.detailTextLabel?.text = String(bookmarkCount ?? 0)
             return cell
         default:
             let cell = tableView.dequeueReusableCellWithIdentifier("RightDetailCell", forIndexPath: indexPath)
