@@ -20,7 +20,7 @@ class Controllers {
     
     @objc func removeStrongReference() {
         bookmark = nil
-        bookmarkStar = nil
+        bookmarkHUD = nil
         library = nil
         search = nil
         setting = nil
@@ -43,11 +43,11 @@ class Controllers {
         return controller
     }
     
-    private var bookmarkStar: BookmarkHUD?
+    private var bookmarkHUD: BookmarkHUD?
     
-    class var bookmarkStar: BookmarkHUD {
-        let controller = Controllers.shared.bookmarkStar ?? UIStoryboard(name: "Bookmark", bundle: nil).instantiateViewControllerWithIdentifier("BookmarkHUD") as! BookmarkHUD
-        Controllers.shared.bookmarkStar = controller
+    class var bookmarkHUD: BookmarkHUD {
+        let controller = Controllers.shared.bookmarkHUD ?? UIStoryboard(name: "Bookmark", bundle: nil).instantiateViewControllerWithIdentifier("BookmarkHUD") as! BookmarkHUD
+        Controllers.shared.bookmarkHUD = controller
         return controller
     }
     

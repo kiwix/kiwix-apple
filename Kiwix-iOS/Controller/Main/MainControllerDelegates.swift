@@ -85,7 +85,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
         let operation = UpdateWidgetDataSourceOperation()
         GlobalQueue.shared.addOperation(operation)
         
-        let controller = Controllers.bookmarkStar
+        let controller = Controllers.bookmarkHUD
         controller.bookmarkAdded = article.isBookmarked
         controller.transitioningDelegate = self
         controller.modalPresentationStyle = .OverFullScreen
