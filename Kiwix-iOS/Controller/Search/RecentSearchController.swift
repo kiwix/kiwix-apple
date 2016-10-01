@@ -62,7 +62,7 @@ class RecentSearchController: UIViewController, UICollectionViewDataSource, UICo
             let searchController = parentViewController?.parentViewController as? SearchController,
             let cell = collectionView.cellForItemAtIndexPath(indexPath) as? LocalLangCell,
             let text = cell.label.text else {return}
-        mainVC.searchBar.text = text
+        mainVC.searchBar.searchTerm = text
         searchController.startSearch(text, delayed: false)
         collectionView.deselectItemAtIndexPath(indexPath, animated: true)
     }

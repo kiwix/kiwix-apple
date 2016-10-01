@@ -44,8 +44,6 @@ extension MainController {
         // Hide Search Result Controller
         hideSearchResultController(animated: true)
         
-        // Search Bar
-        searchBar.text = nil
         if searchBar.isFirstResponder() {searchBar.resignFirstResponder()}
         
         // Hide Cancel Button If Needed
