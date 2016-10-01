@@ -115,8 +115,10 @@ extension MainController {
         dimView.hidden = false
         dimView.alpha = 0.0
         view.layoutIfNeeded()
-        tableOfContentsController?.headings = JSInjection.getTableOfContents(webView)
+        
+        configureTableOfContents()
         configureTOCViewConstraints()
+        
         UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.0, options: .CurveEaseOut, animations: {
             self.view.layoutIfNeeded()
             self.dimView.alpha = 0.5

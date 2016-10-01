@@ -50,6 +50,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
         
         // UI Updates
         configureNavigationButtonTint()
+        configureTableOfContents()
         JSInjection.adjustFontSizeIfNeeded(webView)
     }
     

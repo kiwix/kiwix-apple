@@ -189,6 +189,11 @@ class MainController: UIViewController {
         }
     }
     
+    func configureTableOfContents() {
+        guard traitCollection.horizontalSizeClass == .Regular && isShowingTableOfContents else {return}
+        tableOfContentsController?.headings = JSInjection.getTableOfContents(webView)
+    }
+    
     func configureUserActivity() {
         userActivity = userActivity ?? NSUserActivity(activityType: activityType)
         guard let title = article?.title, let url = article?.url?.absoluteString else {return}
