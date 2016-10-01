@@ -52,6 +52,8 @@ class LocalizedStrings {
     
     static let download = NSLocalizedString("Download", comment: "Common")
     static let bookmarks = NSLocalizedString("Bookmarks", comment: "Common")
+    static let search = NSLocalizedString("Search", comment: "Common")
+    static let done = NSLocalizedString("Done", comment: "Common")
     
     class Library {
         static let spaceNotEnough = NSLocalizedString("Space Not Enough", comment: "Library")

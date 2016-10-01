@@ -9,28 +9,15 @@
 import UIKit
 
 class SettingTBVC: UITableViewController {
-    private(set) var sectionHeader = [LocalizedStrings.library, LocalizedStrings.reading, LocalizedStrings.search, LocalizedStrings.widget, LocalizedStrings.misc]
-    private(set) var cellTextlabels = [[LocalizedStrings.libraryAutoRefresh, LocalizedStrings.libraryUseCellularData, LocalizedStrings.libraryBackup],
-                          [LocalizedStrings.fontSize, LocalizedStrings.adjustLayout],
-                          [LocalizedStrings.history],
-                          [LocalizedStrings.bookmarks],
+    private(set) var sectionHeader: [String?] = [nil, LocalizedStrings.misc]
+    private(set) var cellTitles = [[LocalizedStrings.backupLocalFiles, LocalizedStrings.fontSize, LocalizedStrings.searchHistory],
                           [LocalizedStrings.rateKiwix, LocalizedStrings.about]]
-    
-    let dateComponentsFormatter: NSDateComponentsFormatter = {
-        let formatter = NSDateComponentsFormatter()
-        formatter.unitsStyle = NSDateComponentsFormatterUnitsStyle.Full
-        return formatter
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = LocalizedStrings.settings
         clearsSelectionOnViewWillAppear = true
         showRateKiwixIfNeeded()
-        
-        if UIApplication.buildStatus == .Alpha {
-            cellTextlabels[2].append("Boost Factor 🚀")
-        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -38,41 +25,28 @@ class SettingTBVC: UITableViewController {
         tableView.reloadData()
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "MiscAbout" {
-            guard let controller = segue.destinationViewController as? WebViewController else {return}
-            controller.page = .About
-        }
-    }
-    
     // MARK: - Table view data source
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return sectionHeader.count
+        return cellTitles.count
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cellTextlabels[section].count
+        return cellTitles[section].count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         
-        cell.textLabel?.text = cellTextlabels[indexPath.section][indexPath.row]
+        let title = cellTitles[indexPath.section][indexPath.row]
+        cell.textLabel?.text = title
         cell.detailTextLabel?.text = {
-            switch indexPath {
-            case NSIndexPath(forRow: 0, inSection: 0):
-                return Preference.libraryAutoRefreshDisabled ? LocalizedStrings.disabled :
-                    dateComponentsFormatter.stringFromTimeInterval(Preference.libraryRefreshInterval)
-            case NSIndexPath(forRow: 1, inSection: 0):
-                return Preference.libraryRefreshAllowCellularData ? LocalizedStrings.on : LocalizedStrings.off
-            case NSIndexPath(forRow: 2, inSection: 0):
+            switch title {
+            case LocalizedStrings.backupLocalFiles:
                 guard let skipBackup = NSFileManager.getSkipBackupAttribute(item: NSFileManager.docDirURL) else {return ""}
                 return skipBackup ? LocalizedStrings.off: LocalizedStrings.on
-            case NSIndexPath(forRow: 0, inSection: 1):
+            case LocalizedStrings.fontSize:
                 return String.formattedPercentString(Preference.webViewZoomScale / 100)
-            case NSIndexPath(forRow: 1, inSection: 1):
-                return Preference.webViewInjectJavascriptToAdjustPageLayout ? LocalizedStrings.on : LocalizedStrings.off
             default:
                 return nil
             }
@@ -89,7 +63,7 @@ class SettingTBVC: UITableViewController {
     
     override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         guard section == tableView.numberOfSections - 1 else {return nil}
-        var footnote = String(format: LocalizedStrings.versionString, NSBundle.appShortVersion)
+        var footnote = String(format: LocalizedStrings.settingFootnote, NSBundle.appShortVersion)
         switch UIApplication.buildStatus {
         case .Alpha, .Beta:
             footnote += (UIApplication.buildStatus == .Alpha ? " Alpha" : " Beta")
@@ -113,26 +87,27 @@ class SettingTBVC: UITableViewController {
         let cell = tableView.cellForRowAtIndexPath(indexPath)
         guard let text = cell?.textLabel?.text else {return}
         switch text {
-        case LocalizedStrings.libraryAutoRefresh:
-            performSegueWithIdentifier("LibraryAutoRefresh", sender: self)
-        case LocalizedStrings.libraryUseCellularData:
-            performSegueWithIdentifier("LibraryUseCellularData", sender: self)
-        case LocalizedStrings.libraryBackup:
-            performSegueWithIdentifier("LibraryBackup", sender: self)
+        case LocalizedStrings.backupLocalFiles:
+            let controller = UIStoryboard(name: "Setting", bundle: nil)
+                .instantiateViewControllerWithIdentifier("SettingDetailController") as! SettingDetailController
+            controller.page = .BackupLocalFiles
+            navigationController?.pushViewController(controller, animated: true)
+        case LocalizedStrings.searchHistory:
+            let controller = UIStoryboard(name: "Setting", bundle: nil)
+                .instantiateViewControllerWithIdentifier("SettingDetailController") as! SettingDetailController
+            controller.page = .SearchHistory
+            navigationController?.pushViewController(controller, animated: true)
         case LocalizedStrings.fontSize:
-            performSegueWithIdentifier("ReadingFontSize", sender: self)
-        case LocalizedStrings.adjustLayout:
-            performSegueWithIdentifier("AdjustLayout", sender: self)
-        case LocalizedStrings.history:
-            performSegueWithIdentifier("SearchHistory", sender: self)
-        case LocalizedStrings.bookmarks:
-            performSegueWithIdentifier("SettingWidgetBookmarksTBVC", sender: self)
-        case "Boost Factor 🚀":
-            performSegueWithIdentifier("SearchTune", sender: self)
+            let controller = UIStoryboard(name: "Setting", bundle: nil)
+                .instantiateViewControllerWithIdentifier("FontSizeController") as! FontSizeController
+            navigationController?.pushViewController(controller, animated: true)
         case LocalizedStrings.rateKiwix:
             showRateKiwixAlert(showRemindLater: false)
         case LocalizedStrings.about:
-            performSegueWithIdentifier("MiscAbout", sender: self)
+            let controller = UIStoryboard(name: "Setting", bundle: nil)
+                .instantiateViewControllerWithIdentifier("WebViewController") as! WebViewController
+            controller.page = .About
+            navigationController?.pushViewController(controller, animated: true)
         default:
             break
         }
@@ -190,25 +165,16 @@ class SettingTBVC: UITableViewController {
 }
 
 extension LocalizedStrings {
-    class var settings: String {return NSLocalizedString("Settings", comment: "Setting: Title")}
-    class var versionString: String {return NSLocalizedString("Kiwix for iOS v%@", comment: "Version footnote (please translate 'v' as version)")}
+    static let settings = NSLocalizedString("Settings", comment: "Settings")
     
-    //MARK: -  Table Header Text
-    class var library: String {return NSLocalizedString("Library ", comment: "Setting: Section Header")}
-    class var reading: String {return NSLocalizedString("Reading", comment: "Setting: Section Header")}
-    class var search: String {return NSLocalizedString("Search", comment: "Setting: Section Header")}
-    class var widget: String {return NSLocalizedString("Widget", comment: "Setting: Section Header")}
-    class var misc: String {return NSLocalizedString("Misc", comment: "Setting: Section Header")}
+    static let backupLocalFiles = NSLocalizedString("Backup Local Files", comment: "Setting")
+    static let fontSize = NSLocalizedString("Font Size", comment: "Setting")
+    static let searchHistory = NSLocalizedString("Search History", comment: "Setting")
     
-    //MARK: -  Table Cell Text
-    class var libraryAutoRefresh: String {return NSLocalizedString("Auto Refresh", comment: "Setting: Library Auto Refresh")}
-    class var libraryUseCellularData: String {return NSLocalizedString("Refresh Using Cellular Data", comment: "Setting: Library Use Cellular Data")}
-    class var libraryBackup: String {return NSLocalizedString("Backup Local Files", comment: "Setting: Backup Local Files")}
-    class var fontSize: String {return NSLocalizedString("Font Size", comment: "Setting: Font Size")}
-    class var adjustLayout: String {return NSLocalizedString("Adjust Layout", comment: "Setting: Adjust Layout")}
-    class var rateKiwix: String {return NSLocalizedString("Please Rate Kiwix", comment: "Setting: Others")}
-    class var emailFeedback: String {return NSLocalizedString("Send Email Feedback", comment: "Setting: Others")}
-    class var about: String {return NSLocalizedString("About", comment: "Setting: Others")}
+    static let misc = NSLocalizedString("Misc", comment: "Setting")
+    static let rateKiwix = NSLocalizedString("Give Kiwix a rate!", comment: "Setting")
+    static let about = NSLocalizedString("About", comment: "Setting")
+    static let settingFootnote = NSLocalizedString("Kiwix for iOS v%@", comment: "Version footnote (please translate 'v' as version)")
     
     //MARK: -  Rate Kiwix
     class var rateKiwixTitle: String {return NSLocalizedString("Give Kiwix a rate!", comment: "Rate Kiwix in App Store Alert Title")}

@@ -1,5 +1,5 @@
 //
-//  FontSizeTBVC.swift
+//  FontSizeController.swift
 //  Kiwix
 //
 //  Created by Chris Li on 8/15/15.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FontSizeTBVC: UITableViewController {
+class FontSizeController: UITableViewController {
 
     @IBOutlet var slider: UISlider!
     

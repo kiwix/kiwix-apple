@@ -26,9 +26,8 @@ class JSInjection {
     }
     
     class func adjustFontSizeIfNeeded(webView: UIWebView) {
-        let zoomScale = Preference.webViewZoomScale
-        guard zoomScale != 100.0 else {return}
-        let jString = String(format: "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%.0f%%'", zoomScale)
+        guard Preference.webViewZoomScale != 100.0 else {return}
+        let jString = String(format: "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%.0f%%'", Preference.webViewZoomScale)
         webView.stringByEvaluatingJavaScriptFromString(jString)
     }
     

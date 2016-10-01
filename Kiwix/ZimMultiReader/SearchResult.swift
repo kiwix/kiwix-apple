@@ -64,3 +64,16 @@ class SearchResult: CustomStringConvertible {
         return "(\(distance), \(probability ?? -1), \(String(format: "%.4f", score)))"
     }
 }
+
+class WeightFactor {
+    class func calculate(prob: Double) -> Double {
+        let m = 6.4524436415334163
+        let n = 7.5576145596090623
+        return caluclateLog(m: m, n: n, prob: prob)
+    }
+    
+    private class func caluclateLog(m m: Double, n: Double, prob: Double) -> Double {
+        let e = 2.718281828459
+        return log(n - m * prob) / log(e)
+    }
+}

@@ -52,7 +52,6 @@ class MainController: UIViewController {
         ZimMultiReader.shared.delegate = self
         navigationItem.titleView = searchBar
         
-        NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "webViewNotInjectJavascriptToAdjustPageLayout", options: .New, context: context)
         NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "webViewZoomScale", options: .New, context: context)
         
         configureButtonColor()
@@ -62,14 +61,13 @@ class MainController: UIViewController {
     
     deinit {
         article?.removeObserver(self, forKeyPath: "isBookmarked")
-        NSUserDefaults.standardUserDefaults().removeObserver(self, forKeyPath: "webViewNotInjectJavascriptToAdjustPageLayout")
         NSUserDefaults.standardUserDefaults().removeObserver(self, forKeyPath: "webViewZoomScale")
     }
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         guard context == self.context, let keyPath = keyPath else {return}
         switch keyPath {
-        case "webViewZoomScale", "webViewNotInjectJavascriptToAdjustPageLayout":
+        case "webViewZoomScale":
             webView.reload()
         case "isBookmarked":
             configureBookmarkButton()
@@ -163,19 +161,6 @@ class MainController: UIViewController {
     
     func configureBookmarkButton() {
         bookmarkButton.customImageView?.highlighted = article?.isBookmarked ?? false
-    }
-    
-    func configureWebViewInsets() {
-        let topInset: CGFloat = {
-            guard let navigationBar = navigationController?.navigationBar else {return 44.0}
-            return navigationBar.hidden ? 0.0 : navigationBar.frame.origin.y + navigationBar.frame.height
-        }()
-        let bottomInset: CGFloat = {
-            guard let toolbar = navigationController?.toolbar else {return 0.0}
-            return traitCollection.horizontalSizeClass == .Compact ? view.frame.height - toolbar.frame.origin.y : 0.0
-        }()
-        webView.scrollView.contentInset = UIEdgeInsetsMake(topInset, 0, bottomInset, 0)
-        webView.scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(topInset, 0, bottomInset, 0)
     }
     
     func configureSearchBarPlaceHolder() {
