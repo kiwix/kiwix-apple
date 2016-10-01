@@ -28,7 +28,6 @@ extension MainController {
         showSearchResultController(animated: animated)
         
         // SearchBar
-        searchBar.placeholder = LocalizedStrings.search
         if !searchBar.isFirstResponder() {searchBar.becomeFirstResponder()}
         
         // Show Cancel Button If Needed
