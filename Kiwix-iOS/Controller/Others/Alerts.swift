@@ -85,7 +85,8 @@ class CopyURLAlert: AlertOperation<UIViewController> {
         if let absoluteURL = url.absoluteString {
             message = String(format: NSLocalizedString("The URL is %@", comment: "Copy URL Alert"), absoluteURL)
         }
-        addActionWithTitle(LocalizedStrings.ok)
+        addActionWithTitle(LocalizedStrings.done)
+        preferredAction = actions[0]
     }
 }
 
