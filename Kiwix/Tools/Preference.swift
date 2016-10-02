@@ -17,15 +17,17 @@ class Preference {
     
     // MARK: - Recent Search
     
-    class func addRecentSearchTerm(searchTerm: String) {
-        recentSearchTerms.insert(searchTerm, atIndex: 0)
-    }
-    
-    class var recentSearchTerms: [String] {
-        get{return Defaults[.recentSearchTerms]}
-        set{
-            let searchTerms = NSOrderedSet(array: newValue).array as! [String]
-            Defaults[.recentSearchTerms] = searchTerms.count > 20 ? Array(searchTerms[0..<20]) : searchTerms
+    class RecentSearch {
+        class func add(term term: String) {
+            terms.insert(term, atIndex: 0)
+        }
+        
+        class var terms: [String] {
+            get{return Defaults[.recentSearchTerms]}
+            set{
+                let searchTerms = NSOrderedSet(array: newValue).array as! [String]
+                Defaults[.recentSearchTerms] = searchTerms.count > 20 ? Array(searchTerms[0..<20]) : searchTerms
+            }
         }
     }
     

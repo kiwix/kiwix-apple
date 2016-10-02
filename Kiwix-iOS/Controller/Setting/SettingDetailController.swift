@@ -75,7 +75,7 @@ class SettingDetailController: UITableViewController {
         guard let title = tableView.cellForRowAtIndexPath(indexPath)?.textLabel?.text else {return}
         switch title {
         case LocalizedStrings.clearSearchHistory:
-            Preference.recentSearchTerms = [String]()
+            Preference.RecentSearch.terms = [String]()
             let controller = UIAlertController(title: NSLocalizedString("Cleared", comment: "Setting, search history cleared"),
                                                message: NSLocalizedString("Your search history has been cleared!", comment: "Setting, search history cleared"),
                                                preferredStyle: .Alert)

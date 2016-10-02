@@ -41,7 +41,7 @@ class RecentSearchController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Preference.recentSearchTerms.count
+        return Preference.RecentSearch.terms.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -52,7 +52,7 @@ class RecentSearchController: UIViewController, UICollectionViewDataSource, UICo
     
     func configureCell(cell: UICollectionViewCell, atIndexPath indexPath: NSIndexPath) {
         guard let cell = cell as? LocalLangCell else {return}
-        cell.label.text = Preference.recentSearchTerms[indexPath.item]
+        cell.label.text = Preference.RecentSearch.terms[indexPath.item]
     }
     
     // MARK: - CollectionView Delegate
@@ -71,7 +71,7 @@ class RecentSearchController: UIViewController, UICollectionViewDataSource, UICo
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let height: CGFloat = 30
-        let text = Preference.recentSearchTerms[indexPath.item]
+        let text = Preference.RecentSearch.terms[indexPath.item]
         let font = UIFont.systemFontOfSize(17.0, weight: UIFontWeightRegular)
         let size = text.boundingRectWithSize(CGSizeMake(200, height),
                                              options: NSStringDrawingOptions.UsesLineFragmentOrigin,

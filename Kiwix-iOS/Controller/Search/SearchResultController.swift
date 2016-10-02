@@ -119,6 +119,10 @@ class SearchResultController: SearchTableViewController, UITableViewDataSource, 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
+        if let searchTerm = Controllers.main.searchBar.searchTerm {
+            Preference.RecentSearch.add(term: searchTerm)
+        }
+        
         let result = searchResults[indexPath.row]
         let operation = ArticleLoadOperation(bookID: result.bookID, articleTitle: result.title)
         GlobalQueue.shared.add(load: operation)

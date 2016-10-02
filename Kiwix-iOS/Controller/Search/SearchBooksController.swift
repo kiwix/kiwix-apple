@@ -30,7 +30,7 @@ class SearchBooksController: SearchTableViewController, UITableViewDelegate, UIT
     }
     
     func configureRecentSearchBarHeight() {
-        let newHeight: CGFloat = Preference.recentSearchTerms.count == 0 ? 0.0 : 44.0
+        let newHeight: CGFloat = Preference.RecentSearch.terms.count == 0 ? 0.0 : 44.0
         guard recentSearchBarHeight.constant != newHeight else {return}
         recentSearchBarHeight.constant = newHeight
         recentSearchContainer.setNeedsDisplay()

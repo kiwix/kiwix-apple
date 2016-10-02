@@ -29,7 +29,7 @@ class Controllers {
     
     // MARK: - Main
     
-    var main: MainController {
+    class var main: MainController {
         return (UIApplication.appDelegate.window?.rootViewController as! UINavigationController).topViewController as! MainController
     }
     
