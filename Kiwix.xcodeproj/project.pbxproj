@@ -43,8 +43,6 @@
 		9726591B1D8DB91200D1DFFB /* DownloadProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9726591A1D8DB91200D1DFFB /* DownloadProgress.swift */; };
 		9726591D1D90A64600D1DFFB /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9726591C1D90A64500D1DFFB /* Notifications.swift */; };
 		9734E54E1D289D060061C39B /* Welcome.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9734E54D1D289D060061C39B /* Welcome.storyboard */; };
-		973BCCEC1CEB3FA400F10B44 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCCEB1CEB3FA400F10B44 /* AppDelegate.swift */; };
-		973BCCF31CEB3FA400F10B44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 973BCCF21CEB3FA400F10B44 /* Assets.xcassets */; };
 		973BCD011CEB3FA500F10B44 /* Kiwix_OSXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCD001CEB3FA500F10B44 /* Kiwix_OSXTests.swift */; };
 		973BCD0C1CEB3FA500F10B44 /* Kiwix_OSXUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCD0B1CEB3FA500F10B44 /* Kiwix_OSXUITests.swift */; };
 		973BCD1A1CEB402900F10B44 /* KiwixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCD181CEB402900F10B44 /* KiwixTests.swift */; };
@@ -60,19 +58,11 @@
 		973DD4191D343F2F009D45DB /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40E1D343F2F009D45DB /* libzim.a */; };
 		973DD4281D36E3E4009D45DB /* SettingDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD4271D36E3E4009D45DB /* SettingDetailController.swift */; };
 		974F33C61D99CAD700879D35 /* BookmarkOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974F33C51D99CAD700879D35 /* BookmarkOperation.swift */; };
-		975227821D020560001D1DDE /* Indexer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227811D020560001D1DDE /* Indexer.storyboard */; };
-		975227B01D021539001D1DDE /* IndexerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975227AF1D021539001D1DDE /* IndexerController.swift */; };
 		975227CD1D0227E8001D1DDE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227CA1D0227E8001D1DDE /* Main.storyboard */; };
 		975227CE1D0227E8001D1DDE /* Setting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227CB1D0227E8001D1DDE /* Setting.storyboard */; };
 		975227D01D022814001D1DDE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227CF1D022814001D1DDE /* LaunchScreen.storyboard */; };
-		975334C91CEB6A3D007ED50B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975334C81CEB6A3D007ED50B /* Main.storyboard */; };
-		975334CB1CEB6A43007ED50B /* Preference.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975334CA1CEB6A43007ED50B /* Preference.storyboard */; };
-		975334D01CEB6AE3007ED50B /* PreferenceGeneralController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975334CF1CEB6AE3007ED50B /* PreferenceGeneralController.swift */; };
-		975334D21CEB6B01007ED50B /* LibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975334D11CEB6B01007ED50B /* LibraryController.swift */; };
-		975B90F91CEB75CB00D13906 /* ZimFilesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975B90F81CEB75CB00D13906 /* ZimFilesController.swift */; };
 		975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975B90FD1CEB909100D13906 /* iOSExtensions.swift */; };
 		9763275E1D64FE0F0034F120 /* BookDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9763275D1D64FE0F0034F120 /* BookDetailController.swift */; };
-		9763A6291CEB9E55008A2718 /* OSXExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9763A6281CEB9E55008A2718 /* OSXExtensions.swift */; };
 		9764CBD11D806AD800072D6A /* RefreshLibControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764CBD01D806AD800072D6A /* RefreshLibControl.swift */; };
 		9764CBD31D8083AA00072D6A /* ArticleOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764CBD21D8083AA00072D6A /* ArticleOperation.swift */; };
 		9764F5931D830EF200E0B1C4 /* liblzma.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9764F5921D830EF200E0B1C4 /* liblzma.tbd */; };
@@ -82,10 +72,6 @@
 		9779C3171D4575AE0064CC8E /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779C3161D4575AE0064CC8E /* TodayViewController.swift */; };
 		9779C31A1D4575AE0064CC8E /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9779C3181D4575AE0064CC8E /* MainInterface.storyboard */; };
 		9779C31E1D4575AE0064CC8E /* Bookmarks.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9779C3131D4575AD0064CC8E /* Bookmarks.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		979C518D1CECAE4C001707F2 /* PreferenceWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979C518B1CECAE4C001707F2 /* PreferenceWindowController.swift */; };
-		979CB60F1D04AD04005E1BA1 /* PreferenceTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB60E1D04AD04005E1BA1 /* PreferenceTabController.swift */; };
-		979CB6C81D05CF37005E1BA1 /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6C71D05CF37005E1BA1 /* SearchResultController.swift */; };
-		979CB6CA1D05D26E005E1BA1 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979CB6C91D05D26E005E1BA1 /* WebViewController.swift */; };
 		97A127C91D777CF100FB204D /* RecentSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C51D777CF100FB204D /* RecentSearchController.swift */; };
 		97A127CA1D777CF100FB204D /* SearchBooksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C61D777CF100FB204D /* SearchBooksController.swift */; };
 		97A127CB1D777CF100FB204D /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C71D777CF100FB204D /* SearchController.swift */; };
@@ -106,7 +92,6 @@
 		97A1FD451D6F728200A80EE2 /* StringTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD411D6F728200A80EE2 /* StringTools.swift */; };
 		97A8AD841D6C951A00584ED1 /* LocalBooksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A8AD831D6C951A00584ED1 /* LocalBooksController.swift */; };
 		97A8AD871D6CF38000584ED1 /* EmptyTableConfigExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A8AD861D6CF38000584ED1 /* EmptyTableConfigExtension.swift */; };
-		97BA32A51CEBC36300339A47 /* RootWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BA32A31CEBC29500339A47 /* RootWindowController.swift */; };
 		97C005D61D64B3B0004352E8 /* Library.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C005D51D64B3B0004352E8 /* Library.storyboard */; };
 		97C005D81D64B99E004352E8 /* LibrarySplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C005D71D64B99E004352E8 /* LibrarySplitViewController.swift */; };
 		97C005DC1D64BEFE004352E8 /* CloudBooksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C005DB1D64BEFE004352E8 /* CloudBooksController.swift */; };
@@ -248,9 +233,6 @@
 		9726591C1D90A64500D1DFFB /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		9734E54D1D289D060061C39B /* Welcome.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Welcome.storyboard; path = "Kiwix-iOS/Storyboard/Welcome.storyboard"; sourceTree = SOURCE_ROOT; };
 		973BCCE91CEB3FA400F10B44 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		973BCCEB1CEB3FA400F10B44 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = "Kiwix-OSX/AppDelegate.swift"; sourceTree = SOURCE_ROOT; };
-		973BCCF21CEB3FA400F10B44 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Kiwix-OSX/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
-		973BCCF71CEB3FA400F10B44 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Kiwix-OSX/Info.plist"; sourceTree = SOURCE_ROOT; };
 		973BCCFC1CEB3FA400F10B44 /* Kiwix-OSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kiwix-OSXTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		973BCD001CEB3FA500F10B44 /* Kiwix_OSXTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kiwix_OSXTests.swift; sourceTree = "<group>"; };
 		973BCD021CEB3FA500F10B44 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -273,19 +255,11 @@
 		973DD40E1D343F2F009D45DB /* libzim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzim.a; path = Kiwix/libkiwix/iOS/libzim.a; sourceTree = "<group>"; };
 		973DD4271D36E3E4009D45DB /* SettingDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingDetailController.swift; path = "Kiwix-iOS/Controller/Setting/SettingDetailController.swift"; sourceTree = SOURCE_ROOT; };
 		974F33C51D99CAD700879D35 /* BookmarkOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkOperation.swift; sourceTree = "<group>"; };
-		975227811D020560001D1DDE /* Indexer.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Indexer.storyboard; path = "Kiwix-OSX/StoryBoards/Indexer.storyboard"; sourceTree = SOURCE_ROOT; };
-		975227AF1D021539001D1DDE /* IndexerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IndexerController.swift; path = "Kiwix-OSX/Controllers/IndexerController.swift"; sourceTree = SOURCE_ROOT; };
 		975227CA1D0227E8001D1DDE /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "Kiwix-iOS/Storyboard/Main.storyboard"; sourceTree = SOURCE_ROOT; };
 		975227CB1D0227E8001D1DDE /* Setting.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Setting.storyboard; path = "Kiwix-iOS/Storyboard/Setting.storyboard"; sourceTree = SOURCE_ROOT; };
 		975227CF1D022814001D1DDE /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "Kiwix-iOS/Storyboard/LaunchScreen.storyboard"; sourceTree = SOURCE_ROOT; };
-		975334C81CEB6A3D007ED50B /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "Kiwix-OSX/StoryBoards/Main.storyboard"; sourceTree = SOURCE_ROOT; };
-		975334CA1CEB6A43007ED50B /* Preference.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Preference.storyboard; path = "Kiwix-OSX/StoryBoards/Preference.storyboard"; sourceTree = SOURCE_ROOT; };
-		975334CF1CEB6AE3007ED50B /* PreferenceGeneralController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferenceGeneralController.swift; path = "Kiwix-OSX/Controllers/PreferenceGeneralController.swift"; sourceTree = SOURCE_ROOT; };
-		975334D11CEB6B01007ED50B /* LibraryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibraryController.swift; path = "Kiwix-OSX/Controllers/LibraryController.swift"; sourceTree = SOURCE_ROOT; };
-		975B90F81CEB75CB00D13906 /* ZimFilesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ZimFilesController.swift; path = "Kiwix-OSX/Controllers/ZimFilesController.swift"; sourceTree = SOURCE_ROOT; };
 		975B90FD1CEB909100D13906 /* iOSExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = iOSExtensions.swift; path = "Kiwix-iOS/iOSExtensions.swift"; sourceTree = SOURCE_ROOT; };
 		9763275D1D64FE0F0034F120 /* BookDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookDetailController.swift; sourceTree = "<group>"; };
-		9763A6281CEB9E55008A2718 /* OSXExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OSXExtensions.swift; path = "Kiwix-OSX/OSXExtensions.swift"; sourceTree = SOURCE_ROOT; };
 		9764CBD01D806AD800072D6A /* RefreshLibControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshLibControl.swift; sourceTree = "<group>"; };
 		9764CBD21D8083AA00072D6A /* ArticleOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleOperation.swift; sourceTree = "<group>"; };
 		9764F5921D830EF200E0B1C4 /* liblzma.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = liblzma.tbd; path = usr/lib/liblzma.tbd; sourceTree = SDKROOT; };
@@ -296,10 +270,6 @@
 		9779C3161D4575AE0064CC8E /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		9779C3191D4575AE0064CC8E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		9779C31B1D4575AE0064CC8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		979C518B1CECAE4C001707F2 /* PreferenceWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferenceWindowController.swift; path = "Kiwix-OSX/Controllers/PreferenceWindowController.swift"; sourceTree = SOURCE_ROOT; };
-		979CB60E1D04AD04005E1BA1 /* PreferenceTabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PreferenceTabController.swift; path = Controllers/PreferenceTabController.swift; sourceTree = "<group>"; };
-		979CB6C71D05CF37005E1BA1 /* SearchResultController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchResultController.swift; path = Controllers/SearchResultController.swift; sourceTree = "<group>"; };
-		979CB6C91D05D26E005E1BA1 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebViewController.swift; path = Controllers/WebViewController.swift; sourceTree = "<group>"; };
 		97A127C51D777CF100FB204D /* RecentSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentSearchController.swift; sourceTree = "<group>"; };
 		97A127C61D777CF100FB204D /* SearchBooksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBooksController.swift; sourceTree = "<group>"; };
 		97A127C71D777CF100FB204D /* SearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
@@ -329,7 +299,6 @@
 		97A2ABAA1C1B810000052E74 /* Kiwix-iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kiwix-iOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A8AD831D6C951A00584ED1 /* LocalBooksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalBooksController.swift; sourceTree = "<group>"; };
 		97A8AD861D6CF38000584ED1 /* EmptyTableConfigExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyTableConfigExtension.swift; sourceTree = "<group>"; };
-		97BA32A31CEBC29500339A47 /* RootWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RootWindowController.swift; path = "Kiwix-OSX/Controllers/RootWindowController.swift"; sourceTree = SOURCE_ROOT; };
 		97C005D51D64B3B0004352E8 /* Library.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Library.storyboard; path = "Kiwix-iOS/Storyboard/Library.storyboard"; sourceTree = SOURCE_ROOT; };
 		97C005D71D64B99E004352E8 /* LibrarySplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibrarySplitViewController.swift; path = "Kiwix-iOS/Controller/Library/LibrarySplitViewController.swift"; sourceTree = SOURCE_ROOT; };
 		97C005DB1D64BEFE004352E8 /* CloudBooksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudBooksController.swift; sourceTree = "<group>"; };
@@ -518,28 +487,6 @@
 			path = Kiwix;
 			sourceTree = "<group>";
 		};
-		971187AA1CEB69D500B9909D /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				97BA32A31CEBC29500339A47 /* RootWindowController.swift */,
-				975227AF1D021539001D1DDE /* IndexerController.swift */,
-				979CB6C71D05CF37005E1BA1 /* SearchResultController.swift */,
-				979CB6C91D05D26E005E1BA1 /* WebViewController.swift */,
-				975334CE1CEB6AB0007ED50B /* Preference */,
-			);
-			name = Controllers;
-			sourceTree = "<group>";
-		};
-		971187AB1CEB69DF00B9909D /* StoryBoards */ = {
-			isa = PBXGroup;
-			children = (
-				975334C81CEB6A3D007ED50B /* Main.storyboard */,
-				975227811D020560001D1DDE /* Indexer.storyboard */,
-				975334CA1CEB6A43007ED50B /* Preference.storyboard */,
-			);
-			name = StoryBoards;
-			sourceTree = "<group>";
-		};
 		97163D321CD7E79F008BE2D6 /* Help Docs */ = {
 			isa = PBXGroup;
 			children = (
@@ -683,15 +630,6 @@
 			name = reader;
 			sourceTree = "<group>";
 		};
-		975334CC1CEB6A4D007ED50B /* Supporting */ = {
-			isa = PBXGroup;
-			children = (
-				973BCCF21CEB3FA400F10B44 /* Assets.xcassets */,
-				973BCCF71CEB3FA400F10B44 /* Info.plist */,
-			);
-			name = Supporting;
-			sourceTree = "<group>";
-		};
 		975334CD1CEB6A78007ED50B /* Others */ = {
 			isa = PBXGroup;
 			children = (
@@ -702,18 +640,6 @@
 				CFDF64EC6F9DB861DEEB91A0 /* Frameworks */,
 			);
 			name = Others;
-			sourceTree = "<group>";
-		};
-		975334CE1CEB6AB0007ED50B /* Preference */ = {
-			isa = PBXGroup;
-			children = (
-				979C518B1CECAE4C001707F2 /* PreferenceWindowController.swift */,
-				975334CF1CEB6AE3007ED50B /* PreferenceGeneralController.swift */,
-				979CB60E1D04AD04005E1BA1 /* PreferenceTabController.swift */,
-				975334D11CEB6B01007ED50B /* LibraryController.swift */,
-				975B90F81CEB75CB00D13906 /* ZimFilesController.swift */,
-			);
-			name = Preference;
 			sourceTree = "<group>";
 		};
 		9771DC4B1C37278E009ECFF0 /* Setting */ = {
@@ -817,7 +743,6 @@
 			isa = PBXGroup;
 			children = (
 				973BCD1F1CEB412E00F10B44 /* Shared */,
-				97A2AB8A1C1B80FF00052E74 /* OS X */,
 				973BCCE41CEB3EDE00F10B44 /* iOS */,
 				97E609F21D103DED00EBCB9D /* iOSWidgets */,
 				975334CD1CEB6A78007ED50B /* Others */,
@@ -838,19 +763,6 @@
 				9779C3131D4575AD0064CC8E /* Bookmarks.appex */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		97A2AB8A1C1B80FF00052E74 /* OS X */ = {
-			isa = PBXGroup;
-			children = (
-				973BCCEB1CEB3FA400F10B44 /* AppDelegate.swift */,
-				9763A6281CEB9E55008A2718 /* OSXExtensions.swift */,
-				971187AA1CEB69D500B9909D /* Controllers */,
-				971187AB1CEB69DF00B9909D /* StoryBoards */,
-				975334CC1CEB6A4D007ED50B /* Supporting */,
-			);
-			name = "OS X";
-			path = "Kiwix-OSX";
 			sourceTree = "<group>";
 		};
 		97A2ABA21C1B80FF00052E74 /* Kiwix-iOSTests */ = {
@@ -1189,10 +1101,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				975227821D020560001D1DDE /* Indexer.storyboard in Resources */,
-				973BCCF31CEB3FA400F10B44 /* Assets.xcassets in Resources */,
-				975334C91CEB6A3D007ED50B /* Main.storyboard in Resources */,
-				975334CB1CEB6A43007ED50B /* Preference.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1396,17 +1304,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				975227B01D021539001D1DDE /* IndexerController.swift in Sources */,
-				975334D01CEB6AE3007ED50B /* PreferenceGeneralController.swift in Sources */,
-				979CB6C81D05CF37005E1BA1 /* SearchResultController.swift in Sources */,
-				975B90F91CEB75CB00D13906 /* ZimFilesController.swift in Sources */,
-				97BA32A51CEBC36300339A47 /* RootWindowController.swift in Sources */,
-				979CB6CA1D05D26E005E1BA1 /* WebViewController.swift in Sources */,
-				975334D21CEB6B01007ED50B /* LibraryController.swift in Sources */,
-				979C518D1CECAE4C001707F2 /* PreferenceWindowController.swift in Sources */,
-				973BCCEC1CEB3FA400F10B44 /* AppDelegate.swift in Sources */,
-				9763A6291CEB9E55008A2718 /* OSXExtensions.swift in Sources */,
-				979CB60F1D04AD04005E1BA1 /* PreferenceTabController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
