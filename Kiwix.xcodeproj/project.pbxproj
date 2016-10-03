@@ -21,9 +21,6 @@
 		970E7F831DA0305000741290 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E7F7F1DA0305000741290 /* WelcomeController.swift */; };
 		9711871E1CEB449A00B9909D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711871D1CEB449A00B9909D /* libz.tbd */; };
 		971A10161D022872007FC62C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 971A10151D022872007FC62C /* Assets.xcassets */; };
-		971A101D1D0228E8007FC62C /* adjustlayoutiPad.js in Resources */ = {isa = PBXBuildFile; fileRef = 971A101A1D0228E8007FC62C /* adjustlayoutiPad.js */; };
-		971A101E1D0228E8007FC62C /* adjustlayoutiPhone.js in Resources */ = {isa = PBXBuildFile; fileRef = 971A101B1D0228E8007FC62C /* adjustlayoutiPhone.js */; };
-		971A101F1D0228E8007FC62C /* getTableOfContents.js in Resources */ = {isa = PBXBuildFile; fileRef = 971A101C1D0228E8007FC62C /* getTableOfContents.js */; };
 		971A102C1D022AD5007FC62C /* BarButtonItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10241D022AD5007FC62C /* BarButtonItems.swift */; };
 		971A102E1D022AD5007FC62C /* TableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10261D022AD5007FC62C /* TableViewCells.swift */; };
 		971A102F1D022AD5007FC62C /* Logo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10271D022AD5007FC62C /* Logo.swift */; };
@@ -31,7 +28,6 @@
 		971A10311D022AD5007FC62C /* RefreshHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10291D022AD5007FC62C /* RefreshHUD.swift */; };
 		971A10321D022AD5007FC62C /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A102A1D022AD5007FC62C /* SearchBar.swift */; };
 		971A10521D022D9D007FC62C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10511D022D9D007FC62C /* AppDelegate.swift */; };
-		971A10771D022F05007FC62C /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 971A10791D022F05007FC62C /* Localizable.stringsdict */; };
 		971A107E1D022F74007FC62C /* DownloaderLearnMore.html in Resources */ = {isa = PBXBuildFile; fileRef = 971A107A1D022F74007FC62C /* DownloaderLearnMore.html */; };
 		971A107F1D022F74007FC62C /* ImportBookLearnMore.html in Resources */ = {isa = PBXBuildFile; fileRef = 971A107B1D022F74007FC62C /* ImportBookLearnMore.html */; };
 		971A10801D022F74007FC62C /* Pic_I.png in Resources */ = {isa = PBXBuildFile; fileRef = 971A107C1D022F74007FC62C /* Pic_I.png */; };
@@ -55,6 +51,15 @@
 		973DD4181D343F2F009D45DB /* libxapian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40D1D343F2F009D45DB /* libxapian.a */; };
 		973DD4191D343F2F009D45DB /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40E1D343F2F009D45DB /* libzim.a */; };
 		973DD4281D36E3E4009D45DB /* SettingDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD4271D36E3E4009D45DB /* SettingDetailController.swift */; };
+		974C49221DA3062500E276E1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 974C49241DA3062500E276E1 /* InfoPlist.strings */; };
+		974C492C1DA3062600E276E1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 974C492E1DA3062600E276E1 /* InfoPlist.strings */; };
+		974C49361DA3062600E276E1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 974C49381DA3062600E276E1 /* InfoPlist.strings */; };
+		974C49561DA3077300E276E1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 974C49581DA3077300E276E1 /* Localizable.strings */; };
+		974C495B1DA3077300E276E1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 974C495D1DA3077300E276E1 /* InfoPlist.strings */; };
+		974C49631DA307FF00E276E1 /* adjustlayoutiPad.js in Resources */ = {isa = PBXBuildFile; fileRef = 974C495F1DA307FF00E276E1 /* adjustlayoutiPad.js */; };
+		974C49641DA307FF00E276E1 /* adjustlayoutiPhone.js in Resources */ = {isa = PBXBuildFile; fileRef = 974C49601DA307FF00E276E1 /* adjustlayoutiPhone.js */; };
+		974C49651DA307FF00E276E1 /* getSnippet.js in Resources */ = {isa = PBXBuildFile; fileRef = 974C49611DA307FF00E276E1 /* getSnippet.js */; };
+		974C49661DA307FF00E276E1 /* getTableOfContents.js in Resources */ = {isa = PBXBuildFile; fileRef = 974C49621DA307FF00E276E1 /* getTableOfContents.js */; };
 		974F33C61D99CAD700879D35 /* BookmarkOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974F33C51D99CAD700879D35 /* BookmarkOperation.swift */; };
 		975227CD1D0227E8001D1DDE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227CA1D0227E8001D1DDE /* Main.storyboard */; };
 		975227CE1D0227E8001D1DDE /* Setting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227CB1D0227E8001D1DDE /* Setting.storyboard */; };
@@ -121,7 +126,6 @@
 		97E60A021D10423A00EBCB9D /* ShadowViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E60A011D10423A00EBCB9D /* ShadowViews.swift */; };
 		97E850CB1D2DA5B300A9F688 /* About.html in Resources */ = {isa = PBXBuildFile; fileRef = 97E850CA1D2DA5B300A9F688 /* About.html */; };
 		97F03CE21D2440470040D26E /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97F03CE11D2440470040D26E /* Search.storyboard */; };
-		97FD5CE71D3D90B7001C74A2 /* getSnippet.js in Resources */ = {isa = PBXBuildFile; fileRef = 97FD5CE61D3D90B7001C74A2 /* getSnippet.js */; };
 		97FDACC41D85A3B300DEDACB /* Language+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813E1D6F712800E5FA99 /* Language+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
@@ -184,9 +188,6 @@
 		9711871D1CEB449A00B9909D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		971187A81CEB694400B9909D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
 		971A10151D022872007FC62C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Kiwix-iOS/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
-		971A101A1D0228E8007FC62C /* adjustlayoutiPad.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjustlayoutiPad.js; sourceTree = "<group>"; };
-		971A101B1D0228E8007FC62C /* adjustlayoutiPhone.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjustlayoutiPhone.js; sourceTree = "<group>"; };
-		971A101C1D0228E8007FC62C /* getTableOfContents.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = getTableOfContents.js; sourceTree = "<group>"; };
 		971A10201D022A34007FC62C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Kiwix-iOS/Info.plist"; sourceTree = SOURCE_ROOT; };
 		971A10241D022AD5007FC62C /* BarButtonItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarButtonItems.swift; sourceTree = "<group>"; };
 		971A10261D022AD5007FC62C /* TableViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCells.swift; sourceTree = "<group>"; };
@@ -195,7 +196,6 @@
 		971A10291D022AD5007FC62C /* RefreshHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshHUD.swift; sourceTree = "<group>"; };
 		971A102A1D022AD5007FC62C /* SearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		971A10511D022D9D007FC62C /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		971A10781D022F05007FC62C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		971A107A1D022F74007FC62C /* DownloaderLearnMore.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = DownloaderLearnMore.html; path = Kiwix/HelpDocuments/DownloaderLearnMore.html; sourceTree = SOURCE_ROOT; };
 		971A107B1D022F74007FC62C /* ImportBookLearnMore.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = ImportBookLearnMore.html; path = Kiwix/HelpDocuments/ImportBookLearnMore.html; sourceTree = SOURCE_ROOT; };
 		971A107C1D022F74007FC62C /* Pic_I.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Pic_I.png; path = Kiwix/HelpDocuments/Pic_I.png; sourceTree = SOURCE_ROOT; };
@@ -227,6 +227,15 @@
 		973DD40D1D343F2F009D45DB /* libxapian.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxapian.a; path = Kiwix/libkiwix/iOS/libxapian.a; sourceTree = "<group>"; };
 		973DD40E1D343F2F009D45DB /* libzim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzim.a; path = Kiwix/libkiwix/iOS/libzim.a; sourceTree = "<group>"; };
 		973DD4271D36E3E4009D45DB /* SettingDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingDetailController.swift; path = "Kiwix-iOS/Controller/Setting/SettingDetailController.swift"; sourceTree = SOURCE_ROOT; };
+		974C49231DA3062500E276E1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		974C492D1DA3062600E276E1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		974C49371DA3062600E276E1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		974C49571DA3077300E276E1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		974C495C1DA3077300E276E1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		974C495F1DA307FF00E276E1 /* adjustlayoutiPad.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjustlayoutiPad.js; sourceTree = "<group>"; };
+		974C49601DA307FF00E276E1 /* adjustlayoutiPhone.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjustlayoutiPhone.js; sourceTree = "<group>"; };
+		974C49611DA307FF00E276E1 /* getSnippet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = getSnippet.js; sourceTree = "<group>"; };
+		974C49621DA307FF00E276E1 /* getTableOfContents.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = getTableOfContents.js; sourceTree = "<group>"; };
 		974F33C51D99CAD700879D35 /* BookmarkOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkOperation.swift; sourceTree = "<group>"; };
 		975227CA1D0227E8001D1DDE /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "Kiwix-iOS/Storyboard/Main.storyboard"; sourceTree = SOURCE_ROOT; };
 		975227CB1D0227E8001D1DDE /* Setting.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Setting.storyboard; path = "Kiwix-iOS/Storyboard/Setting.storyboard"; sourceTree = SOURCE_ROOT; };
@@ -307,7 +316,6 @@
 		97E60A011D10423A00EBCB9D /* ShadowViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowViews.swift; sourceTree = "<group>"; };
 		97E850CA1D2DA5B300A9F688 /* About.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = About.html; path = Kiwix/HelpDocuments/About.html; sourceTree = SOURCE_ROOT; };
 		97F03CE11D2440470040D26E /* Search.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Search.storyboard; path = "Kiwix-iOS/Storyboard/Search.storyboard"; sourceTree = SOURCE_ROOT; };
-		97FD5CE61D3D90B7001C74A2 /* getSnippet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = getSnippet.js; sourceTree = "<group>"; };
 		DA0AB5D61F19BE37BD0AFA0A /* Pods-Kiwix-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		EC884ACBBA260AF741C4C4FE /* Pods_Kiwix_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Kiwix_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -463,18 +471,6 @@
 			path = "Kiwix-iOS/Kiwix";
 			sourceTree = "<group>";
 		};
-		971A10191D0228E8007FC62C /* JavaScripts */ = {
-			isa = PBXGroup;
-			children = (
-				971A101A1D0228E8007FC62C /* adjustlayoutiPad.js */,
-				971A101B1D0228E8007FC62C /* adjustlayoutiPhone.js */,
-				971A101C1D0228E8007FC62C /* getTableOfContents.js */,
-				97FD5CE61D3D90B7001C74A2 /* getSnippet.js */,
-			);
-			name = JavaScripts;
-			path = "Kiwix-iOS/JavaScripts";
-			sourceTree = SOURCE_ROOT;
-		};
 		971A10221D022AD5007FC62C /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -522,7 +518,7 @@
 				978C587A1C1CCC9C0077AE47 /* Storyboards */,
 				978C58821C1CCDAF0077AE47 /* Controllers */,
 				971A10221D022AD5007FC62C /* View */,
-				978C58791C1CCC920077AE47 /* Supporting */,
+				974C49391DA3067C00E276E1 /* Support */,
 				97A2AB891C1B80FF00052E74 /* Products */,
 			);
 			name = iOS;
@@ -552,6 +548,7 @@
 			children = (
 				9711872D1CEB507600B9909D /* CoreData */,
 				97163D321CD7E79F008BE2D6 /* Help Docs */,
+				974C495E1DA307FF00E276E1 /* JavaScripts */,
 				971187051CEB426E00B9909D /* libkiwix */,
 				97DF259E1D6F9942001648A3 /* Network */,
 				97E5712A1CA0525300FF4F1D /* Operation */,
@@ -570,6 +567,31 @@
 				97219DBC1D383A00009FDFF1 /* BookmarkHUD.swift */,
 			);
 			path = Bookmark;
+			sourceTree = "<group>";
+		};
+		974C49391DA3067C00E276E1 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				974C495D1DA3077300E276E1 /* InfoPlist.strings */,
+				974C49581DA3077300E276E1 /* Localizable.strings */,
+				971C4F0B1D3FFFA60027B7D2 /* Kiwix.entitlements */,
+				975227CF1D022814001D1DDE /* LaunchScreen.storyboard */,
+				971A10201D022A34007FC62C /* Info.plist */,
+				971A10151D022872007FC62C /* Assets.xcassets */,
+			);
+			name = Support;
+			path = Kiwix;
+			sourceTree = "<group>";
+		};
+		974C495E1DA307FF00E276E1 /* JavaScripts */ = {
+			isa = PBXGroup;
+			children = (
+				974C495F1DA307FF00E276E1 /* adjustlayoutiPad.js */,
+				974C49601DA307FF00E276E1 /* adjustlayoutiPhone.js */,
+				974C49611DA307FF00E276E1 /* getSnippet.js */,
+				974C49621DA307FF00E276E1 /* getTableOfContents.js */,
+			);
+			path = JavaScripts;
 			sourceTree = "<group>";
 		};
 		975227A41D020C0F001D1DDE /* indexer */ = {
@@ -619,6 +641,7 @@
 		9779C3151D4575AD0064CC8E /* Bookmarks */ = {
 			isa = PBXGroup;
 			children = (
+				974C492E1DA3062600E276E1 /* InfoPlist.strings */,
 				9788419C1DA2FF2A00D22D3C /* MainInterface.storyboard */,
 				9779C3161D4575AE0064CC8E /* TodayViewController.swift */,
 				97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */,
@@ -636,20 +659,6 @@
 				970E7F7F1DA0305000741290 /* WelcomeController.swift */,
 			);
 			path = Others;
-			sourceTree = "<group>";
-		};
-		978C58791C1CCC920077AE47 /* Supporting */ = {
-			isa = PBXGroup;
-			children = (
-				971C4F0B1D3FFFA60027B7D2 /* Kiwix.entitlements */,
-				971A10791D022F05007FC62C /* Localizable.stringsdict */,
-				971A10191D0228E8007FC62C /* JavaScripts */,
-				975227CF1D022814001D1DDE /* LaunchScreen.storyboard */,
-				971A10201D022A34007FC62C /* Info.plist */,
-				971A10151D022872007FC62C /* Assets.xcassets */,
-			);
-			name = Supporting;
-			path = Kiwix;
 			sourceTree = "<group>";
 		};
 		978C587A1C1CCC9C0077AE47 /* Storyboards */ = {
@@ -730,6 +739,7 @@
 		97A2ABA21C1B80FF00052E74 /* Kiwix-iOSTests */ = {
 			isa = PBXGroup;
 			children = (
+				974C49241DA3062500E276E1 /* InfoPlist.strings */,
 				973BCD171CEB402900F10B44 /* Info.plist */,
 				973BCD181CEB402900F10B44 /* KiwixTests.swift */,
 			);
@@ -740,6 +750,7 @@
 		97A2ABAD1C1B810000052E74 /* Kiwix-iOSUITests */ = {
 			isa = PBXGroup;
 			children = (
+				974C49381DA3062600E276E1 /* InfoPlist.strings */,
 				973BCD1B1CEB403700F10B44 /* Info.plist */,
 			);
 			name = "Kiwix-iOSUITests";
@@ -1014,6 +1025,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 97A2AB7F1C1B80FF00052E74;
 			productRefGroup = 97A2AB891C1B80FF00052E74 /* Products */;
@@ -1049,6 +1061,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				974C492C1DA3062600E276E1 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1056,25 +1069,26 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				971A101F1D0228E8007FC62C /* getTableOfContents.js in Resources */,
+				974C495B1DA3077300E276E1 /* InfoPlist.strings in Resources */,
 				971A10811D022F74007FC62C /* Pic_P.png in Resources */,
-				97FD5CE71D3D90B7001C74A2 /* getSnippet.js in Resources */,
-				971A101D1D0228E8007FC62C /* adjustlayoutiPad.js in Resources */,
 				975227D01D022814001D1DDE /* LaunchScreen.storyboard in Resources */,
+				974C49631DA307FF00E276E1 /* adjustlayoutiPad.js in Resources */,
+				974C49561DA3077300E276E1 /* Localizable.strings in Resources */,
 				97F03CE21D2440470040D26E /* Search.storyboard in Resources */,
 				9734E54E1D289D060061C39B /* Welcome.storyboard in Resources */,
 				971A10161D022872007FC62C /* Assets.xcassets in Resources */,
-				971A10771D022F05007FC62C /* Localizable.stringsdict in Resources */,
 				97E850CB1D2DA5B300A9F688 /* About.html in Resources */,
 				97C601DC1D7F15C400362D4F /* Bookmark.storyboard in Resources */,
+				974C49641DA307FF00E276E1 /* adjustlayoutiPhone.js in Resources */,
+				974C49661DA307FF00E276E1 /* getTableOfContents.js in Resources */,
 				975227CD1D0227E8001D1DDE /* Main.storyboard in Resources */,
 				975227CE1D0227E8001D1DDE /* Setting.storyboard in Resources */,
 				971A10801D022F74007FC62C /* Pic_I.png in Resources */,
 				9788419D1DA2FF2A00D22D3C /* MainInterface.storyboard in Resources */,
-				971A101E1D0228E8007FC62C /* adjustlayoutiPhone.js in Resources */,
 				97C005D61D64B3B0004352E8 /* Library.storyboard in Resources */,
 				971A107F1D022F74007FC62C /* ImportBookLearnMore.html in Resources */,
 				971A107E1D022F74007FC62C /* DownloaderLearnMore.html in Resources */,
+				974C49651DA307FF00E276E1 /* getSnippet.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1082,6 +1096,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				974C49221DA3062500E276E1 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1089,6 +1104,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				974C49361DA3062600E276E1 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1314,12 +1330,47 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		971A10791D022F05007FC62C /* Localizable.stringsdict */ = {
+		974C49241DA3062500E276E1 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				971A10781D022F05007FC62C /* en */,
+				974C49231DA3062500E276E1 /* zh-Hans */,
 			);
-			name = Localizable.stringsdict;
+			name = InfoPlist.strings;
+			path = "Kiwix-iOSTests";
+			sourceTree = SOURCE_ROOT;
+		};
+		974C492E1DA3062600E276E1 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				974C492D1DA3062600E276E1 /* zh-Hans */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		974C49381DA3062600E276E1 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				974C49371DA3062600E276E1 /* zh-Hans */,
+			);
+			name = InfoPlist.strings;
+			path = "Kiwix-iOSUITests";
+			sourceTree = SOURCE_ROOT;
+		};
+		974C49581DA3077300E276E1 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				974C49571DA3077300E276E1 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			path = "Kiwix-iOS";
+			sourceTree = SOURCE_ROOT;
+		};
+		974C495D1DA3077300E276E1 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				974C495C1DA3077300E276E1 /* zh-Hans */,
+			);
+			name = InfoPlist.strings;
 			path = "Kiwix-iOS";
 			sourceTree = SOURCE_ROOT;
 		};

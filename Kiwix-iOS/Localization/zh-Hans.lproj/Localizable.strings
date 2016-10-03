@@ -1,0 +1,373 @@
+/* Library, Language Filter */
+"%@ and %@ are selected" = "已选中%@和%@";
+
+/* Notification: Book download finished */
+"%@ and %@ have been downloaded" = "";
+
+/* Notification: Book download finished */
+"%@ and %d others have been downloaded" = "";
+
+/* Notification: Book download finished */
+"%@ has been downloaded" = "";
+
+/* Library, Language Filter */
+"%@ is selected" = "已选中%@";
+
+/* Library, download tab */
+"%@ of %@ completed" = "";
+
+/* Library, Language Filter */
+"%d languages are selected" = "";
+
+/* Library, Language Filter */
+"A-Z" = "";
+
+/* Language selection: table section title */
+"ALL" = "";
+
+/* About page title
+   Setting */
+"About" = "";
+
+/* Library, local tab */
+"Add Book by download in app or iTunes File Sharing. New books will show up here automatically." = "";
+
+/* First Time Launch Message */
+"Add a Book to Get Started" = "";
+
+/* No comment provided by engineer. */
+"Add using iTunes File Sharing" = "";
+
+/* Notification: Book download finished */
+"All download tasks are finished." = "";
+
+/* Library, Language Filter */
+"All languages will be displayed" = "";
+
+/* No comment provided by engineer. */
+"Article Count" = "";
+
+/* Setting */
+"Backup Local Files" = "";
+
+/* No comment provided by engineer. */
+"Book Info" = "";
+
+/* Notification: Book download finished */
+"Book download finished" = "";
+
+/* Bookmark HUD */
+"Bookmarked" = "";
+
+/* Bookmarks view title
+   Common */
+"Bookmarks" = "";
+
+/* Basic
+   Library, download tab */
+"Cancel" = "";
+
+/* Cannot Finish Handoff Alert */
+"Cannot Finish Handoff" = "";
+
+/* No comment provided by engineer. */
+"Clear Search History" = "";
+
+/* Setting, search history cleared */
+"Cleared" = "";
+
+/* Library, cloud tab */
+"Cloud" = "";
+
+/* No comment provided by engineer. */
+"Copy URL" = "";
+
+/* Library, Language Filter */
+"Count" = "";
+
+/* No comment provided by engineer. */
+"Creation Date" = "";
+
+/* No comment provided by engineer. */
+"Creator" = "";
+
+/* Basic */
+"Delete" = "";
+
+/* Basic */
+"Disabled" = "";
+
+/* First Time Launch Message */
+"Dismiss" = "";
+
+/* Common */
+"Done" = "";
+
+/* Common
+   First Time Launch Message
+   Library, cloud tab
+   Library, download tab */
+"Download" = "";
+
+/* Library, Space Alert */
+"Download Anyway" = "";
+
+/* No comment provided by engineer. */
+"Downloading" = "";
+
+/* Setting: Font Size */
+"Drag the slider above to adjust the font size of the article. The size of the percentage numbers shows the acutal font size of article body on screen." = "";
+
+/* No comment provided by engineer. */
+"Embedded" = "";
+
+/* Library, download tab */
+"Estimating" = "";
+
+/* No comment provided by engineer. */
+"External" = "";
+
+/* Setting */
+"Font Size" = "";
+
+/* OS X, Preference */
+"General" = "";
+
+/* Rate Kiwix in App Store Alert Title
+   Setting */
+"Give Kiwix a rate!" = "";
+
+/* Language selection: table section title */
+"HIDING" = "";
+
+/* Help page title */
+"Help: Downloader" = "";
+
+/* Help page title */
+"Help: Import Books" = "";
+
+/* Basic */
+"History" = "";
+
+/* First Time Launch Message */
+"Import" = "";
+
+/* No comment provided by engineer. */
+"Index" = "";
+
+/* Version footnote (please translate 'v' as version) */
+"Kiwix for iOS v%@" = "";
+
+/* No comment provided by engineer. */
+"Language" = "";
+
+/* Library, Language Filter */
+"Languages" = "";
+
+/* Refresh Library Control */
+"Last Refresh: %@ ago" = "";
+
+/* OS X, Preference */
+"Library" = "";
+
+/* Library, cloud tab */
+"Library is refreshed successfully!" = "";
+
+/* Library, local tab */
+"Local" = "";
+
+/* Setting */
+"Misc" = "";
+
+/* Network Required Alert */
+"Network Required" = "";
+
+/* Rate Kiwix in App Store Alert Action */
+"Never remind me again" = "";
+
+/* Basic */
+"No" = "";
+
+/* Search, Book Selector */
+"No Books Available" = "";
+
+/* Library, download tab */
+"No Download Tasks" = "";
+
+/* No comment provided by engineer. */
+"No Lang Available" = "";
+
+/* Library, local tab */
+"No Local Books on Device" = "";
+
+/* No comment provided by engineer. */
+"No Picture" = "";
+
+/* Search, Results */
+"No Results" = "";
+
+/* No comment provided by engineer. */
+"None" = "";
+
+/* Setting: Backup local files comment */
+"Note: Large zim file collection can take up a lot of space in backup. You may want to turn this off if you use iCloud for backup." = "";
+
+/* Basic */
+"OK" = "";
+
+/* Basic */
+"Off" = "";
+
+/* Basic */
+"On" = "";
+
+/* Library, Language Filter Alert */
+"Only Show Preferred Language?" = "";
+
+/* Library, Delete Alert */
+"Only the zim file will be removed. All bookmarks related to this book will still be kept." = "";
+
+/* Library, Language Filter */
+"Original" = "";
+
+/* Basic */
+"Others" = "";
+
+/* Library, download tab */
+"Pause" = "";
+
+/* No comment provided by engineer. */
+"Persistent ID" = "";
+
+/* No comment provided by engineer. */
+"Pictures" = "";
+
+/* Search, Book Selector */
+"Please download or import a book." = "";
+
+/* Library, Space Alert */
+"Please free up some space and try again." = "";
+
+/* Search, Results */
+"Please refine your search term." = "";
+
+/* No comment provided by engineer. */
+"Publisher" = "";
+
+/* Refresh Library Control */
+"Pull Down To Refresh" = "";
+
+/* Library, local tab */
+"Purgeable" = "";
+
+/* Rate Kiwix in App Store Alert Action */
+"Rate Now" = "";
+
+/* Library, cloud tab */
+"Refresh" = "";
+
+/* Basic
+   Library, cloud tab */
+"Refreshing..." = "";
+
+/* Rate Kiwix in App Store Alert Action */
+"Remind me later" = "";
+
+/* Basic
+   Library, local tab */
+"Remove" = "";
+
+/* Library, Delete Alert */
+"Remove this book?" = "";
+
+/* Bookmark HUD */
+"Removed" = "";
+
+/* Library, download tab */
+"Restart" = "";
+
+/* Library, download tab */
+"Resume" = "";
+
+/* Library, local tab */
+"Retained by Bookmarks" = "";
+
+/* Language selection: table section title */
+"SHOWING" = "";
+
+/* Common */
+"Search" = "";
+
+/* Setting */
+"Search History" = "";
+
+/* Settings */
+"Settings" = "";
+
+/* No comment provided by engineer. */
+"Size" = "";
+
+/* Library, Space Alert */
+"Space Alert" = "";
+
+/* Library
+   Library, cloud tab */
+"Space Not Enough" = "";
+
+/* Table Of Content, empty text */
+"Table Of Contents Not Available" = "";
+
+/* Bookmark HUD */
+"Tap anywhere to dismiss" = "";
+
+/* No comment provided by engineer. */
+"Tap on A Book to See Detail" = "";
+
+/* Copy URL Alert */
+"The URL is %@" = "";
+
+/* Cannot Finish Handoff Alert */
+"The book required to complete the Handoff is not on the device. Please download the book and try again." = "";
+
+/* Library, cloud tab */
+"There are some books in the cloud" = "";
+
+/* No comment provided by engineer. */
+"This ID does not change in different versions of the same book." = "";
+
+/* Library, Space Alert */
+"This book will take up more than 80% of your free space." = "";
+
+/* Bookmarks view message */
+"To add a bookmark, long press the star button when reading an article" = "";
+
+/* Copy URL Alert */
+"URL Copied Successfully" = "";
+
+/* Network Required Alert */
+"Unable to connect to server. Please check your Internet connection." = "";
+
+/* Basic */
+"Unknown" = "";
+
+/* Rate Kiwix in App Store Alert Message */
+"We hope you enjoyed using Kiwix so far. Would you like to give us a rate in App Store?" = "";
+
+/* First Time Launch Message */
+"Welcome to Kiwix" = "";
+
+/* Setting: Backup local files comment */
+"When turned off, iOS will not backup zim files and index folders to iCloud or iTunes." = "";
+
+/* Basic */
+"Yes" = "";
+
+/* Setting, search history cleared */
+"Your search history has been cleared!" = "";
+
+/* OS X, Preference */
+"Zim Files" = "";
+
+/* Basic */
+"and" = "";
+

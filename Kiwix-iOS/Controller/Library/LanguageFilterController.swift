@@ -223,14 +223,14 @@ protocol LanguageFilterUpdating: class {
 extension LocalizedStrings {
     class LangFilter {
         private static let comment = "Library, Language Filter"
-        class var languages: String {return NSLocalizedString("Languages", comment: comment)}
-        class var noLangSelected: String {return NSLocalizedString("All languages will be displayed", comment: comment)}
-        class var oneLangSelected: String {return NSLocalizedString("%@ is selected", comment: comment)}
-        class var twoLangSelected: String {return NSLocalizedString("%@ and %@ are selected", comment: comment)}
-        class var someLangSelected: String {return NSLocalizedString("%d languages are selected", comment: comment)}
+        class var languages: String {return NSLocalizedString("Languages", comment: "Library, Language Filter")}
+        class var noLangSelected: String {return NSLocalizedString("All languages will be displayed", comment: "Library, Language Filter")}
+        class var oneLangSelected: String {return NSLocalizedString("%@ is selected", comment: "Library, Language Filter")}
+        class var twoLangSelected: String {return NSLocalizedString("%@ and %@ are selected", comment: "Library, Language Filter")}
+        class var someLangSelected: String {return NSLocalizedString("%d languages are selected", comment: "Library, Language Filter")}
         
-        class var count: String {return NSLocalizedString("Count", comment: comment)}
-        class var a_z: String {return NSLocalizedString("A-Z", comment: comment)}
-        class var original: String {return NSLocalizedString("Original", comment: comment)}
+        class var count: String {return NSLocalizedString("Count", comment: "Library, Language Filter")}
+        class var a_z: String {return NSLocalizedString("A-Z", comment: "Library, Language Filter")}
+        class var original: String {return NSLocalizedString("Original", comment: "Library, Language Filter")}
     }
 }
