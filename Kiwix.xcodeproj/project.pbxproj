@@ -959,7 +959,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0800;
-				ORGANIZATIONNAME = Chris;
+				ORGANIZATIONNAME = "Wikimedia CH";
 				TargetAttributes = {
 					973BCCFB1CEB3FA400F10B44 = {
 						CreatedOnToolsVersion = 7.3.1;
