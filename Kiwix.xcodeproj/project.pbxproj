@@ -68,8 +68,8 @@
 		9764F5991D833F2B00E0B1C4 /* KiwixURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764F5981D833F2B00E0B1C4 /* KiwixURL.swift */; };
 		9779C3141D4575AD0064CC8E /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E609F01D103DED00EBCB9D /* NotificationCenter.framework */; };
 		9779C3171D4575AE0064CC8E /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779C3161D4575AE0064CC8E /* TodayViewController.swift */; };
-		9779C31A1D4575AE0064CC8E /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9779C3181D4575AE0064CC8E /* MainInterface.storyboard */; };
 		9779C31E1D4575AE0064CC8E /* Bookmarks.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9779C3131D4575AD0064CC8E /* Bookmarks.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9788419D1DA2FF2A00D22D3C /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9788419C1DA2FF2A00D22D3C /* MainInterface.storyboard */; };
 		97A127C91D777CF100FB204D /* RecentSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C51D777CF100FB204D /* RecentSearchController.swift */; };
 		97A127CA1D777CF100FB204D /* SearchBooksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C61D777CF100FB204D /* SearchBooksController.swift */; };
 		97A127CB1D777CF100FB204D /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C71D777CF100FB204D /* SearchController.swift */; };
@@ -241,8 +241,8 @@
 		976A0C801D41619C0006A742 /* DZNEmptyDataSet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DZNEmptyDataSet.framework; path = "../../../../Users/chrisli/Library/Developer/Xcode/DerivedData/Kiwix-ayxrfhaqnfxzendihdolvkklkmhk/Build/Products/Debug-iphoneos/DZNEmptyDataSet/DZNEmptyDataSet.framework"; sourceTree = "<group>"; };
 		9779C3131D4575AD0064CC8E /* Bookmarks.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Bookmarks.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		9779C3161D4575AE0064CC8E /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
-		9779C3191D4575AE0064CC8E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		9779C31B1D4575AE0064CC8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9788419C1DA2FF2A00D22D3C /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		97A127C51D777CF100FB204D /* RecentSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentSearchController.swift; sourceTree = "<group>"; };
 		97A127C61D777CF100FB204D /* SearchBooksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBooksController.swift; sourceTree = "<group>"; };
 		97A127C71D777CF100FB204D /* SearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
@@ -619,9 +619,9 @@
 		9779C3151D4575AD0064CC8E /* Bookmarks */ = {
 			isa = PBXGroup;
 			children = (
+				9788419C1DA2FF2A00D22D3C /* MainInterface.storyboard */,
 				9779C3161D4575AE0064CC8E /* TodayViewController.swift */,
 				97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */,
-				9779C3181D4575AE0064CC8E /* MainInterface.storyboard */,
 				9779C31B1D4575AE0064CC8E /* Info.plist */,
 			);
 			path = Bookmarks;
@@ -1049,7 +1049,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9779C31A1D4575AE0064CC8E /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1071,6 +1070,7 @@
 				975227CD1D0227E8001D1DDE /* Main.storyboard in Resources */,
 				975227CE1D0227E8001D1DDE /* Setting.storyboard in Resources */,
 				971A10801D022F74007FC62C /* Pic_I.png in Resources */,
+				9788419D1DA2FF2A00D22D3C /* MainInterface.storyboard in Resources */,
 				971A101E1D0228E8007FC62C /* adjustlayoutiPhone.js in Resources */,
 				97C005D61D64B3B0004352E8 /* Library.storyboard in Resources */,
 				971A107F1D022F74007FC62C /* ImportBookLearnMore.html in Resources */,
@@ -1322,14 +1322,6 @@
 			name = Localizable.stringsdict;
 			path = "Kiwix-iOS";
 			sourceTree = SOURCE_ROOT;
-		};
-		9779C3181D4575AE0064CC8E /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				9779C3191D4575AE0064CC8E /* Base */,
-			);
-			name = MainInterface.storyboard;
-			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
 
