@@ -52,7 +52,7 @@ class SettingDetailController: UITableViewController {
             return cell
         case .SearchHistory:
             let cell = tableView.dequeueReusableCellWithIdentifier("CenterTextCell", forIndexPath: indexPath)
-            cell.textLabel?.text = LocalizedStrings.clearSearchHistory
+            cell.textLabel?.text = NSLocalizedString("Clear Search History", comment: "")
             return cell
         }
     }
@@ -72,9 +72,8 @@ class SettingDetailController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        guard let title = tableView.cellForRowAtIndexPath(indexPath)?.textLabel?.text else {return}
-        switch title {
-        case LocalizedStrings.clearSearchHistory:
+        switch page {
+        case .SearchHistory:
             Preference.RecentSearch.terms = [String]()
             let controller = UIAlertController(title: NSLocalizedString("Cleared", comment: "Setting, search history cleared"),
                                                message: NSLocalizedString("Your search history has been cleared!", comment: "Setting, search history cleared"),
@@ -86,11 +85,6 @@ class SettingDetailController: UITableViewController {
             return
         }
     }
-
-}
-
-extension LocalizedStrings {
-    static let clearSearchHistory = NSLocalizedString("Clear Search History", comment: "")
 }
 
 enum SettingDetailControllerContentType: String {

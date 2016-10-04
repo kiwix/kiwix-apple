@@ -285,36 +285,32 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     }
     
     class LocalizedStrings {
-        private static let comment = "Library, Book Detail"
-        static let hasPic = NSLocalizedString("Pictures", comment: comment)
-        static let noPic = NSLocalizedString("No Picture", comment: comment)
+        static let hasPic = NSLocalizedString("Pictures", comment: "Library, Book Detail")
+        static let noPic = NSLocalizedString("No Picture", comment: "Library, Book Detail")
         
-        static let download = NSLocalizedString("Download", comment: comment)
-        static let downloading = NSLocalizedString("Downloading", comment: comment)
-        static let spaceNotEnough = NSLocalizedString("Space Not Enough", comment: comment)
-        static let remove = NSLocalizedString("Remove", comment: comment)
-        static let addUsingiTunesFileSharing = NSLocalizedString("Add using iTunes File Sharing", comment: comment)
-//        static let pause = NSLocalizedString("Pause", comment: comment)
-//        static let resume = NSLocalizedString("Resume", comment: comment)
-//        static let cancel = NSLocalizedString("Cancel", comment: comment)
+        static let download = NSLocalizedString("Download", comment: "Library, Book Detail")
+        static let downloading = NSLocalizedString("Downloading", comment: "Library, Book Detail")
+        static let spaceNotEnough = NSLocalizedString("Space Not Enough", comment: "Library, Book Detail")
+        static let remove = NSLocalizedString("Remove", comment: "Library, Book Detail")
+        static let addUsingiTunesFileSharing = NSLocalizedString("Add using iTunes File Sharing", comment: "Library, Book Detail")
         
-        static let bookmarks = NSLocalizedString("Bookmarks", comment: comment)
-        static let bookInfo = NSLocalizedString("Book Info", comment: comment)
-        static let size = NSLocalizedString("Size", comment: comment)
-        static let createDate = NSLocalizedString("Creation Date", comment: comment)
-        static let arcitleCount = NSLocalizedString("Article Count", comment: comment)
-        static let language = NSLocalizedString("Language", comment: comment)
-        static let creator = NSLocalizedString("Creator", comment: comment)
-        static let publisher = NSLocalizedString("Publisher", comment: comment)
-        static let index = NSLocalizedString("Index", comment: comment)
+        static let bookmarks = NSLocalizedString("Bookmarks", comment: "Library, Book Detail")
+        static let bookInfo = NSLocalizedString("Book Info", comment: "Library, Book Detail")
+        static let size = NSLocalizedString("Size", comment: "Library, Book Detail")
+        static let createDate = NSLocalizedString("Creation Date", comment: "Library, Book Detail")
+        static let arcitleCount = NSLocalizedString("Article Count", comment: "Library, Book Detail")
+        static let language = NSLocalizedString("Language", comment: "Library, Book Detail")
+        static let creator = NSLocalizedString("Creator", comment: "Library, Book Detail")
+        static let publisher = NSLocalizedString("Publisher", comment: "Library, Book Detail")
+        static let index = NSLocalizedString("Index", comment: "Library, Book Detail")
         
-        static let none = NSLocalizedString("None", comment: comment)
-        static let embedded = NSLocalizedString("Embedded", comment: comment)
-        static let external = NSLocalizedString("External", comment: comment)
+        static let none = NSLocalizedString("None", comment: "Library, Book Detail, Index Status")
+        static let embedded = NSLocalizedString("Embedded", comment: "Library, Book Detail, Index Status")
+        static let external = NSLocalizedString("External", comment: "Library, Book Detail, Index Status")
         
-        static let pid = NSLocalizedString("Persistent ID", comment: comment)
-        static let pidNote = NSLocalizedString("This ID does not change in different versions of the same book.", comment: comment)
+        static let pid = NSLocalizedString("Persistent ID", comment: "Library, Book Detail")
+        static let pidNote = NSLocalizedString("This ID does not change in different versions of the same book.", comment: "Library, Book Detail")
         
-        static let copyURL = NSLocalizedString("Copy URL", comment: comment)
+        static let copyURL = NSLocalizedString("Copy URL", comment: "Library, Book Detail")
     }
 }

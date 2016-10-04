@@ -118,7 +118,7 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
                     if string.containsString(" — ") {
                         return string.stringByReplacingOccurrencesOfString(" — ", withString: "\n")
                     } else {
-                        return string + "\n" + LocalizedStrings.estimating
+                        return string + "\n" + NSLocalizedString("Estimating", comment: "Library, download tab")
                     }
                 } else {
                     return string + "\n" + String(downloadTask.state)
@@ -131,7 +131,8 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
             cell.detailLabel.text = {
                 let downloadedSize = NSByteCountFormatter.stringFromByteCount(downloadTask.totalBytesWritten, countStyle: .File)
                 let fileSize = book.fileSizeDescription
-                return String(format: LocalizedStrings.percentCompleted, downloadedSize, fileSize) + "\n" + String(downloadTask.state)
+                return String(format: NSLocalizedString("%@ of %@ completed", comment: "Library, download tab"), downloadedSize, fileSize)
+                    + "\n" + String(downloadTask.state)
             }()
         }
     }
@@ -288,20 +289,5 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
         tableView.endUpdates()
         //refreshTabBarBadgeCount()
     }
-    
-    // MARK: - LocalizedStrings
-    
-    class LocalizedStrings {
-        static let download = NSLocalizedString("Download", comment: "Library, download tab")
-        
-        static let pause = NSLocalizedString("Pause", comment: "Library, download tab")
-        static let resume = NSLocalizedString("Resume", comment: "Library, download tab")
-        static let restart = NSLocalizedString("Restart", comment: "Library, download tab")
-        static let cancel = NSLocalizedString("Cancel", comment: "Library, download tab")
-        
-        static let estimating = NSLocalizedString("Estimating", comment: "Library, download tab")
-        static let percentCompleted = NSLocalizedString("%@ of %@ completed", comment: "Library, download tab")
-    }
-    
     
 }

@@ -31,11 +31,7 @@ class FontSizeController: UITableViewController {
     // MARK: - Table view data source
     
     override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return LocalizedStrings.fontSizeMessage
+        return NSLocalizedString("Drag the slider above to adjust the font size of the article. The size of the percentage numbers shows the acutal font size of article body on screen.", comment: "Setting: Font Size")
     }
 
-}
-
-extension LocalizedStrings {
-    class var fontSizeMessage: String {return NSLocalizedString("Drag the slider above to adjust the font size of the article. The size of the percentage numbers shows the acutal font size of article body on screen.", comment: "Setting: Font Size")}
 }

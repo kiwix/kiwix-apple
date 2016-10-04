@@ -86,7 +86,7 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
     }
     
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
-        let text = NSLocalizedString("Bookmarks", comment: "Bookmarks view title")
+        let text = LocalizedStrings.bookmarks
         let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(18.0),
                           NSForegroundColorAttributeName: UIColor.darkGrayColor()]
         return NSAttributedString(string: text, attributes: attributes)

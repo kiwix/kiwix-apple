@@ -25,7 +25,7 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = LocalizedStrings.LangFilter.languages
+        title = NSLocalizedString("Languages", comment: "Library, Language Filter")
         
         tableView.emptyDataSetSource = self
         tableView.emptyDataSetDelegate = self
@@ -60,10 +60,10 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
         sortSegmentedControl.selectedSegmentIndex = Preference.LangFilter.sortByAlphabeticalAsc == true ? 1: 0
         langNameSegmentedControl.selectedSegmentIndex = Preference.LangFilter.displayInOriginalLocale == true ? 1 : 0
         
-        sortSegmentedControl.setTitle(LocalizedStrings.LangFilter.count, forSegmentAtIndex: 0)
-        sortSegmentedControl.setTitle(LocalizedStrings.LangFilter.a_z, forSegmentAtIndex: 1)
+        sortSegmentedControl.setTitle(NSLocalizedString("Count", comment: "Library, Language Filter"), forSegmentAtIndex: 0)
+        sortSegmentedControl.setTitle(NSLocalizedString("A-Z", comment: "Library, Language Filter"), forSegmentAtIndex: 1)
         langNameSegmentedControl.setTitle(NSLocale.currentLocale().displayNameForKey(NSLocaleIdentifier, value: NSLocale.preferredLangCodes[0]), forSegmentAtIndex: 0)
-        langNameSegmentedControl.setTitle(LocalizedStrings.LangFilter.original, forSegmentAtIndex: 1)
+        langNameSegmentedControl.setTitle(NSLocalizedString("Original", comment: "Library, Language Filter"), forSegmentAtIndex: 1)
     }
     
     func sort() {
@@ -83,16 +83,16 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
         
         switch showLanguages.count {
         case 0:
-            return LocalizedStrings.LangFilter.noLangSelected
+            return NSLocalizedString("All languages will be displayed", comment: "Library, Language Filter")
         case 1:
             guard let name = firstName else {return nil}
-            return String(format: LocalizedStrings.LangFilter.oneLangSelected, name)
+            return String(format: NSLocalizedString("%@ is selected", comment: "Library, Language Filter"), name)
         case 2:
             guard let name0 = firstName else {return nil}
             guard let name1 = secondName else {return nil}
-            return String(format: LocalizedStrings.LangFilter.twoLangSelected, name0, name1)
+            return String(format: NSLocalizedString("%@ and %@ are selected", comment: "Library, Language Filter"), name0, name1)
         default:
-            return String(format: LocalizedStrings.LangFilter.someLangSelected, showLanguages.count)
+            return String(format: NSLocalizedString("%d languages are selected", comment: "Library, Language Filter"), showLanguages.count)
         }
     }
     
@@ -218,19 +218,4 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
 protocol LanguageFilterUpdating: class {
     func languageFilterChanged()
     func languageFilterFinsihEditing(hasChanges: Bool)
-}
-
-extension LocalizedStrings {
-    class LangFilter {
-        private static let comment = "Library, Language Filter"
-        class var languages: String {return NSLocalizedString("Languages", comment: "Library, Language Filter")}
-        class var noLangSelected: String {return NSLocalizedString("All languages will be displayed", comment: "Library, Language Filter")}
-        class var oneLangSelected: String {return NSLocalizedString("%@ is selected", comment: "Library, Language Filter")}
-        class var twoLangSelected: String {return NSLocalizedString("%@ and %@ are selected", comment: "Library, Language Filter")}
-        class var someLangSelected: String {return NSLocalizedString("%d languages are selected", comment: "Library, Language Filter")}
-        
-        class var count: String {return NSLocalizedString("Count", comment: "Library, Language Filter")}
-        class var a_z: String {return NSLocalizedString("A-Z", comment: "Library, Language Filter")}
-        class var original: String {return NSLocalizedString("Original", comment: "Library, Language Filter")}
-    }
 }

@@ -16,8 +16,7 @@ extension String {
         return formatter.stringFromDate(date)
     }
     
-    static func formattedFileSizeString(fileBytes: Int64?) -> String {
-        guard let fileBytes = fileBytes else {return LocalizedStrings.unknown}
+    static func formattedFileSizeString(fileBytes: Int64) -> String {
         return NSByteCountFormatter.stringFromByteCount(fileBytes, countStyle: .File)
     }
     
@@ -49,52 +48,23 @@ extension String {
 }
 
 class LocalizedStrings {
-    
-    static let download = NSLocalizedString("Download", comment: "Common")
     static let bookmarks = NSLocalizedString("Bookmarks", comment: "Common")
     static let search = NSLocalizedString("Search", comment: "Common")
+    
+    static let cloud = NSLocalizedString("Cloud", comment: "Common")
+    static let download = NSLocalizedString("Download", comment: "Common")
+    static let local = NSLocalizedString("Local", comment: "Common")
+    
+    static let spaceNotEnough = NSLocalizedString("Space Not Enough", comment: "Common")
+    static let pause = NSLocalizedString("Pause", comment: "Common")
+    static let resume = NSLocalizedString("Resume", comment: "Common")
+    static let restart = NSLocalizedString("Restart", comment: "Common")
+    static let cancel = NSLocalizedString("Cancel", comment: "Common")
+    static let remove = NSLocalizedString("Remove", comment: "Common")
+    
+    static let yes = NSLocalizedString("Yes", comment: "Common")
+    static let on = NSLocalizedString("On", comment: "Common")
+    static let off = NSLocalizedString("Off", comment: "Common")
+    static let and = NSLocalizedString("and", comment: "Common")
     static let done = NSLocalizedString("Done", comment: "Common")
-    
-    class Library {
-        static let spaceNotEnough = NSLocalizedString("Space Not Enough", comment: "Library")
-        
-    }
-    
-    
-    
-    
-    
-    class var yes: String {return NSLocalizedString("Yes", comment: "Basic")}
-    class var no: String {return NSLocalizedString("No", comment: "Basic")}
-    class var on: String {return NSLocalizedString("On", comment: "Basic")}
-    class var off: String {return NSLocalizedString("Off", comment: "Basic")}
-    class var and: String {return NSLocalizedString("and", comment: "Basic")}
-    class var ok: String {return NSLocalizedString("OK", comment: "Basic")}
-    class var cancel: String {return NSLocalizedString("Cancel", comment: "Basic")}
-    class var others: String {return NSLocalizedString("Others", comment: "Basic")}
-    class var unknown: String {return NSLocalizedString("Unknown", comment: "Basic")}
-    class var disabled: String {return NSLocalizedString("Disabled", comment: "Basic")}
-    class var remove: String {return NSLocalizedString("Remove", comment: "Basic")}
-    class var delete: String {return NSLocalizedString("Delete", comment: "Basic")}
-    class var refreshing: String {return NSLocalizedString("Refreshing...", comment: "Basic")}
-    class var history: String {return NSLocalizedString("History", comment: "Basic")}
-    
-    // MARK: - OS X
-//    class var General: String {return NSLocalizedString("General", comment: "OS X, Preference")}
-//    class var Library: String {return NSLocalizedString("Library", comment: "OS X, Preference")}
-//    class var ZimFiles: String {return NSLocalizedString("Zim Files", comment: "OS X, Preference")}
-    
-    class Common {
-        private static let comment = "Common"
-        static let ok = NSLocalizedString("OK", comment: comment)
-        static let yes = NSLocalizedString("Yes", comment: comment)
-        static let cancel = NSLocalizedString("Cancel", comment: comment)
-    }
-    
-    class LibraryTabTitle {
-        private static let comment = "Library Tab Titles"
-        static let cloud = "Cloud"
-        static let download = "Download"
-        static let local = "Local"
-    }
 }
