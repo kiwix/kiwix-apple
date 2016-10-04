@@ -58,6 +58,7 @@
 		974C49641DA307FF00E276E1 /* adjustlayoutiPhone.js in Resources */ = {isa = PBXBuildFile; fileRef = 974C49601DA307FF00E276E1 /* adjustlayoutiPhone.js */; };
 		974C49651DA307FF00E276E1 /* getSnippet.js in Resources */ = {isa = PBXBuildFile; fileRef = 974C49611DA307FF00E276E1 /* getSnippet.js */; };
 		974C49661DA307FF00E276E1 /* getTableOfContents.js in Resources */ = {isa = PBXBuildFile; fileRef = 974C49621DA307FF00E276E1 /* getTableOfContents.js */; };
+		974C49681DA4266200E276E1 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 974C49671DA4266200E276E1 /* CloudKit.framework */; };
 		974F33C61D99CAD700879D35 /* BookmarkOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974F33C51D99CAD700879D35 /* BookmarkOperation.swift */; };
 		975227CD1D0227E8001D1DDE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227CA1D0227E8001D1DDE /* Main.storyboard */; };
 		975227CE1D0227E8001D1DDE /* Setting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227CB1D0227E8001D1DDE /* Setting.storyboard */; };
@@ -232,6 +233,7 @@
 		974C49601DA307FF00E276E1 /* adjustlayoutiPhone.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjustlayoutiPhone.js; sourceTree = "<group>"; };
 		974C49611DA307FF00E276E1 /* getSnippet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = getSnippet.js; sourceTree = "<group>"; };
 		974C49621DA307FF00E276E1 /* getTableOfContents.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = getTableOfContents.js; sourceTree = "<group>"; };
+		974C49671DA4266200E276E1 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		974F33C51D99CAD700879D35 /* BookmarkOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkOperation.swift; sourceTree = "<group>"; };
 		975227CA1D0227E8001D1DDE /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "Kiwix-iOS/Storyboard/Main.storyboard"; sourceTree = SOURCE_ROOT; };
 		975227CB1D0227E8001D1DDE /* Setting.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Setting.storyboard; path = "Kiwix-iOS/Storyboard/Setting.storyboard"; sourceTree = SOURCE_ROOT; };
@@ -336,6 +338,7 @@
 				973DD4121D343F2F009D45DB /* libicule.a in Frameworks */,
 				973DD4131D343F2F009D45DB /* libiculx.a in Frameworks */,
 				973DD4141D343F2F009D45DB /* libicutest.a in Frameworks */,
+				974C49681DA4266200E276E1 /* CloudKit.framework in Frameworks */,
 				973DD4151D343F2F009D45DB /* libicutu.a in Frameworks */,
 				973DD4161D343F2F009D45DB /* libicuuc.a in Frameworks */,
 				973DD4181D343F2F009D45DB /* libxapian.a in Frameworks */,
@@ -365,6 +368,7 @@
 		931D277C156AE671D3F9EADA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				974C49671DA4266200E276E1 /* CloudKit.framework */,
 				9764F5921D830EF200E0B1C4 /* liblzma.tbd */,
 				976A0C801D41619C0006A742 /* DZNEmptyDataSet.framework */,
 				973DD4041D343F2F009D45DB /* libicudata.a */,
@@ -941,6 +945,12 @@
 							};
 							com.apple.Maps.iOS = {
 								enabled = 0;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
 							};
 						};
 					};
