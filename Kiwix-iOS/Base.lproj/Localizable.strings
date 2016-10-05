@@ -1,5 +1,5 @@
 /* Library, Language Filter */
-"%@ and %@ are selected" = "已选中%@和%@";
+"%@ and %@ are selected" = "%@ and %@ are selected";
 
 /* Notification: Book download finished */
 "%@ and %@ have been downloaded" = "";
@@ -11,7 +11,7 @@
 "%@ has been downloaded" = "";
 
 /* Library, Language Filter */
-"%@ is selected" = "已选中%@";
+"%@ is selected" = "%@ is selected";
 
 /* Library, download tab */
 "%@ of %@ completed" = "";
@@ -35,7 +35,7 @@
 /* First Time Launch Message */
 "Add a Book to Get Started" = "";
 
-/* No comment provided by engineer. */
+/* Library, Book Detail */
 "Add using iTunes File Sharing" = "";
 
 /* Notification: Book download finished */
@@ -44,13 +44,13 @@
 /* Library, Language Filter */
 "All languages will be displayed" = "";
 
-/* No comment provided by engineer. */
+/* Library, Book Detail */
 "Article Count" = "";
 
 /* Setting */
 "Backup Local Files" = "";
 
-/* No comment provided by engineer. */
+/* Library, Book Detail */
 "Book Info" = "";
 
 /* Notification: Book download finished */
@@ -59,12 +59,11 @@
 /* Bookmark HUD */
 "Bookmarked" = "";
 
-/* Bookmarks view title
-   Common */
+/* Common
+   Library, Book Detail */
 "Bookmarks" = "";
 
-/* Basic
-   Library, download tab */
+/* Common */
 "Cancel" = "";
 
 /* Cannot Finish Handoff Alert */
@@ -76,26 +75,20 @@
 /* Setting, search history cleared */
 "Cleared" = "";
 
-/* Library, cloud tab */
+/* Common */
 "Cloud" = "";
 
-/* No comment provided by engineer. */
+/* Library, Book Detail */
 "Copy URL" = "";
 
 /* Library, Language Filter */
 "Count" = "";
 
-/* No comment provided by engineer. */
+/* Library, Book Detail */
 "Creation Date" = "";
 
-/* No comment provided by engineer. */
+/* Library, Book Detail */
 "Creator" = "";
-
-/* Basic */
-"Delete" = "";
-
-/* Basic */
-"Disabled" = "";
 
 /* First Time Launch Message */
 "Dismiss" = "";
@@ -105,33 +98,29 @@
 
 /* Common
    First Time Launch Message
-   Library, cloud tab
-   Library, download tab */
+   Library, Book Detail */
 "Download" = "";
 
 /* Library, Space Alert */
 "Download Anyway" = "";
 
-/* No comment provided by engineer. */
+/* Library, Book Detail */
 "Downloading" = "";
 
 /* Setting: Font Size */
 "Drag the slider above to adjust the font size of the article. The size of the percentage numbers shows the acutal font size of article body on screen." = "";
 
-/* No comment provided by engineer. */
+/* Library, Book Detail, Index Status */
 "Embedded" = "";
 
 /* Library, download tab */
 "Estimating" = "";
 
-/* No comment provided by engineer. */
+/* Library, Book Detail, Index Status */
 "External" = "";
 
 /* Setting */
 "Font Size" = "";
-
-/* OS X, Preference */
-"General" = "";
 
 /* Rate Kiwix in App Store Alert Title
    Setting */
@@ -146,19 +135,16 @@
 /* Help page title */
 "Help: Import Books" = "";
 
-/* Basic */
-"History" = "";
-
 /* First Time Launch Message */
 "Import" = "";
 
-/* No comment provided by engineer. */
+/* Library, Book Detail */
 "Index" = "";
 
 /* Version footnote (please translate 'v' as version) */
 "Kiwix for iOS v%@" = "";
 
-/* No comment provided by engineer. */
+/* Library, Book Detail */
 "Language" = "";
 
 /* Library, Language Filter */
@@ -167,13 +153,10 @@
 /* Refresh Library Control */
 "Last Refresh: %@ ago" = "";
 
-/* OS X, Preference */
-"Library" = "";
-
 /* Library, cloud tab */
 "Library is refreshed successfully!" = "";
 
-/* Library, local tab */
+/* Common */
 "Local" = "";
 
 /* Setting */
@@ -184,9 +167,6 @@
 
 /* Rate Kiwix in App Store Alert Action */
 "Never remind me again" = "";
-
-/* Basic */
-"No" = "";
 
 /* Search, Book Selector */
 "No Books Available" = "";
@@ -200,25 +180,22 @@
 /* Library, local tab */
 "No Local Books on Device" = "";
 
-/* No comment provided by engineer. */
+/* Library, Book Detail */
 "No Picture" = "";
 
 /* Search, Results */
 "No Results" = "";
 
-/* No comment provided by engineer. */
+/* Library, Book Detail, Index Status */
 "None" = "";
 
 /* Setting: Backup local files comment */
 "Note: Large zim file collection can take up a lot of space in backup. You may want to turn this off if you use iCloud for backup." = "";
 
-/* Basic */
-"OK" = "";
-
-/* Basic */
+/* Common */
 "Off" = "";
 
-/* Basic */
+/* Common */
 "On" = "";
 
 /* Library, Language Filter Alert */
@@ -230,16 +207,13 @@
 /* Library, Language Filter */
 "Original" = "";
 
-/* Basic */
-"Others" = "";
-
-/* Library, download tab */
+/* Common */
 "Pause" = "";
 
-/* No comment provided by engineer. */
+/* Library, Book Detail */
 "Persistent ID" = "";
 
-/* No comment provided by engineer. */
+/* Library, Book Detail */
 "Pictures" = "";
 
 /* Search, Book Selector */
@@ -251,7 +225,7 @@
 /* Search, Results */
 "Please refine your search term." = "";
 
-/* No comment provided by engineer. */
+/* Library, Book Detail */
 "Publisher" = "";
 
 /* Refresh Library Control */
@@ -266,15 +240,14 @@
 /* Library, cloud tab */
 "Refresh" = "";
 
-/* Basic
-   Library, cloud tab */
+/* Library, cloud tab */
 "Refreshing..." = "";
 
 /* Rate Kiwix in App Store Alert Action */
 "Remind me later" = "";
 
-/* Basic
-   Library, local tab */
+/* Common
+   Library, Book Detail */
 "Remove" = "";
 
 /* Library, Delete Alert */
@@ -283,10 +256,10 @@
 /* Bookmark HUD */
 "Removed" = "";
 
-/* Library, download tab */
+/* Common */
 "Restart" = "";
 
-/* Library, download tab */
+/* Common */
 "Resume" = "";
 
 /* Library, local tab */
@@ -304,14 +277,14 @@
 /* Settings */
 "Settings" = "";
 
-/* No comment provided by engineer. */
+/* Library, Book Detail */
 "Size" = "";
 
 /* Library, Space Alert */
 "Space Alert" = "";
 
-/* Library
-   Library, cloud tab */
+/* Common
+   Library, Book Detail */
 "Space Not Enough" = "";
 
 /* Table Of Content, empty text */
@@ -332,7 +305,7 @@
 /* Library, cloud tab */
 "There are some books in the cloud" = "";
 
-/* No comment provided by engineer. */
+/* Library, Book Detail */
 "This ID does not change in different versions of the same book." = "";
 
 /* Library, Space Alert */
@@ -347,9 +320,6 @@
 /* Network Required Alert */
 "Unable to connect to server. Please check your Internet connection." = "";
 
-/* Basic */
-"Unknown" = "";
-
 /* Rate Kiwix in App Store Alert Message */
 "We hope you enjoyed using Kiwix so far. Would you like to give us a rate in App Store?" = "";
 
@@ -359,15 +329,12 @@
 /* Setting: Backup local files comment */
 "When turned off, iOS will not backup zim files and index folders to iCloud or iTunes." = "";
 
-/* Basic */
+/* Common */
 "Yes" = "";
 
 /* Setting, search history cleared */
 "Your search history has been cleared!" = "";
 
-/* OS X, Preference */
-"Zim Files" = "";
-
-/* Basic */
+/* Common */
 "and" = "";
 

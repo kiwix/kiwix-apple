@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import CloudKit
 import Operations
 import UserNotifications
 
@@ -30,6 +31,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             let settings = UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: nil)
             UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+        }
+    }
+    
+    func registerCloudKit() {
+        if #available(iOS 10, *) {
+            guard !Preference.hasSubscribedToCloudKitChanges else {return}
+            
+            let subscription = CKDatabaseSubscription(subscriptionID: "")
+            let notificationInfo = CKNotificationInfo()
+            notificationInfo.shouldSendContentAvailable = true
+            subscription.notificationInfo = notificationInfo
+            
+            let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
+            operation.modifySubscriptionsCompletionBlock = { savedSubscriptions, _, error in
+                if let error = error {
+                    print(error.localizedDescription)
+                } else {
+                    Preference.hasSubscribedToCloudKitChanges = true
+                }
+            }
+            
+            let database = CKContainer(identifier: "iCloud.org.kiwix").privateCloudDatabase
+            database.addOperation(operation)
         }
     }
     

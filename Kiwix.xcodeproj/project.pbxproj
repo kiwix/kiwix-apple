@@ -49,11 +49,6 @@
 		973DD4181D343F2F009D45DB /* libxapian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40D1D343F2F009D45DB /* libxapian.a */; };
 		973DD4191D343F2F009D45DB /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40E1D343F2F009D45DB /* libzim.a */; };
 		973DD4281D36E3E4009D45DB /* SettingDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD4271D36E3E4009D45DB /* SettingDetailController.swift */; };
-		974C49221DA3062500E276E1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 974C49241DA3062500E276E1 /* InfoPlist.strings */; };
-		974C492C1DA3062600E276E1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 974C492E1DA3062600E276E1 /* InfoPlist.strings */; };
-		974C49361DA3062600E276E1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 974C49381DA3062600E276E1 /* InfoPlist.strings */; };
-		974C49561DA3077300E276E1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 974C49581DA3077300E276E1 /* Localizable.strings */; };
-		974C495B1DA3077300E276E1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 974C495D1DA3077300E276E1 /* InfoPlist.strings */; };
 		974C49631DA307FF00E276E1 /* adjustlayoutiPad.js in Resources */ = {isa = PBXBuildFile; fileRef = 974C495F1DA307FF00E276E1 /* adjustlayoutiPad.js */; };
 		974C49641DA307FF00E276E1 /* adjustlayoutiPhone.js in Resources */ = {isa = PBXBuildFile; fileRef = 974C49601DA307FF00E276E1 /* adjustlayoutiPhone.js */; };
 		974C49651DA307FF00E276E1 /* getSnippet.js in Resources */ = {isa = PBXBuildFile; fileRef = 974C49611DA307FF00E276E1 /* getSnippet.js */; };
@@ -224,11 +219,6 @@
 		973DD40D1D343F2F009D45DB /* libxapian.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxapian.a; path = Kiwix/libkiwix/iOS/libxapian.a; sourceTree = "<group>"; };
 		973DD40E1D343F2F009D45DB /* libzim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzim.a; path = Kiwix/libkiwix/iOS/libzim.a; sourceTree = "<group>"; };
 		973DD4271D36E3E4009D45DB /* SettingDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingDetailController.swift; path = "Kiwix-iOS/Controller/Setting/SettingDetailController.swift"; sourceTree = SOURCE_ROOT; };
-		974C49231DA3062500E276E1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		974C492D1DA3062600E276E1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		974C49371DA3062600E276E1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		974C49571DA3077300E276E1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		974C495C1DA3077300E276E1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		974C495F1DA307FF00E276E1 /* adjustlayoutiPad.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjustlayoutiPad.js; sourceTree = "<group>"; };
 		974C49601DA307FF00E276E1 /* adjustlayoutiPhone.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjustlayoutiPhone.js; sourceTree = "<group>"; };
 		974C49611DA307FF00E276E1 /* getSnippet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = getSnippet.js; sourceTree = "<group>"; };
@@ -558,8 +548,6 @@
 		974C49391DA3067C00E276E1 /* Support */ = {
 			isa = PBXGroup;
 			children = (
-				974C495D1DA3077300E276E1 /* InfoPlist.strings */,
-				974C49581DA3077300E276E1 /* Localizable.strings */,
 				971C4F0B1D3FFFA60027B7D2 /* Kiwix.entitlements */,
 				975227CF1D022814001D1DDE /* LaunchScreen.storyboard */,
 				971A10201D022A34007FC62C /* Info.plist */,
@@ -627,7 +615,6 @@
 		9779C3151D4575AD0064CC8E /* Bookmarks */ = {
 			isa = PBXGroup;
 			children = (
-				974C492E1DA3062600E276E1 /* InfoPlist.strings */,
 				9788419C1DA2FF2A00D22D3C /* MainInterface.storyboard */,
 				9779C3161D4575AE0064CC8E /* TodayViewController.swift */,
 				97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */,
@@ -723,7 +710,6 @@
 		97A2ABA21C1B80FF00052E74 /* Kiwix-iOSTests */ = {
 			isa = PBXGroup;
 			children = (
-				974C49241DA3062500E276E1 /* InfoPlist.strings */,
 				973BCD171CEB402900F10B44 /* Info.plist */,
 				973BCD181CEB402900F10B44 /* KiwixTests.swift */,
 			);
@@ -734,7 +720,6 @@
 		97A2ABAD1C1B810000052E74 /* Kiwix-iOSUITests */ = {
 			isa = PBXGroup;
 			children = (
-				974C49381DA3062600E276E1 /* InfoPlist.strings */,
 				973BCD1B1CEB403700F10B44 /* Info.plist */,
 			);
 			name = "Kiwix-iOSUITests";
@@ -970,11 +955,6 @@
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
-			knownRegions = (
-				en,
-				Base,
-				"zh-Hans",
-			);
 			mainGroup = 97A2AB7F1C1B80FF00052E74;
 			productRefGroup = 97A2AB891C1B80FF00052E74 /* Products */;
 			projectDirPath = "";
@@ -993,7 +973,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				974C492C1DA3062600E276E1 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1001,11 +980,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				974C495B1DA3077300E276E1 /* InfoPlist.strings in Resources */,
 				971A10811D022F74007FC62C /* Pic_P.png in Resources */,
 				975227D01D022814001D1DDE /* LaunchScreen.storyboard in Resources */,
 				974C49631DA307FF00E276E1 /* adjustlayoutiPad.js in Resources */,
-				974C49561DA3077300E276E1 /* Localizable.strings in Resources */,
 				97F03CE21D2440470040D26E /* Search.storyboard in Resources */,
 				9734E54E1D289D060061C39B /* Welcome.storyboard in Resources */,
 				971A10161D022872007FC62C /* Assets.xcassets in Resources */,
@@ -1028,7 +1005,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				974C49221DA3062500E276E1 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1036,7 +1012,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				974C49361DA3062600E276E1 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1244,53 +1219,6 @@
 			targetProxy = 97A2ABAB1C1B810000052E74 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		974C49241DA3062500E276E1 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				974C49231DA3062500E276E1 /* zh-Hans */,
-			);
-			name = InfoPlist.strings;
-			path = "Kiwix-iOSTests";
-			sourceTree = SOURCE_ROOT;
-		};
-		974C492E1DA3062600E276E1 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				974C492D1DA3062600E276E1 /* zh-Hans */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		974C49381DA3062600E276E1 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				974C49371DA3062600E276E1 /* zh-Hans */,
-			);
-			name = InfoPlist.strings;
-			path = "Kiwix-iOSUITests";
-			sourceTree = SOURCE_ROOT;
-		};
-		974C49581DA3077300E276E1 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				974C49571DA3077300E276E1 /* zh-Hans */,
-			);
-			name = Localizable.strings;
-			path = "Kiwix-iOS";
-			sourceTree = SOURCE_ROOT;
-		};
-		974C495D1DA3077300E276E1 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				974C495C1DA3077300E276E1 /* zh-Hans */,
-			);
-			name = InfoPlist.strings;
-			path = "Kiwix-iOS";
-			sourceTree = SOURCE_ROOT;
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		9779C3201D4575AE0064CC8E /* Debug */ = {
