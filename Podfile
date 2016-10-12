@@ -12,7 +12,7 @@ pod 'Operations', :git => 'https://github.com/ProcedureKit/ProcedureKit.git', :b
 
 end
 
-target 'Kiwix-OSX' do
+target 'Kiwix-macOS' do
 
 platform :osx, '10.10'
 

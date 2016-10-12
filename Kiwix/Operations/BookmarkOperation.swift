@@ -91,32 +91,53 @@ class BookmarkCloudKitOperation: Operation {
     }
     
     override func execute() {
-        guard let bookID = article.book?.id else {finish(); return}
-        
-        let recordID = CKRecordID(recordName: bookID + "|" + article.path)
-        let database = CKContainer(identifier: "iCloud.org.kiwix").privateCloudDatabase
-        
-        database.fetchRecordWithID(recordID) { (record, error) in
-            if let record = record {
-                if self.article.isBookmarked {
-                    self.populate(record, with: self.article)
-                    database.saveRecord(record, completionHandler: { (record, error) in
-                        self.finish()
-                    })
-                } else {
-                    database.deleteRecordWithID(recordID, completionHandler: { (recordID, error) in
-                        self.finish()
-                    })
-                }
-            } else {
-                guard self.article.isBookmarked else {self.finish(); return}
-                let record = CKRecord(recordType: "Article", recordID: recordID)
-                self.populate(record, with: self.article)
-                database.saveRecord(record, completionHandler: { (record, error) in
-                    self.finish()
-                })
-            }
+//        guard let bookID = article.book?.id else {finish(); return}
+//        let container = CKContainer(identifier: "iCloud.org.kiwix")
+//        container.accountStatusWithCompletionHandler { (status, error) in
+//            guard status == .Available else {self.finish(); return}
+//            
+//            container.fetchUserRecordIDWithCompletionHandler({ (recordID, error) in
+//                guard let ownerName = recordID?.recordName else {self.finish(); return}
+//                let database = container.privateCloudDatabase
+//                let zoneID = CKRecordZoneID(zoneName: bookID, ownerName: ownerName)
+//                database.fetchRecordZoneWithID(zoneID, completionHandler: { (zone, error) in
+//                    if let zone = zone {
+//                        
+//                    } else {
+//                        database.
+//                    }
+//                })
+//            })
         }
+        
+        
+        
+//        guard let bookID = article.book?.id else {finish(); return}
+//        
+//        let recordID = CKRecordID(recordName: bookID + "|" + article.path)
+//        let database = CKContainer(identifier: "iCloud.org.kiwix").privateCloudDatabase
+//        
+//        database.fetchRecordWithID(recordID) { (record, error) in
+//            if let record = record {
+//                if self.article.isBookmarked {
+//                    self.populate(record, with: self.article)
+//                    database.saveRecord(record, completionHandler: { (record, error) in
+//                        self.finish()
+//                    })
+//                } else {
+//                    database.deleteRecordWithID(recordID, completionHandler: { (recordID, error) in
+//                        self.finish()
+//                    })
+//                }
+//            } else {
+//                guard self.article.isBookmarked else {self.finish(); return}
+//                let record = CKRecord(recordType: "Article", recordID: recordID)
+//                self.populate(record, with: self.article)
+//                database.saveRecord(record, completionHandler: { (record, error) in
+//                    self.finish()
+//                })
+//            }
+//        }
     }
     
     func populate(record: CKRecord, with article: Article) {
