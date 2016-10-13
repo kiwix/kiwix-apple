@@ -11,11 +11,3 @@ pod 'MBProgressHUD', '~> 1.0.0'
 pod 'Operations', :git => 'https://github.com/ProcedureKit/ProcedureKit.git', :branch => 'swift/2.3'
 
 end
-
-target 'Kiwix-OSX' do
-
-platform :osx, '10.10'
-
-pod 'Operations', :git => 'https://github.com/ProcedureKit/ProcedureKit.git', :branch => 'swift/2.3'
-
-end

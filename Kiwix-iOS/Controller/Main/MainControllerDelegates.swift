@@ -84,8 +84,11 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
         if article.isBookmarked {article.bookmarkDate = NSDate()}
         if article.snippet == nil {article.snippet = JSInjection.getSnippet(webView)}
         
-        let operation = UpdateWidgetDataSourceOperation()
-        GlobalQueue.shared.addOperation(operation)
+//        let cloudKitUpdateOperation = BookmarkCloudKitOperation(article: article)
+//        GlobalQueue.shared.addOperation(cloudKitUpdateOperation)
+        
+        let updateWidgetOperation = UpdateWidgetDataSourceOperation()
+        GlobalQueue.shared.addOperation(updateWidgetOperation)
         
         let controller = Controllers.bookmarkHUD
         controller.bookmarkAdded = article.isBookmarked

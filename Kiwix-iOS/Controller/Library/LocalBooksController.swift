@@ -93,9 +93,9 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
         case "2":
             return LocalizedStrings.local
         case "3":
-            return LocalizedStrings.retainedByBookmarks
+            return NSLocalizedString("Retained by Bookmarks", comment: "Library, local tab")
         case "4":
-            return LocalizedStrings.purgeable
+            return NSLocalizedString("Purgeable", comment: "Library, local tab")
         default:
             return nil
         }
@@ -185,14 +185,5 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
     
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
-    }
-    
-    // MARK: - LocalizedStrings
-    
-    class LocalizedStrings{
-        static let local = NSLocalizedString("Local", comment: "Library, local tab")
-        static let remove = NSLocalizedString("Remove", comment: "Library, local tab")
-        static let retainedByBookmarks = NSLocalizedString("Retained by Bookmarks", comment: "Library, local tab")
-        static let purgeable = NSLocalizedString("Purgeable", comment: "Library, local tab")
     }
 }

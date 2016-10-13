@@ -69,7 +69,7 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
                 case 1:
                     return String(format: NSLocalizedString("%@ has been downloaded", comment: "Notification: Book download finished"), self.downloadedBookTitle[0])
                 case 2:
-                    return String(format: NSLocalizedString("%@ and @% have been downloaded", comment: "Notification: Book download finished"),
+                    return String(format: NSLocalizedString("%@ and %@ have been downloaded", comment: "Notification: Book download finished"),
                                   self.downloadedBookTitle[0], self.downloadedBookTitle[1])
                 default:
                     return String(format: NSLocalizedString("%@ and %d others have been downloaded", comment: "Notification: Book download finished"),

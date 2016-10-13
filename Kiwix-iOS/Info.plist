@@ -49,7 +49,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.8.1593</string>
+	<string>1.8.1739</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
@@ -97,6 +97,7 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
+		<string>remote-notification</string>
 	</array>
 	<key>UIFileSharingEnabled</key>
 	<true/>

@@ -12,7 +12,7 @@ import Operations
 class SpaceNotEnoughAlert: AlertOperation<UIViewController> {
     init(context: UIViewController) {
         super.init(presentAlertFrom: context)
-        title = LocalizedStrings.Library.spaceNotEnough
+        title = LocalizedStrings.spaceNotEnough
         message = NSLocalizedString("Please free up some space and try again.", comment: "Library, Space Alert")
         addActionWithTitle(LocalizedStrings.cancel)
     }
@@ -141,7 +141,7 @@ class CannotFinishHandoffAlert: AlertOperation<UIViewController> {
         super.init(presentAlertFrom: context)
         title = NSLocalizedString("Cannot Finish Handoff", comment: "Cannot Finish Handoff Alert")
         message = NSLocalizedString("The book required to complete the Handoff is not on the device. Please download the book and try again.", comment: "Cannot Finish Handoff Alert")
-        addActionWithTitle(LocalizedStrings.ok)
+        addActionWithTitle(LocalizedStrings.done)
     }
 }
 

@@ -143,7 +143,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
         hud.mode = .Text
         hud.label.numberOfLines = 0
-        hud.label.text = LocalizedStrings.libRefreshSuccessMessage
+        hud.label.text = NSLocalizedString("Library is refreshed successfully!", comment: "Library, cloud tab")
         hud.hideAnimated(true, afterDelay: 2)
     }
     
@@ -378,13 +378,4 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         tableView.endUpdates()
     }
     
-    // MARK: - LocalizedStrings
-    
-    class LocalizedStrings{
-        static let cloud = NSLocalizedString("Cloud", comment: "Library, cloud tab")
-        
-        static let download = NSLocalizedString("Download", comment: "Library, cloud tab")
-        static let spaceNotEnough = NSLocalizedString("Space Not Enough", comment: "Library, cloud tab")
-        static let libRefreshSuccessMessage = NSLocalizedString("Library is refreshed successfully!", comment: "Library, cloud tab")
-    }
 }

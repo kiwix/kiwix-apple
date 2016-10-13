@@ -15,6 +15,11 @@ class Preference {
         set{Defaults[.hasShowGetStartedAlert] = newValue}
     }
     
+    class var hasSubscribedToCloudKitChanges: Bool {
+        get{return Defaults[.hasSubscribedToCloudKitChanges]}
+        set{Defaults[.hasSubscribedToCloudKitChanges] = newValue}
+    }
+    
     // MARK: - Recent Search
     
     class RecentSearch {
@@ -103,6 +108,7 @@ class Preference {
 
 extension DefaultsKeys {
     static let hasShowGetStartedAlert = DefaultsKey<Bool>("hasShowGetStartedAlert")
+    static let hasSubscribedToCloudKitChanges = DefaultsKey<Bool>("hasSubscribedToCloudKitChanges")
     static let recentSearchTerms = DefaultsKey<[String]>("recentSearchTerms")
     static let webViewZoomScale = DefaultsKey<Double?>("webViewZoomScale")
     static let webViewNotInjectJavascriptToAdjustPageLayout = DefaultsKey<Bool>("webViewNotInjectJavascriptToAdjustPageLayout")
