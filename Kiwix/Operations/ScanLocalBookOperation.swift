@@ -54,7 +54,7 @@ class ScanLocalBookOperation: Operation {
     }
     
     override func operationDidFinish(errors: [ErrorType]) {
-        print("Scan finshed, lasted for \(-time.timeIntervalSinceNow) seconds.")
+        print(String(format: "Scan finshed, lasted for %.4f seconds.", -time.timeIntervalSinceNow))
         if shouldMigrateBookmarks {
             produceOperation(BookmarkMigrationOperation())
         }
