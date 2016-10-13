@@ -36,6 +36,7 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        tabBarController?.title = tabBarItem.title
         timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(DownloadTasksController.refreshProgress), userInfo: nil, repeats: true)
     }
     

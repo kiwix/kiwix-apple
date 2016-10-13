@@ -32,6 +32,7 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        tabBarController?.title = tabBarItem.title
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

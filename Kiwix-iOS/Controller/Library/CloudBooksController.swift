@@ -33,13 +33,14 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         tableView.emptyDataSetSource = self
         tableView.emptyDataSetDelegate = self
         tableView.tableFooterView = UIView()
-        
+            
         refreshControl = RefreshLibControl()
         refreshControl?.addTarget(self, action: #selector(CloudBooksController.refresh), forControlEvents: .ValueChanged)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        tabBarController?.title = tabBarItem.title
         configureNavBarButtons()
         refreshAutomatically()
         isOnScreen = true
