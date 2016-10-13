@@ -114,13 +114,6 @@ class MainController: UIViewController {
         }
     }
     
-    // MARK: - Tasks
-    
-    func setTableOfContentIfNeeded() {
-        guard traitCollection.horizontalSizeClass == .Regular && isShowingTableOfContents else {return}
-        tableOfContentsController?.headings = JSInjection.getTableOfContents(webView)
-    }
-    
     // MARK: - Configure
     
     func configureUIElements(horizontalSizeClass: UIUserInterfaceSizeClass) {
@@ -164,7 +157,7 @@ class MainController: UIViewController {
     }
     
     func configureTableOfContents() {
-        guard traitCollection.horizontalSizeClass == .Regular && isShowingTableOfContents else {return}
+        guard isShowingTableOfContents else {return}
         tableOfContentsController?.headings = JSInjection.getTableOfContents(webView)
     }
     
@@ -201,6 +194,7 @@ class MainController: UIViewController {
     func tableOfContentButtonTapped(sender: UIBarButtonItem) {
         guard let _ = article else {return}
         isShowingTableOfContents ? hideTableOfContentsController() : showTableOfContentsController()
+        configureTableOfContents()
     }
     
     func showLibraryButtonTapped() {
