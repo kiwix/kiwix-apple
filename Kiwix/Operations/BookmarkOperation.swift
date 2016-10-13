@@ -108,10 +108,10 @@ class BookmarkCloudKitOperation: Operation {
 //                    }
 //                })
 //            })
-        }
-        
-        
-        
+//        }
+//        
+//        
+//        
 //        guard let bookID = article.book?.id else {finish(); return}
 //        
 //        let recordID = CKRecordID(recordName: bookID + "|" + article.path)
