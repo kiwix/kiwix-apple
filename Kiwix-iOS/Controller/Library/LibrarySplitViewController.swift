@@ -32,8 +32,14 @@ class LibrarySplitViewController: UISplitViewController, UISplitViewControllerDe
     // MARK: - UISplitViewControllerDelegate
     
     func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
-        guard !isShowingLangFilter else {return false}
-        return true
+        let secondaryTopController = (secondaryViewController as? UINavigationController)?.topViewController
+        if let _ = secondaryTopController as? LanguageFilterController {
+            return false
+        } else if (secondaryTopController as? BookDetailController)?.book != nil {
+            return false
+        } else {
+            return true
+        }
     }
     
     var isShowingLangFilter: Bool {
