@@ -29,8 +29,7 @@ class JS {
     
     class func getTableOfContents(webView: UIWebView) -> [HTMLHeading] {
         let jString = "(new TableOfContents()).headerObjects;"
-        guard let context = webView.valueForKeyPath("documentView.webView.mainFrame.javaScriptContext") as? JSContext,
-            let elements = context.evaluateScript(jString).toArray() as? [[String: String]] else {return [HTMLHeading]()}
+        guard let elements = webView.context.evaluateScript(jString).toArray() as? [[String: String]] else {return [HTMLHeading]()}
         var headings = [HTMLHeading]()
         for element in elements {
             guard let heading = HTMLHeading(rawValue: element) else {continue}
@@ -40,10 +39,9 @@ class JS {
     }
     
     class func getSnippet(webView: UIWebView) -> String? {
-        guard let context = webView.valueForKeyPath("documentView.webView.mainFrame.javaScriptContext") as? JSContext,
-            let path = NSBundle.mainBundle().pathForResource("getSnippet", ofType: "js"),
+        guard let path = NSBundle.mainBundle().pathForResource("getSnippet", ofType: "js"),
             let jString = try? String(contentsOfFile: path),
-            let snippet = context.evaluateScript(jString).toString() else {return nil}
+            let snippet = webView.context.evaluateScript(jString).toString() else {return nil}
         return snippet == "null" ? nil : snippet
     }
 }
