@@ -18,7 +18,7 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
     var headings = [HTMLHeading]() {
         didSet {
             configurePreferredContentSize()
-            headinglevelMin = headings.map({$0.level}).minElement() ?? 0
+            headinglevelMin = max(2, headings.map({$0.level}).minElement() ?? 0)
             tableView.reloadData()
         }
     }
@@ -49,10 +49,22 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-        cell.textLabel?.text = headings[indexPath.row].textContent
-        cell.indentationLevel = (headings[indexPath.row].level - headinglevelMin) * 2
-        return cell
+        let heading = headings[indexPath.row]
+        switch heading.level {
+        case 1:
+            let cell = tableView.dequeueReusableCellWithIdentifier("H1Cell", forIndexPath: indexPath)
+            cell.textLabel?.text = heading.textContent
+            return cell
+        case 2:
+            let cell = tableView.dequeueReusableCellWithIdentifier("H2Cell", forIndexPath: indexPath)
+            cell.textLabel?.text = heading.textContent
+            return cell
+        default:
+            let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+            cell.textLabel?.text = heading.textContent
+            cell.indentationLevel = max(0, (heading.level - headinglevelMin) * 2)
+            return cell
+        }
     }
     
     // MARK: - Table view delegate

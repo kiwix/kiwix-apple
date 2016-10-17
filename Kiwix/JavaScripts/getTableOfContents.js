@@ -10,7 +10,7 @@ function getTableOfContents() {
             headers.push(elementToObject(element));
         }
     }
-    return headers;
+    return headers.length > 1 ? headers : undefined;
 }
 
 function elementToObject(element) {
