@@ -50,10 +50,8 @@
 		973DD4191D343F2F009D45DB /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD40E1D343F2F009D45DB /* libzim.a */; };
 		973DD4281D36E3E4009D45DB /* SettingDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973DD4271D36E3E4009D45DB /* SettingDetailController.swift */; };
 		974000151DB008C6009A740D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9788419C1DA2FF2A00D22D3C /* MainInterface.storyboard */; };
-		974C49631DA307FF00E276E1 /* adjustlayoutiPad.js in Resources */ = {isa = PBXBuildFile; fileRef = 974C495F1DA307FF00E276E1 /* adjustlayoutiPad.js */; };
-		974C49641DA307FF00E276E1 /* adjustlayoutiPhone.js in Resources */ = {isa = PBXBuildFile; fileRef = 974C49601DA307FF00E276E1 /* adjustlayoutiPhone.js */; };
 		974C49651DA307FF00E276E1 /* getSnippet.js in Resources */ = {isa = PBXBuildFile; fileRef = 974C49611DA307FF00E276E1 /* getSnippet.js */; };
-		974C49661DA307FF00E276E1 /* getTableOfContents.js in Resources */ = {isa = PBXBuildFile; fileRef = 974C49621DA307FF00E276E1 /* getTableOfContents.js */; };
+		974C49661DA307FF00E276E1 /* injection.js in Resources */ = {isa = PBXBuildFile; fileRef = 974C49621DA307FF00E276E1 /* injection.js */; };
 		974C49681DA4266200E276E1 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 974C49671DA4266200E276E1 /* CloudKit.framework */; };
 		974F33C61D99CAD700879D35 /* BookmarkOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974F33C51D99CAD700879D35 /* BookmarkOperation.swift */; };
 		975227CD1D0227E8001D1DDE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227CA1D0227E8001D1DDE /* Main.storyboard */; };
@@ -219,10 +217,8 @@
 		973DD40D1D343F2F009D45DB /* libxapian.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxapian.a; path = Kiwix/libkiwix/iOS/libxapian.a; sourceTree = "<group>"; };
 		973DD40E1D343F2F009D45DB /* libzim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzim.a; path = Kiwix/libkiwix/iOS/libzim.a; sourceTree = "<group>"; };
 		973DD4271D36E3E4009D45DB /* SettingDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingDetailController.swift; path = "Kiwix-iOS/Controller/Setting/SettingDetailController.swift"; sourceTree = SOURCE_ROOT; };
-		974C495F1DA307FF00E276E1 /* adjustlayoutiPad.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjustlayoutiPad.js; sourceTree = "<group>"; };
-		974C49601DA307FF00E276E1 /* adjustlayoutiPhone.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = adjustlayoutiPhone.js; sourceTree = "<group>"; };
 		974C49611DA307FF00E276E1 /* getSnippet.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = getSnippet.js; sourceTree = "<group>"; };
-		974C49621DA307FF00E276E1 /* getTableOfContents.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = getTableOfContents.js; sourceTree = "<group>"; };
+		974C49621DA307FF00E276E1 /* injection.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = injection.js; sourceTree = "<group>"; };
 		974C49671DA4266200E276E1 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		974F33C51D99CAD700879D35 /* BookmarkOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkOperation.swift; sourceTree = "<group>"; };
 		975227CA1D0227E8001D1DDE /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "Kiwix-iOS/Storyboard/Main.storyboard"; sourceTree = SOURCE_ROOT; };
@@ -560,10 +556,8 @@
 		974C495E1DA307FF00E276E1 /* JavaScripts */ = {
 			isa = PBXGroup;
 			children = (
-				974C495F1DA307FF00E276E1 /* adjustlayoutiPad.js */,
-				974C49601DA307FF00E276E1 /* adjustlayoutiPhone.js */,
 				974C49611DA307FF00E276E1 /* getSnippet.js */,
-				974C49621DA307FF00E276E1 /* getTableOfContents.js */,
+				974C49621DA307FF00E276E1 /* injection.js */,
 			);
 			path = JavaScripts;
 			sourceTree = "<group>";
@@ -994,14 +988,12 @@
 			files = (
 				971A10811D022F74007FC62C /* Pic_P.png in Resources */,
 				975227D01D022814001D1DDE /* LaunchScreen.storyboard in Resources */,
-				974C49631DA307FF00E276E1 /* adjustlayoutiPad.js in Resources */,
 				97F03CE21D2440470040D26E /* Search.storyboard in Resources */,
 				9734E54E1D289D060061C39B /* Welcome.storyboard in Resources */,
 				971A10161D022872007FC62C /* Assets.xcassets in Resources */,
 				97E850CB1D2DA5B300A9F688 /* About.html in Resources */,
 				97C601DC1D7F15C400362D4F /* Bookmark.storyboard in Resources */,
-				974C49641DA307FF00E276E1 /* adjustlayoutiPhone.js in Resources */,
-				974C49661DA307FF00E276E1 /* getTableOfContents.js in Resources */,
+				974C49661DA307FF00E276E1 /* injection.js in Resources */,
 				975227CD1D0227E8001D1DDE /* Main.storyboard in Resources */,
 				975227CE1D0227E8001D1DDE /* Setting.storyboard in Resources */,
 				971A10801D022F74007FC62C /* Pic_I.png in Resources */,

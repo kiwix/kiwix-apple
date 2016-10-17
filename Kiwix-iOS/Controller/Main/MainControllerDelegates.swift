@@ -52,6 +52,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
         configureNavigationButtonTint()
         configureTableOfContents()
         JSInjection.adjustFontSizeIfNeeded(webView)
+        JSInjection.inject(webView)
     }
     
     func webView(webView: UIWebView, didFailLoadWithError error: NSError) {

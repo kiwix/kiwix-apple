@@ -71,6 +71,7 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         delegate?.scrollTo(headings[indexPath.row])
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     // MARK: - Empty table datasource & delegate
