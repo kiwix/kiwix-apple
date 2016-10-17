@@ -1,5 +1,5 @@
 //
-//  JSInjection.swift
+//  JS.swift
 //  Kiwix
 //
 //  Created by Chris Li on 9/9/16.
@@ -9,13 +9,12 @@
 import UIKit
 import JavaScriptCore
 
-class JSInjection {
+class JS {
     
     class func inject(webView: UIWebView) {
-        let context = webView.valueForKeyPath("documentView.webView.mainFrame.javaScriptContext") as? JSContext
         let path = NSBundle.mainBundle().pathForResource("injection", ofType: "js")
         let jString = try? String(contentsOfFile: path!)
-        context?.evaluateScript(jString!)
+        webView.context.evaluateScript(jString!)
     }
     
     class func adjustFontSizeIfNeeded(webView: UIWebView) {
@@ -46,5 +45,11 @@ class JSInjection {
             let jString = try? String(contentsOfFile: path),
             let snippet = context.evaluateScript(jString).toString() else {return nil}
         return snippet == "null" ? nil : snippet
+    }
+}
+
+extension UIWebView {
+    var context: JSContext {
+        return valueForKeyPath("documentView.webView.mainFrame.javaScriptContext") as! JSContext
     }
 }

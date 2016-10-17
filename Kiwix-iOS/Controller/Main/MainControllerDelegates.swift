@@ -44,15 +44,15 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
         // Create article object
         guard let url = webView.request?.URL,
             let article = Article.addOrUpdate(url: url, context: NSManagedObjectContext.mainQueueContext) else {return}
-        article.title = JSInjection.getTitle(from: webView)
+        article.title = JS.getTitle(from: webView)
         article.thumbImagePath = URLResponseCache.shared.firstImage()?.path
         self.article = article
         
         // UI Updates
         configureNavigationButtonTint()
         configureTableOfContents()
-        JSInjection.adjustFontSizeIfNeeded(webView)
-        JSInjection.inject(webView)
+        JS.adjustFontSizeIfNeeded(webView)
+        JS.inject(webView)
     }
     
     func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
@@ -83,7 +83,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
         
         article.isBookmarked = !article.isBookmarked
         if article.isBookmarked {article.bookmarkDate = NSDate()}
-        if article.snippet == nil {article.snippet = JSInjection.getSnippet(webView)}
+        if article.snippet == nil {article.snippet = JS.getSnippet(webView)}
         
 //        let cloudKitUpdateOperation = BookmarkCloudKitOperation(article: article)
 //        GlobalQueue.shared.addOperation(cloudKitUpdateOperation)

@@ -158,7 +158,7 @@ class MainController: UIViewController {
     
     func configureTableOfContents() {
         guard isShowingTableOfContents else {return}
-        tableOfContentsController?.headings = JSInjection.getTableOfContents(webView)
+        tableOfContentsController?.headings = JS.getTableOfContents(webView)
     }
     
     func configureUserActivity() {
