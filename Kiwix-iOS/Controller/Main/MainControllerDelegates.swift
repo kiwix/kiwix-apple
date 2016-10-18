@@ -54,11 +54,16 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
         article.thumbImagePath = URLResponseCache.shared.firstImage()?.path
         self.article = article
         
+        // JS
+        JS.inject(webView)
+        JS.adjustFontSizeIfNeeded(webView)
+        if isShowingTableOfContents {
+            configureTableOfContents()
+            JS.startTOCCallBack(webView)
+        }
+        
         // UI Updates
         configureNavigationButtonTint()
-        configureTableOfContents()
-        JS.adjustFontSizeIfNeeded(webView)
-        JS.inject(webView)
     }
     
     func webView(webView: UIWebView, didFailLoadWithError error: NSError) {

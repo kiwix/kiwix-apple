@@ -158,6 +158,7 @@ class MainController: UIViewController {
     
     func configureTableOfContents() {
         guard isShowingTableOfContents else {return}
+        guard tableOfContentsController?.articleURL != article?.url else {return}
         tableOfContentsController?.headings = JS.getTableOfContents(webView)
     }
     
@@ -194,7 +195,6 @@ class MainController: UIViewController {
     func tableOfContentButtonTapped(sender: UIBarButtonItem) {
         guard let _ = article else {return}
         isShowingTableOfContents ? hideTableOfContentsController() : showTableOfContentsController()
-        configureTableOfContents()
     }
     
     func showLibraryButtonTapped() {

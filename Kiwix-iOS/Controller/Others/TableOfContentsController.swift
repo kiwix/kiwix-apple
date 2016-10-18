@@ -13,8 +13,10 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
     
     @IBOutlet weak var tableView: UITableView!
     private let visibleHeaderIndicator = UIView()
+    
     weak var delegate: TableOfContentsDelegate?
     private var headinglevelMin = 0
+    var articleURL: NSURL?
     
     var headings = [HTMLHeading]() {
         didSet {
@@ -38,6 +40,7 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
         tableView.emptyDataSetSource = self
         tableView.emptyDataSetDelegate = self
         tableView.tableFooterView = UIView()
+        tableView.addSubview(visibleHeaderIndicator)
         visibleHeaderIndicator.backgroundColor = UIColor.redColor()
     }
     
@@ -50,7 +53,7 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
     func configureVisibleHeaderView(animated animated: Bool) {
         // no visible header
         guard visibleHeaderIDs.count > 0 else {
-            visibleHeaderIndicator.removeFromSuperview()
+            visibleHeaderIndicator.hidden = true
             return
         }
         
@@ -59,13 +62,13 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
             let maxIndex = headings.indexOf({$0.id == visibleHeaderIDs.last}) else {return}
         let topIndexPath = NSIndexPath(forRow: minIndex, inSection: 0)
         let bottomIndexPath = NSIndexPath(forRow: maxIndex, inSection: 0)
-        let topCell = tableView(tableView, cellForRowAtIndexPath: topIndexPath)
-        let bottomCell = tableView(tableView, cellForRowAtIndexPath: bottomIndexPath)
-        let top = topCell.frame.origin.y + topCell.frame.height * 0.1
-        let bottom = bottomCell.frame.origin.y + bottomCell.frame.height * 0.9
+        let topCellFrame = tableView.rectForRowAtIndexPath(topIndexPath)
+        let bottomCellFrame = tableView.rectForRowAtIndexPath(bottomIndexPath)
+        let top = topCellFrame.origin.y + topCellFrame.height * 0.1
+        let bottom = bottomCellFrame.origin.y + bottomCellFrame.height * 0.9
         
         // indicator frame
-        if !tableView.subviews.contains(visibleHeaderIndicator) {tableView.addSubview(visibleHeaderIndicator)}
+        visibleHeaderIndicator.hidden = false
         if animated {
             UIView.animateWithDuration(0.1, animations: { 
                 self.visibleHeaderIndicator.frame = CGRectMake(0, top, 3, bottom - top)
@@ -73,7 +76,7 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
         } else {
             visibleHeaderIndicator.frame = CGRectMake(0, top, 3, bottom - top)
         }
-        
+
         // tableview scroll
         let topCellVisible = tableView.indexPathsForVisibleRows?.contains(topIndexPath) ?? false
         let bottomCellVisible = tableView.indexPathsForVisibleRows?.contains(bottomIndexPath) ?? false
