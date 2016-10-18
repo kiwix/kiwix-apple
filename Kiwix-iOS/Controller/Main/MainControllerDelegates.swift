@@ -18,6 +18,12 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
     
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         guard let url = request.URL else {return false}
+        guard url.scheme?.caseInsensitiveCompare("pagescroll") != .OrderedSame else {
+            let components = NSURLComponents(string: url.absoluteString!)
+            let ids = components?.queryItems?.filter({$0.name == "header"}).flatMap({$0.value}) ?? [String]()
+            tableOfContentsController?.visibleHeaderIDs = ids
+            return false
+        }
         guard url.isKiwixURL else {
             let controller = SFSafariViewController(URL: url)
             controller.delegate = self

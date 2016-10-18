@@ -120,6 +120,8 @@ extension MainController {
             self.view.layoutIfNeeded()
             self.dimView.alpha = 0.5
         }) { (completed) in }
+        
+        JS.startTOCCallBack(webView)
     }
     
     func hideTableOfContentsController() {
@@ -133,6 +135,8 @@ extension MainController {
             self.dimView.hidden = true
             self.tocVisiualEffectView.hidden = true
         }
+        
+        JS.stopTOCCallBack(webView)
     }
     
     func configureTOCViewConstraints() {

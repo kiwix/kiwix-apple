@@ -27,8 +27,16 @@ class JS {
         return webView.stringByEvaluatingJavaScriptFromString("document.title")
     }
     
+    class func startTOCCallBack(webView: UIWebView) {
+        webView.stringByEvaluatingJavaScriptFromString("startCallBack()")
+    }
+    
+    class func stopTOCCallBack(webView: UIWebView) {
+        webView.stringByEvaluatingJavaScriptFromString("stopCallBack()")
+    }
+    
     class func getTableOfContents(webView: UIWebView) -> [HTMLHeading] {
-        let jString = "(new TableOfContents()).headerObjects;"
+        let jString = "getTableOfContents().headerObjects;"
         guard let elements = webView.context.evaluateScript(jString).toArray() as? [[String: String]] else {return [HTMLHeading]()}
         var headings = [HTMLHeading]()
         for element in elements {

@@ -12,6 +12,7 @@ import DZNEmptyDataSet
 class TableOfContentsController: UIViewController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     @IBOutlet weak var tableView: UITableView!
+    private let visibleHeaderIndicator = UIView()
     weak var delegate: TableOfContentsDelegate?
     private var headinglevelMin = 0
     
@@ -19,7 +20,14 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
         didSet {
             configurePreferredContentSize()
             headinglevelMin = max(2, headings.map({$0.level}).minElement() ?? 0)
+            visibleHeaderIDs.removeAll()
             tableView.reloadData()
+        }
+    }
+    var visibleHeaderIDs = [String]() {
+        didSet {
+            guard oldValue != visibleHeaderIDs else {return}
+            configureVisibleHeaderView(animated: oldValue.count > 0)
         }
     }
     
@@ -30,6 +38,7 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
         tableView.emptyDataSetSource = self
         tableView.emptyDataSetDelegate = self
         tableView.tableFooterView = UIView()
+        visibleHeaderIndicator.backgroundColor = UIColor.redColor()
     }
     
     func configurePreferredContentSize() {
@@ -37,7 +46,47 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
         let width = traitCollection.horizontalSizeClass == .Regular ? 300 : (UIScreen.mainScreen().bounds.width)
         preferredContentSize = CGSizeMake(width, count == 0 ? 350 : min(CGFloat(count) * 44.0, UIScreen.mainScreen().bounds.height * 0.8))
     }
-
+    
+    func configureVisibleHeaderView(animated animated: Bool) {
+        // no visible header
+        guard visibleHeaderIDs.count > 0 else {
+            visibleHeaderIndicator.removeFromSuperview()
+            return
+        }
+        
+        // calculations
+        guard let minIndex = headings.indexOf({$0.id == visibleHeaderIDs.first}),
+            let maxIndex = headings.indexOf({$0.id == visibleHeaderIDs.last}) else {return}
+        let topIndexPath = NSIndexPath(forRow: minIndex, inSection: 0)
+        let bottomIndexPath = NSIndexPath(forRow: maxIndex, inSection: 0)
+        let topCell = tableView(tableView, cellForRowAtIndexPath: topIndexPath)
+        let bottomCell = tableView(tableView, cellForRowAtIndexPath: bottomIndexPath)
+        let top = topCell.frame.origin.y + topCell.frame.height * 0.1
+        let bottom = bottomCell.frame.origin.y + bottomCell.frame.height * 0.9
+        
+        // indicator frame
+        if !tableView.subviews.contains(visibleHeaderIndicator) {tableView.addSubview(visibleHeaderIndicator)}
+        if animated {
+            UIView.animateWithDuration(0.1, animations: { 
+                self.visibleHeaderIndicator.frame = CGRectMake(0, top, 3, bottom - top)
+            })
+        } else {
+            visibleHeaderIndicator.frame = CGRectMake(0, top, 3, bottom - top)
+        }
+        
+        // tableview scroll
+        let topCellVisible = tableView.indexPathsForVisibleRows?.contains(topIndexPath) ?? false
+        let bottomCellVisible = tableView.indexPathsForVisibleRows?.contains(bottomIndexPath) ?? false
+        switch (topCellVisible, bottomCellVisible) {
+        case (true, false):
+            tableView.scrollToRowAtIndexPath(bottomIndexPath, atScrollPosition: .Bottom, animated: animated)
+        case (false, true), (false, false):
+            tableView.scrollToRowAtIndexPath(topIndexPath, atScrollPosition: .Top, animated: animated)
+        default:
+            return
+        }
+    }
+    
     // MARK: - Table view data source
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
