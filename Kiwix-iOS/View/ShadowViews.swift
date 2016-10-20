@@ -67,8 +67,21 @@ class SearchHRegularDropShadowView: UIView {
 }
 
 class SearchRoundedCornerView: UIView {
+    
     override func awakeFromNib() {
         layer.masksToBounds = true
-        layer.cornerRadius = 10.0
     }
+    
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        guard traitCollection != previousTraitCollection else {return}
+        switch traitCollection.horizontalSizeClass {
+        case .Regular:
+            layer.cornerRadius = 10.0
+        case .Compact:
+            layer.cornerRadius = 0.0
+        default:
+            break
+        }
+    }
+    
 }
