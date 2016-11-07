@@ -3,11 +3,11 @@ use_frameworks!
 
 target 'Kiwix-iOS' do
 
-platform :ios, '9.0'
+platform :ios, '10.0'
 
 pod 'DZNEmptyDataSet'
 pod 'SwiftyUserDefaults'
 pod 'MBProgressHUD', '~> 1.0.0'
-pod 'Operations', :git => 'https://github.com/ProcedureKit/ProcedureKit.git', :branch => 'swift/2.3'
+pod 'ProcedureKit', :git => 'https://github.com/ProcedureKit/ProcedureKit.git', :branch => 'release/4.0.0.beta.4'
 
 end

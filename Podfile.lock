@@ -1,33 +1,33 @@
 PODS:
   - DZNEmptyDataSet (1.8.1)
   - MBProgressHUD (1.0.0)
-  - Operations (3.3.1):
-    - Operations/Standard (= 3.3.1)
-  - Operations/Standard (3.3.1)
+  - ProcedureKit (4.0.0.beta.4):
+    - ProcedureKit/Standard (= 4.0.0.beta.4)
+  - ProcedureKit/Standard (4.0.0.beta.4)
   - SwiftyUserDefaults (2.2.1)
 
 DEPENDENCIES:
   - DZNEmptyDataSet
   - MBProgressHUD (~> 1.0.0)
-  - Operations (from `https://github.com/ProcedureKit/ProcedureKit.git`, branch `swift/2.3`)
+  - ProcedureKit (from `https://github.com/ProcedureKit/ProcedureKit.git`, branch `release/4.0.0.beta.4`)
   - SwiftyUserDefaults
 
 EXTERNAL SOURCES:
-  Operations:
-    :branch: swift/2.3
+  ProcedureKit:
+    :branch: release/4.0.0.beta.4
     :git: https://github.com/ProcedureKit/ProcedureKit.git
 
 CHECKOUT OPTIONS:
-  Operations:
-    :commit: e79d22bc32e2e4faad6cdcde31c71187357b1154
+  ProcedureKit:
+    :commit: be78bf8bea9928ad24bf6b83bc7b5cfab11b5874
     :git: https://github.com/ProcedureKit/ProcedureKit.git
 
 SPEC CHECKSUMS:
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
-  Operations: 6a33d325dae88de21b8edc69b9884fce01aea22b
+  ProcedureKit: 9160071e54e3885fad82f72acc8474366c764f5b
   SwiftyUserDefaults: 7abdba50a50ea0c18ee8903af3c88e4c1cb8448d
 
-PODFILE CHECKSUM: 5086213e2253eac9464671641d84cfc3032346b5
+PODFILE CHECKSUM: e456ad658eea97ee2fb7189b04aaf7b13583b1d7
 
 COCOAPODS: 1.0.1
