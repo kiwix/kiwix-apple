@@ -19,45 +19,45 @@ class SettingDetailController: UITableViewController {
         switch page {
         case .BackupLocalFiles:
             title = LocalizedStrings.backupLocalFiles
-            switchControl.on = !(NSFileManager.getSkipBackupAttribute(item: NSFileManager.docDirURL) ?? false)
+            switchControl.isOn = !(FileManager.getSkipBackupAttribute(item: FileManager.docDirURL) ?? false)
         case .SearchHistory:
             title = LocalizedStrings.searchHistory
         }
         
-        switchControl.addTarget(self, action: #selector(SettingDetailController.switchValueChanged), forControlEvents: .ValueChanged)
+        switchControl.addTarget(self, action: #selector(SettingDetailController.switchValueChanged), for: .valueChanged)
     }
     
     func switchValueChanged() {
         if page == .BackupLocalFiles {
-            NSFileManager.setSkipBackupAttribute(!switchControl.on, url: NSFileManager.docDirURL)
+            FileManager.setSkipBackupAttribute(!switchControl.isOn, url: FileManager.docDirURL)
         }
     }
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch page {
         case .BackupLocalFiles:
-            let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
             cell.textLabel?.text = LocalizedStrings.backupLocalFiles
             cell.accessoryView = switchControl
             return cell
         case .SearchHistory:
-            let cell = tableView.dequeueReusableCellWithIdentifier("CenterTextCell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CenterTextCell", for: indexPath)
             cell.textLabel?.text = NSLocalizedString("Clear Search History", comment: "")
             return cell
         }
     }
     
-    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         switch page {
         case .BackupLocalFiles:
             return NSLocalizedString("When turned off, iOS will not backup zim files and index folders to iCloud or iTunes.",
@@ -70,17 +70,17 @@ class SettingDetailController: UITableViewController {
     
     // MARK: - Table view delegate
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         switch page {
         case .SearchHistory:
             Preference.RecentSearch.terms = [String]()
             let controller = UIAlertController(title: NSLocalizedString("Cleared", comment: "Setting, search history cleared"),
                                                message: NSLocalizedString("Your search history has been cleared!", comment: "Setting, search history cleared"),
-                                               preferredStyle: .Alert)
-            let done = UIAlertAction(title: LocalizedStrings.done, style: .Default, handler: nil)
+                                               preferredStyle: .alert)
+            let done = UIAlertAction(title: LocalizedStrings.done, style: .default, handler: nil)
             controller.addAction(done)
-            presentViewController(controller, animated: true, completion: nil)
+            present(controller, animated: true, completion: nil)
         default:
             return
         }

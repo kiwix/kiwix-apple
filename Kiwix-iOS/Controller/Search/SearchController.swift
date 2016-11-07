@@ -16,7 +16,7 @@ class SearchController: UIViewController, UISearchBarDelegate, UIGestureRecogniz
     @IBOutlet var tapGestureRecognizer: UITapGestureRecognizer!
     var searchResultController: SearchResultController?
     
-    private var searchTerm = "" // last searchTerm
+    fileprivate var searchTerm = "" // last searchTerm
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,36 +24,36 @@ class SearchController: UIViewController, UISearchBarDelegate, UIGestureRecogniz
         tapGestureRecognizer.delegate = self
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureViewVisibility(searchTerm)
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "EmbeddedSearchResultController" {
-            guard let destinationViewController = segue.destinationViewController as? SearchResultController else {return}
+            guard let destinationViewController = segue.destination as? SearchResultController else {return}
             searchResultController = destinationViewController
         }
     }
     
-    func configureViewVisibility(searchTerm: String) {
+    func configureViewVisibility(_ searchTerm: String) {
         if searchTerm == "" {
-            searchResultTBVCContainer.hidden = true
-            tabControllerContainer.hidden = false
+            searchResultTBVCContainer.isHidden = true
+            tabControllerContainer.isHidden = false
         } else {
-            searchResultTBVCContainer.hidden = false
-            tabControllerContainer.hidden = true
+            searchResultTBVCContainer.isHidden = false
+            tabControllerContainer.isHidden = true
         }
     }
     
     // MARK: - Search
     
-    func startSearch(searchTerm: String, delayed: Bool) {
+    func startSearch(_ searchTerm: String, delayed: Bool) {
         guard self.searchTerm != searchTerm else {return}
         self.searchTerm = searchTerm
         configureViewVisibility(searchTerm)
         if delayed {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(275 * USEC_PER_SEC)), dispatch_get_main_queue()) {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(275 * USEC_PER_SEC)) / Double(NSEC_PER_SEC)) {
                 guard searchTerm == self.searchTerm else {return}
                 self.searchResultController?.startSearch(self.searchTerm)
             }
@@ -64,12 +64,12 @@ class SearchController: UIViewController, UISearchBarDelegate, UIGestureRecogniz
     
     // MARK: - Handle Gesture
     
-    func handleTap(tapGestureRecognizer: UIGestureRecognizer) {
-        guard let mainVC = parentViewController as? MainController else {return}
+    func handleTap(_ tapGestureRecognizer: UIGestureRecognizer) {
+        guard let mainVC = parent as? MainController else {return}
         mainVC.hideSearch(animated: true)
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         return touch.view == view ? true : false
     }
 }
@@ -77,37 +77,37 @@ class SearchController: UIViewController, UISearchBarDelegate, UIGestureRecogniz
 class SearchTableViewController: UIViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     @IBOutlet weak var tableView: UITableView!
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SearchTableViewController.keyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SearchTableViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SearchTableViewController.keyboardDidShow(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SearchTableViewController.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tableView.emptyDataSetSource = nil
         tableView.emptyDataSetDelegate = nil
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         tableView.emptyDataSetSource = self
         tableView.emptyDataSetDelegate = self
     }
     
-    func keyboardDidShow(notification: NSNotification) {
+    func keyboardDidShow(_ notification: Notification) {
         guard let userInfo = notification.userInfo as? [String: NSValue],
-            let origin = userInfo[UIKeyboardFrameEndUserInfoKey]?.CGRectValue().origin else {return}
-        let point = view.convertPoint(origin, fromView: nil)
+            let origin = userInfo[UIKeyboardFrameEndUserInfoKey]?.cgRectValue.origin else {return}
+        let point = view.convert(origin, from: nil)
         let buttomInset = view.frame.height - point.y
         tableView.contentInset = UIEdgeInsetsMake(0.0, 0, buttomInset, 0)
         tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0, 0, buttomInset, 0)
         tableView.reloadEmptyDataSet()
     }
     
-    func keyboardWillHide(notification: NSNotification) {
+    func keyboardWillHide(_ notification: Notification) {
         tableView.contentInset = UIEdgeInsetsMake(0.0, 0, 0, 0)
         tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0, 0, 0, 0)
         tableView.reloadEmptyDataSet()

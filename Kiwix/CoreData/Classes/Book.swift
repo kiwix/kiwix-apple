@@ -18,7 +18,7 @@ class Book: NSManagedObject {
 
     // MARK: - Add Book
     
-    class func add(metadata: [String: AnyObject], context: NSManagedObjectContext) -> Book? {
+    class func add(_ metadata: [String: AnyObject], context: NSManagedObjectContext) -> Book? {
         guard let id = metadata["id"] as? String,
             let book = insert(Book.self, context: context) else {return nil}
         
@@ -29,7 +29,7 @@ class Book: NSManagedObject {
         book.desc = metadata["description"] as? String
         book.meta4URL = metadata["url"] as? String
         book.pid = {
-            if let pid = metadata["name"] as? String where pid != "" {
+            if let pid = metadata["name"] as? String, pid != "" {
                 return pid
             } else {
                 return nil
@@ -42,7 +42,7 @@ class Book: NSManagedObject {
             if let fileSize = metadata["size"] as? String {
                 return (Int64(fileSize) ?? 0) * 1024
             } else if let fileSize = metadata["size"] as? NSNumber {
-                return fileSize.longLongValue * 1024
+                return fileSize.int64Value * 1024
             } else {
                 return 0
             }
@@ -50,25 +50,25 @@ class Book: NSManagedObject {
         
         book.date = {
             guard let date = metadata["date"] as? String else {return nil}
-            let dateFormatter = NSDateFormatter()
+            let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"
-            return dateFormatter.dateFromString(date)
+            return dateFormatter.date(from: date)
         }()
         
         book.favIcon = {
-            if let data = metadata["favicon"] as? NSData {
+            if let data = metadata["favicon"] as? Data {
                 return data
             } else if let favIcon = metadata["favicon"] as? String {
-                return NSData(base64EncodedString: favIcon, options: .IgnoreUnknownCharacters)
+                return Data(base64Encoded: favIcon, options: .ignoreUnknownCharacters)
             } else {
                 return nil
             }
         }()
         
         book.hasPic = {
-            if let tags = metadata["tags"] as? String where tags.containsString("nopic") {
+            if let tags = metadata["tags"] as? String, tags.contains("nopic") {
                 return false
-            } else if let meta4url = book.meta4URL where meta4url.containsString("nopic") {
+            } else if let meta4url = book.meta4URL, meta4url.contains("nopic") {
                 return false
             } else {
                 return true
@@ -86,23 +86,23 @@ class Book: NSManagedObject {
     
     // MARK: - Properties
     
-    var url: NSURL? {
+    var url: URL? {
         guard let meta4URL = meta4URL else {return nil}
         // return url = NSURL(string: meta4URL.stringByReplacingOccurrencesOfString(".meta4", withString: ""))
-        let urlComponents = NSURLComponents(string: meta4URL.stringByReplacingOccurrencesOfString(".meta4", withString: ""))
+        var urlComponents = URLComponents(string: meta4URL.replacingOccurrences(of: ".meta4", with: ""))
         urlComponents?.scheme = "https"
-        return urlComponents?.URL
+        return urlComponents?.url
     }
     
     // MARK: - Fetch
     
-    class func fetchAll(context: NSManagedObjectContext) -> [Book] {
-        let fetchRequest = NSFetchRequest(entityName: "Book")
+    class func fetchAll(_ context: NSManagedObjectContext) -> [Book] {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Book")
         return fetch(fetchRequest, type: Book.self, context: context) ?? [Book]()
     }
     
-    class func fetchLocal(context: NSManagedObjectContext) -> [ZimID: Book] {
-        let fetchRequest = NSFetchRequest(entityName: "Book")
+    class func fetchLocal(_ context: NSManagedObjectContext) -> [ZimID: Book] {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Book")
         fetchRequest.predicate = NSPredicate(format: "stateRaw == 2")
         let localBooks = fetch(fetchRequest, type: Book.self, context: context) ?? [Book]()
         
@@ -113,14 +113,14 @@ class Book: NSManagedObject {
         return books
     }
     
-    class func fetch(id: String, context: NSManagedObjectContext) -> Book? {
-        let fetchRequest = NSFetchRequest(entityName: "Book")
+    class func fetch(_ id: String, context: NSManagedObjectContext) -> Book? {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Book")
         fetchRequest.predicate = NSPredicate(format: "id = %@", id)
         return fetch(fetchRequest, type: Book.self, context: context)?.first
     }
     
-    class func fetch(pid pid: String, context: NSManagedObjectContext) -> [Book] {
-        let fetchRequest = NSFetchRequest(entityName: "Book")
+    class func fetch(pid: String, context: NSManagedObjectContext) -> [Book] {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Book")
         fetchRequest.predicate = NSPredicate(format: "pid = %@", pid)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         return fetch(fetchRequest, type: Book.self, context: context) ?? [Book]()
@@ -137,14 +137,14 @@ class Book: NSManagedObject {
     var dateDescription: String? {
         guard let date = date else {return nil}
         
-        let formatter = NSDateFormatter()
+        let formatter = DateFormatter()
         formatter.dateFormat = "MM-dd-yyyy"
-        formatter.dateStyle = .MediumStyle
-        return formatter.stringFromDate(date)
+        formatter.dateStyle = .medium
+        return formatter.string(from: date as Date)
     }
     
     var fileSizeDescription: String {
-        return NSByteCountFormatter.stringFromByteCount(fileSize, countStyle: .File)
+        return ByteCountFormatter.string(fromByteCount: fileSize, countStyle: .file)
     }
     
     var articleCountDescription: String? {
@@ -152,7 +152,7 @@ class Book: NSManagedObject {
     }
     
     var articleCountString: String {
-        func formattedNumberStringFromDouble(num: Double) -> String {
+        func formattedNumberStringFromDouble(_ num: Double) -> String {
             let sign = ((num < 0) ? "-" : "" )
             let abs = fabs(num)
             guard abs >= 1000.0 else {
@@ -179,14 +179,14 @@ class Book: NSManagedObject {
         if let articleCountDescription = articleCountDescription {descriptions.append(articleCountDescription)}
         
         guard descriptions.count != 0 else {return nil}
-        return descriptions.joinWithSeparator(", ")
+        return descriptions.joined(separator: ", ")
     }
     
     var detailedDescription1: String? {
         var descriptions = [String]()
         if let description = detailedDescription {descriptions.append(description)}
         if let bookDescription = desc {descriptions.append(bookDescription)}
-        return descriptions.joinWithSeparator("\n")
+        return descriptions.joined(separator: "\n")
     }
     
     var detailedDescription2: String? {
@@ -194,11 +194,11 @@ class Book: NSManagedObject {
         if let description = detailedDescription {descriptions.append(description)}
         if let bookDescription = desc {descriptions.append(bookDescription)}
         if let creatorAndPublisherDescription = creatorAndPublisherDescription {descriptions.append(creatorAndPublisherDescription)}
-        return descriptions.joinWithSeparator("\n")
+        return descriptions.joined(separator: "\n")
     }
     
-    private var creatorAndPublisherDescription: String? {
-        if let creator = self.creator, publisher = self.publisher {
+    fileprivate var creatorAndPublisherDescription: String? {
+        if let creator = self.creator, let publisher = self.publisher {
             if creator == publisher {
                 return "Creator and publisher: " + creator
             } else {
@@ -218,11 +218,11 @@ class Book: NSManagedObject {
     var state: BookState {
         get {
             switch stateRaw {
-            case 0: return .Cloud
-            case 1: return .Downloading
-            case 2: return .Local
-            case 3: return .Retained
-            default: return .Cloud
+            case 0: return .cloud
+            case 1: return .downloading
+            case 2: return .local
+            case 3: return .retained
+            default: return .cloud
             }
         }
         set {
@@ -231,22 +231,22 @@ class Book: NSManagedObject {
     }
     
     var spaceState: BookSpaceState {
-        guard let freeSpaceInBytes = UIDevice.availableDiskSpace?.freeSize else {return .Enough}
+        guard let freeSpaceInBytes = UIDevice.availableDiskSpace?.freeSize else {return .enough}
         if (0.8 * Double(freeSpaceInBytes)) > Double(fileSize) {
-            return .Enough
+            return .enough
         } else if freeSpaceInBytes < fileSize{
-            return .NotEnough
+            return .notEnough
         } else {
-            return .Caution
+            return .caution
         }
     }
 }
 
 enum BookState: Int {
-    case Cloud, Downloading, Local, Retained
+    case cloud, downloading, local, retained
 }
 
 
 enum BookSpaceState: Int {
-    case Enough, Caution, NotEnough
+    case enough, caution, notEnough
 }

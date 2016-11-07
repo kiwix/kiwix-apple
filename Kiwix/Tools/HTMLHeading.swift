@@ -15,9 +15,9 @@ class HTMLHeading {
     init?(rawValue: [String: String]) {
         let tagName = rawValue["tagName"] ?? ""
         self.id = rawValue["id"] ?? ""
-        self.textContent = (rawValue["textContent"] ?? "").stringByTrimmingCharactersInSet(.whitespaceCharacterSet())
+        self.textContent = (rawValue["textContent"] ?? "").trimmingCharacters(in: .whitespaces)
         self.tagName = tagName
-        self.level = Int(tagName.stringByReplacingOccurrencesOfString("H", withString: "")) ?? -1
+        self.level = Int(tagName.replacingOccurrences(of: "H", with: "")) ?? -1
         
         if id == "" {return nil}
         if tagName == "" {return nil}

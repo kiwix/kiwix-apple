@@ -13,11 +13,11 @@ import UIKit
 // MARK: - CoreData
 
 extension NSFetchedResultsController {
-    func performFetch(deleteCache deleteCache: Bool) {
+    func performFetch(deleteCache: Bool) {
         do {
             if deleteCache {
                 guard let cacheName = cacheName else {return}
-                NSFetchedResultsController.deleteCacheWithName(cacheName)
+                NSFetchedResultsController.deleteCache(withName: cacheName)
             }
             
             try performFetch()
@@ -29,20 +29,20 @@ extension NSFetchedResultsController {
 
 extension NSManagedObjectContext {
     class var mainQueueContext: NSManagedObjectContext {
-        return (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext
+        return (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
     }
 }
 
 // MARK: - UI
 
 enum BuildStatus {
-    case Alpha, Beta, Release
+    case alpha, beta, release
 }
 
 extension UIApplication {
     class var buildStatus: BuildStatus {
         get {
-            return .Beta
+            return .beta
         }
     }
 }
@@ -54,20 +54,20 @@ extension UIStoryboard {
     class var setting: UIStoryboard {get {return UIStoryboard(name: "Setting", bundle: nil)}}
     class var welcome: UIStoryboard {get {return UIStoryboard(name: "Welcome", bundle: nil)}}
     
-    func initViewController<T:UIViewController>(type: T.Type) -> T? {
-        guard let className = NSStringFromClass(T).componentsSeparatedByString(".").last else {
+    func initViewController<T:UIViewController>(_ type: T.Type) -> T? {
+        guard let className = NSStringFromClass(T).components(separatedBy: ".").last else {
             print("NSManagedObjectExtension: Unable to get class name")
             return nil
         }
-        return instantiateViewControllerWithIdentifier(className) as? T
+        return instantiateViewController(withIdentifier: className) as? T
     }
     
-    func initViewController<T:UIViewController>(identifier: String, type: T.Type) -> T? {
-        return instantiateViewControllerWithIdentifier(identifier) as? T
+    func initViewController<T:UIViewController>(_ identifier: String, type: T.Type) -> T? {
+        return instantiateViewController(withIdentifier: identifier) as? T
     }
     
-    func controller<T:UIViewController>(type: T.Type) -> T? {
-        return instantiateViewControllerWithIdentifier(String(T)) as? T
+    func controller<T:UIViewController>(_ type: T.Type) -> T? {
+        return instantiateViewController(withIdentifier: String(describing: T)) as? T
     }
 }
 

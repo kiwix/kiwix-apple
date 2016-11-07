@@ -9,6 +9,30 @@
 import UIKit
 import CoreData
 import DZNEmptyDataSet
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
@@ -18,12 +42,12 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     @IBOutlet weak var hasPicIndicator: UILabel!
     @IBOutlet weak var hasPicLabel: UILabel!
     
-    private(set) var context: UnsafeMutablePointer<Void> = nil
+    fileprivate(set) var context: UnsafeMutableRawPointer? = nil
     
     var book: Book?
-    private(set) var sectionHeaders = [String?]()
-    private(set) var sectionFooters = [String?]()
-    private(set) var cellTitles = [[String]]()
+    fileprivate(set) var sectionHeaders = [String?]()
+    fileprivate(set) var sectionFooters = [String?]()
+    fileprivate(set) var cellTitles = [[String]]()
     var bookmarkCount: Int? {
         guard let book = book else {return nil}
         return Article.fetchBookmarked(in: book, with: NSManagedObjectContext.mainQueueContext).count
@@ -42,24 +66,24 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
         hasPicIndicator.layer.masksToBounds = true
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        book?.addObserver(self, forKeyPath: "stateRaw", options: .New, context: context)
+        book?.addObserver(self, forKeyPath: "stateRaw", options: .new, context: context)
         configureViews()
         tableView.reloadEmptyDataSet()
         tableView.reloadData()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         book?.removeObserver(self, forKeyPath: "stateRaw", context: context)
     }
     
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        guard let book = object as? Book where context == self.context else {return}
-        NSOperationQueue.mainQueue().addOperationWithBlock {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard let book = object as? Book, context == self.context else {return}
+        OperationQueue.main.addOperation {
             self.configureActionSection(with: book)
-            self.tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .Fade)
+            self.tableView.reloadSections(IndexSet(integer: 1), with: .fade)
         }
     }
     
@@ -67,16 +91,16 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     
     func configureStaticHeader(with book: Book) {
         title = book.title
-        favIconImageView.image = UIImage(data: book.favIcon ?? NSData())
+        favIconImageView.image = UIImage(data: book.favIcon as Data? ?? Data())
         titleLabel.text = book.title
-        titleLabel.hidden = false
+        titleLabel.isHidden = false
     }
     
     func configureIndicators(with book: Book) {
-        hasPicIndicator.backgroundColor = book.hasPic ? AppColors.hasPicTintColor : UIColor.lightGrayColor()
+        hasPicIndicator.backgroundColor = book.hasPic ? AppColors.hasPicTintColor : UIColor.lightGray
         hasPicLabel.text = book.hasPic ? LocalizedStrings.hasPic : LocalizedStrings.noPic
-        hasPicIndicator.hidden = false
-        hasPicLabel.hidden = false
+        hasPicIndicator.isHidden = false
+        hasPicLabel.isHidden = false
     }
     
     func configureDescriptionSection(with book: Book) {
@@ -93,15 +117,15 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
         }
         
         switch book.state {
-        case .Cloud, .Retained:
+        case .cloud, .retained:
             if let _ = book.meta4URL {
-                cellTitles[1] = book.spaceState == .NotEnough ? [LocalizedStrings.spaceNotEnough] : [LocalizedStrings.download]
+                cellTitles[1] = book.spaceState == .notEnough ? [LocalizedStrings.spaceNotEnough] : [LocalizedStrings.download]
             } else {
                 cellTitles[1] = [LocalizedStrings.addUsingiTunesFileSharing]
             }
-        case .Downloading:
+        case .downloading:
             cellTitles[1] = [LocalizedStrings.downloading]
-        case .Local:
+        case .local:
             cellTitles[1] = [LocalizedStrings.remove]
         }
     }
@@ -162,47 +186,47 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return cellTitles.count
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cellTitles[section].count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let title = cellTitles[indexPath.section][indexPath.row]
         switch title {
         case LocalizedStrings.download, LocalizedStrings.downloading, LocalizedStrings.spaceNotEnough, LocalizedStrings.remove:
-            let cell = tableView.dequeueReusableCellWithIdentifier("CenterTextCell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CenterTextCell", for: indexPath)
             cell.textLabel?.text = title
             
             switch title {
             case LocalizedStrings.download:
-                if book?.spaceState == .Caution {cell.textLabel?.textColor = UIColor.orangeColor()}
+                if book?.spaceState == .caution {cell.textLabel?.textColor = UIColor.orange}
             case LocalizedStrings.downloading, LocalizedStrings.spaceNotEnough:
-                cell.textLabel?.textColor = UIColor.grayColor()
+                cell.textLabel?.textColor = UIColor.gray
             case LocalizedStrings.remove:
-                cell.textLabel?.textColor = UIColor.redColor()
+                cell.textLabel?.textColor = UIColor.red
             default:
                 break
             }
             return cell
         case LocalizedStrings.pid:
-            let cell = tableView.dequeueReusableCellWithIdentifier("BasicCell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "BasicCell", for: indexPath)
             cell.textLabel?.text = book?.pid
             return cell
         case LocalizedStrings.copyURL:
-            let cell = tableView.dequeueReusableCellWithIdentifier("CenterTextCell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CenterTextCell", for: indexPath)
             cell.textLabel?.text = title
             return cell
         case LocalizedStrings.bookmarks:
-            let cell = tableView.dequeueReusableCellWithIdentifier("DetailSegueCell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DetailSegueCell", for: indexPath)
             cell.textLabel?.text = title
             cell.detailTextLabel?.text = String(bookmarkCount ?? 0)
             return cell
         default:
-            let cell = tableView.dequeueReusableCellWithIdentifier("RightDetailCell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "RightDetailCell", for: indexPath)
             cell.textLabel?.text = title
             switch title {
             case LocalizedStrings.size:
@@ -237,29 +261,29 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
         }
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sectionHeaders[section]
     }
     
-    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return sectionFooters[section]
     }
     
     // MARK: - Table view delegate
     
-    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        guard let view = view as? UITableViewHeaderFooterView where section == 0 else {return}
-        view.textLabel?.textAlignment = .Center
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        guard let view = view as? UITableViewHeaderFooterView, section == 0 else {return}
+        view.textLabel?.textAlignment = .center
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        guard let cell = tableView.cellForRowAtIndexPath(indexPath),
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let cell = tableView.cellForRow(at: indexPath),
             let title = cell.textLabel?.text,
             let book = book else {return}
         switch title {
         case LocalizedStrings.download:
-            if book.spaceState == .Caution {
+            if book.spaceState == .caution {
                 let alert = SpaceCautionAlert(context: self, bookID: book.id)
                 GlobalQueue.shared.addOperation(alert)
             } else {
@@ -271,12 +295,12 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
             GlobalQueue.shared.addOperation(operation)
         case LocalizedStrings.bookmarks:
             guard let controller = UIStoryboard(name: "Bookmark", bundle: nil)
-                .instantiateViewControllerWithIdentifier("BookmarkController") as? BookmarkController else {return}
+                .instantiateViewController(withIdentifier: "BookmarkController") as? BookmarkController else {return}
             controller.book = book
             navigationController?.pushViewController(controller, animated: true)
         case LocalizedStrings.copyURL:
             guard let url = book.url else {return}
-            UIPasteboard.generalPasteboard().string = url.absoluteString
+            UIPasteboard.general.string = url.absoluteString
             let operation = CopyURLAlert(url: url, context: self)
             GlobalQueue.shared.addOperation(operation)
         default:

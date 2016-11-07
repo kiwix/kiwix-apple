@@ -16,12 +16,12 @@ class SearchResult: CustomStringConvertible {
     let snippet: String?
     
     let probability: Double? // range: 0.0 - 1.0
-    private(set) lazy var distance: Int = {
+    fileprivate(set) lazy var distance: Int = {
         // Here we dont use the swift version of levenshtein, because it is slower than the C++ implementation
         //return self.title.lowercaseString.levenshtein(string: self.lowerCaseSearchTerm)
-        return ZimReader.levenshtein(self.title.lowercaseString, anotherString: self.lowerCaseSearchTerm)
+        return ZimReader.levenshtein(self.title.lowercased(), anotherString: self.lowerCaseSearchTerm)
     }()
-    private(set) lazy var score: Double = {
+    fileprivate(set) lazy var score: Double = {
         if let probability = self.probability {
             return WeightFactor.calculate(probability) * Double(self.distance)
         } else {
@@ -57,7 +57,7 @@ class SearchResult: CustomStringConvertible {
         var parts = [bookID, title]
         if let probability = probability {parts.append("\(probability)%")}
         parts.append("dist: \(distance)")
-        return parts.joinWithSeparator(", ")
+        return parts.joined(separator: ", ")
     }
     
     var rankInfo: String {
@@ -66,13 +66,13 @@ class SearchResult: CustomStringConvertible {
 }
 
 class WeightFactor {
-    class func calculate(prob: Double) -> Double {
+    class func calculate(_ prob: Double) -> Double {
         let m = 6.4524436415334163
         let n = 7.5576145596090623
         return caluclateLog(m: m, n: n, prob: prob)
     }
     
-    private class func caluclateLog(m m: Double, n: Double, prob: Double) -> Double {
+    fileprivate class func caluclateLog(m: Double, n: Double, prob: Double) -> Double {
         let e = 2.718281828459
         return log(n - m * prob) / log(e)
     }

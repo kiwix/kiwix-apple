@@ -16,7 +16,7 @@ class SearchResultController: SearchTableViewController, UITableViewDataSource, 
     
     var shouldShowNoResults = false
     var shouldClipRoundCorner: Bool {
-        return traitCollection.verticalSizeClass == .Regular && traitCollection.horizontalSizeClass == .Regular
+        return traitCollection.verticalSizeClass == .regular && traitCollection.horizontalSizeClass == .regular
     }
     
     // MARK: - Override
@@ -25,12 +25,12 @@ class SearchResultController: SearchTableViewController, UITableViewDataSource, 
         super.viewDidLoad()
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.keyboardDismissMode = .OnDrag
+        tableView.keyboardDismissMode = .onDrag
         tableView.emptyDataSetSource = self
         tableView.emptyDataSetDelegate = self
     }
     
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         guard traitCollection != previousTraitCollection else {return}
         tableView.layer.cornerRadius = shouldClipRoundCorner ? 10.0 : 0.0
         tableView.layer.masksToBounds = shouldClipRoundCorner
@@ -40,11 +40,11 @@ class SearchResultController: SearchTableViewController, UITableViewDataSource, 
     
     func selectFirstResultIfPossible() {
         guard searchResults.count > 0 else {return}
-        tableView.selectRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), animated: true, scrollPosition: .Top)
-        tableView(tableView, didSelectRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0))
+        tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: .top)
+        tableView(tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
     }
     
-    func reload(results results: [SearchResult]?) {
+    func reload(results: [SearchResult]?) {
         if let results = results {
             searchResults = results
         } else {
@@ -56,10 +56,10 @@ class SearchResultController: SearchTableViewController, UITableViewDataSource, 
         tableView.reloadEmptyDataSet()
         
         guard searchResults.count > 0 else {return}
-        self.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+        self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
     }
     
-    func startSearch(searchText: String) {
+    func startSearch(_ searchText: String) {
         guard searchText != "" else {
             shouldShowNoResults = false
             reload(results: nil)
@@ -80,44 +80,44 @@ class SearchResultController: SearchTableViewController, UITableViewDataSource, 
     
     // MARK: - Table view data source
 
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let result = searchResults[indexPath.row]
         
         if result.snippet == nil {
-            let cell = tableView.dequeueReusableCellWithIdentifier("ArticleCell", forIndexPath: indexPath) as! ArticleCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ArticleCell", for: indexPath) as! ArticleCell
             configureArticleCell(cell, result: result)
             return cell
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("ArticleSnippetCell", forIndexPath: indexPath) as! ArticleSnippetCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ArticleSnippetCell", for: indexPath) as! ArticleSnippetCell
             configureArticleCell(cell, result: result)
             cell.snippetLabel.text = result.snippet
             return cell
         }
     }
     
-    func configureArticleCell(cell: ArticleCell, result: SearchResult) {
+    func configureArticleCell(_ cell: ArticleCell, result: SearchResult) {
         guard let book = Book.fetch(result.bookID, context: UIApplication.appDelegate.managedObjectContext) else {return}
-        if UIApplication.buildStatus == .Alpha {
+        if UIApplication.buildStatus == .alpha {
             cell.titleLabel.text = result.title + result.rankInfo
         } else {
             cell.titleLabel.text = result.title
         }
-        cell.hasPicIndicator.backgroundColor = book.hasPic ? AppColors.hasPicTintColor : UIColor.lightGrayColor()
+        cell.hasPicIndicator.backgroundColor = book.hasPic ? AppColors.hasPicTintColor : UIColor.lightGray
         cell.favIcon.image = book.favIcon != nil ? UIImage(data: book.favIcon!) : nil
     }
     
     // MARK: Table view delegate
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         
         if let searchTerm = Controllers.main.searchBar.searchTerm {
             Preference.RecentSearch.add(term: searchTerm)
@@ -130,24 +130,24 @@ class SearchResultController: SearchTableViewController, UITableViewDataSource, 
 
     // MARK: - DZNEmptyDataSet
     
-    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+    func titleForEmptyDataSet(_ scrollView: UIScrollView!) -> NSAttributedString! {
         guard shouldShowNoResults else {return nil}
         let string = NSLocalizedString("No Results", comment: "Search, Results")
-        let attributes = [NSFontAttributeName: UIFont.systemFontOfSize(18), NSForegroundColorAttributeName: UIColor.darkGrayColor()]
+        let attributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 18), NSForegroundColorAttributeName: UIColor.darkGray]
         return NSAttributedString(string: string, attributes: attributes)
     }
     
-    func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+    func descriptionForEmptyDataSet(_ scrollView: UIScrollView!) -> NSAttributedString! {
         guard shouldShowNoResults else {return nil}
         let string = NSLocalizedString("Please refine your search term.", comment: "Search, Results")
         let paragraph = NSMutableParagraphStyle()
-        paragraph.lineBreakMode = .ByWordWrapping
-        paragraph.alignment = .Center
-        let attributes = [NSFontAttributeName: UIFont.systemFontOfSize(14), NSForegroundColorAttributeName: UIColor.lightGrayColor(), NSParagraphStyleAttributeName: paragraph]
+        paragraph.lineBreakMode = .byWordWrapping
+        paragraph.alignment = .center
+        let attributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 14), NSForegroundColorAttributeName: UIColor.lightGray, NSParagraphStyleAttributeName: paragraph]
         return NSAttributedString(string: string, attributes: attributes)
     }
     
-    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+    func verticalOffsetForEmptyDataSet(_ scrollView: UIScrollView!) -> CGFloat {
         return -tableView.contentInset.bottom / 2.5
     }
 }

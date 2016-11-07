@@ -14,7 +14,7 @@ import CoreData
 
 extension DownloadTask {
 
-    @NSManaged var creationTime: NSDate
+    @NSManaged var creationTime: Date
     @NSManaged var stateRaw: Int16
     @NSManaged var totalBytesWritten: Int64
     @NSManaged var book: Book?

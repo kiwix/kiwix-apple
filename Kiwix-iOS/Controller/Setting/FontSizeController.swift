@@ -18,19 +18,19 @@ class FontSizeController: UITableViewController {
         slider.value = Float(Preference.webViewZoomScale)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         Preference.webViewZoomScale = Double(lroundf(slider.value))
     }
     
-    @IBAction func sliderTouchUpInside(sender: UISlider) {
+    @IBAction func sliderTouchUpInside(_ sender: UISlider) {
         let step = (sender.maximumValue - sender.minimumValue) / 6
         let roundedValue = Float(lroundf((sender.value - sender.minimumValue) / step)) * step + sender.minimumValue
         sender.setValue(roundedValue, animated: true)
     }
     // MARK: - Table view data source
     
-    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return NSLocalizedString("Drag the slider above to adjust the font size of the article. The size of the percentage numbers shows the acutal font size of article body on screen.", comment: "Setting: Font Size")
     }
 

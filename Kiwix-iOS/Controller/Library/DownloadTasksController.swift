@@ -12,7 +12,7 @@ import DZNEmptyDataSet
 
 class DownloadTasksController: UITableViewController, NSFetchedResultsControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
-    var timer: NSTimer?
+    var timer: Timer?
     
     // MARK: - Override
     
@@ -34,27 +34,27 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
         tableView.rowHeight = UITableViewAutomaticDimension
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.title = tabBarItem.title
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(DownloadTasksController.refreshProgress), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(DownloadTasksController.refreshProgress), userInfo: nil, repeats: true)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         timer?.invalidate()
         timer = nil
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let identifier = segue.identifier else {return}
         switch identifier {
         case "ShowBookDetail":
-            guard let navController = segue.destinationViewController as? UINavigationController,
+            guard let navController = segue.destination as? UINavigationController,
                 let bookDetailController = navController.topViewController as? BookDetailController,
                 let cell = sender as? UITableViewCell,
-                let indexPath = tableView.indexPathForCell(cell),
-                let downloadTask = fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask,
+                let indexPath = tableView.indexPath(for: cell),
+                let downloadTask = fetchedResultController.object(at: indexPath) as? DownloadTask,
                 let book = downloadTask.book else {return}
             bookDetailController.book = book
         default:
@@ -62,7 +62,7 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
         }
     }
     
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         let top = tabBarController!.navigationController!.navigationBar.frame.maxY
         let bottom = tabBarController!.tabBar.frame.height
@@ -75,7 +75,7 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
     
     func refreshProgress() {
         tableView.visibleCells.forEach { (cell) in
-            guard let indexPath = tableView.indexPathForCell(cell) else {return}
+            guard let indexPath = tableView.indexPath(for: cell) else {return}
             configureCell(cell, atIndexPath: indexPath, animated: true)
         }
     }
@@ -87,37 +87,37 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
     
     // MARK: - TableView Data Source
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return fetchedResultController.sections?.count ?? 0
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let sectionInfo = fetchedResultController.sections?[section] else {return 0}
         return sectionInfo.numberOfObjects
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         self.configureCell(cell, atIndexPath: indexPath)
         return cell
     }
     
-    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath, animated: Bool = false) {
-        guard let downloadTask = fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask,
+    func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath, animated: Bool = false) {
+        guard let downloadTask = fetchedResultController.object(at: indexPath) as? DownloadTask,
             let book = downloadTask.book,
             let cell = cell as? DownloadBookCell else {return}
         
         cell.titleLabel.text = book.title
-        cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
+        cell.favIcon.image = UIImage(data: book.favIcon ?? Data())
         
         if let progress = Network.shared.operations[book.id]?.progress {
             cell.progressLabel.text = progress.fractionCompletedDescription
             cell.progressView.setProgress(Float(progress.fractionCompleted), animated: animated)
             cell.detailLabel.text = {
                 let string = progress.progressAndSpeedDescription
-                if downloadTask.state == .Downloading {
-                    if string.containsString(" — ") {
-                        return string.stringByReplacingOccurrencesOfString(" — ", withString: "\n")
+                if downloadTask.state == .downloading {
+                    if string.contains(" — ") {
+                        return string.replacingOccurrences(of: " — ", with: "\n")
                     } else {
                         return string + "\n" + NSLocalizedString("Estimating", comment: "Library, download tab")
                     }
@@ -127,10 +127,10 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
             }()
         } else {
             let progress = Double(downloadTask.totalBytesWritten) / Double(book.fileSize)
-            cell.progressLabel.text = DownloadTask.percentFormatter.stringFromNumber(NSNumber(double: progress))
+            cell.progressLabel.text = DownloadTask.percentFormatter.string(from: NSNumber(value: progress as Double))
             cell.progressView.setProgress(Float(progress), animated: animated)
             cell.detailLabel.text = {
-                let downloadedSize = NSByteCountFormatter.stringFromByteCount(downloadTask.totalBytesWritten, countStyle: .File)
+                let downloadedSize = ByteCountFormatter.string(fromByteCount: downloadTask.totalBytesWritten, countStyle: .file)
                 let fileSize = book.fileSizeDescription
                 return String(format: NSLocalizedString("%@ of %@ completed", comment: "Library, download tab"), downloadedSize, fileSize)
                     + "\n" + String(downloadTask.state)
@@ -140,20 +140,20 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
     
     // MARK: Other Data Source
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard tableView.numberOfSections > 1 else {return nil}
         guard let languageName = fetchedResultController.sections?[section].name else {return nil}
         return languageName
     }
     
-    override func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
+    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         let sectionIndexTitles = fetchedResultController.sectionIndexTitles
         guard sectionIndexTitles.count > 2 else {return nil}
         return sectionIndexTitles
     }
     
-    override func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
-        return fetchedResultController.sectionForSectionIndexTitle(title, atIndex: index)
+    override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        return fetchedResultController.section(forSectionIndexTitle: title, at: index)
     }
     
     // MARK: - Table View Delegate
@@ -170,48 +170,48 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
 //        header.textLabel?.font = UIFont.boldSystemFontOfSize(14)
 //    }
 //    
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {}
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {}
     
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        guard let downloadTask = self.fetchedResultController.objectAtIndexPath(indexPath) as? DownloadTask,
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        guard let downloadTask = self.fetchedResultController.object(at: indexPath) as? DownloadTask,
             let bookID = downloadTask.book?.id else {return nil}
         
         var actions = [UITableViewRowAction]()
         switch downloadTask.state {
-        case .Downloading:
-            let pause = UITableViewRowAction(style: .Normal, title: LocalizedStrings.pause) { (action, indexPath) in
+        case .downloading:
+            let pause = UITableViewRowAction(style: .normal, title: LocalizedStrings.pause) { (action, indexPath) in
                 let operation = PauseBookDwonloadOperation(bookID: bookID)
                 Network.shared.queue.addOperation(operation)
                 tableView.setEditing(false, animated: true)
             }
-            actions.insert(pause, atIndex: 0)
-        case .Paused:
-            let resume = UITableViewRowAction(style: .Normal, title: LocalizedStrings.resume) { (action, indexPath) in
+            actions.insert(pause, at: 0)
+        case .paused:
+            let resume = UITableViewRowAction(style: .normal, title: LocalizedStrings.resume) { (action, indexPath) in
                 let operation = ResumeBookDwonloadOperation(bookID: bookID)
                 Network.shared.queue.addOperation(operation)
                 tableView.setEditing(false, animated: true)
             }
-            actions.insert(resume, atIndex: 0)
-        case .Error:
-            let restart = UITableViewRowAction(style: .Normal, title: LocalizedStrings.restart) { (action, indexPath) in
+            actions.insert(resume, at: 0)
+        case .error:
+            let restart = UITableViewRowAction(style: .normal, title: LocalizedStrings.restart) { (action, indexPath) in
                 let operation = ResumeBookDwonloadOperation(bookID: bookID)
                 Network.shared.queue.addOperation(operation)
                 tableView.setEditing(false, animated: true)
             }
-            actions.insert(restart, atIndex: 0)
+            actions.insert(restart, at: 0)
         default:
             break
         }
         
-        let cancel = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.cancel) { (action, indexPath) -> Void in
+        let cancel = UITableViewRowAction(style: UITableViewRowActionStyle(), title: LocalizedStrings.cancel) { (action, indexPath) -> Void in
             if let bookID = downloadTask.book?.id {
                 if let operation = Network.shared.operations[bookID] {
                     // When download is ongoing
@@ -223,16 +223,16 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
                     // Remove resume data
                     // Delete downloadTask object and set book to not local
                     downloadTask.book?.removeResumeData()
-                    downloadTask.book?.state = .Cloud
-                    self.managedObjectContext.deleteObject(downloadTask)
+                    downloadTask.book?.state = .cloud
+                    self.managedObjectContext.delete(downloadTask)
                 }
             } else {
                 // In case of something goes wrong, and cannot find the book related to a download task, allow user to delete the row
-                self.managedObjectContext.deleteObject(downloadTask)
+                self.managedObjectContext.delete(downloadTask)
             }
             tableView.setEditing(false, animated: true)
         }
-        actions.insert(cancel, atIndex: 0)
+        actions.insert(cancel, at: 0)
         
         return actions
     }
@@ -240,12 +240,12 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
     // MARK: - Fetched Results Controller
     
     let managedObjectContext = UIApplication.appDelegate.managedObjectContext
-    lazy var fetchedResultController: NSFetchedResultsController = {
-        let fetchRequest = NSFetchRequest(entityName: "DownloadTask")
+    lazy var fetchedResultController: NSFetchedResultsController = { () -> <<error type>> in 
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "DownloadTask")
         let creationTimeDescriptor = NSSortDescriptor(key: "creationTime", ascending: true)
         fetchRequest.sortDescriptors = [creationTimeDescriptor]
         
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "DownloadFRC" + NSBundle.buildVersion)
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "DownloadFRC" + Bundle.buildVersion)
         fetchedResultsController.delegate = self
         fetchedResultsController.performFetch(deleteCache: false)
         return fetchedResultsController
@@ -253,40 +253,40 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
     
     // MARK: - Fetched Result Controller Delegate
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         switch type {
-        case .Insert:
-            tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
-        case .Delete:
-            tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+        case .insert:
+            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
+        case .delete:
+            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
         default:
             return
         }
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
-        case .Insert:
+        case .insert:
             guard let newIndexPath = newIndexPath else {return}
-            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Fade)
-        case .Delete:
+            tableView.insertRows(at: [newIndexPath], with: .fade)
+        case .delete:
             guard let indexPath = indexPath else {return}
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        case .Update:
-            guard let indexPath = indexPath, let cell = tableView.cellForRowAtIndexPath(indexPath) else {return}
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        case .update:
+            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) else {return}
             configureCell(cell, atIndexPath: indexPath)
-        case .Move:
+        case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Fade)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.insertRows(at: [newIndexPath], with: .fade)
         }
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
         //refreshTabBarBadgeCount()
     }

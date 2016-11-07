@@ -12,12 +12,12 @@ import CoreData
 
 class Article: NSManagedObject {
     
-    class func addOrUpdate(url url: NSURL, context: NSManagedObjectContext) -> Article? {
+    class func addOrUpdate(url: URL, context: NSManagedObjectContext) -> Article? {
         guard let bookID = url.host,
             let book = Book.fetch(bookID, context: context),
             let path = url.path else {return nil}
         
-        let fetchRequest = NSFetchRequest(entityName: "Article")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
         fetchRequest.predicate = NSPredicate(format: "path = %@ AND book = %@", path, book)
         
         guard let article = Article.fetch(fetchRequest, type: Article.self, context: context)?.first ?? insert(Article.self, context: context) else {return nil}
@@ -26,8 +26,8 @@ class Article: NSManagedObject {
         return article
     }
     
-    class func fetchRecentBookmarks(count: Int, context: NSManagedObjectContext) -> [Article] {
-        let fetchRequest = NSFetchRequest(entityName: "Article")
+    class func fetchRecentBookmarks(_ count: Int, context: NSManagedObjectContext) -> [Article] {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
         let dateDescriptor = NSSortDescriptor(key: "bookmarkDate", ascending: false)
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [dateDescriptor, titleDescriptor]
@@ -37,7 +37,7 @@ class Article: NSManagedObject {
     }
     
     class func fetchBookmarked(in book: Book, with context: NSManagedObjectContext) -> [Article] {
-        let request = NSFetchRequest(entityName: "Article")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
         request.predicate = NSPredicate(format: "book = %@ AND isBookmarked == true", book)
         request.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: false)]
         return fetch(request, type: Article.self, context: context) ?? [Article]()
@@ -45,18 +45,18 @@ class Article: NSManagedObject {
     
     // MARK: - Helper
     
-    var url: NSURL? {
+    var url: URL? {
         guard let bookID = book?.id else {return nil}
-        return NSURL(bookID: bookID, contentPath: path)
+        return URL(bookID: bookID, contentPath: path)
     }
     
-    var thumbImageData: NSData? {
+    var thumbImageData: Data? {
         if let bookID = book?.id, let path = thumbImagePath,
-            let url = NSURL(bookID: bookID, contentPath: path),
-            let data = NSData(contentsOfURL: url) {
+            let url = URL(bookID: bookID, contentPath: path),
+            let data = try? Data(contentsOf: url) {
             return data
         } else {
-            return book?.favIcon
+            return book?.favIcon as Data?
         }
     }
     
@@ -64,12 +64,12 @@ class Article: NSManagedObject {
         guard let title = title,
             let data = thumbImageData,
             let bookID = book?.id,
-            let url = NSURL(bookID: bookID, contentPath: path) else {return nil}
+            let url = URL(bookID: bookID, contentPath: path) else {return nil}
         return [
             "title": title,
             "thumbImageData": data,
             "url": url.absoluteString!,
-            "isMainPage": NSNumber(bool: isMainPage)
+            "isMainPage": NSNumber(value: isMainPage as Bool)
         ]
     }
     

@@ -11,20 +11,20 @@ import CloudKit
 import Operations
 
 class BookmarkMigrationOperation: Operation {
-    private let context: NSManagedObjectContext
+    fileprivate let context: NSManagedObjectContext
     
     override init() {
-        self.context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        context.parentContext = NSManagedObjectContext.mainQueueContext
+        self.context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        context.parent = NSManagedObjectContext.mainQueueContext
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         
         super.init()
         addCondition(MutuallyExclusive<GlobalQueue>())
-        name = String(self)
+        name = String(describing: self)
     }
     
     override func execute() {
-        context.performBlockAndWait {
+        context.performAndWait {
             let pids = Book.fetchLocal(self.context).flatMap({$1.pid})
             for pid in pids {
                 var books = Book.fetch(pid: pid, context: self.context)
@@ -40,8 +40,8 @@ class BookmarkMigrationOperation: Operation {
 }
 
 class BookmarkTrashOperation: Operation {
-    private let context: NSManagedObjectContext
-    private let articles: [Article]
+    fileprivate let context: NSManagedObjectContext
+    fileprivate let articles: [Article]
     
     init(articles: [Article]) {
         self.context = NSManagedObjectContext.mainQueueContext
@@ -49,11 +49,11 @@ class BookmarkTrashOperation: Operation {
         
         super.init()
         addCondition(MutuallyExclusive<BookmarkController>())
-        name = String(self)
+        name = String(describing: self)
     }
     
     override func execute() {
-        context.performBlock { 
+        context.perform { 
             self.articles.forEach() {
                 $0.isBookmarked = false
                 $0.bookmarkDate = nil
@@ -61,12 +61,12 @@ class BookmarkTrashOperation: Operation {
             
             // Get books whose zim file removed, but are retain by bookmarks, and whose bookmarks are all removed
             let books = Set(self.articles.flatMap({$0.book}))
-                .filter({Article.fetchBookmarked(in: $0, with: self.context).count == 0 && $0.state == .Retained})
+                .filter({Article.fetchBookmarked(in: $0, with: self.context).count == 0 && $0.state == .retained})
             books.forEach({ (book) in
                 if let _ = book.meta4URL {
-                    book.state = .Cloud
+                    book.state = .cloud
                 } else {
-                    self.context.deleteObject(book)
+                    self.context.delete(book)
                 }
             })
             
@@ -87,7 +87,7 @@ class BookmarkCloudKitOperation: Operation {
     init(article: Article) {
         self.article = article
         super.init()
-        name = String(self)
+        name = String(describing: self)
     }
     
     override func execute() {
@@ -140,10 +140,10 @@ class BookmarkCloudKitOperation: Operation {
 //        }
     }
     
-    func populate(record: CKRecord, with article: Article) {
-        record["path"] = self.article.path
-        record["title"] = self.article.title
-        record["snippet"] = self.article.snippet
+    func populate(_ record: CKRecord, with article: Article) {
+        record["path"] = self.article.path as CKRecordValue?
+        record["title"] = self.article.title as CKRecordValue?
+        record["snippet"] = self.article.snippet as CKRecordValue?
     }
 }
 

@@ -15,13 +15,13 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
     @IBOutlet weak var sortSegmentedControl: UISegmentedControl!
     @IBOutlet weak var langNameSegmentedControl: UISegmentedControl!
     
-    private let managedObjectContext = NSManagedObjectContext.mainQueueContext
+    fileprivate let managedObjectContext = NSManagedObjectContext.mainQueueContext
     
     weak var delegate: LanguageFilterUpdating?
-    private var initialShowLanguageSet = Set<Language>()
-    private var showLanguages = [Language]()
-    private var hideLanguages = [Language]()
-    private var messageBarButtonItem = MessageBarButtonItem()
+    fileprivate var initialShowLanguageSet = Set<Language>()
+    fileprivate var showLanguages = [Language]()
+    fileprivate var hideLanguages = [Language]()
+    fileprivate var messageBarButtonItem = MessageBarButtonItem()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +41,7 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
         sort()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         let hasChange = initialShowLanguageSet != Set(showLanguages)
         if hasChange {_ = try? managedObjectContext.save()}
         delegate?.languageFilterFinsihEditing(hasChange)
@@ -50,8 +50,8 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
     // MARK: - Configure
     
     func configureToolBar() {
-        navigationController?.toolbarHidden = false
-        let spaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace)
+        navigationController?.isToolbarHidden = false
+        let spaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace)
         setToolbarItems([spaceBarButtonItem, messageBarButtonItem, spaceBarButtonItem], animated: false)
         messageBarButtonItem.text = messageLabelText
     }
@@ -60,10 +60,10 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
         sortSegmentedControl.selectedSegmentIndex = Preference.LangFilter.sortByAlphabeticalAsc == true ? 1: 0
         langNameSegmentedControl.selectedSegmentIndex = Preference.LangFilter.displayInOriginalLocale == true ? 1 : 0
         
-        sortSegmentedControl.setTitle(NSLocalizedString("Count", comment: "Library, Language Filter"), forSegmentAtIndex: 0)
-        sortSegmentedControl.setTitle(NSLocalizedString("A-Z", comment: "Library, Language Filter"), forSegmentAtIndex: 1)
-        langNameSegmentedControl.setTitle(NSLocale.currentLocale().displayNameForKey(NSLocaleIdentifier, value: NSLocale.preferredLangCodes[0]), forSegmentAtIndex: 0)
-        langNameSegmentedControl.setTitle(NSLocalizedString("Original", comment: "Library, Language Filter"), forSegmentAtIndex: 1)
+        sortSegmentedControl.setTitle(NSLocalizedString("Count", comment: "Library, Language Filter"), forSegmentAt: 0)
+        sortSegmentedControl.setTitle(NSLocalizedString("A-Z", comment: "Library, Language Filter"), forSegmentAt: 1)
+        langNameSegmentedControl.setTitle((Locale.current as NSLocale).displayName(forKey: NSLocale.Key.identifier, value: Locale.preferredLangCodes[0]), forSegmentAt: 0)
+        langNameSegmentedControl.setTitle(NSLocalizedString("Original", comment: "Library, Language Filter"), forSegmentAt: 1)
     }
     
     func sort() {
@@ -96,13 +96,13 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
         }
     }
     
-    @IBAction func sortSegmentedControlChanged(sender: UISegmentedControl) {
+    @IBAction func sortSegmentedControlChanged(_ sender: UISegmentedControl) {
         sort()
         tableView.reloadData()
         Preference.LangFilter.sortByAlphabeticalAsc = sender.selectedSegmentIndex == 1
     }
     
-    @IBAction func langNameSegmentedControlChanged(sender: UISegmentedControl) {
+    @IBAction func langNameSegmentedControlChanged(_ sender: UISegmentedControl) {
         Preference.LangFilter.displayInOriginalLocale = sender.selectedSegmentIndex == 1
         if Preference.LangFilter.sortByAlphabeticalAsc { sort() }
         tableView.reloadData()
@@ -111,8 +111,8 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
     
     // MARK: - Sort 
     
-    func sortByCountDesc(languages: [Language]) -> [Language] {
-        return languages.sort { (language0, language1) -> Bool in
+    func sortByCountDesc(_ languages: [Language]) -> [Language] {
+        return languages.sorted { (language0, language1) -> Bool in
             let count0 = language0.books.count
             let count1 = language1.books.count
             guard count0 != count1 else {
@@ -122,34 +122,34 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
         }
     }
     
-    func sortByAlphabeticalAsc(languages: [Language]) -> [Language] {
-        return languages.sort({alphabeticalAscCompare(language0: $0, language1: $1, byOriginalLocale: Preference.LangFilter.displayInOriginalLocale)})
+    func sortByAlphabeticalAsc(_ languages: [Language]) -> [Language] {
+        return languages.sorted(by: {alphabeticalAscCompare(language0: $0, language1: $1, byOriginalLocale: Preference.LangFilter.displayInOriginalLocale)})
     }
     
-    private func alphabeticalAscCompare(language0 language0: Language, language1: Language, byOriginalLocale: Bool) -> Bool {
+    fileprivate func alphabeticalAscCompare(language0: Language, language1: Language, byOriginalLocale: Bool) -> Bool {
         if byOriginalLocale {
             guard let name0 = language0.nameInOriginalLocale,
                 let name1 = language1.nameInOriginalLocale else {return false}
-            return name0.compare(name1) == .OrderedAscending
+            return name0.compare(name1) == .orderedAscending
         } else {
             guard let name0 = language0.nameInCurrentLocale,
                 let name1 = language1.nameInCurrentLocale else {return false}
-            return name0.compare(name1) == .OrderedAscending
+            return name0.compare(name1) == .orderedAscending
         }
     }
     
     // MARK: - Table view data source
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return section == 0 ? showLanguages.count : hideLanguages.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         if indexPath.section == 0 {
             configureCell(cell, atIndexPath: indexPath, language: showLanguages[indexPath.row])
         } else {
@@ -158,12 +158,12 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
         return cell
     }
     
-    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath, language: Language) {
+    func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath, language: Language) {
         cell.textLabel?.text = Preference.LangFilter.displayInOriginalLocale ? language.nameInOriginalLocale : language.nameInCurrentLocale
         cell.detailTextLabel?.text = language.books.count.description
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if showLanguages.count == 0 {
             return section == 0 ? "" : NSLocalizedString("ALL", comment: "Language selection: table section title") + "       "
         } else {
@@ -173,13 +173,13 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
     
     // MARK: - Table view delegate
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        func animateUpdates(originalIndexPath: NSIndexPath, destinationIndexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        func animateUpdates(_ originalIndexPath: IndexPath, destinationIndexPath: IndexPath) {
             tableView.beginUpdates()
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Right)
-            tableView.insertRowsAtIndexPaths([destinationIndexPath], withRowAnimation: .Right)
-            tableView.headerViewForSection(0)?.textLabel?.text = self.tableView(tableView, titleForHeaderInSection: 0)
-            tableView.headerViewForSection(1)?.textLabel?.text = self.tableView(tableView, titleForHeaderInSection: 1)
+            tableView.deleteRows(at: [indexPath], with: .right)
+            tableView.insertRows(at: [destinationIndexPath], with: .right)
+            tableView.headerView(forSection: 0)?.textLabel?.text = self.tableView(tableView, titleForHeaderInSection: 0)
+            tableView.headerView(forSection: 1)?.textLabel?.text = self.tableView(tableView, titleForHeaderInSection: 1)
             tableView.endUpdates()
         }
         
@@ -187,21 +187,21 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
             let language = showLanguages[indexPath.row]
             language.isDisplayed = false
             hideLanguages.append(language)
-            showLanguages.removeAtIndex(indexPath.row)
+            showLanguages.remove(at: indexPath.row)
             hideLanguages = sortByCountDesc(hideLanguages)
             
-            guard let row = hideLanguages.indexOf(language) else {tableView.reloadData(); return}
-            let destinationIndexPath = NSIndexPath(forRow: row, inSection: 1)
+            guard let row = hideLanguages.index(of: language) else {tableView.reloadData(); return}
+            let destinationIndexPath = IndexPath(row: row, section: 1)
             animateUpdates(indexPath, destinationIndexPath: destinationIndexPath)
         } else {
             let language = hideLanguages[indexPath.row]
             language.isDisplayed = true
             showLanguages.append(language)
-            hideLanguages.removeAtIndex(indexPath.row)
+            hideLanguages.remove(at: indexPath.row)
             showLanguages = sortByCountDesc(showLanguages)
             
-            guard let row = showLanguages.indexOf(language) else {tableView.reloadData(); return}
-            let destinationIndexPath = NSIndexPath(forRow: row, inSection: 0)
+            guard let row = showLanguages.index(of: language) else {tableView.reloadData(); return}
+            let destinationIndexPath = IndexPath(row: row, section: 0)
             animateUpdates(indexPath, destinationIndexPath: destinationIndexPath)
         }
         
@@ -209,13 +209,13 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
         delegate?.languageFilterChanged()
     }
     
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if showLanguages.count == 0 && section == 0 {return CGFloat.min}
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if showLanguages.count == 0 && section == 0 {return CGFloat.leastNormalMagnitude}
         return tableView.sectionHeaderHeight
     }
 }
 
 protocol LanguageFilterUpdating: class {
     func languageFilterChanged()
-    func languageFilterFinsihEditing(hasChanges: Bool)
+    func languageFilterFinsihEditing(_ hasChanges: Bool)
 }

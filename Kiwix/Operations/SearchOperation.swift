@@ -10,7 +10,7 @@ import CoreData
 import Operations
 
 class SearchOperation: GroupOperation {
-    private(set) var results = [SearchResult]()
+    fileprivate(set) var results = [SearchResult]()
     let searchTerm: String
     
     init(searchTerm: String) {
@@ -44,7 +44,7 @@ class SearchOperation: GroupOperation {
 private class BookSearch: Operation {
     let zimID: String
     let searchTerm: String
-    private var results = [SearchResult]()
+    fileprivate var results = [SearchResult]()
     
     init(zimID: String, searchTerm: String) {
         self.zimID = zimID
@@ -52,17 +52,17 @@ private class BookSearch: Operation {
         super.init()
     }
     
-    override private func execute() {
+    override fileprivate func execute() {
         defer { finish() }
         guard let reader = ZimMultiReader.shared.readers[zimID] else {return}
         
-        guard !cancelled else {return}
-        let indexedDics = reader.searchUsingIndex(searchTerm) as? [[String: AnyObject]] ?? [[String: AnyObject]]()
+        guard !isCancelled else {return}
+        let indexedDics = reader.search(usingIndex: searchTerm) as? [[String: AnyObject]] ?? [[String: AnyObject]]()
         
-        guard !cancelled else {return}
+        guard !isCancelled else {return}
         let titleDics = reader.searchSuggestionsSmart(searchTerm) as? [[String: AnyObject]] ?? [[String: AnyObject]]()
         
-        guard !cancelled else {return}
+        guard !isCancelled else {return}
         let mixedDics = titleDics + indexedDics // It is important we process the title search result first, so that we always keep the indexed search result
         for dic in mixedDics {
             guard let result = SearchResult (rawResult: dic, lowerCaseSearchTerm: searchTerm) else {continue}
@@ -74,14 +74,14 @@ private class BookSearch: Operation {
 private class Sort: Operation, AutomaticInjectionOperationType {
     var requirement = [SearchResult]()
     
-    private override func execute() {
+    fileprivate override func execute() {
         defer { finish() }
-        guard !cancelled else {return}
+        guard !isCancelled else {return}
         sort()
     }
     
-    private func sort() {
-        requirement.sortInPlace { (result0, result1) -> Bool in
+    fileprivate func sort() {
+        requirement.sort { (result0, result1) -> Bool in
             if result0.score != result1.score {
                 return result0.score < result1.score
             } else {
@@ -92,7 +92,7 @@ private class Sort: Operation, AutomaticInjectionOperationType {
         }
     }
     
-    private func titleCaseInsensitiveCompare(result0: SearchResult, result1: SearchResult) -> Bool {
-        return result0.title.caseInsensitiveCompare(result1.title) == NSComparisonResult.OrderedAscending
+    fileprivate func titleCaseInsensitiveCompare(_ result0: SearchResult, result1: SearchResult) -> Bool {
+        return result0.title.caseInsensitiveCompare(result1.title) == ComparisonResult.orderedAscending
     }
 }

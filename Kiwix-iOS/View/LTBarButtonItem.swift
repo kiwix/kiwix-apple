@@ -26,18 +26,18 @@ class LTBarButtonItem: UIBarButtonItem {
     convenience init(configure: BarButtonConfig) {
         let image: UIImage? = {
             guard let imageName = configure.imageName else {return nil}
-            return UIImage(named: imageName)?.imageWithRenderingMode(configure.renderingMode)
+            return UIImage(named: imageName)?.withRenderingMode(configure.renderingMode)
         }()
         let highlightedImage: UIImage? = {
             guard let highlightedImageName = configure.highlightedImageName else {return nil}
-            return UIImage(named: highlightedImageName)?.imageWithRenderingMode(configure.highlightedrenderingMode)
+            return UIImage(named: highlightedImageName)?.withRenderingMode(configure.highlightedrenderingMode)
         }()
         
         let customImageView = LargeHitZoneImageView(image: image, highlightedImage: highlightedImage)
-        customImageView.contentMode = UIViewContentMode.ScaleAspectFit
-        customImageView.frame = CGRectMake(0, 0, 22, 22)
+        customImageView.contentMode = UIViewContentMode.scaleAspectFit
+        customImageView.frame = CGRect(x: 0, y: 0, width: 22, height: 22)
         customImageView.tintColor = configure.tintColor
-        let containerView = UIView(frame: CGRectMake(0, 0, 44, 30))
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 30))
         customImageView.center = containerView.center
         containerView.addSubview(customImageView)
         self.init(customView: containerView)
@@ -57,7 +57,7 @@ class LTBarButtonItem: UIBarButtonItem {
     func startRotating() {
         guard !isRotating else {return}
         isRotating = true
-        self.customView?.tintColor = UIColor.grayColor()
+        self.customView?.tintColor = UIColor.gray
         rotateImage(1.5, angle: CGFloat(M_PI * 2))
     }
     
@@ -65,12 +65,12 @@ class LTBarButtonItem: UIBarButtonItem {
         isRotating = false
     }
     
-    private func rotateImage(duration: CFTimeInterval, angle: CGFloat) {
+    fileprivate func rotateImage(_ duration: CFTimeInterval, angle: CGFloat) {
         CATransaction.begin()
         let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
         rotationAnimation.byValue = angle
         rotationAnimation.duration = duration
-        rotationAnimation.removedOnCompletion = true
+        rotationAnimation.isRemovedOnCompletion = true
         
         CATransaction.setCompletionBlock { () -> Void in
             guard self.isRotating else {
@@ -79,34 +79,34 @@ class LTBarButtonItem: UIBarButtonItem {
             }
             self.rotateImage(duration, angle: angle)
         }
-        self.customView?.layer.addAnimation(rotationAnimation, forKey: "rotationAnimation")
+        self.customView?.layer.add(rotationAnimation, forKey: "rotationAnimation")
         CATransaction.commit()
     }
     
     // MARK: - handle gesture
     
-    func handleTapGesture(gestureRecognizer: UIGestureRecognizer) {
+    func handleTapGesture(_ gestureRecognizer: UIGestureRecognizer) {
         guard !isRotating else {return}
         delegate?.barButtonTapped(self, gestureRecognizer: gestureRecognizer)
     }
     
-    func handleLongPressGesture(gestureRecognizer: UIGestureRecognizer) {
-        guard gestureRecognizer.state == .Began else {return}
+    func handleLongPressGesture(_ gestureRecognizer: UIGestureRecognizer) {
+        guard gestureRecognizer.state == .began else {return}
         guard !isRotating else {return}
         delegate?.barButtonLongPressedStart(self, gestureRecognizer: gestureRecognizer)
     }
 }
 
 protocol LTBarButtonItemDelegate: class {
-    func barButtonTapped(sender: LTBarButtonItem, gestureRecognizer: UIGestureRecognizer)
-    func barButtonLongPressedStart(sender: LTBarButtonItem, gestureRecognizer: UIGestureRecognizer)
+    func barButtonTapped(_ sender: LTBarButtonItem, gestureRecognizer: UIGestureRecognizer)
+    func barButtonLongPressedStart(_ sender: LTBarButtonItem, gestureRecognizer: UIGestureRecognizer)
 }
 
 extension LTBarButtonItemDelegate {
-    func barButtonTapped(sender: LTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
+    func barButtonTapped(_ sender: LTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
         return
     }
-    func barButtonLongPressedStart(sender: LTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
+    func barButtonLongPressedStart(_ sender: LTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
         return
     }
 }
@@ -114,8 +114,8 @@ extension LTBarButtonItemDelegate {
 struct BarButtonConfig {
     var imageName: String?
     var highlightedImageName: String?
-    var renderingMode: UIImageRenderingMode = .AlwaysTemplate
-    var highlightedrenderingMode: UIImageRenderingMode = .AlwaysTemplate
+    var renderingMode: UIImageRenderingMode = .alwaysTemplate
+    var highlightedrenderingMode: UIImageRenderingMode = .alwaysTemplate
     var tintColor: UIColor?
     
     weak var delegate: LTBarButtonItemDelegate?

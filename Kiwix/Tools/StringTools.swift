@@ -9,28 +9,28 @@
 import Foundation
 
 extension String {
-    static func formattedDateString(date: NSDate) -> String {
-        let formatter = NSDateFormatter()
+    static func formattedDateString(_ date: Date) -> String {
+        let formatter = DateFormatter()
         formatter.dateFormat = "MM-dd-yyyy"
-        formatter.dateStyle = .MediumStyle
-        return formatter.stringFromDate(date)
+        formatter.dateStyle = .medium
+        return formatter.string(from: date)
     }
     
-    static func formattedFileSizeString(fileBytes: Int64) -> String {
-        return NSByteCountFormatter.stringFromByteCount(fileBytes, countStyle: .File)
+    static func formattedFileSizeString(_ fileBytes: Int64) -> String {
+        return ByteCountFormatter.string(fromByteCount: fileBytes, countStyle: .file)
     }
     
-    static func formattedPercentString(double: Double) -> String? {
-        let number = NSNumber(double: double)
-        let formatter = NSNumberFormatter()
-        formatter.numberStyle = .PercentStyle
+    static func formattedPercentString(_ double: Double) -> String? {
+        let number = NSNumber(value: double as Double)
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .percent
         formatter.maximumIntegerDigits = 3
         formatter.maximumFractionDigits = 0
-        formatter.locale = NSLocale.currentLocale()
-        return formatter.stringFromNumber(number)
+        formatter.locale = Locale.current
+        return formatter.string(from: number)
     }
     
-    static func formattedNumberString(double: Double) -> String {
+    static func formattedNumberString(_ double: Double) -> String {
         let sign = ((double < 0) ? "-" : "" )
         let abs = fabs(double)
         guard abs >= 1000.0 else {

@@ -10,9 +10,9 @@ import Foundation
 import CoreData
 
 extension NSManagedObject {
-    class func fetch<T:NSManagedObject>(fetchRequest: NSFetchRequest, type: T.Type, context: NSManagedObjectContext) -> [T]? {
+    class func fetch<T:NSManagedObject>(_ fetchRequest: NSFetchRequest<NSFetchRequestResult>, type: T.Type, context: NSManagedObjectContext) -> [T]? {
         do {
-            let matches = try context.executeFetchRequest(fetchRequest) as? [T]
+            let matches = try context.fetch(fetchRequest) as? [T]
             return matches
         } catch let error as NSError {
             print("Fetch failed: \(error.localizedDescription)")
@@ -20,16 +20,16 @@ extension NSManagedObject {
         }
     }
     
-    class func insert<T:NSManagedObject>(type: T.Type, context: NSManagedObjectContext) -> T? {
-        let className = String(T)
-        guard let obj = NSEntityDescription.insertNewObjectForEntityForName(className, inManagedObjectContext: context) as? T else {return nil}
+    class func insert<T:NSManagedObject>(_ type: T.Type, context: NSManagedObjectContext) -> T? {
+        let className = String(describing: T)
+        guard let obj = NSEntityDescription.insertNewObject(forEntityName: className, into: context) as? T else {return nil}
         return obj
     }
 }
 
 extension NSManagedObjectContext {
     func saveInCorrectThreadIfNeeded() {
-        performBlock { () -> Void in
+        perform { () -> Void in
             self.saveIfNeeded()
         }
     }
@@ -43,9 +43,9 @@ extension NSManagedObjectContext {
         }
     }
     
-    func deleteObjects(objects: [NSManagedObject]) {
+    func deleteObjects(_ objects: [NSManagedObject]) {
         for object in objects {
-            deleteObject(object)
+            delete(object)
         }
     }
 }

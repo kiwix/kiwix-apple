@@ -12,7 +12,7 @@ class LibrarySplitViewController: UISplitViewController, UISplitViewControllerDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        preferredDisplayMode = .AllVisible
+        preferredDisplayMode = .allVisible
         minimumPrimaryColumnWidth = 320.0
         delegate = self
         
@@ -21,17 +21,17 @@ class LibrarySplitViewController: UISplitViewController, UISplitViewControllerDe
     
     func configureDismissButton() {
         guard let master = viewControllers.first as? UINavigationController else {return}
-        let barButtonItem = UIBarButtonItem(image: UIImage(named: "Cross"), style: .Plain, target: self, action: #selector(LibrarySplitViewController.dismiss))
+        let barButtonItem = UIBarButtonItem(image: UIImage(named: "Cross"), style: .plain, target: self, action: #selector(LibrarySplitViewController.dismiss))
         master.topViewController?.navigationItem.leftBarButtonItem = barButtonItem
     }
     
     func dismiss() {
-        dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     // MARK: - UISplitViewControllerDelegate
     
-    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
         let secondaryTopController = (secondaryViewController as? UINavigationController)?.topViewController
         if let _ = secondaryTopController as? LanguageFilterController {
             return false

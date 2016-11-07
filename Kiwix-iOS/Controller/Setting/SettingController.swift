@@ -9,8 +9,8 @@
 import UIKit
 
 class SettingTBVC: UITableViewController {
-    private(set) var sectionHeader: [String?] = [nil, LocalizedStrings.misc]
-    private(set) var cellTitles = [[LocalizedStrings.backupLocalFiles, LocalizedStrings.fontSize, LocalizedStrings.searchHistory],
+    fileprivate(set) var sectionHeader: [String?] = [nil, LocalizedStrings.misc]
+    fileprivate(set) var cellTitles = [[LocalizedStrings.backupLocalFiles, LocalizedStrings.fontSize, LocalizedStrings.searchHistory],
                           [LocalizedStrings.rateKiwix, LocalizedStrings.about]]
     
     override func viewDidLoad() {
@@ -20,30 +20,30 @@ class SettingTBVC: UITableViewController {
         showRateKiwixIfNeeded()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
     }
     
     // MARK: - Table view data source
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return cellTitles.count
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cellTitles[section].count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         
         let title = cellTitles[indexPath.section][indexPath.row]
         cell.textLabel?.text = title
         cell.detailTextLabel?.text = {
             switch title {
             case LocalizedStrings.backupLocalFiles:
-                guard let skipBackup = NSFileManager.getSkipBackupAttribute(item: NSFileManager.docDirURL) else {return ""}
+                guard let skipBackup = FileManager.getSkipBackupAttribute(item: FileManager.docDirURL) else {return ""}
                 return skipBackup ? LocalizedStrings.off: LocalizedStrings.on
             case LocalizedStrings.fontSize:
                 return String.formattedPercentString(Preference.webViewZoomScale / 100)
@@ -57,55 +57,55 @@ class SettingTBVC: UITableViewController {
     
     // MARK: - Table View Delegate
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sectionHeader[section]
     }
     
-    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         guard section == tableView.numberOfSections - 1 else {return nil}
-        var footnote = String(format: LocalizedStrings.settingFootnote, NSBundle.appShortVersion)
+        var footnote = String(format: LocalizedStrings.settingFootnote, Bundle.appShortVersion)
         switch UIApplication.buildStatus {
-        case .Alpha, .Beta:
-            footnote += (UIApplication.buildStatus == .Alpha ? " Alpha" : " Beta")
+        case .alpha, .beta:
+            footnote += (UIApplication.buildStatus == .alpha ? " Alpha" : " Beta")
             footnote += "\n"
-            footnote += "Build " + NSBundle.buildVersion
+            footnote += "Build " + Bundle.buildVersion
             return footnote
-        case .Release:
+        case .release:
             return footnote
         }
     }
     
-    override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         guard section == tableView.numberOfSections - 1 else {return}
         if let view = view as? UITableViewHeaderFooterView {
-            view.textLabel?.textAlignment = .Center
+            view.textLabel?.textAlignment = .center
         }
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        defer {tableView.deselectRowAtIndexPath(indexPath, animated: true)}
-        let cell = tableView.cellForRowAtIndexPath(indexPath)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        defer {tableView.deselectRow(at: indexPath, animated: true)}
+        let cell = tableView.cellForRow(at: indexPath)
         guard let text = cell?.textLabel?.text else {return}
         switch text {
         case LocalizedStrings.backupLocalFiles:
             let controller = UIStoryboard(name: "Setting", bundle: nil)
-                .instantiateViewControllerWithIdentifier("SettingDetailController") as! SettingDetailController
+                .instantiateViewController(withIdentifier: "SettingDetailController") as! SettingDetailController
             controller.page = .BackupLocalFiles
             navigationController?.pushViewController(controller, animated: true)
         case LocalizedStrings.searchHistory:
             let controller = UIStoryboard(name: "Setting", bundle: nil)
-                .instantiateViewControllerWithIdentifier("SettingDetailController") as! SettingDetailController
+                .instantiateViewController(withIdentifier: "SettingDetailController") as! SettingDetailController
             controller.page = .SearchHistory
             navigationController?.pushViewController(controller, animated: true)
         case LocalizedStrings.fontSize:
             let controller = UIStoryboard(name: "Setting", bundle: nil)
-                .instantiateViewControllerWithIdentifier("FontSizeController") as! FontSizeController
+                .instantiateViewController(withIdentifier: "FontSizeController") as! FontSizeController
             navigationController?.pushViewController(controller, animated: true)
         case LocalizedStrings.rateKiwix:
             showRateKiwixAlert(showRemindLater: false)
         case LocalizedStrings.about:
             let controller = UIStoryboard(name: "Setting", bundle: nil)
-                .instantiateViewControllerWithIdentifier("WebViewController") as! WebViewController
+                .instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
             controller.page = .About
             navigationController?.pushViewController(controller, animated: true)
         default:
@@ -118,26 +118,26 @@ class SettingTBVC: UITableViewController {
     func showRateKiwixIfNeeded() {
         guard Preference.haveRateKiwix == false else {return}
         guard let firstActiveDate = Preference.activeUseHistory.first else {return}
-        let installtionIsOldEnough = NSDate().timeIntervalSinceDate(firstActiveDate) > 3600.0 * 24 * 7
+        let installtionIsOldEnough = Date().timeIntervalSince(firstActiveDate as Date) > 3600.0 * 24 * 7
         let hasActivelyUsed = Preference.activeUseHistory.count > 10
         if installtionIsOldEnough && hasActivelyUsed {
             showRateKiwixAlert(showRemindLater: true)
         }
     }
     
-    func showRateKiwixAlert(showRemindLater showRemindLater: Bool) {
-        let alert = UIAlertController(title: LocalizedStrings.rateKiwixTitle, message: LocalizedStrings.rateKiwixMessage, preferredStyle: .Alert)
-        let remindLater = UIAlertAction(title: LocalizedStrings.rateLater, style: .Default) { (action) -> Void in
+    func showRateKiwixAlert(showRemindLater: Bool) {
+        let alert = UIAlertController(title: LocalizedStrings.rateKiwixTitle, message: LocalizedStrings.rateKiwixMessage, preferredStyle: .alert)
+        let remindLater = UIAlertAction(title: LocalizedStrings.rateLater, style: .default) { (action) -> Void in
             Preference.activeUseHistory.removeAll()
         }
-        let remindNever = UIAlertAction(title: LocalizedStrings.rateNever, style: .Default) { (action) -> Void in
+        let remindNever = UIAlertAction(title: LocalizedStrings.rateNever, style: .default) { (action) -> Void in
             Preference.haveRateKiwix = true
         }
-        let rateNow = UIAlertAction(title: LocalizedStrings.rateNow, style: .Cancel) { (action) -> Void in
+        let rateNow = UIAlertAction(title: LocalizedStrings.rateNow, style: .cancel) { (action) -> Void in
             self.goRateInAppStore()
             Preference.haveRateKiwix = true
         }
-        let cancel = UIAlertAction(title: LocalizedStrings.cancel, style: .Default, handler: nil)
+        let cancel = UIAlertAction(title: LocalizedStrings.cancel, style: .default, handler: nil)
         
         if showRemindLater {
             alert.addAction(remindLater)
@@ -148,18 +148,18 @@ class SettingTBVC: UITableViewController {
             alert.addAction(cancel)
         }
         
-        self.presentViewController(alert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
     }
     
     func goRateInAppStore() {
-        let url = NSURL(string: "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=997079563&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8")!
-        UIApplication.sharedApplication().openURL(url)
+        let url = URL(string: "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=997079563&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8")!
+        UIApplication.shared.openURL(url)
     }
     
     // MARK: - Actions
     
-    @IBAction func dismissButtonTapped(sender: UIBarButtonItem) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func dismissButtonTapped(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
     }
 
 }

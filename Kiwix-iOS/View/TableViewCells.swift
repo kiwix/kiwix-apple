@@ -23,21 +23,21 @@ class BasicBookCell: UITableViewCell {
     override func awakeFromNib() {
         hasPicIndicator.layer.cornerRadius = 1.0
         hasPicIndicator.layer.masksToBounds = true
-        hasPicIndicator.backgroundColor = UIColor.clearColor()
+        hasPicIndicator.backgroundColor = UIColor.clear
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        selected = false
-        highlighted = false
+        isSelected = false
+        isHighlighted = false
     }
     
-    override func setHighlighted(highlighted: Bool, animated: Bool) {
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
         setIndicatorColor()
     }
     
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         setIndicatorColor()
     }
@@ -50,8 +50,8 @@ class BasicBookCell: UITableViewCell {
         }
     }
     
-    private func setIndicatorColor() {
-        hasPicIndicator.backgroundColor = hasPic ? AppColors.hasPicTintColor : UIColor.lightGrayColor()
+    fileprivate func setIndicatorColor() {
+        hasPicIndicator.backgroundColor = hasPic ? AppColors.hasPicTintColor : UIColor.lightGray
     }
 }
 
@@ -68,7 +68,7 @@ class CheckMarkBookCell: BasicBookCell {
     
     var isChecked: Bool = false {
         didSet {
-            accessoryImageView.highlighted = isChecked
+            accessoryImageView.isHighlighted = isChecked
         }
     }
     
@@ -118,7 +118,7 @@ class BookmarkSnippetCell: BookmarkCell {
 // MARK: - Protocol
 
 protocol TableCellDelegate: class {
-    func didTapOnAccessoryViewForCell(cell: UITableViewCell)
+    func didTapOnAccessoryViewForCell(_ cell: UITableViewCell)
 }
 
 // MARK: - General

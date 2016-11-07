@@ -10,12 +10,12 @@ import UIKit
 
 class Controllers {
     static let shared = Controllers()
-    private init() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(Controllers.removeStrongReference), name: UIApplicationDidReceiveMemoryWarningNotification, object: nil)
+    fileprivate init() {
+        NotificationCenter.default.addObserver(self, selector: #selector(Controllers.removeStrongReference), name: NSNotification.Name.UIApplicationDidReceiveMemoryWarning, object: nil)
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidReceiveMemoryWarningNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidReceiveMemoryWarning, object: nil)
     }
     
     @objc func removeStrongReference() {
@@ -35,7 +35,7 @@ class Controllers {
     
     // MARK: - Bookmark
     
-    private var bookmark: UINavigationController?
+    fileprivate var bookmark: UINavigationController?
     
     class var bookmark: UINavigationController {
         let controller = Controllers.shared.bookmark ?? UIStoryboard(name: "Bookmark", bundle: nil).instantiateInitialViewController() as! UINavigationController
@@ -43,17 +43,17 @@ class Controllers {
         return controller
     }
     
-    private var bookmarkHUD: BookmarkHUD?
+    fileprivate var bookmarkHUD: BookmarkHUD?
     
     class var bookmarkHUD: BookmarkHUD {
-        let controller = Controllers.shared.bookmarkHUD ?? UIStoryboard(name: "Bookmark", bundle: nil).instantiateViewControllerWithIdentifier("BookmarkHUD") as! BookmarkHUD
+        let controller = Controllers.shared.bookmarkHUD ?? UIStoryboard(name: "Bookmark", bundle: nil).instantiateViewController(withIdentifier: "BookmarkHUD") as! BookmarkHUD
         Controllers.shared.bookmarkHUD = controller
         return controller
     }
     
     // MARK: - Library
     
-    private var library: UIViewController?
+    fileprivate var library: UIViewController?
     
     class var library: UIViewController {
         let controller = Controllers.shared.library ?? UIStoryboard(name: "Library", bundle: nil).instantiateInitialViewController()!
@@ -63,7 +63,7 @@ class Controllers {
     
     // MARK: -  Search
     
-    private var search: SearchController?
+    fileprivate var search: SearchController?
     
     class var search: SearchController {
         let controller = Controllers.shared.search ?? UIStoryboard(name: "Search", bundle: nil).instantiateInitialViewController() as! SearchController
@@ -73,7 +73,7 @@ class Controllers {
     
     // MARK: - Setting
     
-    private var setting: UIViewController?
+    fileprivate var setting: UIViewController?
     
     class var setting: UIViewController {
         let controller = Controllers.shared.setting ?? UIStoryboard(name: "Setting", bundle: nil).instantiateInitialViewController()!
@@ -83,7 +83,7 @@ class Controllers {
     
     // MARK: - Welcome
     
-    private var welcome: WelcomeController?
+    fileprivate var welcome: WelcomeController?
     
     class var welcome: WelcomeController {
         let controller = Controllers.shared.welcome ?? UIStoryboard(name: "Welcome", bundle: nil).instantiateInitialViewController() as! WelcomeController

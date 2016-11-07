@@ -9,7 +9,7 @@
 import UIKit
 
 class RefreshHUD: UIVisualEffectView {
-    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
+    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
     
     convenience init(blurEffectStyle: UIBlurEffectStyle) {
         let effect = UIBlurEffect(style: blurEffectStyle)
@@ -20,18 +20,18 @@ class RefreshHUD: UIVisualEffectView {
         super.init(effect: effect)
         
         self.layer.cornerRadius = 20.0
-        self.layer.borderColor = UIColor.blackColor().colorWithAlphaComponent(0.4).CGColor
+        self.layer.borderColor = UIColor.black.withAlphaComponent(0.4).cgColor
         self.layer.borderWidth = 1.0
-        self.backgroundColor = UIColor.clearColor()
+        self.backgroundColor = UIColor.clear
         self.layer.masksToBounds = true
         
-        activityIndicator.color = UIColor.whiteColor()
+        activityIndicator.color = UIColor.white
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(activityIndicator)
-        let xCenterConstraint = NSLayoutConstraint(item: self, attribute: .CenterX, relatedBy: .Equal, toItem: activityIndicator, attribute: .CenterX, multiplier: 1, constant: 0)
+        let xCenterConstraint = NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: activityIndicator, attribute: .centerX, multiplier: 1, constant: 0)
         self.addConstraint(xCenterConstraint)
         
-        let yCenterConstraint = NSLayoutConstraint(item: self, attribute: .CenterY, relatedBy: .Equal, toItem: activityIndicator, attribute: .CenterY, multiplier: 1, constant: 0)
+        let yCenterConstraint = NSLayoutConstraint(item: self, attribute: .centerY, relatedBy: .equal, toItem: activityIndicator, attribute: .centerY, multiplier: 1, constant: 0)
         self.addConstraint(yCenterConstraint)
         
         activityIndicator.startAnimating()
@@ -45,8 +45,8 @@ class RefreshHUD: UIVisualEffectView {
         activityIndicator.stopAnimating()
     }
     
-    override func willMoveToSuperview(newSuperview: UIView?) {
-        super.willMoveToSuperview(newSuperview)
+    override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
         if let _ = newSuperview {
             activityIndicator.startAnimating()
         } else {

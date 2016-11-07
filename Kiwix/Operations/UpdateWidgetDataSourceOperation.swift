@@ -14,18 +14,18 @@ class UpdateWidgetDataSourceOperation: Operation {
     let context: NSManagedObjectContext
     
     override init() {
-        self.context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        context.parentContext = NSManagedObjectContext.mainQueueContext
+        self.context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        context.parent = NSManagedObjectContext.mainQueueContext
         context.mergePolicy = NSOverwriteMergePolicy
         super.init()
-        name = String(self)
+        name = String(describing: self)
     }
     
     override func execute() {
-        let defaults = NSUserDefaults(suiteName: "group.kiwix")
+        let defaults = UserDefaults(suiteName: "group.kiwix")
         
         var articles = [Article]()
-        context.performBlockAndWait { 
+        context.performAndWait { 
             articles = Article.fetchRecentBookmarks(30, context: self.context)
         }
         
@@ -34,7 +34,7 @@ class UpdateWidgetDataSourceOperation: Operation {
             guard let articleData = article.dictionarySerilization() else {continue}
             bookmarks.append(articleData)
         }
-        defaults?.setObject(bookmarks, forKey: "bookmarks")
+        defaults?.set(bookmarks, forKey: "bookmarks")
         NCWidgetController.widgetController().setHasContent(bookmarks.count > 0, forWidgetWithBundleIdentifier: "self.Kiwix.Bookmarks")
         finish()
     }

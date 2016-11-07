@@ -14,9 +14,9 @@ import DZNEmptyDataSet
 
 class CloudBooksController: UITableViewController, NSFetchedResultsControllerDelegate, LanguageFilterUpdating, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    private(set) var isRefreshing = false
-    private(set) var isOnScreen = false
-    private(set) var langFilterAlertPending = false
+    fileprivate(set) var isRefreshing = false
+    fileprivate(set) var isOnScreen = false
+    fileprivate(set) var langFilterAlertPending = false
     
     // MARK: - Override
     
@@ -35,10 +35,10 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         tableView.tableFooterView = UIView()
             
         refreshControl = RefreshLibControl()
-        refreshControl?.addTarget(self, action: #selector(CloudBooksController.refresh), forControlEvents: .ValueChanged)
+        refreshControl?.addTarget(self, action: #selector(CloudBooksController.refresh), for: .valueChanged)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.title = tabBarItem.title
         configureNavBarButtons()
@@ -46,33 +46,33 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         isOnScreen = true
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if langFilterAlertPending {showLanguageFilterAlert()}
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarController?.navigationItem.rightBarButtonItem = nil
         isOnScreen = false
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let identifier = segue.identifier else {return}
         switch identifier {
         case "ShowBookDetail":
-            guard let navController = segue.destinationViewController as? UINavigationController,
+            guard let navController = segue.destination as? UINavigationController,
                 let bookDetailController = navController.topViewController as? BookDetailController,
                 let cell = sender as? UITableViewCell,
-                let indexPath = tableView.indexPathForCell(cell),
-                let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
+                let indexPath = tableView.indexPath(for: cell),
+                let book = fetchedResultController.object(at: indexPath) as? Book else {return}
             bookDetailController.book = book
         default:
             break
         }
     }
     
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         let top = tabBarController!.navigationController!.navigationBar.frame.maxY
         let bottom = tabBarController!.tabBar.frame.height
@@ -84,14 +84,14 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     // MARK: - Actions
     
     func showLanguageFilterController() {
-        guard let splitViewController = splitViewController as? LibrarySplitViewController where !splitViewController.isShowingLangFilter else {return}
+        guard let splitViewController = splitViewController as? LibrarySplitViewController, !splitViewController.isShowingLangFilter else {return}
         guard let controller = UIStoryboard.library.initViewController(LanguageFilterController.self) else {return}
         controller.delegate = self
         let navController = UINavigationController(rootViewController: controller)
         showDetailViewController(navController, sender: self)
         
         guard let indexPath = tableView.indexPathForSelectedRow else {return}
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func refreshAutomatically() {
@@ -103,10 +103,10 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         refresh(invokedByUser: false)
     }
     
-    func refresh(invokedByUser invokedByUser: Bool) {
+    func refresh(invokedByUser: Bool) {
         let operation = RefreshLibraryOperation()
         operation.addObserver(WillExecuteObserver { (operation) in
-            NSOperationQueue.mainQueue().addOperationWithBlock({
+            OperationQueue.mainQueue().addOperationWithBlock({
                 self.isRefreshing = true
                 self.tableView.reloadEmptyDataSet()
             })
@@ -122,8 +122,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
                 }
                 
                 if errors.count > 0 {
-                    if let error = errors.first as? ReachabilityCondition.Error
-                        where error == ReachabilityCondition.Error.NotReachable && invokedByUser == true {
+                    if let error = errors.first as? ReachabilityCondition.Error, error == ReachabilityCondition.Error.NotReachable && invokedByUser == true {
                         self.showReachibilityAlert()
                     }
                 } else{
@@ -141,11 +140,11 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     
     func showRefreshSuccessMessage() {
         guard let view = self.splitViewController?.view else {return}
-        let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
-        hud.mode = .Text
+        let hud = MBProgressHUD.showAdded(to: view, animated: true)
+        hud.mode = .text
         hud.label.numberOfLines = 0
         hud.label.text = NSLocalizedString("Library is refreshed successfully!", comment: "Library, cloud tab")
-        hud.hideAnimated(true, afterDelay: 2)
+        hud.hide(animated: true, afterDelay: 2)
     }
     
     func showReachibilityAlert() {
@@ -158,7 +157,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
             langFilterAlertPending = true
             return
         }
-        let handler: AlertOperation<UIViewController> -> Void = { [weak self] _ in
+        let handler: (AlertOperation<UIViewController>) -> Void = { [weak self] _ in
             let context = NSManagedObjectContext.mainQueueContext
             context.performBlock({
                 let codes = NSLocale.preferredLangCodes
@@ -182,120 +181,120 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     // MARK: - LanguageFilterUpdating
     
     func languageFilterChanged() {
-        guard isViewLoaded() && view.window != nil else {return}
+        guard isViewLoaded && view.window != nil else {return}
         refreshFetchedResultController()
     }
     
-    func languageFilterFinsihEditing(hasChanges: Bool) {
+    func languageFilterFinsihEditing(_ hasChanges: Bool) {
         guard hasChanges else {return}
         refreshFetchedResultController()
     }
     
     // MARK: - TableView Data Source
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return fetchedResultController.sections?.count ?? 0
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return fetchedResultController.sections?[section].numberOfObjects ?? 0
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         self.configureCell(cell, atIndexPath: indexPath)
         return cell
     }
     
-    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-        guard let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return}
+    func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
+        guard let book = fetchedResultController.object(at: indexPath) as? Book else {return}
         guard let cell = cell as? BasicBookCell else {return}
         
         let textColor: UIColor = {
             switch book.spaceState {
-            case .Enough:
-                return UIColor.blackColor()
-            case .Caution:
-                return UIColor.orangeColor()
-            case .NotEnough:
-                return UIColor.grayColor()
+            case .enough:
+                return UIColor.black
+            case .caution:
+                return UIColor.orange
+            case .notEnough:
+                return UIColor.gray
             }
         }()
         
         cell.hasPic = book.hasPic
-        cell.favIcon.image = UIImage(data: book.favIcon ?? NSData())
+        cell.favIcon.image = UIImage(data: book.favIcon ?? Data())
         cell.titleLabel.text = book.title
         cell.subtitleLabel.text = [
             book.dateDescription,
             book.fileSizeDescription,
             book.articleCountDescription
-        ].flatMap({$0}).joinWithSeparator("  ")
+        ].flatMap({$0}).joined(separator: "  ")
         cell.titleLabel.textColor = textColor
         cell.subtitleLabel.textColor = textColor
     }
     
     // MARK: Other Data Source
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard tableView.numberOfSections > 1 else {return nil}
         guard let languageName = fetchedResultController.sections?[section].name else {return nil}
         return languageName
     }
     
-    override func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
+    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         let sectionIndexTitles = fetchedResultController.sectionIndexTitles
         guard sectionIndexTitles.count > 2 else {return nil}
         return sectionIndexTitles
     }
     
-    override func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
-        return fetchedResultController.sectionForSectionIndexTitle(title, atIndex: index)
+    override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        return fetchedResultController.section(forSectionIndexTitle: title, at: index)
     }
     
     // MARK: - Table View Delegate
     
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard tableView.numberOfSections > 1 else {return 0.0}
         guard let headerText = self.tableView(tableView, titleForHeaderInSection: section) else {return 0.0}
         guard headerText != "" else {return 0.0}
         return 20.0
     }
     
-    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else {return}
-        header.textLabel?.font = UIFont.boldSystemFontOfSize(14)
+        header.textLabel?.font = UIFont.boldSystemFont(ofSize: 14)
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {}
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {}
     
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]?{
-        guard let book = fetchedResultController.objectAtIndexPath(indexPath) as? Book else {return nil}
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?{
+        guard let book = fetchedResultController.object(at: indexPath) as? Book else {return nil}
         switch book.spaceState {
-        case .Enough:
-            let action = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: LocalizedStrings.download, handler: { _ in
+        case .enough:
+            let action = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: LocalizedStrings.download, handler: { _ in
                 guard let download = DownloadBookOperation(bookID: book.id) else {return}
                 Network.shared.queue.addOperation(download)
             })
             action.backgroundColor = UIColor.defaultTint
             return [action]
-        case .Caution:
-            let action = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: LocalizedStrings.download, handler: { _ in
+        case .caution:
+            let action = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: LocalizedStrings.download, handler: { _ in
                 let alert = SpaceCautionAlert(context: self, bookID: book.id)
                 GlobalQueue.shared.addOperation(alert)
                 self.tableView.setEditing(false, animated: true)
             })
-            action.backgroundColor = UIColor.orangeColor()
+            action.backgroundColor = UIColor.orange
             return [action]
-        case .NotEnough:
-            let action = UITableViewRowAction(style: UITableViewRowActionStyle.Normal, title: LocalizedStrings.spaceNotEnough, handler: { _ in
+        case .notEnough:
+            let action = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: LocalizedStrings.spaceNotEnough, handler: { _ in
                 let alert = SpaceNotEnoughAlert(context: self)
                 GlobalQueue.shared.addOperation(alert)
                 self.tableView.setEditing(false, animated: true)
@@ -307,14 +306,14 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     // MARK: - Fetched Results Controller
     
     let managedObjectContext = NSManagedObjectContext.mainQueueContext
-    lazy var fetchedResultController: NSFetchedResultsController = {
-        let fetchRequest = NSFetchRequest(entityName: "Book")
+    lazy var fetchedResultController: NSFetchedResultsController = { () -> <<error type>> in 
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Book")
         let langDescriptor = NSSortDescriptor(key: "language.name", ascending: true)
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
         fetchRequest.predicate = self.onlineCompoundPredicate
         
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "language.name", cacheName: "OnlineFRC" + NSBundle.buildVersion)
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "language.name", cacheName: "OnlineFRC" + Bundle.buildVersion)
         fetchedResultsController.delegate = self
         fetchedResultsController.performFetch(deleteCache: false)
         return fetchedResultsController
@@ -326,7 +325,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         tableView.reloadData()
     }
     
-    private var langPredicate: NSPredicate {
+    fileprivate var langPredicate: NSPredicate {
         let displayedLanguages = Language.fetch(displayed: true, context: managedObjectContext)
         if displayedLanguages.count > 0 {
             return NSPredicate(format: "language IN %@", displayedLanguages)
@@ -335,47 +334,47 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         }
     }
     
-    private var onlineCompoundPredicate: NSCompoundPredicate {
+    fileprivate var onlineCompoundPredicate: NSCompoundPredicate {
         let isCloudPredicate = NSPredicate(format: "stateRaw == 0")
         return NSCompoundPredicate(andPredicateWithSubpredicates: [langPredicate, isCloudPredicate])
     }
     
     // MARK: - Fetched Result Controller Delegate
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         switch type {
-        case .Insert:
-            tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
-        case .Delete:
-            tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+        case .insert:
+            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
+        case .delete:
+            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
         default:
             return
         }
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
-        case .Insert:
+        case .insert:
             guard let newIndexPath = newIndexPath else {return}
-            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Fade)
-        case .Delete:
+            tableView.insertRows(at: [newIndexPath], with: .fade)
+        case .delete:
             guard let indexPath = indexPath else {return}
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        case .Update:
-            guard let indexPath = indexPath, let cell = tableView.cellForRowAtIndexPath(indexPath) else {return}
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        case .update:
+            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) else {return}
             configureCell(cell, atIndexPath: indexPath)
-        case .Move:
+        case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Fade)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.insertRows(at: [newIndexPath], with: .fade)
         }
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
     }
     

@@ -16,9 +16,9 @@ extension Book {
 
     @NSManaged var articleCount: Int64
     @NSManaged var creator: String?
-    @NSManaged var date: NSDate?
+    @NSManaged var date: Date?
     @NSManaged var desc: String?
-    @NSManaged var favIcon: NSData?
+    @NSManaged var favIcon: Data?
     @NSManaged var fileSize: Int64
     @NSManaged var globalCount: Int64
     @NSManaged var hasPic: Bool

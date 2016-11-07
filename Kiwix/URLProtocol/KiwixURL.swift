@@ -8,13 +8,13 @@
 
 import UIKit
 
-extension NSURL {
-    convenience init?(bookID: String, contentPath: String) {
+extension URL {
+    init?(bookID: String, contentPath: String) {
         let baseURLString = "kiwix://" + bookID
-        self.init(string: contentPath, relativeToURL: NSURL(string: baseURLString))
+        (self as NSURL).init(string: contentPath, relativeTo: URL(string: baseURLString))
     }
     
     var isKiwixURL: Bool {
-        return scheme?.caseInsensitiveCompare("kiwix") == .OrderedSame
+        return scheme?.caseInsensitiveCompare("kiwix") == .orderedSame
     }
 }

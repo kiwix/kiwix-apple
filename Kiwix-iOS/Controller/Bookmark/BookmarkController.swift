@@ -35,28 +35,28 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
         }
     }
     
-    override func setEditing(editing: Bool, animated: Bool) {
+    override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         
         switch (editing, isTopViewController) {
         case (true, true), (true, false):
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: #selector(BookmarkController.trashButtonTapped(_:)))
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(BookmarkController.editButtonTapped(_:)))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(BookmarkController.trashButtonTapped(_:)))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(BookmarkController.editButtonTapped(_:)))
         case (false, true):
             navigationItem.leftBarButtonItem = UIBarButtonItem(imageNamed: "Cross", target: self, action: #selector(BookmarkController.dismissSelf))
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: #selector(BookmarkController.editButtonTapped(_:)))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(BookmarkController.editButtonTapped(_:)))
         case (false, false):
             navigationItem.leftBarButtonItem = nil
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: #selector(BookmarkController.editButtonTapped(_:)))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(BookmarkController.editButtonTapped(_:)))
         }
     }
     
     // MARK: - Action
     
-    func trash(articles articles: [Article]) {
+    func trash(articles: [Article]) {
         let operation = BookmarkTrashOperation(articles: articles)
         operation.addObserver(DidFinishObserver { _ in
-            NSOperationQueue.mainQueue().addOperationWithBlock({ 
+            OperationQueue.mainQueue().addOperationWithBlock({ 
                 guard self.fetchedResultController.fetchedObjects?.count == 0 else {return}
                 self.navigationController?.popViewControllerAnimated(true)
             })
@@ -64,76 +64,76 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
         GlobalQueue.shared.addOperation(operation)
     }
     
-    func trashButtonTapped(sender: UIBarButtonItem) {
-        guard editing else {return}
+    func trashButtonTapped(_ sender: UIBarButtonItem) {
+        guard isEditing else {return}
         guard let selectedIndexPathes = tableView.indexPathsForSelectedRows else {return}
-        let articles = selectedIndexPathes.flatMap() {fetchedResultController.objectAtIndexPath($0) as? Article}
+        let articles = selectedIndexPathes.flatMap() {fetchedResultController.object(at: $0) as? Article}
         trash(articles: articles)
     }
     
-    @IBAction func editButtonTapped(sender: UIBarButtonItem) {
-        setEditing(!editing, animated: true)
+    @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
+        setEditing(!isEditing, animated: true)
     }
     
     func dismissSelf() {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Empty table datasource & delegate
     
-    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
+    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
         return UIImage(named: "BookmarkColor")
     }
     
-    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         let text = LocalizedStrings.bookmarks
-        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(18.0),
-                          NSForegroundColorAttributeName: UIColor.darkGrayColor()]
+        let attributes = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 18.0),
+                          NSForegroundColorAttributeName: UIColor.darkGray]
         return NSAttributedString(string: text, attributes: attributes)
     }
     
-    func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         let text = NSLocalizedString("To add a bookmark, long press the star button when reading an article", comment: "Bookmarks view message")
         let style = NSMutableParagraphStyle()
-        style.lineBreakMode = .ByWordWrapping
-        style.alignment = .Center
-        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(14.0),
-                          NSForegroundColorAttributeName: UIColor.lightGrayColor(),
+        style.lineBreakMode = .byWordWrapping
+        style.alignment = .center
+        let attributes = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 14.0),
+                          NSForegroundColorAttributeName: UIColor.lightGray,
                           NSParagraphStyleAttributeName: style]
         return NSAttributedString(string: text, attributes: attributes)
     }
     
-    func spaceHeightForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+    func spaceHeight(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
         return 30.0
     }
 
     // MARK: - Table view data source
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return fetchedResultController.sections?.count ?? 0
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let sectionInfo = fetchedResultController.sections?[section] else {return 0}
         return sectionInfo.numberOfObjects
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let article = fetchedResultController.object(at: indexPath) as? Article
         if let _ = article?.snippet {
-            let cell = tableView.dequeueReusableCellWithIdentifier("BookmarkSnippetCell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "BookmarkSnippetCell", for: indexPath)
             configureSnippetCell(cell, atIndexPath: indexPath)
             return cell
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("BookmarkCell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "BookmarkCell", for: indexPath)
             configureCell(cell, atIndexPath: indexPath)
             return cell
         }
     }
     
-    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+    func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
         guard let cell = cell as? BookmarkCell else {return}
-        guard let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
+        guard let article = fetchedResultController.object(at: indexPath) as? Article else {return}
         
         cell.thumbImageView.image = {
             guard let data = article.thumbImageData else {return nil}
@@ -143,37 +143,37 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
         cell.subtitleLabel.text = article.book?.title
     }
     
-    func configureSnippetCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+    func configureSnippetCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
         configureCell(cell, atIndexPath: indexPath)
         
         guard let cell = cell as? BookmarkSnippetCell else {return}
-        guard let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
+        guard let article = fetchedResultController.object(at: indexPath) as? Article else {return}
         cell.snippetLabel.text = article.snippet
     }
     
     // MARK: - Table view delegate
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        guard !tableView.editing else {return}
-        defer {dismissViewControllerAnimated(true, completion: nil)}
-        guard let article = fetchedResultController.objectAtIndexPath(indexPath) as? Article,
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard !tableView.isEditing else {return}
+        defer {dismiss(animated: true, completion: nil)}
+        guard let article = fetchedResultController.object(at: indexPath) as? Article,
             let url = article.url else {return}
         
         let operation = ArticleLoadOperation(url: url)
         GlobalQueue.shared.add(load: operation)
     }
     
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {}
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {}
     
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let remove = UITableViewRowAction(style: .Destructive, title: LocalizedStrings.remove) { (action, indexPath) -> Void in
-            guard let article = self.fetchedResultController.objectAtIndexPath(indexPath) as? Article else {return}
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let remove = UITableViewRowAction(style: UITableViewRowActionStyle(), title: LocalizedStrings.remove) { (action, indexPath) -> Void in
+            guard let article = self.fetchedResultController.object(at: indexPath) as? Article else {return}
             let context = NSManagedObjectContext.mainQueueContext
-            context.performBlockAndWait({ () -> Void in
+            context.performAndWait({ () -> Void in
                 article.isBookmarked = false
             })
             self.trash(articles: [article])
@@ -181,15 +181,15 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
         return [remove]
     }
     
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat.min
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat.leastNormalMagnitude
     }
     
     // MARK: - Fetched Result Controller Delegate
     
     let managedObjectContext = NSManagedObjectContext.mainQueueContext
-    lazy var fetchedResultController: NSFetchedResultsController = {
-        let fetchRequest = NSFetchRequest(entityName: "Article")
+    lazy var fetchedResultController: NSFetchedResultsController = { () -> <<error type>> in 
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: false),
                                         NSSortDescriptor(key: "title", ascending: true)]
         fetchRequest.predicate = {
@@ -202,7 +202,7 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                     managedObjectContext: self.managedObjectContext,
                                                     sectionNameKeyPath: nil,
-                                                    cacheName: self.book == nil ? nil : "BookmarksFRC" + NSBundle.appShortVersion)
+                                                    cacheName: self.book == nil ? nil : "BookmarksFRC" + Bundle.appShortVersion)
         controller.delegate = self
         controller.performFetch(deleteCache: false)
         return controller
@@ -210,40 +210,40 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
     
     // MARK: - Fetched Result Controller Delegate
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         switch type {
-        case .Insert:
-            tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
-        case .Delete:
-            tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+        case .insert:
+            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
+        case .delete:
+            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
         default:
             return
         }
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
-        case .Insert:
+        case .insert:
             guard let newIndexPath = newIndexPath else {return}
-            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Left)
-        case .Delete:
+            tableView.insertRows(at: [newIndexPath], with: .left)
+        case .delete:
             guard let indexPath = indexPath else {return}
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Right)
-        case .Update:
-            guard let indexPath = indexPath, let cell = tableView.cellForRowAtIndexPath(indexPath) else {return}
+            tableView.deleteRows(at: [indexPath], with: .right)
+        case .update:
+            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) else {return}
             configureCell(cell, atIndexPath: indexPath)
-        case .Move:
+        case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Right)
-            tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Left)
+            tableView.deleteRows(at: [indexPath], with: .right)
+            tableView.insertRows(at: [newIndexPath], with: .left)
         }
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
     }
 }

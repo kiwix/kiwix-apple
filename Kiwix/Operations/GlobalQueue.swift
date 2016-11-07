@@ -11,9 +11,9 @@ import Operations
 class GlobalQueue: OperationQueue {
     static let shared = GlobalQueue()
     
-    private weak var scanOperation: ScanLocalBookOperation?
-    private weak var searchOperation: SearchOperation?
-    private weak var articleLoadOperation: ArticleLoadOperation?
+    fileprivate weak var scanOperation: ScanLocalBookOperation?
+    fileprivate weak var searchOperation: SearchOperation?
+    fileprivate weak var articleLoadOperation: ArticleLoadOperation?
     
     func add(scan operation: ScanLocalBookOperation) {
         addOperation(operation)
@@ -47,22 +47,22 @@ class GlobalQueue: OperationQueue {
 }
 
 public enum OperationErrorCode: Int {
-    case ConditionFailed = 1
-    case ExecutionFailed = 2
+    case conditionFailed = 1
+    case executionFailed = 2
     
     // Error that should be reported to user
-    case NetworkError
-    case ServerNameInvalid
-    case AuthError
-    case AccessRevoked
-    case Unreachable
-    case LackOfValue
-    case UnexpectedError
+    case networkError
+    case serverNameInvalid
+    case authError
+    case accessRevoked
+    case unreachable
+    case lackOfValue
+    case unexpectedError
 }
 
 extension OperationQueue {
     // Oneday should be replaced with ExclusivityController
-    func getOperation(id: String) -> Operation? {
+    func getOperation(_ id: String) -> Operation? {
         for operation in operations {
             guard operation.name == id else {continue}
             guard let operation = operation as? Operation else {continue}

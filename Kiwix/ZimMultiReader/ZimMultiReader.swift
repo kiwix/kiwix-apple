@@ -13,12 +13,12 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     static let shared = ZimMultiReader()
     
     weak var delegate: ZimMultiReaderDelegate?
-    private let monitor = DirectoryMonitor(URL: NSFileManager.docDirURL)
+    fileprivate let monitor = DirectoryMonitor(URL: FileManager.docDirURL)
     
-    private(set) var readers = [ZimID: ZimReader]()
-    private(set) var pidMap = [String: String]() // PID: ID
-    private var lastZimFileURLSnapshot = Set<NSURL>()
-    private var lastIndexFolderURLSnapshot = Set<NSURL>()
+    fileprivate(set) var readers = [ZimID: ZimReader]()
+    fileprivate(set) var pidMap = [String: String]() // PID: ID
+    fileprivate var lastZimFileURLSnapshot = Set<URL>()
+    fileprivate var lastIndexFolderURLSnapshot = Set<URL>()
     
     override init() {
         super.init()
@@ -31,7 +31,7 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     }
     
     func startScan() {
-        let operation = ScanLocalBookOperation(lastZimFileURLSnapshot: lastZimFileURLSnapshot, lastIndexFolderURLSnapshot: lastIndexFolderURLSnapshot)
+        let operation = ScanLocalBookOperation(lastZimFileURLSnapshot: lastZimFileURLSnapshot as Set<NSURL>, lastIndexFolderURLSnapshot: lastIndexFolderURLSnapshot as Set<NSURL>)
         operation.addObserver(DidFinishObserver { (operation, errors) in
             guard let operation = operation as? ScanLocalBookOperation else {return}
             NSOperationQueue.mainQueue().addOperationWithBlock({ 
@@ -42,22 +42,22 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
                 self.delegate?.firstBookAdded()
             })
         })
-        operation.queuePriority = .VeryHigh
-        if readers.count == 0 { operation.qualityOfService = .UserInteractive }
+        operation.queuePriority = .veryHigh
+        if readers.count == 0 { operation.qualityOfService = .userInteractive }
         GlobalQueue.shared.add(scan: operation)
     }
     
     // MARK: - Reader Addition / Deletion
     
-    func addReaders(urls: Set<NSURL>) {
+    func addReaders(_ urls: Set<URL>) {
         for url in urls {
-            guard let reader = ZimReader(ZIMFileURL: url) else {continue}
+            guard let reader = ZimReader(zimFileURL: url) else {continue}
             let id = reader.getID()
-            readers[id] = reader
+            readers[id!] = reader
         }
     }
     
-    func removeReaders(urls: Set<NSURL>) {
+    func removeReaders(_ urls: Set<URL>) {
         for (id, reader) in readers {
             guard urls.contains(reader.fileURL) else {continue}
             readers[id] = nil
@@ -68,13 +68,13 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
         pidMap.removeAll()
         var map = [String: [ZimReader]]() // PID: [ZimReader]
         for (_, reader) in readers {
-            guard let pid = reader.getName() where pid != "" else {continue}
+            guard let pid = reader.getName(), pid != "" else {continue}
             var readers = map[pid] ?? [ZimReader]()
             readers.append(reader)
             map[pid] = readers
         }
         for (pid, readers) in map {
-            guard let reader = readers.sort({ $0.getDate().caseInsensitiveCompare($1.getDate()) == .OrderedAscending }).first,
+            guard let reader = readers.sorted(by: { $0.getDate().caseInsensitiveCompare($1.getDate()) == .orderedAscending }).first,
                 let id = reader.getID() else {continue}
             pidMap[pid] = id
         }
@@ -88,14 +88,14 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     
     // MARK: - Loading System
     
-    func data(id: String, contentURLString: String) -> [String: AnyObject]? {
+    func data(_ id: String, contentURLString: String) -> [String: AnyObject]? {
         guard let reader = readers[id] else {return nil}
-        return reader.dataWithContentURLString(contentURLString) as? [String: AnyObject]
+        return reader.data(withContentURLString: contentURLString) as? [String: AnyObject]
     }
     
-    func pageURLString(articleTitle: String, bookid id: String) -> String? {
+    func pageURLString(_ articleTitle: String, bookid id: String) -> String? {
         guard let reader = readers[id] else {return nil}
-        return reader.pageURLFromTitle(articleTitle)
+        return reader.pageURL(fromTitle: articleTitle)
     }
     
     func mainPageURLString(bookid id: String) -> String? {

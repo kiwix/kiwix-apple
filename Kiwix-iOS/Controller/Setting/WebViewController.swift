@@ -21,38 +21,38 @@ class WebViewController: UIViewController, UIWebViewDelegate {
         guard let page = page else {return}
         switch page {
         case .DownloaderLearnMore:
-            guard let url = NSBundle.mainBundle().URLForResource(page.rawValue, withExtension: "html") else {return}
-            webView.loadRequest(NSURLRequest(URL: url))
+            guard let url = Bundle.main.url(forResource: page.rawValue, withExtension: "html") else {return}
+            webView.loadRequest(URLRequest(url: url))
             title = NSLocalizedString("Help: Downloader", comment: "Help page title")
         case .ImportBookLearnMore:
-            guard let url = NSBundle.mainBundle().URLForResource(page.rawValue, withExtension: "html") else {return}
-            webView.loadRequest(NSURLRequest(URL: url))
+            guard let url = Bundle.main.url(forResource: page.rawValue, withExtension: "html") else {return}
+            webView.loadRequest(URLRequest(url: url))
             title = NSLocalizedString("Help: Import Books", comment: "Help page title")
         case .About:
-            guard let url = NSBundle.mainBundle().URLForResource(page.rawValue, withExtension: "html") else {return}
-            webView.loadRequest(NSURLRequest(URL: url))
+            guard let url = Bundle.main.url(forResource: page.rawValue, withExtension: "html") else {return}
+            webView.loadRequest(URLRequest(url: url))
             title = NSLocalizedString("About", comment: "About page title")
         }
         
         guard let rootController = navigationController?.viewControllers.first else {return}
         if rootController == self {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(WebViewController.dismissSelf))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(WebViewController.dismissSelf))
         }
     }
     
     func dismissSelf() {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func downButtonTapped(sender: UIBarButtonItem) {
-        dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func downButtonTapped(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
     }
     
     // MARK: -  UIWebViewDelegate
     
-    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        if navigationType == .LinkClicked {
-            UIApplication.sharedApplication().openURL(request.URL!)
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        if navigationType == .linkClicked {
+            UIApplication.shared.openURL(request.url!)
             return false
         }
         return true

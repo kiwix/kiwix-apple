@@ -21,8 +21,8 @@ class SearchBar: UISearchBar, UISearchBarDelegate {
         }
     }
     
-    private var textField: UITextField {
-        return valueForKey("searchField") as! UITextField
+    fileprivate var textField: UITextField {
+        return value(forKey: "searchField") as! UITextField
     }
     
     override init(frame: CGRect) {
@@ -34,66 +34,66 @@ class SearchBar: UISearchBar, UISearchBarDelegate {
     }
     
     convenience init() {
-        self.init(frame: CGRectZero)
-        self.searchBarStyle = .Minimal
-        self.autocapitalizationType = .None
+        self.init(frame: CGRect.zero)
+        self.searchBarStyle = .minimal
+        self.autocapitalizationType = .none
         self.placeholder = LocalizedStrings.search
-        self.returnKeyType = .Go
+        self.returnKeyType = .go
         self.delegate = self
     }
     
     // MARK: - UISearchBarDelegate
     
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         text = searchTerm
         configurePlaceholder()
         Controllers.main.showSearch(animated: true)
-        let dispatchTime: dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(0.05 * Double(NSEC_PER_SEC)))
-        dispatch_after(dispatchTime, dispatch_get_main_queue(), { [unowned self] in
+        let dispatchTime: DispatchTime = DispatchTime.now() + Double(Int64(0.05 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: { [unowned self] in
             self.textField.selectAll(nil)
         })
     }
     
-    func searchBarTextDidEndEditing(searchBar: UISearchBar) {
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         text = nil
         configurePlaceholder()
     }
     
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         Controllers.main.hideSearch(animated: true)
     }
     
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchTerm = searchText
         Controllers.search.startSearch(searchText, delayed: true)
     }
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         Controllers.search.searchResultController?.selectFirstResultIfPossible()
     }
     
     // MARK: - Helper
     
-    private func configurePlaceholder() {
-        if textField.editing {
+    fileprivate func configurePlaceholder() {
+        if textField.isEditing {
             placeholder = LocalizedStrings.search
         } else {
             placeholder = articleTitle ?? LocalizedStrings.search
         }
     }
     
-    private func truncatedPlaceHolderString(string: String?, searchBar: UISearchBar) -> String? {
+    fileprivate func truncatedPlaceHolderString(_ string: String?, searchBar: UISearchBar) -> String? {
         guard let string = string,
             let labelFont = textField.font else {return nil}
-        let preferredSize = CGSizeMake(searchBar.frame.width - 45.0, 1000)
-        var rect = (string as NSString).boundingRectWithSize(preferredSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName: labelFont], context: nil)
+        let preferredSize = CGSize(width: searchBar.frame.width - 45.0, height: 1000)
+        var rect = (string as NSString).boundingRect(with: preferredSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName: labelFont], context: nil)
         
         var truncatedString = string as NSString
         var istruncated = false
         while rect.height > textField.frame.height {
             istruncated = true
-            truncatedString = truncatedString.substringToIndex(truncatedString.length - 2)
-            rect = truncatedString.boundingRectWithSize(preferredSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName: labelFont], context: nil)
+            truncatedString = truncatedString.substring(to: truncatedString.length - 2) as NSString
+            rect = truncatedString.boundingRect(with: preferredSize, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName: labelFont], context: nil)
         }
         return truncatedString as String + (istruncated ? "..." : "")
     }

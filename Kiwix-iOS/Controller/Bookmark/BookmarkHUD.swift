@@ -11,7 +11,7 @@ import UIKit
 class BookmarkHUD: UIViewController {
     
     var bookmarkAdded = true
-    private var timer: NSTimer?
+    fileprivate var timer: Timer?
     
     @IBOutlet weak var centerView: UIView!
     @IBOutlet weak var imageView: UIImageView!
@@ -19,25 +19,25 @@ class BookmarkHUD: UIViewController {
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var centerViewYOffset: NSLayoutConstraint!
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNeedsStatusBarAppearanceUpdate()
         label.text = bookmarkAdded ? NSLocalizedString("Bookmarked", comment: "Bookmark HUD") : NSLocalizedString("Removed", comment: "Bookmark HUD")
         messageLabel.text = NSLocalizedString("Tap anywhere to dismiss", comment: "Bookmark HUD")
         messageLabel.alpha = 1.0
-        imageView.highlighted = !bookmarkAdded
+        imageView.isHighlighted = !bookmarkAdded
     }
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(BookmarkHUD.dismissSelf), userInfo: nil, repeats: false)
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(BookmarkHUD.dismissSelf), userInfo: nil, repeats: false)
     }
     
-    @IBAction func tapRecognized(sender: UITapGestureRecognizer) {
+    @IBAction func tapRecognized(_ sender: UITapGestureRecognizer) {
         dismissSelf()
     }
     
     func dismissSelf() {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     var topHalfHeight: CGFloat {
@@ -50,17 +50,17 @@ class BookmarkHUD: UIViewController {
 }
 
 class BookmarkHUDAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-    private let animateIn: Bool
+    fileprivate let animateIn: Bool
     
     init(animateIn: Bool) {
         self.animateIn = animateIn
     }
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.3
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         if animateIn {
             animateInTransition(transitionContext)
         } else {
@@ -68,11 +68,11 @@ class BookmarkHUDAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         }
     }
     
-    private func animateInTransition(transitionContext: UIViewControllerContextTransitioning) {
-        guard let toController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) as? BookmarkHUD,
-            let toView = transitionContext.viewForKey(UITransitionContextToViewKey) else {return}
-        let containerView = transitionContext.containerView()
-        let duration = transitionDuration(transitionContext)
+    fileprivate func animateInTransition(_ transitionContext: UIViewControllerContextTransitioning) {
+        guard let toController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) as? BookmarkHUD,
+            let toView = transitionContext.view(forKey: UITransitionContextViewKey.to) else {return}
+        let containerView = transitionContext.containerView
+        let duration = transitionDuration(using: transitionContext)
         
         containerView.addSubview(toView)
         toView.frame = containerView.frame
@@ -82,11 +82,11 @@ class BookmarkHUDAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         toController.centerViewYOffset.constant = toController.bookmarkAdded ? -(halfHeight + toController.bottomHalfHeight) : (halfHeight + toController.topHalfHeight)
         toController.view.layoutIfNeeded()
         
-        UIView.animateWithDuration(duration * 0.5, delay: 0.0, options: .CurveLinear, animations: {
+        UIView.animate(withDuration: duration * 0.5, delay: 0.0, options: .curveLinear, animations: {
             toView.alpha = 1.0
             }, completion: nil)
         
-        UIView.animateWithDuration(duration * 0.9, delay: duration * 0.1, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+        UIView.animate(withDuration: duration * 0.9, delay: duration * 0.1, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: {
             toController.centerViewYOffset.constant = 0.0
             toController.view.layoutIfNeeded()
         }) { (completed) in
@@ -94,33 +94,33 @@ class BookmarkHUDAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         }
     }
     
-    private func animateOutTransition(transitionContext: UIViewControllerContextTransitioning) {
-        guard let fromController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) as? BookmarkHUD,
-            let fromView = transitionContext.viewForKey(UITransitionContextFromViewKey) else {return}
-        let containerView = transitionContext.containerView()
-        let duration = transitionDuration(transitionContext)
+    fileprivate func animateOutTransition(_ transitionContext: UIViewControllerContextTransitioning) {
+        guard let fromController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) as? BookmarkHUD,
+            let fromView = transitionContext.view(forKey: UITransitionContextViewKey.from) else {return}
+        let containerView = transitionContext.containerView
+        let duration = transitionDuration(using: transitionContext)
         
         let halfHeight = containerView.frame.height / 2
         fromController.view.layoutIfNeeded()
         
-        UIView.animateWithDuration(duration * 0.7, delay: duration * 0.3, options: .CurveLinear, animations: {
+        UIView.animate(withDuration: duration * 0.7, delay: duration * 0.3, options: .curveLinear, animations: {
             fromView.alpha = 0.0
         }) { (completed) in
             transitionContext.completeTransition(completed)
         }
         
-        UIView.animateWithDuration(duration * 0.4, delay: 0.0, options: .CurveEaseIn, animations: {
+        UIView.animate(withDuration: duration * 0.4, delay: 0.0, options: .curveEaseIn, animations: {
             fromController.centerViewYOffset.constant = fromController.bookmarkAdded ? halfHeight + fromController.topHalfHeight : -(halfHeight + fromController.bottomHalfHeight)
             fromController.view.layoutIfNeeded()
             }, completion: nil)
         
         if fromController.bookmarkAdded {
-            UIView.animateWithDuration(duration * 0.3, delay: 0.0, options: .CurveLinear, animations: {
+            UIView.animate(withDuration: duration * 0.3, delay: 0.0, options: .curveLinear, animations: {
                 fromController.messageLabel.alpha = 0.0
                 }, completion: nil)
         }
         
     }
     
-    func animationEnded(transitionCompleted: Bool) { }
+    func animationEnded(_ transitionCompleted: Bool) { }
 }

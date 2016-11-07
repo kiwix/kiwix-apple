@@ -8,15 +8,15 @@
 
 import UIKit
 
-class DownloadProgress: NSProgress {
-    typealias TimePoint = (completedUnitCount: Int64, timeStamp: NSTimeInterval)
-    private var timePoints = [TimePoint]()
-    private let timePointMinCount: Int = 20
-    private let timePointMaxCount: Int = 200
+class DownloadProgress: Progress {
+    typealias TimePoint = (completedUnitCount: Int64, timeStamp: TimeInterval)
+    fileprivate var timePoints = [TimePoint]()
+    fileprivate let timePointMinCount: Int = 20
+    fileprivate let timePointMaxCount: Int = 200
     
     init(completedUnitCount: Int64, totalUnitCount: Int64) {
-        super.init(parent: nil, userInfo: [NSProgressFileOperationKindKey: NSProgressFileOperationKindDownloading])
-        self.kind = NSProgressKindFile
+        super.init(parent: nil, userInfo: [ProgressUserInfoKey.fileOperationKindKey: Progress.FileOperationKind.downloading])
+        self.kind = ProgressKind.file
         self.totalUnitCount = totalUnitCount
         self.completedUnitCount = completedUnitCount
     }
@@ -24,7 +24,7 @@ class DownloadProgress: NSProgress {
     // MARK: - Descriptions
     
     var fractionCompletedDescription: String? {
-        return DownloadTask.percentFormatter.stringFromNumber(NSNumber(double: fractionCompleted))
+        return DownloadTask.percentFormatter.string(from: NSNumber(value: fractionCompleted as Double))
     }
     
     var progressAndSpeedDescription: String! {
@@ -48,15 +48,15 @@ class DownloadProgress: NSProgress {
             averageSpeed = smoothingFactor * lastSpeed + (1 - smoothingFactor) * averageSpeed
         }
         
-        setUserInfoObject(NSNumber(double: averageSpeed), forKey: NSProgressThroughputKey)
+        setUserInfoObject(NSNumber(value: averageSpeed as Double), forKey: ProgressUserInfoKey.throughputKey)
         
         let remainingSeconds = Double(totalUnitCount - completedUnitCount) / averageSpeed
-        setUserInfoObject(NSNumber(double: remainingSeconds), forKey: NSProgressEstimatedTimeRemainingKey)
+        setUserInfoObject(NSNumber(value: remainingSeconds as Double), forKey: ProgressUserInfoKey.estimatedTimeRemainingKey)
     }
     
-    func addObservation(totalBytesWritten: Int64) {
+    func addObservation(_ totalBytesWritten: Int64) {
         completedUnitCount = totalBytesWritten
-        let timeStamp = NSDate().timeIntervalSince1970
+        let timeStamp = Date().timeIntervalSince1970
         if let lastPoint = timePoints.last {
             guard timeStamp - lastPoint.timeStamp > 0.2 else {return}
             timePoints.append((completedUnitCount, timeStamp))

@@ -23,8 +23,8 @@ class Preference {
     // MARK: - Recent Search
     
     class RecentSearch {
-        class func add(term term: String) {
-            terms.insert(term, atIndex: 0)
+        class func add(term: String) {
+            terms.insert(term, at: 0)
         }
         
         class var terms: [String] {
@@ -50,7 +50,7 @@ class Preference {
     
     // MARK: - Rate Kiwix
     
-    class var activeUseHistory: [NSDate] {
+    class var activeUseHistory: [Date] {
         get{return Defaults[.activeUseHistory]}
         set{Defaults[.activeUseHistory] = newValue}
     }
@@ -72,12 +72,12 @@ class Preference {
         set{Defaults[.libraryRefreshNotAllowCellularData] = !newValue}
     }
     
-    class var libraryLastRefreshTime: NSDate? {
+    class var libraryLastRefreshTime: Date? {
         get{return Defaults[.libraryLastRefreshTime]}
         set{Defaults[.libraryLastRefreshTime] = newValue}
     }
     
-    class var libraryRefreshInterval: NSTimeInterval {
+    class var libraryRefreshInterval: TimeInterval {
         get{return Defaults[.libraryRefreshInterval] ?? 3600.0 * 24}
         set{Defaults[.libraryRefreshInterval] = newValue}
     }
@@ -101,8 +101,8 @@ class Preference {
     
     // MARK: - Resume Data
     
-    class var resumeData: [String: NSData] {
-        get{return Defaults[.resumeData] as? [String: NSData] ?? [String: NSData]()}
+    class var resumeData: [String: Data] {
+        get{return Defaults[.resumeData] as? [String: NSData] ?? [String: Data]()}
         set{Defaults[.resumeData] = newValue}}
 }
 

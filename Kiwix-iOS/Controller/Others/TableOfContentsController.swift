@@ -12,16 +12,16 @@ import DZNEmptyDataSet
 class TableOfContentsController: UIViewController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     @IBOutlet weak var tableView: UITableView!
-    private let visibleHeaderIndicator = UIView()
+    fileprivate let visibleHeaderIndicator = UIView()
     
     weak var delegate: TableOfContentsDelegate?
-    private var headinglevelMin = 0
-    var articleURL: NSURL?
+    fileprivate var headinglevelMin = 0
+    var articleURL: URL?
     
     var headings = [HTMLHeading]() {
         didSet {
             configurePreferredContentSize()
-            headinglevelMin = max(2, headings.map({$0.level}).minElement() ?? 0)
+            headinglevelMin = max(2, headings.map({$0.level}).min() ?? 0)
             visibleHeaderIDs.removeAll()
             tableView.reloadData()
         }
@@ -41,40 +41,40 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
         tableView.emptyDataSetDelegate = self
         tableView.tableFooterView = UIView()
         tableView.addSubview(visibleHeaderIndicator)
-        visibleHeaderIndicator.backgroundColor = UIColor.redColor()
+        visibleHeaderIndicator.backgroundColor = UIColor.red
     }
     
     func configurePreferredContentSize() {
         let count = headings.count
-        let width = traitCollection.horizontalSizeClass == .Regular ? 300 : (UIScreen.mainScreen().bounds.width)
-        preferredContentSize = CGSizeMake(width, count == 0 ? 350 : min(CGFloat(count) * 44.0, UIScreen.mainScreen().bounds.height * 0.8))
+        let width = traitCollection.horizontalSizeClass == .regular ? 300 : (UIScreen.main.bounds.width)
+        preferredContentSize = CGSize(width: width, height: count == 0 ? 350 : min(CGFloat(count) * 44.0, UIScreen.main.bounds.height * 0.8))
     }
     
-    func configureVisibleHeaderView(animated animated: Bool) {
+    func configureVisibleHeaderView(animated: Bool) {
         // no visible header
         guard visibleHeaderIDs.count > 0 else {
-            visibleHeaderIndicator.hidden = true
+            visibleHeaderIndicator.isHidden = true
             return
         }
         
         // calculations
-        guard let minIndex = headings.indexOf({$0.id == visibleHeaderIDs.first}),
-            let maxIndex = headings.indexOf({$0.id == visibleHeaderIDs.last}) else {return}
-        let topIndexPath = NSIndexPath(forRow: minIndex, inSection: 0)
-        let bottomIndexPath = NSIndexPath(forRow: maxIndex, inSection: 0)
-        let topCellFrame = tableView.rectForRowAtIndexPath(topIndexPath)
-        let bottomCellFrame = tableView.rectForRowAtIndexPath(bottomIndexPath)
+        guard let minIndex = headings.index(where: {$0.id == visibleHeaderIDs.first}),
+            let maxIndex = headings.index(where: {$0.id == visibleHeaderIDs.last}) else {return}
+        let topIndexPath = IndexPath(row: minIndex, section: 0)
+        let bottomIndexPath = IndexPath(row: maxIndex, section: 0)
+        let topCellFrame = tableView.rectForRow(at: topIndexPath)
+        let bottomCellFrame = tableView.rectForRow(at: bottomIndexPath)
         let top = topCellFrame.origin.y + topCellFrame.height * 0.1
         let bottom = bottomCellFrame.origin.y + bottomCellFrame.height * 0.9
         
         // indicator frame
-        visibleHeaderIndicator.hidden = false
+        visibleHeaderIndicator.isHidden = false
         if animated {
-            UIView.animateWithDuration(0.1, animations: { 
-                self.visibleHeaderIndicator.frame = CGRectMake(0, top, 3, bottom - top)
+            UIView.animate(withDuration: 0.1, animations: { 
+                self.visibleHeaderIndicator.frame = CGRect(x: 0, y: top, width: 3, height: bottom - top)
             })
         } else {
-            visibleHeaderIndicator.frame = CGRectMake(0, top, 3, bottom - top)
+            visibleHeaderIndicator.frame = CGRect(x: 0, y: top, width: 3, height: bottom - top)
         }
 
         // tableview scroll
@@ -82,9 +82,9 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
         let bottomCellVisible = tableView.indexPathsForVisibleRows?.contains(bottomIndexPath) ?? false
         switch (topCellVisible, bottomCellVisible) {
         case (true, false):
-            tableView.scrollToRowAtIndexPath(bottomIndexPath, atScrollPosition: .Bottom, animated: animated)
+            tableView.scrollToRow(at: bottomIndexPath, at: .bottom, animated: animated)
         case (false, true), (false, false):
-            tableView.scrollToRowAtIndexPath(topIndexPath, atScrollPosition: .Top, animated: animated)
+            tableView.scrollToRow(at: topIndexPath, at: .top, animated: animated)
         default:
             return
         }
@@ -92,27 +92,27 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
     
     // MARK: - Table view data source
 
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return headings.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let heading = headings[indexPath.row]
         switch heading.level {
         case 1:
-            let cell = tableView.dequeueReusableCellWithIdentifier("H1Cell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "H1Cell", for: indexPath)
             cell.textLabel?.text = heading.textContent
             return cell
         case 2:
-            let cell = tableView.dequeueReusableCellWithIdentifier("H2Cell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "H2Cell", for: indexPath)
             cell.textLabel?.text = heading.textContent
             return cell
         default:
-            let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
             cell.textLabel?.text = heading.textContent
             cell.indentationLevel = max(0, (heading.level - headinglevelMin) * 2)
             return cell
@@ -121,34 +121,34 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
     
     // MARK: - Table view delegate
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         delegate?.scrollTo(headings[indexPath.row])
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     // MARK: - Empty table datasource & delegate
     
-    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
+    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
         return UIImage(named: "Compass")
     }
     
-    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         let text = NSLocalizedString("Table Of Contents Not Available", comment: "Table Of Content, empty text")
-        let attributes = [NSFontAttributeName: UIFont.boldSystemFontOfSize(18.0),
-                          NSForegroundColorAttributeName: UIColor.darkGrayColor()]
+        let attributes = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 18.0),
+                          NSForegroundColorAttributeName: UIColor.darkGray]
         return NSAttributedString(string: text, attributes: attributes)
     }
     
-    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
         return 0.0
     }
     
-    func spaceHeightForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+    func spaceHeight(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
         return 30.0
     }
     
 }
 
 protocol TableOfContentsDelegate: class {
-    func scrollTo(heading: HTMLHeading)
+    func scrollTo(_ heading: HTMLHeading)
 }

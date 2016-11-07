@@ -9,22 +9,22 @@
 import CoreData
 
 class MigrationPolicy1_5: NSEntityMigrationPolicy {
-    func negateBool(bool: NSNumber) -> NSNumber {
+    func negateBool(_ bool: NSNumber) -> NSNumber {
         let bool = bool.boolValue
-        return !bool
+        return !bool as NSNumber
     }
 }
 
 class MigrationPolicy1_8: NSEntityMigrationPolicy {
-    func bookState(bool: NSNumber?) -> NSNumber {
+    func bookState(_ bool: NSNumber?) -> NSNumber {
         if let bool = bool?.boolValue {
-            return bool ? NSNumber(integer: 2) : NSNumber(integer: 0)
+            return bool ? NSNumber(value: 2 as Int) : NSNumber(value: 0 as Int)
         } else {
-            return NSNumber(integer: 1)
+            return NSNumber(value: 1 as Int)
         }
     }
     
-    func path(url: String) -> String {
-        return NSURL(string: url)?.path ?? ""
+    func path(_ url: String) -> String {
+        return URL(string: url)?.path ?? ""
     }
 }

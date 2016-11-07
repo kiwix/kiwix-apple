@@ -11,54 +11,54 @@ import CoreData
 import Operations
 import UserNotifications
 
-class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSessionDownloadDelegate, OperationQueueDelegate  {
+class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate, OperationQueueDelegate  {
     static let shared = Network()
     let queue = OperationQueue()
     let context = NSManagedObjectContext.mainQueueContext
     
-    private(set) var operations = [String: DownloadBookOperation]()
-    private var downloadedBookTitle = [String]()
-    private var completionHandler: (()-> Void)?
+    fileprivate(set) var operations = [String: DownloadBookOperation]()
+    fileprivate var downloadedBookTitle = [String]()
+    fileprivate var completionHandler: (()-> Void)?
     
-    private override init() {
+    fileprivate override init() {
         super.init()
         queue.delegate = self
-        session.getAllTasksWithCompletionHandler { _ in }
+        session.getAllTasks { _ in }
     }
     
-    lazy var session: NSURLSession = {
-        let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier("org.kiwix.www")
+    lazy var session: Foundation.URLSession = {
+        let configuration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.www")
         configuration.allowsCellularAccess = false
-        configuration.discretionary = false
-        return NSURLSession(configuration: configuration, delegate: self, delegateQueue: nil)
+        configuration.isDiscretionary = false
+        return Foundation.URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }()
     
-    func rejoinSessionWithIdentifier(identifier: String, completionHandler: ()-> Void) {
+    func rejoinSessionWithIdentifier(_ identifier: String, completionHandler: @escaping ()-> Void) {
         guard identifier == session.configuration.identifier else {return}
         self.completionHandler = completionHandler
     }
     
     // MARK: - OperationQueueDelegate
     
-    func operationQueue(queue: OperationQueue, willAddOperation operation: NSOperation) {
+    func operationQueue(_ queue: OperationQueue, willAddOperation operation: Operation) {
         guard let bookID = operation.name,
             let operation = operation as? DownloadBookOperation else {return}
         operations[bookID] = operation
     }
     
-    func operationQueue(queue: OperationQueue, didFinishOperation operation: NSOperation, withErrors errors: [ErrorType]) {
+    func operationQueue(_ queue: OperationQueue, didFinishOperation operation: Operation, withErrors errors: [Error]) {
         guard let bookID = operation.name else {return}
         operations[bookID] = nil
     }
     
-    func operationQueue(queue: OperationQueue, willFinishOperation operation: NSOperation, withErrors errors: [ErrorType]) {}
+    func operationQueue(_ queue: OperationQueue, willFinishOperation operation: Operation, withErrors errors: [Error]) {}
     
-    func operationQueue(queue: OperationQueue, willProduceOperation operation: NSOperation) {}
+    func operationQueue(_ queue: OperationQueue, willProduceOperation operation: Operation) {}
     
     // MARK: - NSURLSessionDelegate
     
-    func URLSessionDidFinishEventsForBackgroundURLSession(session: NSURLSession) {
-        NSOperationQueue.mainQueue().addOperationWithBlock {
+    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+        OperationQueue.main.addOperation {
             self.completionHandler?()
             
             let title = NSLocalizedString("Book download finished", comment: "Notification: Book download finished")
@@ -78,28 +78,28 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
             }()
             
             if #available(iOS 10, *) {
-                UNUserNotificationCenter.currentNotificationCenter().getNotificationSettingsWithCompletionHandler({ (settings) in
-                    guard settings.alertSetting == .Enabled else {return}
+                UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { (settings) in
+                    guard settings.alertSetting == .enabled else {return}
                     let content = UNMutableNotificationContent()
                     content.title = title
                     content.body = body
                     let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.1, repeats: false)
                     let request = UNNotificationRequest(identifier: "org.kiwix.downloadFinished", content: content, trigger: trigger)
-                    UNUserNotificationCenter.currentNotificationCenter().addNotificationRequest(request, withCompletionHandler: nil)
+                    UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
                 })
             } else {
                 let notification = UILocalNotification()
                 notification.alertTitle = title
                 notification.alertBody = body
                 notification.soundName = UILocalNotificationDefaultSoundName
-                UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+                UIApplication.shared.presentLocalNotificationNow(notification)
             }
         }
     }
     
     // MARK: - NSURLSessionTaskDelegate
     
-    func URLSession(session: NSURLSession, task: NSURLSessionTask, didCompleteWithError error: NSError?) {
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         if let error = error {print(error.localizedDescription)}
         
         let context = NSManagedObjectContext.mainQueueContext
@@ -107,47 +107,47 @@ class Network: NSObject, NSURLSessionDelegate, NSURLSessionTaskDelegate, NSURLSe
             let bookID = task.taskDescription,
             let downloadTask = Book.fetch(bookID, context: context)?.downloadTask else {return}
         
-        if let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? NSData {
+        if let resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data {
             Preference.resumeData[bookID] = resumeData
-            downloadTask.state = .Paused
+            downloadTask.state = .paused
             downloadTask.totalBytesWritten = task.countOfBytesReceived
         } else {
-            downloadTask.state = .Error
+            downloadTask.state = .error
         }
     }
     
     // MARK: - NSURLSessionDownloadDelegate
     
-    func URLSession(session: NSURLSession, downloadTask: NSURLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
         guard let bookID = downloadTask.taskDescription,
             let operation = operations[bookID] else {return}
         operation.progress.addObservation(totalBytesWritten)
         
-        context.performBlock { 
-            guard let downloadTask = Book.fetch(bookID, context: self.context)?.downloadTask where downloadTask.state == .Queued else {return}
-            downloadTask.state = .Downloading
+        context.perform { 
+            guard let downloadTask = Book.fetch(bookID, context: self.context)?.downloadTask, downloadTask.state == .queued else {return}
+            downloadTask.state = .downloading
         }
     }
     
-    func URLSession(session: NSURLSession, downloadTask: NSURLSessionDownloadTask, didFinishDownloadingToURL location: NSURL) {
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         guard let bookID = downloadTask.taskDescription else {return}
         
         // Save downloaded zim file
         var fileName: String = downloadTask.response?.suggestedFilename ?? bookID
         if !fileName.hasSuffix(".zim") {fileName += ".zim"}
-        guard let destination = NSFileManager.docDirURL.URLByAppendingPathComponent(fileName) else {return}
-        _ = try? NSFileManager.defaultManager().moveItemAtURL(location, toURL: destination)
+        guard let destination = FileManager.docDirURL.appendingPathComponent(fileName) else {return}
+        _ = try? FileManager.default.moveItem(at: location, to: destination)
         
         // Scanner Operation will updated Book object status
         
         // - Remove cache, if any
         // - Delete Download task Object
-        context.performBlockAndWait { 
+        context.performAndWait { 
             guard let book = Book.fetch(bookID, context: self.context) else {return}
             if let title = book.title {self.downloadedBookTitle.append(title)}
             book.removeResumeData()
             guard let downloadTask = book.downloadTask else {return}
-            self.context.deleteObject(downloadTask)
+            self.context.delete(downloadTask)
         }
     }
 }

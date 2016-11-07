@@ -16,39 +16,39 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
     
     // MARK: - UIWebViewDelegate
     
-    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        guard let url = request.URL else {return false}
-        guard url.scheme?.caseInsensitiveCompare("pagescroll") != .OrderedSame else {
-            let components = NSURLComponents(string: url.absoluteString!)
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        guard let url = request.url else {return false}
+        guard url.scheme?.caseInsensitiveCompare("pagescroll") != .orderedSame else {
+            let components = URLComponents(string: url.absoluteString)
             let ids = components?.queryItems?.filter({$0.name == "header"}).flatMap({$0.value}) ?? [String]()
             tableOfContentsController?.visibleHeaderIDs = ids
             return false
         }
         guard url.isKiwixURL else {
-            let controller = SFSafariViewController(URL: url)
+            let controller = SFSafariViewController(url: url)
             controller.delegate = self
-            presentViewController(controller, animated: true, completion: nil)
+            present(controller, animated: true, completion: nil)
             return false
         }
         return true
     }
     
-    func webViewDidStartLoad(webView: UIWebView) {
+    func webViewDidStartLoad(_ webView: UIWebView) {
         URLResponseCache.shared.start()
         
         // UI Updates
-        if webView.hidden {
-            webView.hidden = false
+        if webView.isHidden {
+            webView.isHidden = false
             hideWelcome()
         }
         hideSearch(animated: true)
     }
     
-    func webViewDidFinishLoad(webView: UIWebView) {
+    func webViewDidFinishLoad(_ webView: UIWebView) {
         URLResponseCache.shared.stop()
         
         // Create article object
-        guard let url = webView.request?.URL,
+        guard let url = webView.request?.url,
             let article = Article.addOrUpdate(url: url, context: NSManagedObjectContext.mainQueueContext) else {return}
         article.title = JS.getTitle(from: webView)
         article.thumbImagePath = URLResponseCache.shared.firstImage()?.path
@@ -66,7 +66,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
         configureNavigationButtonTint()
     }
     
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
+    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
         // handle error
         print(error)
         
@@ -76,24 +76,24 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
     
     // MARK: - SFSafariViewControllerDelegate
     
-    func safariViewControllerDidFinish(controller: SFSafariViewController) {
-        controller.dismissViewControllerAnimated(true, completion: nil)
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        controller.dismiss(animated: true, completion: nil)
     }
     
     // MARK: - LPTBarButtonItemDelegate
     
-    func barButtonTapped(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
+    func barButtonTapped(_ sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
         guard sender == bookmarkButton else {return}
         showBookmarkController()
     }
     
-    func barButtonLongPressedStart(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
+    func barButtonLongPressedStart(_ sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
         guard sender == bookmarkButton else {return}
-        guard !webView.hidden else {return}
+        guard !webView.isHidden else {return}
         guard let article = article else {return}
         
         article.isBookmarked = !article.isBookmarked
-        if article.isBookmarked {article.bookmarkDate = NSDate()}
+        if article.isBookmarked {article.bookmarkDate = Date()}
         if article.snippet == nil {article.snippet = JS.getSnippet(webView)}
         
 //        let cloudKitUpdateOperation = BookmarkCloudKitOperation(article: article)
@@ -105,26 +105,26 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
         let controller = Controllers.bookmarkHUD
         controller.bookmarkAdded = article.isBookmarked
         controller.transitioningDelegate = self
-        controller.modalPresentationStyle = .OverFullScreen
-        presentViewController(controller, animated: true, completion: nil)
+        controller.modalPresentationStyle = .overFullScreen
+        present(controller, animated: true, completion: nil)
         configureBookmarkButton()
     }
     
     // MARK: - UIViewControllerTransitioningDelegate
     
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return BookmarkHUDAnimator(animateIn: true)
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return BookmarkHUDAnimator(animateIn: false)
     }
     
     // MARK: - TableOfContentsDelegate
     
-    func scrollTo(heading: HTMLHeading) {
-        webView.stringByEvaluatingJavaScriptFromString(heading.scrollToJavaScript)
-        if traitCollection.horizontalSizeClass == .Compact {
+    func scrollTo(_ heading: HTMLHeading) {
+        webView.stringByEvaluatingJavaScript(from: heading.scrollToJavaScript)
+        if traitCollection.horizontalSizeClass == .compact {
             hideTableOfContentsController()
         }
     }
@@ -139,8 +139,8 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
     
     // MARK: -  UIPopoverPresentationControllerDelegate
     
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-        return .None
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
     }
     
 }

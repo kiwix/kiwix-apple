@@ -15,10 +15,10 @@ class MessageBarButtonItem: UIBarButtonItem {
     }
     
     let label: UILabel = {
-        let label = UILabel(frame: CGRectMake(0, 0, 220, 40))
-        label.textAlignment = .Center
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 220, height: 40))
+        label.textAlignment = .center
         label.numberOfLines = 2
-        label.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption2)
+        label.font = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption2)
         return label
     }()
     
@@ -37,13 +37,13 @@ class MessageBarButtonItem: UIBarButtonItem {
         self.label.text = text
     }
     
-    func setText(text: String?, animated: Bool) {
+    func setText(_ text: String?, animated: Bool) {
         if animated {
             let animation = CATransition()
             animation.duration = 0.2
             animation.type = kCATransitionFade
             animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-            label.layer.addAnimation(animation, forKey: "changeTextTransition")
+            label.layer.add(animation, forKey: "changeTextTransition")
             label.text = ""
             label.text = text
         } else {
@@ -66,12 +66,12 @@ class LPTBarButtonItem: UIBarButtonItem {
     }
     
     convenience init(image: UIImage?, highlightedImage: UIImage?, target: AnyObject?, longPressAction: Selector, tapAction: Selector) {
-        let customImageView = LargeHitZoneImageView(image: image?.imageWithRenderingMode(.AlwaysTemplate),
-                                                    highlightedImage: highlightedImage?.imageWithRenderingMode(.AlwaysTemplate))
-        customImageView.contentMode = UIViewContentMode.ScaleAspectFit
-        customImageView.frame = CGRectMake(0, 0, 26, 26)
-        customImageView.tintColor = UIColor.grayColor()
-        let containerView = UIView(frame: CGRectMake(0, 0, 52, 30))
+        let customImageView = LargeHitZoneImageView(image: image?.withRenderingMode(.alwaysTemplate),
+                                                    highlightedImage: highlightedImage?.withRenderingMode(.alwaysTemplate))
+        customImageView.contentMode = UIViewContentMode.scaleAspectFit
+        customImageView.frame = CGRect(x: 0, y: 0, width: 26, height: 26)
+        customImageView.tintColor = UIColor.gray
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: 52, height: 30))
         customImageView.center = containerView.center
         containerView.addSubview(customImageView)
         self.init(customView: containerView)
@@ -93,10 +93,10 @@ class LPTBarButtonItem: UIBarButtonItem {
         }()
         
         let customImageView = LargeHitZoneImageView(image: image, highlightedImage: highlightedImage)
-        customImageView.contentMode = UIViewContentMode.ScaleAspectFit
-        customImageView.frame = CGRectMake(0, 0, 26, 26)
-        customImageView.tintColor = grayed ? UIColor.grayColor() : nil
-        let containerView = UIView(frame: CGRectMake(0, 0, 44, 30)) // on ipad may be 52, 44 is value on iP6s+, to be investigated
+        customImageView.contentMode = UIViewContentMode.scaleAspectFit
+        customImageView.frame = CGRect(x: 0, y: 0, width: 26, height: 26)
+        customImageView.tintColor = grayed ? UIColor.gray : nil
+        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 30)) // on ipad may be 52, 44 is value on iP6s+, to be investigated
         customImageView.center = containerView.center
         containerView.addSubview(customImageView)
         self.init(customView: containerView)
@@ -117,12 +117,12 @@ class LPTBarButtonItem: UIBarButtonItem {
     
     // MARK: - handle gesture
     
-    func handleTapGesture(gestureRecognizer: UIGestureRecognizer) {
+    func handleTapGesture(_ gestureRecognizer: UIGestureRecognizer) {
         delegate?.barButtonTapped(self, gestureRecognizer: gestureRecognizer)
     }
     
-    func handleLongPressGesture(gestureRecognizer: UIGestureRecognizer) {
-        guard gestureRecognizer.state == .Began else {return}
+    func handleLongPressGesture(_ gestureRecognizer: UIGestureRecognizer) {
+        guard gestureRecognizer.state == .began else {return}
         delegate?.barButtonLongPressedStart(self, gestureRecognizer: gestureRecognizer)
     }
     
@@ -138,32 +138,32 @@ class LPTBarButtonItem: UIBarButtonItem {
         isRotating = false
     }
     
-    private func rotateImage(duration: CFTimeInterval, angle: CGFloat) {
+    fileprivate func rotateImage(_ duration: CFTimeInterval, angle: CGFloat) {
         CATransaction.begin()
         let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
         rotationAnimation.byValue = angle
         rotationAnimation.duration = duration
-        rotationAnimation.removedOnCompletion = true
+        rotationAnimation.isRemovedOnCompletion = true
         
         CATransaction.setCompletionBlock { () -> Void in
             guard self.isRotating else {return}
             self.rotateImage(duration, angle: angle)
         }
-        customImageView?.layer.addAnimation(rotationAnimation, forKey: "rotationAnimation")
+        customImageView?.layer.add(rotationAnimation, forKey: "rotationAnimation")
         CATransaction.commit()
     }
 }
 
 protocol LPTBarButtonItemDelegate: class {
-    func barButtonTapped(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer)
-    func barButtonLongPressedStart(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer)
+    func barButtonTapped(_ sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer)
+    func barButtonLongPressedStart(_ sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer)
 }
 
 extension LPTBarButtonItemDelegate {
-    func barButtonTapped(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
+    func barButtonTapped(_ sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
         return
     }
-    func barButtonLongPressedStart(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
+    func barButtonLongPressedStart(_ sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {
         return
     }
 }
@@ -171,9 +171,9 @@ extension LPTBarButtonItemDelegate {
 // MARK: - Helper Class
 
 class LargeHitZoneImageView: UIImageView {
-    override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
-        let frame = CGRectInset(self.bounds, -9, -9)
-        return CGRectContainsPoint(frame, point) ? self : nil
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let frame = self.bounds.insetBy(dx: -9, dy: -9)
+        return frame.contains(point) ? self : nil
     }
 }
 
@@ -183,7 +183,7 @@ extension UIBarButtonItem {
     }
     
     convenience init(imageNamed name: String, target: AnyObject?, action: Selector) {
-        let image = UIImage(named: name)?.imageWithRenderingMode(.AlwaysTemplate)
-        self.init(image: image, style: .Plain, target: target, action: action)
+        let image = UIImage(named: name)?.withRenderingMode(.alwaysTemplate)
+        self.init(image: image, style: .plain, target: target, action: action)
     }
 }

@@ -10,12 +10,12 @@ import UIKit
 
 class DropShadowView: UIView {
     var bottomBorder: CALayer?
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         switch traitCollection.horizontalSizeClass {
-        case .Regular:
+        case .regular:
             layer.shadowRadius = 0.0
             layer.shadowOpacity = 0.0
-            layer.backgroundColor = UIColor.whiteColor().CGColor
+            layer.backgroundColor = UIColor.white.cgColor
             
             let border: CALayer = {
                 if let border = bottomBorder {
@@ -23,16 +23,16 @@ class DropShadowView: UIView {
                 } else {
                     let border = CALayer()
                     bottomBorder = border
-                    border.backgroundColor = UIColor.lightGrayColor().colorWithAlphaComponent(0.75).CGColor
+                    border.backgroundColor = UIColor.lightGray.withAlphaComponent(0.75).cgColor
                     return border
                 }
             }()
-            border.frame = CGRectMake(0, rect.height - 0.5, rect.width, 0.5)
+            border.frame = CGRect(x: 0, y: rect.height - 0.5, width: rect.width, height: 0.5)
             layer.addSublayer(border)
-        case .Compact:
+        case .compact:
             layer.shadowRadius = 2.0
             layer.shadowOpacity = 0.5
-            layer.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0).CGColor
+            layer.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1.0).cgColor
             if let border = bottomBorder {border.removeFromSuperlayer()}
         default:
             break
@@ -41,12 +41,12 @@ class DropShadowView: UIView {
     
     override func awakeFromNib() {
         layer.masksToBounds = false
-        layer.shadowOffset = CGSizeMake(0, 0)
+        layer.shadowOffset = CGSize(width: 0, height: 0)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        layer.shadowPath = UIBezierPath(rect: bounds).CGPath
+        layer.shadowPath = UIBezierPath(rect: bounds).cgPath
         setNeedsDisplay()
     }
 }
@@ -55,14 +55,14 @@ class SearchHRegularDropShadowView: UIView {
     override func awakeFromNib() {
         layer.masksToBounds = false
         layer.cornerRadius = 10.0
-        layer.shadowOffset = CGSizeMake(0, 0)
+        layer.shadowOffset = CGSize(width: 0, height: 0)
         layer.shadowRadius = 50.0
         layer.shadowOpacity = 0.2
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        layer.shadowPath = UIBezierPath(rect: bounds).CGPath
+        layer.shadowPath = UIBezierPath(rect: bounds).cgPath
     }
 }
 
@@ -72,12 +72,12 @@ class SearchRoundedCornerView: UIView {
         layer.masksToBounds = true
     }
     
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         guard traitCollection != previousTraitCollection else {return}
         switch traitCollection.horizontalSizeClass {
-        case .Regular:
+        case .regular:
             layer.cornerRadius = 10.0
-        case .Compact:
+        case .compact:
             layer.cornerRadius = 0.0
         default:
             break

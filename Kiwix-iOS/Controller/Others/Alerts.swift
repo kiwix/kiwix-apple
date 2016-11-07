@@ -49,7 +49,7 @@ class RemoveBookConfirmationAlert: AlertOperation<UIViewController> {
 }
 
 class LanguageFilterAlert: AlertOperation<UIViewController> {
-    init(context: UIViewController, handler: AlertOperation<UIViewController> -> Void) {
+    init(context: UIViewController, handler: (AlertOperation<UIViewController>) -> Void) {
         super.init(presentAlertFrom: context)
         
         title = NSLocalizedString("Only Show Preferred Language?", comment: "Library, Language Filter Alert")
@@ -79,7 +79,7 @@ class NetworkRequiredAlert: AlertOperation<UIViewController> {
 }
 
 class CopyURLAlert: AlertOperation<UIViewController> {
-    init(url: NSURL, context: UIViewController) {
+    init(url: URL, context: UIViewController) {
         super.init(presentAlertFrom: context)
         title = NSLocalizedString("URL Copied Successfully", comment: "Copy URL Alert")
         if let absoluteURL = url.absoluteString {
@@ -114,8 +114,8 @@ class GetStartedAlert: AlertOperation<MainController> {
 }
 
 class ShowHelpPageOperation: Operation {
-    private let type: WebViewControllerContentType
-    private let context: UIViewController
+    fileprivate let type: WebViewControllerContentType
+    fileprivate let context: UIViewController
     
     init(type: WebViewControllerContentType, context: UIViewController) {
         self.type = type
@@ -125,7 +125,7 @@ class ShowHelpPageOperation: Operation {
     
     override func execute() {
         defer { finish() }
-        guard let controller = UIStoryboard.setting.instantiateViewControllerWithIdentifier("WebViewController") as? WebViewController else {return}
+        guard let controller = UIStoryboard.setting.instantiateViewController(withIdentifier: "WebViewController") as? WebViewController else {return}
         controller.page = self.type
         
         let operation = UIOperation(controller: UIViewController(),

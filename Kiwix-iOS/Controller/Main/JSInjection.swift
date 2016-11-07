@@ -11,31 +11,31 @@ import JavaScriptCore
 
 class JS {
     
-    class func inject(webView: UIWebView) {
-        let path = NSBundle.mainBundle().pathForResource("injection", ofType: "js")
+    class func inject(_ webView: UIWebView) {
+        let path = Bundle.main.path(forResource: "injection", ofType: "js")
         let jString = try? String(contentsOfFile: path!)
         webView.context.evaluateScript(jString!)
     }
     
-    class func adjustFontSizeIfNeeded(webView: UIWebView) {
+    class func adjustFontSizeIfNeeded(_ webView: UIWebView) {
         guard Preference.webViewZoomScale != 100.0 else {return}
         let jString = String(format: "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%.0f%%'", Preference.webViewZoomScale)
-        webView.stringByEvaluatingJavaScriptFromString(jString)
+        webView.stringByEvaluatingJavaScript(from: jString)
     }
     
     class func getTitle(from webView: UIWebView) -> String? {
-        return webView.stringByEvaluatingJavaScriptFromString("document.title")
+        return webView.stringByEvaluatingJavaScript(from: "document.title")
     }
     
-    class func startTOCCallBack(webView: UIWebView) {
-        webView.stringByEvaluatingJavaScriptFromString("startCallBack()")
+    class func startTOCCallBack(_ webView: UIWebView) {
+        webView.stringByEvaluatingJavaScript(from: "startCallBack()")
     }
     
-    class func stopTOCCallBack(webView: UIWebView) {
-        webView.stringByEvaluatingJavaScriptFromString("stopCallBack()")
+    class func stopTOCCallBack(_ webView: UIWebView) {
+        webView.stringByEvaluatingJavaScript(from: "stopCallBack()")
     }
     
-    class func getTableOfContents(webView: UIWebView) -> [HTMLHeading] {
+    class func getTableOfContents(_ webView: UIWebView) -> [HTMLHeading] {
         let jString = "getTableOfContents().headerObjects;"
         guard let elements = webView.context.evaluateScript(jString).toArray() as? [[String: String]] else {return [HTMLHeading]()}
         var headings = [HTMLHeading]()
@@ -46,8 +46,8 @@ class JS {
         return headings
     }
     
-    class func getSnippet(webView: UIWebView) -> String? {
-        guard let path = NSBundle.mainBundle().pathForResource("getSnippet", ofType: "js"),
+    class func getSnippet(_ webView: UIWebView) -> String? {
+        guard let path = Bundle.main.path(forResource: "getSnippet", ofType: "js"),
             let jString = try? String(contentsOfFile: path),
             let snippet = webView.context.evaluateScript(jString).toString() else {return nil}
         return snippet == "null" ? nil : snippet
@@ -56,6 +56,6 @@ class JS {
 
 extension UIWebView {
     var context: JSContext {
-        return valueForKeyPath("documentView.webView.mainFrame.javaScriptContext") as! JSContext
+        return value(forKeyPath: "documentView.webView.mainFrame.javaScriptContext") as! JSContext
     }
 }

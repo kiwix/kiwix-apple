@@ -10,8 +10,8 @@ import UIKit
 
 class URLResponseCache {
     static let shared = URLResponseCache()
-    private(set) var listening = false
-    private var responses = [NSURL: NSURLResponse]()
+    fileprivate(set) var listening = false
+    fileprivate var responses = [URL: URLResponse]()
     
     func start() {
         listening = true
@@ -26,14 +26,14 @@ class URLResponseCache {
         responses.removeAll()
     }
     
-    func cache(response response: NSURLResponse) {
+    func cache(response: URLResponse) {
         guard listening else {return}
-        guard let url = response.URL else {return}
+        guard let url = response.url else {return}
         responses[url] = response
     }
     
-    func firstImage() -> NSURL? {
-        let response = responses.filter({ $1.MIMEType?.containsString("image") ?? false }).first?.1
-        return response?.URL
+    func firstImage() -> URL? {
+        let response = responses.filter({ $1.mimeType?.contains("image") ?? false }).first?.1
+        return response?.url
     }
 }

@@ -14,11 +14,11 @@ import CoreData
 
 extension Article {
 
-    @NSManaged var bookmarkDate: NSDate?
+    @NSManaged var bookmarkDate: Date?
     @NSManaged var isBookmarked: Bool
     @NSManaged var isMainPage: Bool
     @NSManaged var lastPosition: Float
-    @NSManaged var lastReadDate: NSDate?
+    @NSManaged var lastReadDate: Date?
     @NSManaged var path: String
     @NSManaged var snippet: String?
     @NSManaged var title: String?

@@ -21,11 +21,11 @@ class RecentSearchController: UIViewController, UICollectionViewDataSource, UICo
         collectionView.showsHorizontalScrollIndicator = false
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.reloadData()
         collectionView.collectionViewLayout.invalidateLayout()
-        collectionView.contentOffset = CGPointZero
+        collectionView.contentOffset = CGPoint.zero
     }
     
     override func viewDidLayoutSubviews() {
@@ -36,55 +36,55 @@ class RecentSearchController: UIViewController, UICollectionViewDataSource, UICo
     
     // MARK: - CollectionView Data Source
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return Preference.RecentSearch.terms.count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath)
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
         configureCell(cell, atIndexPath: indexPath)
         return cell
     }
     
-    func configureCell(cell: UICollectionViewCell, atIndexPath indexPath: NSIndexPath) {
+    func configureCell(_ cell: UICollectionViewCell, atIndexPath indexPath: IndexPath) {
         guard let cell = cell as? LocalLangCell else {return}
         cell.label.text = Preference.RecentSearch.terms[indexPath.item]
     }
     
     // MARK: - CollectionView Delegate
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        guard let mainVC = parentViewController?.parentViewController?.parentViewController as? MainController,
-            let searchController = parentViewController?.parentViewController as? SearchController,
-            let cell = collectionView.cellForItemAtIndexPath(indexPath) as? LocalLangCell,
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let mainVC = parent?.parent?.parent as? MainController,
+            let searchController = parent?.parent as? SearchController,
+            let cell = collectionView.cellForItem(at: indexPath) as? LocalLangCell,
             let text = cell.label.text else {return}
         mainVC.searchBar.searchTerm = text
         searchController.startSearch(text, delayed: false)
-        collectionView.deselectItemAtIndexPath(indexPath, animated: true)
+        collectionView.deselectItem(at: indexPath, animated: true)
     }
     
     // MARK: - CollectionView Delegate FlowLayout
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let height: CGFloat = 30
         let text = Preference.RecentSearch.terms[indexPath.item]
-        let font = UIFont.systemFontOfSize(17.0, weight: UIFontWeightRegular)
-        let size = text.boundingRectWithSize(CGSizeMake(200, height),
-                                             options: NSStringDrawingOptions.UsesLineFragmentOrigin,
+        let font = UIFont.systemFont(ofSize: 17.0, weight: UIFontWeightRegular)
+        let size = text.boundingRect(with: CGSize(width: 200, height: height),
+                                             options: NSStringDrawingOptions.usesLineFragmentOrigin,
                                              attributes: [NSFontAttributeName: font], context: nil)
-        return CGSizeMake(size.width + 30, height)
+        return CGSize(width: size.width + 30, height: height)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        let numberOfItems = collectionView.numberOfItemsInSection(section)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        let numberOfItems = collectionView.numberOfItems(inSection: section)
         
         var width: CGFloat = 0
         for item in 0..<numberOfItems {
-            let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: NSIndexPath(forItem: item, inSection: section))
+            let size = self.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAt: IndexPath(item: item, section: section))
             width += size.width
         }
         width += 10.0 * CGFloat(numberOfItems - 1)
@@ -93,7 +93,7 @@ class RecentSearchController: UIViewController, UICollectionViewDataSource, UICo
         return UIEdgeInsetsMake(0, hInset, 0, hInset)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 10
     }
 }

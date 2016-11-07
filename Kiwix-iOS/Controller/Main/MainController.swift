@@ -25,16 +25,16 @@ class MainController: UIViewController {
     // MARK: - Properties
     
     let activityType = "org.kiwix.kiwix.article-view"
-    private var webViewInitialURL: NSURL?
-    private(set) var context: UnsafeMutablePointer<Void> = nil
+    fileprivate var webViewInitialURL: URL?
+    fileprivate(set) var context: UnsafeMutableRawPointer? = nil
     var isShowingTableOfContents = false
-    private(set) var tableOfContentsController: TableOfContentsController?
+    fileprivate(set) var tableOfContentsController: TableOfContentsController?
     let searchBar = SearchBar()
 
     var article: Article? {
         willSet(newArticle) {
             article?.removeObserver(self, forKeyPath: "isBookmarked")
-            newArticle?.addObserver(self, forKeyPath: "isBookmarked", options: .New, context: context)
+            newArticle?.addObserver(self, forKeyPath: "isBookmarked", options: .new, context: context)
         }
         didSet {
             searchBar.articleTitle = article?.title
@@ -52,7 +52,7 @@ class MainController: UIViewController {
         ZimMultiReader.shared.delegate = self
         navigationItem.titleView = searchBar
         
-        NSUserDefaults.standardUserDefaults().addObserver(self, forKeyPath: "webViewZoomScale", options: .New, context: context)
+        UserDefaults.standard.addObserver(self, forKeyPath: "webViewZoomScale", options: .new, context: context)
         
         configureButtonColor()
         showGetStartedAlert()
@@ -61,10 +61,10 @@ class MainController: UIViewController {
     
     deinit {
         article?.removeObserver(self, forKeyPath: "isBookmarked")
-        NSUserDefaults.standardUserDefaults().removeObserver(self, forKeyPath: "webViewZoomScale")
+        UserDefaults.standard.removeObserver(self, forKeyPath: "webViewZoomScale")
     }
     
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard context == self.context, let keyPath = keyPath else {return}
         switch keyPath {
         case "webViewZoomScale":
@@ -76,7 +76,7 @@ class MainController: UIViewController {
         }
     }
     
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if previousTraitCollection?.horizontalSizeClass != traitCollection.horizontalSizeClass {
             configureUIElements(traitCollection.horizontalSizeClass)
@@ -84,26 +84,26 @@ class MainController: UIViewController {
         configureTOCViewConstraints()
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "EmbeddedTOCController" {
-            guard let destinationViewController = segue.destinationViewController as? TableOfContentsController else {return}
+            guard let destinationViewController = segue.destination as? TableOfContentsController else {return}
             tableOfContentsController = destinationViewController
             tableOfContentsController?.delegate = self
         }
     }
     
-    override func updateUserActivityState(activity: NSUserActivity) {
+    override func updateUserActivityState(_ activity: NSUserActivity) {
         defer { super.updateUserActivityState(activity) }
         guard let article = article, let url = article.url?.absoluteString else {return}
         activity.title = article.title
-        activity.addUserInfoEntriesFromDictionary(["ArticleURL": url])
+        activity.addUserInfoEntries(from: ["ArticleURL": url])
         super.updateUserActivityState(activity)
     }
     
-    override func restoreUserActivityState(activity: NSUserActivity) {
+    override func restoreUserActivityState(_ activity: NSUserActivity) {
         guard activity.activityType == activityType,
             let urlString = activity.userInfo?["ArticleURL"] as? String,
-            let url = NSURL(string: urlString),
+            let url = URL(string: urlString),
             let host = url.host else {return}
         if ZimMultiReader.shared.readers.keys.contains(host) {
             let operation = ArticleLoadOperation(url: url)
@@ -116,44 +116,44 @@ class MainController: UIViewController {
     
     // MARK: - Configure
     
-    func configureUIElements(horizontalSizeClass: UIUserInterfaceSizeClass) {
+    func configureUIElements(_ horizontalSizeClass: UIUserInterfaceSizeClass) {
         switch horizontalSizeClass {
-        case .Regular:
-            navigationController?.toolbarHidden = true
+        case .regular:
+            navigationController?.isToolbarHidden = true
             toolbarItems?.removeAll()
             navigationItem.leftBarButtonItems = [navigateLeftButton, navigateRightButton, tableOfContentButton]
             navigationItem.rightBarButtonItems = [settingButton, libraryButton, bookmarkButton]
             searchBar.setShowsCancelButton(false, animated: true)
-        case .Compact:
-            if !searchBar.isFirstResponder() {navigationController?.toolbarHidden = false}
-            if searchBar.isFirstResponder() {searchBar.setShowsCancelButton(true, animated: true)}
+        case .compact:
+            if !searchBar.isFirstResponder {navigationController?.isToolbarHidden = false}
+            if searchBar.isFirstResponder {searchBar.setShowsCancelButton(true, animated: true)}
             navigationItem.leftBarButtonItems?.removeAll()
             navigationItem.rightBarButtonItems?.removeAll()
-            let spaceButton = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+            let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
             toolbarItems = [navigateLeftButton, spaceButton, navigateRightButton, spaceButton, tableOfContentButton, spaceButton, bookmarkButton, spaceButton, libraryButton, spaceButton, settingButton]            
-            if UIDevice.currentDevice().userInterfaceIdiom == .Pad && searchBar.isFirstResponder() {
-                navigationItem.setRightBarButtonItem(cancelButton, animated: true)
+            if UIDevice.current.userInterfaceIdiom == .pad && searchBar.isFirstResponder {
+                navigationItem.setRightBarButton(cancelButton, animated: true)
             }
-        case .Unspecified:
+        case .unspecified:
             break
         }
     }
     
     func configureButtonColor() {
         configureNavigationButtonTint()
-        tableOfContentButton.tintColor = UIColor.grayColor()
-        libraryButton.tintColor = UIColor.grayColor()
-        settingButton.tintColor = UIColor.grayColor()
-        UIBarButtonItem.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self]).tintColor = UIColor.themeColor
+        tableOfContentButton.tintColor = UIColor.gray
+        libraryButton.tintColor = UIColor.gray
+        settingButton.tintColor = UIColor.gray
+        UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.themeColor
     }
     
     func configureNavigationButtonTint() {
-        navigateLeftButton.tintColor = webView.canGoBack ? nil : UIColor.grayColor()
-        navigateRightButton.tintColor = webView.canGoForward ? nil : UIColor.grayColor()
+        navigateLeftButton.tintColor = webView.canGoBack ? nil : UIColor.gray
+        navigateRightButton.tintColor = webView.canGoForward ? nil : UIColor.gray
     }
     
     func configureBookmarkButton() {
-        bookmarkButton.customImageView?.highlighted = article?.isBookmarked ?? false
+        bookmarkButton.customImageView?.isHighlighted = article?.isBookmarked ?? false
     }
     
     func configureTableOfContents() {
@@ -167,7 +167,7 @@ class MainController: UIViewController {
         guard let title = article?.title, let url = article?.url?.absoluteString else {return}
         userActivity?.title = title
         userActivity?.userInfo = ["ArticleURL": url]
-        userActivity?.eligibleForHandoff = true
+        userActivity?.isEligibleForHandoff = true
         userActivity?.supportsContinuationStreams = true
         userActivity?.becomeCurrent()
     }
@@ -180,7 +180,7 @@ class MainController: UIViewController {
     lazy var bookmarkButton: LPTBarButtonItem = LPTBarButtonItem(imageName: "Star", highlightedImageName: "StarHighlighted", delegate: self)
     lazy var libraryButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "Library", target: self, action: #selector(MainController.showLibraryButtonTapped))
     lazy var settingButton: UIBarButtonItem = UIBarButtonItem(imageNamed: "Setting", target: self, action: #selector(MainController.showSettingButtonTapped))
-    lazy var cancelButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(MainController.cancelButtonTapped))
+    lazy var cancelButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(MainController.cancelButtonTapped))
     
     // MARK: - Actions
     
@@ -192,29 +192,29 @@ class MainController: UIViewController {
         webView.goForward()
     }
     
-    func tableOfContentButtonTapped(sender: UIBarButtonItem) {
+    func tableOfContentButtonTapped(_ sender: UIBarButtonItem) {
         guard let _ = article else {return}
         isShowingTableOfContents ? hideTableOfContentsController() : showTableOfContentsController()
     }
     
     func showLibraryButtonTapped() {
         let controller = Controllers.library
-        controller.modalPresentationStyle = .FullScreen
-        presentViewController(controller, animated: true, completion: nil)
+        controller.modalPresentationStyle = .fullScreen
+        present(controller, animated: true, completion: nil)
     }
     
     func showSettingButtonTapped() {
         let controller = Controllers.setting
-        controller.modalPresentationStyle = .FormSheet
-        presentViewController(controller, animated: true, completion: nil)
+        controller.modalPresentationStyle = .formSheet
+        present(controller, animated: true, completion: nil)
     }
     
     func cancelButtonTapped() {
         hideSearch(animated: true)
-        navigationItem.setRightBarButtonItem(nil, animated: true)
+        navigationItem.setRightBarButton(nil, animated: true)
     }
     
-    @IBAction func dimViewTapGestureRecognizer(sender: UITapGestureRecognizer) {
+    @IBAction func dimViewTapGestureRecognizer(_ sender: UITapGestureRecognizer) {
         hideTableOfContentsController()
     }
 }
