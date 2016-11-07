@@ -13,15 +13,15 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
         
     @IBOutlet weak var collectionView: UICollectionView!
     
-    private let hInset: CGFloat = 15.0
-    private let vInset: CGFloat = 10.0
-    private var itemSize = CGSizeZero
-    private var itemsPerRow: CGFloat = 5
-    private var rowCount: CGFloat = 1
-    private var maxRowCount: CGFloat = 1
+    fileprivate let hInset: CGFloat = 15.0
+    fileprivate let vInset: CGFloat = 10.0
+    fileprivate var itemSize = CGSize.zero
+    fileprivate var itemsPerRow: CGFloat = 5
+    fileprivate var rowCount: CGFloat = 1
+    fileprivate var maxRowCount: CGFloat = 1
     
-    private var hasUpdate = true
-    private var bookmarks = [NSDictionary]()
+    fileprivate var hasUpdate = true
+    fileprivate var bookmarks = [NSDictionary]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,15 +33,15 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
         updateUI()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateData()
         calculateItemSize(collectionViewWidth: collectionView.frame.width)
         updateUI()
     }
     
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         calculateItemSize(collectionViewWidth: size.width)
         updateUI()
     }
@@ -49,11 +49,11 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
     // MARK: - Update & Calculation
     
     func updateData() {
-        guard let defaults = NSUserDefaults(suiteName: "group.kiwix") else {return}
-        guard let bookmarks = defaults.objectForKey("bookmarks") as? [NSDictionary] else {return}
+        guard let defaults = UserDefaults(suiteName: "group.kiwix") else {return}
+        guard let bookmarks = defaults.object(forKey: "bookmarks") as? [NSDictionary] else {return}
         hasUpdate = self.bookmarks != bookmarks
         self.bookmarks = bookmarks
-        maxRowCount = CGFloat(max(1, min(defaults.integerForKey("BookmarkWidgetMaxRowCount"), 3)))
+        maxRowCount = CGFloat(max(1, min(defaults.integer(forKey: "BookmarkWidgetMaxRowCount"), 3)))
     }
     
     func updateUI() {
@@ -62,98 +62,98 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
         NCWidgetController.widgetController().setHasContent(bookmarks.count > 0, forWidgetWithBundleIdentifier: "self.Kiwix.Bookmarks")
     }
     
-    func calculateItemSize(collectionViewWidth collectionViewWidth: CGFloat) {
+    func calculateItemSize(collectionViewWidth: CGFloat) {
         itemsPerRow = max(5, min(round(collectionViewWidth / 70), 10))
         let itemWidth = (collectionViewWidth - (itemsPerRow + 1) * hInset) / itemsPerRow
-        let titles = bookmarks.flatMap({$0.objectForKey("title") as? String})
-        let labelHeights = titles.map({$0.heightWithConstrainedWidth(itemWidth, font: UIFont.systemFontOfSize(10.0, weight: UIFontWeightMedium))})
-        let labelMaxHeight = max(12.0, min((labelHeights.maxElement() ?? 12.0), 24.0))
+        let titles = bookmarks.flatMap({$0.object(forKey: "title") as? String})
+        let labelHeights = titles.map({$0.heightWithConstrainedWidth(itemWidth, font: UIFont.systemFont(ofSize: 10.0, weight: UIFontWeightMedium))})
+        let labelMaxHeight = max(12.0, min((labelHeights.max() ?? 12.0), 24.0))
         let itemHeight = itemWidth + 2.0 + labelMaxHeight // itemHeight (1:1 ration) + label top spacing + label height
-        itemSize = CGSizeMake(itemWidth, itemHeight)
+        itemSize = CGSize(width: itemWidth, height: itemHeight)
         
         rowCount = min(ceil(CGFloat(bookmarks.count) / CGFloat(itemsPerRow)), maxRowCount)
         let collectionViewHeight = itemHeight * rowCount + hInset * rowCount
-        preferredContentSize = CGSizeMake(0, max(1, collectionViewHeight))
+        preferredContentSize = CGSize(width: 0, height: max(1, collectionViewHeight))
     }
     
     // MARK: - NCWidgetProviding
     
-    func widgetMarginInsetsForProposedMarginInsets(defaultMarginInsets: UIEdgeInsets) -> UIEdgeInsets {
-        return UIEdgeInsetsZero
+    func widgetMarginInsets(forProposedMarginInsets defaultMarginInsets: UIEdgeInsets) -> UIEdgeInsets {
+        return UIEdgeInsets.zero
     }
     
-    func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void)) {
+    func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         updateData()
         calculateItemSize(collectionViewWidth: collectionView.frame.width)
         updateUI()
-        completionHandler(hasUpdate ? .NewData : .NoData)
+        completionHandler(hasUpdate ? .newData : .noData)
         hasUpdate = false
     }
     
     // MARK: - UICollectionViewDataSource
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return min(bookmarks.count, Int(itemsPerRow * rowCount))
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("BookmarkWidgetCell", forIndexPath: indexPath)
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BookmarkWidgetCell", for: indexPath)
         configureCell(cell, atIndexPath: indexPath)
         return cell
     }
     
-    func configureCell(cell: UICollectionViewCell, atIndexPath indexPath: NSIndexPath) {
+    func configureCell(_ cell: UICollectionViewCell, atIndexPath indexPath: IndexPath) {
         guard let cell = cell as? BookmarkWidgetCell else {return}
         let bookmark = bookmarks[indexPath.item]
         guard let title = bookmark["title"] as? String,
-            let thumbImageData = bookmark["thumbImageData"] as? NSData else {return}
+            let thumbImageData = bookmark["thumbImageData"] as? Data else {return}
         
         cell.label.text = title
         cell.imageView.image = UIImage(data: thumbImageData)
         
         if #available(iOS 10, *) {
-            cell.label.textColor = UIColor.darkGrayColor()
+            cell.label.textColor = UIColor.darkGray
         }
     }
     
     // MARK: - UICollectionViewDelegate
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let bookmark = bookmarks[indexPath.item]
         guard let urlString = bookmark["url"] as? String,
-            let url = NSURL(string: urlString) else {return}
-        extensionContext?.openURL(url, completionHandler: { (completed) in
-            collectionView.deselectItemAtIndexPath(indexPath, animated: true)
+            let url = URL(string: urlString) else {return}
+        extensionContext?.open(url, completionHandler: { (completed) in
+            collectionView.deselectItem(at: indexPath, animated: true)
         })
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return itemSize
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return hInset
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return vInset
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsetsMake(vInset, hInset, vInset, hInset)
     }
 }
 
 private extension String {
-    func heightWithConstrainedWidth(width: CGFloat, font: UIFont) -> CGFloat {
-        let constraintRect = CGSize(width: width, height: CGFloat.max)
-        let boundingBox = self.boundingRectWithSize(constraintRect, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
+    func heightWithConstrainedWidth(_ width: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
+        let boundingBox = self.boundingRect(with: constraintRect, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
         return boundingBox.height
     }
 }
