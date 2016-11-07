@@ -4,7 +4,7 @@ PODS:
   - ProcedureKit (4.0.0.beta.4):
     - ProcedureKit/Standard (= 4.0.0.beta.4)
   - ProcedureKit/Standard (4.0.0.beta.4)
-  - SwiftyUserDefaults (2.2.1)
+  - SwiftyUserDefaults (3.0.0)
 
 DEPENDENCIES:
   - DZNEmptyDataSet
@@ -26,8 +26,8 @@ SPEC CHECKSUMS:
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   ProcedureKit: 9160071e54e3885fad82f72acc8474366c764f5b
-  SwiftyUserDefaults: 7abdba50a50ea0c18ee8903af3c88e4c1cb8448d
+  SwiftyUserDefaults: 0f1d45fc3aafb9064dac661e367f8f83fe21a4b4
 
-PODFILE CHECKSUM: e456ad658eea97ee2fb7189b04aaf7b13583b1d7
+PODFILE CHECKSUM: 3a6500d8c36bc65c0475e02525c34c847c978e18
 
 COCOAPODS: 1.0.1

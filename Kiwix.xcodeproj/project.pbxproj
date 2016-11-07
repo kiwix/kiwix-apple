@@ -912,7 +912,7 @@
 					9779C3121D4575AD0064CC8E = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = L7HWM3SP3L;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0820;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -922,7 +922,7 @@
 					97A2AB871C1B80FF00052E74 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = L7HWM3SP3L;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0820;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -943,12 +943,12 @@
 					};
 					97A2AB9E1C1B80FF00052E74 = {
 						CreatedOnToolsVersion = 7.2;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0820;
 						TestTargetID = 97A2AB871C1B80FF00052E74;
 					};
 					97A2ABA91C1B810000052E74 = {
 						CreatedOnToolsVersion = 7.2;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0820;
 						TestTargetID = 97A2AB871C1B80FF00052E74;
 					};
 				};
@@ -1237,7 +1237,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.Bookmarks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1254,7 +1254,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.Bookmarks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -1381,7 +1381,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Kiwix/Kiwix-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1418,7 +1418,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Kiwix/Kiwix-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -1432,7 +1432,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = self.KiwixTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kiwix.app/Kiwix";
 			};
 			name = Debug;
@@ -1446,7 +1446,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = self.KiwixTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kiwix.app/Kiwix";
 			};
 			name = Release;
@@ -1461,7 +1461,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = "Kiwix-iOS";
 				USES_XCTRUNNER = YES;
 			};
@@ -1476,7 +1476,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = self.KiwixUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = "Kiwix-iOS";
 				USES_XCTRUNNER = YES;
 			};
