@@ -7,9 +7,9 @@
 //
 
 import UIKit
-import Operations
+import ProcedureKit
 
-class ArticleLoadOperation: Operation {
+class ArticleLoadOperation: Procedure {
     let bookID: String?
     let path: String?
     let title: String?
@@ -61,8 +61,8 @@ class ArticleLoadOperation: Operation {
                 return URL(bookID: bookID, contentPath: path)
             }
             if let bookID = bookID {
-                guard let reader = ZimMultiReader.shared.readers[bookID] else {return nil}
-                let path = reader.mainPageURL()
+                guard let reader = ZimMultiReader.shared.readers[bookID],
+                    let path = reader.mainPageURL() else {return nil}
                 return URL(bookID: bookID, contentPath: path)
             }
             return nil

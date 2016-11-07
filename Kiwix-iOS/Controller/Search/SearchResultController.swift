@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Operations
+import ProcedureKit
 import DZNEmptyDataSet
 
 class SearchResultController: SearchTableViewController, UITableViewDataSource, UITableViewDelegate {

@@ -6,9 +6,9 @@
 //  Copyright © 2016 Chris. All rights reserved.
 //
 
-import Operations
+import ProcedureKit
 
-class URLSessionDownloadTaskOperation: Operation {
+class URLSessionDownloadTaskOperation: Procedure {
     
     enum KeyPath: String {
         case State = "state"

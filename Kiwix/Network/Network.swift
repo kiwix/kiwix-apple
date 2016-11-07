@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreData
-import Operations
+import ProcedureKit
 import UserNotifications
 
 class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate, OperationQueueDelegate  {
@@ -40,20 +40,20 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     
     // MARK: - OperationQueueDelegate
     
-    func operationQueue(_ queue: OperationQueue, willAddOperation operation: Operation) {
+    func operationQueue(_ queue: ProcedureQueue, willAddOperation operation: Procedure) {
         guard let bookID = operation.name,
             let operation = operation as? DownloadBookOperation else {return}
         operations[bookID] = operation
     }
     
-    func operationQueue(_ queue: OperationQueue, didFinishOperation operation: Operation, withErrors errors: [Error]) {
+    func operationQueue(_ queue: ProcedureQueue, didFinishOperation operation: Procedure, withErrors errors: [Error]) {
         guard let bookID = operation.name else {return}
         operations[bookID] = nil
     }
     
-    func operationQueue(_ queue: OperationQueue, willFinishOperation operation: Operation, withErrors errors: [Error]) {}
+    func operationQueue(_ queue: ProcedureQueue, willFinishOperation operation: Procedure, withErrors errors: [Error]) {}
     
-    func operationQueue(_ queue: OperationQueue, willProduceOperation operation: Operation) {}
+    func operationQueue(_ queue: ProcedureQueue, willProduceOperation operation: Procedure) {}
     
     // MARK: - NSURLSessionDelegate
     

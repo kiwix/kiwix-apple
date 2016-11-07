@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreData
-import Operations
+import ProcedureKit
 import DZNEmptyDataSet
 
 class LocalBooksController: UITableViewController, NSFetchedResultsControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {

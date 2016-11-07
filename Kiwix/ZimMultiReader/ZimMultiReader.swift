@@ -7,7 +7,7 @@
 //
 
 import CoreData
-import Operations
+import ProcedureKit
 
 class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     static let shared = ZimMultiReader()

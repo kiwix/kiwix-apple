@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Operations
+import ProcedureKit
 
 class SettingDetailController: UITableViewController {
     

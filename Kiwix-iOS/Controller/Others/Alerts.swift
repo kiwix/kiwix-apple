@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Operations
+import ProcedureKit
 
 class SpaceNotEnoughAlert: AlertOperation<UIViewController> {
     init(context: UIViewController) {
@@ -113,7 +113,7 @@ class GetStartedAlert: AlertOperation<MainController> {
     }
 }
 
-class ShowHelpPageOperation: Operation {
+class ShowHelpPageOperation: Procedure {
     fileprivate let type: WebViewControllerContentType
     fileprivate let context: UIViewController
     
@@ -132,7 +132,7 @@ class ShowHelpPageOperation: Operation {
                                     displayControllerFrom: .Present(context),
                                     inNavigationController: true,
                                     sender: nil)
-        produceOperation(operation)
+        produce(operation)
     }
 }
 

@@ -7,9 +7,9 @@
 //
 
 import CoreData
-import Operations
+import ProcedureKit
 
-class ScanLocalBookOperation: Operation {
+class ScanLocalBookOperation: Procedure {
     fileprivate let context: NSManagedObjectContext
     fileprivate(set) var firstBookAdded = false
     fileprivate(set) var shouldMigrateBookmarks = false
@@ -30,7 +30,7 @@ class ScanLocalBookOperation: Operation {
         self.lastIndexFolderURLSnapshot = lastIndexFolderURLSnapshot
         
         super.init()
-        addCondition(MutuallyExclusive<ZimMultiReader>())
+        add(MutuallyExclusive<ZimMultiReader>())
         name = String(describing: self)
     }
     
@@ -56,7 +56,7 @@ class ScanLocalBookOperation: Operation {
     override func operationDidFinish(_ errors: [Error]) {
         print(String(format: "Scan finshed, lasted for %.4f seconds.", -time.timeIntervalSinceNow))
         if shouldMigrateBookmarks {
-            produceOperation(BookmarkMigrationOperation())
+            produce(BookmarkMigrationOperation())
         }
     }
     

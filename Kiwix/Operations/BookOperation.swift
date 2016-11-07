@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreData
-import Operations
+import ProcedureKit
 
 class DownloadBookOperation: URLSessionDownloadTaskOperation {
     let bookID: String?
@@ -22,7 +22,7 @@ class DownloadBookOperation: URLSessionDownloadTaskOperation {
         
         if UIApplication.shared.applicationState == .active,
             let url = downloadTask.originalRequest?.url {
-            addCondition(ReachabilityCondition(url: url, connectivity: .ViaWiFi))
+            add(ReachabilityCondition(url: url, connectivity: .ViaWiFi))
         }
         
         // Update Coredata
@@ -155,7 +155,7 @@ class DownloadBookOperation: URLSessionDownloadTaskOperation {
     }
 }
 
-class RemoveBookOperation: Operation {
+class RemoveBookOperation: Procedure {
     let bookID: String
     
     init(bookID: String) {
@@ -179,7 +179,7 @@ class RemoveBookOperation: Operation {
     }
 }
 
-class PauseBookDwonloadOperation: Operation {
+class PauseBookDwonloadOperation: Procedure {
     let bookID: String
     
     init(bookID: String) {
@@ -193,7 +193,7 @@ class PauseBookDwonloadOperation: Operation {
     }
 }
 
-class ResumeBookDwonloadOperation: Operation {
+class ResumeBookDwonloadOperation: Procedure {
     let bookID: String
     
     init(bookID: String) {
@@ -206,7 +206,7 @@ class ResumeBookDwonloadOperation: Operation {
         guard let data: Data = Preference.resumeData[bookID] as Data?,
             let operation = DownloadBookOperation(bookID: bookID, resumeData: data) else {
                 if let operation = DownloadBookOperation(bookID: bookID) {
-                    produceOperation(operation)
+                    produce(operation)
                 }
                 
                 finish()

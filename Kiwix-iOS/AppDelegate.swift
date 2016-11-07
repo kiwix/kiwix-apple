@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 import CloudKit
-import Operations
+import ProcedureKit
 import UserNotifications
 
 @UIApplicationMain
@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return (window?.rootViewController as? UINavigationController)?.topViewController as? MainController
     }
     
-    fileprivate let recentShortcutTypeString = "org.kiwix.recent"
+    private let recentShortcutTypeString = "org.kiwix.recent"
     
     func recordActiveSession() {
         Preference.activeUseHistory.append(Date()) 

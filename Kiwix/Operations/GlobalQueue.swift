@@ -6,9 +6,9 @@
 //  Copyright © 2016 Chris. All rights reserved.
 //
 
-import Operations
+import ProcedureKit
 
-class GlobalQueue: OperationQueue {
+class GlobalQueue: ProcedureQueue {
     static let shared = GlobalQueue()
     
     fileprivate weak var scanOperation: ScanLocalBookOperation?

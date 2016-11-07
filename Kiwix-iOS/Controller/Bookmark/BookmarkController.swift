@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreData
-import Operations
+import ProcedureKit
 import DZNEmptyDataSet
 
 class BookmarkController: UITableViewController, NSFetchedResultsControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {

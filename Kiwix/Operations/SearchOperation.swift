@@ -7,7 +7,7 @@
 //
 
 import CoreData
-import Operations
+import ProcedureKit
 
 class SearchOperation: GroupOperation {
     fileprivate(set) var results = [SearchResult]()
@@ -41,7 +41,7 @@ class SearchOperation: GroupOperation {
     }
 }
 
-private class BookSearch: Operation {
+private class BookSearch: Procedure {
     let zimID: String
     let searchTerm: String
     fileprivate var results = [SearchResult]()
@@ -71,7 +71,7 @@ private class BookSearch: Operation {
     }
 }
 
-private class Sort: Operation, AutomaticInjectionOperationType {
+private class Sort: Procedure, AutomaticInjectionOperationType {
     var requirement = [SearchResult]()
     
     fileprivate override func execute() {

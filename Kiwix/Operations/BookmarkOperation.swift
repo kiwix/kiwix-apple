@@ -8,9 +8,9 @@
 
 import CoreData
 import CloudKit
-import Operations
+import ProcedureKit
 
-class BookmarkMigrationOperation: Operation {
+class BookmarkMigrationOperation: Procedure {
     fileprivate let context: NSManagedObjectContext
     
     override init() {
@@ -19,7 +19,7 @@ class BookmarkMigrationOperation: Operation {
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         
         super.init()
-        addCondition(MutuallyExclusive<GlobalQueue>())
+        add(MutuallyExclusive<GlobalQueue>())
         name = String(describing: self)
     }
     
@@ -39,7 +39,7 @@ class BookmarkMigrationOperation: Operation {
     }
 }
 
-class BookmarkTrashOperation: Operation {
+class BookmarkTrashOperation: Procedure {
     fileprivate let context: NSManagedObjectContext
     fileprivate let articles: [Article]
     
@@ -48,7 +48,7 @@ class BookmarkTrashOperation: Operation {
         self.articles = articles
         
         super.init()
-        addCondition(MutuallyExclusive<BookmarkController>())
+        add(MutuallyExclusive<BookmarkController>())
         name = String(describing: self)
     }
     
@@ -74,14 +74,14 @@ class BookmarkTrashOperation: Operation {
         }
         
         if articles.count > 0 {
-            produceOperation(UpdateWidgetDataSourceOperation())
+            produce(UpdateWidgetDataSourceOperation())
         }
         
         finish()
     }
 }
 
-class BookmarkCloudKitOperation: Operation {
+class BookmarkCloudKitOperation: Procedure {
     let article: Article
     
     init(article: Article) {
