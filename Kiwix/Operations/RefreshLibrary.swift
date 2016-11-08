@@ -7,8 +7,9 @@
 //
 
 import ProcedureKit
+import CoreData
 
-class RefreshLibrary: GroupProcedure {
+class RefreshLibraryOperation: GroupProcedure {
     
     init() {
         let retrieve = Retrieve()
@@ -19,7 +20,7 @@ class RefreshLibrary: GroupProcedure {
     
 }
 
-private class Retrieve: NetworkDataProcedure<URLSession> {
+fileprivate class Retrieve: NetworkDataProcedure<URLSession> {
     
     init() {
         let session = URLSession.shared
@@ -29,15 +30,26 @@ private class Retrieve: NetworkDataProcedure<URLSession> {
     }
 }
 
-private class Process: Procedure, ResultInjection, XMLParserDelegate {
+fileprivate class Process: Procedure, ResultInjection, XMLParserDelegate {
     var requirement: PendingValue<HTTPResult<Data>> = .pending
-    var result: PendingValue<Void> = .void
+    fileprivate(set) var result: PendingValue<Void> = .void
+    private let context: NSManagedObjectContext
+    private var storeBookIDs = Set<String>()
+    private var memoryBookIDs = Set<String>()
+    
+    override init() {
+        self.context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        context.parent = AppDelegate.persistentContainer.viewContext
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        super.init()
+    }
     
     override func execute() {
         guard let data = requirement.value?.payload else {
             finish(withError: ProcedureKitError.requirementNotSatisfied())
             return
         }
+        
         let parser = XMLParser(data: data)
         parser.delegate = self
         parser.parse()

@@ -96,9 +96,15 @@ class Book: NSManagedObject {
     
     // MARK: - Fetch
     
-    class func fetchAll(_ context: NSManagedObjectContext) -> [Book] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Book")
-        return fetch(fetchRequest, type: Book.self, context: context) ?? [Book]()
+    class func fetchAll(in context: NSManagedObjectContext) -> [Book] {
+        let request: NSFetchRequest<Book> = Book.fetchRequest() as! NSFetchRequest<Book>
+        return (try? context.fetch(request)) ?? [Book]()
+        
+//        let request: NSFetchRequest<NSFetchRequestResult> = Book.fetchRequest()
+//        let res = try? context.fetch(request)
+//        return res
+//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Book")
+//        return fetch(fetchRequest, type: Book.self, context: context) ?? [Book]()
     }
     
     class func fetchLocal(_ context: NSManagedObjectContext) -> [ZimID: Book] {
