@@ -3,6 +3,8 @@ PODS:
   - MBProgressHUD (1.0.0)
   - ProcedureKit (4.0.0.beta.4):
     - ProcedureKit/Standard (= 4.0.0.beta.4)
+  - ProcedureKit/Network (4.0.0.beta.4):
+    - ProcedureKit/Standard
   - ProcedureKit/Standard (4.0.0.beta.4)
   - SwiftyUserDefaults (3.0.0)
 
@@ -10,6 +12,7 @@ DEPENDENCIES:
   - DZNEmptyDataSet
   - MBProgressHUD (~> 1.0.0)
   - ProcedureKit (from `https://github.com/ProcedureKit/ProcedureKit.git`, branch `release/4.0.0.beta.4`)
+  - ProcedureKit/Network (from `https://github.com/ProcedureKit/ProcedureKit.git`, branch `release/4.0.0.beta.4`)
   - SwiftyUserDefaults
 
 EXTERNAL SOURCES:
@@ -28,6 +31,6 @@ SPEC CHECKSUMS:
   ProcedureKit: 9160071e54e3885fad82f72acc8474366c764f5b
   SwiftyUserDefaults: 0f1d45fc3aafb9064dac661e367f8f83fe21a4b4
 
-PODFILE CHECKSUM: 3a6500d8c36bc65c0475e02525c34c847c978e18
+PODFILE CHECKSUM: 2a43cf5fd02fa27c74c7964ae4d60a691552505d
 
 COCOAPODS: 1.0.1

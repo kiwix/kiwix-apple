@@ -44,6 +44,8 @@
 		973208231DD19C7600EDD3DC /* DownloadProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9726591A1D8DB91200D1DFFB /* DownloadProgress.swift */; };
 		973208241DD217B600EDD3DC /* BookmarkHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97219DBC1D383A00009FDFF1 /* BookmarkHUD.swift */; };
 		973208261DD21E9C00EDD3DC /* CoreDataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973208251DD21E9C00EDD3DC /* CoreDataContainer.swift */; };
+		973208271DD2238B00EDD3DC /* GlobalQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6811C1D6F70AC00E5FA99 /* GlobalQueue.swift */; };
+		973208291DD223DB00EDD3DC /* RefreshLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973208281DD223DB00EDD3DC /* RefreshLibrary.swift */; };
 		9734E54E1D289D060061C39B /* Welcome.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9734E54D1D289D060061C39B /* Welcome.storyboard */; };
 		973BCD1A1CEB402900F10B44 /* KiwixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCD181CEB402900F10B44 /* KiwixTests.swift */; };
 		973DD40F1D343F2F009D45DB /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD4041D343F2F009D45DB /* libicudata.a */; };
@@ -188,6 +190,7 @@
 		9726591C1D90A64500D1DFFB /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		9732075B1DD136BB00EDD3DC /* CoreDataExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataExtension.swift; sourceTree = "<group>"; };
 		973208251DD21E9C00EDD3DC /* CoreDataContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataContainer.swift; sourceTree = "<group>"; };
+		973208281DD223DB00EDD3DC /* RefreshLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshLibrary.swift; sourceTree = "<group>"; };
 		9734E54D1D289D060061C39B /* Welcome.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Welcome.storyboard; path = "Kiwix-iOS/Storyboard/Welcome.storyboard"; sourceTree = SOURCE_ROOT; };
 		973BCD001CEB3FA500F10B44 /* Kiwix_OSXTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kiwix_OSXTests.swift; sourceTree = "<group>"; };
 		973BCD021CEB3FA500F10B44 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -759,10 +762,11 @@
 		97E5712A1CA0525300FF4F1D /* Operation */ = {
 			isa = PBXGroup;
 			children = (
+				97D6811C1D6F70AC00E5FA99 /* GlobalQueue.swift */,
 				9764CBD21D8083AA00072D6A /* ArticleOperation.swift */,
 				974F33C51D99CAD700879D35 /* BookmarkOperation.swift */,
 				97DF259B1D6F7612001648A3 /* BookOperation.swift */,
-				97D6811C1D6F70AC00E5FA99 /* GlobalQueue.swift */,
+				973208281DD223DB00EDD3DC /* RefreshLibrary.swift */,
 				97D6811D1D6F70AC00E5FA99 /* RefreshLibraryOperation.swift */,
 				97D6811E1D6F70AC00E5FA99 /* ScanLocalBookOperation.swift */,
 				97D4D64E1D874E6E00C1B065 /* SearchOperation.swift */,
@@ -1114,6 +1118,7 @@
 				971A102E1D022AD5007FC62C /* TableViewCells.swift in Sources */,
 				97E60A021D10423A00EBCB9D /* ShadowViews.swift in Sources */,
 				970E68BA1D3809A3001E8514 /* MainController.swift in Sources */,
+				973208291DD223DB00EDD3DC /* RefreshLibrary.swift in Sources */,
 				97D6813A1D6F711A00E5FA99 /* Language.swift in Sources */,
 				970E7F791DA003FA00741290 /* WebViewController.swift in Sources */,
 				97D681401D6F712800E5FA99 /* Book+CoreDataProperties.swift in Sources */,
@@ -1158,6 +1163,7 @@
 				97A1FD441D6F728200A80EE2 /* Preference.swift in Sources */,
 				97D681311D6F70EC00E5FA99 /* 1.5.xcmappingmodel in Sources */,
 				9732075C1DD136BB00EDD3DC /* CoreDataExtension.swift in Sources */,
+				973208271DD2238B00EDD3DC /* GlobalQueue.swift in Sources */,
 				97A1FD181D6F71CE00A80EE2 /* SearchResult.swift in Sources */,
 				973207A11DD1983D00EDD3DC /* LocalBooksController.swift in Sources */,
 				973DD4281D36E3E4009D45DB /* SettingDetailController.swift in Sources */,

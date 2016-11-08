@@ -48,7 +48,7 @@ private class Retrieve: Procedure, ResultInjection {
     
     fileprivate override func execute() {
         guard !isCancelled else {return}
-        let task = URLSession.shared.dataTask(with: Retrieve.url, completionHandler: { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: Re`trieve.url, completionHandler: { (data, response, error) in
             self.result = data
             self.finish()
         }) 
