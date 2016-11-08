@@ -21,7 +21,6 @@ class RefreshLibraryOperation: GroupProcedure {
 }
 
 fileprivate class Retrieve: NetworkDataProcedure<URLSession> {
-    
     init() {
         let session = URLSession.shared
         let url = URL(string: "https://download.kiwix.org/library/library.xml")!
@@ -59,6 +58,16 @@ fileprivate class Process: Procedure, ResultInjection, XMLParserDelegate {
         parser.delegate = self
         parser.parse()
         
+        let toBeDeleted = storeBookIDs.subtracting(memoryBookIDs)
+        hasUpdate = toBeDeleted.count > 0
+        context.performAndWait {
+            toBeDeleted.forEach({ (id) in
+                
+            })
+        }
+        print("\(memoryBookIDs.count)")
+        
+        if context.hasChanges { try? context.save() }
         finish()
     }
     
@@ -71,13 +80,6 @@ fileprivate class Process: Procedure, ResultInjection, XMLParserDelegate {
                 _ = Book.add(meta: attributeDict, in: self.context)
             })
         }
-    }
-    
-    func parserDidEndDocument(_ parser: XMLParser) {
-        
-    }
-    
-    func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
-        
+        memoryBookIDs.insert(id)
     }
 }
