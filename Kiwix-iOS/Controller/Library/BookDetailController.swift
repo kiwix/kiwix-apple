@@ -50,7 +50,7 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     fileprivate(set) var cellTitles = [[String]]()
     var bookmarkCount: Int? {
         guard let book = book else {return nil}
-        return Article.fetchBookmarked(in: book, with: NSManagedObjectContext.mainQueueContext).count
+        return Article.fetchBookmarked(in: book, with: AppDelegate.persistentContainer.viewContext).count
     }
     
     override func viewDidLoad() {

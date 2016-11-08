@@ -27,12 +27,6 @@ extension NSFetchedResultsController {
     }
 }
 
-extension NSManagedObjectContext {
-    class var mainQueueContext: NSManagedObjectContext {
-        return (UIApplication.shared.delegate as! AppDelegate).managedObjectContext
-    }
-}
-
 // MARK: - UI
 
 enum BuildStatus {

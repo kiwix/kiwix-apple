@@ -240,7 +240,7 @@ class DownloadTasksController: UITableViewController, NSFetchedResultsController
     
     // MARK: - Fetched Results Controller
     
-    let managedObjectContext = UIApplication.appDelegate.managedObjectContext
+    let managedObjectContext = AppDelegate.persistentContainer.viewContext
     lazy var fetchedResultController: NSFetchedResultsController<DownloadTask> = {
         let fetchRequest = DownloadTask.fetchRequest()
         let creationTimeDescriptor = NSSortDescriptor(key: "creationTime", ascending: true)

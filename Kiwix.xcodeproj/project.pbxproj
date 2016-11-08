@@ -32,7 +32,6 @@
 		971A10811D022F74007FC62C /* Pic_P.png in Resources */ = {isa = PBXBuildFile; fileRef = 971A107D1D022F74007FC62C /* Pic_P.png */; };
 		9722122B1D3FCCE200C0DCF2 /* MainControllerShowHide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9722122A1D3FCCE200C0DCF2 /* MainControllerShowHide.swift */; };
 		9726591D1D90A64600D1DFFB /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9726591C1D90A64500D1DFFB /* Notifications.swift */; };
-		9732075A1DD136A700EDD3DC /* CoreDataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973207591DD136A700EDD3DC /* CoreDataContainer.swift */; };
 		9732075C1DD136BB00EDD3DC /* CoreDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9732075B1DD136BB00EDD3DC /* CoreDataExtension.swift */; };
 		9732079E1DD197EA00EDD3DC /* LibrarySplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C005D71D64B99E004352E8 /* LibrarySplitViewController.swift */; };
 		9732079F1DD197F400EDD3DC /* CloudBooksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C005DB1D64BEFE004352E8 /* CloudBooksController.swift */; };
@@ -44,6 +43,7 @@
 		973207A51DD1984700EDD3DC /* SearchBooksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C61D777CF100FB204D /* SearchBooksController.swift */; };
 		973208231DD19C7600EDD3DC /* DownloadProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9726591A1D8DB91200D1DFFB /* DownloadProgress.swift */; };
 		973208241DD217B600EDD3DC /* BookmarkHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97219DBC1D383A00009FDFF1 /* BookmarkHUD.swift */; };
+		973208261DD21E9C00EDD3DC /* CoreDataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973208251DD21E9C00EDD3DC /* CoreDataContainer.swift */; };
 		9734E54E1D289D060061C39B /* Welcome.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9734E54D1D289D060061C39B /* Welcome.storyboard */; };
 		973BCD1A1CEB402900F10B44 /* KiwixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCD181CEB402900F10B44 /* KiwixTests.swift */; };
 		973DD40F1D343F2F009D45DB /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD4041D343F2F009D45DB /* libicudata.a */; };
@@ -186,8 +186,8 @@
 		9722122A1D3FCCE200C0DCF2 /* MainControllerShowHide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainControllerShowHide.swift; path = "Kiwix-iOS/Controller/Main/MainControllerShowHide.swift"; sourceTree = SOURCE_ROOT; };
 		9726591A1D8DB91200D1DFFB /* DownloadProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadProgress.swift; sourceTree = "<group>"; };
 		9726591C1D90A64500D1DFFB /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
-		973207591DD136A700EDD3DC /* CoreDataContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataContainer.swift; sourceTree = "<group>"; };
 		9732075B1DD136BB00EDD3DC /* CoreDataExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataExtension.swift; sourceTree = "<group>"; };
+		973208251DD21E9C00EDD3DC /* CoreDataContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataContainer.swift; sourceTree = "<group>"; };
 		9734E54D1D289D060061C39B /* Welcome.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Welcome.storyboard; path = "Kiwix-iOS/Storyboard/Welcome.storyboard"; sourceTree = SOURCE_ROOT; };
 		973BCD001CEB3FA500F10B44 /* Kiwix_OSXTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kiwix_OSXTests.swift; sourceTree = "<group>"; };
 		973BCD021CEB3FA500F10B44 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -393,8 +393,8 @@
 				971187891CEB53D700B9909D /* Migration */,
 				971187881CEB53CE00B9909D /* Classes */,
 				978C589D1C1CD8750077AE47 /* Properties */,
-				973207591DD136A700EDD3DC /* CoreDataContainer.swift */,
 				9732075B1DD136BB00EDD3DC /* CoreDataExtension.swift */,
+				973208251DD21E9C00EDD3DC /* CoreDataContainer.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -1125,7 +1125,6 @@
 				970E7F831DA0305000741290 /* WelcomeController.swift in Sources */,
 				97A1FD3B1D6F724E00A80EE2 /* stringTools.cpp in Sources */,
 				970E7F741D9DB0FC00741290 /* 1.8.xcmappingmodel in Sources */,
-				9732075A1DD136A700EDD3DC /* CoreDataContainer.swift in Sources */,
 				973207A01DD1983D00EDD3DC /* DownloadTasksController.swift in Sources */,
 				97A1FD321D6F723D00A80EE2 /* resourceTools.cpp in Sources */,
 				971A10321D022AD5007FC62C /* SearchBar.swift in Sources */,
@@ -1150,6 +1149,7 @@
 				97A127CB1D777CF100FB204D /* SearchController.swift in Sources */,
 				97A1FD261D6F71E200A80EE2 /* ZimReader.mm in Sources */,
 				97A1FD1C1D6F71D800A80EE2 /* KiwixURLProtocol.swift in Sources */,
+				973208261DD21E9C00EDD3DC /* CoreDataContainer.swift in Sources */,
 				97D6813F1D6F712800E5FA99 /* Article+CoreDataProperties.swift in Sources */,
 				97A1FD171D6F71CE00A80EE2 /* Extension.swift in Sources */,
 				97D6812E1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld in Sources */,

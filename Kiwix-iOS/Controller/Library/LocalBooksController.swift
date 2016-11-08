@@ -136,7 +136,7 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
     
     // MARK: - Fetched Results Controller
     
-    let managedObjectContext = NSManagedObjectContext.mainQueueContext
+    let managedObjectContext = AppDelegate.persistentContainer.viewContext
     lazy var fetchedResultController: NSFetchedResultsController<Book> = {
         let fetchRequest = Book.fetchRequest()
         let stateDescriptor = NSSortDescriptor(key: "stateRaw", ascending: true)

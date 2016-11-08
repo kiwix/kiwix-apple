@@ -2,18 +2,24 @@
 //  CoreDataContainer.swift
 //  Kiwix
 //
-//  Created by Chris Li on 11/7/16.
+//  Created by Chris Li on 11/8/16.
 //  Copyright © 2016 Wikimedia CH. All rights reserved.
 //
 
-import UIKit
 import CoreData
 
 class CoreDataContainer: NSPersistentContainer {
-//    init() {
-//        super.init(name: "Kiwix")
-//        loadPersistentStores { (description, error) in
-//            
-//        }
-//    }
+    
+    init() {
+        let modelURL = Bundle.main.url(forResource: "Kiwix", withExtension: "momd")!
+        let model = NSManagedObjectModel(contentsOf: modelURL)!
+        super.init(name: "Kiwix", managedObjectModel: model)
+        loadPersistentStores { (_, _) in }
+    }
+    
+    override class func defaultDirectoryURL() -> URL {
+        let urls = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask)
+        return urls[urls.count-1]
+    }
+
 }

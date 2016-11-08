@@ -49,7 +49,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
         
         // Create article object
         guard let url = webView.request?.url,
-            let article = Article.addOrUpdate(url: url, context: NSManagedObjectContext.mainQueueContext) else {return}
+            let article = Article.addOrUpdate(url: url, context: AppDelegate.persistentContainer.viewContext) else {return}
         article.title = JS.getTitle(from: webView)
         article.thumbImagePath = URLResponseCache.shared.firstImage()?.path
         self.article = article

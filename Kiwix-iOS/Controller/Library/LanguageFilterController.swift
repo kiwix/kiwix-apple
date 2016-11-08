@@ -15,7 +15,7 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
     @IBOutlet weak var sortSegmentedControl: UISegmentedControl!
     @IBOutlet weak var langNameSegmentedControl: UISegmentedControl!
     
-    fileprivate let managedObjectContext = NSManagedObjectContext.mainQueueContext
+    fileprivate let managedObjectContext = AppDelegate.persistentContainer.viewContext
     
     weak var delegate: LanguageFilterUpdating?
     fileprivate var initialShowLanguageSet = Set<Language>()

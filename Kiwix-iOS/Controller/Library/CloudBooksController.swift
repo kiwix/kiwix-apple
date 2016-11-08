@@ -306,7 +306,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     
     // MARK: - Fetched Results Controller
     
-    let managedObjectContext = NSManagedObjectContext.mainQueueContext
+    let managedObjectContext = AppDelegate.persistentContainer.viewContext
     lazy var fetchedResultController: NSFetchedResultsController<Book> = {
         let fetchRequest = Book.fetchRequest()
         let langDescriptor = NSSortDescriptor(key: "language.name", ascending: true)
