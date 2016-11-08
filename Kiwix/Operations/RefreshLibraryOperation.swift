@@ -48,7 +48,7 @@ private class Retrieve: Procedure, ResultInjection {
     
     fileprivate override func execute() {
         guard !isCancelled else {return}
-        let task = URLSession.shared.dataTask(with: Re`trieve.url, completionHandler: { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: Retrieve.url, completionHandler: { (data, response, error) in
             self.result = data
             self.finish()
         }) 
@@ -60,9 +60,9 @@ private class Process: Procedure, XMLParserDelegate, AutomaticInjectionOperation
     var requirement: Data?
     fileprivate(set) var hasUpdate = false
     fileprivate(set) var firstTime = false
-    fileprivate let context: NSManagedObjectContext
-    fileprivate var oldBookIDs = Set<String>()
-    fileprivate var newBookIDs = Set<String>()
+    private let context: NSManagedObjectContext
+    private var oldBookIDs = Set<String>()
+    private var newBookIDs = Set<String>()
     
     override init() {
         self.context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
@@ -89,7 +89,7 @@ private class Process: Procedure, XMLParserDelegate, AutomaticInjectionOperation
     
     @objc fileprivate func parserDidStartDocument(_ parser: XMLParser) {
         context.performAndWait { () -> Void in
-            self.oldBookIDs = Set(Book.fetchAll(self.context).flatMap({ $0.id }))
+            self.oldBookIDs = Set(Book.fetchAll(self.context).map({ $0.id }))
         }
     }
     

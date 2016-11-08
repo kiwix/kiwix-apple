@@ -18,55 +18,45 @@ class Book: NSManagedObject {
 
     // MARK: - Add Book
     
-    class func add(_ metadata: [String: AnyObject], context: NSManagedObjectContext) -> Book? {
-        guard let id = metadata["id"] as? String,
-            let book = insert(Book.self, context: context) else {return nil}
+    class func add(meta: [String: String], in context: NSManagedObjectContext) -> Book? {
+        guard let id = meta["id"] else {return nil}
+        let book = Book(context: context)
         
         book.id = id
-        book.title = metadata["title"] as? String
-        book.creator = metadata["creator"] as? String
-        book.publisher = metadata["publisher"] as? String
-        book.desc = metadata["description"] as? String
-        book.meta4URL = metadata["url"] as? String
-        book.pid = {
-            if let pid = metadata["name"] as? String, pid != "" {
-                return pid
-            } else {
-                return nil
-            }
-        }()
+        book.title = meta["title"]
+        book.creator = meta["creator"]
+        book.publisher = meta["publisher"]
+        book.desc = meta["description"]
+        book.meta4URL = meta["url"]
+        book.pid = meta["name"]
         
-        book.articleCount = Int64((metadata["articleCount"] as? String) ?? "") ?? 0
-        book.mediaCount = Int64((metadata["mediaCount"] as? String) ?? "") ?? 0
+        book.articleCount = {
+            guard let string = meta["articleCount"], let value = Int64(string) else {return 0}
+            return value
+        }()
+        book.mediaCount = {
+            guard let string = meta["mediaCount"], let value = Int64(string) else {return 0}
+            return value
+        }()
         book.fileSize = {
-            if let fileSize = metadata["size"] as? String {
-                return (Int64(fileSize) ?? 0) * 1024
-            } else if let fileSize = metadata["size"] as? NSNumber {
-                return fileSize.int64Value * 1024
-            } else {
-                return 0
-            }
+            guard let string = meta["size"], let value = Int64(string) else {return 0}
+            return value * 1024
         }()
         
         book.date = {
-            guard let date = metadata["date"] as? String else {return nil}
+            guard let date = meta["date"] else {return nil}
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"
             return dateFormatter.date(from: date)
         }()
         
         book.favIcon = {
-            if let data = metadata["favicon"] as? Data {
-                return data
-            } else if let favIcon = metadata["favicon"] as? String {
-                return Data(base64Encoded: favIcon, options: .ignoreUnknownCharacters)
-            } else {
-                return nil
-            }
+            guard let favIcon = meta["favicon"] else {return nil}
+            return Data(base64Encoded: favIcon, options: .ignoreUnknownCharacters)
         }()
         
         book.hasPic = {
-            if let tags = metadata["tags"] as? String, tags.contains("nopic") {
+            if let tags = meta["tags"], tags.contains("nopic") {
                 return false
             } else if let meta4url = book.meta4URL, meta4url.contains("nopic") {
                 return false
@@ -76,7 +66,7 @@ class Book: NSManagedObject {
         }()
         
         book.language = {
-            guard let languageCode = metadata["language"] as? String,
+            guard let languageCode = meta["language"],
                 let language = Language.fetchOrAdd(languageCode, context: context) else {return nil}
             return language
         }()
@@ -88,7 +78,6 @@ class Book: NSManagedObject {
     
     var url: URL? {
         guard let meta4URL = meta4URL else {return nil}
-        // return url = NSURL(string: meta4URL.stringByReplacingOccurrencesOfString(".meta4", withString: ""))
         var urlComponents = URLComponents(string: meta4URL.replacingOccurrences(of: ".meta4", with: ""))
         urlComponents?.scheme = "https"
         return urlComponents?.url
@@ -99,12 +88,6 @@ class Book: NSManagedObject {
     class func fetchAll(in context: NSManagedObjectContext) -> [Book] {
         let request: NSFetchRequest<Book> = Book.fetchRequest() as! NSFetchRequest<Book>
         return (try? context.fetch(request)) ?? [Book]()
-        
-//        let request: NSFetchRequest<NSFetchRequestResult> = Book.fetchRequest()
-//        let res = try? context.fetch(request)
-//        return res
-//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Book")
-//        return fetch(fetchRequest, type: Book.self, context: context) ?? [Book]()
     }
     
     class func fetchLocal(_ context: NSManagedObjectContext) -> [ZimID: Book] {

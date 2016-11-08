@@ -34,8 +34,11 @@ fileprivate class Process: Procedure, ResultInjection, XMLParserDelegate {
     var requirement: PendingValue<HTTPResult<Data>> = .pending
     fileprivate(set) var result: PendingValue<Void> = .void
     private let context: NSManagedObjectContext
+    
     private var storeBookIDs = Set<String>()
     private var memoryBookIDs = Set<String>()
+    
+    private var hasUpdate = false
     
     override init() {
         self.context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
@@ -50,6 +53,8 @@ fileprivate class Process: Procedure, ResultInjection, XMLParserDelegate {
             return
         }
         
+        storeBookIDs = Set(Book.fetchAll(in: context).map({ $0.id }))
+        
         let parser = XMLParser(data: data)
         parser.delegate = self
         parser.parse()
@@ -57,12 +62,15 @@ fileprivate class Process: Procedure, ResultInjection, XMLParserDelegate {
         finish()
     }
     
-    func parserDidStartDocument(_ parser: XMLParser) {
-//        let ids = Book.fetch(all: <#T##NSManagedObjectContext#>)
-    }
-    
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
-        print(attributeDict["id"])
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?,
+                qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+        guard elementName == "book", let id = attributeDict["id"] else {return}
+        if !storeBookIDs.contains(id) {
+            hasUpdate = true
+            context.performAndWait({ 
+                _ = Book.add(meta: attributeDict, in: self.context)
+            })
+        }
     }
     
     func parserDidEndDocument(_ parser: XMLParser) {

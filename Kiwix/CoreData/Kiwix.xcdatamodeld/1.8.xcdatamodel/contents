@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11756" systemVersion="16B2555" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.8">
-    <entity name="Article" representedClassName=".Article" syncable="YES">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11756" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1.8">
+    <entity name="Article" representedClassName="Article">
         <attribute name="bookmarkDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isBookmarked" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isMainPage" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
@@ -13,8 +13,9 @@
         <attribute name="title" attributeType="String" syncable="YES"/>
         <relationship name="book" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Book" inverseName="articles" inverseEntity="Book" syncable="YES"/>
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="articles" inverseEntity="Tag" syncable="YES"/>
+        <userInfo/>
     </entity>
-    <entity name="Book" representedClassName=".Book" syncable="YES">
+    <entity name="Book" representedClassName="Book">
         <attribute name="articleCount" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="creator" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -47,8 +48,9 @@
                 <constraint value="id"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
+        <userInfo/>
     </entity>
-    <entity name="DownloadTask" representedClassName=".DownloadTask" syncable="YES">
+    <entity name="DownloadTask" representedClassName="DownloadTask" syncable="YES">
         <attribute name="creationTime" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="stateRaw" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="totalBytesWritten" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -59,7 +61,7 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="Language" representedClassName=".Language" syncable="YES">
+    <entity name="Language" representedClassName="Language" syncable="YES">
         <attribute name="code" attributeType="String" syncable="YES"/>
         <attribute name="isDisplayed" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -75,15 +77,15 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="Tag" representedClassName=".Tag" syncable="YES">
+    <entity name="Tag" representedClassName="Tag" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="articles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Article" inverseName="tags" inverseEntity="Article" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Article" positionX="-657" positionY="-153" width="128" height="223"/>
+        <element name="Article" positionX="-657" positionY="-153" width="128" height="225"/>
         <element name="Book" positionX="-947" positionY="-142" width="128" height="330"/>
         <element name="DownloadTask" positionX="-657" positionY="90" width="128" height="105"/>
-        <element name="Language" positionX="-657" positionY="216" width="128" height="103"/>
-        <element name="Tag" positionX="-425" positionY="-18" width="128" height="73"/>
+        <element name="Language" positionX="-657" positionY="216" width="128" height="105"/>
+        <element name="Tag" positionX="-425" positionY="-18" width="128" height="75"/>
     </elements>
 </model>
