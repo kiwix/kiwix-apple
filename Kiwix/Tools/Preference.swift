@@ -102,8 +102,8 @@ class Preference {
     // MARK: - Resume Data
     
     class var resumeData: [String: Data] {
-        get{return Defaults[.resumeData] as? [String: NSData] ?? [String: Data]()}
-        set{Defaults[.resumeData] = newValue}}
+        get{return Defaults[DefaultsKeys.resumeData] as? [String: Data] ?? [String: Data]()}
+        set{Defaults[DefaultsKeys.resumeData] = newValue}}
 }
 
 extension DefaultsKeys {
@@ -112,16 +112,16 @@ extension DefaultsKeys {
     static let recentSearchTerms = DefaultsKey<[String]>("recentSearchTerms")
     static let webViewZoomScale = DefaultsKey<Double?>("webViewZoomScale")
     static let webViewNotInjectJavascriptToAdjustPageLayout = DefaultsKey<Bool>("webViewNotInjectJavascriptToAdjustPageLayout")
-    static let activeUseHistory = DefaultsKey<[NSDate]>("activeUseHistory")
+    static let activeUseHistory = DefaultsKey<[Date]>("activeUseHistory")
     static let haveRateKiwix = DefaultsKey<Bool>("haveRateKiwix")
     
     static let libraryAutoRefreshDisabled = DefaultsKey<Bool>("libraryAutoRefreshDisabled")
     static let libraryRefreshNotAllowCellularData = DefaultsKey<Bool>("libraryRefreshNotAllowCellularData")
-    static let libraryLastRefreshTime = DefaultsKey<NSDate?>("libraryLastRefreshTime")
+    static let libraryLastRefreshTime = DefaultsKey<Date?>("libraryLastRefreshTime")
     static let libraryRefreshInterval = DefaultsKey<Double?>("libraryRefreshInterval")
     static let preferredLanguageAlertPending = DefaultsKey<Bool>("preferredLanguageAlertPending")
     static let langFilterSortByAlphabeticalAsc = DefaultsKey<Bool>("langFilterSortByAlphabeticalAsc")
     static let langFilterNameDisplayInOriginalLocale = DefaultsKey<Bool>("langFilterNameDisplayInOriginalLocale")
     
-    static let resumeData = DefaultsKey<[String: AnyObject]>("resumeData")
+    static let resumeData = DefaultsKey<[String: Any]>("resumeData")
 }

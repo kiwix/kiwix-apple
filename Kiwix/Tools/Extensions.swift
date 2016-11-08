@@ -88,8 +88,7 @@ extension FileManager {
     // MARK: - Backup Attribute
     
     class func setSkipBackupAttribute(_ skipBackup: Bool, url: URL) {
-        guard let path = url.path else {return}
-        guard FileManager.default.fileExists(atPath: path) else {return}
+        guard FileManager.default.fileExists(atPath: url.path) else {return}
         
         do {
             try (url as NSURL).setResourceValues([URLResourceKey.isExcludedFromBackupKey: skipBackup])
@@ -99,8 +98,7 @@ extension FileManager {
     }
     
     class func getSkipBackupAttribute(item url: URL) -> Bool? {
-        guard let path = url.path else {return nil}
-        guard FileManager.default.fileExists(atPath: path) else {return nil}
+        guard FileManager.default.fileExists(atPath: url.path) else {return nil}
         
         var skipBackup: AnyObject? = nil
         
@@ -125,19 +123,19 @@ extension UIDevice {
     }
 }
 
-extension Collection {
-    subscript (safe index: Index) -> Iterator.Element? {
-        return indices.contains(index) ? self[index] : nil
-    }
-}
-
-// Swift 3
-//extension IndexableBase {
-//    /// Returns the element at the specified index iff it is within bounds, otherwise nil.
-//    public subscript(safe index: Index) -> _Element? {
-//        return index >= startIndex && index < endIndex
-//            ? self[index]
-//            : nil
+//extension Collection {
+//    subscript (safe index: Index) -> Iterator.Element? {
+//        return indices.contains(index) ? self[index] : nil
 //    }
 //}
+
+// Swift 3
+extension IndexableBase {
+    /// Returns the element at the specified index iff it is within bounds, otherwise nil.
+    public subscript(safe index: Index) -> _Element? {
+        return index >= startIndex && index < endIndex
+            ? self[index]
+            : nil
+    }
+}
 

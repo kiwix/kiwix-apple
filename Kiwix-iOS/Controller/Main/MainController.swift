@@ -105,13 +105,13 @@ class MainController: UIViewController {
             let urlString = activity.userInfo?["ArticleURL"] as? String,
             let url = URL(string: urlString),
             let host = url.host else {return}
-        if ZimMultiReader.shared.readers.keys.contains(host) {
-            let operation = ArticleLoadOperation(url: url)
-            GlobalQueue.shared.add(load: operation)
-        } else {
-            let operation = CannotFinishHandoffAlert(context: self)
-            GlobalQueue.shared.addOperation(operation)
-        }
+//        if ZimMultiReader.shared.readers.keys.contains(host) {
+//            let operation = ArticleLoadOperation(url: url)
+//            GlobalQueue.shared.add(load: operation)
+//        } else {
+//            let operation = CannotFinishHandoffAlert(context: self)
+//            GlobalQueue.shared.addOperation(operation)
+//        }
     }
     
     // MARK: - Configure

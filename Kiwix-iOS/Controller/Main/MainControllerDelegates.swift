@@ -99,8 +99,8 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
 //        let cloudKitUpdateOperation = BookmarkCloudKitOperation(article: article)
 //        GlobalQueue.shared.addOperation(cloudKitUpdateOperation)
         
-        let updateWidgetOperation = UpdateWidgetDataSourceOperation()
-        GlobalQueue.shared.addOperation(updateWidgetOperation)
+//        let updateWidgetOperation = UpdateWidgetDataSourceOperation()
+//        GlobalQueue.shared.addOperation(updateWidgetOperation)
         
         let controller = Controllers.bookmarkHUD
         controller.bookmarkAdded = article.isBookmarked
@@ -133,8 +133,8 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate, LPT
     
     func firstBookAdded() {
         guard let bookID = ZimMultiReader.shared.readers.keys.first else {return}
-        let operation = ArticleLoadOperation(bookID: bookID)
-        GlobalQueue.shared.add(load: operation)
+//        let operation = ArticleLoadOperation(bookID: bookID)
+//        GlobalQueue.shared.add(load: operation)
     }
     
     // MARK: -  UIPopoverPresentationControllerDelegate

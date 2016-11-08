@@ -125,10 +125,10 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {}
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let delete = UITableViewRowAction(style: UITableViewRowActionStyle(), title: LocalizedStrings.remove) { (action, indexPath) -> Void in
+        let delete = UITableViewRowAction(style: .destructive, title: LocalizedStrings.remove) { (action, indexPath) -> Void in
             guard let book = self.fetchedResultController.object(at: indexPath) as? Book else {return}
-            let operation = RemoveBookConfirmationAlert(context: self, bookID: book.id)
-            GlobalQueue.shared.addOperation(operation)
+//            let operation = RemoveBookConfirmationAlert(context: self, bookID: book.id)
+//            GlobalQueue.shared.addOperation(operation)
             self.tableView.setEditing(false, animated: true)
         }
         return [delete]
@@ -137,8 +137,8 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
     // MARK: - Fetched Results Controller
     
     let managedObjectContext = NSManagedObjectContext.mainQueueContext
-    lazy var fetchedResultController: NSFetchedResultsController = { () -> <<error type>> in 
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Book")
+    lazy var fetchedResultController: NSFetchedResultsController<Book> = {
+        let fetchRequest = Book.fetchRequest()
         let stateDescriptor = NSSortDescriptor(key: "stateRaw", ascending: true)
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [stateDescriptor, titleDescriptor]
@@ -146,7 +146,7 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "stateRaw", cacheName: "LocalFRC" + Bundle.buildVersion)
         fetchedResultsController.delegate = self
         fetchedResultsController.performFetch(deleteCache: false)
-        return fetchedResultsController
+        return fetchedResultsController as! NSFetchedResultsController<Book>
     }()
     
     // MARK: - Fetched Result Controller Delegate

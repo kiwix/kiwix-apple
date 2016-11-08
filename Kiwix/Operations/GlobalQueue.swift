@@ -11,16 +11,17 @@ import ProcedureKit
 class GlobalQueue: ProcedureQueue {
     static let shared = GlobalQueue()
     
-    fileprivate weak var scanOperation: ScanLocalBookOperation?
-    fileprivate weak var searchOperation: SearchOperation?
+    // Fix: use specific class type
+    fileprivate weak var scanOperation: Procedure?
+    fileprivate weak var searchOperation: Procedure?
     fileprivate weak var articleLoadOperation: ArticleLoadOperation?
     
-    func add(scan operation: ScanLocalBookOperation) {
+    func add(scan operation: Procedure) {
         addOperation(operation)
         scanOperation = operation
     }
     
-    func add(search operation: SearchOperation) {
+    func add(search operation: Procedure) {
         if let scanOperation = scanOperation {
             operation.addDependency(scanOperation)
         }
@@ -59,15 +60,15 @@ public enum OperationErrorCode: Int {
     case lackOfValue
     case unexpectedError
 }
-
-extension OperationQueue {
-    // Oneday should be replaced with ExclusivityController
-    func getOperation(_ id: String) -> Operation? {
-        for operation in operations {
-            guard operation.name == id else {continue}
-            guard let operation = operation as? Operation else {continue}
-            return operation
-        }
-        return nil
-    }
-}
+//
+//extension OperationQueue {
+//    // Oneday should be replaced with ExclusivityController
+//    func getOperation(_ id: String) -> Operation? {
+//        for operation in operations {
+//            guard operation.name == id else {continue}
+//            guard let operation = operation as? Operation else {continue}
+//            return operation
+//        }
+//        return nil
+//    }
+//}

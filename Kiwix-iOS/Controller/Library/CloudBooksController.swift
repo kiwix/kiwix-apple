@@ -104,38 +104,38 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     }
     
     func refresh(invokedByUser: Bool) {
-        let operation = RefreshLibraryOperation()
-        operation.addObserver(WillExecuteObserver { (operation) in
-            OperationQueue.mainQueue().addOperationWithBlock({
-                self.isRefreshing = true
-                self.tableView.reloadEmptyDataSet()
-            })
-        })
-        
-        operation.addObserver(DidFinishObserver { (operation, errors) in
-            guard let operation = operation as? RefreshLibraryOperation else {return}
-            NSOperationQueue.mainQueue().addOperationWithBlock({
-                defer {
-                    self.refreshControl?.endRefreshing()
-                    self.isRefreshing = false
-                    self.tableView.reloadEmptyDataSet()
-                }
-                
-                if errors.count > 0 {
-                    if let error = errors.first as? ReachabilityCondition.Error, error == ReachabilityCondition.Error.NotReachable && invokedByUser == true {
-                        self.showReachibilityAlert()
-                    }
-                } else{
-                    if operation.firstTime {
-                        self.showLanguageFilterAlert()
-                        self.configureNavBarButtons()
-                    } else {
-                        self.showRefreshSuccessMessage()
-                    }
-                }
-            })
-        })
-        GlobalQueue.shared.addOperation(operation)
+//        let operation = RefreshLibraryOperation()
+//        operation.add(WillExecuteObserver { (operation) in
+//            OperationQueue.mainQueue().addOperationWithBlock({
+//                self.isRefreshing = true
+//                self.tableView.reloadEmptyDataSet()
+//            })
+//        })
+//        
+//        operation.add(DidFinishObserver { (operation, errors) in
+//            guard let operation = operation as? RefreshLibraryOperation else {return}
+//            NSOperationQueue.mainQueue().addOperationWithBlock({
+//                defer {
+//                    self.refreshControl?.endRefreshing()
+//                    self.isRefreshing = false
+//                    self.tableView.reloadEmptyDataSet()
+//                }
+//                
+//                if errors.count > 0 {
+//                    if let error = errors.first as? ReachabilityCondition.Error, error == ReachabilityCondition.Error.NotReachable && invokedByUser == true {
+//                        self.showReachibilityAlert()
+//                    }
+//                } else{
+//                    if operation.firstTime {
+//                        self.showLanguageFilterAlert()
+//                        self.configureNavBarButtons()
+//                    } else {
+//                        self.showRefreshSuccessMessage()
+//                    }
+//                }
+//            })
+//        })
+//        GlobalQueue.shared.add(operation)
     }
     
     func showRefreshSuccessMessage() {
@@ -148,29 +148,29 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     }
     
     func showReachibilityAlert() {
-        let operation = NetworkRequiredAlert(context: self)
-        GlobalQueue.shared.addOperation(operation)
+//        let operation = NetworkRequiredAlert(context: self)
+//        GlobalQueue.shared.addOperation(operation)
     }
     
     func showLanguageFilterAlert() {
-        guard isOnScreen else {
-            langFilterAlertPending = true
-            return
-        }
-        let handler: (AlertOperation<UIViewController>) -> Void = { [weak self] _ in
-            let context = NSManagedObjectContext.mainQueueContext
-            context.performBlock({
-                let codes = NSLocale.preferredLangCodes
-                Language.fetchAll(context).forEach({ (language) in
-                    language.isDisplayed = codes.contains(language.code)
-                })
-                _ = try? context.save()
-                self?.refreshFetchedResultController()
-            })
-        }
-        let operation = LanguageFilterAlert(context: self, handler: handler)
-        GlobalQueue.shared.addOperation(operation)
-        langFilterAlertPending = false
+//        guard isOnScreen else {
+//            langFilterAlertPending = true
+//            return
+//        }
+//        let handler: (AlertOperation<UIViewController>) -> Void = { [weak self] _ in
+//            let context = NSManagedObjectContext.mainQueueContext
+//            context.performBlock({
+//                let codes = NSLocale.preferredLangCodes
+//                Language.fetchAll(context).forEach({ (language) in
+//                    language.isDisplayed = codes.contains(language.code)
+//                })
+//                _ = try? context.save()
+//                self?.refreshFetchedResultController()
+//            })
+//        }
+//        let operation = LanguageFilterAlert(context: self, handler: handler)
+//        GlobalQueue.shared.addOperation(operation)
+//        langFilterAlertPending = false
     }
     
     func configureNavBarButtons() {
@@ -276,38 +276,39 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {}
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?{
-        guard let book = fetchedResultController.object(at: indexPath) as? Book else {return nil}
-        switch book.spaceState {
-        case .enough:
-            let action = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: LocalizedStrings.download, handler: { _ in
-                guard let download = DownloadBookOperation(bookID: book.id) else {return}
-                Network.shared.queue.addOperation(download)
-            })
-            action.backgroundColor = UIColor.defaultTint
-            return [action]
-        case .caution:
-            let action = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: LocalizedStrings.download, handler: { _ in
-                let alert = SpaceCautionAlert(context: self, bookID: book.id)
-                GlobalQueue.shared.addOperation(alert)
-                self.tableView.setEditing(false, animated: true)
-            })
-            action.backgroundColor = UIColor.orange
-            return [action]
-        case .notEnough:
-            let action = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: LocalizedStrings.spaceNotEnough, handler: { _ in
-                let alert = SpaceNotEnoughAlert(context: self)
-                GlobalQueue.shared.addOperation(alert)
-                self.tableView.setEditing(false, animated: true)
-            })
-            return [action]
-        }
+//        guard let book = fetchedResultController.object(at: indexPath) as? Book else {return nil}
+//        switch book.spaceState {
+//        case .enough:
+//            let action = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: LocalizedStrings.download, handler: { _ in
+//                guard let download = DownloadBookOperation(bookID: book.id) else {return}
+//                Network.shared.queue.addOperation(download)
+//            })
+//            action.backgroundColor = UIColor.defaultTint
+//            return [action]
+//        case .caution:
+//            let action = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: LocalizedStrings.download, handler: { _ in
+//                let alert = SpaceCautionAlert(context: self, bookID: book.id)
+//                GlobalQueue.shared.addOperation(alert)
+//                self.tableView.setEditing(false, animated: true)
+//            })
+//            action.backgroundColor = UIColor.orange
+//            return [action]
+//        case .notEnough:
+//            let action = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: LocalizedStrings.spaceNotEnough, handler: { _ in
+//                let alert = SpaceNotEnoughAlert(context: self)
+//                GlobalQueue.shared.addOperation(alert)
+//                self.tableView.setEditing(false, animated: true)
+//            })
+//            return [action]
+//        }
+        return []
     }
     
     // MARK: - Fetched Results Controller
     
     let managedObjectContext = NSManagedObjectContext.mainQueueContext
-    lazy var fetchedResultController: NSFetchedResultsController = { () -> <<error type>> in 
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Book")
+    lazy var fetchedResultController: NSFetchedResultsController<Book> = {
+        let fetchRequest = Book.fetchRequest()
         let langDescriptor = NSSortDescriptor(key: "language.name", ascending: true)
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
@@ -316,7 +317,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "language.name", cacheName: "OnlineFRC" + Bundle.buildVersion)
         fetchedResultsController.delegate = self
         fetchedResultsController.performFetch(deleteCache: false)
-        return fetchedResultsController
+        return fetchedResultsController as! NSFetchedResultsController<Book>
     }()
     
     func refreshFetchedResultController() {

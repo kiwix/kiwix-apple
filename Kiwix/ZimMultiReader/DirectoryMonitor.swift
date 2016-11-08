@@ -26,14 +26,14 @@ class DirectoryMonitor {
     let directoryMonitorQueue = DispatchQueue(label: "org.kiwix.directorymonitor", attributes: DispatchQueue.Attributes.concurrent)
     
     /// A dispatch source to monitor a file descriptor created from the directory.
-    var directoryMonitorSource: DispatchSource?
+    var directoryMonitorSource: DispatchSourceFileSystemObject?
     
     /// URL for the directory being monitored.
-    var URL: Foundation.URL
+    var url: Foundation.URL
     
     // MARK: Initializers
     init(URL: Foundation.URL) {
-        self.URL = URL
+        self.url = URL
     }
     
     // MARK: Monitoring
@@ -42,11 +42,11 @@ class DirectoryMonitor {
         // Listen for changes to the directory (if we are not already).
         if directoryMonitorSource == nil && monitoredDirectoryFileDescriptor == -1 {
             // Open the directory referenced by URL for monitoring only.
-            monitoredDirectoryFileDescriptor = open(URL.path, O_EVTONLY)
+            monitoredDirectoryFileDescriptor = open(url.path, O_EVTONLY)
             
             // Define a dispatch source monitoring the directory for additions, deletions, and renamings.
-            directoryMonitorSource = DispatchSource.makeFileSystemObjectSource(fileDescriptor: monitoredDirectoryFileDescriptor, eventMask: DispatchSource.FileSystemEvent.write, queue: directoryMonitorQueue) /*Migrator FIXME: Use DispatchSourceFileSystemObject to avoid the cast*/ as! DispatchSource
-            
+            directoryMonitorSource = DispatchSource.makeFileSystemObjectSource(fileDescriptor: monitoredDirectoryFileDescriptor, eventMask: DispatchSource.FileSystemEvent.write, queue: directoryMonitorQueue)
+
             // Define the block to call when a file change is detected.
             directoryMonitorSource!.setEventHandler {
                 // Call out to the `DirectoryMonitorDelegate` so that it can react appropriately to the change.
@@ -132,18 +132,16 @@ class DirectoryMonitor {
     
     fileprivate func directoryHashes() -> [String] {
         var hashes = [String]()
-        if let path = self.URL.path {
-            do {
-                let contents = try FileManager.default.contentsOfDirectory(atPath: path)
-                for file in contents {
-                    if let hash = fileHash(file) {
-                        hashes.append(hash)
-                    }
+        do {
+            let contents = try FileManager.default.contentsOfDirectory(atPath: url.path)
+            for file in contents {
+                if let hash = fileHash(file) {
+                    hashes.append(hash)
                 }
-            } catch let error as NSError {
-                // failure
-                print("contentsOfDirectoryAtPath failed: \(error.localizedDescription)")
             }
+        } catch let error as NSError {
+            // failure
+            print("contentsOfDirectoryAtPath failed: \(error.localizedDescription)")
         }
         return hashes
     }
@@ -157,16 +155,15 @@ class DirectoryMonitor {
     }
     
     fileprivate func fileSize(_ fileName: String) -> Int64? {
-        if let path = self.URL.appendingPathComponent(fileName).path {
-            if FileManager.default.fileExists(atPath: path) {
-                do {
-                    let attributes = try FileManager.default.attributesOfItem(atPath: path)
-                    let fileSize = attributes[FileAttributeKey.size] as? NSNumber
-                    return fileSize?.int64Value
-                } catch let error as NSError {
-                    // failure
-                    print("attributesOfItemAtPath failed: \(error.localizedDescription)")
-                }
+        let path = self.url.appendingPathComponent(fileName).path
+        if FileManager.default.fileExists(atPath: path) {
+            do {
+                let attributes = try FileManager.default.attributesOfItem(atPath: path)
+                let fileSize = attributes[FileAttributeKey.size] as? NSNumber
+                return fileSize?.int64Value
+            } catch let error as NSError {
+                // failure
+                print("attributesOfItemAtPath failed: \(error.localizedDescription)")
             }
         }
         return nil

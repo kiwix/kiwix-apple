@@ -277,35 +277,35 @@ class BookDetailController: UITableViewController, DZNEmptyDataSetSource, DZNEmp
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        guard let cell = tableView.cellForRow(at: indexPath),
-            let title = cell.textLabel?.text,
-            let book = book else {return}
-        switch title {
-        case LocalizedStrings.download:
-            if book.spaceState == .caution {
-                let alert = SpaceCautionAlert(context: self, bookID: book.id)
-                GlobalQueue.shared.addOperation(alert)
-            } else {
-                guard let download = DownloadBookOperation(bookID: book.id) else {return}
-                Network.shared.queue.addOperation(download)
-            }
-        case LocalizedStrings.remove:
-            let operation = RemoveBookConfirmationAlert(context: self, bookID: book.id)
-            GlobalQueue.shared.addOperation(operation)
-        case LocalizedStrings.bookmarks:
-            guard let controller = UIStoryboard(name: "Bookmark", bundle: nil)
-                .instantiateViewController(withIdentifier: "BookmarkController") as? BookmarkController else {return}
-            controller.book = book
-            navigationController?.pushViewController(controller, animated: true)
-        case LocalizedStrings.copyURL:
-            guard let url = book.url else {return}
-            UIPasteboard.general.string = url.absoluteString
-            let operation = CopyURLAlert(url: url, context: self)
-            GlobalQueue.shared.addOperation(operation)
-        default:
-            return
-        }
+//        tableView.deselectRow(at: indexPath, animated: true)
+//        guard let cell = tableView.cellForRow(at: indexPath),
+//            let title = cell.textLabel?.text,
+//            let book = book else {return}
+//        switch title {
+//        case LocalizedStrings.download:
+//            if book.spaceState == .caution {
+//                let alert = SpaceCautionAlert(context: self, bookID: book.id)
+//                GlobalQueue.shared.addOperation(alert)
+//            } else {
+//                guard let download = DownloadBookOperation(bookID: book.id) else {return}
+//                Network.shared.queue.addOperation(download)
+//            }
+//        case LocalizedStrings.remove:
+//            let operation = RemoveBookConfirmationAlert(context: self, bookID: book.id)
+//            GlobalQueue.shared.addOperation(operation)
+//        case LocalizedStrings.bookmarks:
+//            guard let controller = UIStoryboard(name: "Bookmark", bundle: nil)
+//                .instantiateViewController(withIdentifier: "BookmarkController") as? BookmarkController else {return}
+//            controller.book = book
+//            navigationController?.pushViewController(controller, animated: true)
+//        case LocalizedStrings.copyURL:
+//            guard let url = book.url else {return}
+//            UIPasteboard.general.string = url.absoluteString
+//            let operation = CopyURLAlert(url: url, context: self)
+//            GlobalQueue.shared.addOperation(operation)
+//        default:
+//            return
+//        }
     }
     
     class LocalizedStrings {

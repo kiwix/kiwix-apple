@@ -9,7 +9,7 @@
 import CoreData
 import ProcedureKit
 
-class SearchOperation: GroupOperation {
+class SearchOperation: GroupProcedure {
     fileprivate(set) var results = [SearchResult]()
     let searchTerm: String
     

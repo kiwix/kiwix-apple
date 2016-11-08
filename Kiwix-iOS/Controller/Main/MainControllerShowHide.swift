@@ -189,7 +189,7 @@ extension MainController {
     
     func showGetStartedAlert() {
         guard !Preference.hasShowGetStartedAlert else {return}
-        let operation = GetStartedAlert(context: self)
-        GlobalQueue.shared.addOperation(operation)
+//        let operation = GetStartedAlert(context: self)
+//        GlobalQueue.shared.addOperation(operation)
     }
 }

@@ -31,20 +31,20 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     }
     
     func startScan() {
-        let operation = ScanLocalBookOperation(lastZimFileURLSnapshot: lastZimFileURLSnapshot as Set<NSURL>, lastIndexFolderURLSnapshot: lastIndexFolderURLSnapshot as Set<NSURL>)
-        operation.addObserver(DidFinishObserver { (operation, errors) in
-            guard let operation = operation as? ScanLocalBookOperation else {return}
-            NSOperationQueue.mainQueue().addOperationWithBlock({ 
-                self.lastZimFileURLSnapshot = operation.currentZimFileURLSnapshot
-                self.lastIndexFolderURLSnapshot = operation.currentIndexFolderURLSnapshot
-                
-                guard operation.firstBookAdded else {return}
-                self.delegate?.firstBookAdded()
-            })
-        })
-        operation.queuePriority = .veryHigh
-        if readers.count == 0 { operation.qualityOfService = .userInteractive }
-        GlobalQueue.shared.add(scan: operation)
+//        let operation = ScanLocalBookOperation(lastZimFileURLSnapshot: lastZimFileURLSnapshot as Set<NSURL>, lastIndexFolderURLSnapshot: lastIndexFolderURLSnapshot as Set<NSURL>)
+//        operation.addObserver(DidFinishObserver { (operation, errors) in
+//            guard let operation = operation as? ScanLocalBookOperation else {return}
+//            NSOperationQueue.mainQueue().addOperationWithBlock({ 
+//                self.lastZimFileURLSnapshot = operation.currentZimFileURLSnapshot
+//                self.lastIndexFolderURLSnapshot = operation.currentIndexFolderURLSnapshot
+//                
+//                guard operation.firstBookAdded else {return}
+//                self.delegate?.firstBookAdded()
+//            })
+//        })
+//        operation.queuePriority = .veryHigh
+//        if readers.count == 0 { operation.qualityOfService = .userInteractive }
+//        GlobalQueue.shared.add(scan: operation)
     }
     
     // MARK: - Reader Addition / Deletion

@@ -9,10 +9,10 @@
 import CoreData
 import ProcedureKit
 
-class RefreshLibraryOperation: GroupOperation {
+class RefreshLibraryOperation: GroupProcedure {
     
-    fileprivate(set) var hasUpdate = false
-    fileprivate(set) var firstTime = false
+    private(set) var hasUpdate = false
+    private(set) var firstTime = false
     
     init(invokedByUser: Bool = false) {
         let retrieve = Retrieve()
@@ -37,9 +37,9 @@ class RefreshLibraryOperation: GroupOperation {
     }
 }
 
-private class Retrieve: Procedure, ResultOperationType {
-    fileprivate static let url = URL(string: "https://download.kiwix.org/library/library.xml")!
-    fileprivate var result: Data?
+private class Retrieve: Procedure, ResultInjection {
+    private static let url = URL(string: "https://download.kiwix.org/library/library.xml")!
+    private var result: Data?
     
     override init() {
         super.init()

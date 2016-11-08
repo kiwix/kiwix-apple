@@ -67,7 +67,7 @@ extension UIStoryboard {
     }
     
     func controller<T:UIViewController>(_ type: T.Type) -> T? {
-        return instantiateViewController(withIdentifier: String(describing: T)) as? T
+        return instantiateViewController(withIdentifier: String(describing: T.self)) as? T
     }
 }
 

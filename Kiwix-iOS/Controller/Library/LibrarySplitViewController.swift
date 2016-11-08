@@ -21,11 +21,11 @@ class LibrarySplitViewController: UISplitViewController, UISplitViewControllerDe
     
     func configureDismissButton() {
         guard let master = viewControllers.first as? UINavigationController else {return}
-        let barButtonItem = UIBarButtonItem(image: UIImage(named: "Cross"), style: .plain, target: self, action: #selector(LibrarySplitViewController.dismiss))
+        let barButtonItem = UIBarButtonItem(image: UIImage(named: "Cross"), style: .plain, target: self, action: #selector(dismiss(sender:)))
         master.topViewController?.navigationItem.leftBarButtonItem = barButtonItem
     }
     
-    func dismiss() {
+    func dismiss(sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
     }
     

@@ -21,7 +21,7 @@ extension NSManagedObject {
     }
     
     class func insert<T:NSManagedObject>(_ type: T.Type, context: NSManagedObjectContext) -> T? {
-        let className = String(describing: T)
+        let className = String(describing: T.self)
         guard let obj = NSEntityDescription.insertNewObject(forEntityName: className, into: context) as? T else {return nil}
         return obj
     }

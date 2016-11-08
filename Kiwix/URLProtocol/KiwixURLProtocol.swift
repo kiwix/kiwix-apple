@@ -21,16 +21,17 @@ class KiwixURLProtocol: URLProtocol {
     
     override func startLoading() {
         guard let url = request.url,
-            let id = url.host,
-            let contentURLString = url.path.stringByRemovingPercentEncoding else {
+            let contentURLString = url.path.removingPercentEncoding,
+            let id = url.host else {
                 let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorUnsupportedURL, userInfo: nil)
                 client?.urlProtocol(self, didFailWithError: error)
                 return
         }
+        
         guard let dataDic = ZimMultiReader.shared.data(id, contentURLString: contentURLString),
             let data = dataDic["data"] as? Data,
             let mimeType = dataDic["mime"] as? String,
-            let dataLength = dataDic["length"]?.intValue else {
+            let dataLength: Int = (dataDic["length"] as? NSNumber)?.intValue else {
                 let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable, userInfo: nil)
                 client?.urlProtocol(self, didFailWithError: error)
                 return
@@ -68,6 +69,6 @@ extension URL {
     init?(id: ZimID, contentURLString: String) {
         guard let escapedContentURLString = contentURLString.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {return nil}
         let baseURLString = "kiwix://" + id
-        (self as NSURL).init(string: escapedContentURLString, relativeTo: URL(string: baseURLString))
+        self.init(string: escapedContentURLString, relativeTo: URL(string: baseURLString))
     }
 }

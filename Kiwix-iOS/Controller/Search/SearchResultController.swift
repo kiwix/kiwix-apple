@@ -66,16 +66,16 @@ class SearchResultController: SearchTableViewController, UITableViewDataSource, 
             return
         }
         
-        let operation = SearchOperation(searchTerm: searchText)
-        operation.addObserver(DidFinishObserver {(operation, errors) in
-            guard let operation = operation as? SearchOperation else {return}
-            NSOperationQueue.mainQueue().addOperationWithBlock({
-                self.shouldShowNoResults = true
-                self.reload(results: operation.results)
-            })
-        })
-        GlobalQueue.shared.add(search: operation)
-        shouldShowNoResults = false
+//        let operation = SearchOperation(searchTerm: searchText)
+//        operation.addObserver(DidFinishObserver {(operation, errors) in
+//            guard let operation = operation as? SearchOperation else {return}
+//            NSOperationQueue.mainQueue().addOperationWithBlock({
+//                self.shouldShowNoResults = true
+//                self.reload(results: operation.results)
+//            })
+//        })
+//        GlobalQueue.shared.add(search: operation)
+//        shouldShowNoResults = false
     }
     
     // MARK: - Table view data source
@@ -124,8 +124,8 @@ class SearchResultController: SearchTableViewController, UITableViewDataSource, 
         }
         
         let result = searchResults[indexPath.row]
-        let operation = ArticleLoadOperation(bookID: result.bookID, articleTitle: result.title)
-        GlobalQueue.shared.add(load: operation)
+//        let operation = ArticleLoadOperation(bookID: result.bookID, articleTitle: result.title)
+//        GlobalQueue.shared.add(load: operation)
     }
 
     // MARK: - DZNEmptyDataSet

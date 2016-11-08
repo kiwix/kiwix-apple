@@ -14,8 +14,8 @@ class Article: NSManagedObject {
     
     class func addOrUpdate(url: URL, context: NSManagedObjectContext) -> Article? {
         guard let bookID = url.host,
-            let book = Book.fetch(bookID, context: context),
-            let path = url.path else {return nil}
+            let book = Book.fetch(bookID, context: context) else {return nil}
+        let path = url.path
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
         fetchRequest.predicate = NSPredicate(format: "path = %@ AND book = %@", path, book)
@@ -68,7 +68,7 @@ class Article: NSManagedObject {
         return [
             "title": title,
             "thumbImageData": data,
-            "url": url.absoluteString!,
+            "url": url.absoluteString,
             "isMainPage": NSNumber(value: isMainPage as Bool)
         ]
     }

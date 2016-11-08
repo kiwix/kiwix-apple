@@ -11,7 +11,7 @@ import CoreData
 import ProcedureKit
 import UserNotifications
 
-class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate, OperationQueueDelegate  {
+class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate, ProcedureQueueDelegate  {
     static let shared = Network()
     let queue = OperationQueue()
     let context = NSManagedObjectContext.mainQueueContext

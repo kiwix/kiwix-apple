@@ -39,8 +39,8 @@ class SearchBooksController: SearchTableViewController, UITableViewDelegate, UIT
     // MARK: - Fetched Results Controller
     
     let managedObjectContext = NSManagedObjectContext.mainQueueContext
-    lazy var fetchedResultController: NSFetchedResultsController = { () -> <<error type>> in 
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Book")
+    lazy var fetchedResultController: NSFetchedResultsController<Book> = {
+        let fetchRequest = Book.fetchRequest()
         let langDescriptor = NSSortDescriptor(key: "language.name", ascending: true)
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
@@ -48,7 +48,7 @@ class SearchBooksController: SearchTableViewController, UITableViewDelegate, UIT
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "ScopeFRC" + Bundle.buildVersion)
         fetchedResultsController.delegate = self
         fetchedResultsController.performFetch(deleteCache: false)
-        return fetchedResultsController
+        return fetchedResultsController as! NSFetchedResultsController<Book>
     }()
     
     // MARK: - Table Cell Delegate
@@ -112,8 +112,8 @@ class SearchBooksController: SearchTableViewController, UITableViewDelegate, UIT
         tableView.deselectRow(at: indexPath, animated: true)
         
         guard let book = fetchedResultController.object(at: indexPath) as? Book else {return}
-        let operation = ArticleLoadOperation(bookID: book.id)
-        GlobalQueue.shared.add(load: operation)
+//        let operation = ArticleLoadOperation(bookID: book.id)
+//        GlobalQueue.shared.add(load: operation)
     }
     
     // MARK: - Fetched Result Controller Delegate

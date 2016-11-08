@@ -61,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         URLProtocol.registerClass(KiwixURLProtocol)
-        Network.shared
+//        Network.shared
         
         // Register notification
         if let _ = Preference.libraryLastRefreshTime { registerNotification() }
@@ -84,8 +84,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
         guard url.isKiwixURL else {return false}
-        let operation = ArticleLoadOperation(url: url)
-        GlobalQueue.shared.add(load: operation)
+//        let operation = ArticleLoadOperation(url: url)
+//        GlobalQueue.shared.add(load: operation)
         return true
     }
     
@@ -157,8 +157,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         case recentShortcutTypeString:
             guard let urlString = shortcutItem.userInfo?["URL"] as? String,
                 let url = URL(string: urlString) else {completionHandler(false); return}
-            let operation = ArticleLoadOperation(url: url)
-            GlobalQueue.shared.add(load: operation)
+//            let operation = ArticleLoadOperation(url: url)
+//            GlobalQueue.shared.add(load: operation)
             completionHandler(true)
         default:
             completionHandler(false)
@@ -178,32 +178,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
-        Network.shared.rejoinSessionWithIdentifier(identifier, completionHandler: completionHandler)
+//        Network.shared.rejoinSessionWithIdentifier(identifier, completionHandler: completionHandler)
     }
     
     // MARK: Background Refresh
     
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        let operation = RefreshLibraryOperation()
-        operation.addObserver(DidFinishObserver { (operation, errors) in
-            guard errors.count == 0 else {
-                completionHandler(.Failed)
-                return
-            }
-            guard let operation = operation as? RefreshLibraryOperation else {
-                completionHandler(.NoData)
-                return
-            }
-            
-            let notification = UILocalNotification()
-            notification.alertTitle = "[DEBUG] Library was refreshed"
-            notification.alertBody = NSDate().description
-            notification.soundName = UILocalNotificationDefaultSoundName
-            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
-            
-            completionHandler(operation.hasUpdate ? .NewData : .NoData)
-        })
-        GlobalQueue.shared.addOperation(operation)
+//        let operation = RefreshLibraryOperation()
+//        operation.addObserver(DidFinishObserver { (operation, errors) in
+//            guard errors.count == 0 else {
+//                completionHandler(.Failed)
+//                return
+//            }
+//            guard let operation = operation as? RefreshLibraryOperation else {
+//                completionHandler(.NoData)
+//                return
+//            }
+//            
+//            let notification = UILocalNotification()
+//            notification.alertTitle = "[DEBUG] Library was refreshed"
+//            notification.alertBody = NSDate().description
+//            notification.soundName = UILocalNotificationDefaultSoundName
+//            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+//            
+//            completionHandler(operation.hasUpdate ? .NewData : .NoData)
+//        })
+//        GlobalQueue.shared.addOperation(operation)
     }
 
     // MARK: - Core Data stack

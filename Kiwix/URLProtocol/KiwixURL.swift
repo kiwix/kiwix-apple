@@ -11,7 +11,7 @@ import UIKit
 extension URL {
     init?(bookID: String, contentPath: String) {
         let baseURLString = "kiwix://" + bookID
-        (self as NSURL).init(string: contentPath, relativeTo: URL(string: baseURLString))
+        self.init(string: contentPath, relativeTo: URL(string: baseURLString))
     }
     
     var isKiwixURL: Bool {

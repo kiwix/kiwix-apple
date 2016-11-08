@@ -24,7 +24,7 @@ class URLSessionDownloadTaskOperation: Procedure {
         self.task = downloadTask
         super.init()
         
-        addObserver(NetworkObserver())
+        add(observer: NetworkObserver())
         addObserver(DidCancelObserver { _ in
             if self.produceResumeData {
                 downloadTask.cancelByProducingResumeData({ _ in })
@@ -50,7 +50,9 @@ class URLSessionDownloadTaskOperation: Procedure {
         }
     }
     
-    override func observeValue(forKeyPath keyPath: String?, of object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutableRawPointer) {
+    override func
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [String : AnyObject]?, context: UnsafeMutableRawPointer) {
         guard context == &URLSessionTaskOperationKVOContext else { return }
         
         lock.withCriticalScope {

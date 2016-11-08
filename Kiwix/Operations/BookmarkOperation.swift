@@ -11,7 +11,7 @@ import CloudKit
 import ProcedureKit
 
 class BookmarkMigrationOperation: Procedure {
-    fileprivate let context: NSManagedObjectContext
+    private let context: NSManagedObjectContext
     
     override init() {
         self.context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
@@ -19,7 +19,7 @@ class BookmarkMigrationOperation: Procedure {
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         
         super.init()
-        add(MutuallyExclusive<GlobalQueue>())
+        add(condition: MutuallyExclusive<GlobalQueue>())
         name = String(describing: self)
     }
     
@@ -40,15 +40,15 @@ class BookmarkMigrationOperation: Procedure {
 }
 
 class BookmarkTrashOperation: Procedure {
-    fileprivate let context: NSManagedObjectContext
-    fileprivate let articles: [Article]
+    private let context: NSManagedObjectContext
+    private let articles: [Article]
     
     init(articles: [Article]) {
         self.context = NSManagedObjectContext.mainQueueContext
         self.articles = articles
         
         super.init()
-        add(MutuallyExclusive<BookmarkController>())
+//        add(condition: MutuallyExclusive<BookmarkController>())
         name = String(describing: self)
     }
     
@@ -74,7 +74,7 @@ class BookmarkTrashOperation: Procedure {
         }
         
         if articles.count > 0 {
-            produce(UpdateWidgetDataSourceOperation())
+//            produce(UpdateWidgetDataSourceOperation())
         }
         
         finish()

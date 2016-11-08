@@ -10,10 +10,10 @@ import UIKit
 import CoreData
 
 class CoreDataContainer: NSPersistentContainer {
-    init() {
-        super.init(name: "Kiwix")
-        loadPersistentStores { (description, error) in
-            
-        }
-    }
+//    init() {
+//        super.init(name: "Kiwix")
+//        loadPersistentStores { (description, error) in
+//            
+//        }
+//    }
 }
