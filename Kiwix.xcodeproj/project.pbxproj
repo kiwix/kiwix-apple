@@ -95,7 +95,6 @@
 		97C601DC1D7F15C400362D4F /* Bookmark.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C601DB1D7F15C400362D4F /* Bookmark.storyboard */; };
 		97C601DE1D7F342100362D4F /* HTMLHeading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C601DD1D7F342100362D4F /* HTMLHeading.swift */; };
 		97D452BE1D1723FF0033666F /* CollectionViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D452BD1D1723FF0033666F /* CollectionViewCells.swift */; };
-		97D6812E1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 97D6812A1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld */; };
 		97D681311D6F70EC00E5FA99 /* 1.5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97D6812F1D6F70EC00E5FA99 /* 1.5.xcmappingmodel */; };
 		97D681321D6F70EC00E5FA99 /* MigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681301D6F70EC00E5FA99 /* MigrationPolicy.swift */; };
 		97D681371D6F711A00E5FA99 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681331D6F711A00E5FA99 /* Article.swift */; };
@@ -108,6 +107,7 @@
 		97DB65DA1D4576B600A2CC42 /* BookmarkWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */; };
 		97E60A021D10423A00EBCB9D /* ShadowViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E60A011D10423A00EBCB9D /* ShadowViews.swift */; };
 		97E850CB1D2DA5B300A9F688 /* About.html in Resources */ = {isa = PBXBuildFile; fileRef = 97E850CA1D2DA5B300A9F688 /* About.html */; };
+		97ED50111DD257D00089E9B6 /* Kiwix.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 97D6812A1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld */; };
 		97F03CE21D2440470040D26E /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97F03CE11D2440470040D26E /* Search.storyboard */; };
 		97FDACC41D85A3B300DEDACB /* Language+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813E1D6F712800E5FA99 /* Language+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
@@ -1157,7 +1157,6 @@
 				973208261DD21E9C00EDD3DC /* CoreDataContainer.swift in Sources */,
 				97D6813F1D6F712800E5FA99 /* Article+CoreDataProperties.swift in Sources */,
 				97A1FD171D6F71CE00A80EE2 /* Extension.swift in Sources */,
-				97D6812E1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld in Sources */,
 				97A1FD1D1D6F71D800A80EE2 /* URLResponseCache.swift in Sources */,
 				9764F5971D8339D500E0B1C4 /* JSInjection.swift in Sources */,
 				97A1FD441D6F728200A80EE2 /* Preference.swift in Sources */,
@@ -1166,6 +1165,7 @@
 				973208271DD2238B00EDD3DC /* GlobalQueue.swift in Sources */,
 				97A1FD181D6F71CE00A80EE2 /* SearchResult.swift in Sources */,
 				973207A11DD1983D00EDD3DC /* LocalBooksController.swift in Sources */,
+				97ED50111DD257D00089E9B6 /* Kiwix.xcdatamodeld in Sources */,
 				973DD4281D36E3E4009D45DB /* SettingDetailController.swift in Sources */,
 				973207A41DD1983D00EDD3DC /* EmptyTableConfigExtension.swift in Sources */,
 				970E68BB1D3809A3001E8514 /* MainControllerDelegates.swift in Sources */,
