@@ -14,9 +14,9 @@ import DZNEmptyDataSet
 
 class CloudBooksController: UITableViewController, NSFetchedResultsControllerDelegate, LanguageFilterUpdating, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    fileprivate(set) var isRefreshing = false
-    fileprivate(set) var isOnScreen = false
-    fileprivate(set) var langFilterAlertPending = false
+    private(set) var isRefreshing = false
+    private(set) var isOnScreen = false // used to determine if should delay showing lang filter alert
+    private(set) var langFilterAlertPending = false
     
     // MARK: - Override
     

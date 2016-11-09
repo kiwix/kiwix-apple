@@ -86,7 +86,7 @@ class Book: NSManagedObject {
     // MARK: - Fetch
     
     class func fetchAll(in context: NSManagedObjectContext) -> [Book] {
-        let request: NSFetchRequest<Book> = NSFetchRequest<Book>(entityName: "Book")
+        let request = Book.fetchRequest() as! NSFetchRequest<Book>
         return (try? context.fetch(request)) ?? [Book]()
     }
     

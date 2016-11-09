@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11756" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1.8">
-    <entity name="Article" representedClassName=".Article">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="16A323" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.8">
+    <entity name="Article" representedClassName=".Article" syncable="YES">
         <attribute name="bookmarkDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isBookmarked" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isMainPage" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
@@ -13,9 +13,8 @@
         <attribute name="title" attributeType="String" syncable="YES"/>
         <relationship name="book" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Book" inverseName="articles" inverseEntity="Book" syncable="YES"/>
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="articles" inverseEntity="Tag" syncable="YES"/>
-        <userInfo/>
     </entity>
-    <entity name="Book" representedClassName=".Book">
+    <entity name="Book" representedClassName=".Book" syncable="YES">
         <attribute name="articleCount" optional="YES" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="creator" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -48,7 +47,6 @@
                 <constraint value="id"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
-        <userInfo/>
     </entity>
     <entity name="DownloadTask" representedClassName=".DownloadTask" syncable="YES">
         <attribute name="creationTime" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -82,10 +80,10 @@
         <relationship name="articles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Article" inverseName="tags" inverseEntity="Article" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Article" positionX="-657" positionY="-153" width="128" height="225"/>
-        <element name="Book" positionX="-947" positionY="-142" width="128" height="330"/>
+        <element name="Article" positionX="-657" positionY="-153" width="128" height="223"/>
+        <element name="Book" positionX="-947" positionY="-142" width="128" height="328"/>
         <element name="DownloadTask" positionX="-657" positionY="90" width="128" height="105"/>
-        <element name="Language" positionX="-657" positionY="216" width="128" height="105"/>
-        <element name="Tag" positionX="-425" positionY="-18" width="128" height="75"/>
+        <element name="Language" positionX="-657" positionY="216" width="128" height="103"/>
+        <element name="Tag" positionX="-425" positionY="-18" width="128" height="73"/>
     </elements>
 </model>

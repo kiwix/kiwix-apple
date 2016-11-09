@@ -26,6 +26,7 @@ fileprivate class Retrieve: NetworkDataProcedure<URLSession> {
         let url = URL(string: "https://download.kiwix.org/library/library.xml")!
         let request = URLRequest(url: url)
         super.init(session: session, request: request)
+        add(observer: NetworkObserver())
     }
 }
 
@@ -65,13 +66,13 @@ fileprivate class Process: Procedure, ResultInjection, XMLParserDelegate {
                 
             })
         }
-        print("\(memoryBookIDs.count)")
         
         if context.hasChanges { try? context.save() }
+        Preference.libraryLastRefreshTime = Date()
         finish()
     }
     
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?,
+    fileprivate func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?,
                 qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
         guard elementName == "book", let id = attributeDict["id"] else {return}
         if !storeBookIDs.contains(id) {
@@ -81,5 +82,9 @@ fileprivate class Process: Procedure, ResultInjection, XMLParserDelegate {
             })
         }
         memoryBookIDs.insert(id)
+    }
+    
+    fileprivate func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
+        finish(withError: parseError)
     }
 }
