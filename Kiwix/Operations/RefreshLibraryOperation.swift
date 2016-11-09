@@ -12,7 +12,7 @@ import ProcedureKit
 class RefreshLibraryOperation: GroupProcedure {
     
     private(set) var hasUpdate = false
-    private(set) var firstTime = false
+    private(set) var firstTime = Preference.libraryLastRefreshTime == nil
     
     init(invokedByUser: Bool = false) {
         let retrieve = Retrieve()

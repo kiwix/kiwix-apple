@@ -14,7 +14,7 @@ import DZNEmptyDataSet
 
 class CloudBooksController: UITableViewController, NSFetchedResultsControllerDelegate, LanguageFilterUpdating, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    private(set) var isRefreshing = false
+    private(set) var isRefreshing = false // used to control text on empty table view
     private(set) var isOnScreen = false // used to determine if should delay showing lang filter alert
     private(set) var langFilterAlertPending = false
     
@@ -36,6 +36,10 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
             
         refreshControl = RefreshLibControl()
         refreshControl?.addTarget(self, action: #selector(CloudBooksController.refresh), for: .valueChanged)
+        
+        let inset = UIEdgeInsets(top: 0, left: 0, bottom: tabBarController!.tabBar.frame.height, right: 0)
+        tableView.contentInset = inset
+        tableView.scrollIndicatorInsets = inset
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -64,21 +68,12 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
             guard let navController = segue.destination as? UINavigationController,
                 let bookDetailController = navController.topViewController as? BookDetailController,
                 let cell = sender as? UITableViewCell,
-                let indexPath = tableView.indexPath(for: cell),
-                let book = fetchedResultController.object(at: indexPath) as? Book else {return}
+                let indexPath = tableView.indexPath(for: cell) else {return}
+            let book = fetchedResultController.object(at: indexPath)
             bookDetailController.book = book
         default:
             break
         }
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        let top = tabBarController!.navigationController!.navigationBar.frame.maxY
-        let bottom = tabBarController!.tabBar.frame.height
-        let inset = UIEdgeInsets(top: top, left: 0, bottom: bottom, right: 0)
-        tableView.contentInset = inset
-        tableView.scrollIndicatorInsets = inset
     }
     
     // MARK: - Actions
@@ -104,12 +99,32 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     }
     
     func refresh(invokedByUser: Bool) {
+        let operation = RefreshLibraryOperation()
+        operation.add(observer: WillExecuteObserver { (operation) in
+            OperationQueue.main.addOperation({
+                // Configure empty table data set, so it shows "Refreshing..."
+                self.isRefreshing = true
+                self.tableView.reloadEmptyDataSet()
+            })
+        })
+        operation.add(observer: DidFinishObserver { (operation, errors) in
+            OperationQueue.main.addOperation({ 
+                defer {
+                    self.refreshControl?.endRefreshing()
+                    self.isRefreshing = false
+                    self.tableView.reloadEmptyDataSet()
+                }
+                
+                // handle error
+                // show reachibility alert
+                // show lang filter alert
+                
+            })
+        })
+        GlobalQueue.shared.add(operation: operation)
+        
 //        let operation = RefreshLibraryOperation()
 //        operation.add(WillExecuteObserver { (operation) in
-//            OperationQueue.mainQueue().addOperationWithBlock({
-//                self.isRefreshing = true
-//                self.tableView.reloadEmptyDataSet()
-//            })
 //        })
 //        
 //        operation.add(DidFinishObserver { (operation, errors) in
@@ -207,8 +222,8 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     }
     
     func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
-        guard let book = fetchedResultController.object(at: indexPath) as? Book else {return}
         guard let cell = cell as? BasicBookCell else {return}
+        let book = fetchedResultController.object(at: indexPath)
         
         let textColor: UIColor = {
             switch book.spaceState {
@@ -231,6 +246,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         ].flatMap({$0}).joined(separator: "  ")
         cell.titleLabel.textColor = textColor
         cell.subtitleLabel.textColor = textColor
+        cell.accessoryType = splitViewController?.traitCollection.horizontalSizeClass == .compact ? .disclosureIndicator : .none
     }
     
     // MARK: Other Data Source

@@ -10,14 +10,20 @@ import ProcedureKit
 import CoreData
 
 class RefreshLibraryOperation: GroupProcedure {
+    private(set) var hasUpdate = false
+    private(set) var firstTime = Preference.libraryLastRefreshTime == nil
     
     init() {
         let retrieve = Retrieve()
         let process = Process()
         process.injectResult(from: retrieve)
         super.init(operations: [retrieve, process])
+        
+        process.add(observer: DidFinishObserver { [unowned self] (operation, error) in
+            guard let process = operation as? Process else {return}
+            self.hasUpdate = process.hasUpdate
+        })
     }
-    
 }
 
 fileprivate class Retrieve: NetworkDataProcedure<URLSession> {
@@ -38,7 +44,7 @@ fileprivate class Process: Procedure, ResultInjection, XMLParserDelegate {
     private var storeBookIDs = Set<String>()
     private var memoryBookIDs = Set<String>()
     
-    private var hasUpdate = false
+    private(set) var hasUpdate = false
     
     override init() {
         self.context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
