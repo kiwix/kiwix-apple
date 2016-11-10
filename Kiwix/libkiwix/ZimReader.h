@@ -48,8 +48,8 @@
 - (NSString *)getCreator;
 - (NSString *)getPublisher;
 - (NSString *)getOriginID;
-- (NSNumber *)getFileSize;
-- (NSData *)getFavicon;
+- (NSString *)getFileSize;
+- (NSString *)getFavicon;
 
 - (NSString *)parseURL:(NSString *)urlPath;
 

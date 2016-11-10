@@ -90,16 +90,10 @@ class Book: NSManagedObject {
         return (try? context.fetch(request)) ?? [Book]()
     }
     
-    class func fetchLocal(_ context: NSManagedObjectContext) -> [ZimID: Book] {
+    class func fetchLocal(in context: NSManagedObjectContext) -> [Book] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Book")
         fetchRequest.predicate = NSPredicate(format: "stateRaw == 2")
-        let localBooks = fetch(fetchRequest, type: Book.self, context: context) ?? [Book]()
-        
-        var books = [ZimID: Book]()
-        for book in localBooks {
-            books[book.id] = book
-        }
-        return books
+        return fetch(fetchRequest, type: Book.self, context: context) ?? [Book]()
     }
     
     class func fetch(_ id: String, context: NSManagedObjectContext) -> Book? {

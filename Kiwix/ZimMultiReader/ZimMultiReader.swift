@@ -6,21 +6,22 @@
 //  Copyright © 2015 Chris. All rights reserved.
 //
 
-import CoreData
 import ProcedureKit
+
+typealias ZimID = String
+typealias ArticlePath = String
 
 class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     static let shared = ZimMultiReader()
     
     weak var delegate: ZimMultiReaderDelegate?
-    fileprivate let monitor = DirectoryMonitor(URL: FileManager.docDirURL)
+    private let monitor = DirectoryMonitor(URL: FileManager.docDirURL)
     
-    fileprivate(set) var readers = [ZimID: ZimReader]()
-    fileprivate(set) var pidMap = [String: String]() // PID: ID
-    fileprivate var lastZimFileURLSnapshot = Set<URL>()
-    fileprivate var lastIndexFolderURLSnapshot = Set<URL>()
+    private(set) var readers = [ZimID: ZimReader]()
+    private(set) var pidMap = [String: ZimID]() // PID: ID
+    private var urlSnapShot = URLSnapShot()
     
-    override init() {
+    private override init() {
         super.init()
         monitor.delegate = self
         monitor.startMonitoring()
@@ -31,20 +32,18 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     }
     
     func startScan() {
-//        let operation = ScanLocalBookOperation(lastZimFileURLSnapshot: lastZimFileURLSnapshot as Set<NSURL>, lastIndexFolderURLSnapshot: lastIndexFolderURLSnapshot as Set<NSURL>)
-//        operation.addObserver(DidFinishObserver { (operation, errors) in
-//            guard let operation = operation as? ScanLocalBookOperation else {return}
-//            NSOperationQueue.mainQueue().addOperationWithBlock({ 
-//                self.lastZimFileURLSnapshot = operation.currentZimFileURLSnapshot
-//                self.lastIndexFolderURLSnapshot = operation.currentIndexFolderURLSnapshot
-//                
-//                guard operation.firstBookAdded else {return}
-//                self.delegate?.firstBookAdded()
-//            })
-//        })
-//        operation.queuePriority = .veryHigh
-//        if readers.count == 0 { operation.qualityOfService = .userInteractive }
-//        GlobalQueue.shared.add(scan: operation)
+        let operation = ScanLocalBookOperation(urlSnapshot: urlSnapShot)
+        operation.add(observer: DidFinishObserver{ (operation, errors) in
+            guard let operation = operation as? ScanLocalBookOperation else {return}
+            OperationQueue.main.addOperation({
+                self.urlSnapShot = operation.snapshot
+                guard operation.firstBookAdded else {return}
+                self.delegate?.firstBookAdded()
+            })
+        })
+        operation.queuePriority = .veryHigh
+        if readers.count == 0 { operation.qualityOfService = .userInteractive }
+        GlobalQueue.shared.add(operation: operation)
     }
     
     // MARK: - Reader Addition / Deletion
@@ -115,7 +114,67 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     }
 }
 
+struct URLSnapShot {
+    let zimFile: Set<URL>
+    let indexFolder: Set<URL>
+    
+    init() {
+        self.zimFile = URLSnapShot.getCurrentZimFileURLsInDocDir()
+        self.indexFolder = URLSnapShot.getCurrentIndexFolderURLsInDocDir()
+    }
+    
+    static func - (lhs: URLSnapShot, rhs: URLSnapShot) -> (zimFiles: Set<URL>, indexFolders: Set<URL>) {
+        return (lhs.zimFile.subtracting(rhs.zimFile), lhs.indexFolder.subtracting(rhs.indexFolder))
+    }
+    
+    private static func getCurrentZimFileURLsInDocDir() -> Set<URL> {
+        var urls = FileManager.getContents(dir: FileManager.docDirURL)
+        let keys = [URLResourceKey.isDirectoryKey]
+        urls = urls.filter { (url) -> Bool in
+            guard let values = try? (url as NSURL).resourceValues(forKeys: keys),
+                let isDirectory = (values[URLResourceKey.isDirectoryKey] as? NSNumber)?.boolValue, isDirectory == false else {return false}
+            let pathExtension = url.pathExtension.lowercased()
+            guard pathExtension.contains("zim") else {return false}
+            return true
+        }
+        return Set(urls)
+    }
+    
+    private static func getCurrentIndexFolderURLsInDocDir() -> Set<URL> {
+        var urls = FileManager.getContents(dir: FileManager.docDirURL)
+        let keys = [URLResourceKey.isDirectoryKey]
+        urls = urls.filter { (url) -> Bool in
+            guard let values = try? (url as NSURL).resourceValues(forKeys: keys),
+                let isDirectory = (values[URLResourceKey.isDirectoryKey] as? NSNumber)?.boolValue, isDirectory == true else {return false}
+            let pathExtension = url.pathExtension.lowercased()
+            guard pathExtension == "idx" else {return false}
+            return true
+        }
+        return Set(urls)
+    }
+}
+
 protocol ZimMultiReaderDelegate: class {
     func firstBookAdded()
+}
+
+extension ZimReader {
+    var metaData: [String: String] {
+        var metadata = [String: String]()
+        
+        metadata["id"] = getID()
+        metadata["title"] = getTitle()
+        metadata["description"] = getDesc()
+        metadata["creator"] = getCreator()
+        metadata["publisher"] = getPublisher()
+        metadata["favicon"] = getFavicon()
+        metadata["date"] = getDate()
+        metadata["articleCount"] = getArticleCount()
+        metadata["mediaCount"] = getMediaCount()
+        metadata["size"] = getFileSize()
+        metadata["language"] = getLanguage()
+        
+        return metadata
+    }
 }
 

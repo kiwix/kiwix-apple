@@ -299,18 +299,27 @@ int levenshtein_distance(const std::string &s1, const std::string &s2)
     return [NSString stringWithCString:originIDC.c_str() encoding:NSUTF8StringEncoding];
 }
 
-- (NSNumber *)getFileSize {
-    return [[NSNumber alloc] initWithUnsignedInt:_reader->getFileSize()];
+- (NSString *)getFileSize {
+    return [[[NSNumber alloc] initWithUnsignedInt:_reader->getFileSize()] stringValue];
 }
 
-- (NSData *)getFavicon {
-    NSData *data;
-    string content;
+- (NSString *)getFavicon {
+//    NSData *data;
+//    string content;
+//    string mimeType;
+//    if (_reader->getFavicon(content, mimeType)) {
+//        data = [NSData dataWithBytes:content.c_str() length:content.length()];
+//    }
+//    return data;
+    
+    string contentC;
     string mimeType;
-    if (_reader->getFavicon(content, mimeType)) {
-        data = [NSData dataWithBytes:content.c_str() length:content.length()];
+    NSString *content;
+    
+    if (_reader->getFavicon(contentC, mimeType)) {
+        content = [NSString stringWithCString:contentC.c_str() encoding:NSUTF8StringEncoding];
     }
-    return data;
+    return content;
 }
 
 - (NSString *)parseURL:(NSString *)urlPath {
