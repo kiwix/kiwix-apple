@@ -140,7 +140,6 @@ class DirectoryMonitor {
                 }
             }
         } catch let error as NSError {
-            // failure
             print("contentsOfDirectoryAtPath failed: \(error.localizedDescription)")
         }
         return hashes
@@ -162,7 +161,6 @@ class DirectoryMonitor {
                 let fileSize = attributes[FileAttributeKey.size] as? NSNumber
                 return fileSize?.int64Value
             } catch let error as NSError {
-                // failure
                 print("attributesOfItemAtPath failed: \(error.localizedDescription)")
             }
         }
