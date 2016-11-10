@@ -19,6 +19,16 @@ class LibrarySplitViewController: UISplitViewController, UISplitViewControllerDe
         configureDismissButton()
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        guard traitCollection != previousTraitCollection else {return}
+        let controller: UITableViewController? = {
+            let nav = viewControllers.first as? UINavigationController
+            let tab = nav?.topViewController as? UITabBarController
+            return tab?.selectedViewController as? UITableViewController
+        }()
+        controller?.tableView.reloadData()
+    }
+    
     func configureDismissButton() {
         guard let master = viewControllers.first as? UINavigationController else {return}
         let barButtonItem = UIBarButtonItem(image: UIImage(named: "Cross"), style: .plain, target: self, action: #selector(dismiss(sender:)))

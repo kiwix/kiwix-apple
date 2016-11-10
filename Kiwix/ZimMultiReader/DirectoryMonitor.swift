@@ -78,19 +78,19 @@ class DirectoryMonitor {
     
     // MARK: - Custom Methods
     
-    var isCheckingChanges = false
-    var previousDirectoryHash: [String]? = nil
-    var currentDirectoryHash: [String]? = nil
-    var hashEqualCheck = 0
+    private var isCheckingChanges = false
+    private var previousDirectoryHash: [String]? = nil
+    private var currentDirectoryHash: [String]? = nil
+    private var hashEqualCheck = 0
     
-    fileprivate func directoryContentDidChange() {
+    private func directoryContentDidChange() {
         hashEqualCheck = 0
         if isCheckingChanges == false {
             checkDirectoryChanges()
         }
     }
     
-    fileprivate func checkDirectoryChanges() {
+    private func checkDirectoryChanges() {
         isCheckingChanges = true
         
         previousDirectoryHash = currentDirectoryHash
@@ -116,13 +116,13 @@ class DirectoryMonitor {
         }
     }
     
-    fileprivate func directoryDidReachStasis() {
+    private func directoryDidReachStasis() {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(NSEC_PER_SEC/10)) / Double(NSEC_PER_SEC) , execute: { () -> Void in
             self.delegate?.directoryMonitorDidObserveChange()
         })
     }
     
-    fileprivate func waitAndCheckAgain() {
+    private func waitAndCheckAgain() {
         directoryMonitorQueue.asyncAfter(deadline: DispatchTime.now() + Double(Int64(NSEC_PER_SEC/2)) / Double(NSEC_PER_SEC) , execute: { () -> Void in
             self.checkDirectoryChanges()
         })
@@ -130,7 +130,7 @@ class DirectoryMonitor {
     
     // MARK: - Generate directory file info array
     
-    fileprivate func directoryHashes() -> [String] {
+    private func directoryHashes() -> [String] {
         var hashes = [String]()
         do {
             let contents = try FileManager.default.contentsOfDirectory(atPath: url.path)
@@ -146,7 +146,7 @@ class DirectoryMonitor {
         return hashes
     }
     
-    fileprivate func fileHash(_ fileName: String) -> String? {
+    private func fileHash(_ fileName: String) -> String? {
         if let fileSize = fileSize(fileName) {
             return fileName + "_\(fileSize)"
         } else {
@@ -154,7 +154,7 @@ class DirectoryMonitor {
         }
     }
     
-    fileprivate func fileSize(_ fileName: String) -> Int64? {
+    private func fileSize(_ fileName: String) -> Int64? {
         let path = self.url.appendingPathComponent(fileName).path
         if FileManager.default.fileExists(atPath: path) {
             do {

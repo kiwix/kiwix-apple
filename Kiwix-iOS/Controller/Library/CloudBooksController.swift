@@ -108,6 +108,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
             })
         })
         operation.add(observer: DidFinishObserver { (operation, errors) in
+            guard let operation = operation as? RefreshLibraryOperation else {return}
             OperationQueue.main.addOperation({ 
                 defer {
                     self.refreshControl?.endRefreshing()
@@ -115,42 +116,19 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
                     self.tableView.reloadEmptyDataSet()
                 }
                 
-                // handle error
-                // show reachibility alert
-                // show lang filter alert
-                
+                if let error =  errors.first {
+                    // handle error [network, xmlparse]
+                } else {
+                    if operation.firstTime {
+                        //self.showLanguageFilterAlert()
+                        //self.configureNavBarButtons()
+                    } else {
+                        self.showRefreshSuccessMessage()
+                    }
+                }
             })
         })
         GlobalQueue.shared.add(operation: operation)
-        
-//        let operation = RefreshLibraryOperation()
-//        operation.add(WillExecuteObserver { (operation) in
-//        })
-//        
-//        operation.add(DidFinishObserver { (operation, errors) in
-//            guard let operation = operation as? RefreshLibraryOperation else {return}
-//            NSOperationQueue.mainQueue().addOperationWithBlock({
-//                defer {
-//                    self.refreshControl?.endRefreshing()
-//                    self.isRefreshing = false
-//                    self.tableView.reloadEmptyDataSet()
-//                }
-//                
-//                if errors.count > 0 {
-//                    if let error = errors.first as? ReachabilityCondition.Error, error == ReachabilityCondition.Error.NotReachable && invokedByUser == true {
-//                        self.showReachibilityAlert()
-//                    }
-//                } else{
-//                    if operation.firstTime {
-//                        self.showLanguageFilterAlert()
-//                        self.configureNavBarButtons()
-//                    } else {
-//                        self.showRefreshSuccessMessage()
-//                    }
-//                }
-//            })
-//        })
-//        GlobalQueue.shared.add(operation)
     }
     
     func showRefreshSuccessMessage() {
@@ -292,32 +270,31 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {}
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?{
-//        guard let book = fetchedResultController.object(at: indexPath) as? Book else {return nil}
-//        switch book.spaceState {
-//        case .enough:
-//            let action = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: LocalizedStrings.download, handler: { _ in
+        let book = fetchedResultController.object(at: indexPath)
+        switch book.spaceState {
+        case .enough:
+            let action = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: LocalizedStrings.download, handler: { _ in
 //                guard let download = DownloadBookOperation(bookID: book.id) else {return}
 //                Network.shared.queue.addOperation(download)
-//            })
-//            action.backgroundColor = UIColor.defaultTint
-//            return [action]
-//        case .caution:
-//            let action = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: LocalizedStrings.download, handler: { _ in
+            })
+            action.backgroundColor = UIColor.defaultTint
+            return [action]
+        case .caution:
+            let action = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: LocalizedStrings.download, handler: { _ in
 //                let alert = SpaceCautionAlert(context: self, bookID: book.id)
 //                GlobalQueue.shared.addOperation(alert)
-//                self.tableView.setEditing(false, animated: true)
-//            })
-//            action.backgroundColor = UIColor.orange
-//            return [action]
-//        case .notEnough:
-//            let action = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: LocalizedStrings.spaceNotEnough, handler: { _ in
+                self.tableView.setEditing(false, animated: true)
+            })
+            action.backgroundColor = UIColor.orange
+            return [action]
+        case .notEnough:
+            let action = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: LocalizedStrings.spaceNotEnough, handler: { _ in
 //                let alert = SpaceNotEnoughAlert(context: self)
 //                GlobalQueue.shared.addOperation(alert)
-//                self.tableView.setEditing(false, animated: true)
-//            })
-//            return [action]
-//        }
-        return []
+                self.tableView.setEditing(false, animated: true)
+            })
+            return [action]
+        }
     }
     
     // MARK: - Fetched Results Controller
@@ -342,7 +319,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         tableView.reloadData()
     }
     
-    fileprivate var langPredicate: NSPredicate {
+    private var langPredicate: NSPredicate {
         let displayedLanguages = Language.fetch(displayed: true, context: managedObjectContext)
         if displayedLanguages.count > 0 {
             return NSPredicate(format: "language IN %@", displayedLanguages)
@@ -351,7 +328,7 @@ class CloudBooksController: UITableViewController, NSFetchedResultsControllerDel
         }
     }
     
-    fileprivate var onlineCompoundPredicate: NSCompoundPredicate {
+    private var onlineCompoundPredicate: NSCompoundPredicate {
         let isCloudPredicate = NSPredicate(format: "stateRaw == 0")
         return NSCompoundPredicate(andPredicateWithSubpredicates: [langPredicate, isCloudPredicate])
     }
