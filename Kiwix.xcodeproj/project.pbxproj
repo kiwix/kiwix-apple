@@ -372,6 +372,7 @@
 		970A2A201DD562B60078BB7C /* old */ = {
 			isa = PBXGroup;
 			children = (
+				97DF259B1D6F7612001648A3 /* BookOperation.swift */,
 				97D6811D1D6F70AC00E5FA99 /* RefreshLibraryOperation.swift */,
 			);
 			name = old;
@@ -774,7 +775,6 @@
 				97D6811C1D6F70AC00E5FA99 /* GlobalQueue.swift */,
 				9764CBD21D8083AA00072D6A /* ArticleOperation.swift */,
 				974F33C51D99CAD700879D35 /* BookmarkOperation.swift */,
-				97DF259B1D6F7612001648A3 /* BookOperation.swift */,
 				970A2A211DD562CB0078BB7C /* BookOperations.swift */,
 				973208281DD223DB00EDD3DC /* RefreshLibrary.swift */,
 				97D6811E1D6F70AC00E5FA99 /* ScanLocalBookOperation.swift */,
