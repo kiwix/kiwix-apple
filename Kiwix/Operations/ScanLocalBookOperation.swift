@@ -29,17 +29,26 @@ class ScanLocalBookOperation: Procedure {
     }
     
     override func execute() {
-        defer {finish()}
+        defer { finish() }
         
-        let newSnapshot = URLSnapShot()
-        var addition = newSnapshot - snapshot
-        let deletion = snapshot - newSnapshot
-        snapshot = newSnapshot
+        if ZimMultiReader.shared.readers.count == 0 {
+            // when ZimMultiReader has not reader, only perform addition
+            // i.e., when app is launched initialize all zim readers
+            updateReaders(addition: snapshot.zimFile)
+            context.performAndWait {self.updateCoreData()}
+        } else {
+            let newSnapshot = URLSnapShot()
+            var addition = newSnapshot - snapshot
+            let deletion = snapshot - newSnapshot
+            snapshot = newSnapshot
+            
+            if deletion.indexFolders.count > 0 { addition.zimFiles = newSnapshot.zimFile }
+            
+            updateReaders(addition: addition.zimFiles, deletion: deletion.zimFiles)
+            context.performAndWait {self.updateCoreData()}
+        }
         
-        if deletion.indexFolders.count > 0 { addition.zimFiles = newSnapshot.zimFile }
         
-        updateReaders(addition: addition.zimFiles, deletion: deletion.zimFiles)
-        context.performAndWait {self.updateCoreData()}
         
         let viewContext = AppDelegate.persistentContainer.viewContext
         context.performAndWait { if self.context.hasChanges {try? self.context.save()} }
@@ -53,9 +62,7 @@ class ScanLocalBookOperation: Procedure {
         }
     }
     
-    private func updateReaders(addition: Set<URL>, deletion: Set<URL>) {
-        print(addition)
-        print(deletion)
+    private func updateReaders(addition: Set<URL>, deletion: Set<URL> = Set<URL>()) {
         ZimMultiReader.shared.removeReaders(deletion)
         ZimMultiReader.shared.addReaders(addition)
         ZimMultiReader.shared.producePIDMap()

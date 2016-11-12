@@ -119,15 +119,15 @@ struct URLSnapShot {
     let indexFolder: Set<URL>
     
     init() {
-        self.zimFile = URLSnapShot.getCurrentZimFileURLsInDocDir()
-        self.indexFolder = URLSnapShot.getCurrentIndexFolderURLsInDocDir()
+        self.zimFile = URLSnapShot.zimFileURLsInDocDir()
+        self.indexFolder = URLSnapShot.indexFolderURLsInDocDir()
     }
     
     static func - (lhs: URLSnapShot, rhs: URLSnapShot) -> (zimFiles: Set<URL>, indexFolders: Set<URL>) {
         return (lhs.zimFile.subtracting(rhs.zimFile), lhs.indexFolder.subtracting(rhs.indexFolder))
     }
     
-    private static func getCurrentZimFileURLsInDocDir() -> Set<URL> {
+    static func zimFileURLsInDocDir() -> Set<URL> {
         var urls = FileManager.getContents(dir: FileManager.docDirURL)
         let keys = [URLResourceKey.isDirectoryKey]
         urls = urls.filter { (url) -> Bool in
@@ -140,7 +140,7 @@ struct URLSnapShot {
         return Set(urls)
     }
     
-    private static func getCurrentIndexFolderURLsInDocDir() -> Set<URL> {
+    static func indexFolderURLsInDocDir() -> Set<URL> {
         var urls = FileManager.getContents(dir: FileManager.docDirURL)
         let keys = [URLResourceKey.isDirectoryKey]
         urls = urls.filter { (url) -> Bool in

@@ -28,7 +28,11 @@ class DeleteBookFileOperation: Procedure {
             return
         }
         
-        print(fileName)
+        let urls = URLSnapShot.zimFileURLsInDocDir().union(URLSnapShot.indexFolderURLsInDocDir())
+        urls.forEach { (url) in
+            guard url.pathComponents.last == fileName else {return}
+            try? FileManager.default.removeItem(at: url)
+        }
         
         finish()
     }

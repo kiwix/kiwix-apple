@@ -116,14 +116,14 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {}
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let delete = UITableViewRowAction(style: .destructive, title: LocalizedStrings.remove) { (action, indexPath) -> Void in
+        let remove = UITableViewRowAction(style: .destructive, title: LocalizedStrings.remove) { (action, indexPath) -> Void in
             let book = self.fetchedResultController.object(at: indexPath)
             // this is where the delete book confirm alert will come in replace of DeleteBookFileOperation
             let operation = DeleteBookFileOperation(zimID: book.id)
             GlobalQueue.shared.add(operation: operation)
             self.tableView.setEditing(false, animated: true)
         }
-        return [delete]
+        return [remove]
     }
     
     // MARK: - Fetched Results Controller
