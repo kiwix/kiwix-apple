@@ -42,21 +42,12 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
             guard let navController = segue.destination as? UINavigationController,
                 let bookDetailController = navController.topViewController as? BookDetailController,
                 let cell = sender as? UITableViewCell,
-                let indexPath = tableView.indexPath(for: cell),
-                let book = fetchedResultController.object(at: indexPath) as? Book else {return}
+                let indexPath = tableView.indexPath(for: cell) else {return}
+            let book = fetchedResultController.object(at: indexPath)
             bookDetailController.book = book
         default:
             break
         }
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        let top = tabBarController!.navigationController!.navigationBar.frame.maxY
-        let bottom = tabBarController!.tabBar.frame.height
-        let inset = UIEdgeInsets(top: top, left: 0, bottom: bottom, right: 0)
-        tableView.contentInset = inset
-        tableView.scrollIndicatorInsets = inset
     }
     
     // MARK: - TableView Data Source
@@ -77,8 +68,8 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
     }
     
     func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
-        guard let book = fetchedResultController.object(at: indexPath) as? Book else {return}
         guard let cell = cell as? BasicBookCell else {return}
+        let book = fetchedResultController.object(at: indexPath)
         
         cell.titleLabel.text = book.title
         cell.hasPic = book.hasPic
@@ -126,9 +117,10 @@ class LocalBooksController: UITableViewController, NSFetchedResultsControllerDel
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let delete = UITableViewRowAction(style: .destructive, title: LocalizedStrings.remove) { (action, indexPath) -> Void in
-            guard let book = self.fetchedResultController.object(at: indexPath) as? Book else {return}
-//            let operation = RemoveBookConfirmationAlert(context: self, bookID: book.id)
-//            GlobalQueue.shared.addOperation(operation)
+            let book = self.fetchedResultController.object(at: indexPath)
+            // this is where the delete book confirm alert will come in replace of DeleteBookFileOperation
+            let operation = DeleteBookFileOperation(zimID: book.id)
+            GlobalQueue.shared.add(operation: operation)
             self.tableView.setEditing(false, animated: true)
         }
         return [delete]

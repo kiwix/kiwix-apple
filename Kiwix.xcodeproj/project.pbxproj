@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7356F9FACBB84380CFC8F68F /* Pods_Kiwix_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC884ACBBA260AF741C4C4FE /* Pods_Kiwix_iOS.framework */; };
+		970A2A221DD562CB0078BB7C /* BookOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970A2A211DD562CB0078BB7C /* BookOperations.swift */; };
 		970E68BA1D3809A3001E8514 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B71D3809A3001E8514 /* MainController.swift */; };
 		970E68BB1D3809A3001E8514 /* MainControllerDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E68B81D3809A3001E8514 /* MainControllerDelegates.swift */; };
 		970E7F741D9DB0FC00741290 /* 1.8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 970E7F731D9DB0FC00741290 /* 1.8.xcmappingmodel */; };
@@ -157,6 +158,7 @@
 		6DCB0E958A1083CA248C5A12 /* Pods-Kiwix-OSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-OSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-OSX/Pods-Kiwix-OSX.debug.xcconfig"; sourceTree = "<group>"; };
 		970722A91D6B4D1700A45620 /* LanguageFilterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageFilterController.swift; sourceTree = "<group>"; };
 		970912551D7F452C00BBD5A1 /* 1.8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.8.xcdatamodel; sourceTree = "<group>"; };
+		970A2A211DD562CB0078BB7C /* BookOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookOperations.swift; sourceTree = "<group>"; };
 		970E68B71D3809A3001E8514 /* MainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainController.swift; path = "Kiwix-iOS/Controller/Main/MainController.swift"; sourceTree = SOURCE_ROOT; };
 		970E68B81D3809A3001E8514 /* MainControllerDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainControllerDelegates.swift; path = "Kiwix-iOS/Controller/Main/MainControllerDelegates.swift"; sourceTree = SOURCE_ROOT; };
 		970E7F731D9DB0FC00741290 /* 1.8.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = 1.8.xcmappingmodel; path = Kiwix/CoreData/Migration/1.8.xcmappingmodel; sourceTree = SOURCE_ROOT; };
@@ -365,6 +367,14 @@
 				EC884ACBBA260AF741C4C4FE /* Pods_Kiwix_iOS.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		970A2A201DD562B60078BB7C /* old */ = {
+			isa = PBXGroup;
+			children = (
+				97D6811D1D6F70AC00E5FA99 /* RefreshLibraryOperation.swift */,
+			);
+			name = old;
 			sourceTree = "<group>";
 		};
 		971187051CEB426E00B9909D /* libkiwix */ = {
@@ -760,12 +770,13 @@
 		97E5712A1CA0525300FF4F1D /* Operation */ = {
 			isa = PBXGroup;
 			children = (
+				970A2A201DD562B60078BB7C /* old */,
 				97D6811C1D6F70AC00E5FA99 /* GlobalQueue.swift */,
 				9764CBD21D8083AA00072D6A /* ArticleOperation.swift */,
 				974F33C51D99CAD700879D35 /* BookmarkOperation.swift */,
 				97DF259B1D6F7612001648A3 /* BookOperation.swift */,
+				970A2A211DD562CB0078BB7C /* BookOperations.swift */,
 				973208281DD223DB00EDD3DC /* RefreshLibrary.swift */,
-				97D6811D1D6F70AC00E5FA99 /* RefreshLibraryOperation.swift */,
 				97D6811E1D6F70AC00E5FA99 /* ScanLocalBookOperation.swift */,
 				97D4D64E1D874E6E00C1B065 /* SearchOperation.swift */,
 				97D681211D6F70AC00E5FA99 /* UpdateWidgetDataSourceOperation.swift */,
@@ -1109,6 +1120,7 @@
 				97A1FD161D6F71CE00A80EE2 /* DirectoryMonitor.swift in Sources */,
 				9726591D1D90A64600D1DFFB /* Notifications.swift in Sources */,
 				971A102C1D022AD5007FC62C /* BarButtonItems.swift in Sources */,
+				970A2A221DD562CB0078BB7C /* BookOperations.swift in Sources */,
 				971A10301D022AD5007FC62C /* LTBarButtonItem.swift in Sources */,
 				97A1FD391D6F724E00A80EE2 /* pathTools.cpp in Sources */,
 				970E7F811DA0305000741290 /* ControllerRetainer.swift in Sources */,
