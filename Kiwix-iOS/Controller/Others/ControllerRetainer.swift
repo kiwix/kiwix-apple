@@ -10,7 +10,7 @@ import UIKit
 
 class Controllers {
     static let shared = Controllers()
-    fileprivate init() {
+    private init() {
         NotificationCenter.default.addObserver(self, selector: #selector(Controllers.removeStrongReference), name: NSNotification.Name.UIApplicationDidReceiveMemoryWarning, object: nil)
     }
     
@@ -18,7 +18,7 @@ class Controllers {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidReceiveMemoryWarning, object: nil)
     }
     
-    @objc func removeStrongReference() {
+    @objc private func removeStrongReference() {
         bookmark = nil
         bookmarkHUD = nil
         library = nil
@@ -35,7 +35,7 @@ class Controllers {
     
     // MARK: - Bookmark
     
-    fileprivate var bookmark: UINavigationController?
+    private var bookmark: UINavigationController?
     
     class var bookmark: UINavigationController {
         let controller = Controllers.shared.bookmark ?? UIStoryboard(name: "Bookmark", bundle: nil).instantiateInitialViewController() as! UINavigationController
@@ -43,7 +43,7 @@ class Controllers {
         return controller
     }
     
-    fileprivate var bookmarkHUD: BookmarkHUD?
+    private var bookmarkHUD: BookmarkHUD?
     
     class var bookmarkHUD: BookmarkHUD {
         let controller = Controllers.shared.bookmarkHUD ?? UIStoryboard(name: "Bookmark", bundle: nil).instantiateViewController(withIdentifier: "BookmarkHUD") as! BookmarkHUD
@@ -53,7 +53,7 @@ class Controllers {
     
     // MARK: - Library
     
-    fileprivate var library: UIViewController?
+    private var library: UIViewController?
     
     class var library: UIViewController {
         let controller = Controllers.shared.library ?? UIStoryboard(name: "Library", bundle: nil).instantiateInitialViewController()!
@@ -61,9 +61,10 @@ class Controllers {
         return controller
     }
     
+    
     // MARK: -  Search
     
-    fileprivate var search: SearchController?
+    private var search: SearchController?
     
     class var search: SearchController {
         let controller = Controllers.shared.search ?? UIStoryboard(name: "Search", bundle: nil).instantiateInitialViewController() as! SearchController
@@ -73,7 +74,7 @@ class Controllers {
     
     // MARK: - Setting
     
-    fileprivate var setting: UIViewController?
+    private var setting: UIViewController?
     
     class var setting: UIViewController {
         let controller = Controllers.shared.setting ?? UIStoryboard(name: "Setting", bundle: nil).instantiateInitialViewController()!
@@ -83,7 +84,7 @@ class Controllers {
     
     // MARK: - Welcome
     
-    fileprivate var welcome: WelcomeController?
+    private var welcome: WelcomeController?
     
     class var welcome: WelcomeController {
         let controller = Controllers.shared.welcome ?? UIStoryboard(name: "Welcome", bundle: nil).instantiateInitialViewController() as! WelcomeController
