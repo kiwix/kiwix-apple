@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11760" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="uuM-WO-DyB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11760" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="3qT-fi-cxa">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -30,11 +30,11 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DSn-3Y-Gs4" id="vq5-6x-vLY">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xPq-dt-NK6">
-                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -52,11 +52,11 @@
                                         <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="au4-iz-tLz" id="3UD-lZ-hs0">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="DJX-Kf-59M">
-                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -74,11 +74,11 @@
                                         <rect key="frame" x="0.0" y="116" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cam-ik-ZIw" id="ooG-35-3Wp">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ry7-2s-QyS">
-                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -181,6 +181,41 @@
             </objects>
             <point key="canvasLocation" x="2607" y="432"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="sKQ-wF-qqU">
+            <objects>
+                <navigationController id="3qT-fi-cxa" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="nNd-2P-KwU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="OSe-sS-HTX" kind="relationship" relationship="rootViewController" id="WBP-1c-ZMf"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1xD-QM-7xK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="756" y="-348"/>
+        </scene>
+        <!--Main Controller-->
+        <scene sceneID="WLR-6p-ElI">
+            <objects>
+                <viewController id="OSe-sS-HTX" customClass="MainController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="KVH-WC-JGt"/>
+                        <viewControllerLayoutGuide type="bottom" id="UIX-e1-SUg"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hRW-ET-fRA">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="fuj-b7-iB1"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Yrv-8u-IwG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1657" y="-349"/>
+        </scene>
         <!--Main Controller-->
         <scene sceneID="nEL-IB-dp3">
             <objects>
@@ -194,7 +229,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <webView hidden="YES" opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hIy-lu-2F6">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <dataDetectorType key="dataDetectorTypes"/>
                             </webView>
@@ -305,11 +340,11 @@
                                 <exclude reference="K9J-LG-g2K"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="j9u-OA-K4W"/>
                                 <exclude reference="wIQ-Lv-buV"/>
                                 <exclude reference="fNo-Ba-KRO"/>
                                 <exclude reference="ieA-8B-e1X"/>
                                 <exclude reference="xcv-M9-m5f"/>
+                                <exclude reference="j9u-OA-K4W"/>
                                 <exclude reference="6b5-8X-7aD"/>
                                 <exclude reference="AwJ-A8-0MO"/>
                                 <exclude reference="JwF-38-cyF"/>
@@ -324,10 +359,10 @@
                                 <include reference="K9J-LG-g2K"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="Gde-Fa-kB8"/>
                                 <include reference="fNo-Ba-KRO"/>
                                 <include reference="ieA-8B-e1X"/>
                                 <include reference="xcv-M9-m5f"/>
+                                <include reference="Gde-Fa-kB8"/>
                                 <include reference="AwJ-A8-0MO"/>
                                 <include reference="V1f-UR-jH8"/>
                                 <include reference="c3k-qN-lYX"/>
@@ -339,9 +374,9 @@
                                 <include reference="r0g-Y2-P3v"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="wIQ-Lv-buV"/>
                                 <exclude reference="Gde-Fa-kB8"/>
                                 <include reference="j9u-OA-K4W"/>
-                                <include reference="wIQ-Lv-buV"/>
                                 <include reference="6b5-8X-7aD"/>
                                 <include reference="JwF-38-cyF"/>
                             </mask>

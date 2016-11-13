@@ -116,9 +116,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //UIApplication.updateApplicationIconBadgeNumber()
         
-        if let article = mainController?.article {
-            addRecentArticleShortCutItem(article)
-        }
+//        if let article = mainController?.article {
+//            addRecentArticleShortCutItem(article)
+//        }
     }
     
     //    class func updateApplicationIconBadgeNumber() {
@@ -148,23 +148,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-        switch shortcutItem.type {
-        case "org.kiwix.search":
-            self.mainController?.showSearch(animated: false)
-            completionHandler(true)
-        case "org.kiwix.bookmarks":
-            self.mainController?.showBookmarkController()
-            completionHandler(true)
-        case recentShortcutTypeString:
-            guard let urlString = shortcutItem.userInfo?["URL"] as? String,
-                let url = URL(string: urlString) else {completionHandler(false); return}
-//            let operation = ArticleLoadOperation(url: url)
-//            GlobalQueue.shared.add(load: operation)
-            completionHandler(true)
-        default:
-            completionHandler(false)
-            return
-        }
+//        switch shortcutItem.type {
+//        case "org.kiwix.search":
+//            self.mainController?.showSearch(animated: false)
+//            completionHandler(true)
+//        case "org.kiwix.bookmarks":
+//            self.mainController?.showBookmarkController()
+//            completionHandler(true)
+//        case recentShortcutTypeString:
+//            guard let urlString = shortcutItem.userInfo?["URL"] as? String,
+//                let url = URL(string: urlString) else {completionHandler(false); return}
+////            let operation = ArticleLoadOperation(url: url)
+////            GlobalQueue.shared.add(load: operation)
+//            completionHandler(true)
+//        default:
+//            completionHandler(false)
+//            return
+//        }
     }
 
     // MARK: - Background

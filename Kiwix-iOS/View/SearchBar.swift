@@ -10,9 +10,9 @@ import UIKit
 
 class SearchBar: UIView {
     
-    let backgroundView = SearchBarBackgroundView()
-    let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
-    private(set) var textField: UITextField = SearchBarTextField()
+    private let backgroundView = SearchBarBackgroundView()
+    private let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+    private let textField: UITextField = SearchBarTextField()
     
     // MARK: - Initialization
     
@@ -28,11 +28,6 @@ class SearchBar: UIView {
     
     convenience init() {
         self.init(frame: CGRect.zero)
-    }
-    
-    convenience init(textField: UITextField) {
-        self.init(frame: CGRect.zero)
-        self.textField = textField
     }
     
     override func willMove(toSuperview newSuperview: UIView?) {
@@ -67,7 +62,6 @@ class SearchBar: UIView {
     
     override func becomeFirstResponder() -> Bool {
         textField.isUserInteractionEnabled = true
-        textField.textColor = UIColor.black
         textField.becomeFirstResponder()
         return true
     }
@@ -81,7 +75,6 @@ class SearchBar: UIView {
     
     func textFieldDidEndEditing() {
         textField.isUserInteractionEnabled = false
-        textField.textColor = UIColor.darkGray
     }
 }
 
@@ -103,25 +96,24 @@ class SearchBarTextField: UITextField {
     
     func setup() {
         placeholder = "Search"
-        font = UIFont.systemFont(ofSize: 14.0, weight: UIFontWeightRegular + 0.1)
+        
         autocorrectionType = .no
         autocapitalizationType = .none
         clearButtonMode = .whileEditing
-    }
-    
-    override var text: String? {
-        didSet {
-            let size = CGSize(width: 1000, height: 28)
-            let rect = text?.boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
-            print(rect)
-        }
+        
+        font = UIFont.systemFont(ofSize: 14.0, weight: UIFontWeightMedium)
+        textColor = UIColor.darkText
+        setValue(UIColor.gray, forKeyPath: "_placeholderLabel.textColor")
+        
+        textAlignment = .center
+        contentVerticalAlignment = .center
     }
     
     // MARK: - Rect overrides
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
         let rect = super.textRect(forBounds: bounds)
-        return rect.offsetBy(dx: 50, dy: 1)
+        return rect.offsetBy(dx: 0, dy: 1)
     }
     
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
@@ -171,7 +163,7 @@ class SearchBarBackgroundView: UIView {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         isTouching = true
         animateIn()
-        _ = (superview as? SearchBar)?.becomeFirstResponder()
+//        _ = (superview as? SearchBar)?.becomeFirstResponder()
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -180,12 +172,17 @@ class SearchBarBackgroundView: UIView {
         animateOut()
     }
     
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let frame = self.bounds.insetBy(dx: -6, dy: -12)
+        return frame.contains(point) ? self : nil
+    }
+    
     // MARK: - Animations
     
     func animateIn() {
         isAnimatingIn = true
         UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseOut, animations: {
-            self.backgroundColor = UIColor.gray
+            self.backgroundColor = UIColor.darkGray
             }) { (completed) in
                 self.isAnimatingIn = false
                 guard !self.isTouching else {return}
@@ -198,15 +195,5 @@ class SearchBarBackgroundView: UIView {
             self.backgroundColor = UIColor.lightGray
             }) { (completed) in
         }
-    }
-}
-
-extension String {
-    func heightWithConstrainedWidth(width: CGFloat, font: UIFont) -> CGFloat {
-        let constraintRect = CGSize(width: 1000, height: 28)
-        
-        let boundingBox = self.boundingRect(with: constraintRect, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
-        
-        return boundingBox.height
     }
 }
