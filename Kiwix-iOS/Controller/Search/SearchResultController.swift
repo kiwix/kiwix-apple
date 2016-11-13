@@ -119,9 +119,9 @@ class SearchResultController: SearchTableViewController, UITableViewDataSource, 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if let searchTerm = Controllers.main.searchBar.searchTerm {
-            Preference.RecentSearch.add(term: searchTerm)
-        }
+//        if let searchTerm = Controllers.main.searchBar.searchTerm {
+//            Preference.RecentSearch.add(term: searchTerm)
+//        }
         
         let result = searchResults[indexPath.row]
 //        let operation = ArticleLoadOperation(bookID: result.bookID, articleTitle: result.title)

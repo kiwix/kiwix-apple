@@ -35,7 +35,7 @@ extension MainController {
             if UIDevice.current.userInterfaceIdiom == .pad {
                 navigationItem.setRightBarButton(cancelButton, animated: animated)
             } else if UIDevice.current.userInterfaceIdiom == .phone {
-                searchBar.setShowsCancelButton(true, animated: animated)
+//                searchBar.setShowsCancelButton(true, animated: animated)
             }
         }
     }
@@ -51,7 +51,7 @@ extension MainController {
             if UIDevice.current.userInterfaceIdiom == .pad {
                 navigationItem.setRightBarButton(nil, animated: animated)
             } else if UIDevice.current.userInterfaceIdiom == .phone {
-                searchBar.setShowsCancelButton(false, animated: animated)
+//                searchBar.setShowsCancelButton(false, animated: animated)
             }
         }
     }

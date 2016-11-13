@@ -37,7 +37,7 @@ class MainController: UIViewController {
             newArticle?.addObserver(self, forKeyPath: "isBookmarked", options: .new, context: context)
         }
         didSet {
-            searchBar.articleTitle = article?.title
+//            searchBar.articleTitle = article?.title
             configureBookmarkButton()
             configureUserActivity()
         }
@@ -123,10 +123,10 @@ class MainController: UIViewController {
             toolbarItems?.removeAll()
             navigationItem.leftBarButtonItems = [navigateLeftButton, navigateRightButton, tableOfContentButton]
             navigationItem.rightBarButtonItems = [settingButton, libraryButton, bookmarkButton]
-            searchBar.setShowsCancelButton(false, animated: true)
+//            searchBar.setShowsCancelButton(false, animated: true)
         case .compact:
             if !searchBar.isFirstResponder {navigationController?.isToolbarHidden = false}
-            if searchBar.isFirstResponder {searchBar.setShowsCancelButton(true, animated: true)}
+//            if searchBar.isFirstResponder {searchBar.setShowsCancelButton(true, animated: true)}
             navigationItem.leftBarButtonItems?.removeAll()
             navigationItem.rightBarButtonItems?.removeAll()
             let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
