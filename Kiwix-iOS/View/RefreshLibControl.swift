@@ -20,7 +20,7 @@ class RefreshLibControl: UIRefreshControl {
         }
     }
     
-    fileprivate func updateTitle() {
+    private func updateTitle() {
         let string: String = {
             guard let lastRefreshTime = Preference.libraryLastRefreshTime else {return RefreshLibControl.pullDownToRefresh}
             let interval = lastRefreshTime.timeIntervalSinceNow * -1

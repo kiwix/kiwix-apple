@@ -11,7 +11,7 @@ import UIKit
 class MainController: UIViewController {
     
     let searchBar = SearchBar()
-    let toolBarController = ToolbarController()
+    lazy var toolBarController = BarButtonsController()
 
     override func viewDidLoad() {
         super.viewDidLoad()

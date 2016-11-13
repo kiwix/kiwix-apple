@@ -8,7 +8,7 @@
 
 import UIKit
 
-// MARK: - Book Cells (new)
+// MARK: - Book Cells
 
 /* Book Cell With picture indicator */
 class BasicBookCell: UITableViewCell {
@@ -115,15 +115,25 @@ class BookmarkSnippetCell: BookmarkCell {
     @IBOutlet weak var snippetLabel: UILabel!
 }
 
-// MARK: - Protocol
+// MARK: - Recent Search Cell
 
-protocol TableCellDelegate: class {
-    func didTapOnAccessoryViewForCell(_ cell: UITableViewCell)
+class LocalLangCell: UICollectionViewCell {
+    @IBOutlet weak var label: UILabel!
+    
+    override func awakeFromNib() {
+        layer.cornerRadius = 15.0
+        layer.masksToBounds = true
+        backgroundColor = UIColor.themeColor
+    }
 }
 
-// MARK: - General
+// MARK: - Other
 
 class TextSwitchCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var switchControl: UISwitch!
+}
+
+protocol TableCellDelegate: class {
+    func didTapOnAccessoryViewForCell(_ cell: UITableViewCell)
 }
