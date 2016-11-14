@@ -64,10 +64,11 @@ class Controllers {
     
     // MARK: -  Search
     
-    private var search: SearchController?
+    private var search: SearchContainer?
     
-    class var search: SearchController {
-        let controller = Controllers.shared.search ?? UIStoryboard(name: "Search", bundle: nil).instantiateInitialViewController() as! SearchController
+    class var search: SearchContainer {
+        let controller = Controllers.shared.search ??
+            UIStoryboard(name: "Search", bundle: nil).instantiateInitialViewController() as! SearchContainer
         Controllers.shared.search = controller
         return controller
     }
