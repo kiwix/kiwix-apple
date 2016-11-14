@@ -22,6 +22,10 @@ extension MainController: SearchBarDelegate, ButtonDelegates, SearchContainerDel
     
     // MARK: - Button Delegates
     
+    func didTapLibraryButton() {
+        present(Controllers.library, animated: true, completion: nil)
+    }
+    
     func didTapCancelButton() {
         _ = searchBar.resignFirstResponder()
     }

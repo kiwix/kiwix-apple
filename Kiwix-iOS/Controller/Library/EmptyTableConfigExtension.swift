@@ -46,6 +46,10 @@ extension DownloadTasksController {
         let attributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 18), NSForegroundColorAttributeName: UIColor.darkGray]
         return NSAttributedString(string: string, attributes: attributes)
     }
+    
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
+        return -tabBarController!.navigationController!.navigationBar.frame.maxY
+    }
 }
 
 extension LocalBooksController {

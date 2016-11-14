@@ -12,7 +12,7 @@ import ProcedureKit
 import MBProgressHUD
 import DZNEmptyDataSet
 
-class CloudBooksController: CoreDataBaseController, LanguageFilterUpdating, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class CloudBooksController: CDBC, UITableViewDelegate, UITableViewDataSource, LanguageFilterUpdating, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     private(set) var isRefreshing = false // used to control text on empty table view
     private(set) var isOnScreen = false // used to determine if should delay showing lang filter alert
@@ -33,9 +33,10 @@ class CloudBooksController: CoreDataBaseController, LanguageFilterUpdating, DZNE
         tableView.emptyDataSetSource = self
         tableView.emptyDataSetDelegate = self
         tableView.tableFooterView = UIView()
-            
-        refreshControl = RefreshLibControl()
-        refreshControl?.addTarget(self, action: #selector(CloudBooksController.refresh), for: .valueChanged)
+        
+        let refreshControl = RefreshLibControl()
+        refreshControl.addTarget(self, action: #selector(CloudBooksController.refresh), for: .valueChanged)
+        tableView.refreshControl = refreshControl
         
         let inset = UIEdgeInsets(top: 0, left: 0, bottom: tabBarController!.tabBar.frame.height, right: 0)
         tableView.contentInset = inset
@@ -111,7 +112,7 @@ class CloudBooksController: CoreDataBaseController, LanguageFilterUpdating, DZNE
             guard let operation = operation as? RefreshLibraryOperation else {return}
             OperationQueue.main.addOperation({ 
                 defer {
-                    self.refreshControl?.endRefreshing()
+                    self.tableView.refreshControl?.endRefreshing()
                     self.isRefreshing = false
                     self.tableView.reloadEmptyDataSet()
                 }
@@ -185,15 +186,15 @@ class CloudBooksController: CoreDataBaseController, LanguageFilterUpdating, DZNE
     
     // MARK: - TableView Data Source
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return fetchedResultController.sections?.count ?? 0
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return fetchedResultController.sections?[section].numberOfObjects ?? 0
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         self.configureCell(cell, atIndexPath: indexPath)
         return cell
@@ -229,47 +230,47 @@ class CloudBooksController: CoreDataBaseController, LanguageFilterUpdating, DZNE
     
     // MARK: Other Data Source
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard tableView.numberOfSections > 1 else {return nil}
         guard let languageName = fetchedResultController.sections?[section].name else {return nil}
         return languageName
     }
     
-    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         let sectionIndexTitles = fetchedResultController.sectionIndexTitles
         guard sectionIndexTitles.count > 2 else {return nil}
         return sectionIndexTitles
     }
     
-    override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         return fetchedResultController.section(forSectionIndexTitle: title, at: index)
     }
     
     // MARK: - Table View Delegate
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard tableView.numberOfSections > 1 else {return 0.0}
         guard let headerText = self.tableView(tableView, titleForHeaderInSection: section) else {return 0.0}
         guard headerText != "" else {return 0.0}
         return 20.0
     }
     
-    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else {return}
         header.textLabel?.font = UIFont.boldSystemFont(ofSize: 14)
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {}
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {}
     
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?{
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?{
         let book = fetchedResultController.object(at: indexPath)
         switch book.spaceState {
         case .enough:

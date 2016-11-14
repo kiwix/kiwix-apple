@@ -60,6 +60,8 @@ class Buttons {
             print("left tapped")
         case right:
             print("right tapped")
+        case library:
+            delegate?.didTapLibraryButton()
         case cancel:
             delegate?.didTapCancelButton()
         default:
@@ -81,6 +83,8 @@ class Buttons {
 }
 
 protocol ButtonDelegates {
+    
+    func didTapLibraryButton()
     func didTapCancelButton()
 }
 
