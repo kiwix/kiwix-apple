@@ -17,6 +17,7 @@ class MainController: UIViewController {
         super.viewDidLoad()
         
         navigationItem.titleView = searchBar
+        searchBar.delegate = self
         showWelcome()
     }
     
@@ -45,6 +46,8 @@ class MainController: UIViewController {
         }
     }
     
+    
+    
     // MARK: - Show / Hide
     
     func showWelcome() {
@@ -67,6 +70,11 @@ class MainController: UIViewController {
     func showSearch(animated: Bool) {
         let controller = Controllers.search
         guard !childViewControllers.contains(controller) else {return}
+        
+        // add cancel button if needed
+        if traitCollection.horizontalSizeClass == .compact {
+            navigationItem.setRightBarButton(buttons.cancel, animated: animated)
+        }
         
         addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false

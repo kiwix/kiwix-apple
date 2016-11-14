@@ -42,7 +42,7 @@ class SearchBar: UIView {
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: .UITextFieldTextDidEndEditing, object: textField)
+//        NotificationCenter.default.removeObserver(self, name: .UITextFieldTextDidEndEditing, object: textField)
     }
     
     func setup() {
@@ -61,147 +61,144 @@ class SearchBar: UIView {
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[view]-|", options: .alignAllCenterY, metrics: nil, views: ["view": textField]))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[view]-|", options: .alignAllCenterX, metrics: nil, views: ["view": textField]))
         
-        NotificationCenter.default.addObserver(self, selector: #selector(SearchBar.textFieldDidEndEditing), name: .UITextFieldTextDidEndEditing, object: textField)
+//        NotificationCenter.default.addObserver(self, selector: #selector(SearchBar.textFieldDidEndEditing), name: .UITextFieldTextDidEndEditing, object: textField)
     }
     
     // MARK: - Responder
     
     override func becomeFirstResponder() -> Bool {
         textField.isUserInteractionEnabled = true
+        textField.textAlignment = .left
         textField.becomeFirstResponder()
         delegate?.didBecomeFIrstResponder()
         return true
     }
     
     override func resignFirstResponder() -> Bool {
+        textField.isUserInteractionEnabled = false
+        textField.textAlignment = .center
         textField.resignFirstResponder()
         delegate?.didResignFirstResponder()
         return true
     }
+}
+
+private class SearchBarTextField: UITextField {
     
-    // MARK: - 
-    
-    func textFieldDidEndEditing() {
-        textField.isUserInteractionEnabled = false
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
     }
     
-    class SearchBarTextField: UITextField {
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
+    }
+    
+    convenience init() {
+        self.init(frame: CGRect.zero)
+    }
+    
+    func setup() {
+        placeholder = "Search"
         
-        override init(frame: CGRect) {
-            super.init(frame: frame)
-            setup()
-        }
+        autocorrectionType = .no
+        autocapitalizationType = .none
+        clearButtonMode = .whileEditing
         
-        required init?(coder aDecoder: NSCoder) {
-            super.init(coder: aDecoder)
-            setup()
-        }
+        font = UIFont.systemFont(ofSize: 14.0, weight: UIFontWeightMedium)
+        textColor = UIColor.darkText
+        setValue(UIColor.gray, forKeyPath: "_placeholderLabel.textColor")
         
-        convenience init() {
-            self.init(frame: CGRect.zero)
-        }
-        
-        func setup() {
-            placeholder = "Search"
-            
-            autocorrectionType = .no
-            autocapitalizationType = .none
-            clearButtonMode = .whileEditing
-            
-            font = UIFont.systemFont(ofSize: 14.0, weight: UIFontWeightMedium)
-            textColor = UIColor.darkText
-            setValue(UIColor.gray, forKeyPath: "_placeholderLabel.textColor")
-            
-            textAlignment = .center
-            contentVerticalAlignment = .center
-        }
-        
-        // MARK: - Rect overrides
-        
-        override func textRect(forBounds bounds: CGRect) -> CGRect {
-            let rect = super.textRect(forBounds: bounds)
-            return rect.offsetBy(dx: 0, dy: 1)
-        }
-        
-        override func editingRect(forBounds bounds: CGRect) -> CGRect {
-            return super.textRect(forBounds: bounds).insetBy(dx: 4, dy: 0).offsetBy(dx: 0, dy: 1)
-        }
-        
-        override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
-            return super.leftViewRect(forBounds: bounds).offsetBy(dx: -2, dy: 0)
-        }
-        
-        override func clearButtonRect(forBounds bounds: CGRect) -> CGRect {
-            return super.clearButtonRect(forBounds: bounds).offsetBy(dx: 10, dy: 0)
+        textAlignment = .center
+        contentVerticalAlignment = .center
+    }
+    
+    // MARK: - Rect overrides
+    
+    override func textRect(forBounds bounds: CGRect) -> CGRect {
+        let rect = super.textRect(forBounds: bounds)
+        return rect.offsetBy(dx: 0, dy: 1)
+    }
+    
+    override func editingRect(forBounds bounds: CGRect) -> CGRect {
+        return super.textRect(forBounds: bounds).insetBy(dx: 4, dy: 0).offsetBy(dx: 0, dy: 1)
+    }
+    
+    override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
+        return super.leftViewRect(forBounds: bounds).offsetBy(dx: -2, dy: 0)
+    }
+    
+    override func clearButtonRect(forBounds bounds: CGRect) -> CGRect {
+        return super.clearButtonRect(forBounds: bounds).offsetBy(dx: 10, dy: 0)
+    }
+}
+
+private class SearchBarBackgroundView: UIView {
+    
+    var isTouching = false
+    var isAnimatingIn = false
+    
+    // MARK: - Init
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
+    }
+    
+    convenience init() {
+        self.init(frame: CGRect.zero)
+    }
+    
+    func setup() {
+        translatesAutoresizingMaskIntoConstraints = false
+        backgroundColor = UIColor.lightGray
+        alpha = 0.3
+        layer.cornerRadius = 4.0
+        layer.masksToBounds = true
+    }
+    
+    // MARK: - Override
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        isTouching = true
+        animateIn()
+        _ = (superview as? SearchBar)?.becomeFirstResponder()
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        isTouching = false
+        guard !isAnimatingIn else {return}
+        animateOut()
+    }
+    
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let frame = self.bounds.insetBy(dx: -6, dy: -12)
+        return frame.contains(point) ? self : nil
+    }
+    
+    // MARK: - Animations
+    
+    func animateIn() {
+        isAnimatingIn = true
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseOut, animations: {
+            self.backgroundColor = UIColor.darkGray
+        }) { (completed) in
+            self.isAnimatingIn = false
+            guard !self.isTouching else {return}
+            self.animateOut()
         }
     }
     
-    class SearchBarBackgroundView: UIView {
-        
-        var isTouching = false
-        var isAnimatingIn = false
-        
-        // MARK: - Init
-        
-        override init(frame: CGRect) {
-            super.init(frame: frame)
-            setup()
-        }
-        
-        required init?(coder aDecoder: NSCoder) {
-            super.init(coder: aDecoder)
-            setup()
-        }
-        
-        convenience init() {
-            self.init(frame: CGRect.zero)
-        }
-        
-        func setup() {
-            translatesAutoresizingMaskIntoConstraints = false
-            backgroundColor = UIColor.lightGray
-            alpha = 0.3
-            layer.cornerRadius = 4.0
-            layer.masksToBounds = true
-        }
-        
-        // MARK: - Override
-        
-        override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-            isTouching = true
-            animateIn()
-            _ = (superview as? SearchBar)?.becomeFirstResponder()
-        }
-        
-        override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-            isTouching = false
-            guard !isAnimatingIn else {return}
-            animateOut()
-        }
-        
-        override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-            let frame = self.bounds.insetBy(dx: -6, dy: -12)
-            return frame.contains(point) ? self : nil
-        }
-        
-        // MARK: - Animations
-        
-        func animateIn() {
-            isAnimatingIn = true
-            UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseOut, animations: {
-                self.backgroundColor = UIColor.darkGray
-            }) { (completed) in
-                self.isAnimatingIn = false
-                guard !self.isTouching else {return}
-                self.animateOut()
-            }
-        }
-        
-        func animateOut() {
-            UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseIn, animations: {
-                self.backgroundColor = UIColor.lightGray
-            }, completion: nil)
-        }
+    func animateOut() {
+        UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseIn, animations: {
+            self.backgroundColor = UIColor.lightGray
+        }, completion: nil)
     }
 }
 
