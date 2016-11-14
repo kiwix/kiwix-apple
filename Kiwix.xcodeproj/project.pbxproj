@@ -774,10 +774,10 @@
 			isa = PBXGroup;
 			children = (
 				976B86D71DDA0C7E00FA7FD1 /* SearchContainer.swift */,
-				97A127C71D777CF100FB204D /* SearchController.swift */,
 				97A127C61D777CF100FB204D /* SearchBooksController.swift */,
 				97A127C51D777CF100FB204D /* RecentSearchController.swift */,
 				97A127C81D777CF100FB204D /* SearchResultController.swift */,
+				97A127C71D777CF100FB204D /* SearchController.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";

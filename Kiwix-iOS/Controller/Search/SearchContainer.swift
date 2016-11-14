@@ -20,8 +20,6 @@ class SearchContainer: UIViewController {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleDimViewTap))
         dimView.addGestureRecognizer(tap)
-        
-        
     }
     
     func handleDimViewTap() {
