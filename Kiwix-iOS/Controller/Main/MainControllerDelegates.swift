@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension MainController: SearchBarDelegate {
+extension MainController: SearchBarDelegate, ButtonDelegates, SearchContainerDelegate {
     
     // MARK: - SearchBarDelegate
     
@@ -17,7 +17,19 @@ extension MainController: SearchBarDelegate {
     }
     
     func didResignFirstResponder() {
-        
+        hideSearch(animated: true)
+    }
+    
+    // MARK: - Button Delegates
+    
+    func didTapCancelButton() {
+        _ = searchBar.resignFirstResponder()
+    }
+    
+    // MARK: - SearchContainerDelegate
+    
+    func didTapDimView() {
+        _ = searchBar.resignFirstResponder()
     }
 
 }

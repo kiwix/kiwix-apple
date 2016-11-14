@@ -66,6 +66,12 @@ class SearchBar: UIView {
     
     // MARK: - Responder
     
+    override var isFirstResponder: Bool {
+        get {
+            return textField.isFirstResponder
+        }
+    }
+    
     override func becomeFirstResponder() -> Bool {
         textField.isUserInteractionEnabled = true
         textField.textAlignment = .left

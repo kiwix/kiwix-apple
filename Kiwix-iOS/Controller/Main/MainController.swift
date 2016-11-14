@@ -18,6 +18,8 @@ class MainController: UIViewController {
         
         navigationItem.titleView = searchBar
         searchBar.delegate = self
+        buttons.delegate = self
+        
         showWelcome()
     }
     
@@ -35,6 +37,9 @@ class MainController: UIViewController {
             navigationController?.setToolbarHidden(false, animated: false)
             navigationItem.leftBarButtonItems?.removeAll()
             navigationItem.rightBarButtonItems?.removeAll()
+            if searchBar.isFirstResponder {
+                navigationItem.rightBarButtonItem = buttons.cancel
+            }
             toolbarItems = buttons.toolbar
         case .regular:
             navigationController?.setToolbarHidden(true, animated: false)
@@ -45,8 +50,6 @@ class MainController: UIViewController {
             return
         }
     }
-    
-    
     
     // MARK: - Show / Hide
     
@@ -69,6 +72,7 @@ class MainController: UIViewController {
     
     func showSearch(animated: Bool) {
         let controller = Controllers.search
+        controller.delegate = self
         guard !childViewControllers.contains(controller) else {return}
         
         // add cancel button if needed
@@ -76,6 +80,7 @@ class MainController: UIViewController {
             navigationItem.setRightBarButton(buttons.cancel, animated: animated)
         }
         
+        // manage view hierarchy
         addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(controller.view)
@@ -88,20 +93,23 @@ class MainController: UIViewController {
         
         if animated {
             controller.view.alpha = 0.5
-            controller.view.transform = CGAffineTransform(scaleX: 0.94, y: 0.94)
             UIView.animate(withDuration: 0.15, delay: 0.0, options: .curveEaseOut, animations: { () -> Void in
                 controller.view.alpha = 1.0
-                controller.view.transform = CGAffineTransform.identity
             }, completion: nil)
         } else {
             controller.view.alpha = 1.0
-            controller.view.transform = CGAffineTransform.identity
         }
         controller.didMove(toParentViewController: self)
     }
     
     func hideSearch(animated: Bool) {
-        guard let searchController = childViewControllers.flatMap({$0 as? SearchController}).first else {return}
+        guard let searchController = childViewControllers.flatMap({$0 as? SearchContainer}).first else {return}
+        
+        // remove cancel button if needed
+        if traitCollection.horizontalSizeClass == .compact {
+            navigationItem.setRightBarButton(nil, animated: animated)
+        }
+        
         let completion = { (complete: Bool) -> Void in
             guard complete else {return}
             searchController.view.removeFromSuperview()
@@ -114,7 +122,6 @@ class MainController: UIViewController {
         if animated {
             UIView.animate(withDuration: 0.15, delay: 0.0, options: .beginFromCurrentState, animations: {
                 searchController.view.alpha = 0.0
-                searchController.view.transform = CGAffineTransform(scaleX: 0.96, y: 0.96)
             }, completion: completion)
         } else {
             completion(true)

@@ -26,6 +26,7 @@ class Buttons {
     private(set) lazy var cancel: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(tapped(button:)))
     
     let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace)
+    var delegate: ButtonDelegates?
     
     var toolbar: [UIBarButtonItem] {
         get {
@@ -53,13 +54,14 @@ class Buttons {
         }
     }
     
-    
     @objc func tapped(button: UIBarButtonItem) {
         switch button {
         case left:
             print("left tapped")
         case right:
             print("right tapped")
+        case cancel:
+            delegate?.didTapCancelButton()
         default:
             return
         }
@@ -76,6 +78,10 @@ class Buttons {
             return
         }
     }
+}
+
+protocol ButtonDelegates {
+    func didTapCancelButton()
 }
 
 class GrayBarButtonItem: UIBarButtonItem {
