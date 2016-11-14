@@ -11,7 +11,9 @@ import CoreData
 import ProcedureKit
 import DZNEmptyDataSet
 
-class LocalBooksController: CoreDataBaseController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class LocalBooksController: UIViewController, UITableViewDelegate, UITableViewDataSource, FRCTableDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+    
+    @IBOutlet weak var tableView: UITableView!
     
     // MARK: - Override
     
@@ -67,7 +69,7 @@ class LocalBooksController: CoreDataBaseController, UITableViewDelegate, UITable
         return cell
     }
     
-    override func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
+    func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
         guard let cell = cell as? BasicBookCell else {return}
         let book = fetchedResultController.object(at: indexPath)
         

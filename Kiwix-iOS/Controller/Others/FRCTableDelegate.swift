@@ -9,21 +9,17 @@
 import UIKit
 import CoreData
 
+@objc protocol FRCTableDelegate: NSFetchedResultsControllerDelegate {
+    var tableView: UITableView! { get set }
+    func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath)
+}
 
-class CoreDataBaseController: UIViewController, NSFetchedResultsControllerDelegate {
-    @IBOutlet weak var tableView: UITableView!
-    
-    func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
-        
-    }
-    
-    // MARK: - Fetched Result Controller Delegate
-    
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+extension FRCTableDelegate where Self: UIViewController {
+    func controllerWillChangeContent(controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
     }
     
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+    func controller(controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         switch type {
         case .insert:
             tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
@@ -34,7 +30,7 @@ class CoreDataBaseController: UIViewController, NSFetchedResultsControllerDelega
         }
     }
     
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+    func controller(controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
         case .insert:
             guard let newIndexPath = newIndexPath else {return}
@@ -51,8 +47,8 @@ class CoreDataBaseController: UIViewController, NSFetchedResultsControllerDelega
             tableView.insertRows(at: [newIndexPath], with: .fade)
         }
     }
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+
+    func controllerDidChangeContent(controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
     }
 }

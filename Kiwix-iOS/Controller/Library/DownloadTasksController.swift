@@ -10,8 +10,9 @@ import UIKit
 import CoreData
 import DZNEmptyDataSet
 
-class DownloadTasksController: CoreDataBaseController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class DownloadTasksController: UIViewController, UITableViewDelegate, UITableViewDataSource, FRCTableDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
+    @IBOutlet weak var tableView: UITableView!
     var timer: Timer?
     
     // MARK: - Override
@@ -102,13 +103,17 @@ class DownloadTasksController: CoreDataBaseController, UITableViewDelegate, UITa
         return cell
     }
     
-    func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath, animated: Bool = false) {
+    func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
         guard let downloadTask = fetchedResultController.object(at: indexPath) as? DownloadTask,
             let book = downloadTask.book,
             let cell = cell as? DownloadBookCell else {return}
         
         cell.titleLabel.text = book.title
         cell.favIcon.image = UIImage(data: book.favIcon ?? Data())
+    }
+    
+    func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath, animated: Bool = false) {
+        
         
 //        if let progress = Network.shared.operations[book.id]?.progress {
 //            cell.progressLabel.text = progress.fractionCompletedDescription

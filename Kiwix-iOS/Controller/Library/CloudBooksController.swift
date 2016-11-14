@@ -12,7 +12,9 @@ import ProcedureKit
 import MBProgressHUD
 import DZNEmptyDataSet
 
-class CloudBooksController: CoreDataBaseController, UITableViewDelegate, UITableViewDataSource, LanguageFilterUpdating, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class CloudBooksController: UIViewController, UITableViewDelegate, UITableViewDataSource, FRCTableDelegate, LanguageFilterUpdating, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+    
+    @IBOutlet weak var tableView: UITableView!
     
     private(set) var isRefreshing = false // used to control text on empty table view
     private(set) var isOnScreen = false // used to determine if should delay showing lang filter alert
@@ -200,7 +202,7 @@ class CloudBooksController: CoreDataBaseController, UITableViewDelegate, UITable
         return cell
     }
     
-    override func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
+    func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
         guard let cell = cell as? BasicBookCell else {return}
         let book = fetchedResultController.object(at: indexPath)
         

@@ -21,12 +21,11 @@ class LibrarySplitViewController: UISplitViewController, UISplitViewControllerDe
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         guard traitCollection != previousTraitCollection else {return}
-        let controller: CoreDataBaseController? = {
+        let controller: FRCTableDelegate? = {
             let nav = viewControllers.first as? UINavigationController
             let tab = nav?.topViewController as? UITabBarController
-            return tab?.selectedViewController as? CoreDataBaseController
+            return tab?.selectedViewController as? FRCTableDelegate
         }()
-        //controller?.tableView.reloadData()
         controller?.tableView.indexPathsForVisibleRows?.forEach({ (indexPath) in
             guard let cell = controller?.tableView.cellForRow(at: indexPath) else {return}
             controller?.configureCell(cell, atIndexPath: indexPath)
