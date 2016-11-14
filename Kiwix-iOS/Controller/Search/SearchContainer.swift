@@ -11,13 +11,16 @@ import UIKit
 class SearchContainer: UIViewController {
     
     @IBOutlet weak var dimView: UIView!
+    
     var delegate: SearchContainerDelegate?
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleDimViewTap))
         dimView.addGestureRecognizer(tap)
+        
         
     }
     

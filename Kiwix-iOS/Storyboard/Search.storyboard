@@ -29,9 +29,6 @@
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wyO-bR-owd" customClass="SearchRoundedCornerView" customModule="Kiwix" customModuleProvider="target">
                                 <rect key="frame" x="115" y="64" width="538" height="910"/>
-                                <connections>
-                                    <segue destination="vSQ-RM-B8e" kind="embed" id="eNB-iH-uRa"/>
-                                </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l6w-E8-vrr" customClass="SearchRoundedCornerView" customModule="Kiwix" customModuleProvider="target">
                                 <rect key="frame" x="115" y="64" width="538" height="910"/>
@@ -157,11 +154,11 @@
                         <viewControllerLayoutGuide type="bottom" id="fIX-c6-nY4"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="HEy-pW-bRk">
-                        <rect key="frame" x="0.0" y="0.0" width="538" height="910"/>
+                        <rect key="frame" x="0.0" y="0.0" width="538" height="717"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="nDJ-c8-oj6">
-                                <rect key="frame" x="0.0" y="108" width="538" height="802"/>
+                                <rect key="frame" x="0.0" y="108" width="538" height="609"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="CheckMarkBookCell" id="BZj-UA-kZf" customClass="CheckMarkBookCell" customModule="Kiwix">
@@ -172,7 +169,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GW1-dh-vyc">
-                                                    <rect key="frame" x="48" y="6" width="450" height="19.5"/>
+                                                    <rect key="frame" x="48" y="6" width="450" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="19.5" id="o3M-qV-F9K"/>
                                                     </constraints>
@@ -188,13 +185,13 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b2I-tp-w9c">
-                                                    <rect key="frame" x="48" y="25.5" width="450" height="12.5"/>
+                                                    <rect key="frame" x="48" y="26" width="450" height="12"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Opy-5E-UzW">
-                                                    <rect key="frame" x="42" y="6" width="2" height="31.5"/>
+                                                    <rect key="frame" x="42" y="6" width="2" height="32"/>
                                                     <color key="backgroundColor" red="1" green="0.40000000000000002" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="4" id="gxc-MY-b04"/>
@@ -285,7 +282,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R0s-FA-lXA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1852" y="-1003.4482758620691"/>
+            <point key="canvasLocation" x="1852" y="-1461"/>
         </scene>
         <!--Search Result Controller-->
         <scene sceneID="g1P-db-EbE">
@@ -525,7 +522,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RyG-of-G9K" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2785" y="-1004"/>
+            <point key="canvasLocation" x="2523" y="-1461"/>
         </scene>
         <!--Search Container-->
         <scene sceneID="Rcv-85-TOv">
@@ -543,12 +540,22 @@
                                 <rect key="frame" x="0.0" y="64" width="768" height="960"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="0.5" colorSpace="calibratedWhite"/>
                             </view>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TwU-1D-XoU" customClass="SearchRoundedCornerView" customModule="Kiwix" customModuleProvider="target">
+                                <rect key="frame" x="115" y="64" width="538" height="717"/>
+                                <connections>
+                                    <segue destination="vSQ-RM-B8e" kind="embed" id="5c8-AT-w6g"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="TwU-1D-XoU" firstAttribute="width" secondItem="4ma-1x-rrV" secondAttribute="width" multiplier="0.7" id="8Ra-9F-JD4"/>
                             <constraint firstAttribute="trailing" secondItem="aYO-40-lc1" secondAttribute="trailing" id="BVS-ar-WL4"/>
+                            <constraint firstItem="TwU-1D-XoU" firstAttribute="height" secondItem="4ma-1x-rrV" secondAttribute="height" multiplier="0.7" id="FMO-4e-tUF"/>
                             <constraint firstItem="aYO-40-lc1" firstAttribute="leading" secondItem="4ma-1x-rrV" secondAttribute="leading" id="I4h-o0-seW"/>
+                            <constraint firstItem="TwU-1D-XoU" firstAttribute="centerX" secondItem="4ma-1x-rrV" secondAttribute="centerX" id="Ic8-db-q3b"/>
                             <constraint firstItem="io0-SJ-WNQ" firstAttribute="top" secondItem="aYO-40-lc1" secondAttribute="bottom" id="kHq-Kc-KeD"/>
+                            <constraint firstItem="TwU-1D-XoU" firstAttribute="top" secondItem="BED-lt-fDm" secondAttribute="bottom" id="r7L-V0-bRc"/>
                             <constraint firstItem="aYO-40-lc1" firstAttribute="top" secondItem="BED-lt-fDm" secondAttribute="bottom" id="tGo-AF-P3V"/>
                         </constraints>
                         <variation key="default">

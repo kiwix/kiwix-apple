@@ -11,7 +11,7 @@ import CoreData
 import ProcedureKit
 import DZNEmptyDataSet
 
-class LocalBooksController: LibraryBaseController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class LocalBooksController: CoreDataBaseController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // MARK: - Override
     
