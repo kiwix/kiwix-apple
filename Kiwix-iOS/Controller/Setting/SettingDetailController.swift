@@ -3,7 +3,7 @@
 //  Kiwix
 //
 //  Created by Chris Li on 7/13/16.
-//  Copyright © 2016 Chris. All rights reserved.
+//  Copyright © 2016 Chris Li. All rights reserved.
 //
 
 import UIKit

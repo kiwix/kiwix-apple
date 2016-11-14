@@ -3,7 +3,7 @@
 //  Kiwix
 //
 //  Created by Chris on 12/19/15.
-//  Copyright © 2015 Chris. All rights reserved.
+//  Copyright © 2016 Chris Li. All rights reserved.
 //
 
 import ProcedureKit

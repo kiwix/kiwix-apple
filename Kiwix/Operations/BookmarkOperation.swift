@@ -3,7 +3,7 @@
 //  Kiwix
 //
 //  Created by Chris Li on 9/26/16.
-//  Copyright © 2016 Chris. All rights reserved.
+//  Copyright © 2016 Chris Li. All rights reserved.
 //
 
 import CoreData
