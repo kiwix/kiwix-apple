@@ -35,15 +35,15 @@ class MainController: UIViewController {
         switch traitCollection.horizontalSizeClass {
         case .compact:
             navigationController?.setToolbarHidden(false, animated: false)
-            navigationItem.leftBarButtonItems?.removeAll()
-            navigationItem.rightBarButtonItems?.removeAll()
+            navigationItem.leftBarButtonItems = nil
+            navigationItem.rightBarButtonItems = nil
             if searchBar.isFirstResponder {
                 navigationItem.rightBarButtonItem = buttons.cancel
             }
             toolbarItems = buttons.toolbar
         case .regular:
             navigationController?.setToolbarHidden(true, animated: false)
-            toolbarItems?.removeAll()
+            toolbarItems = nil
             navigationItem.leftBarButtonItems = buttons.navLeft
             navigationItem.rightBarButtonItems = buttons.navRight
         default:

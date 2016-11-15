@@ -48,8 +48,6 @@ class ScanLocalBookOperation: Procedure {
             context.performAndWait {self.updateCoreData()}
         }
         
-        
-        
         let viewContext = AppDelegate.persistentContainer.viewContext
         context.performAndWait { if self.context.hasChanges {try? self.context.save()} }
         viewContext.performAndWait { if viewContext.hasChanges {try? viewContext.save()} }

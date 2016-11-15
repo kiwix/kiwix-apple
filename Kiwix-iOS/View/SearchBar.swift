@@ -41,6 +41,23 @@ class SearchBar: UIView {
         frame = CGRect(x: 0, y: 0, width: superview.frame.width, height: superview.frame.height)
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        guard let superview = superview else {return}
+        let midx = superview.bounds.midX
+        
+        var left = superview.bounds.origin.x
+        var right = superview.bounds.origin.x + superview.bounds.width
+        
+        for view in superview.subviews {
+            guard view.alpha > 0 else { continue }
+            left = view.frame.maxX < midx ? max(left, view.frame.maxX) : left
+            right = view.frame.minX > midx ? min(right, view.frame.minX) : right
+        }
+        
+        frame = CGRect(x: left, y: 0, width: right - left, height: superview.bounds.height).insetBy(dx: 10, dy: 0)
+    }
+    
     deinit {
 //        NotificationCenter.default.removeObserver(self, name: .UITextFieldTextDidEndEditing, object: textField)
     }
@@ -62,6 +79,10 @@ class SearchBar: UIView {
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[view]-|", options: .alignAllCenterX, metrics: nil, views: ["view": textField]))
         
 //        NotificationCenter.default.addObserver(self, selector: #selector(SearchBar.textFieldDidEndEditing), name: .UITextFieldTextDidEndEditing, object: textField)
+    }
+    
+    func textDidChange(textField: UITextField) {
+        print(textField.text  )
     }
     
     // MARK: - Responder
@@ -107,6 +128,7 @@ private class SearchBarTextField: UITextField {
     
     func setup() {
         placeholder = "Search"
+        addTarget(superview, action: #selector(SearchBar.textDidChange(textField:)), for: UIControlEvents.editingChanged)
         
         autocorrectionType = .no
         autocapitalizationType = .none

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class LibrarySplitViewController: UISplitViewController, UISplitViewControllerDelegate {
     override func viewDidLoad() {
@@ -21,10 +22,10 @@ class LibrarySplitViewController: UISplitViewController, UISplitViewControllerDe
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         guard traitCollection != previousTraitCollection else {return}
-        let controller: FRCTableDelegate? = {
+        let controller: LibraryBaseController? = {
             let nav = viewControllers.first as? UINavigationController
             let tab = nav?.topViewController as? UITabBarController
-            return tab?.selectedViewController as? FRCTableDelegate
+            return tab?.selectedViewController as? LibraryBaseController
         }()
         controller?.tableView.indexPathsForVisibleRows?.forEach({ (indexPath) in
             guard let cell = controller?.tableView.cellForRow(at: indexPath) else {return}
@@ -57,5 +58,50 @@ class LibrarySplitViewController: UISplitViewController, UISplitViewControllerDe
     
     var isShowingLangFilter: Bool {
         return ((viewControllers[safe: 1] as? UINavigationController)?.topViewController is LanguageFilterController)
+    }
+}
+
+class LibraryBaseController: UIViewController, NSFetchedResultsControllerDelegate {
+    @IBOutlet weak var tableView: UITableView!
+    
+    func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
+        
+    }
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        switch type {
+        case .insert:
+            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
+        case .delete:
+            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
+        default:
+            return
+        }
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            guard let newIndexPath = newIndexPath else {return}
+            tableView.insertRows(at: [newIndexPath], with: .fade)
+        case .delete:
+            guard let indexPath = indexPath else {return}
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        case .update:
+            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) else {return}
+            configureCell(cell, atIndexPath: indexPath)
+        case .move:
+            guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.insertRows(at: [newIndexPath], with: .fade)
+        }
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
     }
 }

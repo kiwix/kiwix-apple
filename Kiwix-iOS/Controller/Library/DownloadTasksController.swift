@@ -10,9 +10,7 @@ import UIKit
 import CoreData
 import DZNEmptyDataSet
 
-class DownloadTasksController: UIViewController, UITableViewDelegate, UITableViewDataSource, FRCTableDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
-    
-    @IBOutlet weak var tableView: UITableView!
+class DownloadTasksController: LibraryBaseController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     var timer: Timer?
     
     // MARK: - Override
@@ -103,7 +101,7 @@ class DownloadTasksController: UIViewController, UITableViewDelegate, UITableVie
         return cell
     }
     
-    func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
+    override func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
         guard let downloadTask = fetchedResultController.object(at: indexPath) as? DownloadTask,
             let book = downloadTask.book,
             let cell = cell as? DownloadBookCell else {return}
