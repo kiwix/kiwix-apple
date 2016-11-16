@@ -50,7 +50,7 @@ class ArticleLoadOperation: Procedure {
     }
     
     override func execute() {
-        let controller = ((UIApplication.shared.delegate as! AppDelegate)
+        let main = ((UIApplication.shared.delegate as! AppDelegate)
             .window?.rootViewController as! UINavigationController)
             .topViewController as! MainController
         guard let url: URL = {
@@ -75,12 +75,15 @@ class ArticleLoadOperation: Procedure {
         let request = URLRequest(url: url)
         
         OperationQueue.main.addOperation {
-            controller.hideSearch(animated: self.animated)
-            controller.presentingViewController?.dismiss(animated: self.animated, completion: nil)
-            if controller.traitCollection.horizontalSizeClass == .compact {controller.hideTableOfContentsController()}
+            main.hideWelcome()
+            main.showWeb()
+            main.hideSearch(animated: self.animated)
+            main.presentingViewController?.dismiss(animated: self.animated, completion: nil)
+            //if main.traitCollection.horizontalSizeClass == .compact {main.hideTableOfContentsController()}
             
-            if controller.webView.request?.url != url {
-                controller.webView.loadRequest(request)
+            let webView = main.controllers.web.webView
+            if webView.request?.url != url {
+                webView?.loadRequest(request)
             }
             
             self.finish()

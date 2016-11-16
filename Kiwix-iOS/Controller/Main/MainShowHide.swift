@@ -24,9 +24,9 @@ extension MainController {
     }
     
     func hideWelcome() {
-        let controller = childViewControllers.flatMap({$0 as? WelcomeController}).first
-        controller?.removeFromParentViewController()
-        controller?.view.removeFromSuperview()
+        guard let controller = childViewControllers.flatMap({$0 as? WelcomeController}).first else {return}
+        controller.removeFromParentViewController()
+        controller.view.removeFromSuperview()
     }
     
     // MARK: - Search

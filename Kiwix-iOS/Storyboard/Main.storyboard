@@ -36,6 +36,9 @@
                         </constraints>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="webView" destination="MjM-In-ehJ" id="tud-dZ-b7q"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3pg-HH-V5d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
