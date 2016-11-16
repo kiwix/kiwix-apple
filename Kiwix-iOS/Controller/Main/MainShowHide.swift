@@ -46,9 +46,9 @@ extension MainController {
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(controller.view)
         
-        let views = ["SearchController": controller.view]
+        let views = ["view": controller.view]
         view.addConstraints(NSLayoutConstraint.constraints(
-            withVisualFormat: "H:|[SearchController]|", options: .alignAllCenterY, metrics: nil, views: views))
+            withVisualFormat: "H:|[view]|", options: .alignAllCenterY, metrics: nil, views: views))
         view.addConstraint(controller.view.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor))
         view.addConstraint(controller.view.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor))
         
@@ -91,5 +91,20 @@ extension MainController {
     
     // MARK: - Web
     
+    func showWeb() {
+        let controller = controllers.web
+        guard !childViewControllers.contains(controller) else {return}
+        
+        addChildViewController(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(controller.view)
+        
+        let views = ["view": controller.view]
+        view.addConstraints(NSLayoutConstraint.constraints(
+            withVisualFormat: "H:|[view]|", options: .alignAllCenterY, metrics: nil, views: views))
+        view.addConstraint(controller.view.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor))
+        view.addConstraint(controller.view.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor))
+        controller.didMove(toParentViewController: self)
+    }
     
 }
