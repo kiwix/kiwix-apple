@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WebViewController: UIViewController, UIWebViewDelegate {
+class WebViewControllerOld: UIViewController, UIWebViewDelegate {
 
     @IBOutlet weak var webView: UIWebView!
     
@@ -36,7 +36,7 @@ class WebViewController: UIViewController, UIWebViewDelegate {
         
         guard let rootController = navigationController?.viewControllers.first else {return}
         if rootController == self {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(WebViewController.dismissSelf))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissSelf))
         }
     }
     

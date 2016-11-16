@@ -105,7 +105,7 @@ class SettingTBVC: UITableViewController {
             showRateKiwixAlert(showRemindLater: false)
         case LocalizedStrings.about:
             let controller = UIStoryboard(name: "Setting", bundle: nil)
-                .instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
+                .instantiateViewController(withIdentifier: "WebViewControllerOld") as! WebViewControllerOld
             controller.page = .About
             navigationController?.pushViewController(controller, animated: true)
         default:
