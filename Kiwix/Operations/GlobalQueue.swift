@@ -29,28 +29,18 @@ class GlobalQueue: ProcedureQueue {
         add(operation: searchOperation)
         self.searchOperation = searchOperation
     }
-
-    // Fix: use specific class type
-//    private weak var scanOperation: Procedure?
-//    private weak var searchOperation: Procedure?
-//    private weak var articleLoadOperation: ArticleLoadOperation?
     
-//    func add(scan operation: Procedure) {
-//        addOperation(operation)
-//        scanOperation = operation
-//    }
-//    
-//
-//    func add(load operation: ArticleLoadOperation) {
-//        if let scanOperation = scanOperation {
-//            operation.addDependency(scanOperation)
-//        }
-//        
-//        if let articleLoadOperation = self.articleLoadOperation {
-//            operation.addDependency(articleLoadOperation)
-//        }
-//        
-//        addOperation(operation)
-//        articleLoadOperation = operation
-//    }
+    private weak var articleLoadOperation: ArticleLoadOperation?
+    func add(articleLoadOperation: ArticleLoadOperation) {
+        if let scanOperation = scanOperation {
+            articleLoadOperation.addDependency(scanOperation)
+        }
+        
+        if let articleLoadOperation = self.articleLoadOperation {
+            articleLoadOperation.addDependency(articleLoadOperation)
+        }
+        
+        add(operation: articleLoadOperation)
+        self.articleLoadOperation = articleLoadOperation
+    }
 }
