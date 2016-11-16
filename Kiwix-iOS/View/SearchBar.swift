@@ -8,19 +8,16 @@
 
 import UIKit
 
-protocol SearchBarDelegate: class {
-    func didBecomeFIrstResponder()
-    func didResignFirstResponder()
-}
-
 class SearchBar: UIView {
     
     private let backgroundView = SearchBarBackgroundView()
     private let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
     private let textField: UITextField = SearchBarTextField()
+    private var cachedSearchText: String?
+    let delayTextChangeCallback = true
     weak var delegate: SearchBarDelegate?
     
-    // MARK: - Initialization
+    // MARK: - Overrides
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -62,6 +59,8 @@ class SearchBar: UIView {
 //        NotificationCenter.default.removeObserver(self, name: .UITextFieldTextDidEndEditing, object: textField)
     }
     
+    // MARK: -
+    
     func setup() {
         translatesAutoresizingMaskIntoConstraints = true
         autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -82,7 +81,18 @@ class SearchBar: UIView {
     }
     
     func textDidChange(textField: UITextField) {
-        print(textField.text  )
+        guard let searchText = textField.text else {return}
+        if delayTextChangeCallback {
+            guard self.cachedSearchText != searchText else {return}
+            self.cachedSearchText = searchText
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(275 * USEC_PER_SEC)) / Double(NSEC_PER_SEC)) {
+                guard searchText == self.cachedSearchText else {return}
+                self.delegate?.textDidChange(text: searchText, searchBar: self)
+            }
+        } else {
+            cachedSearchText = searchText
+            delegate?.textDidChange(text: searchText, searchBar: self)
+        }
     }
     
     // MARK: - Responder
@@ -97,7 +107,7 @@ class SearchBar: UIView {
         textField.isUserInteractionEnabled = true
         textField.textAlignment = .left
         textField.becomeFirstResponder()
-        delegate?.didBecomeFIrstResponder()
+        delegate?.didBecomeFirstResponder(searchBar: self)
         return true
     }
     
@@ -105,7 +115,7 @@ class SearchBar: UIView {
         textField.isUserInteractionEnabled = false
         textField.textAlignment = .center
         textField.resignFirstResponder()
-        delegate?.didResignFirstResponder()
+        delegate?.didResignFirstResponder(searchBar: self)
         return true
     }
 }
@@ -230,3 +240,10 @@ private class SearchBarBackgroundView: UIView {
     }
 }
 
+// MARK: - SearchBarDelegate
+
+protocol SearchBarDelegate: class {
+    func didBecomeFirstResponder(searchBar: SearchBar)
+    func didResignFirstResponder(searchBar: SearchBar)
+    func textDidChange(text: String, searchBar: SearchBar)
+}

@@ -25,6 +25,10 @@ class SearchContainer: UIViewController {
     func handleDimViewTap() {
         delegate?.didTapDimView()
     }
+    
+    func searchFieldTextDidChange(text: String) {
+        
+    }
 
 }
 

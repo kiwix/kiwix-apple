@@ -12,12 +12,16 @@ extension MainController: SearchBarDelegate, ButtonDelegates, SearchContainerDel
     
     // MARK: - SearchBarDelegate
     
-    func didBecomeFIrstResponder() {
+    func didBecomeFirstResponder(searchBar: SearchBar) {
         showSearch(animated: true)
     }
     
-    func didResignFirstResponder() {
+    func didResignFirstResponder(searchBar: SearchBar) {
         hideSearch(animated: true)
+    }
+    
+    func textDidChange(text: String, searchBar: SearchBar) {
+        print(text)
     }
     
     // MARK: - Button Delegates
