@@ -43,7 +43,7 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
         })
         operation.queuePriority = .veryHigh
         if readers.count == 0 { operation.qualityOfService = .userInteractive }
-        GlobalQueue.shared.add(operation: operation)
+        GlobalQueue.shared.add(scanOperation: operation)
     }
     
     // MARK: - Reader Addition / Deletion

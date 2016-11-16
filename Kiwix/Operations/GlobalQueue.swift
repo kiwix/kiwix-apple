@@ -11,6 +11,25 @@ import ProcedureKit
 class GlobalQueue: ProcedureQueue {
     static let shared = GlobalQueue()
     
+    private weak var scanOperation: ScanLocalBookOperation?
+    func add(scanOperation: ScanLocalBookOperation) {
+        add(operation: scanOperation)
+        self.scanOperation = scanOperation
+    }
+    
+    private weak var searchOperation: SearchOperation?
+    func add(searchOperation: SearchOperation) {
+        if let scanOperation = scanOperation {
+            searchOperation.addDependency(scanOperation)
+        }
+        
+        if let searchOperation = self.searchOperation {
+            searchOperation.cancel()
+        }
+        add(operation: searchOperation)
+        self.searchOperation = searchOperation
+    }
+
     // Fix: use specific class type
 //    private weak var scanOperation: Procedure?
 //    private weak var searchOperation: Procedure?
@@ -21,18 +40,7 @@ class GlobalQueue: ProcedureQueue {
 //        scanOperation = operation
 //    }
 //    
-//    func add(search operation: Procedure) {
-//        if let scanOperation = scanOperation {
-//            operation.addDependency(scanOperation)
-//        }
-//        
-//        if let searchOperation = self.searchOperation {
-//            searchOperation.cancel()
-//        }
-//        addOperation(operation)
-//        searchOperation = operation
-//    }
-//    
+//
 //    func add(load operation: ArticleLoadOperation) {
 //        if let scanOperation = scanOperation {
 //            operation.addDependency(scanOperation)

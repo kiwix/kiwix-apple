@@ -16,10 +16,8 @@ class SearchOperation: GroupProcedure {
         self.searchText = searchText
         super.init(operations: [])
         add(condition: MutuallyExclusive<SearchContainer>())
-    }
-    
-    override func execute() {
-        let searches = Book.fetchLocal(in: AppDelegate.persistentContainer.newBackgroundContext())
+        
+        let searches = Book.fetchLocal(in: AppDelegate.persistentContainer.viewContext)
             .filter({ $0.includeInSearch })
             .map({ BookSearch(zimID: $0.id, searchText: searchText) })
         let sort = Sort()
@@ -34,7 +32,6 @@ class SearchOperation: GroupProcedure {
         })
         add(children: searches)
         add(children: sort)
-        super.execute()
     }
 }
 
