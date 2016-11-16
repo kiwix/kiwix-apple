@@ -10,14 +10,10 @@ import UIKit
 import ProcedureKit
 import DZNEmptyDataSet
 
-class SearchResultController: SearchTableViewController, UITableViewDataSource, UITableViewDelegate {
+class SearchResultController: SearchBaseTableController, UITableViewDataSource, UITableViewDelegate {
     
-    var searchResults = [SearchResult]()
-    
-    var shouldShowNoResults = false
-    var shouldClipRoundCorner: Bool {
-        return traitCollection.verticalSizeClass == .regular && traitCollection.horizontalSizeClass == .regular
-    }
+    private var searchResults = [SearchResult]()
+    private var shouldShowNoResults = false
     
     // MARK: - Override
     
@@ -30,12 +26,6 @@ class SearchResultController: SearchTableViewController, UITableViewDataSource, 
         tableView.emptyDataSetDelegate = self
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        guard traitCollection != previousTraitCollection else {return}
-        tableView.layer.cornerRadius = shouldClipRoundCorner ? 10.0 : 0.0
-        tableView.layer.masksToBounds = shouldClipRoundCorner
-    }
-    
     // MARK: -
     
     func selectFirstResultIfPossible() {
@@ -44,12 +34,9 @@ class SearchResultController: SearchTableViewController, UITableViewDataSource, 
         tableView(tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
     }
     
-    func reload(results: [SearchResult]?) {
-        if let results = results {
-            searchResults = results
-        } else {
-            searchResults.removeAll()
-        }
+    func reload(searchText: String, results: [SearchResult]) {
+        shouldShowNoResults = searchText != ""
+        searchResults = results
         
         tableView.tableFooterView = searchResults.count > 0 ? nil : UIView()
         tableView.reloadData()
@@ -57,25 +44,6 @@ class SearchResultController: SearchTableViewController, UITableViewDataSource, 
         
         guard searchResults.count > 0 else {return}
         self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-    }
-    
-    func startSearch(_ searchText: String) {
-        guard searchText != "" else {
-            shouldShowNoResults = false
-            reload(results: nil)
-            return
-        }
-        
-//        let operation = SearchOperation(searchTerm: searchText)
-//        operation.addObserver(DidFinishObserver {(operation, errors) in
-//            guard let operation = operation as? SearchOperation else {return}
-//            NSOperationQueue.mainQueue().addOperationWithBlock({
-//                self.shouldShowNoResults = true
-//                self.reload(results: operation.results)
-//            })
-//        })
-//        GlobalQueue.shared.add(search: operation)
-//        shouldShowNoResults = false
     }
     
     // MARK: - Table view data source
@@ -118,14 +86,7 @@ class SearchResultController: SearchTableViewController, UITableViewDataSource, 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-//        if let searchTerm = Controllers.main.searchBar.searchTerm {
-//            Preference.RecentSearch.add(term: searchTerm)
-//        }
-        
         let result = searchResults[indexPath.row]
-//        let operation = ArticleLoadOperation(bookID: result.bookID, articleTitle: result.title)
-//        GlobalQueue.shared.add(load: operation)
     }
 
     // MARK: - DZNEmptyDataSet

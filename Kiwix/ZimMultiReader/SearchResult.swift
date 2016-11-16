@@ -63,6 +63,10 @@ class SearchResult: CustomStringConvertible {
     var rankInfo: String {
         return "(\(distance), \(probability ?? -1), \(String(format: "%.4f", score)))"
     }
+    
+    static func << (lhs: SearchResult, rhs: SearchResult) -> Bool {
+        return lhs.title.caseInsensitiveCompare(rhs.title) == ComparisonResult.orderedAscending
+    }
 }
 
 class WeightFactor {

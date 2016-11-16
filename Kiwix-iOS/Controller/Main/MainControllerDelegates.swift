@@ -21,7 +21,7 @@ extension MainController: SearchBarDelegate, ButtonDelegates, SearchContainerDel
     }
     
     func textDidChange(text: String, searchBar: SearchBar) {
-        print(text)
+        Controllers.search.searchText = text
     }
     
     // MARK: - Button Delegates
