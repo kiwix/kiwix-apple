@@ -21,13 +21,13 @@ extension MainController: SearchBarDelegate, ButtonDelegates, SearchContainerDel
     }
     
     func textDidChange(text: String, searchBar: SearchBar) {
-        Controllers.search.searchText = text
+        controllers.search.searchText = text
     }
     
     // MARK: - Button Delegates
     
     func didTapLibraryButton() {
-        present(Controllers.library, animated: true, completion: nil)
+        present(controllers.library, animated: true, completion: nil)
     }
     
     func didTapCancelButton() {

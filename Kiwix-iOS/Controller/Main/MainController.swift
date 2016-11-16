@@ -11,6 +11,7 @@ import UIKit
 class MainController: UIViewController {
     
     let searchBar = SearchBar()
+    lazy var controllers = Controllers()
     lazy var buttons = Buttons()
 
     override func viewDidLoad() {
@@ -54,7 +55,7 @@ class MainController: UIViewController {
     // MARK: - Show / Hide
     
     func showWelcome() {
-        let controller = Controllers.welcome
+        let controller = controllers.welcome
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         addChildViewController(controller)
         view.addSubview(controller.view)
@@ -71,7 +72,7 @@ class MainController: UIViewController {
     }
     
     func showSearch(animated: Bool) {
-        let controller = Controllers.search
+        let controller = controllers.search
         controller.delegate = self
         guard !childViewControllers.contains(controller) else {return}
         
