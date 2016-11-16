@@ -8,17 +8,11 @@
 
 import UIKit
 
-// MARK: - Book Cells
+// MARK: - Base Class
 
-/* Book Cell With picture indicator */
-class BasicBookCell: UITableViewCell {
-    
+class FavIconAndPicIndicatorCell: UITableViewCell {
     @IBOutlet weak var favIcon: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var hasPicIndicator: UIView!
-    
-    // MARK: Override
     
     override func awakeFromNib() {
         hasPicIndicator.layer.cornerRadius = 1.0
@@ -31,6 +25,8 @@ class BasicBookCell: UITableViewCell {
         isSelected = false
         isHighlighted = false
     }
+    
+    // MARK: Override
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
@@ -50,12 +46,30 @@ class BasicBookCell: UITableViewCell {
         }
     }
     
-    fileprivate func setIndicatorColor() {
+    private func setIndicatorColor() {
         hasPicIndicator.backgroundColor = hasPic ? AppColors.hasPicTintColor : UIColor.lightGray
     }
 }
 
-/* Book Cell With P & I indicator, a check mark on the right */
+// MARK: - BasicBookCell
+
+class BasicBookCell: FavIconAndPicIndicatorCell {
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
+}
+
+// MARK: - DownloadBookCell
+
+class DownloadBookCell: UITableViewCell {
+    @IBOutlet weak var favIcon: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var detailLabel: UILabel!
+    @IBOutlet weak var progressLabel: UILabel!
+    @IBOutlet weak var progressView: UIProgressView!
+}
+
+// MARK: - CheckMarkBookCell
+
 class CheckMarkBookCell: BasicBookCell {
     @IBOutlet weak var accessoryImageView: LargeHitZoneImageView!
     weak var delegate: TableCellDelegate?
@@ -77,26 +91,17 @@ class CheckMarkBookCell: BasicBookCell {
     }
 }
 
-/* Book Cell With progress bar and 2 line detail label */
-class DownloadBookCell: UITableViewCell {
-    @IBOutlet weak var favIcon: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var detailLabel: UILabel!
-    @IBOutlet weak var progressLabel: UILabel!
-    @IBOutlet weak var progressView: UIProgressView!
-}
-
 // MARK: - Article Cell
 
-class ArticleCell: UITableViewCell {
-    @IBOutlet weak var favIcon: UIImageView!
-    @IBOutlet weak var hasPicIndicator: UIView!
+class ArticleCell: FavIconAndPicIndicatorCell {
     @IBOutlet weak var titleLabel: UILabel!
 }
 
 class ArticleSnippetCell: ArticleCell {
     @IBOutlet weak var snippetLabel: UILabel!
 }
+
+// MARK: - last time refactor
 
 // MARK: - Bookmark Cell
 
