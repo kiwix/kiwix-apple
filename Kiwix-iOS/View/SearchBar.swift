@@ -15,6 +15,8 @@ class SearchBar: UIView {
     private let textField: UITextField = SearchBarTextField()
     private var cachedSearchText: String?
     let delayTextChangeCallback = true
+    private var previousSearchText = ""
+    var title = ""
     weak var delegate: SearchBarDelegate?
     
     // MARK: - Overrides
@@ -107,6 +109,8 @@ class SearchBar: UIView {
         textField.isUserInteractionEnabled = true
         textField.textAlignment = .left
         textField.becomeFirstResponder()
+        title = textField.text ?? ""
+        textField.text = previousSearchText
         delegate?.didBecomeFirstResponder(searchBar: self)
         return true
     }
@@ -115,6 +119,8 @@ class SearchBar: UIView {
         textField.isUserInteractionEnabled = false
         textField.textAlignment = .center
         textField.resignFirstResponder()
+        previousSearchText = textField.text ?? ""
+        textField.text = title
         delegate?.didResignFirstResponder(searchBar: self)
         return true
     }

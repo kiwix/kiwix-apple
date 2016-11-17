@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 // MARK: - Search
 
@@ -80,6 +81,41 @@ extension MainController: SearchBarDelegate {
         } else {
             completion(true)
         }
+    }
+}
+
+// MARK: - Web
+
+extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        guard let url = webView.request?.url else {return false}
+        guard url.isKiwixURL else {
+            let controller = SFSafariViewController(url: url)
+            controller.delegate = self
+            present(controller, animated: true, completion: nil)
+            return false
+        }
+        return true
+    }
+    
+    func webViewDidStartLoad(_ webView: UIWebView) {
+        
+    }
+    
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        
+    }
+    
+    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
+        
+    }
+}
+
+// MARK: - SFSafariViewControllerDelegate
+
+extension MainController {
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        controller.dismiss(animated: true, completion: nil)
     }
 }
 

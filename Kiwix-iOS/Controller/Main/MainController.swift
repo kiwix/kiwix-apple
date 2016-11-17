@@ -22,6 +22,7 @@ class MainController: UIViewController {
         navigationItem.titleView = searchBar
         searchBar.delegate = self
         buttons.delegate = self
+        webView.delegate = self
         
         showWelcome()
     }
