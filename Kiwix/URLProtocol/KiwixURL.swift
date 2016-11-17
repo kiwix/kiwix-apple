@@ -11,7 +11,8 @@ import UIKit
 extension URL {
     init?(bookID: String, contentPath: String) {
         let baseURLString = "kiwix://" + bookID
-        self.init(string: contentPath, relativeTo: URL(string: baseURLString))
+        guard let encoded = contentPath.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {return nil}
+        self.init(string: encoded, relativeTo: URL(string: baseURLString))
     }
     
     var isKiwixURL: Bool {

@@ -88,7 +88,7 @@ extension MainController: SearchBarDelegate {
 
 extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        guard let url = webView.request?.url else {return false}
+        guard let url = request.url else {return false}
         guard url.isKiwixURL else {
             let controller = SFSafariViewController(url: url)
             controller.delegate = self
@@ -103,7 +103,8 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
-        
+        guard let title = JS.getTitle(from: webView) else {return}
+        searchBar.title = title
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {

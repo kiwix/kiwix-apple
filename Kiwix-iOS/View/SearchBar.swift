@@ -13,11 +13,17 @@ class SearchBar: UIView {
     private let backgroundView = SearchBarBackgroundView()
     private let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
     private let textField: UITextField = SearchBarTextField()
-    private var cachedSearchText: String?
+    
     let delayTextChangeCallback = true
-    private var previousSearchText = ""
-    var title = ""
     weak var delegate: SearchBarDelegate?
+    private var cachedSearchText: String?
+    private var previousSearchText = ""
+    var title = "" {
+        didSet {
+            if !isFirstResponder {textField.text = title}
+        }
+    }
+    
     
     // MARK: - Overrides
     
@@ -100,9 +106,7 @@ class SearchBar: UIView {
     // MARK: - Responder
     
     override var isFirstResponder: Bool {
-        get {
-            return textField.isFirstResponder
-        }
+        return textField.isFirstResponder
     }
     
     override func becomeFirstResponder() -> Bool {

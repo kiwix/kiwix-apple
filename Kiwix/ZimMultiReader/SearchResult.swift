@@ -50,7 +50,7 @@ class SearchResult: CustomStringConvertible {
         self.snippet = snippet
         self.probability = probability
         
-        if title == "" || path == "" || bookID == "" {return nil}
+        if title == "" || bookID == "" {return nil}
     }
     
     var description: String {

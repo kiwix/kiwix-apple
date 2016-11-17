@@ -70,10 +70,7 @@
         string titleC;
         while (_reader->getNextSuggestion(titleC)) {
             NSString *title = [NSString stringWithUTF8String:titleC.c_str()];
-            NSString *path = [self pageURLFromTitle:title];
-            [results addObject:@{@"title": title,
-                                 @"path": path,
-                                 @"bookID": bookID}];
+            [results addObject:@{@"title": title, @"bookID": bookID}];
         }
     }
     return results;
