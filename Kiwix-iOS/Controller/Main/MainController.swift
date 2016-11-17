@@ -10,6 +10,7 @@ import UIKit
 
 class MainController: UIViewController {
     
+    @IBOutlet weak var webView: UIWebView!
     let searchBar = SearchBar()
     lazy var controllers = Controllers()
     lazy var buttons = Buttons()
@@ -17,6 +18,7 @@ class MainController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        webView.loadRequest(URLRequest(url: URL(string: "about:blank")!))
         navigationItem.titleView = searchBar
         searchBar.delegate = self
         buttons.delegate = self

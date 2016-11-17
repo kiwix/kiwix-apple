@@ -87,6 +87,8 @@ class SearchResultController: SearchBaseTableController, UITableViewDataSource, 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let result = searchResults[indexPath.row]
+        let operation = ArticleLoadOperation(bookID: result.bookID, articlePath: result.path)
+        GlobalQueue.shared.add(articleLoadOperation: operation)
     }
 
     // MARK: - DZNEmptyDataSet

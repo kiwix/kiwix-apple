@@ -29,8 +29,6 @@
 		9726591D1D90A64600D1DFFB /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9726591C1D90A64500D1DFFB /* Notifications.swift */; };
 		972F81571DDBFC79008D7289 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972F81561DDBFC79008D7289 /* Search.swift */; };
 		972F81591DDC1B71008D7289 /* Controllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972F81581DDC1B71008D7289 /* Controllers.swift */; };
-		972F815B1DDCBF71008D7289 /* MainShowHide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972F815A1DDCBF71008D7289 /* MainShowHide.swift */; };
-		972F815D1DDCBFF9008D7289 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972F815C1DDCBFF9008D7289 /* WebViewController.swift */; };
 		9732075C1DD136BB00EDD3DC /* CoreDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9732075B1DD136BB00EDD3DC /* CoreDataExtension.swift */; };
 		9732079E1DD197EA00EDD3DC /* LibrarySplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C005D71D64B99E004352E8 /* LibrarySplitViewController.swift */; };
 		9732079F1DD197F400EDD3DC /* CloudBooksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C005DB1D64BEFE004352E8 /* CloudBooksController.swift */; };
@@ -190,8 +188,6 @@
 		9726591C1D90A64500D1DFFB /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		972F81561DDBFC79008D7289 /* Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		972F81581DDC1B71008D7289 /* Controllers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Controllers.swift; sourceTree = "<group>"; };
-		972F815A1DDCBF71008D7289 /* MainShowHide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainShowHide.swift; sourceTree = "<group>"; };
-		972F815C1DDCBFF9008D7289 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		9732075B1DD136BB00EDD3DC /* CoreDataExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataExtension.swift; sourceTree = "<group>"; };
 		973208251DD21E9C00EDD3DC /* CoreDataContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataContainer.swift; sourceTree = "<group>"; };
 		973208281DD223DB00EDD3DC /* RefreshLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshLibrary.swift; sourceTree = "<group>"; };
@@ -485,8 +481,6 @@
 				97BC0FBA1DD90A34004BBAD1 /* old */,
 				97BC0FBE1DD90A65004BBAD1 /* MainController.swift */,
 				97D0E98E1DDA12B30029530E /* MainDelegates.swift */,
-				972F815A1DDCBF71008D7289 /* MainShowHide.swift */,
-				972F815C1DDCBFF9008D7289 /* WebViewController.swift */,
 				97BC0FC11DD92B62004BBAD1 /* Buttons.swift */,
 				97BC0FBD1DD90A65004BBAD1 /* JSInjection.swift */,
 				972F81581DDC1B71008D7289 /* Controllers.swift */,
@@ -1189,9 +1183,7 @@
 				97A1FD1C1D6F71D800A80EE2 /* KiwixURLProtocol.swift in Sources */,
 				97C2C26A1DDCC58500A9CC64 /* ArticleOperation.swift in Sources */,
 				973208261DD21E9C00EDD3DC /* CoreDataContainer.swift in Sources */,
-				972F815B1DDCBF71008D7289 /* MainShowHide.swift in Sources */,
 				97D6813F1D6F712800E5FA99 /* Article+CoreDataProperties.swift in Sources */,
-				972F815D1DDCBFF9008D7289 /* WebViewController.swift in Sources */,
 				97A1FD1D1D6F71D800A80EE2 /* URLResponseCache.swift in Sources */,
 				97A1FD441D6F728200A80EE2 /* Preference.swift in Sources */,
 				97D681311D6F70EC00E5FA99 /* 1.5.xcmappingmodel in Sources */,

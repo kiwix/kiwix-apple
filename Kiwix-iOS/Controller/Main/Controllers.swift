@@ -25,10 +25,6 @@ class Controllers {
         return (UIApplication.appDelegate.window?.rootViewController as! UINavigationController).topViewController as! MainController
     }
     
-    // MARK: - Web
-    
-    lazy private(set) var web = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
-    
 //    // MARK: - Bookmark
 //    
 //    private var bookmark: UINavigationController?

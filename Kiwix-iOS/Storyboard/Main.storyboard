@@ -10,40 +10,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Web View Controller-->
-        <scene sceneID="Plq-9G-fRT">
-            <objects>
-                <viewController storyboardIdentifier="WebViewController" id="hhM-UO-XZK" customClass="WebViewController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="gaV-4e-09V"/>
-                        <viewControllerLayoutGuide type="bottom" id="7Tg-lD-cCY"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="h0X-vc-qIf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MjM-In-ehJ">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </webView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="MjM-In-ehJ" firstAttribute="top" secondItem="gaV-4e-09V" secondAttribute="bottom" constant="-64" id="2DB-FF-mbL"/>
-                            <constraint firstAttribute="trailing" secondItem="MjM-In-ehJ" secondAttribute="trailing" id="2On-HI-gaZ"/>
-                            <constraint firstItem="MjM-In-ehJ" firstAttribute="leading" secondItem="h0X-vc-qIf" secondAttribute="leading" id="qz0-jI-wLz"/>
-                            <constraint firstItem="7Tg-lD-cCY" firstAttribute="top" secondItem="MjM-In-ehJ" secondAttribute="bottom" id="rmz-qH-LFY"/>
-                        </constraints>
-                    </view>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <connections>
-                        <outlet property="webView" destination="MjM-In-ehJ" id="tud-dZ-b7q"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3pg-HH-V5d" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2474.4000000000001" y="-348.57571214392806"/>
-        </scene>
         <!--Table Of Contents Controller-->
         <scene sceneID="sFA-xU-ByH">
             <objects>
@@ -242,13 +208,29 @@
                     <view key="view" contentMode="scaleToFill" id="hRW-ET-fRA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MjM-In-ehJ">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </webView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="MjM-In-ehJ" firstAttribute="top" secondItem="KVH-WC-JGt" secondAttribute="bottom" constant="-64" id="1Om-9P-m57"/>
+                            <constraint firstItem="MjM-In-ehJ" firstAttribute="leading" secondItem="hRW-ET-fRA" secondAttribute="leading" id="Kf8-Rn-ROp"/>
+                            <constraint firstItem="UIX-e1-SUg" firstAttribute="top" secondItem="MjM-In-ehJ" secondAttribute="bottom" constant="-44" id="MRq-VY-WQT"/>
+                            <constraint firstAttribute="trailing" secondItem="MjM-In-ehJ" secondAttribute="trailing" id="tIZ-J4-u59"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="fuj-b7-iB1"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="webView" destination="MjM-In-ehJ" id="bOM-dN-Gc6"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yrv-8u-IwG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1657" y="-349"/>
+            <point key="canvasLocation" x="1656.8" y="-349.47526236881561"/>
         </scene>
         <!--Main Controller-->
         <scene sceneID="nEL-IB-dp3">
