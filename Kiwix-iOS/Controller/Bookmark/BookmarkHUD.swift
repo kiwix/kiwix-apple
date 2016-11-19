@@ -18,6 +18,8 @@ class BookmarkHUD: UIViewController {
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var centerViewYOffset: NSLayoutConstraint!
+    @IBOutlet weak var imageViewBottomToCenterViewTopSpacing: NSLayoutConstraint!
+    @IBOutlet weak var labelToptoCenterViewBottomSpacing: NSLayoutConstraint!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -41,16 +43,16 @@ class BookmarkHUD: UIViewController {
     }
     
     var topHalfHeight: CGFloat {
-        return centerView.frame.height / 2 + imageView.frame.height
+        return centerView.frame.height / 2 + imageView.frame.height + imageViewBottomToCenterViewTopSpacing.constant
     }
     
     var bottomHalfHeight: CGFloat {
-        return centerView.frame.height / 2 + label.frame.height
+        return centerView.frame.height / 2 + label.frame.height + labelToptoCenterViewBottomSpacing.constant
     }
 }
 
 class BookmarkHUDAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-    fileprivate let animateIn: Bool
+    private let animateIn: Bool
     
     init(animateIn: Bool) {
         self.animateIn = animateIn
@@ -68,7 +70,7 @@ class BookmarkHUDAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         }
     }
     
-    fileprivate func animateInTransition(_ transitionContext: UIViewControllerContextTransitioning) {
+    private func animateInTransition(_ transitionContext: UIViewControllerContextTransitioning) {
         guard let toController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) as? BookmarkHUD,
             let toView = transitionContext.view(forKey: UITransitionContextViewKey.to) else {return}
         let containerView = transitionContext.containerView
@@ -94,7 +96,7 @@ class BookmarkHUDAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         }
     }
     
-    fileprivate func animateOutTransition(_ transitionContext: UIViewControllerContextTransitioning) {
+    private func animateOutTransition(_ transitionContext: UIViewControllerContextTransitioning) {
         guard let fromController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) as? BookmarkHUD,
             let fromView = transitionContext.view(forKey: UITransitionContextViewKey.from) else {return}
         let containerView = transitionContext.containerView
