@@ -123,12 +123,20 @@ extension MainController {
 // MARK: - Button Delegates
 
 extension MainController: ButtonDelegates, SearchContainerDelegate {
+    func didTapBookmarkButton() {
+        showBookmarkController()
+    }
+    
     func didTapLibraryButton() {
         present(controllers.library, animated: true, completion: nil)
     }
     
     func didTapCancelButton() {
         _ = searchBar.resignFirstResponder()
+    }
+    
+    func didLongPressBookmarkButton() {
+        showBookmarkHUD()
     }
 }
 
@@ -158,5 +166,31 @@ extension MainController {
         guard let controller = childViewControllers.flatMap({$0 as? WelcomeController}).first else {return}
         controller.removeFromParentViewController()
         controller.view.removeFromSuperview()
+    }
+}
+
+// MARK: - Bookmark
+
+extension MainController: UIViewControllerTransitioningDelegate {
+    func showBookmarkController() {
+//        let controller = Controllers.bookmark
+//        controller.modalPresentationStyle = .formSheet
+//        present(controller, animated: true, completion: nil)
+    }
+    
+    func showBookmarkHUD() {
+        let controller = controllers.bookmarkHUD
+        controller.bookmarkAdded = !controller.bookmarkAdded
+        controller.transitioningDelegate = self
+        controller.modalPresentationStyle = .overFullScreen
+        present(controller, animated: true, completion: nil)
+    }
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return BookmarkHUDAnimator(animateIn: true)
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return BookmarkHUDAnimator(animateIn: false)
     }
 }

@@ -60,6 +60,8 @@ class Buttons {
             print("left tapped")
         case right:
             print("right tapped")
+        case bookmark:
+            delegate?.didTapBookmarkButton()
         case library:
             delegate?.didTapLibraryButton()
         case cancel:
@@ -76,6 +78,8 @@ class Buttons {
             print("left long tapped")
         case 1:
             print("right long tapped")
+        case 3:
+            delegate?.didLongPressBookmarkButton()
         default:
             return
         }
@@ -83,9 +87,11 @@ class Buttons {
 }
 
 protocol ButtonDelegates {
-    
+    func didTapBookmarkButton()
     func didTapLibraryButton()
     func didTapCancelButton()
+    
+    func didLongPressBookmarkButton()
 }
 
 class GrayBarButtonItem: UIBarButtonItem {

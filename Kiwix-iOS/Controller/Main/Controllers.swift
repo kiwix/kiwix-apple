@@ -43,6 +43,8 @@ class Controllers {
 //        return controller
 //    }
     
+    private(set) lazy var bookmarkHUD = UIStoryboard(name: "Bookmark", bundle: nil).instantiateViewController(withIdentifier: "BookmarkHUD") as! BookmarkHUD
+    
     // MARK: - Library
     
     private var _library: UIViewController?
