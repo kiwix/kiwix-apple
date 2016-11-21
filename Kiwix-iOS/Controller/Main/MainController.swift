@@ -19,7 +19,7 @@ class MainController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        webView.loadRequest(URLRequest(url: URL(string: "about:blank")!))
+//        webView.loadRequest(URLRequest(url: URL(string: "about:blank")!))
         navigationItem.titleView = searchBar
         searchBar.delegate = self
         buttons.delegate = self
@@ -54,5 +54,51 @@ class MainController: UIViewController {
         default:
             return
         }
+    }
+}
+
+class WebView: UIWebView {
+    var backList = [URL]()
+    var forwardList = [URL]()
+    var currentURL: URL?
+    
+    override var canGoBack: Bool {
+        return backList.count > 0
+    }
+    
+    override var canGoForward: Bool {
+        return forwardList.count > 0
+    }
+    
+    override func goBack() {
+        guard let lastURL = backList.last, let currentURL = currentURL else {return}
+        backList.removeLast()
+        self.currentURL = lastURL
+        forwardList.insert(currentURL, at: 0)
+        
+        let request = URLRequest(url: lastURL)
+        loadRequest(request)
+    }
+    
+    override func goForward() {
+        guard let nextURL = forwardList.first, let currentURL = currentURL else {return}
+        backList.append(currentURL)
+        self.currentURL = nextURL
+        forwardList.removeFirst()
+        
+        let request = URLRequest(url: nextURL)
+        loadRequest(request)
+    }
+    
+    override func loadRequest(_ request: URLRequest) {
+        super.loadRequest(request)
+        guard let currentURL = currentURL, let requestURL = request.url else {
+            self.currentURL = request.url
+            return
+        }
+        guard currentURL != requestURL else {return}
+        backList.append(currentURL)
+        self.currentURL = requestURL
+        forwardList.removeAll()
     }
 }

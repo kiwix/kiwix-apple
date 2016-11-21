@@ -13,24 +13,44 @@ class NavigationList {
     var forwardList = [URL]()
     var currentURL: URL?
     
-    func webViewFinishedLoading(url: URL) {
-        guard url != currentURL else { return }
+    func webViewStartLoading(requestURL: URL) {
+        guard let currentURL = currentURL else {
+            self.currentURL = requestURL
+            return
+        }
+        
+        guard currentURL != requestURL else {return}
+        backList.append(currentURL)
+        self.currentURL = requestURL
+        forwardList.removeAll()
     }
     
-    func goBack() {
+    func goBack(webView: UIWebView) {
+        guard let lastURL = backList.last, let currentURL = currentURL else {return}
+        backList.removeLast()
+        self.currentURL = lastURL
+        forwardList.insert(currentURL, at: 0)
         
+        let request = URLRequest(url: lastURL)
+        webView.loadRequest(request)
     }
     
-    func goForward() {
+    func goForward(webView: UIWebView) {
+        guard let nextURL = forwardList.first, let currentURL = currentURL else {return}
+        backList.append(currentURL)
+        self.currentURL = nextURL
+        forwardList.removeFirst()
         
+        let request = URLRequest(url: nextURL)
+        webView.loadRequest(request)
     }
     
     var canGoBack: Bool {
-        return false
+        return backList.count > 0
     }
     
     var canGoForward: Bool {
-        return false
+        return forwardList.count > 0
     }
 
 }

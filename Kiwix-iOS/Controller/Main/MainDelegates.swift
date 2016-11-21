@@ -95,11 +95,11 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
             present(controller, animated: true, completion: nil)
             return false
         }
+        navigationList.webViewStartLoading(requestURL: url)
         return true
     }
     
     func webViewDidStartLoad(_ webView: UIWebView) {
-        
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
@@ -107,8 +107,8 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
         guard let title = JS.getTitle(from: webView) else {return}
         searchBar.title = title
         
-        buttons.back.tintColor = webView.canGoBack ? nil : UIColor.gray
-        buttons.forward.tintColor = webView.canGoForward ? nil : UIColor.gray
+        buttons.back.tintColor = navigationList.canGoBack ? nil : UIColor.gray
+        buttons.forward.tintColor = navigationList.canGoForward ? nil : UIColor.gray
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
@@ -128,11 +128,11 @@ extension MainController {
 
 extension MainController: ButtonDelegates, SearchContainerDelegate {
     func didTapBackButton() {
-        webView.goBack()
+        navigationList.goBack(webView: webView)
     }
     
     func didTapForwardButton() {
-        webView.goForward()
+        navigationList.goForward(webView: webView)
     }
     
     func didTapBookmarkButton() {
