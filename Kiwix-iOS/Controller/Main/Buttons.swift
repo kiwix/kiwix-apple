@@ -10,9 +10,9 @@ import UIKit
 
 class Buttons {
     
-    private(set) lazy var left: UIBarButtonItem = GrayBarButtonItem(image: UIImage(named: "LeftArrow"), style: .plain,
+    private(set) lazy var back: UIBarButtonItem = GrayBarButtonItem(image: UIImage(named: "LeftArrow"), style: .plain,
                                                                   target: self, action: #selector(tapped(button:)))
-    private(set) lazy var right: UIBarButtonItem = GrayBarButtonItem(image: UIImage(named: "RightArrow"), style: .plain,
+    private(set) lazy var forward: UIBarButtonItem = GrayBarButtonItem(image: UIImage(named: "RightArrow"), style: .plain,
                                                                    target: self, action: #selector(tapped(button:)))
     private(set) lazy var toc: UIBarButtonItem = GrayBarButtonItem(image: UIImage(named: "TableOfContent"), style: .plain,
                                                                    target: self, action: #selector(tapped(button:)))
@@ -30,13 +30,13 @@ class Buttons {
     
     var toolbar: [UIBarButtonItem] {
         get {
-            return [left, space, right, space, toc, space, bookmark, space, library, space, setting]
+            return [back, space, forward, space, toc, space, bookmark, space, library, space, setting]
         }
     }
     
     var navLeft: [UIBarButtonItem] {
         get {
-            return [left, right, toc]
+            return [back, forward, toc]
         }
     }
     
@@ -47,7 +47,7 @@ class Buttons {
     }
     
     func addLongTapGestureRecognizer() {
-        [left, right, toc, bookmark, library, setting].enumerated().forEach { (index, button) in
+        [back, forward, toc, bookmark, library, setting].enumerated().forEach { (index, button) in
             guard let view = button.value(forKey: "view") as? UIView else {return}
             view.tag = index
             view.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(pressed(recognizer:))))
@@ -56,10 +56,10 @@ class Buttons {
     
     @objc func tapped(button: UIBarButtonItem) {
         switch button {
-        case left:
-            print("left tapped")
-        case right:
-            print("right tapped")
+        case back:
+            delegate?.didTapBackButton()
+        case forward:
+            delegate?.didTapForwardButton()
         case bookmark:
             delegate?.didTapBookmarkButton()
         case library:
@@ -87,6 +87,8 @@ class Buttons {
 }
 
 protocol ButtonDelegates {
+    func didTapBackButton()
+    func didTapForwardButton()
     func didTapBookmarkButton()
     func didTapLibraryButton()
     func didTapCancelButton()

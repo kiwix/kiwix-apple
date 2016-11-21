@@ -60,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: -
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        URLProtocol.registerClass(KiwixURLProtocol)
+        URLProtocol.registerClass(KiwixURLProtocol.self)
         
 //        Network.shared
         

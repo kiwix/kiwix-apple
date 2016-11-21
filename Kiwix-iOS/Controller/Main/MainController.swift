@@ -14,6 +14,7 @@ class MainController: UIViewController {
     let searchBar = SearchBar()
     lazy var controllers = Controllers()
     lazy var buttons = Buttons()
+    let navigationStack = NavigationStack()
 
     override func viewDidLoad() {
         super.viewDidLoad()
