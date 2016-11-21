@@ -103,6 +103,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
+        JS.preventDefaultLongTap(webView: webView)
         guard let title = JS.getTitle(from: webView) else {return}
         searchBar.title = title
         

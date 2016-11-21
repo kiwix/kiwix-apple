@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NavigationStack {
+class NavigationList {
     var backList = [URL]()
     var forwardList = [URL]()
     var currentURL: URL?

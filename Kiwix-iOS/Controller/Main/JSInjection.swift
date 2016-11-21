@@ -11,10 +11,9 @@ import JavaScriptCore
 
 class JS {
     
-    class func inject(_ webView: UIWebView) {
-        let path = Bundle.main.path(forResource: "injection", ofType: "js")
-        let jString = try? String(contentsOfFile: path!)
-        webView.context.evaluateScript(jString!)
+    class func preventDefaultLongTap(webView: UIWebView) {
+        let jString = "document.body.style.webkitTouchCallout='none';"
+        webView.context.evaluateScript(jString)
     }
     
     class func adjustFontSizeIfNeeded(_ webView: UIWebView) {

@@ -14,7 +14,7 @@ class MainController: UIViewController {
     let searchBar = SearchBar()
     lazy var controllers = Controllers()
     lazy var buttons = Buttons()
-    let navigationStack = NavigationStack()
+    let navigationList = NavigationList()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,5 +55,4 @@ class MainController: UIViewController {
             return
         }
     }
-    
 }
