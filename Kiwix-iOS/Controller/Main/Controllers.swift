@@ -25,8 +25,13 @@ class Controllers {
         return (UIApplication.appDelegate.window?.rootViewController as! UINavigationController).topViewController as! MainController
     }
     
-//    // MARK: - Bookmark
-//    
+    // MARK: - NavigationList
+    
+    private(set) lazy var navigationList = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "NavigationListController") as! NavigationListController
+
+    
+    // MARK: - Bookmark
+//
 //    private var bookmark: UINavigationController?
 //    
 //    class var bookmark: UINavigationController {

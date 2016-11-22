@@ -70,6 +70,7 @@
 		9764F5991D833F2B00E0B1C4 /* KiwixURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764F5981D833F2B00E0B1C4 /* KiwixURL.swift */; };
 		976B86D81DDA0C7E00FA7FD1 /* SearchContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976B86D71DDA0C7E00FA7FD1 /* SearchContainer.swift */; };
 		9771A5BD1DD269BD005F1795 /* Book+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813C1D6F712800E5FA99 /* Book+CoreDataProperties.swift */; };
+		977319801DE3AA3200111474 /* NavigationListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9773197F1DE3AA3200111474 /* NavigationListController.swift */; };
 		9779C3141D4575AD0064CC8E /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E609F01D103DED00EBCB9D /* NotificationCenter.framework */; };
 		9779C3171D4575AE0064CC8E /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779C3161D4575AE0064CC8E /* TodayViewController.swift */; };
 		9779C31E1D4575AE0064CC8E /* Bookmarks.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9779C3131D4575AD0064CC8E /* Bookmarks.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -228,6 +229,7 @@
 		9764F5981D833F2B00E0B1C4 /* KiwixURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KiwixURL.swift; sourceTree = "<group>"; };
 		976A0C801D41619C0006A742 /* DZNEmptyDataSet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DZNEmptyDataSet.framework; path = "../../../../Users/chrisli/Library/Developer/Xcode/DerivedData/Kiwix-ayxrfhaqnfxzendihdolvkklkmhk/Build/Products/Debug-iphoneos/DZNEmptyDataSet/DZNEmptyDataSet.framework"; sourceTree = "<group>"; };
 		976B86D71DDA0C7E00FA7FD1 /* SearchContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchContainer.swift; sourceTree = "<group>"; };
+		9773197F1DE3AA3200111474 /* NavigationListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationListController.swift; sourceTree = "<group>"; };
 		9779C3131D4575AD0064CC8E /* Bookmarks.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Bookmarks.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		9779C3161D4575AE0064CC8E /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		9779C31B1D4575AE0064CC8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -486,6 +488,7 @@
 				97BC0FC11DD92B62004BBAD1 /* Buttons.swift */,
 				97BC0FBD1DD90A65004BBAD1 /* JSInjection.swift */,
 				97362EE81DE1EADB004205B5 /* NavigationList.swift */,
+				9773197F1DE3AA3200111474 /* NavigationListController.swift */,
 				972F81581DDC1B71008D7289 /* Controllers.swift */,
 			);
 			path = Main;
@@ -1179,6 +1182,7 @@
 				9764F5991D833F2B00E0B1C4 /* KiwixURL.swift in Sources */,
 				97A127CC1D777CF100FB204D /* SearchResultController.swift in Sources */,
 				9732079F1DD197F400EDD3DC /* CloudBooksController.swift in Sources */,
+				977319801DE3AA3200111474 /* NavigationListController.swift in Sources */,
 				973208241DD217B600EDD3DC /* BookmarkHUD.swift in Sources */,
 				971A102F1D022AD5007FC62C /* Logo.swift in Sources */,
 				970E7F821DA0305000741290 /* TableOfContentsController.swift in Sources */,

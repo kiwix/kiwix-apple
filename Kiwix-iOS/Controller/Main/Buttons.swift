@@ -75,9 +75,9 @@ class Buttons {
         guard let view = recognizer.view, recognizer.state == .began else {return}
         switch view.tag {
         case 0:
-            print("left long tapped")
+            delegate?.didLongPressBackButton()
         case 1:
-            print("right long tapped")
+            delegate?.didLongPressForwardButton()
         case 3:
             delegate?.didLongPressBookmarkButton()
         default:
@@ -93,17 +93,38 @@ protocol ButtonDelegates {
     func didTapLibraryButton()
     func didTapCancelButton()
     
+    func didLongPressBackButton()
+    func didLongPressForwardButton()
     func didLongPressBookmarkButton()
 }
 
 class GrayBarButtonItem: UIBarButtonItem {
     override init() {
         super.init()
+        print(value(forKey: "view") as? UIView)
         tintColor = UIColor.gray
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        print(value(forKey: "view") as? UIView)
         tintColor = UIColor.gray
     }
+    
+}
+
+class BarButton: UIBarButtonItem {
+    private(set) var type = BarButtonType.blank
+    convenience init(type: BarButtonType) {
+        let button = UIButton()
+        button.setImage(<#T##image: UIImage?##UIImage?#>, for: <#T##UIControlState#>)
+        self.init(customView: button)
+        self.type = type
+    }
+}
+
+enum BarButtonType {
+    case back, forward
+    case tableOfContent, bookmark, library, setting
+    case blank
 }

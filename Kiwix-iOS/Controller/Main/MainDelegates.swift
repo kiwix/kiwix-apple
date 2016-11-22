@@ -107,8 +107,8 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
         guard let title = JS.getTitle(from: webView) else {return}
         searchBar.title = title
         
-        buttons.back.tintColor = navigationList.canGoBack ? nil : UIColor.gray
-        buttons.forward.tintColor = navigationList.canGoForward ? nil : UIColor.gray
+//        buttons.back.tintColor = navigationList.canGoBack ? nil : UIColor.gray
+//        buttons.forward.tintColor = navigationList.canGoForward ? nil : UIColor.gray
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
@@ -145,6 +145,20 @@ extension MainController: ButtonDelegates, SearchContainerDelegate {
     
     func didTapCancelButton() {
         _ = searchBar.resignFirstResponder()
+    }
+    
+    func didLongPressBackButton() {
+        let controller = controllers.navigationList
+        controller.urls = navigationList.backList
+        let nav = UINavigationController(rootViewController: controller)
+        present(nav, animated: true, completion: nil)
+    }
+    
+    func didLongPressForwardButton() {
+        let controller = controllers.navigationList
+        controller.urls = navigationList.forwardList
+        let nav = UINavigationController(rootViewController: controller)
+        present(nav, animated: true, completion: nil)
     }
     
     func didLongPressBookmarkButton() {
