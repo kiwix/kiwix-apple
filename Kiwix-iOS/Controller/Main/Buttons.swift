@@ -26,11 +26,13 @@ class Buttons {
     private(set) lazy var cancel: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(tapped(button:)))
     
     let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace)
+    
+    let testB = BarButton()
     var delegate: ButtonDelegates?
     
     var toolbar: [UIBarButtonItem] {
         get {
-            return [back, space, forward, space, toc, space, bookmark, space, library, space, setting]
+            return [testB, space, toc, space, bookmark, space, library, space, setting]
         }
     }
     
@@ -116,9 +118,10 @@ class GrayBarButtonItem: UIBarButtonItem {
 class BarButton: UIBarButtonItem {
     private(set) var type = BarButtonType.blank
     convenience init(type: BarButtonType) {
-        let button = UIButton()
-        button.setImage(<#T##image: UIImage?##UIImage?#>, for: <#T##UIControlState#>)
-        self.init(customView: button)
+        let imageView = UIImageView(image: UIImage(named: "Bookmark"))
+        imageView.frame = CGRect(x: 0, y: 0, width: 26, height: 26)
+        self.init(customView: imageView)
+//        self.init(image: nil, style: .plain, target: nil, action: nil)
         self.type = type
     }
 }

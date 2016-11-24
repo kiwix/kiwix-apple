@@ -181,7 +181,7 @@ extension MainController {
         let controller = controllers.welcome
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         addChildViewController(controller)
-        view.addSubview(controller.view)
+        view.insertSubview(controller.view, aboveSubview: webView)
         let views = ["view": controller.view]
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: .alignAllTop, metrics: nil, views: views))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: .alignAllLeft, metrics: nil, views: views))

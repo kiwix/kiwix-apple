@@ -33,28 +33,28 @@ class MainController: UIViewController {
         buttons.addLongTapGestureRecognizer()
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass ||
-            traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass else {return}
-        switch traitCollection.horizontalSizeClass {
-        case .compact:
-            navigationController?.setToolbarHidden(false, animated: false)
-            navigationItem.leftBarButtonItems = nil
-            navigationItem.rightBarButtonItems = nil
-            if searchBar.isFirstResponder {
-                navigationItem.rightBarButtonItem = buttons.cancel
-            }
-            toolbarItems = buttons.toolbar
-        case .regular:
-            navigationController?.setToolbarHidden(true, animated: false)
-            toolbarItems = nil
-            navigationItem.leftBarButtonItems = buttons.navLeft
-            navigationItem.rightBarButtonItems = buttons.navRight
-        default:
-            return
-        }
-    }
+//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+//        super.traitCollectionDidChange(previousTraitCollection)
+//        guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass ||
+//            traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass else {return}
+//        switch traitCollection.horizontalSizeClass {
+//        case .compact:
+//            navigationController?.setToolbarHidden(false, animated: false)
+//            navigationItem.leftBarButtonItems = nil
+//            navigationItem.rightBarButtonItems = nil
+//            if searchBar.isFirstResponder {
+//                navigationItem.rightBarButtonItem = buttons.cancel
+//            }
+//            toolbarItems = buttons.toolbar
+//        case .regular:
+//            navigationController?.setToolbarHidden(true, animated: false)
+//            toolbarItems = nil
+//            navigationItem.leftBarButtonItems = buttons.navLeft
+//            navigationItem.rightBarButtonItems = buttons.navRight
+//        default:
+//            return
+//        }
+//    }
 }
 
 class WebView: UIWebView {
@@ -100,5 +100,25 @@ class WebView: UIWebView {
         backList.append(currentURL)
         self.currentURL = requestURL
         forwardList.removeAll()
+    }
+}
+
+class TestStackView: UIStackView {
+    var topBorder = CALayer()
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        topBorder.backgroundColor = UIColor.lightGray.withAlphaComponent(0.9).cgColor
+        layer.addSublayer(topBorder)
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        topBorder.frame = CGRect(x: 0, y: 0, width: rect.width, height: 0.5)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setNeedsDisplay()
     }
 }
