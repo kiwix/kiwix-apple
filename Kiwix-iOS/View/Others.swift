@@ -85,3 +85,10 @@ class SearchRoundedCornerView: UIView {
     }
     
 }
+
+class LargeHitZoneImageView: UIImageView {
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let frame = self.bounds.insetBy(dx: -9, dy: -9)
+        return frame.contains(point) ? self : nil
+    }
+}
