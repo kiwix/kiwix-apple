@@ -57,52 +57,24 @@ class LPTBarButtonItem: UIBarButtonItem {
     
     // MARK: - init
     
-    override init() {
-        super.init()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-    convenience init(image: UIImage?, highlightedImage: UIImage?, target: AnyObject?, longPressAction: Selector, tapAction: Selector) {
-        let customImageView = LargeHitZoneImageView(image: image?.withRenderingMode(.alwaysTemplate),
-                                                    highlightedImage: highlightedImage?.withRenderingMode(.alwaysTemplate))
-        customImageView.contentMode = UIViewContentMode.scaleAspectFit
-        customImageView.frame = CGRect(x: 0, y: 0, width: 26, height: 26)
-        customImageView.tintColor = UIColor.gray
-        let containerView = UIView(frame: CGRect(x: 0, y: 0, width: 52, height: 30))
-        customImageView.center = containerView.center
-        containerView.addSubview(customImageView)
-        self.init(customView: containerView)
-        
-        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: target, action: longPressAction)
-        let tapGestureRecognizer = UITapGestureRecognizer(target: target, action: tapAction)
-        containerView.addGestureRecognizer(longPressGestureRecognizer)
-        containerView.addGestureRecognizer(tapGestureRecognizer)
-    }
-    
-    convenience init(imageName: String?, highlightedImageName: String? = nil, grayed: Bool = true, delegate: LPTBarButtonItemDelegate) {
-        let image: UIImage? = {
-            guard let imageName = imageName else {return nil}
-            return UIImage(named: imageName)
-        }()
+    convenience init(imageName: String, highlightedImageName: String? = nil, grayed: Bool = true, delegate: LPTBarButtonItemDelegate? = nil) {
+        let image = UIImage(named: imageName)
         let highlightedImage: UIImage? = {
-            guard let highlightedImageName = highlightedImageName else {return nil}
-            return UIImage(named: highlightedImageName)
+            guard let name = highlightedImageName else {return nil}
+            return UIImage(named: name)
         }()
         
-        let customImageView = LargeHitZoneImageView(image: image, highlightedImage: highlightedImage)
-        customImageView.contentMode = UIViewContentMode.scaleAspectFit
-        customImageView.frame = CGRect(x: 0, y: 0, width: 26, height: 26)
-        customImageView.tintColor = grayed ? UIColor.gray : nil
+        let imageView = LargeHitZoneImageView(image: image, highlightedImage: highlightedImage)
+        imageView.contentMode = UIViewContentMode.scaleAspectFit
+        imageView.frame = CGRect(x: 0, y: 0, width: 26, height: 26)
+        imageView.tintColor = grayed ? UIColor.gray : nil
         let containerView = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 30)) // on ipad may be 52, 44 is value on iP6s+, to be investigated
-        customImageView.center = containerView.center
-        containerView.addSubview(customImageView)
+        imageView.center = containerView.center
+        containerView.addSubview(imageView)
         self.init(customView: containerView)
 
         self.delegate = delegate
-        self.customImageView = customImageView
+        self.customImageView = imageView
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(LPTBarButtonItem.handleLongPressGesture(_:)))
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(LPTBarButtonItem.handleTapGesture(_:)))
         containerView.addGestureRecognizer(longPressGestureRecognizer)
@@ -112,8 +84,8 @@ class LPTBarButtonItem: UIBarButtonItem {
     // MARK: - properties
     
     weak var delegate: LPTBarButtonItemDelegate?
-    var customImageView: LargeHitZoneImageView?
-    var isRotating = false
+    private(set) var customImageView: LargeHitZoneImageView?
+    private(set) var isRotating = false
     
     // MARK: - handle gesture
     
@@ -138,7 +110,7 @@ class LPTBarButtonItem: UIBarButtonItem {
         isRotating = false
     }
     
-    fileprivate func rotateImage(_ duration: CFTimeInterval, angle: CGFloat) {
+    private func rotateImage(_ duration: CFTimeInterval, angle: CGFloat) {
         CATransaction.begin()
         let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
         rotationAnimation.byValue = angle
@@ -174,16 +146,5 @@ class LargeHitZoneImageView: UIImageView {
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         let frame = self.bounds.insetBy(dx: -9, dy: -9)
         return frame.contains(point) ? self : nil
-    }
-}
-
-extension UIBarButtonItem {
-    convenience init(barButtonSystemItem systemItem: UIBarButtonSystemItem) {
-        self.init(barButtonSystemItem: systemItem, target: nil, action: nil)
-    }
-    
-    convenience init(imageNamed name: String, target: AnyObject?, action: Selector) {
-        let image = UIImage(named: name)?.withRenderingMode(.alwaysTemplate)
-        self.init(image: image, style: .plain, target: target, action: action)
     }
 }

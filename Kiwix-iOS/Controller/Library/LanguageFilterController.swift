@@ -51,7 +51,7 @@ class LanguageFilterController: UITableViewController, NSFetchedResultsControlle
     
     func configureToolBar() {
         navigationController?.isToolbarHidden = false
-        let spaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace)
+        let spaceBarButtonItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         setToolbarItems([spaceBarButtonItem, messageBarButtonItem, spaceBarButtonItem], animated: false)
         messageBarButtonItem.text = messageLabelText
     }

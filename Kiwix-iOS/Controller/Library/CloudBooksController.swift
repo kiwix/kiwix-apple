@@ -168,7 +168,7 @@ class CloudBooksController: LibraryBaseController, UITableViewDelegate, UITableV
     
     func configureNavBarButtons() {
         tabBarController?.navigationItem.rightBarButtonItem = Preference.libraryLastRefreshTime == nil ? nil
-            : UIBarButtonItem(imageNamed: "LanguageFilter", target: self, action: #selector(CloudBooksController.showLanguageFilterController))
+            : UIBarButtonItem(image: UIImage(named: "LanguageFilter"), style: .plain, target: self, action: #selector(CloudBooksController.showLanguageFilterController))
     }
     
     // MARK: - LanguageFilterUpdating

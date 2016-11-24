@@ -10,29 +10,36 @@ import UIKit
 
 class Buttons {
     
-    private(set) lazy var back: UIBarButtonItem = GrayBarButtonItem(image: UIImage(named: "LeftArrow"), style: .plain,
-                                                                  target: self, action: #selector(tapped(button:)))
-    private(set) lazy var forward: UIBarButtonItem = GrayBarButtonItem(image: UIImage(named: "RightArrow"), style: .plain,
-                                                                   target: self, action: #selector(tapped(button:)))
-    private(set) lazy var toc: UIBarButtonItem = GrayBarButtonItem(image: UIImage(named: "TableOfContent"), style: .plain,
-                                                                   target: self, action: #selector(tapped(button:)))
-    private(set) lazy var bookmark: UIBarButtonItem = GrayBarButtonItem(image: UIImage(named: "Bookmark"), style: .plain,
-                                                                   target: self, action: #selector(tapped(button:)))
-    private(set) lazy var library: UIBarButtonItem = GrayBarButtonItem(image: UIImage(named: "Library"), style: .plain,
-                                                                   target: self, action: #selector(tapped(button:)))
-    private(set) lazy var setting: UIBarButtonItem = GrayBarButtonItem(image: UIImage(named: "Setting"), style: .plain,
-                                                                   target: self, action: #selector(tapped(button:)))
+//    private(set) lazy var back: UIBarButtonItem = GrayBarButtonItem(image: UIImage(named: "LeftArrow"), style: .plain,
+//                                                                  target: self, action: #selector(tapped(button:)))
+//    private(set) lazy var forward: UIBarButtonItem = GrayBarButtonItem(image: UIImage(named: "RightArrow"), style: .plain,
+//                                                                   target: self, action: #selector(tapped(button:)))
+//    private(set) lazy var toc: UIBarButtonItem = GrayBarButtonItem(image: UIImage(named: "TableOfContent"), style: .plain,
+//                                                                   target: self, action: #selector(tapped(button:)))
+//    private(set) lazy var bookmark: UIBarButtonItem = GrayBarButtonItem(image: UIImage(named: "Bookmark"), style: .plain,
+//                                                                   target: self, action: #selector(tapped(button:)))
+//    private(set) lazy var library: UIBarButtonItem = GrayBarButtonItem(image: UIImage(named: "Library"), style: .plain,
+//                                                                   target: self, action: #selector(tapped(button:)))
+//    private(set) lazy var setting: UIBarButtonItem = GrayBarButtonItem(image: UIImage(named: "Setting"), style: .plain,
+//                                                                   target: self, action: #selector(tapped(button:)))
+    
+    private(set) lazy var back: UIBarButtonItem = LPTBarButtonItem(imageName: "LeftArrow")
+    private(set) lazy var forward: UIBarButtonItem = LPTBarButtonItem(imageName: "RightArrow")
+    private(set) lazy var toc: UIBarButtonItem = LPTBarButtonItem(imageName: "TableOfContent")
+    private(set) lazy var bookmark: UIBarButtonItem = LPTBarButtonItem(imageName: "Bookmark")
+    private(set) lazy var library: UIBarButtonItem = LPTBarButtonItem(imageName: "Library")
+    private(set) lazy var setting: UIBarButtonItem = LPTBarButtonItem(imageName: "Setting")
     
     private(set) lazy var cancel: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(tapped(button:)))
     
-    let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace)
+    let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
     
     let testB = BarButton()
     var delegate: ButtonDelegates?
     
     var toolbar: [UIBarButtonItem] {
         get {
-            return [testB, space, toc, space, bookmark, space, library, space, setting]
+            return [back, space, forward, space, toc, space, bookmark, space, library, space, setting]
         }
     }
     
