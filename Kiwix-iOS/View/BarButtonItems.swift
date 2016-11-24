@@ -34,10 +34,18 @@ class LPTBarButtonItem: UIBarButtonItem {
 
         self.delegate = delegate
         self.imageView = imageView
-        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGesture(gestureRecognizer:)))
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(gestureRecognizer:)))
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGesture(gesture:)))
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(gesture:)))
         containerView.addGestureRecognizer(longPressGestureRecognizer)
         containerView.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    // MARK: - Overrides
+    
+    override var tintColor: UIColor? {
+        didSet {
+            imageView?.tintColor = tintColor
+        }
     }
     
     // MARK: - properties
@@ -48,13 +56,13 @@ class LPTBarButtonItem: UIBarButtonItem {
     
     // MARK: - handle gesture
     
-    func handleTapGesture(gestureRecognizer: UIGestureRecognizer) {
-        delegate?.barButtonTapped(sender: self, gestureRecognizer: gestureRecognizer)
+    func handleTapGesture(gesture: UITapGestureRecognizer) {
+        delegate?.barButtonTapped(sender: self, gesture: gesture)
     }
     
-    func handleLongPressGesture(gestureRecognizer: UIGestureRecognizer) {
-        guard gestureRecognizer.state == .began else {return}
-        delegate?.barButtonLongPressedStart(sender: self, gestureRecognizer: gestureRecognizer)
+    func handleLongPressGesture(gesture: UILongPressGestureRecognizer) {
+        guard gesture.state == .began else {return}
+        delegate?.barButtonLongPressedStart(sender: self, gesture: gesture)
     }
     
     // MARK: - rotate
@@ -86,13 +94,13 @@ class LPTBarButtonItem: UIBarButtonItem {
 }
 
 protocol LPTBarButtonItemDelegate: class {
-    func barButtonTapped(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer)
-    func barButtonLongPressedStart(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer)
+    func barButtonTapped(sender: LPTBarButtonItem, gesture: UITapGestureRecognizer)
+    func barButtonLongPressedStart(sender: LPTBarButtonItem, gesture: UILongPressGestureRecognizer)
 }
 
 extension LPTBarButtonItemDelegate {
-    func barButtonTapped(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {return}
-    func barButtonLongPressedStart(sender: LPTBarButtonItem, gestureRecognizer: UIGestureRecognizer) {return}
+    func barButtonTapped(sender: LPTBarButtonItem, gesture: UITapGestureRecognizer) {return}
+    func barButtonLongPressedStart(sender: LPTBarButtonItem, gesture: UILongPressGestureRecognizer) {return}
 }
 
 class MessageBarButtonItem: UIBarButtonItem {

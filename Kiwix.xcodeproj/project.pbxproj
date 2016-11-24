@@ -456,11 +456,11 @@
 		971A10221D022AD5007FC62C /* View */ = {
 			isa = PBXGroup;
 			children = (
+				971A10241D022AD5007FC62C /* BarButtonItems.swift */,
 				971A10261D022AD5007FC62C /* Cells.swift */,
 				971A10271D022AD5007FC62C /* Logo.swift */,
 				9764CBD01D806AD800072D6A /* RefreshLibControl.swift */,
 				971A102A1D022AD5007FC62C /* SearchBar.swift */,
-				971A10241D022AD5007FC62C /* BarButtonItems.swift */,
 				97E60A011D10423A00EBCB9D /* Others.swift */,
 			);
 			path = View;

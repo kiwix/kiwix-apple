@@ -8,14 +8,14 @@
 
 import UIKit
 
-class Buttons {
+class Buttons: LPTBarButtonItemDelegate {
     
-    private(set) lazy var back: UIBarButtonItem = LPTBarButtonItem(imageName: "LeftArrow", scale: 0.8)
-    private(set) lazy var forward: UIBarButtonItem = LPTBarButtonItem(imageName: "RightArrow", scale: 0.8)
-    private(set) lazy var toc: UIBarButtonItem = LPTBarButtonItem(imageName: "TableOfContent", scale: 0.8)
-    private(set) lazy var bookmark: UIBarButtonItem = LPTBarButtonItem(imageName: "Bookmark", scale: 0.9)
-    private(set) lazy var library: UIBarButtonItem = LPTBarButtonItem(imageName: "Library")
-    private(set) lazy var setting: UIBarButtonItem = LPTBarButtonItem(imageName: "Setting")
+    private(set) lazy var back: UIBarButtonItem = LPTBarButtonItem(imageName: "LeftArrow", scale: 0.8, delegate: self)
+    private(set) lazy var forward: UIBarButtonItem = LPTBarButtonItem(imageName: "RightArrow", scale: 0.8, delegate: self)
+    private(set) lazy var toc: UIBarButtonItem = LPTBarButtonItem(imageName: "TableOfContent", scale: 0.8, delegate: self)
+    private(set) lazy var bookmark: UIBarButtonItem = LPTBarButtonItem(imageName: "Bookmark", scale: 0.9, delegate: self)
+    private(set) lazy var library: UIBarButtonItem = LPTBarButtonItem(imageName: "Library", delegate: self)
+    private(set) lazy var setting: UIBarButtonItem = LPTBarButtonItem(imageName: "Setting", delegate: self)
     
     private(set) lazy var cancel: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(tapped(button:)))
     
@@ -26,42 +26,38 @@ class Buttons {
     var navLeft: [UIBarButtonItem] {return [back, forward, toc]}
     var navRight: [UIBarButtonItem] {return [setting, library, bookmark]}
     
-    
-    @objc func tapped(button: UIBarButtonItem) {
-        switch button {
+    func barButtonTapped(sender: LPTBarButtonItem, gesture: UITapGestureRecognizer) {
+        switch sender {
         case back:
             delegate?.didTapBackButton()
         case forward:
             delegate?.didTapForwardButton()
-        case bookmark:
-            delegate?.didTapBookmarkButton()
-        case library:
-            delegate?.didTapLibraryButton()
-        case cancel:
-            delegate?.didTapCancelButton()
         default:
             return
         }
     }
     
-    @objc func pressed(recognizer: UILongPressGestureRecognizer) {
-        guard let view = recognizer.view, recognizer.state == .began else {return}
-        switch view.tag {
-        case 0:
+    func barButtonLongPressedStart(sender: LPTBarButtonItem, gesture: UILongPressGestureRecognizer) {
+        switch sender {
+        case back:
             delegate?.didLongPressBackButton()
-        case 1:
+        case forward:
             delegate?.didLongPressForwardButton()
-        case 3:
-            delegate?.didLongPressBookmarkButton()
         default:
             return
         }
+    }
+    
+    @objc func tapped(button: UIBarButtonItem) {
+        guard button == cancel else {return}
+        delegate?.didTapCancelButton()
     }
 }
 
 protocol ButtonDelegates {
     func didTapBackButton()
     func didTapForwardButton()
+    func didTapTOCButton()
     func didTapBookmarkButton()
     func didTapLibraryButton()
     func didTapCancelButton()
@@ -69,21 +65,4 @@ protocol ButtonDelegates {
     func didLongPressBackButton()
     func didLongPressForwardButton()
     func didLongPressBookmarkButton()
-}
-
-class BarButton: UIBarButtonItem {
-    private(set) var type = BarButtonType.blank
-    convenience init(type: BarButtonType) {
-        let imageView = UIImageView(image: UIImage(named: "Bookmark"))
-        imageView.frame = CGRect(x: 0, y: 0, width: 26, height: 26)
-        self.init(customView: imageView)
-//        self.init(image: nil, style: .plain, target: nil, action: nil)
-        self.type = type
-    }
-}
-
-enum BarButtonType {
-    case back, forward
-    case tableOfContent, bookmark, library, setting
-    case blank
 }
