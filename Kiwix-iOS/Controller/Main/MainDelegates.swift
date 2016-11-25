@@ -95,7 +95,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
             present(controller, animated: true, completion: nil)
             return false
         }
-        navigationList.webViewStartLoading(requestURL: url)
+        controllers.navigationList.startLoading(requestURL: url)
         return true
     }
     
@@ -107,8 +107,8 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
         guard let title = JS.getTitle(from: webView) else {return}
         searchBar.title = title
         
-        buttons.back.tintColor = navigationList.canGoBack ? nil : UIColor.gray
-        buttons.forward.tintColor = navigationList.canGoForward ? nil : UIColor.gray
+        buttons.back.tintColor = controllers.navigationList.canGoBack ? nil : UIColor.gray
+        buttons.forward.tintColor = controllers.navigationList.canGoForward ? nil : UIColor.gray
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
@@ -128,11 +128,11 @@ extension MainController {
 
 extension MainController: ButtonDelegates, SearchContainerDelegate {
     func didTapBackButton() {
-        navigationList.goBack(webView: webView)
+//        navigationList.goBack(webView: webView)
     }
     
     func didTapForwardButton() {
-        navigationList.goForward(webView: webView)
+//        navigationList.goForward(webView: webView)
     }
     
     func didTapTOCButton() {
@@ -153,20 +153,31 @@ extension MainController: ButtonDelegates, SearchContainerDelegate {
     
     func didLongPressBackButton() {
         let controller = controllers.navigationList
-        controller.urls = navigationList.backList
+        controller.type = .back
+        controller.delegate = self
         let nav = UINavigationController(rootViewController: controller)
         present(nav, animated: true, completion: nil)
     }
     
     func didLongPressForwardButton() {
         let controller = controllers.navigationList
-        controller.urls = navigationList.forwardList
+        controller.type = .forward
+        controller.delegate = self
         let nav = UINavigationController(rootViewController: controller)
         present(nav, animated: true, completion: nil)
     }
     
     func didLongPressBookmarkButton() {
         showBookmarkHUD()
+    }
+}
+
+// MARK: - NavigationListControllerDelegate
+
+extension MainController: NavigationListControllerDelegate {
+    func load(url: URL) {
+        let request = URLRequest(url: url)
+        webView.loadRequest(request)
     }
 }
 

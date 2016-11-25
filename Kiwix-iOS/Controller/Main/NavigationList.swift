@@ -73,6 +73,3 @@ class NavigationList {
     }
 }
 
-enum NavigationListType {
-    case Back, Forward
-}
