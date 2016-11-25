@@ -43,6 +43,8 @@ class Buttons: LPTBarButtonItemDelegate {
             delegate?.didLongPressBackButton()
         case forward:
             delegate?.didLongPressForwardButton()
+        case bookmark:
+            delegate?.didLongPressBookmarkButton()
         default:
             return
         }

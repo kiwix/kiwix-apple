@@ -52,10 +52,9 @@ class DownloadTasksController: LibraryBaseController, UITableViewDelegate, UITab
             guard let navController = segue.destination as? UINavigationController,
                 let bookDetailController = navController.topViewController as? BookDetailController,
                 let cell = sender as? UITableViewCell,
-                let indexPath = tableView.indexPath(for: cell),
-                let downloadTask = fetchedResultController.object(at: indexPath) as? DownloadTask,
-                let book = downloadTask.book else {return}
-            bookDetailController.book = book
+                let indexPath = tableView.indexPath(for: cell) else {return}
+            let downloadTask = fetchedResultController.object(at: indexPath)
+            bookDetailController.book = downloadTask.book
         default:
             break
         }

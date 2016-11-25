@@ -54,8 +54,8 @@ class SearchBooksController: SearchBaseTableController, UITableViewDelegate, UIT
     // MARK: - Table Cell Delegate
     
     func didTapOnAccessoryViewForCell(_ cell: UITableViewCell) {
-        guard let indexPath = tableView.indexPath(for: cell),
-            let book = fetchedResultController.object(at: indexPath) as? Book else {return}
+        guard let indexPath = tableView.indexPath(for: cell) else {return}
+        let book = fetchedResultController.object(at: indexPath)
         book.includeInSearch = !book.includeInSearch
     }
 
@@ -77,8 +77,8 @@ class SearchBooksController: SearchBaseTableController, UITableViewDelegate, UIT
     }
     
     func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
-        guard let book = fetchedResultController.object(at: indexPath) as? Book else {return}
         guard let cell = cell as? CheckMarkBookCell else {return}
+        let book = fetchedResultController.object(at: indexPath)
         
         cell.delegate = self
         cell.titleLabel.text = book.title
@@ -111,9 +111,9 @@ class SearchBooksController: SearchBaseTableController, UITableViewDelegate, UIT
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        guard let book = fetchedResultController.object(at: indexPath) as? Book else {return}
-//        let operation = ArticleLoadOperation(bookID: book.id)
-//        GlobalQueue.shared.add(load: operation)
+        let book = fetchedResultController.object(at: indexPath)
+        let operation = ArticleLoadOperation(bookID: book.id)
+        GlobalQueue.shared.add(articleLoadOperation: operation)
     }
     
     // MARK: - Fetched Result Controller Delegate

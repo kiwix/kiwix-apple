@@ -123,3 +123,9 @@ extension UIDevice {
     }
 }
 
+extension Collection {
+    public subscript(safe index: Index) -> _Element? {
+        return index >= startIndex && index < endIndex ? self[index] : nil
+    }
+}
+
