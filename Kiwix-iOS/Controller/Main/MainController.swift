@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import WebKit
 
 class MainController: UIViewController {
     
@@ -18,7 +19,6 @@ class MainController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        webView.loadRequest(URLRequest(url: URL(string: "about:blank")!))
         navigationItem.titleView = searchBar
         searchBar.delegate = self
         buttons.delegate = self
