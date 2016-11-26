@@ -12,7 +12,6 @@ import CoreData
 // Yes, I know it'd be better to make this into a protocol.
 // But unfortunately, UIKit cannot seems to be able to recognize default protocol implementation in Swift. (iOS 10.1)
 
-
 class CoreDataTableBaseController: UIViewController, NSFetchedResultsControllerDelegate {
     @IBOutlet weak var tableView: UITableView!
     
