@@ -15,16 +15,13 @@ class SearchContainer: UIViewController {
     @IBOutlet weak var scopeAndHistoryContainer: UIView!
     @IBOutlet weak var resultContainer: UIView!
     private var resultController: SearchResultController!
-    
-    
     var delegate: SearchContainerDelegate?
     
-    var searchText = "" {
-        didSet {
-            configureVisibility()
-            startSearch()
-        }
+    @IBAction func handleDimViewTap(_ sender: UITapGestureRecognizer) {
+        delegate?.didTapSearchDimView()
     }
+    
+    // MARK: - Overrides
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +34,15 @@ class SearchContainer: UIViewController {
             
         } else if segue.identifier == "EmbeddedResultController" {
             resultController = segue.destination as! SearchResultController
+        }
+    }
+    
+    // MARK: - Search
+    
+    var searchText = "" {
+        didSet {
+            configureVisibility()
+            startSearch()
         }
     }
     
@@ -55,10 +61,6 @@ class SearchContainer: UIViewController {
                 self.resultController.reload(searchText: self.searchText, results: search.results)
             })
         })
-    }
-    
-    @IBAction func handleDimViewTap(_ sender: UITapGestureRecognizer) {
-        delegate?.didTapSearchDimView()
     }
 }
 

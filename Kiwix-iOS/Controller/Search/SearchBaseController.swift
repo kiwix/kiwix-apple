@@ -9,21 +9,32 @@
 import UIKit
 import DZNEmptyDataSet
 
+/**
+ Base class for SearchBooksController and SearchResultController. 
+ 
+ Provides:
+ 
+  - tableView inset handle
+  - DZNEmptyDataSet refresh
+ 
+ when keyboard shows / hides
+ */
+
 class SearchBaseTableController: UIViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     @IBOutlet weak var tableView: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(notification:)), name: .UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: .UIKeyboardWillHide, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tableView.emptyDataSetSource = nil
         tableView.emptyDataSetDelegate = nil
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardDidShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -32,7 +43,7 @@ class SearchBaseTableController: UIViewController, DZNEmptyDataSetSource, DZNEmp
         tableView.emptyDataSetDelegate = self
     }
     
-    func keyboardDidShow(_ notification: Notification) {
+    func keyboardDidShow(notification: Notification) {
         guard let userInfo = notification.userInfo as? [String: NSValue],
             let origin = userInfo[UIKeyboardFrameEndUserInfoKey]?.cgRectValue.origin else {return}
         let point = view.convert(origin, from: nil)
@@ -42,7 +53,7 @@ class SearchBaseTableController: UIViewController, DZNEmptyDataSetSource, DZNEmp
         tableView.reloadEmptyDataSet()
     }
     
-    func keyboardWillHide(_ notification: Notification) {
+    func keyboardWillHide(notification: Notification) {
         tableView.contentInset = UIEdgeInsetsMake(0.0, 0, 0, 0)
         tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0, 0, 0, 0)
         tableView.reloadEmptyDataSet()
