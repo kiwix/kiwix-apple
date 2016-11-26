@@ -11,7 +11,6 @@
 		970A2A221DD562CB0078BB7C /* BookOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970A2A211DD562CB0078BB7C /* BookOperations.swift */; };
 		970E7F741D9DB0FC00741290 /* 1.8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 970E7F731D9DB0FC00741290 /* 1.8.xcmappingmodel */; };
 		970E7F771D9DBEA900741290 /* SettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E7F761D9DBEA900741290 /* SettingController.swift */; };
-		970E7F791DA003FA00741290 /* WebViewControllerOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E7F781DA003FA00741290 /* WebViewControllerOld.swift */; };
 		970E7F7B1DA0069600741290 /* FontSizeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E7F7A1DA0069600741290 /* FontSizeController.swift */; };
 		970E7F821DA0305000741290 /* TableOfContentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E7F7E1DA0305000741290 /* TableOfContentsController.swift */; };
 		970E7F831DA0305000741290 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E7F7F1DA0305000741290 /* WelcomeController.swift */; };
@@ -1145,7 +1144,6 @@
 				97D6813A1D6F711A00E5FA99 /* Language.swift in Sources */,
 				97BC0FBF1DD90A65004BBAD1 /* JSInjection.swift in Sources */,
 				97BC0FC01DD90A65004BBAD1 /* MainController.swift in Sources */,
-				970E7F791DA003FA00741290 /* WebViewControllerOld.swift in Sources */,
 				97A1FD421D6F728200A80EE2 /* Extensions.swift in Sources */,
 				97A1FD3A1D6F724E00A80EE2 /* reader.cpp in Sources */,
 				973207A31DD1983D00EDD3DC /* LanguageFilterController.swift in Sources */,

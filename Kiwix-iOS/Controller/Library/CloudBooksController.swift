@@ -80,7 +80,7 @@ class CloudBooksController: LibraryBaseController, UITableViewDelegate, UITableV
     
     func showLanguageFilterController() {
         guard let splitViewController = splitViewController as? LibrarySplitViewController, !splitViewController.isShowingLangFilter else {return}
-        guard let controller = UIStoryboard.library.initViewController(LanguageFilterController.self) else {return}
+        let controller = UIStoryboard(name: "library", bundle: nil).instantiateViewController(withIdentifier: "LanguageFilterController") as! LanguageFilterController
         controller.delegate = self
         let navController = UINavigationController(rootViewController: controller)
         showDetailViewController(navController, sender: self)
@@ -116,7 +116,7 @@ class CloudBooksController: LibraryBaseController, UITableViewDelegate, UITableV
                     self.tableView.reloadEmptyDataSet()
                 }
                 
-                if let error =  errors.first {
+                if let _ =  errors.first {
                     // handle error [network, xmlparse]
                 } else {
                     if operation.firstTime {
@@ -307,15 +307,16 @@ class CloudBooksController: LibraryBaseController, UITableViewDelegate, UITableV
         fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
         fetchRequest.predicate = self.onlineCompoundPredicate
         
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "language.name", cacheName: "OnlineFRC" + Bundle.buildVersion)
-        fetchedResultsController.delegate = self
-        fetchedResultsController.performFetch(deleteCache: false)
-        return fetchedResultsController as! NSFetchedResultsController<Book>
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "language.name", cacheName: "OnlineFRC" + Bundle.buildVersion)
+        controller.delegate = self
+        try? controller.performFetch()
+        return controller as! NSFetchedResultsController<Book>
     }()
     
     func refreshFetchedResultController() {
         fetchedResultController.fetchRequest.predicate = onlineCompoundPredicate
-        fetchedResultController.performFetch(deleteCache: true)
+        NSFetchedResultsController<Book>.deleteCache(withName: fetchedResultController.cacheName)
+        try? fetchedResultController.performFetch()
         tableView.reloadData()
     }
     

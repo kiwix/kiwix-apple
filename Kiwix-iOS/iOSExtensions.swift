@@ -6,26 +6,7 @@
 //  Copyright © 2016 Chris Li. All rights reserved.
 //
 
-import Foundation
-import CoreData
 import UIKit
-
-// MARK: - CoreData
-
-extension NSFetchedResultsController {
-    func performFetch(deleteCache: Bool) {
-        do {
-            if deleteCache {
-                guard let cacheName = cacheName else {return}
-                NSFetchedResultsController.deleteCache(withName: cacheName)
-            }
-            
-            try performFetch()
-        } catch let error as NSError {
-            print("FetchedResultController performFetch failed: \(error.localizedDescription)")
-        }
-    }
-}
 
 // MARK: - UI
 
@@ -38,30 +19,6 @@ extension UIApplication {
         get {
             return .beta
         }
-    }
-}
-
-extension UIStoryboard {
-    class var library: UIStoryboard {get {return UIStoryboard(name: "Library", bundle: nil)}}
-    class var main: UIStoryboard {get {return UIStoryboard(name: "Main", bundle: nil)}}
-    class var search: UIStoryboard {get {return UIStoryboard(name: "Search", bundle: nil)}}
-    class var setting: UIStoryboard {get {return UIStoryboard(name: "Setting", bundle: nil)}}
-    class var welcome: UIStoryboard {get {return UIStoryboard(name: "Welcome", bundle: nil)}}
-    
-    func initViewController<T:UIViewController>(_ type: T.Type) -> T? {
-        guard let className = NSStringFromClass(T).components(separatedBy: ".").last else {
-            print("NSManagedObjectExtension: Unable to get class name")
-            return nil
-        }
-        return instantiateViewController(withIdentifier: className) as? T
-    }
-    
-    func initViewController<T:UIViewController>(_ identifier: String, type: T.Type) -> T? {
-        return instantiateViewController(withIdentifier: identifier) as? T
-    }
-    
-    func controller<T:UIViewController>(_ type: T.Type) -> T? {
-        return instantiateViewController(withIdentifier: String(describing: T.self)) as? T
     }
 }
 

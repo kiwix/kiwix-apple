@@ -101,8 +101,8 @@ class DownloadTasksController: LibraryBaseController, UITableViewDelegate, UITab
     }
     
     override func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
-        guard let downloadTask = fetchedResultController.object(at: indexPath) as? DownloadTask,
-            let book = downloadTask.book,
+        let downloadTask = fetchedResultController.object(at: indexPath)
+        guard  let book = downloadTask.book,
             let cell = cell as? DownloadBookCell else {return}
         
         cell.titleLabel.text = book.title
@@ -248,10 +248,10 @@ class DownloadTasksController: LibraryBaseController, UITableViewDelegate, UITab
         let creationTimeDescriptor = NSSortDescriptor(key: "creationTime", ascending: true)
         fetchRequest.sortDescriptors = [creationTimeDescriptor]
         
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "DownloadFRC" + Bundle.buildVersion)
-        fetchedResultsController.delegate = self
-        fetchedResultsController.performFetch(deleteCache: false)
-        return fetchedResultsController as! NSFetchedResultsController<DownloadTask>
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "DownloadFRC" + Bundle.buildVersion)
+        controller.delegate = self
+        try? controller.performFetch()
+        return controller as! NSFetchedResultsController<DownloadTask>
     }()
     
 }

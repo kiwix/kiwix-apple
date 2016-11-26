@@ -138,7 +138,7 @@ class LocalBooksController: LibraryBaseController, UITableViewDelegate, UITableV
         fetchRequest.predicate = NSPredicate(format: "stateRaw >= 2")
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: "stateRaw", cacheName: "LocalFRC" + Bundle.buildVersion)
         fetchedResultsController.delegate = self
-        fetchedResultsController.performFetch(deleteCache: false)
+        try? fetchedResultsController.performFetch()
         return fetchedResultsController as! NSFetchedResultsController<Book>
     }()
     

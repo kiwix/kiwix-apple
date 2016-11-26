@@ -104,10 +104,11 @@ class SettingTBVC: UITableViewController {
         case LocalizedStrings.rateKiwix:
             showRateKiwixAlert(showRemindLater: false)
         case LocalizedStrings.about:
-            let controller = UIStoryboard(name: "Setting", bundle: nil)
-                .instantiateViewController(withIdentifier: "WebViewControllerOld") as! WebViewControllerOld
-            controller.page = .About
-            navigationController?.pushViewController(controller, animated: true)
+            break
+//            let controller = UIStoryboard(name: "Setting", bundle: nil)
+//                .instantiateViewController(withIdentifier: "WebViewControllerOld") as! WebViewControllerOld
+//            controller.page = .About
+//            navigationController?.pushViewController(controller, animated: true)
         default:
             break
         }
@@ -152,8 +153,8 @@ class SettingTBVC: UITableViewController {
     }
     
     func goRateInAppStore() {
-        let url = URL(string: "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=997079563&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8")!
-        UIApplication.shared.openURL(url)
+//        let url = URL(string: "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=997079563&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8")!
+//        UIApplication.shared.openURL(url)
     }
     
     // MARK: - Actions

@@ -36,21 +36,6 @@ class SearchBooksController: SearchBaseTableController, UITableViewDelegate, UIT
         recentSearchContainer.setNeedsDisplay()
     }
     
-    // MARK: - Fetched Results Controller
-    
-    let managedObjectContext = AppDelegate.persistentContainer.viewContext
-    lazy var fetchedResultController: NSFetchedResultsController<Book> = {
-        let fetchRequest = Book.fetchRequest()
-        let langDescriptor = NSSortDescriptor(key: "language.name", ascending: true)
-        let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
-        fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
-        fetchRequest.predicate = NSPredicate(format: "stateRaw == 2")
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "ScopeFRC" + Bundle.buildVersion)
-        fetchedResultsController.delegate = self
-        fetchedResultsController.performFetch(deleteCache: false)
-        return fetchedResultsController as! NSFetchedResultsController<Book>
-    }()
-    
     // MARK: - Table Cell Delegate
     
     func didTapOnAccessoryViewForCell(_ cell: UITableViewCell) {
@@ -175,4 +160,19 @@ class SearchBooksController: SearchBaseTableController, UITableViewDelegate, UIT
     func verticalOffsetForEmptyDataSet(_ scrollView: UIScrollView!) -> CGFloat {
         return -(tableView.contentInset.bottom + recentSearchBarHeight.constant) / 2.5
     }
+    
+    // MARK: - Fetched Results Controller
+    
+    let managedObjectContext = AppDelegate.persistentContainer.viewContext
+    lazy var fetchedResultController: NSFetchedResultsController<Book> = {
+        let fetchRequest = Book.fetchRequest()
+        let langDescriptor = NSSortDescriptor(key: "language.name", ascending: true)
+        let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
+        fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
+        fetchRequest.predicate = NSPredicate(format: "stateRaw == 2")
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "ScopeFRC" + Bundle.buildVersion)
+        fetchedResultsController.delegate = self
+        try? fetchedResultsController.performFetch()
+        return fetchedResultsController as! NSFetchedResultsController<Book>
+    }()
 }

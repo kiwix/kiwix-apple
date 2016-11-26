@@ -73,9 +73,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
-        // Here we get what notification permission user currently allows
-    }
+//    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
+//        // Here we get what notification permission user currently allows
+//    }
     
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.

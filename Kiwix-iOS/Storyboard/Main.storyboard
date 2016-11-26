@@ -209,61 +209,6 @@
             </objects>
             <point key="canvasLocation" x="2607" y="432"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="sKQ-wF-qqU">
-            <objects>
-                <navigationController id="3qT-fi-cxa" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="nNd-2P-KwU">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="OSe-sS-HTX" kind="relationship" relationship="rootViewController" id="WBP-1c-ZMf"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1xD-QM-7xK" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="756" y="-348"/>
-        </scene>
-        <!--Main Controller-->
-        <scene sceneID="WLR-6p-ElI">
-            <objects>
-                <viewController id="OSe-sS-HTX" customClass="MainController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="KVH-WC-JGt"/>
-                        <viewControllerLayoutGuide type="bottom" id="UIX-e1-SUg"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="hRW-ET-fRA">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <webView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MjM-In-ehJ">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </webView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="MjM-In-ehJ" firstAttribute="top" secondItem="KVH-WC-JGt" secondAttribute="bottom" constant="-64" id="1Om-9P-m57">
-                                <variation key="heightClass=compact-widthClass=regular" constant="-44"/>
-                            </constraint>
-                            <constraint firstItem="MjM-In-ehJ" firstAttribute="leading" secondItem="hRW-ET-fRA" secondAttribute="leading" id="Kf8-Rn-ROp"/>
-                            <constraint firstItem="UIX-e1-SUg" firstAttribute="top" secondItem="MjM-In-ehJ" secondAttribute="bottom" constant="-44" id="MRq-VY-WQT">
-                                <variation key="widthClass=regular" constant="0.0"/>
-                            </constraint>
-                            <constraint firstAttribute="trailing" secondItem="MjM-In-ehJ" secondAttribute="trailing" id="tIZ-J4-u59"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="fuj-b7-iB1"/>
-                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="webView" destination="MjM-In-ehJ" id="bOM-dN-Gc6"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Yrv-8u-IwG" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1651" y="-351"/>
-        </scene>
         <!--Main Controller-->
         <scene sceneID="nEL-IB-dp3">
             <objects>
