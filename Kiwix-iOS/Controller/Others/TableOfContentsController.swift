@@ -122,7 +122,7 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
     // MARK: - Table view delegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        delegate?.scrollTo(headings[indexPath.row])
+        delegate?.didSelectTOCItem(heading: headings[indexPath.row])
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -150,5 +150,5 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
 }
 
 protocol TableOfContentsDelegate: class {
-    func scrollTo(_ heading: HTMLHeading)
+    func didSelectTOCItem(heading: HTMLHeading)
 }

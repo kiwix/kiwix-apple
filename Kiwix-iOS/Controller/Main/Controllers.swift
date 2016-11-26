@@ -10,26 +10,12 @@ import UIKit
 
 class Controllers {
     
-    public func cleanUp() {
-        //_bookmark = nil
-        //bookmarkHUD = nil
-        _library = nil
-        _search = nil
-        //setting = nil
-        _welcome = nil
-    }
-    
     // MARK: - Main
     
     class var main: MainController {
         return (UIApplication.appDelegate.window?.rootViewController as! UINavigationController).topViewController as! MainController
     }
-    
-    // MARK: - NavigationList
-    
-    private(set) lazy var navigationList = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "NavigationListController") as! NavigationListController
 
-    
     // MARK: - Bookmark
 //
 //    private var bookmark: UINavigationController?

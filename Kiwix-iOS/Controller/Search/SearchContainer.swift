@@ -58,10 +58,10 @@ class SearchContainer: UIViewController {
     }
     
     @IBAction func handleDimViewTap(_ sender: UITapGestureRecognizer) {
-        delegate?.didTapDimView()
+        delegate?.didTapSearchDimView()
     }
 }
 
 protocol SearchContainerDelegate: class {
-    func didTapDimView()
+    func didTapSearchDimView()
 }

@@ -9,9 +9,40 @@
 import UIKit
 import SafariServices
 
+// MARK: - Web
+
+extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        guard let url = request.url else {return false}
+        guard url.isKiwixURL else {
+            let controller = SFSafariViewController(url: url)
+            controller.delegate = self
+            present(controller, animated: true, completion: nil)
+            return false
+        }
+        return true
+    }
+    
+    func webViewDidStartLoad(_ webView: UIWebView) {
+    }
+    
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        JS.preventDefaultLongTap(webView: webView)
+        guard let title = JS.getTitle(from: webView) else {return}
+        searchBar.title = title
+        
+        buttons.back.tintColor = webView.canGoBack ? nil : UIColor.gray
+        buttons.forward.tintColor = webView.canGoForward ? nil : UIColor.gray
+    }
+    
+    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
+        
+    }
+}
+
 // MARK: - Search
 
-extension MainController: SearchBarDelegate {
+extension MainController: SearchBarDelegate, SearchContainerDelegate {
     
     func didBecomeFirstResponder(searchBar: SearchBar) {
         showSearch(animated: true)
@@ -82,50 +113,15 @@ extension MainController: SearchBarDelegate {
             completion(true)
         }
     }
-}
-
-// MARK: - Web
-
-extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
-    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        guard let url = request.url else {return false}
-        guard url.isKiwixURL else {
-            let controller = SFSafariViewController(url: url)
-            controller.delegate = self
-            present(controller, animated: true, completion: nil)
-            return false
-        }
-        return true
-    }
     
-    func webViewDidStartLoad(_ webView: UIWebView) {
-    }
-    
-    func webViewDidFinishLoad(_ webView: UIWebView) {
-        JS.preventDefaultLongTap(webView: webView)
-        guard let title = JS.getTitle(from: webView) else {return}
-        searchBar.title = title
-        
-        buttons.back.tintColor = webView.canGoBack ? nil : UIColor.gray
-        buttons.forward.tintColor = webView.canGoForward ? nil : UIColor.gray
-    }
-    
-    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
-        
-    }
-}
-
-// MARK: - SFSafariViewControllerDelegate
-
-extension MainController {
-    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        controller.dismiss(animated: true, completion: nil)
+    func didTapSearchDimView() {
+        _ = searchBar.resignFirstResponder()
     }
 }
 
 // MARK: - Button Delegates
 
-extension MainController: ButtonDelegates, SearchContainerDelegate {
+extension MainController: ButtonDelegates {
     func didTapBackButton() {
         webView.goBack()
     }
@@ -135,7 +131,7 @@ extension MainController: ButtonDelegates, SearchContainerDelegate {
     }
     
     func didTapTOCButton() {
-        
+        isShowingTableOfContents ? hideTableOfContents(animated: true) : showTableOfContents(animated: true)
     }
     
     func didTapBookmarkButton() {
@@ -161,20 +157,81 @@ extension MainController: ButtonDelegates, SearchContainerDelegate {
     }
 }
 
-// MARK: - NavigationListControllerDelegate
+// MARK: - Table Of Content
 
-//extension MainController: NavigationListControllerDelegate {
-//    func load(url: URL) {
-//        let request = URLRequest(url: url)
-//        webView.loadRequest(request)
-//    }
-//}
-
-// MARK: - SearchContainerDelegate
-
-extension MainController {
-    func didTapDimView() {
-        _ = searchBar.resignFirstResponder()
+extension MainController: TableOfContentsDelegate {
+    func showTableOfContents(animated: Bool) {
+        guard welcomeController == nil else {return}
+        isShowingTableOfContents = true
+        tocVisiualEffectView.isHidden = false
+        dimView.isHidden = false
+        dimView.alpha = 0.0
+        view.layoutIfNeeded()
+        
+        //configureTableOfContents()
+        configureTOCConstraints()
+        
+        if animated {
+            UIView.animate(withDuration: 0.3, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.0, options: .curveEaseOut, animations: {
+                self.view.layoutIfNeeded()
+                self.dimView.alpha = 0.5
+            }) { (completed) in }
+        } else {
+            view.layoutIfNeeded()
+            dimView.alpha = 0.5
+        }
+        
+        JS.startTOCCallBack(webView)
+    }
+    
+    func hideTableOfContents(animated: Bool) {
+        isShowingTableOfContents = false
+        view.layoutIfNeeded()
+        
+        configureTOCConstraints()
+        if animated {
+            UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseIn, animations: {
+                self.view.layoutIfNeeded()
+                self.dimView.alpha = 0.0
+            }) { (completed) in
+                self.dimView.isHidden = true
+                self.tocVisiualEffectView.isHidden = true
+            }
+        } else {
+            view.layoutIfNeeded()
+            dimView.alpha = 0.0
+            dimView.isHidden = true
+            tocVisiualEffectView.isHidden = true
+        }
+        
+        JS.stopTOCCallBack(webView)
+    }
+    
+    func configureTOCConstraints() {
+        switch traitCollection.horizontalSizeClass {
+        case .compact:
+            let tocHeight: CGFloat = {
+                guard let controller = tableOfContentsController else {return floor(view.frame.height * 0.4)}
+                let tocContentHeight = controller.tableView.contentSize.height
+                guard controller.headings.count != 0 else {return floor(view.frame.height * 0.4)}
+                let toolBarHeight: CGFloat = traitCollection.horizontalSizeClass == .regular ? 0.0 : (traitCollection.verticalSizeClass == .compact ? 32.0 : 44.0)
+                return min(tocContentHeight + toolBarHeight, floor(view.frame.height * 0.65))
+            }()
+            tocHeightConstraint.constant = tocHeight
+            tocTopToSuperViewBottomSpacing.constant = isShowingTableOfContents ? tocHeight : 0.0
+        case .regular:
+            tocLeadSpacing.constant = isShowingTableOfContents ? 0.0 : 270
+        default:
+            break
+        }
+    }
+    
+    func didSelectTOCItem(heading: HTMLHeading) {
+        
+    }
+    
+    @IBAction func didTapTOCDimView(_ sender: UITapGestureRecognizer) {
+        hideTableOfContents(animated: true)
     }
 }
 
@@ -193,9 +250,13 @@ extension MainController {
     }
     
     func hideWelcome() {
-        guard let controller = childViewControllers.flatMap({$0 as? WelcomeController}).first else {return}
+        guard let controller = welcomeController else {return}
         controller.removeFromParentViewController()
         controller.view.removeFromSuperview()
+    }
+    
+    var welcomeController: WelcomeController? {
+        return childViewControllers.flatMap({$0 as? WelcomeController}).first
     }
 }
 
@@ -222,5 +283,13 @@ extension MainController: UIViewControllerTransitioningDelegate {
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return BookmarkHUDAnimator(animateIn: false)
+    }
+}
+
+// MARK: - SFSafariViewControllerDelegate
+
+extension MainController {
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        controller.dismiss(animated: true, completion: nil)
     }
 }
