@@ -14,6 +14,7 @@ import CoreData
  
  Yes, I know it'd be better to make this into a protocol.
  But unfortunately, UIKit cannot seems to be able to recognize default protocol implementation in Swift. (iOS 10.1)
+ More spedifically, protocol extension is a swift only feature and is not visible to objc_msgSend()
  */
 
 class CoreDataTableBaseController: UIViewController, NSFetchedResultsControllerDelegate {

@@ -20,8 +20,8 @@ import DZNEmptyDataSet
  when keyboard shows / hides
  */
 
-class SearchBaseTableController: UIViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
-    @IBOutlet weak var tableView: UITableView!
+class SearchBaseTableController: CoreDataTableBaseController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+//    @IBOutlet weak var tableView: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
