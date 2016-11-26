@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import DZNEmptyDataSet
 
-class DownloadTasksController: LibraryBaseController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class DownloadTasksController: CoreDataTableBaseController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     var timer: Timer?
     
     // MARK: - Override

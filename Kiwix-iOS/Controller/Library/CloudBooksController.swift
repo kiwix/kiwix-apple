@@ -12,7 +12,7 @@ import ProcedureKit
 import MBProgressHUD
 import DZNEmptyDataSet
 
-class CloudBooksController: LibraryBaseController, UITableViewDelegate, UITableViewDataSource, LanguageFilterUpdating, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class CloudBooksController: CoreDataTableBaseController, UITableViewDelegate, UITableViewDataSource, LanguageFilterUpdating, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     private(set) var isRefreshing = false // used to control text on empty table view
     private(set) var isOnScreen = false // used to determine if should delay showing lang filter alert
     private(set) var langFilterAlertPending = false
