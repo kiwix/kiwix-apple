@@ -31,9 +31,10 @@ function TableOfContents () {
     
     this.headerObjects = this.getHeaderObjects();
     
-    function elementToObject(element) {
+    function elementToObject(element, index) {
         var obj = {};
         obj.id = element.id;
+        obj.index = index;
         obj.textContent = element.textContent;
         obj.tagName = element.tagName;
         return obj;
