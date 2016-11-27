@@ -10,12 +10,12 @@ import UIKit
 
 class Buttons: LPTBarButtonItemDelegate {
     
-    private(set) lazy var back: UIBarButtonItem = LPTBarButtonItem(imageName: "LeftArrow", scale: 0.8, delegate: self)
-    private(set) lazy var forward: UIBarButtonItem = LPTBarButtonItem(imageName: "RightArrow", scale: 0.8, delegate: self)
-    private(set) lazy var toc: UIBarButtonItem = LPTBarButtonItem(imageName: "TableOfContent", scale: 0.8, delegate: self)
-    private(set) lazy var bookmark: UIBarButtonItem = LPTBarButtonItem(imageName: "Bookmark", scale: 0.9, delegate: self)
-    private(set) lazy var library: UIBarButtonItem = LPTBarButtonItem(imageName: "Library", delegate: self)
-    private(set) lazy var setting: UIBarButtonItem = LPTBarButtonItem(imageName: "Setting", delegate: self)
+    private(set) lazy var back: LPTBarButtonItem = LPTBarButtonItem(imageName: "LeftArrow", scale: 0.8, delegate: self)
+    private(set) lazy var forward: LPTBarButtonItem = LPTBarButtonItem(imageName: "RightArrow", scale: 0.8, delegate: self)
+    private(set) lazy var toc: LPTBarButtonItem = LPTBarButtonItem(imageName: "TableOfContent", scale: 0.8, delegate: self)
+    private(set) lazy var bookmark: LPTBarButtonItem = LPTBarButtonItem(imageName: "Bookmark", highlightedImageName: "BookmarkHighlighted", scale: 0.9, grayed: false, delegate: self)
+    private(set) lazy var library: LPTBarButtonItem = LPTBarButtonItem(imageName: "Library", delegate: self)
+    private(set) lazy var setting: LPTBarButtonItem = LPTBarButtonItem(imageName: "Setting", delegate: self)
     
     private(set) lazy var cancel: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(tapped(button:)))
     

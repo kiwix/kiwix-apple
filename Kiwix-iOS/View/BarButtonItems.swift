@@ -15,17 +15,22 @@ class LPTBarButtonItem: UIBarButtonItem {
                      scale: CGFloat = 1.0,
                      grayed: Bool = true,
                      delegate: LPTBarButtonItemDelegate? = nil) {
-        let image = UIImage(named: imageName)?.withRenderingMode(.alwaysTemplate)
-        let highlightedImage: UIImage? = {
+        var image = UIImage(named: imageName)
+        var highlightedImage: UIImage? = {
             guard let name = highlightedImageName else {return nil}
-            return UIImage(named: name)?.withRenderingMode(.alwaysTemplate)
+            return UIImage(named: name)
         }()
+        
+        if grayed {
+            image = image?.withRenderingMode(.alwaysTemplate)
+            highlightedImage = highlightedImage?.withRenderingMode(.alwaysTemplate)
+        }
         
         let imageView = UIImageView(image: image, highlightedImage: highlightedImage)
         imageView.contentMode = UIViewContentMode.scaleAspectFit
         imageView.frame = CGRect(x: 0, y: 0, width: 26, height: 26)
-        imageView.tintColor = grayed ? UIColor.gray : nil
         imageView.transform = CGAffineTransform(scaleX: scale, y: scale)
+        if grayed {imageView.tintColor = UIColor.gray}
         
         let containerView = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 30)) // on ipad may be 52, 44 is value on iP6s+, to be investigated
         imageView.center = containerView.center
@@ -45,6 +50,12 @@ class LPTBarButtonItem: UIBarButtonItem {
     override var tintColor: UIColor? {
         didSet {
             imageView?.tintColor = tintColor
+        }
+    }
+    
+    var isHighlighted: Bool = false {
+        didSet {
+            imageView?.isHighlighted = isHighlighted
         }
     }
     

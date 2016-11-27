@@ -32,10 +32,15 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
         JS.preventDefaultLongTap(webView: webView)
         URLResponseCache.shared.stop()
         
+        guard let url = webView.request?.url,
+            let article = Article.fetch(url: url, context: AppDelegate.persistentContainer.viewContext) else {return}
+        
         buttons.back.tintColor = webView.canGoBack ? nil : UIColor.gray
         buttons.forward.tintColor = webView.canGoForward ? nil : UIColor.gray
+        buttons.bookmark.isHighlighted = article.isBookmarked
         
         guard let title = JS.getTitle(from: webView) else {return}
+        article.title = title
         searchBar.title = title
     }
     
@@ -156,12 +161,13 @@ extension MainController: ButtonDelegates {
     }
     
     func didLongPressBookmarkButton() {
-        showBookmarkHUD()
-        
         guard let url = webView.request?.url,
             let article = Article.fetch(url: url, context: AppDelegate.persistentContainer.viewContext) else {return}
-        article.title = JS.getTitle(from: webView)
+        article.isBookmarked = !article.isBookmarked
         
+        showBookmarkHUD()
+        controllers.bookmarkHUD.bookmarkAdded = article.isBookmarked
+        buttons.bookmark.isHighlighted = article.isBookmarked
     }
 }
 
