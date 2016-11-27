@@ -13,7 +13,9 @@ class Controllers {
     // MARK: - Main
     
     class var main: MainController {
-        return (UIApplication.appDelegate.window?.rootViewController as! UINavigationController).topViewController as! MainController
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let nav = appDelegate.window?.rootViewController as! UINavigationController
+        return nav.topViewController as! MainController
     }
 
     // MARK: - Bookmark

@@ -7,28 +7,7 @@
 //
 
 import Foundation
-
-#if os(iOS) || os(watchOS) || os(tvOS)
-    import UIKit
-#elseif os(OSX)
-    import AppKit
-#endif
-
-// MARK: - App Delegate Accessor
-
-#if os(iOS) || os(watchOS) || os(tvOS)
-    extension UIApplication {
-        class var appDelegate: AppDelegate {
-            return UIApplication.shared.delegate as! AppDelegate
-        }
-    }
-#elseif os(OSX)
-    extension NSApplication {
-        class var appDelegate: AppDelegate {
-            return NSApplication.sharedApplication().delegate as! AppDelegate
-        }
-    }
-#endif
+import UIKit
 
 extension Locale {
     static var preferredLangCodes: [String] {
