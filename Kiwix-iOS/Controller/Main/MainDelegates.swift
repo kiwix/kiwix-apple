@@ -167,13 +167,17 @@ extension MainController: ButtonDelegates {
     }
     
     func didLongPressBookmarkButton() {
-        func indexArticle(article: Article) {
+        func indexBookmark(article: Article) {
             if article.isBookmarked {
                 CSSearchableIndex.default().indexSearchableItems([article.searchableItem], completionHandler: nil)
             } else {
                 guard let url = article.url else {return}
                 CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: [url.absoluteString], completionHandler: nil)
             }
+        }
+        
+        func syncBookmark(article: Article) {
+            
         }
         
         guard let url = webView.request?.url,
@@ -184,7 +188,8 @@ extension MainController: ButtonDelegates {
         controllers.bookmarkHUD.bookmarkAdded = article.isBookmarked
         buttons.bookmark.isHighlighted = article.isBookmarked
         
-        indexArticle(article: article)
+        indexBookmark(article: article)
+        syncBookmark(article: article)
     }
 }
 

@@ -15,7 +15,7 @@ class HTMLHeading {
     init?(rawValue: [String: Any]) {
         self.index = rawValue["index"] as? Int
         self.tagName = rawValue["tagName"] as? String
-        self.textContent = (rawValue["textContent"] as? String)?.trimmingCharacters(in: .whitespaces)
+        self.textContent = (rawValue["textContent"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines)
         
         self.level = {
             guard let tagName = rawValue["tagName"] as? String else {return nil}

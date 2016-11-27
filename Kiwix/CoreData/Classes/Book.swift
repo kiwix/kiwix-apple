@@ -180,7 +180,7 @@ class Book: NSManagedObject {
         return descriptions.joined(separator: "\n")
     }
     
-    fileprivate var creatorAndPublisherDescription: String? {
+    private var creatorAndPublisherDescription: String? {
         if let creator = self.creator, let publisher = self.publisher {
             if creator == publisher {
                 return "Creator and publisher: " + creator
