@@ -24,19 +24,21 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
     }
     
     func webViewDidStartLoad(_ webView: UIWebView) {
+        URLResponseCache.shared.start()
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
         JS.preventDefaultLongTap(webView: webView)
-        guard let title = JS.getTitle(from: webView) else {return}
-        searchBar.title = title
+        URLResponseCache.shared.stop()
         
         buttons.back.tintColor = webView.canGoBack ? nil : UIColor.gray
         buttons.forward.tintColor = webView.canGoForward ? nil : UIColor.gray
+        
+        guard let title = JS.getTitle(from: webView) else {return}
+        searchBar.title = title
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
-        
     }
 }
 

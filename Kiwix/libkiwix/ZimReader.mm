@@ -301,22 +301,14 @@ int levenshtein_distance(const std::string &s1, const std::string &s2)
 }
 
 - (NSString *)getFavicon {
-//    NSData *data;
-//    string content;
-//    string mimeType;
-//    if (_reader->getFavicon(content, mimeType)) {
-//        data = [NSData dataWithBytes:content.c_str() length:content.length()];
-//    }
-//    return data;
-    
-    string contentC;
+    NSData *data;
+    string content;
     string mimeType;
-    NSString *content;
-    
-    if (_reader->getFavicon(contentC, mimeType)) {
-        content = [NSString stringWithCString:contentC.c_str() encoding:NSUTF8StringEncoding];
+    if (_reader->getFavicon(content, mimeType)) {
+        data = [NSData dataWithBytes:content.c_str() length:content.length()];
     }
-    return content;
+    NSString * str = [data base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
+    return str;
 }
 
 - (NSString *)parseURL:(NSString *)urlPath {

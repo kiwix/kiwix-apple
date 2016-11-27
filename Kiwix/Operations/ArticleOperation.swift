@@ -85,9 +85,10 @@ class ArticleLoadOperation: Procedure {
             }
             
             self.finish()
-
-            
-//            //if main.traitCollection.horizontalSizeClass == .compact {main.hideTableOfContentsController()}
         }
     }
+}
+
+class BookmarkAddOperation: Procedure {
+    
 }
