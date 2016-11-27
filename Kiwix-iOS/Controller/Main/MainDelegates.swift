@@ -144,6 +144,7 @@ extension MainController: ButtonDelegates {
     }
     
     func didTapTOCButton() {
+        tableOfContentsController?.headings = JS.getTableOfContents(from: webView)
         isShowingTableOfContents ? hideTableOfContents(animated: true) : showTableOfContents(animated: true)
     }
     

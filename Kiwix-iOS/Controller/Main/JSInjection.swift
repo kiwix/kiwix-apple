@@ -50,9 +50,9 @@ class JS {
         webView.stringByEvaluatingJavaScript(from: "stopCallBack()")
     }
     
-    class func getTableOfContents(_ webView: UIWebView) -> [HTMLHeading] {
+    class func getTableOfContents(from webView: UIWebView) -> [HTMLHeading] {
         let jString = "getTableOfContents().headerObjects;"
-        guard let elements = webView.context.evaluateScript(jString).toArray() as? [[String: String]] else {return [HTMLHeading]()}
+        guard let elements = webView.context.evaluateScript(jString).toArray() as? [[String: Any]] else {return [HTMLHeading]()}
         var headings = [HTMLHeading]()
         for element in elements {
             guard let heading = HTMLHeading(rawValue: element) else {continue}

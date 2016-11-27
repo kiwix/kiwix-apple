@@ -123,7 +123,7 @@
                                 </prototypes>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tZq-RO-dRD">
-                                <rect key="frame" x="269" y="0.0" width="1" height="306"/>
+                                <rect key="frame" x="269" y="0.0" width="1" height="916"/>
                                 <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="18" id="OTo-dk-TbS">
@@ -144,19 +144,14 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="xpu-sV-k1z" firstAttribute="top" secondItem="ckI-RJ-vNm" secondAttribute="top" id="0Ke-XJ-1X0"/>
-                            <constraint firstItem="tZq-RO-dRD" firstAttribute="leading" secondItem="xpu-sV-k1z" secondAttribute="trailing" constant="8" id="3No-fR-9mh">
-                                <variation key="widthClass=regular" constant="0.0"/>
-                            </constraint>
-                            <constraint firstItem="tZq-RO-dRD" firstAttribute="top" secondItem="m5m-JG-xST" secondAttribute="bottom" id="Cl3-Kl-nY0"/>
                             <constraint firstAttribute="trailing" secondItem="xpu-sV-k1z" secondAttribute="trailing" id="FgY-e7-gFD"/>
                             <constraint firstItem="xpu-sV-k1z" firstAttribute="leading" secondItem="ckI-RJ-vNm" secondAttribute="leading" id="IeC-i9-2HS"/>
-                            <constraint firstItem="4FP-XB-FlM" firstAttribute="top" secondItem="xpu-sV-k1z" secondAttribute="bottom" id="XDC-Ei-kbw"/>
+                            <constraint firstItem="xpu-sV-k1z" firstAttribute="top" secondItem="ckI-RJ-vNm" secondAttribute="top" id="QQG-Eu-4eh"/>
+                            <constraint firstAttribute="topMargin" secondItem="tZq-RO-dRD" secondAttribute="top" id="dqr-qp-yJh"/>
+                            <constraint firstItem="tZq-RO-dRD" firstAttribute="leading" secondItem="xpu-sV-k1z" secondAttribute="trailing" id="gyA-z0-8v8"/>
                             <constraint firstAttribute="trailing" secondItem="tZq-RO-dRD" secondAttribute="trailing" id="olA-XZ-0EX"/>
-                            <constraint firstItem="xpu-sV-k1z" firstAttribute="bottom" secondItem="ckI-RJ-vNm" secondAttribute="bottomMargin" id="qdY-qI-Wxp"/>
-                            <constraint firstItem="4FP-XB-FlM" firstAttribute="top" secondItem="tZq-RO-dRD" secondAttribute="bottom" id="qhd-h1-qMQ"/>
-                            <constraint firstAttribute="trailing" secondItem="xpu-sV-k1z" secondAttribute="trailing" id="xGK-V4-BpV"/>
-                            <constraint firstItem="4FP-XB-FlM" firstAttribute="top" secondItem="xpu-sV-k1z" secondAttribute="bottom" id="xwq-xw-Eg3"/>
+                            <constraint firstItem="4FP-XB-FlM" firstAttribute="top" secondItem="xpu-sV-k1z" secondAttribute="bottom" id="sDJ-uZ-sXQ"/>
+                            <constraint firstAttribute="bottom" secondItem="xpu-sV-k1z" secondAttribute="bottom" id="tqu-A9-BxO"/>
                             <constraint firstAttribute="bottom" secondItem="tZq-RO-dRD" secondAttribute="bottom" id="y5a-P4-Smx"/>
                         </constraints>
                         <variation key="default">
@@ -164,23 +159,17 @@
                                 <exclude reference="tZq-RO-dRD"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="FgY-e7-gFD"/>
-                                <exclude reference="qdY-qI-Wxp"/>
-                                <exclude reference="qhd-h1-qMQ"/>
-                                <exclude reference="xwq-xw-Eg3"/>
-                                <exclude reference="3No-fR-9mh"/>
-                                <exclude reference="Cl3-Kl-nY0"/>
                                 <exclude reference="olA-XZ-0EX"/>
                                 <exclude reference="y5a-P4-Smx"/>
+                                <exclude reference="FgY-e7-gFD"/>
+                                <exclude reference="tqu-A9-BxO"/>
+                                <exclude reference="sDJ-uZ-sXQ"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="constraints">
                                 <include reference="FgY-e7-gFD"/>
-                                <exclude reference="qdY-qI-Wxp"/>
-                                <exclude reference="xGK-V4-BpV"/>
-                                <exclude reference="XDC-Ei-kbw"/>
-                                <include reference="xwq-xw-Eg3"/>
+                                <include reference="sDJ-uZ-sXQ"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=regular">
@@ -188,19 +177,14 @@
                                 <include reference="tZq-RO-dRD"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="FgY-e7-gFD"/>
-                                <include reference="qdY-qI-Wxp"/>
-                                <exclude reference="xGK-V4-BpV"/>
-                                <exclude reference="XDC-Ei-kbw"/>
-                                <exclude reference="qhd-h1-qMQ"/>
-                                <include reference="3No-fR-9mh"/>
-                                <include reference="Cl3-Kl-nY0"/>
                                 <include reference="olA-XZ-0EX"/>
                                 <include reference="y5a-P4-Smx"/>
+                                <exclude reference="FgY-e7-gFD"/>
+                                <include reference="tqu-A9-BxO"/>
                             </mask>
                         </variation>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <connections>
                         <outlet property="tableView" destination="xpu-sV-k1z" id="LF3-XM-mfa"/>
                     </connections>

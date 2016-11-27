@@ -16,7 +16,6 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
     
     weak var delegate: TableOfContentsDelegate?
     fileprivate var headinglevelMin = 0
-    var articleURL: URL?
     
     var headings = [HTMLHeading]() {
         didSet {
@@ -51,43 +50,43 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func configureVisibleHeaderView(animated: Bool) {
-        // no visible header
-        guard visibleHeaderIDs.count > 0 else {
-            visibleHeaderIndicator.isHidden = true
-            return
-        }
-        
-        // calculations
-        guard let minIndex = headings.index(where: {$0.id == visibleHeaderIDs.first}),
-            let maxIndex = headings.index(where: {$0.id == visibleHeaderIDs.last}) else {return}
-        let topIndexPath = IndexPath(row: minIndex, section: 0)
-        let bottomIndexPath = IndexPath(row: maxIndex, section: 0)
-        let topCellFrame = tableView.rectForRow(at: topIndexPath)
-        let bottomCellFrame = tableView.rectForRow(at: bottomIndexPath)
-        let top = topCellFrame.origin.y + topCellFrame.height * 0.1
-        let bottom = bottomCellFrame.origin.y + bottomCellFrame.height * 0.9
-        
-        // indicator frame
-        visibleHeaderIndicator.isHidden = false
-        if animated {
-            UIView.animate(withDuration: 0.1, animations: { 
-                self.visibleHeaderIndicator.frame = CGRect(x: 0, y: top, width: 3, height: bottom - top)
-            })
-        } else {
-            visibleHeaderIndicator.frame = CGRect(x: 0, y: top, width: 3, height: bottom - top)
-        }
-
-        // tableview scroll
-        let topCellVisible = tableView.indexPathsForVisibleRows?.contains(topIndexPath) ?? false
-        let bottomCellVisible = tableView.indexPathsForVisibleRows?.contains(bottomIndexPath) ?? false
-        switch (topCellVisible, bottomCellVisible) {
-        case (true, false):
-            tableView.scrollToRow(at: bottomIndexPath, at: .bottom, animated: animated)
-        case (false, true), (false, false):
-            tableView.scrollToRow(at: topIndexPath, at: .top, animated: animated)
-        default:
-            return
-        }
+//        // no visible header
+//        guard visibleHeaderIDs.count > 0 else {
+//            visibleHeaderIndicator.isHidden = true
+//            return
+//        }
+//        
+//        // calculations
+//        guard let minIndex = headings.index(where: {$0.id == visibleHeaderIDs.first}),
+//            let maxIndex = headings.index(where: {$0.id == visibleHeaderIDs.last}) else {return}
+//        let topIndexPath = IndexPath(row: minIndex, section: 0)
+//        let bottomIndexPath = IndexPath(row: maxIndex, section: 0)
+//        let topCellFrame = tableView.rectForRow(at: topIndexPath)
+//        let bottomCellFrame = tableView.rectForRow(at: bottomIndexPath)
+//        let top = topCellFrame.origin.y + topCellFrame.height * 0.1
+//        let bottom = bottomCellFrame.origin.y + bottomCellFrame.height * 0.9
+//        
+//        // indicator frame
+//        visibleHeaderIndicator.isHidden = false
+//        if animated {
+//            UIView.animate(withDuration: 0.1, animations: { 
+//                self.visibleHeaderIndicator.frame = CGRect(x: 0, y: top, width: 3, height: bottom - top)
+//            })
+//        } else {
+//            visibleHeaderIndicator.frame = CGRect(x: 0, y: top, width: 3, height: bottom - top)
+//        }
+//
+//        // tableview scroll
+//        let topCellVisible = tableView.indexPathsForVisibleRows?.contains(topIndexPath) ?? false
+//        let bottomCellVisible = tableView.indexPathsForVisibleRows?.contains(bottomIndexPath) ?? false
+//        switch (topCellVisible, bottomCellVisible) {
+//        case (true, false):
+//            tableView.scrollToRow(at: bottomIndexPath, at: .bottom, animated: animated)
+//        case (false, true), (false, false):
+//            tableView.scrollToRow(at: topIndexPath, at: .top, animated: animated)
+//        default:
+//            return
+//        }
     }
     
     // MARK: - Table view data source

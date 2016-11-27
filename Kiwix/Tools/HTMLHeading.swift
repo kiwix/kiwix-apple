@@ -7,25 +7,26 @@
 //
 
 class HTMLHeading {
-    let id: String
-    let tagName: String
-    let textContent: String
-    let level: Int
+    let index: Int!
+    let tagName: String!
+    let textContent: String!
+    let level: Int!
     
-    init?(rawValue: [String: String]) {
-        let tagName = rawValue["tagName"] ?? ""
-        self.id = rawValue["id"] ?? ""
-        self.textContent = (rawValue["textContent"] ?? "").trimmingCharacters(in: .whitespaces)
-        self.tagName = tagName
-        self.level = Int(tagName.replacingOccurrences(of: "H", with: "")) ?? -1
+    init?(rawValue: [String: Any]) {
+        self.index = rawValue["index"] as? Int
+        self.tagName = rawValue["tagName"] as? String
+        self.textContent = (rawValue["textContent"] as? String)?.trimmingCharacters(in: .whitespaces)
         
-        if id == "" {return nil}
-        if tagName == "" {return nil}
-        if textContent == "" {return nil}
-        if level == -1 {return nil}
+        self.level = {
+            guard let tagName = rawValue["tagName"] as? String else {return nil}
+            return Int(tagName.replacingOccurrences(of: "H", with: ""))
+        }()
+        
+        if index == nil || tagName == nil || textContent == nil || level == nil {return nil}
     }
     
     var scrollToJavaScript: String {
-        return "document.getElementById('\(id)').scrollIntoView();"
+        return ""
+//        return "document.getElementById('\(id)').scrollIntoView();"
     }
 }

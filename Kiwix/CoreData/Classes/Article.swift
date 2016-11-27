@@ -76,17 +76,4 @@ class Article: NSManagedObject {
         }
     }
     
-    func dictionarySerilization() -> NSDictionary? {
-        guard let title = title,
-            let data = thumbImageData,
-            let bookID = book?.id,
-            let url = URL(bookID: bookID, contentPath: path) else {return nil}
-        return [
-            "title": title,
-            "thumbImageData": data,
-            "url": url.absoluteString,
-            "isMainPage": NSNumber(value: isMainPage as Bool)
-        ]
-    }
-    
 }
