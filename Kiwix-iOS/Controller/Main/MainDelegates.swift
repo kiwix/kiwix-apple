@@ -28,6 +28,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
+        JS.inject(webView: webView)
         JS.preventDefaultLongTap(webView: webView)
         URLResponseCache.shared.stop()
         
@@ -157,8 +158,10 @@ extension MainController: ButtonDelegates {
     func didLongPressBookmarkButton() {
         showBookmarkHUD()
         
-//        guard let url
-//        let article = Article.fetch(url: <#T##URL#>, context: <#T##NSManagedObjectContext#>)
+        guard let url = webView.request?.url,
+            let article = Article.fetch(url: url, context: AppDelegate.persistentContainer.viewContext) else {return}
+        article.title = JS.getTitle(from: webView)
+        
     }
 }
 

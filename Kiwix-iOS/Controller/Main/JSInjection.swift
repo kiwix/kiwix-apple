@@ -11,6 +11,12 @@ import JavaScriptCore
 
 class JS {
     
+    class func inject(webView: UIWebView) {
+        guard let url = Bundle.main.url(forResource: "injection", withExtension: "js"),
+            let jString = try? String(contentsOf: url) else {return}
+        webView.stringByEvaluatingJavaScript(from: jString)
+    }
+    
     class func preventDefaultLongTap(webView: UIWebView) {
         let jString = "document.body.style.webkitTouchCallout='none';"
         webView.context.evaluateScript(jString)
