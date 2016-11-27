@@ -28,9 +28,19 @@ class JS {
         webView.stringByEvaluatingJavaScript(from: jString)
     }
     
+    // MARK: - Attributes
+    
     class func getTitle(from webView: UIWebView) -> String? {
         return webView.stringByEvaluatingJavaScript(from: "document.title")
     }
+    
+    class func getSnippet(from webView: UIWebView) -> String? {
+        let jString = "getSnippet();"
+        guard let snippet = webView.context.evaluateScript(jString).toString() else {return nil}
+        return snippet == "null" ? nil : snippet
+    }
+    
+    // MARK: - Table of Contents
     
     class func startTOCCallBack(_ webView: UIWebView) {
         webView.stringByEvaluatingJavaScript(from: "startCallBack()")
@@ -51,12 +61,6 @@ class JS {
         return headings
     }
     
-    class func getSnippet(_ webView: UIWebView) -> String? {
-        guard let path = Bundle.main.path(forResource: "getSnippet", ofType: "js"),
-            let jString = try? String(contentsOfFile: path),
-            let snippet = webView.context.evaluateScript(jString).toString() else {return nil}
-        return snippet == "null" ? nil : snippet
-    }
 }
 
 extension UIWebView {

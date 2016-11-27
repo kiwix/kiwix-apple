@@ -6,9 +6,8 @@
 //  Copyright © 2016 Chris Li. All rights reserved.
 //
 
-import Foundation
 import CoreData
-
+import CoreSpotlight
 
 class Article: NSManagedObject {
     
@@ -43,11 +42,28 @@ class Article: NSManagedObject {
         return fetch(request, type: Article.self, context: context) ?? [Article]()
     }
     
+    var searchableItem: CSSearchableItem {
+        let attributeSet = CSSearchableItemAttributeSet()
+        attributeSet.title = title
+        attributeSet.contentDescription = snippet
+        attributeSet.thumbnailData = thumbImageData
+        attributeSet.creator = book?.title
+        attributeSet.htmlContentData = htmlContentData
+        attributeSet.lastUsedDate = bookmarkDate
+        attributeSet.path = path
+        return CSSearchableItem(uniqueIdentifier: url?.absoluteString, domainIdentifier: book?.id, attributeSet: attributeSet)
+    }
+    
     // MARK: - Helper
     
     var url: URL? {
         guard let bookID = book?.id else {return nil}
         return URL(bookID: bookID, contentPath: path)
+    }
+    
+    var htmlContentData: Data? {
+        guard let url = url else {return nil}
+        return try? Data(contentsOf: url)
     }
     
     var thumbImageData: Data? {

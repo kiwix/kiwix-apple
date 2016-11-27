@@ -8,6 +8,7 @@
 
 import UIKit
 import SafariServices
+import CoreSpotlight
 
 // MARK: - Web
 
@@ -40,8 +41,12 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
         buttons.bookmark.isHighlighted = article.isBookmarked
         
         guard let title = JS.getTitle(from: webView) else {return}
-        article.title = title
         searchBar.title = title
+        
+        article.title = title
+        article.snippet = JS.getSnippet(from: webView);
+        article.bookmarkDate = Date()
+        article.thumbImagePath = URLResponseCache.shared.firstImage()?.path
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
@@ -168,6 +173,14 @@ extension MainController: ButtonDelegates {
         showBookmarkHUD()
         controllers.bookmarkHUD.bookmarkAdded = article.isBookmarked
         buttons.bookmark.isHighlighted = article.isBookmarked
+        
+        if article.isBookmarked {
+            CSSearchableIndex.default().indexSearchableItems([article.searchableItem], completionHandler: nil)
+        } else {
+            if let url = article.url {
+                CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: [url.absoluteString], completionHandler: nil)
+            }
+        }
     }
 }
 

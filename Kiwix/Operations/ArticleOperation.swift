@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import CoreSpotlight
+import CloudKit
 import ProcedureKit
 
 class ArticleLoadOperation: Procedure {
@@ -89,7 +91,7 @@ class ArticleLoadOperation: Procedure {
     }
 }
 
-class BookmarkAddOperation: Procedure {
+class SpotlightIndexOperation: Procedure {
     init(url: URL) {
         assert(Thread.isMainThread, "This Operation can only be initialized in the main thread")
         super.init()
