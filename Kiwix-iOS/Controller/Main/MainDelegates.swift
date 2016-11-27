@@ -167,6 +167,15 @@ extension MainController: ButtonDelegates {
     }
     
     func didLongPressBookmarkButton() {
+        func indexArticle(article: Article) {
+            if article.isBookmarked {
+                CSSearchableIndex.default().indexSearchableItems([article.searchableItem], completionHandler: nil)
+            } else {
+                guard let url = article.url else {return}
+                CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: [url.absoluteString], completionHandler: nil)
+            }
+        }
+        
         guard let url = webView.request?.url,
             let article = Article.fetch(url: url, context: AppDelegate.persistentContainer.viewContext) else {return}
         article.isBookmarked = !article.isBookmarked
@@ -175,13 +184,7 @@ extension MainController: ButtonDelegates {
         controllers.bookmarkHUD.bookmarkAdded = article.isBookmarked
         buttons.bookmark.isHighlighted = article.isBookmarked
         
-        if article.isBookmarked {
-            CSSearchableIndex.default().indexSearchableItems([article.searchableItem], completionHandler: nil)
-        } else {
-            if let url = article.url {
-                CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: [url.absoluteString], completionHandler: nil)
-            }
-        }
+        indexArticle(article: article)
     }
 }
 

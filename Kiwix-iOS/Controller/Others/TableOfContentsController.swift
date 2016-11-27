@@ -12,10 +12,10 @@ import DZNEmptyDataSet
 class TableOfContentsController: UIViewController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     @IBOutlet weak var tableView: UITableView!
-    fileprivate let visibleHeaderIndicator = UIView()
+    private let visibleHeaderIndicator = UIView()
     
     weak var delegate: TableOfContentsDelegate?
-    fileprivate var headinglevelMin = 0
+    private var headinglevelMin = 0
     
     var headings = [HTMLHeading]() {
         didSet {
@@ -136,10 +136,6 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
         let attributes = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 18.0),
                           NSForegroundColorAttributeName: UIColor.darkGray]
         return NSAttributedString(string: text, attributes: attributes)
-    }
-    
-    func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
-        return 0.0
     }
     
     func spaceHeight(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {

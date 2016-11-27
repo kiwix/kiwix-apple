@@ -78,6 +78,7 @@ class ArticleLoadOperation: Procedure {
         
         OperationQueue.main.addOperation {
             _ = main.searchBar.resignFirstResponder()
+            main.hideTableOfContents(animated: true)
             main.presentingViewController?.dismiss(animated: self.animated, completion: nil)
             main.hideWelcome()
             
