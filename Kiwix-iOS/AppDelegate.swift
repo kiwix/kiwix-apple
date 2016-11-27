@@ -8,16 +8,43 @@
 import UIKit
 import CoreData
 import CloudKit
-import ProcedureKit
+import CoreSpotlight
 import UserNotifications
+import ProcedureKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
-    var mainController: MainController? {
-        return (window?.rootViewController as? UINavigationController)?.topViewController as? MainController
+    
+    // MARK: - Continuity
+    
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        switch userActivity.activityType {
+        case CSSearchableItemActionType:
+            return true
+        default:
+            return false
+        }
     }
+    
+    // MARK: - Core Data
+    
+    lazy var persistentContainer = CoreDataContainer()
+    
+    class var persistentContainer: CoreDataContainer {
+        return (UIApplication.shared.delegate as! AppDelegate).persistentContainer
+    }
+    
+    func saveContext () {
+        let context = persistentContainer.viewContext
+        if context.hasChanges { try? context.save() }
+    }
+    
+    
+    
+    
+    
     
     private let recentShortcutTypeString = "org.kiwix.recent"
     
@@ -90,16 +117,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
-        if userActivity.activityType == "org.kiwix.kiwix.article-view" {
-            guard let navController = window?.rootViewController as? UINavigationController,
-                let controller = navController.topViewController as? MainController else {return false}
-            controller.restoreUserActivityState(userActivity)
-            return true
-        } else {
-            return false
-        }
-    }
+//    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+//        if userActivity.activityType == "org.kiwix.kiwix.article-view" {
+//            guard let navController = window?.rootViewController as? UINavigationController,
+//                let controller = navController.topViewController as? MainController else {return false}
+//            controller.restoreUserActivityState(userActivity)
+//            return true
+//        } else {
+//            return false
+//        }
+//    }
     
     // MARK: - Active
     
@@ -205,23 +232,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            completionHandler(operation.hasUpdate ? .NewData : .NoData)
 //        })
 //        GlobalQueue.shared.addOperation(operation)
-    }
-
-    // MARK: - Core Data stack
-    
-    lazy var persistentContainer = CoreDataContainer()
-    
-    func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            try? context.save()
-        }
-    }
-    
-    // MARK: - Accessor
-    
-    class var persistentContainer: CoreDataContainer {
-        return (UIApplication.shared.delegate as! AppDelegate).persistentContainer
     }
 
 }

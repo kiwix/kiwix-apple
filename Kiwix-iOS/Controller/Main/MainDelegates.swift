@@ -156,6 +156,9 @@ extension MainController: ButtonDelegates {
     
     func didLongPressBookmarkButton() {
         showBookmarkHUD()
+        
+//        guard let url
+//        let article = Article.fetch(url: <#T##URL#>, context: <#T##NSManagedObjectContext#>)
     }
 }
 

@@ -30,7 +30,7 @@ class DownloadBookOperation: URLSessionDownloadTaskOperation {
         context.performAndWait {
             guard let bookID = self.bookID,
                 let book = Book.fetch(bookID, context: context),
-                let downloadTask = DownloadTask.addOrUpdate(book, context: context) else {return}
+                let downloadTask = DownloadTask.fetch(book, context: context) else {return}
             book.state = .downloading
             downloadTask.state = .queued
             
