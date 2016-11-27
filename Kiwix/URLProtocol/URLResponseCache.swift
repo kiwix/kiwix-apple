@@ -10,16 +10,18 @@ import UIKit
 
 class URLResponseCache {
     static let shared = URLResponseCache()
-    fileprivate(set) var listening = false
-    fileprivate var responses = [URL: URLResponse]()
+    private(set) var isListening = false
+    private var responses = [URL: URLResponse]()
+    
+    private init() {}
     
     func start() {
-        listening = true
         clear()
+        isListening = true
     }
     
     func stop() {
-        listening = false
+        isListening = false
     }
     
     func clear() {
@@ -27,8 +29,7 @@ class URLResponseCache {
     }
     
     func cache(response: URLResponse) {
-        guard listening else {return}
-        guard let url = response.url else {return}
+        guard isListening, let url = response.url else {return}
         responses[url] = response
     }
     
