@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import CloudKit
 #if os(iOS) || os(watchOS) || os(tvOS)
     import UIKit
 #elseif os(OSX)
@@ -16,7 +17,7 @@ import CoreData
 
 class Book: NSManagedObject {
 
-    // MARK: - Add Book
+    // MARK: - Add
     
     class func add(meta: [String: String], in context: NSManagedObjectContext) -> Book? {
         guard let id = meta["id"] else {return nil}
@@ -74,15 +75,6 @@ class Book: NSManagedObject {
         return book
     }
     
-    // MARK: - Properties
-    
-    var url: URL? {
-        guard let meta4URL = meta4URL else {return nil}
-        var urlComponents = URLComponents(string: meta4URL.replacingOccurrences(of: ".meta4", with: ""))
-        urlComponents?.scheme = "https"
-        return urlComponents?.url
-    }
-    
     // MARK: - Fetch
     
     class func fetchAll(in context: NSManagedObjectContext) -> [Book] {
@@ -107,6 +99,34 @@ class Book: NSManagedObject {
         fetchRequest.predicate = NSPredicate(format: "pid = %@", pid)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         return fetch(fetchRequest, type: Book.self, context: context) ?? [Book]()
+    }
+    
+    // MARK: - CloudKit
+    
+    var cloudKitRecord: CKRecord {
+        let recordID = CKRecordID(recordName: id)
+        let record = CKRecord(recordType: "Book", recordID: recordID)
+        record["id"] = id as NSString?
+        record["title"] = title as NSString?
+        record["description"] = desc as NSString?
+        record["creator"] = creator as NSString?
+        record["publisher"] = publisher as NSString?
+        record["favicon"] = favIcon as NSData?
+        record["date"] = date as NSDate?
+        record["articleCount"] = articleCount as NSNumber
+        record["mediaCount"] = mediaCount as NSNumber
+        record["fileSize"] = fileSize as NSNumber
+        record["language"] = language?.code as NSString?
+        return record
+    }
+    
+    // MARK: - Properties
+    
+    var url: URL? {
+        guard let meta4URL = meta4URL else {return nil}
+        var urlComponents = URLComponents(string: meta4URL.replacingOccurrences(of: ".meta4", with: ""))
+        urlComponents?.scheme = "https"
+        return urlComponents?.url
     }
     
     // MARK: - Manage

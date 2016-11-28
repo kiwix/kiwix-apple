@@ -44,6 +44,7 @@
 		9734E54E1D289D060061C39B /* Welcome.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9734E54D1D289D060061C39B /* Welcome.storyboard */; };
 		973A5C921DEA3F5600C7804C /* CoreDataTableBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A5C911DEA3F5600C7804C /* CoreDataTableBaseController.swift */; };
 		973A5C951DEA6DD000C7804C /* URLResponseCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A5C931DEA6CA900C7804C /* URLResponseCache.swift */; };
+		973A5C991DEBC54800C7804C /* CloudKitOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A5C981DEBC54800C7804C /* CloudKitOperations.swift */; };
 		973BCD1A1CEB402900F10B44 /* KiwixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BCD181CEB402900F10B44 /* KiwixTests.swift */; };
 		973DD40F1D343F2F009D45DB /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD4041D343F2F009D45DB /* libicudata.a */; };
 		973DD4101D343F2F009D45DB /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD4051D343F2F009D45DB /* libicui18n.a */; };
@@ -191,6 +192,7 @@
 		9734E54D1D289D060061C39B /* Welcome.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Welcome.storyboard; path = "Kiwix-iOS/Storyboard/Welcome.storyboard"; sourceTree = SOURCE_ROOT; };
 		973A5C911DEA3F5600C7804C /* CoreDataTableBaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTableBaseController.swift; sourceTree = "<group>"; };
 		973A5C931DEA6CA900C7804C /* URLResponseCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLResponseCache.swift; sourceTree = "<group>"; };
+		973A5C981DEBC54800C7804C /* CloudKitOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitOperations.swift; sourceTree = "<group>"; };
 		973BCD001CEB3FA500F10B44 /* Kiwix_OSXTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kiwix_OSXTests.swift; sourceTree = "<group>"; };
 		973BCD021CEB3FA500F10B44 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		973BCD0B1CEB3FA500F10B44 /* Kiwix_OSXUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kiwix_OSXUITests.swift; sourceTree = "<group>"; };
@@ -786,6 +788,7 @@
 				97D6811C1D6F70AC00E5FA99 /* GlobalQueue.swift */,
 				9764CBD21D8083AA00072D6A /* ArticleOperation.swift */,
 				970A2A211DD562CB0078BB7C /* BookOperations.swift */,
+				973A5C981DEBC54800C7804C /* CloudKitOperations.swift */,
 				973208281DD223DB00EDD3DC /* RefreshLibrary.swift */,
 				97D6811E1D6F70AC00E5FA99 /* ScanLocalBook.swift */,
 				972F81561DDBFC79008D7289 /* Search.swift */,
@@ -1176,6 +1179,7 @@
 				97A1FD261D6F71E200A80EE2 /* ZimReader.mm in Sources */,
 				97A1FD1C1D6F71D800A80EE2 /* KiwixURLProtocol.swift in Sources */,
 				97C2C26A1DDCC58500A9CC64 /* ArticleOperation.swift in Sources */,
+				973A5C991DEBC54800C7804C /* CloudKitOperations.swift in Sources */,
 				973208261DD21E9C00EDD3DC /* CoreDataContainer.swift in Sources */,
 				97D6813F1D6F712800E5FA99 /* Article+CoreDataProperties.swift in Sources */,
 				97A1FD441D6F728200A80EE2 /* Preference.swift in Sources */,

@@ -9,6 +9,7 @@
 import UIKit
 import SafariServices
 import CoreSpotlight
+import CloudKit
 
 // MARK: - Web
 
@@ -177,7 +178,14 @@ extension MainController: ButtonDelegates {
         }
         
         func syncBookmark(article: Article) {
-            
+            guard let record = article.cloudKitRecord else {return}
+//            guard let book = article.book else {return}
+//            let record = book.cloudKitRecord
+            let container = CKContainer(identifier: "iCloud.org.kiwix")
+            let database = container.privateCloudDatabase
+            database.save(record, completionHandler: {record, error in
+                print(error?.localizedDescription)
+            })
         }
         
         guard let url = webView.request?.url,
@@ -189,6 +197,7 @@ extension MainController: ButtonDelegates {
         buttons.bookmark.isHighlighted = article.isBookmarked
         
         indexBookmark(article: article)
+        let op = Art
         syncBookmark(article: article)
     }
 }

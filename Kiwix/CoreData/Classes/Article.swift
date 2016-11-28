@@ -8,8 +8,11 @@
 
 import CoreData
 import CoreSpotlight
+import CloudKit
 
 class Article: NSManagedObject {
+    
+    // MARK: - Fetch
     
     class func fetch(url: URL, context: NSManagedObjectContext) -> Article? {
         guard let bookID = url.host,
@@ -42,6 +45,8 @@ class Article: NSManagedObject {
         return fetch(request, type: Article.self, context: context) ?? [Article]()
     }
     
+    // MARK: - CoreSpotlight
+    
     var searchableItem: CSSearchableItem {
         let attributeSet = CSSearchableItemAttributeSet()
         attributeSet.title = title
@@ -54,7 +59,23 @@ class Article: NSManagedObject {
         return CSSearchableItem(uniqueIdentifier: url?.absoluteString, domainIdentifier: book?.id, attributeSet: attributeSet)
     }
     
-    // MARK: - Helper
+    // MARK: - CloudKit
+    
+    var cloudKitRecord: CKRecord? {
+        guard let url = url, let bookID = book?.id else {return nil}
+        let recordID = CKRecordID(recordName: url.absoluteString)
+        let bookRecordID = CKRecordID(recordName: bookID)
+        let record = CKRecord(recordType: "Article", recordID: recordID)
+        record["path"] = path as NSString?
+        record["title"] = title as NSString?
+        record["snippet"] = snippet as NSString?
+        record["thumbImagePath"] = thumbImagePath as NSString?
+        record["isBookmarked"] = isBookmarked as NSNumber
+        record["book"] = CKReference(recordID: bookRecordID, action: .deleteSelf)
+        return record
+    }
+    
+    // MARK: - Properties
     
     var url: URL? {
         guard let bookID = book?.id else {return nil}
