@@ -10,6 +10,7 @@ import ProcedureKit
 
 class GlobalQueue: ProcedureQueue {
     static let shared = GlobalQueue()
+    override private init() {}
     
     private weak var scanOperation: ScanLocalBookOperation?
     func add(scanOperation: ScanLocalBookOperation) {
@@ -43,4 +44,10 @@ class GlobalQueue: ProcedureQueue {
         add(operation: articleLoadOperation)
         self.articleLoadOperation = articleLoadOperation
     }
+}
+
+
+class CloudKitQueue: OperationQueue {
+    static let shared = CloudKitQueue()
+    override private init() {}
 }

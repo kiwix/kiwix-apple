@@ -103,8 +103,15 @@ class Book: NSManagedObject {
     
     // MARK: - CloudKit
     
-    var cloudKitRecord: CKRecord {
-        let recordID = CKRecordID(recordName: id)
+    var recordZoneID: CKRecordZoneID {
+        return CKRecordZoneID(zoneName: id, ownerName: CKCurrentUserDefaultName)
+    }
+    
+    var recordID: CKRecordID {
+        return CKRecordID(recordName: id, zoneID: recordZoneID)
+    }
+    
+    var record: CKRecord {
         let record = CKRecord(recordType: "Book", recordID: recordID)
         record["id"] = id as NSString?
         record["title"] = title as NSString?

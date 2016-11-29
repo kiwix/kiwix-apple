@@ -177,28 +177,21 @@ extension MainController: ButtonDelegates {
             }
         }
         
-        func syncBookmark(article: Article) {
-            guard let record = article.cloudKitRecord else {return}
-//            guard let book = article.book else {return}
-//            let record = book.cloudKitRecord
-            let container = CKContainer(identifier: "iCloud.org.kiwix")
-            let database = container.privateCloudDatabase
-            database.save(record, completionHandler: {record, error in
-                print(error?.localizedDescription)
-            })
-        }
-        
         guard let url = webView.request?.url,
             let article = Article.fetch(url: url, context: AppDelegate.persistentContainer.viewContext) else {return}
         article.isBookmarked = !article.isBookmarked
+        
+        if AppDelegate.persistentContainer.viewContext.hasChanges {
+            try? AppDelegate.persistentContainer.viewContext.save()
+        }
         
         showBookmarkHUD()
         controllers.bookmarkHUD.bookmarkAdded = article.isBookmarked
         buttons.bookmark.isHighlighted = article.isBookmarked
         
         indexBookmark(article: article)
-        let op = Art
-        syncBookmark(article: article)
+        let operation = BookmarkSyncOperation(articleURL: url)
+        GlobalQueue.shared.add(operation: operation)
     }
 }
 

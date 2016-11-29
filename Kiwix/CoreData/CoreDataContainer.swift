@@ -15,6 +15,7 @@ class CoreDataContainer: NSPersistentContainer {
         let model = NSManagedObjectModel(contentsOf: modelURL)!
         super.init(name: "kiwix", managedObjectModel: model)
         loadPersistentStores { (_, _) in }
+        viewContext.automaticallyMergesChangesFromParent = true
     }
     
     override class func defaultDirectoryURL() -> URL {
