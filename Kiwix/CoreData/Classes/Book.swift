@@ -8,7 +8,7 @@
 
 import Foundation
 import CoreData
-import CloudKit
+
 #if os(iOS) || os(watchOS) || os(tvOS)
     import UIKit
 #elseif os(OSX)
@@ -102,30 +102,30 @@ class Book: NSManagedObject {
     }
     
     // MARK: - CloudKit
-    
-    var recordZoneID: CKRecordZoneID {
-        return CKRecordZoneID(zoneName: id, ownerName: CKCurrentUserDefaultName)
-    }
-    
-    var recordID: CKRecordID {
-        return CKRecordID(recordName: id, zoneID: recordZoneID)
-    }
-    
-    var record: CKRecord {
-        let record = CKRecord(recordType: "Book", recordID: recordID)
-        record["id"] = id as NSString?
-        record["title"] = title as NSString?
-        record["description"] = desc as NSString?
-        record["creator"] = creator as NSString?
-        record["publisher"] = publisher as NSString?
-        record["favicon"] = favIcon as NSData?
-        record["date"] = date as NSDate?
-        record["articleCount"] = articleCount as NSNumber
-        record["mediaCount"] = mediaCount as NSNumber
-        record["fileSize"] = fileSize as NSNumber
-        record["language"] = language?.code as NSString?
-        return record
-    }
+//    
+//    var recordZoneID: CKRecordZoneID {
+//        return CKRecordZoneID(zoneName: id, ownerName: CKCurrentUserDefaultName)
+//    }
+//    
+//    var recordID: CKRecordID {
+//        return CKRecordID(recordName: id, zoneID: recordZoneID)
+//    }
+//    
+//    var record: CKRecord {
+//        let record = CKRecord(recordType: "Book", recordID: recordID)
+//        record["id"] = id as NSString?
+//        record["title"] = title as NSString?
+//        record["description"] = desc as NSString?
+//        record["creator"] = creator as NSString?
+//        record["publisher"] = publisher as NSString?
+//        record["favicon"] = favIcon as NSData?
+//        record["date"] = date as NSDate?
+//        record["articleCount"] = articleCount as NSNumber
+//        record["mediaCount"] = mediaCount as NSNumber
+//        record["fileSize"] = fileSize as NSNumber
+//        record["language"] = language?.code as NSString?
+//        return record
+//    }
     
     // MARK: - Properties
     

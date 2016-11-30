@@ -8,7 +8,6 @@
 
 import CoreData
 import CoreSpotlight
-import CloudKit
 
 class Article: NSManagedObject {
     
@@ -61,19 +60,19 @@ class Article: NSManagedObject {
     
     // MARK: - CloudKit
     
-    var cloudKitRecord: CKRecord? {
-        guard let url = url, let bookID = book?.id else {return nil}
-        let recordID = CKRecordID(recordName: url.absoluteString)
-        let bookRecordID = CKRecordID(recordName: bookID)
-        let record = CKRecord(recordType: "Article", recordID: recordID)
-        record["path"] = path as NSString?
-        record["title"] = title as NSString?
-        record["snippet"] = snippet as NSString?
-        record["thumbImagePath"] = thumbImagePath as NSString?
-        record["isBookmarked"] = isBookmarked as NSNumber
-        record["book"] = CKReference(recordID: bookRecordID, action: .deleteSelf)
-        return record
-    }
+//    var cloudKitRecord: CKRecord? {
+//        guard let url = url, let bookID = book?.id else {return nil}
+//        let recordID = CKRecordID(recordName: url.absoluteString)
+//        let bookRecordID = CKRecordID(recordName: bookID)
+//        let record = CKRecord(recordType: "Article", recordID: recordID)
+//        record["path"] = path as NSString?
+//        record["title"] = title as NSString?
+//        record["snippet"] = snippet as NSString?
+//        record["thumbImagePath"] = thumbImagePath as NSString?
+//        record["isBookmarked"] = isBookmarked as NSNumber
+//        record["book"] = CKReference(recordID: bookRecordID, action: .deleteSelf)
+//        return record
+//    }
     
     // MARK: - Properties
     
