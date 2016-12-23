@@ -36,9 +36,8 @@ fileprivate class Retrieve: NetworkDataProcedure<URLSession> {
     }
 }
 
-fileprivate class Process: Procedure, ResultInjection, XMLParserDelegate {
-    var requirement: PendingValue<HTTPResult<Data>> = .pending
-    fileprivate(set) var result: PendingValue<Void> = .void
+fileprivate class Process: Procedure, InputProcedure, XMLParserDelegate {
+    var input: Pending<HTTPPayloadResponse<Data>> = .pending
     private let context: NSManagedObjectContext
     
     private var storeBookIDs = Set<String>()
@@ -54,7 +53,7 @@ fileprivate class Process: Procedure, ResultInjection, XMLParserDelegate {
     }
     
     override func execute() {
-        guard let data = requirement.value?.payload else {
+        guard let data = input.value?.payload else {
             finish(withError: ProcedureKitError.requirementNotSatisfied())
             return
         }

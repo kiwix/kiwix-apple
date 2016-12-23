@@ -1,39 +1,42 @@
 PODS:
   - DZNEmptyDataSet (1.8.1)
   - MBProgressHUD (1.0.0)
-  - ProcedureKit (4.0.0.beta.4):
-    - ProcedureKit/Standard (= 4.0.0.beta.4)
-  - ProcedureKit/Mobile (4.0.0.beta.4):
+  - ProcedureKit (4.0.0.beta.5):
+    - ProcedureKit/Standard (= 4.0.0.beta.5)
+  - ProcedureKit/Cloud (4.0.0.beta.5):
     - ProcedureKit/Standard
-  - ProcedureKit/Network (4.0.0.beta.4):
+  - ProcedureKit/Mobile (4.0.0.beta.5):
     - ProcedureKit/Standard
-  - ProcedureKit/Standard (4.0.0.beta.4)
+  - ProcedureKit/Network (4.0.0.beta.5):
+    - ProcedureKit/Standard
+  - ProcedureKit/Standard (4.0.0.beta.5)
   - SwiftyUserDefaults (3.0.0)
 
 DEPENDENCIES:
   - DZNEmptyDataSet
   - MBProgressHUD (~> 1.0.0)
-  - ProcedureKit (from `https://github.com/ProcedureKit/ProcedureKit.git`, branch `release/4.0.0.beta.4`)
-  - ProcedureKit/Mobile (from `https://github.com/ProcedureKit/ProcedureKit.git`, branch `release/4.0.0.beta.4`)
-  - ProcedureKit/Network (from `https://github.com/ProcedureKit/ProcedureKit.git`, branch `release/4.0.0.beta.4`)
+  - ProcedureKit (from `https://github.com/ProcedureKit/ProcedureKit.git`, branch `release/4.0.0.beta.5`)
+  - ProcedureKit/Cloud (from `https://github.com/ProcedureKit/ProcedureKit.git`, branch `release/4.0.0.beta.5`)
+  - ProcedureKit/Mobile (from `https://github.com/ProcedureKit/ProcedureKit.git`, branch `release/4.0.0.beta.5`)
+  - ProcedureKit/Network (from `https://github.com/ProcedureKit/ProcedureKit.git`, branch `release/4.0.0.beta.5`)
   - SwiftyUserDefaults
 
 EXTERNAL SOURCES:
   ProcedureKit:
-    :branch: release/4.0.0.beta.4
+    :branch: release/4.0.0.beta.5
     :git: https://github.com/ProcedureKit/ProcedureKit.git
 
 CHECKOUT OPTIONS:
   ProcedureKit:
-    :commit: be78bf8bea9928ad24bf6b83bc7b5cfab11b5874
+    :commit: e0d3e52f5052b1004f07e7d595022fc54d6e5336
     :git: https://github.com/ProcedureKit/ProcedureKit.git
 
 SPEC CHECKSUMS:
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
-  ProcedureKit: 9160071e54e3885fad82f72acc8474366c764f5b
+  ProcedureKit: 71bf6e0265e406f96bdd4f767ef47c78a2c18ce3
   SwiftyUserDefaults: 0f1d45fc3aafb9064dac661e367f8f83fe21a4b4
 
-PODFILE CHECKSUM: 43f01172d4e3b5f4e0ad68f2a251cc23a4bb0f5a
+PODFILE CHECKSUM: abf95d1f5f7b05e5b977e17595badfbae0a1b862
 
 COCOAPODS: 1.0.1

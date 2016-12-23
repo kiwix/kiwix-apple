@@ -113,17 +113,6 @@ class Book: NSManagedObject {
 //    
 //    var record: CKRecord {
 //        let record = CKRecord(recordType: "Book", recordID: recordID)
-//        record["id"] = id as NSString?
-//        record["title"] = title as NSString?
-//        record["description"] = desc as NSString?
-//        record["creator"] = creator as NSString?
-//        record["publisher"] = publisher as NSString?
-//        record["favicon"] = favIcon as NSData?
-//        record["date"] = date as NSDate?
-//        record["articleCount"] = articleCount as NSNumber
-//        record["mediaCount"] = mediaCount as NSNumber
-//        record["fileSize"] = fileSize as NSNumber
-//        record["language"] = language?.code as NSString?
 //        return record
 //    }
     

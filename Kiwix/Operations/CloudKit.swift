@@ -23,43 +23,54 @@ class BookmarkSyncOperation: GroupProcedure {
         
         super.init(operations: [zone, book])
     }
-    
-
 }
 
-//class UpdateArticleOperation: Procedure {
-//    let database: CKDatabase
-//    let bookID: String
-//    
-//    init(database: CKDatabase, bookID: String) {
-//        self.database = database
-//        self.bookID = bookID
-//        super.init()
-//    }
-//    
-//    override func execute() {
-//        guard let zone = requirement.value else {
-//            finish()
-//            return
-//        }
-//        
-//        AppDelegate.persistentContainer.performBackgroundTask { (context) in
-//            guard let book = Book.fetch(self.bookID, context: context) else {
-//                self.finish()
-//                return
-//            }
-//            let fetch = CKFetchRecordsOperation(recordIDs: [bookRecordID])
-//            fetch.database = self.database
-//            fetch.fetchRecordsCompletionBlock = { records, error in
-//                if let book = records?[bookRecordID] {
-//                    
-//                }
-//            }
-//        }
-//        
-//        
-//    }
-//}
+class FetchArticleRecordOperation: Procedure {
+    let database: CKDatabase
+    let articleURL: URL
+    var recordZone: CKRecordZone?
+    var bookRecord: CKRecord?
+    var articleRecord: CKRecord?
+    
+    init(database: CKDatabase, articleURL: URL) {
+        self.database = database
+        self.articleURL = articleURL
+        super.init()
+    }
+    
+    override func execute() {
+        guard let zone = recordZone, let bookRecord = bookRecord else {
+            finish()
+            return
+        }
+        
+        let recordID = CKRecordID(recordName: articleURL.absoluteString, zoneID: zone.zoneID)
+        let fetch = CKFetchRecordsOperation(recordIDs: [recordID])
+        fetch.database = self.database
+        fetch.fetchRecordsCompletionBlock = { records, error in
+            if let record = records?[recordID] {
+//                self.article = record
+                
+                self.finish()
+            } else {
+                self.create(recordID: recordID, in: zone)
+            }
+        }
+        CloudKitQueue.shared.add(operations: fetch)
+    }
+    
+    private func create(recordID: CKRecordID, in zone: CKRecordZone) {
+        let record = CKRecord(recordType: "Article", recordID: recordID)
+        
+        let context = AppDelegate.persistentContainer.newBackgroundContext()
+    }
+    
+    private func configure(record: CKRecord, article: Article) {
+        
+    }
+}
+
+
 
 class FetchBookRecordOperation: Procedure {
     let database: CKDatabase
@@ -78,32 +89,51 @@ class FetchBookRecordOperation: Procedure {
             finish()
             return
         }
-        AppDelegate.persistentContainer.performBackgroundTask { (context) in
-            let recordID = CKRecordID(recordName: self.bookID, zoneID: zone.zoneID)
-            let fetch = CKFetchRecordsOperation(recordIDs: [recordID])
-            fetch.database = self.database
-            fetch.fetchRecordsCompletionBlock = { records, error in
-                if let record = records?[recordID] {
-                    self.record = record
-                    // update, or not
-                    self.finish()
-                } else {
-                    let record = CKRecord(recordType: "Book", recordID: recordID)
-                    let modify = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
-                    modify.database = self.database
-                    modify.modifyRecordsCompletionBlock = { saved, _, error in
-                        if let record = saved?.first {
-                            self.record = record
-                            self.finish()
-                        } else {
-                            self.finish(withError: error)
-                        }
-                    }
-                    CloudKitQueue.shared.add(operations: modify)
-                }
+        
+        let recordID = CKRecordID(recordName: self.bookID, zoneID: zone.zoneID)
+        let fetch = CKFetchRecordsOperation(recordIDs: [recordID])
+        fetch.database = self.database
+        fetch.fetchRecordsCompletionBlock = { records, error in
+            if let record = records?[recordID] {
+                self.record = record
+                self.finish()
+            } else {
+                self.create(recordID: recordID, in: zone)
             }
-            CloudKitQueue.shared.add(operations: fetch)
         }
+        CloudKitQueue.shared.add(operations: fetch)
+    }
+    
+    private func create(recordID: CKRecordID, in zone: CKRecordZone) {
+        let record = CKRecord(recordType: "Book", recordID: recordID)
+        
+        let context = AppDelegate.persistentContainer.newBackgroundContext()
+        context.performAndWait { 
+            guard let book = Book.fetch(self.bookID, context: context) else {return}
+            record["id"] = book.id as NSString?
+            record["title"] = book.title as NSString?
+            record["description"] = book.desc as NSString?
+            record["creator"] = book.creator as NSString?
+            record["publisher"] = book.publisher as NSString?
+            record["favicon"] = book.favIcon as NSData?
+            record["date"] = book.date as NSDate?
+            record["articleCount"] = book.articleCount as NSNumber
+            record["mediaCount"] = book.mediaCount as NSNumber
+            record["fileSize"] = book.fileSize as NSNumber
+            record["language"] = book.language?.code as NSString?
+        }
+        
+        let modify = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
+        modify.database = self.database
+        modify.modifyRecordsCompletionBlock = { saved, _, error in
+            if let record = saved?.first {
+                self.record = record
+                self.finish()
+            } else {
+                self.finish(withError: error)
+            }
+        }
+        CloudKitQueue.shared.add(operations: modify)
     }
 }
 
