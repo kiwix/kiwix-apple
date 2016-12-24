@@ -67,9 +67,10 @@ fileprivate class Process: Procedure, InputProcedure, XMLParserDelegate {
         let toBeDeleted = storeBookIDs.subtracting(memoryBookIDs)
         hasUpdate = toBeDeleted.count > 0
         context.performAndWait {
-            toBeDeleted.forEach({ (id) in
-                
-            })
+            for id in toBeDeleted {
+                guard let book = Book.fetch(id, context: self.context) else {continue}
+                self.context.delete(book)
+            }
         }
         
         if context.hasChanges { try? context.save() }
