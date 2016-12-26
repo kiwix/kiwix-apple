@@ -12,7 +12,7 @@ import CoreData
 
 class DownloadTask: NSManagedObject {
 
-    class func fetch(_ book: Book, context: NSManagedObjectContext) -> DownloadTask? {
+    class func fetch(book: Book, context: NSManagedObjectContext) -> DownloadTask? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "DownloadTask")
         fetchRequest.predicate = NSPredicate(format: "book = %@", book)
         let downloadTask = DownloadTask.fetch(fetchRequest, type: DownloadTask.self, context: context)?.first ?? insert(DownloadTask.self, context: context)

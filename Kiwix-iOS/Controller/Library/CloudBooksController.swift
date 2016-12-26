@@ -274,8 +274,10 @@ class CloudBooksController: CoreDataTableBaseController, UITableViewDelegate, UI
         switch book.spaceState {
         case .enough:
             let action = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: LocalizedStrings.download, handler: { _ in
-//                guard let download = DownloadBookOperation(bookID: book.id) else {return}
-//                Network.shared.queue.addOperation(download)
+                guard let url = book.url else {return}
+                let download = BookDownloadProcedure(session: DownloadManager.shared.session, bookID: book.id, url: url)
+                DownloadManager.shared.queue.add(operation: download)
+                self.tableView.setEditing(false, animated: true)
             })
             action.backgroundColor = UIColor.defaultTint
             return [action]

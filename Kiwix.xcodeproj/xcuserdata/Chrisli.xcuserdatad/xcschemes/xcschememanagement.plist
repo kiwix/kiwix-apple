@@ -7,7 +7,7 @@
 		<key>Bookmarks.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>1</integer>
 		</dict>
 		<key>Kiwix-iOS.xcscheme</key>
 		<dict>
@@ -20,57 +20,57 @@
 		<key>9722121A1D3ECCFE00C0DCF2</key>
 		<dict>
 			<key>primary</key>
-			<true/>
+			<true />
 		</dict>
 		<key>973BCCE81CEB3FA400F10B44</key>
 		<dict>
 			<key>primary</key>
-			<true/>
+			<true />
 		</dict>
 		<key>973BCCFB1CEB3FA400F10B44</key>
 		<dict>
 			<key>primary</key>
-			<true/>
+			<true />
 		</dict>
 		<key>973BCD061CEB3FA500F10B44</key>
 		<dict>
 			<key>primary</key>
-			<true/>
+			<true />
 		</dict>
 		<key>9779C2FD1D4574280064CC8E</key>
 		<dict>
 			<key>primary</key>
-			<true/>
+			<true />
 		</dict>
 		<key>9779C3121D4575AD0064CC8E</key>
 		<dict>
 			<key>primary</key>
-			<true/>
+			<true />
 		</dict>
 		<key>97A2AB871C1B80FF00052E74</key>
 		<dict>
 			<key>primary</key>
-			<true/>
+			<true />
 		</dict>
 		<key>97A2AB9E1C1B80FF00052E74</key>
 		<dict>
 			<key>primary</key>
-			<true/>
+			<true />
 		</dict>
 		<key>97A2ABA91C1B810000052E74</key>
 		<dict>
 			<key>primary</key>
-			<true/>
+			<true />
 		</dict>
 		<key>97CF3EEA1D428F9600AE82FE</key>
 		<dict>
 			<key>primary</key>
-			<true/>
+			<true />
 		</dict>
 		<key>97E609EE1D103DED00EBCB9D</key>
 		<dict>
 			<key>primary</key>
-			<true/>
+			<true />
 		</dict>
 	</dict>
 </dict>

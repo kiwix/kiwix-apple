@@ -63,6 +63,8 @@
 		975227CD1D0227E8001D1DDE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227CA1D0227E8001D1DDE /* Main.storyboard */; };
 		975227CE1D0227E8001D1DDE /* Setting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227CB1D0227E8001D1DDE /* Setting.storyboard */; };
 		975227D01D022814001D1DDE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227CF1D022814001D1DDE /* LaunchScreen.storyboard */; };
+		9757C74A1E10660B008A9469 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9757C7491E10660B008A9469 /* DownloadManager.swift */; };
+		9757C74C1E106958008A9469 /* BackgroundDownload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9757C74B1E106958008A9469 /* BackgroundDownload.swift */; };
 		975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975B90FD1CEB909100D13906 /* iOSExtensions.swift */; };
 		9764CBD11D806AD800072D6A /* RefreshLibControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764CBD01D806AD800072D6A /* RefreshLibControl.swift */; };
 		9764F5931D830EF200E0B1C4 /* liblzma.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9764F5921D830EF200E0B1C4 /* liblzma.tbd */; };
@@ -217,6 +219,8 @@
 		975227CA1D0227E8001D1DDE /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "Kiwix-iOS/Storyboard/Main.storyboard"; sourceTree = SOURCE_ROOT; };
 		975227CB1D0227E8001D1DDE /* Setting.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Setting.storyboard; path = "Kiwix-iOS/Storyboard/Setting.storyboard"; sourceTree = SOURCE_ROOT; };
 		975227CF1D022814001D1DDE /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "Kiwix-iOS/Storyboard/LaunchScreen.storyboard"; sourceTree = SOURCE_ROOT; };
+		9757C7491E10660B008A9469 /* DownloadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
+		9757C74B1E106958008A9469 /* BackgroundDownload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundDownload.swift; sourceTree = "<group>"; };
 		975B90FD1CEB909100D13906 /* iOSExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = iOSExtensions.swift; path = "Kiwix-iOS/iOSExtensions.swift"; sourceTree = SOURCE_ROOT; };
 		9763275D1D64FE0F0034F120 /* BookDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookDetailController.swift; sourceTree = "<group>"; };
 		9764CBD01D806AD800072D6A /* RefreshLibControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshLibControl.swift; sourceTree = "<group>"; };
@@ -751,6 +755,7 @@
 			isa = PBXGroup;
 			children = (
 				97DF259F1D6F996B001648A3 /* Network.swift */,
+				9757C7491E10660B008A9469 /* DownloadManager.swift */,
 				9726591A1D8DB91200D1DFFB /* DownloadProgress.swift */,
 			);
 			path = Network;
@@ -773,6 +778,7 @@
 			children = (
 				97D6811C1D6F70AC00E5FA99 /* GlobalQueue.swift */,
 				9764CBD21D8083AA00072D6A /* ArticleOperation.swift */,
+				9757C74B1E106958008A9469 /* BackgroundDownload.swift */,
 				970A2A211DD562CB0078BB7C /* BookOperations.swift */,
 				973A5C981DEBC54800C7804C /* CloudKit.swift */,
 				973208281DD223DB00EDD3DC /* RefreshLibrary.swift */,
@@ -1111,6 +1117,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9757C74C1E106958008A9469 /* BackgroundDownload.swift in Sources */,
 				970E7F771D9DBEA900741290 /* SettingController.swift in Sources */,
 				973A5C951DEA6DD000C7804C /* URLResponseCache.swift in Sources */,
 				973207A51DD1984700EDD3DC /* SearchBooksController.swift in Sources */,
@@ -1137,6 +1144,7 @@
 				97A1FD3A1D6F724E00A80EE2 /* reader.cpp in Sources */,
 				973207A31DD1983D00EDD3DC /* LanguageFilterController.swift in Sources */,
 				97D681371D6F711A00E5FA99 /* Article.swift in Sources */,
+				9757C74A1E10660B008A9469 /* DownloadManager.swift in Sources */,
 				972F81571DDBFC79008D7289 /* Search.swift in Sources */,
 				970E7F831DA0305000741290 /* WelcomeController.swift in Sources */,
 				97A1FD3B1D6F724E00A80EE2 /* stringTools.cpp in Sources */,
