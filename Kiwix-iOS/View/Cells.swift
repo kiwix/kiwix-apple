@@ -87,7 +87,7 @@ class CheckMarkBookCell: BasicBookCell {
     }
     
     func handleTap() {
-        self.delegate?.didTapOnAccessoryViewForCell(self)
+        self.delegate?.didTapCheckMark(cell: self)
     }
 }
 
@@ -140,5 +140,5 @@ class TextSwitchCell: UITableViewCell {
 }
 
 protocol TableCellDelegate: class {
-    func didTapOnAccessoryViewForCell(_ cell: UITableViewCell)
+    func didTapCheckMark(cell: UITableViewCell)
 }

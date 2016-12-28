@@ -38,10 +38,12 @@ class SearchBooksController: SearchBaseTableController, UITableViewDelegate, UIT
     
     // MARK: - Table Cell Delegate
     
-    func didTapOnAccessoryViewForCell(_ cell: UITableViewCell) {
+    func didTapCheckMark(cell: UITableViewCell) {
         guard let indexPath = tableView.indexPath(for: cell) else {return}
         let book = fetchedResultController.object(at: indexPath)
-        book.includeInSearch = !book.includeInSearch
+        managedObjectContext.performAndWait { 
+            book.includeInSearch = !book.includeInSearch
+        }
     }
 
     // MARK: - Table view data source

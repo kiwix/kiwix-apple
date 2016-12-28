@@ -9,19 +9,8 @@
 import UIKit
 import DZNEmptyDataSet
 
-/**
- Base class for SearchBooksController and SearchResultController. 
- 
- Provides:
- 
-  - tableView inset handle
-  - DZNEmptyDataSet refresh
- 
- when keyboard shows / hides
- */
 
 class SearchBaseTableController: CoreDataTableBaseController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
-//    @IBOutlet weak var tableView: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
