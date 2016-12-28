@@ -10,7 +10,7 @@ import UIKit
 import DZNEmptyDataSet
 
 
-class SearchBaseTableController: CoreDataTableBaseController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class SearchBaseTableController: CoreDataTableBaseController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

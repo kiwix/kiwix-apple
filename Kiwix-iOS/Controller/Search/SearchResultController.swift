@@ -10,7 +10,7 @@ import UIKit
 import ProcedureKit
 import DZNEmptyDataSet
 
-class SearchResultController: SearchBaseTableController, UITableViewDataSource, UITableViewDelegate {
+class SearchResultController: SearchBaseTableController, UITableViewDataSource, UITableViewDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     private var searchResults = [SearchResult]()
     private var shouldShowNoResults = false
