@@ -28,9 +28,7 @@ class SearchContainer: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //EmbeddedScopeAndHistoryController
-        
-        if segue.identifier == "" {
+        if segue.identifier == "EmbeddedScopeAndHistoryController" {
             
         } else if segue.identifier == "EmbeddedResultController" {
             resultController = segue.destination as! SearchResultController

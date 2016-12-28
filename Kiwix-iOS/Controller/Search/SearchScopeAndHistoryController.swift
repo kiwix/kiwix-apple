@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import DZNEmptyDataSet
 
-class SearchBooksController: SearchBaseTableController, UITableViewDelegate, UITableViewDataSource, TableCellDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class SearchScopeAndHistoryController: SearchBaseTableController, UITableViewDelegate, UITableViewDataSource, TableCellDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
     @IBOutlet weak var recentSearchContainer: DropShadowView!
     @IBOutlet weak var recentSearchBarHeight: NSLayoutConstraint!
