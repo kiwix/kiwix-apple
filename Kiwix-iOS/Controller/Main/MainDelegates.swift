@@ -70,6 +70,12 @@ extension MainController: SearchBarDelegate, SearchContainerDelegate {
         controllers.search.searchText = text
     }
     
+    func shouldReturn(searchBar: SearchBar) -> Bool {
+        let controller = controllers.search.resultController!
+        controller.selectFirstResult()
+        return controller.searchResults.count > 0
+    }
+    
     private func showSearch(animated: Bool) {
         let controller = controllers.search
         controller.delegate = self

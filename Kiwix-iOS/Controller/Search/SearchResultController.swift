@@ -12,7 +12,7 @@ import DZNEmptyDataSet
 
 class SearchResultController: SearchBaseTableController, UITableViewDataSource, UITableViewDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    private var searchResults = [SearchResult]()
+    private(set) var searchResults = [SearchResult]()
     private var searchText = ""
     
     /**

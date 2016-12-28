@@ -14,7 +14,7 @@ class SearchContainer: UIViewController {
     @IBOutlet weak var dimView: UIView!
     @IBOutlet weak var scopeAndHistoryContainer: UIView!
     @IBOutlet weak var resultContainer: UIView!
-    private var resultController: SearchResultController!
+    private(set) var resultController: SearchResultController!
     var delegate: SearchContainerDelegate?
     
     @IBAction func handleDimViewTap(_ sender: UITapGestureRecognizer) {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SearchBar: UIView {
+class SearchBar: UIView, UITextFieldDelegate {
     
     private let backgroundView = SearchBarBackgroundView()
     private let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
@@ -23,7 +23,6 @@ class SearchBar: UIView {
             if !isFirstResponder {textField.text = title}
         }
     }
-    
     
     // MARK: - Overrides
     
@@ -63,10 +62,6 @@ class SearchBar: UIView {
         frame = CGRect(x: left, y: 0, width: right - left, height: superview.bounds.height).insetBy(dx: 10, dy: 0)
     }
     
-    deinit {
-//        NotificationCenter.default.removeObserver(self, name: .UITextFieldTextDidEndEditing, object: textField)
-    }
-    
     // MARK: -
     
     func setup() {
@@ -80,12 +75,12 @@ class SearchBar: UIView {
         backgroundView.addSubview(visualEffectView)
 
         addSubview(textField)
+        textField.delegate = self
+        textField.returnKeyType = .go
         textField.isUserInteractionEnabled = false
         textField.translatesAutoresizingMaskIntoConstraints = false
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[view]-|", options: .alignAllCenterY, metrics: nil, views: ["view": textField]))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[view]-|", options: .alignAllCenterX, metrics: nil, views: ["view": textField]))
-        
-//        NotificationCenter.default.addObserver(self, selector: #selector(SearchBar.textFieldDidEndEditing), name: .UITextFieldTextDidEndEditing, object: textField)
     }
     
     func textDidChange(textField: UITextField) {
@@ -101,6 +96,10 @@ class SearchBar: UIView {
             cachedSearchText = searchText
             delegate?.textDidChange(text: searchText, searchBar: self)
         }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        return delegate?.shouldReturn(searchBar: self) ?? false
     }
     
     // MARK: - Responder
@@ -148,7 +147,7 @@ private class SearchBarTextField: UITextField {
     
     func setup() {
         placeholder = "Search"
-        addTarget(superview, action: #selector(SearchBar.textDidChange(textField:)), for: UIControlEvents.editingChanged)
+        addTarget(superview, action: #selector(SearchBar.textDidChange(textField:)), for: .editingChanged)
         
         autocorrectionType = .no
         autocapitalizationType = .none
@@ -256,4 +255,5 @@ protocol SearchBarDelegate: class {
     func didBecomeFirstResponder(searchBar: SearchBar)
     func didResignFirstResponder(searchBar: SearchBar)
     func textDidChange(text: String, searchBar: SearchBar)
+    func shouldReturn(searchBar: SearchBar) -> Bool
 }
