@@ -20,16 +20,8 @@ class SearchBaseTableController: CoreDataTableBaseController, DZNEmptyDataSetSou
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        tableView.emptyDataSetSource = nil
-        tableView.emptyDataSetDelegate = nil
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        tableView.emptyDataSetSource = self
-        tableView.emptyDataSetDelegate = self
     }
     
     func keyboardDidShow(notification: Notification) {

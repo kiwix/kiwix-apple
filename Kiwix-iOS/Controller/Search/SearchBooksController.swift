@@ -27,6 +27,8 @@ class SearchBooksController: SearchBaseTableController, UITableViewDelegate, UIT
         super.viewWillAppear(animated)
         tableView.reloadData()
         configureRecentSearchBarHeight()
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
     }
     
     func configureRecentSearchBarHeight() {
