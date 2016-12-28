@@ -93,14 +93,14 @@ class SearchResultController: SearchBaseTableController, UITableViewDataSource, 
 
     // MARK: - DZNEmptyDataSet
     
-    func titleForEmptyDataSet(_ scrollView: UIScrollView!) -> NSAttributedString! {
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         guard shouldShowNoResults else {return nil}
         let string = NSLocalizedString("No Results", comment: "Search, Results")
         let attributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 18), NSForegroundColorAttributeName: UIColor.darkGray]
         return NSAttributedString(string: string, attributes: attributes)
     }
     
-    func descriptionForEmptyDataSet(_ scrollView: UIScrollView!) -> NSAttributedString! {
+    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         guard shouldShowNoResults else {return nil}
         let string = NSLocalizedString("Please refine your search term.", comment: "Search, Results")
         let paragraph = NSMutableParagraphStyle()
@@ -110,7 +110,7 @@ class SearchResultController: SearchBaseTableController, UITableViewDataSource, 
         return NSAttributedString(string: string, attributes: attributes)
     }
     
-    func verticalOffsetForEmptyDataSet(_ scrollView: UIScrollView!) -> CGFloat {
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
         return -tableView.contentInset.bottom / 2.5
     }
 }

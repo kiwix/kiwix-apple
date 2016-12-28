@@ -107,13 +107,13 @@ class SearchBooksController: SearchBaseTableController, UITableViewDelegate, UIT
     
     // MARK: - DZNEmptyDataSet
     
-    func titleForEmptyDataSet(_ scrollView: UIScrollView!) -> NSAttributedString! {
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         let string = NSLocalizedString("No Books Available", comment: "Search, Book Selector")
         let attributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 18), NSForegroundColorAttributeName: UIColor.darkGray]
         return NSAttributedString(string: string, attributes: attributes)
     }
     
-    func descriptionForEmptyDataSet(_ scrollView: UIScrollView!) -> NSAttributedString! {
+    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         let string = NSLocalizedString("Please download or import a book.", comment: "Search, Book Selector")
         let paragraph = NSMutableParagraphStyle()
         paragraph.lineBreakMode = .byWordWrapping
@@ -122,7 +122,7 @@ class SearchBooksController: SearchBaseTableController, UITableViewDelegate, UIT
         return NSAttributedString(string: string, attributes: attributes)
     }
     
-    func verticalOffsetForEmptyDataSet(_ scrollView: UIScrollView!) -> CGFloat {
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
         return -(tableView.contentInset.bottom + recentSearchBarHeight.constant) / 2.5
     }
     
