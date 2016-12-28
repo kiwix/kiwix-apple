@@ -13,13 +13,16 @@ import DZNEmptyDataSet
 class SearchResultController: SearchBaseTableController, UITableViewDataSource, UITableViewDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     private var searchResults = [SearchResult]()
+    private var searchText = ""
     
     /**
         Controls if empty table background should be displayed
         - When search text is empty, shouldShowNoResults = false
         - When search text is **not** empty, shouldShowNoResults = true
      */
-    private var shouldShowNoResults = false
+    private var shouldShowNoResults: Bool {
+        return searchText != ""
+    }
     
     
     override func viewDidLoad() {
@@ -31,7 +34,7 @@ class SearchResultController: SearchBaseTableController, UITableViewDataSource, 
         tableView.emptyDataSetDelegate = self
     }
     
-    func selectFirstResultIfPossible() {
+    func selectFirstResult() {
         guard searchResults.count > 0 else {return}
         tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: .top)
         tableView(tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
@@ -43,7 +46,7 @@ class SearchResultController: SearchBaseTableController, UITableViewDataSource, 
         - Parameter results: An array of search result to be displayed
      */
     func reload(searchText: String, results: [SearchResult]) {
-        shouldShowNoResults = searchText != ""
+        self.searchText = searchText
         searchResults = results
         
         tableView.tableFooterView = searchResults.count > 0 ? nil : UIView()
@@ -97,6 +100,7 @@ class SearchResultController: SearchBaseTableController, UITableViewDataSource, 
         let result = searchResults[indexPath.row]
         let operation = ArticleLoadOperation(bookID: result.bookID, articleTitle: result.title)
         GlobalQueue.shared.add(articleLoadOperation: operation)
+        Preference.RecentSearch.add(term: searchText)
     }
 
     // MARK: - DZNEmptyDataSet
