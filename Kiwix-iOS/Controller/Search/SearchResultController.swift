@@ -13,9 +13,14 @@ import DZNEmptyDataSet
 class SearchResultController: SearchBaseTableController, UITableViewDataSource, UITableViewDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     private var searchResults = [SearchResult]()
+    
+    /**
+        Controls if empty table background should be displayed
+        - When search text is empty, shouldShowNoResults = false
+        - When search text is **not** empty, shouldShowNoResults = true
+     */
     private var shouldShowNoResults = false
     
-    // MARK: - Override
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,14 +31,17 @@ class SearchResultController: SearchBaseTableController, UITableViewDataSource, 
         tableView.emptyDataSetDelegate = self
     }
     
-    // MARK: -
-    
     func selectFirstResultIfPossible() {
         guard searchResults.count > 0 else {return}
         tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: .top)
         tableView(tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
     }
     
+    /**
+        Reload search result table
+        - Parameter searchText: The search text used to produce the results
+        - Parameter results: An array of search result to be displayed
+     */
     func reload(searchText: String, results: [SearchResult]) {
         shouldShowNoResults = searchText != ""
         searchResults = results
