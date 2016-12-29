@@ -57,16 +57,9 @@ class RecentSearchController: UIViewController, UICollectionViewDataSource, UICo
     // MARK: - CollectionView Delegate
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let mainVC = parent?.parent?.parent as? MainController else {return}
-        print("tapped")
-        
-//        guard let mainVC = parent?.parent?.parent as? MainController,
-//            let searchController = parent?.parent as? SearchController,
-//            let cell = collectionView.cellForItem(at: indexPath) as? LocalLangCell,
-//            let text = cell.label.text else {return}
-//        mainVC.searchBar.searchTerm = text
-//        searchController.startSearch(text, delayed: false)
-//        collectionView.deselectItem(at: indexPath, animated: true)
+        guard let cell = collectionView.cellForItem(at: indexPath) as? LocalLangCell,
+            let text = cell.label.text else {return}
+        Controllers.main.searchBar.searchText = text
     }
     
     // MARK: - CollectionView Delegate FlowLayout

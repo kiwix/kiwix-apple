@@ -17,10 +17,25 @@ class SearchBar: UIView, UITextFieldDelegate {
     let delayTextChangeCallback = true
     weak var delegate: SearchBarDelegate?
     private var cachedSearchText: String?
-    private var previousSearchText = ""
+    
+    /**
+     The text to display when search bar is not the first responder
+     */
     var title = "" {
         didSet {
-            if !isFirstResponder {textField.text = title}
+            guard !isFirstResponder else {return}
+            textField.text = title
+        }
+    }
+    
+    /**
+     The search text of the search bar. It is preserved even if search bar resigns and then become first responser again
+     */
+    var searchText = "" {
+        didSet {
+            guard searchText != textField.text && isFirstResponder else {return}
+            textField.text = searchText
+            textDidChange(textField: textField)
         }
     }
     
@@ -112,8 +127,7 @@ class SearchBar: UIView, UITextFieldDelegate {
         textField.isUserInteractionEnabled = true
         textField.textAlignment = .left
         textField.becomeFirstResponder()
-        title = textField.text ?? ""
-        textField.text = previousSearchText
+        textField.text = searchText
         delegate?.didBecomeFirstResponder(searchBar: self)
         return true
     }
@@ -122,7 +136,7 @@ class SearchBar: UIView, UITextFieldDelegate {
         textField.isUserInteractionEnabled = false
         textField.textAlignment = .center
         textField.resignFirstResponder()
-        previousSearchText = textField.text ?? ""
+        searchText = textField.text ?? ""
         textField.text = title
         delegate?.didResignFirstResponder(searchBar: self)
         return true
