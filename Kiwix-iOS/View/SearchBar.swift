@@ -135,6 +135,12 @@ class SearchBar: UIView, UITextFieldDelegate {
         textField.textAlignment = .left
         textField.becomeFirstResponder()
         textField.text = searchText
+        
+        if (searchText != "") {
+            textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
+            textField.perform(#selector(selectAll(_:)), with: nil)
+        }
+        
         delegate?.didBecomeFirstResponder(searchBar: self)
         return true
     }
