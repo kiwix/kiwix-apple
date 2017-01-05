@@ -99,18 +99,25 @@ class SearchBar: UIView, UITextFieldDelegate {
     }
     
     func textDidChange(textField: UITextField) {
-        guard let searchText = textField.text else {return}
-        if delayTextChangeCallback {
-            guard self.cachedSearchText != searchText else {return}
-            self.cachedSearchText = searchText
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(275 * USEC_PER_SEC)) / Double(NSEC_PER_SEC)) {
-                guard searchText == self.cachedSearchText else {return}
-                self.delegate?.textDidChange(text: searchText, searchBar: self)
-            }
-        } else {
-            cachedSearchText = searchText
-            delegate?.textDidChange(text: searchText, searchBar: self)
-        }
+        guard let textFieldText = textField.text else {return}
+        delegate?.textDidChange(text: textFieldText, searchBar: self)
+//        if textFieldText == "" {
+//            print("about to call delegate")
+//            
+//        } else {
+//            self.delegate?.textDidChange(text: textFieldText, searchBar: self)
+//            if delayTextChangeCallback {
+//                guard self.cachedSearchText != textFieldText else {return}
+//                self.cachedSearchText = textFieldText
+//                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(275 * USEC_PER_SEC)) / Double(NSEC_PER_SEC)) {
+//                    guard textFieldText == self.cachedSearchText else {return}
+//                    self.delegate?.textDidChange(text: textFieldText, searchBar: self)
+//                }
+//            } else {
+//                cachedSearchText = textFieldText
+//                delegate?.textDidChange(text: textFieldText, searchBar: self)
+//            }
+//        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -191,7 +198,7 @@ private class SearchBarTextField: UITextField {
     }
     
     override func clearButtonRect(forBounds bounds: CGRect) -> CGRect {
-        return super.clearButtonRect(forBounds: bounds).offsetBy(dx: 10, dy: 0)
+        return super.clearButtonRect(forBounds: bounds).insetBy(dx: -4, dy: -6).offsetBy(dx: 4, dy: 0)
     }
 }
 
@@ -239,7 +246,7 @@ private class SearchBarBackgroundView: UIView {
     }
     
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        let frame = self.bounds.insetBy(dx: -6, dy: -12)
+        let frame = self.bounds.insetBy(dx: 0, dy: -12)
         return frame.contains(point) ? self : nil
     }
     
@@ -248,7 +255,7 @@ private class SearchBarBackgroundView: UIView {
     func animateIn() {
         isAnimatingIn = true
         UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseOut, animations: {
-            self.backgroundColor = UIColor.darkGray
+            self.backgroundColor = UIColor.darkGray.withAlphaComponent(0.75)
         }) { (completed) in
             self.isAnimatingIn = false
             guard !self.isTouching else {return}
