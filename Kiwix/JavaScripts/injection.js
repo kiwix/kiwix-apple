@@ -1,149 +1,67 @@
-var toc = undefined;
-var visEle = undefined;
-var visibleHeaderIDs = undefined;
-
-function getTableOfContents() {
-    toc = toc == undefined ? new TableOfContents() : toc;
-    return toc;
-}
-
 function TableOfContents () {
-    this.getHeaderElements = function () {
-        var h1 = document.getElementsByTagName('h1')[0];
-        var elememts = Array.prototype.slice.call(document.querySelectorAll('h2, h3, h4'));
-        elememts.splice(0, 0, h1);
-        return elememts;
-    }
-    
-    this.headerElements = this.getHeaderElements();
-    
-    this.getHeaderObjects = function () {
-        return this.headerElements.map( elementToObject );
-    }
-    
-    this.headerObjects = this.getHeaderObjects();
-    
-    function elementToObject(element, index) {
-        var obj = {};
-        obj.id = element.id;
-        obj.index = index;
-        obj.textContent = element.textContent;
-        obj.tagName = element.tagName;
-        return obj;
-    }
-}
+    this.headings = document.querySelectorAll("h1, h2, h3, h4, h5, h6");
 
-function getVisibleElementsChecker() {
-    visEle = visEle == undefined ? new VisibleElements() : visEle;
-    return visEle;
-}
-
-function VisibleElements () {
-    // return a 2d array [[header(h1/h2/h3), p, ul, div]]
-    function getElementGroups() {
-        var groups = [];
-        var group = [document.getElementsByTagName('h1')[0]];
-        var contents = document.getElementById("mw-content-text").children;
-        var headerTags = ['h2', 'h3', 'h4'].map(function(x){ return x.toUpperCase() });
-        
-        for (i = 0; i < contents.length; i++) {
-            var element = contents[i];
-            if (headerTags.includes(element.tagName)) {
-                groups.push(group);
-                group = []
-            }
-            group.push(element);
+    this.getHeadingObjects = function () {
+        var headings = [];
+        for (i = 0; i < this.headings.length; i++) { 
+            var element = this.headings[i];
+            var obj = {};
+            obj.id = element.id;
+            obj.index = i;
+            obj.textContent = element.textContent;
+            obj.tagName = element.tagName;
+            headings.push(obj);
         }
-        
-        groups.push(group);
-        return groups;
+        return headings;
     }
-    
-    this.elementGroups = getElementGroups();
-    
-    this.getVisibleHeaders = function () {
-        var groups = this.elementGroups;
+
+    this.scrollToView = function (index) {
+        this.headings[index].scrollIntoView();
+    }
+
+    this.getVisibleHeadingIndex = function () {
         var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
-        var visibleHeaders = [];
-        
-        for (i = 0; i < groups.length; i++) {
-            var group = groups[i];
-            var header = group[0];
-            var groupVisible = false;
-            
-            for (j = 0; j < group.length; j++) {
-                var element = group[j];
-                var rect = element.getBoundingClientRect();
-                var isVisible = !(rect.bottom < 0 || rect.top - viewHeight >= 0);
-                groupVisible = groupVisible || isVisible;
-                if (isVisible) { // if found an element visible in group, break and check the next group
-                    visibleHeaders.push(header)
-                    break;
-                }
-            }
-            
-            // If found visible groups already, but current group is not visible
-            // It means we are checking area below the visible area, should break
-            if (visibleHeaders.length > 0 && !groupVisible) {
-                break;
+        var aboveIndexes = [];
+        var visibleIndexes = [];
+        var belowIndexes = [];
+
+        for (i = 0; i < this.headings.length; i++) { 
+            var element = this.headings[i];
+            var rect = element.getBoundingClientRect();
+
+            var isAboveTopBorder = rect.bottom < 0;
+            var isBelowBottomBorder = viewHeight - rect.top < 0;
+
+            if (isAboveTopBorder) {
+                aboveIndexes.push(i);
+            } else if (isBelowBottomBorder) {
+                belowIndexes.push(i);
+            } else {
+                visibleIndexes.push(i);
             }
         }
-        
-        return visibleHeaders;
-    }
-    
-    this.getVisibleHeaderIDs = function () {
-        return this.getVisibleHeaders().map(function(x){ return x.id });
-    }
-}
 
-function startCallBack() {
-    function arraysEqual(a, b) {
-        if (a === b) return true;
-        if (a == null || b == null) return false;
-        if (a.length != b.length) return false;
-        
-        for (var i = 0; i < a.length; ++i) {
-            if (a[i] !== b[i]) return false;
+        if (aboveIndexes.length > 0) {
+            return [aboveIndexes[aboveIndexes.length-1]].concat(visibleIndexes);
+        } else {
+            return visibleIndexes;
         }
-        return true;
     }
 
-    function callBack(visibleHeaderIDs) {
-        var parameter = visibleHeaderIDs.map(function(x){ return 'header=' + x }).join('&');
-        window.location = 'pagescroll:scrollEnded?' + parameter;
-    }
-    
-    visibleHeaderIDs = getVisibleElementsChecker().getVisibleHeaderIDs();
-    window.onscroll = function() {
-        var newVisibleHeaderIDs = getVisibleElementsChecker().getVisibleHeaderIDs();
-        if (!arraysEqual(visibleHeaderIDs, newVisibleHeaderIDs)) {
-            visibleHeaderIDs = newVisibleHeaderIDs;
-            callBack(visibleHeaderIDs);
-        }
-    };
-    callBack(visibleHeaderIDs);
-}
-
-function stopCallBack() {
-    window.onscroll = undefined;
-}
-
-function getSnippet() {
-    var element = document.getElementById('mw-content-text');
-    if (element) {
-        var children = element.children;
-        for (i = 0; i < children.length; i++) {
-            var child = children[i];
-            if (child.tagName == 'P') {
-                var text = child.textContent || child.innerText || "";
-                if (text.replace(/\s/g, '').length) {
-                    var regex = /\[[0-9|a-z|A-Z| ]*\]/g;
-                    text = text.replace(regex, "");
-                    return text;
-                }
+    this.startCallBack = function () {
+        var handleScroll = function() {
+            var indexes = tableOfContents.getVisibleHeadingIndex();
+            if (indexes.length > 0) {
+                window.location = 'pagescroll:scrollEnded?start=' + indexes[0] + '&length=' + indexes.length;
             }
         }
+        window.onscroll = handleScroll;
+        handleScroll();
     }
-    return null;
+
+    this.stopCallBack = function () {
+        window.onscroll = undefined;
+    }
 }
+
+var tableOfContents = new TableOfContents();

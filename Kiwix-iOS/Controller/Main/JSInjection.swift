@@ -42,16 +42,16 @@ class JS {
     
     // MARK: - Table of Contents
     
-    class func startTOCCallBack(_ webView: UIWebView) {
-        webView.stringByEvaluatingJavaScript(from: "startCallBack()")
+    class func startTOCCallBack(webView: UIWebView) {
+        webView.stringByEvaluatingJavaScript(from: "tableOfContents.startCallBack()")
     }
     
-    class func stopTOCCallBack(_ webView: UIWebView) {
-        webView.stringByEvaluatingJavaScript(from: "stopCallBack()")
+    class func stopTOCCallBack(webView: UIWebView) {
+        webView.stringByEvaluatingJavaScript(from: "tableOfContents.stopCallBack()")
     }
     
-    class func getTableOfContents(from webView: UIWebView) -> [HTMLHeading] {
-        let jString = "getTableOfContents().headerObjects;"
+    class func getTableOfContents(webView: UIWebView) -> [HTMLHeading] {
+        let jString = "tableOfContents.getHeadingObjects()"
         guard let elements = webView.context.evaluateScript(jString).toArray() as? [[String: Any]] else {return [HTMLHeading]()}
         var headings = [HTMLHeading]()
         for element in elements {
@@ -59,6 +59,10 @@ class JS {
             headings.append(heading)
         }
         return headings
+    }
+    
+    class func scrollToHeading(webView: UIWebView, index: Int) {
+        webView.stringByEvaluatingJavaScript(from: "tableOfContents.scrollToView(\(index))")
     }
     
 }

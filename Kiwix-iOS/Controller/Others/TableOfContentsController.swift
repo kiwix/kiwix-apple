@@ -15,20 +15,17 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
     private let visibleHeaderIndicator = UIView()
     
     weak var delegate: TableOfContentsDelegate?
-    private var headinglevelMin = 0
     
     var headings = [HTMLHeading]() {
         didSet {
             configurePreferredContentSize()
-            headinglevelMin = max(2, headings.map({$0.level}).min() ?? 0)
-            visibleHeaderIDs.removeAll()
             tableView.reloadData()
         }
     }
-    var visibleHeaderIDs = [String]() {
+    
+    var visibleRange: (start: Int, length: Int)? {
         didSet {
-            guard oldValue != visibleHeaderIDs else {return}
-            configureVisibleHeaderView(animated: oldValue.count > 0)
+            configureVisibleHeaderView(animated: true)
         }
     }
     
@@ -50,43 +47,40 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func configureVisibleHeaderView(animated: Bool) {
-//        // no visible header
-//        guard visibleHeaderIDs.count > 0 else {
-//            visibleHeaderIndicator.isHidden = true
-//            return
-//        }
-//        
-//        // calculations
-//        guard let minIndex = headings.index(where: {$0.id == visibleHeaderIDs.first}),
-//            let maxIndex = headings.index(where: {$0.id == visibleHeaderIDs.last}) else {return}
-//        let topIndexPath = IndexPath(row: minIndex, section: 0)
-//        let bottomIndexPath = IndexPath(row: maxIndex, section: 0)
-//        let topCellFrame = tableView.rectForRow(at: topIndexPath)
-//        let bottomCellFrame = tableView.rectForRow(at: bottomIndexPath)
-//        let top = topCellFrame.origin.y + topCellFrame.height * 0.1
-//        let bottom = bottomCellFrame.origin.y + bottomCellFrame.height * 0.9
-//        
-//        // indicator frame
-//        visibleHeaderIndicator.isHidden = false
-//        if animated {
-//            UIView.animate(withDuration: 0.1, animations: { 
-//                self.visibleHeaderIndicator.frame = CGRect(x: 0, y: top, width: 3, height: bottom - top)
-//            })
-//        } else {
-//            visibleHeaderIndicator.frame = CGRect(x: 0, y: top, width: 3, height: bottom - top)
-//        }
-//
-//        // tableview scroll
-//        let topCellVisible = tableView.indexPathsForVisibleRows?.contains(topIndexPath) ?? false
-//        let bottomCellVisible = tableView.indexPathsForVisibleRows?.contains(bottomIndexPath) ?? false
-//        switch (topCellVisible, bottomCellVisible) {
-//        case (true, false):
-//            tableView.scrollToRow(at: bottomIndexPath, at: .bottom, animated: animated)
-//        case (false, true), (false, false):
-//            tableView.scrollToRow(at: topIndexPath, at: .top, animated: animated)
-//        default:
-//            return
-//        }
+        // no visible header
+        guard let visibleRange = visibleRange else {
+            visibleHeaderIndicator.isHidden = true
+            return
+        }
+
+        let topIndexPath = IndexPath(row: visibleRange.start, section: 0)
+        let bottomIndexPath = IndexPath(row: visibleRange.start + visibleRange.length - 1, section: 0)
+        let topCellFrame = tableView.rectForRow(at: topIndexPath)
+        let bottomCellFrame = tableView.rectForRow(at: bottomIndexPath)
+        let top = topCellFrame.origin.y + topCellFrame.height * 0.1
+        let bottom = bottomCellFrame.origin.y + bottomCellFrame.height * 0.9
+
+        // indicator frame
+        visibleHeaderIndicator.isHidden = false
+        if animated {
+            UIView.animate(withDuration: 0.1, animations: { 
+                self.visibleHeaderIndicator.frame = CGRect(x: 0, y: top, width: 3, height: bottom - top)
+            })
+        } else {
+            visibleHeaderIndicator.frame = CGRect(x: 0, y: top, width: 3, height: bottom - top)
+        }
+
+        // tableview scroll
+        let topCellVisible = tableView.indexPathsForVisibleRows?.contains(topIndexPath) ?? false
+        let bottomCellVisible = tableView.indexPathsForVisibleRows?.contains(bottomIndexPath) ?? false
+        switch (topCellVisible, bottomCellVisible) {
+        case (true, false):
+            tableView.scrollToRow(at: bottomIndexPath, at: .bottom, animated: animated)
+        case (false, true), (false, false):
+            tableView.scrollToRow(at: topIndexPath, at: .top, animated: animated)
+        default:
+            return
+        }
     }
     
     // MARK: - Table view data source
@@ -113,7 +107,7 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
         default:
             let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
             cell.textLabel?.text = heading.textContent
-            cell.indentationLevel = max(0, (heading.level - headinglevelMin) * 2)
+            cell.indentationLevel = (heading.level - 2) * 2
             return cell
         }
     }
@@ -121,7 +115,7 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
     // MARK: - Table view delegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        delegate?.didSelectTOCItem(heading: headings[indexPath.row])
+        delegate?.didSelectHeading(index: indexPath.row)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -145,5 +139,5 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
 }
 
 protocol TableOfContentsDelegate: class {
-    func didSelectTOCItem(heading: HTMLHeading)
+    func didSelectHeading(index: Int)
 }

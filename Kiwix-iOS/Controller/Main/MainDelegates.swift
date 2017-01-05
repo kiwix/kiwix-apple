@@ -16,13 +16,23 @@ import CloudKit
 extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         guard let url = request.url else {return false}
-        guard url.isKiwixURL else {
+        if url.isKiwixURL {
+            return true
+        } else if url.scheme == "pagescroll" {
+            let components = URLComponents(string: url.absoluteString)
+            guard let query = components?.queryItems,
+                let startStr = query[0].value, let start = Int(startStr),
+                let lengthStr = query[1].value, let length = Int(lengthStr) else {
+                return false
+            }
+            tableOfContentsController?.visibleRange = (start, length)
+            return false
+        } else {
             let controller = SFSafariViewController(url: url)
             controller.delegate = self
             present(controller, animated: true, completion: nil)
             return false
         }
-        return true
     }
     
     func webViewDidStartLoad(_ webView: UIWebView) {
@@ -32,6 +42,8 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
     func webViewDidFinishLoad(_ webView: UIWebView) {
         JS.inject(webView: webView)
         JS.preventDefaultLongTap(webView: webView)
+        JS.startTOCCallBack(webView: webView)
+        
         URLResponseCache.shared.stop()
         
         guard let url = webView.request?.url,
@@ -155,7 +167,7 @@ extension MainController: ButtonDelegates {
     }
     
     func didTapTOCButton() {
-        tableOfContentsController?.headings = JS.getTableOfContents(from: webView)
+        tableOfContentsController?.headings = JS.getTableOfContents(webView: webView)
         isShowingTableOfContents ? hideTableOfContents(animated: true) : showTableOfContents(animated: true)
     }
     
@@ -228,8 +240,6 @@ extension MainController: TableOfContentsDelegate {
             view.layoutIfNeeded()
             dimView.alpha = 0.5
         }
-        
-        JS.startTOCCallBack(webView)
     }
     
     func hideTableOfContents(animated: Bool) {
@@ -251,8 +261,6 @@ extension MainController: TableOfContentsDelegate {
             dimView.isHidden = true
             tocVisiualEffectView.isHidden = true
         }
-        
-        JS.stopTOCCallBack(webView)
     }
     
     func configureTOCConstraints() {
@@ -274,8 +282,11 @@ extension MainController: TableOfContentsDelegate {
         }
     }
     
-    func didSelectTOCItem(heading: HTMLHeading) {
-        
+    func didSelectHeading(index: Int) {
+        JS.scrollToHeading(webView: webView, index: index)
+        if traitCollection.horizontalSizeClass == .compact {
+            hideTableOfContents(animated: true)
+        }
     }
     
     @IBAction func didTapTOCDimView(_ sender: UITapGestureRecognizer) {
