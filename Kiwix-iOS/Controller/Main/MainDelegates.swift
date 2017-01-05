@@ -81,6 +81,8 @@ extension MainController: SearchBarDelegate, SearchContainerDelegate {
         controller.delegate = self
         guard !childViewControllers.contains(controller) else {return}
         
+        navigationController?.setToolbarHidden(true, animated: animated)
+        
         // add cancel button if needed
         if traitCollection.horizontalSizeClass == .compact {
             navigationItem.setRightBarButton(buttons.cancel, animated: animated)
@@ -110,6 +112,8 @@ extension MainController: SearchBarDelegate, SearchContainerDelegate {
     
     private func hideSearch(animated: Bool) {
         guard let searchController = childViewControllers.flatMap({$0 as? SearchContainer}).first else {return}
+        
+        navigationController?.setToolbarHidden(false, animated: animated)
         
         // remove cancel button if needed
         if traitCollection.horizontalSizeClass == .compact {
