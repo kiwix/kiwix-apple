@@ -263,7 +263,7 @@
                                     <constraint firstAttribute="width" constant="270" id="EC0-IZ-NeD"/>
                                     <constraint firstAttribute="height" constant="390" id="Hbh-Zr-Fie"/>
                                 </constraints>
-                                <blurEffect style="extraLight"/>
+                                <blurEffect style="prominent"/>
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="EC0-IZ-NeD"/>
