@@ -83,7 +83,25 @@ class SearchRoundedCornerView: UIView {
             break
         }
     }
+}
+
+class TOCRoundedCornerVisualEffectView: UIVisualEffectView {
+    override func awakeFromNib() {
+        layer.masksToBounds = true
+        clipsToBounds = true
+    }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        guard traitCollection != previousTraitCollection else {return}
+        switch traitCollection.horizontalSizeClass {
+        case .regular:
+            layer.cornerRadius = 0.0
+        case .compact:
+            layer.cornerRadius = 8.0
+        default:
+            break
+        }
+    }
 }
 
 class LargeHitZoneImageView: UIImageView {
