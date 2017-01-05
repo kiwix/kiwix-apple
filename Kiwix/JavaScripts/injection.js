@@ -29,7 +29,7 @@ function TableOfContents () {
             var element = this.headings[i];
             var rect = element.getBoundingClientRect();
 
-            var isAboveTopBorder = rect.bottom < 0;
+            var isAboveTopBorder = rect.top - 10 < 0;
             var isBelowBottomBorder = viewHeight - rect.top < 0;
 
             if (isAboveTopBorder) {

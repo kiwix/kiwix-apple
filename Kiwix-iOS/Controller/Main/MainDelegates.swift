@@ -42,6 +42,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
     func webViewDidFinishLoad(_ webView: UIWebView) {
         JS.inject(webView: webView)
         JS.preventDefaultLongTap(webView: webView)
+        tableOfContentsController?.headings = JS.getTableOfContents(webView: webView)
         JS.startTOCCallBack(webView: webView)
         
         URLResponseCache.shared.stop()
@@ -93,10 +94,10 @@ extension MainController: SearchBarDelegate, SearchContainerDelegate {
         controller.delegate = self
         guard !childViewControllers.contains(controller) else {return}
         
-        navigationController?.setToolbarHidden(true, animated: animated)
-        
-        // add cancel button if needed
+        // hide toolbar
+        // add cancel button 
         if traitCollection.horizontalSizeClass == .compact {
+            navigationController?.setToolbarHidden(true, animated: animated)
             navigationItem.setRightBarButton(buttons.cancel, animated: animated)
         }
         
@@ -125,10 +126,10 @@ extension MainController: SearchBarDelegate, SearchContainerDelegate {
     private func hideSearch(animated: Bool) {
         guard let searchController = childViewControllers.flatMap({$0 as? SearchContainer}).first else {return}
         
-        navigationController?.setToolbarHidden(false, animated: animated)
-        
-        // remove cancel button if needed
+        // show toolbar
+        // remove cancel button
         if traitCollection.horizontalSizeClass == .compact {
+            navigationController?.setToolbarHidden(false, animated: animated)
             navigationItem.setRightBarButton(nil, animated: animated)
         }
         
@@ -167,7 +168,6 @@ extension MainController: ButtonDelegates {
     }
     
     func didTapTOCButton() {
-        tableOfContentsController?.headings = JS.getTableOfContents(webView: webView)
         isShowingTableOfContents ? hideTableOfContents(animated: true) : showTableOfContents(animated: true)
     }
     

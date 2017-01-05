@@ -78,9 +78,12 @@ class ArticleLoadOperation: Procedure {
         
         OperationQueue.main.addOperation {
             _ = main.searchBar.resignFirstResponder()
-            main.hideTableOfContents(animated: true)
             main.presentingViewController?.dismiss(animated: self.animated, completion: nil)
             main.hideWelcome()
+            
+            if main.traitCollection.horizontalSizeClass == .compact {
+                main.hideTableOfContents(animated: true)
+            }
             
             let webView = main.webView
             if webView?.request?.url != url {
