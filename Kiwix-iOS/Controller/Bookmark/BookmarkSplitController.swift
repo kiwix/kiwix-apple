@@ -31,6 +31,14 @@ class BookmarkSplitController: UISplitViewController, UISplitViewControllerDeleg
     }
     
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
-        return true
+        if let nav = secondaryViewController as? UINavigationController,
+            let controller = nav.topViewController as? BookmarkCollectionController,
+            let _ = controller.book {
+            // show detail
+            return false
+        } else {
+            // show master
+            return true
+        }
     }
 }

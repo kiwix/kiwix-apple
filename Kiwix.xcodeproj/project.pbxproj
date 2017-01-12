@@ -67,6 +67,7 @@
 		9757C74C1E106958008A9469 /* BackgroundDownload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9757C74B1E106958008A9469 /* BackgroundDownload.swift */; };
 		97599AA21E26D3B000BA15EF /* BookmarkBooksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599AA11E26D3B000BA15EF /* BookmarkBooksController.swift */; };
 		97599AE01E28031A00BA15EF /* BookmarkSplitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599ADF1E28031A00BA15EF /* BookmarkSplitController.swift */; };
+		97599AE21E28193D00BA15EF /* BookmarkCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599AE11E28193D00BA15EF /* BookmarkCollectionController.swift */; };
 		975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975B90FD1CEB909100D13906 /* iOSExtensions.swift */; };
 		9764CBD11D806AD800072D6A /* RefreshLibControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764CBD01D806AD800072D6A /* RefreshLibControl.swift */; };
 		9764F5931D830EF200E0B1C4 /* liblzma.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9764F5921D830EF200E0B1C4 /* liblzma.tbd */; };
@@ -226,6 +227,7 @@
 		9757C74B1E106958008A9469 /* BackgroundDownload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundDownload.swift; sourceTree = "<group>"; };
 		97599AA11E26D3B000BA15EF /* BookmarkBooksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkBooksController.swift; sourceTree = "<group>"; };
 		97599ADF1E28031A00BA15EF /* BookmarkSplitController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkSplitController.swift; sourceTree = "<group>"; };
+		97599AE11E28193D00BA15EF /* BookmarkCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkCollectionController.swift; sourceTree = "<group>"; };
 		975B90FD1CEB909100D13906 /* iOSExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = iOSExtensions.swift; path = "Kiwix-iOS/iOSExtensions.swift"; sourceTree = SOURCE_ROOT; };
 		9763275D1D64FE0F0034F120 /* BookDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookDetailController.swift; sourceTree = "<group>"; };
 		9764CBD01D806AD800072D6A /* RefreshLibControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshLibControl.swift; sourceTree = "<group>"; };
@@ -537,6 +539,7 @@
 			children = (
 				97599ADF1E28031A00BA15EF /* BookmarkSplitController.swift */,
 				97599AA11E26D3B000BA15EF /* BookmarkBooksController.swift */,
+				97599AE11E28193D00BA15EF /* BookmarkCollectionController.swift */,
 				97C5BD4A1D9AF4B5009692CF /* BookmarkController.swift */,
 				97219DBC1D383A00009FDFF1 /* BookmarkHUD.swift */,
 			);
@@ -1167,6 +1170,7 @@
 				973207A41DD1983D00EDD3DC /* EmptyTableConfigExtension.swift in Sources */,
 				97A127C91D777CF100FB204D /* RecentSearchController.swift in Sources */,
 				970E7F7B1DA0069600741290 /* FontSizeController.swift in Sources */,
+				97599AE21E28193D00BA15EF /* BookmarkCollectionController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

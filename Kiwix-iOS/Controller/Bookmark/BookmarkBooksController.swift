@@ -14,6 +14,15 @@ class BookmarkBooksController: CoreDataTableBaseController, UITableViewDelegate,
         super.viewDidLoad()
         title = "Bookmarks"
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard segue.identifier == "showBookmarks",
+            let navController = segue.destination as? UINavigationController,
+            let controller = navController.topViewController as? BookmarkCollectionController else {return}
+        guard let cell = sender as? UITableViewCell,
+            let indexPath = tableView.indexPath(for: cell) else {return}
+        controller.book = fetchedResultController.object(at: indexPath)
+    }
 
 
     @IBAction func dismiss(_ sender: UIBarButtonItem) {
@@ -51,6 +60,12 @@ class BookmarkBooksController: CoreDataTableBaseController, UITableViewDelegate,
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard let stateRaw = fetchedResultController.sections?[section].name, let stateInt = Int(stateRaw) else {return nil}
         return BookState(rawValue: stateInt)?.description
+    }
+    
+    // MARK: - TableView Delegate
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     // MARK: - Fetched Results Controller

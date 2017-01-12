@@ -157,10 +157,10 @@
             </objects>
             <point key="canvasLocation" x="2402" y="1764"/>
         </scene>
-        <!--View Controller-->
+        <!--Bookmark Collection Controller-->
         <scene sceneID="cHE-4Y-51R">
             <objects>
-                <viewController id="oLN-7t-Pr8" sceneMemberID="viewController">
+                <viewController id="oLN-7t-Pr8" customClass="BookmarkCollectionController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="f18-bT-5eI"/>
                         <viewControllerLayoutGuide type="bottom" id="ZaM-mS-Ov3"/>
@@ -168,13 +168,44 @@
                     <view key="view" contentMode="scaleToFill" id="CNz-v0-bW2">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="2uy-xe-2Xa">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="FG6-Px-7sh">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="8Ym-GP-ecI">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </view>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ZaM-mS-Ov3" firstAttribute="top" secondItem="2uy-xe-2Xa" secondAttribute="bottom" id="E2R-BE-Zo3"/>
+                            <constraint firstAttribute="trailing" secondItem="2uy-xe-2Xa" secondAttribute="trailing" id="aAH-yb-eXm"/>
+                            <constraint firstItem="2uy-xe-2Xa" firstAttribute="leading" secondItem="CNz-v0-bW2" secondAttribute="leading" id="dgF-e0-hE3"/>
+                            <constraint firstItem="2uy-xe-2Xa" firstAttribute="top" secondItem="CNz-v0-bW2" secondAttribute="top" id="nk4-pm-kWp"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Wqn-bE-ueD"/>
+                    <connections>
+                        <outlet property="colectionView" destination="2uy-xe-2Xa" id="eGI-rk-sWH"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Ru-B3-FcT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3289.8550724637685" y="3196.467391304348"/>
+            <point key="canvasLocation" x="3244.9275362318845" y="3196.467391304348"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="i96-PS-3ib">
@@ -238,7 +269,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vCd-Vo-NUE">
-                                                    <rect key="frame" x="42" y="6" width="2" height="31.5"/>
+                                                    <rect key="frame" x="42" y="6" width="2" height="31.666666666666664"/>
                                                     <color key="backgroundColor" red="1" green="0.40000000000000002" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="2" id="mUe-cP-6T5"/>
@@ -274,6 +305,7 @@
                                             <outlet property="hasPicIndicator" destination="vCd-Vo-NUE" id="oxG-mF-2gO"/>
                                             <outlet property="subtitleLabel" destination="wUN-Co-X2K" id="tJG-Vg-Ctp"/>
                                             <outlet property="titleLabel" destination="F5J-kg-p5Y" id="SGC-oq-RQ6"/>
+                                            <segue destination="hDm-kh-ZLk" kind="showDetail" identifier="showBookmarks" id="vG1-Ih-Ag7"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -479,4 +511,7 @@
         <image name="BookmarkRemoved" width="348" height="331"/>
         <image name="Cross" width="16" height="16"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="ipW-qc-ph3"/>
+    </inferredMetricsTieBreakers>
 </document>
