@@ -19,23 +19,8 @@ class Controllers {
     }
 
     // MARK: - Bookmark
-//
-//    private var bookmark: UINavigationController?
-//    
-//    class var bookmark: UINavigationController {
-//        let controller = Controllers.shared.bookmark ?? UIStoryboard(name: "Bookmark", bundle: nil).instantiateInitialViewController() as! UINavigationController
-//        Controllers.shared.bookmark = controller
-//        return controller
-//    }
-//    
-//    private var bookmarkHUD: BookmarkHUD?
-//    
-//    class var bookmarkHUD: BookmarkHUD {
-//        let controller = Controllers.shared.bookmarkHUD ?? UIStoryboard(name: "Bookmark", bundle: nil).instantiateViewController(withIdentifier: "BookmarkHUD") as! BookmarkHUD
-//        Controllers.shared.bookmarkHUD = controller
-//        return controller
-//    }
-    
+
+    private(set) lazy var bookmark = UIStoryboard(name: "Bookmark", bundle: nil).instantiateInitialViewController() as! UISplitViewController
     private(set) lazy var bookmarkHUD = UIStoryboard(name: "Bookmark", bundle: nil).instantiateViewController(withIdentifier: "BookmarkHUD") as! BookmarkHUD
     
     // MARK: - Library

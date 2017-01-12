@@ -65,6 +65,8 @@
 		975227D01D022814001D1DDE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227CF1D022814001D1DDE /* LaunchScreen.storyboard */; };
 		9757C74A1E10660B008A9469 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9757C7491E10660B008A9469 /* DownloadManager.swift */; };
 		9757C74C1E106958008A9469 /* BackgroundDownload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9757C74B1E106958008A9469 /* BackgroundDownload.swift */; };
+		97599AA21E26D3B000BA15EF /* BookmarkBooksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599AA11E26D3B000BA15EF /* BookmarkBooksController.swift */; };
+		97599AE01E28031A00BA15EF /* BookmarkSplitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599ADF1E28031A00BA15EF /* BookmarkSplitController.swift */; };
 		975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975B90FD1CEB909100D13906 /* iOSExtensions.swift */; };
 		9764CBD11D806AD800072D6A /* RefreshLibControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764CBD01D806AD800072D6A /* RefreshLibControl.swift */; };
 		9764F5931D830EF200E0B1C4 /* liblzma.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9764F5921D830EF200E0B1C4 /* liblzma.tbd */; };
@@ -222,6 +224,8 @@
 		975227CF1D022814001D1DDE /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "Kiwix-iOS/Storyboard/LaunchScreen.storyboard"; sourceTree = SOURCE_ROOT; };
 		9757C7491E10660B008A9469 /* DownloadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
 		9757C74B1E106958008A9469 /* BackgroundDownload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundDownload.swift; sourceTree = "<group>"; };
+		97599AA11E26D3B000BA15EF /* BookmarkBooksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkBooksController.swift; sourceTree = "<group>"; };
+		97599ADF1E28031A00BA15EF /* BookmarkSplitController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkSplitController.swift; sourceTree = "<group>"; };
 		975B90FD1CEB909100D13906 /* iOSExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = iOSExtensions.swift; path = "Kiwix-iOS/iOSExtensions.swift"; sourceTree = SOURCE_ROOT; };
 		9763275D1D64FE0F0034F120 /* BookDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookDetailController.swift; sourceTree = "<group>"; };
 		9764CBD01D806AD800072D6A /* RefreshLibControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshLibControl.swift; sourceTree = "<group>"; };
@@ -531,6 +535,8 @@
 		9749A1B21C430653000F2D1E /* Bookmark */ = {
 			isa = PBXGroup;
 			children = (
+				97599ADF1E28031A00BA15EF /* BookmarkSplitController.swift */,
+				97599AA11E26D3B000BA15EF /* BookmarkBooksController.swift */,
 				97C5BD4A1D9AF4B5009692CF /* BookmarkController.swift */,
 				97219DBC1D383A00009FDFF1 /* BookmarkHUD.swift */,
 			);
@@ -1120,6 +1126,7 @@
 				970E7F741D9DB0FC00741290 /* 1.8.xcmappingmodel in Sources */,
 				973207A01DD1983D00EDD3DC /* DownloadTasksController.swift in Sources */,
 				977A458C1E14EA140089C596 /* Cloud.swift in Sources */,
+				97599AA21E26D3B000BA15EF /* BookmarkBooksController.swift in Sources */,
 				97D0E9931DDA487E0029530E /* SearchBaseController.swift in Sources */,
 				97A1FD321D6F723D00A80EE2 /* resourceTools.cpp in Sources */,
 				97A1FD451D6F728200A80EE2 /* StringTools.swift in Sources */,
@@ -1142,6 +1149,7 @@
 				97A1FD191D6F71CE00A80EE2 /* ZimMultiReader.swift in Sources */,
 				97A1FD261D6F71E200A80EE2 /* ZimReader.mm in Sources */,
 				97A1FD1C1D6F71D800A80EE2 /* KiwixURLProtocol.swift in Sources */,
+				97599AE01E28031A00BA15EF /* BookmarkSplitController.swift in Sources */,
 				97C2C26A1DDCC58500A9CC64 /* ArticleOperation.swift in Sources */,
 				973A5C991DEBC54800C7804C /* CloudKit.swift in Sources */,
 				973208261DD21E9C00EDD3DC /* CoreDataContainer.swift in Sources */,
@@ -1326,7 +1334,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DA0AB5D61F19BE37BD0AFA0A /* Pods-Kiwix-iOS.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
@@ -1363,7 +1371,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5B9300794E7F4EFE5B3E8F19 /* Pods-Kiwix-iOS.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";

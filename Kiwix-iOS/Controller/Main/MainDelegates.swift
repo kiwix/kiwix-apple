@@ -323,9 +323,9 @@ extension MainController {
 
 extension MainController: UIViewControllerTransitioningDelegate {
     func showBookmarkController() {
-//        let controller = Controllers.bookmark
-//        controller.modalPresentationStyle = .formSheet
-//        present(controller, animated: true, completion: nil)
+        let controller = controllers.bookmark
+        controller.modalPresentationStyle = .fullScreen
+        present(controller, animated: true, completion: nil)
     }
     
     func showBookmarkHUD() {

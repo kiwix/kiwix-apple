@@ -241,8 +241,17 @@ class Book: NSManagedObject {
     }
 }
 
-enum BookState: Int {
+enum BookState: Int, CustomStringConvertible {
     case cloud, downloading, local, retained
+    
+    var description: String {
+        switch self {
+            case .cloud: return "Cloud"
+            case .downloading: return "Downloading"
+            case .local: return "Local"
+            case .retained: return "Retained"
+        }
+    }
 }
 
 

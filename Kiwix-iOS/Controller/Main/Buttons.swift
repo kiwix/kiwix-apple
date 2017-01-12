@@ -34,6 +34,8 @@ class Buttons: LPTBarButtonItemDelegate {
             delegate?.didTapForwardButton()
         case toc:
             delegate?.didTapTOCButton()
+        case bookmark:
+            delegate?.didTapBookmarkButton()
         case library:
             delegate?.didTapLibraryButton()
         default:
