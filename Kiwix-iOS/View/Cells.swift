@@ -93,6 +93,17 @@ class CheckMarkBookCell: BasicBookCell {
 
 // MARK: - Article Cell
 
+class BookmarkCollectionCell: UICollectionViewCell {
+    override func awakeFromNib() {
+        thumbImageView.layer.cornerRadius = 4.0
+        thumbImageView.clipsToBounds = true
+    }
+    
+    @IBOutlet weak var thumbImageView: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var snippetLabel: UILabel!
+}
+
 class ArticleCell: FavIconAndPicIndicatorCell {
     @IBOutlet weak var titleLabel: UILabel!
 }
@@ -100,6 +111,8 @@ class ArticleCell: FavIconAndPicIndicatorCell {
 class ArticleSnippetCell: ArticleCell {
     @IBOutlet weak var snippetLabel: UILabel!
 }
+
+
 
 // MARK: - last time refactor
 

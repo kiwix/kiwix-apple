@@ -190,7 +190,7 @@ extension MainController: ButtonDelegates {
     }
     
     func didLongPressBookmarkButton() {
-        func indexBookmark(article: Article) {
+        func indexCoreSpotlight(article: Article) {
             if article.isBookmarked {
                 CSSearchableIndex.default().indexSearchableItems([article.searchableItem], completionHandler: nil)
             } else {
@@ -199,21 +199,20 @@ extension MainController: ButtonDelegates {
             }
         }
         
+        let context = AppDelegate.persistentContainer.viewContext
         guard let url = webView.request?.url,
-            let article = Article.fetch(url: url, context: AppDelegate.persistentContainer.viewContext) else {return}
+            let article = Article.fetch(url: url, context: context) else {return}
         article.isBookmarked = !article.isBookmarked
         
-        if AppDelegate.persistentContainer.viewContext.hasChanges {
-            try? AppDelegate.persistentContainer.viewContext.save()
-        }
+        if context.hasChanges {try? context.save()}
         
         showBookmarkHUD()
         controllers.bookmarkHUD.bookmarkAdded = article.isBookmarked
         buttons.bookmark.isHighlighted = article.isBookmarked
         
-        indexBookmark(article: article)
-        let operation = BookmarkSyncOperation(articleURL: url)
-        GlobalQueue.shared.add(operation: operation)
+        indexCoreSpotlight(article: article)
+//        let operation = BookmarkSyncOperation(articleURL: url)
+//        GlobalQueue.shared.add(operation: operation)
     }
 }
 
