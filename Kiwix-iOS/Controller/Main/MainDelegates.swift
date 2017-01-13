@@ -58,7 +58,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
         searchBar.title = title
         
         article.title = title
-        article.snippet = JS.getSnippet(from: webView);
+        article.snippet = JS.getSnippet(from: webView)
         article.bookmarkDate = Date()
         article.thumbImagePath = URLResponseCache.shared.firstImage()?.path
     }

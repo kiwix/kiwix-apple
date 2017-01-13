@@ -18,7 +18,7 @@ class BookmarkBooksController: CoreDataTableBaseController, UITableViewDelegate,
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard segue.identifier == "showBookmarks",
             let navController = segue.destination as? UINavigationController,
-            let controller = navController.topViewController as? BookmarkArticleController else {return}
+            let controller = navController.topViewController as? BookmarkCollectionController else {return}
         guard let cell = sender as? UITableViewCell,
             let indexPath = tableView.indexPath(for: cell) else {return}
         controller.book = fetchedResultController.object(at: indexPath)

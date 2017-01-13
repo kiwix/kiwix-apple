@@ -35,7 +35,7 @@ class JS {
     }
     
     class func getSnippet(from webView: UIWebView) -> String? {
-        let jString = "getSnippet();"
+        let jString = "snippet.parse();"
         guard let snippet = webView.context.evaluateScript(jString).toString() else {return nil}
         return snippet == "null" ? nil : snippet
     }

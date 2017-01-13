@@ -64,4 +64,29 @@ function TableOfContents () {
     }
 }
 
+function Snippet () {
+    this.parse = function () {
+        var snippet = '';
+        var elements = document.getElementsByTagName('p');
+        for (i = 0; i < elements.length; i++) {
+            var localSnippet = this.extractCleanText(elements[i]);
+            snippet += localSnippet;
+            if (snippet.length > 200) {break;}
+        }
+        return snippet;
+    }
+
+    this.extractCleanText = function (element) {
+        var text = element.textContent || element.innerText || "";
+        if (text.replace(/\s/g, '').length) {
+            var regex = /\[[0-9|a-z|A-Z| ]*\]/g;
+            text = text.replace(regex, "");
+            return text;
+        } else {
+            return '';
+        }
+    }
+}
+
 var tableOfContents = new TableOfContents();
+var snippet = new Snippet();

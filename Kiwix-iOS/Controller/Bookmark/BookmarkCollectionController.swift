@@ -11,7 +11,7 @@ import CoreData
 
 class BookmarkCollectionController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,NSFetchedResultsControllerDelegate {
 
-    private(set) var itemWidth: CGFloat = 0
+    private(set) var itemWidth: CGFloat = 0.0
     private(set) var shouldReloadCollectionView = false
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -26,13 +26,23 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
         collectionView.alwaysBounceVertical = true
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        configureItemWidth(collectionViewWidth: collectionView.frame.width)
+    }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-//        let itemsPerRow = ((size.width - 10) / 200).rounded()
-        let itemsPerRow: CGFloat = 2.0
-        print("\(itemsPerRow), \(size.width)")
-        
-        itemWidth = floor((size.width - (itemsPerRow + 1) * 20) / itemsPerRow)
+        configureItemWidth(collectionViewWidth: collectionView.frame.width)
         collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    @IBAction func dismiss(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func configureItemWidth(collectionViewWidth: CGFloat) {
+        let itemsPerRow = ((collectionViewWidth - 10) / 300).rounded()
+        self.itemWidth = floor((collectionViewWidth - (itemsPerRow + 1) * 10) / itemsPerRow)
     }
     
     // MARK: - UICollectionView Data Source
@@ -57,7 +67,6 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        print(itemWidth)
         return CGSize(width: itemWidth, height: itemWidth)
     }
     
@@ -82,3 +91,4 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
         return controller as! NSFetchedResultsController<Article>
     }()
 }
+

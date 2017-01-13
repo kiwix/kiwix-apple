@@ -20,7 +20,7 @@ class Controllers {
 
     // MARK: - Bookmark
 
-    private(set) lazy var bookmark = UIStoryboard(name: "Bookmark", bundle: nil).instantiateInitialViewController() as! UISplitViewController
+    private(set) lazy var bookmark = UIStoryboard(name: "Bookmark", bundle: nil).instantiateInitialViewController() as! UINavigationController
     private(set) lazy var bookmarkHUD = UIStoryboard(name: "Bookmark", bundle: nil).instantiateViewController(withIdentifier: "BookmarkHUD") as! BookmarkHUD
     
     // MARK: - Library
