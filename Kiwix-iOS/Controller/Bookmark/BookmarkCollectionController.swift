@@ -21,9 +21,24 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
         }
     }
     
+    @IBAction func dismiss(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func configureItemWidth(collectionViewWidth: CGFloat) {
+        let itemsPerRow = ((collectionViewWidth - 10) / 300).rounded()
+        self.itemWidth = floor((collectionViewWidth - (itemsPerRow + 1) * 10) / itemsPerRow)
+    }
+    
+    // MARK: - override
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.alwaysBounceVertical = true
+        
+        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -34,15 +49,6 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         configureItemWidth(collectionViewWidth: collectionView.frame.width)
         collectionView.collectionViewLayout.invalidateLayout()
-    }
-    
-    @IBAction func dismiss(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func configureItemWidth(collectionViewWidth: CGFloat) {
-        let itemsPerRow = ((collectionViewWidth - 10) / 300).rounded()
-        self.itemWidth = floor((collectionViewWidth - (itemsPerRow + 1) * 10) / itemsPerRow)
     }
     
     // MARK: - UICollectionView Data Source
@@ -56,7 +62,7 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! BookmarkCollectionCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell2", for: indexPath) as! BookmarkCollectionCell
         let article = fetchedResultController.object(at: indexPath)
         cell.titleLabel.text = article.title
         cell.snippetLabel.text = article.snippet
@@ -70,12 +76,9 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
         return CGSize(width: itemWidth, height: itemWidth)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-    }
-    
     // MARK: - NSFetchedResultsControllerDelegate
     
+    var blocks = [() -> Void]()
     var blockOperations: [BlockOperation] = []
     let managedObjectContext = AppDelegate.persistentContainer.viewContext
     lazy var fetchedResultController: NSFetchedResultsController<Article> = {
@@ -86,9 +89,62 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
         
         let cacheName = ["BookmarkFRC", self.book?.title ?? "All", Bundle.buildVersion].joined(separator: "_")
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: cacheName)
-//        controller.delegate = self
+        controller.delegate = self
         try? controller.performFetch()
         return controller as! NSFetchedResultsController<Article>
     }()
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            guard collectionView.numberOfSections > 0,
+                let newIndexPath = newIndexPath,
+                collectionView.numberOfItems(inSection: newIndexPath.section) > 0 else {
+                    shouldReloadCollectionView = true
+                    break
+            }
+            blocks.append({ self.collectionView.insertItems(at: [newIndexPath]) })
+        case .delete:
+            guard let indexPath = indexPath else {break}
+            blocks.append({ self.collectionView.reloadItems(at: [indexPath]) })
+        case .move:
+            guard let indexPath = indexPath, let newIndexPath = newIndexPath else {break}
+            blocks.append({ self.collectionView.moveItem(at: indexPath, to: newIndexPath) })
+        case .update:
+            guard let indexPath = indexPath, collectionView.numberOfItems(inSection: indexPath.section) != 1 else {
+                self.shouldReloadCollectionView = true
+                break
+            }
+            blocks.append({ self.collectionView.deleteItems(at: [indexPath]) })
+        }
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        
+        switch type {
+        case .insert:
+            blocks.append({ self.collectionView.insertSections(IndexSet(integer: sectionIndex)) })
+        case .delete:
+            blocks.append({ self.collectionView.deleteSections(IndexSet(integer: sectionIndex)) })
+        case .move:
+            break
+        case .update:
+            blocks.append({ self.collectionView.reloadSections(IndexSet(integer: sectionIndex)) })
+        }
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        OperationQueue.main.addOperation({
+            if self.shouldReloadCollectionView {
+                self.collectionView.reloadData()
+            } else {
+                self.collectionView.performBatchUpdates({ 
+                    self.blocks.forEach({ $0() })
+                }, completion: { (completed) in
+                    self.blocks.removeAll()
+                })
+            }
+        })
+    }
 }
 
