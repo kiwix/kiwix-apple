@@ -30,10 +30,11 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
+        collectionView.indexPathsForSelectedItems?.forEach({ collectionView.deselectItem(at: $0, animated: false) })
         if editing {
-            navigationItem.rightBarButtonItems? = [doneButton, deleteButton]
+            navigationItem.setRightBarButtonItems([doneButton, deleteButton], animated: animated)
         } else {
-            navigationItem.rightBarButtonItems = [editButton]
+            navigationItem.setRightBarButtonItems([editButton], animated: animated)
         }
     }
     
@@ -52,6 +53,16 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
         dismiss(animated: true, completion: nil)
     }
     
+    func configureButtons() {
+        // For some reason, initializing buttons with target actions does not work
+        editButton.target = self
+        editButton.action = #selector(editButtonTapped(sender:))
+        doneButton.target = self
+        doneButton.action = #selector(doneButtonTapped(sender:))
+        deleteButton.target = self
+        deleteButton.action = #selector(deleteButtonTapped(sender:))
+    }
+    
     func editButtonTapped(sender: UIBarButtonItem) {
         setEditing(true, animated: true)
     }
@@ -63,9 +74,8 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
     func deleteButtonTapped(sender: UIBarButtonItem) {
         let context = AppDelegate.persistentContainer.viewContext
         context.perform {
-            let fetchRequest = Article.fetchRequest() as! NSFetchRequest<Article>
-            let articles = try? context.fetch(fetchRequest)
-            articles?.forEach({ (article) in
+            self.collectionView.indexPathsForSelectedItems?.forEach({ (indexPath) in
+                let article = self.fetchedResultController.object(at: indexPath)
                 context.delete(article)
             })
             try? context.save()
@@ -79,6 +89,9 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
         title = "Bookmarks"
         navigationItem.rightBarButtonItems = [editButton]
         collectionView.alwaysBounceVertical = true
+        collectionView.allowsMultipleSelection = true
+        
+        configureButtons()
         
         if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
@@ -122,9 +135,12 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
     // MARK: - UICollectionView Delegate
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let article = fetchedResultController.object(at: indexPath)
-        guard let url = article.url else {return}
-        GlobalQueue.shared.add(articleLoadOperation: ArticleLoadOperation(url: url))
+        if !isEditing {
+            collectionView.deselectItem(at: indexPath, animated: true)
+            let article = fetchedResultController.object(at: indexPath)
+            guard let url = article.url else {return}
+            GlobalQueue.shared.add(articleLoadOperation: ArticleLoadOperation(url: url))
+        }
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout

@@ -137,7 +137,11 @@ class BookmarkCollectionCell: UICollectionViewCell {
     @IBOutlet weak var bookTitleLabel: UILabel!
     @IBOutlet weak var bookmarkDetailLabel: UILabel!
     
-    
+    override var isSelected: Bool {
+        didSet {
+            contentView.backgroundColor = isSelected ? UIColor(colorLiteralRed: 200/255, green: 220/255, blue: 1, alpha: 1) : UIColor.white
+        }
+    }
 }
 
 
