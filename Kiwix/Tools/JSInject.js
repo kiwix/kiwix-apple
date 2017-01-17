@@ -70,6 +70,7 @@ function Snippet () {
         var elements = document.getElementsByTagName('p');
         for (i = 0; i < elements.length; i++) {
             var localSnippet = this.extractCleanText(elements[i]);
+            snippet += " ";
             snippet += localSnippet;
             if (snippet.length > 400) {break;}
         }
