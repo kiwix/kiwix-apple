@@ -12,7 +12,7 @@ import JavaScriptCore
 class JS {
     
     class func inject(webView: UIWebView) {
-        guard let url = Bundle.main.url(forResource: "injection", withExtension: "js"),
+        guard let url = Bundle.main.url(forResource: "JSInject", withExtension: "js"),
             let jString = try? String(contentsOf: url) else {return}
         webView.stringByEvaluatingJavaScript(from: jString)
     }
