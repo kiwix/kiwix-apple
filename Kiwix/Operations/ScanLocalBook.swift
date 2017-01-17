@@ -14,11 +14,13 @@ class ScanLocalBookOperation: Procedure {
     private(set) var firstBookAdded = false
     private(set) var shouldMigrateBookmarks = false
     
-    private(set) var snapshot: URLSnapShot
+    private(set) var oldSnapshot: URLSnapShot
+    private(set) var newSnapshot: URLSnapShot
     private let time = Date()
     
-    init(urlSnapshot: URLSnapShot) {
-        self.snapshot = urlSnapshot
+    init(snapshot: URLSnapShot) {
+        self.oldSnapshot = snapshot
+        self.newSnapshot = snapshot
         self.context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         context.parent = AppDelegate.persistentContainer.viewContext
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
@@ -31,16 +33,16 @@ class ScanLocalBookOperation: Procedure {
     override func execute() {
         defer { finish() }
         
+        newSnapshot = URLSnapShot()
         if ZimMultiReader.shared.readers.count == 0 {
             // when ZimMultiReader has not reader, only perform addition
-            // i.e., when app is launched initialize all zim readers
-            updateReaders(addition: snapshot.zimFile)
+            // i.e., when app is launched initialize all zim readers, or when first book is added
+            updateReaders(addition: newSnapshot.zimFile)
             context.performAndWait {self.updateCoreData()}
         } else {
-            let newSnapshot = URLSnapShot()
-            var addition = newSnapshot - snapshot
-            let deletion = snapshot - newSnapshot
-            snapshot = newSnapshot
+            
+            var addition = newSnapshot - oldSnapshot
+            let deletion = oldSnapshot - newSnapshot
             
             if deletion.indexFolders.count > 0 { addition.zimFiles = newSnapshot.zimFile }
             

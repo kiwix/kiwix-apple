@@ -135,7 +135,7 @@ class SearchScopeAndHistoryController: SearchBaseTableController, UITableViewDel
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
         fetchRequest.predicate = NSPredicate(format: "stateRaw == 2")
-        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: "ScopeFRC" + Bundle.buildVersion)
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController.delegate = self
         try? fetchedResultsController.performFetch()
         return fetchedResultsController as! NSFetchedResultsController<Book>

@@ -32,11 +32,11 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     }
     
     func startScan() {
-        let operation = ScanLocalBookOperation(urlSnapshot: urlSnapShot)
+        let operation = ScanLocalBookOperation(snapshot: urlSnapShot)
         operation.add(observer: DidFinishObserver{ (operation, errors) in
             guard let operation = operation as? ScanLocalBookOperation else {return}
             OperationQueue.main.addOperation({
-                self.urlSnapShot = operation.snapshot
+                self.urlSnapShot = operation.newSnapshot
                 guard operation.firstBookAdded else {return}
                 self.delegate?.firstBookAdded()
             })
