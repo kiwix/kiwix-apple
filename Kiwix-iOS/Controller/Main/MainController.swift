@@ -44,6 +44,7 @@ class MainController: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass ||
             traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass else {return}
+        
         // buttons
         switch traitCollection.horizontalSizeClass {
         case .compact:

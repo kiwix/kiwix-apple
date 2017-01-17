@@ -49,7 +49,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LK0-aY-C9L">
-                                                    <rect key="frame" x="8" y="31" width="191" height="17"/>
+                                                    <rect key="frame" x="8" y="30" width="191" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -95,7 +95,9 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="trailingMargin" secondItem="9EM-Do-qfE" secondAttribute="trailing" id="0H3-5k-m0f"/>
-                                            <constraint firstItem="LK0-aY-C9L" firstAttribute="top" secondItem="YA4-yb-hoI" secondAttribute="bottom" constant="1" id="95I-Gx-tc1"/>
+                                            <constraint firstItem="LK0-aY-C9L" firstAttribute="top" secondItem="YA4-yb-hoI" secondAttribute="bottom" constant="1" id="95I-Gx-tc1">
+                                                <variation key="widthClass=compact" constant="0.0"/>
+                                            </constraint>
                                             <constraint firstItem="CQi-0M-O0e" firstAttribute="top" secondItem="9EM-Do-qfE" secondAttribute="bottom" constant="6" id="9jg-Ou-dzI"/>
                                             <constraint firstItem="Alw-Di-WEl" firstAttribute="leading" secondItem="CQi-0M-O0e" secondAttribute="trailing" constant="8" id="Eoq-GI-7la"/>
                                             <constraint firstItem="Alw-Di-WEl" firstAttribute="top" secondItem="9EM-Do-qfE" secondAttribute="bottom" constant="6" id="GkX-zd-iqc"/>
@@ -141,11 +143,6 @@
                         <barButtonItem key="leftBarButtonItem" image="Cross" id="4b2-E8-EjF">
                             <connections>
                                 <action selector="dismiss:" destination="mMM-mS-I3F" id="PkU-Qf-DQ9"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="ELs-vA-7OD">
-                            <connections>
-                                <action selector="removaAll:" destination="mMM-mS-I3F" id="LC1-Lp-IK5"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

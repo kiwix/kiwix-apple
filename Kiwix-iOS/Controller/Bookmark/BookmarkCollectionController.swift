@@ -11,20 +11,9 @@ import CoreData
 
 class BookmarkCollectionController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
 
+    @IBOutlet weak var collectionView: UICollectionView!
     private(set) var itemWidth: CGFloat = 0.0
     private(set) var shouldReloadCollectionView = false
-    @IBOutlet weak var collectionView: UICollectionView!
-    @IBAction func removaAll(_ sender: UIBarButtonItem) {
-        let context = AppDelegate.persistentContainer.viewContext
-        context.perform {
-            let fetchRequest = Article.fetchRequest() as! NSFetchRequest<Article>
-            let articles = try? context.fetch(fetchRequest)
-            articles?.forEach({ (article) in
-                context.delete(article)
-            })
-            try? context.save()
-        }
-    }
     
     var book: Book? {
         didSet {
@@ -39,8 +28,13 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
         return formatter
     }()
     
-    @IBAction func dismiss(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        if editing {
+            navigationItem.rightBarButtonItems? = [doneButton, deleteButton]
+        } else {
+            navigationItem.rightBarButtonItems = [editButton]
+        }
     }
     
     func configureItemWidth(collectionViewWidth: CGFloat) {
@@ -48,10 +42,42 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
         self.itemWidth = floor((collectionViewWidth - (itemsPerRow + 1) * 10) / itemsPerRow)
     }
     
+    // MARK: - UI Control
+    
+    let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editButtonTapped(sender:)))
+    let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneButtonTapped(sender:)))
+    let deleteButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteButtonTapped(sender:)))
+    
+    @IBAction func dismiss(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func editButtonTapped(sender: UIBarButtonItem) {
+        setEditing(true, animated: true)
+    }
+    
+    func doneButtonTapped(sender: UIBarButtonItem) {
+        setEditing(false, animated: true)
+    }
+    
+    func deleteButtonTapped(sender: UIBarButtonItem) {
+        let context = AppDelegate.persistentContainer.viewContext
+        context.perform {
+            let fetchRequest = Article.fetchRequest() as! NSFetchRequest<Article>
+            let articles = try? context.fetch(fetchRequest)
+            articles?.forEach({ (article) in
+                context.delete(article)
+            })
+            try? context.save()
+        }
+    }
+    
     // MARK: - override
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Bookmarks"
+        navigationItem.rightBarButtonItems = [editButton]
         collectionView.alwaysBounceVertical = true
         
         if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {

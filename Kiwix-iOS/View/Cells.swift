@@ -136,6 +136,8 @@ class BookmarkCollectionCell: UICollectionViewCell {
     @IBOutlet weak var dividerView: UIView!
     @IBOutlet weak var bookTitleLabel: UILabel!
     @IBOutlet weak var bookmarkDetailLabel: UILabel!
+    
+    
 }
 
 
