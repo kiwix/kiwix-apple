@@ -9,11 +9,22 @@
 import UIKit
 import CoreData
 
-class BookmarkCollectionController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,NSFetchedResultsControllerDelegate {
+class BookmarkCollectionController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
 
     private(set) var itemWidth: CGFloat = 0.0
     private(set) var shouldReloadCollectionView = false
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBAction func removaAll(_ sender: UIBarButtonItem) {
+        let context = AppDelegate.persistentContainer.viewContext
+        context.perform {
+            let fetchRequest = Article.fetchRequest() as! NSFetchRequest<Article>
+            let articles = try? context.fetch(fetchRequest)
+            articles?.forEach({ (article) in
+                context.delete(article)
+            })
+            try? context.save()
+        }
+    }
     
     var book: Book? {
         didSet {
@@ -26,7 +37,7 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
     }
     
     func configureItemWidth(collectionViewWidth: CGFloat) {
-        let itemsPerRow = ((collectionViewWidth - 10) / 300).rounded()
+        let itemsPerRow = ((collectionViewWidth - 10) / 320).rounded()
         self.itemWidth = floor((collectionViewWidth - (itemsPerRow + 1) * 10) / itemsPerRow)
     }
     
@@ -62,33 +73,36 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell2", for: indexPath) as! BookmarkCollectionCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! BookmarkCollectionCell
         let article = fetchedResultController.object(at: indexPath)
         cell.titleLabel.text = article.title
         cell.snippetLabel.text = article.snippet
-//        cell.thumbImageView.image 
+        if let data = article.thumbImageData {
+            cell.thumbImageView.image = UIImage(data: data)
+        }
+        
         return cell
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: itemWidth, height: itemWidth)
+        return CGSize(width: itemWidth, height: itemWidth * 0.72)
     }
     
-    // MARK: - NSFetchedResultsControllerDelegate
+    // MARK: - NSFetchedResultsController
     
-    var blocks = [() -> Void]()
-    var blockOperations: [BlockOperation] = []
+    private var closures = [() -> Void]()
     let managedObjectContext = AppDelegate.persistentContainer.viewContext
     lazy var fetchedResultController: NSFetchedResultsController<Article> = {
         let fetchRequest = Article.fetchRequest()
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [titleDescriptor]
-        if let book = self.book {fetchRequest.predicate = NSPredicate(format: "book == %@", book)}
-        
-        let cacheName = ["BookmarkFRC", self.book?.title ?? "All", Bundle.buildVersion].joined(separator: "_")
-        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: cacheName)
+//        var predicates = [NSPredicate]()
+//        predicates.append(NSPredicate(format: "isBookmarked = true"))
+//        if let book = self.book { predicates.append(NSPredicate(format: "book == %@", book)) }
+//        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         controller.delegate = self
         try? controller.performFetch()
         return controller as! NSFetchedResultsController<Article>
@@ -103,33 +117,32 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
                     shouldReloadCollectionView = true
                     break
             }
-            blocks.append({ self.collectionView.insertItems(at: [newIndexPath]) })
+            closures.append({ [weak self] in self?.collectionView.insertItems(at: [newIndexPath]) })
         case .delete:
             guard let indexPath = indexPath else {break}
-            blocks.append({ self.collectionView.reloadItems(at: [indexPath]) })
+            closures.append({ [weak self] in self?.collectionView.deleteItems(at: [indexPath]) })
         case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else {break}
-            blocks.append({ self.collectionView.moveItem(at: indexPath, to: newIndexPath) })
+            closures.append({ [weak self] in self?.collectionView.moveItem(at: indexPath, to: newIndexPath) })
         case .update:
             guard let indexPath = indexPath, collectionView.numberOfItems(inSection: indexPath.section) != 1 else {
                 self.shouldReloadCollectionView = true
                 break
             }
-            blocks.append({ self.collectionView.deleteItems(at: [indexPath]) })
+            closures.append({ [weak self] in self?.collectionView.reloadItems(at: [indexPath]) })
         }
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-        
         switch type {
         case .insert:
-            blocks.append({ self.collectionView.insertSections(IndexSet(integer: sectionIndex)) })
+            closures.append({ [weak self] in self?.collectionView.insertSections(IndexSet(integer: sectionIndex)) })
         case .delete:
-            blocks.append({ self.collectionView.deleteSections(IndexSet(integer: sectionIndex)) })
+            closures.append({ [weak self] in self?.collectionView.deleteSections(IndexSet(integer: sectionIndex)) })
         case .move:
             break
         case .update:
-            blocks.append({ self.collectionView.reloadSections(IndexSet(integer: sectionIndex)) })
+            closures.append({ [weak self] in self?.collectionView.reloadSections(IndexSet(integer: sectionIndex)) })
         }
     }
     
@@ -139,9 +152,9 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
                 self.collectionView.reloadData()
             } else {
                 self.collectionView.performBatchUpdates({ 
-                    self.blocks.forEach({ $0() })
+                    self.closures.forEach({ $0() })
                 }, completion: { (completed) in
-                    self.blocks.removeAll()
+                    self.closures.removeAll()
                 })
             }
         })

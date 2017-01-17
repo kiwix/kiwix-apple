@@ -71,7 +71,7 @@ function Snippet () {
         for (i = 0; i < elements.length; i++) {
             var localSnippet = this.extractCleanText(elements[i]);
             snippet += localSnippet;
-            if (snippet.length > 200) {break;}
+            if (snippet.length > 400) {break;}
         }
         return snippet;
     }

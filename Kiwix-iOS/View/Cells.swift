@@ -93,36 +93,17 @@ class CheckMarkBookCell: BasicBookCell {
 
 // MARK: - Article Cell
 
-class BookmarkCollectionCell: UICollectionViewCell {
-    override func awakeFromNib() {
-        clipsToBounds = false
-        backgroundColor = UIColor.clear
-        layer.masksToBounds = false
-        layer.shadowColor = UIColor.lightGray.cgColor
-        layer.shadowOpacity = 0.5
-        layer.shadowOffset = CGSize.zero
-        layer.shadowRadius = 1.0
-        
-        contentView.clipsToBounds = true
-        contentView.backgroundColor = UIColor.white
-        contentView.layer.masksToBounds = true
-        contentView.layer.cornerRadius = 2.0
-        
-        thumbImageView.layer.cornerRadius = 4.0
-        thumbImageView.clipsToBounds = true
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: 2.0).cgPath
-    }
-    
-    @IBOutlet weak var thumbImageView: UIImageView!
+class ArticleCell: FavIconAndPicIndicatorCell {
     @IBOutlet weak var titleLabel: UILabel!
+}
+
+class ArticleSnippetCell: ArticleCell {
     @IBOutlet weak var snippetLabel: UILabel!
 }
 
-class BookmarkCollectionCell2: UICollectionViewCell {
+// MARK: - Bookmark Cell
+
+class BookmarkCollectionCell: UICollectionViewCell {
     override func awakeFromNib() {
         clipsToBounds = false
         backgroundColor = UIColor.clear
