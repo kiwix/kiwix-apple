@@ -32,6 +32,13 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
         }
     }
     
+    let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter
+    }()
+    
     @IBAction func dismiss(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
@@ -80,6 +87,8 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
         if let data = article.thumbImageData {
             cell.thumbImageView.image = UIImage(data: data)
         }
+        cell.bookTitleLabel.text = article.book?.title
+        if let date = article.bookmarkDate {cell.bookmarkDetailLabel.text = dateFormatter.string(from: date)}
         
         return cell
     }
@@ -104,8 +113,7 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
     let managedObjectContext = AppDelegate.persistentContainer.viewContext
     lazy var fetchedResultController: NSFetchedResultsController<Article> = {
         let fetchRequest = Article.fetchRequest()
-        let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
-        fetchRequest.sortDescriptors = [titleDescriptor]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: false)]
         var predicates = [NSPredicate]()
         predicates.append(NSPredicate(format: "isBookmarked = true"))
         if let book = self.book { predicates.append(NSPredicate(format: "book == %@", book)) }

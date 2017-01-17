@@ -120,6 +120,9 @@ class BookmarkCollectionCell: UICollectionViewCell {
         
         thumbImageView.layer.cornerRadius = 4.0
         thumbImageView.clipsToBounds = true
+        
+        dividerView.layer.cornerRadius = 1
+        dividerView.layer.masksToBounds = true
     }
     
     override func layoutSubviews() {
@@ -130,6 +133,9 @@ class BookmarkCollectionCell: UICollectionViewCell {
     @IBOutlet weak var thumbImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var snippetLabel: UILabel!
+    @IBOutlet weak var dividerView: UIView!
+    @IBOutlet weak var bookTitleLabel: UILabel!
+    @IBOutlet weak var bookmarkDetailLabel: UILabel!
 }
 
 

@@ -203,6 +203,7 @@ extension MainController: ButtonDelegates {
         guard let url = webView.request?.url,
             let article = Article.fetch(url: url, context: context) else {return}
         article.isBookmarked = !article.isBookmarked
+        if article.isBookmarked {article.bookmarkDate = Date()}
         
         if context.hasChanges {try? context.save()}
         
