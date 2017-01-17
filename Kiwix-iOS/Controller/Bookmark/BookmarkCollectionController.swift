@@ -84,6 +84,14 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
         return cell
     }
     
+    // MARK: - UICollectionView Delegate
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let article = fetchedResultController.object(at: indexPath)
+        guard let url = article.url else {return}
+        GlobalQueue.shared.add(articleLoadOperation: ArticleLoadOperation(url: url))
+    }
+    
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -98,10 +106,10 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
         let fetchRequest = Article.fetchRequest()
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [titleDescriptor]
-//        var predicates = [NSPredicate]()
-//        predicates.append(NSPredicate(format: "isBookmarked = true"))
-//        if let book = self.book { predicates.append(NSPredicate(format: "book == %@", book)) }
-//        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        var predicates = [NSPredicate]()
+        predicates.append(NSPredicate(format: "isBookmarked = true"))
+        if let book = self.book { predicates.append(NSPredicate(format: "book == %@", book)) }
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
         controller.delegate = self
         try? controller.performFetch()
