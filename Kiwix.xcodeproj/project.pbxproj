@@ -64,7 +64,6 @@
 		9757C74A1E10660B008A9469 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9757C7491E10660B008A9469 /* DownloadManager.swift */; };
 		9757C74C1E106958008A9469 /* BackgroundDownload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9757C74B1E106958008A9469 /* BackgroundDownload.swift */; };
 		97599AA21E26D3B000BA15EF /* BookmarkBooksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599AA11E26D3B000BA15EF /* BookmarkBooksController.swift */; };
-		97599AE01E28031A00BA15EF /* BookmarkSplitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599ADF1E28031A00BA15EF /* BookmarkSplitController.swift */; };
 		97599AE21E28193D00BA15EF /* BookmarkCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599AE11E28193D00BA15EF /* BookmarkCollectionController.swift */; };
 		975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975B90FD1CEB909100D13906 /* iOSExtensions.swift */; };
 		9764CBD11D806AD800072D6A /* RefreshLibControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764CBD01D806AD800072D6A /* RefreshLibControl.swift */; };
@@ -72,6 +71,7 @@
 		9764F5991D833F2B00E0B1C4 /* KiwixURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764F5981D833F2B00E0B1C4 /* KiwixURL.swift */; };
 		976B86D81DDA0C7E00FA7FD1 /* SearchContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976B86D71DDA0C7E00FA7FD1 /* SearchContainer.swift */; };
 		976C1DCB1E2FD5FC005EDEC4 /* TableOfContentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976C1DCA1E2FD5FC005EDEC4 /* TableOfContentsController.swift */; };
+		976C1DCE1E30000E005EDEC4 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976C1DCD1E30000E005EDEC4 /* SettingsController.swift */; };
 		9771A5BD1DD269BD005F1795 /* Book+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813C1D6F712800E5FA99 /* Book+CoreDataProperties.swift */; };
 		9779C3141D4575AD0064CC8E /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E609F01D103DED00EBCB9D /* NotificationCenter.framework */; };
 		9779C3171D4575AE0064CC8E /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779C3161D4575AE0064CC8E /* TodayViewController.swift */; };
@@ -223,7 +223,6 @@
 		9757C7491E10660B008A9469 /* DownloadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
 		9757C74B1E106958008A9469 /* BackgroundDownload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundDownload.swift; sourceTree = "<group>"; };
 		97599AA11E26D3B000BA15EF /* BookmarkBooksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkBooksController.swift; sourceTree = "<group>"; };
-		97599ADF1E28031A00BA15EF /* BookmarkSplitController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkSplitController.swift; sourceTree = "<group>"; };
 		97599AE11E28193D00BA15EF /* BookmarkCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkCollectionController.swift; sourceTree = "<group>"; };
 		975B90FD1CEB909100D13906 /* iOSExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = iOSExtensions.swift; path = "Kiwix-iOS/iOSExtensions.swift"; sourceTree = SOURCE_ROOT; };
 		9763275D1D64FE0F0034F120 /* BookDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookDetailController.swift; sourceTree = "<group>"; };
@@ -234,6 +233,7 @@
 		976A0C801D41619C0006A742 /* DZNEmptyDataSet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DZNEmptyDataSet.framework; path = "../../../../Users/chrisli/Library/Developer/Xcode/DerivedData/Kiwix-ayxrfhaqnfxzendihdolvkklkmhk/Build/Products/Debug-iphoneos/DZNEmptyDataSet/DZNEmptyDataSet.framework"; sourceTree = "<group>"; };
 		976B86D71DDA0C7E00FA7FD1 /* SearchContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchContainer.swift; sourceTree = "<group>"; };
 		976C1DCA1E2FD5FC005EDEC4 /* TableOfContentsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableOfContentsController.swift; sourceTree = "<group>"; };
+		976C1DCD1E30000E005EDEC4 /* SettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		9779C3131D4575AD0064CC8E /* Bookmarks.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Bookmarks.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		9779C3161D4575AE0064CC8E /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		9779C31B1D4575AE0064CC8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -272,7 +272,6 @@
 		97C005D51D64B3B0004352E8 /* Library.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Library.storyboard; path = "Kiwix-iOS/Storyboard/Library.storyboard"; sourceTree = SOURCE_ROOT; };
 		97C005D71D64B99E004352E8 /* LibrarySplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LibrarySplitViewController.swift; path = "Kiwix-iOS/Controller/Library/LibrarySplitViewController.swift"; sourceTree = SOURCE_ROOT; };
 		97C005DB1D64BEFE004352E8 /* CloudBooksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudBooksController.swift; sourceTree = "<group>"; };
-		97C5BD4A1D9AF4B5009692CF /* BookmarkController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkController.swift; sourceTree = "<group>"; };
 		97C601DB1D7F15C400362D4F /* Bookmark.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Bookmark.storyboard; sourceTree = "<group>"; };
 		97C601DD1D7F342100362D4F /* HTMLHeading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTMLHeading.swift; sourceTree = "<group>"; };
 		97D0E9921DDA487E0029530E /* SearchBaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBaseController.swift; sourceTree = "<group>"; };
@@ -535,9 +534,7 @@
 			isa = PBXGroup;
 			children = (
 				97599AE11E28193D00BA15EF /* BookmarkCollectionController.swift */,
-				97599ADF1E28031A00BA15EF /* BookmarkSplitController.swift */,
 				97599AA11E26D3B000BA15EF /* BookmarkBooksController.swift */,
-				97C5BD4A1D9AF4B5009692CF /* BookmarkController.swift */,
 				97219DBC1D383A00009FDFF1 /* BookmarkHUD.swift */,
 			);
 			path = Bookmark;
@@ -588,13 +585,23 @@
 			name = Others;
 			sourceTree = "<group>";
 		};
-		9771DC4B1C37278E009ECFF0 /* Setting */ = {
+		976C1DCC1E2FFFF3005EDEC4 /* old */ = {
 			isa = PBXGroup;
 			children = (
 				970E7F761D9DBEA900741290 /* SettingController.swift */,
 				970E7F7A1DA0069600741290 /* FontSizeController.swift */,
 				973DD4271D36E3E4009D45DB /* SettingDetailController.swift */,
 				970E7F781DA003FA00741290 /* WebViewControllerOld.swift */,
+			);
+			name = old;
+			sourceTree = "<group>";
+		};
+		9771DC4B1C37278E009ECFF0 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				9787BC1F1D9318080030D311 /* Others */,
+				976C1DCC1E2FFFF3005EDEC4 /* old */,
+				976C1DCD1E30000E005EDEC4 /* SettingsController.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -625,7 +632,8 @@
 				973A5C911DEA3F5600C7804C /* CoreDataTableBaseController.swift */,
 				970E7F7F1DA0305000741290 /* WelcomeController.swift */,
 			);
-			path = Others;
+			name = Others;
+			path = ../Others;
 			sourceTree = "<group>";
 		};
 		978C587A1C1CCC9C0077AE47 /* Storyboards */ = {
@@ -650,7 +658,6 @@
 				972B007D1C35DBAB00B5FDC5 /* Main */,
 				97E108221C5D5A0D00E27FD3 /* Search */,
 				9771DC4B1C37278E009ECFF0 /* Setting */,
-				9787BC1F1D9318080030D311 /* Others */,
 			);
 			name = Controllers;
 			path = Controller;
@@ -1090,6 +1097,7 @@
 				973207A51DD1984700EDD3DC /* SearchScopeAndHistoryController.swift in Sources */,
 				973207A21DD1983D00EDD3DC /* BookDetailController.swift in Sources */,
 				973208231DD19C7600EDD3DC /* DownloadProgress.swift in Sources */,
+				976C1DCE1E30000E005EDEC4 /* SettingsController.swift in Sources */,
 				97A1FD161D6F71CE00A80EE2 /* DirectoryMonitor.swift in Sources */,
 				9726591D1D90A64600D1DFFB /* Notifications.swift in Sources */,
 				971A102C1D022AD5007FC62C /* BarButtonItems.swift in Sources */,
@@ -1140,7 +1148,6 @@
 				97A1FD191D6F71CE00A80EE2 /* ZimMultiReader.swift in Sources */,
 				97A1FD261D6F71E200A80EE2 /* ZimReader.mm in Sources */,
 				97A1FD1C1D6F71D800A80EE2 /* KiwixURLProtocol.swift in Sources */,
-				97599AE01E28031A00BA15EF /* BookmarkSplitController.swift in Sources */,
 				97C2C26A1DDCC58500A9CC64 /* ArticleOperation.swift in Sources */,
 				973A5C991DEBC54800C7804C /* CloudKit.swift in Sources */,
 				973208261DD21E9C00EDD3DC /* CoreDataContainer.swift in Sources */,

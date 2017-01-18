@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -35,7 +36,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="lfi-9s-ZjZ" customClass="BookmarkCollectionCell" customModule="Kiwix" customModuleProvider="target">
-                                        <rect key="frame" x="103.66666666666667" y="0.0" width="207" height="169"/>
+                                        <rect key="frame" x="104" y="0.0" width="207" height="169"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="207" height="169"/>
@@ -168,79 +169,6 @@
             </objects>
             <point key="canvasLocation" x="5005.7971014492759" y="3266.576086956522"/>
         </scene>
-        <!--Bookmark Article Controller-->
-        <scene sceneID="VN9-Ad-dWZ">
-            <objects>
-                <viewController id="xE4-gI-XU7" customClass="BookmarkArticleController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="KsU-SN-Q6B"/>
-                        <viewControllerLayoutGuide type="bottom" id="i96-VK-hQ6"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Xiw-sf-MU8">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Qeu-f3-5WZ">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="PgF-nn-SRl" style="IBUITableViewCellStyleDefault" id="ctR-1A-5o0">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ctR-1A-5o0" id="5Nd-fl-Nsl">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PgF-nn-SRl">
-                                                    <rect key="frame" x="15" y="0.0" width="384" height="43"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="xE4-gI-XU7" id="Lkk-BR-5CV"/>
-                                    <outlet property="delegate" destination="xE4-gI-XU7" id="cZz-Kc-ooY"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="Qeu-f3-5WZ" firstAttribute="top" secondItem="Xiw-sf-MU8" secondAttribute="top" id="2cO-aT-bsr"/>
-                            <constraint firstItem="i96-VK-hQ6" firstAttribute="top" secondItem="Qeu-f3-5WZ" secondAttribute="bottom" id="MuY-3z-cYR"/>
-                            <constraint firstItem="Qeu-f3-5WZ" firstAttribute="leading" secondItem="Xiw-sf-MU8" secondAttribute="leading" id="YR8-76-eRf"/>
-                            <constraint firstAttribute="trailing" secondItem="Qeu-f3-5WZ" secondAttribute="trailing" id="oQ7-ZW-ApC"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="UYE-OB-ou5"/>
-                    <connections>
-                        <outlet property="tableView" destination="Qeu-f3-5WZ" id="BuJ-5o-bhv"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KyR-qJ-SWv" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2706" y="2413"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="i96-PS-3ib">
-            <objects>
-                <navigationController id="8sg-ud-siF" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="THl-YC-SF3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="6ta-bG-bwf" kind="relationship" relationship="rootViewController" id="00r-M0-WcP"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KtC-fm-L5w" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1843" y="1769"/>
-        </scene>
         <!--Bookmark Books Controller-->
         <scene sceneID="g5J-tc-3iG">
             <objects>
@@ -258,10 +186,10 @@
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="ZwJ-s2-oXZ" customClass="BasicBookCell" customModule="Kiwix" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.333333333333336" width="414" height="44"/>
+                                        <rect key="frame" x="0.0" y="56" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZwJ-s2-oXZ" id="acz-8H-Je1">
-                                            <rect key="frame" x="0.0" y="0.0" width="381" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="381" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="F5J-kg-p5Y">
@@ -323,7 +251,6 @@
                                             <outlet property="hasPicIndicator" destination="vCd-Vo-NUE" id="oxG-mF-2gO"/>
                                             <outlet property="subtitleLabel" destination="wUN-Co-X2K" id="tJG-Vg-Ctp"/>
                                             <outlet property="titleLabel" destination="F5J-kg-p5Y" id="SGC-oq-RQ6"/>
-                                            <segue destination="hDm-kh-ZLk" kind="showDetail" identifier="showBookmarks" id="vG1-Ih-Ag7"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -354,20 +281,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mda-Cj-fak" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2706" y="1769"/>
-        </scene>
-        <!--Bookmark Split Controller-->
-        <scene sceneID="SDm-nf-Wpq">
-            <objects>
-                <splitViewController id="ALQ-3b-cEW" customClass="BookmarkSplitController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
-                    <connections>
-                        <segue destination="8sg-ud-siF" kind="relationship" relationship="masterViewController" id="25F-nw-ITK"/>
-                        <segue destination="hDm-kh-ZLk" kind="relationship" relationship="detailViewController" id="ipW-qc-ph3"/>
-                    </connections>
-                </splitViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="XnC-Pf-fz7" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="928" y="2095"/>
+            <point key="canvasLocation" x="5006" y="2565"/>
         </scene>
         <!--BookmarkHUD-->
         <scene sceneID="eMu-pk-jX5">
@@ -488,24 +402,6 @@
             <point key="canvasLocation" x="4099" y="2566"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="IbQ-Ft-djH">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="hDm-kh-ZLk" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lNg-T6-EiE">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="xE4-gI-XU7" kind="relationship" relationship="rootViewController" id="4H6-ag-m1c"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="avJ-P8-fSY" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1843" y="2414"/>
-        </scene>
-        <!--Navigation Controller-->
         <scene sceneID="DnL-5M-iZu">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ogU-eE-4Z9" sceneMemberID="viewController">
@@ -531,7 +427,4 @@
         <image name="Cross" width="16" height="16"/>
         <image name="Dots" width="21" height="21"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="ipW-qc-ph3"/>
-    </inferredMetricsTieBreakers>
 </document>
