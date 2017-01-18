@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import DZNEmptyDataSet
 
 class BookmarkCollectionController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
 
@@ -32,6 +33,7 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
         super.setEditing(editing, animated: animated)
         collectionView.indexPathsForSelectedItems?.forEach({ collectionView.deselectItem(at: $0, animated: false) })
         if editing {
+            deleteButton.isEnabled = false
             navigationItem.setRightBarButtonItems([doneButton, deleteButton], animated: animated)
         } else {
             navigationItem.setRightBarButtonItems([editButton], animated: animated)
@@ -90,6 +92,8 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
         navigationItem.rightBarButtonItems = [editButton]
         collectionView.alwaysBounceVertical = true
         collectionView.allowsMultipleSelection = true
+        collectionView.emptyDataSetSource = self
+        collectionView.emptyDataSetDelegate = self
         
         configureButtons()
         
@@ -106,6 +110,11 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         configureItemWidth(collectionViewWidth: collectionView.frame.width)
         collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        setEditing(false, animated: false)
     }
     
     // MARK: - UICollectionView Data Source
@@ -135,11 +144,19 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
     // MARK: - UICollectionView Delegate
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if !isEditing {
+        if isEditing {
+            deleteButton.isEnabled = (collectionView.indexPathsForSelectedItems?.count ?? 0) > 0
+        } else {
             collectionView.deselectItem(at: indexPath, animated: true)
             let article = fetchedResultController.object(at: indexPath)
             guard let url = article.url else {return}
             GlobalQueue.shared.add(articleLoadOperation: ArticleLoadOperation(url: url))
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        if isEditing {
+            deleteButton.isEnabled = (collectionView.indexPathsForSelectedItems?.count ?? 0) > 0
         }
     }
     
@@ -217,5 +234,27 @@ class BookmarkCollectionController: UIViewController, UICollectionViewDataSource
             }
         })
     }
+}
+
+extension BookmarkCollectionController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
+        return UIImage(named: "BookmarkColor")
+    }
+    
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = NSLocalizedString("Bookmark Your Favorite Article", comment: "Bookmark Empty Title")
+        let attributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 18), NSForegroundColorAttributeName: UIColor.darkGray]
+        return NSAttributedString(string: string, attributes: attributes)
+    }
+    
+    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = NSLocalizedString("Long press the star button after an article is loaded to bookmark it.", comment: "Library, local tab")
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineBreakMode = .byWordWrapping
+        paragraph.alignment = .center
+        let attributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 14), NSForegroundColorAttributeName: UIColor.lightGray, NSParagraphStyleAttributeName: paragraph]
+        return NSAttributedString(string: string, attributes: attributes)
+    }
+    
 }
 
