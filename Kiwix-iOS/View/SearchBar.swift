@@ -12,7 +12,7 @@ class SearchBar: UIView, UITextFieldDelegate {
     
     private let backgroundView = SearchBarBackgroundView()
     private let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
-    private let textField: UITextField = SearchBarTextField()
+    let textField: UITextField = SearchBarTextField()
     
     let delayTextChangeCallback = true
     weak var delegate: SearchBarDelegate?
@@ -101,23 +101,6 @@ class SearchBar: UIView, UITextFieldDelegate {
     func textDidChange(textField: UITextField) {
         guard let textFieldText = textField.text else {return}
         delegate?.textDidChange(text: textFieldText, searchBar: self)
-//        if textFieldText == "" {
-//            print("about to call delegate")
-//            
-//        } else {
-//            self.delegate?.textDidChange(text: textFieldText, searchBar: self)
-//            if delayTextChangeCallback {
-//                guard self.cachedSearchText != textFieldText else {return}
-//                self.cachedSearchText = textFieldText
-//                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(275 * USEC_PER_SEC)) / Double(NSEC_PER_SEC)) {
-//                    guard textFieldText == self.cachedSearchText else {return}
-//                    self.delegate?.textDidChange(text: textFieldText, searchBar: self)
-//                }
-//            } else {
-//                cachedSearchText = textFieldText
-//                delegate?.textDidChange(text: textFieldText, searchBar: self)
-//            }
-//        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -157,7 +140,7 @@ class SearchBar: UIView, UITextFieldDelegate {
 }
 
 private class SearchBarTextField: UITextField {
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -199,12 +182,8 @@ private class SearchBarTextField: UITextField {
         return super.textRect(forBounds: bounds).insetBy(dx: 4, dy: 0).offsetBy(dx: 0, dy: 1)
     }
     
-    override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
-        return super.leftViewRect(forBounds: bounds).offsetBy(dx: -2, dy: 0)
-    }
-    
     override func clearButtonRect(forBounds bounds: CGRect) -> CGRect {
-        return super.clearButtonRect(forBounds: bounds).insetBy(dx: -4, dy: -6).offsetBy(dx: 4, dy: 0)
+        return super.clearButtonRect(forBounds: bounds).insetBy(dx: -4, dy: -6).offsetBy(dx: 8, dy: 0)
     }
 }
 
