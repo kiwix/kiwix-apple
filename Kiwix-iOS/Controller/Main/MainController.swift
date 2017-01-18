@@ -20,7 +20,6 @@ class MainController: UIViewController {
     @IBOutlet weak var tocHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tocLeadSpacing: NSLayoutConstraint!
     
-    
     let searchBar = SearchBar()
     lazy var controllers = Controllers()
     lazy var buttons = Buttons()
@@ -28,6 +27,13 @@ class MainController: UIViewController {
     var isShowingTableOfContents = false
     private(set) var tableOfContentsController: TableOfContentsController?
 
+    private var observerContext = 0
+    var article: Article? {
+        didSet {
+            oldValue?.removeObserver(self, forKeyPath: "isBookmarked", context: &observerContext)
+            article?.addObserver(self, forKeyPath: "isBookmarked", options: [.new, .old], context: &observerContext)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,6 +77,16 @@ class MainController: UIViewController {
             guard let controller = segue.destination as? TableOfContentsController else {return}
             tableOfContentsController = controller
             tableOfContentsController?.delegate = self
+        }
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard context == &observerContext else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            return
+        }
+        if let article = object as? Article {
+            buttons.bookmark.isHighlighted = article.isBookmarked
         }
     }
 }
@@ -123,8 +139,9 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
         
         article.title = title
         article.snippet = JS.getSnippet(from: webView)
-        article.bookmarkDate = Date()
+        article.lastReadDate = Date()
         article.thumbImagePath = URLResponseCache.shared.firstImage()?.path
+        self.article = article
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
@@ -273,7 +290,6 @@ extension MainController: ButtonDelegates {
         
         showBookmarkHUD()
         controllers.bookmarkHUD.bookmarkAdded = article.isBookmarked
-        buttons.bookmark.isHighlighted = article.isBookmarked
         
         indexCoreSpotlight(article: article)
         //        let operation = BookmarkSyncOperation(articleURL: url)
@@ -358,31 +374,6 @@ extension MainController: TableOfContentsDelegate {
     }
 }
 
-// MARK: - Welcome
-
-extension MainController {
-    func showWelcome() {
-        let controller = controllers.welcome
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        addChildViewController(controller)
-        view.insertSubview(controller.view, aboveSubview: webView)
-        let views = ["view": controller.view]
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: .alignAllTop, metrics: nil, views: views))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: .alignAllLeft, metrics: nil, views: views))
-        controller.didMove(toParentViewController: self)
-    }
-    
-    func hideWelcome() {
-        guard let controller = welcomeController else {return}
-        controller.removeFromParentViewController()
-        controller.view.removeFromSuperview()
-    }
-    
-    var welcomeController: WelcomeController? {
-        return childViewControllers.flatMap({$0 as? WelcomeController}).first
-    }
-}
-
 // MARK: - Bookmark
 
 extension MainController: UIViewControllerTransitioningDelegate {
@@ -406,6 +397,31 @@ extension MainController: UIViewControllerTransitioningDelegate {
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return BookmarkHUDAnimator(animateIn: false)
+    }
+}
+
+// MARK: - Welcome
+
+extension MainController {
+    func showWelcome() {
+        let controller = controllers.welcome
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        addChildViewController(controller)
+        view.insertSubview(controller.view, aboveSubview: webView)
+        let views = ["view": controller.view]
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: .alignAllTop, metrics: nil, views: views))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: .alignAllLeft, metrics: nil, views: views))
+        controller.didMove(toParentViewController: self)
+    }
+    
+    func hideWelcome() {
+        guard let controller = welcomeController else {return}
+        controller.removeFromParentViewController()
+        controller.view.removeFromSuperview()
+    }
+    
+    var welcomeController: WelcomeController? {
+        return childViewControllers.flatMap({$0 as? WelcomeController}).first
     }
 }
 
