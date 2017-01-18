@@ -9,7 +9,7 @@
 import UIKit
 import DZNEmptyDataSet
 
-class TableOfContentsController: UIViewController, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class TableOfContentsController: UIViewController, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     private let visibleHeaderIndicator = UIView()
@@ -43,7 +43,8 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
     func configurePreferredContentSize() {
         let count = headings.count
         let width = traitCollection.horizontalSizeClass == .regular ? 300 : (UIScreen.main.bounds.width)
-        preferredContentSize = CGSize(width: width, height: count == 0 ? 350 : min(CGFloat(count) * 44.0, UIScreen.main.bounds.height * 0.8))
+        let height = count == 0 ? 350 : min(CGFloat(count) * 44.0, round(UIScreen.main.bounds.height * 0.65 / 44) * 44)
+        preferredContentSize = CGSize(width: width, height: height)
     }
     
     func configureVisibleHeaderView(animated: Bool) {
@@ -81,6 +82,10 @@ class TableOfContentsController: UIViewController, UITableViewDelegate, UITableV
         default:
             return
         }
+    }
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        targetContentOffset.pointee.y = round(targetContentOffset.pointee.y / 44) * 44
     }
     
     // MARK: - Table view data source

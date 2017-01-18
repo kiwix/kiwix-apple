@@ -347,12 +347,7 @@ extension MainController: TableOfContentsDelegate {
         switch traitCollection.horizontalSizeClass {
         case .compact:
             let toolBarHeight: CGFloat = traitCollection.horizontalSizeClass == .regular ? 0.0 : (traitCollection.verticalSizeClass == .compact ? 32.0 : 44.0)
-            let tocHeight: CGFloat = {
-                guard let controller = tableOfContentsController else {return floor(view.frame.height * 0.4)}
-                let tocContentHeight = controller.tableView.contentSize.height
-                guard controller.headings.count != 0 else {return floor(view.frame.height * 0.4)}
-                return min(tocContentHeight, floor(view.frame.height * 0.65))
-            }()
+            let tocHeight = tableOfContentsController?.preferredContentSize.height ?? floor(view.frame.height * 0.4)
             tocHeightConstraint.constant = tocHeight
             tocTopToSuperViewBottomSpacing.constant = isShowingTableOfContents ? tocHeight + toolBarHeight + 10 : 0.0
         case .regular:

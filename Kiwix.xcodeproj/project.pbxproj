@@ -12,7 +12,6 @@
 		970E7F741D9DB0FC00741290 /* 1.8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 970E7F731D9DB0FC00741290 /* 1.8.xcmappingmodel */; };
 		970E7F771D9DBEA900741290 /* SettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E7F761D9DBEA900741290 /* SettingController.swift */; };
 		970E7F7B1DA0069600741290 /* FontSizeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E7F7A1DA0069600741290 /* FontSizeController.swift */; };
-		970E7F821DA0305000741290 /* TableOfContentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E7F7E1DA0305000741290 /* TableOfContentsController.swift */; };
 		970E7F831DA0305000741290 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E7F7F1DA0305000741290 /* WelcomeController.swift */; };
 		9711871E1CEB449A00B9909D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711871D1CEB449A00B9909D /* libz.tbd */; };
 		971A10161D022872007FC62C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 971A10151D022872007FC62C /* Assets.xcassets */; };
@@ -72,6 +71,7 @@
 		9764F5931D830EF200E0B1C4 /* liblzma.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9764F5921D830EF200E0B1C4 /* liblzma.tbd */; };
 		9764F5991D833F2B00E0B1C4 /* KiwixURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764F5981D833F2B00E0B1C4 /* KiwixURL.swift */; };
 		976B86D81DDA0C7E00FA7FD1 /* SearchContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976B86D71DDA0C7E00FA7FD1 /* SearchContainer.swift */; };
+		976C1DCB1E2FD5FC005EDEC4 /* TableOfContentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976C1DCA1E2FD5FC005EDEC4 /* TableOfContentsController.swift */; };
 		9771A5BD1DD269BD005F1795 /* Book+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813C1D6F712800E5FA99 /* Book+CoreDataProperties.swift */; };
 		9779C3141D4575AD0064CC8E /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E609F01D103DED00EBCB9D /* NotificationCenter.framework */; };
 		9779C3171D4575AE0064CC8E /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779C3161D4575AE0064CC8E /* TodayViewController.swift */; };
@@ -169,7 +169,6 @@
 		970E7F781DA003FA00741290 /* WebViewControllerOld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewControllerOld.swift; sourceTree = "<group>"; };
 		970E7F7A1DA0069600741290 /* FontSizeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontSizeController.swift; sourceTree = "<group>"; };
 		970E7F7C1DA0305000741290 /* Alerts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
-		970E7F7E1DA0305000741290 /* TableOfContentsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableOfContentsController.swift; sourceTree = "<group>"; };
 		970E7F7F1DA0305000741290 /* WelcomeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
 		9711871B1CEB448400B9909D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		9711871D1CEB449A00B9909D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -234,6 +233,7 @@
 		9764F5981D833F2B00E0B1C4 /* KiwixURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KiwixURL.swift; sourceTree = "<group>"; };
 		976A0C801D41619C0006A742 /* DZNEmptyDataSet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DZNEmptyDataSet.framework; path = "../../../../Users/chrisli/Library/Developer/Xcode/DerivedData/Kiwix-ayxrfhaqnfxzendihdolvkklkmhk/Build/Products/Debug-iphoneos/DZNEmptyDataSet/DZNEmptyDataSet.framework"; sourceTree = "<group>"; };
 		976B86D71DDA0C7E00FA7FD1 /* SearchContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchContainer.swift; sourceTree = "<group>"; };
+		976C1DCA1E2FD5FC005EDEC4 /* TableOfContentsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableOfContentsController.swift; sourceTree = "<group>"; };
 		9779C3131D4575AD0064CC8E /* Bookmarks.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Bookmarks.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		9779C3161D4575AE0064CC8E /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		9779C31B1D4575AE0064CC8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -474,6 +474,7 @@
 				97BC0FBE1DD90A65004BBAD1 /* MainController.swift */,
 				97BC0FC11DD92B62004BBAD1 /* Buttons.swift */,
 				97BC0FBD1DD90A65004BBAD1 /* JSInjection.swift */,
+				976C1DCA1E2FD5FC005EDEC4 /* TableOfContentsController.swift */,
 				972F81581DDC1B71008D7289 /* Controllers.swift */,
 			);
 			path = Main;
@@ -621,7 +622,6 @@
 			isa = PBXGroup;
 			children = (
 				970E7F7C1DA0305000741290 /* Alerts.swift */,
-				970E7F7E1DA0305000741290 /* TableOfContentsController.swift */,
 				973A5C911DEA3F5600C7804C /* CoreDataTableBaseController.swift */,
 				970E7F7F1DA0305000741290 /* WelcomeController.swift */,
 			);
@@ -1126,6 +1126,7 @@
 				977B954D1DD4C40400F6F62B /* ScanLocalBook.swift in Sources */,
 				97D681321D6F70EC00E5FA99 /* MigrationPolicy.swift in Sources */,
 				9732079E1DD197EA00EDD3DC /* LibrarySplitViewController.swift in Sources */,
+				976C1DCB1E2FD5FC005EDEC4 /* TableOfContentsController.swift in Sources */,
 				9771A5BD1DD269BD005F1795 /* Book+CoreDataProperties.swift in Sources */,
 				9764CBD11D806AD800072D6A /* RefreshLibControl.swift in Sources */,
 				97C601DE1D7F342100362D4F /* HTMLHeading.swift in Sources */,
@@ -1136,7 +1137,6 @@
 				9732079F1DD197F400EDD3DC /* CloudBooksController.swift in Sources */,
 				973208241DD217B600EDD3DC /* BookmarkHUD.swift in Sources */,
 				971A102F1D022AD5007FC62C /* Logo.swift in Sources */,
-				970E7F821DA0305000741290 /* TableOfContentsController.swift in Sources */,
 				97A1FD191D6F71CE00A80EE2 /* ZimMultiReader.swift in Sources */,
 				97A1FD261D6F71E200A80EE2 /* ZimReader.mm in Sources */,
 				97A1FD1C1D6F71D800A80EE2 /* KiwixURLProtocol.swift in Sources */,
