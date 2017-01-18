@@ -40,16 +40,15 @@ class Controllers {
         _search = controller
         return controller
     }
-//    
-//    // MARK: - Setting
-//    
-//    private var setting: UIViewController?
-//    
-//    class var setting: UIViewController {
-//        let controller = Controllers.shared.setting ?? UIStoryboard(name: "Setting", bundle: nil).instantiateInitialViewController()!
-//        Controllers.shared.setting = controller
-//        return controller
-//    }
+    
+    // MARK: - Setting
+    
+    private var _setting: UIViewController?
+    var setting: UIViewController {
+        let controller = _setting ?? UIStoryboard(name: "Setting", bundle: nil).instantiateInitialViewController()!
+        _setting = controller
+        return controller
+    }
     
     // MARK: - Welcome
     

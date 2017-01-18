@@ -38,6 +38,8 @@ class Buttons: LPTBarButtonItemDelegate {
             delegate?.didTapBookmarkButton()
         case library:
             delegate?.didTapLibraryButton()
+        case setting:
+            delegate?.didTapSettingButton()
         default:
             return
         }
@@ -68,6 +70,7 @@ protocol ButtonDelegates {
     func didTapTOCButton()
     func didTapBookmarkButton()
     func didTapLibraryButton()
+    func didTapSettingButton()
     func didTapCancelButton()
     
     func didLongPressBackButton()

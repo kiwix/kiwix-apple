@@ -260,6 +260,10 @@ extension MainController: ButtonDelegates {
         present(controllers.library, animated: true, completion: nil)
     }
     
+    func didTapSettingButton() {
+        present(controllers.setting, animated: true, completion: nil)
+    }
+    
     func didTapCancelButton() {
         _ = searchBar.resignFirstResponder()
     }
