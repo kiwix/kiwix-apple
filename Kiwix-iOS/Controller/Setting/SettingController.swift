@@ -80,7 +80,7 @@ extension Localized {
             }
             class NotConfiguredError {
                 static let title = NSLocalizedString("Cannot send Email", comment: "Feedback error title")
-                static let message = NSLocalizedString("The device is not configured to send email.", comment: "Feedback error message")
+                static let message = NSLocalizedString("The device is not configured to send email. You can send an email to chris@kiwix.org using other devices.", comment: "Feedback error message")
             }
             class ComposerError {
                 static let title = NSLocalizedString("Email not sent", comment: "Feedback error title")

@@ -28,10 +28,15 @@ class FeedbackMailOperation: UIProcedure, MFMailComposeViewControllerDelegate {
             })
             try? produce(operation: alert)
         } else {
+            guard result == .sent else {
+                presented.dismiss(animated: true, completion: nil)
+                finish()
+                return
+            }
             let alert = EmailSentAlert(context: controller)
             alert.addDidFinishBlockObserver(block: { [weak self] (alert, errors) in
                 self?.presented.dismiss(animated: true, completion: nil)
-                self?.finish(withError: error)
+                self?.finish()
             })
             try? produce(operation: alert)
         }
