@@ -174,16 +174,15 @@ private class SearchBarTextField: UITextField {
     // MARK: - Rect overrides
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
-        let rect = super.textRect(forBounds: bounds)
-        return rect.offsetBy(dx: 0, dy: 1)
+        return super.textRect(forBounds: bounds).offsetBy(dx: 0, dy: 1)
     }
     
     override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return super.textRect(forBounds: bounds).insetBy(dx: 4, dy: 0).offsetBy(dx: 0, dy: 1)
+        return super.textRect(forBounds: bounds).offsetBy(dx: 0, dy: 1)
     }
     
     override func clearButtonRect(forBounds bounds: CGRect) -> CGRect {
-        return super.clearButtonRect(forBounds: bounds).insetBy(dx: -4, dy: -6).offsetBy(dx: 8, dy: 0)
+        return super.clearButtonRect(forBounds: bounds).insetBy(dx: -6, dy: -8).offsetBy(dx: 8, dy: 0)
     }
 }
 
@@ -231,8 +230,9 @@ private class SearchBarBackgroundView: UIView {
     }
     
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        let frame = self.bounds.insetBy(dx: 0, dy: -12)
-        return frame.contains(point) ? self : nil
+//        let frame = self.bounds.insetBy(dx: 0, dy: -12)
+//        return frame.contains(point) ? self : nil
+        return bounds.contains(point) ? self : nil
     }
     
     // MARK: - Animations
