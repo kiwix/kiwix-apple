@@ -19,6 +19,7 @@ class TableOfContentsController: UIViewController, UIScrollViewDelegate, UITable
     var headings = [HTMLHeading]() {
         didSet {
             configurePreferredContentSize()
+            visibleHeaderIndicator.isHidden = headings.count == 0
             tableView.reloadData()
         }
     }
