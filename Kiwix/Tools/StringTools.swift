@@ -68,3 +68,10 @@ class LocalizedStrings {
     static let and = NSLocalizedString("and", comment: "Common")
     static let done = NSLocalizedString("Done", comment: "Common")
 }
+
+class Localized {
+    class Alert {
+        static let ok = NSLocalizedString("OK", comment: "Alert action")
+    }
+    
+}
