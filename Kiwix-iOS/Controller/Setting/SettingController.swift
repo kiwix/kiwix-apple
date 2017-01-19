@@ -8,6 +8,7 @@
 
 import UIKit
 import MessageUI
+import ProcedureKit
 
 class SettingController: UITableViewController {
     
@@ -52,8 +53,22 @@ class SettingController: UITableViewController {
             } else {
                 UIQueue.shared.add(operation: EmailNotConfiguredAlert(context: self))
             }
+        case Localized.Setting.rateApp:
+            UIQueue.shared.add(operation: AlertProcedure.rateKiwix(context: self, userInitiated: true))
         default:
             return
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        guard section == tableView.numberOfSections - 1 else {return nil}
+        return String(format: Localized.Setting.version, Bundle.appShortVersion)
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        guard section == tableView.numberOfSections - 1 else {return}
+        if let view = view as? UITableViewHeaderFooterView {
+            view.textLabel?.textAlignment = .center
         }
     }
 
@@ -61,19 +76,18 @@ class SettingController: UITableViewController {
 
 extension Localized {
     class Setting {
-        static let title = NSLocalizedString("Setting", comment: "Setting view title")
+        static let title = NSLocalizedString("Setting", comment: "Setting table title")
         
-        static let fontSize = NSLocalizedString("Font Size", comment: "Setting view rows")
-        static let notifications = NSLocalizedString("Notifications", comment: "Setting view rows")
-        
-        static let feedback = NSLocalizedString("Email us your suggestions", comment: "Setting view rows")
-        static let rateApp = NSLocalizedString("Give Kiwix a Rate", comment: "Setting view rows")
-        
-        static let about = NSLocalizedString("About", comment: "Setting view rows")
+        static let fontSize = NSLocalizedString("Font Size", comment: "Setting table rows")
+        static let notifications = NSLocalizedString("Notifications", comment: "Setting table rows")
+        static let feedback = NSLocalizedString("Email us your suggestions", comment: "Setting table rows")
+        static let rateApp = NSLocalizedString("Give Kiwix a Rate", comment: "Setting table rows")
+        static let about = NSLocalizedString("About", comment: "Setting table rows")
+        static let version = NSLocalizedString("Kiwix for iOS v%@", comment: "Setting table footer")
         
         class Feedback {
             static let subject = NSLocalizedString(String(format: "Feedback: Kiwix for iOS %@", Bundle.appShortVersion),
-                                                   comment: "Feedback view subject, %@ will be replaced by kiwix version string")
+                                                   comment: "Feedback email composer subject, %@ will be replaced by kiwix version string")
             class Success {
                 static let title = NSLocalizedString("Email Sent", comment: "Feedback success title")
                 static let message = NSLocalizedString("Your Email was sent. We will get back to you shortly.", comment: "Feedback success message")
@@ -85,6 +99,12 @@ extension Localized {
             class ComposerError {
                 static let title = NSLocalizedString("Email not sent", comment: "Feedback error title")
             }
+        }
+        
+        class RateApp {
+            static let message = NSLocalizedString("Would you like to rate Kiwix in App Store?", comment: "Rate app alert message")
+            static let goToAppStore = NSLocalizedString("Go to App Store", comment: "Rate app alert action")
+            static let remindMeLater = NSLocalizedString("Remind Me Later", comment: "Rate app alert action")
         }
     }
 }

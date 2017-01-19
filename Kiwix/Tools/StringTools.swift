@@ -72,6 +72,7 @@ class LocalizedStrings {
 class Localized {
     class Alert {
         static let ok = NSLocalizedString("OK", comment: "Alert action")
+        static let cancel = NSLocalizedString("Cancel", comment: "Alert action")
     }
     
 }
