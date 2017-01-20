@@ -22,9 +22,9 @@ class JS {
         webView.context.evaluateScript(jString)
     }
     
-    class func adjustFontSizeIfNeeded(_ webView: UIWebView) {
-        guard Preference.webViewZoomScale != 100.0 else {return}
-        let jString = String(format: "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%.0f%%'", Preference.webViewZoomScale)
+    class func adjustFontSizeIfNeeded(webView: UIWebView) {
+        guard Preference.webViewZoomScale != 1 else {return}
+        let jString = String(format: "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%.0f%%'", Preference.webViewZoomScale * 100)
         webView.stringByEvaluatingJavaScript(from: jString)
     }
     

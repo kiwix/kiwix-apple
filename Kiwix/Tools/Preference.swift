@@ -39,7 +39,7 @@ class Preference {
     // MARK: - Reading
     
     class var webViewZoomScale: Double {
-        get{return Defaults[.webViewZoomScale] ?? 100.0}
+        get{if let scale = Defaults[.webViewZoomScale] {return scale > 50 ? scale / 100 : scale} else {return 1}}
         set{Defaults[.webViewZoomScale] = newValue}
     }
     

@@ -124,6 +124,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
         JS.preventDefaultLongTap(webView: webView)
         tableOfContentsController?.headings = JS.getTableOfContents(webView: webView)
         JS.startTOCCallBack(webView: webView)
+        JS.adjustFontSizeIfNeeded(webView: webView)
         
         URLResponseCache.shared.stop()
         
@@ -257,7 +258,7 @@ extension MainController: ButtonDelegates {
     }
     
     func didTapLibraryButton() {
-        present(controllers.library, animated: true, completion: nil)
+        // present(controllers.library, animated: true, completion: nil)
     }
     
     func didTapSettingButton() {

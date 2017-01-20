@@ -24,8 +24,14 @@ class FontSizeController: UIViewController, UITableViewDelegate, UITableViewData
         return formatter
     }()
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        label.font = UIFont.systemFont(ofSize: 14.0 * CGFloat(selected))
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        if Preference.webViewZoomScale != selected {Controllers.main.webView.reload()}
         Preference.webViewZoomScale = selected
     }
     
