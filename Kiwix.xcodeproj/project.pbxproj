@@ -71,6 +71,8 @@
 		976C1DD21E3000F1005EDEC4 /* SettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976C1DD11E3000F1005EDEC4 /* SettingController.swift */; };
 		976C1DD41E300695005EDEC4 /* UIProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976C1DD31E300695005EDEC4 /* UIProcedure.swift */; };
 		976C1DD61E32628B005EDEC4 /* StaticWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976C1DD51E32628B005EDEC4 /* StaticWebController.swift */; };
+		976C1DD81E327328005EDEC4 /* FontSizeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976C1DD71E327328005EDEC4 /* FontSizeController.swift */; };
+		976C1DDA1E32A7B3005EDEC4 /* NotificationSettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976C1DD91E32A7B3005EDEC4 /* NotificationSettingController.swift */; };
 		9771A5BD1DD269BD005F1795 /* Book+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813C1D6F712800E5FA99 /* Book+CoreDataProperties.swift */; };
 		9779C3141D4575AD0064CC8E /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E609F01D103DED00EBCB9D /* NotificationCenter.framework */; };
 		9779C3171D4575AE0064CC8E /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779C3161D4575AE0064CC8E /* TodayViewController.swift */; };
@@ -232,6 +234,8 @@
 		976C1DD11E3000F1005EDEC4 /* SettingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingController.swift; sourceTree = "<group>"; };
 		976C1DD31E300695005EDEC4 /* UIProcedure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIProcedure.swift; sourceTree = "<group>"; };
 		976C1DD51E32628B005EDEC4 /* StaticWebController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticWebController.swift; sourceTree = "<group>"; };
+		976C1DD71E327328005EDEC4 /* FontSizeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontSizeController.swift; sourceTree = "<group>"; };
+		976C1DD91E32A7B3005EDEC4 /* NotificationSettingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingController.swift; sourceTree = "<group>"; };
 		9779C3131D4575AD0064CC8E /* Bookmarks.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Bookmarks.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		9779C3161D4575AE0064CC8E /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		9779C31B1D4575AE0064CC8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -587,6 +591,8 @@
 			isa = PBXGroup;
 			children = (
 				976C1DD11E3000F1005EDEC4 /* SettingController.swift */,
+				976C1DD91E32A7B3005EDEC4 /* NotificationSettingController.swift */,
+				976C1DD71E327328005EDEC4 /* FontSizeController.swift */,
 				976C1DD51E32628B005EDEC4 /* StaticWebController.swift */,
 			);
 			path = Setting;
@@ -1123,6 +1129,7 @@
 				97D681321D6F70EC00E5FA99 /* MigrationPolicy.swift in Sources */,
 				9732079E1DD197EA00EDD3DC /* LibrarySplitViewController.swift in Sources */,
 				976C1DCB1E2FD5FC005EDEC4 /* TableOfContentsController.swift in Sources */,
+				976C1DD81E327328005EDEC4 /* FontSizeController.swift in Sources */,
 				9771A5BD1DD269BD005F1795 /* Book+CoreDataProperties.swift in Sources */,
 				9764CBD11D806AD800072D6A /* RefreshLibControl.swift in Sources */,
 				976C1DD61E32628B005EDEC4 /* StaticWebController.swift in Sources */,
@@ -1133,6 +1140,7 @@
 				97A127CC1D777CF100FB204D /* SearchResultController.swift in Sources */,
 				9732079F1DD197F400EDD3DC /* CloudBooksController.swift in Sources */,
 				973208241DD217B600EDD3DC /* BookmarkHUD.swift in Sources */,
+				976C1DDA1E32A7B3005EDEC4 /* NotificationSettingController.swift in Sources */,
 				971A102F1D022AD5007FC62C /* Logo.swift in Sources */,
 				97A1FD191D6F71CE00A80EE2 /* ZimMultiReader.swift in Sources */,
 				97A1FD261D6F71E200A80EE2 /* ZimReader.mm in Sources */,

@@ -15,6 +15,14 @@ class SettingController: UITableViewController {
     let rows = [[Localized.Setting.fontSize, Localized.Setting.notifications],
                 [Localized.Setting.feedback, Localized.Setting.rateApp],
                 [Localized.Setting.about]]
+    
+    let percentageFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .percent
+        formatter.maximumFractionDigits = 0
+        formatter.maximumIntegerDigits = 3
+        return formatter
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +45,14 @@ class SettingController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = rows[indexPath.section][indexPath.row]
+        let text = rows[indexPath.section][indexPath.row]
+        cell.textLabel?.text = text
+        switch text {
+        case Localized.Setting.fontSize:
+            cell.detailTextLabel?.text = percentageFormatter.string(from: NSNumber(value: Preference.webViewZoomScale))
+        default:
+            cell.detailTextLabel?.text = nil
+        }
         return cell
     }
     
@@ -47,6 +62,10 @@ class SettingController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         let text = rows[indexPath.section][indexPath.row]
         switch text {
+        case Localized.Setting.fontSize:
+            let controller = UIStoryboard(name: "Setting", bundle: nil).instantiateViewController(withIdentifier: "FontSizeController") as! FontSizeController
+            controller.title = Localized.Setting.fontSize
+            navigationController?.pushViewController(controller, animated: true)
         case Localized.Setting.feedback:
             if MFMailComposeViewController.canSendMail() {
                 UIQueue.shared.add(operation: FeedbackMailOperation(context: self))
@@ -89,6 +108,11 @@ extension Localized {
         static let rateApp = NSLocalizedString("Give Kiwix a Rate", comment: "Setting table rows")
         static let about = NSLocalizedString("About", comment: "Setting table rows")
         static let version = NSLocalizedString("Kiwix for iOS v%@", comment: "Setting table footer")
+        
+        class Notification {
+            static let libraryRefresh = NSLocalizedString("Library Refresh", comment: "Notification Setting")
+            static let bookUpdatesAvailable = NSLocalizedString("Book Updates Available", comment: "Notification Setting")
+        }
         
         class Feedback {
             static let subject = NSLocalizedString(String(format: "Feedback: Kiwix for iOS %@", Bundle.appShortVersion),
