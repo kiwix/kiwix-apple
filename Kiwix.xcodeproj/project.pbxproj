@@ -103,6 +103,7 @@
 		97C2C26A1DDCC58500A9CC64 /* ArticleOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764CBD21D8083AA00072D6A /* ArticleOperation.swift */; };
 		97C601DC1D7F15C400362D4F /* Bookmark.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C601DB1D7F15C400362D4F /* Bookmark.storyboard */; };
 		97C601DE1D7F342100362D4F /* HTMLHeading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C601DD1D7F342100362D4F /* HTMLHeading.swift */; };
+		97D048AC1E32B7BE0028F9FD /* liblzma.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9764F5921D830EF200E0B1C4 /* liblzma.tbd */; };
 		97D0E9931DDA487E0029530E /* SearchBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D0E9921DDA487E0029530E /* SearchBaseController.swift */; };
 		97D681311D6F70EC00E5FA99 /* 1.5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97D6812F1D6F70EC00E5FA99 /* 1.5.xcmappingmodel */; };
 		97D681321D6F70EC00E5FA99 /* MigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681301D6F70EC00E5FA99 /* MigrationPolicy.swift */; };
@@ -168,9 +169,7 @@
 		970E7F731D9DB0FC00741290 /* 1.8.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = 1.8.xcmappingmodel; path = Kiwix/CoreData/Migration/1.8.xcmappingmodel; sourceTree = SOURCE_ROOT; };
 		970E7F7C1DA0305000741290 /* Alerts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		970E7F7F1DA0305000741290 /* WelcomeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
-		9711871B1CEB448400B9909D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		9711871D1CEB449A00B9909D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		971187A81CEB694400B9909D /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
 		971A10151D022872007FC62C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Kiwix-iOS/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
 		971A10201D022A34007FC62C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Kiwix-iOS/Info.plist"; sourceTree = SOURCE_ROOT; };
 		971A10241D022AD5007FC62C /* BarButtonItems.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarButtonItems.swift; sourceTree = "<group>"; };
@@ -210,7 +209,6 @@
 		973DD4091D343F2F009D45DB /* libicutest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicutest.a; path = Kiwix/libkiwix/iOS/libicutest.a; sourceTree = "<group>"; };
 		973DD40A1D343F2F009D45DB /* libicutu.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicutu.a; path = Kiwix/libkiwix/iOS/libicutu.a; sourceTree = "<group>"; };
 		973DD40B1D343F2F009D45DB /* libicuuc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuuc.a; path = Kiwix/libkiwix/iOS/libicuuc.a; sourceTree = "<group>"; };
-		973DD40C1D343F2F009D45DB /* liblzma.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblzma.a; path = Kiwix/libkiwix/iOS/liblzma.a; sourceTree = "<group>"; };
 		973DD40D1D343F2F009D45DB /* libxapian.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxapian.a; path = Kiwix/libkiwix/iOS/libxapian.a; sourceTree = "<group>"; };
 		973DD40E1D343F2F009D45DB /* libzim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzim.a; path = Kiwix/libkiwix/iOS/libzim.a; sourceTree = "<group>"; };
 		974C49671DA4266200E276E1 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
@@ -310,6 +308,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97D048AC1E32B7BE0028F9FD /* liblzma.tbd in Frameworks */,
 				9779C3141D4575AD0064CC8E /* NotificationCenter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -355,9 +354,10 @@
 		931D277C156AE671D3F9EADA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				976A0C801D41619C0006A742 /* DZNEmptyDataSet.framework */,
 				974C49671DA4266200E276E1 /* CloudKit.framework */,
 				9764F5921D830EF200E0B1C4 /* liblzma.tbd */,
-				976A0C801D41619C0006A742 /* DZNEmptyDataSet.framework */,
+				9711871D1CEB449A00B9909D /* libz.tbd */,
 				973DD4041D343F2F009D45DB /* libicudata.a */,
 				973DD4051D343F2F009D45DB /* libicui18n.a */,
 				973DD4061D343F2F009D45DB /* libicuio.a */,
@@ -366,7 +366,6 @@
 				973DD4091D343F2F009D45DB /* libicutest.a */,
 				973DD40A1D343F2F009D45DB /* libicutu.a */,
 				973DD40B1D343F2F009D45DB /* libicuuc.a */,
-				973DD40C1D343F2F009D45DB /* liblzma.a */,
 				973DD40D1D343F2F009D45DB /* libxapian.a */,
 				973DD40E1D343F2F009D45DB /* libzim.a */,
 				97E609F01D103DED00EBCB9D /* NotificationCenter.framework */,
@@ -581,7 +580,6 @@
 				973BCD0A1CEB3FA500F10B44 /* Kiwix-OSXUITests */,
 				97A2ABA21C1B80FF00052E74 /* Kiwix-iOSTests */,
 				97A2ABAD1C1B810000052E74 /* Kiwix-iOSUITests */,
-				CFDF64EC6F9DB861DEEB91A0 /* Frameworks */,
 			);
 			name = Others;
 			sourceTree = "<group>";
@@ -800,16 +798,6 @@
 			children = (
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		CFDF64EC6F9DB861DEEB91A0 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				971187A81CEB694400B9909D /* WebKit.framework */,
-				9711871D1CEB449A00B9909D /* libz.tbd */,
-				9711871B1CEB448400B9909D /* libz.tbd */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		F544A4E4357A6D33CF234C6B /* Pods */ = {
