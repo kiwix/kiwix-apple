@@ -66,6 +66,10 @@ class SettingController: UITableViewController {
             let controller = UIStoryboard(name: "Setting", bundle: nil).instantiateViewController(withIdentifier: "FontSizeController") as! FontSizeController
             controller.title = Localized.Setting.fontSize
             navigationController?.pushViewController(controller, animated: true)
+        case Localized.Setting.notifications:
+            let controller = UIStoryboard(name: "Setting", bundle: nil).instantiateViewController(withIdentifier: "NotificationSettingController") as! NotificationSettingController
+            controller.title = Localized.Setting.notifications
+            navigationController?.pushViewController(controller, animated: true)
         case Localized.Setting.feedback:
             if MFMailComposeViewController.canSendMail() {
                 UIQueue.shared.add(operation: FeedbackMailOperation(context: self))
@@ -109,9 +113,9 @@ extension Localized {
         static let about = NSLocalizedString("About", comment: "Setting table rows")
         static let version = NSLocalizedString("Kiwix for iOS v%@", comment: "Setting table footer")
         
-        class Notification {
+        class Notifications {
             static let libraryRefresh = NSLocalizedString("Library Refresh", comment: "Notification Setting")
-            static let bookUpdatesAvailable = NSLocalizedString("Book Updates Available", comment: "Notification Setting")
+            static let bookUpdateAvailable = NSLocalizedString("Book Update Available", comment: "Notification Setting")
         }
         
         class Feedback {

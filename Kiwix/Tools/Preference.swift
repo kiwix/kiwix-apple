@@ -43,11 +43,6 @@ class Preference {
         set{Defaults[.webViewZoomScale] = newValue}
     }
     
-    class var webViewInjectJavascriptToAdjustPageLayout: Bool {
-        get{return !Defaults[.webViewNotInjectJavascriptToAdjustPageLayout]}
-        set{Defaults[.webViewNotInjectJavascriptToAdjustPageLayout] = !newValue}
-    }
-    
     // MARK: - Rate Kiwix
     
     class var activeUseHistory: [Date] {
@@ -111,7 +106,6 @@ extension DefaultsKeys {
     static let hasSubscribedToCloudKitChanges = DefaultsKey<Bool>("hasSubscribedToCloudKitChanges")
     static let recentSearchTerms = DefaultsKey<[String]>("recentSearchTerms")
     static let webViewZoomScale = DefaultsKey<Double?>("webViewZoomScale")
-    static let webViewNotInjectJavascriptToAdjustPageLayout = DefaultsKey<Bool>("webViewNotInjectJavascriptToAdjustPageLayout")
     static let activeUseHistory = DefaultsKey<[Date]>("activeUseHistory")
     static let haveRateKiwix = DefaultsKey<Bool>("haveRateKiwix")
     
@@ -124,4 +118,24 @@ extension DefaultsKeys {
     static let langFilterNameDisplayInOriginalLocale = DefaultsKey<Bool>("langFilterNameDisplayInOriginalLocale")
     
     static let resumeData = DefaultsKey<[String: Any]>("resumeData")
+}
+
+// MARK: - Notifications
+
+extension Preference {
+    class Notifications {
+        class var libraryRefresh: Bool {
+            get{return Defaults[.notificationLibraryRefresh] ?? true}
+            set{Defaults[.notificationLibraryRefresh] = newValue}
+        }
+        class var bookUpdateAvailable: Bool {
+            get{return Defaults[.notificationBookUpdateAvailable] ?? true}
+            set{Defaults[.notificationBookUpdateAvailable] = newValue}
+        }
+    }
+}
+
+extension DefaultsKeys {
+    static let notificationLibraryRefresh = DefaultsKey<Bool?>("notificationLibraryRefresh")
+    static let notificationBookUpdateAvailable = DefaultsKey<Bool?>("notificationBookUpdateAvailable")
 }
