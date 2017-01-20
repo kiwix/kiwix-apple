@@ -21,7 +21,7 @@ class FeedbackMailOperation: UIProcedure, MFMailComposeViewControllerDelegate {
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         if let error = error {
-            let alert = EmailNotSentAlert(context: controller, message: error.localizedDescription)
+            let alert = AlertProcedure.Feedback.emailNotSent(context: controller, message: error.localizedDescription)
             alert.addDidFinishBlockObserver(block: { [weak self] (alert, errors) in
                 self?.presented.dismiss(animated: true, completion: nil)
                 self?.finish(withError: error)
@@ -33,7 +33,7 @@ class FeedbackMailOperation: UIProcedure, MFMailComposeViewControllerDelegate {
                 finish()
                 return
             }
-            let alert = EmailSentAlert(context: controller)
+            let alert = AlertProcedure.Feedback.emailSent(context: controller)
             alert.addDidFinishBlockObserver(block: { [weak self] (alert, errors) in
                 self?.presented.dismiss(animated: true, completion: nil)
                 self?.finish()
@@ -43,38 +43,33 @@ class FeedbackMailOperation: UIProcedure, MFMailComposeViewControllerDelegate {
     }
 }
 
-class EmailSentAlert: UIProcedure {
-    let controller = UIAlertController(title: Localized.Setting.Feedback.Success.title,
-                                       message: Localized.Setting.Feedback.Success.message,
-                                       preferredStyle: .alert)
-    init(context: UIViewController) {
-        super.init(present: controller, from: context, withStyle: .present, inNavigationController: false, finishAfterPresenting: false)
-        controller.addAction(UIAlertAction(title: Localized.Alert.ok, style: .default, handler: {[weak self] _ in self?.finish()}))
-    }
-}
-
-class EmailNotConfiguredAlert: UIProcedure {
-    let controller = UIAlertController(title: Localized.Setting.Feedback.NotConfiguredError.title,
-                                       message: Localized.Setting.Feedback.NotConfiguredError.message,
-                                       preferredStyle: .alert)
-    init(context: UIViewController) {
-        super.init(present: controller, from: context, withStyle: .present, inNavigationController: false, finishAfterPresenting: false)
-        controller.addAction(UIAlertAction(title: Localized.Alert.ok, style: .cancel, handler: {[weak self] _ in self?.finish()}))
-    }
-}
-
-class EmailNotSentAlert: UIProcedure {
-    let controller = UIAlertController(title: Localized.Setting.Feedback.ComposerError.title,
-                                       message: nil,
-                                       preferredStyle: .alert)
-    init(context: UIViewController, message: String?) {
-        controller.message = message
-        super.init(present: controller, from: context, withStyle: .present, inNavigationController: false, finishAfterPresenting: false)
-        controller.addAction(UIAlertAction(title: Localized.Alert.ok, style: .cancel, handler: {[weak self] _ in self?.finish()}))
-    }
-}
-
 extension AlertProcedure {
+    class Feedback {
+        static func emailSent(context: UIViewController) -> AlertProcedure {
+            let alert = AlertProcedure(presentAlertFrom: context)
+            alert.title = Localized.Setting.Feedback.Success.title
+            alert.message = Localized.Setting.Feedback.Success.message
+            alert.add(actionWithTitle: Localized.Alert.ok, style: .default)
+            return alert
+        }
+        
+        static func emailNotConfigured(context: UIViewController) -> AlertProcedure {
+            let alert = AlertProcedure(presentAlertFrom: context)
+            alert.title = Localized.Setting.Feedback.NotConfiguredError.title
+            alert.message = Localized.Setting.Feedback.NotConfiguredError.message
+            alert.add(actionWithTitle: Localized.Alert.ok, style: .cancel)
+            return alert
+        }
+        
+        static func emailNotSent(context: UIViewController, message: String?) -> AlertProcedure {
+            let alert = AlertProcedure(presentAlertFrom: context)
+            alert.title = Localized.Setting.Feedback.ComposerError.title
+            alert.message = message
+            alert.add(actionWithTitle: Localized.Alert.ok, style: .cancel)
+            return alert
+        }
+    }
+    
     static func rateKiwix(context: UIViewController, userInitiated: Bool) -> AlertProcedure {
         let alert = AlertProcedure(presentAlertFrom: context)
         alert.title = Localized.Setting.rateApp

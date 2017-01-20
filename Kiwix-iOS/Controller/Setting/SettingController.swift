@@ -51,7 +51,7 @@ class SettingController: UITableViewController {
             if MFMailComposeViewController.canSendMail() {
                 UIQueue.shared.add(operation: FeedbackMailOperation(context: self))
             } else {
-                UIQueue.shared.add(operation: EmailNotConfiguredAlert(context: self))
+                UIQueue.shared.add(operation: AlertProcedure.Feedback.emailNotConfigured(context: self))
             }
         case Localized.Setting.rateApp:
             UIQueue.shared.add(operation: AlertProcedure.rateKiwix(context: self, userInitiated: true))
@@ -90,7 +90,7 @@ extension Localized {
                                                    comment: "Feedback email composer subject, %@ will be replaced by kiwix version string")
             class Success {
                 static let title = NSLocalizedString("Email Sent", comment: "Feedback success title")
-                static let message = NSLocalizedString("Your Email was sent. We will get back to you shortly.", comment: "Feedback success message")
+                static let message = NSLocalizedString("Your Email was sent successfully.", comment: "Feedback success message")
             }
             class NotConfiguredError {
                 static let title = NSLocalizedString("Cannot send Email", comment: "Feedback error title")
