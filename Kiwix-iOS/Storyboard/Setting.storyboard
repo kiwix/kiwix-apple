@@ -53,6 +53,39 @@
             </objects>
             <point key="canvasLocation" x="1040.8" y="224.4377811094453"/>
         </scene>
+        <!--Static Web Controller-->
+        <scene sceneID="BAo-fm-zbn">
+            <objects>
+                <viewController storyboardIdentifier="StaticWebController" id="NZ8-xj-UdR" customClass="StaticWebController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="q6h-wV-M9K"/>
+                        <viewControllerLayoutGuide type="bottom" id="ts2-NC-gzs"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="noq-fM-QpC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F9v-t9-ijZ">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ts2-NC-gzs" firstAttribute="top" secondItem="F9v-t9-ijZ" secondAttribute="bottom" id="ADZ-HF-JiF"/>
+                            <constraint firstItem="F9v-t9-ijZ" firstAttribute="top" secondItem="noq-fM-QpC" secondAttribute="top" id="LLu-GE-M2a"/>
+                            <constraint firstAttribute="trailing" secondItem="F9v-t9-ijZ" secondAttribute="trailing" id="Svb-CH-deN"/>
+                            <constraint firstItem="F9v-t9-ijZ" firstAttribute="leading" secondItem="noq-fM-QpC" secondAttribute="leading" id="TGA-uK-7VS"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="webView" destination="F9v-t9-ijZ" id="P7e-k5-3w4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uxQ-jA-31z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1772" y="224.4377811094453"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="y2e-Kj-oGf">
             <objects>

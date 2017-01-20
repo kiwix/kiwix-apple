@@ -55,6 +55,11 @@ class SettingController: UITableViewController {
             }
         case Localized.Setting.rateApp:
             UIQueue.shared.add(operation: AlertProcedure.rateKiwix(context: self, userInitiated: true))
+        case Localized.Setting.about:
+            let controller = UIStoryboard(name: "Setting", bundle: nil).instantiateViewController(withIdentifier: "StaticWebController") as! StaticWebController
+            controller.title = Localized.Setting.about
+            controller.load(htmlFileName: "About")
+            navigationController?.pushViewController(controller, animated: true)
         default:
             return
         }
