@@ -111,6 +111,7 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! LibraryCollectionCell
         
         let book = fetchedResultController.object(at: indexPath)
+        print(book.meta4URL)
         cell.delegate = self
         cell.imageView.image = UIImage(data: book.favIcon ?? Data())
         cell.titleLabel.text = book.title

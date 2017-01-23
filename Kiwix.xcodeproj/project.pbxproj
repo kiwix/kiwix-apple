@@ -11,6 +11,7 @@
 		9705D5941E368189005292AC /* Library.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9705D5931E368189005292AC /* Library.storyboard */; };
 		9705D5961E368712005292AC /* LibraryBooksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9705D5951E368712005292AC /* LibraryBooksController.swift */; };
 		9705D5981E368933005292AC /* CoreDataCollectionBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9705D5971E368933005292AC /* CoreDataCollectionBaseController.swift */; };
+		9705D59A1E36B876005292AC /* LibraryLanguageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9705D5991E36B876005292AC /* LibraryLanguageController.swift */; };
 		970A2A221DD562CB0078BB7C /* BookOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970A2A211DD562CB0078BB7C /* BookOperations.swift */; };
 		970E7F741D9DB0FC00741290 /* 1.8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 970E7F731D9DB0FC00741290 /* 1.8.xcmappingmodel */; };
 		970E7F831DA0305000741290 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E7F7F1DA0305000741290 /* WelcomeController.swift */; };
@@ -162,6 +163,7 @@
 		9705D5931E368189005292AC /* Library.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Library.storyboard; sourceTree = "<group>"; };
 		9705D5951E368712005292AC /* LibraryBooksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryBooksController.swift; sourceTree = "<group>"; };
 		9705D5971E368933005292AC /* CoreDataCollectionBaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataCollectionBaseController.swift; sourceTree = "<group>"; };
+		9705D5991E36B876005292AC /* LibraryLanguageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryLanguageController.swift; sourceTree = "<group>"; };
 		970912551D7F452C00BBD5A1 /* 1.8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.8.xcdatamodel; sourceTree = "<group>"; };
 		970A2A211DD562CB0078BB7C /* BookOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookOperations.swift; sourceTree = "<group>"; };
 		970E7F731D9DB0FC00741290 /* 1.8.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = 1.8.xcmappingmodel; path = Kiwix/CoreData/Migration/1.8.xcmappingmodel; sourceTree = SOURCE_ROOT; };
@@ -726,6 +728,7 @@
 			isa = PBXGroup;
 			children = (
 				9705D5951E368712005292AC /* LibraryBooksController.swift */,
+				9705D5991E36B876005292AC /* LibraryLanguageController.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -1099,6 +1102,7 @@
 				9705D5961E368712005292AC /* LibraryBooksController.swift in Sources */,
 				97D681391D6F711A00E5FA99 /* DownloadTask.swift in Sources */,
 				977B954D1DD4C40400F6F62B /* ScanLocalBook.swift in Sources */,
+				9705D59A1E36B876005292AC /* LibraryLanguageController.swift in Sources */,
 				97D681321D6F70EC00E5FA99 /* MigrationPolicy.swift in Sources */,
 				976C1DCB1E2FD5FC005EDEC4 /* TableOfContentsController.swift in Sources */,
 				976C1DD81E327328005EDEC4 /* FontSizeController.swift in Sources */,

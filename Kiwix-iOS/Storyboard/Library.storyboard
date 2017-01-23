@@ -170,7 +170,14 @@
                     <navigationItem key="navigationItem" id="sRt-4x-eGb">
                         <barButtonItem key="leftBarButtonItem" image="Cross" id="isr-wO-QO3">
                             <connections>
-                                <action selector="dismissButtonTapped:" destination="cDq-va-k4I" id="gEj-c5-Tf4"/>
+                                <action selector="dismissButtonTapped:" destination="cDq-va-k4I" id="RgX-lM-cfN"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="LanguageFilter" id="0v8-uV-zCG">
+                            <connections>
+                                <segue destination="9UV-8Y-ZY2" kind="popoverPresentation" popoverAnchorBarButtonItem="0v8-uV-zCG" id="PFl-Zb-f3y">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -181,6 +188,46 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BWN-YP-64P" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-173.59999999999999" y="-1395.6521739130435"/>
+        </scene>
+        <!--Library Language Controller-->
+        <scene sceneID="nQz-wd-Pht">
+            <objects>
+                <viewController id="AY1-gf-NdX" customClass="LibraryLanguageController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Gbe-6q-AdX"/>
+                        <viewControllerLayoutGuide type="bottom" id="8vj-R1-8rW"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="mon-4F-A4S">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="28D-2G-Cvf">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="28D-2G-Cvf" firstAttribute="top" secondItem="mon-4F-A4S" secondAttribute="top" id="DJO-iO-hYh"/>
+                            <constraint firstItem="28D-2G-Cvf" firstAttribute="leading" secondItem="mon-4F-A4S" secondAttribute="leading" id="E9e-XT-g3D"/>
+                            <constraint firstItem="8vj-R1-8rW" firstAttribute="top" secondItem="28D-2G-Cvf" secondAttribute="bottom" id="pQ2-u7-NMz"/>
+                            <constraint firstAttribute="trailing" secondItem="28D-2G-Cvf" secondAttribute="trailing" id="rLN-pb-zDN"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="vzE-Av-BsR">
+                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="OR7-vP-57g">
+                            <connections>
+                                <action selector="dismissButtonTapped:" destination="AY1-gf-NdX" id="PQe-Ul-pjG"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="28D-2G-Cvf" id="wxf-wh-F7V"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LO6-m0-Uxj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1712.8" y="-1396.5517241379312"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="c2f-93-r3I">
@@ -238,9 +285,28 @@
             </objects>
             <point key="canvasLocation" x="-1112.8" y="-740.7796101949026"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="p9k-Dg-805">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="9UV-8Y-ZY2" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="R1C-h3-seO">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="AY1-gf-NdX" kind="relationship" relationship="rootViewController" id="sor-RY-jDf"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VM9-Mm-1VF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="745" y="-1396"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Cross" width="16" height="16"/>
         <image name="Dots" width="16" height="16"/>
+        <image name="LanguageFilter" width="16" height="16"/>
     </resources>
 </document>
