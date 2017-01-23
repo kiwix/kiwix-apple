@@ -258,7 +258,7 @@ extension MainController: ButtonDelegates {
     }
     
     func didTapLibraryButton() {
-        // present(controllers.library, animated: true, completion: nil)
+         present(controllers.library, animated: true, completion: nil)
     }
     
     func didTapSettingButton() {
