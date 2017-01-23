@@ -12,7 +12,7 @@ import DZNEmptyDataSet
 
 class BookmarkCollectionController: CoreDataCollectionBaseController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     private(set) var itemWidth: CGFloat = 0.0
-        
+    
     var book: Book? {
         didSet {
             title = book?.title ?? "All"
