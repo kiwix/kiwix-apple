@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class LibraryBooksController: UIViewController {
 
@@ -16,8 +17,5 @@ class LibraryBooksController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
+    
 }
