@@ -39,7 +39,7 @@ class BookmarkCollectionController: CoreDataCollectionBaseController, UICollecti
     
     func configureItemWidth(collectionViewWidth: CGFloat) {
         let itemsPerRow = ((collectionViewWidth - 10) / 320).rounded()
-        self.itemWidth = floor((collectionViewWidth - (itemsPerRow + 1) * 10) / itemsPerRow)
+        itemWidth = floor((collectionViewWidth - (itemsPerRow + 1) * 10) / itemsPerRow)
     }
     
     // MARK: - UI Control

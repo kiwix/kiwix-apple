@@ -101,8 +101,6 @@ class ArticleSnippetCell: ArticleCell {
     @IBOutlet weak var snippetLabel: UILabel!
 }
 
-// MARK: - Bookmark Cell
-
 class BookmarkCollectionCell: UICollectionViewCell {
     override func awakeFromNib() {
         clipsToBounds = false
@@ -142,6 +140,35 @@ class BookmarkCollectionCell: UICollectionViewCell {
             contentView.backgroundColor = isSelected ? UIColor(colorLiteralRed: 200/255, green: 220/255, blue: 1, alpha: 1) : UIColor.white
         }
     }
+}
+
+class LibraryCollectionCell: UICollectionViewCell {
+    override func awakeFromNib() {
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 2.0
+        hasPicLabel.layer.borderWidth = 1.5
+        hasPicLabel.layer.borderColor = UIColor.orange.cgColor
+        hasPicLabel.layer.cornerRadius = 8.0
+    }
+    
+    @IBAction func moreButtonTapped(_ sender: UIButton) {
+        delegate?.didTapMoreButton(cell: self)
+    }
+    
+    weak var delegate: LibraryCollectionCellDelegate?
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var hasPicLabel: UILabel!
+}
+
+protocol LibraryCollectionCellDelegate: class {
+    func didTapMoreButton(cell: LibraryCollectionCell)
+}
+
+class LibraryCollectionHeader: UICollectionReusableView {
+    @IBOutlet weak var textLabel: UILabel!
 }
 
 
