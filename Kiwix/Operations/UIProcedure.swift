@@ -86,5 +86,18 @@ extension AlertProcedure {
         alert.add(actionWithTitle: Localized.Alert.cancel, style: .cancel)
         return alert
     }
+    
+    static func bookMore(context: UIViewController, book: Book) -> AlertProcedure {
+        let alert = AlertProcedure(presentAlertFrom: context, withPreferredStyle: .actionSheet, waitForDismissal: false)
+        alert.title = book.title
+        alert.add(actionWithTitle: Localized.Library.download, style: .default) { _ in
+            
+        }
+        alert.add(actionWithTitle: Localized.Library.copyURL, style: .default) { _ in
+            guard let url = book.url else {return}
+            UIPasteboard.general.string = url.absoluteString
+        }
+        return alert
+    }
 }
 

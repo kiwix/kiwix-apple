@@ -152,8 +152,13 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
     
     func didTapMoreButton(cell: LibraryCollectionCell) {
         guard let indexPath = collectionView.indexPath(for: cell) else {return}
+        let book = fetchedResultController.object(at: indexPath)
         
-        
+        let procedure = AlertProcedure.bookMore(context: self, book: book)
+        procedure.alert.modalPresentationStyle = .popover
+        procedure.alert.popoverPresentationController?.sourceView = cell.moreButton
+        procedure.alert.popoverPresentationController?.sourceRect = cell.moreButton.bounds
+        UIQueue.shared.add(operation: procedure)
     }
     
     // MARK: - NSFetchedResultsController
@@ -192,6 +197,8 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
 
 extension Localized {
     class Library {
-        static let title = NSLocalizedString("Library", comment: "Library, Language Filter")
+        static let title = NSLocalizedString("Library", comment: "Library")
+        static let download = NSLocalizedString("Download", comment: "Library, more action sheet")
+        static let copyURL = NSLocalizedString("Copy URL", comment: "Library, more action sheet")
     }
 }

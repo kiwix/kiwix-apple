@@ -161,6 +161,7 @@ class LibraryCollectionCell: UICollectionViewCell {
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var hasPicLabel: UILabel!
+    @IBOutlet weak var moreButton: UIButton!
 }
 
 protocol LibraryCollectionCellDelegate: class {
