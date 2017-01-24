@@ -49,6 +49,16 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         collectionView.collectionViewLayout.invalidateLayout()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showLangFilter" {
+            let nav = segue.destination as? UINavigationController
+            let controller = nav?.topViewController as? LibraryLanguageController
+            controller?.dismissBlock = {[unowned self] in
+                print("sdjk")
+            }
+        }
+    }
+    
     // MARK: - Refresh
     
     private(set) var isRefreshing = false // used to control text on empty table view
@@ -111,7 +121,6 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! LibraryCollectionCell
         
         let book = fetchedResultController.object(at: indexPath)
-        print(book.meta4URL)
         cell.delegate = self
         cell.imageView.image = UIImage(data: book.favIcon ?? Data())
         cell.titleLabel.text = book.title
@@ -155,7 +164,6 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
         fetchRequest.predicate = NSPredicate(format: "language.name != nil")
-////        fetchRequest.predicate = self.onlineCompoundPredicate
         
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                     managedObjectContext: self.managedObjectContext,
@@ -164,4 +172,10 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         try? controller.performFetch()
         return controller as! NSFetchedResultsController<Book>
     }()
+}
+
+extension Localized {
+    class Library {
+        
+    }
 }
