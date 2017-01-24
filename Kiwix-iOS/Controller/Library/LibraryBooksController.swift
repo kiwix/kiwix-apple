@@ -55,6 +55,7 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
             let controller = nav?.topViewController as? LibraryLanguageController
             controller?.dismissBlock = {[unowned self] in
                 print("sdjk")
+                self.reloadFetchedResultController()
             }
         }
     }
@@ -164,7 +165,7 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
         fetchRequest.predicate = NSPredicate(format: "language.name != nil")
-        
+        fetchRequest.predicate = self.predicate
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                     managedObjectContext: self.managedObjectContext,
                                                     sectionNameKeyPath: "language.name", cacheName: nil)
@@ -172,6 +173,21 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         try? controller.performFetch()
         return controller as! NSFetchedResultsController<Book>
     }()
+    
+    var predicate: NSCompoundPredicate {
+        let displayedLanguages = Language.fetch(displayed: true, context: managedObjectContext)
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [
+            NSPredicate(format: "stateRaw == 0"),
+            displayedLanguages.count > 0 ? NSPredicate(format: "language IN %@", displayedLanguages) : NSPredicate(format: "language.name != nil")
+        ])
+    }
+    
+    func reloadFetchedResultController() {
+        fetchedResultController.fetchRequest.predicate = predicate
+        NSFetchedResultsController<Book>.deleteCache(withName: fetchedResultController.cacheName)
+        try? fetchedResultController.performFetch()
+        collectionView.reloadData()
+    }
 }
 
 extension Localized {
