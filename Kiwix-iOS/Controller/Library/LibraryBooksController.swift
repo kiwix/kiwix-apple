@@ -25,6 +25,7 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = Localized.Library.title
         configureRefreshControl()
         
         if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -54,7 +55,6 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
             let nav = segue.destination as? UINavigationController
             let controller = nav?.topViewController as? LibraryLanguageController
             controller?.dismissBlock = {[unowned self] in
-                print("sdjk")
                 self.reloadFetchedResultController()
             }
         }
@@ -152,7 +152,7 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
     
     func didTapMoreButton(cell: LibraryCollectionCell) {
         guard let indexPath = collectionView.indexPath(for: cell) else {return}
-        print("\(indexPath) tapped")
+        
         
     }
     
@@ -192,6 +192,6 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
 
 extension Localized {
     class Library {
-        
+        static let title = NSLocalizedString("Library", comment: "Library, Language Filter")
     }
 }
