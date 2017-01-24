@@ -97,6 +97,7 @@ extension AlertProcedure {
             guard let url = book.url else {return}
             UIPasteboard.general.string = url.absoluteString
         }
+        alert.add(actionWithTitle: Localized.Alert.cancel, style: .cancel) { _ in }
         return alert
     }
 }
