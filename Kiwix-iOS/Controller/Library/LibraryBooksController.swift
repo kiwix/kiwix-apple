@@ -13,6 +13,13 @@ import DZNEmptyDataSet
 
 class LibraryBooksController: CoreDataCollectionBaseController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, LibraryCollectionCellDelegate {
     private(set) var itemWidth: CGFloat = 0.0
+    var isCloudTab = true {
+        didSet {
+            title = isCloudTab ? Localized.Library.cloudTitle : Localized.Library.localTitle
+            tabBarItem.image = UIImage(named: isCloudTab ? "Cloud" : "Folder")
+            tabBarItem.selectedImage = UIImage(named: isCloudTab ? "CloudFilled" : "FolderFilled")
+        }
+    }
     
     @IBAction func dismissButtonTapped(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
@@ -25,9 +32,8 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = Localized.Library.title
-        configureRefreshControl()
         
+        configureRefreshControl()
         if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.minimumInteritemSpacing = 1
             layout.minimumLineSpacing = 1
@@ -182,7 +188,7 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
     var predicate: NSCompoundPredicate {
         let displayedLanguages = Language.fetch(displayed: true, context: managedObjectContext)
         return NSCompoundPredicate(andPredicateWithSubpredicates: [
-            NSPredicate(format: "stateRaw == 0"),
+            NSPredicate(format: "stateRaw == 0 OR stateRaw == 1"),
             displayedLanguages.count > 0 ? NSPredicate(format: "language IN %@", displayedLanguages) : NSPredicate(format: "language.name != nil")
         ])
     }
@@ -197,7 +203,9 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
 
 extension Localized {
     class Library {
-        static let title = NSLocalizedString("Library", comment: "Library")
+        static let cloudTitle = NSLocalizedString("Cloud", comment: "Library, Cloud")
+        static let localTitle = NSLocalizedString("Local", comment: "Library, Local")
+        
         static let download = NSLocalizedString("Download", comment: "Library, more action sheet")
         static let copyURL = NSLocalizedString("Copy URL", comment: "Library, more action sheet")
     }
