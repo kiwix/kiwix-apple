@@ -55,8 +55,7 @@ class SearchScopeAndHistoryController: SearchBaseTableController, UITableViewDel
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sectionInfo = fetchedResultController.sections?[section] else {return 0}
-        return sectionInfo.numberOfObjects
+        return fetchedResultController.sections?[section].numberOfObjects ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

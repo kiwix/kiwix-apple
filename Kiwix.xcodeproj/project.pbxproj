@@ -34,6 +34,7 @@
 		973208261DD21E9C00EDD3DC /* CoreDataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973208251DD21E9C00EDD3DC /* CoreDataContainer.swift */; };
 		973208271DD2238B00EDD3DC /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6811C1D6F70AC00E5FA99 /* Queue.swift */; };
 		973208291DD223DB00EDD3DC /* RefreshLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973208281DD223DB00EDD3DC /* RefreshLibrary.swift */; };
+		97347BBA1E39056A00F56EE6 /* LibraryDownloadController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97347BB91E39056A00F56EE6 /* LibraryDownloadController.swift */; };
 		9734E54E1D289D060061C39B /* Welcome.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9734E54D1D289D060061C39B /* Welcome.storyboard */; };
 		9737F6211E379D0700961020 /* LibraryLanguageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9737F6201E379D0700961020 /* LibraryLanguageController.swift */; };
 		973A5C921DEA3F5600C7804C /* CoreDataTableBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A5C911DEA3F5600C7804C /* CoreDataTableBaseController.swift */; };
@@ -187,6 +188,7 @@
 		9732075B1DD136BB00EDD3DC /* CoreDataExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataExtension.swift; sourceTree = "<group>"; };
 		973208251DD21E9C00EDD3DC /* CoreDataContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataContainer.swift; sourceTree = "<group>"; };
 		973208281DD223DB00EDD3DC /* RefreshLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshLibrary.swift; sourceTree = "<group>"; };
+		97347BB91E39056A00F56EE6 /* LibraryDownloadController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryDownloadController.swift; sourceTree = "<group>"; };
 		9734E54D1D289D060061C39B /* Welcome.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Welcome.storyboard; path = "Kiwix-iOS/Storyboard/Welcome.storyboard"; sourceTree = SOURCE_ROOT; };
 		9737F6201E379D0700961020 /* LibraryLanguageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryLanguageController.swift; sourceTree = "<group>"; };
 		973A5C911DEA3F5600C7804C /* CoreDataTableBaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTableBaseController.swift; sourceTree = "<group>"; };
@@ -723,6 +725,7 @@
 			children = (
 				9705D5951E368712005292AC /* LibraryBooksController.swift */,
 				9737F6201E379D0700961020 /* LibraryLanguageController.swift */,
+				97347BB91E39056A00F56EE6 /* LibraryDownloadController.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -1097,6 +1100,7 @@
 				976C1DD81E327328005EDEC4 /* FontSizeController.swift in Sources */,
 				9771A5BD1DD269BD005F1795 /* Book+CoreDataProperties.swift in Sources */,
 				9764CBD11D806AD800072D6A /* RefreshLibControl.swift in Sources */,
+				97347BBA1E39056A00F56EE6 /* LibraryDownloadController.swift in Sources */,
 				976C1DD61E32628B005EDEC4 /* StaticWebController.swift in Sources */,
 				97C601DE1D7F342100362D4F /* HTMLHeading.swift in Sources */,
 				975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */,

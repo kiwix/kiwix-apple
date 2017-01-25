@@ -39,16 +39,20 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
         let downloadTask = DownloadTask.fetch(bookID: book.id, context: managedObjectContext)
         downloadTask?.state = .queued
         
+        if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
+        
         progresses[book.id] = 0
         if progresses.count == 1 { startTimer() }
     }
     
     func startTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { (timer) in
-            for (bookID, bytesWritten) in self.progresses {
-                guard let book = Book.fetch(bookID, context: self.managedObjectContext) else {continue}
-                book.downloadTask?.totalBytesWritten = bytesWritten
-            }
+            self.managedObjectContext.perform({ 
+                for (bookID, bytesWritten) in self.progresses {
+                    guard let book = Book.fetch(bookID, context: self.managedObjectContext) else {continue}
+                    book.downloadTask?.totalBytesWritten = bytesWritten
+                }
+            })
         })
     }
     
@@ -65,8 +69,10 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     }
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
-        guard let bookID = downloadTask.taskDescription else {return}
-        progresses[bookID] = bytesWritten
+        managedObjectContext.perform { 
+            guard let bookID = downloadTask.taskDescription else {return}
+            self.progresses[bookID] = totalBytesWritten
+        }
     }
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {

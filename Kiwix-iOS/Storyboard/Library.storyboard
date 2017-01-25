@@ -256,35 +256,6 @@
             </objects>
             <point key="canvasLocation" x="-1112.8" y="-740.7796101949026"/>
         </scene>
-        <!--Table View Controller-->
-        <scene sceneID="6ID-KU-NtG">
-            <objects>
-                <tableViewController id="hlk-pR-5X0" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="4As-10-hJy">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="GKO-mU-RLA">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GKO-mU-RLA" id="DhQ-qe-TwG">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="hlk-pR-5X0" id="t2d-pl-3Xc"/>
-                            <outlet property="delegate" destination="hlk-pR-5X0" id="uOn-D5-gXu"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="Ear-9F-grv"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="nGp-ZZ-iRU" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1622" y="-2118"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="009-Nq-Jlu">
             <objects>
@@ -380,12 +351,87 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="hlk-pR-5X0" kind="relationship" relationship="rootViewController" id="v7D-WH-08D"/>
+                        <segue destination="n7s-WF-MFQ" kind="relationship" relationship="rootViewController" id="0Ur-eF-YX9"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z5c-N8-xas" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="721" y="-2118"/>
+        </scene>
+        <!--Library Download Controller-->
+        <scene sceneID="oBK-si-54D">
+            <objects>
+                <viewController id="n7s-WF-MFQ" customClass="LibraryDownloadController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="FAn-SL-Qo0"/>
+                        <viewControllerLayoutGuide type="bottom" id="1HO-0f-jcI"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="MOG-eQ-eA6">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="VO0-cd-Axb">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="prU-fs-X0V">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <prototypes>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="0az-To-29T" detailTextLabel="P8A-Na-1yb" style="IBUITableViewCellStyleValue1" id="3r6-eO-Iy1">
+                                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3r6-eO-Iy1" id="nVN-8L-w1D">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0az-To-29T">
+                                                            <rect key="frame" x="15" y="12" width="33.5" height="20.5"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="P8A-Na-1yb">
+                                                            <rect key="frame" x="316" y="12" width="44" height="20.5"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </tableViewCellContentView>
+                                            </tableViewCell>
+                                        </prototypes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="n7s-WF-MFQ" id="rNc-cd-1e8"/>
+                                            <outlet property="delegate" destination="n7s-WF-MFQ" id="Q8f-t7-tCe"/>
+                                        </connections>
+                                    </tableView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="VO0-cd-Axb" firstAttribute="top" secondItem="MOG-eQ-eA6" secondAttribute="top" id="DDC-YV-D2a"/>
+                            <constraint firstAttribute="trailing" secondItem="VO0-cd-Axb" secondAttribute="trailing" id="LZE-Nv-V5P"/>
+                            <constraint firstItem="1HO-0f-jcI" firstAttribute="top" secondItem="VO0-cd-Axb" secondAttribute="bottom" id="pSr-O1-OGq"/>
+                            <constraint firstItem="VO0-cd-Axb" firstAttribute="leading" secondItem="MOG-eQ-eA6" secondAttribute="leading" id="w9u-si-WcW"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="nXq-yo-F6Y">
+                        <barButtonItem key="leftBarButtonItem" image="Cross" id="BM0-SY-e5W">
+                            <connections>
+                                <action selector="dismissButtonTapped:" destination="n7s-WF-MFQ" id="mbv-HZ-AaN"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="prU-fs-X0V" id="4PL-RK-6C1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Rra-HQ-Ajz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1445.5999999999999" y="-2118.8905547226386"/>
         </scene>
     </scenes>
     <resources>
