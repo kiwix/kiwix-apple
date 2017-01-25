@@ -183,7 +183,7 @@
                                     </segue>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="Downloading" id="dtT-qi-KWI">
+                            <barButtonItem image="Download" id="dtT-qi-KWI">
                                 <connections>
                                     <segue destination="slW-nF-UiF" kind="popoverPresentation" popoverAnchorBarButtonItem="dtT-qi-KWI" id="NDd-oj-RlO">
                                         <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
@@ -419,7 +419,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="nXq-yo-F6Y">
-                        <barButtonItem key="leftBarButtonItem" image="Cross" id="BM0-SY-e5W">
+                        <barButtonItem key="leftBarButtonItem" style="done" systemItem="done" id="BM0-SY-e5W">
                             <connections>
                                 <action selector="dismissButtonTapped:" destination="n7s-WF-MFQ" id="mbv-HZ-AaN"/>
                             </connections>
@@ -431,12 +431,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rra-HQ-Ajz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1445.5999999999999" y="-2118.8905547226386"/>
+            <point key="canvasLocation" x="1622" y="-2119"/>
         </scene>
     </scenes>
     <resources>
         <image name="Cross" width="16" height="16"/>
         <image name="Dots" width="16" height="16"/>
+        <image name="Download" width="16" height="16"/>
         <image name="LanguageFilter" width="16" height="16"/>
     </resources>
 </document>
