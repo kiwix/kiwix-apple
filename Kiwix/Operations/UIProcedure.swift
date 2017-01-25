@@ -91,6 +91,7 @@ extension AlertProcedure {
         let alert = AlertProcedure(presentAlertFrom: context, withPreferredStyle: .actionSheet, waitForDismissal: true)
         alert.title = book.title
         alert.add(actionWithTitle: Localized.Library.download, style: .default) { _ in
+            Network.shared.start(book: book)
             alert.finish()
         }
         alert.add(actionWithTitle: Localized.Library.copyURL, style: .default) { _ in

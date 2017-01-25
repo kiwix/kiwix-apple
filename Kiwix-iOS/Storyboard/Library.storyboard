@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="9Nq-QX-pIk">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12100" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="9Nq-QX-pIk">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12072"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -52,7 +53,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Cell" id="Aea-Om-Uku" customClass="LibraryCollectionCell" customModule="Kiwix" customModuleProvider="target">
-                                        <rect key="frame" x="28" y="20" width="320" height="66"/>
+                                        <rect key="frame" x="27.5" y="20" width="320" height="66"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
@@ -174,13 +175,22 @@
                                 <action selector="dismissButtonTapped:" destination="cDq-va-k4I" id="RgX-lM-cfN"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="LanguageFilter" id="0v8-uV-zCG">
-                            <connections>
-                                <segue destination="yzc-l3-ioG" kind="popoverPresentation" identifier="showLangFilter" popoverAnchorBarButtonItem="0v8-uV-zCG" id="hlL-SF-vTM">
-                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                </segue>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem image="LanguageFilter" id="0v8-uV-zCG">
+                                <connections>
+                                    <segue destination="yzc-l3-ioG" kind="popoverPresentation" identifier="showLangFilter" popoverAnchorBarButtonItem="0v8-uV-zCG" id="hlL-SF-vTM">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                    </segue>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Downloading" id="dtT-qi-KWI">
+                                <connections>
+                                    <segue destination="slW-nF-UiF" kind="popoverPresentation" popoverAnchorBarButtonItem="dtT-qi-KWI" id="NDd-oj-RlO">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                    </segue>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="UY0-46-c3y" id="lFH-jM-jh7"/>
@@ -246,6 +256,35 @@
             </objects>
             <point key="canvasLocation" x="-1112.8" y="-740.7796101949026"/>
         </scene>
+        <!--Table View Controller-->
+        <scene sceneID="6ID-KU-NtG">
+            <objects>
+                <tableViewController id="hlk-pR-5X0" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="4As-10-hJy">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="GKO-mU-RLA">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GKO-mU-RLA" id="DhQ-qe-TwG">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="hlk-pR-5X0" id="t2d-pl-3Xc"/>
+                            <outlet property="delegate" destination="hlk-pR-5X0" id="uOn-D5-gXu"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="Ear-9F-grv"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nGp-ZZ-iRU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1622" y="-2118"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="009-Nq-Jlu">
             <objects>
@@ -274,7 +313,7 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="dyh-6J-ZGf" detailTextLabel="d0p-hJ-zVy" style="IBUITableViewCellStyleValue1" id="PuW-jR-mYi">
-                                <rect key="frame" x="0.0" y="56" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PuW-jR-mYi" id="hQJ-5P-hy0">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -311,7 +350,7 @@
                             </connections>
                         </barButtonItem>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="ODt-wT-Y6T">
-                            <rect key="frame" x="126" y="8" width="123" height="29"/>
+                            <rect key="frame" x="126" y="7.5" width="123" height="29"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="English"/>
@@ -329,6 +368,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MZw-BB-s9z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1623" y="-1397"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="INT-af-HVz">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="slW-nF-UiF" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="AEw-P0-Tdq">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="hlk-pR-5X0" kind="relationship" relationship="rootViewController" id="v7D-WH-08D"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="z5c-N8-xas" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="721" y="-2118"/>
         </scene>
     </scenes>
     <resources>

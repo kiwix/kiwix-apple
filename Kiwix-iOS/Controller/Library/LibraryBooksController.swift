@@ -131,7 +131,7 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
             book.articleCountDescription
         ].flatMap({$0}).joined(separator: "  ")
         cell.descriptionLabel.text = book.desc
-        cell.hasPicLabel.isHidden = book.hasPic
+        cell.hasPicLabel.isHidden = !book.hasPic
         
         return cell
     }
