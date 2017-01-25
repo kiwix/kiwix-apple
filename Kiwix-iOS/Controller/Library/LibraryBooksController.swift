@@ -21,19 +21,53 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         }
     }
     
-    @IBAction func dismissButtonTapped(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
-    }
-    
     func configureItemWidth(collectionViewWidth: CGFloat) {
         let itemsPerRow = (collectionViewWidth / 320).rounded()
         itemWidth = (collectionViewWidth - 1 * (itemsPerRow - 1)) / itemsPerRow
     }
     
+    // MARK: - UIControls
+    
+    let languageFilterButton = UIBarButtonItem(image: UIImage(named: "LanguageFilter"), style: .plain, target: nil, action: nil)
+    let downlaodButton = UIBarButtonItem(image: UIImage(named: "Download"), style: .plain, target: nil, action: nil)
+    @IBAction func dismissButtonTapped(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func configureBarButtons() {
+        if isCloudTab {
+            languageFilterButton.target = self
+            languageFilterButton.action = #selector(languageFilterButtonTapped(sender:))
+            downlaodButton.target = self
+            downlaodButton.action = #selector(downloadButtonTapped(sender:))
+            navigationItem.rightBarButtonItems = [languageFilterButton, downlaodButton]
+        } else {
+            navigationItem.rightBarButtonItem = editButtonItem
+        }
+    }
+    
+    func languageFilterButtonTapped(sender: UIBarButtonItem) {
+        let controller = UIStoryboard(name: "Library", bundle: nil).instantiateViewController(withIdentifier: "LibraryLanguageNavController")
+        controller.modalPresentationStyle = .popover
+        controller.popoverPresentationController?.barButtonItem = sender
+        present(controller, animated: true, completion: nil)
+    }
+    
+    func downloadButtonTapped(sender: UIBarButtonItem) {
+        let controller = UIStoryboard(name: "Library", bundle: nil).instantiateViewController(withIdentifier: "LibraryDownloadNavController")
+        controller.modalPresentationStyle = .popover
+        controller.popoverPresentationController?.barButtonItem = sender
+        present(controller, animated: true, completion: nil)
+    }
+    
+    // MARK: - Override
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureRefreshControl()
+        configureBarButtons()
+        if isCloudTab { configureRefreshControl() }
+        
         if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.minimumInteritemSpacing = 1
             layout.minimumLineSpacing = 1
@@ -186,11 +220,15 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
     }()
     
     var predicate: NSCompoundPredicate {
-        let displayedLanguages = Language.fetch(displayed: true, context: managedObjectContext)
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [
-            NSPredicate(format: "stateRaw == 0 OR stateRaw == 1"),
-            displayedLanguages.count > 0 ? NSPredicate(format: "language IN %@", displayedLanguages) : NSPredicate(format: "language.name != nil")
-        ])
+        if isCloudTab {
+            let displayedLanguages = Language.fetch(displayed: true, context: managedObjectContext)
+            return NSCompoundPredicate(andPredicateWithSubpredicates: [
+                NSPredicate(format: "stateRaw == 0 OR stateRaw == 1"),
+                displayedLanguages.count > 0 ? NSPredicate(format: "language IN %@", displayedLanguages) : NSPredicate(format: "language.name != nil")
+            ])
+        } else {
+            return NSCompoundPredicate(andPredicateWithSubpredicates: [NSPredicate(format: "stateRaw == 2")])
+        }
     }
     
     func reloadFetchedResultController() {

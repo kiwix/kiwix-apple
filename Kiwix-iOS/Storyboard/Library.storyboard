@@ -7,7 +7,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12072"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -156,22 +155,6 @@
                                 <action selector="dismissButtonTapped:" destination="cDq-va-k4I" id="RgX-lM-cfN"/>
                             </connections>
                         </barButtonItem>
-                        <rightBarButtonItems>
-                            <barButtonItem image="LanguageFilter" id="0v8-uV-zCG">
-                                <connections>
-                                    <segue destination="yzc-l3-ioG" kind="popoverPresentation" identifier="showLangFilter" popoverAnchorBarButtonItem="0v8-uV-zCG" id="hlL-SF-vTM">
-                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                    </segue>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem image="Download" id="dtT-qi-KWI">
-                                <connections>
-                                    <segue destination="slW-nF-UiF" kind="popoverPresentation" popoverAnchorBarButtonItem="dtT-qi-KWI" id="NDd-oj-RlO">
-                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                    </segue>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="UY0-46-c3y" id="lFH-jM-jh7"/>
@@ -212,12 +195,12 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h1k-OL-RxH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1112.8" y="-1395.6521739130435"/>
+            <point key="canvasLocation" x="-1074" y="-1396"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="009-Nq-Jlu">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="yzc-l3-ioG" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="LibraryLanguageNavController" automaticallyAdjustsScrollViewInsets="NO" id="yzc-l3-ioG" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Wdw-pU-0LU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -230,7 +213,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HvZ-jb-XAs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="722" y="-1396"/>
+            <point key="canvasLocation" x="-1074" y="65"/>
         </scene>
         <!--Library Language Controller-->
         <scene sceneID="jB1-ec-I5Q">
@@ -296,12 +279,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MZw-BB-s9z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1623" y="-1397"/>
+            <point key="canvasLocation" x="-174" y="64"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="INT-af-HVz">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="slW-nF-UiF" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="LibraryDownloadNavController" automaticallyAdjustsScrollViewInsets="NO" id="slW-nF-UiF" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="AEw-P0-Tdq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -314,7 +297,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z5c-N8-xas" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="721" y="-2118"/>
+            <point key="canvasLocation" x="-1074" y="-657"/>
         </scene>
         <!--Library Download Controller-->
         <scene sceneID="oBK-si-54D">
@@ -389,13 +372,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rra-HQ-Ajz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1622" y="-2119"/>
+            <point key="canvasLocation" x="-174" y="-658"/>
         </scene>
     </scenes>
     <resources>
         <image name="Cross" width="16" height="16"/>
         <image name="Dots" width="16" height="16"/>
-        <image name="Download" width="16" height="16"/>
-        <image name="LanguageFilter" width="16" height="16"/>
     </resources>
 </document>
