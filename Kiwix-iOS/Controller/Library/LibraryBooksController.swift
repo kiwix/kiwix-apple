@@ -21,9 +21,51 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         }
     }
     
+    func configureCollectionViewLayout() {
+        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {return}
+        layout.minimumInteritemSpacing = 1
+        layout.minimumLineSpacing = 1
+    }
+    
     func configureItemWidth(collectionViewWidth: CGFloat) {
         let itemsPerRow = (collectionViewWidth / 320).rounded()
         itemWidth = (collectionViewWidth - 1 * (itemsPerRow - 1)) / itemsPerRow
+    }
+    
+    // MARK: - Override
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        configureBarButtons()
+        configureCollectionViewLayout()
+        if isCloudTab { configureRefreshControl() }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if isCloudTab { refreshAutomatically() }
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        configureItemWidth(collectionViewWidth: collectionView.frame.width)
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        configureItemWidth(collectionViewWidth: collectionView.frame.width)
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showLangFilter" {
+            let nav = segue.destination as? UINavigationController
+            let controller = nav?.topViewController as? LibraryLanguageController
+            controller?.dismissBlock = {[unowned self] in
+                self.reloadFetchedResultController()
+            }
+        }
     }
     
     // MARK: - UIControls
@@ -58,46 +100,6 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         controller.modalPresentationStyle = .popover
         controller.popoverPresentationController?.barButtonItem = sender
         present(controller, animated: true, completion: nil)
-    }
-    
-    // MARK: - Override
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        configureBarButtons()
-        if isCloudTab { configureRefreshControl() }
-        
-        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.minimumInteritemSpacing = 1
-            layout.minimumLineSpacing = 1
-        }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        refreshAutomatically()
-        collectionView.collectionViewLayout.invalidateLayout()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        configureItemWidth(collectionViewWidth: collectionView.frame.width)
-    }
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        configureItemWidth(collectionViewWidth: collectionView.frame.width)
-        collectionView.collectionViewLayout.invalidateLayout()
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showLangFilter" {
-            let nav = segue.destination as? UINavigationController
-            let controller = nav?.topViewController as? LibraryLanguageController
-            controller?.dismissBlock = {[unowned self] in
-                self.reloadFetchedResultController()
-            }
-        }
     }
     
     // MARK: - Refresh
