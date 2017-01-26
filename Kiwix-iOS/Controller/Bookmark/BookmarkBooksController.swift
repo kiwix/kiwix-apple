@@ -46,7 +46,7 @@ class BookmarkBooksController: CoreDataTableBaseController, UITableViewDelegate,
         return cell
     }
     
-    override func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
+    override func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath, animated: Bool = false) {
         guard let cell = cell as? BasicBookCell else {return}
         let book = fetchedResultController.object(at: indexPath)
         

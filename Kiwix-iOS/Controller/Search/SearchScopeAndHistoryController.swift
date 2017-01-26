@@ -64,7 +64,7 @@ class SearchScopeAndHistoryController: SearchBaseTableController, UITableViewDel
         return cell
     }
     
-    override func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
+    override func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath, animated: Bool = false) {
         guard let cell = cell as? CheckMarkBookCell else {return}
         let book = fetchedResultController.object(at: indexPath)
         

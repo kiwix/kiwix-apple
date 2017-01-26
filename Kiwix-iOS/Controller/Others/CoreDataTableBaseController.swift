@@ -20,7 +20,7 @@ import CoreData
 class CoreDataTableBaseController: UIViewController, NSFetchedResultsControllerDelegate {
     @IBOutlet weak var tableView: UITableView!
     
-    func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
+    func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath, animated: Bool = false) {
         
     }
     
@@ -49,7 +49,7 @@ class CoreDataTableBaseController: UIViewController, NSFetchedResultsControllerD
             tableView.deleteRows(at: [indexPath], with: .fade)
         case .update:
             guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) else {return}
-            configureCell(cell, atIndexPath: indexPath)
+            configureCell(cell, atIndexPath: indexPath, animated: true)
         case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
             tableView.deleteRows(at: [indexPath], with: .fade)

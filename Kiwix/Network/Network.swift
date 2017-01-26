@@ -45,7 +45,53 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
         if progresses.count == 1 { startTimer() }
     }
     
-    func startTimer() {
+    func pause(bookID: String) {
+        cancelTask(in: wifiSession, taskDescription: bookID, producingResumingData: true)
+        cancelTask(in: cellularSession, taskDescription: bookID, producingResumingData: true)
+    }
+    
+    func cancel(bookID: String) {
+        cancelTask(in: wifiSession, taskDescription: bookID, producingResumingData: false)
+        cancelTask(in: cellularSession, taskDescription: bookID, producingResumingData: false)
+    }
+    
+    private func cancelTask(in session: URLSession, taskDescription: String, producingResumingData: Bool) {
+        session.getTasksWithCompletionHandler { (_, _, downloadTasks) in
+            func updateCoreData(bookID: String) {
+                self.managedObjectContext.perform({
+                    guard let book = Book.fetch(taskDescription, context: self.managedObjectContext) else {return}
+                    if let _ = book.url {
+                        book.state = .cloud
+                    } else {
+                        self.managedObjectContext.delete(book)
+                    }
+                    
+                    guard let downloadTask = book.downloadTask else {return}
+                    if producingResumingData {
+                        downloadTask.state = .paused
+                    } else {
+                        self.managedObjectContext.delete(downloadTask)
+                    }
+                })
+            }
+            
+            if let task = downloadTasks.filter({$0.taskDescription == taskDescription}).first {
+                if producingResumingData {
+                    task.cancel(byProducingResumeData: { (data) in
+                        // save data
+                        updateCoreData(bookID: taskDescription)
+                    })
+                } else {
+                    task.cancel()
+                    updateCoreData(bookID: taskDescription)
+                }
+            } else {
+                updateCoreData(bookID: taskDescription)
+            }
+        }
+    }
+    
+    private func startTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { (timer) in
             self.managedObjectContext.perform({ 
                 for (bookID, bytesWritten) in self.progresses {

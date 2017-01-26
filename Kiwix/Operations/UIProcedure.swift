@@ -49,7 +49,7 @@ extension AlertProcedure {
             let alert = AlertProcedure(presentAlertFrom: context)
             alert.title = Localized.Setting.Feedback.Success.title
             alert.message = Localized.Setting.Feedback.Success.message
-            alert.add(actionWithTitle: Localized.Alert.ok, style: .default)
+            alert.add(actionWithTitle: Localized.Common.ok, style: .default)
             return alert
         }
         
@@ -57,7 +57,7 @@ extension AlertProcedure {
             let alert = AlertProcedure(presentAlertFrom: context)
             alert.title = Localized.Setting.Feedback.NotConfiguredError.title
             alert.message = Localized.Setting.Feedback.NotConfiguredError.message
-            alert.add(actionWithTitle: Localized.Alert.ok, style: .cancel)
+            alert.add(actionWithTitle: Localized.Common.ok, style: .cancel)
             return alert
         }
         
@@ -65,7 +65,7 @@ extension AlertProcedure {
             let alert = AlertProcedure(presentAlertFrom: context)
             alert.title = Localized.Setting.Feedback.ComposerError.title
             alert.message = message
-            alert.add(actionWithTitle: Localized.Alert.ok, style: .cancel)
+            alert.add(actionWithTitle: Localized.Common.ok, style: .cancel)
             return alert
         }
     }
@@ -83,7 +83,7 @@ extension AlertProcedure {
                 // clear launch history
             })
         }
-        alert.add(actionWithTitle: Localized.Alert.cancel, style: .cancel)
+        alert.add(actionWithTitle: Localized.Common.cancel, style: .cancel)
         return alert
     }
     
@@ -99,7 +99,7 @@ extension AlertProcedure {
             UIPasteboard.general.string = url.absoluteString
             alert.finish()
         }
-        alert.add(actionWithTitle: Localized.Alert.cancel, style: .cancel) { _ in alert.finish() }
+        alert.add(actionWithTitle: Localized.Common.cancel, style: .cancel) { _ in alert.finish() }
         return alert
     }
 }
