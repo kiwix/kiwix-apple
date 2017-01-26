@@ -76,6 +76,7 @@
 		9779C31E1D4575AE0064CC8E /* Bookmarks.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9779C3131D4575AD0064CC8E /* Bookmarks.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		977A458C1E14EA140089C596 /* Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977A458B1E14EA140089C596 /* Cloud.swift */; };
 		977AE7F91DD8F22400F1E581 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A102A1D022AD5007FC62C /* SearchBar.swift */; };
+		977B121C1E3A5E8D00981890 /* LibraryCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B121B1E3A5E8D00981890 /* LibraryCells.swift */; };
 		977B954D1DD4C40400F6F62B /* ScanLocalBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6811E1D6F70AC00E5FA99 /* ScanLocalBook.swift */; };
 		97A08C151DD263B90070D0E4 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681341D6F711A00E5FA99 /* Book.swift */; };
 		97A127C91D777CF100FB204D /* RecentSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C51D777CF100FB204D /* RecentSearchController.swift */; };
@@ -236,6 +237,7 @@
 		9779C3161D4575AE0064CC8E /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		9779C31B1D4575AE0064CC8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		977A458B1E14EA140089C596 /* Cloud.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cloud.swift; sourceTree = "<group>"; };
+		977B121B1E3A5E8D00981890 /* LibraryCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryCells.swift; sourceTree = "<group>"; };
 		9788419C1DA2FF2A00D22D3C /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		97A127C51D777CF100FB204D /* RecentSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentSearchController.swift; sourceTree = "<group>"; };
 		97A127C61D777CF100FB204D /* SearchScopeAndHistoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchScopeAndHistoryController.swift; sourceTree = "<group>"; };
@@ -442,6 +444,7 @@
 			children = (
 				971A10241D022AD5007FC62C /* BarButtonItems.swift */,
 				971A10261D022AD5007FC62C /* Cells.swift */,
+				977B121B1E3A5E8D00981890 /* LibraryCells.swift */,
 				971A10271D022AD5007FC62C /* Logo.swift */,
 				9764CBD01D806AD800072D6A /* RefreshLibControl.swift */,
 				971A102A1D022AD5007FC62C /* SearchBar.swift */,
@@ -1087,6 +1090,7 @@
 				972F81571DDBFC79008D7289 /* Search.swift in Sources */,
 				970E7F831DA0305000741290 /* WelcomeController.swift in Sources */,
 				97A1FD3B1D6F724E00A80EE2 /* stringTools.cpp in Sources */,
+				977B121C1E3A5E8D00981890 /* LibraryCells.swift in Sources */,
 				970E7F741D9DB0FC00741290 /* 1.8.xcmappingmodel in Sources */,
 				977A458C1E14EA140089C596 /* Cloud.swift in Sources */,
 				97599AA21E26D3B000BA15EF /* BookmarkBooksController.swift in Sources */,

@@ -10,9 +10,12 @@ import UIKit
 import CoreData
 
 class LibraryDownloadController: CoreDataTableBaseController, UITableViewDelegate, UITableViewDataSource {
+    
+    let progressFormatter = Progress()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        progressFormatter.kind = .file
     }
     
     @IBAction func dismissButtonTapped(_ sender: UIBarButtonItem) {
@@ -35,10 +38,18 @@ class LibraryDownloadController: CoreDataTableBaseController, UITableViewDelegat
     }
     
     override func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
+        guard let cell = cell as? DownloadTaskCell else {return}
+        
         let downloadTask = fetchedResultController.object(at: indexPath)
-        let book = downloadTask.book
-        cell.textLabel?.text = book?.title
-        cell.detailTextLabel?.text = "\(downloadTask.totalBytesWritten)"
+        guard let book = downloadTask.book else {return}
+        
+        progressFormatter.completedUnitCount = downloadTask.totalBytesWritten
+        progressFormatter.totalUnitCount = book.fileSize
+        
+        if let data = book.favIcon {cell.thumbImageView.image = UIImage(data: data)}
+        cell.titleLabel.text = book.title
+        cell.subtitleLabel.text = progressFormatter.localizedAdditionalDescription
+        cell.progressView.setProgress(Float(downloadTask.totalBytesWritten) / Float(book.fileSize), animated: true)
     }
 
     // MARK: - NSFetchedResultsController

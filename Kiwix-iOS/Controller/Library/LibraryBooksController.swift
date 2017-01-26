@@ -54,8 +54,8 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        configureItemWidth(collectionViewWidth: collectionView.frame.width)
-        collectionView.collectionViewLayout.invalidateLayout()
+        configureItemWidth(collectionViewWidth: size.width)
+        collectionView?.collectionViewLayout.invalidateLayout()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
