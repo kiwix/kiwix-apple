@@ -58,16 +58,6 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         collectionView?.collectionViewLayout.invalidateLayout()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showLangFilter" {
-            let nav = segue.destination as? UINavigationController
-            let controller = nav?.topViewController as? LibraryLanguageController
-            controller?.dismissBlock = {[unowned self] in
-                self.reloadFetchedResultController()
-            }
-        }
-    }
-    
     // MARK: - UIControls
     
     let languageFilterButton = UIBarButtonItem(image: UIImage(named: "LanguageFilter"), style: .plain, target: nil, action: nil)
@@ -89,10 +79,14 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
     }
     
     func languageFilterButtonTapped(sender: UIBarButtonItem) {
-        let controller = UIStoryboard(name: "Library", bundle: nil).instantiateViewController(withIdentifier: "LibraryLanguageNavController")
-        controller.modalPresentationStyle = .popover
-        controller.popoverPresentationController?.barButtonItem = sender
-        present(controller, animated: true, completion: nil)
+        let nav = UIStoryboard(name: "Library", bundle: nil).instantiateViewController(withIdentifier: "LibraryLanguageNavController") as! UINavigationController
+        (nav.topViewController as? LibraryLanguageController)?.dismissBlock = {[unowned self] in
+            self.reloadFetchedResultController()
+        }
+        
+        nav.modalPresentationStyle = .popover
+        nav.popoverPresentationController?.barButtonItem = sender
+        present(nav, animated: true, completion: nil)
     }
     
     func downloadButtonTapped(sender: UIBarButtonItem) {

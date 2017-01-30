@@ -31,22 +31,18 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     // MARK: - actions
     
     func startDownload(bookID: String) {
-        self.managedObjectContext.perform { 
-            guard let book = Book.fetch(bookID, context: self.managedObjectContext) else {return}
-            book.state = .local
-        }
-//        guard let url = book.url else {return}
-//        let task = (book.fileSize > 100000000 ? wifiSession: cellularSession).downloadTask(with: url)
-//        task.taskDescription = book.id
-//        task.resume()
-//        
-//        let downloadTask = DownloadTask.fetch(bookID: book.id, context: managedObjectContext)
-//        downloadTask?.state = .queued
-//        
-//        if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
-//        
-//        progresses[book.id] = 0
-//        if progresses.count == 1 { startTimer() }
+        guard let book = Book.fetch(bookID, context: managedObjectContext), let url = book.url else {return}
+        let task = (book.fileSize > 100000000 ? wifiSession: cellularSession).downloadTask(with: url)
+        task.taskDescription = book.id
+        task.resume()
+        
+        let downloadTask = DownloadTask.fetch(bookID: book.id, context: managedObjectContext)
+        downloadTask?.state = .queued
+        
+        if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
+        
+        progresses[book.id] = 0
+        if progresses.count == 1 { startTimer() }
     }
     
     func pause(bookID: String) {
@@ -131,16 +127,28 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     }
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        managedObjectContext.perform { 
-            guard let bookID = downloadTask.taskDescription,
-                let book = Book.fetch(bookID, context: self.managedObjectContext),
-                let downloadTask = DownloadTask.fetch(bookID: bookID, context: self.managedObjectContext) else {return}
-            //book.state = .local
-            self.managedObjectContext.delete(downloadTask)
-            print("finish downloading")
+        managedObjectContext.perform {
+            guard let bookID = downloadTask.taskDescription else {return}
+            if let book = Book.fetch(bookID, context: self.managedObjectContext),
+                let downloadTask = DownloadTask.fetch(bookID: bookID, context: self.managedObjectContext) {
+                book.state = .local
+                self.managedObjectContext.delete(downloadTask)
+            }
             
             self.progresses[bookID] = nil
             if self.progresses.count == 0 { self.timer?.invalidate() }
+            
+            if let docDirURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+                let fileName = {
+                    return downloadTask.response?.suggestedFilename
+                        ?? downloadTask.originalRequest?.url?.lastPathComponent
+                        ?? bookID
+                }()
+                let destination = docDirURL.appendingPathComponent(fileName)
+                try? FileManager.default.moveItem(at: location, to: destination)
+            }
+            
+            print("finish downloading")
         }
         
 
