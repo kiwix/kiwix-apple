@@ -225,7 +225,7 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         if isCloudTab {
             let displayedLanguages = Language.fetch(displayed: true, context: managedObjectContext)
             return NSCompoundPredicate(andPredicateWithSubpredicates: [
-                NSPredicate(format: "stateRaw == 0 OR stateRaw == 1"),
+                NSPredicate(format: "stateRaw == 0"),
                 displayedLanguages.count > 0 ? NSPredicate(format: "language IN %@", displayedLanguages) : NSPredicate(format: "language.name != nil")
             ])
         } else {
@@ -239,6 +239,7 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         try? fetchedResultController.performFetch()
         collectionView.reloadData()
     }
+
 }
 
 extension Localized {

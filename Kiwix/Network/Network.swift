@@ -30,19 +30,23 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     
     // MARK: - actions
     
-    func start(book: Book) {
-        guard let url = book.url else {return}
-        let task = (book.fileSize > 100000000 ? wifiSession: cellularSession).downloadTask(with: url)
-        task.taskDescription = book.id
-        task.resume()
-        
-        let downloadTask = DownloadTask.fetch(bookID: book.id, context: managedObjectContext)
-        downloadTask?.state = .queued
-        
-        if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
-        
-        progresses[book.id] = 0
-        if progresses.count == 1 { startTimer() }
+    func startDownload(bookID: String) {
+        self.managedObjectContext.perform { 
+            guard let book = Book.fetch(bookID, context: self.managedObjectContext) else {return}
+            book.state = .local
+        }
+//        guard let url = book.url else {return}
+//        let task = (book.fileSize > 100000000 ? wifiSession: cellularSession).downloadTask(with: url)
+//        task.taskDescription = book.id
+//        task.resume()
+//        
+//        let downloadTask = DownloadTask.fetch(bookID: book.id, context: managedObjectContext)
+//        downloadTask?.state = .queued
+//        
+//        if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
+//        
+//        progresses[book.id] = 0
+//        if progresses.count == 1 { startTimer() }
     }
     
     func pause(bookID: String) {
@@ -105,18 +109,23 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     // MARK: - URLSessionTaskDelegate
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        
+        guard let bookID = task.taskDescription else {return}
+        if let data = (error as? NSError)?.userInfo[NSURLSessionDownloadTaskResumeData] as? Data {
+            Preference.resumeData[bookID] = data
+            self.managedObjectContext.perform({ 
+                guard let book = Book.fetch(bookID, context: self.managedObjectContext) else {return}
+                book.downloadTask?.state = .paused
+            })
+        }
     }
     
     // MARK: - URLSessionDownloadDelegate
     
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didResumeAtOffset fileOffset: Int64, expectedTotalBytes: Int64) {
-        
-    }
-    
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
         managedObjectContext.perform { 
-            guard let bookID = downloadTask.taskDescription else {return}
+            guard let bookID = downloadTask.taskDescription,
+                let book = Book.fetch(bookID, context: self.managedObjectContext) else {return}
+            if book.state != .downloading {book.state = .downloading}
             self.progresses[bookID] = totalBytesWritten
         }
     }

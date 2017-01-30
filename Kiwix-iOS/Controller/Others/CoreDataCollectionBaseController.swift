@@ -13,14 +13,17 @@ class CoreDataCollectionBaseController: UIViewController, NSFetchedResultsContro
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    private(set) var shouldReloadCollectionView = false
+    private(set) var shouldReloadCollectionView = false {didSet{ print("shouldReload: \(shouldReloadCollectionView)")}}
     private var closures = [() -> Void]()
     
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any, at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
         case .insert:
             guard collectionView.numberOfSections > 0,
                 let newIndexPath = newIndexPath,
+                newIndexPath.section + 1 <= collectionView.numberOfSections,
                 collectionView.numberOfItems(inSection: newIndexPath.section) > 0 else {
                     shouldReloadCollectionView = true
                     break
@@ -58,6 +61,7 @@ class CoreDataCollectionBaseController: UIViewController, NSFetchedResultsContro
         OperationQueue.main.addOperation({
             if self.shouldReloadCollectionView {
                 self.collectionView.reloadData()
+                self.closures.removeAll()
             } else {
                 self.collectionView.performBatchUpdates({
                     self.closures.forEach({ $0() })
