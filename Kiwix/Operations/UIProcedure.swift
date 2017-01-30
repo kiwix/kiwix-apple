@@ -93,7 +93,7 @@ extension AlertProcedure {
         alert.title = book.title
         if book.state == .cloud {
             alert.add(actionWithTitle: Localized.Library.download, style: .default) { _ in
-                Network.shared.startDownload(bookID: book.id)
+                Network.shared.start(bookID: book.id)
                 alert.finish()
             }
             alert.add(actionWithTitle: Localized.Library.copyURL, style: .default) { _ in

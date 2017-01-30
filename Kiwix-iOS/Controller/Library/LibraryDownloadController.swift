@@ -15,6 +15,7 @@ class LibraryDownloadController: CoreDataTableBaseController, UITableViewDelegat
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = Localized.Library.download
         progressFormatter.kind = .file
     }
     
@@ -61,9 +62,7 @@ class LibraryDownloadController: CoreDataTableBaseController, UITableViewDelegat
         let cancel = UITableViewRowAction(style: .destructive, title: Localized.Common.cancel) { (action, indexPath) in
             Network.shared.cancel(bookID: book.id)
         }
-        return [
-            cancel
-        ]
+        return [cancel]
     }
 
     // MARK: - NSFetchedResultsController
