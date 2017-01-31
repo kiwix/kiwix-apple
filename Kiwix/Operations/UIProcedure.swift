@@ -9,6 +9,8 @@
 import MessageUI
 import ProcedureKit
 
+// MARK: - Feedback
+
 class FeedbackMailOperation: UIProcedure, MFMailComposeViewControllerDelegate {
     let controller = MFMailComposeViewController()
     
@@ -113,6 +115,40 @@ extension AlertProcedure {
         
         alert.add(actionWithTitle: Localized.Common.cancel, style: .cancel) { _ in alert.finish() }
         return alert
+    }
+}
+
+// MARK: - Library 
+
+extension AlertProcedure {
+    class Library {
+        static func refreshError(context: UIViewController) -> AlertProcedure {
+            assert(Thread.isMainThread, "Library refresh error alert has to be initialized in the main thread")
+            let alert = AlertProcedure(presentAlertFrom: context, withPreferredStyle: .actionSheet, waitForDismissal: true)
+            alert.title = "There was an error"
+            if book.state == .cloud {
+                alert.add(actionWithTitle: Localized.Library.download, style: .default) { _ in
+                    Network.shared.start(bookID: book.id)
+                    alert.finish()
+                }
+                alert.add(actionWithTitle: Localized.Library.copyURL, style: .default) { _ in
+                    guard let url = book.url else {return}
+                    UIPasteboard.general.string = url.absoluteString
+                    alert.finish()
+                }
+            } else if book.state == .local {
+                alert.add(actionWithTitle: "set back to cloud", style: .default) { _ in
+                    let context = AppDelegate.persistentContainer.viewContext
+                    context.perform({
+                        book.state = .cloud
+                    })
+                    alert.finish()
+                }
+            }
+            
+            alert.add(actionWithTitle: Localized.Common.cancel, style: .cancel) { _ in alert.finish() }
+            return alert
+        }
     }
 }
 

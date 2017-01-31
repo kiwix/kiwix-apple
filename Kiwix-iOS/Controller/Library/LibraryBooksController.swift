@@ -129,7 +129,8 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
                     self.collectionView.reloadEmptyDataSet()
                 }
                 
-                if let _ =  errors.first {
+                if let error = errors.first {
+                    print("dd:" + error.localizedDescription)
                     // handle error [network, xmlparse]
                 } else {
                     if operation.firstTime {
@@ -234,14 +235,4 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         collectionView.reloadData()
     }
 
-}
-
-extension Localized {
-    class Library {
-        static let cloudTitle = NSLocalizedString("Cloud", comment: "Library, Cloud")
-        static let localTitle = NSLocalizedString("Local", comment: "Library, Local")
-        
-        static let download = NSLocalizedString("Download", comment: "Library, more action sheet")
-        static let copyURL = NSLocalizedString("Copy URL", comment: "Library, more action sheet")
-    }
 }

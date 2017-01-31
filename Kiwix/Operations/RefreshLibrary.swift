@@ -30,7 +30,8 @@ fileprivate class Retrieve: NetworkDataProcedure<URLSession> {
     init() {
         let session = URLSession.shared
         let url = URL(string: "https://download.kiwix.org/library/library.xml")!
-        let request = URLRequest(url: url)
+        var request = URLRequest(url: url)
+        request.timeoutInterval = 10.0
         super.init(session: session, request: request)
         add(observer: NetworkObserver())
     }

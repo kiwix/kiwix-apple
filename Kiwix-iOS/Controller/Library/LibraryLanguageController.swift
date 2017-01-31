@@ -156,13 +156,3 @@ class LibraryLanguageController: UITableViewController, NSFetchedResultsControll
         }
     }
 }
-
-extension Localized.Library {
-    class LanguageFilter {
-        static let title = NSLocalizedString("Languages", comment: "Library, Language Filter")
-        static let all = NSLocalizedString("ALL", comment: "Library, Language Filter")
-        static let showing = NSLocalizedString("SHOWING", comment: "Library, Language Filter")
-        static let hiding = NSLocalizedString("HIDING", comment: "Library, Language Filter")
-        static let original = NSLocalizedString("Original", comment: "Library, Language Filter")
-    }
-}
