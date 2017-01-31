@@ -6,7 +6,7 @@
 //  Copyright © 2017 Chris Li. All rights reserved.
 //
 
-import UIKit
+import UserNotifications
 
 class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
     static let shared = Network()
@@ -140,6 +140,21 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
         if let identifier = session.configuration.identifier,
             let handler = backgroundEventsCompleteProcessing[identifier] {
             handler()
+        }
+        
+        if Preference.Notifications.bookDownloadFinish {
+            self.managedObjectContext.perform({ 
+                guard let book = Book.fetch(bookID, context: self.managedObjectContext) else {return}
+                let content = UNMutableNotificationContent()
+                content.categoryIdentifier = "org.kiwix.download-finished"
+                content.title = {
+                    if let title = book.title {return title + "is downloaded!"}
+                    else {return "Download task is finished!"}
+                }()
+                content.body = book.fileSizeDescription + "has been downloaded."
+                let request = UNNotificationRequest(identifier: "org.kiwix.download-finished." + bookID, content: content, trigger: nil)
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+            })
         }
     }
     

@@ -132,10 +132,16 @@ extension Preference {
             get{return Defaults[.notificationBookUpdateAvailable] ?? true}
             set{Defaults[.notificationBookUpdateAvailable] = newValue}
         }
+        
+        class var bookDownloadFinish: Bool {
+            get{return Defaults[.notificationBookDownloadFinish] ?? true}
+            set{Defaults[.notificationBookDownloadFinish] = newValue}
+        }
     }
 }
 
 extension DefaultsKeys {
     static let notificationLibraryRefresh = DefaultsKey<Bool?>("notificationLibraryRefresh")
     static let notificationBookUpdateAvailable = DefaultsKey<Bool?>("notificationBookUpdateAvailable")
+    static let notificationBookDownloadFinish = DefaultsKey<Bool?>("notificationBookDownloadFinish")
 }
