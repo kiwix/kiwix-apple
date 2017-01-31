@@ -143,17 +143,20 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
         }
         
         if Preference.Notifications.bookDownloadFinish {
-            self.managedObjectContext.perform({ 
-                guard let book = Book.fetch(bookID, context: self.managedObjectContext) else {return}
-                let content = UNMutableNotificationContent()
-                content.categoryIdentifier = "org.kiwix.download-finished"
-                content.title = {
-                    if let title = book.title {return title + "is downloaded!"}
-                    else {return "Download task is finished!"}
-                }()
-                content.body = book.fileSizeDescription + "has been downloaded."
-                let request = UNNotificationRequest(identifier: "org.kiwix.download-finished." + bookID, content: content, trigger: nil)
-                UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+            UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { (settings) in
+                guard settings.alertSetting == .enabled else {return}
+                self.managedObjectContext.perform({
+                    guard let book = Book.fetch(bookID, context: self.managedObjectContext) else {return}
+                    let content = UNMutableNotificationContent()
+                    content.categoryIdentifier = "org.kiwix.download-finished"
+                    content.title = {
+                        if let title = book.title {return title + " is downloaded!"}
+                        else {return "Download task is finished!"}
+                    }()
+                    content.body = book.fileSizeDescription + " has been transferred."
+                    let request = UNNotificationRequest(identifier: "org.kiwix.download-finished." + bookID, content: content, trigger: nil)
+                    UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+                })
             })
         }
     }

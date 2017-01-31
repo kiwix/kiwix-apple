@@ -17,6 +17,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     
+    // MARK: - App State Change
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
+        URLProtocol.registerClass(KiwixURLProtocol.self)
+        _ = Network.shared
+        return true
+    }
+    
+    // MARK: - URLSession Background Event
+    
+    func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
+        Network.shared.backgroundEventsCompleteProcessing[identifier] = completionHandler
+    }
+    
+    // MARK: Background Refresh
+    
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        
+    }
+    
+    
+    
+    
+    
     // MARK: - Continuity
     
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
@@ -86,19 +110,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: -
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        URLProtocol.registerClass(KiwixURLProtocol.self)
-        
-        _ = Network.shared
+//    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+//
+    
+    
         
         // Register notification
-        if let _ = Preference.libraryLastRefreshTime { registerNotification() }
+//        if let _ = Preference.libraryLastRefreshTime { registerNotification() }
         
         // Set background refresh interval
-        application.setMinimumBackgroundFetchInterval(86400)
-        
-        return true
-    }
+//        application.setMinimumBackgroundFetchInterval(86400)
+//        
+//        return true
+//    }
     
 //    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
 //        // Here we get what notification permission user currently allows
@@ -194,45 +218,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
     }
 
-    // MARK: - Background
     
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    }
-
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-    }
-    
-    func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
-        Network.shared.backgroundEventsCompleteProcessing[identifier] = completionHandler
-    }
-    
-    // MARK: Background Refresh
-    
-    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-//        let operation = RefreshLibraryOperation()
-//        operation.addObserver(DidFinishObserver { (operation, errors) in
-//            guard errors.count == 0 else {
-//                completionHandler(.Failed)
-//                return
-//            }
-//            guard let operation = operation as? RefreshLibraryOperation else {
-//                completionHandler(.NoData)
-//                return
-//            }
-//            
-//            let notification = UILocalNotification()
-//            notification.alertTitle = "[DEBUG] Library was refreshed"
-//            notification.alertBody = NSDate().description
-//            notification.soundName = UILocalNotificationDefaultSoundName
-//            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
-//            
-//            completionHandler(operation.hasUpdate ? .NewData : .NoData)
-//        })
-//        GlobalQueue.shared.addOperation(operation)
-    }
 
 }
 

@@ -13,7 +13,7 @@ class CoreDataCollectionBaseController: UIViewController, NSFetchedResultsContro
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    private(set) var shouldReloadCollectionView = false {didSet{ print("shouldReload: \(shouldReloadCollectionView)")}}
+    private(set) var shouldReloadCollectionView = false
     private var closures = [() -> Void]()
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,

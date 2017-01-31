@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 class LibraryTabController: UITabBarController {
     let cloud = UIStoryboard(name: "Library", bundle: nil).instantiateViewController(withIdentifier: "LibraryBookNavController") as! UINavigationController
@@ -21,4 +22,8 @@ class LibraryTabController: UITabBarController {
         viewControllers = [cloud, local]
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _ in }
+    }
 }
