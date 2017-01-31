@@ -10,6 +10,7 @@ import UIKit
 
 class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
     static let shared = Network()
+    let bookSizeThreshold: Int64 = 100000000
     private override init() {
         super.init()
         _ = wifiSession
@@ -36,16 +37,16 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     
     func start(bookID: String) {
         guard let book = Book.fetch(bookID, context: managedObjectContext), let url = book.url else {return}
-        let task = (book.fileSize > 100000000 ? wifiSession: cellularSession).downloadTask(with: url)
+        let task = (book.fileSize > bookSizeThreshold ? wifiSession: cellularSession).downloadTask(with: url)
         task.taskDescription = book.id
         task.resume()
         
-        let downloadTask = DownloadTask.fetch(bookID: book.id, context: managedObjectContext)
+        let downloadTask = DownloadTask.fetch(bookID: bookID, context: managedObjectContext)
         downloadTask?.state = .queued
         
         if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
         
-        progresses[book.id] = 0
+        progresses[bookID] = 0
         if progresses.count == 1 { startTimer() }
     }
     
@@ -74,7 +75,22 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     }
     
     func resume(bookID: String) {
+        guard let data = Preference.resumeData[bookID] else {return}
+        let bookSizeIsBig: Bool = {
+            guard let size = Book.fetch(bookID, context: self.managedObjectContext)?.fileSize else {return true}
+            return size > bookSizeThreshold
+        }()
+        let task = (bookSizeIsBig ? wifiSession : cellularSession).downloadTask(withResumeData: data)
+        task.taskDescription = bookID
+        task.resume()
         
+        let downloadTask = DownloadTask.fetch(bookID: bookID, context: managedObjectContext)
+        downloadTask?.state = .queued
+        
+        if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
+        
+        progresses[bookID] = 0
+        if progresses.count == 1 { startTimer() }
     }
     
     private func cancelTask(in session: URLSession, taskDescription: String, producingResumingData: Bool) {
@@ -118,6 +134,7 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
                 if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
             })
         }
+        print(error?.localizedDescription)
     }
     
     // MARK: - URLSessionDownloadDelegate
