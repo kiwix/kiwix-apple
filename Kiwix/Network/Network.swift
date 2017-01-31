@@ -33,6 +33,8 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
         return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }()
     
+    var backgroundEventsCompleteProcessing = [String: () -> Void]()
+    
     // MARK: - actions
     
     func start(bookID: String) {
@@ -134,7 +136,11 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
                 if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
             })
         }
-        print(error?.localizedDescription)
+        
+        if let identifier = session.configuration.identifier,
+            let handler = backgroundEventsCompleteProcessing[identifier] {
+            handler()
+        }
     }
     
     // MARK: - URLSessionDownloadDelegate
