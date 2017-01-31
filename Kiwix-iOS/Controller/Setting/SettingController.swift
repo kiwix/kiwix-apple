@@ -126,6 +126,7 @@ extension Localized {
         class Notifications {
             static let libraryRefresh = NSLocalizedString("Library Refresh", comment: "Notification Setting")
             static let bookUpdateAvailable = NSLocalizedString("Book Update Available", comment: "Notification Setting")
+            static let bookDownloadFinish = NSLocalizedString("Book Download Finish", comment: "Notification Setting")
         }
         
         class Feedback {
