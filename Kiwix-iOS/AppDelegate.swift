@@ -89,7 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         URLProtocol.registerClass(KiwixURLProtocol.self)
         
-//        Network.shared
+        Network.shared
         
         // Register notification
         if let _ = Preference.libraryLastRefreshTime { registerNotification() }

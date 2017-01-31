@@ -59,10 +59,26 @@ class LibraryDownloadController: CoreDataTableBaseController, UITableViewDelegat
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let downloadTask = fetchedResultController.object(at: indexPath)
         guard let book = downloadTask.book else {return []}
-        let cancel = UITableViewRowAction(style: .destructive, title: Localized.Common.cancel) { (action, indexPath) in
+        var actions = [UITableViewRowAction(style: .destructive, title: Localized.Common.cancel) { (action, indexPath) in
             Network.shared.cancel(bookID: book.id)
+        }]
+        if downloadTask.state == .downloading {
+            let pause = UITableViewRowAction(style: .normal, title: "Pause", handler: { _ in
+                tableView.setEditing(false, animated: true)
+                Network.shared.pause(bookID: book.id)
+            })
+            pause.backgroundColor = UIColor.orange
+            actions.append(pause)
+        } else if downloadTask.state == .paused {
+            let resume = UITableViewRowAction(style: .normal, title: "Resume", handler: { (action, indexPath) in
+                tableView.setEditing(false, animated: true)
+                Network.shared.resume(bookID: book.id)
+            })
+            resume.backgroundColor = view.tintColor
+            actions.append(resume)
         }
-        return [cancel]
+        
+        return actions
     }
 
     // MARK: - NSFetchedResultsController
