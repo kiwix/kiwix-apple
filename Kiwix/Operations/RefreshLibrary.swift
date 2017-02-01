@@ -26,7 +26,7 @@ class RefreshLibraryOperation: GroupProcedure {
     }
 }
 
-fileprivate class Retrieve: NetworkDataProcedure<URLSession> {
+private class Retrieve: NetworkDataProcedure<URLSession> {
     init() {
         let session = URLSession.shared
         let url = URL(string: "https://download.kiwix.org/library/library.xml")!
@@ -37,7 +37,7 @@ fileprivate class Retrieve: NetworkDataProcedure<URLSession> {
     }
 }
 
-fileprivate class Process: Procedure, InputProcedure, XMLParserDelegate {
+private class Process: Procedure, InputProcedure, XMLParserDelegate {
     var input: Pending<HTTPPayloadResponse<Data>> = .pending
     private let context: NSManagedObjectContext
     
@@ -79,7 +79,7 @@ fileprivate class Process: Procedure, InputProcedure, XMLParserDelegate {
         finish()
     }
     
-    fileprivate func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?,
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?,
                 qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
         guard elementName == "book", let id = attributeDict["id"] else {return}
         if !storeBookIDs.contains(id) {
@@ -91,7 +91,7 @@ fileprivate class Process: Procedure, InputProcedure, XMLParserDelegate {
         memoryBookIDs.insert(id)
     }
     
-    fileprivate func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
+    func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
         finish(withError: parseError)
     }
 }

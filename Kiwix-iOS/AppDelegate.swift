@@ -16,6 +16,9 @@ import ProcedureKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    class var mainController: MainController {return ((UIApplication.shared.delegate as! AppDelegate)
+        .window?.rootViewController as! UINavigationController)
+        .topViewController as! MainController}
     
     // MARK: - App State Change
     
@@ -23,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         URLProtocol.registerClass(KiwixURLProtocol.self)
         _ = Network.shared
         _ = AppNotification.shared
+        application.setMinimumBackgroundFetchInterval(86400)
         return true
     }
     
@@ -35,7 +39,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: Background Refresh
     
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        
+        let refresh = RefreshLibraryOperation()
+        refresh.addDidFinishBlockObserver { (operation, errors) in
+            guard Preference.Notifications.libraryRefresh else {return}
+            if let _ = errors.first {
+                completionHandler(.failed)
+            } else {
+                OperationQueue.main.addOperation({ 
+                    AppNotification.shared.libraryRefreshed(completion: { 
+                        completionHandler(operation.hasUpdate ? .newData : .noData)
+                    })
+                })
+            }
+        }
+        GlobalQueue.shared.add(operation: refresh)
     }
     
     

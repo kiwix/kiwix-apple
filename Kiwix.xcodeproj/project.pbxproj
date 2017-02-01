@@ -218,9 +218,6 @@
 		9788419C1DA2FF2A00D22D3C /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		978C9DBF1E4245B60078BFF7 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		978C9DC11E4245B60078BFF7 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
-		978C9DD31E4245FD0078BFF7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
-		978C9DD41E4245FD0078BFF7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		978C9DD51E4245FD0078BFF7 /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		97A127C51D777CF100FB204D /* RecentSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentSearchController.swift; sourceTree = "<group>"; };
 		97A127C61D777CF100FB204D /* SearchScopeAndHistoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchScopeAndHistoryController.swift; sourceTree = "<group>"; };
 		97A127C81D777CF100FB204D /* SearchResultController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultController.swift; sourceTree = "<group>"; };
@@ -597,24 +594,6 @@
 			name = Properties;
 			sourceTree = "<group>";
 		};
-		978C9DD01E4245FD0078BFF7 /* iOSExtension */ = {
-			isa = PBXGroup;
-			children = (
-				978C9DD11E4245FD0078BFF7 /* ArticlePreview */,
-			);
-			path = iOSExtension;
-			sourceTree = "<group>";
-		};
-		978C9DD11E4245FD0078BFF7 /* ArticlePreview */ = {
-			isa = PBXGroup;
-			children = (
-				978C9DD21E4245FD0078BFF7 /* MainInterface.storyboard */,
-				978C9DD41E4245FD0078BFF7 /* Info.plist */,
-				978C9DD51E4245FD0078BFF7 /* NotificationViewController.swift */,
-			);
-			path = ArticlePreview;
-			sourceTree = "<group>";
-		};
 		97A1FD3C1D6F728200A80EE2 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
@@ -630,7 +609,6 @@
 		97A2AB7F1C1B80FF00052E74 = {
 			isa = PBXGroup;
 			children = (
-				978C9DD01E4245FD0078BFF7 /* iOSExtension */,
 				973BCD1F1CEB412E00F10B44 /* Shared */,
 				973BCCE41CEB3EDE00F10B44 /* iOS */,
 				97E609F21D103DED00EBCB9D /* iOSWidgets */,
@@ -1021,17 +999,6 @@
 			targetProxy = 9779C31C1D4575AE0064CC8E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		978C9DD21E4245FD0078BFF7 /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				978C9DD31E4245FD0078BFF7 /* Base */,
-			);
-			name = MainInterface.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		9779C3201D4575AE0064CC8E /* Debug */ = {

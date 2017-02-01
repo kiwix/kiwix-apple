@@ -114,7 +114,7 @@ class Localized {
         static let version = NSLocalizedString("Kiwix for iOS v%@", comment: "Setting table footer")
         
         class Notifications {
-            static let libraryRefresh = NSLocalizedString("Library Refresh", comment: "Notification Setting")
+            static let libraryRefresh = NSLocalizedString("Background Library Refresh", comment: "Notification Setting")
             static let bookUpdateAvailable = NSLocalizedString("Book Update Available", comment: "Notification Setting")
             static let bookDownloadFinish = NSLocalizedString("Book Download Finish", comment: "Notification Setting")
         }

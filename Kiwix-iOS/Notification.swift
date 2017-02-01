@@ -17,28 +17,44 @@ class AppNotification: NSObject, UNUserNotificationCenterDelegate {
     }
     
     let downloadFinishIdentifier = "org.kiwix.download-finished"
+    let refreshLibraryIdentifier = "org.kiwix.library-refreshed"
     
     func requestAuth() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _ in }
     }
     
     func registerActions() {
-        let downloadFinish = UNNotificationCategory(identifier: downloadFinishIdentifier, actions: [
+        let bookDownload = UNNotificationCategory(identifier: downloadFinishIdentifier, actions: [
             UNNotificationAction(identifier: "loadMain", title: "Open Main Page", options: .foreground)
         ], intentIdentifiers: [])
-        UNUserNotificationCenter.current().setNotificationCategories([downloadFinish])
+        let refreshLibrary = UNNotificationCategory(identifier: refreshLibraryIdentifier, actions: [
+            UNNotificationAction(identifier: "openLibrary", title: "Open Library", options: .foreground)
+        ], intentIdentifiers: [])
+        UNUserNotificationCenter.current().setNotificationCategories([bookDownload, refreshLibrary])
     }
     
     func downloadFinished(bookID: String, bookTitle: String, fileSizeDescription: String) {
         UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { (settings) in
             guard settings.alertSetting == .enabled else {return}
             let content = UNMutableNotificationContent()
-            content.categoryIdentifier = "org.kiwix.download-finished"
+            content.categoryIdentifier = self.downloadFinishIdentifier
             content.title = bookTitle + " is downloaded!"
             content.body = fileSizeDescription + " has been transferred."
-            content.categoryIdentifier = self.downloadFinishIdentifier
             let request = UNNotificationRequest(identifier: [self.downloadFinishIdentifier, bookID].joined(separator: "."), content: content, trigger: nil)
             UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+        })
+    }
+    
+    func libraryRefreshed(completion: @escaping () -> Void) {
+        UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { (settings) in
+            guard settings.alertSetting == .enabled else {return}
+            let content = UNMutableNotificationContent()
+            content.categoryIdentifier = self.refreshLibraryIdentifier
+            content.title = "Library was refreshed successfully"
+            let request = UNNotificationRequest(identifier: self.refreshLibraryIdentifier, content: content, trigger: nil)
+            UNUserNotificationCenter.current().add(request, withCompletionHandler: { (error) in
+                completion()
+            })
         })
     }
     
@@ -53,8 +69,14 @@ class AppNotification: NSObject, UNUserNotificationCenterDelegate {
         if requestIdentifier.hasPrefix(downloadFinishIdentifier) {
             let bookID = requestIdentifier.replacingOccurrences(of: downloadFinishIdentifier + ".", with: "")
             if response.actionIdentifier == UNNotificationDefaultActionIdentifier || response.actionIdentifier == "loadMain" {
-                GlobalQueue.shared.add(articleLoad: ArticleLoadOperation(bookID: bookID))
+                let load = ArticleLoadOperation(bookID: bookID)
+                load.addDidFinishBlockObserver(block: { (procedure, errors) in
+                    completionHandler()
+                })
+                GlobalQueue.shared.add(articleLoad: load)
             }
+        } else if requestIdentifier.hasPrefix(downloadFinishIdentifier) {
+            AppDelegate.mainController.didTapLibraryButton()
         }
     }
 }
