@@ -95,6 +95,11 @@ class Localized {
             static let original = NSLocalizedString("Original", comment: "Library, Language Filter")
         }
         
+        class LanguageFilterAlert {
+            static let title = NSLocalizedString("Filter Languages?", comment: "Library, Language Filter Alert")
+            static let message = NSLocalizedString("Would you like to hide books", comment: "Library, Language Filter Alert")
+        }
+        
         class RefreshError {
             static let title = NSLocalizedString("Unable to refresh library", comment: "Library, Refresh Error")
             static let subtitle = NSLocalizedString("Please try again later", comment: "Library, Refresh Error")

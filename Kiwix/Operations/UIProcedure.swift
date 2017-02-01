@@ -122,12 +122,34 @@ extension AlertProcedure {
 
 extension AlertProcedure {
     class Library {
+        static func languageFilter(context: UIViewController) -> AlertProcedure {
+            let preferredLangCodes = Locale.preferredLangCodes
+            let languages = Language.fetchAll(AppDelegate.persistentContainer.viewContext)
+            let alert = AlertProcedure(presentAlertFrom: context)
+            alert.title = Localized.Library.LanguageFilterAlert.title
+            alert.message = {
+                let lang = preferredLangCodes.map({ Locale.current.localizedString(forIdentifier: $0) }).flatMap({$0})
+                return "You might understand " + lang.joined(separator: ", ") + ". Would you like to hide books not in these languages?"
+            }()
+            alert.add(actionWithTitle: "Hide Other Languages", style: .default) { (procedure, action) in
+                languages.forEach({ $0.isDisplayed = preferredLangCodes.contains($0.code) })
+            }
+            alert.add(actionWithTitle: "Show All Languages", style: .default) { (procedure, action) in
+                languages.forEach({$0.isDisplayed = true})
+            }
+            alert.addDidFinishBlockObserver { _ in
+                let managedObjectContext = AppDelegate.persistentContainer.viewContext
+                if managedObjectContext.hasChanges { try? managedObjectContext.save() }
+                (context as? LibraryBooksController)?.reloadFetchedResultController()
+            }
+            return alert
+        }
+        
         static func refreshError(context: UIViewController, message: String) -> AlertProcedure {
-            assert(Thread.isMainThread, "Library refresh error alert has to be initialized in the main thread")
-            let alert = AlertProcedure(presentAlertFrom: context, withPreferredStyle: .actionSheet, waitForDismissal: true)
+            let alert = AlertProcedure(presentAlertFrom: context)
             alert.title = Localized.Library.RefreshError.title
             alert.message = message
-            alert.add(actionWithTitle: Localized.Common.ok, style: .cancel) { _ in alert.finish() }
+            alert.add(actionWithTitle: Localized.Common.ok)
             return alert
         }
     }

@@ -130,9 +130,9 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
                 }
                 
                 if let error = errors.first {
-                    print("dd:" + error.localizedDescription)
-                    // handle error [network, xmlparse]
+                    UIQueue.shared.add(operation: AlertProcedure.Library.refreshError(context: self, message: error.localizedDescription))
                 } else {
+                    UIQueue.shared.add(operation: AlertProcedure.Library.languageFilter(context: self))
                     if operation.firstTime {
                         //self.showLanguageFilterAlert()
                         //self.configureNavBarButtons()
