@@ -23,6 +23,6 @@ class LibraryTabController: UITabBarController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        AppNotification.shared.register()
+        AppNotification.shared.requestAuth()
     }
 }

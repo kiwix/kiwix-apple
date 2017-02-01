@@ -10,10 +10,23 @@ import UserNotifications
 
 class AppNotification: NSObject, UNUserNotificationCenterDelegate {
     static let shared = AppNotification()
-    private override init() {}
+    private override init() {
+        super.init()
+        UNUserNotificationCenter.current().delegate = self
+        registerActions()
+    }
     
-    func register() {
+    let downloadFinishIdentifier = "org.kiwix.download-finished"
+    
+    func requestAuth() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _ in }
+    }
+    
+    func registerActions() {
+        let downloadFinish = UNNotificationCategory(identifier: downloadFinishIdentifier, actions: [
+            UNNotificationAction(identifier: "loadMain", title: "Open Main Page", options: .foreground)
+        ], intentIdentifiers: [])
+        UNUserNotificationCenter.current().setNotificationCategories([downloadFinish])
     }
     
     func downloadFinished(bookID: String, bookTitle: String, fileSizeDescription: String) {
@@ -23,7 +36,8 @@ class AppNotification: NSObject, UNUserNotificationCenterDelegate {
             content.categoryIdentifier = "org.kiwix.download-finished"
             content.title = bookTitle + " is downloaded!"
             content.body = fileSizeDescription + " has been transferred."
-            let request = UNNotificationRequest(identifier: "org.kiwix.download-finished." + bookID, content: content, trigger: nil)
+            content.categoryIdentifier = self.downloadFinishIdentifier
+            let request = UNNotificationRequest(identifier: [self.downloadFinishIdentifier, bookID].joined(separator: "."), content: content, trigger: nil)
             UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
         })
     }
@@ -34,5 +48,13 @@ class AppNotification: NSObject, UNUserNotificationCenterDelegate {
         completionHandler([.alert, .sound])
     }
         
-    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let requestIdentifier = response.notification.request.identifier
+        if requestIdentifier.hasPrefix(downloadFinishIdentifier) {
+            let bookID = requestIdentifier.replacingOccurrences(of: downloadFinishIdentifier + ".", with: "")
+            if response.actionIdentifier == UNNotificationDefaultActionIdentifier || response.actionIdentifier == "loadMain" {
+                GlobalQueue.shared.add(articleLoad: ArticleLoadOperation(bookID: bookID))
+            }
+        }
+    }
 }

@@ -32,17 +32,17 @@ class GlobalQueue: ProcedureQueue {
     }
     
     private weak var articleLoadOperation: ArticleLoadOperation?
-    func add(articleLoadOperation: ArticleLoadOperation) {
+    func add(articleLoad operation: ArticleLoadOperation) {
         if let scanOperation = scanOperation {
-            articleLoadOperation.addDependency(scanOperation)
+            operation.addDependency(scanOperation)
         }
         
         if let articleLoadOperation = self.articleLoadOperation {
             articleLoadOperation.addDependency(articleLoadOperation)
         }
         
-        add(operation: articleLoadOperation)
-        self.articleLoadOperation = articleLoadOperation
+        add(operation: operation)
+        self.articleLoadOperation = operation
     }
 }
 

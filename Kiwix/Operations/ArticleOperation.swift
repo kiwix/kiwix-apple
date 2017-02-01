@@ -78,7 +78,10 @@ class ArticleLoadOperation: Procedure {
         
         OperationQueue.main.addOperation {
             _ = main.searchBar.resignFirstResponder()
-            main.presentedViewController?.dismiss(animated: self.animated, completion: nil)
+            
+            main.presentedViewController?.dismiss(animated: true, completion: { 
+                main.presentedViewController?.dismiss(animated: true, completion: nil)
+            })
             main.hideWelcome()
             
             if main.traitCollection.horizontalSizeClass == .compact {

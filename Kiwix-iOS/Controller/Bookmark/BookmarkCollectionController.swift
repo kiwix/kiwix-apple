@@ -147,7 +147,7 @@ class BookmarkCollectionController: CoreDataCollectionBaseController, UICollecti
             collectionView.deselectItem(at: indexPath, animated: true)
             let article = fetchedResultController.object(at: indexPath)
             guard let url = article.url else {return}
-            GlobalQueue.shared.add(articleLoadOperation: ArticleLoadOperation(url: url))
+            GlobalQueue.shared.add(articleLoad: ArticleLoadOperation(url: url))
         }
     }
     

@@ -98,8 +98,7 @@ class SearchResultController: SearchBaseTableController, UITableViewDataSource, 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let result = searchResults[indexPath.row]
-        let operation = ArticleLoadOperation(bookID: result.bookID, articleTitle: result.title)
-        GlobalQueue.shared.add(articleLoadOperation: operation)
+        GlobalQueue.shared.add(articleLoad: ArticleLoadOperation(bookID: result.bookID, articleTitle: result.title))
         Preference.RecentSearch.add(term: searchText)
     }
 

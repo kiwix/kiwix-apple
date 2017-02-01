@@ -100,8 +100,7 @@ class SearchScopeAndHistoryController: SearchBaseTableController, UITableViewDel
         tableView.deselectRow(at: indexPath, animated: true)
         
         let book = fetchedResultController.object(at: indexPath)
-        let operation = ArticleLoadOperation(bookID: book.id)
-        GlobalQueue.shared.add(articleLoadOperation: operation)
+        GlobalQueue.shared.add(articleLoad: ArticleLoadOperation(bookID: book.id))
     }
     
     // MARK: - DZNEmptyDataSet
