@@ -11,7 +11,6 @@ import UIKit
 class NotificationSettingController: UITableViewController {
 
     let rows = [[Localized.Setting.Notifications.libraryRefresh],
-                [Localized.Setting.Notifications.bookUpdateAvailable],
                 [Localized.Setting.Notifications.bookDownloadFinish]]
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -31,9 +30,9 @@ class NotificationSettingController: UITableViewController {
         switch switchView.tag {
         case 0:
             switchView.isOn = Preference.Notifications.libraryRefresh
+//        case 1:
+//            switchView.isOn = Preference.Notifications.bookUpdateAvailable
         case 1:
-            switchView.isOn = Preference.Notifications.bookUpdateAvailable
-        case 2:
             switchView.isOn = Preference.Notifications.bookDownloadFinish
         default:
             break
@@ -49,9 +48,9 @@ class NotificationSettingController: UITableViewController {
         switch switchView.tag {
         case 0:
             Preference.Notifications.libraryRefresh = !Preference.Notifications.libraryRefresh
+//        case 1:
+//            Preference.Notifications.bookUpdateAvailable = !Preference.Notifications.bookUpdateAvailable
         case 1:
-            Preference.Notifications.bookUpdateAvailable = !Preference.Notifications.bookUpdateAvailable
-        case 2:
             Preference.Notifications.bookDownloadFinish = !Preference.Notifications.bookDownloadFinish
         default:
             break
