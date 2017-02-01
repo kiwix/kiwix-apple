@@ -89,33 +89,7 @@ extension AlertProcedure {
         return alert
     }
     
-    static func bookMore(context: UIViewController, book: Book) -> AlertProcedure {
-        assert(Thread.isMainThread, "The more")
-        let alert = AlertProcedure(presentAlertFrom: context, withPreferredStyle: .actionSheet, waitForDismissal: true)
-        alert.title = book.title
-        if book.state == .cloud {
-            alert.add(actionWithTitle: Localized.Library.download, style: .default) { _ in
-                Network.shared.start(bookID: book.id)
-                alert.finish()
-            }
-            alert.add(actionWithTitle: Localized.Library.copyURL, style: .default) { _ in
-                guard let url = book.url else {return}
-                UIPasteboard.general.string = url.absoluteString
-                alert.finish()
-            }
-        } else if book.state == .local {
-            alert.add(actionWithTitle: "set back to cloud", style: .default) { _ in
-                let context = AppDelegate.persistentContainer.viewContext
-                context.perform({
-                    book.state = .cloud
-                })
-                alert.finish()
-            }
-        }
-        
-        alert.add(actionWithTitle: Localized.Common.cancel, style: .cancel) { _ in alert.finish() }
-        return alert
-    }
+    
 }
 
 // MARK: - Library 
@@ -123,6 +97,7 @@ extension AlertProcedure {
 extension AlertProcedure {
     class Library {
         static func languageFilter(context: UIViewController) -> AlertProcedure {
+            assert(Thread.isMainThread)
             let preferredLangCodes = Locale.preferredLangCodes
             let languages = Language.fetchAll(AppDelegate.persistentContainer.viewContext)
             let alert = AlertProcedure(presentAlertFrom: context)
@@ -145,7 +120,34 @@ extension AlertProcedure {
             return alert
         }
         
+        static func more(context: UIViewController, book: Book) -> AlertProcedure {
+            assert(Thread.isMainThread)
+            let alert = AlertProcedure(presentAlertFrom: context, withPreferredStyle: .actionSheet, waitForDismissal: true)
+            alert.title = book.title
+            alert.message = book.desc
+            if book.state == .cloud {
+                alert.add(actionWithTitle: Localized.Library.download, style: .default) { _ in
+                    Network.shared.start(bookID: book.id)
+                    alert.finish()
+                }
+                alert.add(actionWithTitle: Localized.Library.copyURL, style: .default) { _ in
+                    guard let url = book.url else {return}
+                    UIPasteboard.general.string = url.absoluteString
+                    alert.finish()
+                }
+            } else if book.state == .local {
+                alert.add(actionWithTitle: "Remove", style: .default) { _ in
+                    guard let fileURL = ZimMultiReader.shared.readers[book.id]?.fileURL else {return}
+                    try? FileManager.default.removeItem(at: fileURL)
+                }
+            }
+            
+            alert.add(actionWithTitle: Localized.Common.cancel, style: .cancel) { _ in alert.finish() }
+            return alert
+        }
+        
         static func refreshError(context: UIViewController, message: String) -> AlertProcedure {
+            assert(Thread.isMainThread)
             let alert = AlertProcedure(presentAlertFrom: context)
             alert.title = Localized.Library.RefreshError.title
             alert.message = message

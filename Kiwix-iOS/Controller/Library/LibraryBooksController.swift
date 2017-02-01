@@ -74,7 +74,7 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
             downlaodButton.action = #selector(downloadButtonTapped(sender:))
             navigationItem.rightBarButtonItems = [languageFilterButton, downlaodButton]
         } else {
-            navigationItem.rightBarButtonItem = editButtonItem
+            // navigationItem.rightBarButtonItem = editButtonItem
         }
     }
     
@@ -187,7 +187,7 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         guard let indexPath = collectionView.indexPath(for: cell) else {return}
         let book = fetchedResultController.object(at: indexPath)
         
-        let procedure = AlertProcedure.bookMore(context: self, book: book)
+        let procedure = AlertProcedure.Library.more(context: self, book: book)
         procedure.alert.modalPresentationStyle = .popover
         procedure.alert.popoverPresentationController?.sourceView = cell.moreButton
         procedure.alert.popoverPresentationController?.sourceRect = cell.moreButton.bounds
