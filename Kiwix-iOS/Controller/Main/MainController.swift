@@ -35,6 +35,8 @@ class MainController: UIViewController {
         }
     }
     
+    // MARK: - Overrides
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -88,6 +90,12 @@ class MainController: UIViewController {
         if let article = object as? Article {
             buttons.bookmark.isHighlighted = article.isBookmarked
         }
+    }
+    
+    func dismissPresentedControllers() {
+        presentedViewController?.dismiss(animated: true, completion: { 
+            self.presentedViewController?.dismiss(animated: true, completion: nil)
+        })
     }
 }
 

@@ -30,13 +30,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    // MARK: - URLSession Background Event
-    
-    func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
-        Network.shared.backgroundEventsCompleteProcessing[identifier] = completionHandler
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        ZimMultiReader.shared.startScan()
     }
     
-    // MARK: Background Refresh
+    func applicationWillResignActive(_ application: UIApplication) {
+        let type = "org.kiwix.recent"
+        let previousIndex: Int? = {
+            guard let recent = UIApplication.shared.shortcutItems?.filter({$0.type == type}).first else {return nil}
+            return UIApplication.shared.shortcutItems?.index(of: recent)
+        }()
+        
+        if let index = previousIndex { UIApplication.shared.shortcutItems?.remove(at: index) }
+        
+        if let article = AppDelegate.mainController.article,
+            let title = article.title, let url = article.url?.absoluteString {
+            let item = UIMutableApplicationShortcutItem(type: type,
+                                                        localizedTitle: title,
+                                                        localizedSubtitle: nil,
+                                                        icon: UIApplicationShortcutIcon(templateImageName: "Recent"),
+                                                        userInfo: ["URL": url])
+            if let index = previousIndex {
+                UIApplication.shared.shortcutItems?.insert(item, at: index)
+            } else {
+                UIApplication.shared.shortcutItems?.append(item)
+            }
+        }
+    }
+    
+    func applicationWillTerminate(_ application: UIApplication) {
+        self.saveContext()
+    }
+    
+    // MARK: - Background
     
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         let refresh = RefreshLibraryOperation()
@@ -55,18 +81,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GlobalQueue.shared.add(operation: refresh)
     }
     
+    func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
+        Network.shared.backgroundEventsCompleteProcessing[identifier] = completionHandler
+    }
     
+    // MARK: - Quick Actions
     
-    
-    
-    // MARK: - Continuity
-    
-    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
-        switch userActivity.activityType {
-        case CSSearchableItemActionType:
-            return true
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        switch shortcutItem.type {
+        case "org.kiwix.search":
+            AppDelegate.mainController.dismissPresentedControllers()
+            _ = AppDelegate.mainController.searchBar.becomeFirstResponder()
+            completionHandler(true)
+        case "org.kiwix.bookmarks":
+            if AppDelegate.mainController.searchBar.isFirstResponder {_ = AppDelegate.mainController.searchBar.resignFirstResponder()}
+            AppDelegate.mainController.showBookmarkController()
+            completionHandler(true)
+        case "org.kiwix.recent":
+            guard let urlString = shortcutItem.userInfo?["URL"] as? String,
+                let url = URL(string: urlString) else {completionHandler(false); return}
+            GlobalQueue.shared.add(articleLoad: ArticleLoadOperation(url: url))
+            completionHandler(true)
         default:
-            return false
+            completionHandler(false)
+            return
         }
     }
     
@@ -82,6 +120,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let context = persistentContainer.viewContext
         if context.hasChanges { try? context.save() }
     }
+    
+    
+
+    
+    
+    
+    
+    // MARK: - Continuity
+    
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        switch userActivity.activityType {
+        case CSSearchableItemActionType:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    
     
     
     
@@ -146,11 +203,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        // Here we get what notification permission user currently allows
 //    }
     
-    func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        // Saves changes in the application's managed object context before the application terminates.
-        self.saveContext()
-    }
+
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
         guard url.isKiwixURL else {return false}
@@ -172,14 +225,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Active
     
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(AppDelegate.recordActiveSession), userInfo: nil, repeats: false)
-        ZimMultiReader.shared.startScan()
-        removeAllDynamicShortcutItems()
-    }
+//    func applicationDidBecomeActive(_ application: UIApplication) {
+//        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+//        Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(AppDelegate.recordActiveSession), userInfo: nil, repeats: false)
+//        ZimMultiReader.shared.startScan()
+//        removeAllDynamicShortcutItems()
+//    }
 
-    func applicationWillResignActive(_ application: UIApplication) {
+//    func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
         
@@ -188,7 +241,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        if let article = mainController?.article {
 //            addRecentArticleShortCutItem(article)
 //        }
-    }
+//    }
     
     //    class func updateApplicationIconBadgeNumber() {
     //        guard let settings = UIApplication.sharedApplication().currentUserNotificationSettings() else {return}
@@ -216,25 +269,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-//        switch shortcutItem.type {
-//        case "org.kiwix.search":
-//            self.mainController?.showSearch(animated: false)
-//            completionHandler(true)
-//        case "org.kiwix.bookmarks":
-//            self.mainController?.showBookmarkController()
-//            completionHandler(true)
+//    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
 //        case recentShortcutTypeString:
-//            guard let urlString = shortcutItem.userInfo?["URL"] as? String,
-//                let url = URL(string: urlString) else {completionHandler(false); return}
-////            let operation = ArticleLoadOperation(url: url)
-////            GlobalQueue.shared.add(load: operation)
+//            let operation = ArticleLoadOperation(url: url)
+//            GlobalQueue.shared.add(load: operation)
 //            completionHandler(true)
 //        default:
 //            completionHandler(false)
 //            return
 //        }
-    }
+//    }
 
     
 
