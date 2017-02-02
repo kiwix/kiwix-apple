@@ -145,8 +145,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     
-    private let recentShortcutTypeString = "org.kiwix.recent"
-    
     func recordActiveSession() {
         Preference.activeUseHistory.append(Date()) 
     }
@@ -189,19 +187,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //
     
     
-        
-        // Register notification
-//        if let _ = Preference.libraryLastRefreshTime { registerNotification() }
-        
-        // Set background refresh interval
-//        application.setMinimumBackgroundFetchInterval(86400)
-//        
-//        return true
-//    }
-    
-//    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
-//        // Here we get what notification permission user currently allows
-//    }
     
 
     
@@ -222,65 +207,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            return false
 //        }
 //    }
-    
-    // MARK: - Active
-    
-//    func applicationDidBecomeActive(_ application: UIApplication) {
-//        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-//        Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(AppDelegate.recordActiveSession), userInfo: nil, repeats: false)
-//        ZimMultiReader.shared.startScan()
-//        removeAllDynamicShortcutItems()
-//    }
-
-//    func applicationWillResignActive(_ application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-        
-        //UIApplication.updateApplicationIconBadgeNumber()
-        
-//        if let article = mainController?.article {
-//            addRecentArticleShortCutItem(article)
-//        }
-//    }
-    
-    //    class func updateApplicationIconBadgeNumber() {
-    //        guard let settings = UIApplication.sharedApplication().currentUserNotificationSettings() else {return}
-    //        guard settings.types.contains(UIUserNotificationType.Badge) else {return}
-    //        //UIApplication.sharedApplication().applicationIconBadgeNumber = downloader.taskCount ?? 0
-    //    }
-    
-    // MARK: - Shotcut Items
-    
-    func addRecentArticleShortCutItem(_ article: Article) {
-        guard let title = article.title, let url = article.url?.absoluteString else {return}
-        let icon = UIApplicationShortcutIcon(templateImageName: "Recent")
-        let item = UIMutableApplicationShortcutItem(type: recentShortcutTypeString,
-                                                    localizedTitle: title, localizedSubtitle: "",
-                                                    icon: icon,
-                                                    userInfo: ["URL": url])
-        UIApplication.shared.shortcutItems?.append(item)
-    }
-    
-    func removeAllDynamicShortcutItems() {
-        guard let items = UIApplication.shared.shortcutItems?.filter({$0.type == recentShortcutTypeString}) else {return}
-        for item in items {
-            guard let index = UIApplication.shared.shortcutItems?.index(of: item) else {continue}
-            UIApplication.shared.shortcutItems?.remove(at: index)
-        }
-    }
-    
-//    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-//        case recentShortcutTypeString:
-//            let operation = ArticleLoadOperation(url: url)
-//            GlobalQueue.shared.add(load: operation)
-//            completionHandler(true)
-//        default:
-//            completionHandler(false)
-//            return
-//        }
-//    }
-
-    
 
 }
 
