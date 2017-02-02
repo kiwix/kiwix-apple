@@ -31,9 +31,15 @@ private class Retrieve: NetworkDataProcedure<URLSession> {
         let session = URLSession.shared
         let url = URL(string: "https://download.kiwix.org/library/library.xml")!
         var request = URLRequest(url: url)
-        request.timeoutInterval = 10.0
+        request.timeoutInterval = 30.0
         super.init(session: session, request: request)
-        add(observer: NetworkObserver())
+        
+        addWillExecuteBlockObserver { _ in
+            NetworkActivityController.shared.taskDidStart(identifier: "RetrieveLibrary")
+        }
+        addDidFinishBlockObserver { _ in
+            NetworkActivityController.shared.taskDidFinish(identifier: "RetrieveLibrary")
+        }
     }
 }
 

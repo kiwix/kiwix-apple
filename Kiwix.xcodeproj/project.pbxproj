@@ -77,6 +77,7 @@
 		977AE7F91DD8F22400F1E581 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A102A1D022AD5007FC62C /* SearchBar.swift */; };
 		977B121C1E3A5E8D00981890 /* LibraryCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B121B1E3A5E8D00981890 /* LibraryCells.swift */; };
 		977B954D1DD4C40400F6F62B /* ScanLocalBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6811E1D6F70AC00E5FA99 /* ScanLocalBook.swift */; };
+		9780DE061E43BFF5009B6945 /* NetworkActivityIndicatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9780DE051E43BFF5009B6945 /* NetworkActivityIndicatorController.swift */; };
 		97A08C151DD263B90070D0E4 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681341D6F711A00E5FA99 /* Book.swift */; };
 		97A127C91D777CF100FB204D /* RecentSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C51D777CF100FB204D /* RecentSearchController.swift */; };
 		97A127CC1D777CF100FB204D /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C81D777CF100FB204D /* SearchResultController.swift */; };
@@ -215,6 +216,7 @@
 		9779C31B1D4575AE0064CC8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		977A458B1E14EA140089C596 /* Cloud.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cloud.swift; sourceTree = "<group>"; };
 		977B121B1E3A5E8D00981890 /* LibraryCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryCells.swift; sourceTree = "<group>"; };
+		9780DE051E43BFF5009B6945 /* NetworkActivityIndicatorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkActivityIndicatorController.swift; sourceTree = "<group>"; };
 		9788419C1DA2FF2A00D22D3C /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		978C9DBF1E4245B60078BFF7 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		978C9DC11E4245B60078BFF7 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
@@ -653,6 +655,7 @@
 			children = (
 				97642B981E380CC0003E2D0B /* Network.swift */,
 				9726591A1D8DB91200D1DFFB /* DownloadProgress.swift */,
+				9780DE051E43BFF5009B6945 /* NetworkActivityIndicatorController.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -940,6 +943,7 @@
 				972F81571DDBFC79008D7289 /* Search.swift in Sources */,
 				970E7F831DA0305000741290 /* WelcomeController.swift in Sources */,
 				97A1FD3B1D6F724E00A80EE2 /* stringTools.cpp in Sources */,
+				9780DE061E43BFF5009B6945 /* NetworkActivityIndicatorController.swift in Sources */,
 				977B121C1E3A5E8D00981890 /* LibraryCells.swift in Sources */,
 				970E7F741D9DB0FC00741290 /* 1.8.xcmappingmodel in Sources */,
 				977A458C1E14EA140089C596 /* Cloud.swift in Sources */,

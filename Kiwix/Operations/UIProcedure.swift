@@ -110,7 +110,7 @@ extension AlertProcedure {
                 languages.forEach({ $0.isDisplayed = preferredLangCodes.contains($0.code) })
             }
             alert.add(actionWithTitle: "Show All Languages", style: .default) { (procedure, action) in
-                languages.forEach({$0.isDisplayed = true})
+                languages.forEach({$0.isDisplayed = false})
             }
             alert.addDidFinishBlockObserver { _ in
                 let managedObjectContext = AppDelegate.persistentContainer.viewContext

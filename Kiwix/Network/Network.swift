@@ -36,18 +36,24 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     // MARK: - actions
     
     func start(bookID: String) {
-        guard let book = Book.fetch(bookID, context: managedObjectContext), let url = book.url else {return}
-        let task = (book.fileSize > bookSizeThreshold ? wifiSession: cellularSession).downloadTask(with: url)
-        task.taskDescription = book.id
-        task.resume()
-        
-        let downloadTask = DownloadTask.fetch(bookID: bookID, context: managedObjectContext)
-        downloadTask?.state = .queued
-        
-        if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
-        
-        progresses[bookID] = 0
-        if progresses.count == 1 { startTimer() }
+        managedObjectContext.perform {
+            guard let book = Book.fetch(bookID, context: self.managedObjectContext),
+                let url = book.url else {return}
+            let task = (book.fileSize > self.bookSizeThreshold ? self.wifiSession: self.cellularSession).downloadTask(with: url)
+            task.taskDescription = book.id
+            task.resume()
+            
+            book.state = .downloading
+            let downloadTask = DownloadTask.fetch(bookID: bookID, context: self.managedObjectContext)
+            downloadTask?.state = .queued
+            
+            if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
+            
+            self.progresses[bookID] = 0
+            if self.progresses.count == 1 { self.startTimer() }
+            
+            NetworkActivityController.shared.taskDidStart(identifier: bookID)
+        }
     }
     
     func pause(bookID: String) {
@@ -91,6 +97,8 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
         
         progresses[bookID] = 0
         if progresses.count == 1 { startTimer() }
+        
+        NetworkActivityController.shared.taskDidStart(identifier: bookID)
     }
     
     private func cancelTask(in session: URLSession, taskDescription: String, producingResumingData: Bool) {
@@ -123,15 +131,10 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
         if progresses.count == 0 { timer?.invalidate() }
         
         if let error = error as NSError?, error.code == URLError.cancelled.rawValue {
-            self.managedObjectContext.perform({ 
-                guard let book = Book.fetch(bookID, context: self.managedObjectContext) else {return}
-                guard book.downloadTask?.state != .paused else {return}
+            self.managedObjectContext.perform({
                 if let data = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data {
                     Preference.resumeData[bookID] = data
                 }
-                if book.state != .downloading {book.state = .downloading}
-                book.downloadTask?.state = .paused
-                if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
             })
         }
         
@@ -139,6 +142,8 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
             let handler = backgroundEventsCompleteProcessing[identifier] {
             handler()
         }
+        
+        NetworkActivityController.shared.taskDidFinish(identifier: bookID)
     }
     
     // MARK: - URLSessionDownloadDelegate
