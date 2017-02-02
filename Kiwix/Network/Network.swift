@@ -139,15 +139,6 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
             let handler = backgroundEventsCompleteProcessing[identifier] {
             handler()
         }
-        
-        if Preference.Notifications.bookDownloadFinish {
-            self.managedObjectContext.perform({ 
-                guard let book = Book.fetch(bookID, context: self.managedObjectContext) else {return}
-                AppNotification.shared.downloadFinished(bookID: book.id,
-                                                        bookTitle: book.title ?? "Book",
-                                                        fileSizeDescription: book.fileSizeDescription)
-            })
-        }
     }
     
     // MARK: - URLSessionDownloadDelegate
@@ -181,6 +172,12 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
             book.state = .local
             self.managedObjectContext.delete(downloadTask)
             if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
+            
+            if Preference.Notifications.bookDownloadFinish {
+                AppNotification.shared.downloadFinished(bookID: book.id,
+                                                        bookTitle: book.title ?? "Book",
+                                                        fileSizeDescription: book.fileSizeDescription)
+            }
         }
     }
 }
