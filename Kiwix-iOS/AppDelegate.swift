@@ -32,30 +32,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         ZimMultiReader.shared.startScan()
+        UserHabit.shared.appDidBecomeActive()
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
-        let type = "org.kiwix.recent"
-        let previousIndex: Int? = {
-            guard let recent = UIApplication.shared.shortcutItems?.filter({$0.type == type}).first else {return nil}
-            return UIApplication.shared.shortcutItems?.index(of: recent)
-        }()
-        
-        if let index = previousIndex { UIApplication.shared.shortcutItems?.remove(at: index) }
-        
-        if let article = AppDelegate.mainController.article,
-            let title = article.title, let url = article.url?.absoluteString {
-            let item = UIMutableApplicationShortcutItem(type: type,
-                                                        localizedTitle: title,
-                                                        localizedSubtitle: nil,
-                                                        icon: UIApplicationShortcutIcon(templateImageName: "Recent"),
-                                                        userInfo: ["URL": url])
-            if let index = previousIndex {
-                UIApplication.shared.shortcutItems?.insert(item, at: index)
-            } else {
-                UIApplication.shared.shortcutItems?.append(item)
+        func updateQuickActions() {
+            let type = "org.kiwix.recent"
+            let previousIndex: Int? = {
+                guard let recent = UIApplication.shared.shortcutItems?.filter({$0.type == type}).first else {return nil}
+                return UIApplication.shared.shortcutItems?.index(of: recent)
+            }()
+            
+            if let index = previousIndex { UIApplication.shared.shortcutItems?.remove(at: index) }
+            
+            if let article = AppDelegate.mainController.article,
+                let title = article.title, let url = article.url?.absoluteString {
+                let item = UIMutableApplicationShortcutItem(type: type,
+                                                            localizedTitle: title,
+                                                            localizedSubtitle: nil,
+                                                            icon: UIApplicationShortcutIcon(templateImageName: "Recent"),
+                                                            userInfo: ["URL": url])
+                if let index = previousIndex {
+                    UIApplication.shared.shortcutItems?.insert(item, at: index)
+                } else {
+                    UIApplication.shared.shortcutItems?.append(item)
+                }
             }
         }
+        updateQuickActions()
+        UserHabit.shared.appDidBecomeActive()
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
