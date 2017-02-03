@@ -310,7 +310,6 @@ extension MainController: ButtonDelegates {
                     "isMainPage": NSNumber(value: article.isMainPage)
                 ]
             }
-            print(bookmarks.count)
             defaults.set(bookmarks, forKey: "bookmarks")
             NCWidgetController.widgetController().setHasContent(bookmarks.count > 0, forWidgetWithBundleIdentifier: "self.Kiwix.Bookmarks")
             
