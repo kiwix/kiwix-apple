@@ -11,7 +11,7 @@ import CoreData
 import ProcedureKit
 import DZNEmptyDataSet
 
-class LibraryBooksController: CoreDataCollectionBaseController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, LibraryCollectionCellDelegate {
+class LibraryBooksController: CoreDataCollectionBaseController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, LibraryCollectionCellDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     private(set) var itemWidth: CGFloat = 0.0
     var isCloudTab = true {
         didSet {
@@ -106,12 +106,13 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
     }
     
     func refreshAutomatically() {
-        guard let date = Preference.libraryLastRefreshTime else { refresh(); return }
+        guard let date = Preference.libraryLastRefreshTime else { refresh(shouldIgnoreInternetConnectivityError: true); return }
         guard date.timeIntervalSinceNow < -86400 else {return}
-        refresh()
+        refresh(shouldIgnoreInternetConnectivityError: true)
     }
     
-    func refresh() {
+    func refresh(shouldIgnoreInternetConnectivityError: Bool) {
+        guard !isRefreshing else {return}
         let operation = RefreshLibraryOperation()
         operation.add(observer: WillExecuteObserver { (operation) in
             OperationQueue.main.addOperation({
@@ -130,7 +131,13 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
                 }
                 
                 if let error = errors.first {
-                    UIQueue.shared.add(operation: AlertProcedure.Library.refreshError(context: self, message: error.localizedDescription))
+                    if (error as NSError).code == URLError.notConnectedToInternet.rawValue {
+                        if !shouldIgnoreInternetConnectivityError {
+                            UIQueue.shared.add(operation: AlertProcedure.Library.refreshError(context: self, message: error.localizedDescription))
+                        }
+                    } else {
+                        UIQueue.shared.add(operation: AlertProcedure.Library.refreshError(context: self, message: error.localizedDescription))
+                    }
                 } else {
                     if operation.firstTime {
                         UIQueue.shared.add(operation: AlertProcedure.Library.languageFilter(context: self))
@@ -230,5 +237,55 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         try? fetchedResultController.performFetch()
         collectionView.reloadData()
     }
-
+    
+    // MARK: - DZNEmptyDataSet
+    
+    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
+        return UIImage(named: isCloudTab ? "CloudColor" : "FolderColor")
+    }
+    
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        return NSAttributedString(string: isCloudTab ? "There are books in the cloud" : "No book is on the device",
+                                  attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 18),
+                                               NSForegroundColorAttributeName: UIColor.darkGray])
+    }
+    
+    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let text = isCloudTab
+            ? "Refresh the library to see a list of books available for download"
+            : "Add some books by downloading on device or using iTunes File Sharing"
+        let style = NSMutableParagraphStyle()
+        style.lineBreakMode = .byWordWrapping
+        style.alignment = .center
+        return NSAttributedString(string: text,
+                                  attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 14),
+                                               NSForegroundColorAttributeName: UIColor.lightGray,
+                                               NSParagraphStyleAttributeName: style])
+    }
+    
+    func spaceHeight(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
+        return 20
+    }
+    
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
+        var attributes: [String: Any] = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 17)]
+        if isCloudTab {
+            if isRefreshing {
+                attributes[NSForegroundColorAttributeName] = UIColor.lightGray
+            } else {
+                attributes[NSForegroundColorAttributeName] = state == .highlighted ? UIColor.lightGray : view.tintColor!
+            }
+            return NSAttributedString(string: "Refresh", attributes: attributes)
+        } else {
+            return NSAttributedString(string: "  ", attributes: attributes)
+        }
+    }
+    
+    func emptyDataSetDidTapButton(_ scrollView: UIScrollView!) {
+        if isCloudTab {
+            guard !isRefreshing else {return}
+            refresh(shouldIgnoreInternetConnectivityError: false)
+        }
+    }
+    
 }

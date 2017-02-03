@@ -618,7 +618,6 @@
 				97E609F21D103DED00EBCB9D /* iOSWidgets */,
 				931D277C156AE671D3F9EADA /* Frameworks */,
 				F544A4E4357A6D33CF234C6B /* Pods */,
-				9C1D0054BEA442431151A95D /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -699,13 +698,6 @@
 			);
 			name = iOSWidgets;
 			path = "Kiwix-iOSWidgets";
-			sourceTree = "<group>";
-		};
-		9C1D0054BEA442431151A95D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		F544A4E4357A6D33CF234C6B /* Pods */ = {
@@ -814,7 +806,7 @@
 				Base,
 			);
 			mainGroup = 97A2AB7F1C1B80FF00052E74;
-			productRefGroup = 9C1D0054BEA442431151A95D /* Products */;
+			productRefGroup = 97A2AB7F1C1B80FF00052E74;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (

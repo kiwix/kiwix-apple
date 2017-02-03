@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Library Books Controller-->
+        <!--Empty Data Set Delegate-->
         <scene sceneID="IOQ-Xf-IR9">
             <objects>
                 <viewController id="cDq-va-k4I" customClass="LibraryBooksController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
@@ -138,6 +138,8 @@
                                 <connections>
                                     <outlet property="dataSource" destination="cDq-va-k4I" id="C1Z-rn-cDB"/>
                                     <outlet property="delegate" destination="cDq-va-k4I" id="O4e-0Y-jYL"/>
+                                    <outlet property="emptyDataSetDelegate" destination="cDq-va-k4I" id="fac-Nj-P3u"/>
+                                    <outlet property="emptyDataSetSource" destination="cDq-va-k4I" id="jdo-N6-VOe"/>
                                 </connections>
                             </collectionView>
                         </subviews>
