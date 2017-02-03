@@ -10,6 +10,7 @@ import UIKit
 import SafariServices
 import CoreSpotlight
 import CloudKit
+import NotificationCenter
 
 class MainController: UIViewController {
     
@@ -294,6 +295,27 @@ extension MainController: ButtonDelegates {
             }
         }
         
+        func updateBookmarkWidget() {
+            guard let defaults = UserDefaults(suiteName: "group.kiwix") else {return}
+            let bookmarks = Article
+                .fetchRecentBookmarks(count: 30, context: AppDelegate.persistentContainer.viewContext)
+                .flatMap { (article) -> [String: Any]? in
+                guard let title = article.title,
+                    let data = article.thumbImageData,
+                    let urlString = article.url?.absoluteString else {return nil}
+                return [
+                    "title": title,
+                    "thumbImageData": data,
+                    "url": urlString,
+                    "isMainPage": NSNumber(value: article.isMainPage)
+                ]
+            }
+            print(bookmarks.count)
+            defaults.set(bookmarks, forKey: "bookmarks")
+            NCWidgetController.widgetController().setHasContent(bookmarks.count > 0, forWidgetWithBundleIdentifier: "self.Kiwix.Bookmarks")
+            
+        }
+        
         let context = AppDelegate.persistentContainer.viewContext
         guard let url = webView.request?.url,
             let article = Article.fetch(url: url, context: context) else {return}
@@ -306,8 +328,7 @@ extension MainController: ButtonDelegates {
         controllers.bookmarkHUD.bookmarkAdded = article.isBookmarked
         
         indexCoreSpotlight(article: article)
-        //        let operation = BookmarkSyncOperation(articleURL: url)
-        //        GlobalQueue.shared.add(operation: operation)
+        updateBookmarkWidget()
     }
 }
 

@@ -26,7 +26,7 @@ class UpdateWidgetDataSourceOperation: Procedure {
         
         var articles = [Article]()
         context.performAndWait { 
-            articles = Article.fetchRecentBookmarks(30, context: self.context)
+            
         }
         
         var bookmarks = [NSDictionary]()

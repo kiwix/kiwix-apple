@@ -27,16 +27,14 @@ class Article: NSManagedObject {
         return article
     }
     
-//    class func fetchRecentBookmarks(_ count: Int, context: NSManagedObjectContext) -> [Article] {
-//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
-//        let dateDescriptor = NSSortDescriptor(key: "bookmarkDate", ascending: false)
-//        let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
-//        fetchRequest.sortDescriptors = [dateDescriptor, titleDescriptor]
-//        fetchRequest.predicate = NSPredicate(format: "isBookmarked == true")
-//        fetchRequest.fetchLimit = count
-//        return fetch(fetchRequest, type: Article.self, context: context) ?? [Article]()
-//    }
-//    
+    class func fetchRecentBookmarks(count: Int, context: NSManagedObjectContext) -> [Article] {
+        let fetchRequest = Article.fetchRequest() as! NSFetchRequest<Article>
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: false)]
+        fetchRequest.predicate = NSPredicate(format: "isBookmarked == true")
+        fetchRequest.fetchLimit = count
+        return (try? context.fetch(fetchRequest)) ?? [Article]()
+    }
+    
     class func fetchBookmarked(in book: Book, with context: NSManagedObjectContext) -> [Article] {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
         request.predicate = NSPredicate(format: "book = %@ AND isBookmarked == true", book)
