@@ -251,7 +251,6 @@
 		97D0E9921DDA487E0029530E /* SearchBaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBaseController.swift; sourceTree = "<group>"; };
 		97D6811C1D6F70AC00E5FA99 /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		97D6811E1D6F70AC00E5FA99 /* ScanLocalBook.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanLocalBook.swift; sourceTree = "<group>"; };
-		97D681211D6F70AC00E5FA99 /* UpdateWidgetDataSourceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateWidgetDataSourceOperation.swift; sourceTree = "<group>"; };
 		97D6812B1D6F70DE00E5FA99 /* 1.5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.5.xcdatamodel; sourceTree = "<group>"; };
 		97D6812C1D6F70DE00E5FA99 /* 1.7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.7.xcdatamodel; sourceTree = "<group>"; };
 		97D6812D1D6F70DE00E5FA99 /* Kiwix.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Kiwix.xcdatamodel; sourceTree = "<group>"; };
@@ -679,7 +678,6 @@
 				973208281DD223DB00EDD3DC /* RefreshLibrary.swift */,
 				97D6811E1D6F70AC00E5FA99 /* ScanLocalBook.swift */,
 				972F81561DDBFC79008D7289 /* Search.swift */,
-				97D681211D6F70AC00E5FA99 /* UpdateWidgetDataSourceOperation.swift */,
 				976C1DD31E300695005EDEC4 /* UIProcedure.swift */,
 			);
 			name = Operation;
