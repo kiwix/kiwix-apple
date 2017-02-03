@@ -217,7 +217,7 @@
             </objects>
             <point key="canvasLocation" x="-1074" y="65"/>
         </scene>
-        <!--Library Language Controller-->
+        <!--Empty Data Set Delegate-->
         <scene sceneID="jB1-ec-I5Q">
             <objects>
                 <tableViewController storyboardIdentifier="LanguageFilterController" id="YXq-FN-ov8" customClass="LibraryLanguageController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
@@ -254,6 +254,8 @@
                         <connections>
                             <outlet property="dataSource" destination="YXq-FN-ov8" id="hRN-3s-A7O"/>
                             <outlet property="delegate" destination="YXq-FN-ov8" id="D0R-dF-zb9"/>
+                            <outlet property="emptyDataSetDelegate" destination="YXq-FN-ov8" id="Jk1-z1-TXX"/>
+                            <outlet property="emptyDataSetSource" destination="YXq-FN-ov8" id="Vez-cy-zWa"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="GNP-b4-wXb">

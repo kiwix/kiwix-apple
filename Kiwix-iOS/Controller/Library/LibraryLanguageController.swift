@@ -83,7 +83,7 @@ class LibraryLanguageController: UITableViewController, NSFetchedResultsControll
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return (showLanguages.count + hideLanguages.count) > 0 ? 2 : 0
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -154,5 +154,13 @@ class LibraryLanguageController: UITableViewController, NSFetchedResultsControll
         } else {
             return 30
         }
+    }
+    
+    // MARK: - DZNEmptyDataSet
+    
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        return NSAttributedString(string: "No language available",
+                                  attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 18),
+                                               NSForegroundColorAttributeName: UIColor.darkGray])
     }
 }
