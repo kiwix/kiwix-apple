@@ -143,13 +143,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
     func registerCloudKit() {
         if #available(iOS 10, *) {
             guard !Preference.hasSubscribedToCloudKitChanges else {return}
@@ -172,14 +165,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             database.add(operation)
         }
     }
-    
-    // MARK: -
-
-//    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-//
-    
-    
-    
 
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {

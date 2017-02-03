@@ -197,7 +197,7 @@ extension MainController: SearchBarDelegate, SearchContainerDelegate {
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(controller.view)
         
-        let views = ["view": controller.view]
+        let views: [String: Any] = ["view": controller.view]
         view.addConstraints(NSLayoutConstraint.constraints(
             withVisualFormat: "H:|[view]|", options: .alignAllCenterY, metrics: nil, views: views))
         view.addConstraint(controller.view.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor))
@@ -417,7 +417,7 @@ extension MainController {
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         addChildViewController(controller)
         view.insertSubview(controller.view, aboveSubview: webView)
-        let views = ["view": controller.view]
+        let views: [String: Any] = ["view": controller.view]
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: .alignAllTop, metrics: nil, views: views))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: .alignAllLeft, metrics: nil, views: views))
         controller.didMove(toParentViewController: self)

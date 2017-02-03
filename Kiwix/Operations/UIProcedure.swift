@@ -98,9 +98,9 @@ extension AlertProcedure {
             alert.title = Localized.Library.LanguageFilterAlert.title
             alert.message = {
                 let lang = preferredLangCodes.map({ Locale.current.localizedString(forIdentifier: $0) }).flatMap({$0})
-                return "You might understand " + lang.joined(separator: ", ") + ". Would you like to hide books not in these languages?"
+                return "You have set " + lang.joined(separator: ", ") + " as the preferred language of the device. " + "Would you like to hide books in other languages?"
             }()
-            alert.add(actionWithTitle: "Hide Other Languages", style: .default) { (procedure, action) in
+            alert.add(actionWithTitle: "Hide Books in Other Languages", style: .default) { (procedure, action) in
                 languages.forEach({ $0.isDisplayed = preferredLangCodes.contains($0.code) })
             }
             alert.add(actionWithTitle: "Show All Languages", style: .default) { (procedure, action) in

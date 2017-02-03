@@ -40,7 +40,6 @@
 		9737F6211E379D0700961020 /* LibraryLanguageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9737F6201E379D0700961020 /* LibraryLanguageController.swift */; };
 		973A5C921DEA3F5600C7804C /* CoreDataTableBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A5C911DEA3F5600C7804C /* CoreDataTableBaseController.swift */; };
 		973A5C951DEA6DD000C7804C /* URLResponseCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A5C931DEA6CA900C7804C /* URLResponseCache.swift */; };
-		973A5C991DEBC54800C7804C /* CloudKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A5C981DEBC54800C7804C /* CloudKit.swift */; };
 		973DD40F1D343F2F009D45DB /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD4041D343F2F009D45DB /* libicudata.a */; };
 		973DD4101D343F2F009D45DB /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD4051D343F2F009D45DB /* libicui18n.a */; };
 		973DD4111D343F2F009D45DB /* libicuio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DD4061D343F2F009D45DB /* libicuio.a */; };
@@ -980,7 +979,6 @@
 				97A1FD261D6F71E200A80EE2 /* ZimReader.mm in Sources */,
 				97A1FD1C1D6F71D800A80EE2 /* KiwixURLProtocol.swift in Sources */,
 				97C2C26A1DDCC58500A9CC64 /* ArticleOperation.swift in Sources */,
-				973A5C991DEBC54800C7804C /* CloudKit.swift in Sources */,
 				973208261DD21E9C00EDD3DC /* CoreDataContainer.swift in Sources */,
 				97D6813F1D6F712800E5FA99 /* Article+CoreDataProperties.swift in Sources */,
 				97A1FD441D6F728200A80EE2 /* Preference.swift in Sources */,
