@@ -60,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         updateQuickActions()
-        UserHabit.shared.appDidBecomeActive()
+        UserHabit.shared.appWillResignActive()
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
@@ -149,19 +149,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     
-    
-    func recordActiveSession() {
-        Preference.activeUseHistory.append(Date()) 
-    }
-    
-    func registerNotification() {
-        if #available(iOS 10, *) {
-            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { _ in })
-        } else {
-            let settings = UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: nil)
-            UIApplication.shared.registerUserNotificationSettings(settings)
-        }
-    }
     
     func registerCloudKit() {
         if #available(iOS 10, *) {

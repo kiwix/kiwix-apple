@@ -6,6 +6,7 @@
 //  Copyright © 2016 Chris Li. All rights reserved.
 //
 
+import UIKit
 import UserNotifications
 
 class AppNotification: NSObject, UNUserNotificationCenterDelegate {
@@ -13,11 +14,13 @@ class AppNotification: NSObject, UNUserNotificationCenterDelegate {
     private override init() {
         super.init()
         UNUserNotificationCenter.current().delegate = self
+        requestAuth()
         registerActions()
     }
     
     let downloadFinishIdentifier = "org.kiwix.download-finished"
     let refreshLibraryIdentifier = "org.kiwix.library-refreshed"
+    let rateAppIdentifier = "org.kiwix.rate-app"
     
     func requestAuth() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _ in }
@@ -30,7 +33,10 @@ class AppNotification: NSObject, UNUserNotificationCenterDelegate {
         let refreshLibrary = UNNotificationCategory(identifier: refreshLibraryIdentifier, actions: [
             UNNotificationAction(identifier: "openLibrary", title: "Open Library", options: .foreground)
         ], intentIdentifiers: [])
-        UNUserNotificationCenter.current().setNotificationCategories([bookDownload, refreshLibrary])
+        let rateApp = UNNotificationCategory(identifier: rateAppIdentifier, actions: [
+            UNNotificationAction(identifier: "rateApp", title: Localized.Setting.RateApp.message, options: .foreground)
+        ], intentIdentifiers: [])
+        UNUserNotificationCenter.current().setNotificationCategories([bookDownload, refreshLibrary, rateApp])
     }
     
     func downloadFinished(bookID: String, bookTitle: String, fileSizeDescription: String) {
@@ -58,6 +64,22 @@ class AppNotification: NSObject, UNUserNotificationCenterDelegate {
         })
     }
     
+    func rateApp() {
+        guard Preference.Rate.activeHistory.count > 10 && !Preference.Rate.hasRated else {return}
+        UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { (settings) in
+            guard settings.alertSetting == .enabled else {return}
+            let content = UNMutableNotificationContent()
+            content.categoryIdentifier = self.rateAppIdentifier
+            content.title = "Like Kiwix?"
+            content.body = "Give us a rate or review on App Store!"
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 4, repeats: false)
+            let request = UNNotificationRequest(identifier: self.rateAppIdentifier, content: content, trigger: trigger)
+            UNUserNotificationCenter.current().add(request, withCompletionHandler: { (error) in
+                Preference.Rate.activeHistory.removeAll()
+            })
+        })
+    }
+    
     // MARK: - UNUserNotificationCenterDelegate
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
@@ -75,8 +97,12 @@ class AppNotification: NSObject, UNUserNotificationCenterDelegate {
                 })
                 GlobalQueue.shared.add(articleLoad: load)
             }
-        } else if requestIdentifier.hasPrefix(downloadFinishIdentifier) {
+        } else if requestIdentifier == refreshLibraryIdentifier {
             AppDelegate.mainController.didTapLibraryButton()
+        } else if requestIdentifier == rateAppIdentifier {
+            let url = URL(string: "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=997079563&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8")!
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            Preference.Rate.hasRated = true
         }
     }
 }

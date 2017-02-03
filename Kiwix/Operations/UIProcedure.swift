@@ -72,7 +72,7 @@ extension AlertProcedure {
         }
     }
     
-    static func rateKiwix(context: UIViewController, userInitiated: Bool) -> AlertProcedure {
+    static func rateKiwix(context: UIViewController) -> AlertProcedure {
         let alert = AlertProcedure(presentAlertFrom: context)
         alert.title = Localized.Setting.rateApp
         alert.message = Localized.Setting.RateApp.message
@@ -80,15 +80,9 @@ extension AlertProcedure {
             let url = URL(string: "http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=997079563&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8")!
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
-        if !userInitiated {
-            alert.add(actionWithTitle: Localized.Setting.RateApp.remindMeLater, style: .default, handler: { (alert, action) in
-                // clear launch history
-            })
-        }
         alert.add(actionWithTitle: Localized.Common.cancel, style: .cancel)
         return alert
     }
-    
     
 }
 

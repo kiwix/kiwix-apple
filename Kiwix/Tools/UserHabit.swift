@@ -21,7 +21,17 @@ class UserHabit {
     }
     
     func appWillResignActive() {
-        let interval = timeAppDidBecomeActive?.timeIntervalSinceNow
-        print(interval)
+        // if app stay active for more than 10s, record this as an active session
+        guard let timeAppDidBecomeActive = timeAppDidBecomeActive,
+            timeAppDidBecomeActive.timeIntervalSinceNow * -1 > 10 else {return}
+        
+        if let lastDate = Preference.Rate.activeHistory.last {
+            if timeAppDidBecomeActive.timeIntervalSince(lastDate) > 24 * 3600 {
+                Preference.Rate.activeHistory.append(timeAppDidBecomeActive)
+            }
+        } else {
+            Preference.Rate.activeHistory.append(timeAppDidBecomeActive)
+        }
+        print("ActiveUse: \(Preference.Rate.activeHistory)")
     }
 }

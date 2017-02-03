@@ -43,18 +43,6 @@ class Preference {
         set{Defaults[.webViewZoomScale] = newValue}
     }
     
-    // MARK: - Rate Kiwix
-    
-    class var activeUseHistory: [Date] {
-        get{return Defaults[.activeUseHistory]}
-        set{Defaults[.activeUseHistory] = newValue}
-    }
-    
-    class var haveRateKiwix: Bool {
-        get{return Defaults[.haveRateKiwix]}
-        set{Defaults[.haveRateKiwix] = newValue}
-    }
-    
     // MARK: - Library
     
     class var libraryAutoRefreshDisabled: Bool {
@@ -118,6 +106,24 @@ extension DefaultsKeys {
     static let langFilterNameDisplayInOriginalLocale = DefaultsKey<Bool>("langFilterNameDisplayInOriginalLocale")
     
     static let resumeData = DefaultsKey<[String: Any]>("resumeData")
+}
+
+// MARK: - Rate
+
+extension Preference {
+    class Rate {
+        private static var activeHistoryKey = "Rate.activeHistory-\(Bundle.appShortVersion)"
+        private static var hasRatedKey = "Rate.hasRated-\(Bundle.appShortVersion)"
+        class var activeHistory: [Date] {
+            get {return UserDefaults.standard.array(forKey: activeHistoryKey)?.flatMap({$0 as? Date}) ?? [Date]()}
+            set {UserDefaults.standard.set(newValue, forKey: activeHistoryKey)}
+        }
+        
+        class var hasRated: Bool {
+            get {return UserDefaults.standard.bool(forKey: hasRatedKey)}
+            set {UserDefaults.standard.set(newValue, forKey: hasRatedKey)}
+        }
+    }
 }
 
 // MARK: - Notifications

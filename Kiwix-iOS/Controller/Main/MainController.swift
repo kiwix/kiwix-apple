@@ -46,6 +46,7 @@ class MainController: UIViewController {
         webView.delegate = self
         
         showWelcome()
+        AppNotification.shared.rateApp()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
