@@ -96,15 +96,3 @@ class ArticleLoadOperation: Procedure {
     }
 }
 
-class SpotlightIndexOperation: Procedure {
-    init(url: URL) {
-        assert(Thread.isMainThread, "This Operation can only be initialized in the main thread")
-        super.init()
-    }
-    
-    override func execute() {
-        AppDelegate.persistentContainer.viewContext.performAndWait { 
-            
-        }
-    }
-}

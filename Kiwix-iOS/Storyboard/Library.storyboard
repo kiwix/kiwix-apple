@@ -340,10 +340,10 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="bDK-ON-vzl">
-                                                    <rect key="frame" x="60" y="31" width="307" height="2"/>
+                                                    <rect key="frame" x="60" y="33" width="307" height="2"/>
                                                 </progressView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kV6-Lt-E6s">
-                                                    <rect key="frame" x="60" y="35" width="307" height="15"/>
+                                                    <rect key="frame" x="60" y="39" width="307" height="15"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -351,7 +351,7 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="GhC-S8-4Ak" firstAttribute="centerY" secondItem="nVN-8L-w1D" secondAttribute="centerY" id="1HQ-Ka-V5B"/>
-                                                <constraint firstItem="kV6-Lt-E6s" firstAttribute="top" secondItem="bDK-ON-vzl" secondAttribute="bottom" constant="2" id="BCZ-fO-oVq"/>
+                                                <constraint firstItem="kV6-Lt-E6s" firstAttribute="top" secondItem="bDK-ON-vzl" secondAttribute="bottom" constant="4" id="BCZ-fO-oVq"/>
                                                 <constraint firstAttribute="leadingMargin" secondItem="GhC-S8-4Ak" secondAttribute="leading" id="KJW-gj-p94"/>
                                                 <constraint firstItem="kV6-Lt-E6s" firstAttribute="leading" secondItem="GhC-S8-4Ak" secondAttribute="trailing" constant="8" id="MH1-8I-9h5"/>
                                                 <constraint firstItem="bDK-ON-vzl" firstAttribute="leading" secondItem="GhC-S8-4Ak" secondAttribute="trailing" constant="8" id="Nq4-pU-ACR"/>
@@ -360,7 +360,7 @@
                                                 <constraint firstAttribute="trailingMargin" secondItem="bDK-ON-vzl" secondAttribute="trailing" id="giD-gR-Qou"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="kV6-Lt-E6s" secondAttribute="trailing" id="lFV-oP-iqa"/>
                                                 <constraint firstItem="Zkf-Od-qYs" firstAttribute="leading" secondItem="GhC-S8-4Ak" secondAttribute="trailing" constant="8" id="pm3-kg-EYD"/>
-                                                <constraint firstItem="bDK-ON-vzl" firstAttribute="top" secondItem="Zkf-Od-qYs" secondAttribute="bottom" constant="2" id="rV9-Mq-ksX"/>
+                                                <constraint firstItem="bDK-ON-vzl" firstAttribute="top" secondItem="Zkf-Od-qYs" secondAttribute="bottom" constant="4" id="rV9-Mq-ksX"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
