@@ -11,7 +11,6 @@
 		9705D5941E368189005292AC /* Library.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9705D5931E368189005292AC /* Library.storyboard */; };
 		9705D5961E368712005292AC /* LibraryBooksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9705D5951E368712005292AC /* LibraryBooksController.swift */; };
 		9705D5981E368933005292AC /* CoreDataCollectionBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9705D5971E368933005292AC /* CoreDataCollectionBaseController.swift */; };
-		970E7F741D9DB0FC00741290 /* 1.8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 970E7F731D9DB0FC00741290 /* 1.8.xcmappingmodel */; };
 		970E7F831DA0305000741290 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E7F7F1DA0305000741290 /* WelcomeController.swift */; };
 		9711871E1CEB449A00B9909D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711871D1CEB449A00B9909D /* libz.tbd */; };
 		971A10161D022872007FC62C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 971A10151D022872007FC62C /* Assets.xcassets */; };
@@ -24,6 +23,7 @@
 		971A10801D022F74007FC62C /* Pic_I.png in Resources */ = {isa = PBXBuildFile; fileRef = 971A107C1D022F74007FC62C /* Pic_I.png */; };
 		971A10811D022F74007FC62C /* Pic_P.png in Resources */ = {isa = PBXBuildFile; fileRef = 971A107D1D022F74007FC62C /* Pic_P.png */; };
 		9725345F1E43E2250005D169 /* UserHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9725345E1E43E2250005D169 /* UserHabit.swift */; };
+		972534611E4527D40005D169 /* 1.8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 972534601E4527D40005D169 /* 1.8.xcmappingmodel */; };
 		9726591D1D90A64600D1DFFB /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9726591C1D90A64500D1DFFB /* Notification.swift */; };
 		972F81571DDBFC79008D7289 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972F81561DDBFC79008D7289 /* Search.swift */; };
 		972F81591DDC1B71008D7289 /* Controllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972F81581DDC1B71008D7289 /* Controllers.swift */; };
@@ -72,7 +72,6 @@
 		9779C3141D4575AD0064CC8E /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E609F01D103DED00EBCB9D /* NotificationCenter.framework */; };
 		9779C3171D4575AE0064CC8E /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779C3161D4575AE0064CC8E /* TodayViewController.swift */; };
 		9779C31E1D4575AE0064CC8E /* Bookmarks.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9779C3131D4575AD0064CC8E /* Bookmarks.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		977A458C1E14EA140089C596 /* Cloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977A458B1E14EA140089C596 /* Cloud.swift */; };
 		977AE7F91DD8F22400F1E581 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A102A1D022AD5007FC62C /* SearchBar.swift */; };
 		977B121C1E3A5E8D00981890 /* LibraryCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977B121B1E3A5E8D00981890 /* LibraryCells.swift */; };
 		977B954D1DD4C40400F6F62B /* ScanLocalBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6811E1D6F70AC00E5FA99 /* ScanLocalBook.swift */; };
@@ -149,7 +148,7 @@
 		9705D5951E368712005292AC /* LibraryBooksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryBooksController.swift; sourceTree = "<group>"; };
 		9705D5971E368933005292AC /* CoreDataCollectionBaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataCollectionBaseController.swift; sourceTree = "<group>"; };
 		970912551D7F452C00BBD5A1 /* 1.8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.8.xcdatamodel; sourceTree = "<group>"; };
-		970E7F731D9DB0FC00741290 /* 1.8.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = 1.8.xcmappingmodel; path = Kiwix/CoreData/Migration/1.8.xcmappingmodel; sourceTree = SOURCE_ROOT; };
+		970E7F731D9DB0FC00741290 /* 1.8-old.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = "1.8-old.xcmappingmodel"; path = "Kiwix/CoreData/Migration/1.8-old.xcmappingmodel"; sourceTree = SOURCE_ROOT; };
 		970E7F7C1DA0305000741290 /* Alerts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		970E7F7F1DA0305000741290 /* WelcomeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
 		9711871D1CEB449A00B9909D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -167,6 +166,7 @@
 		971C4F0B1D3FFFA60027B7D2 /* Kiwix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Kiwix.entitlements; path = "Kiwix-iOS/Kiwix.entitlements"; sourceTree = SOURCE_ROOT; };
 		97219DBC1D383A00009FDFF1 /* BookmarkHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BookmarkHUD.swift; path = "Kiwix-iOS/Controller/Bookmark/BookmarkHUD.swift"; sourceTree = SOURCE_ROOT; };
 		9725345E1E43E2250005D169 /* UserHabit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserHabit.swift; sourceTree = "<group>"; };
+		972534601E4527D40005D169 /* 1.8.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = 1.8.xcmappingmodel; path = Kiwix/CoreData/Migration/1.8.xcmappingmodel; sourceTree = SOURCE_ROOT; };
 		9726591A1D8DB91200D1DFFB /* DownloadProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadProgress.swift; sourceTree = "<group>"; };
 		9726591C1D90A64500D1DFFB /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		972F81561DDBFC79008D7289 /* Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
@@ -213,7 +213,6 @@
 		9779C3131D4575AD0064CC8E /* Bookmarks.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Bookmarks.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		9779C3161D4575AE0064CC8E /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		9779C31B1D4575AE0064CC8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		977A458B1E14EA140089C596 /* Cloud.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cloud.swift; sourceTree = "<group>"; };
 		977B121B1E3A5E8D00981890 /* LibraryCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryCells.swift; sourceTree = "<group>"; };
 		9780DE051E43BFF5009B6945 /* NetworkActivityIndicatorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkActivityIndicatorController.swift; sourceTree = "<group>"; };
 		9788419C1DA2FF2A00D22D3C /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
@@ -381,8 +380,9 @@
 			isa = PBXGroup;
 			children = (
 				97D6812F1D6F70EC00E5FA99 /* 1.5.xcmappingmodel */,
-				970E7F731D9DB0FC00741290 /* 1.8.xcmappingmodel */,
+				970E7F731D9DB0FC00741290 /* 1.8-old.xcmappingmodel */,
 				97D681301D6F70EC00E5FA99 /* MigrationPolicy.swift */,
+				972534601E4527D40005D169 /* 1.8.xcmappingmodel */,
 			);
 			name = Migration;
 			path = Kiwix;
@@ -538,7 +538,6 @@
 		977A458A1E14E98F0089C596 /* Cloud */ = {
 			isa = PBXGroup;
 			children = (
-				977A458B1E14EA140089C596 /* Cloud.swift */,
 			);
 			path = Cloud;
 			sourceTree = "<group>";
@@ -931,8 +930,6 @@
 				97A1FD3B1D6F724E00A80EE2 /* stringTools.cpp in Sources */,
 				9780DE061E43BFF5009B6945 /* NetworkActivityIndicatorController.swift in Sources */,
 				977B121C1E3A5E8D00981890 /* LibraryCells.swift in Sources */,
-				970E7F741D9DB0FC00741290 /* 1.8.xcmappingmodel in Sources */,
-				977A458C1E14EA140089C596 /* Cloud.swift in Sources */,
 				97599AA21E26D3B000BA15EF /* BookmarkBooksController.swift in Sources */,
 				97D0E9931DDA487E0029530E /* SearchBaseController.swift in Sources */,
 				97A1FD321D6F723D00A80EE2 /* resourceTools.cpp in Sources */,
@@ -971,6 +968,7 @@
 				973208271DD2238B00EDD3DC /* Queue.swift in Sources */,
 				973A5C921DEA3F5600C7804C /* CoreDataTableBaseController.swift in Sources */,
 				97A1FD181D6F71CE00A80EE2 /* SearchResult.swift in Sources */,
+				972534611E4527D40005D169 /* 1.8.xcmappingmodel in Sources */,
 				977AE7F91DD8F22400F1E581 /* SearchBar.swift in Sources */,
 				97ED50111DD257D00089E9B6 /* Kiwix.xcdatamodeld in Sources */,
 				9705D5981E368933005292AC /* CoreDataCollectionBaseController.swift in Sources */,
