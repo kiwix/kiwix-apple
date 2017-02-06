@@ -8,45 +8,6 @@
 
 import Foundation
 
-extension String {
-    static func formattedDateString(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MM-dd-yyyy"
-        formatter.dateStyle = .medium
-        return formatter.string(from: date)
-    }
-    
-    static func formattedFileSizeString(_ fileBytes: Int64) -> String {
-        return ByteCountFormatter.string(fromByteCount: fileBytes, countStyle: .file)
-    }
-    
-    static func formattedPercentString(_ double: Double) -> String? {
-        let number = NSNumber(value: double as Double)
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .percent
-        formatter.maximumIntegerDigits = 3
-        formatter.maximumFractionDigits = 0
-        formatter.locale = Locale.current
-        return formatter.string(from: number)
-    }
-    
-    static func formattedNumberString(_ double: Double) -> String {
-        let sign = ((double < 0) ? "-" : "" )
-        let abs = fabs(double)
-        guard abs >= 1000.0 else {
-            if abs - Double(Int(abs)) == 0 {
-                return "\(sign)\(Int(abs))"
-            } else {
-                return "\(sign)\(abs)"
-            }
-        }
-        let exp: Int = Int(log10(abs) / log10(1000))
-        let units: [String] = ["K","M","G","T","P","E"]
-        let roundedNum: Double = round(10 * abs / pow(1000.0,Double(exp))) / 10;
-        return "\(sign)\(roundedNum)\(units[exp-1])"
-    }
-}
-
 class LocalizedStrings {
     static let bookmarks = NSLocalizedString("Bookmarks", comment: "Common")
     static let search = NSLocalizedString("Search", comment: "Common")

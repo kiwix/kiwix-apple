@@ -24,9 +24,4 @@ class HTMLHeading {
         
         if index == nil || tagName == nil || textContent == nil || level == nil {return nil}
     }
-    
-    var scrollToJavaScript: String {
-        return ""
-//        return "document.getElementById('\(id)').scrollIntoView();"
-    }
 }

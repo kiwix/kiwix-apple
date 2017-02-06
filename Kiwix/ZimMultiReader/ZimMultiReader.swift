@@ -15,13 +15,16 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     static let shared = ZimMultiReader()
     
     weak var delegate: ZimMultiReaderDelegate?
-    private let monitor = DirectoryMonitor(URL: FileManager.docDirURL)
+    private let docDirURL: URL
+    private let monitor: DirectoryMonitor
     
     private(set) var readers = [ZimID: ZimReader]()
     private(set) var pidMap = [String: ZimID]() // PID: ID
     private var urlSnapShot = URLSnapShot()
     
     private override init() {
+        docDirURL = (try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false))!
+        monitor = DirectoryMonitor(URL: docDirURL)
         super.init()
         monitor.delegate = self
         monitor.startMonitoring()
@@ -29,6 +32,14 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
     
     deinit {
         monitor.stopMonitoring()
+    }
+    
+    func removeICloudSyncAttribute() {
+        var docDirURL = self.docDirURL
+        guard FileManager.default.fileExists(atPath: docDirURL.path) else {return}
+        var value = URLResourceValues()
+        value.isExcludedFromBackup = true
+        try? docDirURL.setResourceValues(value)
     }
     
     func startScan() {
@@ -123,12 +134,19 @@ struct URLSnapShot {
         self.indexFolder = URLSnapShot.indexFolderURLsInDocDir()
     }
     
+    private static func getDocDirContents() -> [URL] {
+        let docDirURL = (try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false))!
+        let options: FileManager.DirectoryEnumerationOptions = [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants]
+        let urls = try? FileManager.default.contentsOfDirectory(at: docDirURL, includingPropertiesForKeys: nil, options: options)
+        return urls ?? [URL]()
+    }
+    
     static func - (lhs: URLSnapShot, rhs: URLSnapShot) -> (zimFiles: Set<URL>, indexFolders: Set<URL>) {
         return (lhs.zimFile.subtracting(rhs.zimFile), lhs.indexFolder.subtracting(rhs.indexFolder))
     }
     
     static func zimFileURLsInDocDir() -> Set<URL> {
-        var urls = FileManager.getContents(dir: FileManager.docDirURL)
+        var urls = getDocDirContents()
         let keys = [URLResourceKey.isDirectoryKey]
         urls = urls.filter { (url) -> Bool in
             guard let values = try? (url as NSURL).resourceValues(forKeys: keys),
@@ -141,7 +159,7 @@ struct URLSnapShot {
     }
     
     static func indexFolderURLsInDocDir() -> Set<URL> {
-        var urls = FileManager.getContents(dir: FileManager.docDirURL)
+        var urls = getDocDirContents()
         let keys = [URLResourceKey.isDirectoryKey]
         urls = urls.filter { (url) -> Bool in
             guard let values = try? (url as NSURL).resourceValues(forKeys: keys),

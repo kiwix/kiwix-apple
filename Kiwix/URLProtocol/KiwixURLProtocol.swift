@@ -4,7 +4,7 @@
 //
 //  Created by Chris Li on 8/14/15.
 //  Copyright © 2015 Chris Li. All rights reserved.
-//  http://www.raywenderlich.com/76735/using-nsurlprotocol-swift
+
 
 class KiwixURLProtocol: URLProtocol {
     override class func canInit(with request: URLRequest) -> Bool {
@@ -47,28 +47,17 @@ class KiwixURLProtocol: URLProtocol {
     
     override func stopLoading() {
         return
-        
     }
 }
 
 extension URL {
-    static func kiwixURLWithZimFileid(_ id: String, contentURLString: String) -> URL? {
-        guard let escapedContentURLString = contentURLString.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {return nil}
-        let baseURLString = "kiwix://" + id
-        return URL(string: escapedContentURLString, relativeTo: URL(string: baseURLString))
+    init?(bookID: String, contentPath: String) {
+        let baseURLString = "kiwix://" + bookID
+        guard let encoded = contentPath.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {return nil}
+        self.init(string: encoded, relativeTo: URL(string: baseURLString))
     }
     
-    static func kiwixURLWithZimFileid(_ id: String, articleTitle: String) -> URL? {
-        guard let contentURLString = ZimMultiReader.shared.pageURLString(articleTitle, bookid: id) else {
-            print("ZimMultiReader cannot get pageURLString from \(articleTitle) in book \(id)")
-            return nil
-        }
-        return URL.kiwixURLWithZimFileid(id, contentURLString: contentURLString)
-    }
-    
-    init?(id: ZimID, contentURLString: String) {
-        guard let escapedContentURLString = contentURLString.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {return nil}
-        let baseURLString = "kiwix://" + id
-        self.init(string: escapedContentURLString, relativeTo: URL(string: baseURLString))
+    var isKiwixURL: Bool {
+        return scheme?.caseInsensitiveCompare("kiwix") == .orderedSame
     }
 }

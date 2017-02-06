@@ -59,7 +59,6 @@
 		97642B991E380CC0003E2D0B /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97642B981E380CC0003E2D0B /* Network.swift */; };
 		9764CBD11D806AD800072D6A /* RefreshLibControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764CBD01D806AD800072D6A /* RefreshLibControl.swift */; };
 		9764F5931D830EF200E0B1C4 /* liblzma.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9764F5921D830EF200E0B1C4 /* liblzma.tbd */; };
-		9764F5991D833F2B00E0B1C4 /* KiwixURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764F5981D833F2B00E0B1C4 /* KiwixURL.swift */; };
 		976B86D81DDA0C7E00FA7FD1 /* SearchContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976B86D71DDA0C7E00FA7FD1 /* SearchContainer.swift */; };
 		976C1DCB1E2FD5FC005EDEC4 /* TableOfContentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976C1DCA1E2FD5FC005EDEC4 /* TableOfContentsController.swift */; };
 		976C1DD01E3000B6005EDEC4 /* Setting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 976C1DCF1E3000B6005EDEC4 /* Setting.storyboard */; };
@@ -90,7 +89,7 @@
 		97A1FD3B1D6F724E00A80EE2 /* stringTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD371D6F724E00A80EE2 /* stringTools.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
 		97A1FD421D6F728200A80EE2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD3D1D6F728200A80EE2 /* Extensions.swift */; };
 		97A1FD441D6F728200A80EE2 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD401D6F728200A80EE2 /* Preference.swift */; };
-		97A1FD451D6F728200A80EE2 /* StringTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD411D6F728200A80EE2 /* StringTools.swift */; };
+		97A1FD451D6F728200A80EE2 /* Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD411D6F728200A80EE2 /* Localized.swift */; };
 		97A9F6F51E2E990500F423AA /* JSInject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* JSInject.js */; };
 		97BC0FBF1DD90A65004BBAD1 /* JSInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BC0FBD1DD90A65004BBAD1 /* JSInjection.swift */; };
 		97BC0FC01DD90A65004BBAD1 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BC0FBE1DD90A65004BBAD1 /* MainController.swift */; };
@@ -200,7 +199,6 @@
 		9764CBD01D806AD800072D6A /* RefreshLibControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshLibControl.swift; sourceTree = "<group>"; };
 		9764CBD21D8083AA00072D6A /* ArticleProcedure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleProcedure.swift; sourceTree = "<group>"; };
 		9764F5921D830EF200E0B1C4 /* liblzma.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = liblzma.tbd; path = usr/lib/liblzma.tbd; sourceTree = SDKROOT; };
-		9764F5981D833F2B00E0B1C4 /* KiwixURL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KiwixURL.swift; sourceTree = "<group>"; };
 		976A0C801D41619C0006A742 /* DZNEmptyDataSet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DZNEmptyDataSet.framework; path = "../../../../Users/chrisli/Library/Developer/Xcode/DerivedData/Kiwix-ayxrfhaqnfxzendihdolvkklkmhk/Build/Products/Debug-iphoneos/DZNEmptyDataSet/DZNEmptyDataSet.framework"; sourceTree = "<group>"; };
 		976B86D71DDA0C7E00FA7FD1 /* SearchContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchContainer.swift; sourceTree = "<group>"; };
 		976C1DCA1E2FD5FC005EDEC4 /* TableOfContentsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableOfContentsController.swift; sourceTree = "<group>"; };
@@ -238,7 +236,7 @@
 		97A1FD371D6F724E00A80EE2 /* stringTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = stringTools.cpp; path = "C&C++/stringTools.cpp"; sourceTree = "<group>"; };
 		97A1FD3D1D6F728200A80EE2 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		97A1FD401D6F728200A80EE2 /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
-		97A1FD411D6F728200A80EE2 /* StringTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringTools.swift; sourceTree = "<group>"; };
+		97A1FD411D6F728200A80EE2 /* Localized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localized.swift; sourceTree = "<group>"; };
 		97A2AB881C1B80FF00052E74 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A9F6F41E2E990500F423AA /* JSInject.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = JSInject.js; sourceTree = "<group>"; };
 		97BC0FBD1DD90A65004BBAD1 /* JSInjection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSInjection.swift; sourceTree = "<group>"; };
@@ -598,8 +596,8 @@
 				97A1FD3D1D6F728200A80EE2 /* Extensions.swift */,
 				97C601DD1D7F342100362D4F /* HTMLHeading.swift */,
 				97A9F6F41E2E990500F423AA /* JSInject.js */,
+				97A1FD411D6F728200A80EE2 /* Localized.swift */,
 				97A1FD401D6F728200A80EE2 /* Preference.swift */,
-				97A1FD411D6F728200A80EE2 /* StringTools.swift */,
 				9725345E1E43E2250005D169 /* UserHabit.swift */,
 			);
 			path = Tools;
@@ -628,7 +626,6 @@
 		97BAA8EA1D3D2D0A0038F57F /* URLProtocol */ = {
 			isa = PBXGroup;
 			children = (
-				9764F5981D833F2B00E0B1C4 /* KiwixURL.swift */,
 				97A1FD1A1D6F71D800A80EE2 /* KiwixURLProtocol.swift */,
 				973A5C931DEA6CA900C7804C /* URLResponseCache.swift */,
 			);
@@ -933,7 +930,7 @@
 				97599AA21E26D3B000BA15EF /* BookmarkBooksController.swift in Sources */,
 				97D0E9931DDA487E0029530E /* SearchBaseController.swift in Sources */,
 				97A1FD321D6F723D00A80EE2 /* resourceTools.cpp in Sources */,
-				97A1FD451D6F728200A80EE2 /* StringTools.swift in Sources */,
+				97A1FD451D6F728200A80EE2 /* Localized.swift in Sources */,
 				976C1DD21E3000F1005EDEC4 /* SettingController.swift in Sources */,
 				97D681411D6F712800E5FA99 /* DownloadTask+CoreDataProperties.swift in Sources */,
 				9705D5961E368712005292AC /* LibraryBooksController.swift in Sources */,
@@ -950,7 +947,6 @@
 				97C601DE1D7F342100362D4F /* HTMLHeading.swift in Sources */,
 				975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */,
 				971A10521D022D9D007FC62C /* AppDelegate.swift in Sources */,
-				9764F5991D833F2B00E0B1C4 /* KiwixURL.swift in Sources */,
 				97A127CC1D777CF100FB204D /* SearchResultController.swift in Sources */,
 				97642B991E380CC0003E2D0B /* Network.swift in Sources */,
 				973208241DD217B600EDD3DC /* BookmarkHUD.swift in Sources */,

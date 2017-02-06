@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import CoreSpotlight
-import CloudKit
 import ProcedureKit
 
 class ArticleLoadOperation: Procedure {

@@ -97,7 +97,7 @@ extension AlertProcedure {
             let alert = AlertProcedure(presentAlertFrom: context)
             alert.title = Localized.Library.LanguageFilterAlert.title
             alert.message = {
-                let lang = preferredLangCodes.map({ Locale.current.localizedString(forIdentifier: $0) }).flatMap({$0})
+                let lang = Locale.preferredLangNames
                 return "You have set " + lang.joined(separator: ", ") + " as the preferred language of the device. " + "Would you like to hide books in other languages?"
             }()
             alert.add(actionWithTitle: "Hide Other Languages", style: .default) { (procedure, action) in

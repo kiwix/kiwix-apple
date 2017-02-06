@@ -42,56 +42,6 @@ extension Bundle {
     }
 }
 
-extension FileManager {
-    class var docDirURL: URL {
-        let url = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-        return url!
-    }
-    
-    class var libDirURL: URL {
-        let url = try? FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-        return url!
-    }
-    
-    class var cacheDirURL: URL {
-        let url = try? FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-        return url!
-    }
-    
-    class func getContents(dir: URL) -> [URL] {
-        let options: FileManager.DirectoryEnumerationOptions = [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants]
-        let urls = try? FileManager.default.contentsOfDirectory(at: FileManager.docDirURL, includingPropertiesForKeys: nil, options: options)
-        return urls ?? [URL]()
-    }
-    
-    // MARK: - Backup Attribute
-    
-    class func setSkipBackupAttribute(_ skipBackup: Bool, url: URL) {
-        guard FileManager.default.fileExists(atPath: url.path) else {return}
-        
-        do {
-            try (url as NSURL).setResourceValues([URLResourceKey.isExcludedFromBackupKey: skipBackup])
-        } catch let error as NSError {
-            print("Set skip backup attribute for item \(url) failed, error: \(error.localizedDescription)")
-        }
-    }
-    
-    class func getSkipBackupAttribute(item url: URL) -> Bool? {
-        guard FileManager.default.fileExists(atPath: url.path) else {return nil}
-        
-        var skipBackup: AnyObject? = nil
-        
-        do {
-            try (url as NSURL).getResourceValue(&skipBackup, forKey: URLResourceKey.isExcludedFromBackupKey)
-        } catch let error as NSError {
-            print("Get skip backup attribute for item \(url) failed, error: \(error.localizedDescription)")
-        }
-        
-        guard let number = skipBackup as? NSNumber else {return nil}
-        return number.boolValue
-    }
-}
-
 extension UIDevice {
     class var availableDiskSpace: (freeSize: Int64, totalSize: Int64)? {
         let docDirPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
@@ -102,9 +52,4 @@ extension UIDevice {
     }
 }
 
-extension Collection {
-    public subscript(safe index: Index) -> _Element? {
-        return index >= startIndex && index < endIndex ? self[index] : nil
-    }
-}
 
