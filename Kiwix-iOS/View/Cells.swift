@@ -8,6 +8,12 @@
 
 import UIKit
 
+// MARK: - Library Cell
+
+
+
+
+
 // MARK: - Base Class
 
 class FavIconAndPicIndicatorCell: UITableViewCell {
@@ -171,7 +177,6 @@ protocol LibraryCollectionCellDelegate: class {
 class LibraryCollectionHeader: UICollectionReusableView {
     @IBOutlet weak var textLabel: UILabel!
 }
-
 
 class DownloadTaskCell: UITableViewCell {
     @IBOutlet weak var thumbImageView: UIImageView!
