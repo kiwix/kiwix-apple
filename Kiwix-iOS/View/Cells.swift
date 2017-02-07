@@ -154,8 +154,9 @@ class LibraryCollectionCell: UICollectionViewCell {
         delegate?.didTapMoreButton(cell: self)
     }
     
-    var spaceStatus: SpaceStatus = .enough {
+    var spaceStatus: SpaceStatus? {
         didSet {
+            guard let spaceStatus = spaceStatus else {return}
             switch spaceStatus {
             case .enough:
                 titleLabel.textColor = UIColor.black

@@ -114,11 +114,12 @@ extension AlertProcedure {
             return alert
         }
         
-        static func more(context: UIViewController, book: Book, spaceStatus: SpaceStatus) -> AlertProcedure {
+        static func more(context: UIViewController, book: Book, spaceStatus: SpaceStatus?) -> AlertProcedure {
             assert(Thread.isMainThread)
             let alert = AlertProcedure(presentAlertFrom: context, withPreferredStyle: .actionSheet, waitForDismissal: true)
             alert.title = book.title
             alert.message = {
+                guard let spaceStatus = spaceStatus else {return book.desc}
                 switch spaceStatus {
                 case .enough:
                     return book.desc
@@ -146,7 +147,7 @@ extension AlertProcedure {
             }
             
             alert.add(actionWithTitle: Localized.Common.cancel, style: .cancel) { _ in alert.finish() }
-            alert.actions.first?.isEnabled = spaceStatus != .notEnough
+            if let _ = spaceStatus {alert.actions.first?.isEnabled = spaceStatus != .notEnough}
             return alert
         }
         

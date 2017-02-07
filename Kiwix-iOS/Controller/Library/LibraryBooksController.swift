@@ -192,7 +192,7 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         ].flatMap({$0}).joined(separator: "  ")
         cell.descriptionLabel.text = book.desc
         cell.hasPicLabel.isHidden = !book.hasPic
-        cell.spaceStatus = getBookSpaceStatus(fileSize: book.fileSize)
+        if isCloudTab {cell.spaceStatus = getBookSpaceStatus(fileSize: book.fileSize)}
         
         return cell
     }
