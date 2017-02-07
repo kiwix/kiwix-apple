@@ -50,14 +50,14 @@ class RecentSearchController: UIViewController, UICollectionViewDataSource, UICo
     }
     
     func configureCell(_ cell: UICollectionViewCell, atIndexPath indexPath: IndexPath) {
-        guard let cell = cell as? LocalLangCell else {return}
+        guard let cell = cell as? RecentSearchCell else {return}
         cell.label.text = Preference.RecentSearch.terms[indexPath.item]
     }
     
     // MARK: - CollectionView Delegate
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? LocalLangCell,
+        guard let cell = collectionView.cellForItem(at: indexPath) as? RecentSearchCell,
             let text = cell.label.text else {return}
         Controllers.main.searchBar.searchText = text
     }

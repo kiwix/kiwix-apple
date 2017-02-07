@@ -8,12 +8,6 @@
 
 import UIKit
 
-// MARK: - Library Cell
-
-
-
-
-
 // MARK: - Base Class
 
 class FavIconAndPicIndicatorCell: UITableViewCell {
@@ -57,24 +51,7 @@ class FavIconAndPicIndicatorCell: UITableViewCell {
     }
 }
 
-// MARK: - BasicBookCell
-
-class BasicBookCell: FavIconAndPicIndicatorCell {
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subtitleLabel: UILabel!
-}
-
-// MARK: - DownloadBookCell
-
-class DownloadBookCell: UITableViewCell {
-    @IBOutlet weak var favIcon: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var detailLabel: UILabel!
-    @IBOutlet weak var progressLabel: UILabel!
-    @IBOutlet weak var progressView: UIProgressView!
-}
-
-// MARK: - CheckMarkBookCell
+// MARK: - Search
 
 class CheckMarkBookCell: BasicBookCell {
     @IBOutlet weak var accessoryImageView: LargeHitZoneImageView!
@@ -97,7 +74,9 @@ class CheckMarkBookCell: BasicBookCell {
     }
 }
 
-// MARK: - Article Cell
+protocol TableCellDelegate: class {
+    func didTapCheckMark(cell: UITableViewCell)
+}
 
 class ArticleCell: FavIconAndPicIndicatorCell {
     @IBOutlet weak var titleLabel: UILabel!
@@ -106,6 +85,18 @@ class ArticleCell: FavIconAndPicIndicatorCell {
 class ArticleSnippetCell: ArticleCell {
     @IBOutlet weak var snippetLabel: UILabel!
 }
+
+class RecentSearchCell: UICollectionViewCell {
+    @IBOutlet weak var label: UILabel!
+    override func awakeFromNib() {
+        layer.cornerRadius = 15.0
+        layer.masksToBounds = true
+        backgroundColor = AppColors.theme
+    }
+}
+
+
+// MARK: - Bookmark
 
 class BookmarkCollectionCell: UICollectionViewCell {
     override func awakeFromNib() {
@@ -148,6 +139,8 @@ class BookmarkCollectionCell: UICollectionViewCell {
     }
 }
 
+// MARK: - Library Cell
+
 class LibraryCollectionCell: UICollectionViewCell {
     override func awakeFromNib() {
         imageView.clipsToBounds = true
@@ -186,44 +179,14 @@ class DownloadTaskCell: UITableViewCell {
 }
 
 
-// MARK: - last time refactor
 
-// MARK: - Bookmark Cell
 
-class BookmarkCell: UITableViewCell {
-    override func awakeFromNib() {
-        thumbImageView.layer.cornerRadius = 4.0
-        thumbImageView.clipsToBounds = true
-    }
-    
-    @IBOutlet weak var thumbImageView: UIImageView!
+
+
+
+// MARK: - legacy
+
+class BasicBookCell: FavIconAndPicIndicatorCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
-}
-
-class BookmarkSnippetCell: BookmarkCell {
-    @IBOutlet weak var snippetLabel: UILabel!
-}
-
-// MARK: - Recent Search Cell
-
-class LocalLangCell: UICollectionViewCell {
-    @IBOutlet weak var label: UILabel!
-    
-    override func awakeFromNib() {
-        layer.cornerRadius = 15.0
-        layer.masksToBounds = true
-        backgroundColor = AppColors.theme
-    }
-}
-
-// MARK: - Other
-
-class TextSwitchCell: UITableViewCell {
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var switchControl: UISwitch!
-}
-
-protocol TableCellDelegate: class {
-    func didTapCheckMark(cell: UITableViewCell)
 }
