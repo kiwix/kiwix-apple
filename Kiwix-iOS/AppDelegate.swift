@@ -113,6 +113,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    // MARK: - Open URL Specified Resource
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
+        guard url.isKiwixURL else {return false}
+        GlobalQueue.shared.add(articleLoad: ArticleLoadOperation(url: url))
+        return true
+    }
+    
     // MARK: - Core Data
     
     lazy var persistentContainer = CoreDataContainer()
@@ -134,45 +142,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Continuity
     
-    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
-        switch userActivity.activityType {
-        case CSSearchableItemActionType:
-            return true
-        default:
-            return false
-        }
-    }
+//    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+//        switch userActivity.activityType {
+//        case CSSearchableItemActionType:
+//            return true
+//        default:
+//            return false
+//        }
+//    }
     
-    func registerCloudKit() {
-        if #available(iOS 10, *) {
-            guard !Preference.hasSubscribedToCloudKitChanges else {return}
-            
-            let subscription = CKDatabaseSubscription(subscriptionID: "")
-            let notificationInfo = CKNotificationInfo()
-            notificationInfo.shouldSendContentAvailable = true
-            subscription.notificationInfo = notificationInfo
-            
-            let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
-            operation.modifySubscriptionsCompletionBlock = { savedSubscriptions, _, error in
-                if let error = error {
-                    print(error.localizedDescription)
-                } else {
-                    Preference.hasSubscribedToCloudKitChanges = true
-                }
-            }
-            
-            let database = CKContainer(identifier: "iCloud.org.kiwix").privateCloudDatabase
-            database.add(operation)
-        }
-    }
+//    func registerCloudKit() {
+//        if #available(iOS 10, *) {
+//            guard !Preference.hasSubscribedToCloudKitChanges else {return}
+//            
+//            let subscription = CKDatabaseSubscription(subscriptionID: "")
+//            let notificationInfo = CKNotificationInfo()
+//            notificationInfo.shouldSendContentAvailable = true
+//            subscription.notificationInfo = notificationInfo
+//            
+//            let operation = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
+//            operation.modifySubscriptionsCompletionBlock = { savedSubscriptions, _, error in
+//                if let error = error {
+//                    print(error.localizedDescription)
+//                } else {
+//                    Preference.hasSubscribedToCloudKitChanges = true
+//                }
+//            }
+//            
+//            let database = CKContainer(identifier: "iCloud.org.kiwix").privateCloudDatabase
+//            database.add(operation)
+//        }
+//    }
 
     
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
-        guard url.isKiwixURL else {return false}
-//        let operation = ArticleLoadOperation(url: url)
-//        GlobalQueue.shared.add(load: operation)
-        return true
-    }
+    
     
 //    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
 //        if userActivity.activityType == "org.kiwix.kiwix.article-view" {

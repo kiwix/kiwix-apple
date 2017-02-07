@@ -203,7 +203,7 @@ class LocalLangCell: UICollectionViewCell {
     override func awakeFromNib() {
         layer.cornerRadius = 15.0
         layer.masksToBounds = true
-        backgroundColor = UIColor.themeColor
+        backgroundColor = AppColors.theme
     }
 }
 

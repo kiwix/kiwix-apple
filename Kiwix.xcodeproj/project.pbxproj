@@ -148,7 +148,6 @@
 		9705D5971E368933005292AC /* CoreDataCollectionBaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataCollectionBaseController.swift; sourceTree = "<group>"; };
 		970912551D7F452C00BBD5A1 /* 1.8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.8.xcdatamodel; sourceTree = "<group>"; };
 		970E7F731D9DB0FC00741290 /* 1.8-old.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; name = "1.8-old.xcmappingmodel"; path = "Kiwix/CoreData/Migration/1.8-old.xcmappingmodel"; sourceTree = SOURCE_ROOT; };
-		970E7F7C1DA0305000741290 /* Alerts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		970E7F7F1DA0305000741290 /* WelcomeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
 		9711871D1CEB449A00B9909D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		971A10151D022872007FC62C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Kiwix-iOS/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
@@ -543,7 +542,6 @@
 		9787BC1F1D9318080030D311 /* Others */ = {
 			isa = PBXGroup;
 			children = (
-				970E7F7C1DA0305000741290 /* Alerts.swift */,
 				973A5C911DEA3F5600C7804C /* CoreDataTableBaseController.swift */,
 				9705D5971E368933005292AC /* CoreDataCollectionBaseController.swift */,
 				970E7F7F1DA0305000741290 /* WelcomeController.swift */,
