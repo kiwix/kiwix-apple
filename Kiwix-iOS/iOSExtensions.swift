@@ -60,13 +60,3 @@ extension Bundle {
         return (Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String) ?? "Unknown"
     }
 }
-
-extension UIDevice {
-    class var availableDiskSpace: (freeSize: Int64, totalSize: Int64)? {
-        let docDirPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
-        guard let systemAttributes = try? FileManager.default.attributesOfFileSystem(forPath: docDirPath),
-            let freeSize = (systemAttributes[FileAttributeKey.systemFreeSize] as? NSNumber)?.int64Value,
-            let totalSize = (systemAttributes[FileAttributeKey.systemSize] as? NSNumber)?.int64Value else {return nil}
-        return (freeSize, totalSize)
-    }
-}

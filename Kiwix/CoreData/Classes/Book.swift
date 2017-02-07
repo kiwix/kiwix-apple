@@ -228,17 +228,6 @@ class Book: NSManagedObject {
             stateRaw = Int16(newValue.rawValue)
         }
     }
-    
-    var spaceState: BookSpaceState {
-        guard let freeSpaceInBytes = UIDevice.availableDiskSpace?.freeSize else {return .enough}
-        if (0.8 * Double(freeSpaceInBytes)) > Double(fileSize) {
-            return .enough
-        } else if freeSpaceInBytes < fileSize{
-            return .notEnough
-        } else {
-            return .caution
-        }
-    }
 }
 
 enum BookState: Int, CustomStringConvertible {
@@ -252,9 +241,4 @@ enum BookState: Int, CustomStringConvertible {
             case .retained: return "Retained"
         }
     }
-}
-
-
-enum BookSpaceState: Int {
-    case enough, caution, notEnough
 }

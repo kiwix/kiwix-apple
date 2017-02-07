@@ -13,6 +13,7 @@ import DZNEmptyDataSet
 
 class LibraryBooksController: CoreDataCollectionBaseController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, LibraryCollectionCellDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     private(set) var itemWidth: CGFloat = 0.0
+    private(set) var freeDiskSpace: Int64 = 0
     var isCloudTab = true {
         didSet {
             title = isCloudTab ? Localized.Library.cloudTitle : Localized.Library.localTitle
@@ -32,6 +33,22 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         itemWidth = (collectionViewWidth - 1 * (itemsPerRow - 1)) / itemsPerRow
     }
     
+    func getAvailableDiskSpace() -> Int64 {
+        let docDirPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+        let systemAttributes = try! FileManager.default.attributesOfFileSystem(forPath: docDirPath)
+        return (systemAttributes[FileAttributeKey.systemFreeSize] as! NSNumber).int64Value
+    }
+    
+    func getBookSpaceStatus(fileSize: Int64) -> SpaceStatus {
+        if (0.8 * Double(freeDiskSpace)) > Double(fileSize) {
+            return .enough
+        } else if freeDiskSpace < fileSize{
+            return .notEnough
+        } else {
+            return .caution
+        }
+    }
+    
     // MARK: - Override
     
     override func viewDidLoad() {
@@ -39,7 +56,10 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         
         configureBarButtons()
         configureCollectionViewLayout()
-        if isCloudTab { configureRefreshControl() }
+        if isCloudTab {
+            freeDiskSpace = getAvailableDiskSpace()
+            configureRefreshControl()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -172,6 +192,7 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         ].flatMap({$0}).joined(separator: "  ")
         cell.descriptionLabel.text = book.desc
         cell.hasPicLabel.isHidden = !book.hasPic
+        cell.spaceStatus = getBookSpaceStatus(fileSize: book.fileSize)
         
         return cell
     }
@@ -194,7 +215,7 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         guard let indexPath = collectionView.indexPath(for: cell) else {return}
         let book = fetchedResultController.object(at: indexPath)
         
-        let procedure = AlertProcedure.Library.more(context: self, book: book)
+        let procedure = AlertProcedure.Library.more(context: self, book: book, spaceStatus: cell.spaceStatus)
         procedure.alert.modalPresentationStyle = .popover
         procedure.alert.popoverPresentationController?.sourceView = cell.moreButton
         procedure.alert.popoverPresentationController?.sourceRect = cell.moreButton.bounds

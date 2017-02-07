@@ -154,6 +154,31 @@ class LibraryCollectionCell: UICollectionViewCell {
         delegate?.didTapMoreButton(cell: self)
     }
     
+    var spaceStatus: SpaceStatus = .enough {
+        didSet {
+            switch spaceStatus {
+            case .enough:
+                titleLabel.textColor = UIColor.black
+                subtitleLabel.textColor = UIColor.black
+                descriptionLabel.textColor = UIColor.black
+                hasPicLabel.textColor = UIColor.orange
+                hasPicLabel.layer.borderColor = UIColor.orange.cgColor
+            case .caution:
+                titleLabel.textColor = UIColor.orange
+                subtitleLabel.textColor = UIColor.orange
+                descriptionLabel.textColor = UIColor.orange
+                hasPicLabel.textColor = UIColor.orange
+                hasPicLabel.layer.borderColor = UIColor.orange.cgColor
+            case .notEnough:
+                titleLabel.textColor = UIColor.gray
+                subtitleLabel.textColor = UIColor.gray
+                descriptionLabel.textColor = UIColor.gray
+                hasPicLabel.textColor = UIColor.gray
+                hasPicLabel.layer.borderColor = UIColor.gray.cgColor
+            }
+        }
+    }
+    
     weak var delegate: LibraryCollectionCellDelegate?
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -161,6 +186,11 @@ class LibraryCollectionCell: UICollectionViewCell {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var hasPicLabel: UILabel!
     @IBOutlet weak var moreButton: UIButton!
+}
+
+
+enum SpaceStatus {
+    case enough, caution, notEnough
 }
 
 protocol LibraryCollectionCellDelegate: class {

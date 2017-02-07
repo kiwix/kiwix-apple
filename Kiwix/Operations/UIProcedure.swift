@@ -114,11 +114,20 @@ extension AlertProcedure {
             return alert
         }
         
-        static func more(context: UIViewController, book: Book) -> AlertProcedure {
+        static func more(context: UIViewController, book: Book, spaceStatus: SpaceStatus) -> AlertProcedure {
             assert(Thread.isMainThread)
             let alert = AlertProcedure(presentAlertFrom: context, withPreferredStyle: .actionSheet, waitForDismissal: true)
             alert.title = book.title
-            alert.message = book.desc
+            alert.message = {
+                switch spaceStatus {
+                case .enough:
+                    return book.desc
+                case .caution:
+                    return "Caution: This book will take up more than 80% of the free space on your device!"
+                case .notEnough:
+                    return "You cannot start downloading, because your device does not have enough free space for this book."
+                }
+            }()
             if book.state == .cloud {
                 alert.add(actionWithTitle: Localized.Library.download, style: .default) { _ in
                     Network.shared.start(bookID: book.id)
@@ -137,6 +146,7 @@ extension AlertProcedure {
             }
             
             alert.add(actionWithTitle: Localized.Common.cancel, style: .cancel) { _ in alert.finish() }
+            alert.actions.first?.isEnabled = spaceStatus != .notEnough
             return alert
         }
         
