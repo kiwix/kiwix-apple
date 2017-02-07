@@ -173,7 +173,12 @@ class LibraryCollectionHeader: UICollectionReusableView {
 }
 
 
-
+class DownloadTaskCell: UITableViewCell {
+    @IBOutlet weak var thumbImageView: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var progressView: UIProgressView!
+}
 
 
 // MARK: - last time refactor

@@ -230,8 +230,6 @@ private class SearchBarBackgroundView: UIView {
     }
     
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-//        let frame = self.bounds.insetBy(dx: 0, dy: -12)
-//        return frame.contains(point) ? self : nil
         return bounds.contains(point) ? self : nil
     }
     

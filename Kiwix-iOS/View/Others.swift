@@ -51,21 +51,6 @@ class DropShadowView: UIView {
     }
 }
 
-class SearchHRegularDropShadowView: UIView {
-    override func awakeFromNib() {
-        layer.masksToBounds = false
-        layer.cornerRadius = 10.0
-        layer.shadowOffset = CGSize(width: 0, height: 0)
-        layer.shadowRadius = 50.0
-        layer.shadowOpacity = 0.2
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        layer.shadowPath = UIBezierPath(rect: bounds).cgPath
-    }
-}
-
 class SearchRoundedCornerView: UIView {
     
     override func awakeFromNib() {
