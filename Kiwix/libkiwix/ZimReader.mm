@@ -33,14 +33,14 @@
         
         try {
             zim::File zimFileHandle = *_reader->getZimFileHandler();
-            zim::Article xapianArticle = zimFileHandle.getArticle('Z', "/Z/fulltextIndex/xapian");
+            zim::Article xapianArticle = zimFileHandle.getArticle('Z', "/fulltextIndex/xapian");
             if (xapianArticle.good()) {
                 zim::offset_type dbOffset = xapianArticle.getOffset();
                 int databasefd = open([url fileSystemRepresentation], O_RDONLY);
                 lseek(databasefd, dbOffset, SEEK_SET);
                 _db = new Xapian::Database(databasefd);
             } else {
-                throw "xapian db not in zim";
+                throw "zim file dowes not have a embedded xapian db";
             }
         } catch (...) {
             try {
