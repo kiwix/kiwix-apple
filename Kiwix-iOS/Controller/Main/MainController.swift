@@ -36,18 +36,31 @@ class MainController: UIViewController {
         }
     }
     
-    // MARK: - Overrides
+    // MARK: - Basic
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        searchBar.delegate = self
+        buttons.delegate = self
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        searchBar.delegate = self
+        buttons.delegate = self
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationItem.titleView = searchBar
-        searchBar.delegate = self
-        buttons.delegate = self
         webView.delegate = self
-        
+        navigationItem.titleView = searchBar
         showWelcome()
         AppNotification.shared.rateApp()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("will appear")
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
