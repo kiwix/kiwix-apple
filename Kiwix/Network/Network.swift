@@ -126,6 +126,7 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     // MARK: - URLSessionTaskDelegate
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        if let error = error {print("Download error: \(error.localizedDescription)")}
         guard let bookID = task.taskDescription else {return}
         progresses[bookID] = nil
         if progresses.count == 0 { timer?.invalidate() }
