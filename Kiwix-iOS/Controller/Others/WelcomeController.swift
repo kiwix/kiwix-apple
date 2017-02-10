@@ -11,6 +11,7 @@ import UIKit
 class WelcomeController: UIViewController {
     @IBOutlet weak var stackView: UIStackView!
     let button = ProminentButton(theme: .blue)
+    private var book: Book?
     
     enum WelcomePageStatus {
         case openLibrary, openMainPage, readLast
@@ -24,30 +25,57 @@ class WelcomeController: UIViewController {
             subView.removeFromSuperview()
         }
         stackView.addArrangedSubview(button)
+        button.alpha = 0.0
         
         NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: "LibraryScanFinished"), object: nil, queue: nil) { (notification) in
-            OperationQueue.main.addOperation({ 
-                self.configureButtons()
+            OperationQueue.main.addOperation({
+                self.configureButtons(firstBookAdded: (notification.userInfo?["FirstBookAdded"] as? Bool) ?? false)
             })
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
-    func configureButtons() {
-        UIView.animate(withDuration: 0.2) {
+    func configureButtons(firstBookAdded: Bool) {
+        func configure() {
             if ZimMultiReader.shared.readers.count == 0 {
-                self.button.theme = .blue
-                self.button.configureText(title: "Open Library", subtitle: "Download or import a book")
-                self.button.addTarget(Controllers.main, action: #selector(MainController.didTapLibraryButton), for: .touchUpInside)
+                self.button.alpha = 1.0
+                button.theme = .blue
+                button.configureText(title: "Open Library", subtitle: "Download or import a book")
+                button.addTarget(Controllers.main, action: #selector(MainController.didTapLibraryButton), for: .touchUpInside)
             } else {
-                self.button.theme = .green
-                self.button.configureText(title: "Start Reading", subtitle: "Open main page of placeholder")
-                self.button.addTarget(Controllers.main, action: #selector(MainController.didTapLibraryButton), for: .touchUpInside)
+                guard let bookID = ZimMultiReader.shared.readers.first?.key,
+                    let book = Book.fetch(bookID, context: AppDelegate.persistentContainer.viewContext),
+                    let title = book.title else {
+                        stackView.removeArrangedSubview(button)
+                        button.removeFromSuperview()
+                        return
+                }
+                self.book = book
+                button.alpha = 1.0
+                button.theme = .green
+                button.configureText(title: "Start Reading", subtitle: "Open main page of \(title)")
+                button.removeTarget(nil, action: nil, for: UIControlEvents.allEvents)
+                button.addTarget(self, action: #selector(self.didTapReadMainPageButton(sender:)), for: .touchUpInside)
             }
         }
+        func show() {
+            UIView.animate(withDuration: 0.1, animations: { 
+                configure()
+            }, completion: nil)
+        }
+        if button.alpha != 0.0 {
+            UIView.animate(withDuration: 0.1, animations: { 
+                self.button.alpha = 0.0
+            }, completion: { (completed) in
+                show()
+            })
+        } else {
+            show()
+        }
+    }
+    
+    func didTapReadMainPageButton(sender: UIButton) {
+        guard let bookID = book?.id else {return}
+        GlobalQueue.shared.add(articleLoad: ArticleLoadOperation(bookID: bookID))
     }
 }
 

@@ -83,11 +83,12 @@ class SettingController: UITableViewController {
                 UIQueue.shared.add(operation: AlertProcedure.Feedback.emailNotConfigured(context: self))
             }
         case Localized.Setting.rateApp:
-            if #available(iOS 10.3, OSX 10.12.4, *) {
-                SKStoreReviewController.requestReview()
-            } else {
-                UIQueue.shared.add(operation: AlertProcedure.rateKiwix(context: self))
-            }
+//            if #available(iOS 10.3, OSX 10.12.4, *) {
+//                SKStoreReviewController.requestReview()
+//            } else {
+//                UIQueue.shared.add(operation: AlertProcedure.rateKiwix(context: self))
+//            }
+            UIQueue.shared.add(operation: AlertProcedure.rateKiwix(context: self))
         case Localized.Setting.about:
             let controller = UIStoryboard(name: "Setting", bundle: nil).instantiateViewController(withIdentifier: "StaticWebController") as! StaticWebController
             controller.title = Localized.Setting.about

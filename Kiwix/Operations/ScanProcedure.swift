@@ -30,7 +30,8 @@ class ScanLocalBookOperation: Procedure {
         name = String(describing: self)
         
         addDidFinishBlockObserver { (procedure, errors) in
-            let notification = Notification(name: Notification.Name(rawValue: "LibraryScanFinished"))
+            var notification = Notification(name: Notification.Name(rawValue: "LibraryScanFinished"))
+            notification.userInfo?["FirstBookAdded"] = self.firstBookAdded
             NotificationCenter.default.post(notification)
         }
     }
