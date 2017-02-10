@@ -6,8 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12072"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -23,74 +21,87 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nWg-4h-oN7" customClass="Logo" customModule="Kiwix" customModuleProvider="target">
-                                <rect key="frame" x="177" y="301" width="60" height="60"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="60" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XaQ-Wa-tdO">
+                                <rect key="frame" x="16" y="301" width="382" height="240.66666666666663"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="IiH-Wy-J2l">
+                                        <rect key="frame" x="0.0" y="0.0" width="382" height="134.33333333333331"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nWg-4h-oN7" customClass="Logo" customModule="Kiwix" customModuleProvider="target">
+                                                <rect key="frame" x="161" y="0.0" width="60" height="60"/>
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="60" id="9ka-12-r09"/>
+                                                    <constraint firstAttribute="width" constant="60" id="ymm-kd-e0Q"/>
+                                                </constraints>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KIWIX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="heM-Vx-A7u">
+                                                <rect key="frame" x="128.66666666666669" y="60" width="124.66666666666666" height="58.666666666666686"/>
+                                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="49"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                                <variation key="heightClass=compact-widthClass=compact">
+                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="38"/>
+                                                </variation>
+                                                <variation key="heightClass=regular-widthClass=regular">
+                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="58"/>
+                                                </variation>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wikipedia Anywhere" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="786-cr-yay">
+                                                <rect key="frame" x="129.66666666666669" y="118.66666666666669" width="122.66666666666666" height="15.666666666666629"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                                <variation key="heightClass=compact-widthClass=compact">
+                                                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                </variation>
+                                                <variation key="heightClass=regular-widthClass=regular">
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                </variation>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="E2J-2L-EfY">
+                                        <rect key="frame" x="0.0" y="170.66666666666669" width="382" height="69.999999999999943"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uud-4c-AAn">
+                                                <rect key="frame" x="0.0" y="0.0" width="382" height="30"/>
+                                                <color key="backgroundColor" red="0.60646116733551025" green="0.79930049180984497" blue="0.98724311590194702" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <state key="normal" title="Button"/>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UH2-n1-fHt">
+                                                <rect key="frame" x="0.0" y="40" width="382" height="29.999999999999943"/>
+                                                <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <state key="normal" title="Button"/>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="6MF-hS-UMd"/>
+                                        </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="6MF-hS-UMd"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=compact">
+                                            <mask key="constraints">
+                                                <include reference="6MF-hS-UMd"/>
+                                            </mask>
+                                        </variation>
+                                    </stackView>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="60" id="J1t-fs-gnK"/>
-                                    <constraint firstAttribute="height" constant="60" id="p45-0q-dKw"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="400" id="rfY-RF-d1w"/>
                                 </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HdA-x4-WiZ">
-                                <rect key="frame" x="197" y="363" width="20" height="10"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="10" id="fI2-Co-2QO"/>
-                                    <constraint firstAttribute="width" constant="20" id="oKo-QQ-rVn"/>
-                                </constraints>
-                            </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wikipedia Anywhere" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="786-cr-yay">
-                                <rect key="frame" x="107" y="440.33333333333326" width="200" height="15.666666666666686"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="NIm-me-EN7"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                                <variation key="heightClass=compact-widthClass=compact">
-                                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=regular">
-                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                </variation>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KIWIX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="heM-Vx-A7u">
-                                <rect key="frame" x="107" y="373.66666666666669" width="200" height="58.666666666666629"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="Zbh-Kq-ZDe"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="49"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                                <variation key="heightClass=compact-widthClass=compact">
-                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="38"/>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=regular">
-                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="58"/>
-                                </variation>
-                            </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="E2J-2L-EfY">
-                                <rect key="frame" x="20" y="539" width="374" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="VJS-aA-KWr"/>
-                                </constraints>
+                                <variation key="heightClass=compact" alignment="center" axis="horizontal"/>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="E2J-2L-EfY" firstAttribute="top" secondItem="heM-Vx-A7u" secondAttribute="bottom" multiplier="1.2" constant="20" id="43n-kM-7JX">
-                                <variation key="heightClass=compact" constant="0.0"/>
-                            </constraint>
-                            <constraint firstItem="786-cr-yay" firstAttribute="top" secondItem="heM-Vx-A7u" secondAttribute="bottom" constant="8" id="CU4-Lo-Cxs"/>
-                            <constraint firstItem="heM-Vx-A7u" firstAttribute="top" secondItem="HdA-x4-WiZ" secondAttribute="bottom" constant="0.5" id="JoH-xK-bUs"/>
-                            <constraint firstItem="heM-Vx-A7u" firstAttribute="centerX" secondItem="NVS-td-RHS" secondAttribute="centerX" id="Kjs-NP-6cQ"/>
-                            <constraint firstItem="HdA-x4-WiZ" firstAttribute="centerY" secondItem="NVS-td-RHS" secondAttribute="centerY" id="Rfi-Go-i02"/>
-                            <constraint firstItem="HdA-x4-WiZ" firstAttribute="top" secondItem="nWg-4h-oN7" secondAttribute="bottom" constant="2" id="dKe-x1-KIB"/>
-                            <constraint firstItem="HdA-x4-WiZ" firstAttribute="centerX" secondItem="NVS-td-RHS" secondAttribute="centerX" id="oAY-D3-1Si"/>
-                            <constraint firstItem="786-cr-yay" firstAttribute="centerX" secondItem="NVS-td-RHS" secondAttribute="centerX" id="okf-kX-tsv"/>
-                            <constraint firstItem="nWg-4h-oN7" firstAttribute="centerX" secondItem="NVS-td-RHS" secondAttribute="centerX" id="paN-oe-UEg"/>
-                            <constraint firstItem="E2J-2L-EfY" firstAttribute="trailing" secondItem="NVS-td-RHS" secondAttribute="trailingMargin" id="v7Z-oQ-Ckf"/>
-                            <constraint firstItem="E2J-2L-EfY" firstAttribute="leading" secondItem="NVS-td-RHS" secondAttribute="leadingMargin" id="yWh-6k-EfM"/>
+                            <constraint firstItem="XaQ-Wa-tdO" firstAttribute="centerX" secondItem="NVS-td-RHS" secondAttribute="centerX" id="Bs9-VB-c4N"/>
+                            <constraint firstAttribute="trailing" secondItem="XaQ-Wa-tdO" secondAttribute="trailing" priority="750" constant="16" id="RUR-Z8-9N3"/>
+                            <constraint firstItem="XaQ-Wa-tdO" firstAttribute="leading" secondItem="NVS-td-RHS" secondAttribute="leading" priority="750" constant="16" id="p5n-ag-api"/>
+                            <constraint firstItem="IiH-Wy-J2l" firstAttribute="centerY" secondItem="NVS-td-RHS" secondAttribute="centerY" id="wg3-rS-3fE"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="CRN-GU-Pfx"/>
@@ -102,7 +113,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rsN-FU-j3g" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2780" y="-209.14542728635683"/>
+            <point key="canvasLocation" x="2779.7101449275365" y="-209.5108695652174"/>
         </scene>
     </scenes>
 </document>

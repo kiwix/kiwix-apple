@@ -28,6 +28,11 @@ class ScanLocalBookOperation: Procedure {
         super.init()
         add(condition: MutuallyExclusive<ScanLocalBookOperation>())
         name = String(describing: self)
+        
+        addDidFinishBlockObserver { (procedure, errors) in
+            let notification = Notification(name: Notification.Name(rawValue: "LibraryScanFinished"))
+            NotificationCenter.default.post(notification)
+        }
     }
     
     override func execute() {
