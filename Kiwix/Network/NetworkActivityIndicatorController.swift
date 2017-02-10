@@ -12,22 +12,22 @@ class NetworkActivityController {
     static let shared = NetworkActivityController()
     private init() {}
     
-    private var tasks = [String]() {
+    private var taskIdentifiers = [String]() {
         didSet {
             OperationQueue.main.addOperation {
-                UIApplication.shared.isNetworkActivityIndicatorVisible = self.tasks.count > 0
+                UIApplication.shared.isNetworkActivityIndicatorVisible = self.taskIdentifiers.count > 0
             }
         }
     }
     
     func taskDidStart(identifier: String) {
-        tasks.append(identifier)
+        taskIdentifiers.append(identifier)
     }
     
     func taskDidFinish(identifier: String) {
-        guard let index = tasks.index(of: identifier) else {
-            assert(false, "Network Indicator add/removal is not balanced")
+        guard let index = taskIdentifiers.index(of: identifier) else {
+            return
         }
-        tasks.remove(at: index)
+        taskIdentifiers.remove(at: index)
     }
 }
