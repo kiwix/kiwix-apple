@@ -58,7 +58,6 @@
 		975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975B90FD1CEB909100D13906 /* iOSExtensions.swift */; };
 		97642B991E380CC0003E2D0B /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97642B981E380CC0003E2D0B /* Network.swift */; };
 		9764CBD11D806AD800072D6A /* RefreshLibControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764CBD01D806AD800072D6A /* RefreshLibControl.swift */; };
-		9764F5931D830EF200E0B1C4 /* liblzma.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9764F5921D830EF200E0B1C4 /* liblzma.tbd */; };
 		976B86D81DDA0C7E00FA7FD1 /* SearchContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976B86D71DDA0C7E00FA7FD1 /* SearchContainer.swift */; };
 		976C1DCB1E2FD5FC005EDEC4 /* TableOfContentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976C1DCA1E2FD5FC005EDEC4 /* TableOfContentsController.swift */; };
 		976C1DD01E3000B6005EDEC4 /* Setting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 976C1DCF1E3000B6005EDEC4 /* Setting.storyboard */; };
@@ -74,6 +73,7 @@
 		977AE7F91DD8F22400F1E581 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A102A1D022AD5007FC62C /* SearchBar.swift */; };
 		977B954D1DD4C40400F6F62B /* ScanProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6811E1D6F70AC00E5FA99 /* ScanProcedure.swift */; };
 		9780DE061E43BFF5009B6945 /* NetworkActivityIndicatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9780DE051E43BFF5009B6945 /* NetworkActivityIndicatorController.swift */; };
+		9793157C1E50B1A80093D3BA /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9793157B1E50B1A80093D3BA /* liblzma.a */; };
 		97A08C151DD263B90070D0E4 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681341D6F711A00E5FA99 /* Book.swift */; };
 		97A127C91D777CF100FB204D /* RecentSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C51D777CF100FB204D /* RecentSearchController.swift */; };
 		97A127CC1D777CF100FB204D /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C81D777CF100FB204D /* SearchResultController.swift */; };
@@ -213,6 +213,7 @@
 		9788419C1DA2FF2A00D22D3C /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		978C9DBF1E4245B60078BFF7 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		978C9DC11E4245B60078BFF7 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
+		9793157B1E50B1A80093D3BA /* liblzma.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblzma.a; path = Kiwix/libkiwix/iOS/liblzma.a; sourceTree = "<group>"; };
 		97A127C51D777CF100FB204D /* RecentSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentSearchController.swift; sourceTree = "<group>"; };
 		97A127C61D777CF100FB204D /* SearchScopeAndHistoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchScopeAndHistoryController.swift; sourceTree = "<group>"; };
 		97A127C81D777CF100FB204D /* SearchResultController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultController.swift; sourceTree = "<group>"; };
@@ -280,7 +281,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9764F5931D830EF200E0B1C4 /* liblzma.tbd in Frameworks */,
 				973DD40F1D343F2F009D45DB /* libicudata.a in Frameworks */,
 				973DD4101D343F2F009D45DB /* libicui18n.a in Frameworks */,
 				973DD4111D343F2F009D45DB /* libicuio.a in Frameworks */,
@@ -291,6 +291,7 @@
 				973DD4151D343F2F009D45DB /* libicutu.a in Frameworks */,
 				973DD4161D343F2F009D45DB /* libicuuc.a in Frameworks */,
 				973DD4181D343F2F009D45DB /* libxapian.a in Frameworks */,
+				9793157C1E50B1A80093D3BA /* liblzma.a in Frameworks */,
 				973DD4191D343F2F009D45DB /* libzim.a in Frameworks */,
 				9711871E1CEB449A00B9909D /* libz.tbd in Frameworks */,
 				7356F9FACBB84380CFC8F68F /* Pods_Kiwix_iOS.framework in Frameworks */,
@@ -303,6 +304,7 @@
 		931D277C156AE671D3F9EADA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9793157B1E50B1A80093D3BA /* liblzma.a */,
 				976A0C801D41619C0006A742 /* DZNEmptyDataSet.framework */,
 				974C49671DA4266200E276E1 /* CloudKit.framework */,
 				9764F5921D830EF200E0B1C4 /* liblzma.tbd */,
