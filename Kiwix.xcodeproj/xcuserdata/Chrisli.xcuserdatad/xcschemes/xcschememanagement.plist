@@ -19,6 +19,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>Kiwix.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -53,6 +58,21 @@
 			<true/>
 		</dict>
 		<key>978C9DBD1E4245B60078BFF7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>979315801E5127930093D3BA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>979315901E5127930093D3BA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9793159B1E5127940093D3BA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
