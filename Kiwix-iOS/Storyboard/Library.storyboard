@@ -74,10 +74,10 @@
                                                     <color key="textColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nTw-d7-YqD">
-                                                    <rect key="frame" x="270" y="10" width="42" height="46"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nTw-d7-YqD" customClass="LibraryMoreButton" customModule="Kiwix" customModuleProvider="target">
+                                                    <rect key="frame" x="286" y="10" width="26" height="46"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="42" id="lBA-pd-Pa2"/>
+                                                        <constraint firstAttribute="width" constant="26" id="lBA-pd-Pa2"/>
                                                         <constraint firstAttribute="height" constant="46" id="qqN-B2-nid"/>
                                                     </constraints>
                                                     <state key="normal" image="Dots"/>

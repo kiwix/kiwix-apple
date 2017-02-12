@@ -157,3 +157,11 @@ class MessageBarButtonItem: UIBarButtonItem {
         }
     }
 }
+
+class LibraryMoreButton: UIButton {
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        if self.isHidden || !self.isUserInteractionEnabled || self.alpha < 0.01 { return nil }
+        let rect = bounds.insetBy(dx: -16, dy: 0)
+        return rect.contains(point) ? self : nil
+    }
+}
