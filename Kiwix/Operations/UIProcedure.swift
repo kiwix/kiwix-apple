@@ -140,6 +140,9 @@ extension AlertProcedure {
                     alert.finish()
                 }
             } else if book.state == .local {
+                alert.add(actionWithTitle: "Open Main Page", style: .default) { _ in
+                    GlobalQueue.shared.add(articleLoad: ArticleLoadOperation(bookID: book.id))
+                }
                 alert.add(actionWithTitle: "Remove", style: .default) { _ in
                     guard let fileURL = ZimMultiReader.shared.readers[book.id]?.fileURL else {return}
                     try? FileManager.default.removeItem(at: fileURL)
