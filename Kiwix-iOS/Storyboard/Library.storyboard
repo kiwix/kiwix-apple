@@ -74,13 +74,12 @@
                                                     <color key="textColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nTw-d7-YqD" customClass="LibraryMoreButton" customModule="Kiwix" customModuleProvider="target">
-                                                    <rect key="frame" x="286" y="10" width="26" height="46"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nTw-d7-YqD" customClass="LibraryMoreButton" customModule="Kiwix" customModuleProvider="target">
+                                                    <rect key="frame" x="276" y="10" width="36" height="46"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="26" id="lBA-pd-Pa2"/>
+                                                        <constraint firstAttribute="width" constant="36" id="lBA-pd-Pa2"/>
                                                         <constraint firstAttribute="height" constant="46" id="qqN-B2-nid"/>
                                                     </constraints>
-                                                    <state key="normal" image="Dots"/>
                                                     <connections>
                                                         <action selector="moreButtonTapped:" destination="Aea-Om-Uku" eventType="touchUpInside" id="Cxh-DD-Tyi"/>
                                                     </connections>
@@ -100,9 +99,9 @@
                                             <constraint firstItem="q2k-12-zti" firstAttribute="leading" secondItem="Wbk-Lp-yTb" secondAttribute="trailing" constant="8" id="g7u-6E-fy5"/>
                                             <constraint firstAttribute="leadingMargin" secondItem="Wbk-Lp-yTb" secondAttribute="leading" id="hkU-Yw-gmi"/>
                                             <constraint firstItem="aKZ-e6-Ikq" firstAttribute="baseline" secondItem="q2k-12-zti" secondAttribute="baseline" id="oqT-7N-NgD"/>
-                                            <constraint firstItem="nTw-d7-YqD" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="aKZ-e6-Ikq" secondAttribute="trailing" id="pmb-V3-HIM"/>
+                                            <constraint firstItem="nTw-d7-YqD" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="aKZ-e6-Ikq" secondAttribute="trailing" constant="4" id="pmb-V3-HIM"/>
                                             <constraint firstAttribute="topMargin" secondItem="q2k-12-zti" secondAttribute="top" id="qG1-In-0ae"/>
-                                            <constraint firstItem="nTw-d7-YqD" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wmd-Qv-2ia" secondAttribute="trailing" id="qRe-Xm-jjX"/>
+                                            <constraint firstItem="nTw-d7-YqD" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wmd-Qv-2ia" secondAttribute="trailing" constant="4" id="qRe-Xm-jjX"/>
                                             <constraint firstItem="rmy-yO-cBy" firstAttribute="top" secondItem="q2k-12-zti" secondAttribute="bottom" id="tUM-uu-aX5"/>
                                         </constraints>
                                         <connections>
@@ -403,6 +402,5 @@
     </scenes>
     <resources>
         <image name="Cross" width="16" height="16"/>
-        <image name="Dots" width="16" height="16"/>
     </resources>
 </document>

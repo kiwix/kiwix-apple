@@ -53,6 +53,9 @@
 		974C49681DA4266200E276E1 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 974C49671DA4266200E276E1 /* CloudKit.framework */; };
 		975227CD1D0227E8001D1DDE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227CA1D0227E8001D1DDE /* Main.storyboard */; };
 		975227D01D022814001D1DDE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975227CF1D022814001D1DDE /* LaunchScreen.storyboard */; };
+		9757F6671E5147FF0062D419 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9757F6661E5147FF0062D419 /* Assets.xcassets */; };
+		9757F66A1E5148620062D419 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9757F6681E5148260062D419 /* Main.storyboard */; };
+		9757F66D1E5149200062D419 /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9757F66C1E5149200062D419 /* MainWindowController.swift */; };
 		97599AA21E26D3B000BA15EF /* BookmarkBooksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599AA11E26D3B000BA15EF /* BookmarkBooksController.swift */; };
 		97599AE21E28193D00BA15EF /* BookmarkCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97599AE11E28193D00BA15EF /* BookmarkCollectionController.swift */; };
 		975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975B90FD1CEB909100D13906 /* iOSExtensions.swift */; };
@@ -76,8 +79,6 @@
 		9793157C1E50B1A80093D3BA /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9793157B1E50B1A80093D3BA /* liblzma.a */; };
 		979315841E5127930093D3BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979315831E5127930093D3BA /* AppDelegate.swift */; };
 		979315861E5127930093D3BA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979315851E5127930093D3BA /* ViewController.swift */; };
-		979315881E5127930093D3BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 979315871E5127930093D3BA /* Assets.xcassets */; };
-		9793158B1E5127930093D3BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 979315891E5127930093D3BA /* Main.storyboard */; };
 		97A08C151DD263B90070D0E4 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681341D6F711A00E5FA99 /* Book.swift */; };
 		97A127C91D777CF100FB204D /* RecentSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C51D777CF100FB204D /* RecentSearchController.swift */; };
 		97A127CC1D777CF100FB204D /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A127C81D777CF100FB204D /* SearchResultController.swift */; };
@@ -194,6 +195,9 @@
 		974C49671DA4266200E276E1 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		975227CA1D0227E8001D1DDE /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = "Kiwix-iOS/Storyboard/Main.storyboard"; sourceTree = SOURCE_ROOT; };
 		975227CF1D022814001D1DDE /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "Kiwix-iOS/Storyboard/LaunchScreen.storyboard"; sourceTree = SOURCE_ROOT; };
+		9757F6661E5147FF0062D419 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9757F6681E5148260062D419 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		9757F66C1E5149200062D419 /* MainWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
 		97599AA11E26D3B000BA15EF /* BookmarkBooksController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkBooksController.swift; sourceTree = "<group>"; };
 		97599AE11E28193D00BA15EF /* BookmarkCollectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkCollectionController.swift; sourceTree = "<group>"; };
 		975B90FD1CEB909100D13906 /* iOSExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = iOSExtensions.swift; path = "Kiwix-iOS/iOSExtensions.swift"; sourceTree = SOURCE_ROOT; };
@@ -218,11 +222,9 @@
 		978C9DBF1E4245B60078BFF7 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		978C9DC11E4245B60078BFF7 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		9793157B1E50B1A80093D3BA /* liblzma.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblzma.a; path = Kiwix/libkiwix/iOS/liblzma.a; sourceTree = "<group>"; };
-		979315811E5127930093D3BA /* Kiwix-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kiwix-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		979315811E5127930093D3BA /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		979315831E5127930093D3BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		979315851E5127930093D3BA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		979315871E5127930093D3BA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		9793158A1E5127930093D3BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9793158C1E5127930093D3BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97A127C51D777CF100FB204D /* RecentSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentSearchController.swift; sourceTree = "<group>"; };
 		97A127C61D777CF100FB204D /* SearchScopeAndHistoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchScopeAndHistoryController.swift; sourceTree = "<group>"; };
@@ -526,6 +528,14 @@
 			name = reader;
 			sourceTree = "<group>";
 		};
+		9757F66B1E5149050062D419 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				9757F66C1E5149200062D419 /* MainWindowController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		9771DC4B1C37278E009ECFF0 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
@@ -607,14 +617,22 @@
 		979315821E5127930093D3BA /* macOS */ = {
 			isa = PBXGroup;
 			children = (
+				9757F66B1E5149050062D419 /* Controller */,
 				979315831E5127930093D3BA /* AppDelegate.swift */,
 				979315851E5127930093D3BA /* ViewController.swift */,
-				979315871E5127930093D3BA /* Assets.xcassets */,
-				979315891E5127930093D3BA /* Main.storyboard */,
+				9757F6681E5148260062D419 /* Main.storyboard */,
+				979315AC1E5147A70093D3BA /* Support */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		979315AC1E5147A70093D3BA /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				9757F6661E5147FF0062D419 /* Assets.xcassets */,
 				9793158C1E5127930093D3BA /* Info.plist */,
 			);
-			name = macOS;
-			path = Kiwix;
+			path = Support;
 			sourceTree = "<group>";
 		};
 		97A1FD3C1D6F728200A80EE2 /* Tools */ = {
@@ -639,7 +657,7 @@
 				97E609F21D103DED00EBCB9D /* iOSWidgets */,
 				931D277C156AE671D3F9EADA /* Frameworks */,
 				F544A4E4357A6D33CF234C6B /* Pods */,
-				979315811E5127930093D3BA /* Kiwix-macOS.app */,
+				979315811E5127930093D3BA /* Kiwix.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -749,9 +767,9 @@
 			productReference = 9779C3131D4575AD0064CC8E /* Bookmarks.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		979315801E5127930093D3BA /* Kiwix-macOS */ = {
+		979315801E5127930093D3BA /* macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 979315A31E5127940093D3BA /* Build configuration list for PBXNativeTarget "Kiwix-macOS" */;
+			buildConfigurationList = 979315A31E5127940093D3BA /* Build configuration list for PBXNativeTarget "macOS" */;
 			buildPhases = (
 				9793157D1E5127930093D3BA /* Sources */,
 				9793157E1E5127930093D3BA /* Frameworks */,
@@ -761,9 +779,9 @@
 			);
 			dependencies = (
 			);
-			name = "Kiwix-macOS";
+			name = macOS;
 			productName = Kiwix;
-			productReference = 979315811E5127930093D3BA /* Kiwix-macOS.app */;
+			productReference = 979315811E5127930093D3BA /* Kiwix.app */;
 			productType = "com.apple.product-type.application";
 		};
 		97A2AB871C1B80FF00052E74 /* Kiwix-iOS */ = {
@@ -851,7 +869,7 @@
 			projectRoot = "";
 			targets = (
 				97A2AB871C1B80FF00052E74 /* Kiwix-iOS */,
-				979315801E5127930093D3BA /* Kiwix-macOS */,
+				979315801E5127930093D3BA /* macOS */,
 				9779C3121D4575AD0064CC8E /* Bookmarks */,
 			);
 		};
@@ -870,8 +888,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				979315881E5127930093D3BA /* Assets.xcassets in Resources */,
-				9793158B1E5127930093D3BA /* Main.storyboard in Resources */,
+				9757F66A1E5148620062D419 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -883,6 +900,7 @@
 				971A10811D022F74007FC62C /* Pic_P.png in Resources */,
 				975227D01D022814001D1DDE /* LaunchScreen.storyboard in Resources */,
 				97F03CE21D2440470040D26E /* Search.storyboard in Resources */,
+				9757F6671E5147FF0062D419 /* Assets.xcassets in Resources */,
 				9734E54E1D289D060061C39B /* Welcome.storyboard in Resources */,
 				971A10161D022872007FC62C /* Assets.xcassets in Resources */,
 				97E850CB1D2DA5B300A9F688 /* About.html in Resources */,
@@ -962,6 +980,7 @@
 			files = (
 				979315861E5127930093D3BA /* ViewController.swift in Sources */,
 				979315841E5127930093D3BA /* AppDelegate.swift in Sources */,
+				9757F66D1E5149200062D419 /* MainWindowController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1053,17 +1072,6 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		979315891E5127930093D3BA /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				9793158A1E5127930093D3BA /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		9779C3201D4575AE0064CC8E /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1110,11 +1118,11 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				INFOPLIST_FILE = Kiwix/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/macOS/Support/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.Kiwix;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Kiwix;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 3.0;
@@ -1130,11 +1138,11 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				INFOPLIST_FILE = Kiwix/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/macOS/Support/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.Kiwix;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Kiwix;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 3.0;
 			};
@@ -1318,13 +1326,14 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		979315A31E5127940093D3BA /* Build configuration list for PBXNativeTarget "Kiwix-macOS" */ = {
+		979315A31E5127940093D3BA /* Build configuration list for PBXNativeTarget "macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				979315A41E5127940093D3BA /* Debug */,
 				979315A51E5127940093D3BA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		97A2AB831C1B80FF00052E74 /* Build configuration list for PBXProject "Kiwix" */ = {
 			isa = XCConfigurationList;
