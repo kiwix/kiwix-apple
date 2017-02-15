@@ -131,8 +131,10 @@ extension AlertProcedure {
             }()
             if book.state == .cloud {
                 alert.add(actionWithTitle: Localized.Library.download, style: .default) { _ in
-                    Network.shared.start(bookID: book.id)
-                    alert.finish()
+                    OperationQueue.main.addOperation({
+                        UIQueue.shared.add(operation: download(context: context, bookID: book.id))
+                        alert.finish()
+                    })
                 }
                 alert.add(actionWithTitle: Localized.Library.copyURL, style: .default) { _ in
                     guard let url = book.url else {return}
@@ -150,7 +152,21 @@ extension AlertProcedure {
             }
             
             alert.add(actionWithTitle: Localized.Common.cancel, style: .cancel) { _ in alert.finish() }
-            if let _ = spaceStatus {alert.actions.first?.isEnabled = spaceStatus != .notEnough}
+            if let _ = spaceStatus { alert.actions.first?.isEnabled = (spaceStatus != .notEnough) }
+            return alert
+        }
+        
+        static func download(context: UIViewController, bookID: String) -> AlertProcedure {
+            assert(Thread.isMainThread)
+            let alert = AlertProcedure(presentAlertFrom: context)
+            alert.title = "Choose A Download Mode"
+            alert.add(actionWithTitle: "Wifi Only", style: .default) { _ in
+                Network.shared.start(bookID: bookID, useWifiAndCellular: false)
+            }
+            alert.add(actionWithTitle: "Wifi + Cellular", style: .default) { _ in
+                Network.shared.start(bookID: bookID, useWifiAndCellular: true)
+            }
+            alert.add(actionWithTitle: Localized.Common.cancel, style: .cancel) { _ in }
             return alert
         }
         

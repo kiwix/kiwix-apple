@@ -35,11 +35,18 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     
     // MARK: - actions
     
-    func start(bookID: String) {
+    func start(bookID: String, useWifiAndCellular: Bool?) {
         managedObjectContext.perform {
             guard let book = Book.fetch(bookID, context: self.managedObjectContext),
                 let url = book.url else {return}
-            let task = (book.fileSize > self.bookSizeThreshold ? self.wifiSession: self.cellularSession).downloadTask(with: url)
+            let session: URLSession = {
+                if let useWifiAndCellular = useWifiAndCellular {
+                    return useWifiAndCellular ? self.cellularSession : self.wifiSession
+                } else {
+                    return book.fileSize > self.bookSizeThreshold ? self.wifiSession : self.cellularSession
+                }
+            }()
+            let task = session.downloadTask(with: url)
             task.taskDescription = book.id
             task.resume()
             
