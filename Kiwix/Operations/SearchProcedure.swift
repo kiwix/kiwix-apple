@@ -23,7 +23,7 @@ class SearchOperation: GroupProcedure {
         let sort = Sort()
         searches.forEach { (search) in
             sort.inject(dependency: search, block: { (sort, search, errors) in
-                sort.results += search.results
+                sort.results += search.results.values
             })
         }
         sort.add(observer: DidFinishObserver { [unowned self] (operation, errors) in
@@ -39,7 +39,7 @@ private class BookSearch: Procedure {
     let zimID: ZimID
     let searchText: String
     
-    fileprivate var results = [SearchResult]()
+    fileprivate var results = [String: SearchResult]()
     
     init(zimID: ZimID, searchText: String) {
         self.zimID = zimID
@@ -62,7 +62,7 @@ private class BookSearch: Procedure {
         let mixedDics = titleDics + indexedDics
         for dic in mixedDics {
             guard let result = SearchResult (rawResult: dic, lowerCaseSearchTerm: searchText) else {continue}
-            self.results.append(result)
+            self.results[result.title] = result
         }
     }
 }
