@@ -203,6 +203,14 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
         return header
     }
     
+    // MARK: - UICollectionView Delegate
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        guard let cell = collectionView.cellForItem(at: indexPath) as? LibraryCollectionCell else {return}
+        didTapMoreButton(cell: cell)
+    }
+    
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

@@ -187,6 +187,12 @@ class LibraryCollectionCell: UICollectionViewCell {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var hasPicLabel: UILabel!
     @IBOutlet weak var moreButton: UIButton!
+    
+    override var isSelected: Bool {
+        didSet {
+            backgroundColor = isSelected ? UIColor(colorLiteralRed: 200/255, green: 220/255, blue: 1, alpha: 1) : UIColor.clear
+        }
+    }
 }
 
 

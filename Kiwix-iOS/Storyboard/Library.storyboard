@@ -86,7 +86,6 @@
                                                 </button>
                                             </subviews>
                                         </view>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         <constraints>
                                             <constraint firstItem="Wbk-Lp-yTb" firstAttribute="centerY" secondItem="Aea-Om-Uku" secondAttribute="centerY" id="3Lj-sz-46B"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="nTw-d7-YqD" secondAttribute="trailing" id="5JR-74-PhA"/>
