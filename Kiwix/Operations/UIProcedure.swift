@@ -8,6 +8,7 @@
 
 import MessageUI
 import ProcedureKit
+import SystemConfiguration
 
 // MARK: - Feedback
 
@@ -132,7 +133,11 @@ extension AlertProcedure {
             if book.state == .cloud {
                 alert.add(actionWithTitle: Localized.Library.download, style: .default) { _ in
                     OperationQueue.main.addOperation({
-                        UIQueue.shared.add(operation: download(context: context, bookID: book.id))
+                        if true {
+                            UIQueue.shared.add(operation: download(context: context, bookID: book.id))
+                        } else {
+                            Network.shared.start(bookID: book.id, useWifiAndCellular: false)
+                        }
                         alert.finish()
                     })
                 }
@@ -161,7 +166,7 @@ extension AlertProcedure {
             let alert = AlertProcedure(presentAlertFrom: context)
             alert.title = "Choose A Download Mode"
             alert.add(actionWithTitle: "Wifi Only", style: .default) { _ in
-                Network.shared.start(bookID: bookID, useWifiAndCellular: false)
+                
             }
             alert.add(actionWithTitle: "Wifi + Cellular", style: .default) { _ in
                 Network.shared.start(bookID: bookID, useWifiAndCellular: true)
