@@ -5,3 +5,4 @@
 #import "ZimReader.h"
 #import "ZimIndexer.h"
 
+#include <ifaddrs.h>

@@ -133,7 +133,7 @@ extension AlertProcedure {
             if book.state == .cloud {
                 alert.add(actionWithTitle: Localized.Library.download, style: .default) { _ in
                     OperationQueue.main.addOperation({
-                        if true {
+                        if UIDevice.hasCellularCapability {
                             UIQueue.shared.add(operation: download(context: context, bookID: book.id))
                         } else {
                             Network.shared.start(bookID: book.id, useWifiAndCellular: false)

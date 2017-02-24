@@ -60,3 +60,19 @@ extension Bundle {
         return (Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String) ?? "Unknown"
     }
 }
+
+extension UIDevice {
+    class var hasCellularCapability: Bool {
+        // Get list of all interfaces on the local machine:
+        var ifaddr : UnsafeMutablePointer<ifaddrs>? = nil
+        if getifaddrs(&ifaddr) == 0 {
+            var ptr = ifaddr
+            while ptr != nil {
+                ptr = ptr!.pointee.ifa_next
+                let ifaName = String(utf8String: ptr!.pointee.ifa_name)
+                if ifaName == "pdp_ip0" {return true}
+            }
+        }
+        return false
+    }
+}
