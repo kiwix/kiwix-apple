@@ -68,9 +68,10 @@ extension UIDevice {
         if getifaddrs(&ifaddr) == 0 {
             var ptr = ifaddr
             while ptr != nil {
-                ptr = ptr!.pointee.ifa_next
-                let ifaName = String(utf8String: ptr!.pointee.ifa_name)
+                guard let pointer = ptr else {continue}
+                let ifaName = String(utf8String: pointer.pointee.ifa_name)
                 if ifaName == "pdp_ip0" {return true}
+                ptr = pointer.pointee.ifa_next
             }
         }
         return false

@@ -166,7 +166,7 @@ extension AlertProcedure {
             let alert = AlertProcedure(presentAlertFrom: context)
             alert.title = "Choose A Download Mode"
             alert.add(actionWithTitle: "Wifi Only", style: .default) { _ in
-                
+                Network.shared.start(bookID: bookID, useWifiAndCellular: false)
             }
             alert.add(actionWithTitle: "Wifi + Cellular", style: .default) { _ in
                 Network.shared.start(bookID: bookID, useWifiAndCellular: true)
