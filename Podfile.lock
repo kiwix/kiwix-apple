@@ -1,4 +1,5 @@
 PODS:
+<<<<<<< HEAD
   - DateTools (1.7.0)
   - DZNEmptyDataSet (1.8.1)
   - Operations (3.3.1):
@@ -29,5 +30,46 @@ SPEC CHECKSUMS:
   SwiftyUserDefaults: e7c8197a9d4068702e7f2406a968cae413b8de27
 
 PODFILE CHECKSUM: dafe7442de9229d78c81ec09646e9230caf12c71
+=======
+  - DZNEmptyDataSet (1.8.1)
+  - MBProgressHUD (1.0.0)
+  - ProcedureKit (4.0.0):
+    - ProcedureKit/Standard (= 4.0.0)
+  - ProcedureKit/Cloud (4.0.0):
+    - ProcedureKit/Standard
+  - ProcedureKit/Mobile (4.0.0):
+    - ProcedureKit/Standard
+  - ProcedureKit/Network (4.0.0):
+    - ProcedureKit/Standard
+  - ProcedureKit/Standard (4.0.0)
+  - SwiftyUserDefaults (3.0.0)
 
-COCOAPODS: 1.0.1
+DEPENDENCIES:
+  - DZNEmptyDataSet
+  - MBProgressHUD (~> 1.0.0)
+  - ProcedureKit (from `https://github.com/ProcedureKit/ProcedureKit.git`, branch `release/4.0.0.beta.6`)
+  - ProcedureKit/Cloud (from `https://github.com/ProcedureKit/ProcedureKit.git`, branch `release/4.0.0.beta.6`)
+  - ProcedureKit/Mobile (from `https://github.com/ProcedureKit/ProcedureKit.git`, branch `release/4.0.0.beta.6`)
+  - ProcedureKit/Network (from `https://github.com/ProcedureKit/ProcedureKit.git`, branch `release/4.0.0.beta.6`)
+  - SwiftyUserDefaults
+
+EXTERNAL SOURCES:
+  ProcedureKit:
+    :branch: release/4.0.0.beta.6
+    :git: https://github.com/ProcedureKit/ProcedureKit.git
+
+CHECKOUT OPTIONS:
+  ProcedureKit:
+    :commit: 5d8e0766b8fd41aca545896030f2ffae5249688d
+    :git: https://github.com/ProcedureKit/ProcedureKit.git
+
+SPEC CHECKSUMS:
+  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  ProcedureKit: 9825e1850007c3879e8e6ea175852a73605ecdf2
+  SwiftyUserDefaults: 0f1d45fc3aafb9064dac661e367f8f83fe21a4b4
+
+PODFILE CHECKSUM: 28797b95738306052fa8a6edf4aff3bf9dd2ec20
+>>>>>>> 1.8
+
+COCOAPODS: 1.1.1
