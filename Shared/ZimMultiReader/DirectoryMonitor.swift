@@ -153,19 +153,6 @@ class DirectoryMonitor {
         }
     }
     
-<<<<<<< HEAD:Kiwix/ZimMultiReader/DirectoryMonitor.swift
-    private func fileSize(fileName: String) -> Int64? {
-        if let path = self.URL.URLByAppendingPathComponent(fileName)!.path {
-            if NSFileManager.defaultManager().fileExistsAtPath(path) {
-                do {
-                    let attributes = try NSFileManager.defaultManager().attributesOfItemAtPath(path)
-                    let fileSize = attributes[NSFileSize] as? NSNumber
-                    return fileSize?.longLongValue
-                } catch let error as NSError {
-                    // failure
-                    print("attributesOfItemAtPath failed: \(error.localizedDescription)")
-                }
-=======
     private func fileSize(_ fileName: String) -> Int64? {
         let path = self.url.appendingPathComponent(fileName).path
         if FileManager.default.fileExists(atPath: path) {
@@ -175,7 +162,6 @@ class DirectoryMonitor {
                 return fileSize?.int64Value
             } catch let error as NSError {
                 print("attributesOfItemAtPath failed: \(error.localizedDescription)")
->>>>>>> 1.8:Shared/ZimMultiReader/DirectoryMonitor.swift
             }
         }
         return nil

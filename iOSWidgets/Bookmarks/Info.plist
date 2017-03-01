@@ -21,11 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-<<<<<<< HEAD:Kiwix-iOSWidgets/Bookmarks/Info.plist
-	<string>1.7.776</string>
-=======
 	<string>1.8.4112</string>
->>>>>>> 1.8:iOSWidgets/Bookmarks/Info.plist
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionMainStoryboard</key>

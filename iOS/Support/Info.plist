@@ -49,11 +49,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-<<<<<<< HEAD:Kiwix-iOS/Info.plist
-	<string>1.7.776</string>
-=======
 	<string>1.8.4112</string>
->>>>>>> 1.8:iOS/Support/Info.plist
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
@@ -73,15 +69,10 @@
 			</dict>
 		</dict>
 	</dict>
-<<<<<<< HEAD:Kiwix-iOS/Info.plist
-	<key>NSCalendarsUsageDescription</key>
-	<string>Kiwix does NOT need to have access your Calendar</string>
-=======
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>org.kiwix.kiwix.article-view</string>
 	</array>
->>>>>>> 1.8:iOS/Support/Info.plist
 	<key>UIApplicationShortcutItems</key>
 	<array>
 		<dict>
