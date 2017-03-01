@@ -31,7 +31,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "97A2AB871C1B80FF00052E74"
                BuildableName = "Kiwix.app"
-               BlueprintName = "Kiwix-iOS"
+               BlueprintName = "iOS"
                ReferencedContainer = "container:Kiwix.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -43,13 +43,23 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9706DAA81E6750EB0005FE0F"
+               BuildableName = "iOS_ScreenshotAutomator.xctest"
+               BlueprintName = "iOS_ScreenshotAutomator"
+               ReferencedContainer = "container:Kiwix.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9779C3121D4575AD0064CC8E"
-            BuildableName = "Bookmarks.appex"
-            BlueprintName = "Bookmarks"
+            BlueprintIdentifier = "97A2AB871C1B80FF00052E74"
+            BuildableName = "Kiwix.app"
+            BlueprintName = "iOS"
             ReferencedContainer = "container:Kiwix.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -73,7 +83,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "97A2AB871C1B80FF00052E74"
             BuildableName = "Kiwix.app"
-            BlueprintName = "Kiwix-iOS"
+            BlueprintName = "iOS"
             ReferencedContainer = "container:Kiwix.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -93,7 +103,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "97A2AB871C1B80FF00052E74"
             BuildableName = "Kiwix.app"
-            BlueprintName = "Kiwix-iOS"
+            BlueprintName = "iOS"
             ReferencedContainer = "container:Kiwix.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

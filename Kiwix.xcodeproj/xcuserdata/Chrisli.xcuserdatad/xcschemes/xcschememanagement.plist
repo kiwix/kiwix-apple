@@ -11,17 +11,34 @@
 		</dict>
 		<key>Bookmarks.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<false/>
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
-		<key>Kiwix-iOS.xcscheme</key>
+		<key>iOS.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>macOS.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>9706DA941E674F5D0005FE0F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9706DAA81E6750EB0005FE0F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>9722121A1D3ECCFE00C0DCF2</key>
 		<dict>
 			<key>primary</key>
@@ -53,6 +70,21 @@
 			<true/>
 		</dict>
 		<key>978C9DBD1E4245B60078BFF7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>979315801E5127930093D3BA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>979315901E5127930093D3BA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9793159B1E5127940093D3BA</key>
 		<dict>
 			<key>primary</key>
 			<true/>

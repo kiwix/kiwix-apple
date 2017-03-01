@@ -1,7 +1,7 @@
 # Uncomment this line if you're using Swift
 use_frameworks!
 
-target 'Kiwix-iOS' do
+target 'iOS' do
 
 platform :ios, '10.0'
 
