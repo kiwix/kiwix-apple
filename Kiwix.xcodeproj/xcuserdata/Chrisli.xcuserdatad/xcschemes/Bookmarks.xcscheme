@@ -47,7 +47,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9706DA941E674F5D0005FE0F"
+               BlueprintIdentifier = "9706DAA81E6750EB0005FE0F"
                BuildableName = "iOS_ScreenshotAutomator.xctest"
                BlueprintName = "iOS_ScreenshotAutomator"
                ReferencedContainer = "container:Kiwix.xcodeproj">

@@ -11,8 +11,10 @@
 		</dict>
 		<key>Bookmarks.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<false/>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>1</integer>
 		</dict>
 		<key>iOS.xcscheme</key>
 		<dict>

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F85759625A491CA2F27C1BF /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBC0C1E7272F1F1CFC34318A /* Pods_iOS.framework */; };
 		7356F9FACBB84380CFC8F68F /* Pods_Kiwix_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC884ACBBA260AF741C4C4FE /* Pods_Kiwix_iOS.framework */; };
 		9706DAB61E6751120005FE0F /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9706DAB41E6751120005FE0F /* Info.plist */; };
 		9706DAB71E6751120005FE0F /* iOS_ScreenshotAutomator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9706DAB51E6751120005FE0F /* iOS_ScreenshotAutomator.swift */; };
@@ -291,7 +292,10 @@
 		97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkWidgetCell.swift; sourceTree = "<group>"; };
 		97E609F01D103DED00EBCB9D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		97E850CA1D2DA5B300A9F688 /* About.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = About.html; path = Kiwix/HelpDocuments/About.html; sourceTree = SOURCE_ROOT; };
+		BDFD686AE11F06B9F1B3B782 /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		DA0AB5D61F19BE37BD0AFA0A /* Pods-Kiwix-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiwix-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		EAE9B571F10BDC813C035DF1 /* Pods-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		EBC0C1E7272F1F1CFC34318A /* Pods_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC884ACBBA260AF741C4C4FE /* Pods_Kiwix_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Kiwix_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -336,6 +340,7 @@
 				973DD4191D343F2F009D45DB /* libzim.a in Frameworks */,
 				9711871E1CEB449A00B9909D /* libz.tbd in Frameworks */,
 				7356F9FACBB84380CFC8F68F /* Pods_Kiwix_iOS.framework in Frameworks */,
+				4F85759625A491CA2F27C1BF /* Pods_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -365,6 +370,7 @@
 				EC884ACBBA260AF741C4C4FE /* Pods_Kiwix_iOS.framework */,
 				978C9DBF1E4245B60078BFF7 /* UserNotifications.framework */,
 				978C9DC11E4245B60078BFF7 /* UserNotificationsUI.framework */,
+				EBC0C1E7272F1F1CFC34318A /* Pods_iOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -782,6 +788,8 @@
 				69E75DFE2EF83272AC5B02BA /* Pods-Kiwix-OSX.release.xcconfig */,
 				DA0AB5D61F19BE37BD0AFA0A /* Pods-Kiwix-iOS.debug.xcconfig */,
 				5B9300794E7F4EFE5B3E8F19 /* Pods-Kiwix-iOS.release.xcconfig */,
+				BDFD686AE11F06B9F1B3B782 /* Pods-iOS.debug.xcconfig */,
+				EAE9B571F10BDC813C035DF1 /* Pods-iOS.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1002,7 +1010,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOS/Pods-iOS-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		7D32C417880EE3A4FFF4017C /* [CP] Embed Pods Frameworks */ = {
@@ -1017,7 +1025,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Kiwix-iOS/Pods-Kiwix-iOS-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOS/Pods-iOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CDD21917A84F651D4CEFF569 /* [CP] Check Pods Manifest.lock */ = {
@@ -1360,7 +1368,7 @@
 		};
 		97A2ABB41C1B810000052E74 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DA0AB5D61F19BE37BD0AFA0A /* Pods-Kiwix-iOS.debug.xcconfig */;
+			baseConfigurationReference = BDFD686AE11F06B9F1B3B782 /* Pods-iOS.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1398,7 +1406,7 @@
 		};
 		97A2ABB51C1B810000052E74 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B9300794E7F4EFE5B3E8F19 /* Pods-Kiwix-iOS.release.xcconfig */;
+			baseConfigurationReference = EAE9B571F10BDC813C035DF1 /* Pods-iOS.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
