@@ -781,8 +781,7 @@
 			children = (
 				9779C3151D4575AD0064CC8E /* Bookmarks */,
 			);
-			name = iOSWidgets;
-			path = "Kiwix-iOSWidgets";
+			path = iOSWidgets;
 			sourceTree = "<group>";
 		};
 		F544A4E4357A6D33CF234C6B /* Pods */ = {
@@ -1212,11 +1211,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
-				CODE_SIGN_ENTITLEMENTS = "Kiwix-iOSWidgets/Bookmarks/Bookmarks.entitlements";
+				CODE_SIGN_ENTITLEMENTS = iOSWidgets/Bookmarks/Bookmarks.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				INFOPLIST_FILE = "Kiwix-iOSWidgets/Bookmarks/Info.plist";
+				INFOPLIST_FILE = iOSWidgets/Bookmarks/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.Bookmarks;
@@ -1230,11 +1229,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
-				CODE_SIGN_ENTITLEMENTS = "Kiwix-iOSWidgets/Bookmarks/Bookmarks.entitlements";
+				CODE_SIGN_ENTITLEMENTS = iOSWidgets/Bookmarks/Bookmarks.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				INFOPLIST_FILE = "Kiwix-iOSWidgets/Bookmarks/Info.plist";
+				INFOPLIST_FILE = iOSWidgets/Bookmarks/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.Bookmarks;
