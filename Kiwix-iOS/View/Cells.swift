@@ -143,6 +143,8 @@ class BookmarkCollectionCell: UICollectionViewCell {
 
 class LibraryCollectionCell: UICollectionViewCell {
     override func awakeFromNib() {
+        layer.cornerRadius = 2.0
+        clipsToBounds = true
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 2.0
         hasPicLabel.layer.borderWidth = 1.5
@@ -188,9 +190,17 @@ class LibraryCollectionCell: UICollectionViewCell {
     @IBOutlet weak var hasPicLabel: UILabel!
     @IBOutlet weak var moreButton: UIButton!
     
+    override var isHighlighted: Bool {
+        didSet {
+            guard traitCollection.horizontalSizeClass == .compact || traitCollection.verticalSizeClass == .compact else {return}
+            backgroundColor = isHighlighted ? UIColor(colorLiteralRed: 200/255, green: 220/255, blue: 1, alpha: 1) : UIColor.white
+        }
+    }
+    
     override var isSelected: Bool {
         didSet {
-            backgroundColor = isSelected ? UIColor(colorLiteralRed: 200/255, green: 220/255, blue: 1, alpha: 1) : UIColor.clear
+            guard traitCollection.horizontalSizeClass == .compact || traitCollection.verticalSizeClass == .compact else {return}
+            backgroundColor = isSelected ? UIColor(colorLiteralRed: 200/255, green: 220/255, blue: 1, alpha: 1) : UIColor.white
         }
     }
 }

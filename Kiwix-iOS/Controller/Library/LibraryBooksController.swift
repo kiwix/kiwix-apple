@@ -207,7 +207,8 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        guard let cell = collectionView.cellForItem(at: indexPath) as? LibraryCollectionCell else {return}
+        guard traitCollection.horizontalSizeClass == .compact || traitCollection.verticalSizeClass == .compact,
+            let cell = collectionView.cellForItem(at: indexPath) as? LibraryCollectionCell else {return}
         didTapMoreButton(cell: cell)
     }
     
