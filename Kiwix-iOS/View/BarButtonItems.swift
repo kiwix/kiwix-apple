@@ -14,7 +14,9 @@ class LPTBarButtonItem: UIBarButtonItem {
                      highlightedImageName: String? = nil,
                      scale: CGFloat = 1.0,
                      grayed: Bool = true,
-                     delegate: LPTBarButtonItemDelegate? = nil) {
+                     delegate: LPTBarButtonItemDelegate? = nil,
+                     accessibilityLabel: String? = nil,
+                     accessibilityIdentifier: String? = nil) {
         var image = UIImage(named: imageName)
         var highlightedImage: UIImage? = {
             guard let name = highlightedImageName else {return nil}
@@ -43,6 +45,10 @@ class LPTBarButtonItem: UIBarButtonItem {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(gesture:)))
         containerView.addGestureRecognizer(longPressGestureRecognizer)
         containerView.addGestureRecognizer(tapGestureRecognizer)
+        
+        self.isAccessibilityElement = true
+        self.accessibilityLabel = accessibilityLabel
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
     
     // MARK: - Overrides
