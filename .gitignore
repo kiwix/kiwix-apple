@@ -1,7 +1,9 @@
 screenshots
 Snapfile
-Shared/libkiwix
-
+Shared/libkiwix/C&C++
+Shared/libkiwix/include
+Shared/libkiwix/shared
+Shared/libkiwix/static
 
 # Xcode
 #
