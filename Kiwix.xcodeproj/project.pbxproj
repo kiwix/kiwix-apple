@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4F85759625A491CA2F27C1BF /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBC0C1E7272F1F1CFC34318A /* Pods_iOS.framework */; };
-		9706DAB61E6751120005FE0F /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9706DAB41E6751120005FE0F /* Info.plist */; };
-		9706DAB71E6751120005FE0F /* iOS_ScreenshotAutomator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9706DAB51E6751120005FE0F /* iOS_ScreenshotAutomator.swift */; };
-		9706DAB91E67527B0005FE0F /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9706DAB81E67527B0005FE0F /* SnapshotHelper.swift */; };
 		970D79D41E60B8A8003F5997 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 970D79D01E60B8A8003F5997 /* Assets.xcassets */; };
 		970D79D61E60B8A8003F5997 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 970D79D31E60B8A8003F5997 /* LaunchScreen.storyboard */; };
 		9711871E1CEB449A00B9909D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9711871D1CEB449A00B9909D /* libz.tbd */; };
@@ -108,6 +105,8 @@
 		97D681411D6F712800E5FA99 /* DownloadTask+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813D1D6F712800E5FA99 /* DownloadTask+CoreDataProperties.swift */; };
 		97DB65DA1D4576B600A2CC42 /* BookmarkWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */; };
 		97ED50111DD257D00089E9B6 /* Kiwix.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 97D6812A1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld */; };
+		97FC27DE1E69CE31008B2348 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 97FC27DC1E69CE31008B2348 /* Info.plist */; };
+		97FC27DF1E69CE31008B2348 /* iOS_ScreenshotAutomator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FC27DD1E69CE31008B2348 /* iOS_ScreenshotAutomator.swift */; };
 		97FC60891E6868F1003CFD38 /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97FC607E1E6868F1003CFD38 /* libicudata.a */; };
 		97FC608A1E6868F1003CFD38 /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97FC607F1E6868F1003CFD38 /* libicui18n.a */; };
 		97FC608B1E6868F1003CFD38 /* libicuio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97FC60801E6868F1003CFD38 /* libicuio.a */; };
@@ -123,19 +122,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		9706DAAE1E6750EB0005FE0F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 97A2AB801C1B80FF00052E74 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 97A2AB871C1B80FF00052E74;
-			remoteInfo = iOS;
-		};
 		9779C31C1D4575AE0064CC8E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 97A2AB801C1B80FF00052E74 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 9779C3121D4575AD0064CC8E;
 			remoteInfo = Bookmarks;
+		};
+		97FC27D61E69CE10008B2348 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97A2AB801C1B80FF00052E74 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 97A2AB871C1B80FF00052E74;
+			remoteInfo = iOS;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -154,10 +153,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		9706DAA91E6750EB0005FE0F /* iOS_ScreenshotAutomator.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOS_ScreenshotAutomator.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9706DAB41E6751120005FE0F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9706DAB51E6751120005FE0F /* iOS_ScreenshotAutomator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOS_ScreenshotAutomator.swift; sourceTree = "<group>"; };
-		9706DAB81E67527B0005FE0F /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		970912551D7F452C00BBD5A1 /* 1.8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.8.xcdatamodel; sourceTree = "<group>"; };
 		970D79D01E60B8A8003F5997 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		970D79D11E60B8A8003F5997 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -277,6 +272,9 @@
 		97D6813E1D6F712800E5FA99 /* Language+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Language+CoreDataProperties.swift"; path = "Classes/Language+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkWidgetCell.swift; sourceTree = "<group>"; };
 		97E609F01D103DED00EBCB9D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		97FC27D11E69CE10008B2348 /* iOS_ScreenshotAutomator.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOS_ScreenshotAutomator.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		97FC27DC1E69CE31008B2348 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		97FC27DD1E69CE31008B2348 /* iOS_ScreenshotAutomator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOS_ScreenshotAutomator.swift; sourceTree = "<group>"; };
 		97FC607E1E6868F1003CFD38 /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicudata.a; sourceTree = "<group>"; };
 		97FC607F1E6868F1003CFD38 /* libicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicui18n.a; sourceTree = "<group>"; };
 		97FC60801E6868F1003CFD38 /* libicuio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicuio.a; sourceTree = "<group>"; };
@@ -294,13 +292,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		9706DAA61E6750EB0005FE0F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9779C3101D4575AD0064CC8E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -337,6 +328,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		97FC27CE1E69CE10008B2348 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -352,19 +350,9 @@
 		9706DA9F1E6750360005FE0F /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				9706DAB31E6751120005FE0F /* iOS_ScreenshotAutomator */,
+				97FC27DB1E69CE31008B2348 /* iOS_ScreenshotAutomator */,
 			);
 			path = Tests;
-			sourceTree = "<group>";
-		};
-		9706DAB31E6751120005FE0F /* iOS_ScreenshotAutomator */ = {
-			isa = PBXGroup;
-			children = (
-				9706DAB41E6751120005FE0F /* Info.plist */,
-				9706DAB51E6751120005FE0F /* iOS_ScreenshotAutomator.swift */,
-				9706DAB81E67527B0005FE0F /* SnapshotHelper.swift */,
-			);
-			path = iOS_ScreenshotAutomator;
 			sourceTree = "<group>";
 		};
 		971187051CEB426E00B9909D /* libkiwix */ = {
@@ -606,7 +594,7 @@
 				931D277C156AE671D3F9EADA /* Libraries */,
 				F544A4E4357A6D33CF234C6B /* Pods */,
 				979315811E5127930093D3BA /* Kiwix.app */,
-				9706DAA91E6750EB0005FE0F /* iOS_ScreenshotAutomator.xctest */,
+				97FC27D11E69CE10008B2348 /* iOS_ScreenshotAutomator.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -753,6 +741,15 @@
 			path = iOSWidgets;
 			sourceTree = "<group>";
 		};
+		97FC27DB1E69CE31008B2348 /* iOS_ScreenshotAutomator */ = {
+			isa = PBXGroup;
+			children = (
+				97FC27DC1E69CE31008B2348 /* Info.plist */,
+				97FC27DD1E69CE31008B2348 /* iOS_ScreenshotAutomator.swift */,
+			);
+			path = iOS_ScreenshotAutomator;
+			sourceTree = "<group>";
+		};
 		97FC607B1E686883003CFD38 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -798,24 +795,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9706DAA81E6750EB0005FE0F /* iOS_ScreenshotAutomator */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 9706DAB01E6750EB0005FE0F /* Build configuration list for PBXNativeTarget "iOS_ScreenshotAutomator" */;
-			buildPhases = (
-				9706DAA51E6750EB0005FE0F /* Sources */,
-				9706DAA61E6750EB0005FE0F /* Frameworks */,
-				9706DAA71E6750EB0005FE0F /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				9706DAAF1E6750EB0005FE0F /* PBXTargetDependency */,
-			);
-			name = iOS_ScreenshotAutomator;
-			productName = iOS_ScreenshotAutomator;
-			productReference = 9706DAA91E6750EB0005FE0F /* iOS_ScreenshotAutomator.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		9779C3121D4575AD0064CC8E /* Bookmarks */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9779C31F1D4575AE0064CC8E /* Build configuration list for PBXNativeTarget "Bookmarks" */;
@@ -872,6 +851,24 @@
 			productReference = 97A2AB881C1B80FF00052E74 /* Kiwix.app */;
 			productType = "com.apple.product-type.application";
 		};
+		97FC27D01E69CE10008B2348 /* iOS_ScreenshotAutomator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 97FC27D81E69CE10008B2348 /* Build configuration list for PBXNativeTarget "iOS_ScreenshotAutomator" */;
+			buildPhases = (
+				97FC27CD1E69CE10008B2348 /* Sources */,
+				97FC27CE1E69CE10008B2348 /* Frameworks */,
+				97FC27CF1E69CE10008B2348 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				97FC27D71E69CE10008B2348 /* PBXTargetDependency */,
+			);
+			name = iOS_ScreenshotAutomator;
+			productName = iOS_ScreenshotAutomator;
+			productReference = 97FC27D11E69CE10008B2348 /* iOS_ScreenshotAutomator.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -882,12 +879,6 @@
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Chris Li";
 				TargetAttributes = {
-					9706DAA81E6750EB0005FE0F = {
-						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = L7HWM3SP3L;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 97A2AB871C1B80FF00052E74;
-					};
 					9779C3121D4575AD0064CC8E = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = L7HWM3SP3L;
@@ -925,6 +916,12 @@
 							};
 						};
 					};
+					97FC27D01E69CE10008B2348 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = L7HWM3SP3L;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 97A2AB871C1B80FF00052E74;
+					};
 				};
 			};
 			buildConfigurationList = 97A2AB831C1B80FF00052E74 /* Build configuration list for PBXProject "Kiwix" */;
@@ -943,20 +940,12 @@
 				97A2AB871C1B80FF00052E74 /* iOS */,
 				979315801E5127930093D3BA /* macOS */,
 				9779C3121D4575AD0064CC8E /* Bookmarks */,
-				9706DAA81E6750EB0005FE0F /* iOS_ScreenshotAutomator */,
+				97FC27D01E69CE10008B2348 /* iOS_ScreenshotAutomator */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		9706DAA71E6750EB0005FE0F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9706DAB61E6751120005FE0F /* Info.plist in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9779C3111D4575AD0064CC8E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -992,6 +981,14 @@
 				97D231651E677C5600DCD4A4 /* Main.storyboard in Resources */,
 				97D231641E677C5600DCD4A4 /* Library.storyboard in Resources */,
 				97318E461E6780E7000B718B /* DownloaderLearnMore.html in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		97FC27CF1E69CE10008B2348 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97FC27DE1E69CE31008B2348 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1046,15 +1043,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		9706DAA51E6750EB0005FE0F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9706DAB71E6751120005FE0F /* iOS_ScreenshotAutomator.swift in Sources */,
-				9706DAB91E67527B0005FE0F /* SnapshotHelper.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9779C30F1D4575AD0064CC8E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1153,55 +1141,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		97FC27CD1E69CE10008B2348 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97FC27DF1E69CE31008B2348 /* iOS_ScreenshotAutomator.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		9706DAAF1E6750EB0005FE0F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 97A2AB871C1B80FF00052E74 /* iOS */;
-			targetProxy = 9706DAAE1E6750EB0005FE0F /* PBXContainerItemProxy */;
-		};
 		9779C31D1D4575AE0064CC8E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 9779C3121D4575AD0064CC8E /* Bookmarks */;
 			targetProxy = 9779C31C1D4575AE0064CC8E /* PBXContainerItemProxy */;
 		};
+		97FC27D71E69CE10008B2348 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 97A2AB871C1B80FF00052E74 /* iOS */;
+			targetProxy = 97FC27D61E69CE10008B2348 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		9706DAB11E6750EB0005FE0F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				INFOPLIST_FILE = Tests/iOS_ScreenshotAutomator/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.kiwix.iOS-ScreenshotAutomator";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 3.0;
-				TEST_TARGET_NAME = iOS;
-			};
-			name = Debug;
-		};
-		9706DAB21E6750EB0005FE0F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				INFOPLIST_FILE = Tests/iOS_ScreenshotAutomator/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.kiwix.iOS-ScreenshotAutomator";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-				TEST_TARGET_NAME = iOS;
-			};
-			name = Release;
-		};
 		9779C3201D4575AE0064CC8E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1443,18 +1406,42 @@
 			};
 			name = Release;
 		};
+		97FC27D91E69CE10008B2348 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				DEVELOPMENT_TEAM = L7HWM3SP3L;
+				INFOPLIST_FILE = iOS_ScreenshotAutomator/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.kiwix.iOS-ScreenshotAutomator";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = iOS;
+			};
+			name = Debug;
+		};
+		97FC27DA1E69CE10008B2348 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				DEVELOPMENT_TEAM = L7HWM3SP3L;
+				INFOPLIST_FILE = iOS_ScreenshotAutomator/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.kiwix.iOS-ScreenshotAutomator";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = iOS;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9706DAB01E6750EB0005FE0F /* Build configuration list for PBXNativeTarget "iOS_ScreenshotAutomator" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9706DAB11E6750EB0005FE0F /* Debug */,
-				9706DAB21E6750EB0005FE0F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		9779C31F1D4575AE0064CC8E /* Build configuration list for PBXNativeTarget "Bookmarks" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1490,6 +1477,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		97FC27D81E69CE10008B2348 /* Build configuration list for PBXNativeTarget "iOS_ScreenshotAutomator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97FC27D91E69CE10008B2348 /* Debug */,
+				97FC27DA1E69CE10008B2348 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 

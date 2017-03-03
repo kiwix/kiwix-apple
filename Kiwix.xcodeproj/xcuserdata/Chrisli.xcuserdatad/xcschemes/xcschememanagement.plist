@@ -14,12 +14,19 @@
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<key>iOS.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>6</integer>
+			<integer>0</integer>
+		</dict>
+		<key>iOS_ScreenshotAutomator.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<true/>
+			<key>orderHint</key>
+			<integer>2</integer>
 		</dict>
 		<key>macOS.xcscheme</key>
 		<dict>
@@ -110,6 +117,11 @@
 			<true/>
 		</dict>
 		<key>97E609EE1D103DED00EBCB9D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>97FC27D01E69CE10008B2348</key>
 		<dict>
 			<key>primary</key>
 			<true/>

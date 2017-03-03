@@ -2,7 +2,7 @@
 //  iOS_ScreenshotAutomator.swift
 //  iOS_ScreenshotAutomator
 //
-//  Created by Chris Li on 3/1/17.
+//  Created by Chris Li on 3/3/17.
 //  Copyright © 2017 Chris Li. All rights reserved.
 //
 
@@ -12,9 +12,6 @@ class iOS_ScreenshotAutomator: XCTestCase {
         
     override func setUp() {
         super.setUp()
-        let app = XCUIApplication()
-        setupSnapshot(app)
-        app.launch()
         
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
@@ -32,18 +29,11 @@ class iOS_ScreenshotAutomator: XCTestCase {
     }
     
     func testExample() {
-        addUIInterruptionMonitor(withDescription: "System Alert") { (alert) -> Bool in
-            alert.buttons["Allow"].tap()
-            snapshot("01Welcome")
-            return true
-        }
-        XCUIApplication().toolbars.otherElements["Library"].tap()
-        XCUIApplication().alerts["Filter Languages?"].buttons["Hide Other Languages"].tap()
-        snapshot("02Library")
         
+        let app = XCUIApplication()
+        app.toolbars.otherElements["Library"].tap()
+        app.alerts["Filter Languages?"].buttons["Hide Other Languages"].tap()
         
     }
     
 }
-
-
