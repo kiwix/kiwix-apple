@@ -1412,7 +1412,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				INFOPLIST_FILE = iOS_ScreenshotAutomator/Info.plist;
+				INFOPLIST_FILE = tests/iOS_ScreenshotAutomator/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.kiwix.iOS-ScreenshotAutomator";
@@ -1429,7 +1429,7 @@
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				INFOPLIST_FILE = iOS_ScreenshotAutomator/Info.plist;
+				INFOPLIST_FILE = tests/iOS_ScreenshotAutomator/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.kiwix.iOS-ScreenshotAutomator";
@@ -1485,6 +1485,7 @@
 				97FC27DA1E69CE10008B2348 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
