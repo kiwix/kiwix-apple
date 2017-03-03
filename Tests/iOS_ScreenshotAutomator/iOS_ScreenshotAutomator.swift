@@ -28,12 +28,33 @@ class iOS_ScreenshotAutomator: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        
+    func testLibrary() {
         let app = XCUIApplication()
-        app.toolbars.otherElements["Library"].tap()
-        app.alerts["Filter Languages?"].buttons["Hide Other Languages"].tap()
+        let buttonInToolbar = app.toolbars.otherElements["Library"]
+        if buttonInToolbar.exists {
+            buttonInToolbar.tap()
+        } else {
+            app.navigationBars["Kiwix.Main"].otherElements["Library"].tap()
+        }
         
+        let refreshButton = app.collectionViews.buttons["Refresh"]
+        if refreshButton.exists {
+            refreshButton.tap()
+            let alert = app.alerts["Filter Languages?"]
+            let exists = NSPredicate(format: "exists == 1")
+            expectation(for: exists, evaluatedWith: alert, handler: nil)
+            waitForExpectations(timeout: 30, handler: nil)
+            alert.buttons["Hide Other Languages"].tap()
+            snapshot("03Library")
+        } else {
+            snapshot("03Library")
+        }
     }
+    
+    func testWelcomePage() {
+        snapshot("01Welcome")
+    }
+    
+
     
 }

@@ -61,6 +61,7 @@
 		97A1FD451D6F728200A80EE2 /* Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD411D6F728200A80EE2 /* Localized.swift */; };
 		97A9F6F51E2E990500F423AA /* JSInject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* JSInject.js */; };
 		97C2C26A1DDCC58500A9CC64 /* ArticleProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764CBD21D8083AA00072D6A /* ArticleProcedure.swift */; };
+		97C5D1541E69D0170042898D /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C5D1521E69D0170042898D /* SnapshotHelper.swift */; };
 		97C601DE1D7F342100362D4F /* HTMLHeading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C601DD1D7F342100362D4F /* HTMLHeading.swift */; };
 		97D231631E677C5600DCD4A4 /* Bookmark.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97D2315D1E677C5600DCD4A4 /* Bookmark.storyboard */; };
 		97D231641E677C5600DCD4A4 /* Library.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97D2315E1E677C5600DCD4A4 /* Library.storyboard */; };
@@ -220,6 +221,7 @@
 		97A1FD411D6F728200A80EE2 /* Localized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localized.swift; sourceTree = "<group>"; };
 		97A2AB881C1B80FF00052E74 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A9F6F41E2E990500F423AA /* JSInject.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = JSInject.js; sourceTree = "<group>"; };
+		97C5D1521E69D0170042898D /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		97C601DD1D7F342100362D4F /* HTMLHeading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTMLHeading.swift; sourceTree = "<group>"; };
 		97D2315D1E677C5600DCD4A4 /* Bookmark.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Bookmark.storyboard; sourceTree = "<group>"; };
 		97D2315E1E677C5600DCD4A4 /* Library.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Library.storyboard; sourceTree = "<group>"; };
@@ -745,6 +747,7 @@
 			isa = PBXGroup;
 			children = (
 				97FC27DC1E69CE31008B2348 /* Info.plist */,
+				97C5D1521E69D0170042898D /* SnapshotHelper.swift */,
 				97FC27DD1E69CE31008B2348 /* iOS_ScreenshotAutomator.swift */,
 			);
 			path = iOS_ScreenshotAutomator;
@@ -1146,6 +1149,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				97FC27DF1E69CE31008B2348 /* iOS_ScreenshotAutomator.swift in Sources */,
+				97C5D1541E69D0170042898D /* SnapshotHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
