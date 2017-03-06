@@ -13,5 +13,53 @@
             stopOnStyle = "0">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "macOS/AppDelegate.swift"
+            timestampString = "510517442.987023"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
+            landmarkName = "windowWillClose(notification:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Kiwix.AppDelegate.windowWillClose (notification : __ObjC.NSNotification) -&gt; ()"
+                  moduleName = "Kiwix"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/Data/Developer/Kiwix/macOS/AppDelegate.swift"
+                  timestampString = "510517446.950933"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "34"
+                  endingLineNumber = "34"
+                  offsetFromSymbolStart = "19">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Kiwix.AppDelegate.windowWillClose (notification : __ObjC.NSNotification) -&gt; ()"
+                  moduleName = "Kiwix"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/Data/Developer/Kiwix/macOS/AppDelegate.swift"
+                  timestampString = "510517446.952015"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "34"
+                  endingLineNumber = "34"
+                  offsetFromSymbolStart = "499">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

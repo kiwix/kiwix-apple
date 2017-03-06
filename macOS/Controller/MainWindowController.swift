@@ -13,4 +13,14 @@ class MainWindowController: NSWindowController {
         super.windowDidLoad()
         window?.titleVisibility = .hidden
     }
+    
+    
+    @IBAction override func newWindowForTab(_ sender: Any?) {
+        let windowController = storyboard?.instantiateInitialController() as! MainWindowController
+        window?.addTabbedWindow(windowController.window!, ordered: .above)
+        AppDelegate.add(controller: windowController)
+        windowController.window?.orderFront(self.window)
+        windowController.window?.makeKey()
+    }
 }
+
