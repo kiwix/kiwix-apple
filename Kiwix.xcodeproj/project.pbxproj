@@ -32,7 +32,6 @@
 		973A5C951DEA6DD000C7804C /* URLResponseCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A5C931DEA6CA900C7804C /* URLResponseCache.swift */; };
 		974000151DB008C6009A740D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9788419C1DA2FF2A00D22D3C /* MainInterface.storyboard */; };
 		974C49681DA4266200E276E1 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 974C49671DA4266200E276E1 /* CloudKit.framework */; };
-		9757F6671E5147FF0062D419 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9757F6661E5147FF0062D419 /* Assets.xcassets */; };
 		9757F66A1E5148620062D419 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9757F6681E5148260062D419 /* Main.storyboard */; };
 		9757F66D1E5149200062D419 /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9757F66C1E5149200062D419 /* MainWindowController.swift */; };
 		975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975B90FD1CEB909100D13906 /* iOSExtensions.swift */; };
@@ -46,6 +45,7 @@
 		9780DE061E43BFF5009B6945 /* NetworkActivityIndicatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9780DE051E43BFF5009B6945 /* NetworkActivityIndicatorController.swift */; };
 		979315841E5127930093D3BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979315831E5127930093D3BA /* AppDelegate.swift */; };
 		979315861E5127930093D3BA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979315851E5127930093D3BA /* ViewController.swift */; };
+		979D177E1E6DA9A6006AE496 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9757F6661E5147FF0062D419 /* Assets.xcassets */; };
 		97A08C151DD263B90070D0E4 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681341D6F711A00E5FA99 /* Book.swift */; };
 		97A1FD161D6F71CE00A80EE2 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD121D6F71CE00A80EE2 /* DirectoryMonitor.swift */; };
 		97A1FD181D6F71CE00A80EE2 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD141D6F71CE00A80EE2 /* SearchResult.swift */; };
@@ -274,7 +274,7 @@
 		97D6813E1D6F712800E5FA99 /* Language+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Language+CoreDataProperties.swift"; path = "Classes/Language+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkWidgetCell.swift; sourceTree = "<group>"; };
 		97E609F01D103DED00EBCB9D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
-		97FC27D11E69CE10008B2348 /* iOS_ScreenshotAutomator.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOS_ScreenshotAutomator.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		97FC27D11E69CE10008B2348 /* iOS_ScreenshotAutomator.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = iOS_ScreenshotAutomator.xctest; path = "/Volumes/Data/Developer/Kiwix/build/Debug-iphoneos/iOS_ScreenshotAutomator.xctest"; sourceTree = "<absolute>"; };
 		97FC27DC1E69CE31008B2348 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97FC27DD1E69CE31008B2348 /* iOS_ScreenshotAutomator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOS_ScreenshotAutomator.swift; sourceTree = "<group>"; };
 		97FC607E1E6868F1003CFD38 /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicudata.a; sourceTree = "<group>"; };
@@ -596,7 +596,6 @@
 				931D277C156AE671D3F9EADA /* Libraries */,
 				F544A4E4357A6D33CF234C6B /* Pods */,
 				979315811E5127930093D3BA /* Kiwix.app */,
-				97FC27D11E69CE10008B2348 /* iOS_ScreenshotAutomator.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -961,6 +960,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				979D177E1E6DA9A6006AE496 /* Assets.xcassets in Resources */,
 				9757F66A1E5148620062D419 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -978,7 +978,6 @@
 				97318E4B1E6780E7000B718B /* Pic_P.png in Resources */,
 				97D231681E677C5600DCD4A4 /* Welcome.storyboard in Resources */,
 				97D231661E677C5600DCD4A4 /* Search.storyboard in Resources */,
-				9757F6671E5147FF0062D419 /* Assets.xcassets in Resources */,
 				97D231631E677C5600DCD4A4 /* Bookmark.storyboard in Resources */,
 				970D79D61E60B8A8003F5997 /* LaunchScreen.storyboard in Resources */,
 				97D231651E677C5600DCD4A4 /* Main.storyboard in Resources */,
@@ -1208,7 +1207,7 @@
 		979315A41E5127940093D3BA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = macOS;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "Mac Developer";
@@ -1228,7 +1227,7 @@
 		979315A51E5127940093D3BA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = macOS;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "Mac Developer";
@@ -1340,7 +1339,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = iOS;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1378,7 +1377,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = iOS;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
