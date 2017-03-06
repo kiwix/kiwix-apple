@@ -659,7 +659,7 @@
                 <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Kiwix" customModuleProvider="target"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="39" y="-292"/>
+            <point key="canvasLocation" x="-66" y="-304"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
@@ -669,11 +669,34 @@
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <rect key="contentRect" x="573" y="322" width="800" height="600"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-                        <toolbar key="toolbar" implicitIdentifier="7CF99D36-F6A8-4C6A-8A7E-C6FB7B3B3B05" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="xq9-8K-hdd">
+                        <toolbar key="toolbar" implicitIdentifier="7CF99D36-F6A8-4C6A-8A7E-C6FB7B3B3B05" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="regular" id="xq9-8K-hdd">
                             <allowedToolbarItems>
-                                <toolbarItem implicitItemIdentifier="NSToolbarShowColorsItem" id="H2i-hf-wpF"/>
-                                <toolbarItem implicitItemIdentifier="NSToolbarShowFontsItem" id="nwi-WJ-ve6"/>
-                                <toolbarItem implicitItemIdentifier="NSToolbarPrintItem" id="uwJ-9y-jNH"/>
+                                <toolbarItem implicitItemIdentifier="833D7855-CB38-4C00-87EC-E6083A087DB1" label="Go Back" paletteLabel="Go Back" image="GoBack" id="TdJ-1k-75w">
+                                    <nil key="toolTip"/>
+                                    <size key="minSize" width="25" height="25"/>
+                                    <size key="maxSize" width="27" height="27"/>
+                                    <button key="view" verticalHuggingPriority="750" id="an4-q2-PNw">
+                                        <rect key="frame" x="13" y="14" width="25" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <buttonCell key="cell" type="roundTextured" title="Textured Rounded" bezelStyle="texturedRounded" image="GoBack" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="mixed" borderStyle="border" allowsMixedState="YES" imageScaling="proportionallyDown" inset="2" id="XM8-Je-nHF">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                    </button>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="8AAFDE6E-03E8-49A2-94AC-37D60E412A51" label="Go Forward" paletteLabel="Go Forward" image="GoForward" id="wOG-c0-MRO">
+                                    <nil key="toolTip"/>
+                                    <size key="minSize" width="25" height="25"/>
+                                    <size key="maxSize" width="27" height="27"/>
+                                    <button key="view" verticalHuggingPriority="750" id="GpN-Jd-Hyj">
+                                        <rect key="frame" x="22" y="14" width="25" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <buttonCell key="cell" type="roundTextured" title="Textured Rounded" bezelStyle="texturedRounded" image="GoForward" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="3hx-8N-qpg">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                    </button>
+                                </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="dmT-mu-dnu"/>
                                 <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="Es7-BJ-vcz"/>
                                 <toolbarItem implicitItemIdentifier="B11F6B47-5318-454C-A250-96281A75BC52" label="Custom View" paletteLabel="Custom View" id="fcZ-QW-KUk">
@@ -692,6 +715,8 @@
                                 </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
+                                <toolbarItem reference="TdJ-1k-75w"/>
+                                <toolbarItem reference="wOG-c0-MRO"/>
                                 <toolbarItem reference="Es7-BJ-vcz"/>
                                 <toolbarItem reference="fcZ-QW-KUk"/>
                                 <toolbarItem reference="Es7-BJ-vcz"/>
@@ -699,6 +724,8 @@
                         </toolbar>
                     </window>
                     <connections>
+                        <outlet property="goBackButton" destination="TdJ-1k-75w" id="x2X-gf-yMC"/>
+                        <outlet property="toolBar" destination="xq9-8K-hdd" id="uj2-vZ-qCX"/>
                         <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
                     </connections>
                 </windowController>
@@ -737,4 +764,8 @@
             <point key="canvasLocation" x="116" y="811"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="GoBack" width="410" height="410"/>
+        <image name="GoForward" width="410" height="410"/>
+    </resources>
 </document>

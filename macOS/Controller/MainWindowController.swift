@@ -9,6 +9,8 @@
 import AppKit
 
 class MainWindowController: NSWindowController {
+    @IBOutlet weak var toolBar: NSToolbar!
+    @IBOutlet weak var goBackButton: NSToolbarItem!
     override func windowDidLoad() {
         super.windowDidLoad()
         window?.titleVisibility = .hidden

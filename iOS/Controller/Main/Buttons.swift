@@ -10,9 +10,9 @@ import UIKit
 
 class Buttons: LPTBarButtonItemDelegate {
     
-    private(set) lazy var back: LPTBarButtonItem = LPTBarButtonItem(imageName: "LeftArrow", scale: 0.8, delegate: self,
+    private(set) lazy var back: LPTBarButtonItem = LPTBarButtonItem(imageName: "GoBack", scale: 0.8, delegate: self,
                                                                     accessibilityLabel: "Go back", accessibilityIdentifier: "GoBack")
-    private(set) lazy var forward: LPTBarButtonItem = LPTBarButtonItem(imageName: "RightArrow", scale: 0.8, delegate: self,
+    private(set) lazy var forward: LPTBarButtonItem = LPTBarButtonItem(imageName: "GoForward", scale: 0.8, delegate: self,
                                                                        accessibilityLabel: "Go forward", accessibilityIdentifier: "GoForward")
     private(set) lazy var toc: LPTBarButtonItem = LPTBarButtonItem(imageName: "TableOfContent", scale: 0.8, delegate: self,
                                                                    accessibilityLabel: "Table of content", accessibilityIdentifier: "TableOfContent")
