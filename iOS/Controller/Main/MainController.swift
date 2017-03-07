@@ -14,13 +14,13 @@ import NotificationCenter
 
 class MainController: UIViewController {
     
-    @IBOutlet weak var webView: UIWebView!
     @IBOutlet weak var dimView: UIView!
     @IBOutlet weak var tocVisiualEffectView: UIVisualEffectView!
     @IBOutlet weak var tocTopToSuperViewBottomSpacing: NSLayoutConstraint!
     @IBOutlet weak var tocHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tocLeadSpacing: NSLayoutConstraint!
     
+    var webView = UIWebView()
     let searchBar = SearchBar()
     lazy var controllers = Controllers()
     lazy var buttons = Buttons()
@@ -55,6 +55,7 @@ class MainController: UIViewController {
         webView.delegate = self
         navigationItem.titleView = searchBar
         showWelcome()
+        configureWebView()
         AppNotification.shared.rateApp()
     }
     
@@ -164,6 +165,24 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
+    }
+    
+    func configureWebView() {
+        if webView.superview != nil {
+            webView.removeFromSuperview()
+        }
+        view.insertSubview(webView, at: 0)
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[webView]|", options: NSLayoutFormatOptions.alignAllLeft, metrics: nil, views: ["webView": webView]))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[webView]|", options: NSLayoutFormatOptions.alignAllLeft, metrics: nil, views: ["webView": webView]))
+        
+        webView.isOpaque = false
+        webView.backgroundColor = UIColor.white
+        webView.delegate = self
+    }
+    
+    func resetWebView() {
+        
     }
 }
 

@@ -85,8 +85,8 @@ class ArticleLoadOperation: Procedure {
             }
             
             let webView = main.webView
-            if webView?.request?.url != url {
-                webView?.loadRequest(request)
+            if webView.request?.url != url {
+                webView.loadRequest(request)
             }
             
             self.finish()

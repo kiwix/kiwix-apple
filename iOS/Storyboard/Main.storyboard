@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="uuM-WO-DyB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="uuM-WO-DyB">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -24,7 +24,7 @@
                                 <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="r7E-6T-nCU" id="MHm-bs-fau">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -59,11 +59,11 @@
                                         <rect key="frame" x="0.0" y="28" width="394" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DSn-3Y-Gs4" id="vq5-6x-vLY">
-                                            <rect key="frame" x="0.0" y="0.0" width="394" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="394" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xPq-dt-NK6">
-                                                    <rect key="frame" x="15" y="0.0" width="364" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="364" height="43.666666666666664"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -81,11 +81,11 @@
                                         <rect key="frame" x="0.0" y="72" width="394" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="au4-iz-tLz" id="3UD-lZ-hs0">
-                                            <rect key="frame" x="0.0" y="0.0" width="394" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="394" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="DJX-Kf-59M">
-                                                    <rect key="frame" x="15" y="0.0" width="364" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="364" height="43.666666666666664"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -103,11 +103,11 @@
                                         <rect key="frame" x="0.0" y="116" width="394" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cam-ik-ZIw" id="ooG-35-3Wp">
-                                            <rect key="frame" x="0.0" y="0.0" width="394" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="394" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ry7-2s-QyS">
-                                                    <rect key="frame" x="15" y="0.0" width="364" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="364" height="43.666666666666664"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -201,11 +201,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView opaque="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hIy-lu-2F6">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <dataDetectorType key="dataDetectorTypes"/>
-                            </webView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K9J-LG-g2K">
                                 <rect key="frame" x="0.0" y="64" width="414" height="628"/>
                                 <color key="backgroundColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -286,24 +281,11 @@
                         <constraints>
                             <constraint firstAttribute="leading" secondItem="r0g-Y2-P3v" secondAttribute="leading" constant="270" id="6b5-8X-7aD"/>
                             <constraint firstItem="r0g-Y2-P3v" firstAttribute="leading" secondItem="BDO-xK-ZEa" secondAttribute="leading" constant="10" id="AwJ-A8-0MO"/>
-                            <constraint firstItem="hIy-lu-2F6" firstAttribute="leading" secondItem="BDO-xK-ZEa" secondAttribute="leading" id="Gde-Fa-kB8"/>
                             <constraint firstItem="r0g-Y2-P3v" firstAttribute="top" secondItem="HS5-a8-H6G" secondAttribute="bottom" id="JwF-38-cyF"/>
-                            <constraint firstItem="hIy-lu-2F6" firstAttribute="top" secondItem="HS5-a8-H6G" secondAttribute="bottom" constant="-64" id="Ooa-c6-8q6">
-                                <variation key="widthClass=regular" constant="-64"/>
-                                <variation key="heightClass=compact-widthClass=compact" constant="-32"/>
-                                <variation key="heightClass=compact-widthClass=regular" constant="-44"/>
-                            </constraint>
                             <constraint firstItem="fXQ-NS-gMx" firstAttribute="top" secondItem="K9J-LG-g2K" secondAttribute="bottom" id="QYO-fy-GYr"/>
-                            <constraint firstItem="fXQ-NS-gMx" firstAttribute="top" secondItem="hIy-lu-2F6" secondAttribute="bottom" constant="-44" id="WOB-MJ-B5Z">
-                                <variation key="widthClass=regular" constant="0.0"/>
-                                <variation key="heightClass=compact-widthClass=compact" constant="-32"/>
-                                <variation key="heightClass=compact-widthClass=regular" constant="0.0"/>
-                            </constraint>
-                            <constraint firstAttribute="trailing" secondItem="hIy-lu-2F6" secondAttribute="trailing" id="bDC-Yf-1BU"/>
                             <constraint firstAttribute="bottom" secondItem="r0g-Y2-P3v" secondAttribute="top" id="c3k-qN-lYX"/>
                             <constraint firstAttribute="trailing" secondItem="K9J-LG-g2K" secondAttribute="trailing" id="fNo-Ba-KRO"/>
                             <constraint firstItem="K9J-LG-g2K" firstAttribute="leading" secondItem="BDO-xK-ZEa" secondAttribute="leading" id="ieA-8B-e1X"/>
-                            <constraint firstItem="hIy-lu-2F6" firstAttribute="leading" secondItem="r0g-Y2-P3v" secondAttribute="trailing" id="j9u-OA-K4W"/>
                             <constraint firstAttribute="trailing" secondItem="r0g-Y2-P3v" secondAttribute="trailing" constant="10" id="qvn-rd-wza"/>
                             <constraint firstItem="fXQ-NS-gMx" firstAttribute="top" secondItem="r0g-Y2-P3v" secondAttribute="bottom" id="wIQ-Lv-buV"/>
                             <constraint firstItem="K9J-LG-g2K" firstAttribute="top" secondItem="HS5-a8-H6G" secondAttribute="bottom" priority="750" id="xcv-M9-m5f"/>
@@ -314,12 +296,11 @@
                                 <exclude reference="r0g-Y2-P3v"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="j9u-OA-K4W"/>
+                                <exclude reference="QYO-fy-GYr"/>
+                                <exclude reference="wIQ-Lv-buV"/>
                                 <exclude reference="fNo-Ba-KRO"/>
                                 <exclude reference="ieA-8B-e1X"/>
                                 <exclude reference="xcv-M9-m5f"/>
-                                <exclude reference="QYO-fy-GYr"/>
-                                <exclude reference="wIQ-Lv-buV"/>
                                 <exclude reference="6b5-8X-7aD"/>
                                 <exclude reference="AwJ-A8-0MO"/>
                                 <exclude reference="JwF-38-cyF"/>
@@ -333,11 +314,10 @@
                                 <include reference="r0g-Y2-P3v"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="Gde-Fa-kB8"/>
+                                <include reference="QYO-fy-GYr"/>
                                 <include reference="fNo-Ba-KRO"/>
                                 <include reference="ieA-8B-e1X"/>
                                 <include reference="xcv-M9-m5f"/>
-                                <include reference="QYO-fy-GYr"/>
                                 <include reference="AwJ-A8-0MO"/>
                                 <include reference="c3k-qN-lYX"/>
                                 <include reference="qvn-rd-wza"/>
@@ -348,8 +328,6 @@
                                 <include reference="r0g-Y2-P3v"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="Gde-Fa-kB8"/>
-                                <include reference="j9u-OA-K4W"/>
                                 <include reference="wIQ-Lv-buV"/>
                                 <include reference="6b5-8X-7aD"/>
                                 <include reference="JwF-38-cyF"/>
@@ -363,7 +341,6 @@
                         <outlet property="tocLeadSpacing" destination="6b5-8X-7aD" id="YTL-Lm-2aX"/>
                         <outlet property="tocTopToSuperViewBottomSpacing" destination="c3k-qN-lYX" id="5Vf-Kg-W55"/>
                         <outlet property="tocVisiualEffectView" destination="r0g-Y2-P3v" id="USv-AV-zg4"/>
-                        <outlet property="webView" destination="hIy-lu-2F6" id="77z-Ea-aVH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gtk-Xb-X35" userLabel="First Responder" sceneMemberID="firstResponder"/>
