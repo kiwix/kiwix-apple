@@ -168,9 +168,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
     }
     
     func configureWebView() {
-        if webView.superview != nil {
-            webView.removeFromSuperview()
-        }
+        webView.removeFromSuperview()
         view.insertSubview(webView, at: 0)
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[webView]|", options: NSLayoutFormatOptions.alignAllLeft, metrics: nil, views: ["webView": webView]))
@@ -182,7 +180,10 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
     }
     
     func resetWebView() {
-        
+        webView.removeFromSuperview()
+        webView = UIWebView()
+        configureWebView()
+        showWelcome()
     }
 }
 

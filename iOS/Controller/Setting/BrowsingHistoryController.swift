@@ -8,10 +8,15 @@
 
 import UIKit
 
-class BrowseHistoryController: UITableViewController {
+class BrowsingHistoryController: UITableViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = Localized.Setting.history
+    }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -24,7 +29,7 @@ class BrowseHistoryController: UITableViewController {
         if indexPath.section == 0 {
             cell.textLabel?.text = Localized.Setting.History.clearSearchHistory
         } else {
-            cell.textLabel?.text = Localized.Setting.History.clearSearchHistory
+            cell.textLabel?.text = Localized.Setting.History.clearBrowsingHistory
         }
 
         return cell
@@ -32,7 +37,11 @@ class BrowseHistoryController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
+        if indexPath.section == 0 {
+            Preference.RecentSearch.terms.removeAll()
+        } else {
+            AppDelegate.mainController.resetWebView()
+        }
     }
 
 }

@@ -12,6 +12,11 @@ class NotificationSettingController: UITableViewController {
 
     let rows = [[Localized.Setting.Notifications.libraryRefresh],
                 [Localized.Setting.Notifications.bookDownloadFinish]]
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = Localized.Setting.notifications
+    }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return rows.count
