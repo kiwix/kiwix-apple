@@ -104,6 +104,7 @@
 		97D6813A1D6F711A00E5FA99 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681361D6F711A00E5FA99 /* Language.swift */; };
 		97D6813F1D6F712800E5FA99 /* Article+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813B1D6F712800E5FA99 /* Article+CoreDataProperties.swift */; };
 		97D681411D6F712800E5FA99 /* DownloadTask+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813D1D6F712800E5FA99 /* DownloadTask+CoreDataProperties.swift */; };
+		97DA5C1E1E6F420800873048 /* BrowsingHistoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DA5C1D1E6F420800873048 /* BrowsingHistoryController.swift */; };
 		97DB65DA1D4576B600A2CC42 /* BookmarkWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */; };
 		97ED50111DD257D00089E9B6 /* Kiwix.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 97D6812A1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld */; };
 		97FC27DE1E69CE31008B2348 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 97FC27DC1E69CE31008B2348 /* Info.plist */; };
@@ -272,6 +273,7 @@
 		97D6813D1D6F712800E5FA99 /* DownloadTask+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "DownloadTask+CoreDataProperties.swift"; path = "Classes/DownloadTask+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		97D6813E1D6F712800E5FA99 /* Language+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Language+CoreDataProperties.swift"; path = "Classes/Language+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		97DA5C1C1E6F35F700873048 /* iOS_ScreenshotAutomator.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOS_ScreenshotAutomator.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		97DA5C1D1E6F420800873048 /* BrowsingHistoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowsingHistoryController.swift; sourceTree = "<group>"; };
 		97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkWidgetCell.swift; sourceTree = "<group>"; };
 		97E609F01D103DED00EBCB9D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		97FC27DC1E69CE31008B2348 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -687,6 +689,7 @@
 		97D231831E677C6700DCD4A4 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
+				97DA5C1D1E6F420800873048 /* BrowsingHistoryController.swift */,
 				97D231841E677C6700DCD4A4 /* FontSizeController.swift */,
 				97D231851E677C6700DCD4A4 /* NotificationSettingController.swift */,
 				97D231861E677C6700DCD4A4 /* SettingController.swift */,
@@ -1099,6 +1102,7 @@
 				972F81571DDBFC79008D7289 /* SearchProcedure.swift in Sources */,
 				97D231961E677C6700DCD4A4 /* WelcomeController.swift in Sources */,
 				97A1FD3B1D6F724E00A80EE2 /* stringTools.cpp in Sources */,
+				97DA5C1E1E6F420800873048 /* BrowsingHistoryController.swift in Sources */,
 				9780DE061E43BFF5009B6945 /* NetworkActivityIndicatorController.swift in Sources */,
 				97A1FD321D6F723D00A80EE2 /* resourceTools.cpp in Sources */,
 				97D231971E677C6700DCD4A4 /* RecentSearchController.swift in Sources */,

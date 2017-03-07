@@ -13,7 +13,7 @@ import ProcedureKit
 
 class SettingController: UITableViewController {
     
-    let rows = [[Localized.Setting.fontSize, Localized.Setting.notifications],
+    let rows = [[Localized.Setting.fontSize, Localized.Setting.notifications, Localized.Setting.history],
                 [Localized.Setting.feedback, Localized.Setting.rateApp],
                 [Localized.Setting.about]]
     
@@ -70,11 +70,12 @@ class SettingController: UITableViewController {
         switch text {
         case Localized.Setting.fontSize:
             let controller = UIStoryboard(name: "Setting", bundle: nil).instantiateViewController(withIdentifier: "FontSizeController") as! FontSizeController
-            controller.title = Localized.Setting.fontSize
             navigationController?.pushViewController(controller, animated: true)
         case Localized.Setting.notifications:
             let controller = UIStoryboard(name: "Setting", bundle: nil).instantiateViewController(withIdentifier: "NotificationSettingController") as! NotificationSettingController
-            controller.title = Localized.Setting.notifications
+            navigationController?.pushViewController(controller, animated: true)
+        case Localized.Setting.history:
+            let controller = UIStoryboard(name: "Setting", bundle: nil).instantiateViewController(withIdentifier: "BrowsingHistoryController") as! BrowsingHistoryController
             navigationController?.pushViewController(controller, animated: true)
         case Localized.Setting.feedback:
             if MFMailComposeViewController.canSendMail() {
