@@ -271,9 +271,9 @@
 		97D6813C1D6F712800E5FA99 /* Book+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Book+CoreDataProperties.swift"; path = "Classes/Book+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		97D6813D1D6F712800E5FA99 /* DownloadTask+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "DownloadTask+CoreDataProperties.swift"; path = "Classes/DownloadTask+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		97D6813E1D6F712800E5FA99 /* Language+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Language+CoreDataProperties.swift"; path = "Classes/Language+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		97DA5C1C1E6F35F700873048 /* iOS_ScreenshotAutomator.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOS_ScreenshotAutomator.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkWidgetCell.swift; sourceTree = "<group>"; };
 		97E609F01D103DED00EBCB9D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
-		97FC27D11E69CE10008B2348 /* iOS_ScreenshotAutomator.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = iOS_ScreenshotAutomator.xctest; path = "/Volumes/Data/Developer/Kiwix/build/Debug-iphoneos/iOS_ScreenshotAutomator.xctest"; sourceTree = "<absolute>"; };
 		97FC27DC1E69CE31008B2348 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97FC27DD1E69CE31008B2348 /* iOS_ScreenshotAutomator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOS_ScreenshotAutomator.swift; sourceTree = "<group>"; };
 		97FC607E1E6868F1003CFD38 /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicudata.a; sourceTree = "<group>"; };
@@ -565,6 +565,7 @@
 		979315AC1E5147A70093D3BA /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				979315811E5127930093D3BA /* Kiwix.app */,
 				9793158C1E5127930093D3BA /* Info.plist */,
 			);
 			path = Support;
@@ -593,13 +594,13 @@
 				9706DA9F1E6750360005FE0F /* Tests */,
 				931D277C156AE671D3F9EADA /* Libraries */,
 				F544A4E4357A6D33CF234C6B /* Pods */,
-				979315811E5127930093D3BA /* Kiwix.app */,
 			);
 			sourceTree = "<group>";
 		};
 		97A2AB891C1B80FF00052E74 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				97DA5C1C1E6F35F700873048 /* iOS_ScreenshotAutomator.xctest */,
 				97A2AB881C1B80FF00052E74 /* Kiwix.app */,
 				9779C3131D4575AD0064CC8E /* Bookmarks.appex */,
 			);
@@ -866,7 +867,7 @@
 			);
 			name = iOS_ScreenshotAutomator;
 			productName = iOS_ScreenshotAutomator;
-			productReference = 97FC27D11E69CE10008B2348 /* iOS_ScreenshotAutomator.xctest */;
+			productReference = 97DA5C1C1E6F35F700873048 /* iOS_ScreenshotAutomator.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
