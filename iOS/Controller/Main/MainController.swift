@@ -184,6 +184,14 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
         webView = UIWebView()
         configureWebView()
         showWelcome()
+        
+        if let navBar = navigationController?.navigationBar, let toolbar = navigationController?.toolbar {
+            let top = navBar.frame.maxY
+            let bottom = toolbar.isHidden ? 0 : toolbar.frame.height
+            let inset = UIEdgeInsetsMake(top, 0, bottom, 0)
+            webView.scrollView.contentInset = inset
+            webView.scrollView.scrollIndicatorInsets = inset
+        }
     }
 }
 
