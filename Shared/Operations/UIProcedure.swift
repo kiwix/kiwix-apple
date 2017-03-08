@@ -85,6 +85,22 @@ extension AlertProcedure {
         return alert
     }
     
+    class History {
+        static func clearSearchHistory(context: UIViewController) -> AlertProcedure {
+            let alert = AlertProcedure(presentAlertFrom: context)
+            alert.title = Localized.Setting.History.Search.cleared
+            alert.add(actionWithTitle: Localized.Common.ok, style: .cancel)
+            return alert
+        }
+        
+        static func clearBrowsingHistory(context: UIViewController) -> AlertProcedure  {
+            let alert = AlertProcedure(presentAlertFrom: context)
+            alert.title = Localized.Setting.History.Browsing.cleared
+            alert.add(actionWithTitle: Localized.Common.ok, style: .cancel)
+            return alert
+        }
+    }
+    
 }
 
 // MARK: - Library 

@@ -87,8 +87,15 @@ class Localized {
         }
         
         class History {
-            static let clearSearchHistory = NSLocalizedString("Clear Search History", comment: "History Setting")
-            static let clearBrowsingHistory = NSLocalizedString("Clear Browsing History", comment: "History Setting")
+            class Search {
+                static let title = NSLocalizedString("Clear Search History", comment: "History Setting")
+                static let cleared = NSLocalizedString("Search History Cleared", comment: "History Setting")
+            }
+            
+            class Browsing {
+                static let title = NSLocalizedString("Clear Browsing History", comment: "History Setting")
+                static let cleared = NSLocalizedString("Browsing History Cleared", comment: "History Setting")
+            }
         }
         
         class Feedback {
