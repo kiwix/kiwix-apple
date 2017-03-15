@@ -162,6 +162,10 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
         article.lastReadDate = Date()
         article.thumbImagePath = URLResponseCache.shared.firstImage()?.path
         self.article = article
+        
+        if let lastPosition = article.lastPosition?.floatValue {
+            webView.scrollView.contentOffset = CGPoint(x: 0, y: CGFloat(lastPosition) * webView.scrollView.contentSize.height)
+        }
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
@@ -177,6 +181,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
         webView.isOpaque = false
         webView.backgroundColor = UIColor.white
         webView.delegate = self
+        webView.scrollView.delegate = self
     }
     
     func resetWebView() {
@@ -192,6 +197,14 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
             webView.scrollView.contentInset = inset
             webView.scrollView.scrollIndicatorInsets = inset
         }
+    }
+}
+
+// MARK: - Scroll
+
+extension MainController: UIScrollViewDelegate {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        article?.lastPosition = NSNumber(value: Double(scrollView.contentOffset.y / scrollView.contentSize.height))
     }
 }
 
