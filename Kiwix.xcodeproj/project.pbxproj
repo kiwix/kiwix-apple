@@ -20,7 +20,6 @@
 		97318E4A1E6780E7000B718B /* Pic_I.png in Resources */ = {isa = PBXBuildFile; fileRef = 97318E431E6780E7000B718B /* Pic_I.png */; };
 		97318E4B1E6780E7000B718B /* Pic_P.png in Resources */ = {isa = PBXBuildFile; fileRef = 97318E441E6780E7000B718B /* Pic_P.png */; };
 		97318E511E6780F9000B718B /* 1.5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97318E4D1E6780F9000B718B /* 1.5.xcmappingmodel */; };
-		97318E521E6780F9000B718B /* 1.8-old.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97318E4E1E6780F9000B718B /* 1.8-old.xcmappingmodel */; };
 		97318E531E6780F9000B718B /* 1.8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97318E4F1E6780F9000B718B /* 1.8.xcmappingmodel */; };
 		97318E541E6780F9000B718B /* MigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97318E501E6780F9000B718B /* MigrationPolicy.swift */; };
 		9732075C1DD136BB00EDD3DC /* CoreDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9732075B1DD136BB00EDD3DC /* CoreDataExtension.swift */; };
@@ -1142,7 +1141,6 @@
 				97D2319A1E677C6700DCD4A4 /* SearchResultController.swift in Sources */,
 				97ED50111DD257D00089E9B6 /* Kiwix.xcdatamodeld in Sources */,
 				9725345F1E43E2250005D169 /* UserHabit.swift in Sources */,
-				97318E521E6780F9000B718B /* 1.8-old.xcmappingmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

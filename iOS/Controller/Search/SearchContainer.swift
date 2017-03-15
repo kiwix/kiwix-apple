@@ -39,6 +39,7 @@ class SearchContainer: UIViewController {
     
     var searchText = "" {
         didSet {
+            guard searchText != oldValue else {return}
             configureVisibility()
             startSearch()
         }
