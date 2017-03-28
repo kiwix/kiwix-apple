@@ -120,6 +120,7 @@
 		97FC60921E6868F1003CFD38 /* libxapian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97FC60871E6868F1003CFD38 /* libxapian.a */; };
 		97FC60931E6868F1003CFD38 /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97FC60881E6868F1003CFD38 /* libzim.a */; };
 		97FDACC41D85A3B300DEDACB /* Language+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813E1D6F712800E5FA99 /* Language+CoreDataProperties.swift */; };
+		C8C55028E2800E371EBFA9F7 /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E854211810A39173DD6A5BD /* Pods_iOS.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -154,6 +155,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2E854211810A39173DD6A5BD /* Pods_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		970912551D7F452C00BBD5A1 /* 1.8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.8.xcdatamodel; sourceTree = "<group>"; };
 		970D79D11E60B8A8003F5997 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		970D79D21E60B8A8003F5997 /* Kiwix.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
@@ -327,6 +329,7 @@
 				4F85759625A491CA2F27C1BF /* Pods_iOS.framework in Frameworks */,
 				97FC608E1E6868F1003CFD38 /* libicutest.a in Frameworks */,
 				97FC60911E6868F1003CFD38 /* liblzma.a in Frameworks */,
+				C8C55028E2800E371EBFA9F7 /* Pods_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +343,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3B93EAF9B5C5AA23046BDEAC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2E854211810A39173DD6A5BD /* Pods_iOS.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		931D277C156AE671D3F9EADA /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -595,6 +606,7 @@
 				9706DA9F1E6750360005FE0F /* Tests */,
 				931D277C156AE671D3F9EADA /* Libraries */,
 				F544A4E4357A6D33CF234C6B /* Pods */,
+				3B93EAF9B5C5AA23046BDEAC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
