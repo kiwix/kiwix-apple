@@ -55,7 +55,7 @@ class MainController: UIViewController {
         webView.delegate = self
         navigationItem.titleView = searchBar
         showWelcome()
-        configureWebView()
+        //configureWebView()
         AppNotification.shared.rateApp()
     }
     
