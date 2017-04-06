@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="2Bo-lO-qA9">
-    <device id="retina5_5" orientation="landscape">
+    <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -18,17 +18,17 @@
                         <viewControllerLayoutGuide type="bottom" id="erc-nt-iny"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="NVS-td-RHS">
-                        <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="XaQ-Wa-tdO">
-                                <rect key="frame" x="168" y="140" width="400" height="134.33333333333331"/>
+                                <rect key="frame" x="16" y="301" width="382" height="224.33333333333337"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="IiH-Wy-J2l">
-                                        <rect key="frame" x="0.0" y="0.0" width="195" height="134.33333333333331"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="382" height="134.33333333333331"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nWg-4h-oN7" customClass="Logo" customModule="Kiwix" customModuleProvider="target">
-                                                <rect key="frame" x="67.666666666666657" y="0.0" width="60.000000000000028" height="60"/>
+                                                <rect key="frame" x="161" y="0.0" width="60" height="60"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="60" id="9ka-12-r09"/>
@@ -36,7 +36,7 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KIWIX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="heM-Vx-A7u">
-                                                <rect key="frame" x="35.333333333333343" y="60" width="124.66666666666666" height="58.666666666666686"/>
+                                                <rect key="frame" x="128.66666666666669" y="60" width="124.66666666666666" height="58.666666666666686"/>
                                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="49"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -48,7 +48,7 @@
                                                 </variation>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wikipedia Anywhere" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="786-cr-yay">
-                                                <rect key="frame" x="36.333333333333343" y="118.66666666666669" width="122.66666666666666" height="15.666666666666629"/>
+                                                <rect key="frame" x="129.66666666666669" y="118.66666666666669" width="122.66666666666666" height="15.666666666666629"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -62,10 +62,10 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="E2J-2L-EfY">
-                                        <rect key="frame" x="205" y="52.333333333333343" width="195" height="30"/>
+                                        <rect key="frame" x="0.0" y="194.33333333333331" width="382" height="30.000000000000057"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uud-4c-AAn">
-                                                <rect key="frame" x="0.0" y="0.0" width="195" height="30"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="382" height="30.000000000000057"/>
                                                 <color key="backgroundColor" red="0.60646116733551025" green="0.79930049180984497" blue="0.98724311590194702" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" title="Button"/>
                                             </button>
@@ -75,7 +75,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="400" id="rfY-RF-d1w"/>
                                 </constraints>
-                                <variation key="heightClass=compact" alignment="center" axis="horizontal" distribution="fillEqually" spacing="10"/>
+                                <variation key="heightClass=compact" alignment="center" axis="horizontal" distribution="fillEqually" spacing="30"/>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
