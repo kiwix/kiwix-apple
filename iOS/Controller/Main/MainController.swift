@@ -15,6 +15,7 @@ import NotificationCenter
 class MainController: UIViewController {
     
     @IBOutlet weak var dimView: UIView!
+    @IBOutlet weak var tabContainerView: UIView!
     @IBOutlet weak var tocVisiualEffectView: UIVisualEffectView!
     @IBOutlet weak var tocTopToSuperViewBottomSpacing: NSLayoutConstraint!
     @IBOutlet weak var tocHeightConstraint: NSLayoutConstraint!
@@ -107,6 +108,22 @@ class MainController: UIViewController {
         presentedViewController?.dismiss(animated: true, completion: { 
             self.presentedViewController?.dismiss(animated: true, completion: nil)
         })
+    }
+}
+
+// MARK: - Tabs
+
+extension MainController {
+    func showEmptyTab() {
+        let controller = controllers.createTab()
+        addChildViewController(controller)
+        tabContainerView.addSubview(controller.view)
+    }
+    
+    func removeTab() {
+        let controller = controllers.tabs.filter({ childViewControllers.contains($0) }).first
+        controller?.removeFromParentViewController()
+        controller?.view.removeFromSuperview()
     }
 }
 

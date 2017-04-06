@@ -17,6 +17,20 @@ class Controllers {
         let nav = appDelegate.window?.rootViewController as! UINavigationController
         return nav.topViewController as! MainController
     }
+    
+    // MARK: - Tabs
+    
+    var tabs = [TabController]()
+    
+    func createTab() -> TabController {
+        let tab = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TabController") as! TabController
+        tabs.append(tab)
+        return tab
+    }
+    
+    func removeTab(at index: Int) {
+        tabs.remove(at: index)
+    }
 
     // MARK: - Bookmark
 

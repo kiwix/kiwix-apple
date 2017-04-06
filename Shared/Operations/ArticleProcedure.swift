@@ -79,15 +79,16 @@ class ArticleLoadOperation: Procedure {
             
             main.dismissPresentedControllers()
             main.hideWelcome()
+            main.showEmptyTab()
             
             if main.traitCollection.horizontalSizeClass == .compact {
                 main.hideTableOfContents(animated: true)
             }
             
-            let webView = main.webView
-            if webView.request?.url != url {
-                webView.loadRequest(request)
-            }
+//            let webView = main.webView
+//            if webView.request?.url != url {
+//                webView.loadRequest(request)
+//            }
             
             self.finish()
         }
