@@ -44,7 +44,7 @@ class BrowsingHistoryController: UITableViewController {
             Preference.RecentSearch.terms.removeAll()
             UIQueue.shared.add(operation: AlertProcedure.History.clearSearchHistory(context: self))
         } else {
-            AppDelegate.mainController.resetWebView()
+            AppDelegate.mainController.showEmptyTab()
             UIQueue.shared.add(operation: AlertProcedure.History.clearBrowsingHistory(context: self))
         }
     }

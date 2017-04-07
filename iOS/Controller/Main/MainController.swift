@@ -57,7 +57,6 @@ class MainController: UIViewController {
         webView.delegate = self
         navigationItem.titleView = searchBar
         showWelcome()
-        //configureWebView()
         AppNotification.shared.rateApp()
     }
     
@@ -116,6 +115,7 @@ class MainController: UIViewController {
 
 extension MainController {
     func showEmptyTab() {
+        removeCurrentTab()
         let controller = controllers.createTab()
         addChildViewController(controller)
         tabContainerView.addSubview(controller.view)

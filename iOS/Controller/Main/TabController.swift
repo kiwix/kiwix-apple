@@ -13,9 +13,6 @@ class TabController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let url = URL(string: "https://www.google.com")!
-        webView.loadRequest(URLRequest(url: url))
     }
 
 }
