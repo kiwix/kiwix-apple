@@ -18,7 +18,6 @@ class TableOfContentsController: UIViewController, UIScrollViewDelegate, UITable
     
     var headings = [HTMLHeading]() {
         didSet {
-            configurePreferredContentSize()
             visibleHeaderIndicator.isHidden = headings.count == 0
             tableView.reloadData()
         }
@@ -27,6 +26,16 @@ class TableOfContentsController: UIViewController, UIScrollViewDelegate, UITable
     var visibleRange: (start: Int, length: Int)? {
         didSet {
             configureVisibleHeaderView(animated: true)
+        }
+    }
+    
+    override var preferredContentSize: CGSize {
+        get {
+            return CGSize(width: traitCollection.horizontalSizeClass == .regular ? 300 : (UIScreen.main.bounds.width),
+                          height: headings.count == 0 ? 350 : min(CGFloat(headings.count) * 44.0, round(UIScreen.main.bounds.height * 0.65 / 44) * 44))
+        }
+        set {
+           super.preferredContentSize = newValue
         }
     }
     
@@ -39,13 +48,6 @@ class TableOfContentsController: UIViewController, UIScrollViewDelegate, UITable
         tableView.tableFooterView = UIView()
         tableView.addSubview(visibleHeaderIndicator)
         visibleHeaderIndicator.backgroundColor = UIColor.red
-    }
-    
-    func configurePreferredContentSize() {
-        let count = headings.count
-        let width = traitCollection.horizontalSizeClass == .regular ? 300 : (UIScreen.main.bounds.width)
-        let height = count == 0 ? 350 : min(CGFloat(count) * 44.0, round(UIScreen.main.bounds.height * 0.65 / 44) * 44)
-        preferredContentSize = CGSize(width: width, height: height)
     }
     
     func configureVisibleHeaderView(animated: Bool) {

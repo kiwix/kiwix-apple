@@ -27,7 +27,7 @@ class MainController: UIViewController {
     lazy var buttons = Buttons()
     
     var isShowingTableOfContents = false
-    private(set) var tableOfContentsController: TableOfContentsController?
+    private(set) var tableOfContentsController: TableOfContentsController!
 
     private var observerContext = 0
     var article: Article? {
@@ -90,7 +90,7 @@ class MainController: UIViewController {
         if segue.identifier == "EmbeddedTOCController" {
             guard let controller = segue.destination as? TableOfContentsController else {return}
             tableOfContentsController = controller
-            tableOfContentsController?.delegate = self
+            tableOfContentsController.delegate = self
         }
     }
     
@@ -158,7 +158,7 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
     func webViewDidFinishLoad(_ webView: UIWebView) {
         JS.inject(webView: webView)
         JS.preventDefaultLongTap(webView: webView)
-        tableOfContentsController?.headings = JS.getTableOfContents(webView: webView)
+        tableOfContentsController.headings = JS.getTableOfContents(webView: webView)
         JS.startTOCCallBack(webView: webView)
         JS.adjustFontSizeIfNeeded(webView: webView)
         
@@ -447,7 +447,7 @@ extension MainController: TableOfContentsDelegate {
         switch traitCollection.horizontalSizeClass {
         case .compact:
             let toolBarHeight: CGFloat = traitCollection.horizontalSizeClass == .regular ? 0.0 : (traitCollection.verticalSizeClass == .compact ? 32.0 : 44.0)
-            let tocHeight = tableOfContentsController?.preferredContentSize.height ?? floor(view.frame.height * 0.4)
+            let tocHeight = tableOfContentsController.preferredContentSize.height
             tocHeightConstraint.constant = tocHeight
             tocTopToSuperViewBottomSpacing.constant = isShowingTableOfContents ? tocHeight + toolBarHeight + 10 : 0.0
         case .regular:
