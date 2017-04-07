@@ -25,6 +25,7 @@ class MainController: UIViewController {
     let searchBar = SearchBar()
     lazy var controllers = Controllers()
     lazy var buttons = Buttons()
+    var currentTab: TabController?
     
     var isShowingTableOfContents = false
     private(set) var tableOfContentsController: TableOfContentsController!
@@ -118,12 +119,12 @@ extension MainController {
         let controller = controllers.createTab()
         addChildViewController(controller)
         tabContainerView.addSubview(controller.view)
+        currentTab = controller
     }
     
-    func removeTab() {
-        let controller = controllers.tabs.filter({ childViewControllers.contains($0) }).first
-        controller?.removeFromParentViewController()
-        controller?.view.removeFromSuperview()
+    func removeCurrentTab() {
+        currentTab?.removeFromParentViewController()
+        currentTab?.view.removeFromSuperview()
     }
 }
 
