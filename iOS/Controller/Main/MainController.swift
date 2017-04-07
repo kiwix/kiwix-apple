@@ -113,18 +113,35 @@ class MainController: UIViewController {
 
 // MARK: - Tabs
 
-extension MainController {
+extension MainController: TabControllerDelegate {
     func showEmptyTab() {
         removeCurrentTab()
         let controller = controllers.createTab()
+        controller.delegate = self
         addChildViewController(controller)
         tabContainerView.addSubview(controller.view)
         currentTab = controller
     }
     
     func removeCurrentTab() {
+        currentTab?.delegate = nil
         currentTab?.removeFromParentViewController()
         currentTab?.view.removeFromSuperview()
+    }
+    
+    // MARK: TabControllerDelegate
+    
+    func didFinishLoad(tab: TabController) {
+        let webView = tab.webView!
+        
+        JS.inject(webView: webView)
+        JS.preventDefaultLongTap(webView: webView)
+        tableOfContentsController.headings = JS.getTableOfContents(webView: webView)
+        JS.startTOCCallBack(webView: webView)
+        JS.adjustFontSizeIfNeeded(webView: webView)
+        
+        buttons.back.tintColor = webView.canGoBack ? nil : UIColor.gray
+        buttons.forward.tintColor = webView.canGoForward ? nil : UIColor.gray
     }
 }
 
@@ -157,19 +174,14 @@ extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
-        JS.inject(webView: webView)
-        JS.preventDefaultLongTap(webView: webView)
-        tableOfContentsController.headings = JS.getTableOfContents(webView: webView)
-        JS.startTOCCallBack(webView: webView)
-        JS.adjustFontSizeIfNeeded(webView: webView)
+        
         
         URLResponseCache.shared.stop()
         
         guard let url = webView.request?.url,
             let article = Article.fetch(url: url, context: AppDelegate.persistentContainer.viewContext) else {return}
         
-        buttons.back.tintColor = webView.canGoBack ? nil : UIColor.gray
-        buttons.forward.tintColor = webView.canGoForward ? nil : UIColor.gray
+        
         buttons.bookmark.isHighlighted = article.isBookmarked
         
         guard let title = JS.getTitle(from: webView) else {return}
@@ -319,11 +331,11 @@ extension MainController: SearchBarDelegate, SearchContainerDelegate {
 
 extension MainController: ButtonDelegates {
     func didTapBackButton() {
-        webView.goBack()
+        currentTab?.webView.goBack()
     }
     
     func didTapForwardButton() {
-        webView.goForward()
+        currentTab?.webView.goForward()
     }
     
     func didTapTOCButton() {
@@ -409,7 +421,6 @@ extension MainController: TableOfContentsDelegate {
         dimView.alpha = 0.0
         view.layoutIfNeeded()
         
-        //configureTableOfContents()
         configureTOCConstraints()
         
         if animated {
@@ -444,7 +455,7 @@ extension MainController: TableOfContentsDelegate {
         }
     }
     
-    func configureTOCConstraints() {
+    fileprivate func configureTOCConstraints() {
         switch traitCollection.horizontalSizeClass {
         case .compact:
             let toolBarHeight: CGFloat = traitCollection.horizontalSizeClass == .regular ? 0.0 : (traitCollection.verticalSizeClass == .compact ? 32.0 : 44.0)
@@ -528,4 +539,3 @@ extension MainController {
         controller.dismiss(animated: true, completion: nil)
     }
 }
-
