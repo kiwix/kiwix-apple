@@ -202,3 +202,37 @@ extension AlertProcedure {
     }
 }
 
+// MARK: - Quick Actions
+
+class PresentOperation: Procedure {
+    let mainController = Controllers.main
+    
+    func dismiss() {
+        mainController.dismissPresentedControllers(animated: false)
+        if mainController.searchBar.isFirstResponder { mainController.searchBar.resignFirstResponder() }
+    }
+}
+
+class PresentBookmarkOperation: PresentOperation {
+    override func execute() {
+        OperationQueue.main.addOperation { 
+            if self.mainController.presentedViewController != self.mainController.controllers.bookmark {
+                self.dismiss()
+                self.mainController.showBookmarkController()
+            }
+            self.finish()
+        }
+    }
+}
+
+class PresentSearchOperation: PresentOperation {
+    override func execute() {
+        OperationQueue.main.addOperation { 
+            if !self.mainController.searchBar.isFirstResponder {
+                self.dismiss()
+                self.mainController.searchBar.becomeFirstResponder()
+            }
+            self.finish()
+        }
+    }
+}

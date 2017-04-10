@@ -10,8 +10,9 @@ import UIKit
 
 class TabController: UIViewController, UIWebViewDelegate, UIScrollViewDelegate {
     @IBOutlet weak var webView: UIWebView!
-    private(set) var article: Article?
     weak var delegate: TabControllerDelegate?
+    private(set) var article: Article?
+    private var offset = [URL: CGFloat]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +44,7 @@ class TabController: UIViewController, UIWebViewDelegate, UIScrollViewDelegate {
     
     func webViewDidStartLoad(_ webView: UIWebView) {
         URLResponseCache.shared.start()
+        print(webView.canGoBack)
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
@@ -62,11 +64,11 @@ class TabController: UIViewController, UIWebViewDelegate, UIScrollViewDelegate {
         article.thumbImagePath = URLResponseCache.shared.firstImage()?.path
         self.article = article
         
-        if let lastPosition = article.lastPosition?.floatValue {
-            webView.scrollView.contentOffset = CGPoint(x: 0, y: CGFloat(lastPosition) * webView.scrollView.contentSize.height)
+        if let url = article.url, let offset = offset[url] {
+            webView.scrollView.contentOffset = CGPoint(x: 0, y: offset * webView.scrollView.contentSize.height)
         }
         
-        delegate?.didFinishLoad(tab: self)
+        delegate?.didFinishLoading(tab: self)
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
@@ -75,14 +77,20 @@ class TabController: UIViewController, UIWebViewDelegate, UIScrollViewDelegate {
     
     // MARK: - UIScrollViewDelegate
     
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        guard let url = article?.url else {return}
+        offset[url] = scrollView.contentOffset.y / scrollView.contentSize.height
+    }
+    
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        article?.lastPosition = NSNumber(value: Double(scrollView.contentOffset.y / scrollView.contentSize.height))
+        guard let url = article?.url else {return}
+        offset[url] = scrollView.contentOffset.y / scrollView.contentSize.height
     }
 
 }
 
 protocol TabControllerDelegate: class {
-    func didFinishLoad(tab: TabController)
+    func didFinishLoading(tab: TabController)
     func didTapOnExternalLink(url: URL)
     func pageDidScroll(start: Int, length: Int)
 }

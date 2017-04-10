@@ -95,12 +95,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
         switch shortcutItem.type {
         case "org.kiwix.search":
-            AppDelegate.mainController.dismissPresentedControllers()
-            _ = AppDelegate.mainController.searchBar.becomeFirstResponder()
+            GlobalQueue.shared.add(operation: PresentSearchOperation())
             completionHandler(true)
         case "org.kiwix.bookmarks":
-            if AppDelegate.mainController.searchBar.isFirstResponder {_ = AppDelegate.mainController.searchBar.resignFirstResponder()}
-            AppDelegate.mainController.showBookmarkController()
+            GlobalQueue.shared.add(operation: PresentBookmarkOperation())
             completionHandler(true)
         case "org.kiwix.recent":
             guard let urlString = shortcutItem.userInfo?["URL"] as? String,

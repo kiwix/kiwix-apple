@@ -86,7 +86,7 @@ class ArticleLoadOperation: Procedure {
             }
             
             main.searchBar.resignFirstResponder()
-            main.dismissPresentedControllers()
+            main.dismissPresentedControllers(animated: true)
             main.hideWelcome()
             if main.traitCollection.horizontalSizeClass == .compact { main.hideTableOfContents(animated: true) }
             

@@ -26,6 +26,13 @@ class MainController: UIViewController {
     let buttons = Buttons()
     fileprivate(set) var currentTab: TabController?
     
+    var onLoad: ((Void) -> Void)?
+    lazy var activateSearch = {
+        guard !self.searchBar.isFirstResponder else {return}
+        self.dismissPresentedControllers(animated: false)
+        self.searchBar.becomeFirstResponder()
+    }
+    var shouldPresentBookmark = false
     var isShowingTableOfContents = false
     private(set) var tableOfContentsController: TableOfContentsController!
     
@@ -47,6 +54,7 @@ class MainController: UIViewController {
         super.viewDidLoad()
         navigationItem.titleView = searchBar
         showWelcome()
+        if shouldPresentBookmark{ presentBookmark(); shouldPresentBookmark = false }
         AppNotification.shared.rateApp()
     }
     
@@ -84,9 +92,9 @@ class MainController: UIViewController {
         }
     }
     
-    func dismissPresentedControllers() {
-        presentedViewController?.dismiss(animated: true, completion: { 
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
+    func dismissPresentedControllers(animated: Bool) {
+        presentedViewController?.dismiss(animated: animated, completion: {
+            self.presentedViewController?.dismiss(animated: animated, completion: nil)
         })
     }
 }
@@ -111,7 +119,7 @@ extension MainController: TabControllerDelegate {
     
     // MARK: TabControllerDelegate
     
-    func didFinishLoad(tab: TabController) {
+    func didFinishLoading(tab: TabController) {
         let webView = tab.webView!
         searchBar.title = currentTab?.article?.title ?? ""
         tableOfContentsController.headings = JS.getTableOfContents(webView: webView)
@@ -377,6 +385,10 @@ extension MainController: TableOfContentsDelegate {
 // MARK: - Bookmark
 
 extension MainController: UIViewControllerTransitioningDelegate {
+    func presentBookmark() {
+        
+    }
+    
     func showBookmarkController() {
         let controller = controllers.bookmark
         controller.modalPresentationStyle = .fullScreen
