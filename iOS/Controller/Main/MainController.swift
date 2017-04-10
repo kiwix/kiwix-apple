@@ -26,12 +26,6 @@ class MainController: UIViewController {
     let buttons = Buttons()
     fileprivate(set) var currentTab: TabController?
     
-    var onLoad: ((Void) -> Void)?
-    lazy var activateSearch = {
-        guard !self.searchBar.isFirstResponder else {return}
-        self.dismissPresentedControllers(animated: false)
-        self.searchBar.becomeFirstResponder()
-    }
     var shouldPresentBookmark = false
     var isShowingTableOfContents = false
     private(set) var tableOfContentsController: TableOfContentsController!
@@ -54,7 +48,6 @@ class MainController: UIViewController {
         super.viewDidLoad()
         navigationItem.titleView = searchBar
         showWelcome()
-        if shouldPresentBookmark{ presentBookmark(); shouldPresentBookmark = false }
         AppNotification.shared.rateApp()
     }
     
@@ -385,10 +378,6 @@ extension MainController: TableOfContentsDelegate {
 // MARK: - Bookmark
 
 extension MainController: UIViewControllerTransitioningDelegate {
-    func presentBookmark() {
-        
-    }
-    
     func showBookmarkController() {
         let controller = controllers.bookmark
         controller.modalPresentationStyle = .fullScreen
