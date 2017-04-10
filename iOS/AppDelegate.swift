@@ -45,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             if let index = previousIndex { UIApplication.shared.shortcutItems?.remove(at: index) }
             
-            if let article = AppDelegate.mainController.article,
+            if let article = AppDelegate.mainController.currentTab?.article,
                 let title = article.title, let url = article.url?.absoluteString {
                 let item = UIMutableApplicationShortcutItem(type: type,
                                                             localizedTitle: title,

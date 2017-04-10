@@ -32,7 +32,7 @@ class FontSizeController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if Preference.webViewZoomScale != selected {Controllers.main.webView.reload()}
+        if Preference.webViewZoomScale != selected {Controllers.main.currentTab?.webView.reload()}
         Preference.webViewZoomScale = selected
     }
     
