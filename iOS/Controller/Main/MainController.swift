@@ -105,9 +105,15 @@ extension MainController: TabControllerDelegate {
     }
     
     func removeCurrentTab() {
-        currentTab?.delegate = nil
-        currentTab?.removeFromParentViewController()
-        currentTab?.view.removeFromSuperview()
+        guard let currentTab = currentTab else {return}
+        currentTab.delegate = nil
+        currentTab.removeFromParentViewController()
+        currentTab.view.removeFromSuperview()
+        searchBar.title = ""
+        buttons.back.tintColor = UIColor.gray
+        buttons.forward.tintColor = UIColor.gray
+        buttons.bookmark.isHighlighted = false
+        showWelcome()
     }
     
     // MARK: TabControllerDelegate
