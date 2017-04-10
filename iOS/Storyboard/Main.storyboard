@@ -204,6 +204,7 @@
                             <webView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PCs-Hw-kfH">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" address="YES"/>
                             </webView>
                         </subviews>
                         <constraints>

@@ -470,6 +470,7 @@ extension MainController: TableOfContentsDelegate {
     }
     
     func didSelectHeading(index: Int) {
+        guard let webView = currentTab?.webView else {return}
         JS.scrollToHeading(webView: webView, index: index)
         if traitCollection.horizontalSizeClass == .compact {
             hideTableOfContents(animated: true)

@@ -15,6 +15,7 @@ class TabController: UIViewController, UIWebViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.delegate = self
+        webView.allowsLinkPreview = true
     }
     
     // MARK: - UIWebViewDelegate
