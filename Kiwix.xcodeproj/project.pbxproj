@@ -121,7 +121,6 @@
 		97FC60921E6868F1003CFD38 /* libxapian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97FC60871E6868F1003CFD38 /* libxapian.a */; };
 		97FC60931E6868F1003CFD38 /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97FC60881E6868F1003CFD38 /* libzim.a */; };
 		97FDACC41D85A3B300DEDACB /* Language+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813E1D6F712800E5FA99 /* Language+CoreDataProperties.swift */; };
-		C8C55028E2800E371EBFA9F7 /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E854211810A39173DD6A5BD /* Pods_iOS.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -331,7 +330,6 @@
 				4F85759625A491CA2F27C1BF /* Pods_iOS.framework in Frameworks */,
 				97FC608E1E6868F1003CFD38 /* libicutest.a in Frameworks */,
 				97FC60911E6868F1003CFD38 /* liblzma.a in Frameworks */,
-				C8C55028E2800E371EBFA9F7 /* Pods_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
