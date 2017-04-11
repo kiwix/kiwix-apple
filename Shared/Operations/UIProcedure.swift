@@ -125,8 +125,10 @@ extension AlertProcedure {
             }
             alert.addDidFinishBlockObserver { _ in
                 let managedObjectContext = AppDelegate.persistentContainer.viewContext
-                if managedObjectContext.hasChanges { try? managedObjectContext.save() }
-                (context as? LibraryBooksController)?.reloadFetchedResultController()
+                managedObjectContext.performAndWait({
+                    if managedObjectContext.hasChanges { try? managedObjectContext.save() }
+                    (context as? LibraryBooksController)?.reloadFetchedResultController()
+                })
             }
             return alert
         }
