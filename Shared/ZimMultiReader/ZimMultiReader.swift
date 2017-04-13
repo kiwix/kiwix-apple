@@ -34,14 +34,6 @@ class ZimMultiReader: NSObject, DirectoryMonitorDelegate {
         monitor.stopMonitoring()
     }
     
-    func removeICloudSyncAttribute() {
-        var docDirURL = self.docDirURL
-        guard FileManager.default.fileExists(atPath: docDirURL.path) else {return}
-        var value = URLResourceValues()
-        value.isExcludedFromBackup = true
-        try? docDirURL.setResourceValues(value)
-    }
-    
     func startScan() {
         let operation = ScanLocalBookOperation(snapshot: urlSnapShot)
         operation.add(observer: DidFinishObserver{ (operation, errors) in

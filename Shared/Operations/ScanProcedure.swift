@@ -56,6 +56,7 @@ class ScanLocalBookOperation: Procedure {
             context.performAndWait {self.updateCoreData()}
         }
         
+        excludeDocDirFromBackup()
         let viewContext = AppDelegate.persistentContainer.viewContext
         context.performAndWait { if self.context.hasChanges {try? self.context.save()} }
         viewContext.performAndWait { if viewContext.hasChanges {try? viewContext.save()} }
@@ -115,6 +116,14 @@ class ScanLocalBookOperation: Procedure {
         if addition.count >= 1 {
             shouldMigrateBookmarks = true
         }
+    }
+    
+    private func excludeDocDirFromBackup() {
+        var docDirURL = (try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false))!
+        guard FileManager.default.fileExists(atPath: docDirURL.path) else {return}
+        var value = URLResourceValues()
+        value.isExcludedFromBackup = true
+        try? docDirURL.setResourceValues(value)
     }
     
 }
