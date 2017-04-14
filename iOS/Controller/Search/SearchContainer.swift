@@ -39,6 +39,7 @@ class SearchContainer: UIViewController {
     
     var searchText = "" {
         didSet {
+            guard searchText != oldValue else {return}
             configureVisibility()
             startSearch()
         }
@@ -52,13 +53,13 @@ class SearchContainer: UIViewController {
     
     private func startSearch() {
         let search = SearchOperation(searchText: searchText)
-        GlobalQueue.shared.add(operation: search)
         search.add(observer: DidFinishObserver { [unowned self] (operation, errors) in
             guard let search = operation as? SearchOperation else {return}
             OperationQueue.main.addOperation({ 
                 self.resultController.reload(searchText: self.searchText, results: search.results)
             })
         })
+        GlobalQueue.shared.add(operation: search)
     }
 }
 

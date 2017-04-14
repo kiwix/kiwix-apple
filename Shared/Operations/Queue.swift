@@ -44,6 +44,16 @@ class GlobalQueue: ProcedureQueue {
         add(operation: operation)
         self.articleLoadOperation = operation
     }
+    
+    private weak var presentOperation: PresentOperation?
+    func add(presentOperation operation: PresentOperation) {
+        if let scanOperation = scanOperation {
+            operation.addDependency(scanOperation)
+        }
+        
+        add(operation: operation)
+        self.presentOperation = operation
+    }
 }
 
 

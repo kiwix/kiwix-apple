@@ -17,7 +17,7 @@ extension Article {
     @NSManaged var bookmarkDate: Date?
     @NSManaged var isBookmarked: Bool
     @NSManaged var isMainPage: Bool
-    @NSManaged var lastPosition: Float
+    @NSManaged var lastPosition: NSNumber?
     @NSManaged var lastReadDate: Date?
     @NSManaged var path: String
     @NSManaged var snippet: String?

@@ -113,7 +113,7 @@ class SearchBar: UIView, UITextFieldDelegate {
         return textField.isFirstResponder
     }
     
-    override func becomeFirstResponder() -> Bool {
+    @discardableResult override func becomeFirstResponder() -> Bool {
         textField.isUserInteractionEnabled = true
         textField.textAlignment = .left
         textField.becomeFirstResponder()
@@ -128,7 +128,7 @@ class SearchBar: UIView, UITextFieldDelegate {
         return true
     }
     
-    override func resignFirstResponder() -> Bool {
+    @discardableResult override func resignFirstResponder() -> Bool {
         textField.isUserInteractionEnabled = false
         textField.textAlignment = .center
         textField.resignFirstResponder()

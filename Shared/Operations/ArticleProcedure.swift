@@ -72,22 +72,25 @@ class ArticleLoadOperation: Procedure {
             return
         }
 
-        let request = URLRequest(url: url)
-        
         OperationQueue.main.addOperation {
-            _ = main.searchBar.resignFirstResponder()
+            func load() {
+                if let tab = main.currentTab {
+                    let request = URLRequest(url: url)
+                    if tab.webView.request?.url != url {
+                        tab.webView.loadRequest(request)
+                    }
+                } else {
+                    main.showEmptyTab()
+                    load()
+                }
+            }
             
-            main.dismissPresentedControllers()
+            main.searchBar.resignFirstResponder()
+            main.dismissPresentedControllers(animated: true)
             main.hideWelcome()
+            if main.traitCollection.horizontalSizeClass == .compact { main.hideTableOfContents(animated: true) }
             
-            if main.traitCollection.horizontalSizeClass == .compact {
-                main.hideTableOfContents(animated: true)
-            }
-            
-            let webView = main.webView
-            if webView?.request?.url != url {
-                webView?.loadRequest(request)
-            }
+            load()
             
             self.finish()
         }

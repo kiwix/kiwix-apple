@@ -14,27 +14,21 @@ import NotificationCenter
 
 class MainController: UIViewController {
     
-    @IBOutlet weak var webView: UIWebView!
     @IBOutlet weak var dimView: UIView!
+    @IBOutlet weak var tabContainerView: UIView!
     @IBOutlet weak var tocVisiualEffectView: UIVisualEffectView!
     @IBOutlet weak var tocTopToSuperViewBottomSpacing: NSLayoutConstraint!
     @IBOutlet weak var tocHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tocLeadSpacing: NSLayoutConstraint!
     
     let searchBar = SearchBar()
-    lazy var controllers = Controllers()
-    lazy var buttons = Buttons()
+    let controllers = Controllers()
+    let buttons = Buttons()
+    fileprivate(set) var currentTab: TabController?
     
+    var shouldPresentBookmark = false
     var isShowingTableOfContents = false
-    private(set) var tableOfContentsController: TableOfContentsController?
-
-    private var observerContext = 0
-    var article: Article? {
-        didSet {
-            oldValue?.removeObserver(self, forKeyPath: "isBookmarked", context: &observerContext)
-            article?.addObserver(self, forKeyPath: "isBookmarked", options: [.new, .old], context: &observerContext)
-        }
-    }
+    private(set) var tableOfContentsController: TableOfContentsController!
     
     // MARK: - Basic
     
@@ -52,7 +46,6 @@ class MainController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        webView.delegate = self
         navigationItem.titleView = searchBar
         showWelcome()
         AppNotification.shared.rateApp()
@@ -88,82 +81,60 @@ class MainController: UIViewController {
         if segue.identifier == "EmbeddedTOCController" {
             guard let controller = segue.destination as? TableOfContentsController else {return}
             tableOfContentsController = controller
-            tableOfContentsController?.delegate = self
+            tableOfContentsController.delegate = self
         }
     }
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        guard context == &observerContext else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-            return
-        }
-        if let article = object as? Article {
-            buttons.bookmark.isHighlighted = article.isBookmarked
-        }
-    }
-    
-    func dismissPresentedControllers() {
-        presentedViewController?.dismiss(animated: true, completion: { 
-            self.presentedViewController?.dismiss(animated: true, completion: nil)
+    func dismissPresentedControllers(animated: Bool) {
+        presentedViewController?.dismiss(animated: animated, completion: {
+            self.presentedViewController?.dismiss(animated: animated, completion: nil)
         })
     }
 }
 
-// MARK: - Web
+// MARK: - Tabs
 
-extension MainController: UIWebViewDelegate, SFSafariViewControllerDelegate {
-    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        guard let url = request.url else {return false}
-        if url.isKiwixURL {
-            return true
-        } else if url.scheme == "pagescroll" {
-            let components = URLComponents(string: url.absoluteString)
-            guard let query = components?.queryItems,
-                let startStr = query[0].value, let start = Int(startStr),
-                let lengthStr = query[1].value, let length = Int(lengthStr) else {
-                    return false
-            }
-            tableOfContentsController?.visibleRange = (start, length)
-            return false
-        } else {
-            let controller = SFSafariViewController(url: url)
-            controller.delegate = self
-            present(controller, animated: true, completion: nil)
-            return false
-        }
+extension MainController: TabControllerDelegate {
+    func showEmptyTab() {
+        removeCurrentTab()
+        let controller = controllers.createTab()
+        controller.delegate = self
+        addChildViewController(controller)
+        tabContainerView.addSubview(controller.view)
+        currentTab = controller
     }
     
-    func webViewDidStartLoad(_ webView: UIWebView) {
-        URLResponseCache.shared.start()
+    func removeCurrentTab() {
+        guard let currentTab = currentTab else {return}
+        currentTab.delegate = nil
+        currentTab.removeFromParentViewController()
+        currentTab.view.removeFromSuperview()
+        searchBar.title = ""
+        buttons.back.tintColor = UIColor.gray
+        buttons.forward.tintColor = UIColor.gray
+        buttons.bookmark.isHighlighted = false
+        showWelcome()
     }
     
-    func webViewDidFinishLoad(_ webView: UIWebView) {
-        JS.inject(webView: webView)
-        JS.preventDefaultLongTap(webView: webView)
-        tableOfContentsController?.headings = JS.getTableOfContents(webView: webView)
-        JS.startTOCCallBack(webView: webView)
-        JS.adjustFontSizeIfNeeded(webView: webView)
-        
-        URLResponseCache.shared.stop()
-        
-        guard let url = webView.request?.url,
-            let article = Article.fetch(url: url, context: AppDelegate.persistentContainer.viewContext) else {return}
-        
+    // MARK: TabControllerDelegate
+    
+    func didFinishLoading(tab: TabController) {
+        let webView = tab.webView!
+        searchBar.title = currentTab?.article?.title ?? ""
+        tableOfContentsController.headings = JS.getTableOfContents(webView: webView)
         buttons.back.tintColor = webView.canGoBack ? nil : UIColor.gray
         buttons.forward.tintColor = webView.canGoForward ? nil : UIColor.gray
-        buttons.bookmark.isHighlighted = article.isBookmarked
-        
-        guard let title = JS.getTitle(from: webView) else {return}
-        searchBar.title = title
-        
-        article.title = title
-        article.snippet = JS.getSnippet(from: webView)
-        article.lastReadDate = Date()
-        article.thumbImagePath = URLResponseCache.shared.firstImage()?.path
-        self.article = article
+        buttons.bookmark.isHighlighted = currentTab?.article?.isBookmarked ?? false
     }
     
-    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
+    func didTapOnExternalLink(url: URL) {
+        let controller = SFSafariViewController(url: url)
+        controller.delegate = self
+        present(controller, animated: true, completion: nil)
+    }
+    
+    func pageDidScroll(start: Int, length: Int) {
+        tableOfContentsController?.visibleRange = (start, length)
     }
 }
 
@@ -260,11 +231,11 @@ extension MainController: SearchBarDelegate, SearchContainerDelegate {
 
 extension MainController: ButtonDelegates {
     func didTapBackButton() {
-        webView.goBack()
+        currentTab?.webView.goBack()
     }
     
     func didTapForwardButton() {
-        webView.goForward()
+        currentTab?.webView.goForward()
     }
     
     func didTapTOCButton() {
@@ -324,15 +295,14 @@ extension MainController: ButtonDelegates {
         }
         
         let context = AppDelegate.persistentContainer.viewContext
-        guard let url = webView.request?.url,
-            let article = Article.fetch(url: url, context: context) else {return}
+        guard let article = currentTab?.article else {return}
         article.isBookmarked = !article.isBookmarked
         if article.isBookmarked {article.bookmarkDate = Date()}
-        
         if context.hasChanges {try? context.save()}
         
         showBookmarkHUD()
         controllers.bookmarkHUD.bookmarkAdded = article.isBookmarked
+        buttons.bookmark.isHighlighted = article.isBookmarked
         
         indexCoreSpotlight(article: article)
         updateBookmarkWidget()
@@ -350,7 +320,6 @@ extension MainController: TableOfContentsDelegate {
         dimView.alpha = 0.0
         view.layoutIfNeeded()
         
-        //configureTableOfContents()
         configureTOCConstraints()
         
         if animated {
@@ -385,11 +354,11 @@ extension MainController: TableOfContentsDelegate {
         }
     }
     
-    func configureTOCConstraints() {
+    fileprivate func configureTOCConstraints() {
         switch traitCollection.horizontalSizeClass {
         case .compact:
             let toolBarHeight: CGFloat = traitCollection.horizontalSizeClass == .regular ? 0.0 : (traitCollection.verticalSizeClass == .compact ? 32.0 : 44.0)
-            let tocHeight = tableOfContentsController?.preferredContentSize.height ?? floor(view.frame.height * 0.4)
+            let tocHeight = tableOfContentsController.preferredContentSize.height
             tocHeightConstraint.constant = tocHeight
             tocTopToSuperViewBottomSpacing.constant = isShowingTableOfContents ? tocHeight + toolBarHeight + 10 : 0.0
         case .regular:
@@ -400,6 +369,7 @@ extension MainController: TableOfContentsDelegate {
     }
     
     func didSelectHeading(index: Int) {
+        guard let webView = currentTab?.webView else {return}
         JS.scrollToHeading(webView: webView, index: index)
         if traitCollection.horizontalSizeClass == .compact {
             hideTableOfContents(animated: true)
@@ -444,7 +414,7 @@ extension MainController {
         let controller = controllers.welcome
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         addChildViewController(controller)
-        view.insertSubview(controller.view, aboveSubview: webView)
+        view.insertSubview(controller.view, aboveSubview: tabContainerView)
         let views: [String: Any] = ["view": controller.view]
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|", options: .alignAllTop, metrics: nil, views: views))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[view]|", options: .alignAllLeft, metrics: nil, views: views))
@@ -464,9 +434,8 @@ extension MainController {
 
 // MARK: - SFSafariViewControllerDelegate
 
-extension MainController {
+extension MainController: SFSafariViewControllerDelegate {
     func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
         controller.dismiss(animated: true, completion: nil)
     }
 }
-

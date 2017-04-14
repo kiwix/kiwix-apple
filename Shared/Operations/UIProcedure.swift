@@ -85,6 +85,22 @@ extension AlertProcedure {
         return alert
     }
     
+    class History {
+        static func clearSearchHistory(context: UIViewController) -> AlertProcedure {
+            let alert = AlertProcedure(presentAlertFrom: context)
+            alert.title = Localized.Setting.History.Search.cleared
+            alert.add(actionWithTitle: Localized.Common.ok, style: .cancel)
+            return alert
+        }
+        
+        static func clearBrowsingHistory(context: UIViewController) -> AlertProcedure  {
+            let alert = AlertProcedure(presentAlertFrom: context)
+            alert.title = Localized.Setting.History.Browsing.cleared
+            alert.add(actionWithTitle: Localized.Common.ok, style: .cancel)
+            return alert
+        }
+    }
+    
 }
 
 // MARK: - Library 
@@ -109,8 +125,10 @@ extension AlertProcedure {
             }
             alert.addDidFinishBlockObserver { _ in
                 let managedObjectContext = AppDelegate.persistentContainer.viewContext
-                if managedObjectContext.hasChanges { try? managedObjectContext.save() }
-                (context as? LibraryBooksController)?.reloadFetchedResultController()
+                managedObjectContext.performAndWait({
+                    if managedObjectContext.hasChanges { try? managedObjectContext.save() }
+                    (context as? LibraryBooksController)?.reloadFetchedResultController()
+                })
             }
             return alert
         }
@@ -186,3 +204,37 @@ extension AlertProcedure {
     }
 }
 
+// MARK: - Quick Actions
+
+class PresentOperation: Procedure {
+    let mainController = Controllers.main
+    
+    func dismiss() {
+        mainController.dismissPresentedControllers(animated: false)
+        if mainController.searchBar.isFirstResponder { mainController.searchBar.resignFirstResponder() }
+    }
+}
+
+class PresentBookmarkOperation: PresentOperation {
+    override func execute() {
+        OperationQueue.main.addOperation { 
+            if self.mainController.presentedViewController != self.mainController.controllers.bookmark {
+                self.dismiss()
+                self.mainController.showBookmarkController()
+            }
+            self.finish()
+        }
+    }
+}
+
+class PresentSearchOperation: PresentOperation {
+    override func execute() {
+        OperationQueue.main.addOperation { 
+            if !self.mainController.searchBar.isFirstResponder {
+                self.dismiss()
+                self.mainController.searchBar.becomeFirstResponder()
+            }
+            self.finish()
+        }
+    }
+}

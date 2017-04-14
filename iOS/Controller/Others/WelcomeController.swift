@@ -105,6 +105,16 @@ class ProminentButton: UIButton {
         }
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        guard traitCollection != previousTraitCollection else {return}
+        switch traitCollection.verticalSizeClass {
+        case .compact:
+            contentEdgeInsets = UIEdgeInsets(top: 15, left: 10, bottom: 15, right: 10)
+        default:
+            contentEdgeInsets = UIEdgeInsets.zero
+        }
+    }
+    
     private func configureColor() {
         switch theme {
         case .blue:

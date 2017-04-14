@@ -17,6 +17,7 @@ class SearchOperation: GroupProcedure {
         super.init(operations: [])
         add(condition: MutuallyExclusive<SearchContainer>())
         
+        guard searchText != "" else {return}
         let searches = Book.fetchLocal(in: AppDelegate.persistentContainer.viewContext)
             .filter({ $0.includeInSearch })
             .map({ BookSearch(zimID: $0.id, searchText: searchText) })

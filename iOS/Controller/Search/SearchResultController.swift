@@ -24,7 +24,6 @@ class SearchResultController: SearchBaseTableController, UITableViewDataSource, 
         return searchText != ""
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.estimatedRowHeight = 44.0
@@ -125,3 +124,4 @@ class SearchResultController: SearchBaseTableController, UITableViewDataSource, 
         return -tableView.contentInset.bottom / 2.5
     }
 }
+

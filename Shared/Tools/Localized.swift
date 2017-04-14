@@ -74,6 +74,7 @@ class Localized {
         
         static let fontSize = NSLocalizedString("Font Size", comment: "Setting table rows")
         static let notifications = NSLocalizedString("Notifications", comment: "Setting table rows")
+        static let history = NSLocalizedString("History", comment: "History Setting")
         static let feedback = NSLocalizedString("Email us your suggestions", comment: "Setting table rows")
         static let rateApp = NSLocalizedString("Give Kiwix a Rate", comment: "Setting table rows")
         static let about = NSLocalizedString("About", comment: "Setting table rows")
@@ -83,6 +84,18 @@ class Localized {
             static let libraryRefresh = NSLocalizedString("Background Library Refresh", comment: "Notification Setting")
             static let bookUpdateAvailable = NSLocalizedString("Book Update Available", comment: "Notification Setting")
             static let bookDownloadFinish = NSLocalizedString("Book Download Finish", comment: "Notification Setting")
+        }
+        
+        class History {
+            class Search {
+                static let title = NSLocalizedString("Clear Search History", comment: "History Setting")
+                static let cleared = NSLocalizedString("Search History Cleared", comment: "History Setting")
+            }
+            
+            class Browsing {
+                static let title = NSLocalizedString("Clear Browsing History", comment: "History Setting")
+                static let cleared = NSLocalizedString("Browsing History Cleared", comment: "History Setting")
+            }
         }
         
         class Feedback {
