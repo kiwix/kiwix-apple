@@ -119,11 +119,17 @@ class ScanLocalBookOperation: Procedure {
     }
     
     private func excludeDocDirFromBackup() {
-        var docDirURL = (try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false))!
-        guard FileManager.default.fileExists(atPath: docDirURL.path) else {return}
-        var value = URLResourceValues()
-        value.isExcludedFromBackup = true
-        try? docDirURL.setResourceValues(value)
+        let docDirURL = (try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false))!
+        let contents = (try? FileManager.default.contentsOfDirectory(at: docDirURL, includingPropertiesForKeys: nil, options: .skipsSubdirectoryDescendants)) ?? [URL]()
+        for var url in contents {
+            var value = URLResourceValues()
+            value.isExcludedFromBackup = true
+            try? url.setResourceValues(value)
+        }
+//        guard FileManager.default.fileExists(atPath: docDirURL.path) else {return}
+//        var value = URLResourceValues()
+//        value.isExcludedFromBackup = true
+//        try? docDirURL.setResourceValues(value)
     }
     
 }
