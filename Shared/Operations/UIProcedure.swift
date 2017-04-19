@@ -29,7 +29,7 @@ class FeedbackMailOperation: UIProcedure, MFMailComposeViewControllerDelegate {
                 self?.presented.dismiss(animated: true, completion: nil)
                 self?.finish(withError: error)
             })
-            try? produce(operation: alert)
+            _ = try? produce(operation: alert)
         } else {
             guard result == .sent else {
                 presented.dismiss(animated: true, completion: nil)
@@ -41,7 +41,7 @@ class FeedbackMailOperation: UIProcedure, MFMailComposeViewControllerDelegate {
                 self?.presented.dismiss(animated: true, completion: nil)
                 self?.finish()
             })
-            try? produce(operation: alert)
+            _ = try? produce(operation: alert)
         }
     }
 }

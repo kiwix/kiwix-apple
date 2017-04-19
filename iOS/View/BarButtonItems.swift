@@ -81,33 +81,6 @@ class LPTBarButtonItem: UIBarButtonItem {
         guard gesture.state == .began else {return}
         delegate?.barButtonLongPressedStart(sender: self, gesture: gesture)
     }
-    
-    // MARK: - rotate
-    
-    func startRotating() {
-        guard !isRotating else {return}
-        isRotating = true
-        rotateImage(duration: 1.0, angle: CGFloat(M_PI * 2))
-    }
-    
-    func stopRotating() {
-        isRotating = false
-    }
-    
-    private func rotateImage(duration: CFTimeInterval, angle: CGFloat) {
-        CATransaction.begin()
-        let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
-        rotationAnimation.byValue = angle
-        rotationAnimation.duration = duration
-        rotationAnimation.isRemovedOnCompletion = true
-        
-        CATransaction.setCompletionBlock { () -> Void in
-            guard self.isRotating else {return}
-            self.rotateImage(duration: duration, angle: angle)
-        }
-        imageView?.layer.add(rotationAnimation, forKey: "rotationAnimation")
-        CATransaction.commit()
-    }
 }
 
 protocol LPTBarButtonItemDelegate: class {
