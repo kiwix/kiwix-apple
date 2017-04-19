@@ -29,7 +29,7 @@ class RefreshLibraryOperation: GroupProcedure {
 private class Retrieve: NetworkDataProcedure<URLSession> {
     init() {
         let session = URLSession.shared
-        let url = URL(string: "https://download.kiwix.org/library/library.xml")!
+        let url = URL(string: "https://download.kiwix.org/library/library_zim.xml")!
         var request = URLRequest(url: url)
         request.timeoutInterval = 30.0
         super.init(session: session, request: request)
