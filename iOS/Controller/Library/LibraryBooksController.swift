@@ -133,7 +133,7 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
     
     func refresh(shouldIgnoreInternetConnectivityError: Bool) {
         guard !isRefreshing else {return}
-        let operation = RefreshLibraryOperation()
+        let operation = RefreshLibraryProcedure()
         operation.add(observer: WillExecuteObserver { (operation) in
             OperationQueue.main.addOperation({
                 // Configure empty table data set, so it shows "Refreshing..."
@@ -142,7 +142,7 @@ class LibraryBooksController: CoreDataCollectionBaseController, UICollectionView
             })
         })
         operation.add(observer: DidFinishObserver { (operation, errors) in
-            guard let operation = operation as? RefreshLibraryOperation else {return}
+            guard let operation = operation as? RefreshLibraryProcedure else {return}
             OperationQueue.main.addOperation({
                 defer {
                     self.collectionView.refreshControl?.endRefreshing()

@@ -9,7 +9,7 @@
 import ProcedureKit
 import CoreData
 
-class RefreshLibraryOperation: GroupProcedure {
+class RefreshLibraryProcedure: GroupProcedure {
     private(set) var hasUpdate = false
     private(set) var firstTime = Preference.libraryLastRefreshTime == nil
     

@@ -56,12 +56,6 @@ class GlobalQueue: ProcedureQueue {
     }
 }
 
-
-class CloudKitQueue: OperationQueue {
-    static let shared = CloudKitQueue()
-    override private init() {}
-}
-
 class UIQueue: ProcedureQueue {
     static let shared = ProcedureQueue()
     override private init() {}
