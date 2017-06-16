@@ -852,6 +852,7 @@
 				97E609FF1D103DED00EBCB9D /* Embed App Extensions */,
 				7D32C417880EE3A4FFF4017C /* [CP] Embed Pods Frameworks */,
 				20E4CC4E024923B9E858CC06 /* [CP] Copy Pods Resources */,
+				9786B0701EF42A5600D0C4D9 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1034,6 +1035,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOS/Pods-iOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		9786B0701EF42A5600D0C4D9 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "agvtool new-version -all 1.8.225";
 		};
 		CDD21917A84F651D4CEFF569 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1222,7 +1236,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				INFOPLIST_FILE = "$(SRCROOT)/macOS/Support/Info.plist";
+				INFOPLIST_FILE = macOS/Support/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.Kiwix;
@@ -1242,7 +1256,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				INFOPLIST_FILE = "$(SRCROOT)/macOS/Support/Info.plist";
+				INFOPLIST_FILE = macOS/Support/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.Kiwix;
@@ -1355,6 +1369,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1.8.4400;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1363,7 +1378,7 @@
 					"$(PROJECT_DIR)/Shared/libkiwix/C&C++",
 					"$(PROJECT_DIR)/Shared/libkiwix/",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/iOS/Support/Info.plist";
+				INFOPLIST_FILE = iOS/Support/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -1377,6 +1392,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Kiwix-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -1393,6 +1409,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1.8.4400;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1401,7 +1418,7 @@
 					"$(PROJECT_DIR)/Shared/libkiwix/C&C++",
 					"$(PROJECT_DIR)/Shared/libkiwix/",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/iOS/Support/Info.plist";
+				INFOPLIST_FILE = iOS/Support/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -1415,6 +1432,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Kiwix-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
