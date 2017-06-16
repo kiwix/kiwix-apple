@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="M4Y-Lb-cyx">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <scenes>
+        <!--Today View Controller-->
+        <scene sceneID="cwh-vc-ff4">
+            <objects>
+                <viewController id="M4Y-Lb-cyx" customClass="TodayViewController" customModule="Bookmarks" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Ft6-oW-KC0"/>
+                        <viewControllerLayoutGuide type="bottom" id="FKl-LY-JtV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" simulatedAppContext="notificationCenter" id="S3S-Oj-5AN">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="rGU-qY-GzL">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="elH-Eg-whL">
+                                    <size key="itemSize" width="64" height="92"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="BookmarkWidgetCell" id="shV-TG-J6y" customClass="BookmarkWidgetCell" customModule="Bookmarks" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="64" height="92"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="64" height="92"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oCt-Oa-l7V">
+                                                    <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
+                                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="oCt-Oa-l7V" secondAttribute="height" multiplier="1:1" id="mTX-gY-AnP"/>
+                                                    </constraints>
+                                                </view>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5ff-qy-Hgj">
+                                                    <rect key="frame" x="2" y="2" width="60" height="60"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="5ff-qy-Hgj" secondAttribute="height" multiplier="1:1" id="xey-BP-NuA"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cpM-fR-Nl4">
+                                                    <rect key="frame" x="0.0" y="66" width="64" height="12"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="10"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="oCt-Oa-l7V" firstAttribute="leading" secondItem="shV-TG-J6y" secondAttribute="leading" id="3Iz-Ch-1ub"/>
+                                            <constraint firstAttribute="trailing" secondItem="oCt-Oa-l7V" secondAttribute="trailing" id="4th-dr-nsA"/>
+                                            <constraint firstItem="cpM-fR-Nl4" firstAttribute="leading" secondItem="shV-TG-J6y" secondAttribute="leading" id="R3a-Ik-dTO"/>
+                                            <constraint firstItem="oCt-Oa-l7V" firstAttribute="top" secondItem="shV-TG-J6y" secondAttribute="top" id="fJC-Sd-n9A"/>
+                                            <constraint firstItem="5ff-qy-Hgj" firstAttribute="top" secondItem="shV-TG-J6y" secondAttribute="top" constant="2" id="gyY-t5-3oU"/>
+                                            <constraint firstAttribute="trailing" secondItem="5ff-qy-Hgj" secondAttribute="trailing" constant="2" id="n7k-4X-SYx"/>
+                                            <constraint firstItem="cpM-fR-Nl4" firstAttribute="top" secondItem="oCt-Oa-l7V" secondAttribute="bottom" constant="2" id="pYC-H9-NbT"/>
+                                            <constraint firstAttribute="trailing" secondItem="cpM-fR-Nl4" secondAttribute="trailing" id="rRQ-AL-9dU"/>
+                                            <constraint firstItem="5ff-qy-Hgj" firstAttribute="leading" secondItem="shV-TG-J6y" secondAttribute="leading" constant="2" id="spE-wK-Obf"/>
+                                        </constraints>
+                                        <size key="customSize" width="64" height="92"/>
+                                        <connections>
+                                            <outlet property="imageBackgroundView" destination="oCt-Oa-l7V" id="0EK-gh-2yQ"/>
+                                            <outlet property="imageView" destination="5ff-qy-Hgj" id="P92-ze-loY"/>
+                                            <outlet property="label" destination="cpM-fR-Nl4" id="jQp-Vs-HaK"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="rGU-qY-GzL" secondAttribute="bottom" id="0DU-Xd-zt9"/>
+                            <constraint firstItem="rGU-qY-GzL" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leading" id="76F-49-Fzg"/>
+                            <constraint firstAttribute="trailing" secondItem="rGU-qY-GzL" secondAttribute="trailing" id="CEt-21-7VZ"/>
+                            <constraint firstItem="rGU-qY-GzL" firstAttribute="top" secondItem="Ft6-oW-KC0" secondAttribute="bottom" id="TFg-Zd-dq7"/>
+                        </constraints>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="100"/>
+                    <connections>
+                        <outlet property="collectionView" destination="rGU-qY-GzL" id="lfU-S6-XrK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vXp-U4-Rya" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="516" y="285"/>
+        </scene>
+    </scenes>
+</document>
