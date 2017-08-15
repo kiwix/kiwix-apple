@@ -1,22 +1,22 @@
 //
 //  ViewController.swift
-//  Kiwix
+//  KiwixMac
 //
-//  Created by Chris Li on 2/12/17.
-//  Copyright © 2017 Chris Li. All rights reserved.
+//  Created by Chris Li on 8/14/17.
+//  Copyright © 2017 Kiwix. All rights reserved.
 //
 
 import Cocoa
 import WebKit
 
 class ViewController: NSViewController {
-    @IBOutlet weak var webView: WebView!
 
+    @IBOutlet weak var webView: WebView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        let url = URL(string: "https://www.google.com")
-        let request = URLRequest(url: url!)
-        webView.mainFrame.load(request)
+
+        // Do any additional setup after loading the view.
     }
 
     override var representedObject: Any? {

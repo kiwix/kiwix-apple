@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
-        <plugIn identifier="com.apple.WebKitIBPlugin" version="11762"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12121"/>
+        <plugIn identifier="com.apple.WebKitIBPlugin" version="12121"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -13,11 +13,11 @@
                 <application id="hnw-xV-0zn" sceneMemberID="viewController">
                     <menu key="mainMenu" title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
                         <items>
-                            <menuItem title="Kiwix" id="1Xt-HY-uBw">
+                            <menuItem title="KiwixMac" id="1Xt-HY-uBw">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Kiwix" systemMenu="apple" id="uQy-DD-JDr">
+                                <menu key="submenu" title="KiwixMac" systemMenu="apple" id="uQy-DD-JDr">
                                     <items>
-                                        <menuItem title="About Kiwix" id="5kV-Vb-QxS">
+                                        <menuItem title="About KiwixMac" id="5kV-Vb-QxS">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="orderFrontStandardAboutPanel:" target="Ady-hI-5gd" id="Exp-CZ-Vem"/>
@@ -31,7 +31,7 @@
                                             <menu key="submenu" title="Services" systemMenu="services" id="hz9-B4-Xy5"/>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="4je-JR-u6R"/>
-                                        <menuItem title="Hide Kiwix" keyEquivalent="h" id="Olw-nP-bQN">
+                                        <menuItem title="Hide KiwixMac" keyEquivalent="h" id="Olw-nP-bQN">
                                             <connections>
                                                 <action selector="hide:" target="Ady-hI-5gd" id="PnN-Uc-m68"/>
                                             </connections>
@@ -49,7 +49,7 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="kCx-OE-vgT"/>
-                                        <menuItem title="Quit Kiwix" keyEquivalent="q" id="4sb-4s-VLi">
+                                        <menuItem title="Quit KiwixMac" keyEquivalent="q" id="4sb-4s-VLi">
                                             <connections>
                                                 <action selector="terminate:" target="Ady-hI-5gd" id="Te7-pn-YzF"/>
                                             </connections>
@@ -642,7 +642,7 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
                                     <items>
-                                        <menuItem title="Kiwix Help" keyEquivalent="?" id="FKE-Sm-Kum">
+                                        <menuItem title="KiwixMac Help" keyEquivalent="?" id="FKE-Sm-Kum">
                                             <connections>
                                                 <action selector="showHelp:" target="Ady-hI-5gd" id="y7X-2Q-9no"/>
                                             </connections>
@@ -656,92 +656,162 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Kiwix" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="KiwixMac" customModuleProvider="target"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-66" y="-304"/>
+            <point key="canvasLocation" x="81" y="-66"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
             <objects>
-                <windowController id="B8D-0N-5wS" customClass="MainWindowController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <windowController id="B8D-0N-5wS" customClass="WindowController" customModule="KiwixMac" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-                        <rect key="contentRect" x="573" y="322" width="800" height="600"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-                        <toolbar key="toolbar" implicitIdentifier="7CF99D36-F6A8-4C6A-8A7E-C6FB7B3B3B05" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="regular" id="xq9-8K-hdd">
+                        <toolbar key="toolbar" implicitIdentifier="05883A09-BD97-4887-B838-656B159754CD" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="P8b-mc-Yk8">
                             <allowedToolbarItems>
-                                <toolbarItem implicitItemIdentifier="833D7855-CB38-4C00-87EC-E6083A087DB1" label="Go Back" paletteLabel="Go Back" image="GoBack" id="TdJ-1k-75w">
+                                <toolbarItem implicitItemIdentifier="NSToolbarShowColorsItem" id="AF0-6g-MOm"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarShowFontsItem" id="ceG-Fw-0X7"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarPrintItem" id="eTa-Xp-pfT"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="cTM-NR-s9d"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="QPA-cF-uj3"/>
+                                <toolbarItem implicitItemIdentifier="13D47984-1620-4349-9EE9-C48886B4B13A" label="" paletteLabel="" id="WVv-rz-ENA">
                                     <nil key="toolTip"/>
-                                    <size key="minSize" width="25" height="25"/>
-                                    <size key="maxSize" width="27" height="27"/>
-                                    <button key="view" verticalHuggingPriority="750" id="an4-q2-PNw">
-                                        <rect key="frame" x="13" y="14" width="25" height="25"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                        <buttonCell key="cell" type="roundTextured" title="Textured Rounded" bezelStyle="texturedRounded" image="GoBack" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="mixed" borderStyle="border" allowsMixedState="YES" imageScaling="proportionallyDown" inset="2" id="XM8-Je-nHF">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                    </button>
-                                </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="8AAFDE6E-03E8-49A2-94AC-37D60E412A51" label="Go Forward" paletteLabel="Go Forward" image="GoForward" id="wOG-c0-MRO">
-                                    <nil key="toolTip"/>
-                                    <size key="minSize" width="25" height="25"/>
-                                    <size key="maxSize" width="27" height="27"/>
-                                    <button key="view" verticalHuggingPriority="750" id="GpN-Jd-Hyj">
-                                        <rect key="frame" x="22" y="14" width="25" height="25"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                        <buttonCell key="cell" type="roundTextured" title="Textured Rounded" bezelStyle="texturedRounded" image="GoForward" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="3hx-8N-qpg">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                    </button>
-                                </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="dmT-mu-dnu"/>
-                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="Es7-BJ-vcz"/>
-                                <toolbarItem implicitItemIdentifier="B11F6B47-5318-454C-A250-96281A75BC52" label="Custom View" paletteLabel="Custom View" id="fcZ-QW-KUk">
-                                    <nil key="toolTip"/>
-                                    <size key="minSize" width="96" height="22"/>
-                                    <size key="maxSize" width="96" height="22"/>
-                                    <searchField key="view" wantsLayer="YES" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" id="kpq-E7-WXh">
-                                        <rect key="frame" x="0.0" y="14" width="96" height="22"/>
+                                    <size key="minSize" width="82" height="32"/>
+                                    <size key="maxSize" width="82" height="32"/>
+                                    <button key="view" verticalHuggingPriority="750" id="FEk-yi-oOr">
+                                        <rect key="frame" x="0.0" y="14" width="82" height="32"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="8d7-EF-gAV">
+                                        <buttonCell key="cell" type="push" title="Back" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Z7H-En-pmz">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
-                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </searchFieldCell>
-                                    </searchField>
+                                        </buttonCell>
+                                    </button>
+                                    <connections>
+                                        <action selector="backButtonClicked:" target="B8D-0N-5wS" id="OSo-g7-j47"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="AEF1184C-02C5-4A42-AA8E-77C005E4DB17" label="" paletteLabel="" id="QRo-2u-uWq">
+                                    <nil key="toolTip"/>
+                                    <size key="minSize" width="82" height="32"/>
+                                    <size key="maxSize" width="102" height="43"/>
+                                    <button key="view" verticalHuggingPriority="750" id="9uW-eD-Ud8">
+                                        <rect key="frame" x="0.0" y="14" width="102" height="43"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="push" title="Forward" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="gv9-hf-H0A">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                    </button>
+                                    <connections>
+                                        <action selector="forwardButtonClicked:" target="B8D-0N-5wS" id="fs4-sf-IO4"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="C9CD3393-74BC-45EE-93EC-5839E5E68868" label="" paletteLabel="" id="UMF-Qc-cUT">
+                                    <nil key="toolTip"/>
+                                    <size key="minSize" width="82" height="32"/>
+                                    <size key="maxSize" width="82" height="32"/>
+                                    <button key="view" verticalHuggingPriority="750" id="O2H-MV-Sxn">
+                                        <rect key="frame" x="0.0" y="14" width="82" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="push" title="Open" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Do5-Ar-gW5">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                    </button>
+                                    <connections>
+                                        <segue destination="kwW-Tb-FZc" kind="popover" popoverAnchorView="UMF-Qc-cUT" popoverBehavior="t" preferredEdge="maxY" id="QLF-zU-RoW"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="41AB8DD8-5EDB-4CCF-95AA-C95CB7594128" label="" paletteLabel="" id="Rfg-AX-DJo">
+                                    <nil key="toolTip"/>
+                                    <size key="minSize" width="82" height="32"/>
+                                    <size key="maxSize" width="82" height="32"/>
+                                    <button key="view" verticalHuggingPriority="750" id="0jI-rQ-vbP">
+                                        <rect key="frame" x="0.0" y="14" width="82" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="push" title="Main" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Zhe-vI-ONo">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                    </button>
+                                    <connections>
+                                        <action selector="mainButtonTapped:" target="B8D-0N-5wS" id="WGI-b7-cof"/>
+                                    </connections>
                                 </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
-                                <toolbarItem reference="TdJ-1k-75w"/>
-                                <toolbarItem reference="wOG-c0-MRO"/>
-                                <toolbarItem reference="Es7-BJ-vcz"/>
-                                <toolbarItem reference="fcZ-QW-KUk"/>
-                                <toolbarItem reference="Es7-BJ-vcz"/>
+                                <toolbarItem reference="WVv-rz-ENA"/>
+                                <toolbarItem reference="QRo-2u-uWq"/>
+                                <toolbarItem reference="QPA-cF-uj3"/>
+                                <toolbarItem reference="Rfg-AX-DJo"/>
+                                <toolbarItem reference="UMF-Qc-cUT"/>
                             </defaultToolbarItems>
                         </toolbar>
                     </window>
                     <connections>
-                        <outlet property="goBackButton" destination="TdJ-1k-75w" id="x2X-gf-yMC"/>
-                        <outlet property="toolBar" destination="xq9-8K-hdd" id="uj2-vZ-qCX"/>
                         <segue destination="XfG-lQ-9wD" kind="relationship" relationship="window.shadowedContentViewController" id="cq2-FE-JQM"/>
                     </connections>
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="116" y="164"/>
+            <point key="canvasLocation" x="75" y="250"/>
+        </scene>
+        <!--Open Controller-->
+        <scene sceneID="6jG-CJ-RL1">
+            <objects>
+                <viewController id="kwW-Tb-FZc" customClass="OpenController" customModule="KiwixMac" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="H2i-G7-gua">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="143"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Xr-W0-eBL">
+                                <rect key="frame" x="20" y="101" width="410" height="22"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="I0R-N3-ZrL">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MUw-AR-LEw">
+                                <rect key="frame" x="189" y="13" width="73" height="32"/>
+                                <buttonCell key="cell" type="push" title="Open" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="3bS-qf-CGV">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="openButtonTapped:" target="kwW-Tb-FZc" id="Bu2-jp-hpp"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="MUw-AR-LEw" firstAttribute="centerX" secondItem="H2i-G7-gua" secondAttribute="centerX" id="4KM-dH-JOs"/>
+                            <constraint firstAttribute="bottom" secondItem="MUw-AR-LEw" secondAttribute="bottom" constant="20" id="YCq-zl-Tqu"/>
+                            <constraint firstItem="MUw-AR-LEw" firstAttribute="top" secondItem="6Xr-W0-eBL" secondAttribute="bottom" constant="60" id="atx-ps-hWh"/>
+                            <constraint firstItem="6Xr-W0-eBL" firstAttribute="top" secondItem="H2i-G7-gua" secondAttribute="top" constant="20" id="dIs-ko-vvx"/>
+                            <constraint firstAttribute="trailing" secondItem="6Xr-W0-eBL" secondAttribute="trailing" constant="20" id="ftg-P3-bLZ"/>
+                            <constraint firstItem="6Xr-W0-eBL" firstAttribute="leading" secondItem="H2i-G7-gua" secondAttribute="leading" constant="20" id="gpw-4f-DTe"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="pathTextField" destination="6Xr-W0-eBL" id="VuS-VL-UCf"/>
+                    </connections>
+                </viewController>
+                <customObject id="e8p-Su-Oix" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="679" y="219"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="KiwixMac" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <webView translatesAutoresizingMaskIntoConstraints="NO" id="ZqZ-Ws-9S8">
+                            <webView translatesAutoresizingMaskIntoConstraints="NO" id="UtM-Ag-xrn">
                                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                                 <webPreferences key="preferences" defaultFontSize="16" defaultFixedFontSize="13" minimumFontSize="0">
                                     <nil key="identifier"/>
@@ -749,23 +819,34 @@
                             </webView>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="ZqZ-Ws-9S8" secondAttribute="bottom" id="2nG-5w-jSy"/>
-                            <constraint firstAttribute="trailing" secondItem="ZqZ-Ws-9S8" secondAttribute="trailing" id="DU7-E7-5hp"/>
-                            <constraint firstItem="ZqZ-Ws-9S8" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="K2M-L7-pYc"/>
-                            <constraint firstItem="ZqZ-Ws-9S8" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="aQM-3r-yJm"/>
+                            <constraint firstItem="UtM-Ag-xrn" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="JBL-Z9-fTg"/>
+                            <constraint firstAttribute="bottom" secondItem="UtM-Ag-xrn" secondAttribute="bottom" id="ZBs-Xi-r7P"/>
+                            <constraint firstItem="UtM-Ag-xrn" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="goY-q8-LvB"/>
+                            <constraint firstAttribute="trailing" secondItem="UtM-Ag-xrn" secondAttribute="trailing" id="q9D-vx-XST"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="webView" destination="ZqZ-Ws-9S8" id="xjM-UU-rpF"/>
+                        <outlet property="webView" destination="UtM-Ag-xrn" id="COi-1f-mjf"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <toolbar implicitIdentifier="09D11707-F4A3-4FD5-970E-AC5832E91C2B" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="C5P-nS-k2n">
+                    <allowedToolbarItems>
+                        <toolbarItem implicitItemIdentifier="NSToolbarShowColorsItem" id="BS5-dk-0Ph"/>
+                        <toolbarItem implicitItemIdentifier="NSToolbarShowFontsItem" id="A1Y-BJ-n7L"/>
+                        <toolbarItem implicitItemIdentifier="NSToolbarPrintItem" id="l9n-ik-Ru0"/>
+                        <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="e05-5h-C7r"/>
+                        <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="T4M-lb-Beb"/>
+                    </allowedToolbarItems>
+                    <defaultToolbarItems>
+                        <toolbarItem reference="BS5-dk-0Ph"/>
+                        <toolbarItem reference="A1Y-BJ-n7L"/>
+                        <toolbarItem reference="T4M-lb-Beb"/>
+                        <toolbarItem reference="l9n-ik-Ru0"/>
+                    </defaultToolbarItems>
+                </toolbar>
             </objects>
-            <point key="canvasLocation" x="116" y="811"/>
+            <point key="canvasLocation" x="75" y="655"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="GoBack" width="410" height="410"/>
-        <image name="GoForward" width="410" height="410"/>
-    </resources>
 </document>

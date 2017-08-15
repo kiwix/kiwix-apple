@@ -5,7 +5,7 @@ Shared/libkiwix/include
 Shared/libkiwix/shared
 Shared/libkiwix/static
 
-macOS/KiwixBuild
+Shared/Dependencies
 
 TestZims
 
