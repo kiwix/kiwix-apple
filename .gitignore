@@ -1,9 +1,12 @@
 screenshots
-Snapfile
+
 Shared/libkiwix/C&C++
 Shared/libkiwix/include
 Shared/libkiwix/shared
 Shared/libkiwix/static
+
+macOS/KiwixBuild
+
 TestZims
 
 
