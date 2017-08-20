@@ -281,8 +281,8 @@
 		978C9DC11E4245B60078BFF7 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		979315811E5127930093D3BA /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9793158C1E5127930093D3BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		979681A71F46917E008A50FF /* ZimManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZimManager.h; path = Shared/Dependencies/ZimManager.h; sourceTree = SOURCE_ROOT; };
-		979681A81F46917E008A50FF /* ZimManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ZimManager.mm; path = Shared/Dependencies/ZimManager.mm; sourceTree = SOURCE_ROOT; };
+		979681A71F46917E008A50FF /* ZimManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZimManager.h; path = "Shared/Dependencies/New Group/ZimManager.h"; sourceTree = SOURCE_ROOT; };
+		979681A81F46917E008A50FF /* ZimManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ZimManager.mm; path = "Shared/Dependencies/New Group/ZimManager.mm"; sourceTree = SOURCE_ROOT; };
 		979D17821E6DE50C006AE496 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97A1FD121D6F71CE00A80EE2 /* DirectoryMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryMonitor.swift; sourceTree = "<group>"; };
 		97A1FD141D6F71CE00A80EE2 /* SearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
@@ -791,6 +791,7 @@
 			isa = PBXGroup;
 			children = (
 				979D17821E6DE50C006AE496 /* Assets.xcassets */,
+				97A6EE6C1F4A475F00926FD1 /* Bridging */,
 				977A458A1E14E98F0089C596 /* Cloud */,
 				97318E3D1E6780E7000B718B /* Help */,
 				9711872D1CEB507600B9909D /* CoreData */,
@@ -840,8 +841,6 @@
 				97D9D5031F43824000A8CBEF /* ZimReader.mm */,
 				976D2A6F1F45B813003F5431 /* ZimSearcher.h */,
 				976D2A701F45B813003F5431 /* ZimSearcher.mm */,
-				979681A71F46917E008A50FF /* ZimManager.h */,
-				979681A81F46917E008A50FF /* ZimManager.mm */,
 				97D9D3F41F43813D00A8CBEF /* include */,
 				976D2A561F44F451003F5431 /* iOS_lib */,
 				976D29D11F44B46D003F5431 /* macOS_lib */,
@@ -987,6 +986,15 @@
 				9779C3131D4575AD0064CC8E /* Bookmarks.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		97A6EE6C1F4A475F00926FD1 /* Bridging */ = {
+			isa = PBXGroup;
+			children = (
+				979681A71F46917E008A50FF /* ZimManager.h */,
+				979681A81F46917E008A50FF /* ZimManager.mm */,
+			);
+			path = Bridging;
 			sourceTree = "<group>";
 		};
 		97BAA8EA1D3D2D0A0038F57F /* URLProtocol */ = {
