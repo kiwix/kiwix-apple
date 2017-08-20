@@ -16,23 +16,23 @@ class SearchOperation: GroupProcedure {
         self.searchText = searchText
         super.init(operations: [])
         add(condition: MutuallyExclusive<SearchContainer>())
-        
+
         guard searchText != "" else {return}
         let searches = Book.fetchLocal(in: AppDelegate.persistentContainer.viewContext)
             .filter({ $0.includeInSearch })
             .map({ BookSearch(zimID: $0.id, searchText: searchText) })
-        let sort = Sort()
-        searches.forEach { (search) in
-            sort.inject(dependency: search, block: { (sort, search, errors) in
-                sort.results += search.results.values
-            })
-        }
-        sort.add(observer: DidFinishObserver { [unowned self] (operation, errors) in
-            guard let sort = operation as? Sort else {return}
-            self.results = sort.results
-        })
+//        let sort = Sort()
+//        searches.forEach { (search) in
+//            sort.inject(dependency: search, block: { (sort, search, errors) in
+//                sort.results += search.results.values
+//            })
+//        }
+//        sort.add(observer: DidFinishObserver { [unowned self] (operation, errors) in
+//            guard let sort = operation as? Sort else {return}
+//            self.results = sort.results
+//        })
         add(children: searches)
-        add(children: sort)
+//        add(children: sort)
     }
 }
 
@@ -50,21 +50,23 @@ private class BookSearch: Procedure {
     
     fileprivate override func execute() {
         defer { finish() }
-        guard let reader = ZimMultiReader.shared.readers[zimID] else {return}
         
-        guard !isCancelled else {return}
-        let indexedDics = reader.search(usingIndex: searchText) as? [[String: AnyObject]] ?? [[String: AnyObject]]()
+//        guard let reader = ZimMultiReader.shared.readers[zimID] else {return}
+//        print(reader.searchSuggestionsSmart(searchText))
         
-        guard !isCancelled else {return}
-        let titleDics = reader.searchSuggestionsSmart(searchText) as? [[String: AnyObject]] ?? [[String: AnyObject]]()
-        
-        guard !isCancelled else {return}
-        // It is important we process the title search result first, so that we always keep the indexed search result
-        let mixedDics = titleDics + indexedDics
-        for dic in mixedDics {
-            guard let result = SearchResult (rawResult: dic, lowerCaseSearchTerm: searchText) else {continue}
-            self.results[result.title] = result
-        }
+//        guard !isCancelled else {return}
+//        let indexedDics = reader.search(usingIndex: searchText) as? [[String: AnyObject]] ?? [[String: AnyObject]]()
+//        
+//        guard !isCancelled else {return}
+//        let titleDics = reader.searchSuggestionsSmart(searchText) as? [[String: AnyObject]] ?? [[String: AnyObject]]()
+//        
+//        guard !isCancelled else {return}
+//        // It is important we process the title search result first, so that we always keep the indexed search result
+//        let mixedDics = titleDics + indexedDics
+//        for dic in mixedDics {
+//            guard let result = SearchResult (rawResult: dic, lowerCaseSearchTerm: searchText) else {continue}
+//            self.results[result.title] = result
+//        }
     }
 }
 

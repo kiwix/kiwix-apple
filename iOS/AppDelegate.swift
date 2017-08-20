@@ -27,6 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ = Network.shared
         _ = AppNotification.shared
         application.setMinimumBackgroundFetchInterval(86400)
+        
+        let manager = ZimManager()
         return true
     }
     

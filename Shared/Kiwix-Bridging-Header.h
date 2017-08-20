@@ -3,5 +3,6 @@
 //
 
 #import "ZimReader.h"
+#import "ZimManager.h"
 
 #include <ifaddrs.h>
