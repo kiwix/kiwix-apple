@@ -685,6 +685,9 @@
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
                                     </button>
+                                    <connections>
+                                        <action selector="mainPageButtonTapped:" target="B8D-0N-5wS" id="1C2-1r-gcW"/>
+                                    </connections>
                                 </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="1680E0D6-9392-484C-ABDA-DFFB7997F34C" label="Back/Forward" paletteLabel="Back/Forward" visibilityPriority="2" id="Djp-oY-b28">
                                     <nil key="toolTip"/>
@@ -700,6 +703,9 @@
                                                 <segment image="Forward" width="28" tag="1"/>
                                             </segments>
                                         </segmentedCell>
+                                        <connections>
+                                            <action selector="backForwardControlClicked:" target="B8D-0N-5wS" id="wsV-qu-p3U"/>
+                                        </connections>
                                     </segmentedControl>
                                 </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="A45F6AC5-11FC-48EE-9117-45D3B7836F9C" label="Custom View" paletteLabel="Custom View" tag="-1" id="N4x-Kc-asF">

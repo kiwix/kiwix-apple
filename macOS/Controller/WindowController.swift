@@ -9,7 +9,7 @@
 import Cocoa
 
 class WindowController: NSWindowController {
-    @IBAction func mainButtonTapped(_ sender: NSToolbarItem) {
+    @IBAction func mainPageButtonTapped(_ sender: NSToolbarItem) {
         guard let id = ZimManager.shared.getReaderIDs().first,
             let mainPagePath = ZimManager.shared.getMainPagePath(bookID: id),
             let controller = contentViewController as? ViewController,
@@ -18,15 +18,13 @@ class WindowController: NSWindowController {
         controller.webView.mainFrame.load(request)
     }
     
-    @IBAction func backButtonClicked(_ sender: NSToolbarItem) {
+    @IBAction func backForwardControlClicked(_ sender: NSSegmentedControl) {
         guard let controller = contentViewController as? ViewController else {return}
-        print(controller.webView.canGoBack)
-        controller.webView.goBack()
-    }
-    
-    @IBAction func forwardButtonClicked(_ sender: NSToolbarItem) {
-        guard let controller = contentViewController as? ViewController else {return}
-        controller.webView.goForward()
+        if sender.selectedSegment == 0 {
+            controller.webView.goBack()
+        } else if sender.selectedSegment == 1 {
+            controller.webView.goForward()
+        }
     }
     
     override func windowDidLoad() {
