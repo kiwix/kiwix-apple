@@ -12,6 +12,14 @@
       "idiom" : "universal",
       "filename" : "house158.png",
       "scale" : "3x"
+    },
+    {
+      "idiom" : "mac",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "mac",
+      "scale" : "2x"
     }
   ],
   "info" : {

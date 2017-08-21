@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4F85759625A491CA2F27C1BF /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBC0C1E7272F1F1CFC34318A /* Pods_iOS.framework */; };
+		9707B8F61F4B4F1500075D4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9707B8F51F4B4F1500075D4F /* Assets.xcassets */; };
 		970D79D61E60B8A8003F5997 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 970D79D31E60B8A8003F5997 /* LaunchScreen.storyboard */; };
 		971A10521D022D9D007FC62C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A10511D022D9D007FC62C /* AppDelegate.swift */; };
 		9725345F1E43E2250005D169 /* UserHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9725345E1E43E2250005D169 /* UserHabit.swift */; };
@@ -29,12 +30,12 @@
 		974C49681DA4266200E276E1 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 974C49671DA4266200E276E1 /* CloudKit.framework */; };
 		975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975B90FD1CEB909100D13906 /* iOSExtensions.swift */; };
 		97642B991E380CC0003E2D0B /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97642B981E380CC0003E2D0B /* Network.swift */; };
-		976771751F4378FC007ED0C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767716F1F4378FC007ED0C2 /* AppDelegate.swift */; };
 		976771761F4378FC007ED0C2 /* OpenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976771701F4378FC007ED0C2 /* OpenController.swift */; };
 		976771771F4378FC007ED0C2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976771711F4378FC007ED0C2 /* ViewController.swift */; };
 		976771781F4378FC007ED0C2 /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976771721F4378FC007ED0C2 /* WindowController.swift */; };
 		976771791F4378FC007ED0C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 976771741F4378FC007ED0C2 /* Main.storyboard */; };
 		976771801F437BB9007ED0C2 /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767717D1F437BB9007ED0C2 /* KiwixURLProtocol.swift */; };
+		9768C2351F4B7BAC00FD499B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768C2341F4B7BAC00FD499B /* AppDelegate.swift */; };
 		976C1DD41E300695005EDEC4 /* UIProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976C1DD31E300695005EDEC4 /* UIProcedure.swift */; };
 		976D29DE1F44B46D003F5431 /* libicudata.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D29D21F44B46D003F5431 /* libicudata.58.2.dylib */; };
 		976D29DF1F44B46D003F5431 /* libicui18n.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D29D31F44B46D003F5431 /* libicui18n.58.2.dylib */; };
@@ -211,6 +212,7 @@
 
 /* Begin PBXFileReference section */
 		2E854211810A39173DD6A5BD /* Pods_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9707B8F51F4B4F1500075D4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		970912551D7F452C00BBD5A1 /* 1.8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.8.xcdatamodel; sourceTree = "<group>"; };
 		970D79D11E60B8A8003F5997 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		970D79D21E60B8A8003F5997 /* Kiwix.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
@@ -239,12 +241,12 @@
 		975B90FD1CEB909100D13906 /* iOSExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOSExtensions.swift; sourceTree = "<group>"; };
 		97642B981E380CC0003E2D0B /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		9764CBD21D8083AA00072D6A /* ArticleProcedure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleProcedure.swift; sourceTree = "<group>"; };
-		9767716F1F4378FC007ED0C2 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		976771701F4378FC007ED0C2 /* OpenController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenController.swift; sourceTree = "<group>"; };
 		976771711F4378FC007ED0C2 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		976771721F4378FC007ED0C2 /* WindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
 		976771741F4378FC007ED0C2 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		9767717D1F437BB9007ED0C2 /* KiwixURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KiwixURLProtocol.swift; sourceTree = "<group>"; };
+		9768C2341F4B7BAC00FD499B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		976A0C801D41619C0006A742 /* DZNEmptyDataSet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DZNEmptyDataSet.framework; path = "/Users/chrisli/Library/Developer/Xcode/DerivedData/Kiwix-ayxrfhaqnfxzendihdolvkklkmhk/Build/Products/Debug-iphoneos/DZNEmptyDataSet/DZNEmptyDataSet.framework"; sourceTree = "<absolute>"; };
 		976C1DD31E300695005EDEC4 /* UIProcedure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIProcedure.swift; sourceTree = "<group>"; };
 		976D29D21F44B46D003F5431 /* libicudata.58.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicudata.58.2.dylib; sourceTree = "<group>"; };
@@ -819,7 +821,6 @@
 		9767716E1F4378FC007ED0C2 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				9767716F1F4378FC007ED0C2 /* AppDelegate.swift */,
 				976771701F4378FC007ED0C2 /* OpenController.swift */,
 				976771711F4378FC007ED0C2 /* ViewController.swift */,
 				976771721F4378FC007ED0C2 /* WindowController.swift */,
@@ -928,10 +929,12 @@
 		979315821E5127930093D3BA /* macOS */ = {
 			isa = PBXGroup;
 			children = (
+				9768C2341F4B7BAC00FD499B /* AppDelegate.swift */,
 				9767716E1F4378FC007ED0C2 /* Controller */,
 				976771731F4378FC007ED0C2 /* Storyboard */,
 				979315AC1E5147A70093D3BA /* Support */,
 				9767717D1F437BB9007ED0C2 /* KiwixURLProtocol.swift */,
+				9707B8F51F4B4F1500075D4F /* Assets.xcassets */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -1675,6 +1678,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				979D17841E6DE50C006AE496 /* Assets.xcassets in Resources */,
+				9707B8F61F4B4F1500075D4F /* Assets.xcassets in Resources */,
 				976771791F4378FC007ED0C2 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1783,8 +1787,8 @@
 				976771771F4378FC007ED0C2 /* ViewController.swift in Sources */,
 				976771781F4378FC007ED0C2 /* WindowController.swift in Sources */,
 				979681AA1F470E9B008A50FF /* ZimManager.mm in Sources */,
-				976771751F4378FC007ED0C2 /* AppDelegate.swift in Sources */,
 				976771801F437BB9007ED0C2 /* KiwixURLProtocol.swift in Sources */,
+				9768C2351F4B7BAC00FD499B /* AppDelegate.swift in Sources */,
 				976771761F4378FC007ED0C2 /* OpenController.swift in Sources */,
 				97A6EE6F1F4A99A700926FD1 /* ZimManager.swift in Sources */,
 			);

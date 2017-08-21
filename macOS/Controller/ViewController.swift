@@ -15,8 +15,11 @@ class ViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        view.window?.titleVisibility = .hidden
     }
 
     override var representedObject: Any? {
