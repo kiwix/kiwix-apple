@@ -281,8 +281,9 @@
 		978C9DC11E4245B60078BFF7 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		979315811E5127930093D3BA /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9793158C1E5127930093D3BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		979681A71F46917E008A50FF /* ZimManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZimManager.h; path = "Shared/Dependencies/New Group/ZimManager.h"; sourceTree = SOURCE_ROOT; };
 		979681A81F46917E008A50FF /* ZimManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ZimManager.mm; path = "Shared/Dependencies/New Group/ZimManager.mm"; sourceTree = SOURCE_ROOT; };
+		979681A71F46917E008A50FF /* ZimManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZimManager.h; path = Shared/Bridging/ZimManager.h; sourceTree = SOURCE_ROOT; };
+		979681A81F46917E008A50FF /* ZimManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ZimManager.mm; path = Shared/Bridging/ZimManager.mm; sourceTree = SOURCE_ROOT; };
 		979D17821E6DE50C006AE496 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97A1FD121D6F71CE00A80EE2 /* DirectoryMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryMonitor.swift; sourceTree = "<group>"; };
 		97A1FD141D6F71CE00A80EE2 /* SearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
@@ -792,7 +793,6 @@
 			children = (
 				979D17821E6DE50C006AE496 /* Assets.xcassets */,
 				97A6EE6C1F4A475F00926FD1 /* Bridging */,
-				977A458A1E14E98F0089C596 /* Cloud */,
 				97318E3D1E6780E7000B718B /* Help */,
 				9711872D1CEB507600B9909D /* CoreData */,
 				976771821F437DB9007ED0C2 /* Dependencies */,
@@ -897,13 +897,6 @@
 				9779C31B1D4575AE0064CC8E /* Info.plist */,
 			);
 			path = Bookmarks;
-			sourceTree = "<group>";
-		};
-		977A458A1E14E98F0089C596 /* Cloud */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Cloud;
 			sourceTree = "<group>";
 		};
 		978C587A1C1CCC9C0077AE47 /* Storyboards */ = {

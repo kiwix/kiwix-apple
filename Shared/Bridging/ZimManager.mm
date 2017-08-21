@@ -13,7 +13,7 @@
 #import "ZimManager.h"
 
 @interface ZimManager () {
-    std::unordered_map<std::string, kiwix::Reader> readers;
+    std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>> readers;
 }
 @end
 
@@ -23,6 +23,7 @@
     self = [super init];
     if (self) {
         [self scan];
+        readers.reserve(20);
     }
     return self;
 }
@@ -38,9 +39,9 @@
     
     for (NSURL *file in files) {
         try {
-            kiwix::Reader reader = kiwix::Reader([file fileSystemRepresentation]);
-            std::string identifier = reader.getId();
-            readers.insert(std::pair<std::string, kiwix::Reader>(identifier, reader));
+            std::shared_ptr<kiwix::Reader> reader = std::make_shared<kiwix::Reader>([file fileSystemRepresentation]);
+            std::string identifier = reader->getId();
+            readers.insert(std::make_pair(identifier, reader));
             existing.erase(identifier);
         } catch (const std::exception &e) { }
     }
@@ -49,8 +50,5 @@
         readers.erase(identifier);
     }
 }
-
-//- (void)dealloc {
-//}
 
 @end
