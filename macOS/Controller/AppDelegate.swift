@@ -13,6 +13,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         URLProtocol.registerClass(KiwixURLProtocol.self)
+        
+        let manager = ZimManager()
+        
+        
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -23,4 +27,3 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 
 }
-

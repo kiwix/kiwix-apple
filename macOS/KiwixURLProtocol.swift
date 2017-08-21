@@ -23,28 +23,39 @@ class KiwixURLProtocol: URLProtocol {
     
     override func startLoading() {
         guard let url = request.url,
-            let contentURLString = url.path.removingPercentEncoding,
+            let contentPath = url.path.removingPercentEncoding,
             let id = url.host else {
                 let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorUnsupportedURL, userInfo: nil)
                 client?.urlProtocol(self, didFailWithError: error)
                 return
         }
         
-        guard let reader = (NSApplication.shared().delegate as! AppDelegate).reader else {return}
-        guard let dataDic = reader.data(withContentURLString: contentURLString),
-            let data = dataDic["data"] as? Data,
-            let mimeType = dataDic["mime"] as? String,
-            let dataLength: Int = (dataDic["length"] as? NSNumber)?.intValue else {
-                let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable, userInfo: nil)
-                client?.urlProtocol(self, didFailWithError: error)
-                return
+        guard let content = ZimManager.shared.getContent(bookID: id, contentPath: contentPath) else {
+            let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable, userInfo: nil)
+            client?.urlProtocol(self, didFailWithError: error)
+            return
         }
         
-        let response = URLResponse(url: url, mimeType: mimeType, expectedContentLength: dataLength, textEncodingName: nil)
-        
+        let response = URLResponse(url: url, mimeType: content.mime, expectedContentLength: content.length, textEncodingName: nil)
         client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .allowed)
-        client?.urlProtocol(self, didLoad: data)
+        client?.urlProtocol(self, didLoad: content.data)
         client?.urlProtocolDidFinishLoading(self)
+        
+//        guard let reader = (NSApplication.shared().delegate as! AppDelegate).reader else {return}
+//        guard let dataDic = reader.data(withContentURLString: contentPath),
+//            let data = dataDic["data"] as? Data,
+//            let mimeType = dataDic["mime"] as? String,
+//            let dataLength: Int = (dataDic["length"] as? NSNumber)?.intValue else {
+//                let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable, userInfo: nil)
+//                client?.urlProtocol(self, didFailWithError: error)
+//                return
+//        }
+//
+//        let response = URLResponse(url: url, mimeType: mimeType, expectedContentLength: dataLength, textEncodingName: nil)
+//
+//        client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .allowed)
+//        client?.urlProtocol(self, didLoad: data)
+//        client?.urlProtocolDidFinishLoading(self)
     }
     
     override func stopLoading() {

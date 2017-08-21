@@ -91,6 +91,8 @@
 		97A1FD421D6F728200A80EE2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD3D1D6F728200A80EE2 /* Extensions.swift */; };
 		97A1FD441D6F728200A80EE2 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD401D6F728200A80EE2 /* Preference.swift */; };
 		97A1FD451D6F728200A80EE2 /* Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD411D6F728200A80EE2 /* Localized.swift */; };
+		97A6EE6E1F4A99A700926FD1 /* ZimManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A6EE6D1F4A99A700926FD1 /* ZimManager.swift */; };
+		97A6EE6F1F4A99A700926FD1 /* ZimManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A6EE6D1F4A99A700926FD1 /* ZimManager.swift */; };
 		97A9F6F51E2E990500F423AA /* JSInject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* JSInject.js */; };
 		97C2C26A1DDCC58500A9CC64 /* ArticleProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764CBD21D8083AA00072D6A /* ArticleProcedure.swift */; };
 		97C5D1541E69D0170042898D /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C5D1521E69D0170042898D /* SnapshotHelper.swift */; };
@@ -281,7 +283,6 @@
 		978C9DC11E4245B60078BFF7 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		979315811E5127930093D3BA /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9793158C1E5127930093D3BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		979681A81F46917E008A50FF /* ZimManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ZimManager.mm; path = "Shared/Dependencies/New Group/ZimManager.mm"; sourceTree = SOURCE_ROOT; };
 		979681A71F46917E008A50FF /* ZimManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZimManager.h; path = Shared/Bridging/ZimManager.h; sourceTree = SOURCE_ROOT; };
 		979681A81F46917E008A50FF /* ZimManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ZimManager.mm; path = Shared/Bridging/ZimManager.mm; sourceTree = SOURCE_ROOT; };
 		979D17821E6DE50C006AE496 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -293,6 +294,7 @@
 		97A1FD401D6F728200A80EE2 /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		97A1FD411D6F728200A80EE2 /* Localized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localized.swift; sourceTree = "<group>"; };
 		97A2AB881C1B80FF00052E74 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		97A6EE6D1F4A99A700926FD1 /* ZimManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimManager.swift; sourceTree = "<group>"; };
 		97A9F6F41E2E990500F423AA /* JSInject.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = JSInject.js; sourceTree = "<group>"; };
 		97C5D1521E69D0170042898D /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		97C601DD1D7F342100362D4F /* HTMLHeading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTMLHeading.swift; sourceTree = "<group>"; };
@@ -986,6 +988,7 @@
 			children = (
 				979681A71F46917E008A50FF /* ZimManager.h */,
 				979681A81F46917E008A50FF /* ZimManager.mm */,
+				97A6EE6D1F4A99A700926FD1 /* ZimManager.swift */,
 			);
 			path = Bridging;
 			sourceTree = "<group>";
@@ -1784,6 +1787,7 @@
 				976771751F4378FC007ED0C2 /* AppDelegate.swift in Sources */,
 				976771801F437BB9007ED0C2 /* KiwixURLProtocol.swift in Sources */,
 				976771761F4378FC007ED0C2 /* OpenController.swift in Sources */,
+				97A6EE6F1F4A99A700926FD1 /* ZimManager.swift in Sources */,
 				97D9D5051F43824000A8CBEF /* ZimReader.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1822,6 +1826,7 @@
 				97D681371D6F711A00E5FA99 /* Article.swift in Sources */,
 				976D2A711F45B813003F5431 /* ZimSearcher.mm in Sources */,
 				97D231911E677C6700DCD4A4 /* JSInjection.swift in Sources */,
+				97A6EE6E1F4A99A700926FD1 /* ZimManager.swift in Sources */,
 				976C1DD41E300695005EDEC4 /* UIProcedure.swift in Sources */,
 				972F81571DDBFC79008D7289 /* SearchProcedure.swift in Sources */,
 				97D231961E677C6700DCD4A4 /* WelcomeController.swift in Sources */,
