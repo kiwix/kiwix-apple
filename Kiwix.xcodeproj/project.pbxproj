@@ -139,7 +139,6 @@
 		97D6813F1D6F712800E5FA99 /* Article+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813B1D6F712800E5FA99 /* Article+CoreDataProperties.swift */; };
 		97D681411D6F712800E5FA99 /* DownloadTask+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813D1D6F712800E5FA99 /* DownloadTask+CoreDataProperties.swift */; };
 		97D9D5041F43824000A8CBEF /* ZimReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97D9D5031F43824000A8CBEF /* ZimReader.mm */; };
-		97D9D5051F43824000A8CBEF /* ZimReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97D9D5031F43824000A8CBEF /* ZimReader.mm */; };
 		97DA5C1E1E6F420800873048 /* BrowsingHistoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DA5C1D1E6F420800873048 /* BrowsingHistoryController.swift */; };
 		97DB65DA1D4576B600A2CC42 /* BookmarkWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */; };
 		97E0A7B71E96CC3300320F06 /* TabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E0A7B61E96CC3300320F06 /* TabController.swift */; };
@@ -1788,7 +1787,6 @@
 				976771801F437BB9007ED0C2 /* KiwixURLProtocol.swift in Sources */,
 				976771761F4378FC007ED0C2 /* OpenController.swift in Sources */,
 				97A6EE6F1F4A99A700926FD1 /* ZimManager.swift in Sources */,
-				97D9D5051F43824000A8CBEF /* ZimReader.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

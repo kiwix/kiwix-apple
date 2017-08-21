@@ -13,17 +13,11 @@ class OpenController: NSViewController {
 
     @IBAction func openButtonTapped(_ sender: NSButton) {
         let path = pathTextField.stringValue
-        print(path)
-        
-        let url = URL(fileURLWithPath: path)
-        
-        (NSApplication.shared().delegate as! AppDelegate).reader = ZimReader(zimFileURL: url)
-        
+        ZimManager.shared.addBook(path: path)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do view setup here.
     }
     
 }

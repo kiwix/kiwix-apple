@@ -13,17 +13,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         URLProtocol.registerClass(KiwixURLProtocol.self)
-        
-        let manager = ZimManager()
-        
-        
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
-    
-    var reader: ZimReader? = nil
-
-
 }

@@ -20,14 +20,14 @@ extension ZimManager {
     }
     
     func getContent(bookID: String, contentPath: String) -> (data: Data, mime: String, length: Int)? {
-        guard let content = __getContent("", contentURL: ""),
+        guard let content = __getContent(bookID, contentURL: contentPath),
             let data = content["data"] as? Data,
             let mime = content["mime"] as? String,
             let length = content["length"] as? Int else {return nil}
         return (data, mime, length)
     }
     
-    func getMainPageURL(bookID: String) {
-        __getMainPageURL(bookID)
+    func getMainPagePath(bookID: String) -> String? {
+        return __getMainPageURL(bookID)
     }
 }
