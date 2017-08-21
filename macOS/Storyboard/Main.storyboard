@@ -24,7 +24,11 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
-                                        <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW"/>
+                                        <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW">
+                                            <connections>
+                                                <segue destination="W9u-Fw-XBg" kind="show" id="qSI-zf-8lo"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem isSeparatorItem="YES" id="wFC-TO-SCJ"/>
                                         <menuItem title="Services" id="NMo-om-nkz">
                                             <modifierMask key="keyEquivalentModifierMask"/>
@@ -659,7 +663,15 @@
                 <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Kiwix" customModuleProvider="target"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="-67"/>
+            <point key="canvasLocation" x="32" y="-34"/>
+        </scene>
+        <!--Preference-->
+        <scene sceneID="OBR-1i-rmw">
+            <objects>
+                <controllerPlaceholder storyboardName="Preference" id="W9u-Fw-XBg" sceneMemberID="viewController"/>
+                <customObject id="iFG-Mf-RqZ" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="406" y="-31"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
@@ -668,8 +680,9 @@
                     <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="600" y="400" width="471" height="270"/>
+                        <rect key="contentRect" x="600" y="400" width="400" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <value key="minSize" type="size" width="400" height="270"/>
                         <toolbar key="toolbar" implicitIdentifier="05883A09-BD97-4887-B838-656B159754CD" autosavesConfiguration="NO" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconOnly" sizeMode="regular" id="P8b-mc-Yk8">
                             <allowedToolbarItems>
                                 <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="QPA-cF-uj3"/>
@@ -708,18 +721,18 @@
                                         </connections>
                                     </segmentedControl>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="A45F6AC5-11FC-48EE-9117-45D3B7836F9C" label="Custom View" paletteLabel="Custom View" tag="-1" id="N4x-Kc-asF">
+                                <toolbarItem implicitItemIdentifier="A45F6AC5-11FC-48EE-9117-45D3B7836F9C" label="Search" paletteLabel="Search" tag="-1" id="N4x-Kc-asF">
                                     <nil key="toolTip"/>
-                                    <size key="minSize" width="320" height="28"/>
-                                    <size key="maxSize" width="800" height="96"/>
+                                    <size key="minSize" width="150" height="28"/>
+                                    <size key="maxSize" width="600" height="96"/>
                                     <customView key="view" id="Ors-wL-GWW">
-                                        <rect key="frame" x="0.0" y="14" width="320" height="28"/>
+                                        <rect key="frame" x="0.0" y="14" width="150" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <subviews>
                                             <searchField wantsLayer="YES" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zwv-h5-dBZ">
-                                                <rect key="frame" x="0.0" y="3" width="320" height="22"/>
+                                                <rect key="frame" x="0.0" y="3" width="150" height="22"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="750" constant="320" id="Glc-fZ-eSo"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="750" constant="150" id="Glc-fZ-eSo"/>
                                                 </constraints>
                                                 <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="c2w-67-j7d">
                                                     <font key="font" metaFont="system"/>
@@ -754,7 +767,7 @@
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="70.5" y="250"/>
+            <point key="canvasLocation" x="29" y="250"/>
         </scene>
         <!--Open Controller-->
         <scene sceneID="6jG-CJ-RL1">
@@ -798,7 +811,7 @@
                 </viewController>
                 <customObject id="e8p-Su-Oix" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="679" y="219"/>
+            <point key="canvasLocation" x="628" y="755"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="hIz-AP-VOD">
@@ -843,7 +856,7 @@
                     </defaultToolbarItems>
                 </toolbar>
             </objects>
-            <point key="canvasLocation" x="75" y="655"/>
+            <point key="canvasLocation" x="596" y="250"/>
         </scene>
     </scenes>
     <resources>
