@@ -7,8 +7,12 @@ target 'iOS' do
     pod 'DZNEmptyDataSet'
     pod 'SwiftyUserDefaults'
     pod 'ProcedureKit/All', :path => 'submodules/ProcedureKit'
-    pod 'ProcedureKit/Mobile', :path => 'submodules/ProcedureKit'  
-    # pod 'ProcedureKit', :git => 'https://github.com/ProcedureKit/ProcedureKit.git', :branch => 'release/4.1.0'
-    # pod 'ProcedureKit/Network', :git => 'https://github.com/ProcedureKit/ProcedureKit.git', :branch => 'release/4.1.0'
-    # pod 'ProcedureKit/Mobile', :git => 'https://github.com/ProcedureKit/ProcedureKit.git', :branch => 'release/4.1.0'
+    pod 'ProcedureKit/Mobile', :path => 'submodules/ProcedureKit'
+end
+
+target 'macOS' do
+    platform :osx, '10.10'
+    use_frameworks!
+    
+    pod 'SwiftyUserDefaults'
 end

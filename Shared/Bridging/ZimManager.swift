@@ -15,6 +15,12 @@ extension ZimManager {
         __addBook(byPath: path)
     }
     
+    func addBooks(paths: [String]) {
+        for path in paths {
+            __addBook(byPath: path)
+        }
+    }
+    
     func getReaderIDs() -> [String] {
         return __getReaderIdentifiers().flatMap({$0 as? String})
     }

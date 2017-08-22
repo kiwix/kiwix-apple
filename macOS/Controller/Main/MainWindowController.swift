@@ -1,30 +1,31 @@
 //
-//  WindowController.swift
-//  KiwixMac
+//  MainController.swift
+//  macOS
 //
-//  Created by Chris Li on 8/15/17.
-//  Copyright © 2017 Kiwix. All rights reserved.
+//  Created by Chris Li on 8/22/17.
+//  Copyright © 2017 Chris Li. All rights reserved.
 //
 
 import Cocoa
+import WebKit
+import SwiftyUserDefaults
 
-class WindowController: NSWindowController {
+class MainWindowController: NSWindowController {
+    @IBOutlet weak var titleTextField: NSTextField!
+    
     override func windowDidLoad() {
         super.windowDidLoad()
-        window?.title = "Kiwix"
+        window?.titleVisibility = .hidden
     }
     
     @IBAction func mainPageButtonTapped(_ sender: NSToolbarItem) {
-        guard let id = ZimManager.shared.getReaderIDs().first,
-            let mainPagePath = ZimManager.shared.getMainPagePath(bookID: id),
-            let controller = contentViewController as? ViewController,
-            let mainPageURL = URL(bookID: id, contentPath: mainPagePath) else {return}
-        let request = URLRequest(url: mainPageURL)
-        controller.webView.mainFrame.load(request)
+        guard let split = contentViewController as? NSSplitViewController,
+            let controller = split.splitViewItems.last?.viewController as? WebViewController else {return}
+        controller.loadMainPage()
     }
     
     @IBAction func backForwardControlClicked(_ sender: NSSegmentedControl) {
-        guard let controller = contentViewController as? ViewController else {return}
+        guard let controller = contentViewController as? WebViewController else {return}
         if sender.selectedSegment == 0 {
             controller.webView.goBack()
         } else if sender.selectedSegment == 1 {
@@ -41,10 +42,9 @@ class WindowController: NSWindowController {
         
         openPanel.beginSheetModal(for: window!) { response in
             guard response == NSFileHandlingPanelOKButton else {return}
-            for url in openPanel.urls {
-                ZimManager.shared.addBook(path: url.path)
-            }
+            let paths = openPanel.urls.map({$0.path})
+            Defaults[.bookPaths] = paths
+            ZimManager.shared.addBooks(paths: paths)
         }
     }
-    
 }
