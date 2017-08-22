@@ -822,10 +822,10 @@
             </objects>
             <point key="canvasLocation" x="229" y="1036"/>
         </scene>
-        <!--View Controller-->
+        <!--Search Controller-->
         <scene sceneID="1qM-jK-bFE">
             <objects>
-                <viewController id="t4t-oA-aIo" sceneMemberID="viewController">
+                <viewController id="t4t-oA-aIo" customClass="SearchController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="KLI-H2-CL8">
                         <rect key="frame" x="0.0" y="0.0" width="230" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -840,6 +840,9 @@
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </searchFieldCell>
+                                <connections>
+                                    <action selector="searchFieldChanged:" target="t4t-oA-aIo" id="LMX-Cr-bW8"/>
+                                </connections>
                             </searchField>
                             <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="ZEX-HG-gNI">
                                 <rect key="frame" x="0.0" y="0.0" width="230" height="224"/>
@@ -945,6 +948,9 @@
                             <constraint firstItem="OaO-17-WvL" firstAttribute="leading" secondItem="KLI-H2-CL8" secondAttribute="leading" constant="10" id="lGS-ne-mHM"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="searchField" destination="OaO-17-WvL" id="Abw-Lx-5h1"/>
+                    </connections>
                 </viewController>
                 <customObject id="GCe-x5-Tkv" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>

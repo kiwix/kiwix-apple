@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import WebKit
 
 class WebViewController: NSViewController, WebFrameLoadDelegate {
     @IBOutlet weak var webView: WebView!

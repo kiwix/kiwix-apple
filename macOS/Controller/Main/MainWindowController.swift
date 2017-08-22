@@ -7,7 +7,6 @@
 //
 
 import Cocoa
-import WebKit
 import SwiftyUserDefaults
 
 class MainWindowController: NSWindowController {

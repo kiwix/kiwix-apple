@@ -144,6 +144,7 @@
 		97DB65DA1D4576B600A2CC42 /* BookmarkWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */; };
 		97E0A7B71E96CC3300320F06 /* TabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E0A7B61E96CC3300320F06 /* TabController.swift */; };
 		97E9834E1F4CA0A00021E96A /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9834D1F4CA0A00021E96A /* WebViewController.swift */; };
+		97E983501F4CA54A0021E96A /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9834F1F4CA54A0021E96A /* SearchController.swift */; };
 		97ED50111DD257D00089E9B6 /* Kiwix.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 97D6812A1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld */; };
 		97FC27DE1E69CE31008B2348 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 97FC27DC1E69CE31008B2348 /* Info.plist */; };
 		97FC27DF1E69CE31008B2348 /* iOS_ScreenshotAutomator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FC27DD1E69CE31008B2348 /* iOS_ScreenshotAutomator.swift */; };
@@ -622,6 +623,7 @@
 		97E0A7B61E96CC3300320F06 /* TabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabController.swift; sourceTree = "<group>"; };
 		97E609F01D103DED00EBCB9D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		97E9834D1F4CA0A00021E96A /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		97E9834F1F4CA54A0021E96A /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		97FC27DC1E69CE31008B2348 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97FC27DD1E69CE31008B2348 /* iOS_ScreenshotAutomator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOS_ScreenshotAutomator.swift; sourceTree = "<group>"; };
 		97FC607E1E6868F1003CFD38 /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicudata.a; sourceTree = "<group>"; };
@@ -833,6 +835,7 @@
 			children = (
 				97533B451F4C723900F6651A /* MainWindowController.swift */,
 				97E9834D1F4CA0A00021E96A /* WebViewController.swift */,
+				97E9834F1F4CA54A0021E96A /* SearchController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -1863,6 +1866,7 @@
 				9768C23B1F4B7F6300FD499B /* Preference.swift in Sources */,
 				979681AA1F470E9B008A50FF /* ZimManager.mm in Sources */,
 				97533B461F4C723900F6651A /* MainWindowController.swift in Sources */,
+				97E983501F4CA54A0021E96A /* SearchController.swift in Sources */,
 				976771801F437BB9007ED0C2 /* KiwixURLProtocol.swift in Sources */,
 				97E9834E1F4CA0A00021E96A /* WebViewController.swift in Sources */,
 				9768C2351F4B7BAC00FD499B /* AppDelegate.swift in Sources */,
