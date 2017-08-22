@@ -110,7 +110,7 @@
     }
 }
 
-# pragma makr - URL handling
+# pragma mark - URL handling
 
 - (NSString *)getMainPageURL:(NSString *)bookID {
     auto found = readers.find([bookID cStringUsingEncoding:NSUTF8StringEncoding]);
@@ -121,6 +121,42 @@
         std::string mainPageURLC = reader->getMainPageUrl();
         return [NSString stringWithCString:mainPageURLC.c_str() encoding:NSUTF8StringEncoding];
     }
+}
+
+# pragma mark - Search
+
+- (void)enumerateThings:(void (^)(NSString *result))block {
+    block(@"test");
+}
+
+- (NSArray *)getSearchSuggestions:(NSString *)searchTerm {
+    std::string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];
+    NSMutableArray *suggestions = [[NSMutableArray alloc] init];
+    
+    unsigned int count = 5;
+    for(auto iter: readers) {
+        std::shared_ptr<kiwix::Reader> reader = iter.second;
+        reader->searchSuggestionsSmart(searchTermC, count);
+        
+        std::string titleC;
+        std::string pathC;
+        
+        while (reader->getNextSuggestion(titleC, pathC)) {
+            NSString *title = [NSString stringWithCString:titleC.c_str() encoding:NSUTF8StringEncoding];
+            NSString *path = [NSString stringWithCString:pathC.c_str() encoding:NSUTF8StringEncoding];
+            [suggestions addObject:@{@"title": title, @"path": path}];
+        }
+    }
+    
+    if (readers.size() > 1) {
+        [suggestions sortUsingComparator:^NSComparisonResult(NSDictionary * _Nonnull obj1, NSDictionary * _Nonnull obj2) {
+            NSString *title1 = [obj1 objectForKey:@"title"];
+            NSString *title2 = [obj2 objectForKey:@"title"];
+            return [title1 caseInsensitiveCompare:title2];
+        }];
+    }
+    
+    return suggestions;
 }
 
 @end

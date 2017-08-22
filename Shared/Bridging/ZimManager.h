@@ -20,5 +20,8 @@
 
 - (NSString *)getMainPageURL:(NSString *)bookID NS_REFINED_FOR_SWIFT;
 
+- (void)enumerateThings:(void (^)(NSString *result))block;
+- (NSArray *)getSearchSuggestions:(NSString *)searchTerm NS_REFINED_FOR_SWIFT;
+
 
 @end

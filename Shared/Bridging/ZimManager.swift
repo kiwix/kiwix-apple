@@ -36,4 +36,14 @@ extension ZimManager {
     func getMainPagePath(bookID: String) -> String? {
         return __getMainPageURL(bookID)
     }
+    
+    func getSearchSuggestions(searchTerm: String) -> [(title: String, path: String)] {
+        guard let suggestions = __getSearchSuggestions(searchTerm) else {return []}
+        return suggestions.flatMap { suggestion -> (String, String)? in
+            guard let suggestion = suggestion as? Dictionary<String, String>,
+                let title = suggestion["title"],
+                let path = suggestion["path"] else {return nil}
+            return (title, path)
+        }
+    }
 }
