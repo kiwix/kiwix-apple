@@ -13,7 +13,7 @@
                     <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="RCu-hI-fJN">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="294" y="323" width="700" height="500"/>
+                        <rect key="contentRect" x="600" y="300" width="700" height="500"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1080"/>
                         <value key="minSize" type="size" width="700" height="500"/>
                         <value key="maxSize" type="size" width="700" height="500"/>
@@ -40,7 +40,7 @@
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hbF-Jx-Jie">
                                 <rect key="frame" x="20" y="20" width="660" height="460"/>
                                 <clipView key="contentView" id="N5t-UT-8JW">
-                                    <rect key="frame" x="1" y="23" width="658" height="436"/>
+                                    <rect key="frame" x="1" y="0.0" width="658" height="459"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="4e0-7F-dQs" viewBased="YES" id="uEa-kZ-gyM">

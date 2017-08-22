@@ -9,6 +9,11 @@
 import Cocoa
 
 class WindowController: NSWindowController {
+    override func windowDidLoad() {
+        super.windowDidLoad()
+        window?.title = "Kiwix"
+    }
+    
     @IBAction func mainPageButtonTapped(_ sender: NSToolbarItem) {
         guard let id = ZimManager.shared.getReaderIDs().first,
             let mainPagePath = ZimManager.shared.getMainPagePath(bookID: id),
@@ -27,8 +32,19 @@ class WindowController: NSWindowController {
         }
     }
     
-    override func windowDidLoad() {
-        super.windowDidLoad()
-        window?.title = "Kiwix"
+    @IBAction func openBook(_ sender: NSMenuItem) {
+        let openPanel = NSOpenPanel()
+        openPanel.showsHiddenFiles = false
+        openPanel.canChooseFiles = true
+        openPanel.canChooseDirectories = false
+        openPanel.allowsMultipleSelection = false
+        
+        openPanel.beginSheetModal(for: window!) { response in
+            guard response == NSFileHandlingPanelOKButton else {return}
+            for url in openPanel.urls {
+                ZimManager.shared.addBook(path: url.path)
+            }
+        }
     }
+    
 }
