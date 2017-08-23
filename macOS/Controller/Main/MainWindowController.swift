@@ -24,7 +24,8 @@ class MainWindowController: NSWindowController {
     }
     
     @IBAction func backForwardControlClicked(_ sender: NSSegmentedControl) {
-        guard let controller = contentViewController as? WebViewController else {return}
+        guard let split = contentViewController as? NSSplitViewController,
+            let controller = split.splitViewItems.last?.viewController as? WebViewController else {return}
         if sender.selectedSegment == 0 {
             controller.webView.goBack()
         } else if sender.selectedSegment == 1 {
@@ -43,7 +44,12 @@ class MainWindowController: NSWindowController {
             guard response == NSFileHandlingPanelOKButton else {return}
             let paths = openPanel.urls.map({$0.path})
             Defaults[.bookPaths] = paths
+            ZimManager.shared.removeAllBook();
             ZimManager.shared.addBooks(paths: paths)
+            
+            guard let split = self.contentViewController as? NSSplitViewController,
+                let controller = split.splitViewItems.last?.viewController as? WebViewController else {return}
+            controller.loadMainPage()
         }
     }
 }

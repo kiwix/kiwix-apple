@@ -72,6 +72,15 @@
     readers.insert(std::make_pair(identifier, reader));
 }
 
+- (void)removeBookByID:(NSString *)bookID {
+    std::string bookIDC = [bookID cStringUsingEncoding:NSUTF8StringEncoding];
+    readers.erase(bookIDC);
+}
+
+- (void)removeAllBook {
+    readers.clear();
+}
+
 - (NSArray *)getReaderIdentifiers {
     NSMutableArray *identifiers = [[NSMutableArray alloc] init];
     for(auto reader: readers) {
@@ -133,30 +142,67 @@
     std::string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];
     NSMutableArray *suggestions = [[NSMutableArray alloc] init];
     
-    unsigned int count = 5;
-    for(auto iter: readers) {
-        std::shared_ptr<kiwix::Reader> reader = iter.second;
-        reader->searchSuggestionsSmart(searchTermC, count);
-        
-        std::string titleC;
-        std::string pathC;
-        
-        while (reader->getNextSuggestion(titleC, pathC)) {
-            NSString *title = [NSString stringWithCString:titleC.c_str() encoding:NSUTF8StringEncoding];
-            NSString *path = [NSString stringWithCString:pathC.c_str() encoding:NSUTF8StringEncoding];
-            [suggestions addObject:@{@"title": title, @"path": path}];
-        }
-    }
+//    unsigned int count = 5;
+//    searcher.suggestions(searchTermC);
+//    while (count > 0) {
+//        kiwix::Result *result = searcher.getNextResult();
+//
+//        if (result == NULL) {
+//            break;
+//        }
+//
+//        NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
+//        NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
+//        [suggestions addObject:@{@"title": title, @"path": path}];
+//
+//        count--;
+//    }
     
-    if (readers.size() > 1) {
-        [suggestions sortUsingComparator:^NSComparisonResult(NSDictionary * _Nonnull obj1, NSDictionary * _Nonnull obj2) {
-            NSString *title1 = [obj1 objectForKey:@"title"];
-            NSString *title2 = [obj2 objectForKey:@"title"];
-            return [title1 caseInsensitiveCompare:title2];
-        }];
-    }
+//    for(auto iter: readers) {
+//        std::shared_ptr<kiwix::Reader> reader = iter.second;
+//        reader->searchSuggestionsSmart(searchTermC, count);
+//
+//        std::string titleC;
+//        std::string pathC;
+//
+//        while (reader->getNextSuggestion(titleC, pathC)) {
+//            NSString *title = [NSString stringWithCString:titleC.c_str() encoding:NSUTF8StringEncoding];
+//            NSString *path = [NSString stringWithCString:pathC.c_str() encoding:NSUTF8StringEncoding];
+//            [suggestions addObject:@{@"title": title, @"path": path}];
+//        }
+//    }
+//
+//    if (readers.size() > 1) {
+//        [suggestions sortUsingComparator:^NSComparisonResult(NSDictionary * _Nonnull obj1, NSDictionary * _Nonnull obj2) {
+//            NSString *title1 = [obj1 objectForKey:@"title"];
+//            NSString *title2 = [obj2 objectForKey:@"title"];
+//            return [title1 caseInsensitiveCompare:title2];
+//        }];
+//    }
     
     return suggestions;
+}
+
+- (NSArray *)getSearchResults:(NSString *)searchTerm {
+    std::string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];
+    NSMutableArray *results = [[NSMutableArray alloc] init];
+    
+    kiwix::Searcher searcher;
+    for(auto pair: readers) {
+        searcher.add_reader(pair.second.get(), pair.first);
+    }
+    if (readers.size() == 0) {return results;}
+    
+    searcher.search(searchTermC, 0, 20);
+    kiwix::Result *result = searcher.getNextResult();
+    while (result != NULL) {
+        NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
+        NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
+        NSString *snippet = [NSString stringWithCString:result->get_snippet().c_str() encoding:NSUTF8StringEncoding];
+        [results addObject:@{@"title": title, @"path": path, @"snippet": snippet}];
+        result = searcher.getNextResult();
+    }
+    return results;
 }
 
 @end

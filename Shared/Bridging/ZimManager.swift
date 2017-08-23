@@ -7,23 +7,12 @@
 //
 
 extension ZimManager {
-    class var shared: ZimManager {
-        return ZimManager.__sharedInstance()
-    }
+    class var shared: ZimManager {return ZimManager.__sharedInstance()}
     
-    func addBook(path: String) {
-        __addBook(byPath: path)
-    }
-    
-    func addBooks(paths: [String]) {
-        for path in paths {
-            __addBook(byPath: path)
-        }
-    }
-    
-    func getReaderIDs() -> [String] {
-        return __getReaderIdentifiers().flatMap({$0 as? String})
-    }
+    func addBook(path: String) {__addBook(byPath: path)}
+    func addBooks(paths: [String]) {paths.forEach({__addBook(byPath: $0)})}
+    func removeBooks(id: String) {__removeBook(byID: id)}
+    func getReaderIDs() -> [String] {return __getReaderIdentifiers().flatMap({$0 as? String})}
     
     func getContent(bookID: String, contentPath: String) -> (data: Data, mime: String, length: Int)? {
         guard let content = __getContent(bookID, contentURL: contentPath),
@@ -44,6 +33,17 @@ extension ZimManager {
                 let title = suggestion["title"],
                 let path = suggestion["path"] else {return nil}
             return (title, path)
+        }
+    }
+    
+    func getSearchResults(searchTerm: String) -> [(title: String, path: String, snippet: String)] {
+        guard let results = __getSearchResults(searchTerm) else {return []}
+        return results.flatMap { result -> (String, String, String)? in
+            guard let result = result as? Dictionary<String, String>,
+                let title = result["title"],
+                let path = result["path"],
+                let snippet = result["snippet"] else {return nil}
+            return (title, path, snippet)
         }
     }
 }

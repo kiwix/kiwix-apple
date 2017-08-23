@@ -12,7 +12,7 @@ class SearchController: NSViewController {
     let searchMenu = NSMenu()
     @IBOutlet weak var searchField: NSSearchField!
     @IBAction func searchFieldChanged(_ sender: NSSearchField) {
-        let result = ZimManager.shared.getSearchSuggestions(searchTerm: sender.stringValue)
+        let result = ZimManager.shared.getSearchResults(searchTerm: sender.stringValue)
         print(result)
     }
     

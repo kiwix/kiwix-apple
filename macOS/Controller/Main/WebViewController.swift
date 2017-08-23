@@ -31,8 +31,7 @@ class WebViewController: NSViewController, WebFrameLoadDelegate {
     // MARK: - WebFrameLoadDelegate
     
     func webView(_ sender: WebView!, didFinishLoadFor frame: WebFrame!) {
-        guard let controller = view.window?.windowController as? MainWindowController,
-            let title = frame.dataSource?.pageTitle else {return}
-        controller.titleTextField.stringValue = title
+        guard let controller = view.window?.windowController as? MainWindowController else {return}
+        controller.titleTextField.stringValue = frame.dataSource?.pageTitle ?? ""
     }
 }
