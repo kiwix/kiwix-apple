@@ -8,12 +8,16 @@
 
 import Cocoa
 
-class SearchController: NSViewController {
+class SearchController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     let searchMenu = NSMenu()
+    var searchResults: [(title: String, path: String, snippet: String)] = []
+    
     @IBOutlet weak var searchField: NSSearchField!
+    @IBOutlet weak var tableView: NSTableView!
     @IBAction func searchFieldChanged(_ sender: NSSearchField) {
-        let result = ZimManager.shared.getSearchResults(searchTerm: sender.stringValue)
-        print(result)
+        searchResults = ZimManager.shared.getSearchResults(searchTerm: sender.stringValue)
+        tableView.reloadData()
+        print(searchResults)
     }
     
     override func viewDidLoad() {
@@ -41,6 +45,33 @@ class SearchController: NSViewController {
         searchMenu.insertItem(noRecent, at: 0)
         
         searchField.searchMenuTemplate = searchMenu
+    }
+    
+    // MARK: - NSTableViewDataSource
+    
+    func numberOfRows(in tableView: NSTableView) -> Int {
+        return searchResults.count
+    }
+    
+    func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
+        if let row = tableView.make(withIdentifier: "ResultRow", owner: self) as? SearchResultTableRowView {
+            return row
+        } else {
+            let row = SearchResultTableRowView()
+            row.identifier = "ResultRow"
+            return row
+        }
+    }
+    
+    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        let cell = tableView.make(withIdentifier: "Result", owner: self) as! SearchResultTableCellView
+        cell.titleField.stringValue = searchResults[row].title
+        cell.snippetField.stringValue = searchResults[row].snippet
+        return cell
+    }
+    
+    func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+        return 100
     }
     
 }

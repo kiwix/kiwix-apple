@@ -145,6 +145,7 @@
 		97E0A7B71E96CC3300320F06 /* TabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E0A7B61E96CC3300320F06 /* TabController.swift */; };
 		97E9834E1F4CA0A00021E96A /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9834D1F4CA0A00021E96A /* WebViewController.swift */; };
 		97E983501F4CA54A0021E96A /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9834F1F4CA54A0021E96A /* SearchController.swift */; };
+		97E983541F4DDB670021E96A /* SearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E983531F4DDB670021E96A /* SearchResultView.swift */; };
 		97ED50111DD257D00089E9B6 /* Kiwix.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 97D6812A1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld */; };
 		97FC27DE1E69CE31008B2348 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 97FC27DC1E69CE31008B2348 /* Info.plist */; };
 		97FC27DF1E69CE31008B2348 /* iOS_ScreenshotAutomator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FC27DD1E69CE31008B2348 /* iOS_ScreenshotAutomator.swift */; };
@@ -624,6 +625,7 @@
 		97E609F01D103DED00EBCB9D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		97E9834D1F4CA0A00021E96A /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		97E9834F1F4CA54A0021E96A /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
+		97E983531F4DDB670021E96A /* SearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultView.swift; sourceTree = "<group>"; };
 		97FC27DC1E69CE31008B2348 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97FC27DD1E69CE31008B2348 /* iOS_ScreenshotAutomator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOS_ScreenshotAutomator.swift; sourceTree = "<group>"; };
 		97FC607E1E6868F1003CFD38 /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicudata.a; sourceTree = "<group>"; };
@@ -954,6 +956,7 @@
 				9768C2341F4B7BAC00FD499B /* AppDelegate.swift */,
 				9767717D1F437BB9007ED0C2 /* KiwixURLProtocol.swift */,
 				9767716E1F4378FC007ED0C2 /* Controller */,
+				97E983521F4DDB2C0021E96A /* View */,
 				976771731F4378FC007ED0C2 /* Storyboard */,
 				979315AC1E5147A70093D3BA /* Support */,
 				9707B8F51F4B4F1500075D4F /* Assets.xcassets */,
@@ -1479,6 +1482,14 @@
 			path = iOSWidgets;
 			sourceTree = "<group>";
 		};
+		97E983521F4DDB2C0021E96A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				97E983531F4DDB670021E96A /* SearchResultView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		97FC27DB1E69CE31008B2348 /* iOS_ScreenshotAutomator */ = {
 			isa = PBXGroup;
 			children = (
@@ -1870,6 +1881,7 @@
 				976771801F437BB9007ED0C2 /* KiwixURLProtocol.swift in Sources */,
 				97E9834E1F4CA0A00021E96A /* WebViewController.swift in Sources */,
 				9768C2351F4B7BAC00FD499B /* AppDelegate.swift in Sources */,
+				97E983541F4DDB670021E96A /* SearchResultView.swift in Sources */,
 				97A6EE6F1F4A99A700926FD1 /* ZimManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

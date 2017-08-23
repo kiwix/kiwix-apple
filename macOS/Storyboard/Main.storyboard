@@ -5,6 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13178.6"/>
         <plugIn identifier="com.apple.WebKitIBPlugin" version="13178.6"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="system font weights other than Regular or Bold" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -849,9 +850,6 @@
                         <subviews>
                             <searchField wantsLayer="YES" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OaO-17-WvL">
                                 <rect key="frame" x="10" y="232" width="210" height="22"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="280" id="XP6-4f-5yG"/>
-                                </constraints>
                                 <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" recentsAutosaveName="search.recentSearchTerms" id="Jxv-cC-2Ys">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -861,20 +859,21 @@
                                     <action selector="searchFieldChanged:" target="t4t-oA-aIo" id="LMX-Cr-bW8"/>
                                 </connections>
                             </searchField>
-                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="ZEX-HG-gNI">
+                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10002" horizontalPageScroll="10" verticalLineScroll="10002" verticalPageScroll="10" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="ZEX-HG-gNI">
                                 <rect key="frame" x="0.0" y="0.0" width="230" height="224"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="T25-35-m9Q">
                                     <rect key="frame" x="0.0" y="0.0" width="230" height="224"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="Evv-dY-yV2">
+                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="10000" viewBased="YES" id="Evv-dY-yV2">
                                             <rect key="frame" x="0.0" y="0.0" width="230" height="224"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
+                                            <tableViewGridLines key="gridStyleMask" horizontal="YES"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn identifier="" width="64" minWidth="10" maxWidth="3.4028234663852886e+38" id="wz4-bb-fgO">
+                                                <tableColumn identifier="" editable="NO" width="227" minWidth="10" maxWidth="3.4028234663852886e+38" id="wz4-bb-fgO">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                         <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -887,27 +886,48 @@
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
-                                                        <tableCellView id="PDs-cz-Frj">
-                                                            <rect key="frame" x="1" y="1" width="64" height="17"/>
+                                                        <tableCellView identifier="Result" id="PDs-cz-Frj" customClass="SearchResultTableCellView" customModule="Kiwix" customModuleProvider="target">
+                                                            <rect key="frame" x="1" y="1" width="227" height="44"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Eaz-Dg-3ww">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="64" height="17"/>
-                                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="RKt-eX-kb6">
-                                                                        <font key="font" metaFont="system"/>
-                                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7mE-Nv-MJL">
+                                                                    <rect key="frame" x="8" y="22" width="211" height="18"/>
+                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Label" drawsBackground="YES" id="fwo-9L-q5s">
+                                                                        <font key="font" metaFont="systemSemibold" size="14"/>
+                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
+                                                                    </textFieldCell>
+                                                                </textField>
+                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Ftj-hL-c0q">
+                                                                    <rect key="frame" x="8" y="4" width="211" height="16"/>
+                                                                    <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="Multiline Label" drawsBackground="YES" id="kg9-nU-uPm">
+                                                                        <font key="font" metaFont="system" size="12"/>
+                                                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                                                     </textFieldCell>
                                                                 </textField>
                                                             </subviews>
+                                                            <constraints>
+                                                                <constraint firstAttribute="bottom" secondItem="Ftj-hL-c0q" secondAttribute="bottom" constant="4" id="1Uh-as-A75"/>
+                                                                <constraint firstItem="7mE-Nv-MJL" firstAttribute="top" secondItem="PDs-cz-Frj" secondAttribute="top" constant="4" id="6QF-5E-C0K"/>
+                                                                <constraint firstAttribute="trailing" secondItem="7mE-Nv-MJL" secondAttribute="trailing" constant="8" id="Kuc-pa-Ohu"/>
+                                                                <constraint firstAttribute="trailing" secondItem="Ftj-hL-c0q" secondAttribute="trailing" constant="8" id="dkK-Vg-Owf"/>
+                                                                <constraint firstItem="Ftj-hL-c0q" firstAttribute="leading" secondItem="PDs-cz-Frj" secondAttribute="leading" constant="8" id="god-3S-NOC"/>
+                                                                <constraint firstItem="Ftj-hL-c0q" firstAttribute="top" secondItem="7mE-Nv-MJL" secondAttribute="bottom" constant="2" id="l5X-Mb-ED7"/>
+                                                                <constraint firstItem="7mE-Nv-MJL" firstAttribute="leading" secondItem="PDs-cz-Frj" secondAttribute="leading" constant="8" id="pWD-kv-ma8"/>
+                                                            </constraints>
                                                             <connections>
-                                                                <outlet property="textField" destination="Eaz-Dg-3ww" id="gWI-LN-dQF"/>
+                                                                <outlet property="snippetField" destination="Ftj-hL-c0q" id="sDw-iv-0ho"/>
+                                                                <outlet property="titleField" destination="7mE-Nv-MJL" id="YCx-4o-e3A"/>
                                                             </connections>
                                                         </tableCellView>
                                                     </prototypeCellViews>
                                                 </tableColumn>
                                             </tableColumns>
+                                            <connections>
+                                                <outlet property="dataSource" destination="t4t-oA-aIo" id="cbU-7E-qmN"/>
+                                                <outlet property="delegate" destination="t4t-oA-aIo" id="uMO-yc-Suf"/>
+                                            </connections>
                                         </tableView>
                                     </subviews>
                                     <color key="backgroundColor" red="0.99607473611831665" green="0.99220293760299683" blue="0.99199241399765015" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -934,6 +954,7 @@
                     </view>
                     <connections>
                         <outlet property="searchField" destination="OaO-17-WvL" id="Abw-Lx-5h1"/>
+                        <outlet property="tableView" destination="Evv-dY-yV2" id="Rgi-K9-TdJ"/>
                     </connections>
                 </viewController>
                 <customObject id="GCe-x5-Tkv" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
