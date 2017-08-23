@@ -926,6 +926,7 @@
                                                 </tableColumn>
                                             </tableColumns>
                                             <connections>
+                                                <action selector="tableViewClicked:" target="t4t-oA-aIo" id="5UZ-2V-a1K"/>
                                                 <outlet property="dataSource" destination="t4t-oA-aIo" id="cbU-7E-qmN"/>
                                                 <outlet property="delegate" destination="t4t-oA-aIo" id="uMO-yc-Suf"/>
                                             </connections>

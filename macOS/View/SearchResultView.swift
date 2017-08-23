@@ -11,9 +11,26 @@ import Cocoa
 class SearchResultTableCellView: NSTableCellView {
     @IBOutlet weak var titleField: NSTextField!
     @IBOutlet weak var snippetField: NSTextField!
+    
+    override var backgroundStyle: NSBackgroundStyle {
+        didSet {
+            if backgroundStyle == .light {
+                titleField.textColor = NSColor.black
+                snippetField.textColor = NSColor.labelColor
+            } else {
+                titleField.textColor = NSColor.selectedMenuItemTextColor
+                snippetField.textColor = NSColor.selectedTextBackgroundColor
+            }
+        }
+    }
 }
 
 class SearchResultTableRowView: NSTableRowView {
+    override func drawSelection(in dirtyRect: NSRect) {
+        super.drawSelection(in: dirtyRect)
+        if isSelected {
+        }
+    }
 
     
 //    override func drawSeparator(in dirtyRect: NSRect) {

@@ -48,8 +48,10 @@ class MainWindowController: NSWindowController {
             ZimManager.shared.addBooks(paths: paths)
             
             guard let split = self.contentViewController as? NSSplitViewController,
-                let controller = split.splitViewItems.last?.viewController as? WebViewController else {return}
-            controller.loadMainPage()
+                let searchController = split.splitViewItems.first?.viewController as? SearchController,
+                let webController = split.splitViewItems.last?.viewController as? WebViewController else {return}
+            searchController.clearSearch()
+            webController.loadMainPage()
         }
     }
 }

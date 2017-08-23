@@ -67,9 +67,11 @@
 }
 
 - (void)addBookByPath:(NSString *)path {
-    std::shared_ptr<kiwix::Reader> reader = std::make_shared<kiwix::Reader>([path cStringUsingEncoding:NSUTF8StringEncoding]);
-    std::string identifier = reader->getId();
-    readers.insert(std::make_pair(identifier, reader));
+    try {
+        std::shared_ptr<kiwix::Reader> reader = std::make_shared<kiwix::Reader>([path cStringUsingEncoding:NSUTF8StringEncoding]);
+        std::string identifier = reader->getId();
+        readers.insert(std::make_pair(identifier, reader));
+    } catch (const std::exception &e) { }
 }
 
 - (void)removeBookByID:(NSString *)bookID {
@@ -187,8 +189,10 @@
     std::string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];
     NSMutableArray *results = [[NSMutableArray alloc] init];
     
+    std::vector<std::string> identifiers;
     kiwix::Searcher searcher;
     for(auto pair: readers) {
+        identifiers.push_back(pair.first);
         searcher.add_reader(pair.second.get(), pair.first);
     }
     if (readers.size() == 0) {return results;}
@@ -196,10 +200,11 @@
     searcher.search(searchTermC, 0, 20);
     kiwix::Result *result = searcher.getNextResult();
     while (result != NULL) {
+        NSString *identifier = [NSString stringWithCString:identifiers.at(result->get_readerIndex()).c_str() encoding:NSUTF8StringEncoding];
         NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
         NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
         NSString *snippet = [NSString stringWithCString:result->get_snippet().c_str() encoding:NSUTF8StringEncoding];
-        [results addObject:@{@"title": title, @"path": path, @"snippet": snippet}];
+        [results addObject:@{@"id": identifier, @"title": title, @"path": path, @"snippet": snippet}];
         result = searcher.getNextResult();
     }
     return results;

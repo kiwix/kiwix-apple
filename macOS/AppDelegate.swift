@@ -14,6 +14,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         URLProtocol.registerClass(KiwixURLProtocol.self)
+        Defaults[.bookPaths] = []
         ZimManager.shared.addBooks(paths: Defaults[.bookPaths])
         
         guard let split = NSApplication.shared().mainWindow?.contentViewController as? NSSplitViewController,

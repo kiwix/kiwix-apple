@@ -36,14 +36,15 @@ extension ZimManager {
         }
     }
     
-    func getSearchResults(searchTerm: String) -> [(title: String, path: String, snippet: String)] {
+    func getSearchResults(searchTerm: String) -> [(id: String, title: String, path: String, snippet: String)] {
         guard let results = __getSearchResults(searchTerm) else {return []}
-        return results.flatMap { result -> (String, String, String)? in
+        return results.flatMap { result -> (String, String, String, String)? in
             guard let result = result as? Dictionary<String, String>,
+                let id = result["id"],
                 let title = result["title"],
                 let path = result["path"],
                 let snippet = result["snippet"] else {return nil}
-            return (title, path, snippet)
+            return (id, title, path, snippet)
         }
     }
 }

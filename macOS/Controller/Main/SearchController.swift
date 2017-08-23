@@ -10,14 +10,21 @@ import Cocoa
 
 class SearchController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     let searchMenu = NSMenu()
-    var searchResults: [(title: String, path: String, snippet: String)] = []
+    var searchResults: [(id: String, title: String, path: String, snippet: String)] = []
     
     @IBOutlet weak var searchField: NSSearchField!
     @IBOutlet weak var tableView: NSTableView!
     @IBAction func searchFieldChanged(_ sender: NSSearchField) {
         searchResults = ZimManager.shared.getSearchResults(searchTerm: sender.stringValue)
         tableView.reloadData()
-        print(searchResults)
+    }
+    @IBAction func tableViewClicked(_ sender: NSTableView) {
+        guard tableView.selectedRow >= 0 else {return}
+        let result = searchResults[tableView.selectedRow]
+        guard let url = URL(bookID: result.id, contentPath: result.path) else {return}
+        guard let split = view.window?.contentViewController as? NSSplitViewController,
+            let controller = split.splitViewItems.last?.viewController as? WebViewController else {return}
+        controller.load(url: url)
     }
     
     override func viewDidLoad() {
@@ -47,6 +54,12 @@ class SearchController: NSViewController, NSTableViewDataSource, NSTableViewDele
         searchField.searchMenuTemplate = searchMenu
     }
     
+    func clearSearch() {
+        searchField.stringValue = ""
+        searchResults = []
+        tableView.reloadData()
+    }
+    
     // MARK: - NSTableViewDataSource
     
     func numberOfRows(in tableView: NSTableView) -> Int {
@@ -73,7 +86,6 @@ class SearchController: NSViewController, NSTableViewDataSource, NSTableViewDele
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         return 92
     }
-    
 }
 
 //class SearchField: NSSearchField {

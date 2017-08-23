@@ -24,7 +24,11 @@ class WebViewController: NSViewController, WebFrameLoadDelegate {
         guard let id = ZimManager.shared.getReaderIDs().first,
             let mainPagePath = ZimManager.shared.getMainPagePath(bookID: id),
             let mainPageURL = URL(bookID: id, contentPath: mainPagePath) else {return}
-        let request = URLRequest(url: mainPageURL)
+        load(url: mainPageURL)
+    }
+    
+    func load(url: URL) {
+        let request = URLRequest(url: url)
         webView.mainFrame.load(request)
     }
     
