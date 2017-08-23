@@ -15,8 +15,11 @@ class SearchController: NSViewController, NSTableViewDataSource, NSTableViewDele
     @IBOutlet weak var searchField: NSSearchField!
     @IBOutlet weak var tableView: NSTableView!
     @IBAction func searchFieldChanged(_ sender: NSSearchField) {
+        guard let controller = view.window?.windowController as? MainWindowController else {return}
+        controller.loadingView.startAnimation(sender)
         searchResults = ZimManager.shared.getSearchResults(searchTerm: sender.stringValue)
         tableView.reloadData()
+        controller.loadingView.stopAnimation(sender)
     }
     @IBAction func tableViewClicked(_ sender: NSTableView) {
         guard tableView.selectedRow >= 0 else {return}

@@ -11,6 +11,7 @@ import SwiftyUserDefaults
 
 class MainWindowController: NSWindowController {
     @IBOutlet weak var titleTextField: NSTextField!
+    @IBOutlet weak var loadingView: NSProgressIndicator!
     
     override func windowDidLoad() {
         super.windowDidLoad()

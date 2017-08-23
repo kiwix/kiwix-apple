@@ -747,9 +747,19 @@
                                         </textFieldCell>
                                     </textField>
                                 </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="6824380A-E093-4E6C-851F-C1CF1AE46A5A" label="Loading" paletteLabel="Loading" tag="-1" id="btS-wf-S85">
+                                    <nil key="toolTip"/>
+                                    <size key="minSize" width="16" height="16"/>
+                                    <size key="maxSize" width="16" height="16"/>
+                                    <progressIndicator key="view" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="1S2-ay-orZ">
+                                        <rect key="frame" x="17" y="14" width="16" height="16"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                    </progressIndicator>
+                                </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
                                 <toolbarItem reference="Djp-oY-b28"/>
+                                <toolbarItem reference="btS-wf-S85"/>
                                 <toolbarItem reference="QPA-cF-uj3"/>
                                 <toolbarItem reference="VLR-yv-aSh"/>
                                 <toolbarItem reference="QPA-cF-uj3"/>
@@ -762,6 +772,7 @@
                         </connections>
                     </window>
                     <connections>
+                        <outlet property="loadingView" destination="1S2-ay-orZ" id="fK4-ul-ZRo"/>
                         <outlet property="titleTextField" destination="7ew-w2-SPK" id="kWx-Ld-09e"/>
                         <segue destination="iF5-i3-nBX" kind="relationship" relationship="window.shadowedContentViewController" id="KRF-C8-maU"/>
                     </connections>
@@ -820,7 +831,7 @@
             <objects>
                 <splitViewController id="iF5-i3-nBX" sceneMemberID="viewController">
                     <splitViewItems>
-                        <splitViewItem canCollapse="YES" id="0ej-23-FDP"/>
+                        <splitViewItem id="0ej-23-FDP"/>
                         <splitViewItem id="fSv-bT-kzs"/>
                     </splitViewItems>
                     <splitView key="splitView" dividerStyle="thin" vertical="YES" id="Alr-p4-P1Y">
@@ -901,7 +912,7 @@
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Ftj-hL-c0q">
                                                                     <rect key="frame" x="8" y="4" width="211" height="64"/>
                                                                     <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" drawsBackground="YES" id="kg9-nU-uPm">
-                                                                        <font key="font" metaFont="system" size="12"/>
+                                                                        <font key="font" metaFont="cellTitle"/>
                                                                         <string key="title">Touring prestigious and notable universities in the U.S. Many foreign visitors to the United States of America, especially those with pre-</string>
                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
@@ -943,7 +954,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="UZ3-6O-wqw">
-                                    <rect key="frame" x="224" y="17" width="15" height="102"/>
+                                    <rect key="frame" x="214" y="0.0" width="16" height="224"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
