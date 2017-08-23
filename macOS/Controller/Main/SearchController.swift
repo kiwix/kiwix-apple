@@ -71,7 +71,7 @@ class SearchController: NSViewController, NSTableViewDataSource, NSTableViewDele
     }
     
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        return 100
+        return 92
     }
     
 }
