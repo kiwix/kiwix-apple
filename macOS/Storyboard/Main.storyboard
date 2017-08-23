@@ -697,6 +697,22 @@
                                         <action selector="mainPageButtonTapped:" target="B8D-0N-5wS" id="cVW-Dc-cla"/>
                                     </connections>
                                 </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="06B140B9-7CE3-4066-AD38-A74F7FE9E8EE" label="Open" paletteLabel="Open" image="Open" visibilityPriority="1" id="hUi-H8-GMb">
+                                    <nil key="toolTip"/>
+                                    <size key="minSize" width="40" height="28"/>
+                                    <size key="maxSize" width="40" height="47"/>
+                                    <button key="view" verticalHuggingPriority="750" id="B6f-si-h1V">
+                                        <rect key="frame" x="0.0" y="14" width="40" height="28"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="roundTextured" title="Round Rect" bezelStyle="texturedRounded" image="Open" imagePosition="only" alignment="center" state="on" borderStyle="border" inset="2" id="MCv-gP-2h2">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                    </button>
+                                    <connections>
+                                        <action selector="openBook:" target="Oky-zY-oP4" id="aNI-JX-roT"/>
+                                    </connections>
+                                </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="1680E0D6-9392-484C-ABDA-DFFB7997F34C" label="Back/Forward" paletteLabel="Back/Forward" visibilityPriority="2" id="Djp-oY-b28">
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="58" height="25"/>
@@ -736,6 +752,7 @@
                                 <toolbarItem reference="QPA-cF-uj3"/>
                                 <toolbarItem reference="VLR-yv-aSh"/>
                                 <toolbarItem reference="QPA-cF-uj3"/>
+                                <toolbarItem reference="hUi-H8-GMb"/>
                                 <toolbarItem reference="oLM-Vk-Q9j"/>
                             </defaultToolbarItems>
                         </toolbar>
@@ -928,5 +945,6 @@
         <image name="Back" width="19.200000762939453" height="19.200000762939453"/>
         <image name="Forward" width="19.200000762939453" height="19.200000762939453"/>
         <image name="Home" width="25.600000381469727" height="25.600000381469727"/>
+        <image name="Open" width="25.600000381469727" height="25.600000381469727"/>
     </resources>
 </document>
