@@ -14,25 +14,17 @@ class SearchResultTableCellView: NSTableCellView {
     
     override var backgroundStyle: NSBackgroundStyle {
         didSet {
-            if backgroundStyle == .light {
-                titleField.textColor = NSColor.black
-                snippetField.textColor = NSColor.labelColor
-            } else {
-                titleField.textColor = NSColor.selectedMenuItemTextColor
-                snippetField.textColor = NSColor.selectedTextBackgroundColor
-            }
+            titleField.textColor = backgroundStyle == .light ? NSColor.black : NSColor.selectedMenuItemTextColor
+            let snippetColor = backgroundStyle == .light ? NSColor.labelColor : NSColor.textBackgroundColor
+            let snippet = NSMutableAttributedString(attributedString: snippetField.attributedStringValue)
+            let range = NSRange(location: 0, length: snippet.length)
+            snippet.setAttributes([NSForegroundColorAttributeName: snippetColor], range: range)
+            snippetField.attributedStringValue = snippet
         }
     }
 }
 
 class SearchResultTableRowView: NSTableRowView {
-    override func drawSelection(in dirtyRect: NSRect) {
-        super.drawSelection(in: dirtyRect)
-        if isSelected {
-        }
-    }
-
-    
 //    override func drawSeparator(in dirtyRect: NSRect) {
 //        Swift.print(dirtyRect)
 //        Swift.print(NSRect(x: 8, y: 0, width: dirtyRect.width - 8, height: dirtyRect.height))

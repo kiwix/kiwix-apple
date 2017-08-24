@@ -20,14 +20,14 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Kiwix" systemMenu="apple" id="uQy-DD-JDr">
                                     <items>
-                                        <menuItem title="About KiwixMac" id="5kV-Vb-QxS">
+                                        <menuItem title="About Kiwix" id="5kV-Vb-QxS">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="orderFrontStandardAboutPanel:" target="Ady-hI-5gd" id="Exp-CZ-Vem"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
-                                        <menuItem title="Preferences…" keyEquivalent="," id="BOF-NM-1cW">
+                                        <menuItem title="Preferences…" hidden="YES" keyEquivalent="," id="BOF-NM-1cW">
                                             <connections>
                                                 <segue destination="W9u-Fw-XBg" kind="show" id="qSI-zf-8lo"/>
                                             </connections>
