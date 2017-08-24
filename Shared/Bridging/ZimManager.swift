@@ -60,7 +60,13 @@ extension ZimManager {
             guard let font = font as? NSFont else {return}
             let traits = font.fontDescriptor.symbolicTraits
             let isBold = NSFontTraitMask(rawValue: UInt(traits)).contains(.boldFontMask)
-            let newFont = NSFont.systemFont(ofSize: 12, weight: isBold ? NSFontWeightSemibold : NSFontWeightRegular)
+            let newFont: NSFont = {
+                if #available(OSX 10.11, *) {
+                    return NSFont.systemFont(ofSize: 12, weight: isBold ? NSFontWeightSemibold : NSFontWeightRegular)
+                } else {
+                    return isBold ? NSFont.boldSystemFont(ofSize: 12) : NSFont.systemFont(ofSize: 12)
+                }
+            }()
             snippet.addAttribute(NSFontAttributeName, value: newFont, range: range)
         })
         snippet.addAttribute(NSForegroundColorAttributeName, value: NSColor.labelColor, range: wholeRange)

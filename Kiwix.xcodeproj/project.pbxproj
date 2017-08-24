@@ -1651,7 +1651,7 @@
 					};
 					979315801E5127930093D3BA = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 565QQU5C4F;
+						DevelopmentTeam = L7HWM3SP3L;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.Mac = {
@@ -2055,15 +2055,15 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 565QQU5C4F;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Shared/Dependencies/include";
+				DEVELOPMENT_TEAM = L7HWM3SP3L;
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = macOS/Support/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../Frameworks/libkiwix";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Shared/Dependencies/macOS_lib",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.KiwixMacOS;
 				PRODUCT_NAME = Kiwix;
@@ -2073,6 +2073,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/macOS/BridgingHeader.h";
 				SWIFT_VERSION = 3.0;
+				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Shared/Dependencies/include";
 			};
 			name = Debug;
 		};
@@ -2087,22 +2088,24 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 565QQU5C4F;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Shared/Dependencies/include";
+				DEVELOPMENT_TEAM = L7HWM3SP3L;
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = macOS/Support/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../Frameworks/libkiwix";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Shared/Dependencies/macOS_lib",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.KiwixMacOS;
 				PRODUCT_NAME = Kiwix;
+				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/macOS/BridgingHeader.h";
 				SWIFT_VERSION = 3.0;
+				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Shared/Dependencies/include";
 			};
 			name = Release;
 		};
@@ -2146,7 +2149,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -2189,7 +2192,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
