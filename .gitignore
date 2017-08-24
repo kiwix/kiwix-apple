@@ -1,14 +1,5 @@
-screenshots
-
-Shared/libkiwix/C&C++
-Shared/libkiwix/include
-Shared/libkiwix/shared
-Shared/libkiwix/static
-
+AppStore/screenshots
 Shared/Dependencies
-
-TestZims
-
 
 # Xcode
 #
