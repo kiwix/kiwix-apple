@@ -28,6 +28,7 @@ class WebViewController: NSViewController, WebFrameLoadDelegate {
     }
     
     func load(url: URL) {
+        if webView.isHidden {webView.isHidden = false}
         let request = URLRequest(url: url)
         webView.mainFrame.load(request)
     }

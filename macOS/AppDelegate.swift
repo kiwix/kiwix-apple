@@ -14,19 +14,28 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         URLProtocol.registerClass(KiwixURLProtocol.self)
-        Defaults[.bookPaths] = []
-        ZimManager.shared.addBooks(paths: Defaults[.bookPaths])
         
+        if (!Defaults[.terminated]) {
+            Defaults[.bookPaths] = []
+        }
+        Defaults[.terminated] = false
+        ZimManager.shared.addBooks(paths: Defaults[.bookPaths])
+
         guard let split = NSApplication.shared().mainWindow?.contentViewController as? NSSplitViewController,
             let controller = split.splitViewItems.last?.viewController as? WebViewController else {return}
         controller.loadMainPage()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
+        Defaults[.terminated] = true
+    }
+    
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return true
     }
 }
 
 extension DefaultsKeys {
     static let bookPaths = DefaultsKey<[String]>("bookPaths")
+    static let terminated = DefaultsKey<Bool>("terminated")
 }

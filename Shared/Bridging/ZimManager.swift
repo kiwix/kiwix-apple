@@ -6,6 +6,8 @@
 //  Copyright © 2017 Chris Li. All rights reserved.
 //
 
+import AppKit
+
 extension ZimManager {
     class var shared: ZimManager {return ZimManager.__sharedInstance()}
     
@@ -36,15 +38,32 @@ extension ZimManager {
         }
     }
     
-    func getSearchResults(searchTerm: String) -> [(id: String, title: String, path: String, snippet: String)] {
+    func getSearchResults(searchTerm: String) -> [(id: String, title: String, path: String, snippet: NSAttributedString)] {
         guard let results = __getSearchResults(searchTerm) else {return []}
-        return results.flatMap { result -> (String, String, String, String)? in
+        return results.flatMap { result -> (String, String, String, NSAttributedString)? in
             guard let result = result as? Dictionary<String, String>,
                 let id = result["id"],
                 let title = result["title"],
                 let path = result["path"],
-                let snippet = result["snippet"] else {return nil}
+                let snippet = parseSnippet(string: result["snippet"]) else {return nil}
             return (id, title, path, snippet)
         }
+    }
+    
+    private func parseSnippet(string: String?) -> NSAttributedString? {
+        let options: [String: Any] = [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+                                      NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue]
+        guard let snippetData = string?.data(using: String.Encoding.utf8),
+            let snippet = try? NSMutableAttributedString(data: snippetData, options: options, documentAttributes: nil) else {return nil}
+        let wholeRange = NSRange(location: 0, length: snippet.length)
+        snippet.enumerateAttribute(NSFontAttributeName, in: wholeRange, options: .longestEffectiveRangeNotRequired, using: { (font, range, stop) in
+            guard let font = font as? NSFont else {return}
+            let traits = font.fontDescriptor.symbolicTraits
+            let isBold = NSFontTraitMask(rawValue: UInt(traits)).contains(.boldFontMask)
+            let newFont = NSFont.systemFont(ofSize: 12, weight: isBold ? NSFontWeightSemibold : NSFontWeightRegular)
+            snippet.addAttribute(NSFontAttributeName, value: newFont, range: range)
+        })
+        snippet.addAttribute(NSForegroundColorAttributeName, value: NSColor.labelColor, range: wholeRange)
+        return snippet
     }
 }

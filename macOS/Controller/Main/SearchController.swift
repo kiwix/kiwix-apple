@@ -10,7 +10,7 @@ import Cocoa
 
 class SearchController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     let searchMenu = NSMenu()
-    var searchResults: [(id: String, title: String, path: String, snippet: String)] = []
+    var searchResults: [(id: String, title: String, path: String, snippet: NSAttributedString)] = []
     
     @IBOutlet weak var searchField: NSSearchField!
     @IBOutlet weak var tableView: NSTableView!
@@ -37,21 +37,21 @@ class SearchController: NSViewController, NSTableViewDataSource, NSTableViewDele
     
     func configSearchMenu() {
         let clear = NSMenuItem(title: "Clear", action: nil, keyEquivalent: "")
-        clear.tag = NSSearchFieldClearRecentsMenuItemTag
+        clear.tag = Int(NSSearchFieldClearRecentsMenuItemTag)
         searchMenu.insertItem(clear, at: 0)
         
         searchMenu.insertItem(NSMenuItem.separator(), at: 0)
         
         let recents = NSMenuItem(title: "", action: nil, keyEquivalent: "")
-        recents.tag = NSSearchFieldRecentsMenuItemTag
+        recents.tag = Int(NSSearchFieldRecentsMenuItemTag)
         searchMenu.insertItem(recents, at: 0)
         
         let recentHeader = NSMenuItem(title: "Recent Search", action: nil, keyEquivalent: "")
-        recentHeader.tag = NSSearchFieldRecentsTitleMenuItemTag
+        recentHeader.tag = Int(NSSearchFieldRecentsTitleMenuItemTag)
         searchMenu.insertItem(recentHeader, at: 0)
         
         let noRecent = NSMenuItem(title: "No Recent Search", action: nil, keyEquivalent: "")
-        noRecent.tag = NSSearchFieldNoRecentsMenuItemTag
+        noRecent.tag = Int(NSSearchFieldNoRecentsMenuItemTag)
         searchMenu.insertItem(noRecent, at: 0)
         
         searchField.searchMenuTemplate = searchMenu
@@ -82,7 +82,7 @@ class SearchController: NSViewController, NSTableViewDataSource, NSTableViewDele
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let cell = tableView.make(withIdentifier: "Result", owner: self) as! SearchResultTableCellView
         cell.titleField.stringValue = searchResults[row].title
-        cell.snippetField.stringValue = searchResults[row].snippet
+        cell.snippetField.attributedStringValue = searchResults[row].snippet
         return cell
     }
     

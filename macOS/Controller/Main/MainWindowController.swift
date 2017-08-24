@@ -56,3 +56,9 @@ class MainWindowController: NSWindowController {
         }
     }
 }
+
+class WelcomeViewController: NSViewController {
+    @IBAction func openBookButtonTapped(_ sender: NSButton) {
+        
+    }
+}
