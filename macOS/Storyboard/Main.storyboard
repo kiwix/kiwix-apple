@@ -683,7 +683,7 @@
                         <toolbar key="toolbar" implicitIdentifier="05883A09-BD97-4887-B838-656B159754CD" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconOnly" sizeMode="regular" id="P8b-mc-Yk8">
                             <allowedToolbarItems>
                                 <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="QPA-cF-uj3"/>
-                                <toolbarItem implicitItemIdentifier="08C90A37-E8F6-4F0C-92E1-D9BA022B01E2" label="Main Page" paletteLabel="Main Page" image="Home" visibilityPriority="1" id="oLM-Vk-Q9j">
+                                <toolbarItem implicitItemIdentifier="08C90A37-E8F6-4F0C-92E1-D9BA022B01E2" label="Main Page" paletteLabel="Main Page" image="Home" id="oLM-Vk-Q9j">
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="40" height="28"/>
                                     <size key="maxSize" width="40" height="47"/>
@@ -699,7 +699,7 @@
                                         <action selector="mainPageButtonTapped:" target="B8D-0N-5wS" id="cVW-Dc-cla"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="06B140B9-7CE3-4066-AD38-A74F7FE9E8EE" label="Open" paletteLabel="Open" image="Open" visibilityPriority="1" id="hUi-H8-GMb">
+                                <toolbarItem implicitItemIdentifier="06B140B9-7CE3-4066-AD38-A74F7FE9E8EE" label="Open" paletteLabel="Open" image="Open" id="hUi-H8-GMb">
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="40" height="28"/>
                                     <size key="maxSize" width="40" height="47"/>
@@ -715,7 +715,7 @@
                                         <action selector="openBook:" target="Oky-zY-oP4" id="aNI-JX-roT"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="1680E0D6-9392-484C-ABDA-DFFB7997F34C" label="Back/Forward" paletteLabel="Back/Forward" visibilityPriority="2" id="Djp-oY-b28">
+                                <toolbarItem implicitItemIdentifier="1680E0D6-9392-484C-ABDA-DFFB7997F34C" label="Back/Forward" paletteLabel="Back/Forward" id="Djp-oY-b28">
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="58" height="25"/>
                                     <size key="maxSize" width="58" height="28"/>
@@ -757,12 +757,40 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                     </progressIndicator>
                                 </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="0C2005E9-9000-4B31-A786-1F4BAF935385" label="Search" paletteLabel="Search" tag="-1" id="VWC-hA-TeQ">
+                                    <nil key="toolTip"/>
+                                    <size key="minSize" width="163" height="22"/>
+                                    <size key="maxSize" width="600" height="22"/>
+                                    <customView key="view" id="OkE-04-5fe">
+                                        <rect key="frame" x="0.0" y="14" width="500" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <subviews>
+                                            <searchField wantsLayer="YES" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jGR-U3-X3O">
+                                                <rect key="frame" x="0.0" y="0.0" width="500" height="22"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="600" id="Egn-iC-MKs"/>
+                                                </constraints>
+                                                <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="Iv7-vs-fKh">
+                                                    <font key="font" metaFont="system"/>
+                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </searchFieldCell>
+                                            </searchField>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="jGR-U3-X3O" firstAttribute="leading" secondItem="OkE-04-5fe" secondAttribute="leading" id="4vJ-8n-rWd"/>
+                                            <constraint firstItem="jGR-U3-X3O" firstAttribute="top" secondItem="OkE-04-5fe" secondAttribute="top" id="Xpc-BO-uD0"/>
+                                            <constraint firstAttribute="bottom" secondItem="jGR-U3-X3O" secondAttribute="bottom" id="Ywb-ZY-xVS"/>
+                                            <constraint firstAttribute="trailing" secondItem="jGR-U3-X3O" secondAttribute="trailing" id="gXU-9p-GdQ"/>
+                                        </constraints>
+                                    </customView>
+                                </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
                                 <toolbarItem reference="Djp-oY-b28"/>
                                 <toolbarItem reference="btS-wf-S85"/>
                                 <toolbarItem reference="QPA-cF-uj3"/>
-                                <toolbarItem reference="VLR-yv-aSh"/>
+                                <toolbarItem reference="VWC-hA-TeQ"/>
                                 <toolbarItem reference="QPA-cF-uj3"/>
                                 <toolbarItem reference="hUi-H8-GMb"/>
                                 <toolbarItem reference="oLM-Vk-Q9j"/>
