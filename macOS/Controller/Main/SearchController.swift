@@ -8,6 +8,39 @@
 
 import Cocoa
 
+class SearchResultWindowController: NSWindowController {
+    override func windowDidLoad() {
+        window?.titlebarAppearsTransparent = true
+        window?.titleVisibility = .hidden
+        window?.isOpaque = false
+        window?.backgroundColor = .clear
+        window?.standardWindowButton(NSWindowButton.closeButton)?.isHidden = true
+        window?.standardWindowButton(NSWindowButton.miniaturizeButton)?.isHidden = true
+        window?.standardWindowButton(NSWindowButton.fullScreenButton)?.isHidden = true
+        window?.standardWindowButton(NSWindowButton.zoomButton)?.isHidden = true
+    }
+}
+
+class SearchResultContainerController: NSViewController {
+    @IBOutlet weak var visiualEffect: NSVisualEffectView!
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureVisiualEffectView()
+    }
+    
+    func configureVisiualEffectView() {
+        visiualEffect.blendingMode = .behindWindow
+        visiualEffect.state = .active
+        if #available(OSX 10.11, *) {
+            visiualEffect.material = .menu
+        } else {
+            visiualEffect.material = .light
+        }
+        visiualEffect.wantsLayer = true
+        visiualEffect.layer?.cornerRadius = 4.0
+    }
+}
+
 class SearchController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     let searchMenu = NSMenu()
     var searchResults: [(id: String, title: String, path: String, snippet: NSAttributedString)] = []
@@ -90,11 +123,3 @@ class SearchController: NSViewController, NSTableViewDataSource, NSTableViewDele
         return 92
     }
 }
-
-//class SearchField: NSSearchField {
-//    override func rectForSearchButton(whenCentered isCentered: Bool) -> NSRect {
-//        let rect = super.rectForSearchButton(whenCentered: isCentered)
-//        return rect.offsetBy(dx: -rect.origin.x, dy: 0)
-//    }
-//}
-

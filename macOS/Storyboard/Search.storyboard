@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="s4g-hm-xR1">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13178.6" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="s4g-hm-xR1">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12121"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13178.6"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Window Controller-->
         <scene sceneID="FTR-eR-Eqm">
             <objects>
-                <windowController id="s4g-hm-xR1" customClass="SearchResultContainerController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <windowController id="s4g-hm-xR1" customClass="SearchResultWindowController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="XWx-Za-z6M">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" unifiedTitleAndToolbar="YES" fullSizeContentView="YES"/>
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="245" y="310" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1050"/>
+                        <connections>
+                            <outlet property="delegate" destination="s4g-hm-xR1" id="3qd-gW-UET"/>
+                        </connections>
                     </window>
                     <connections>
                         <segue destination="gjy-ma-ITW" kind="relationship" relationship="window.shadowedContentViewController" id="tux-xX-qnP"/>
@@ -23,28 +27,28 @@
             </objects>
             <point key="canvasLocation" x="-110" y="-276"/>
         </scene>
-        <!--View Controller-->
+        <!--Search Result Container Controller-->
         <scene sceneID="lxV-66-rjA">
             <objects>
-                <viewController id="gjy-ma-ITW" sceneMemberID="viewController">
+                <viewController id="gjy-ma-ITW" customClass="SearchResultContainerController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="KUr-Zc-Haj">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C6i-Sr-DG8">
-                                <rect key="frame" x="222" y="126" width="37" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="gfk-Tr-YGU">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
+                            <visualEffectView blendingMode="behindWindow" material="appearanceBased" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="OwQ-NK-8Px">
+                                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                            </visualEffectView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="C6i-Sr-DG8" firstAttribute="centerX" secondItem="KUr-Zc-Haj" secondAttribute="centerX" id="76j-MI-xwV"/>
-                            <constraint firstItem="C6i-Sr-DG8" firstAttribute="centerY" secondItem="KUr-Zc-Haj" secondAttribute="centerY" id="Bxn-79-W5d"/>
+                            <constraint firstAttribute="bottom" secondItem="OwQ-NK-8Px" secondAttribute="bottom" id="6WD-sV-jcG"/>
+                            <constraint firstAttribute="trailing" secondItem="OwQ-NK-8Px" secondAttribute="trailing" id="YiH-Lb-SSj"/>
+                            <constraint firstItem="OwQ-NK-8Px" firstAttribute="top" secondItem="KUr-Zc-Haj" secondAttribute="top" id="exA-zI-2RY"/>
+                            <constraint firstItem="OwQ-NK-8Px" firstAttribute="leading" secondItem="KUr-Zc-Haj" secondAttribute="leading" id="z0a-6b-7DD"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="visiualEffect" destination="OwQ-NK-8Px" id="KGW-gZ-ius"/>
+                    </connections>
                 </viewController>
                 <customObject id="7HH-ww-VAW" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
