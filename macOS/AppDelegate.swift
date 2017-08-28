@@ -19,7 +19,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             Defaults[.bookPaths] = []
         }
         Defaults[.terminated] = false
-        ZimManager.shared.addBooks(paths: Defaults[.bookPaths])
+        
+        var isStale = false
+        let urls = Defaults[.zimBookmarks].flatMap({try? URL(resolvingBookmarkData: $0, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)}).flatMap({$0})
+        ZimManager.shared.addBook(urls: urls)
 
         guard let split = NSApplication.shared().mainWindow?.contentViewController as? NSSplitViewController,
             let controller = split.splitViewItems.last?.viewController as? WebViewController else {return}
@@ -37,5 +40,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 extension DefaultsKeys {
     static let bookPaths = DefaultsKey<[String]>("bookPaths")
+    static let zimBookmarks = DefaultsKey<[Data]>("zimBookmarks")
     static let terminated = DefaultsKey<Bool>("terminated")
 }

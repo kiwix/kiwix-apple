@@ -13,6 +13,7 @@
 #import "ZimManager.h"
 
 @interface ZimManager () {
+    NSMutableDictionary *zimURLs;
     std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>> readers;
 }
 @end
@@ -23,7 +24,7 @@
 
 + (ZimManager *)sharedInstance {
     static ZimManager *sharedInstance = nil;
-    static dispatch_once_t onceToken; // onceToken = 0
+    static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = [[ZimManager alloc] init];
     });
@@ -33,17 +34,23 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
+        zimURLs = [[NSMutableDictionary alloc] init];
+        readers.reserve(20);
 # if TARGET_OS_IPHONE
         [self scan];
 #endif
-        readers.reserve(20);
     }
     return self;
+}
+
+- (void)dealloc {
+    [self removeAllBook];
 }
 
 #pragma mark - reader management
 
 - (void)scan {
+    // TODO: - reuse
     NSURL *docDirURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:NULL];
     NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:docDirURL includingPropertiesForKeys:nil options:(NSDirectoryEnumerationSkipsSubdirectoryDescendants) error:nil];
     
@@ -66,21 +73,32 @@
     }
 }
 
-- (void)addBookByPath:(NSString *)path {
+- (void)addBookByURL:(NSURL *)url {
     try {
-        std::shared_ptr<kiwix::Reader> reader = std::make_shared<kiwix::Reader>([path cStringUsingEncoding:NSUTF8StringEncoding]);
-        std::string identifier = reader->getId();
-        readers.insert(std::make_pair(identifier, reader));
+#if TARGET_OS_MAC
+        [url startAccessingSecurityScopedResource];
+#endif
+        std::shared_ptr<kiwix::Reader> reader = std::make_shared<kiwix::Reader>([url fileSystemRepresentation]);
+        std::string identifierC = reader->getId();
+        readers.insert(std::make_pair(identifierC, reader));
+        
+        NSString *identifier = [NSString stringWithCString:identifierC.c_str() encoding:NSUTF8StringEncoding];
+        zimURLs[identifier] = url;
     } catch (const std::exception &e) { }
 }
 
 - (void)removeBookByID:(NSString *)bookID {
     std::string bookIDC = [bookID cStringUsingEncoding:NSUTF8StringEncoding];
     readers.erase(bookIDC);
+    
+    [zimURLs[bookID] stopAccessingSecurityScopedResource];
+    [zimURLs removeObjectForKey:bookID];
 }
 
 - (void)removeAllBook {
-    readers.clear();
+    for (NSString *bookID in zimURLs) {
+        [self removeBookByID:bookID];
+    }
 }
 
 - (NSArray *)getReaderIdentifiers {

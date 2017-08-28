@@ -11,8 +11,8 @@ import AppKit
 extension ZimManager {
     class var shared: ZimManager {return ZimManager.__sharedInstance()}
     
-    func addBook(path: String) {__addBook(byPath: path)}
-    func addBooks(paths: [String]) {paths.forEach({__addBook(byPath: $0)})}
+    func addBook(url: URL) {__addBook(by: url)}
+    func addBook(urls: [URL]) {urls.forEach({__addBook(by: $0)})}
     func removeBooks(id: String) {__removeBook(byID: id)}
     func getReaderIDs() -> [String] {return __getReaderIdentifiers().flatMap({$0 as? String})}
     

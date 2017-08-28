@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13178.6" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12121"/>
-        <plugIn identifier="com.apple.WebKitIBPlugin" version="12121"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13178.6"/>
+        <plugIn identifier="com.apple.WebKitIBPlugin" version="13178.6"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
         <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
@@ -738,7 +739,7 @@
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="96" height="22"/>
                                     <size key="maxSize" width="600" height="22"/>
-                                    <textField key="view" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" id="7ew-w2-SPK">
+                                    <textField key="view" verticalHuggingPriority="750" id="7ew-w2-SPK">
                                         <rect key="frame" x="0.0" y="14" width="96" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="center" allowsEditingTextAttributes="YES" usesSingleLineMode="YES" bezelStyle="round" id="O33-aU-ym2">
@@ -748,24 +749,15 @@
                                         </textFieldCell>
                                     </textField>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="6824380A-E093-4E6C-851F-C1CF1AE46A5A" label="Loading" paletteLabel="Loading" tag="-1" id="btS-wf-S85">
-                                    <nil key="toolTip"/>
-                                    <size key="minSize" width="16" height="16"/>
-                                    <size key="maxSize" width="16" height="16"/>
-                                    <progressIndicator key="view" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="1S2-ay-orZ">
-                                        <rect key="frame" x="17" y="14" width="16" height="16"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    </progressIndicator>
-                                </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="0C2005E9-9000-4B31-A786-1F4BAF935385" label="Search" paletteLabel="Search" tag="-1" id="VWC-hA-TeQ">
                                     <nil key="toolTip"/>
-                                    <size key="minSize" width="163" height="22"/>
+                                    <size key="minSize" width="90" height="22"/>
                                     <size key="maxSize" width="600" height="22"/>
                                     <customView key="view" id="OkE-04-5fe">
                                         <rect key="frame" x="0.0" y="14" width="500" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <subviews>
-                                            <searchField wantsLayer="YES" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jGR-U3-X3O">
+                                            <searchField wantsLayer="YES" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jGR-U3-X3O">
                                                 <rect key="frame" x="0.0" y="0.0" width="500" height="22"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="600" id="Egn-iC-MKs"/>
@@ -791,7 +783,6 @@
                             </allowedToolbarItems>
                             <defaultToolbarItems>
                                 <toolbarItem reference="Djp-oY-b28"/>
-                                <toolbarItem reference="btS-wf-S85"/>
                                 <toolbarItem reference="QPA-cF-uj3"/>
                                 <toolbarItem reference="VWC-hA-TeQ"/>
                                 <toolbarItem reference="QPA-cF-uj3"/>
@@ -804,7 +795,6 @@
                         </connections>
                     </window>
                     <connections>
-                        <outlet property="loadingView" destination="1S2-ay-orZ" id="fK4-ul-ZRo"/>
                         <outlet property="searchField" destination="jGR-U3-X3O" id="Ayi-hj-Ism"/>
                         <outlet property="titleTextField" destination="7ew-w2-SPK" id="kWx-Ld-09e"/>
                         <segue destination="iF5-i3-nBX" kind="relationship" relationship="window.shadowedContentViewController" id="KRF-C8-maU"/>
@@ -880,7 +870,7 @@
                             <stackView distribution="equalSpacing" orientation="vertical" alignment="centerX" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q6a-uM-LFi">
                                 <rect key="frame" x="149" y="128" width="205" height="126"/>
                                 <subviews>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P8j-EL-u5L">
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="P8j-EL-u5L">
                                         <rect key="frame" x="-2" y="37" width="209" height="89"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="KIWIX" id="1tN-QT-pI1">
                                             <font key="font" metaFont="systemSemibold" size="74"/>
@@ -888,8 +878,8 @@
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XeJ-gj-UmK">
-                                        <rect key="frame" x="0.5" y="0.0" width="204" height="27"/>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XeJ-gj-UmK">
+                                        <rect key="frame" x="1" y="0.0" width="204" height="27"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Wikipedia Anywhere" id="BJd-s8-giH">
                                             <font key="font" metaFont="system" size="22"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -934,7 +924,7 @@
             <objects>
                 <splitViewController id="iF5-i3-nBX" sceneMemberID="viewController">
                     <splitViewItems>
-                        <splitViewItem id="0ej-23-FDP"/>
+                        <splitViewItem collapsed="YES" id="0ej-23-FDP"/>
                         <splitViewItem id="fSv-bT-kzs"/>
                     </splitViewItems>
                     <splitView key="splitView" dividerStyle="thin" vertical="YES" id="Alr-p4-P1Y">
@@ -962,7 +952,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="230" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <searchField wantsLayer="YES" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OaO-17-WvL">
+                            <searchField wantsLayer="YES" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OaO-17-WvL">
                                 <rect key="frame" x="10" y="232" width="210" height="22"/>
                                 <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" recentsAutosaveName="search.recentSearchTerms" id="Jxv-cC-2Ys">
                                     <font key="font" metaFont="system"/>
@@ -1004,7 +994,7 @@
                                                             <rect key="frame" x="1" y="1" width="227" height="92"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7mE-Nv-MJL">
+                                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7mE-Nv-MJL">
                                                                     <rect key="frame" x="8" y="70" width="211" height="18"/>
                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Label" drawsBackground="YES" id="fwo-9L-q5s">
                                                                         <font key="font" metaFont="systemSemibold" size="14"/>
@@ -1012,7 +1002,7 @@
                                                                         <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
                                                                     </textFieldCell>
                                                                 </textField>
-                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ftj-hL-c0q">
+                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Ftj-hL-c0q">
                                                                     <rect key="frame" x="8" y="4" width="211" height="64"/>
                                                                     <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" drawsBackground="YES" id="kg9-nU-uPm">
                                                                         <font key="font" metaFont="cellTitle"/>

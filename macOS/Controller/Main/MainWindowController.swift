@@ -51,11 +51,8 @@ class MainWindowController: NSWindowController, NSSearchFieldDelegate {
             
             var isStale = false
             let urls = bookmarks.flatMap({try? URL(resolvingBookmarkData: $0, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)}).flatMap({$0})
-            
-            urls.forEach({_ = $0.startAccessingSecurityScopedResource()})
-            print(urls)
             ZimManager.shared.removeAllBook();
-            ZimManager.shared.addBooks(paths: paths)
+            ZimManager.shared.addBook(urls: urls)
             
             guard let split = self.contentViewController as? NSSplitViewController,
                 let searchController = split.splitViewItems.first?.viewController as? SearchController,

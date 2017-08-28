@@ -13,7 +13,7 @@
 + (ZimManager *)sharedInstance NS_REFINED_FOR_SWIFT;
 
 - (void)scan;
-- (void)addBookByPath:(NSString *)path NS_REFINED_FOR_SWIFT;
+- (void)addBookByURL:(NSURL *)url NS_REFINED_FOR_SWIFT;
 - (void)removeBookByID:(NSString *)bookID NS_REFINED_FOR_SWIFT;
 - (void)removeAllBook;
 - (NSArray *)getReaderIdentifiers NS_REFINED_FOR_SWIFT;
