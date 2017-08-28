@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="s4g-hm-xR1">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12121"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Window Controller-->
+        <scene sceneID="FTR-eR-Eqm">
+            <objects>
+                <windowController id="s4g-hm-xR1" customClass="SearchResultContainerController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="XWx-Za-z6M">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" unifiedTitleAndToolbar="YES" fullSizeContentView="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="245" y="310" width="480" height="270"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1050"/>
+                    </window>
+                    <connections>
+                        <segue destination="gjy-ma-ITW" kind="relationship" relationship="window.shadowedContentViewController" id="tux-xX-qnP"/>
+                    </connections>
+                </windowController>
+                <customObject id="QIt-Ps-WvI" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-110" y="-276"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="lxV-66-rjA">
+            <objects>
+                <viewController id="gjy-ma-ITW" sceneMemberID="viewController">
+                    <view key="view" id="KUr-Zc-Haj">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C6i-Sr-DG8">
+                                <rect key="frame" x="222" y="126" width="37" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="gfk-Tr-YGU">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="C6i-Sr-DG8" firstAttribute="centerX" secondItem="KUr-Zc-Haj" secondAttribute="centerX" id="76j-MI-xwV"/>
+                            <constraint firstItem="C6i-Sr-DG8" firstAttribute="centerY" secondItem="KUr-Zc-Haj" secondAttribute="centerY" id="Bxn-79-W5d"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <customObject id="7HH-ww-VAW" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-110" y="186"/>
+        </scene>
+    </scenes>
+</document>

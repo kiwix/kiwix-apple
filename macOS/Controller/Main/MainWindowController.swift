@@ -13,7 +13,6 @@ class MainWindowController: NSWindowController, NSSearchFieldDelegate {
     @IBOutlet weak var titleTextField: NSTextField!
     @IBOutlet weak var loadingView: NSProgressIndicator!
     @IBOutlet weak var searchField: NSSearchField!
-    @IBOutlet weak var searchFieldItem: NSToolbarItem!
     
     override func windowDidLoad() {
         super.windowDidLoad()
@@ -46,7 +45,15 @@ class MainWindowController: NSWindowController, NSSearchFieldDelegate {
         openPanel.beginSheetModal(for: window!) { response in
             guard response == NSFileHandlingPanelOKButton else {return}
             let paths = openPanel.urls.map({$0.path})
-            Defaults[.bookPaths] = paths
+            
+            let bookmarks = paths.flatMap({try? URL(fileURLWithPath: $0).bookmarkData(options: [.withSecurityScope, .securityScopeAllowOnlyReadAccess], includingResourceValuesForKeys: nil, relativeTo: nil)})
+            Defaults[.zimBookmarks] = bookmarks
+            
+            var isStale = false
+            let urls = bookmarks.flatMap({try? URL(resolvingBookmarkData: $0, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)}).flatMap({$0})
+            
+            urls.forEach({_ = $0.startAccessingSecurityScopedResource()})
+            print(urls)
             ZimManager.shared.removeAllBook();
             ZimManager.shared.addBooks(paths: paths)
             
@@ -60,7 +67,7 @@ class MainWindowController: NSWindowController, NSSearchFieldDelegate {
     
     // MARK: - NSSearchFieldDelegate
     
-    let searchResultWindowController = SearchResultWindowController()
+    let searchResultWindowController = NSStoryboard(name: "Search", bundle: nil).instantiateInitialController() as! NSWindowController
     
     override func controlTextDidBeginEditing(_ obj: Notification) {
         guard let resultWindow = searchResultWindowController.window else {return}
@@ -70,10 +77,15 @@ class MainWindowController: NSWindowController, NSSearchFieldDelegate {
     }
     
     override func controlTextDidEndEditing(_ obj: Notification) {
+        guard let resultWindow = searchResultWindowController.window else {return}
+        if resultWindow.isVisible {
+            hideSearchResultWindow()
+        }
     }
     
     func showSearchResultWindow(searchField: NSSearchField) {
-        guard let parentWindow = searchField.window, let parentView = searchField.superview,
+        guard let parentWindow = searchField.window,
+            let parentView = searchField.superview,
             let resultWindow = searchResultWindowController.window else {return}
         
         var frame = parentView.convert(searchField.frame, to: nil)
@@ -84,51 +96,11 @@ class MainWindowController: NSWindowController, NSSearchFieldDelegate {
         resultWindow.setFrameTopLeftPoint(frame.origin)
         parentWindow.addChildWindow(resultWindow, ordered: .above)
     }
-}
-
-class SearchFieldItem: NSToolbarItem {
-    override var minSize: NSSize {
-        get {return NSSize(width: 0, height: 22)}
-        set {}
-    }
     
-    override var maxSize: NSSize {
-        get {return NSSize(width: 600, height: 22)}
-        set {}
-    }
-}
-
-class SearchField: NSSearchField {
-    override var intrinsicContentSize: NSSize {
-        get {return NSSize(width: 600, height: 22)}
-        set {}
-    }
-    override var preferredMaxLayoutWidth: CGFloat {
-        get {return 600}
-        set {}
-    }
-}
-
-
-class SearchResultWindowController: NSWindowController {
-    init() {
-        let window = NSWindow()
-        window.styleMask = .borderless
-        window.contentView = RoundedCornerView()
-        print(window.contentView?.frame)
-        super.init(window: window)
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
-}
-
-class RoundedCornerView: NSView {
-    override func draw(_ dirtyRect: NSRect) {
-        let borderPath = NSBezierPath(roundedRect: bounds, xRadius: 4, yRadius: 4)
-        NSColor.windowBackgroundColor.setFill()
-        borderPath.fill()
+    func hideSearchResultWindow() {
+        guard let resultWindow = searchResultWindowController.window else {return}
+        resultWindow.parent?.removeChildWindow(resultWindow)
+        resultWindow.orderOut(nil)
     }
 }
 

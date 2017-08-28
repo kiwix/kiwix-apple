@@ -775,6 +775,9 @@
                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </searchFieldCell>
+                                                <connections>
+                                                    <outlet property="delegate" destination="B8D-0N-5wS" id="Gbe-RL-S11"/>
+                                                </connections>
                                             </searchField>
                                         </subviews>
                                         <constraints>
@@ -802,6 +805,7 @@
                     </window>
                     <connections>
                         <outlet property="loadingView" destination="1S2-ay-orZ" id="fK4-ul-ZRo"/>
+                        <outlet property="searchField" destination="jGR-U3-X3O" id="Ayi-hj-Ism"/>
                         <outlet property="titleTextField" destination="7ew-w2-SPK" id="kWx-Ld-09e"/>
                         <segue destination="iF5-i3-nBX" kind="relationship" relationship="window.shadowedContentViewController" id="KRF-C8-maU"/>
                     </connections>
@@ -885,7 +889,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XeJ-gj-UmK">
-                                        <rect key="frame" x="1" y="0.0" width="204" height="27"/>
+                                        <rect key="frame" x="0.5" y="0.0" width="204" height="27"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Wikipedia Anywhere" id="BJd-s8-giH">
                                             <font key="font" metaFont="system" size="22"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
