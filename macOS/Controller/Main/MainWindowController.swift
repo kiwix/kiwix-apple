@@ -9,7 +9,7 @@
 import Cocoa
 import SwiftyUserDefaults
 
-class MainWindowController: NSWindowController, NSSearchFieldDelegate {
+class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldDelegate {
     @IBOutlet weak var titleTextField: NSTextField!
     @IBOutlet weak var loadingView: NSProgressIndicator!
     @IBOutlet weak var searchField: NSSearchField!
@@ -17,6 +17,22 @@ class MainWindowController: NSWindowController, NSSearchFieldDelegate {
     override func windowDidLoad() {
         super.windowDidLoad()
         window?.titleVisibility = .hidden
+        window?.delegate = self
+    }
+    
+    func windowWillStartLiveResize(_ notification: Notification) {
+        guard let resultWindow = searchResultWindowController.window else {return}
+        if resultWindow.isVisible {
+            hideSearchResultWindow()
+            shouldShowSearchWhenResizingFinished = true
+        }
+    }
+    
+    func windowDidEndLiveResize(_ notification: Notification) {
+        if shouldShowSearchWhenResizingFinished {
+            showSearchResultWindow()
+            shouldShowSearchWhenResizingFinished = false
+        }
     }
     
     @IBAction func mainPageButtonTapped(_ sender: NSToolbarItem) {
@@ -65,11 +81,12 @@ class MainWindowController: NSWindowController, NSSearchFieldDelegate {
     // MARK: - NSSearchFieldDelegate
     
     let searchResultWindowController = NSStoryboard(name: "Search", bundle: nil).instantiateInitialController() as! NSWindowController
+    var shouldShowSearchWhenResizingFinished = false
     
     override func controlTextDidBeginEditing(_ obj: Notification) {
         guard let resultWindow = searchResultWindowController.window else {return}
         if !resultWindow.isVisible {
-            showSearchResultWindow(searchField: searchField)
+            showSearchResultWindow()
         }
     }
     
@@ -80,17 +97,17 @@ class MainWindowController: NSWindowController, NSSearchFieldDelegate {
         }
     }
     
-    func showSearchResultWindow(searchField: NSSearchField) {
+    func showSearchResultWindow() {
         guard let parentWindow = searchField.window,
             let parentView = searchField.superview,
             let resultWindow = searchResultWindowController.window else {return}
-        
-        var frame = parentView.convert(searchField.frame, to: nil)
-        frame = parentWindow.convertToScreen(frame)
-        frame = NSRect(origin: frame.origin, size: CGSize(width: searchField.frame.width, height: 300))
-        frame = frame.offsetBy(dx: 0, dy: -2)
-        resultWindow.setFrame(frame, display: true)
-        resultWindow.setFrameTopLeftPoint(frame.origin)
+        let searchFieldFrame = parentView.convert(searchField.frame, to: nil)
+        let width = max(380, searchFieldFrame.width)
+        let height = max(0.6 * width, 300)
+        let origin = width == searchFieldFrame.width ? searchFieldFrame.origin : NSPoint(x: (parentWindow.frame.width - width)/2, y: searchFieldFrame.origin.y)
+        let resultFrame = parentWindow.convertToScreen(NSRect(origin: origin, size: CGSize(width: width, height: height)).offsetBy(dx: 0, dy: -2))
+        resultWindow.setFrame(resultFrame, display: true)
+        resultWindow.setFrameTopLeftPoint(resultFrame.origin)
         parentWindow.addChildWindow(resultWindow, ordered: .above)
     }
     

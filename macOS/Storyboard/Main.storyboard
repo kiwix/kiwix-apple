@@ -752,16 +752,13 @@
                                 <toolbarItem implicitItemIdentifier="0C2005E9-9000-4B31-A786-1F4BAF935385" label="Search" paletteLabel="Search" tag="-1" id="VWC-hA-TeQ">
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="90" height="22"/>
-                                    <size key="maxSize" width="600" height="22"/>
+                                    <size key="maxSize" width="800" height="22"/>
                                     <customView key="view" id="OkE-04-5fe">
                                         <rect key="frame" x="0.0" y="14" width="500" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <subviews>
                                             <searchField wantsLayer="YES" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jGR-U3-X3O">
                                                 <rect key="frame" x="0.0" y="0.0" width="500" height="22"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="600" id="Egn-iC-MKs"/>
-                                                </constraints>
                                                 <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="Iv7-vs-fKh">
                                                     <font key="font" metaFont="system"/>
                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
