@@ -22,8 +22,7 @@ class WebViewController: NSViewController, WebFrameLoadDelegate {
     
     func loadMainPage() {
         guard let id = ZimManager.shared.getReaderIDs().first,
-            let mainPagePath = ZimManager.shared.getMainPagePath(bookID: id),
-            let mainPageURL = URL(bookID: id, contentPath: mainPagePath) else {return}
+            let mainPageURL = ZimManager.shared.getMainPageURL(bookID: id) else {return}
         load(url: mainPageURL)
     }
     
@@ -37,6 +36,6 @@ class WebViewController: NSViewController, WebFrameLoadDelegate {
     
     func webView(_ sender: WebView!, didFinishLoadFor frame: WebFrame!) {
         guard let controller = view.window?.windowController as? MainWindowController else {return}
-        controller.titleTextField.stringValue = frame.dataSource?.pageTitle ?? ""
+        controller.searchField.placeholderString = frame.dataSource?.pageTitle ?? "Search"
     }
 }

@@ -13,7 +13,8 @@ extension ZimManager {
     
     func addBook(url: URL) {__addBook(by: url)}
     func addBook(urls: [URL]) {urls.forEach({__addBook(by: $0)})}
-    func removeBooks(id: String) {__removeBook(byID: id)}
+    func removeBook(id: String) {__removeBook(byID: id)}
+    func removeBooks() {__removeAllBooks()}
     func getReaderIDs() -> [String] {return __getReaderIdentifiers().flatMap({$0 as? String})}
     
     func getContent(bookID: String, contentPath: String) -> (data: Data, mime: String, length: Int)? {
@@ -24,36 +25,67 @@ extension ZimManager {
         return (data, mime, length)
     }
     
-    func getMainPagePath(bookID: String) -> String? {
-        return __getMainPageURL(bookID)
+    func getMainPageURL(bookID: String) -> URL? {
+        guard let path = __getMainPageURL(bookID) else {return nil}
+        return URL(bookID: bookID, contentPath: path)
     }
     
-    func getSearchSuggestions(searchTerm: String) -> [(title: String, path: String)] {
-        guard let suggestions = __getSearchSuggestions(searchTerm) else {return []}
-        return suggestions.flatMap { suggestion -> (String, String)? in
+    func startSearch(term: String) {__startSearch(term)}
+    
+    func getNextSearchResult() -> SearchResult? {
+        guard let result = __getNextSearchResult() as? Dictionary<String, String>,
+            let id = result["id"],
+            let path = result["path"],
+            let title = result["title"],
+            let snippet = result["snippet"] else {return nil}
+        return SearchResult(bookID: id, path: path, title: title, snippet: snippet)
+    }
+    
+    func getSearchSuggestions(term: String) -> [SearchResult] {
+        guard let suggestions = __getSearchSuggestions(term) else {return []}
+        return suggestions.flatMap { suggestion -> SearchResult? in
             guard let suggestion = suggestion as? Dictionary<String, String>,
+                let id = suggestion["id"],
                 let title = suggestion["title"],
                 let path = suggestion["path"] else {return nil}
-            return (title, path)
+            return SearchResult(bookID: id, path: path, title: title)
+        }
+    }
+}
+
+class SearchResult {
+    let url: URL
+    let title: String
+    let snippet: String?
+    let attributedSnippet: NSAttributedString?
+    
+    var hasSnippet: Bool {
+        return snippet != nil || attributedSnippet != nil
+    }
+    
+    init?(bookID: String, path: String, title: String, snippet: String? = nil) {
+        guard let url = URL(bookID: bookID, contentPath: path) else {return nil}
+        self.url = url
+        self.title = title
+        
+        guard let snippet = snippet else {
+            self.snippet = nil
+            self.attributedSnippet = nil
+            return
+        }
+        if snippet.contains("<b>"), let snippet = SearchResult.parseSnippet(html: snippet) {
+            self.snippet = nil
+            self.attributedSnippet = snippet
+        } else {
+            self.snippet = snippet
+            self.attributedSnippet = nil
         }
     }
     
-    func getSearchResults(searchTerm: String) -> [(id: String, title: String, path: String, snippet: NSAttributedString)] {
-        guard let results = __getSearchResults(searchTerm) else {return []}
-        return results.flatMap { result -> (String, String, String, NSAttributedString)? in
-            guard let result = result as? Dictionary<String, String>,
-                let id = result["id"],
-                let title = result["title"],
-                let path = result["path"],
-                let snippet = parseSnippet(string: result["snippet"]) else {return nil}
-            return (id, title, path, snippet)
-        }
-    }
-    
-    private func parseSnippet(string: String?) -> NSAttributedString? {
+    private static func parseSnippet(html: String) -> NSAttributedString? {
         let options: [String: Any] = [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
                                       NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue]
-        guard let snippetData = string?.data(using: String.Encoding.utf8),
+        guard let snippetData = html.data(using: String.Encoding.utf8),
             let snippet = try? NSMutableAttributedString(data: snippetData, options: options, documentAttributes: nil) else {return nil}
         let wholeRange = NSRange(location: 0, length: snippet.length)
         snippet.enumerateAttribute(NSFontAttributeName, in: wholeRange, options: .longestEffectiveRangeNotRequired, using: { (font, range, stop) in
@@ -72,4 +104,5 @@ extension ZimManager {
         snippet.addAttribute(NSForegroundColorAttributeName, value: NSColor.labelColor, range: wholeRange)
         return snippet
     }
+    
 }

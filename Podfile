@@ -15,4 +15,5 @@ target 'macOS' do
     use_frameworks!
     
     pod 'SwiftyUserDefaults'
+    pod 'ProcedureKit/All', :path => 'submodules/ProcedureKit'
 end

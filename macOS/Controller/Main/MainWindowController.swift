@@ -10,9 +10,9 @@ import Cocoa
 import SwiftyUserDefaults
 
 class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldDelegate {
-    @IBOutlet weak var titleTextField: NSTextField!
-    @IBOutlet weak var loadingView: NSProgressIndicator!
     @IBOutlet weak var searchField: NSSearchField!
+    let searchResultWindowController = NSStoryboard(name: "Search", bundle: nil).instantiateInitialController() as! NSWindowController
+    private var shouldShowSearchWhenResizingFinished = false
     
     override func windowDidLoad() {
         super.windowDidLoad()
@@ -35,6 +35,8 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
         }
     }
     
+    // MARK: - Actions
+    
     @IBAction func mainPageButtonTapped(_ sender: NSToolbarItem) {
         guard let split = contentViewController as? NSSplitViewController,
             let controller = split.splitViewItems.last?.viewController as? WebViewController else {return}
@@ -49,6 +51,11 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
         } else if sender.selectedSegment == 1 {
             controller.webView.goForward()
         }
+    }
+    
+    @IBAction func searchFieldTextDidChange(_ sender: NSSearchField) {
+        guard let searchController = searchResultWindowController.contentViewController as? SearchController else {return}
+        searchController.startSearch(searchTerm: sender.stringValue)
     }
     
     @IBAction func openBook(_ sender: NSMenuItem) {
@@ -67,21 +74,18 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
             
             var isStale = false
             let urls = bookmarks.flatMap({try? URL(resolvingBookmarkData: $0, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)}).flatMap({$0})
-            ZimManager.shared.removeAllBook();
+            ZimManager.shared.removeBooks();
             ZimManager.shared.addBook(urls: urls)
             
+            guard let searchController = self.searchResultWindowController.contentViewController as? SearchController else {return}
+//            searchController.clearSearch()
             guard let split = self.contentViewController as? NSSplitViewController,
-                let searchController = split.splitViewItems.first?.viewController as? SearchController,
                 let webController = split.splitViewItems.last?.viewController as? WebViewController else {return}
-            searchController.clearSearch()
             webController.loadMainPage()
         }
     }
     
     // MARK: - NSSearchFieldDelegate
-    
-    let searchResultWindowController = NSStoryboard(name: "Search", bundle: nil).instantiateInitialController() as! NSWindowController
-    var shouldShowSearchWhenResizingFinished = false
     
     override func controlTextDidBeginEditing(_ obj: Notification) {
         guard let resultWindow = searchResultWindowController.window else {return}

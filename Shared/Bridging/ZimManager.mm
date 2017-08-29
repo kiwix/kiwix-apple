@@ -12,13 +12,15 @@
 #include "searcher.h"
 #import "ZimManager.h"
 
-@interface ZimManager () {
-    NSMutableDictionary *zimURLs;
-    std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>> readers;
-}
-@end
-
 @implementation ZimManager
+
+std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>> readers;
+kiwix::Searcher *searcher = NULL;
+std::vector<std::string> *searcherZimIDs = NULL;
+
+#if TARGET_OS_MAC
+    NSMutableDictionary *zimURLs;
+#endif
 
 #pragma mark - init
 
@@ -34,9 +36,10 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        zimURLs = [[NSMutableDictionary alloc] init];
         readers.reserve(20);
-# if TARGET_OS_IPHONE
+#if TARGET_OS_MAC
+        zimURLs = [[NSMutableDictionary alloc] init];
+#elif TARGET_OS_IPHONE
         [self scan];
 #endif
     }
@@ -44,13 +47,13 @@
 }
 
 - (void)dealloc {
-    [self removeAllBook];
+    [self removeAllBooks];
 }
 
 #pragma mark - reader management
 
 - (void)scan {
-    // TODO: - reuse
+    // TODO: reuse other functions
     NSURL *docDirURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:NULL];
     NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:docDirURL includingPropertiesForKeys:nil options:(NSDirectoryEnumerationSkipsSubdirectoryDescendants) error:nil];
     
@@ -81,21 +84,25 @@
         std::shared_ptr<kiwix::Reader> reader = std::make_shared<kiwix::Reader>([url fileSystemRepresentation]);
         std::string identifierC = reader->getId();
         readers.insert(std::make_pair(identifierC, reader));
-        
+
+#if TARGET_OS_MAC
         NSString *identifier = [NSString stringWithCString:identifierC.c_str() encoding:NSUTF8StringEncoding];
         zimURLs[identifier] = url;
+#endif
     } catch (const std::exception &e) { }
 }
 
 - (void)removeBookByID:(NSString *)bookID {
     std::string bookIDC = [bookID cStringUsingEncoding:NSUTF8StringEncoding];
     readers.erase(bookIDC);
-    
+
+#if TARGET_OS_MAC
     [zimURLs[bookID] stopAccessingSecurityScopedResource];
     [zimURLs removeObjectForKey:bookID];
+#endif
 }
 
-- (void)removeAllBook {
+- (void)removeAllBooks {
     for (NSString *bookID in zimURLs) {
         [self removeBookByID:bookID];
     }
@@ -154,78 +161,79 @@
 
 # pragma mark - Search
 
-- (void)enumerateThings:(void (^)(NSString *result))block {
-    block(@"test");
+- (void)startSearch:(NSString *)searchTerm {
+    if (searcherZimIDs == NULL) {
+        searcherZimIDs = new std::vector<std::string>;
+    } else {
+        searcherZimIDs->clear();
+    }
+    if (searcher == NULL) {
+        searcher = new kiwix::Searcher;
+        for(auto pair: readers) {
+            searcher->add_reader(pair.second.get(), pair.first);
+            searcherZimIDs->push_back(pair.first);
+        }
+    }
+    
+    std::string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];
+    int offset = 0;
+    int limit = 20;
+    searcher->search(searchTermC, offset, limit);
+}
+
+- (NSDictionary *)getNextSearchResult {
+    if (searcher == NULL || searcherZimIDs == NULL) {return nil;}
+    
+    kiwix::Result *result = searcher->getNextResult();
+    if (result != NULL) {
+        NSString *identifier = [NSString stringWithCString:searcherZimIDs->at(result->get_readerIndex()).c_str() encoding:NSUTF8StringEncoding];
+        NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
+        NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
+        NSString *snippet = [NSString stringWithCString:result->get_snippet().c_str() encoding:NSUTF8StringEncoding];
+        delete result;
+        return @{@"id": identifier, @"title": title, @"path": path, @"snippet": snippet};
+    } else {
+        return nil;
+    }
+}
+
+- (void)stopSearch {
+    delete searcher;
+    delete searcherZimIDs;
+    searcher = NULL;
+    searcherZimIDs = NULL;
 }
 
 - (NSArray *)getSearchSuggestions:(NSString *)searchTerm {
     std::string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];
     NSMutableArray *suggestions = [[NSMutableArray alloc] init];
     
-//    unsigned int count = 5;
-//    searcher.suggestions(searchTermC);
-//    while (count > 0) {
-//        kiwix::Result *result = searcher.getNextResult();
-//
-//        if (result == NULL) {
-//            break;
-//        }
-//
-//        NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
-//        NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
-//        [suggestions addObject:@{@"title": title, @"path": path}];
-//
-//        count--;
-//    }
+    unsigned int count = max(5, int(20 / readers.size()));
     
-//    for(auto iter: readers) {
-//        std::shared_ptr<kiwix::Reader> reader = iter.second;
-//        reader->searchSuggestionsSmart(searchTermC, count);
-//
-//        std::string titleC;
-//        std::string pathC;
-//
-//        while (reader->getNextSuggestion(titleC, pathC)) {
-//            NSString *title = [NSString stringWithCString:titleC.c_str() encoding:NSUTF8StringEncoding];
-//            NSString *path = [NSString stringWithCString:pathC.c_str() encoding:NSUTF8StringEncoding];
-//            [suggestions addObject:@{@"title": title, @"path": path}];
-//        }
-//    }
-//
-//    if (readers.size() > 1) {
-//        [suggestions sortUsingComparator:^NSComparisonResult(NSDictionary * _Nonnull obj1, NSDictionary * _Nonnull obj2) {
-//            NSString *title1 = [obj1 objectForKey:@"title"];
-//            NSString *title2 = [obj2 objectForKey:@"title"];
-//            return [title1 caseInsensitiveCompare:title2];
-//        }];
-//    }
+    for(auto iter: readers) {
+        std::shared_ptr<kiwix::Reader> reader = iter.second;
+        reader->searchSuggestionsSmart(searchTermC, count);
+        
+        std::string titleC;
+        std::string pathC;
+        
+        NSString *identifier = [NSString stringWithCString:iter.first.c_str() encoding:NSUTF8StringEncoding];
+        while (reader->getNextSuggestion(titleC, pathC)) {
+            NSString *title = [NSString stringWithCString:titleC.c_str() encoding:NSUTF8StringEncoding];
+            NSString *path = [NSString stringWithCString:pathC.c_str() encoding:NSUTF8StringEncoding];
+            [suggestions addObject:@{@"id": identifier, @"title": title, @"path": path}];
+        }
+    }
+    
+    if (readers.size() > 1) {
+        [suggestions sortUsingComparator:^NSComparisonResult(NSDictionary * _Nonnull obj1, NSDictionary * _Nonnull obj2) {
+            NSString *title1 = [obj1 objectForKey:@"title"];
+            NSString *title2 = [obj2 objectForKey:@"title"];
+            return [title1 caseInsensitiveCompare:title2];
+        }];
+    }
     
     return suggestions;
-}
-
-- (NSArray *)getSearchResults:(NSString *)searchTerm {
-    std::string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];
-    NSMutableArray *results = [[NSMutableArray alloc] init];
-    
-    std::vector<std::string> identifiers;
-    kiwix::Searcher searcher;
-    for(auto pair: readers) {
-        identifiers.push_back(pair.first);
-        searcher.add_reader(pair.second.get(), pair.first);
-    }
-    if (readers.size() == 0) {return results;}
-    
-    searcher.search(searchTermC, 0, 20);
-    kiwix::Result *result = searcher.getNextResult();
-    while (result != NULL) {
-        NSString *identifier = [NSString stringWithCString:identifiers.at(result->get_readerIndex()).c_str() encoding:NSUTF8StringEncoding];
-        NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
-        NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
-        NSString *snippet = [NSString stringWithCString:result->get_snippet().c_str() encoding:NSUTF8StringEncoding];
-        [results addObject:@{@"id": identifier, @"title": title, @"path": path, @"snippet": snippet}];
-        result = searcher.getNextResult();
-    }
-    return results;
 }
 
 @end
