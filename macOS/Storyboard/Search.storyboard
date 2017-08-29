@@ -69,7 +69,7 @@
                                                             </textFieldCell>
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                             <prototypeCellViews>
-                                                                <tableCellView identifier="Result" id="zMY-Vf-rG1" customClass="SearchResultTableCellView" customModule="Kiwix" customModuleProvider="target">
+                                                                <tableCellView identifier="TitleSnippetResult" id="zMY-Vf-rG1" customClass="SearchTitleSnippetResultTableCellView" customModule="Kiwix" customModuleProvider="target">
                                                                     <rect key="frame" x="1" y="1" width="397" height="92"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
@@ -78,7 +78,7 @@
                                                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Label" drawsBackground="YES" id="2v5-UX-OFk">
                                                                                 <font key="font" metaFont="systemSemibold" size="14"/>
                                                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
+                                                                                <color key="backgroundColor" red="1" green="0.41176021099999999" blue="0.3543582857" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             </textFieldCell>
                                                                         </textField>
                                                                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="pDP-M4-Blg">
@@ -105,33 +105,34 @@
                                                                         <outlet property="titleField" destination="Khx-wg-eog" id="3Tv-Yh-XL9"/>
                                                                     </connections>
                                                                 </tableCellView>
-                                                                <tableCellView identifier="Result" id="DTN-iN-6EO" customClass="SearchResultTableCellView" customModule="Kiwix" customModuleProvider="target">
+                                                                <tableCellView identifier="TitleResult" id="fcH-MS-cwR" customClass="SearchTitleResultTableCellView" customModule="Kiwix" customModuleProvider="target">
                                                                     <rect key="frame" x="1" y="95" width="397" height="26"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
-                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TIP-3R-Phy">
+                                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hwI-Eg-fgf">
                                                                             <rect key="frame" x="8" y="4" width="381" height="18"/>
-                                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Label" drawsBackground="YES" id="le2-N4-Vte">
+                                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Label" drawsBackground="YES" id="Rw7-Rz-Zc1">
                                                                                 <font key="font" metaFont="systemSemibold" size="14"/>
                                                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="deviceWhite"/>
+                                                                                <color key="backgroundColor" red="1" green="0.41176021099999999" blue="0.3543582857" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             </textFieldCell>
                                                                         </textField>
                                                                     </subviews>
                                                                     <constraints>
-                                                                        <constraint firstItem="TIP-3R-Phy" firstAttribute="top" secondItem="DTN-iN-6EO" secondAttribute="top" constant="4" id="CXv-E5-Mk8"/>
-                                                                        <constraint firstAttribute="trailing" secondItem="TIP-3R-Phy" secondAttribute="trailing" constant="8" id="EKJ-na-5vy"/>
-                                                                        <constraint firstItem="TIP-3R-Phy" firstAttribute="leading" secondItem="DTN-iN-6EO" secondAttribute="leading" constant="8" id="tF8-fF-PAG"/>
-                                                                        <constraint firstAttribute="bottom" secondItem="TIP-3R-Phy" secondAttribute="bottom" constant="4" id="zpv-W7-dHe"/>
+                                                                        <constraint firstAttribute="trailing" secondItem="hwI-Eg-fgf" secondAttribute="trailing" constant="8" id="5Je-ny-oNc"/>
+                                                                        <constraint firstItem="hwI-Eg-fgf" firstAttribute="top" secondItem="fcH-MS-cwR" secondAttribute="top" constant="4" id="RAD-sx-bsE"/>
+                                                                        <constraint firstAttribute="bottom" secondItem="hwI-Eg-fgf" secondAttribute="bottom" constant="4" id="j8J-AX-YcS"/>
+                                                                        <constraint firstItem="hwI-Eg-fgf" firstAttribute="leading" secondItem="fcH-MS-cwR" secondAttribute="leading" constant="8" id="vOL-k4-oSZ"/>
                                                                     </constraints>
                                                                     <connections>
-                                                                        <outlet property="titleField" destination="TIP-3R-Phy" id="mXo-7i-Itz"/>
+                                                                        <outlet property="titleField" destination="hwI-Eg-fgf" id="pjL-nj-jZS"/>
                                                                     </connections>
                                                                 </tableCellView>
                                                             </prototypeCellViews>
                                                         </tableColumn>
                                                     </tableColumns>
                                                     <connections>
+                                                        <action selector="tableViewClicked:" target="gjy-ma-ITW" id="Zmy-d9-cKb"/>
                                                         <outlet property="dataSource" destination="gjy-ma-ITW" id="z3N-Uu-Ogc"/>
                                                         <outlet property="delegate" destination="gjy-ma-ITW" id="R9f-Ti-EGk"/>
                                                     </connections>

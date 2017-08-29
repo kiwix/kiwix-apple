@@ -719,7 +719,7 @@
                                 <toolbarItem implicitItemIdentifier="1680E0D6-9392-484C-ABDA-DFFB7997F34C" label="Back/Forward" paletteLabel="Back/Forward" id="Djp-oY-b28">
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="58" height="25"/>
-                                    <size key="maxSize" width="58" height="28"/>
+                                    <size key="maxSize" width="62" height="28"/>
                                     <segmentedControl key="view" verticalHuggingPriority="750" id="l6s-bI-qqW">
                                         <rect key="frame" x="11" y="14" width="58" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -738,8 +738,8 @@
                                 <toolbarItem implicitItemIdentifier="0C2005E9-9000-4B31-A786-1F4BAF935385" label="Search" paletteLabel="Search" tag="-1" id="VWC-hA-TeQ">
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="90" height="22"/>
-                                    <size key="maxSize" width="800" height="22"/>
-                                    <customView key="view" id="OkE-04-5fe">
+                                    <size key="maxSize" width="800" height="24"/>
+                                    <customView key="view" id="OkE-04-5fe" customClass="SearchFieldContainer" customModule="Kiwix" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="14" width="500" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <subviews>

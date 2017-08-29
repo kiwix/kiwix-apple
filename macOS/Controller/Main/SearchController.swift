@@ -61,7 +61,9 @@ class SearchController: NSViewController, ProcedureQueueDelegate, NSTableViewDat
     
     @IBAction func tableViewClicked(_ sender: NSTableView) {
         guard tableView.selectedRow >= 0 else {return}
-        guard let split = view.window?.contentViewController as? NSSplitViewController,
+        guard let mainController = NSApplication.shared().mainWindow?.windowController as? MainWindowController else {return}
+        mainController.hideSearchResultWindow()
+        guard let split = NSApplication.shared().mainWindow?.contentViewController as? NSSplitViewController,
             let controller = split.splitViewItems.last?.viewController as? WebViewController else {return}
         controller.load(url: results[tableView.selectedRow].url)
     }
@@ -93,114 +95,36 @@ class SearchController: NSViewController, ProcedureQueueDelegate, NSTableViewDat
     }
     
     func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
-        if let row = tableView.make(withIdentifier: "ResultRow", owner: self) as? SearchResultTableRowView {
+        if let row = tableView.make(withIdentifier: "ResultRow", owner: self) as? NSTableRowView {
             return row
         } else {
-            let row = SearchResultTableRowView()
+            let row = NSTableRowView()
             row.identifier = "ResultRow"
             return row
         }
     }
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let cell = tableView.make(withIdentifier: "Result", owner: self) as! SearchResultTableCellView
         let result = results[row]
-        cell.titleField.stringValue = result.title
-        if let snippet = result.snippet {
-            cell.snippetField.stringValue = snippet
-        } else if let snippet = result.attributedSnippet {
-            cell.snippetField.attributedStringValue = snippet
+        if result.hasSnippet {
+            let cell = tableView.make(withIdentifier: "TitleSnippetResult", owner: self) as! SearchTitleSnippetResultTableCellView
+            cell.titleField.stringValue = result.title
+            if let snippet = result.snippet {
+                cell.snippetField.stringValue = snippet
+            } else if let snippet = result.attributedSnippet {
+                cell.snippetField.attributedStringValue = snippet
+            } else {
+                cell.snippetField.stringValue = ""
+            }
+            return cell
         } else {
-            cell.snippetField.stringValue = ""
-            cell.snippetField.attributedStringValue = NSAttributedString()
-        }
-        return cell
-    }
-    
-    func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        return results[row].hasSnippet ? 92 : 26
-    }
-}
-
-
-
-class SearchControllerOld: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
-    let searchMenu = NSMenu()
-    var searchResults: [(id: String, title: String, path: String, snippet: NSAttributedString)] = []
-    
-    @IBOutlet weak var searchField: NSSearchField!
-    @IBOutlet weak var tableView: NSTableView!
-    @IBAction func searchFieldChanged(_ sender: NSSearchField) {
-        guard let controller = view.window?.windowController as? MainWindowController else {return}
-//        searchResults = ZimManager.shared.getSearchResults(searchTerm: sender.stringValue)
-        tableView.reloadData()
-    }
-    @IBAction func tableViewClicked(_ sender: NSTableView) {
-        guard tableView.selectedRow >= 0 else {return}
-        let result = searchResults[tableView.selectedRow]
-        guard let url = URL(bookID: result.id, contentPath: result.path) else {return}
-        guard let split = view.window?.contentViewController as? NSSplitViewController,
-            let controller = split.splitViewItems.last?.viewController as? WebViewController else {return}
-        controller.load(url: url)
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configSearchMenu()
-    }
-    
-    func configSearchMenu() {
-        let clear = NSMenuItem(title: "Clear", action: nil, keyEquivalent: "")
-        clear.tag = Int(NSSearchFieldClearRecentsMenuItemTag)
-        searchMenu.insertItem(clear, at: 0)
-        
-        searchMenu.insertItem(NSMenuItem.separator(), at: 0)
-        
-        let recents = NSMenuItem(title: "", action: nil, keyEquivalent: "")
-        recents.tag = Int(NSSearchFieldRecentsMenuItemTag)
-        searchMenu.insertItem(recents, at: 0)
-        
-        let recentHeader = NSMenuItem(title: "Recent Search", action: nil, keyEquivalent: "")
-        recentHeader.tag = Int(NSSearchFieldRecentsTitleMenuItemTag)
-        searchMenu.insertItem(recentHeader, at: 0)
-        
-        let noRecent = NSMenuItem(title: "No Recent Search", action: nil, keyEquivalent: "")
-        noRecent.tag = Int(NSSearchFieldNoRecentsMenuItemTag)
-        searchMenu.insertItem(noRecent, at: 0)
-        
-        searchField.searchMenuTemplate = searchMenu
-    }
-    
-    func clearSearch() {
-        searchField.stringValue = ""
-        searchResults = []
-        tableView.reloadData()
-    }
-    
-    // MARK: - NSTableViewDataSource
-    
-    func numberOfRows(in tableView: NSTableView) -> Int {
-        return searchResults.count
-    }
-    
-    func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
-        if let row = tableView.make(withIdentifier: "ResultRow", owner: self) as? SearchResultTableRowView {
-            return row
-        } else {
-            let row = SearchResultTableRowView()
-            row.identifier = "ResultRow"
-            return row
+            let cell = tableView.make(withIdentifier: "TitleResult", owner: self) as! SearchTitleResultTableCellView
+            cell.titleField.stringValue = result.title
+            return cell
         }
     }
     
-    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let cell = tableView.make(withIdentifier: "Result", owner: self) as! SearchResultTableCellView
-        cell.titleField.stringValue = searchResults[row].title
-        cell.snippetField.attributedStringValue = searchResults[row].snippet
-        return cell
-    }
-    
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        return 92
+        return results[row].hasSnippet ? 92 : 30
     }
 }

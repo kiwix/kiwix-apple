@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class SearchResultTableCellView: NSTableCellView {
+class SearchTitleSnippetResultTableCellView: NSTableCellView {
     @IBOutlet weak var titleField: NSTextField!
     @IBOutlet weak var snippetField: NSTextField!
     
@@ -24,10 +24,13 @@ class SearchResultTableCellView: NSTableCellView {
     }
 }
 
-class SearchResultTableRowView: NSTableRowView {
-//    override func drawSeparator(in dirtyRect: NSRect) {
-//        Swift.print(dirtyRect)
-//        Swift.print(NSRect(x: 8, y: 0, width: dirtyRect.width - 8, height: dirtyRect.height))
-//        super.drawBackground(in: dirtyRect.insetBy(dx: 8, dy: 8))
-//    }
+class SearchTitleResultTableCellView: NSTableCellView {
+    @IBOutlet weak var titleField: NSTextField!
+}
+
+class SearchFieldContainer: NSView {
+    override func awakeFromNib() {
+        wantsLayer = true
+        layer?.masksToBounds = false
+    }
 }
