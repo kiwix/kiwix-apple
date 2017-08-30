@@ -29,11 +29,6 @@ class SearchTitleResultTableCellView: NSTableCellView {
 }
 
 class SearchFieldContainer: NSView {
-//    override func awakeFromNib() {
-//        wantsLayer = true
-//        layer?.masksToBounds = false
-//    }
-    
     override func draw(_ dirtyRect: NSRect) {
         wantsLayer = true
         layer?.masksToBounds = false
