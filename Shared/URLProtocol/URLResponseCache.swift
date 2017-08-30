@@ -6,7 +6,6 @@
 //  Copyright © 2016 Chris Li. All rights reserved.
 //
 
-import UIKit
 
 class URLResponseCache {
     static let shared = URLResponseCache()

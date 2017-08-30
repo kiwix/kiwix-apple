@@ -1,41 +1,45 @@
 //
 //  AppDelegate.swift
-//  Kiwix
+//  KiwixMac
 //
-//  Created by Chris Li on 2/12/17.
-//  Copyright © 2017 Chris Li. All rights reserved.
+//  Created by Chris Li on 8/14/17.
+//  Copyright © 2017 Kiwix. All rights reserved.
 //
 
 import Cocoa
-import AppKit
+import SwiftyUserDefaults
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
-        NotificationCenter.default.addObserver(self, selector: #selector(windowWillClose(notification:)), name: .NSWindowWillClose, object: nil)
+        URLProtocol.registerClass(KiwixURLProtocol.self)
+        
+        if (!Defaults[.terminated]) {
+            Defaults[.bookPaths] = []
+        }
+        Defaults[.terminated] = false
+        
+        var isStale = false
+        let urls = Defaults[.zimBookmarks].flatMap({try? URL(resolvingBookmarkData: $0, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)}).flatMap({$0})
+        ZimManager.shared.addBook(urls: urls)
+
+        guard let split = NSApplication.shared().mainWindow?.contentViewController as? NSSplitViewController,
+            let controller = split.splitViewItems.last?.viewController as? WebViewController else {return}
+        controller.loadMainPage()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
+        Defaults[.terminated] = true
     }
     
-    // MARK: - Window Management
-    
-    private var windows = [MainWindowController]()
-
-    class func add(controller: MainWindowController) {
-        let delegate = NSApplication.shared().delegate as! AppDelegate
-        delegate.windows.append(controller)
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return true
     }
-    
-    func windowWillClose(notification: NSNotification) {
-        guard let controller = notification.object as? MainWindowController,
-            let index = windows.index(of: controller) else {return}
-        windows.remove(at: index)
-    }
-    
-    @IBAction func newWindowForTab(_ sender: Any?){}
 }
 
+extension DefaultsKeys {
+    static let bookPaths = DefaultsKey<[String]>("bookPaths")
+    static let zimBookmarks = DefaultsKey<[Data]>("zimBookmarks")
+    static let terminated = DefaultsKey<Bool>("terminated")
+}

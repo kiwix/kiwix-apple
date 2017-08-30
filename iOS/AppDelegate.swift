@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ = Network.shared
         _ = AppNotification.shared
         application.setMinimumBackgroundFetchInterval(86400)
+        
         return true
     }
     
@@ -70,7 +71,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Background
     
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        let refresh = RefreshLibraryOperation()
+        let refresh = RefreshLibraryProcedure()
         refresh.addDidFinishBlockObserver { (operation, errors) in
             guard Preference.Notifications.libraryRefresh else {return}
             if let _ = errors.first {
