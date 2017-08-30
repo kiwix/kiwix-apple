@@ -9,33 +9,30 @@
 import Cocoa
 import SwiftyUserDefaults
 
-class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldDelegate, SearchFieldResponderDelegate {
+class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldDelegate, SearchFieldDelegate {
     @IBOutlet weak var searchField: SearchField!
     let searchResultWindowController = NSStoryboard(name: "Search", bundle: nil).instantiateInitialController() as! NSWindowController
-//    private var shouldShowSearchWhenResizingFinished = false
+    private var localMouseDownEventMonitor: Any?
     private var lostFocusObserver: Any?
     
     override func windowDidLoad() {
         super.windowDidLoad()
         window?.titleVisibility = .hidden
         window?.delegate = self
-        searchField.responderDelegate = self
+        searchField.fieldDelegate = self
     }
     
-//    func windowWillStartLiveResize(_ notification: Notification) {
-//        guard let resultWindow = searchResultWindowController.window else {return}
-//        if resultWindow.isVisible {
-//            hideSearchResultWindow()
-//            shouldShowSearchWhenResizingFinished = true
-//        }
-//    }
-//
-//    func windowDidEndLiveResize(_ notification: Notification) {
-//        if shouldShowSearchWhenResizingFinished {
-//            showSearchResultWindow()
-//            shouldShowSearchWhenResizingFinished = false
-//        }
-//    }
+    func windowWillStartLiveResize(_ notification: Notification) {
+        if searchField.searchStarted {
+            hideSearchResultWindow()
+        }
+    }
+
+    func windowDidEndLiveResize(_ notification: Notification) {
+        if searchField.searchStarted {
+            showSearchResultWindow()
+        }
+    }
     
     // MARK: - Actions
     
@@ -83,37 +80,24 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
     }
     
     // MARK: - NSSearchFieldDelegate
-    var isSearching = false
     
-    func searchFieldDidBecameFirstResponder() {
-        print("did became first responder, issearching: \(isSearching)")
-        
-        guard let resultWindow = searchResultWindowController.window else {return}
-        if !resultWindow.isVisible {
-            showSearchResultWindow()
-        }
-        
+    func searchWillStart() {
+        showSearchResultWindow()
     }
     
-    override func controlTextDidBeginEditing(_ obj: Notification) {
-        isSearching = true
-    }
-    
-    override func controlTextDidEndEditing(_ obj: Notification) {
-        isSearching = false
-        print("controlTextDidEndEditing")
+    func searchWillEnd() {
         hideSearchResultWindow()
+        window?.makeFirstResponder(nil)
     }
     
     @IBAction func searchFieldTextDidChange(_ sender: NSSearchField) {
-        guard isSearching else {return}
+        searchField.searchTermCache = sender.stringValue
         guard let searchController = searchResultWindowController.contentViewController as? SearchController else {return}
         searchController.startSearch(searchTerm: sender.stringValue)
     }
     
-    func showSearchResultWindow() {
-        print("show results window")
-        guard let resultWindow = searchResultWindowController.window else {return}
+    private func showSearchResultWindow() {
+        guard let resultWindow = searchResultWindowController.window, !resultWindow.isVisible else {return}
         guard let mainWindow = searchField.window,
             let parentView = searchField.superview else {return}
         let searchFieldFrame = parentView.convert(searchField.frame, to: nil)
@@ -125,41 +109,40 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
         resultWindow.setFrameTopLeftPoint(resultFrame.origin)
         mainWindow.addChildWindow(resultWindow, ordered: .above)
         
-//        NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown, .otherMouseDown]) { (event) -> NSEvent? in
-//            if event.window == resultWindow {
-//                return event
-//            } else if event.window == mainWindow {
-//                guard let contentView = mainWindow.contentView else {return event}
-//                let point = contentView.convert(event.locationInWindow, from: nil)
-//                let hitView = contentView.hitTest(point)
-//                let editor = self.searchField.currentEditor()
-//                if hitView != self.searchField && (editor != nil && hitView != editor) {
-//                    self.hideSearchResultWindow()
-//                    return nil
-//                } else {
-//                    return event
-//                }
-//            } else {
-//                self.hideSearchResultWindow()
-//                return event
-//            }
-//        }
-//        
-//        self.lostFocusObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name.NSWindowDidResignKey, object: mainWindow, queue: nil) { (_) in
-//            self.hideSearchResultWindow()
-//        }
+        localMouseDownEventMonitor = NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown, .otherMouseDown]) { (event) -> NSEvent? in
+            if event.window == resultWindow {
+                return event
+            } else if event.window == mainWindow {
+                let point = self.searchField.convert(event.locationInWindow, from: nil)
+                let inSearchField = self.searchField.bounds.contains(point)
+                if !inSearchField {
+                    self.searchField.endSearch()
+                }
+                return event
+            } else {
+                self.searchField.endSearch()
+                return event
+            }
+        }
+
+        lostFocusObserver = NotificationCenter.default.addObserver(forName: .NSWindowDidResignKey, object: mainWindow, queue: nil) { (_) in
+            self.searchField.endSearch()
+        }
     }
     
-    func hideSearchResultWindow() {
-        print("hide results window")
+    private func hideSearchResultWindow() {
         guard let resultWindow = searchResultWindowController.window, resultWindow.isVisible else {return}
         resultWindow.parent?.removeChildWindow(resultWindow)
         resultWindow.orderOut(nil)
-        searchField.stringValue = ""
-        window?.makeFirstResponder(nil)
         
-        if let lostFocusObserver = lostFocusObserver {
-            NotificationCenter.default.removeObserver(lostFocusObserver)
+        if let monitor = localMouseDownEventMonitor {
+            NSEvent.removeMonitor(monitor)
+            localMouseDownEventMonitor = nil
+        }
+        
+        if let observer = lostFocusObserver {
+            NotificationCenter.default.removeObserver(observer)
+            lostFocusObserver = nil
         }
     }
 }

@@ -36,6 +36,6 @@ class WebViewController: NSViewController, WebFrameLoadDelegate {
     
     func webView(_ sender: WebView!, didFinishLoadFor frame: WebFrame!) {
         guard let controller = view.window?.windowController as? MainWindowController else {return}
-        controller.searchField.placeholderString = frame.dataSource?.pageTitle ?? "Search"
+        controller.searchField.title = frame.dataSource?.pageTitle
     }
 }

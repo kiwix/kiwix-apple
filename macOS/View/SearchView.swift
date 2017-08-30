@@ -29,20 +29,59 @@ class SearchTitleResultTableCellView: NSTableCellView {
 }
 
 class SearchFieldContainer: NSView {
-    override func awakeFromNib() {
+//    override func awakeFromNib() {
+//        wantsLayer = true
+//        layer?.masksToBounds = false
+//    }
+    
+    override func draw(_ dirtyRect: NSRect) {
         wantsLayer = true
         layer?.masksToBounds = false
     }
 }
 
 class SearchField: NSSearchField {
-    weak var responderDelegate: SearchFieldResponderDelegate?
-    override func becomeFirstResponder() -> Bool {
-        responderDelegate?.searchFieldDidBecameFirstResponder()
-        return super.becomeFirstResponder()
+    weak var fieldDelegate: SearchFieldDelegate?
+    
+    private(set) var searchStarted = false {
+        didSet {
+            if searchStarted {
+                placeholderString = prompt
+            } else {
+                placeholderString = title
+            }
+        }
+    }
+    
+    var title: String? = "" {
+        didSet {
+            placeholderString = title ?? prompt
+        }
+    }
+    
+    var searchTermCache = ""
+    let prompt = "Search"
+    
+    
+    override func mouseDown(with event: NSEvent) {
+        super.mouseDown(with: event)
+        if !searchStarted {
+            stringValue = searchTermCache
+            fieldDelegate?.searchWillStart()
+            searchStarted = true
+        }
+    }
+    
+    func endSearch() {
+        if searchStarted {
+            stringValue = ""
+            fieldDelegate?.searchWillEnd()
+            searchStarted = false
+        }
     }
 }
 
-protocol SearchFieldResponderDelegate: NSSearchFieldDelegate {
-    func searchFieldDidBecameFirstResponder()
+protocol SearchFieldDelegate: class {
+    func searchWillStart()
+    func searchWillEnd()
 }

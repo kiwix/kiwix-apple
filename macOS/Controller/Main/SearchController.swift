@@ -67,7 +67,7 @@ class SearchController: NSViewController, ProcedureQueueDelegate, NSTableViewDat
     @IBAction func tableViewClicked(_ sender: NSTableView) {
         guard tableView.selectedRow >= 0 else {return}
         guard let mainController = NSApplication.shared().mainWindow?.windowController as? MainWindowController else {return}
-        mainController.hideSearchResultWindow()
+        mainController.searchField.endSearch()
         guard let split = NSApplication.shared().mainWindow?.contentViewController as? NSSplitViewController,
             let controller = split.splitViewItems.last?.viewController as? WebViewController else {return}
         controller.load(url: results[tableView.selectedRow].url)
