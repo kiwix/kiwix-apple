@@ -34,3 +34,15 @@ class SearchFieldContainer: NSView {
         layer?.masksToBounds = false
     }
 }
+
+class SearchField: NSSearchField {
+    weak var responderDelegate: SearchFieldResponderDelegate?
+    override func becomeFirstResponder() -> Bool {
+        responderDelegate?.searchFieldDidBecameFirstResponder()
+        return super.becomeFirstResponder()
+    }
+}
+
+protocol SearchFieldResponderDelegate: NSSearchFieldDelegate {
+    func searchFieldDidBecameFirstResponder()
+}

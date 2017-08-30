@@ -743,7 +743,7 @@
                                         <rect key="frame" x="0.0" y="14" width="500" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <subviews>
-                                            <searchField wantsLayer="YES" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jGR-U3-X3O">
+                                            <searchField wantsLayer="YES" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jGR-U3-X3O" customClass="SearchField" customModule="Kiwix" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="500" height="22"/>
                                                 <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="Iv7-vs-fKh">
                                                     <font key="font" metaFont="system"/>

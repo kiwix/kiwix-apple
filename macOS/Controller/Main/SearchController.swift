@@ -22,6 +22,11 @@ class SearchResultWindowController: NSWindowController {
     }
 }
 
+class SearchResultWindow: NSWindow {
+    override var canBecomeKey: Bool {return false}
+    override var canBecomeMain: Bool {return false}
+}
+
 class SearchController: NSViewController, ProcedureQueueDelegate, NSTableViewDataSource, NSTableViewDelegate {
     @IBOutlet weak var visiualEffect: NSVisualEffectView!
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
@@ -125,6 +130,6 @@ class SearchController: NSViewController, ProcedureQueueDelegate, NSTableViewDat
     }
     
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        return results[row].hasSnippet ? 92 : 30
+        return results[row].hasSnippet ? 92 : 26
     }
 }
