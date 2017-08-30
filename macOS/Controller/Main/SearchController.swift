@@ -30,6 +30,7 @@ class SearchResultWindow: NSWindow {
 class SearchController: NSViewController, ProcedureQueueDelegate, NSTableViewDataSource, NSTableViewDelegate {
     @IBOutlet weak var visiualEffect: NSVisualEffectView!
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
+    @IBOutlet weak var noResultLabel: NSTextField!
     @IBOutlet weak var tableView: NSTableView!
     
     let queue = ProcedureQueue()
@@ -39,6 +40,16 @@ class SearchController: NSViewController, ProcedureQueueDelegate, NSTableViewDat
         super.viewDidLoad()
         configureVisiualEffectView()
         queue.delegate = self
+    }
+    
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        configureTrackingArea()
+    }
+    
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        view.window?.makeFirstResponder(nil)
     }
     
     func configureVisiualEffectView() {
@@ -64,6 +75,11 @@ class SearchController: NSViewController, ProcedureQueueDelegate, NSTableViewDat
         queue.add(operation: procedure)
     }
     
+    func clearSearch() {
+        results = []
+        tableView.reloadData()
+    }
+    
     @IBAction func tableViewClicked(_ sender: NSTableView) {
         guard tableView.selectedRow >= 0 else {return}
         guard let mainController = NSApplication.shared().mainWindow?.windowController as? MainWindowController else {return}
@@ -73,6 +89,19 @@ class SearchController: NSViewController, ProcedureQueueDelegate, NSTableViewDat
         controller.load(url: results[tableView.selectedRow].url)
     }
     
+    // MARK: - Mouse tracking
+    
+    func configureTrackingArea() {
+        let options: NSTrackingAreaOptions = [.mouseMoved, .activeAlways]
+        let trackingArea = NSTrackingArea(rect: view.convert(tableView.frame, from: tableView.superview), options: options, owner: self, userInfo: nil)
+        view.addTrackingArea(trackingArea)
+    }
+    
+    override func mouseMoved(with event: NSEvent) {
+        let point = tableView.convert(event.locationInWindow, from: nil)
+        tableView.selectRowIndexes(IndexSet(integer: tableView.row(at: point)), byExtendingSelection: false)
+    }
+
     // MARK: - ProcedureQueueDelegate
     
     func procedureQueue(_ queue: ProcedureQueue, willAddProcedure procedure: Procedure, context: Any?) -> ProcedureFuture? {
@@ -80,6 +109,7 @@ class SearchController: NSViewController, ProcedureQueueDelegate, NSTableViewDat
         DispatchQueue.main.async {
             self.progressIndicator.startAnimation(nil)
             self.tableView.isHidden = true
+            self.noResultLabel.isHidden = true
         }
         return nil
     }
@@ -88,7 +118,8 @@ class SearchController: NSViewController, ProcedureQueueDelegate, NSTableViewDat
         guard queue.operationCount == 0 else {return}
         DispatchQueue.main.async {
             self.progressIndicator.stopAnimation(nil)
-            self.tableView.isHidden = false
+            self.tableView.isHidden = self.results.count == 0
+            self.noResultLabel.isHidden = !self.tableView.isHidden
             self.tableView.reloadData()
         }
     }

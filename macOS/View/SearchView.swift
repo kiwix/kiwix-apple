@@ -26,6 +26,12 @@ class SearchTitleSnippetResultTableCellView: NSTableCellView {
 
 class SearchTitleResultTableCellView: NSTableCellView {
     @IBOutlet weak var titleField: NSTextField!
+    
+    override var backgroundStyle: NSBackgroundStyle {
+        didSet {
+            titleField.textColor = backgroundStyle == .light ? NSColor.black : NSColor.selectedMenuItemTextColor
+        }
+    }
 }
 
 class SearchFieldContainer: NSView {
@@ -57,6 +63,11 @@ class SearchField: NSSearchField {
     var searchTermCache = ""
     let prompt = "Search"
     
+    override func awakeFromNib() {
+        guard let cell = (cell as? NSSearchFieldCell)?.cancelButtonCell else {return}
+        cell.target = self
+        cell.action = #selector(cancelButtonClicked)
+    }
     
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
@@ -74,9 +85,16 @@ class SearchField: NSSearchField {
             searchStarted = false
         }
     }
+    
+    func cancelButtonClicked() {
+        stringValue = ""
+        searchTermCache = ""
+        fieldDelegate?.searchTextDidClear()
+    }
 }
 
 protocol SearchFieldDelegate: class {
     func searchWillStart()
+    func searchTextDidClear()
     func searchWillEnd()
 }

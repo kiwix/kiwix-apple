@@ -72,7 +72,9 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
             ZimManager.shared.addBook(urls: urls)
             
             guard let searchController = self.searchResultWindowController.contentViewController as? SearchController else {return}
-//            searchController.clearSearch()
+            self.searchField.endSearch()
+            self.searchField.searchTermCache = ""
+            searchController.clearSearch()
             guard let split = self.contentViewController as? NSSplitViewController,
                 let webController = split.splitViewItems.last?.viewController as? WebViewController else {return}
             webController.loadMainPage()
@@ -83,6 +85,11 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
     
     func searchWillStart() {
         showSearchResultWindow()
+    }
+    
+    func searchTextDidClear() {
+        guard let searchController = self.searchResultWindowController.contentViewController as? SearchController else {return}
+        searchController.clearSearch()
     }
     
     func searchWillEnd() {
