@@ -6,6 +6,8 @@ This is the home for Kiwix apps on iOS and macOS.
 - Test the macOS app. [Direct Download](https://www.dropbox.com/s/fl30dhng2l0yeki/Kiwix.dmg?dl=0)
 
 ### iOS
+
+![alt text](https://img.shields.io/badge/version-1.8.1-blue.svg) ![alt text](https://img.shields.io/badge/compatibility-iOS%2010.0-green.svg)
 <span>
 <img src="https://img.shields.io/badge/version-1.8.1-blue.svg" alt="Drawing="/>
 <img src="https://img.shields.io/badge/compatibility-iOS%2010.0-green.svg" alt="Drawing="/>
