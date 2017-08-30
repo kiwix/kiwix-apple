@@ -842,10 +842,10 @@
             </objects>
             <point key="canvasLocation" x="477.5" y="1552.5"/>
         </scene>
-        <!--Welcome View Controller-->
+        <!--View Controller-->
         <scene sceneID="whX-Vk-8fO">
             <objects>
-                <viewController id="jmg-Am-8VV" customClass="WelcomeViewController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="jmg-Am-8VV" sceneMemberID="viewController">
                     <view key="view" id="U3f-Mp-NGl" customClass="WelcomeView" customModule="Kiwix" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="503" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>

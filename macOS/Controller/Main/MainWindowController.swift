@@ -75,9 +75,19 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
             self.searchField.endSearch()
             self.searchField.searchTermCache = ""
             searchController.clearSearch()
+            
             guard let split = self.contentViewController as? NSSplitViewController,
                 let webController = split.splitViewItems.last?.viewController as? WebViewController else {return}
-            webController.loadMainPage()
+            if ZimManager.shared.getReaderIDs().count > 0 {
+                webController.loadMainPage()
+            } else {
+                webController.webView.isHidden = true
+                let alert = NSAlert()
+                alert.messageText = "Cannot Open Book"
+                alert.informativeText = "The file you selected is not a valid zim file."
+                alert.addButton(withTitle: "Ok")
+                alert.runModal()
+            }
         }
     }
     
@@ -151,11 +161,5 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
             NotificationCenter.default.removeObserver(observer)
             lostFocusObserver = nil
         }
-    }
-}
-
-class WelcomeViewController: NSViewController {
-    @IBAction func openBookButtonTapped(_ sender: NSButton) {
-        
     }
 }
