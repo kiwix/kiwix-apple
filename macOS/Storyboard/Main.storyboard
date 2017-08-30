@@ -851,8 +851,16 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="equalSpacing" orientation="vertical" alignment="centerX" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q6a-uM-LFi">
-                                <rect key="frame" x="149" y="128" width="205" height="126"/>
+                                <rect key="frame" x="149" y="29" width="205" height="336"/>
                                 <subviews>
+                                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DiV-IB-4Fz">
+                                        <rect key="frame" x="3" y="136" width="200" height="200"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="200" id="Scq-5a-GfQ"/>
+                                            <constraint firstAttribute="height" constant="200" id="uC8-6Q-dKX"/>
+                                        </constraints>
+                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="bottom" image="LogoMac" id="dW4-wk-ohG"/>
+                                    </imageView>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="P8j-EL-u5L">
                                         <rect key="frame" x="-2" y="37" width="209" height="89"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="KIWIX" id="1tN-QT-pI1">
@@ -873,14 +881,16 @@
                                 <visibilityPriorities>
                                     <integer value="1000"/>
                                     <integer value="1000"/>
+                                    <integer value="1000"/>
                                 </visibilityPriorities>
                                 <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                 </customSpacing>
                             </stackView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="82H-H3-bsH">
-                                <rect key="frame" x="198" y="60" width="107" height="32"/>
+                                <rect key="frame" x="198" y="-39" width="107" height="32"/>
                                 <buttonCell key="cell" type="push" title="Open Book" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ax2-gK-j18">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -891,8 +901,8 @@
                             </button>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="P8j-EL-u5L" firstAttribute="bottom" secondItem="U3f-Mp-NGl" secondAttribute="bottom" multiplier="0.45" id="V23-ww-H0i"/>
                             <constraint firstItem="82H-H3-bsH" firstAttribute="top" secondItem="Q6a-uM-LFi" secondAttribute="bottom" constant="40" id="b6E-91-9hg"/>
+                            <constraint firstItem="DiV-IB-4Fz" firstAttribute="bottom" secondItem="U3f-Mp-NGl" secondAttribute="bottom" multiplier="0.45" id="dcJ-sf-0Zi"/>
                             <constraint firstItem="Q6a-uM-LFi" firstAttribute="centerX" secondItem="U3f-Mp-NGl" secondAttribute="centerX" id="lYI-ky-r1f"/>
                             <constraint firstItem="82H-H3-bsH" firstAttribute="centerX" secondItem="U3f-Mp-NGl" secondAttribute="centerX" id="ubd-Be-3TT"/>
                         </constraints>
@@ -945,6 +955,7 @@
         <image name="Back" width="19.200000762939453" height="19.200000762939453"/>
         <image name="Forward" width="19.200000762939453" height="19.200000762939453"/>
         <image name="Home" width="25.600000381469727" height="25.600000381469727"/>
+        <image name="LogoMac" width="200" height="200"/>
         <image name="Open" width="25.600000381469727" height="25.600000381469727"/>
     </resources>
 </document>
