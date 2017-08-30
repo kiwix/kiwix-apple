@@ -208,7 +208,7 @@ std::vector<std::string> *searcherZimIDs = NULL;
     std::string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];
     NSMutableArray *suggestions = [[NSMutableArray alloc] init];
     
-    unsigned int count = max(5, int(20 / readers.size()));
+    unsigned int count = max(5, int(30 / readers.size()));
     
     for(auto iter: readers) {
         std::shared_ptr<kiwix::Reader> reader = iter.second;

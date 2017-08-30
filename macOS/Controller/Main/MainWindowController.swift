@@ -109,7 +109,7 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
             let parentView = searchField.superview else {return}
         let searchFieldFrame = parentView.convert(searchField.frame, to: nil)
         let width = max(380, searchFieldFrame.width)
-        let height = max(0.6 * width, 300)
+        let height = max(0.75 * width, 300)
         let origin = width == searchFieldFrame.width ? searchFieldFrame.origin : NSPoint(x: (mainWindow.frame.width - width)/2, y: searchFieldFrame.origin.y)
         let resultFrame = mainWindow.convertToScreen(NSRect(origin: origin, size: CGSize(width: width, height: height)).offsetBy(dx: 0, dy: -2))
         resultWindow.setFrame(resultFrame, display: true)
