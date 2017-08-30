@@ -81,6 +81,9 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
             if ZimManager.shared.getReaderIDs().count > 0 {
                 webController.loadMainPage()
             } else {
+                self.searchField.title = nil
+                self.searchField.searchTermCache = ""
+                self.searchTextDidClear()
                 webController.webView.isHidden = true
                 let alert = NSAlert()
                 alert.messageText = "Cannot Open Book"
