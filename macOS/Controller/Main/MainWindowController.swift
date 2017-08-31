@@ -1,6 +1,6 @@
 //
 //  MainController.swift
-//  macOS
+//  Kiwix
 //
 //  Created by Chris Li on 8/22/17.
 //  Copyright © 2017 Chris Li. All rights reserved.
@@ -34,6 +34,37 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
         }
     }
     
+    func openBooks(paths: [String]) {
+        let bookmarks = paths.flatMap({try? URL(fileURLWithPath: $0).bookmarkData(options: [.withSecurityScope, .securityScopeAllowOnlyReadAccess], includingResourceValuesForKeys: nil, relativeTo: nil)})
+        Defaults[.zimBookmarks] = bookmarks
+        
+        var isStale = false
+        let urls = bookmarks.flatMap({try? URL(resolvingBookmarkData: $0, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)}).flatMap({$0})
+        ZimManager.shared.removeBooks();
+        ZimManager.shared.addBook(urls: urls)
+        
+        guard let searchController = self.searchResultWindowController.contentViewController as? SearchController else {return}
+        self.searchField.endSearch()
+        self.searchField.searchTermCache = ""
+        searchController.clearSearch()
+        
+        guard let split = self.contentViewController as? NSSplitViewController,
+            let webController = split.splitViewItems.last?.viewController as? WebViewController else {return}
+        if ZimManager.shared.getReaderIDs().count > 0 {
+            webController.loadMainPage()
+        } else {
+            self.searchField.title = nil
+            self.searchField.searchTermCache = ""
+            self.searchTextDidClear()
+            webController.webView.isHidden = true
+            let alert = NSAlert()
+            alert.messageText = "Cannot Open Book"
+            alert.informativeText = "The file you selected is not a valid zim file."
+            alert.addButton(withTitle: "Ok")
+            alert.runModal()
+        }
+    }
+    
     // MARK: - Actions
     
     @IBAction func mainPageButtonTapped(_ sender: NSToolbarItem) {
@@ -63,35 +94,7 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
         openPanel.beginSheetModal(for: window!) { response in
             guard response == NSFileHandlingPanelOKButton else {return}
             let paths = openPanel.urls.map({$0.path})
-            
-            let bookmarks = paths.flatMap({try? URL(fileURLWithPath: $0).bookmarkData(options: [.withSecurityScope, .securityScopeAllowOnlyReadAccess], includingResourceValuesForKeys: nil, relativeTo: nil)})
-            Defaults[.zimBookmarks] = bookmarks
-            
-            var isStale = false
-            let urls = bookmarks.flatMap({try? URL(resolvingBookmarkData: $0, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)}).flatMap({$0})
-            ZimManager.shared.removeBooks();
-            ZimManager.shared.addBook(urls: urls)
-            
-            guard let searchController = self.searchResultWindowController.contentViewController as? SearchController else {return}
-            self.searchField.endSearch()
-            self.searchField.searchTermCache = ""
-            searchController.clearSearch()
-            
-            guard let split = self.contentViewController as? NSSplitViewController,
-                let webController = split.splitViewItems.last?.viewController as? WebViewController else {return}
-            if ZimManager.shared.getReaderIDs().count > 0 {
-                webController.loadMainPage()
-            } else {
-                self.searchField.title = nil
-                self.searchField.searchTermCache = ""
-                self.searchTextDidClear()
-                webController.webView.isHidden = true
-                let alert = NSAlert()
-                alert.messageText = "Cannot Open Book"
-                alert.informativeText = "The file you selected is not a valid zim file."
-                alert.addButton(withTitle: "Ok")
-                alert.runModal()
-            }
+            self.openBooks(paths: paths)
         }
     }
     
