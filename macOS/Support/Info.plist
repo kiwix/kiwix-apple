@@ -4,6 +4,24 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>zim</string>
+				<string>zimaa</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>ZimFile.icns</string>
+			<key>CFBundleTypeName</key>
+			<string>OpenZIM Content File</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -16,17 +34,56 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>2.0</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>org.kiwix</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>kiwix</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
-	<string>2.0.2</string>
+	<string>2.0.3</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.reference</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2017 Chris Li. All rights reserved.</string>
+	<string>Copyright © 2017 Kiwix and authors</string>
 	<key>NSMainStoryboardFile</key>
 	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+				<string>public.content</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Zim File</string>
+			<key>UTTypeIconFile</key>
+			<string>ZimFile.icns</string>
+			<key>UTTypeIdentifier</key>
+			<string>org.openzim.zim</string>
+			<key>UTTypeReferenceURL</key>
+			<string>http://www.openzim.org/wiki/ZIM_file_format</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>zim</string>
+					<string>zimaa</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
 </dict>
 </plist>

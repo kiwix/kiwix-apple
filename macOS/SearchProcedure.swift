@@ -1,6 +1,6 @@
 //
 //  SearchProcedure.swift
-//  macOS
+//  Kiwix
 //
 //  Created by Chris Li on 8/28/17.
 //  Copyright © 2017 Chris Li. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  KiwixMac
+//  Kiwix
 //
 //  Created by Chris Li on 8/14/17.
 //  Copyright © 2017 Kiwix. All rights reserved.
@@ -35,6 +35,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return true
+    }
+    
+    func application(_ sender: NSApplication, openFiles filenames: [String]) {
+        guard let controller = NSApplication.shared().mainWindow?.windowController as? MainWindowController else {return}
+        controller.openBooks(paths: filenames)
     }
 }
 
