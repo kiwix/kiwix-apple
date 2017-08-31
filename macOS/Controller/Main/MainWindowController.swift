@@ -58,6 +58,7 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
         openPanel.canChooseFiles = true
         openPanel.canChooseDirectories = false
         openPanel.allowsMultipleSelection = false
+        openPanel.allowedFileTypes = ["zim", "zimaa"]
         
         openPanel.beginSheetModal(for: window!) { response in
             guard response == NSFileHandlingPanelOKButton else {return}
