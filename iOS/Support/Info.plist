@@ -134,6 +134,8 @@
 			<string>ZIM File</string>
 			<key>UTTypeIdentifier</key>
 			<string>org.kiwix.zim</string>
+			<key>UTTypeSize320IconFile</key>
+			<string></string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>Item 0</key>
