@@ -31,6 +31,12 @@
 		97533B461F4C723900F6651A /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97533B451F4C723900F6651A /* MainWindowController.swift */; };
 		975415D41F54C1870007EA6C /* SearchProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975415D31F54C1870007EA6C /* SearchProcedure.swift */; };
 		975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975B90FD1CEB909100D13906 /* iOSExtensions.swift */; };
+		975FDADA1F6082DA00A10E8C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDAD91F6082DA00A10E8C /* AppDelegate.swift */; };
+		975FDADC1F6082DA00A10E8C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDADB1F6082DA00A10E8C /* ViewController.swift */; };
+		975FDADF1F6082DA00A10E8C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975FDADD1F6082DA00A10E8C /* Main.storyboard */; };
+		975FDAE11F6082DA00A10E8C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 975FDAE01F6082DA00A10E8C /* Assets.xcassets */; };
+		975FDAE41F6082DA00A10E8C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975FDAE21F6082DA00A10E8C /* LaunchScreen.storyboard */; };
+		975FDAF01F60869200A10E8C /* wikipedia_en_medicine_nopic_2017-07.zim in CopyFiles */ = {isa = PBXBuildFile; fileRef = 975FDAEC1F60857500A10E8C /* wikipedia_en_medicine_nopic_2017-07.zim */; };
 		97642B991E380CC0003E2D0B /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97642B981E380CC0003E2D0B /* Network.swift */; };
 		9765D9801F50CC4700BFDC1E /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9765D97F1F50CC4700BFDC1E /* Search.storyboard */; };
 		976771791F4378FC007ED0C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 976771741F4378FC007ED0C2 /* Main.storyboard */; };
@@ -171,6 +177,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		975FDAED1F6085B200A10E8C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				975FDAF01F60869200A10E8C /* wikipedia_en_medicine_nopic_2017-07.zim in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		976D297B1F44A776003F5431 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -246,6 +262,15 @@
 		975415D31F54C1870007EA6C /* SearchProcedure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchProcedure.swift; sourceTree = "<group>"; };
 		9759D4211F4F278800705779 /* Kiwix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
 		975B90FD1CEB909100D13906 /* iOSExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOSExtensions.swift; sourceTree = "<group>"; };
+		975FDAD71F6082DA00A10E8C /* WikiMed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikiMed.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		975FDAD91F6082DA00A10E8C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		975FDADB1F6082DA00A10E8C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		975FDADE1F6082DA00A10E8C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		975FDAE01F6082DA00A10E8C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		975FDAE31F6082DA00A10E8C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		975FDAE51F6082DA00A10E8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		975FDAEB1F60839E00A10E8C /* WikiMed.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = WikiMed.app; path = "../../../../../../Users/chrisli/Library/Developer/Xcode/DerivedData/Kiwix-ayxrfhaqnfxzendihdolvkklkmhk/Build/Products/Debug-iphoneos/WikiMed.app"; sourceTree = "<group>"; };
+		975FDAEC1F60857500A10E8C /* wikipedia_en_medicine_nopic_2017-07.zim */ = {isa = PBXFileReference; lastKnownFileType = file; path = "wikipedia_en_medicine_nopic_2017-07.zim"; sourceTree = "<group>"; };
 		97642B981E380CC0003E2D0B /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		9764CBD21D8083AA00072D6A /* ArticleProcedure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleProcedure.swift; sourceTree = "<group>"; };
 		9765D97F1F50CC4700BFDC1E /* Search.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = "<group>"; };
@@ -649,6 +674,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		975FDAD41F6082DA00A10E8C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9779C3101D4575AD0064CC8E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -843,6 +875,29 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
+		975FDAD81F6082DA00A10E8C /* WikiMed */ = {
+			isa = PBXGroup;
+			children = (
+				975FDAD91F6082DA00A10E8C /* AppDelegate.swift */,
+				975FDADB1F6082DA00A10E8C /* ViewController.swift */,
+				975FDADD1F6082DA00A10E8C /* Main.storyboard */,
+				975FDAEA1F60839900A10E8C /* Support */,
+				975FDAE01F6082DA00A10E8C /* Assets.xcassets */,
+			);
+			path = WikiMed;
+			sourceTree = "<group>";
+		};
+		975FDAEA1F60839900A10E8C /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				975FDAEC1F60857500A10E8C /* wikipedia_en_medicine_nopic_2017-07.zim */,
+				975FDAE21F6082DA00A10E8C /* LaunchScreen.storyboard */,
+				975FDAE51F6082DA00A10E8C /* Info.plist */,
+				975FDAEB1F60839E00A10E8C /* WikiMed.app */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
 		9767716E1F4378FC007ED0C2 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -996,11 +1051,13 @@
 				973BCD1F1CEB412E00F10B44 /* Shared */,
 				973BCCE41CEB3EDE00F10B44 /* iOS */,
 				979315821E5127930093D3BA /* macOS */,
+				975FDAD81F6082DA00A10E8C /* WikiMed */,
 				97E609F21D103DED00EBCB9D /* iOSWidgets */,
 				9706DA9F1E6750360005FE0F /* Tests */,
 				931D277C156AE671D3F9EADA /* Libraries */,
 				F544A4E4357A6D33CF234C6B /* Pods */,
 				3B93EAF9B5C5AA23046BDEAC /* Frameworks */,
+				975FDAD71F6082DA00A10E8C /* WikiMed.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1552,6 +1609,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		975FDAD61F6082DA00A10E8C /* WikiMed */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 975FDAE81F6082DA00A10E8C /* Build configuration list for PBXNativeTarget "WikiMed" */;
+			buildPhases = (
+				975FDAD31F6082DA00A10E8C /* Sources */,
+				975FDAD41F6082DA00A10E8C /* Frameworks */,
+				975FDAD51F6082DA00A10E8C /* Resources */,
+				975FDAED1F6085B200A10E8C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WikiMed;
+			productName = WikiMed;
+			productReference = 975FDAD71F6082DA00A10E8C /* WikiMed.app */;
+			productType = "com.apple.product-type.application";
+		};
 		9779C3121D4575AD0064CC8E /* Bookmarks */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9779C31F1D4575AE0064CC8E /* Build configuration list for PBXNativeTarget "Bookmarks" */;
@@ -1637,10 +1712,15 @@
 		97A2AB801C1B80FF00052E74 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0820;
+				LastSwiftUpdateCheck = 0900;
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Chris Li";
 				TargetAttributes = {
+					975FDAD61F6082DA00A10E8C = {
+						CreatedOnToolsVersion = 9.0;
+						DevelopmentTeam = L7HWM3SP3L;
+						ProvisioningStyle = Automatic;
+					};
 					9779C3121D4575AD0064CC8E = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = L7HWM3SP3L;
@@ -1716,6 +1796,7 @@
 			targets = (
 				97A2AB871C1B80FF00052E74 /* iOS */,
 				979315801E5127930093D3BA /* macOS */,
+				975FDAD61F6082DA00A10E8C /* WikiMed */,
 				9779C3121D4575AD0064CC8E /* Bookmarks */,
 				97FC27D01E69CE10008B2348 /* iOS_ScreenshotAutomator */,
 			);
@@ -1723,6 +1804,16 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		975FDAD51F6082DA00A10E8C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				975FDAE41F6082DA00A10E8C /* LaunchScreen.storyboard in Resources */,
+				975FDAE11F6082DA00A10E8C /* Assets.xcassets in Resources */,
+				975FDADF1F6082DA00A10E8C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9779C3111D4575AD0064CC8E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1883,6 +1974,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		975FDAD31F6082DA00A10E8C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				975FDADC1F6082DA00A10E8C /* ViewController.swift in Sources */,
+				975FDADA1F6082DA00A10E8C /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9779C30F1D4575AD0064CC8E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2010,7 +2110,73 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		975FDADD1F6082DA00A10E8C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				975FDADE1F6082DA00A10E8C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		975FDAE21F6082DA00A10E8C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				975FDAE31F6082DA00A10E8C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
+		975FDAE61F6082DA00A10E8C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L7HWM3SP3L;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = WikiMed/Support/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.wikimed;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		975FDAE71F6082DA00A10E8C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L7HWM3SP3L;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = WikiMed/Support/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.wikimed;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		9779C3201D4575AE0064CC8E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2350,6 +2516,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		975FDAE81F6082DA00A10E8C /* Build configuration list for PBXNativeTarget "WikiMed" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				975FDAE61F6082DA00A10E8C /* Debug */,
+				975FDAE71F6082DA00A10E8C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		9779C31F1D4575AE0064CC8E /* Build configuration list for PBXNativeTarget "Bookmarks" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
