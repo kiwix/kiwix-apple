@@ -5,8 +5,6 @@
 //  Created by Chris Li on 8/14/15.
 //  Copyright © 2015 Chris Li. All rights reserved.
 
-import Foundation
-import AppKit
 
 class KiwixURLProtocol: URLProtocol {
     override class func canInit(with request: URLRequest) -> Bool {
@@ -40,22 +38,6 @@ class KiwixURLProtocol: URLProtocol {
         client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .allowed)
         client?.urlProtocol(self, didLoad: content.data)
         client?.urlProtocolDidFinishLoading(self)
-        
-//        guard let reader = (NSApplication.shared().delegate as! AppDelegate).reader else {return}
-//        guard let dataDic = reader.data(withContentURLString: contentPath),
-//            let data = dataDic["data"] as? Data,
-//            let mimeType = dataDic["mime"] as? String,
-//            let dataLength: Int = (dataDic["length"] as? NSNumber)?.intValue else {
-//                let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable, userInfo: nil)
-//                client?.urlProtocol(self, didFailWithError: error)
-//                return
-//        }
-//
-//        let response = URLResponse(url: url, mimeType: mimeType, expectedContentLength: dataLength, textEncodingName: nil)
-//
-//        client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .allowed)
-//        client?.urlProtocol(self, didLoad: data)
-//        client?.urlProtocolDidFinishLoading(self)
     }
     
     override func stopLoading() {
