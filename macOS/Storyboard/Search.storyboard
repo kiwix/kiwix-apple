@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13178.6" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="s4g-hm-xR1">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="s4g-hm-xR1">
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13178.6"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
         <capability name="system font weights other than Regular or Bold" minToolsVersion="7.0"/>
     </dependencies>
@@ -28,10 +27,10 @@
             </objects>
             <point key="canvasLocation" x="-110" y="-276"/>
         </scene>
-        <!--Search Controller-->
+        <!--Search Result Controller-->
         <scene sceneID="lxV-66-rjA">
             <objects>
-                <viewController id="gjy-ma-ITW" customClass="SearchController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="gjy-ma-ITW" customClass="SearchResultController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="KUr-Zc-Haj">
                         <rect key="frame" x="0.0" y="0.0" width="400" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -43,7 +42,7 @@
                                         <rect key="frame" x="184" y="119" width="32" height="32"/>
                                     </progressIndicator>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="00x-V3-bcB">
-                                        <rect key="frame" x="125" y="117" width="151" height="36"/>
+                                        <rect key="frame" x="127" y="117" width="147" height="36"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="No Results" id="7o0-hc-VP6">
                                             <font key="font" metaFont="systemMedium" size="30"/>
                                             <color key="textColor" white="0.0" alpha="0.50239739806866957" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -54,7 +53,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="400" height="270"/>
                                         <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="M6j-eX-Fz5">
                                             <rect key="frame" x="0.0" y="0.0" width="400" height="270"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="10000" viewBased="YES" id="k1Y-gj-AyS">
                                                     <rect key="frame" x="0.0" y="0.0" width="400" height="270"/>
@@ -64,7 +63,7 @@
                                                     <tableViewGridLines key="gridStyleMask" horizontal="YES"/>
                                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                     <tableColumns>
-                                                        <tableColumn editable="NO" width="397" minWidth="10" maxWidth="3.4028234663852886e+38" id="AO6-xv-tUH">
+                                                        <tableColumn identifier="" editable="NO" width="397" minWidth="10" maxWidth="3.4028234663852886e+38" id="AO6-xv-tUH">
                                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>

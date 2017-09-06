@@ -2,26 +2,18 @@
 //  LibraryLanguageController.swift
 //  Kiwix
 //
-//  Created by Chris Li on 1/24/17.
+//  Created by Chris Li on 10/18/17.
 //  Copyright © 2017 Chris Li. All rights reserved.
 //
 
 import UIKit
-import CoreData
-import DZNEmptyDataSet
 
-class LibraryLanguageController: UITableViewController, NSFetchedResultsControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
-
-    @IBOutlet weak var langNameSegmentedControl: UISegmentedControl!
-    @IBAction func segmentedControlChanged(_ sender: UISegmentedControl) {
-        Preference.LangFilter.displayInOriginalLocale = !Preference.LangFilter.displayInOriginalLocale
-        tableView.reloadRows(at: tableView.indexPathsForVisibleRows ?? [IndexPath](), with: .automatic)
-    }
-    @IBAction func doneButtonTapped(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
-    }
+class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    let tableView = UITableView(frame: .zero, style: .grouped)
+    let segmentedControl = UISegmentedControl(items: [(Locale.current as NSLocale).displayName(forKey: .identifier, value: Locale.preferredLanguages[0])!,
+                                                      NSLocalizedString("Original", comment: "Language lanuguage filter display name control")])
     
-    private let managedObjectContext = AppDelegate.persistentContainer.viewContext
+    private let managedObjectContext = CoreDataContainer.shared.viewContext
     private var initialShowLanguageSet = Set<Language>()
     private var showLanguages = [Language]()
     private var hideLanguages = [Language]()
@@ -30,12 +22,19 @@ class LibraryLanguageController: UITableViewController, NSFetchedResultsControll
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureSegmentedControls()
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
+        
         showLanguages = Language.fetch(displayed: true, context: managedObjectContext)
         hideLanguages = Language.fetch(displayed: false, context: managedObjectContext)
         initialShowLanguageSet = Set(showLanguages)
-        
-        configureSegmentedControls()
         sort()
+    }
+    
+    override func loadView() {
+        view = tableView
+        tableView.dataSource = self
+        tableView.delegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -43,85 +42,92 @@ class LibraryLanguageController: UITableViewController, NSFetchedResultsControll
         dismissBlock?()
     }
     
-    func configureSegmentedControls() {
-        langNameSegmentedControl.selectedSegmentIndex = Preference.LangFilter.displayInOriginalLocale == true ? 1 : 0
-        langNameSegmentedControl.setTitle((Locale.current as NSLocale).displayName(forKey: NSLocale.Key.identifier, value: Locale.preferredLangCodes[0]), forSegmentAt: 0)
-        langNameSegmentedControl.setTitle(Localized.Library.LanguageFilter.original, forSegmentAt: 1)
+    private func configureSegmentedControls() {
+        let stackView = UIStackView()
+        segmentedControl.apportionsSegmentWidthsByContent = true
+        segmentedControl.selectedSegmentIndex = Preference.LangFilter.displayInOriginalLocale == true ? 1 : 0
+        segmentedControl.addTarget(self, action: #selector(segmentedControlChanged(sender:)), for: .valueChanged)
+        segmentedControl.setContentHuggingPriority(.init(251), for: .horizontal)
+        stackView.addArrangedSubview(segmentedControl)
+        stackView.addArrangedSubview(UIView())
+        navigationItem.titleView = segmentedControl
+    }
+    
+    @objc func segmentedControlChanged(sender: UISegmentedControl) {
+        Preference.LangFilter.displayInOriginalLocale = !Preference.LangFilter.displayInOriginalLocale
+        tableView.reloadRows(at: tableView.indexPathsForVisibleRows ?? [IndexPath](), with: .automatic)
+    }
+    
+    @objc func dismissController() {
+        dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Sort
     
-    func sort() {
+    private func sort() {
         showLanguages = sortByCountDesc(languages: showLanguages)
         hideLanguages = sortByCountDesc(languages: hideLanguages)
     }
     
-    func sortByCountDesc(languages: [Language]) -> [Language] {
-        return languages.sorted { (language0, language1) -> Bool in
-            let count0 = language0.books.count
-            let count1 = language1.books.count
-            guard count0 != count1 else {
-                return alphabeticalAscCompare(language0: language0, language1: language1,
-                                              byOriginalLocale: Preference.LangFilter.displayInOriginalLocale)
+    private func sortByCountDesc(languages: [Language]) -> [Language] {
+        return languages.sorted {
+            let count0 = $0.books.count
+            let count1 = $1.books.count
+            guard $0.books.count != $1.books.count else {
+                if Preference.LangFilter.displayInOriginalLocale {
+                    guard let name0 = $0.nameInOriginalLocale,
+                        let name1 = $1.nameInOriginalLocale else {return false}
+                    return name0.compare(name1) == .orderedAscending
+                } else {
+                    guard let name0 = $0.nameInCurrentLocale,
+                        let name1 = $1.nameInCurrentLocale else {return false}
+                    return name0.compare(name1) == .orderedAscending
+                }
             }
             return count0 > count1
         }
     }
-    
-    private func alphabeticalAscCompare(language0: Language, language1: Language, byOriginalLocale: Bool) -> Bool {
-        if byOriginalLocale {
-            guard let name0 = language0.nameInOriginalLocale,
-                let name1 = language1.nameInOriginalLocale else {return false}
-            return name0.compare(name1) == .orderedAscending
-        } else {
-            guard let name0 = language0.nameInCurrentLocale,
-                let name1 = language1.nameInCurrentLocale else {return false}
-            return name0.compare(name1) == .orderedAscending
-        }
+
+    // MARK: - UITableViewDataSource & Delegates
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
     }
-    
-    // MARK: - Table view data source
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return (showLanguages.count + hideLanguages.count) > 0 ? 2 : 0
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return section == 0 ? showLanguages.count : hideLanguages.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") ?? UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "Cell")
         if indexPath.section == 0 {
-            configureCell(cell, atIndexPath: indexPath, language: showLanguages[indexPath.row])
+            configure(cell: cell, atIndexPath: indexPath, language: showLanguages[indexPath.row])
         } else {
-            configureCell(cell, atIndexPath: indexPath, language: hideLanguages[indexPath.row])
+            configure(cell: cell, atIndexPath: indexPath, language: hideLanguages[indexPath.row])
         }
         return cell
     }
     
-    func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath, language: Language) {
+    func configure(cell: UITableViewCell, atIndexPath indexPath: IndexPath, language: Language) {
         cell.textLabel?.text = Preference.LangFilter.displayInOriginalLocale ? language.nameInOriginalLocale : language.nameInCurrentLocale
         cell.detailTextLabel?.text = language.books.count.description
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if showLanguages.count == 0 {
-            return section == 0 ? "" : Localized.Library.LanguageFilter.all + "       "
+            return section == 0 ? "" : "All" + "       "
         } else {
-            return section == 0 ? Localized.Library.LanguageFilter.showing : Localized.Library.LanguageFilter.hiding
+            return section == 0 ? "Showing" : "Hiding"
         }
     }
     
-    // MARK: - Table view delegate
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         func animateUpdates(_ originalIndexPath: IndexPath, destinationIndexPath: IndexPath) {
             tableView.beginUpdates()
             tableView.deleteRows(at: [indexPath], with: .right)
             tableView.insertRows(at: [destinationIndexPath], with: .right)
-            tableView.headerView(forSection: 0)?.textLabel?.text = self.tableView(tableView, titleForHeaderInSection: 0)
-            tableView.headerView(forSection: 1)?.textLabel?.text = self.tableView(tableView, titleForHeaderInSection: 1)
+            tableView.headerView(forSection: 0)?.textLabel?.text = self.tableView(tableView, titleForHeaderInSection: 0)?.uppercased()
+            tableView.headerView(forSection: 1)?.textLabel?.text = self.tableView(tableView, titleForHeaderInSection: 1)?.uppercased()
             tableView.endUpdates()
         }
         
@@ -148,19 +154,24 @@ class LibraryLanguageController: UITableViewController, NSFetchedResultsControll
         }
     }
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
-            return showLanguages.count == 0 ? CGFloat.leastNormalMagnitude : 44
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if showLanguages.count == 0 {
+            return section == 0 ? CGFloat.leastNormalMagnitude : 36
         } else {
-            return 30
+            return 36
         }
     }
     
-    // MARK: - DZNEmptyDataSet
-    
-    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        return NSAttributedString(string: "No language available",
-                                  attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 18),
-                                               NSForegroundColorAttributeName: UIColor.darkGray])
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return .leastNormalMagnitude
     }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return nil
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return nil
+    }
+
 }

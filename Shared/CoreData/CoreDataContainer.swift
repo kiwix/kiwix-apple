@@ -9,12 +9,21 @@
 import CoreData
 
 class CoreDataContainer: NSPersistentContainer {
+    static let shared = CoreDataContainer()
     
-    init() {
+    private init() {
         let modelURL = Bundle.main.url(forResource: "Kiwix", withExtension: "momd")!
         let model = NSManagedObjectModel(contentsOf: modelURL)
-        super.init(name: "kiwix", managedObjectModel: model)
-        loadPersistentStores { (_, _) in }
+        super.init(name: "kiwix", managedObjectModel: model!)
+        
+        persistentStoreDescriptions.first?.shouldMigrateStoreAutomatically = true
+        persistentStoreDescriptions.first?.shouldInferMappingModelAutomatically = false
+        
+        loadPersistentStores { (_, error) in
+            if let error = error {
+                print(error)
+            }
+        }
         viewContext.automaticallyMergesChangesFromParent = true
     }
     
