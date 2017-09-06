@@ -79,17 +79,18 @@ class SettingController: UITableViewController {
             navigationController?.pushViewController(controller, animated: true)
         case Localized.Setting.feedback:
             if MFMailComposeViewController.canSendMail() {
-                UIQueue.shared.add(operation: FeedbackMailOperation(context: self))
+//                UIQueue.shared.add(operation: FeedbackMailOperation(context: self))
             } else {
-                UIQueue.shared.add(operation: AlertProcedure.Feedback.emailNotConfigured(context: self))
+//                UIQueue.shared.add(operation: AlertProcedure.Feedback.emailNotConfigured(context: self))
             }
         case Localized.Setting.rateApp:
+            break
 //            if #available(iOS 10.3, OSX 10.12.4, *) {
 //                SKStoreReviewController.requestReview()
 //            } else {
 //                UIQueue.shared.add(operation: AlertProcedure.rateKiwix(context: self))
 //            }
-            UIQueue.shared.add(operation: AlertProcedure.rateKiwix(context: self))
+//            UIQueue.shared.add(operation: AlertProcedure.rateKiwix(context: self))
         case Localized.Setting.about:
             let controller = UIStoryboard(name: "Setting", bundle: nil).instantiateViewController(withIdentifier: "StaticWebController") as! StaticWebController
             controller.title = Localized.Setting.about

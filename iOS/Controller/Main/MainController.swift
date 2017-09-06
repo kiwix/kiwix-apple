@@ -21,7 +21,7 @@ class MainController: UIViewController {
     @IBOutlet weak var tocHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tocLeadSpacing: NSLayoutConstraint!
     
-    let searchBar = SearchBar()
+    let searchBar = UISearchBar()
     let controllers = Controllers()
     let buttons = Buttons()
     fileprivate(set) var currentTab: TabController?
@@ -140,25 +140,25 @@ extension MainController: TabControllerDelegate {
 
 // MARK: - Search
 
-extension MainController: SearchBarDelegate, SearchContainerDelegate {
+extension MainController: UISearchBarDelegate, SearchContainerDelegate {
     
-    func didBecomeFirstResponder(searchBar: SearchBar) {
-        showSearch(animated: true)
-    }
-    
-    func didResignFirstResponder(searchBar: SearchBar) {
-        hideSearch(animated: true)
-    }
-    
-    func textDidChange(text: String, searchBar: SearchBar) {
-        controllers.search.searchText = text
-    }
-    
-    func shouldReturn(searchBar: SearchBar) -> Bool {
-        let controller = controllers.search.resultController!
-        controller.selectFirstResult()
-        return controller.searchResults.count > 0
-    }
+//    func didBecomeFirstResponder(searchBar: SearchBar) {
+//        showSearch(animated: true)
+//    }
+//
+//    func didResignFirstResponder(searchBar: SearchBar) {
+//        hideSearch(animated: true)
+//    }
+//
+//    func textDidChange(text: String, searchBar: SearchBar) {
+//        controllers.search.searchText = text
+//    }
+//
+//    func shouldReturn(searchBar: SearchBar) -> Bool {
+//        let controller = controllers.search.resultController!
+//        controller.selectFirstResult()
+//        return controller.searchResults.count > 0
+//    }
     
     private func showSearch(animated: Bool) {
         let controller = controllers.search

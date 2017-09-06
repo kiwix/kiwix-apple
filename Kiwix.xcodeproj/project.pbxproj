@@ -38,7 +38,6 @@
 		9768C2351F4B7BAC00FD499B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768C2341F4B7BAC00FD499B /* AppDelegate.swift */; };
 		9768C2371F4B7E9900FD499B /* Preference.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9768C2361F4B7E9900FD499B /* Preference.storyboard */; };
 		9768C23B1F4B7F6300FD499B /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768C23A1F4B7F6300FD499B /* Preference.swift */; };
-		976C1DD41E300695005EDEC4 /* UIProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976C1DD31E300695005EDEC4 /* UIProcedure.swift */; };
 		976D29DE1F44B46D003F5431 /* libicudata.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D29D21F44B46D003F5431 /* libicudata.58.2.dylib */; };
 		976D29DF1F44B46D003F5431 /* libicui18n.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D29D31F44B46D003F5431 /* libicui18n.58.2.dylib */; };
 		976D29E01F44B46D003F5431 /* libicuio.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D29D41F44B46D003F5431 /* libicuio.58.2.dylib */; };
@@ -87,7 +86,6 @@
 		979D17831E6DE50C006AE496 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 979D17821E6DE50C006AE496 /* Assets.xcassets */; };
 		97A08C151DD263B90070D0E4 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681341D6F711A00E5FA99 /* Book.swift */; };
 		97A1FD161D6F71CE00A80EE2 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD121D6F71CE00A80EE2 /* DirectoryMonitor.swift */; };
-		97A1FD181D6F71CE00A80EE2 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD141D6F71CE00A80EE2 /* SearchResult.swift */; };
 		97A1FD191D6F71CE00A80EE2 /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD151D6F71CE00A80EE2 /* ZimMultiReader.swift */; };
 		97A1FD1C1D6F71D800A80EE2 /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD1A1D6F71D800A80EE2 /* KiwixURLProtocol.swift */; };
 		97A1FD421D6F728200A80EE2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD3D1D6F728200A80EE2 /* Extensions.swift */; };
@@ -135,7 +133,6 @@
 		97D231AA1E677CB300DCD4A4 /* Logo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D231A31E677CB300DCD4A4 /* Logo.swift */; };
 		97D231AB1E677CB300DCD4A4 /* Others.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D231A41E677CB300DCD4A4 /* Others.swift */; };
 		97D231AC1E677CB300DCD4A4 /* RefreshLibControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D231A51E677CB300DCD4A4 /* RefreshLibControl.swift */; };
-		97D231AE1E677CB300DCD4A4 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D231A71E677CB300DCD4A4 /* SearchBar.swift */; };
 		97D681371D6F711A00E5FA99 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681331D6F711A00E5FA99 /* Article.swift */; };
 		97D681391D6F711A00E5FA99 /* DownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681351D6F711A00E5FA99 /* DownloadTask.swift */; };
 		97D6813A1D6F711A00E5FA99 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681361D6F711A00E5FA99 /* Language.swift */; };
@@ -1647,7 +1644,7 @@
 					9779C3121D4575AD0064CC8E = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = L7HWM3SP3L;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0900;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -1677,7 +1674,7 @@
 					97A2AB871C1B80FF00052E74 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = L7HWM3SP3L;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 0900;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -1921,7 +1918,6 @@
 				973208231DD19C7600EDD3DC /* DownloadProgress.swift in Sources */,
 				97A1FD161D6F71CE00A80EE2 /* DirectoryMonitor.swift in Sources */,
 				9726591D1D90A64600D1DFFB /* Notification.swift in Sources */,
-				97D231AE1E677CB300DCD4A4 /* SearchBar.swift in Sources */,
 				97FDACC41D85A3B300DEDACB /* Language+CoreDataProperties.swift in Sources */,
 				97D231981E677C6700DCD4A4 /* SearchBaseController.swift in Sources */,
 				97D2318E1E677C6700DCD4A4 /* LibraryTabController.swift in Sources */,
@@ -1948,7 +1944,6 @@
 				976D2A711F45B813003F5431 /* ZimSearcher.mm in Sources */,
 				97D231911E677C6700DCD4A4 /* JSInjection.swift in Sources */,
 				97A6EE6E1F4A99A700926FD1 /* ZimManager.swift in Sources */,
-				976C1DD41E300695005EDEC4 /* UIProcedure.swift in Sources */,
 				972F81571DDBFC79008D7289 /* SearchProcedure.swift in Sources */,
 				97D231961E677C6700DCD4A4 /* WelcomeController.swift in Sources */,
 				97DA5C1E1E6F420800873048 /* BrowsingHistoryController.swift in Sources */,
@@ -1985,7 +1980,6 @@
 				97D231A91E677CB300DCD4A4 /* Cells.swift in Sources */,
 				97D2318A1E677C6700DCD4A4 /* BookmarkHUD.swift in Sources */,
 				973208271DD2238B00EDD3DC /* Queue.swift in Sources */,
-				97A1FD181D6F71CE00A80EE2 /* SearchResult.swift in Sources */,
 				97D2319A1E677C6700DCD4A4 /* SearchResultController.swift in Sources */,
 				97ED50111DD257D00089E9B6 /* Kiwix.xcdatamodeld in Sources */,
 				9725345F1E43E2250005D169 /* UserHabit.swift in Sources */,
@@ -2031,7 +2025,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.Bookmarks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -2049,7 +2044,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.Bookmarks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -2265,7 +2261,8 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Kiwix-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				VALID_ARCHS = "arm64 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -2310,7 +2307,8 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Kiwix-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				VALID_ARCHS = "arm64 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
