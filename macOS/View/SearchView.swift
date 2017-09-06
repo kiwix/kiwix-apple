@@ -12,13 +12,13 @@ class SearchTitleSnippetResultTableCellView: NSTableCellView {
     @IBOutlet weak var titleField: NSTextField!
     @IBOutlet weak var snippetField: NSTextField!
     
-    override var backgroundStyle: NSBackgroundStyle {
+    override var backgroundStyle: NSView.BackgroundStyle {
         didSet {
             titleField.textColor = backgroundStyle == .light ? NSColor.black : NSColor.selectedMenuItemTextColor
             let snippetColor = backgroundStyle == .light ? NSColor.labelColor : NSColor.textBackgroundColor
             let snippet = NSMutableAttributedString(attributedString: snippetField.attributedStringValue)
             let range = NSRange(location: 0, length: snippet.length)
-            snippet.addAttribute(NSForegroundColorAttributeName, value: snippetColor, range: range)
+            snippet.addAttribute(NSAttributedStringKey.foregroundColor, value: snippetColor, range: range)
             snippetField.attributedStringValue = snippet
         }
     }
@@ -27,7 +27,7 @@ class SearchTitleSnippetResultTableCellView: NSTableCellView {
 class SearchTitleResultTableCellView: NSTableCellView {
     @IBOutlet weak var titleField: NSTextField!
     
-    override var backgroundStyle: NSBackgroundStyle {
+    override var backgroundStyle: NSView.BackgroundStyle {
         didSet {
             titleField.textColor = backgroundStyle == .light ? NSColor.black : NSColor.selectedMenuItemTextColor
         }
@@ -90,7 +90,7 @@ class SearchField: NSSearchField {
         }
     }
     
-    func cancelButtonClicked() {
+    @objc func cancelButtonClicked() {
         stringValue = ""
         searchTermCache = ""
         fieldDelegate?.searchTextDidClear()

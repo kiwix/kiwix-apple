@@ -24,7 +24,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let urls = Defaults[.zimBookmarks].flatMap({try? URL(resolvingBookmarkData: $0, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)}).flatMap({$0})
         ZimManager.shared.addBook(urls: urls)
 
-        guard let split = NSApplication.shared().mainWindow?.contentViewController as? NSSplitViewController,
+        guard let split = NSApplication.shared.mainWindow?.contentViewController as? NSSplitViewController,
             let controller = split.splitViewItems.last?.viewController as? WebViewController else {return}
         controller.loadMainPage()
     }
@@ -38,7 +38,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func application(_ sender: NSApplication, openFiles filenames: [String]) {
-        guard let controller = NSApplication.shared().mainWindow?.windowController as? MainWindowController else {return}
+        guard let controller = NSApplication.shared.mainWindow?.windowController as? MainWindowController else {return}
         controller.openBooks(paths: filenames)
     }
 }

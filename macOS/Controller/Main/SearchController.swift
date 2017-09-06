@@ -15,10 +15,10 @@ class SearchResultWindowController: NSWindowController {
         window?.titleVisibility = .hidden
         window?.isOpaque = false
         window?.backgroundColor = .clear
-        window?.standardWindowButton(NSWindowButton.closeButton)?.isHidden = true
-        window?.standardWindowButton(NSWindowButton.miniaturizeButton)?.isHidden = true
-        window?.standardWindowButton(NSWindowButton.fullScreenButton)?.isHidden = true
-        window?.standardWindowButton(NSWindowButton.zoomButton)?.isHidden = true
+        window?.standardWindowButton(NSWindow.ButtonType.closeButton)?.isHidden = true
+        window?.standardWindowButton(NSWindow.ButtonType.miniaturizeButton)?.isHidden = true
+        window?.standardWindowButton(NSWindow.ButtonType.fullScreenButton)?.isHidden = true
+        window?.standardWindowButton(NSWindow.ButtonType.zoomButton)?.isHidden = true
     }
 }
 
@@ -82,9 +82,9 @@ class SearchController: NSViewController, ProcedureQueueDelegate, NSTableViewDat
     
     @IBAction func tableViewClicked(_ sender: NSTableView) {
         guard tableView.selectedRow >= 0 else {return}
-        guard let mainController = NSApplication.shared().mainWindow?.windowController as? MainWindowController else {return}
+        guard let mainController = NSApplication.shared.mainWindow?.windowController as? MainWindowController else {return}
         mainController.searchField.endSearch()
-        guard let split = NSApplication.shared().mainWindow?.contentViewController as? NSSplitViewController,
+        guard let split = NSApplication.shared.mainWindow?.contentViewController as? NSSplitViewController,
             let controller = split.splitViewItems.last?.viewController as? WebViewController else {return}
         controller.load(url: results[tableView.selectedRow].url)
     }
@@ -92,7 +92,7 @@ class SearchController: NSViewController, ProcedureQueueDelegate, NSTableViewDat
     // MARK: - Mouse tracking
     
     func configureTrackingArea() {
-        let options: NSTrackingAreaOptions = [.mouseMoved, .activeAlways]
+        let options: NSTrackingArea.Options = [NSTrackingArea.Options.mouseMoved, NSTrackingArea.Options.activeAlways]
         let trackingArea = NSTrackingArea(rect: view.convert(tableView.frame, from: tableView.superview), options: options, owner: self, userInfo: nil)
         view.addTrackingArea(trackingArea)
     }
@@ -131,11 +131,11 @@ class SearchController: NSViewController, ProcedureQueueDelegate, NSTableViewDat
     }
     
     func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
-        if let row = tableView.make(withIdentifier: "ResultRow", owner: self) as? NSTableRowView {
+        if let row = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ResultRow"), owner: self) as? NSTableRowView {
             return row
         } else {
             let row = NSTableRowView()
-            row.identifier = "ResultRow"
+            row.identifier = NSUserInterfaceItemIdentifier(rawValue: "ResultRow")
             return row
         }
     }
@@ -143,7 +143,7 @@ class SearchController: NSViewController, ProcedureQueueDelegate, NSTableViewDat
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let result = results[row]
         if result.hasSnippet {
-            let cell = tableView.make(withIdentifier: "TitleSnippetResult", owner: self) as! SearchTitleSnippetResultTableCellView
+            let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "TitleSnippetResult"), owner: self) as! SearchTitleSnippetResultTableCellView
             cell.titleField.stringValue = result.title
             if let snippet = result.snippet {
                 cell.snippetField.stringValue = snippet
@@ -154,7 +154,7 @@ class SearchController: NSViewController, ProcedureQueueDelegate, NSTableViewDat
             }
             return cell
         } else {
-            let cell = tableView.make(withIdentifier: "TitleResult", owner: self) as! SearchTitleResultTableCellView
+            let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "TitleResult"), owner: self) as! SearchTitleResultTableCellView
             cell.titleField.stringValue = result.title
             return cell
         }

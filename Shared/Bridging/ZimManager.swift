@@ -83,25 +83,25 @@ class SearchResult {
     }
     
     private static func parseSnippet(html: String) -> NSAttributedString? {
-        let options: [String: Any] = [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-                                      NSCharacterEncodingDocumentAttribute: String.Encoding.utf8.rawValue]
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html,
+                                      NSAttributedString.DocumentReadingOptionKey.characterEncoding: String.Encoding.utf8.rawValue]
         guard let snippetData = html.data(using: String.Encoding.utf8),
             let snippet = try? NSMutableAttributedString(data: snippetData, options: options, documentAttributes: nil) else {return nil}
         let wholeRange = NSRange(location: 0, length: snippet.length)
-        snippet.enumerateAttribute(NSFontAttributeName, in: wholeRange, options: .longestEffectiveRangeNotRequired, using: { (font, range, stop) in
+        snippet.enumerateAttribute(NSAttributedStringKey.font, in: wholeRange, options: .longestEffectiveRangeNotRequired, using: { (font, range, stop) in
             guard let font = font as? NSFont else {return}
             let traits = font.fontDescriptor.symbolicTraits
-            let isBold = NSFontTraitMask(rawValue: UInt(traits)).contains(.boldFontMask)
+            let isBold = NSFontTraitMask(rawValue: UInt(traits.rawValue)).contains(.boldFontMask)
             let newFont: NSFont = {
                 if #available(OSX 10.11, *) {
-                    return NSFont.systemFont(ofSize: 12, weight: isBold ? NSFontWeightSemibold : NSFontWeightRegular)
+                    return NSFont.systemFont(ofSize: 12, weight: isBold ? NSFont.Weight.semibold : NSFont.Weight.regular)
                 } else {
                     return isBold ? NSFont.boldSystemFont(ofSize: 12) : NSFont.systemFont(ofSize: 12)
                 }
             }()
-            snippet.addAttribute(NSFontAttributeName, value: newFont, range: range)
+            snippet.addAttribute(NSAttributedStringKey.font, value: newFont, range: range)
         })
-        snippet.addAttribute(NSForegroundColorAttributeName, value: NSColor.labelColor, range: wholeRange)
+        snippet.addAttribute(NSAttributedStringKey.foregroundColor, value: NSColor.labelColor, range: wholeRange)
         return snippet
     }
     
