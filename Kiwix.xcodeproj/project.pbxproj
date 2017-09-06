@@ -32,15 +32,14 @@
 		975415D41F54C1870007EA6C /* SearchProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975415D31F54C1870007EA6C /* SearchProcedure.swift */; };
 		975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975B90FD1CEB909100D13906 /* iOSExtensions.swift */; };
 		975FDADA1F6082DA00A10E8C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDAD91F6082DA00A10E8C /* AppDelegate.swift */; };
-		975FDADC1F6082DA00A10E8C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDADB1F6082DA00A10E8C /* ViewController.swift */; };
+		975FDADC1F6082DA00A10E8C /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDADB1F6082DA00A10E8C /* MainController.swift */; };
 		975FDADF1F6082DA00A10E8C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975FDADD1F6082DA00A10E8C /* Main.storyboard */; };
 		975FDAE11F6082DA00A10E8C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 975FDAE01F6082DA00A10E8C /* Assets.xcassets */; };
 		975FDAE41F6082DA00A10E8C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975FDAE21F6082DA00A10E8C /* LaunchScreen.storyboard */; };
-		975FDAF11F60877900A10E8C /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767717D1F437BB9007ED0C2 /* KiwixURLProtocol.swift */; };
-		975FDAF41F6089FA00A10E8C /* wikipedia_en_medicine_nopic_2017-07.zim in CopyFiles */ = {isa = PBXBuildFile; fileRef = 975FDAEC1F60857500A10E8C /* wikipedia_en_medicine_nopic_2017-07.zim */; };
-		975FDAF51F608A2200A10E8C /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767717D1F437BB9007ED0C2 /* KiwixURLProtocol.swift */; };
+		975FDAF11F60877900A10E8C /* URLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767717D1F437BB9007ED0C2 /* URLProtocol.swift */; };
+		975FDAF51F608A2200A10E8C /* URLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767717D1F437BB9007ED0C2 /* URLProtocol.swift */; };
 		975FDAF61F608A2500A10E8C /* ZimManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 979681A81F46917E008A50FF /* ZimManager.mm */; };
-		975FDAF81F608A2A00A10E8C /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767717D1F437BB9007ED0C2 /* KiwixURLProtocol.swift */; };
+		975FDAF81F608A2A00A10E8C /* URLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767717D1F437BB9007ED0C2 /* URLProtocol.swift */; };
 		975FDAF91F608A9700A10E8C /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A571F44F451003F5431 /* libicudata.a */; };
 		975FDAFA1F608A9700A10E8C /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A581F44F451003F5431 /* libicui18n.a */; };
 		975FDAFB1F608A9700A10E8C /* libicuio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A591F44F451003F5431 /* libicuio.a */; };
@@ -54,6 +53,8 @@
 		975FDB031F608A9700A10E8C /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A611F44F451003F5431 /* libz.a */; };
 		975FDB041F608A9700A10E8C /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A621F44F451003F5431 /* libzim.a */; };
 		975FDB051F608ADA00A10E8C /* ZimManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A6EE6D1F4A99A700926FD1 /* ZimManager.swift */; };
+		975FDB071F608F4100A10E8C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 975FDB061F608F4100A10E8C /* WebKit.framework */; };
+		975FDB091F60922D00A10E8C /* wikipedia_en_medicine_novid_2017-08.zim in CopyFiles */ = {isa = PBXBuildFile; fileRef = 975FDB081F60922100A10E8C /* wikipedia_en_medicine_novid_2017-08.zim */; };
 		97642B991E380CC0003E2D0B /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97642B981E380CC0003E2D0B /* Network.swift */; };
 		9765D9801F50CC4700BFDC1E /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9765D97F1F50CC4700BFDC1E /* Search.storyboard */; };
 		976771791F4378FC007ED0C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 976771741F4378FC007ED0C2 /* Main.storyboard */; };
@@ -198,7 +199,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-				975FDAF41F6089FA00A10E8C /* wikipedia_en_medicine_nopic_2017-07.zim in CopyFiles */,
+				975FDB091F60922D00A10E8C /* wikipedia_en_medicine_novid_2017-08.zim in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,18 +280,20 @@
 		975B90FD1CEB909100D13906 /* iOSExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOSExtensions.swift; sourceTree = "<group>"; };
 		975FDAD71F6082DA00A10E8C /* WikiMed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikiMed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		975FDAD91F6082DA00A10E8C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		975FDADB1F6082DA00A10E8C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		975FDADB1F6082DA00A10E8C /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
 		975FDADE1F6082DA00A10E8C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		975FDAE01F6082DA00A10E8C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		975FDAE31F6082DA00A10E8C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		975FDAE51F6082DA00A10E8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		975FDAEB1F60839E00A10E8C /* WikiMed.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = WikiMed.app; path = "../../../../../../Users/chrisli/Library/Developer/Xcode/DerivedData/Kiwix-ayxrfhaqnfxzendihdolvkklkmhk/Build/Products/Debug-iphoneos/WikiMed.app"; sourceTree = "<group>"; };
-		975FDAEC1F60857500A10E8C /* wikipedia_en_medicine_nopic_2017-07.zim */ = {isa = PBXFileReference; lastKnownFileType = file; path = "wikipedia_en_medicine_nopic_2017-07.zim"; sourceTree = "<group>"; };
+		975FDB061F608F4100A10E8C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		975FDB081F60922100A10E8C /* wikipedia_en_medicine_novid_2017-08.zim */ = {isa = PBXFileReference; lastKnownFileType = file; path = "wikipedia_en_medicine_novid_2017-08.zim"; sourceTree = "<group>"; };
+		975FDB0B1F60930A00A10E8C /* WebKitHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitHandler.swift; sourceTree = "<group>"; };
 		97642B981E380CC0003E2D0B /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		9764CBD21D8083AA00072D6A /* ArticleProcedure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleProcedure.swift; sourceTree = "<group>"; };
 		9765D97F1F50CC4700BFDC1E /* Search.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = "<group>"; };
 		976771741F4378FC007ED0C2 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		9767717D1F437BB9007ED0C2 /* KiwixURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KiwixURLProtocol.swift; sourceTree = "<group>"; };
+		9767717D1F437BB9007ED0C2 /* URLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLProtocol.swift; sourceTree = "<group>"; };
 		9768C2341F4B7BAC00FD499B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9768C2361F4B7E9900FD499B /* Preference.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Preference.storyboard; sourceTree = "<group>"; };
 		9768C23A1F4B7F6300FD499B /* Preference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
@@ -691,6 +694,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				975FDB071F608F4100A10E8C /* WebKit.framework in Frameworks */,
 				975FDAFB1F608A9700A10E8C /* libicuio.a in Frameworks */,
 				975FDB031F608A9700A10E8C /* libz.a in Frameworks */,
 				975FDAFD1F608A9700A10E8C /* libicutu.a in Frameworks */,
@@ -769,6 +773,7 @@
 		3B93EAF9B5C5AA23046BDEAC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				975FDB061F608F4100A10E8C /* WebKit.framework */,
 				2E854211810A39173DD6A5BD /* Pods_iOS.framework */,
 				81DF90AB14037E242E284CA8 /* Pods_macOS.framework */,
 			);
@@ -867,6 +872,7 @@
 		973BCD1F1CEB412E00F10B44 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				975FDB0A1F6092DE00A10E8C /* Loading */,
 				979D17821E6DE50C006AE496 /* Assets.xcassets */,
 				97A6EE6C1F4A475F00926FD1 /* Bridging */,
 				97318E3D1E6780E7000B718B /* Help */,
@@ -904,7 +910,7 @@
 			isa = PBXGroup;
 			children = (
 				975FDAD91F6082DA00A10E8C /* AppDelegate.swift */,
-				975FDADB1F6082DA00A10E8C /* ViewController.swift */,
+				975FDADB1F6082DA00A10E8C /* MainController.swift */,
 				975FDADD1F6082DA00A10E8C /* Main.storyboard */,
 				975FDAEA1F60839900A10E8C /* Support */,
 				975FDAE01F6082DA00A10E8C /* Assets.xcassets */,
@@ -915,12 +921,21 @@
 		975FDAEA1F60839900A10E8C /* Support */ = {
 			isa = PBXGroup;
 			children = (
-				975FDAEC1F60857500A10E8C /* wikipedia_en_medicine_nopic_2017-07.zim */,
+				975FDB081F60922100A10E8C /* wikipedia_en_medicine_novid_2017-08.zim */,
 				975FDAE21F6082DA00A10E8C /* LaunchScreen.storyboard */,
 				975FDAE51F6082DA00A10E8C /* Info.plist */,
 				975FDAEB1F60839E00A10E8C /* WikiMed.app */,
 			);
 			path = Support;
+			sourceTree = "<group>";
+		};
+		975FDB0A1F6092DE00A10E8C /* Loading */ = {
+			isa = PBXGroup;
+			children = (
+				9767717D1F437BB9007ED0C2 /* URLProtocol.swift */,
+				975FDB0B1F60930A00A10E8C /* WebKitHandler.swift */,
+			);
+			path = Loading;
 			sourceTree = "<group>";
 		};
 		9767716E1F4378FC007ED0C2 /* Controller */ = {
@@ -1096,7 +1111,6 @@
 		97A6EE6C1F4A475F00926FD1 /* Bridging */ = {
 			isa = PBXGroup;
 			children = (
-				9767717D1F437BB9007ED0C2 /* KiwixURLProtocol.swift */,
 				979681A71F46917E008A50FF /* ZimManager.h */,
 				979681A81F46917E008A50FF /* ZimManager.mm */,
 				97A6EE6D1F4A99A700926FD1 /* ZimManager.swift */,
@@ -2002,8 +2016,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				975FDAF61F608A2500A10E8C /* ZimManager.mm in Sources */,
-				975FDADC1F6082DA00A10E8C /* ViewController.swift in Sources */,
-				975FDAF51F608A2200A10E8C /* KiwixURLProtocol.swift in Sources */,
+				975FDADC1F6082DA00A10E8C /* MainController.swift in Sources */,
+				975FDAF51F608A2200A10E8C /* URLProtocol.swift in Sources */,
 				975FDB051F608ADA00A10E8C /* ZimManager.swift in Sources */,
 				975FDADA1F6082DA00A10E8C /* AppDelegate.swift in Sources */,
 			);
@@ -2022,7 +2036,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				975FDAF81F608A2A00A10E8C /* KiwixURLProtocol.swift in Sources */,
+				975FDAF81F608A2A00A10E8C /* URLProtocol.swift in Sources */,
 				9768C23B1F4B7F6300FD499B /* Preference.swift in Sources */,
 				979681AA1F470E9B008A50FF /* ZimManager.mm in Sources */,
 				97533B461F4C723900F6651A /* MainWindowController.swift in Sources */,
@@ -2067,7 +2081,7 @@
 				97D231AA1E677CB300DCD4A4 /* Logo.swift in Sources */,
 				97D231AB1E677CB300DCD4A4 /* Others.swift in Sources */,
 				97D681371D6F711A00E5FA99 /* Article.swift in Sources */,
-				975FDAF11F60877900A10E8C /* KiwixURLProtocol.swift in Sources */,
+				975FDAF11F60877900A10E8C /* URLProtocol.swift in Sources */,
 				97D231911E677C6700DCD4A4 /* JSInjection.swift in Sources */,
 				97A6EE6E1F4A99A700926FD1 /* ZimManager.swift in Sources */,
 				972F81571DDBFC79008D7289 /* SearchProcedure.swift in Sources */,
