@@ -9,7 +9,7 @@
 import UIKit
 import SafariServices
 
-class LegacyTabViewViewController: UIViewController, UIWebViewDelegate, ToolBarControlEvents {
+class LegacyTabController: TabController, UIWebViewDelegate, ToolBarControlEvents {
     let webView = UIWebView()
     let toolBarController = ToolBarController()
     
@@ -26,10 +26,8 @@ class LegacyTabViewViewController: UIViewController, UIWebViewDelegate, ToolBarC
         webView.backgroundColor = UIColor.clear
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(webView)
-        view.addConstraint(NSLayoutConstraint(item: webView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: webView, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: webView, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: webView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1.0, constant: 0.0))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[webView]|", options: [], metrics: nil, views: ["webView": webView]))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[webView]|", options: [], metrics: nil, views: ["webView": webView]))
     }
     
     private func addToolBar() {

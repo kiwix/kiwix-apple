@@ -9,31 +9,52 @@
 import UIKit
 import WebKit
 
-class MainController: UIViewController {
-    let tab = LegacyTabViewViewController()
+class MainController: UIViewController, UISearchBarDelegate {
+    let searchResultController = SearchResultController()
+    let tab = LegacyTabController()
     
     @IBOutlet weak var webView: UIWebView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureSearch()
         addTab()
-        
-        let search = UISearchBar()
-        search.placeholder = "Search"
-        search.searchBarStyle = .minimal
-        navigationItem.titleView = search
+    }
+    
+    func configureSearch() {
+        let searchBar = UISearchBar()
+        searchBar.delegate = self
+        searchBar.placeholder = NSLocalizedString("Search", comment: "Search Promot")
+        searchBar.searchBarStyle = .minimal
+        navigationItem.titleView = searchBar
     }
     
     func addTab() {
         addChildViewController(tab)
         tab.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tab.view)
-        
-        view.addConstraint(NSLayoutConstraint(item: tab.view, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: tab.view, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: tab.view, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1.0, constant: 0.0))
-        view.addConstraint(NSLayoutConstraint(item: tab.view, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1.0, constant: 0.0))
-        
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[tab]|", options: [], metrics: nil, views: ["tab": tab.view]))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[tab]|", options: [], metrics: nil, views: ["tab": tab.view]))
         tab.didMove(toParentViewController: self)
+    }
+    
+    // MARK: - UISearchBarDelegate
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    }
+    
+    func showSearchController() {
+        
+    }
+    
+    func hideSearchController() {
+        
     }
     
 }

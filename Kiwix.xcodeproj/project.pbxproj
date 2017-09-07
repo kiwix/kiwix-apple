@@ -115,8 +115,10 @@
 		97A1FD451D6F728200A80EE2 /* Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD411D6F728200A80EE2 /* Localized.swift */; };
 		97A6EE6E1F4A99A700926FD1 /* ZimManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A6EE6D1F4A99A700926FD1 /* ZimManager.swift */; };
 		97A6EE6F1F4A99A700926FD1 /* ZimManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A6EE6D1F4A99A700926FD1 /* ZimManager.swift */; };
-		97A996CE1F609C9F007A6282 /* LegacyTabViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996CD1F609C9F007A6282 /* LegacyTabViewViewController.swift */; };
+		97A996CE1F609C9F007A6282 /* LegacyTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996CD1F609C9F007A6282 /* LegacyTabController.swift */; };
 		97A996D21F60A1A0007A6282 /* ToolBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996D11F60A1A0007A6282 /* ToolBarController.swift */; };
+		97A996D41F61DB38007A6282 /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996D31F61DB38007A6282 /* SearchResultController.swift */; };
+		97A996D61F61ED21007A6282 /* TabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996D51F61ED21007A6282 /* TabController.swift */; };
 		97A9F6F51E2E990500F423AA /* JSInject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* JSInject.js */; };
 		97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */; };
 		97C2C26A1DDCC58500A9CC64 /* ArticleProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764CBD21D8083AA00072D6A /* ArticleProcedure.swift */; };
@@ -346,8 +348,10 @@
 		97A1FD411D6F728200A80EE2 /* Localized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localized.swift; sourceTree = "<group>"; };
 		97A2AB881C1B80FF00052E74 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A6EE6D1F4A99A700926FD1 /* ZimManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimManager.swift; sourceTree = "<group>"; };
-		97A996CD1F609C9F007A6282 /* LegacyTabViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyTabViewViewController.swift; sourceTree = "<group>"; };
+		97A996CD1F609C9F007A6282 /* LegacyTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyTabController.swift; sourceTree = "<group>"; };
 		97A996D11F60A1A0007A6282 /* ToolBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarController.swift; sourceTree = "<group>"; };
+		97A996D31F61DB38007A6282 /* SearchResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultController.swift; sourceTree = "<group>"; };
+		97A996D51F61ED21007A6282 /* TabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabController.swift; sourceTree = "<group>"; };
 		97A9F6F41E2E990500F423AA /* JSInject.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = JSInject.js; sourceTree = "<group>"; };
 		97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		97C5D1521E69D0170042898D /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
@@ -954,8 +958,10 @@
 			isa = PBXGroup;
 			children = (
 				975FDADB1F6082DA00A10E8C /* MainController.swift */,
-				97A996CD1F609C9F007A6282 /* LegacyTabViewViewController.swift */,
+				97A996D51F61ED21007A6282 /* TabController.swift */,
+				97A996CD1F609C9F007A6282 /* LegacyTabController.swift */,
 				97A996D11F60A1A0007A6282 /* ToolBarController.swift */,
+				97A996D31F61DB38007A6282 /* SearchResultController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2037,12 +2043,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97A996D41F61DB38007A6282 /* SearchResultController.swift in Sources */,
 				975FDAF61F608A2500A10E8C /* ZimManager.mm in Sources */,
 				97A996D21F60A1A0007A6282 /* ToolBarController.swift in Sources */,
 				975FDADC1F6082DA00A10E8C /* MainController.swift in Sources */,
 				975FDAF51F608A2200A10E8C /* URLProtocol.swift in Sources */,
 				975FDB051F608ADA00A10E8C /* ZimManager.swift in Sources */,
-				97A996CE1F609C9F007A6282 /* LegacyTabViewViewController.swift in Sources */,
+				97A996CE1F609C9F007A6282 /* LegacyTabController.swift in Sources */,
+				97A996D61F61ED21007A6282 /* TabController.swift in Sources */,
 				975FDADA1F6082DA00A10E8C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
