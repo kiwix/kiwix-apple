@@ -12,6 +12,7 @@ import WebKit
 class MainController: UIViewController {
     let tab = LegacyTabViewViewController()
     
+    @IBOutlet weak var webView: UIWebView!
     override func viewDidLoad() {
         super.viewDidLoad()
         addTab()
