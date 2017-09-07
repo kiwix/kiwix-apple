@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SafariServices
 
-class LegacyTabViewViewController: UIViewController, ToolBarControlEvents {
+class LegacyTabViewViewController: UIViewController, UIWebViewDelegate, ToolBarControlEvents {
     let webView = UIWebView()
     let toolBarController = ToolBarController()
     
@@ -20,6 +21,7 @@ class LegacyTabViewViewController: UIViewController, ToolBarControlEvents {
     }
     
     private func addWebView() {
+        webView.delegate = self
         webView.isOpaque = false
         webView.backgroundColor = UIColor.clear
         webView.translatesAutoresizingMaskIntoConstraints = false
@@ -50,6 +52,19 @@ class LegacyTabViewViewController: UIViewController, ToolBarControlEvents {
     func load(url: URL) {
         let request = URLRequest(url: url)
         webView.loadRequest(request)
+    }
+    
+    // MARK: - UIWebViewDelegate
+    
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        guard let url = request.url else {return false}
+        if url.isKiwixURL {
+            return true
+        } else {
+            let controller = SFSafariViewController(url: url)
+            present(controller, animated: true, completion: nil)
+            return false
+        }
     }
     
     // MARK: - ToolBarControlEvents
