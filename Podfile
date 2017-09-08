@@ -17,3 +17,10 @@ target 'macOS' do
     pod 'SwiftyUserDefaults'
     pod 'ProcedureKit/All', :path => 'submodules/ProcedureKit'
 end
+
+target 'WikiMed' do
+    platform :ios, '10.0'
+    use_frameworks!
+    
+    pod 'ProcedureKit/All', :path => 'submodules/ProcedureKit'
+end

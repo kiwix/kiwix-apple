@@ -177,6 +177,7 @@
 		97FDACC41D85A3B300DEDACB /* Language+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813E1D6F712800E5FA99 /* Language+CoreDataProperties.swift */; };
 		DFD371610877B5817E9C9FEB /* Pods_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81DF90AB14037E242E284CA8 /* Pods_macOS.framework */; };
 		E1B5556AE19C8BD6BE295E79 /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E854211810A39173DD6A5BD /* Pods_iOS.framework */; };
+		FA1E975E797443400EBF3EE8 /* Pods_WikiMed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14995D226EC82CFFBBB5B159 /* Pods_WikiMed.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -251,7 +252,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		14995D226EC82CFFBBB5B159 /* Pods_WikiMed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WikiMed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E854211810A39173DD6A5BD /* Pods_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7510393635E2E3EF2F7C29DB /* Pods-WikiMed.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WikiMed.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WikiMed/Pods-WikiMed.debug.xcconfig"; sourceTree = "<group>"; };
 		81DF90AB14037E242E284CA8 /* Pods_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9707B8F51F4B4F1500075D4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		970912551D7F452C00BBD5A1 /* 1.8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.8.xcdatamodel; sourceTree = "<group>"; };
@@ -695,6 +698,7 @@
 		DB2AE49B95B84C6AAA4C6A80 /* Pods-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-macOS/Pods-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		EAE9B571F10BDC813C035DF1 /* Pods-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		EBC0C1E7272F1F1CFC34318A /* Pods_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC89D040865EE325CEE40811 /* Pods-WikiMed.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WikiMed.release.xcconfig"; path = "Pods/Target Support Files/Pods-WikiMed/Pods-WikiMed.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -715,6 +719,7 @@
 				975FDAFA1F608A9700A10E8C /* libicui18n.a in Frameworks */,
 				975FDB021F608A9700A10E8C /* libxapian.a in Frameworks */,
 				975FDAFC1F608A9700A10E8C /* libicutest.a in Frameworks */,
+				FA1E975E797443400EBF3EE8 /* Pods_WikiMed.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -784,6 +789,7 @@
 				975FDB061F608F4100A10E8C /* WebKit.framework */,
 				2E854211810A39173DD6A5BD /* Pods_iOS.framework */,
 				81DF90AB14037E242E284CA8 /* Pods_macOS.framework */,
+				14995D226EC82CFFBBB5B159 /* Pods_WikiMed.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1667,6 +1673,8 @@
 				EAE9B571F10BDC813C035DF1 /* Pods-iOS.release.xcconfig */,
 				C6EB8B17B86590EA06112D8C /* Pods-macOS.debug.xcconfig */,
 				DB2AE49B95B84C6AAA4C6A80 /* Pods-macOS.release.xcconfig */,
+				7510393635E2E3EF2F7C29DB /* Pods-WikiMed.debug.xcconfig */,
+				EC89D040865EE325CEE40811 /* Pods-WikiMed.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1678,10 +1686,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 975FDAE81F6082DA00A10E8C /* Build configuration list for PBXNativeTarget "WikiMed" */;
 			buildPhases = (
+				77F8FD9102CBDD3000108585 /* [CP] Check Pods Manifest.lock */,
 				975FDAD31F6082DA00A10E8C /* Sources */,
 				975FDAD41F6082DA00A10E8C /* Frameworks */,
 				975FDAD51F6082DA00A10E8C /* Resources */,
 				975FDAF31F6089F000A10E8C /* CopyFiles */,
+				9FEAE878FB7E7DD7DCFB939B /* [CP] Embed Pods Frameworks */,
+				A8740E1541BE640E55FD15A9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1965,7 +1976,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-macOS/Pods-macOS-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ProcedureKit-All-Cloud-Location-Network-Standard/ProcedureKit.framework",
+				"${BUILT_PRODUCTS_DIR}/ProcedureKit-All-Cloud-Location-Network-Standard-macOS/ProcedureKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyUserDefaults-macOS/SwiftyUserDefaults.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1976,6 +1987,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-macOS/Pods-macOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		77F8FD9102CBDD3000108585 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WikiMed-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		7D32C417880EE3A4FFF4017C /* [CP] Embed Pods Frameworks */ = {
@@ -2016,6 +2045,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9FEAE878FB7E7DD7DCFB939B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-WikiMed/Pods-WikiMed-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ProcedureKit-All-Cloud-Location-Network-Standard-iOS/ProcedureKit.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProcedureKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WikiMed/Pods-WikiMed-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A8740E1541BE640E55FD15A9 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WikiMed/Pods-WikiMed-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CDD21917A84F651D4CEFF569 /* [CP] Check Pods Manifest.lock */ = {
@@ -2204,6 +2266,7 @@
 /* Begin XCBuildConfiguration section */
 		975FDAE61F6082DA00A10E8C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7510393635E2E3EF2F7C29DB /* Pods-WikiMed.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2235,6 +2298,7 @@
 		};
 		975FDAE71F6082DA00A10E8C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EC89D040865EE325CEE40811 /* Pods-WikiMed.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
