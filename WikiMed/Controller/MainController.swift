@@ -10,7 +10,7 @@ import UIKit
 import WebKit
 
 class MainController: UIViewController, UISearchBarDelegate {
-    let searchResultController = SearchResultController()
+    let searchController = SearchController()
     let tab = LegacyTabController()
     let searchBar = UISearchBar()
     lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(endSearch))
@@ -57,21 +57,22 @@ class MainController: UIViewController, UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        searchController.startSearch(text: searchText)
     }
     
     private func showSearchController() {
-        addChildViewController(searchResultController)
-        let searchResult = searchResultController.view!
+        addChildViewController(searchController)
+        let searchResult = searchController.view!
         searchResult.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(searchResult)
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[searchResult]|", options: [], metrics: nil, views: ["searchResult": searchResult]))
         view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[topGuide]-(0)-[searchResult]|", options: [], metrics: nil, views: ["topGuide": topLayoutGuide, "searchResult": searchResult]))
-        searchResultController.didMove(toParentViewController: self)
+        searchController.didMove(toParentViewController: self)
     }
     
     private func hideSearchController() {
-        searchResultController.view.removeFromSuperview()
-        searchResultController.removeFromParentViewController()
+        searchController.view.removeFromSuperview()
+        searchController.removeFromParentViewController()
     }
     
 }

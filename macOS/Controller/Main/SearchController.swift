@@ -66,6 +66,7 @@ class SearchController: NSViewController, ProcedureQueueDelegate, NSTableViewDat
     
     func startSearch(searchTerm: String) {
         let procedure = SearchProcedure(term: searchTerm)
+        procedure.add(condition: MutuallyExclusive<SearchController>())
         procedure.add(observer: DidFinishObserver(didFinish: { [unowned self] (procedure, errors) in
             guard let procedure = procedure as? SearchProcedure else {return}
             OperationQueue.main.addOperation({

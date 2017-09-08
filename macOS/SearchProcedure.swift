@@ -16,30 +16,37 @@ class SearchProcedure: Procedure {
     init(term: String) {
         self.term = term
         super.init()
-        add(condition: MutuallyExclusive<SearchController>())
         name = "Search Procedure"
     }
     
     override func execute() {
-        defer {
-            finish()
-        }
+        defer {finish()}
         
         guard term != "" else {return}
-        var results = [SearchResult]()
         
+        var results = indexedSearch()
+        if results.count == 0 {
+            results = titleSearch()
+        }
+
+        self.results = results
+    }
+    
+    func indexedSearch() -> [SearchResult] {
+        defer {ZimManager.shared.stopSearch()}
+        
+        guard !isCancelled else {return []}
+        var results = [SearchResult]()
         ZimManager.shared.startSearch(term: term)
         while let result = ZimManager.shared.getNextSearchResult() {
-            guard !isCancelled else {return}
+            guard !isCancelled else {return []}
             results.append(result)
         }
-        ZimManager.shared.stopSearch()
-        
-        guard !isCancelled else {return}
-        if results.count == 0 {
-            results += ZimManager.shared.getSearchSuggestions(term: term)
-        }
-        
-        self.results = results
+        return results
+    }
+    
+    func titleSearch() -> [SearchResult]{
+        guard !isCancelled else {return []}
+        return ZimManager.shared.getSearchSuggestions(term: term)
     }
 }

@@ -7,15 +7,22 @@
 //
 
 import UIKit
+import ProcedureKit
 
-class SearchResultController: UIViewController, UIViewControllerTransitioningDelegate {
+class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSource, ProcedureQueueDelegate {
     let tableView = UITableView()
     let visual = VisualEffectShadowView()
     let background = UIView()
     
+    let queue = ProcedureQueue()
+    private(set) var results: [SearchResult] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureTableView()
+        
         view.backgroundColor = UIColor.clear
+        queue.delegate = self
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -31,6 +38,13 @@ class SearchResultController: UIViewController, UIViewControllerTransitioningDel
             visual.removeFromSuperview()
             addTableView()
         }
+    }
+    
+    private func configureTableView() {
+        tableView.register(SearchResultTitleCell.self, forCellReuseIdentifier: "TitleCell")
+        tableView.register(SearchResultTitleSnippetCell.self, forCellReuseIdentifier: "TitleSnippetCell")
+        tableView.dataSource = self
+        tableView.delegate = self
     }
     
     func addTableView() {
@@ -91,5 +105,71 @@ class SearchResultController: UIViewController, UIViewControllerTransitioningDel
     @objc func backgroundViewTapped() {
         guard let main = parent as? MainController else {return}
         main.searchBar.resignFirstResponder()
+    }
+    
+    func startSearch(text: String) {
+        let procedure = SearchProcedure(term: text)
+        procedure.add(condition: MutuallyExclusive<SearchController>())
+        procedure.add(observer: DidFinishObserver(didFinish: { [unowned self] (procedure, errors) in
+            guard let procedure = procedure as? SearchProcedure else {return}
+            OperationQueue.main.addOperation({
+                self.results = procedure.results
+            })
+        }))
+        queue.add(operation: procedure)
+    }
+    
+    // MARK: - UITableView
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return results.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let result = results[indexPath.row]
+        let identifier = result.hasSnippet ? "TitleSnippetCell" : "TitleCell"
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+        
+        if let cell = cell as? SearchResultTitleCell {
+            cell.titleLabel.text = result.title
+        } else if let cell = cell as? SearchResultTitleSnippetCell {
+            cell.titleLabel.text = result.title
+            if let snippet = result.snippet {
+                cell.snippetLabel.text = snippet
+            } else if let snippet = result.attributedSnippet {
+                cell.snippetLabel.attributedText = snippet
+            }
+        }
+        
+        return cell
+    }
+    
+    // MARK: - ProcedureQueueDelegate
+    
+    func procedureQueue(_ queue: ProcedureQueue, willAddProcedure procedure: Procedure, context: Any?) -> ProcedureFuture? {
+        if queue.operationCount == 0 {
+            DispatchQueue.main.async {
+                //            self.progressIndicator.startAnimation(nil)
+                self.tableView.isHidden = true
+                //            self.noResultLabel.isHidden = true
+            }
+        } else {
+            queue.operations.forEach({$0.cancel()})
+        }
+        return nil
+    }
+    
+    func procedureQueue(_ queue: ProcedureQueue, didFinishProcedure procedure: Procedure, withErrors errors: [Error]) {
+        guard queue.operationCount == 0 else {return}
+        DispatchQueue.main.async {
+//            self.progressIndicator.stopAnimation(nil)
+            self.tableView.isHidden = self.results.count == 0
+//            self.noResultLabel.isHidden = !self.tableView.isHidden
+            self.tableView.reloadData()
+        }
     }
 }
