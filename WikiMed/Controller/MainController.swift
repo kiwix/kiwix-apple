@@ -12,6 +12,8 @@ import WebKit
 class MainController: UIViewController, UISearchBarDelegate {
     let searchResultController = SearchResultController()
     let tab = LegacyTabController()
+    let searchBar = UISearchBar()
+    lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(endSearch))
     
     @IBOutlet weak var webView: UIWebView!
     
@@ -22,10 +24,10 @@ class MainController: UIViewController, UISearchBarDelegate {
     }
     
     func configureSearch() {
-        let searchBar = UISearchBar()
         searchBar.delegate = self
         searchBar.placeholder = NSLocalizedString("Search", comment: "Search Promot")
         searchBar.searchBarStyle = .minimal
+        
         navigationItem.titleView = searchBar
     }
     
@@ -38,23 +40,38 @@ class MainController: UIViewController, UISearchBarDelegate {
         tab.didMove(toParentViewController: self)
     }
     
+    @objc func endSearch() {
+        searchBar.resignFirstResponder()
+    }
+    
     // MARK: - UISearchBarDelegate
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        navigationItem.setRightBarButton(cancelButton, animated: true)
+        showSearchController()
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        navigationItem.setRightBarButton(nil, animated: true)
+        hideSearchController()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     }
     
-    func showSearchController() {
-        
+    private func showSearchController() {
+        addChildViewController(searchResultController)
+        let searchResult = searchResultController.view!
+        searchResult.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(searchResult)
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[searchResult]|", options: [], metrics: nil, views: ["searchResult": searchResult]))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[topGuide]-(0)-[searchResult]|", options: [], metrics: nil, views: ["topGuide": topLayoutGuide, "searchResult": searchResult]))
+        searchResultController.didMove(toParentViewController: self)
     }
     
-    func hideSearchController() {
-        
+    private func hideSearchController() {
+        searchResultController.view.removeFromSuperview()
+        searchResultController.removeFromParentViewController()
     }
     
 }

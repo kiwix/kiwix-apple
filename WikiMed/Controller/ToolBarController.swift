@@ -17,7 +17,7 @@ class ToolBarController: UIViewController {
     private lazy var home = ToolBarButton(imageName: "Home")
     
     override func loadView() {
-        view = ToolBarContainerView()
+        view = VisualEffectShadowView()
     }
     
     override func viewDidLoad() {
@@ -31,7 +31,7 @@ class ToolBarController: UIViewController {
         stackView.alignment = .center
         stackView.distribution = .equalSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        let visualContent = (view as! ToolBarContainerView).visualEffectView.contentView
+        let visualContent = (view as! VisualEffectShadowView).visualEffectView.contentView
         visualContent.addSubview(stackView)
         visualContent.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[stack]|", options: [], metrics: nil, views: ["stack": stackView]))
         visualContent.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[stack]|", options: [], metrics: nil, views: ["stack": stackView]))
@@ -66,7 +66,7 @@ protocol ToolBarControlEvents: class {
     func homeButtonTapped()
 }
 
-class ToolBarContainerView: UIView {
+class VisualEffectShadowView: UIView {
     struct Shadow {
         let offset: CGSize
         let blur: CGFloat
