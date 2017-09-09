@@ -25,6 +25,31 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
         queue.delegate = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(notification:)), name: .UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+    }
+    @objc func keyboardDidShow(notification: Notification) {
+        guard let userInfo = notification.userInfo as? [String: NSValue],
+            let origin = userInfo[UIKeyboardFrameEndUserInfoKey]?.cgRectValue.origin else {return}
+        let point = tableView.convert(origin, from: nil)
+        let buttomInset = tableView.frame.height - point.y
+        tableView.contentInset = UIEdgeInsetsMake(0.0, 0, buttomInset, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0, 0, buttomInset, 0)
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+        tableView.contentInset = UIEdgeInsetsMake(0.0, 0, 0, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0, 0, 0, 0)
+    }
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
@@ -39,6 +64,8 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
             addTableView()
         }
     }
+    
+    // MARK: - view manipulation
     
     private func configureTableView() {
         tableView.register(SearchResultTitleCell.self, forCellReuseIdentifier: "TitleCell")
@@ -107,6 +134,8 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
         main.searchBar.resignFirstResponder()
     }
     
+    // MARK: - Search
+    
     func startSearch(text: String) {
         let procedure = SearchProcedure(term: text)
         procedure.add(condition: MutuallyExclusive<SearchController>())
@@ -146,6 +175,13 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let main = parent as? MainController else {return}
+        main.searchBar.resignFirstResponder()
+        main.tab.load(url: results[indexPath.row].url)
     }
     
     // MARK: - ProcedureQueueDelegate
