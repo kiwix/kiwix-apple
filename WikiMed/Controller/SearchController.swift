@@ -10,122 +10,99 @@ import UIKit
 import ProcedureKit
 
 class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSource, ProcedureQueueDelegate {
-    let tableView = UITableView()
-    let visual = VisualEffectShadowView()
-    let background = UIView()
+    let containerView = SearchResultContainerView()
+    let searchResultView = SearchResultView()
     
     let queue = ProcedureQueue()
     private(set) var results: [SearchResult] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureTableView()
-        
-        view.backgroundColor = UIColor.clear
+        configureViews()
         queue.delegate = self
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
+        if traitCollection.horizontalSizeClass == .regular {
+            configureForHorizontalRegular()
+        } else if traitCollection.horizontalSizeClass == .compact {
+            configureForHorizontalCompact()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(notification:)), name: .UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: .UIKeyboardWillHide, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
     }
+    
+    @objc func keyboardWillShow(notification: Notification)  {
+        searchResultView.isHidden = true
+    }
+    
     @objc func keyboardDidShow(notification: Notification) {
+        
         guard let userInfo = notification.userInfo as? [String: NSValue],
             let origin = userInfo[UIKeyboardFrameEndUserInfoKey]?.cgRectValue.origin else {return}
-        let point = tableView.convert(origin, from: nil)
-        let buttomInset = tableView.frame.height - point.y
-        tableView.contentInset = UIEdgeInsetsMake(0.0, 0, buttomInset, 0)
-        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0, 0, buttomInset, 0)
+        let point = searchResultView.convert(origin, from: nil)
+        searchResultView.bottomInset = searchResultView.frame.height - point.y
+        searchResultView.isHidden = false
     }
     
     @objc func keyboardWillHide(notification: Notification) {
-        tableView.contentInset = UIEdgeInsetsMake(0.0, 0, 0, 0)
-        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0, 0, 0, 0)
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
-        view.removeConstraints(visual.constraints)
-        if traitCollection.horizontalSizeClass == .regular {
-            tableView.removeFromSuperview()
-            addBackgroundView()
-            addVisualView()
-        } else if traitCollection.horizontalSizeClass == .compact {
-            background.removeFromSuperview()
-            visual.removeFromSuperview()
-            addTableView()
-        }
+        searchResultView.bottomInset = 0
     }
     
     // MARK: - view manipulation
     
-    private func configureTableView() {
-        tableView.register(SearchResultTitleCell.self, forCellReuseIdentifier: "TitleCell")
-        tableView.register(SearchResultTitleSnippetCell.self, forCellReuseIdentifier: "TitleSnippetCell")
-        tableView.dataSource = self
-        tableView.delegate = self
-    }
-    
-    func addTableView() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.removeFromSuperview()
-        tableView.backgroundColor = .white
-        view.addSubview(tableView)
-        view.addConstraints([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            tableView.rightAnchor.constraint(equalTo: view.rightAnchor),
-        ])
-    }
-    
-    func addBackgroundView() {
-        background.translatesAutoresizingMaskIntoConstraints = false
-        background.backgroundColor = UIColor.lightGray.withAlphaComponent(0.25)
-        view.addSubview(background)
-        if background.gestureRecognizers?.count ?? 0 == 0 {
-            background.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(backgroundViewTapped)))
-        }
-        view.addSubview(background)
-        view.addConstraints([
-            background.topAnchor.constraint(equalTo: view.topAnchor),
-            background.leftAnchor.constraint(equalTo: view.leftAnchor),
-            background.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            background.rightAnchor.constraint(equalTo: view.rightAnchor),
-        ])
-    }
-    
-    func addVisualView() {
-        visual.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(visual)
-        let widthPropotion = visual.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75)
-        widthPropotion.priority = .defaultHigh
-        view.addConstraints([
-            visual.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            visual.topAnchor.constraint(equalTo: view.topAnchor, constant: -visual.shadow.blur),
-            visual.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.75),
-            widthPropotion,
-            visual.widthAnchor.constraint(lessThanOrEqualToConstant: 800)
-        ])
+    private func configureViews() {
+        view.backgroundColor = UIColor.clear
+        containerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(backgroundViewTapped)))
         
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.removeFromSuperview()
-        tableView.backgroundColor = .clear
-        let contentView = visual.visualEffectView.contentView
-        contentView.addSubview(tableView)
-        contentView.addConstraints([
-            tableView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            tableView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-            tableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            tableView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+        searchResultView.tableView.register(SearchResultTitleCell.self, forCellReuseIdentifier: "TitleCell")
+        searchResultView.tableView.register(SearchResultTitleSnippetCell.self, forCellReuseIdentifier: "TitleSnippetCell")
+        searchResultView.tableView.dataSource = self
+        searchResultView.tableView.delegate = self
+    }
+    
+    private func configureForHorizontalCompact() {
+        guard searchResultView.superview != view else {return}
+        containerView.removeFromSuperview()
+        searchResultView.removeFromSuperview()
+        view.addSubview(searchResultView)
+        view.addConstraints([
+            searchResultView.topAnchor.constraint(equalTo: view.topAnchor),
+            searchResultView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            searchResultView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            searchResultView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        searchResultView.tableView.backgroundColor = .white
+    }
+    
+    private func configureForHorizontalRegular() {
+        guard containerView.superview != view else {return}
+        containerView.removeFromSuperview()
+        searchResultView.removeFromSuperview()
+        
+        searchResultView.tableView.backgroundColor = .clear
+        containerView.add(searchResultView: searchResultView)
+        
+        view.addSubview(containerView)
+        view.addConstraints([
+            containerView.topAnchor.constraint(equalTo: view.topAnchor),
+            containerView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            containerView.rightAnchor.constraint(equalTo: view.rightAnchor),
         ])
     }
     
@@ -189,9 +166,10 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     func procedureQueue(_ queue: ProcedureQueue, willAddProcedure procedure: Procedure, context: Any?) -> ProcedureFuture? {
         if queue.operationCount == 0 {
             DispatchQueue.main.async {
-                //            self.progressIndicator.startAnimation(nil)
-                self.tableView.isHidden = true
-                //            self.noResultLabel.isHidden = true
+                self.searchResultView.tableView.isHidden = true
+                self.searchResultView.emptyResult.isHidden = true
+                self.searchResultView.searching.isHidden = false
+                self.searchResultView.searching.activityIndicator.startAnimating()
             }
         } else {
             queue.operations.forEach({$0.cancel()})
@@ -202,10 +180,11 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     func procedureQueue(_ queue: ProcedureQueue, didFinishProcedure procedure: Procedure, withErrors errors: [Error]) {
         guard queue.operationCount == 0 else {return}
         DispatchQueue.main.async {
-//            self.progressIndicator.stopAnimation(nil)
-            self.tableView.isHidden = self.results.count == 0
-//            self.noResultLabel.isHidden = !self.tableView.isHidden
-            self.tableView.reloadData()
+            self.searchResultView.searching.activityIndicator.stopAnimating()
+            self.searchResultView.searching.isHidden = true
+            self.searchResultView.emptyResult.isHidden = self.results.count != 0
+            self.searchResultView.tableView.isHidden = self.results.count == 0
+            self.searchResultView.tableView.reloadData()
         }
     }
 }

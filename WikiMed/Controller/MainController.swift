@@ -65,8 +65,17 @@ class MainController: UIViewController, UISearchBarDelegate {
         let searchResult = searchController.view!
         searchResult.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(searchResult)
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[searchResult]|", options: [], metrics: nil, views: ["searchResult": searchResult]))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[topGuide]-(0)-[searchResult]|", options: [], metrics: nil, views: ["topGuide": topLayoutGuide, "searchResult": searchResult]))
+        let constraints = [
+            searchResult.leftAnchor.constraint(equalTo: view.leftAnchor),
+            searchResult.rightAnchor.constraint(equalTo: view.rightAnchor),
+            searchResult.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ]
+        view.addConstraints(constraints)
+        if #available(iOS 11.0, *) {
+            view.addConstraint(searchResult.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor))
+        } else {
+            view.addConstraint(searchResult.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor))
+        }
         searchController.didMove(toParentViewController: self)
     }
     
