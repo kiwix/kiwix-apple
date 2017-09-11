@@ -1,5 +1,5 @@
 //
-//  SearchResultController.swift
+//  SearchController.swift
 //  WikiMed
 //
 //  Created by Chris Li on 9/7/17.
@@ -67,7 +67,9 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     private func configureViews() {
         view.backgroundColor = UIColor.clear
-        containerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(backgroundViewTapped)))
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(backgroundViewTapped))
+        recognizer.delegate = containerView
+        containerView.addGestureRecognizer(recognizer)
         
         searchResultView.tableView.register(SearchResultTitleCell.self, forCellReuseIdentifier: "TitleCell")
         searchResultView.tableView.register(SearchResultTitleSnippetCell.self, forCellReuseIdentifier: "TitleSnippetCell")

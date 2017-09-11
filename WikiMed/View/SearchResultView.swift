@@ -1,6 +1,6 @@
 //
-//  SearchResultTitleSnippetCell.swift
-//  WikiMed
+//  SearchResultView.swift
+//  Kiwix
 //
 //  Created by Chris Li on 9/8/17.
 //  Copyright © 2017 Chris Li. All rights reserved.
@@ -69,7 +69,7 @@ class SearchResultTitleSnippetCell: UITableViewCell {
     }
 }
 
-class SearchResultContainerView: UIView {
+class SearchResultContainerView: UIView, UIGestureRecognizerDelegate {
     let visualShadowView = VisualEffectShadowView()
     
     init() {
@@ -109,6 +109,10 @@ class SearchResultContainerView: UIView {
             searchResultView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
             searchResultView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        return touch.view == self
     }
 }
 
