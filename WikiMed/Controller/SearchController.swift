@@ -10,7 +10,8 @@ import UIKit
 import ProcedureKit
 
 class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSource, ProcedureQueueDelegate {
-    let containerView = SearchResultContainerView()
+    let horizontalRegularContainer = SearchResultHorizontalRegularContainerView()
+    let horizontalCompactContainer = SearchResultHorizontalCompactContainerView()
     let searchResultView = SearchResultView()
     
     let queue = ProcedureQueue()
@@ -51,7 +52,6 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     @objc func keyboardDidShow(notification: Notification) {
-        
         guard let userInfo = notification.userInfo as? [String: NSValue],
             let origin = userInfo[UIKeyboardFrameEndUserInfoKey]?.cgRectValue.origin else {return}
         let point = searchResultView.convert(origin, from: nil)
@@ -68,8 +68,24 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     private func configureViews() {
         view.backgroundColor = UIColor.clear
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(backgroundViewTapped))
-        recognizer.delegate = containerView
-        containerView.addGestureRecognizer(recognizer)
+        recognizer.delegate = horizontalRegularContainer
+        horizontalRegularContainer.addGestureRecognizer(recognizer)
+        
+        view.addSubview(horizontalRegularContainer)
+        horizontalRegularContainer.isHidden = true
+        view.addConstraints([
+            horizontalRegularContainer.topAnchor.constraint(equalTo: view.topAnchor),
+            horizontalRegularContainer.leftAnchor.constraint(equalTo: view.leftAnchor),
+            horizontalRegularContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            horizontalRegularContainer.rightAnchor.constraint(equalTo: view.rightAnchor)])
+        
+        view.addSubview(horizontalCompactContainer)
+        horizontalCompactContainer.isHidden = true
+        view.addConstraints([
+            horizontalCompactContainer.topAnchor.constraint(equalTo: view.topAnchor),
+            horizontalCompactContainer.leftAnchor.constraint(equalTo: view.leftAnchor),
+            horizontalCompactContainer.rightAnchor.constraint(equalTo: view.rightAnchor),
+            horizontalCompactContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
         
         searchResultView.tableView.register(SearchResultTitleCell.self, forCellReuseIdentifier: "TitleCell")
         searchResultView.tableView.register(SearchResultTitleSnippetCell.self, forCellReuseIdentifier: "TitleSnippetCell")
@@ -78,34 +94,19 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     private func configureForHorizontalCompact() {
-        guard searchResultView.superview != view else {return}
-        containerView.removeFromSuperview()
+        guard horizontalCompactContainer.isHidden else {return}
         searchResultView.removeFromSuperview()
-        view.addSubview(searchResultView)
-        view.addConstraints([
-            searchResultView.topAnchor.constraint(equalTo: view.topAnchor),
-            searchResultView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            searchResultView.rightAnchor.constraint(equalTo: view.rightAnchor),
-            searchResultView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-        searchResultView.tableView.backgroundColor = .white
+        horizontalCompactContainer.add(searchResultView: searchResultView)
+        horizontalCompactContainer.isHidden = false
+        horizontalRegularContainer.isHidden = true
     }
     
     private func configureForHorizontalRegular() {
-        guard containerView.superview != view else {return}
-        containerView.removeFromSuperview()
+        guard horizontalRegularContainer.isHidden else {return}
         searchResultView.removeFromSuperview()
-        
-        searchResultView.tableView.backgroundColor = .clear
-        containerView.add(searchResultView: searchResultView)
-        
-        view.addSubview(containerView)
-        view.addConstraints([
-            containerView.topAnchor.constraint(equalTo: view.topAnchor),
-            containerView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            containerView.rightAnchor.constraint(equalTo: view.rightAnchor),
-        ])
+        horizontalRegularContainer.add(searchResultView: searchResultView)
+        horizontalRegularContainer.isHidden = false
+        horizontalCompactContainer.isHidden = true
     }
     
     @objc func backgroundViewTapped() {
@@ -161,6 +162,10 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
         guard let main = parent as? MainController else {return}
         main.searchBar.resignFirstResponder()
         main.tab.load(url: results[indexPath.row].url)
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return results[indexPath.row].hasSnippet ? (traitCollection.horizontalSizeClass == .regular ? 126.5 : 200) : 44
     }
     
     // MARK: - ProcedureQueueDelegate

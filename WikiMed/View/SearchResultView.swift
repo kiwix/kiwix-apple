@@ -69,7 +69,7 @@ class SearchResultTitleSnippetCell: UITableViewCell {
     }
 }
 
-class SearchResultContainerView: UIView, UIGestureRecognizerDelegate {
+class SearchResultHorizontalRegularContainerView: UIView, UIGestureRecognizerDelegate {
     let visualShadowView = VisualEffectShadowView()
     
     init() {
@@ -103,16 +103,45 @@ class SearchResultContainerView: UIView, UIGestureRecognizerDelegate {
     func add(searchResultView: SearchResultView) {
         let contentView = visualShadowView.visualEffectView.contentView
         contentView.addSubview(searchResultView)
-        contentView.addConstraints([
+        let constraints = [
             searchResultView.topAnchor.constraint(equalTo: contentView.topAnchor),
             searchResultView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
             searchResultView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
             searchResultView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
+        ]
+        contentView.addConstraints(constraints)
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         return touch.view == self
+    }
+}
+
+class SearchResultHorizontalCompactContainerView: UIView {
+    init() {
+        super.init(frame: CGRect.zero)
+        configureViews()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        configureViews()
+    }
+    
+    private func configureViews() {
+        translatesAutoresizingMaskIntoConstraints = false
+        backgroundColor = UIColor.white
+    }
+    
+    func add(searchResultView: SearchResultView) {
+        addSubview(searchResultView)
+        let constraints = [
+            searchResultView.topAnchor.constraint(equalTo: topAnchor),
+            searchResultView.leftAnchor.constraint(equalTo: leftAnchor),
+            searchResultView.rightAnchor.constraint(equalTo: rightAnchor),
+            searchResultView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ]
+        addConstraints(constraints)
     }
 }
 
@@ -143,6 +172,7 @@ class SearchResultView: UIView {
         let views = [tableView, emptyResult, searching]
         views.forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
+            view.backgroundColor = .clear
             addSubview(view)
             let bottomConstraint = view.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -bottomInset)
             let constraints = [
