@@ -15,6 +15,7 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     let searchResultView = SearchResultView()
     
     let queue = ProcedureQueue()
+    private(set) var searchText = ""
     private(set) var results: [SearchResult] = []
     
     override func viewDidLoad() {
@@ -117,6 +118,7 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     // MARK: - Search
     
     func startSearch(text: String) {
+        searchText = text
         let procedure = SearchProcedure(term: text)
         procedure.add(condition: MutuallyExclusive<SearchController>())
         procedure.add(observer: DidFinishObserver(didFinish: { [unowned self] (procedure, errors) in
@@ -192,6 +194,10 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
             self.searchResultView.emptyResult.isHidden = self.results.count != 0
             self.searchResultView.tableView.isHidden = self.results.count == 0
             self.searchResultView.tableView.reloadData()
+            if self.results.count > 0 {
+                let firstRow = IndexPath(row: 0, section: 0)
+                self.searchResultView.tableView.scrollToRow(at: firstRow, at: .top, animated: false)
+            }
         }
     }
 }

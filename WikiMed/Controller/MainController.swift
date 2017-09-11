@@ -13,7 +13,7 @@ class MainController: UIViewController, UISearchBarDelegate {
     let searchController = SearchController()
     let tab = LegacyTabController()
     let searchBar = UISearchBar()
-    lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(endSearch))
+    lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
     
     @IBOutlet weak var webView: UIWebView!
     
@@ -27,6 +27,8 @@ class MainController: UIViewController, UISearchBarDelegate {
         searchBar.delegate = self
         searchBar.placeholder = NSLocalizedString("Search", comment: "Search Promot")
         searchBar.searchBarStyle = .minimal
+        searchBar.autocapitalizationType = .none
+        searchBar.autocorrectionType = .no
         
         navigationItem.titleView = searchBar
     }
@@ -40,18 +42,30 @@ class MainController: UIViewController, UISearchBarDelegate {
         tab.didMove(toParentViewController: self)
     }
     
-    @objc func endSearch() {
+    @objc func cancelSearch() {
         searchBar.resignFirstResponder()
     }
     
     // MARK: - UISearchBarDelegate
     
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        searchBar.text = searchController.searchText
+        return true
+    }
+    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        DispatchQueue.main.async {
+            if let textField = searchBar.value(forKey: "searchField") as? UITextField {
+                textField.selectAll(nil)
+            }
+        }
+        
         navigationItem.setRightBarButton(cancelButton, animated: true)
         showSearchController()
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.text = nil
         navigationItem.setRightBarButton(nil, animated: true)
         hideSearchController()
     }
