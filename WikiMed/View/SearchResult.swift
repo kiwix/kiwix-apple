@@ -150,6 +150,9 @@ class SearchResultView: UIView {
             addConstraints(constraints)
             bottomAnchorConstraints.append(bottomConstraint)
         }
+        emptyResult.isHidden = false
+        tableView.isHidden = true
+        searching.isHidden = true
     }
 }
 
