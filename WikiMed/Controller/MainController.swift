@@ -11,8 +11,9 @@ import WebKit
 
 class MainController: UIViewController, UISearchBarDelegate {
     let searchController = SearchController()
-    let tab = LegacyTabController()
     let searchBar = UISearchBar()
+    
+    private(set) var tabs = [UIViewController]()
     lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
     
     @IBOutlet weak var webView: UIWebView!
@@ -34,6 +35,15 @@ class MainController: UIViewController, UISearchBarDelegate {
     }
     
     func addTab() {
+        if tabs.count == 0 {
+            if #available(iOS 11.0, *) {
+                tabs.append(WebKitTabController())
+            } else {
+                tabs.append(LegacyTabController())
+            }
+        }
+        
+        guard let tab = tabs.first else {return}
         addChildViewController(tab)
         tab.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tab.view)

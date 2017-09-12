@@ -9,35 +9,39 @@
 import UIKit
 import SafariServices
 
-class LegacyTabController: TabController, UIWebViewDelegate, ToolBarControlEvents {
+class LegacyTabController: UIViewController, UIWebViewDelegate, ToolBarControlEvents {
     let webView = UIWebView()
     let toolBarController = ToolBarController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addWebView()
-        addToolBar()
+        configureWebView()
+        configureToolBar()
         loadMainPage()
     }
     
-    private func addWebView() {
+    private func configureWebView() {
         webView.delegate = self
         webView.isOpaque = false
         webView.backgroundColor = UIColor.clear
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(webView)
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[webView]|", options: [], metrics: nil, views: ["webView": webView]))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[webView]|", options: [], metrics: nil, views: ["webView": webView]))
+        view.addConstraints([
+            webView.topAnchor.constraint(equalTo: view.topAnchor),
+            webView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            webView.rightAnchor.constraint(equalTo: view.rightAnchor)])
     }
     
-    private func addToolBar() {
+    private func configureToolBar() {
         toolBarController.delegate = self
         addChildViewController(toolBarController)
         let toolBar = toolBarController.view!
         toolBar.translatesAutoresizingMaskIntoConstraints = false
         view.insertSubview(toolBar, aboveSubview: webView)
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[toolBar]-(10)-|", options: [], metrics: nil, views: ["toolBar": toolBar]))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[toolBar]-(10)-|", options: [], metrics: nil, views: ["toolBar": toolBar]))
+        view.addConstraints([
+            view.rightAnchor.constraint(equalTo: toolBar.rightAnchor, constant: 10),
+            view.bottomAnchor.constraint(equalTo: toolBar.bottomAnchor, constant: 10)])
         toolBarController.didMove(toParentViewController: self)
     }
     
