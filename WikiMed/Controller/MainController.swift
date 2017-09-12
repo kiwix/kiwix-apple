@@ -37,6 +37,7 @@ class MainController: UIViewController, UISearchBarDelegate {
     func addTab() {
         if tabs.count == 0 {
             if #available(iOS 11.0, *) {
+//                tabs.append(LegacyTabController())
                 tabs.append(WebKitTabController())
             } else {
                 tabs.append(LegacyTabController())

@@ -17,6 +17,7 @@ class LegacyTabController: UIViewController, UIWebViewDelegate, ToolBarControlEv
         super.viewDidLoad()
         configureWebView()
         configureToolBar()
+        updateToolBarButtons()
         loadMainPage()
     }
     
@@ -24,6 +25,7 @@ class LegacyTabController: UIViewController, UIWebViewDelegate, ToolBarControlEv
         webView.delegate = self
         webView.isOpaque = false
         webView.backgroundColor = UIColor.clear
+        webView.allowsLinkPreview = true
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(webView)
         view.addConstraints([
@@ -44,6 +46,13 @@ class LegacyTabController: UIViewController, UIWebViewDelegate, ToolBarControlEv
             view.bottomAnchor.constraint(equalTo: toolBar.bottomAnchor, constant: 10)])
         toolBarController.didMove(toParentViewController: self)
     }
+    
+    private func updateToolBarButtons() {
+        toolBarController.back.tintColor = webView.canGoBack ? nil : UIColor.gray
+        toolBarController.forward.tintColor = webView.canGoForward ? nil : UIColor.gray
+    }
+    
+    // MARK: - loading
     
     func loadMainPage() {
         guard let id = ZimManager.shared.getReaderIDs().first,
@@ -67,6 +76,10 @@ class LegacyTabController: UIViewController, UIWebViewDelegate, ToolBarControlEv
             present(controller, animated: true, completion: nil)
             return false
         }
+    }
+    
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        updateToolBarButtons()
     }
     
     // MARK: - ToolBarControlEvents

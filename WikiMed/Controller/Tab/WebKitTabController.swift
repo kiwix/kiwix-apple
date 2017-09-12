@@ -11,22 +11,29 @@ import WebKit
 import SafariServices
 
 @available(iOS 11.0, *)
-class WebKitTabController: UIViewController, ToolBarControlEvents {
+class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate, ToolBarControlEvents {
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
         return WKWebView(frame: CGRect.zero, configuration: config)
     }()
+    let progressView = UIProgressView()
     let toolBarController = ToolBarController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureWebView()
+//        configureProgressView()
         configureToolBar()
+        updateToolBarButtons()
         loadMainPage()
     }
     
     private func configureWebView() {
+        webView.uiDelegate = self
+        webView.navigationDelegate = self
+        webView.allowsLinkPreview = true
+        webView.allowsBackForwardNavigationGestures = true
         webView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(webView)
         view.addConstraints([
@@ -34,6 +41,29 @@ class WebKitTabController: UIViewController, ToolBarControlEvents {
             webView.leftAnchor.constraint(equalTo: view.leftAnchor),
             webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             webView.rightAnchor.constraint(equalTo: view.rightAnchor)])
+    }
+    var timer: Timer?
+    private func configureProgressView() {
+        progressView.progressViewStyle = .bar
+        progressView.translatesAutoresizingMaskIntoConstraints = false
+        view.insertSubview(progressView, aboveSubview: webView)
+        view.addConstraints([
+            view.leftAnchor.constraint(equalTo: progressView.leftAnchor),
+            view.rightAnchor.constraint(equalTo: progressView.rightAnchor)])
+        view.addConstraint(view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: progressView.topAnchor))
+        progressView.progress = 0.5
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true, block: { timer in
+//            if self.progressView.isHidden {
+//                self.progressView.setProgress(0, animated: false)
+//                self.progressView.isHidden = false
+//            } else {
+//                print(self.webView.estimatedProgress)
+//                self.progressView.setProgress(Float(self.webView.estimatedProgress), animated: false)
+//                self.progressView.isHidden = self.webView.estimatedProgress == 1
+//            }
+        })
+        timer?.fire()
     }
     
     private func configureToolBar() {
@@ -48,6 +78,13 @@ class WebKitTabController: UIViewController, ToolBarControlEvents {
         toolBarController.didMove(toParentViewController: self)
     }
     
+    private func updateToolBarButtons() {
+        toolBarController.back.tintColor = webView.canGoBack ? nil : UIColor.gray
+        toolBarController.forward.tintColor = webView.canGoForward ? nil : UIColor.gray
+    }
+    
+    // MARK: - loading
+    
     func loadMainPage() {
         guard let id = ZimManager.shared.getReaderIDs().first,
             let url = ZimManager.shared.getMainPageURL(bookID: id) else {return}
@@ -57,6 +94,12 @@ class WebKitTabController: UIViewController, ToolBarControlEvents {
     func load(url: URL) {
         let request = URLRequest(url: url)
         webView.load(request)
+    }
+    
+    // MARK: - WKNavigationDelegate
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        updateToolBarButtons()
     }
 
     // MARK: - ToolBarControlEvents

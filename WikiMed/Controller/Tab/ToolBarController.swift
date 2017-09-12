@@ -12,9 +12,9 @@ class ToolBarController: UIViewController {
     let stackView = UIStackView()
     weak var delegate: ToolBarControlEvents?
     
-    private lazy var back = ToolBarButton(imageName: "Left")
-    private lazy var forward = ToolBarButton(imageName: "Right")
-    private lazy var home = ToolBarButton(imageName: "Home")
+    private(set) lazy var back = ToolBarButton(imageName: "Left")
+    private(set) lazy var forward = ToolBarButton(imageName: "Right")
+    private(set) lazy var home = ToolBarButton(imageName: "Home")
     
     override func loadView() {
         view = VisualEffectShadowView()
