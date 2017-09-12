@@ -42,7 +42,7 @@ class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate,
             webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             webView.rightAnchor.constraint(equalTo: view.rightAnchor)])
     }
-    var timer: Timer?
+    
     private func configureProgressView() {
         progressView.progressViewStyle = .bar
         progressView.translatesAutoresizingMaskIntoConstraints = false
@@ -51,19 +51,6 @@ class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate,
             view.leftAnchor.constraint(equalTo: progressView.leftAnchor),
             view.rightAnchor.constraint(equalTo: progressView.rightAnchor)])
         view.addConstraint(view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: progressView.topAnchor))
-        progressView.progress = 0.5
-        
-        timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true, block: { timer in
-//            if self.progressView.isHidden {
-//                self.progressView.setProgress(0, animated: false)
-//                self.progressView.isHidden = false
-//            } else {
-//                print(self.webView.estimatedProgress)
-//                self.progressView.setProgress(Float(self.webView.estimatedProgress), animated: false)
-//                self.progressView.isHidden = self.webView.estimatedProgress == 1
-//            }
-        })
-        timer?.fire()
     }
     
     private func configureToolBar() {
