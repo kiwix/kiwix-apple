@@ -20,6 +20,7 @@ class KiwixURLProtocol: URLProtocol {
     }
     
     override func startLoading() {
+        print(request.url!)
         guard let url = request.url,
             let contentPath = url.path.removingPercentEncoding,
             let id = url.host else {

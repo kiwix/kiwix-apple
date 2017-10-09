@@ -10,24 +10,30 @@ import UIKit
 import WebKit
 import SafariServices
 
+
 @available(iOS 11.0, *)
-class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate, ToolBarControlEvents {
+class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate, ToolBarControlEvents, ArticleLoading {
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
-        return WKWebView(frame: CGRect.zero, configuration: config)
+        return WKWebView(frame: .zero, configuration: config)
     }()
-    let progressView = UIProgressView()
     let toolBarController = ToolBarController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureWebView()
-//        configureProgressView()
         configureToolBar()
         updateToolBarButtons()
         loadMainPage()
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, toolBarController.view.frame.height + 20, 0)
+    }
+    
+    // MARK: - Configure
     
     private func configureWebView() {
         webView.uiDelegate = self
@@ -43,16 +49,6 @@ class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate,
             webView.rightAnchor.constraint(equalTo: view.rightAnchor)])
     }
     
-    private func configureProgressView() {
-        progressView.progressViewStyle = .bar
-        progressView.translatesAutoresizingMaskIntoConstraints = false
-        view.insertSubview(progressView, aboveSubview: webView)
-        view.addConstraints([
-            view.leftAnchor.constraint(equalTo: progressView.leftAnchor),
-            view.rightAnchor.constraint(equalTo: progressView.rightAnchor)])
-        view.addConstraint(view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: progressView.topAnchor))
-    }
-    
     private func configureToolBar() {
         toolBarController.delegate = self
         addChildViewController(toolBarController)
@@ -60,8 +56,8 @@ class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         toolBar.translatesAutoresizingMaskIntoConstraints = false
         view.insertSubview(toolBar, aboveSubview: webView)
         view.addConstraints([
-            view.rightAnchor.constraint(equalTo: toolBar.rightAnchor, constant: 10),
-            view.bottomAnchor.constraint(equalTo: toolBar.bottomAnchor, constant: 10)])
+            view.safeAreaLayoutGuide.centerXAnchor.constraint(equalTo: toolBar.centerXAnchor),
+            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: toolBar.bottomAnchor, constant: 10)])
         toolBarController.didMove(toParentViewController: self)
     }
     
@@ -102,5 +98,8 @@ class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     func homeButtonTapped() {
         loadMainPage()
     }
+}
 
+protocol ArticleLoading {
+    func load(url: URL)
 }

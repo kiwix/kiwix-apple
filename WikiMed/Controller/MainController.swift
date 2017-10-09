@@ -37,7 +37,6 @@ class MainController: UIViewController, UISearchBarDelegate {
     func addTab() {
         if tabs.count == 0 {
             if #available(iOS 11.0, *) {
-//                tabs.append(LegacyTabController())
                 tabs.append(WebKitTabController())
             } else {
                 tabs.append(LegacyTabController())
@@ -69,9 +68,10 @@ class MainController: UIViewController, UISearchBarDelegate {
             if let textField = searchBar.value(forKey: "searchField") as? UITextField {
                 textField.selectAll(nil)
             }
+            self.navigationItem.setRightBarButton(self.cancelButton, animated: true)
         }
         
-        navigationItem.setRightBarButton(cancelButton, animated: true)
+        
         showSearchController()
     }
     

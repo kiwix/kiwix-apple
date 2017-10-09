@@ -150,6 +150,6 @@ class ToolBarDivider: UIView {
     }
     
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: 0.5, height: 50)
+        return CGSize(width: 1 / UIScreen.main.scale, height: 50)
     }
 }

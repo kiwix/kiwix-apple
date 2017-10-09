@@ -164,11 +164,7 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
         guard let main = parent as? MainController else {return}
         main.searchBar.resignFirstResponder()
         let url = results[indexPath.row].url
-        if #available(iOS 11.0, *) {
-            (main.tabs.first as? WebKitTabController)?.load(url: url)
-        } else {
-            (main.tabs.first as? LegacyTabController)?.load(url: url)
-        }
+        (main.tabs.first as? ArticleLoading)?.load(url: url)
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {

@@ -56,10 +56,10 @@
 		975FDB041F608A9700A10E8C /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A621F44F451003F5431 /* libzim.a */; };
 		975FDB051F608ADA00A10E8C /* ZimManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A6EE6D1F4A99A700926FD1 /* ZimManager.swift */; };
 		975FDB071F608F4100A10E8C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 975FDB061F608F4100A10E8C /* WebKit.framework */; };
-		975FDB091F60922D00A10E8C /* wikipedia_en_medicine_novid_2017-08.zim in CopyFiles */ = {isa = PBXBuildFile; fileRef = 975FDB081F60922100A10E8C /* wikipedia_en_medicine_novid_2017-08.zim */; };
 		97642B991E380CC0003E2D0B /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97642B981E380CC0003E2D0B /* Network.swift */; };
 		9765D9801F50CC4700BFDC1E /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9765D97F1F50CC4700BFDC1E /* Search.storyboard */; };
 		976771791F4378FC007ED0C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 976771741F4378FC007ED0C2 /* Main.storyboard */; };
+		976860251F6855C400755BFA /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976860241F6855C400755BFA /* SearchResult.swift */; };
 		9768C2351F4B7BAC00FD499B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768C2341F4B7BAC00FD499B /* AppDelegate.swift */; };
 		9768C2371F4B7E9900FD499B /* Preference.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9768C2361F4B7E9900FD499B /* Preference.storyboard */; };
 		9768C23B1F4B7F6300FD499B /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768C23A1F4B7F6300FD499B /* Preference.swift */; };
@@ -125,7 +125,8 @@
 		97A9F6F51E2E990500F423AA /* JSInject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* JSInject.js */; };
 		97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */; };
 		97C2C26A1DDCC58500A9CC64 /* ArticleProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764CBD21D8083AA00072D6A /* ArticleProcedure.swift */; };
-		97C5D1541E69D0170042898D /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C5D1521E69D0170042898D /* SnapshotHelper.swift */; };
+		97C459771F86C1360013AC22 /* wikipedia_en_medicine_novid.zim in Resources */ = {isa = PBXBuildFile; fileRef = 97C459761F86C1360013AC22 /* wikipedia_en_medicine_novid.zim */; };
+		97C459781F86C14A0013AC22 /* wikipedia_en_medicine_novid.zim in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97C459761F86C1360013AC22 /* wikipedia_en_medicine_novid.zim */; };
 		97C601DE1D7F342100362D4F /* HTMLHeading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C601DD1D7F342100362D4F /* HTMLHeading.swift */; };
 		97D231631E677C5600DCD4A4 /* Bookmark.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97D2315D1E677C5600DCD4A4 /* Bookmark.storyboard */; };
 		97D231641E677C5600DCD4A4 /* Library.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97D2315E1E677C5600DCD4A4 /* Library.storyboard */; };
@@ -175,11 +176,8 @@
 		97E983501F4CA54A0021E96A /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9834F1F4CA54A0021E96A /* SearchController.swift */; };
 		97E983541F4DDB670021E96A /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E983531F4DDB670021E96A /* SearchView.swift */; };
 		97ED50111DD257D00089E9B6 /* Kiwix.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 97D6812A1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld */; };
-		97FC27DE1E69CE31008B2348 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 97FC27DC1E69CE31008B2348 /* Info.plist */; };
-		97FC27DF1E69CE31008B2348 /* iOS_ScreenshotAutomator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FC27DD1E69CE31008B2348 /* iOS_ScreenshotAutomator.swift */; };
 		97FDACC41D85A3B300DEDACB /* Language+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813E1D6F712800E5FA99 /* Language+CoreDataProperties.swift */; };
 		DFD371610877B5817E9C9FEB /* Pods_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81DF90AB14037E242E284CA8 /* Pods_macOS.framework */; };
-		E1B5556AE19C8BD6BE295E79 /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E854211810A39173DD6A5BD /* Pods_iOS.framework */; };
 		FA1E975E797443400EBF3EE8 /* Pods_WikiMed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14995D226EC82CFFBBB5B159 /* Pods_WikiMed.framework */; };
 /* End PBXBuildFile section */
 
@@ -191,23 +189,16 @@
 			remoteGlobalIDString = 9779C3121D4575AD0064CC8E;
 			remoteInfo = Bookmarks;
 		};
-		97FC27D61E69CE10008B2348 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 97A2AB801C1B80FF00052E74 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 97A2AB871C1B80FF00052E74;
-			remoteInfo = iOS;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		975FDAF31F6089F000A10E8C /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-				975FDB091F60922D00A10E8C /* wikipedia_en_medicine_novid_2017-08.zim in CopyFiles */,
+				97C459781F86C14A0013AC22 /* wikipedia_en_medicine_novid.zim in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,22 +280,20 @@
 		975415D31F54C1870007EA6C /* SearchProcedure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchProcedure.swift; sourceTree = "<group>"; };
 		9759D4211F4F278800705779 /* Kiwix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
 		975B90FD1CEB909100D13906 /* iOSExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOSExtensions.swift; sourceTree = "<group>"; };
-		975FDAD71F6082DA00A10E8C /* WikiMed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikiMed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		975FDAD91F6082DA00A10E8C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		975FDADB1F6082DA00A10E8C /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
 		975FDADE1F6082DA00A10E8C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		975FDAE01F6082DA00A10E8C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		975FDAE31F6082DA00A10E8C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		975FDAE51F6082DA00A10E8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		975FDAEB1F60839E00A10E8C /* WikiMed.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = WikiMed.app; path = "../../../../../../Users/chrisli/Library/Developer/Xcode/DerivedData/Kiwix-ayxrfhaqnfxzendihdolvkklkmhk/Build/Products/Debug-iphoneos/WikiMed.app"; sourceTree = "<group>"; };
 		975FDB061F608F4100A10E8C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		975FDB081F60922100A10E8C /* wikipedia_en_medicine_novid_2017-08.zim */ = {isa = PBXFileReference; lastKnownFileType = file; path = "wikipedia_en_medicine_novid_2017-08.zim"; sourceTree = "<group>"; };
 		975FDB0B1F60930A00A10E8C /* WebKitHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitHandler.swift; sourceTree = "<group>"; };
 		97642B981E380CC0003E2D0B /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		9764CBD21D8083AA00072D6A /* ArticleProcedure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleProcedure.swift; sourceTree = "<group>"; };
 		9765D97F1F50CC4700BFDC1E /* Search.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = "<group>"; };
 		976771741F4378FC007ED0C2 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		9767717D1F437BB9007ED0C2 /* URLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLProtocol.swift; sourceTree = "<group>"; };
+		976860241F6855C400755BFA /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		9768C2341F4B7BAC00FD499B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9768C2361F4B7E9900FD499B /* Preference.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Preference.storyboard; sourceTree = "<group>"; };
 		9768C23A1F4B7F6300FD499B /* Preference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
@@ -354,6 +343,7 @@
 		97A1FD401D6F728200A80EE2 /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		97A1FD411D6F728200A80EE2 /* Localized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localized.swift; sourceTree = "<group>"; };
 		97A2AB881C1B80FF00052E74 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		97A36BAF1F8C0B590079B452 /* WikiMed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikiMed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A6EE6D1F4A99A700926FD1 /* ZimManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimManager.swift; sourceTree = "<group>"; };
 		97A996CD1F609C9F007A6282 /* LegacyTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyTabController.swift; sourceTree = "<group>"; };
 		97A996D11F60A1A0007A6282 /* ToolBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarController.swift; sourceTree = "<group>"; };
@@ -361,7 +351,7 @@
 		97A996DE1F630FBC007A6282 /* SearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultView.swift; sourceTree = "<group>"; };
 		97A9F6F41E2E990500F423AA /* JSInject.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = JSInject.js; sourceTree = "<group>"; };
 		97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
-		97C5D1521E69D0170042898D /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
+		97C459761F86C1360013AC22 /* wikipedia_en_medicine_novid.zim */ = {isa = PBXFileReference; lastKnownFileType = file; path = wikipedia_en_medicine_novid.zim; sourceTree = "<group>"; };
 		97C601DD1D7F342100362D4F /* HTMLHeading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTMLHeading.swift; sourceTree = "<group>"; };
 		97D2315D1E677C5600DCD4A4 /* Bookmark.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Bookmark.storyboard; sourceTree = "<group>"; };
 		97D2315E1E677C5600DCD4A4 /* Library.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Library.storyboard; sourceTree = "<group>"; };
@@ -676,7 +666,6 @@
 		97D9D5011F43813D00A8CBEF /* zlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zlib.h; sourceTree = "<group>"; };
 		97D9D5021F43824000A8CBEF /* ZimReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZimReader.h; path = Shared/Dependencies/ZimReader.h; sourceTree = SOURCE_ROOT; };
 		97D9D5031F43824000A8CBEF /* ZimReader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ZimReader.mm; path = Shared/Dependencies/ZimReader.mm; sourceTree = SOURCE_ROOT; };
-		97DA5C1C1E6F35F700873048 /* iOS_ScreenshotAutomator.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOS_ScreenshotAutomator.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		97DA5C1D1E6F420800873048 /* BrowsingHistoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowsingHistoryController.swift; sourceTree = "<group>"; };
 		97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkWidgetCell.swift; sourceTree = "<group>"; };
 		97E0A7B61E96CC3300320F06 /* TabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabController.swift; sourceTree = "<group>"; };
@@ -684,8 +673,6 @@
 		97E9834D1F4CA0A00021E96A /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		97E9834F1F4CA54A0021E96A /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		97E983531F4DDB670021E96A /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
-		97FC27DC1E69CE31008B2348 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		97FC27DD1E69CE31008B2348 /* iOS_ScreenshotAutomator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iOS_ScreenshotAutomator.swift; sourceTree = "<group>"; };
 		97FC607E1E6868F1003CFD38 /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicudata.a; sourceTree = "<group>"; };
 		97FC607F1E6868F1003CFD38 /* libicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicui18n.a; sourceTree = "<group>"; };
 		97FC60801E6868F1003CFD38 /* libicuio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicuio.a; sourceTree = "<group>"; };
@@ -773,14 +760,6 @@
 				976D2A6B1F44F451003F5431 /* libpugixml.a in Frameworks */,
 				976D2A691F44F451003F5431 /* libkiwix.a in Frameworks */,
 				976D2A661F44F451003F5431 /* libicutest.a in Frameworks */,
-				E1B5556AE19C8BD6BE295E79 /* Pods_iOS.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		97FC27CE1E69CE10008B2348 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -815,14 +794,6 @@
 				97A996D11F60A1A0007A6282 /* ToolBarController.swift */,
 			);
 			path = Tab;
-			sourceTree = "<group>";
-		};
-		9706DA9F1E6750360005FE0F /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				97FC27DB1E69CE31008B2348 /* iOS_ScreenshotAutomator */,
-			);
-			path = Tests;
 			sourceTree = "<group>";
 		};
 		9711872D1CEB507600B9909D /* CoreData */ = {
@@ -950,10 +921,8 @@
 		975FDAEA1F60839900A10E8C /* Support */ = {
 			isa = PBXGroup;
 			children = (
-				975FDB081F60922100A10E8C /* wikipedia_en_medicine_novid_2017-08.zim */,
 				975FDAE21F6082DA00A10E8C /* LaunchScreen.storyboard */,
 				975FDAE51F6082DA00A10E8C /* Info.plist */,
-				975FDAEB1F60839E00A10E8C /* WikiMed.app */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -1137,18 +1106,17 @@
 				979315821E5127930093D3BA /* macOS */,
 				975FDAD81F6082DA00A10E8C /* WikiMed */,
 				97E609F21D103DED00EBCB9D /* iOSWidgets */,
-				9706DA9F1E6750360005FE0F /* Tests */,
+				97C459751F86C1360013AC22 /* ZimFiles */,
 				931D277C156AE671D3F9EADA /* Libraries */,
 				F544A4E4357A6D33CF234C6B /* Pods */,
 				3B93EAF9B5C5AA23046BDEAC /* Frameworks */,
-				975FDAD71F6082DA00A10E8C /* WikiMed.app */,
+				97A36BAF1F8C0B590079B452 /* WikiMed.app */,
 			);
 			sourceTree = "<group>";
 		};
 		97A2AB891C1B80FF00052E74 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				97DA5C1C1E6F35F700873048 /* iOS_ScreenshotAutomator.xctest */,
 				97A2AB881C1B80FF00052E74 /* Kiwix.app */,
 				9779C3131D4575AD0064CC8E /* Bookmarks.appex */,
 			);
@@ -1161,6 +1129,7 @@
 				979681A71F46917E008A50FF /* ZimManager.h */,
 				979681A81F46917E008A50FF /* ZimManager.mm */,
 				97A6EE6D1F4A99A700926FD1 /* ZimManager.swift */,
+				976860241F6855C400755BFA /* SearchResult.swift */,
 			);
 			path = Bridging;
 			sourceTree = "<group>";
@@ -1180,6 +1149,14 @@
 				973A5C931DEA6CA900C7804C /* URLResponseCache.swift */,
 			);
 			path = URLProtocol;
+			sourceTree = "<group>";
+		};
+		97C459751F86C1360013AC22 /* ZimFiles */ = {
+			isa = PBXGroup;
+			children = (
+				97C459761F86C1360013AC22 /* wikipedia_en_medicine_novid.zim */,
+			);
+			path = ZimFiles;
 			sourceTree = "<group>";
 		};
 		97D231691E677C6700DCD4A4 /* Controller */ = {
@@ -1644,16 +1621,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		97FC27DB1E69CE31008B2348 /* iOS_ScreenshotAutomator */ = {
-			isa = PBXGroup;
-			children = (
-				97FC27DC1E69CE31008B2348 /* Info.plist */,
-				97C5D1521E69D0170042898D /* SnapshotHelper.swift */,
-				97FC27DD1E69CE31008B2348 /* iOS_ScreenshotAutomator.swift */,
-			);
-			path = iOS_ScreenshotAutomator;
-			sourceTree = "<group>";
-		};
 		97FC607B1E686883003CFD38 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1721,7 +1688,7 @@
 			);
 			name = WikiMed;
 			productName = WikiMed;
-			productReference = 975FDAD71F6082DA00A10E8C /* WikiMed.app */;
+			productReference = 97A36BAF1F8C0B590079B452 /* WikiMed.app */;
 			productType = "com.apple.product-type.application";
 		};
 		9779C3121D4575AD0064CC8E /* Bookmarks */ = {
@@ -1785,24 +1752,6 @@
 			productReference = 97A2AB881C1B80FF00052E74 /* Kiwix.app */;
 			productType = "com.apple.product-type.application";
 		};
-		97FC27D01E69CE10008B2348 /* iOS_ScreenshotAutomator */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 97FC27D81E69CE10008B2348 /* Build configuration list for PBXNativeTarget "iOS_ScreenshotAutomator" */;
-			buildPhases = (
-				97FC27CD1E69CE10008B2348 /* Sources */,
-				97FC27CE1E69CE10008B2348 /* Frameworks */,
-				97FC27CF1E69CE10008B2348 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				97FC27D71E69CE10008B2348 /* PBXTargetDependency */,
-			);
-			name = iOS_ScreenshotAutomator;
-			productName = iOS_ScreenshotAutomator;
-			productReference = 97DA5C1C1E6F35F700873048 /* iOS_ScreenshotAutomator.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1810,7 +1759,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0900;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = "Chris Li";
 				TargetAttributes = {
 					975FDAD61F6082DA00A10E8C = {
@@ -1870,12 +1819,6 @@
 							};
 						};
 					};
-					97FC27D01E69CE10008B2348 = {
-						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = L7HWM3SP3L;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 97A2AB871C1B80FF00052E74;
-					};
 				};
 			};
 			buildConfigurationList = 97A2AB831C1B80FF00052E74 /* Build configuration list for PBXProject "Kiwix" */;
@@ -1895,7 +1838,6 @@
 				979315801E5127930093D3BA /* macOS */,
 				975FDAD61F6082DA00A10E8C /* WikiMed */,
 				9779C3121D4575AD0064CC8E /* Bookmarks */,
-				97FC27D01E69CE10008B2348 /* iOS_ScreenshotAutomator */,
 			);
 		};
 /* End PBXProject section */
@@ -1943,17 +1885,10 @@
 				97D231661E677C5600DCD4A4 /* Search.storyboard in Resources */,
 				97D231631E677C5600DCD4A4 /* Bookmark.storyboard in Resources */,
 				970D79D61E60B8A8003F5997 /* LaunchScreen.storyboard in Resources */,
+				97C459771F86C1360013AC22 /* wikipedia_en_medicine_novid.zim in Resources */,
 				97D231651E677C5600DCD4A4 /* Main.storyboard in Resources */,
 				97D231641E677C5600DCD4A4 /* Library.storyboard in Resources */,
 				97318E461E6780E7000B718B /* DownloaderLearnMore.html in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		97FC27CF1E69CE10008B2348 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				97FC27DE1E69CE31008B2348 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2133,6 +2068,7 @@
 				975FDAF51F608A2200A10E8C /* URLProtocol.swift in Sources */,
 				97050D011F6733400021DE78 /* WebKitTabController.swift in Sources */,
 				97050D031F6735100021DE78 /* WebKitHandler.swift in Sources */,
+				976860251F6855C400755BFA /* SearchResult.swift in Sources */,
 				975FDB051F608ADA00A10E8C /* ZimManager.swift in Sources */,
 				97A996CE1F609C9F007A6282 /* LegacyTabController.swift in Sources */,
 				97A996DF1F630FBC007A6282 /* SearchResultView.swift in Sources */,
@@ -2244,15 +2180,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		97FC27CD1E69CE10008B2348 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				97FC27DF1E69CE31008B2348 /* iOS_ScreenshotAutomator.swift in Sources */,
-				97C5D1541E69D0170042898D /* SnapshotHelper.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -2260,11 +2187,6 @@
 			isa = PBXTargetDependency;
 			target = 9779C3121D4575AD0064CC8E /* Bookmarks */;
 			targetProxy = 9779C31C1D4575AE0064CC8E /* PBXContainerItemProxy */;
-		};
-		97FC27D71E69CE10008B2348 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 97A2AB871C1B80FF00052E74 /* iOS */;
-			targetProxy = 97FC27D61E69CE10008B2348 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2654,39 +2576,6 @@
 			};
 			name = Release;
 		};
-		97FC27D91E69CE10008B2348 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				INFOPLIST_FILE = tests/iOS_ScreenshotAutomator/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.kiwix.iOS-ScreenshotAutomator";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 3.0;
-				TEST_TARGET_NAME = iOS;
-			};
-			name = Debug;
-		};
-		97FC27DA1E69CE10008B2348 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				INFOPLIST_FILE = tests/iOS_ScreenshotAutomator/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.kiwix.iOS-ScreenshotAutomator";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-				TEST_TARGET_NAME = iOS;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2731,15 +2620,6 @@
 			buildConfigurations = (
 				97A2ABB41C1B810000052E74 /* Debug */,
 				97A2ABB51C1B810000052E74 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		97FC27D81E69CE10008B2348 /* Build configuration list for PBXNativeTarget "iOS_ScreenshotAutomator" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				97FC27D91E69CE10008B2348 /* Debug */,
-				97FC27DA1E69CE10008B2348 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

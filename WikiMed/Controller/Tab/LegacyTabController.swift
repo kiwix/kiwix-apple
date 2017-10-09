@@ -9,7 +9,7 @@
 import UIKit
 import SafariServices
 
-class LegacyTabController: UIViewController, UIWebViewDelegate, ToolBarControlEvents {
+class LegacyTabController: UIViewController, UIWebViewDelegate, ToolBarControlEvents, ArticleLoading {
     let webView = UIWebView()
     let toolBarController = ToolBarController()
     
@@ -41,9 +41,20 @@ class LegacyTabController: UIViewController, UIWebViewDelegate, ToolBarControlEv
         let toolBar = toolBarController.view!
         toolBar.translatesAutoresizingMaskIntoConstraints = false
         view.insertSubview(toolBar, aboveSubview: webView)
-        view.addConstraints([
-            view.rightAnchor.constraint(equalTo: toolBar.rightAnchor, constant: 10),
-            view.bottomAnchor.constraint(equalTo: toolBar.bottomAnchor, constant: 10)])
+        if #available(iOS 11.0, *) {
+            view.addConstraints([
+                view.rightAnchor.constraint(equalTo: toolBar.rightAnchor, constant: 10),
+                view.bottomAnchor.constraint(equalTo: toolBar.bottomAnchor, constant: 10)])
+            additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, 100, 0)
+        } else {
+            view.addConstraints([
+                view.rightAnchor.constraint(equalTo: toolBar.rightAnchor, constant: 10),
+                view.bottomAnchor.constraint(equalTo: toolBar.bottomAnchor, constant: 10)])
+        }
+        
+//        view.addConstraints([
+//            view.rightAnchor.constraint(equalTo: toolBar.rightAnchor, constant: 10),
+//            view.bottomAnchor.constraint(equalTo: toolBar.bottomAnchor, constant: 10)])
         toolBarController.didMove(toParentViewController: self)
     }
     

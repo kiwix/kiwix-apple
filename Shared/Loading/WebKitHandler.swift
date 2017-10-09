@@ -15,19 +15,25 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
             url.isKiwixURL,
             let contentPath = url.path.removingPercentEncoding,
             let id = url.host else {
+                urlSchemeTask.didFailWithError(ResourceLoadingError.invalidURL)
                 return
         }
         
         guard let content = ZimManager.shared.getContent(bookID: id, contentPath: contentPath) else {
+            urlSchemeTask.didFailWithError(ResourceLoadingError.contentNotFound)
             return
         }
+        
         let response = URLResponse(url: url, mimeType: content.mime, expectedContentLength: content.length, textEncodingName: nil)
         urlSchemeTask.didReceive(response)
         urlSchemeTask.didReceive(content.data)
         urlSchemeTask.didFinish()
     }
     
-    func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
-        
-    }
+    func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {}
+}
+
+enum ResourceLoadingError: Error {
+    case invalidURL
+    case contentNotFound
 }
