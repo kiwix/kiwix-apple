@@ -12,9 +12,10 @@ class ToolBarController: UIViewController {
     let stackView = UIStackView()
     weak var delegate: ToolBarControlEvents?
     
-    private(set) lazy var back = ToolBarButton(imageName: "Left")
-    private(set) lazy var forward = ToolBarButton(imageName: "Right")
-    private(set) lazy var home = ToolBarButton(imageName: "Home")
+    private(set) lazy var back = ToolBarButton(image: #imageLiteral(resourceName: "Left"))
+    private(set) lazy var forward = ToolBarButton(image: #imageLiteral(resourceName: "Right"))
+    private(set) lazy var home = ToolBarButton(image: #imageLiteral(resourceName: "Home"))
+    private(set) lazy var library = ToolBarButton(image: #imageLiteral(resourceName: "Library"))
     
     override func loadView() {
         view = VisualEffectShadowView()
@@ -43,6 +44,10 @@ class ToolBarController: UIViewController {
         stackView.addArrangedSubview(forward)
         stackView.addArrangedSubview(ToolBarDivider())
         stackView.addArrangedSubview(home)
+        if Bundle.main.infoDictionary?["CFBundleName"] as? String == "Kiwix" {
+            stackView.addArrangedSubview(ToolBarDivider())
+            stackView.addArrangedSubview(library)
+        }
         
         back.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
         forward.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
@@ -118,9 +123,9 @@ class VisualEffectShadowView: UIView {
 }
 
 class ToolBarButton: UIButton {
-    convenience init(imageName: String) {
+    convenience init(image: UIImage) {
         self.init()
-        setImage(UIImage(named: imageName)?.withRenderingMode(.alwaysTemplate), for: .normal)
+        setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
     }
     
     override var intrinsicContentSize: CGSize {
