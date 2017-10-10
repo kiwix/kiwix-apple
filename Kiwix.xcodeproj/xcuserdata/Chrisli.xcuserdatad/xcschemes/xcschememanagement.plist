@@ -19,7 +19,12 @@
 		<key>WikiMed.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>13</integer>
+			<integer>14</integer>
+		</dict>
+		<key>iOS new.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>15</integer>
 		</dict>
 		<key>iOS.xcscheme</key>
 		<dict>
@@ -112,6 +117,11 @@
 			<true/>
 		</dict>
 		<key>97A2ABA91C1B810000052E74</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>97A36C241F8C21210079B452</key>
 		<dict>
 			<key>primary</key>
 			<true/>
