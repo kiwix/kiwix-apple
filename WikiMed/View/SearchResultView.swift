@@ -101,7 +101,7 @@ class SearchResultHorizontalRegularContainerView: UIView, UIGestureRecognizerDel
     }
     
     func add(searchResultView: SearchResultView) {
-        let contentView = visualShadowView.visualEffectView.contentView
+        let contentView = visualShadowView.contentView
         contentView.addSubview(searchResultView)
         let constraints = [
             searchResultView.topAnchor.constraint(equalTo: contentView.topAnchor),
