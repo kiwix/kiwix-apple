@@ -13,7 +13,6 @@ import Foundation
 import CoreData
 
 extension Article {
-
     @NSManaged var bookmarkDate: Date?
     @NSManaged var isBookmarked: Bool
     @NSManaged var isMainPage: Bool
@@ -29,7 +28,6 @@ extension Article {
 }
 
 extension Book {
-    
     @NSManaged var articleCount: Int64
     @NSManaged var creator: String?
     @NSManaged var date: Date?
@@ -54,7 +52,6 @@ extension Book {
 }
 
 extension DownloadTask {
-    
     @NSManaged var creationTime: Date
     @NSManaged var stateRaw: Int16
     @NSManaged var totalBytesWritten: Int64
@@ -63,7 +60,6 @@ extension DownloadTask {
 }
 
 extension Language {
-    
     @NSManaged var code: String
     @NSManaged var isDisplayed: Bool
     @NSManaged var name: String?
