@@ -13,7 +13,7 @@ class CoreDataContainer: NSPersistentContainer {
     init() {
         let modelURL = Bundle.main.url(forResource: "Kiwix", withExtension: "momd")!
         let model = NSManagedObjectModel(contentsOf: modelURL)
-        super.init(name: "kiwix", managedObjectModel: model)
+        super.init(name: "kiwix", managedObjectModel: model!)
         loadPersistentStores { (_, _) in }
         viewContext.automaticallyMergesChangesFromParent = true
     }

@@ -1,8 +1,8 @@
 //
-//  Book+CoreDataProperties.swift
+//  Article+CoreDataProperties.swift
 //  Kiwix
 //
-//  Created by Chris Li on 4/12/16.
+//  Created by Chris on 1/10/16.
 //  Copyright © 2016 Chris Li. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -12,8 +12,24 @@
 import Foundation
 import CoreData
 
-extension Book {
+extension Article {
 
+    @NSManaged var bookmarkDate: Date?
+    @NSManaged var isBookmarked: Bool
+    @NSManaged var isMainPage: Bool
+    @NSManaged var lastPosition: NSNumber?
+    @NSManaged var lastReadDate: Date?
+    @NSManaged var path: String
+    @NSManaged var snippet: String?
+    @NSManaged var title: String?
+    
+    @NSManaged var book: Book?
+    @NSManaged var tags: NSSet?
+    @NSManaged var thumbImagePath: String?
+}
+
+extension Book {
+    
     @NSManaged var articleCount: Int64
     @NSManaged var creator: String?
     @NSManaged var date: Date?
@@ -34,5 +50,24 @@ extension Book {
     @NSManaged var articles: Set<Article>
     @NSManaged var downloadTask: DownloadTask?
     @NSManaged var language: Language?
+    
+}
 
+extension DownloadTask {
+    
+    @NSManaged var creationTime: Date
+    @NSManaged var stateRaw: Int16
+    @NSManaged var totalBytesWritten: Int64
+    @NSManaged var book: Book?
+    
+}
+
+extension Language {
+    
+    @NSManaged var code: String
+    @NSManaged var isDisplayed: Bool
+    @NSManaged var name: String?
+    
+    @NSManaged var books: Set<Book>
+    
 }

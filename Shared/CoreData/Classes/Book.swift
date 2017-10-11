@@ -101,21 +101,6 @@ class Book: NSManagedObject {
         return fetch(fetchRequest, type: Book.self, context: context) ?? [Book]()
     }
     
-    // MARK: - CloudKit
-//    
-//    var recordZoneID: CKRecordZoneID {
-//        return CKRecordZoneID(zoneName: id, ownerName: CKCurrentUserDefaultName)
-//    }
-//    
-//    var recordID: CKRecordID {
-//        return CKRecordID(recordName: id, zoneID: recordZoneID)
-//    }
-//    
-//    var record: CKRecord {
-//        let record = CKRecord(recordType: "Book", recordID: recordID)
-//        return record
-//    }
-    
     // MARK: - Properties
     
     var url: URL? {
@@ -128,7 +113,7 @@ class Book: NSManagedObject {
     // MARK: - Manage
     
     func removeResumeData() {
-        Preference.resumeData[id] = nil
+//        Preference.resumeData[id] = nil
     }
     
     // MARK: - Properties Description

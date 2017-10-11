@@ -99,7 +99,6 @@
 		976D2A6C1F44F451003F5431 /* libxapian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A601F44F451003F5431 /* libxapian.a */; };
 		976D2A6D1F44F451003F5431 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A611F44F451003F5431 /* libz.a */; };
 		976D2A6E1F44F451003F5431 /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A621F44F451003F5431 /* libzim.a */; };
-		9771A5BD1DD269BD005F1795 /* Book+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813C1D6F712800E5FA99 /* Book+CoreDataProperties.swift */; };
 		9779C3141D4575AD0064CC8E /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E609F01D103DED00EBCB9D /* NotificationCenter.framework */; };
 		9779C3171D4575AE0064CC8E /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779C3161D4575AE0064CC8E /* TodayViewController.swift */; };
 		9779C31E1D4575AE0064CC8E /* Bookmarks.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9779C3131D4575AD0064CC8E /* Bookmarks.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -108,7 +107,6 @@
 		979681A91F46917E008A50FF /* ZimManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 979681A81F46917E008A50FF /* ZimManager.mm */; };
 		979681AA1F470E9B008A50FF /* ZimManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 979681A81F46917E008A50FF /* ZimManager.mm */; };
 		979D17831E6DE50C006AE496 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 979D17821E6DE50C006AE496 /* Assets.xcassets */; };
-		97A08C151DD263B90070D0E4 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681341D6F711A00E5FA99 /* Book.swift */; };
 		97A1FD161D6F71CE00A80EE2 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD121D6F71CE00A80EE2 /* DirectoryMonitor.swift */; };
 		97A1FD191D6F71CE00A80EE2 /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD151D6F71CE00A80EE2 /* ZimMultiReader.swift */; };
 		97A1FD1C1D6F71D800A80EE2 /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD1A1D6F71D800A80EE2 /* KiwixURLProtocol.swift */; };
@@ -151,6 +149,32 @@
 		97A36C551F8D57380079B452 /* TabControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A36C531F8D57380079B452 /* TabControllerProtocol.swift */; };
 		97A36C571F8D5FCD0079B452 /* LibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A36C561F8D5FCD0079B452 /* LibraryController.swift */; };
 		97A36C581F8D5FCD0079B452 /* LibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A36C561F8D5FCD0079B452 /* LibraryController.swift */; };
+		97A36C5B1F8EA6DD0079B452 /* Kiwix.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 97D6812A1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld */; };
+		97A36C5C1F8EA6DE0079B452 /* Kiwix.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 97D6812A1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld */; };
+		97A36C5D1F8EA6E60079B452 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681331D6F711A00E5FA99 /* Article.swift */; };
+		97A36C5E1F8EA6E60079B452 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681341D6F711A00E5FA99 /* Book.swift */; };
+		97A36C5F1F8EA6E60079B452 /* DownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681351D6F711A00E5FA99 /* DownloadTask.swift */; };
+		97A36C601F8EA6E60079B452 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681361D6F711A00E5FA99 /* Language.swift */; };
+		97A36C611F8EA6E70079B452 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681331D6F711A00E5FA99 /* Article.swift */; };
+		97A36C621F8EA6E70079B452 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681341D6F711A00E5FA99 /* Book.swift */; };
+		97A36C631F8EA6E70079B452 /* DownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681351D6F711A00E5FA99 /* DownloadTask.swift */; };
+		97A36C641F8EA6E70079B452 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681361D6F711A00E5FA99 /* Language.swift */; };
+		97A36C651F8EA6E90079B452 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681331D6F711A00E5FA99 /* Article.swift */; };
+		97A36C661F8EA6E90079B452 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681341D6F711A00E5FA99 /* Book.swift */; };
+		97A36C671F8EA6E90079B452 /* DownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681351D6F711A00E5FA99 /* DownloadTask.swift */; };
+		97A36C681F8EA6E90079B452 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681361D6F711A00E5FA99 /* Language.swift */; };
+		97A36C691F8EA6F40079B452 /* 1.5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97318E4D1E6780F9000B718B /* 1.5.xcmappingmodel */; };
+		97A36C6A1F8EA6F40079B452 /* 1.8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97318E4F1E6780F9000B718B /* 1.8.xcmappingmodel */; };
+		97A36C6B1F8EA6F40079B452 /* MigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97318E501E6780F9000B718B /* MigrationPolicy.swift */; };
+		97A36C6C1F8EA6F50079B452 /* 1.5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97318E4D1E6780F9000B718B /* 1.5.xcmappingmodel */; };
+		97A36C6D1F8EA6F50079B452 /* 1.8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97318E4F1E6780F9000B718B /* 1.8.xcmappingmodel */; };
+		97A36C6E1F8EA6F50079B452 /* MigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97318E501E6780F9000B718B /* MigrationPolicy.swift */; };
+		97A36C6F1F8EA6F90079B452 /* ManagedObjectProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813B1D6F712800E5FA99 /* ManagedObjectProperties.swift */; };
+		97A36C731F8EA6FA0079B452 /* ManagedObjectProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813B1D6F712800E5FA99 /* ManagedObjectProperties.swift */; };
+		97A36C771F8EA6FD0079B452 /* CoreDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9732075B1DD136BB00EDD3DC /* CoreDataExtension.swift */; };
+		97A36C781F8EA6FD0079B452 /* CoreDataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973208251DD21E9C00EDD3DC /* CoreDataContainer.swift */; };
+		97A36C791F8EA6FE0079B452 /* CoreDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9732075B1DD136BB00EDD3DC /* CoreDataExtension.swift */; };
+		97A36C7A1F8EA6FE0079B452 /* CoreDataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973208251DD21E9C00EDD3DC /* CoreDataContainer.swift */; };
 		97A6EE6E1F4A99A700926FD1 /* ZimManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A6EE6D1F4A99A700926FD1 /* ZimManager.swift */; };
 		97A6EE6F1F4A99A700926FD1 /* ZimManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A6EE6D1F4A99A700926FD1 /* ZimManager.swift */; };
 		97A996CE1F609C9F007A6282 /* LegacyTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996CD1F609C9F007A6282 /* LegacyTabController.swift */; };
@@ -199,11 +223,7 @@
 		97D231AA1E677CB300DCD4A4 /* Logo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D231A31E677CB300DCD4A4 /* Logo.swift */; };
 		97D231AB1E677CB300DCD4A4 /* Others.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D231A41E677CB300DCD4A4 /* Others.swift */; };
 		97D231AC1E677CB300DCD4A4 /* RefreshLibControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D231A51E677CB300DCD4A4 /* RefreshLibControl.swift */; };
-		97D681371D6F711A00E5FA99 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681331D6F711A00E5FA99 /* Article.swift */; };
-		97D681391D6F711A00E5FA99 /* DownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681351D6F711A00E5FA99 /* DownloadTask.swift */; };
-		97D6813A1D6F711A00E5FA99 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681361D6F711A00E5FA99 /* Language.swift */; };
-		97D6813F1D6F712800E5FA99 /* Article+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813B1D6F712800E5FA99 /* Article+CoreDataProperties.swift */; };
-		97D681411D6F712800E5FA99 /* DownloadTask+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813D1D6F712800E5FA99 /* DownloadTask+CoreDataProperties.swift */; };
+		97D6813F1D6F712800E5FA99 /* ManagedObjectProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813B1D6F712800E5FA99 /* ManagedObjectProperties.swift */; };
 		97D9D5041F43824000A8CBEF /* ZimReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97D9D5031F43824000A8CBEF /* ZimReader.mm */; };
 		97DA5C1E1E6F420800873048 /* BrowsingHistoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DA5C1D1E6F420800873048 /* BrowsingHistoryController.swift */; };
 		97DB65DA1D4576B600A2CC42 /* BookmarkWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */; };
@@ -212,7 +232,6 @@
 		97E983501F4CA54A0021E96A /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9834F1F4CA54A0021E96A /* SearchController.swift */; };
 		97E983541F4DDB670021E96A /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E983531F4DDB670021E96A /* SearchView.swift */; };
 		97ED50111DD257D00089E9B6 /* Kiwix.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 97D6812A1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld */; };
-		97FDACC41D85A3B300DEDACB /* Language+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813E1D6F712800E5FA99 /* Language+CoreDataProperties.swift */; };
 		DFD371610877B5817E9C9FEB /* Pods_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81DF90AB14037E242E284CA8 /* Pods_macOS.framework */; };
 		FA1E975E797443400EBF3EE8 /* Pods_WikiMed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14995D226EC82CFFBBB5B159 /* Pods_WikiMed.framework */; };
 /* End PBXBuildFile section */
@@ -437,10 +456,7 @@
 		97D681341D6F711A00E5FA99 /* Book.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Book.swift; path = Classes/Book.swift; sourceTree = "<group>"; };
 		97D681351D6F711A00E5FA99 /* DownloadTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DownloadTask.swift; path = Classes/DownloadTask.swift; sourceTree = "<group>"; };
 		97D681361D6F711A00E5FA99 /* Language.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Language.swift; path = Classes/Language.swift; sourceTree = "<group>"; };
-		97D6813B1D6F712800E5FA99 /* Article+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Article+CoreDataProperties.swift"; path = "Classes/Article+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		97D6813C1D6F712800E5FA99 /* Book+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Book+CoreDataProperties.swift"; path = "Classes/Book+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		97D6813D1D6F712800E5FA99 /* DownloadTask+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "DownloadTask+CoreDataProperties.swift"; path = "Classes/DownloadTask+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		97D6813E1D6F712800E5FA99 /* Language+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Language+CoreDataProperties.swift"; path = "Classes/Language+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		97D6813B1D6F712800E5FA99 /* ManagedObjectProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedObjectProperties.swift; sourceTree = "<group>"; };
 		97D9D3F71F43813D00A8CBEF /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
 		97D9D3F81F43813D00A8CBEF /* networkTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = networkTools.h; sourceTree = "<group>"; };
 		97D9D3F91F43813D00A8CBEF /* otherTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = otherTools.h; sourceTree = "<group>"; };
@@ -862,9 +878,9 @@
 				97D6812A1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld */,
 				971187881CEB53CE00B9909D /* Classes */,
 				97318E4C1E6780F9000B718B /* Migration */,
-				978C589D1C1CD8750077AE47 /* Properties */,
 				9732075B1DD136BB00EDD3DC /* CoreDataExtension.swift */,
 				973208251DD21E9C00EDD3DC /* CoreDataContainer.swift */,
+				97D6813B1D6F712800E5FA99 /* ManagedObjectProperties.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -1109,17 +1125,6 @@
 			);
 			name = Storyboards;
 			path = Storyboard;
-			sourceTree = "<group>";
-		};
-		978C589D1C1CD8750077AE47 /* Properties */ = {
-			isa = PBXGroup;
-			children = (
-				97D6813B1D6F712800E5FA99 /* Article+CoreDataProperties.swift */,
-				97D6813C1D6F712800E5FA99 /* Book+CoreDataProperties.swift */,
-				97D6813D1D6F712800E5FA99 /* DownloadTask+CoreDataProperties.swift */,
-				97D6813E1D6F712800E5FA99 /* Language+CoreDataProperties.swift */,
-			);
-			name = Properties;
 			sourceTree = "<group>";
 		};
 		979315821E5127930093D3BA /* macOS */ = {
@@ -2210,19 +2215,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97A36C631F8EA6E70079B452 /* DownloadTask.swift in Sources */,
 				97A996D41F61DB38007A6282 /* SearchController.swift in Sources */,
+				97A36C6E1F8EA6F50079B452 /* MigrationPolicy.swift in Sources */,
 				975FDAF61F608A2500A10E8C /* ZimManager.mm in Sources */,
+				97A36C6D1F8EA6F50079B452 /* 1.8.xcmappingmodel in Sources */,
+				97A36C641F8EA6E70079B452 /* Language.swift in Sources */,
+				97A36C611F8EA6E70079B452 /* Article.swift in Sources */,
 				97A36C551F8D57380079B452 /* TabControllerProtocol.swift in Sources */,
+				97A36C7A1F8EA6FE0079B452 /* CoreDataContainer.swift in Sources */,
 				97A996D21F60A1A0007A6282 /* ToolBarController.swift in Sources */,
 				975FDADC1F6082DA00A10E8C /* MainController.swift in Sources */,
 				975FDAF51F608A2200A10E8C /* URLProtocol.swift in Sources */,
 				97050D011F6733400021DE78 /* WebKitTabController.swift in Sources */,
 				97050D031F6735100021DE78 /* WebKitHandler.swift in Sources */,
 				976860251F6855C400755BFA /* SearchResult.swift in Sources */,
+				97A36C791F8EA6FE0079B452 /* CoreDataExtension.swift in Sources */,
+				97A36C6C1F8EA6F50079B452 /* 1.5.xcmappingmodel in Sources */,
 				975FDB051F608ADA00A10E8C /* ZimManager.swift in Sources */,
+				97A36C621F8EA6E70079B452 /* Book.swift in Sources */,
 				97A996CE1F609C9F007A6282 /* LegacyTabController.swift in Sources */,
+				97A36C5C1F8EA6DE0079B452 /* Kiwix.xcdatamodeld in Sources */,
 				97A36C581F8D5FCD0079B452 /* LibraryController.swift in Sources */,
 				97A996DF1F630FBC007A6282 /* SearchResultView.swift in Sources */,
+				97A36C731F8EA6FA0079B452 /* ManagedObjectProperties.swift in Sources */,
 				975FDADA1F6082DA00A10E8C /* AppDelegate.swift in Sources */,
 				97A996D71F62F1B5007A6282 /* SearchProcedure.swift in Sources */,
 				97A36C521F8D4FB80079B452 /* VisualEffectShadowView.swift in Sources */,
@@ -2264,16 +2280,13 @@
 				973208231DD19C7600EDD3DC /* DownloadProgress.swift in Sources */,
 				97A1FD161D6F71CE00A80EE2 /* DirectoryMonitor.swift in Sources */,
 				9726591D1D90A64600D1DFFB /* Notification.swift in Sources */,
-				97FDACC41D85A3B300DEDACB /* Language+CoreDataProperties.swift in Sources */,
 				97D231981E677C6700DCD4A4 /* SearchBaseController.swift in Sources */,
 				97D2318E1E677C6700DCD4A4 /* LibraryTabController.swift in Sources */,
 				973208291DD223DB00EDD3DC /* LibraryProcedure.swift in Sources */,
-				97A08C151DD263B90070D0E4 /* Book.swift in Sources */,
 				97D2319D1E677C6700DCD4A4 /* NotificationSettingController.swift in Sources */,
 				97D2319B1E677C6700DCD4A4 /* SearchScopeAndHistoryController.swift in Sources */,
 				97E0A7B71E96CC3300320F06 /* TabController.swift in Sources */,
 				97D2318C1E677C6700DCD4A4 /* LibraryDownloadController.swift in Sources */,
-				97D6813A1D6F711A00E5FA99 /* Language.swift in Sources */,
 				97D231991E677C6700DCD4A4 /* SearchContainer.swift in Sources */,
 				97D231881E677C6700DCD4A4 /* BookmarkBooksController.swift in Sources */,
 				979681A91F46917E008A50FF /* ZimManager.mm in Sources */,
@@ -2283,10 +2296,10 @@
 				97D231A81E677CB300DCD4A4 /* BarButtonItems.swift in Sources */,
 				97A1FD421D6F728200A80EE2 /* Extensions.swift in Sources */,
 				97D231AC1E677CB300DCD4A4 /* RefreshLibControl.swift in Sources */,
+				97A36C681F8EA6E90079B452 /* Language.swift in Sources */,
 				97D2318D1E677C6700DCD4A4 /* LibraryLanguageController.swift in Sources */,
 				97D231AA1E677CB300DCD4A4 /* Logo.swift in Sources */,
 				97D231AB1E677CB300DCD4A4 /* Others.swift in Sources */,
-				97D681371D6F711A00E5FA99 /* Article.swift in Sources */,
 				975FDAF11F60877900A10E8C /* URLProtocol.swift in Sources */,
 				97D231911E677C6700DCD4A4 /* JSInjection.swift in Sources */,
 				97A6EE6E1F4A99A700926FD1 /* ZimManager.swift in Sources */,
@@ -2296,18 +2309,16 @@
 				9780DE061E43BFF5009B6945 /* NetworkActivityIndicatorController.swift in Sources */,
 				97D231971E677C6700DCD4A4 /* RecentSearchController.swift in Sources */,
 				97A1FD451D6F728200A80EE2 /* Localized.swift in Sources */,
-				97D681411D6F712800E5FA99 /* DownloadTask+CoreDataProperties.swift in Sources */,
-				97D681391D6F711A00E5FA99 /* DownloadTask.swift in Sources */,
 				977B954D1DD4C40400F6F62B /* ScanProcedure.swift in Sources */,
 				97D231921E677C6700DCD4A4 /* MainController.swift in Sources */,
 				97D231951E677C6700DCD4A4 /* CoreDataTableBaseController.swift in Sources */,
-				9771A5BD1DD269BD005F1795 /* Book+CoreDataProperties.swift in Sources */,
 				97D231931E677C6700DCD4A4 /* TableOfContentsController.swift in Sources */,
 				97318E511E6780F9000B718B /* 1.5.xcmappingmodel in Sources */,
 				97D2319C1E677C6700DCD4A4 /* FontSizeController.swift in Sources */,
 				97D2319E1E677C6700DCD4A4 /* SettingController.swift in Sources */,
 				97C601DE1D7F342100362D4F /* HTMLHeading.swift in Sources */,
 				975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */,
+				97A36C651F8EA6E90079B452 /* Article.swift in Sources */,
 				97318E541E6780F9000B718B /* MigrationPolicy.swift in Sources */,
 				97D231901E677C6700DCD4A4 /* Controllers.swift in Sources */,
 				97318E531E6780F9000B718B /* 1.8.xcmappingmodel in Sources */,
@@ -2315,17 +2326,19 @@
 				97642B991E380CC0003E2D0B /* Network.swift in Sources */,
 				97A1FD191D6F71CE00A80EE2 /* ZimMultiReader.swift in Sources */,
 				97D231941E677C6700DCD4A4 /* CoreDataCollectionBaseController.swift in Sources */,
+				97A36C671F8EA6E90079B452 /* DownloadTask.swift in Sources */,
 				97A1FD1C1D6F71D800A80EE2 /* KiwixURLProtocol.swift in Sources */,
 				97D231891E677C6700DCD4A4 /* BookmarkCollectionController.swift in Sources */,
 				97C2C26A1DDCC58500A9CC64 /* ArticleProcedure.swift in Sources */,
 				973208261DD21E9C00EDD3DC /* CoreDataContainer.swift in Sources */,
-				97D6813F1D6F712800E5FA99 /* Article+CoreDataProperties.swift in Sources */,
+				97D6813F1D6F712800E5FA99 /* ManagedObjectProperties.swift in Sources */,
 				97A1FD441D6F728200A80EE2 /* Preference.swift in Sources */,
 				97D2318B1E677C6700DCD4A4 /* LibraryBooksController.swift in Sources */,
 				9732075C1DD136BB00EDD3DC /* CoreDataExtension.swift in Sources */,
 				97D231A91E677CB300DCD4A4 /* Cells.swift in Sources */,
 				97D2318A1E677C6700DCD4A4 /* BookmarkHUD.swift in Sources */,
 				973208271DD2238B00EDD3DC /* Queue.swift in Sources */,
+				97A36C661F8EA6E90079B452 /* Book.swift in Sources */,
 				97D2319A1E677C6700DCD4A4 /* SearchResultController.swift in Sources */,
 				97ED50111DD257D00089E9B6 /* Kiwix.xcdatamodeld in Sources */,
 				9725345F1E43E2250005D169 /* UserHabit.swift in Sources */,
@@ -2336,19 +2349,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97A36C5F1F8EA6E60079B452 /* DownloadTask.swift in Sources */,
 				97A36C271F8C21210079B452 /* SearchController.swift in Sources */,
+				97A36C6B1F8EA6F40079B452 /* MigrationPolicy.swift in Sources */,
 				97A36C281F8C21210079B452 /* ZimManager.mm in Sources */,
+				97A36C6A1F8EA6F40079B452 /* 1.8.xcmappingmodel in Sources */,
+				97A36C601F8EA6E60079B452 /* Language.swift in Sources */,
+				97A36C5D1F8EA6E60079B452 /* Article.swift in Sources */,
 				97A36C541F8D57380079B452 /* TabControllerProtocol.swift in Sources */,
+				97A36C781F8EA6FD0079B452 /* CoreDataContainer.swift in Sources */,
 				97A36C291F8C21210079B452 /* ToolBarController.swift in Sources */,
 				97A36C2A1F8C21210079B452 /* MainController.swift in Sources */,
 				97A36C2B1F8C21210079B452 /* URLProtocol.swift in Sources */,
 				97A36C2C1F8C21210079B452 /* WebKitTabController.swift in Sources */,
 				97A36C2D1F8C21210079B452 /* WebKitHandler.swift in Sources */,
 				97A36C2E1F8C21210079B452 /* SearchResult.swift in Sources */,
+				97A36C771F8EA6FD0079B452 /* CoreDataExtension.swift in Sources */,
+				97A36C691F8EA6F40079B452 /* 1.5.xcmappingmodel in Sources */,
 				97A36C2F1F8C21210079B452 /* ZimManager.swift in Sources */,
+				97A36C5E1F8EA6E60079B452 /* Book.swift in Sources */,
 				97A36C301F8C21210079B452 /* LegacyTabController.swift in Sources */,
+				97A36C5B1F8EA6DD0079B452 /* Kiwix.xcdatamodeld in Sources */,
 				97A36C571F8D5FCD0079B452 /* LibraryController.swift in Sources */,
 				97A36C311F8C21210079B452 /* SearchResultView.swift in Sources */,
+				97A36C6F1F8EA6F90079B452 /* ManagedObjectProperties.swift in Sources */,
 				97A36C321F8C21210079B452 /* AppDelegate.swift in Sources */,
 				97A36C331F8C21210079B452 /* SearchProcedure.swift in Sources */,
 				97A36C511F8D4FB80079B452 /* VisualEffectShadowView.swift in Sources */,
@@ -2400,7 +2424,7 @@
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = WikiMed/Support/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2432,7 +2456,7 @@
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = WikiMed/Support/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2766,7 +2790,7 @@
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = WikiMed/Support/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2798,7 +2822,7 @@
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = WikiMed/Support/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
