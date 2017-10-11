@@ -9,17 +9,32 @@
 import UIKit
 import SafariServices
 
-class LegacyTabController: UIViewController, UIWebViewDelegate, ToolBarControlEvents, ArticleLoading {
-    let webView = UIWebView()
-    let toolBarController = ToolBarController()
+class LegacyTabController: UIViewController, UIWebViewDelegate, TabController {
+    private let webView = UIWebView()
+    
+    override func loadView() {
+        view = webView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureWebView()
-        configureToolBar()
-        updateToolBarButtons()
-        loadMainPage()
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        //        webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, toolBarController.view.frame.height + 20, 0)
+    }
+    
+    var canGoBack: Bool {
+        get {return webView.canGoBack}
+    }
+    
+    var canGoForward: Bool {
+        get {return webView.canGoForward}
+    }
+    
+    // MARK: - Configure
     
     private func configureWebView() {
         webView.delegate = self
@@ -27,43 +42,17 @@ class LegacyTabController: UIViewController, UIWebViewDelegate, ToolBarControlEv
         webView.backgroundColor = UIColor.clear
         webView.allowsLinkPreview = true
         webView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(webView)
-        view.addConstraints([
-            webView.topAnchor.constraint(equalTo: view.topAnchor),
-            webView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            webView.rightAnchor.constraint(equalTo: view.rightAnchor)])
-    }
-    
-    private func configureToolBar() {
-        toolBarController.delegate = self
-        addChildViewController(toolBarController)
-        let toolBar = toolBarController.view!
-        toolBar.translatesAutoresizingMaskIntoConstraints = false
-        view.insertSubview(toolBar, aboveSubview: webView)
-        if #available(iOS 11.0, *) {
-            view.addConstraints([
-                view.rightAnchor.constraint(equalTo: toolBar.rightAnchor, constant: 10),
-                view.bottomAnchor.constraint(equalTo: toolBar.bottomAnchor, constant: 10)])
-            additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, 100, 0)
-        } else {
-            view.addConstraints([
-                view.rightAnchor.constraint(equalTo: toolBar.rightAnchor, constant: 10),
-                view.bottomAnchor.constraint(equalTo: toolBar.bottomAnchor, constant: 10)])
-        }
-        
-//        view.addConstraints([
-//            view.rightAnchor.constraint(equalTo: toolBar.rightAnchor, constant: 10),
-//            view.bottomAnchor.constraint(equalTo: toolBar.bottomAnchor, constant: 10)])
-        toolBarController.didMove(toParentViewController: self)
-    }
-    
-    private func updateToolBarButtons() {
-        toolBarController.back.tintColor = webView.canGoBack ? nil : UIColor.gray
-        toolBarController.forward.tintColor = webView.canGoForward ? nil : UIColor.gray
     }
     
     // MARK: - loading
+    
+    func goBack() {
+        webView.goBack()
+    }
+    
+    func goForward() {
+        webView.goForward()
+    }
     
     func loadMainPage() {
         guard let id = ZimManager.shared.getReaderIDs().first,
@@ -90,20 +79,6 @@ class LegacyTabController: UIViewController, UIWebViewDelegate, ToolBarControlEv
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
-        updateToolBarButtons()
-    }
-    
-    // MARK: - ToolBarControlEvents
-    
-    func backButtonTapped() {
-        webView.goBack()
-    }
-    
-    func forwardButtonTapped() {
-        webView.goForward()
-    }
-    
-    func homeButtonTapped() {
-        loadMainPage()
+//        updateToolBarButtons()
     }
 }

@@ -145,6 +145,12 @@
 		97A36C441F8C21210079B452 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975FDAE21F6082DA00A10E8C /* LaunchScreen.storyboard */; };
 		97A36C451F8C21210079B452 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 975FDAE01F6082DA00A10E8C /* Assets.xcassets */; };
 		97A36C461F8C21210079B452 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975FDADD1F6082DA00A10E8C /* Main.storyboard */; };
+		97A36C511F8D4FB80079B452 /* VisualEffectShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A36C501F8D4FB80079B452 /* VisualEffectShadowView.swift */; };
+		97A36C521F8D4FB80079B452 /* VisualEffectShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A36C501F8D4FB80079B452 /* VisualEffectShadowView.swift */; };
+		97A36C541F8D57380079B452 /* TabControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A36C531F8D57380079B452 /* TabControllerProtocol.swift */; };
+		97A36C551F8D57380079B452 /* TabControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A36C531F8D57380079B452 /* TabControllerProtocol.swift */; };
+		97A36C571F8D5FCD0079B452 /* LibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A36C561F8D5FCD0079B452 /* LibraryController.swift */; };
+		97A36C581F8D5FCD0079B452 /* LibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A36C561F8D5FCD0079B452 /* LibraryController.swift */; };
 		97A6EE6E1F4A99A700926FD1 /* ZimManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A6EE6D1F4A99A700926FD1 /* ZimManager.swift */; };
 		97A6EE6F1F4A99A700926FD1 /* ZimManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A6EE6D1F4A99A700926FD1 /* ZimManager.swift */; };
 		97A996CE1F609C9F007A6282 /* LegacyTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996CD1F609C9F007A6282 /* LegacyTabController.swift */; };
@@ -375,6 +381,9 @@
 		97A2AB881C1B80FF00052E74 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A36BAF1F8C0B590079B452 /* WikiMed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikiMed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A36C4E1F8C21210079B452 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		97A36C501F8D4FB80079B452 /* VisualEffectShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectShadowView.swift; sourceTree = "<group>"; };
+		97A36C531F8D57380079B452 /* TabControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabControllerProtocol.swift; sourceTree = "<group>"; };
+		97A36C561F8D5FCD0079B452 /* LibraryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryController.swift; sourceTree = "<group>"; };
 		97A6EE6D1F4A99A700926FD1 /* ZimManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimManager.swift; sourceTree = "<group>"; };
 		97A996CD1F609C9F007A6282 /* LegacyTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyTabController.swift; sourceTree = "<group>"; };
 		97A996D11F60A1A0007A6282 /* ToolBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarController.swift; sourceTree = "<group>"; };
@@ -841,9 +850,9 @@
 		97050CFF1F6730010021DE78 /* Tab */ = {
 			isa = PBXGroup;
 			children = (
+				97A36C531F8D57380079B452 /* TabControllerProtocol.swift */,
 				97A996CD1F609C9F007A6282 /* LegacyTabController.swift */,
 				97050D001F6733400021DE78 /* WebKitTabController.swift */,
-				97A996D11F60A1A0007A6282 /* ToolBarController.swift */,
 			);
 			path = Tab;
 			sourceTree = "<group>";
@@ -1000,8 +1009,10 @@
 			isa = PBXGroup;
 			children = (
 				975FDADB1F6082DA00A10E8C /* MainController.swift */,
-				97050CFF1F6730010021DE78 /* Tab */,
 				97A996D31F61DB38007A6282 /* SearchController.swift */,
+				97A996D11F60A1A0007A6282 /* ToolBarController.swift */,
+				97A36C561F8D5FCD0079B452 /* LibraryController.swift */,
+				97050CFF1F6730010021DE78 /* Tab */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1191,6 +1202,7 @@
 			isa = PBXGroup;
 			children = (
 				97A996DE1F630FBC007A6282 /* SearchResultView.swift */,
+				97A36C501F8D4FB80079B452 /* VisualEffectShadowView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2202,6 +2214,7 @@
 			files = (
 				97A996D41F61DB38007A6282 /* SearchController.swift in Sources */,
 				975FDAF61F608A2500A10E8C /* ZimManager.mm in Sources */,
+				97A36C551F8D57380079B452 /* TabControllerProtocol.swift in Sources */,
 				97A996D21F60A1A0007A6282 /* ToolBarController.swift in Sources */,
 				975FDADC1F6082DA00A10E8C /* MainController.swift in Sources */,
 				975FDAF51F608A2200A10E8C /* URLProtocol.swift in Sources */,
@@ -2210,9 +2223,11 @@
 				976860251F6855C400755BFA /* SearchResult.swift in Sources */,
 				975FDB051F608ADA00A10E8C /* ZimManager.swift in Sources */,
 				97A996CE1F609C9F007A6282 /* LegacyTabController.swift in Sources */,
+				97A36C581F8D5FCD0079B452 /* LibraryController.swift in Sources */,
 				97A996DF1F630FBC007A6282 /* SearchResultView.swift in Sources */,
 				975FDADA1F6082DA00A10E8C /* AppDelegate.swift in Sources */,
 				97A996D71F62F1B5007A6282 /* SearchProcedure.swift in Sources */,
+				97A36C521F8D4FB80079B452 /* VisualEffectShadowView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2325,6 +2340,7 @@
 			files = (
 				97A36C271F8C21210079B452 /* SearchController.swift in Sources */,
 				97A36C281F8C21210079B452 /* ZimManager.mm in Sources */,
+				97A36C541F8D57380079B452 /* TabControllerProtocol.swift in Sources */,
 				97A36C291F8C21210079B452 /* ToolBarController.swift in Sources */,
 				97A36C2A1F8C21210079B452 /* MainController.swift in Sources */,
 				97A36C2B1F8C21210079B452 /* URLProtocol.swift in Sources */,
@@ -2333,9 +2349,11 @@
 				97A36C2E1F8C21210079B452 /* SearchResult.swift in Sources */,
 				97A36C2F1F8C21210079B452 /* ZimManager.swift in Sources */,
 				97A36C301F8C21210079B452 /* LegacyTabController.swift in Sources */,
+				97A36C571F8D5FCD0079B452 /* LibraryController.swift in Sources */,
 				97A36C311F8C21210079B452 /* SearchResultView.swift in Sources */,
 				97A36C321F8C21210079B452 /* AppDelegate.swift in Sources */,
 				97A36C331F8C21210079B452 /* SearchProcedure.swift in Sources */,
+				97A36C511F8D4FB80079B452 /* VisualEffectShadowView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

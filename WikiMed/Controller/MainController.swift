@@ -9,11 +9,16 @@
 import UIKit
 import WebKit
 
-class MainController: UIViewController, UISearchBarDelegate {
-    let searchController = SearchController()
+class MainController: UIViewController, UISearchBarDelegate, ToolBarControlEvents {
     let searchBar = UISearchBar()
+    let searchController = SearchController()
     
+    private(set) var currentTab: TabController?
     private(set) var tabs = [UIViewController]()
+    let toolBarController = ToolBarController()
+    
+    private lazy var libraryController = LibraryController()
+    
     lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
     
     @IBOutlet weak var webView: UIWebView!
@@ -21,6 +26,7 @@ class MainController: UIViewController, UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSearch()
+        configureToolBar()
         addTab()
     }
     
@@ -30,8 +36,25 @@ class MainController: UIViewController, UISearchBarDelegate {
         searchBar.searchBarStyle = .minimal
         searchBar.autocapitalizationType = .none
         searchBar.autocorrectionType = .no
-        
         navigationItem.titleView = searchBar
+    }
+    
+    func configureToolBar() {
+        toolBarController.delegate = self
+        addChildViewController(toolBarController)
+        let toolBar = toolBarController.view!
+        toolBar.translatesAutoresizingMaskIntoConstraints = false
+        view.insertSubview(toolBar, at: 0)
+        if #available(iOS 11.0, *) {
+            view.addConstraints([
+                view.safeAreaLayoutGuide.centerXAnchor.constraint(equalTo: toolBar.centerXAnchor),
+                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: toolBar.bottomAnchor, constant: 10)])
+        } else {
+            view.addConstraints([
+                view.centerXAnchor.constraint(equalTo: toolBar.centerXAnchor),
+                view.bottomAnchor.constraint(equalTo: toolBar.bottomAnchor, constant: 10)])
+        }
+        toolBarController.didMove(toParentViewController: self)
     }
     
     func addTab() {
@@ -44,11 +67,15 @@ class MainController: UIViewController, UISearchBarDelegate {
         }
         
         guard let tab = tabs.first else {return}
+        currentTab = tab as? TabController
         addChildViewController(tab)
         tab.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(tab.view)
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[tab]|", options: [], metrics: nil, views: ["tab": tab.view]))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[tab]|", options: [], metrics: nil, views: ["tab": tab.view]))
+        view.insertSubview(tab.view, belowSubview: toolBarController.view)
+        view.addConstraints([
+            view.topAnchor.constraint(equalTo: tab.view.topAnchor),
+            view.leftAnchor.constraint(equalTo: tab.view.leftAnchor),
+            view.bottomAnchor.constraint(equalTo: tab.view.bottomAnchor),
+            view.rightAnchor.constraint(equalTo: tab.view.rightAnchor)])
         tab.didMove(toParentViewController: self)
     }
     
@@ -56,7 +83,30 @@ class MainController: UIViewController, UISearchBarDelegate {
         searchBar.resignFirstResponder()
     }
     
-    // MARK: - UISearchBarDelegate
+    // MARK: - ToolBar
+    
+    func backButtonTapped() {
+        currentTab?.goBack()
+    }
+    
+    func forwardButtonTapped() {
+        currentTab?.goForward()
+    }
+    
+    func homeButtonTapped() {
+        currentTab?.loadMainPage()
+    }
+    
+    func libraryButtonTapped() {
+        present(libraryController, animated: true, completion: nil)
+    }
+    
+    private func updateToolBarButtons() {
+        toolBarController.back.tintColor = webView.canGoBack ? nil : UIColor.gray
+        toolBarController.forward.tintColor = webView.canGoForward ? nil : UIColor.gray
+    }
+    
+    // MARK: - SearchBar
     
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         searchBar.text = searchController.searchText
@@ -70,8 +120,6 @@ class MainController: UIViewController, UISearchBarDelegate {
             }
             self.navigationItem.setRightBarButton(self.cancelButton, animated: true)
         }
-        
-        
         showSearchController()
     }
     
@@ -108,6 +156,15 @@ class MainController: UIViewController, UISearchBarDelegate {
         searchController.view.removeFromSuperview()
         searchController.removeFromParentViewController()
     }
-    
 }
 
+class BaseController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
+    }
+    
+    @objc func dismissController() {
+        dismiss(animated: true, completion: nil)
+    }
+}

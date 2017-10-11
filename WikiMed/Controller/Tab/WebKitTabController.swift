@@ -12,25 +12,33 @@ import SafariServices
 
 
 @available(iOS 11.0, *)
-class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate, ToolBarControlEvents, ArticleLoading {
-    let webView: WKWebView = {
+class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate, TabController {
+    private let webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
         return WKWebView(frame: .zero, configuration: config)
     }()
-    let toolBarController = ToolBarController()
     
+    override func loadView() {
+        view = webView
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureWebView()
-        configureToolBar()
-        updateToolBarButtons()
-        loadMainPage()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, toolBarController.view.frame.height + 20, 0)
+//        webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, toolBarController.view.frame.height + 20, 0)
+    }
+    
+    var canGoBack: Bool {
+        get {return webView.canGoBack}
+    }
+    
+    var canGoForward: Bool {
+        get {return webView.canGoForward}
     }
     
     // MARK: - Configure
@@ -41,32 +49,17 @@ class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         webView.allowsLinkPreview = true
         webView.allowsBackForwardNavigationGestures = true
         webView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(webView)
-        view.addConstraints([
-            webView.topAnchor.constraint(equalTo: view.topAnchor),
-            webView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            webView.rightAnchor.constraint(equalTo: view.rightAnchor)])
-    }
-    
-    private func configureToolBar() {
-        toolBarController.delegate = self
-        addChildViewController(toolBarController)
-        let toolBar = toolBarController.view!
-        toolBar.translatesAutoresizingMaskIntoConstraints = false
-        view.insertSubview(toolBar, aboveSubview: webView)
-        view.addConstraints([
-            view.safeAreaLayoutGuide.centerXAnchor.constraint(equalTo: toolBar.centerXAnchor),
-            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: toolBar.bottomAnchor, constant: 10)])
-        toolBarController.didMove(toParentViewController: self)
-    }
-    
-    private func updateToolBarButtons() {
-        toolBarController.back.tintColor = webView.canGoBack ? nil : UIColor.gray
-        toolBarController.forward.tintColor = webView.canGoForward ? nil : UIColor.gray
     }
     
     // MARK: - loading
+    
+    func goBack() {
+        webView.goBack()
+    }
+    
+    func goForward() {
+        webView.goForward()
+    }
     
     func loadMainPage() {
         guard let id = ZimManager.shared.getReaderIDs().first,
@@ -82,24 +75,9 @@ class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     // MARK: - WKNavigationDelegate
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        updateToolBarButtons()
-    }
-
-    // MARK: - ToolBarControlEvents
-    
-    func backButtonTapped() {
-        webView.goBack()
+//        updateToolBarButtons()
     }
     
-    func forwardButtonTapped() {
-        webView.goForward()
-    }
-    
-    func homeButtonTapped() {
-        loadMainPage()
-    }
 }
 
-protocol ArticleLoading {
-    func load(url: URL)
-}
+
