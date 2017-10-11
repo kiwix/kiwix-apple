@@ -9,28 +9,27 @@
 import UIKit
 import WebKit
 
-class MainController: UIViewController, UISearchBarDelegate, ToolBarControlEvents {
+class MainController: UIViewController, UISearchBarDelegate, TabLoadingActivity, ToolBarControlEvents {
     let searchBar = UISearchBar()
     let searchController = SearchController()
     
-    private(set) var currentTab: TabController?
-    private(set) var tabs = [UIViewController]()
+    private(set) var currentTab: (UIViewController & TabController)?
+    private(set) var tabs = [UIViewController & TabController]()
     let toolBarController = ToolBarController()
     
     private lazy var libraryController = LibraryController()
     
     lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
     
-    @IBOutlet weak var webView: UIWebView!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSearch()
         configureToolBar()
         addTab()
+        loadMainPageForCustomApps()
     }
     
-    func configureSearch() {
+    private func configureSearch() {
         searchBar.delegate = self
         searchBar.placeholder = NSLocalizedString("Search", comment: "Search Promot")
         searchBar.searchBarStyle = .minimal
@@ -39,7 +38,7 @@ class MainController: UIViewController, UISearchBarDelegate, ToolBarControlEvent
         navigationItem.titleView = searchBar
     }
     
-    func configureToolBar() {
+    private func configureToolBar() {
         toolBarController.delegate = self
         addChildViewController(toolBarController)
         let toolBar = toolBarController.view!
@@ -57,17 +56,18 @@ class MainController: UIViewController, UISearchBarDelegate, ToolBarControlEvent
         toolBarController.didMove(toParentViewController: self)
     }
     
-    func addTab() {
-        if tabs.count == 0 {
+    private func addTab() {
+        var tab: UIViewController & TabController = {
             if #available(iOS 11.0, *) {
-                tabs.append(WebKitTabController())
+                return WebKitTabController()
             } else {
-                tabs.append(LegacyTabController())
+                return LegacyTabController()
             }
-        }
+        }()
         
-        guard let tab = tabs.first else {return}
-        currentTab = tab as? TabController
+        tab.delegate = self
+        currentTab = tab
+        
         addChildViewController(tab)
         tab.view.translatesAutoresizingMaskIntoConstraints = false
         view.insertSubview(tab.view, belowSubview: toolBarController.view)
@@ -77,10 +77,22 @@ class MainController: UIViewController, UISearchBarDelegate, ToolBarControlEvent
             view.bottomAnchor.constraint(equalTo: tab.view.bottomAnchor),
             view.rightAnchor.constraint(equalTo: tab.view.rightAnchor)])
         tab.didMove(toParentViewController: self)
+        
+        updateToolBarButtons()
+    }
+    
+    private func loadMainPageForCustomApps() {
+        if Bundle.main.infoDictionary?["CFBundleName"] as? String != "Kiwix" {
+            currentTab?.loadMainPage()
+        }
     }
     
     @objc func cancelSearch() {
         searchBar.resignFirstResponder()
+    }
+    
+    func loadingFinished() {
+        updateToolBarButtons()
     }
     
     // MARK: - ToolBar
@@ -102,8 +114,9 @@ class MainController: UIViewController, UISearchBarDelegate, ToolBarControlEvent
     }
     
     private func updateToolBarButtons() {
-        toolBarController.back.tintColor = webView.canGoBack ? nil : UIColor.gray
-        toolBarController.forward.tintColor = webView.canGoForward ? nil : UIColor.gray
+        guard let tab = currentTab else {return}
+        toolBarController.back.tintColor = tab.canGoBack ? nil : .gray
+        toolBarController.forward.tintColor = tab.canGoForward ? nil : .gray
     }
     
     // MARK: - SearchBar

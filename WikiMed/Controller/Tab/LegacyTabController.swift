@@ -11,6 +11,7 @@ import SafariServices
 
 class LegacyTabController: UIViewController, UIWebViewDelegate, TabController {
     private let webView = UIWebView()
+    weak var delegate: TabLoadingActivity?
     
     override func loadView() {
         view = webView
@@ -79,6 +80,6 @@ class LegacyTabController: UIViewController, UIWebViewDelegate, TabController {
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
-//        updateToolBarButtons()
+        delegate?.loadingFinished()
     }
 }

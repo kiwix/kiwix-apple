@@ -11,6 +11,7 @@ import UIKit
 protocol TabController {
     var canGoBack: Bool {get}
     var canGoForward: Bool {get}
+    weak var delegate: TabLoadingActivity? {get set}
     
     func goBack()
     func goForward()
@@ -18,6 +19,6 @@ protocol TabController {
     func load(url: URL)
 }
 
-protocol TabLoadingActivity {
-    
+protocol TabLoadingActivity: class {
+    func loadingFinished()
 }

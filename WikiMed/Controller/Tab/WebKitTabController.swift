@@ -18,6 +18,7 @@ class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
         return WKWebView(frame: .zero, configuration: config)
     }()
+    weak var delegate: TabLoadingActivity?
     
     override func loadView() {
         view = webView
@@ -74,10 +75,20 @@ class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     
     // MARK: - WKNavigationDelegate
     
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-//        updateToolBarButtons()
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = navigationAction.request.url else {return decisionHandler(.cancel)}
+        if url.isKiwixURL {
+            decisionHandler(.allow)
+        } else {
+            let controller = SFSafariViewController(url: url)
+            present(controller, animated: true, completion: nil)
+            decisionHandler(.cancel)
+        }
     }
     
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        delegate?.loadingFinished()
+    }
 }
 
 
