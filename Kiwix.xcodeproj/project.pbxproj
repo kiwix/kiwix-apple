@@ -303,7 +303,6 @@
 		97318E411E6780E7000B718B /* ImportBookLearnMore.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = ImportBookLearnMore.html; sourceTree = "<group>"; };
 		97318E421E6780E7000B718B /* ImportBookLearnMore.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = ImportBookLearnMore.md; sourceTree = "<group>"; };
 		97318E4D1E6780F9000B718B /* 1.5.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = 1.5.xcmappingmodel; sourceTree = "<group>"; };
-		97318E4E1E6780F9000B718B /* 1.8-old.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "1.8-old.xcmappingmodel"; sourceTree = "<group>"; };
 		97318E4F1E6780F9000B718B /* 1.8.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = 1.8.xcmappingmodel; sourceTree = "<group>"; };
 		97318E501E6780F9000B718B /* MigrationPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MigrationPolicy.swift; sourceTree = "<group>"; };
 		9732075B1DD136BB00EDD3DC /* CoreDataExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataExtension.swift; sourceTree = "<group>"; };
@@ -907,7 +906,6 @@
 			isa = PBXGroup;
 			children = (
 				97318E4D1E6780F9000B718B /* 1.5.xcmappingmodel */,
-				97318E4E1E6780F9000B718B /* 1.8-old.xcmappingmodel */,
 				97318E4F1E6780F9000B718B /* 1.8.xcmappingmodel */,
 				97318E501E6780F9000B718B /* MigrationPolicy.swift */,
 			);
