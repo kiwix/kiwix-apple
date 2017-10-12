@@ -21,7 +21,6 @@
 		97318E481E6780E7000B718B /* ImportBookLearnMore.html in Resources */ = {isa = PBXBuildFile; fileRef = 97318E411E6780E7000B718B /* ImportBookLearnMore.html */; };
 		97318E511E6780F9000B718B /* 1.5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97318E4D1E6780F9000B718B /* 1.5.xcmappingmodel */; };
 		97318E531E6780F9000B718B /* 1.8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97318E4F1E6780F9000B718B /* 1.8.xcmappingmodel */; };
-		97318E541E6780F9000B718B /* MigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97318E501E6780F9000B718B /* MigrationPolicy.swift */; };
 		9732075C1DD136BB00EDD3DC /* CoreDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9732075B1DD136BB00EDD3DC /* CoreDataExtension.swift */; };
 		973208231DD19C7600EDD3DC /* DownloadProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9726591A1D8DB91200D1DFFB /* DownloadProgress.swift */; };
 		973208261DD21E9C00EDD3DC /* CoreDataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973208251DD21E9C00EDD3DC /* CoreDataContainer.swift */; };
@@ -227,6 +226,7 @@
 		97D9D5041F43824000A8CBEF /* ZimReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97D9D5031F43824000A8CBEF /* ZimReader.mm */; };
 		97DA5C1E1E6F420800873048 /* BrowsingHistoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DA5C1D1E6F420800873048 /* BrowsingHistoryController.swift */; };
 		97DB65DA1D4576B600A2CC42 /* BookmarkWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */; };
+		97DEE7301F8F211400287124 /* 1.9.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97DEE72F1F8F211400287124 /* 1.9.xcmappingmodel */; };
 		97E0A7B71E96CC3300320F06 /* TabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E0A7B61E96CC3300320F06 /* TabController.swift */; };
 		97E9834E1F4CA0A00021E96A /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9834D1F4CA0A00021E96A /* WebViewController.swift */; };
 		97E983501F4CA54A0021E96A /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9834F1F4CA54A0021E96A /* SearchController.swift */; };
@@ -723,6 +723,8 @@
 		97D9D5031F43824000A8CBEF /* ZimReader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ZimReader.mm; path = Shared/Dependencies/ZimReader.mm; sourceTree = SOURCE_ROOT; };
 		97DA5C1D1E6F420800873048 /* BrowsingHistoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowsingHistoryController.swift; sourceTree = "<group>"; };
 		97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkWidgetCell.swift; sourceTree = "<group>"; };
+		97DEE72E1F8F1EA200287124 /* 1.9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.9.xcdatamodel; sourceTree = "<group>"; };
+		97DEE72F1F8F211400287124 /* 1.9.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = 1.9.xcmappingmodel; sourceTree = "<group>"; };
 		97E0A7B61E96CC3300320F06 /* TabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabController.swift; sourceTree = "<group>"; };
 		97E609F01D103DED00EBCB9D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		97E9834D1F4CA0A00021E96A /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
@@ -923,6 +925,7 @@
 			children = (
 				97318E4D1E6780F9000B718B /* 1.5.xcmappingmodel */,
 				97318E4F1E6780F9000B718B /* 1.8.xcmappingmodel */,
+				97DEE72F1F8F211400287124 /* 1.9.xcmappingmodel */,
 				97318E501E6780F9000B718B /* MigrationPolicy.swift */,
 			);
 			path = Migration;
@@ -2319,7 +2322,6 @@
 				97C601DE1D7F342100362D4F /* HTMLHeading.swift in Sources */,
 				975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */,
 				97A36C651F8EA6E90079B452 /* Article.swift in Sources */,
-				97318E541E6780F9000B718B /* MigrationPolicy.swift in Sources */,
 				97D231901E677C6700DCD4A4 /* Controllers.swift in Sources */,
 				97318E531E6780F9000B718B /* 1.8.xcmappingmodel in Sources */,
 				971A10521D022D9D007FC62C /* AppDelegate.swift in Sources */,
@@ -2353,6 +2355,7 @@
 				97A36C271F8C21210079B452 /* SearchController.swift in Sources */,
 				97A36C6B1F8EA6F40079B452 /* MigrationPolicy.swift in Sources */,
 				97A36C281F8C21210079B452 /* ZimManager.mm in Sources */,
+				97DEE7301F8F211400287124 /* 1.9.xcmappingmodel in Sources */,
 				97A36C6A1F8EA6F40079B452 /* 1.8.xcmappingmodel in Sources */,
 				97A36C601F8EA6E60079B452 /* Language.swift in Sources */,
 				97A36C5D1F8EA6E60079B452 /* Article.swift in Sources */,
@@ -2901,12 +2904,13 @@
 		97D6812A1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				97DEE72E1F8F1EA200287124 /* 1.9.xcdatamodel */,
 				970912551D7F452C00BBD5A1 /* 1.8.xcdatamodel */,
 				97D6812B1D6F70DE00E5FA99 /* 1.5.xcdatamodel */,
 				97D6812C1D6F70DE00E5FA99 /* 1.7.xcdatamodel */,
 				97D6812D1D6F70DE00E5FA99 /* Kiwix.xcdatamodel */,
 			);
-			currentVersion = 970912551D7F452C00BBD5A1 /* 1.8.xcdatamodel */;
+			currentVersion = 97DEE72E1F8F1EA200287124 /* 1.9.xcdatamodel */;
 			path = Kiwix.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

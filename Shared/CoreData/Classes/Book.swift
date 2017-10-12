@@ -227,3 +227,23 @@ enum BookState: Int, CustomStringConvertible {
         }
     }
 }
+
+enum BookCategory: String {
+    case wikibooks
+    case wikinews
+    case wikipedia
+    case wikiquote
+    case wikisource
+    case wikispecies
+    case wikiversity
+    case wikivoyage
+    case wiktionary
+    
+    case gutenberg
+    case phet
+    case ted
+    case vikidia
+    case stackExchange
+    
+    case other
+}

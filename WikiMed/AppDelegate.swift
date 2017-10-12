@@ -17,11 +17,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func loadZimFile() {
+    func applicationWillTerminate(_ application: UIApplication) {
+        self.saveContext()
+    }
+    
+    private func loadZimFile() {
         guard let resource = Bundle.main.resourceURL,
             let files = try? FileManager.default.contentsOfDirectory(at: resource, includingPropertiesForKeys: nil, options: .skipsSubdirectoryDescendants),
             let zimFile = files.filter({$0.pathExtension == "zim"}).first else {return}
         ZimManager.shared.addBook(url: zimFile)
+    }
+    
+    // MARK: - Core Data
+    
+    lazy var persistentContainer = CoreDataContainer()
+    class var persistentContainer: CoreDataContainer {
+        return (UIApplication.shared.delegate as! AppDelegate).persistentContainer
+    }
+    
+    private func saveContext () {
+        let context = persistentContainer.viewContext
+        if context.hasChanges { try? context.save() }
     }
 }
 

@@ -29,6 +29,7 @@ extension Article {
 
 extension Book {
     @NSManaged var articleCount: Int64
+    @NSManaged var category: String?
     @NSManaged var creator: String?
     @NSManaged var date: Date?
     @NSManaged var desc: String?

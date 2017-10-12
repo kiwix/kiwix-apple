@@ -52,6 +52,8 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        let books = Book.fetchAll(in: AppDelegate.persistentContainer.viewContext)
+        print(books.count)
     }
     
     override func viewDidLoad() {

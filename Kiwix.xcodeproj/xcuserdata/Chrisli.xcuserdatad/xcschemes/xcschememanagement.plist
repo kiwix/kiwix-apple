@@ -21,15 +21,10 @@
 			<key>orderHint</key>
 			<integer>14</integer>
 		</dict>
-		<key>iOS new.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>13</integer>
-		</dict>
 		<key>iOS.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>13</integer>
 		</dict>
 		<key>iOS_ScreenshotAutomator.xcscheme</key>
 		<dict>
@@ -37,6 +32,11 @@
 			<false/>
 			<key>orderHint</key>
 			<integer>3</integer>
+		</dict>
+		<key>iOS_old.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>0</integer>
 		</dict>
 		<key>macOS.xcscheme</key>
 		<dict>
