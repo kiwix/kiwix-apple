@@ -33,10 +33,10 @@ class MigrationPolicy1_9: NSEntityMigrationPolicy {
     @objc func bookCategory(urlString: String?) -> String? {
         guard let urlString = urlString,
             let components = URL(string: urlString)?.pathComponents,
-            components.indices ~= 1 else {return nil}
-        if let category = BookCategory(rawValue: components[1]) {
+            components.indices ~= 2 else {return nil}
+        if let category = BookCategory(rawValue: components[2]) {
             return category.rawValue
-        } else if components[1] == "stack_exchange" {
+        } else if components[2] == "stack_exchange" {
             return BookCategory.stackExchange.rawValue
         } else {
             return BookCategory.other.rawValue
