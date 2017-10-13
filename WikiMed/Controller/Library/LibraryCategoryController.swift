@@ -21,7 +21,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         view = tableView
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(LibraryBookCell.self, forCellReuseIdentifier: "cell")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,16 +39,21 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LibraryBookCell
         
         let book = fetchedResultController.object(at: indexPath)
-        cell.textLabel?.text = book.title
-        cell.imageView?.image = UIImage(data: book.favIcon ?? Data())
+        cell.titleLabel.text = book.title
+        cell.subtitleLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
+        cell.logoView.image = UIImage(data: book.favIcon ?? Data())
         return cell
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return fetchedResultController.sections?[section].name
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 44
     }
     
     // MARK: - NSFetchedResultsController

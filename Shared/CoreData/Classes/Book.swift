@@ -118,83 +118,26 @@ class Book: NSManagedObject {
     
     // MARK: - Properties Description
     
-    var dateDescription: String? {
-        guard let date = date else {return nil}
-        
+    static private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM-dd-yyyy"
         formatter.dateStyle = .medium
-        return formatter.string(from: date as Date)
+        return formatter
+    }()
+    
+    var dateDescription: String? {
+        guard let date = date else {return nil}
+        return Book.dateFormatter.string(from: date)
     }
     
-    var fileSizeDescription: String {
+    var fileSizeDescription: String? {
+        guard fileSize != 0 else {return nil}
         return ByteCountFormatter.string(fromByteCount: fileSize, countStyle: .file)
     }
     
     var articleCountDescription: String? {
-        return articleCountString + (articleCount > 1 ? " articles" : " article")
-    }
-    
-    var articleCountString: String {
-        func formattedNumberStringFromDouble(_ num: Double) -> String {
-            let sign = ((num < 0) ? "-" : "" )
-            let abs = fabs(num)
-            guard abs >= 1000.0 else {
-                if abs - Double(Int(abs)) == 0 {
-                    return "\(sign)\(Int(abs))"
-                } else {
-                    return "\(sign)\(abs)"
-                }
-            }
-            let exp: Int = Int(log10(abs) / log10(1000))
-            let units: [String] = ["K","M","G","T","P","E"]
-            let roundedNum: Double = round(10 * abs / pow(1000.0,Double(exp))) / 10;
-            return "\(sign)\(roundedNum)\(units[exp-1])"
-        }
-        return formattedNumberStringFromDouble(Double(articleCount))
-    }
-    
-    // MARK: - Description Label Text
-    
-    var detailedDescription: String? {
-        var descriptions = [String]()
-        if let dateDescription = dateDescription {descriptions.append(dateDescription)}
-        descriptions.append(fileSizeDescription)
-        if let articleCountDescription = articleCountDescription {descriptions.append(articleCountDescription)}
-        
-        guard descriptions.count != 0 else {return nil}
-        return descriptions.joined(separator: ", ")
-    }
-    
-    var detailedDescription1: String? {
-        var descriptions = [String]()
-        if let description = detailedDescription {descriptions.append(description)}
-        if let bookDescription = desc {descriptions.append(bookDescription)}
-        return descriptions.joined(separator: "\n")
-    }
-    
-    var detailedDescription2: String? {
-        var descriptions = [String]()
-        if let description = detailedDescription {descriptions.append(description)}
-        if let bookDescription = desc {descriptions.append(bookDescription)}
-        if let creatorAndPublisherDescription = creatorAndPublisherDescription {descriptions.append(creatorAndPublisherDescription)}
-        return descriptions.joined(separator: "\n")
-    }
-    
-    private var creatorAndPublisherDescription: String? {
-        if let creator = self.creator, let publisher = self.publisher {
-            if creator == publisher {
-                return "Creator and publisher: " + creator
-            } else {
-                return "Creator: " + creator + " Publisher: " + publisher
-            }
-        } else if let creator = self.creator {
-            return "Creator: " + creator
-        } else if let publisher = self.publisher {
-            return "Publisher: " + publisher
-        } else {
-            return nil
-        }
+        guard articleCount != 0 else {return nil}
+        return BookArticleCountFormatter.string(num: articleCount) + (articleCount > 1 ? " articles" : " article")
     }
     
     // MARK: - States
@@ -212,6 +155,18 @@ class Book: NSManagedObject {
         set {
             stateRaw = Int16(newValue.rawValue)
         }
+    }
+}
+
+class BookArticleCountFormatter {
+    class func string(num: Int64) -> String {
+        let sign = ((num < 0) ? "-" : "" )
+        let abs = Swift.abs(num)
+        guard abs >= 1000 else {return "\(sign)\(abs)"}
+        let exp = Int(log10(Double(abs)) / log10(1000))
+        let units = ["K","M","G","T","P","E"]
+        let rounded = round(10 * Double(abs) / pow(1000.0,Double(exp))) / 10;
+        return "\(sign)\(rounded)\(units[exp-1])"
     }
 }
 
