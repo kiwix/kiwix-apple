@@ -21,7 +21,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         view = tableView
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(LibraryBookCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(LibraryBookCell.self, forCellReuseIdentifier: "Cell")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -39,7 +39,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LibraryBookCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! LibraryBookCell
         
         let book = fetchedResultController.object(at: indexPath)
         cell.titleLabel.text = book.title
@@ -58,8 +58,8 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: - NSFetchedResultsController
     
-    let managedObjectContext = AppDelegate.persistentContainer.viewContext
-    lazy var fetchedResultController: NSFetchedResultsController<Book> = {
+    private let managedObjectContext = AppDelegate.persistentContainer.viewContext
+    private lazy var fetchedResultController: NSFetchedResultsController<Book> = {
         let fetchRequest = Book.fetchRequest()
         let langDescriptor = NSSortDescriptor(key: "language.name", ascending: true)
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
@@ -74,7 +74,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         return controller as! NSFetchedResultsController<Book>
     }()
     
-    var predicate: NSCompoundPredicate {
+    private var predicate: NSCompoundPredicate {
         let displayedLanguages = Language.fetch(displayed: true, context: managedObjectContext)
         var subpredicates = [
             NSPredicate(format: "stateRaw == 0"),
