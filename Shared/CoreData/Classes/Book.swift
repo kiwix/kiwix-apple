@@ -240,7 +240,6 @@ enum BookCategory: String {
     case wiktionary
     
     case gutenberg
-    case phet
     case ted
     case vikidia
     case stackExchange
