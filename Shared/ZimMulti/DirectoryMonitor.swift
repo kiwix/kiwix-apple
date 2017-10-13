@@ -20,16 +20,16 @@ class DirectoryMonitor {
     weak var delegate: DirectoryMonitorDelegate?
     
     /// A file descriptor for the monitored directory.
-    var monitoredDirectoryFileDescriptor: CInt = -1
+    private var monitoredDirectoryFileDescriptor: CInt = -1
     
     /// A dispatch queue used for sending file changes in the directory.
-    let directoryMonitorQueue = DispatchQueue(label: "org.kiwix.directorymonitor", attributes: DispatchQueue.Attributes.concurrent)
+    private let directoryMonitorQueue = DispatchQueue(label: "org.kiwix.directorymonitor", attributes: DispatchQueue.Attributes.concurrent)
     
     /// A dispatch source to monitor a file descriptor created from the directory.
-    var directoryMonitorSource: DispatchSourceFileSystemObject?
+    private var directoryMonitorSource: DispatchSourceFileSystemObject?
     
     /// URL for the directory being monitored.
-    var url: Foundation.URL
+    private var url: Foundation.URL
     
     // MARK: Initializers
     init(URL: Foundation.URL) {
@@ -38,7 +38,7 @@ class DirectoryMonitor {
     
     // MARK: Monitoring
     
-    func startMonitoring() {
+    func start() {
         // Listen for changes to the directory (if we are not already).
         if directoryMonitorSource == nil && monitoredDirectoryFileDescriptor == -1 {
             // Open the directory referenced by URL for monitoring only.
@@ -68,7 +68,7 @@ class DirectoryMonitor {
         }
     }
     
-    func stopMonitoring() {
+    func stop() {
         // Stop listening for changes to the directory, if the source has been created.
         if directoryMonitorSource != nil {
             // Stop monitoring the directory via the source.
