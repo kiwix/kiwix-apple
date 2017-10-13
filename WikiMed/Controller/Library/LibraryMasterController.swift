@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import CoreData
 
-class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewDataSource {
+class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     let tableView = UITableView(frame: .zero, style: .grouped)
     let categories: [BookCategory] = [
         .wikipedia, .wikivoyage, .wikibooks, .wikiversity, .wikispecies, .wikinews,
@@ -32,6 +33,7 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(LibraryBookCell.self, forCellReuseIdentifier: "BookCell")
         tableView.register(LibraryCategoryCell.self, forCellReuseIdentifier: "CategoryCell")
     }
     
@@ -46,55 +48,45 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
     // MARK: - UITableViewDataSource & Delegates
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return fetchedResultControllerSectionCount + 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return 3
-        case 1:
-            return 3
-        case 2:
+        if section < fetchedResultControllerSectionCount {
+            return fetchedResultController.sections?[section].numberOfObjects ?? 0
+        } else {
             return categories.count
-        default:
-            return 0
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch indexPath.section {
-        case 0:
+        if indexPath.section < fetchedResultControllerSectionCount {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             cell.accessoryType = .disclosureIndicator
-            cell.textLabel?.text = "Downloading Book Title"
+            cell.textLabel?.text = "Placeholder Title"
             return cell
-        case 1:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-            cell.accessoryType = .disclosureIndicator
-            cell.textLabel?.text = "Local Book Title"
-            return cell
-        case 2:
+        } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath) as! LibraryCategoryCell
             cell.accessoryType = .disclosureIndicator
             cell.titleLabel.text = categoryNames[indexPath.row]
             cell.logoView.image = categoryImages[indexPath.row]
             return cell
-        default:
-            return tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         }
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return NSLocalizedString("Downloading", comment: "Library section headers")
-        case 1:
-            return NSLocalizedString("On Device", comment: "Library section headers")
-        case 2:
+        if section < fetchedResultControllerSectionCount {
+            guard let sectionTitle = fetchedResultController.sections?[section].name else {return nil}
+            switch sectionTitle {
+            case "1":
+                return NSLocalizedString("Downloading", comment: "Library section headers")
+            case "2":
+                return NSLocalizedString("On Device", comment: "Library section headers")
+            default:
+                return nil
+            }
+        } else {
             return NSLocalizedString("Categories", comment: "Library section headers")
-        default:
-            return nil
         }
     }
     
@@ -108,6 +100,26 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
+    }
+    
+    // MARK: - NSFetchedResultsController
+    
+    private let managedObjectContext = AppDelegate.persistentContainer.viewContext
+    private lazy var fetchedResultController: NSFetchedResultsController<Book> = {
+        let fetchRequest = Book.fetchRequest()
+        fetchRequest.sortDescriptors = [
+            NSSortDescriptor(key: "stateRaw", ascending: true),
+            NSSortDescriptor(key: "title", ascending: true)]
+        fetchRequest.predicate = NSPredicate(format: "stateRaw == 1 OR stateRaw == 2")
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                    managedObjectContext: self.managedObjectContext,
+                                                    sectionNameKeyPath: "stateRaw", cacheName: nil)
+        controller.delegate = self
+        try? controller.performFetch()
+        return controller as! NSFetchedResultsController<Book>
+    }()
+    private var fetchedResultControllerSectionCount: Int {
+        return fetchedResultController.sections?.count ?? 0
     }
 }
 

@@ -64,7 +64,6 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         let langDescriptor = NSSortDescriptor(key: "language.name", ascending: true)
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
-        fetchRequest.predicate = NSPredicate(format: "language.name != nil")
         fetchRequest.predicate = self.predicate
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                     managedObjectContext: self.managedObjectContext,
