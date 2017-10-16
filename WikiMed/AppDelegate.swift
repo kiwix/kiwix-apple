@@ -15,20 +15,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = UINavigationController(rootViewController: MainController())
         window?.makeKeyAndVisible()
+        
         URLProtocol.registerClass(KiwixURLProtocol.self)
-        loadZimFile()
+        ZimMultiReader.shared.startMonitoring(url: URL.documentDirectory)
         return true
+    }
+    
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        ZimMultiReader.shared.startMonitoring(url: URL.documentDirectory)
+        ZimMultiReader.shared.scan(url: URL.documentDirectory)
+    }
+    
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        ZimMultiReader.shared.stopMonitoring(url: URL.documentDirectory)
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
         self.saveContext()
-    }
-    
-    private func loadZimFile() {
-        guard let resource = Bundle.main.resourceURL,
-            let files = try? FileManager.default.contentsOfDirectory(at: resource, includingPropertiesForKeys: nil, options: .skipsSubdirectoryDescendants),
-            let zimFile = files.filter({$0.pathExtension == "zim"}).first else {return}
-        ZimManager.shared.addBook(url: zimFile)
     }
     
     // MARK: - Core Data

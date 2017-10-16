@@ -10,7 +10,7 @@ import Foundation
 
 /// A protocol that allows delegates of `DirectoryMonitor` to respond to changes in a directory.
 protocol DirectoryMonitorDelegate: class {
-    func directoryMonitorDidObserveChange()
+    func directoryContentDidChange(url: URL)
 }
 
 class DirectoryMonitor {
@@ -32,8 +32,8 @@ class DirectoryMonitor {
     private var url: Foundation.URL
     
     // MARK: Initializers
-    init(URL: Foundation.URL) {
-        self.url = URL
+    init(url: Foundation.URL) {
+        self.url = url
     }
     
     // MARK: Monitoring
@@ -118,7 +118,7 @@ class DirectoryMonitor {
     
     private func directoryDidReachStasis() {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(NSEC_PER_SEC/10)) / Double(NSEC_PER_SEC) , execute: { () -> Void in
-            self.delegate?.directoryMonitorDidObserveChange()
+            self.delegate?.directoryContentDidChange(url: self.url)
         })
     }
     
