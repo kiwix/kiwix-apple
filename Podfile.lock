@@ -1,18 +1,18 @@
 PODS:
   - DZNEmptyDataSet (1.8.1)
-  - ProcedureKit/All (4.3.2):
+  - ProcedureKit/All (4.4.0):
     - ProcedureKit/Cloud
     - ProcedureKit/Location
     - ProcedureKit/Network
-  - ProcedureKit/Cloud (4.3.2):
+  - ProcedureKit/Cloud (4.4.0):
     - ProcedureKit/Standard
-  - ProcedureKit/Location (4.3.2):
+  - ProcedureKit/Location (4.4.0):
     - ProcedureKit/Standard
-  - ProcedureKit/Mobile (4.3.2):
+  - ProcedureKit/Mobile (4.4.0):
     - ProcedureKit/Standard
-  - ProcedureKit/Network (4.3.2):
+  - ProcedureKit/Network (4.4.0):
     - ProcedureKit/Standard
-  - ProcedureKit/Standard (4.3.2)
+  - ProcedureKit/Standard (4.4.0)
   - SwiftyUserDefaults (3.0.0)
 
 DEPENDENCIES:
@@ -27,7 +27,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  ProcedureKit: 23a26525ec91dc8a0cf6ba5c3cb611bdbb23fb57
+  ProcedureKit: 5f669bfcb430207af16433d4637612824499e61e
   SwiftyUserDefaults: 0f1d45fc3aafb9064dac661e367f8f83fe21a4b4
 
 PODFILE CHECKSUM: 9985a4ad04d4ed6fc38dc7bb183567397966ea92

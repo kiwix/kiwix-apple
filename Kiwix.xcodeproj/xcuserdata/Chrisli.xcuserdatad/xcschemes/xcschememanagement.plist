@@ -24,7 +24,7 @@
 		<key>iOS.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>13</integer>
+			<integer>4</integer>
 		</dict>
 		<key>iOS_ScreenshotAutomator.xcscheme</key>
 		<dict>
