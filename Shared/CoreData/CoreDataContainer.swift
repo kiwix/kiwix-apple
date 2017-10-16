@@ -9,8 +9,9 @@
 import CoreData
 
 class CoreDataContainer: NSPersistentContainer {
+    static let shared = CoreDataContainer()
     
-    init() {
+    private init() {
         let modelURL = Bundle.main.url(forResource: "Kiwix", withExtension: "momd")!
         let model = NSManagedObjectModel(contentsOf: modelURL)
         super.init(name: "kiwix", managedObjectModel: model!)

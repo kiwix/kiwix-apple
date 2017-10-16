@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         URLProtocol.registerClass(KiwixURLProtocol.self)
         ZimMultiReader.shared.startMonitoring(url: URL.documentDirectory)
+        ZimMultiReader.shared.scan(url: URL.documentDirectory)
         return true
     }
     
@@ -31,19 +32,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-        self.saveContext()
-    }
-    
-    // MARK: - Core Data
-    
-    lazy var persistentContainer = CoreDataContainer()
-    class var persistentContainer: CoreDataContainer {
-        return (UIApplication.shared.delegate as! AppDelegate).persistentContainer
-    }
-    
-    private func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges { try? context.save() }
+        let context = CoreDataContainer.shared.viewContext
+        if context.hasChanges {
+            try? context.save()
+        }
     }
 }
 

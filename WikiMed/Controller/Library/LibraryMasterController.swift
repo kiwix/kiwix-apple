@@ -104,7 +104,7 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
     
     // MARK: - NSFetchedResultsController
     
-    private let managedObjectContext = AppDelegate.persistentContainer.viewContext
+    private let managedObjectContext = CoreDataContainer.shared.viewContext
     private lazy var fetchedResultController: NSFetchedResultsController<Book> = {
         let fetchRequest = Book.fetchRequest()
         fetchRequest.sortDescriptors = [

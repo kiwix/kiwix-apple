@@ -88,8 +88,8 @@ class Book: NSManagedObject {
         return fetch(fetchRequest, type: Book.self, context: context) ?? [Book]()
     }
     
-    class func fetch(_ id: String, context: NSManagedObjectContext) -> Book? {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Book")
+    class func fetch(id: String, context: NSManagedObjectContext) -> Book? {
+        let fetchRequest = Book.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "id = %@", id)
         return fetch(fetchRequest, type: Book.self, context: context)?.first
     }

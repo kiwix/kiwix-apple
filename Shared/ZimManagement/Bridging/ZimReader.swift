@@ -10,6 +10,8 @@ import UIKit
 
 extension ZimReader {
     var id: String {return __getID()}
+    var title: String {return __getTitle()}
+    
     var mainPageURL: URL? {return URL(string: __getMainPageURL())}
     
     convenience init?(fileURL: URL) {

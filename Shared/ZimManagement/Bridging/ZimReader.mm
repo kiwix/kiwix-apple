@@ -48,14 +48,21 @@
     }
 }
 
-- (NSString *)getID {
-    return [NSString stringWithCString:identifier->c_str() encoding:NSUTF8StringEncoding];
-}
-
 - (NSString *)getMainPageURL {
     std::string mainPageURLC = reader->getMainPageUrl();
     return [NSString stringWithCString:mainPageURLC.c_str() encoding:NSUTF8StringEncoding];
 }
+
+- (NSString *)getID {
+    return [NSString stringWithCString:identifier->c_str() encoding:NSUTF8StringEncoding];
+}
+
+- (NSString *)getTitle {
+    return [NSString stringWithCString:(reader->getTitle()).c_str() encoding:NSUTF8StringEncoding];
+}
+
+
+
 
 
 
@@ -199,11 +206,6 @@
 //    return [NSString stringWithCString:idC.c_str() encoding:NSUTF8StringEncoding];
 //}
 //
-//- (NSString *)getTitle {
-//    string titleC;
-//    titleC = _reader->getTitle();
-//    return [NSString stringWithCString:titleC.c_str() encoding:NSUTF8StringEncoding];
-//}
 //
 //- (NSString *)getDesc {
 //    string descriptionC;

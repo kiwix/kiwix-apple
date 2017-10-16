@@ -15,7 +15,7 @@ class Article: NSManagedObject {
     
     class func fetch(url: URL, context: NSManagedObjectContext) -> Article? {
         guard let bookID = url.host,
-            let book = Book.fetch(bookID, context: context) else {return nil}
+            let book = Book.fetch(id: bookID, context: context) else {return nil}
         let path = url.path
         
         let fetchRequest = Article.fetchRequest() as! NSFetchRequest<Article>

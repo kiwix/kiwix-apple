@@ -58,7 +58,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: - NSFetchedResultsController
     
-    private let managedObjectContext = AppDelegate.persistentContainer.viewContext
+    private let managedObjectContext = CoreDataContainer.shared.viewContext
     private lazy var fetchedResultController: NSFetchedResultsController<Book> = {
         let fetchRequest = Book.fetchRequest()
         let langDescriptor = NSSortDescriptor(key: "language.name", ascending: true)

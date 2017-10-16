@@ -7,26 +7,23 @@
 //
 
 import UIKit
+import ProcedureKit
 
 class ZimMultiReader: DirectoryMonitorDelegate{
     static let shared = ZimMultiReader()
-    private var readers = [String: ZimReader]()
+    fileprivate(set) var readers = [ZimFileID: ZimReader]()
     private var montiors = [URL: DirectoryMonitor]()
     
-    private init() {
-        scan(url: URL.documentDirectory)
-        scan(url: URL.resourceDirectory)
-    }
+    private let queue = ProcedureQueue()
+    private weak var scanProcedure: Scan?
+    
+    private init() {}
     
     func scan(url: URL) {
-        let urls = (try? FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants])) ?? []
-        for url in urls {
-            guard url.pathExtension == "zim" || url.pathExtension == "zimaa" else {return}
-            if let reader = ZimReader(fileURL: url) {
-                readers[reader.id] = reader
-            }
-        }
-        print(readers.count)
+        let scan = Scan(url: url)
+        if let previous = scanProcedure { scan.addDependency(previous) }
+        scanProcedure = scan
+        queue.add(operation: scan)
     }
     
     // MARK: - Monitor
@@ -47,6 +44,67 @@ class ZimMultiReader: DirectoryMonitorDelegate{
         scan(url: url)
     }
 }
+
+class Scan: Procedure {
+    let urls: [URL]
+    
+    init(url: URL) {
+        self.urls = [url]
+        super.init()
+    }
+    
+    init(urls: [URL]) {
+        self.urls = urls
+        super.init()
+    }
+    
+    override func execute() {
+        urls.forEach({ updateReader(url: $0) })
+        updateDatabase()
+        print(ZimMultiReader.shared.readers.count)
+        finish()
+    }
+    
+    func updateReader(url: URL) {
+        let urls = (try? FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants])) ?? []
+        for url in urls {
+            guard url.pathExtension == "zim" || url.pathExtension == "zimaa",
+                let reader = ZimReader(fileURL: url),
+                !ZimMultiReader.shared.readers.keys.contains(reader.id) else {return}
+            ZimMultiReader.shared.readers[reader.id] = reader
+        }
+    }
+    
+    func updateDatabase() {
+        let context = CoreDataContainer.shared.newBackgroundContext()
+        context.performAndWait {
+            for (bookID, reader) in ZimMultiReader.shared.readers {
+                if let book = Book.fetch(id: bookID, context: context) {
+                    book.state = .local
+                } else {
+                    let book = Book(context: context)
+                    book.id = reader.id
+                    book.title = reader.title
+                }
+            }
+            
+            for book in Book.fetchLocal(in: context) {
+                guard !ZimMultiReader.shared.readers.keys.contains(book.id) else {continue}
+                if let _ = book.meta4URL {
+                    book.state = .cloud
+                } else {
+                    context.delete(book)
+                }
+            }
+            
+            if context.hasChanges {
+                try? context.save()
+            }
+        }
+    }
+}
+
+typealias ZimFileID = String
 
 extension URL {
     static let documentDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)

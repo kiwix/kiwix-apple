@@ -14,9 +14,12 @@
 - (instancetype)initWithZimFileURL:(NSURL *)url NS_REFINED_FOR_SWIFT;
 
 - (NSDictionary *)getContent:(NSString *)contentURL NS_REFINED_FOR_SWIFT;
+- (NSString *)getMainPageURL NS_REFINED_FOR_SWIFT;
 
 - (NSString *)getID NS_REFINED_FOR_SWIFT;
-- (NSString *)getMainPageURL NS_REFINED_FOR_SWIFT;
+- (NSString *)getTitle NS_REFINED_FOR_SWIFT;
+
+
 
 
 

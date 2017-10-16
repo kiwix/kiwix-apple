@@ -14,7 +14,7 @@ class DownloadTask: NSManagedObject {
     
     class func fetch(bookID: String, context: NSManagedObjectContext) -> DownloadTask? {
         let fetchRequest = DownloadTask.fetchRequest() as! NSFetchRequest<DownloadTask>
-        guard let book = Book.fetch(bookID, context: context) else {return nil}
+        guard let book = Book.fetch(id: bookID, context: context) else {return nil}
         fetchRequest.predicate = NSPredicate(format: "book = %@", book)
         
         guard let downloadTask = try? context.fetch(fetchRequest).first ?? DownloadTask(context: context) else {return nil}

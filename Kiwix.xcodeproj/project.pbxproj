@@ -167,7 +167,6 @@
 		97A36C631F8EA6E70079B452 /* DownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681351D6F711A00E5FA99 /* DownloadTask.swift */; };
 		97A36C641F8EA6E70079B452 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681361D6F711A00E5FA99 /* Language.swift */; };
 		97A36C651F8EA6E90079B452 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681331D6F711A00E5FA99 /* Article.swift */; };
-		97A36C661F8EA6E90079B452 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681341D6F711A00E5FA99 /* Book.swift */; };
 		97A36C671F8EA6E90079B452 /* DownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681351D6F711A00E5FA99 /* DownloadTask.swift */; };
 		97A36C681F8EA6E90079B452 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D681361D6F711A00E5FA99 /* Language.swift */; };
 		97A36C691F8EA6F40079B452 /* 1.5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97318E4D1E6780F9000B718B /* 1.5.xcmappingmodel */; };
@@ -2328,7 +2327,6 @@
 				97D231A91E677CB300DCD4A4 /* Cells.swift in Sources */,
 				97D2318A1E677C6700DCD4A4 /* BookmarkHUD.swift in Sources */,
 				973208271DD2238B00EDD3DC /* Queue.swift in Sources */,
-				97A36C661F8EA6E90079B452 /* Book.swift in Sources */,
 				97D2319A1E677C6700DCD4A4 /* SearchResultController.swift in Sources */,
 				97ED50111DD257D00089E9B6 /* Kiwix.xcdatamodeld in Sources */,
 				9725345F1E43E2250005D169 /* UserHabit.swift in Sources */,
