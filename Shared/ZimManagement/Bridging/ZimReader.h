@@ -11,16 +11,24 @@
 
 @interface ZimReader : NSObject
 
-- (instancetype)initWithZimFileURL:(NSURL *)url NS_REFINED_FOR_SWIFT;
+- (instancetype _Nullable)initWithZimFileURL:(NSURL *_Nonnull)url NS_REFINED_FOR_SWIFT;
 
-- (NSDictionary *)getContent:(NSString *)contentURL NS_REFINED_FOR_SWIFT;
-- (NSString *)getMainPageURL NS_REFINED_FOR_SWIFT;
+- (NSDictionary *_Nullable)getContent:(NSString *_Nonnull)contentURL NS_REFINED_FOR_SWIFT;
 
-- (NSString *)getID NS_REFINED_FOR_SWIFT;
-- (NSString *)getTitle NS_REFINED_FOR_SWIFT;
-
-
-
+- (NSString *_Nonnull)getID NS_REFINED_FOR_SWIFT;
+- (NSString *_Nonnull)getMainPageURL NS_REFINED_FOR_SWIFT;
+- (NSString *_Nonnull)getTitle NS_REFINED_FOR_SWIFT;
+- (NSString *_Nonnull)getDescription NS_REFINED_FOR_SWIFT;
+- (NSString *_Nonnull)getLanguage NS_REFINED_FOR_SWIFT;
+- (NSString *_Nonnull)getName NS_REFINED_FOR_SWIFT;
+- (NSString *_Nonnull)getTags NS_REFINED_FOR_SWIFT;
+- (NSString *_Nonnull)getDate NS_REFINED_FOR_SWIFT;
+- (NSString *_Nonnull)getCreator NS_REFINED_FOR_SWIFT;
+- (NSString *_Nonnull)getPublisher NS_REFINED_FOR_SWIFT;
+- (NSData *_Nullable)getFavicon NS_REFINED_FOR_SWIFT;
+- (unsigned int)getArticleCount NS_REFINED_FOR_SWIFT;
+- (unsigned int)getMediaCount NS_REFINED_FOR_SWIFT;
+- (unsigned int)getGlobalCount NS_REFINED_FOR_SWIFT;
 
 
 //#pragma mark - getData

@@ -48,20 +48,67 @@
     }
 }
 
-- (NSString *)getMainPageURL {
-    std::string mainPageURLC = reader->getMainPageUrl();
-    return [NSString stringWithCString:mainPageURLC.c_str() encoding:NSUTF8StringEncoding];
-}
-
 - (NSString *)getID {
     return [NSString stringWithCString:identifier->c_str() encoding:NSUTF8StringEncoding];
+}
+
+- (NSString *)getMainPageURL {
+    return [NSString stringWithCString:(reader->getMainPageUrl()).c_str() encoding:NSUTF8StringEncoding];
 }
 
 - (NSString *)getTitle {
     return [NSString stringWithCString:(reader->getTitle()).c_str() encoding:NSUTF8StringEncoding];
 }
 
+- (NSString *)getDescription {
+    return [NSString stringWithCString:(reader->getDescription()).c_str() encoding:NSUTF8StringEncoding];
+}
 
+- (NSString *)getLanguage {
+    return [NSString stringWithCString:(reader->getLanguage()).c_str() encoding:NSUTF8StringEncoding];
+}
+
+- (NSString *)getName {
+    return [NSString stringWithCString:(reader->getName()).c_str() encoding:NSUTF8StringEncoding];
+}
+
+- (NSString *)getTags {
+    return [NSString stringWithCString:(reader->getTags()).c_str() encoding:NSUTF8StringEncoding];
+}
+
+- (NSString *)getDate {
+    return [NSString stringWithCString:(reader->getDate()).c_str() encoding:NSUTF8StringEncoding];
+}
+
+- (NSString *)getCreator {
+    return [NSString stringWithCString:(reader->getCreator()).c_str() encoding:NSUTF8StringEncoding];
+}
+
+- (NSString *)getPublisher {
+    return [NSString stringWithCString:(reader->getOrigId()).c_str() encoding:NSUTF8StringEncoding];
+}
+
+- (NSData *)getFavicon {
+    string content;
+    string mimeType;
+    if (reader->getFavicon(content, mimeType)) {
+        return [NSData dataWithBytes:content.c_str() length:content.length()];
+    } else {
+        return nil;
+    }
+}
+
+- (unsigned int)getArticleCount {
+    return reader->getArticleCount();
+}
+
+- (unsigned int)getMediaCount {
+    return reader->getMediaCount();
+}
+
+- (unsigned int)getGlobalCount {
+    return reader->getGlobalCount();
+}
 
 
 
@@ -186,17 +233,6 @@
 //
 //#pragma mark - getCounts
 //
-//- (NSString *)getArticleCount {
-//    return [NSString stringWithFormat:@"%u", _reader->getArticleCount()];
-//}
-//
-//- (NSString *)getMediaCount {
-//    return [NSString stringWithFormat:@"%u", _reader->getMediaCount()];
-//}
-//
-//- (NSString *)getGlobalCount {
-//    return [NSString stringWithFormat:@"%u", _reader->getGlobalCount()];
-//}
 //
 //#pragma mark - get File Attributes
 //
@@ -207,47 +243,6 @@
 //}
 //
 //
-//- (NSString *)getDesc {
-//    string descriptionC;
-//    descriptionC = _reader->getDescription();
-//    return [NSString stringWithCString:descriptionC.c_str() encoding:NSUTF8StringEncoding];
-//}
-//
-//- (NSString *)getLanguage {
-//    string languageC;
-//    languageC = _reader->getLanguage();
-//    return [NSString stringWithCString:languageC.c_str() encoding:NSUTF8StringEncoding];
-//}
-//
-//- (NSString *)getName {
-//    string nameC;
-//    nameC = _reader->getName();
-//    return [NSString stringWithCString:nameC.c_str() encoding:NSUTF8StringEncoding];
-//}
-//
-//- (NSString *)getTags {
-//    string tagsC;
-//    tagsC = _reader->getTags();
-//    return [NSString stringWithCString:tagsC.c_str() encoding:NSUTF8StringEncoding];
-//}
-//
-//- (NSString *)getDate {
-//    string dateC;
-//    dateC = _reader->getDate();
-//    return [NSString stringWithCString:dateC.c_str() encoding:NSUTF8StringEncoding];
-//}
-//
-//- (NSString *)getCreator {
-//    string creatorC;
-//    creatorC = _reader->getCreator();
-//    return [NSString stringWithCString:creatorC.c_str() encoding:NSUTF8StringEncoding];
-//}
-//
-//- (NSString *)getPublisher {
-//    string publisherC;
-//    publisherC = _reader->getOrigId();
-//    return [NSString stringWithCString:publisherC.c_str() encoding:NSUTF8StringEncoding];
-//}
 //
 //- (NSString *)getOriginID {
 //    string originIDC;
@@ -259,16 +254,6 @@
 //    return [[[NSNumber alloc] initWithUnsignedInt:_reader->getFileSize()] stringValue];
 //}
 //
-//- (NSString *)getFavicon {
-//    NSData *data;
-//    string content;
-//    string mimeType;
-//    if (_reader->getFavicon(content, mimeType)) {
-//        data = [NSData dataWithBytes:content.c_str() length:content.length()];
-//    }
-//    NSString * str = [data base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
-//    return str;
-//}
 //
 //- (NSString *)parseURL:(NSString *)urlPath {
 //    NSString *title;

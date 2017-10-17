@@ -66,13 +66,20 @@ class Scan: Procedure {
     }
     
     func updateReader(url: URL) {
+        var onDevice = [ZimFileID]()
         let urls = (try? FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants])) ?? []
         for url in urls {
             guard url.pathExtension == "zim" || url.pathExtension == "zimaa",
-                let reader = ZimReader(fileURL: url),
-                !ZimMultiReader.shared.readers.keys.contains(reader.id) else {return}
-            ZimMultiReader.shared.readers[reader.id] = reader
+                let reader = ZimReader(fileURL: url) else {return}
+            onDevice.append(reader.id)
+            if !ZimMultiReader.shared.readers.keys.contains(reader.id) {
+                ZimMultiReader.shared.readers[reader.id] = reader
+            }
         }
+        
+        Set(ZimMultiReader.shared.readers.keys).subtracting(onDevice).forEach({
+            ZimMultiReader.shared.readers[$0] = nil
+        })
     }
     
     func updateDatabase() {
@@ -85,6 +92,17 @@ class Scan: Procedure {
                     let book = Book(context: context)
                     book.id = reader.id
                     book.title = reader.title
+                    book.desc = reader.bookDescription
+                    book.pid = reader.name
+                    book.date = reader.date
+                    book.creator = reader.creator
+                    book.publisher = reader.publisher
+                    book.favIcon = reader.favicon
+                    book.articleCount = reader.articleCount
+                    book.mediaCount = reader.mediaCount
+                    book.globalCount = reader.globalCount
+                    
+                    book.state = .local
                 }
             }
             
