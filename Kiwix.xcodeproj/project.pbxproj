@@ -317,6 +317,7 @@
 		3577B1822471E1C4D5274B7D /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		7510393635E2E3EF2F7C29DB /* Pods-WikiMed.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WikiMed.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WikiMed/Pods-WikiMed.debug.xcconfig"; sourceTree = "<group>"; };
 		81DF90AB14037E242E284CA8 /* Pods_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		97041F7E1F9652D4007D63F5 /* WikiMed.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WikiMed.plist; sourceTree = "<group>"; };
 		97050D001F6733400021DE78 /* WebKitTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitTabController.swift; sourceTree = "<group>"; };
 		9707B8F51F4B4F1500075D4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		970912551D7F452C00BBD5A1 /* 1.8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.8.xcdatamodel; sourceTree = "<group>"; };
@@ -956,7 +957,7 @@
 			path = Migration;
 			sourceTree = "<group>";
 		};
-		973BCCE41CEB3EDE00F10B44 /* iOS */ = {
+		973BCCE41CEB3EDE00F10B44 /* iOS_old */ = {
 			isa = PBXGroup;
 			children = (
 				971A10511D022D9D007FC62C /* AppDelegate.swift */,
@@ -968,7 +969,7 @@
 				974C49391DA3067C00E276E1 /* Support */,
 				97A2AB891C1B80FF00052E74 /* Products */,
 			);
-			path = iOS;
+			path = iOS_old;
 			sourceTree = "<group>";
 		};
 		973BCD1F1CEB412E00F10B44 /* Shared */ = {
@@ -1009,7 +1010,7 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
-		975FDAD81F6082DA00A10E8C /* WikiMed */ = {
+		975FDAD81F6082DA00A10E8C /* iOS */ = {
 			isa = PBXGroup;
 			children = (
 				975FDAD91F6082DA00A10E8C /* AppDelegate.swift */,
@@ -1018,7 +1019,7 @@
 				975FDAEA1F60839900A10E8C /* Support */,
 				975FDAE01F6082DA00A10E8C /* Assets.xcassets */,
 			);
-			path = WikiMed;
+			path = iOS;
 			sourceTree = "<group>";
 		};
 		975FDAEA1F60839900A10E8C /* Support */ = {
@@ -1026,6 +1027,7 @@
 			children = (
 				975FDAE21F6082DA00A10E8C /* LaunchScreen.storyboard */,
 				975FDAE51F6082DA00A10E8C /* Info.plist */,
+				97041F7E1F9652D4007D63F5 /* WikiMed.plist */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -1196,9 +1198,9 @@
 			isa = PBXGroup;
 			children = (
 				973BCD1F1CEB412E00F10B44 /* Shared */,
-				973BCCE41CEB3EDE00F10B44 /* iOS */,
+				973BCCE41CEB3EDE00F10B44 /* iOS_old */,
+				975FDAD81F6082DA00A10E8C /* iOS */,
 				979315821E5127930093D3BA /* macOS */,
-				975FDAD81F6082DA00A10E8C /* WikiMed */,
 				97E609F21D103DED00EBCB9D /* iOSWidgets */,
 				97C459751F86C1360013AC22 /* ZimFiles */,
 				931D277C156AE671D3F9EADA /* Libraries */,
@@ -2412,7 +2414,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = WikiMed/Support/Info.plist;
+				INFOPLIST_FILE = iOS/Support/WikiMed.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -2444,7 +2446,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = WikiMed/Support/Info.plist;
+				INFOPLIST_FILE = iOS/Support/WikiMed.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -2776,7 +2778,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = WikiMed/Support/Info.plist;
+				INFOPLIST_FILE = iOS/Support/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -2808,7 +2810,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = WikiMed/Support/Info.plist;
+				INFOPLIST_FILE = iOS/Support/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
