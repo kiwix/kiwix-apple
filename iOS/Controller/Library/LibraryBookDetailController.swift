@@ -73,7 +73,6 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
             }))
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             present(alert, animated: true, completion: nil)
-            
         }
     }
 }
