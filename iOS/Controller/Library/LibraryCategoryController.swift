@@ -11,10 +11,12 @@ import CoreData
 
 class LibraryCategoryController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
     let tableView = UITableView()
-    var category: BookCategory? {
-        didSet {
-            reloadFetchedResultController()
-        }
+    private(set) var category: BookCategory?
+    
+    convenience init(category: BookCategory, title: String) {
+        self.init()
+        self.category = category
+        self.title = title
     }
     
     override func loadView() {
@@ -22,10 +24,6 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(LibraryBookCell.self, forCellReuseIdentifier: "Cell")
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
     }
     
     // MARK: - UITableViewDataSource & Delagates

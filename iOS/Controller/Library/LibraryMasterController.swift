@@ -105,15 +105,13 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
             switch sectionTitle {
             case "2":
                 let controller = LibraryBookDetailController(book: fetchedResultController.object(at: indexPath))
-                return showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
+                showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
             default:
                 return
             }
         } else {
-            if let split = splitViewController as? LibraryController {
-                split.detail.prepare(category: categories[indexPath.row], name: categoryNames[indexPath.row])
-                showDetailViewController(UINavigationController(rootViewController: split.detail), sender: nil)
-            }
+            let controller = LibraryCategoryController(category: categories[indexPath.row], title: categoryNames[indexPath.row])
+            showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
         }
     }
     

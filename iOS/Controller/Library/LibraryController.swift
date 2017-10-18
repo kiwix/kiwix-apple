@@ -9,12 +9,11 @@
 import UIKit
 
 class LibraryController: UISplitViewController, UISplitViewControllerDelegate {
-    let master  = LibraryMasterController()
-    let detail = LibraryDetailController()
-    
     init() {
         super.init(nibName: nil, bundle: nil)
-        viewControllers = [UINavigationController(rootViewController: master), UINavigationController(rootViewController: detail)]
+        viewControllers = [
+            UINavigationController(rootViewController: LibraryMasterController()),
+            UINavigationController(rootViewController: LibraryBlankDetailController())]
         delegate = self
         preferredDisplayMode = .allVisible
     }

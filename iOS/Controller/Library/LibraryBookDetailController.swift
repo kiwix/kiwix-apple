@@ -29,6 +29,8 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "ActionCell")
     }
     
+    // MARK: - UITableViewDataSource & Delagates
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return titles.count
     }
