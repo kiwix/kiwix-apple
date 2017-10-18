@@ -14,7 +14,7 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
     let refreshControl = UIRefreshControl()
     let categories: [BookCategory] = [
         .wikipedia, .wikivoyage, .wikibooks, .wikiversity, .wikispecies, .wikinews,
-        .vikidia, .ted, .stackExchange, .gutenberg, .other]
+        .vikidia, .ted, .stackExchange, .other]
     let categoryImages = [#imageLiteral(resourceName: "Wikipedia"), #imageLiteral(resourceName: "Wikivoyage"), #imageLiteral(resourceName: "Wikibooks"), #imageLiteral(resourceName: "Wikiversity"), #imageLiteral(resourceName: "Wikispecies"), #imageLiteral(resourceName: "Wikinews"), #imageLiteral(resourceName: "Vikidia"), #imageLiteral(resourceName: "TED"), #imageLiteral(resourceName: "StackExchange"), #imageLiteral(resourceName: "Gutenberg"), #imageLiteral(resourceName: "Other")]
     let categoryNames = [
         NSLocalizedString("Wikipedia", comment: "Zim File Types"),
@@ -26,7 +26,6 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
         NSLocalizedString("Vikidia", comment: "Zim File Types"),
         NSLocalizedString("TED", comment: "Zim File Types"),
         NSLocalizedString("StackExchange", comment: "Zim File Types"),
-        NSLocalizedString("Gutenberg", comment: "Zim File Types"),
         NSLocalizedString("Other", comment: "Zim File Types")]
     
     override func loadView() {
