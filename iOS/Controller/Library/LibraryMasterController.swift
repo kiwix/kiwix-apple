@@ -11,6 +11,7 @@ import CoreData
 
 class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     let tableView = UITableView(frame: .zero, style: .grouped)
+    let refreshControl = UIRefreshControl()
     let categories: [BookCategory] = [
         .wikipedia, .wikivoyage, .wikibooks, .wikiversity, .wikispecies, .wikinews,
         .vikidia, .ted, .stackExchange, .gutenberg, .other]
@@ -32,6 +33,7 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
         view = tableView
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.refreshControl = refreshControl
         tableView.register(LibraryBookCell.self, forCellReuseIdentifier: "BookCell")
         tableView.register(LibraryCategoryCell.self, forCellReuseIdentifier: "CategoryCell")
     }
@@ -98,9 +100,20 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if let split = splitViewController as? LibraryController {
-            split.detail.prepare(category: categories[indexPath.row], name: categoryNames[indexPath.row])
-            showDetailViewController(UINavigationController(rootViewController: split.detail), sender: nil)
+        if indexPath.section < fetchedResultControllerSectionCount {
+            guard let sectionTitle = fetchedResultController.sections?[indexPath.section].name else {return}
+            switch sectionTitle {
+            case "2":
+                let controller = LibraryBookDetailController(book: fetchedResultController.object(at: indexPath))
+                return showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
+            default:
+                return
+            }
+        } else {
+            if let split = splitViewController as? LibraryController {
+                split.detail.prepare(category: categories[indexPath.row], name: categoryNames[indexPath.row])
+                showDetailViewController(UINavigationController(rootViewController: split.detail), sender: nil)
+            }
         }
     }
     

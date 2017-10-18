@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		97041F821F96A3EE007D63F5 /* LibraryBookDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */; };
+		97041F831F96A3F3007D63F5 /* LibraryBookDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */; };
 		97050D011F6733400021DE78 /* WebKitTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97050D001F6733400021DE78 /* WebKitTabController.swift */; };
 		97050D031F6735100021DE78 /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDB0B1F60930A00A10E8C /* WebKitHandler.swift */; };
 		9707B8F61F4B4F1500075D4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9707B8F51F4B4F1500075D4F /* Assets.xcassets */; };
@@ -318,6 +320,7 @@
 		7510393635E2E3EF2F7C29DB /* Pods-WikiMed.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WikiMed.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WikiMed/Pods-WikiMed.debug.xcconfig"; sourceTree = "<group>"; };
 		81DF90AB14037E242E284CA8 /* Pods_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		97041F7E1F9652D4007D63F5 /* WikiMed.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WikiMed.plist; sourceTree = "<group>"; };
+		97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryBookDetailController.swift; sourceTree = "<group>"; };
 		97050D001F6733400021DE78 /* WebKitTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitTabController.swift; sourceTree = "<group>"; };
 		9707B8F51F4B4F1500075D4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		970912551D7F452C00BBD5A1 /* 1.8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.8.xcdatamodel; sourceTree = "<group>"; };
@@ -1245,6 +1248,7 @@
 			children = (
 				97A36C561F8D5FCD0079B452 /* LibraryController.swift */,
 				97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */,
+				97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */,
 				97B104711F8FE0BC00488444 /* LibraryDetailController.swift */,
 				97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */,
 				97161A881F90072A00A89DE3 /* LibraryTableCells.swift */,
@@ -2230,6 +2234,7 @@
 				97A36C581F8D5FCD0079B452 /* LibraryController.swift in Sources */,
 				97A996DF1F630FBC007A6282 /* SearchResultView.swift in Sources */,
 				97161A871F8FFD1E00A89DE3 /* LibraryCategoryController.swift in Sources */,
+				97041F831F96A3F3007D63F5 /* LibraryBookDetailController.swift in Sources */,
 				976B4B3A1F94FAEE007F5E07 /* ZimReader.swift in Sources */,
 				97A36C731F8EA6FA0079B452 /* ManagedObjectProperties.swift in Sources */,
 				975FDADA1F6082DA00A10E8C /* AppDelegate.swift in Sources */,
@@ -2352,6 +2357,7 @@
 				97161A8D1F9157C700A89DE3 /* ZimMultiReader.swift in Sources */,
 				97A36C5D1F8EA6E60079B452 /* Article.swift in Sources */,
 				97A36C541F8D57380079B452 /* TabControllerProtocol.swift in Sources */,
+				97041F821F96A3EE007D63F5 /* LibraryBookDetailController.swift in Sources */,
 				97A36C781F8EA6FD0079B452 /* CoreDataContainer.swift in Sources */,
 				97161A861F8FFD1E00A89DE3 /* LibraryCategoryController.swift in Sources */,
 				97A36C291F8C21210079B452 /* ToolBarController.swift in Sources */,
@@ -2683,7 +2689,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = iOS/Support/Kiwix.entitlements;
+				CODE_SIGN_ENTITLEMENTS = iOS_old/Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1.8.225;
@@ -2728,7 +2734,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = iOS/Support/Kiwix.entitlements;
+				CODE_SIGN_ENTITLEMENTS = iOS_old/Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1.8.225;
