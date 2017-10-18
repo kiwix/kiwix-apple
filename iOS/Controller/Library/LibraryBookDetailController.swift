@@ -13,6 +13,7 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
     let tableView = UITableView(frame: .zero, style: .grouped)
     let titles = [
         [NSLocalizedString("Delete File", comment: "Book Detail Cell"), NSLocalizedString("Delete Bookmarks", comment: "Book Detail Cell"), NSLocalizedString("Delete File and Bookmarks", comment: "Book Detail Cell")],
+        [NSLocalizedString("Open Main Page", comment: "Book Detail Cell")],
         [NSLocalizedString("Size", comment: "Book Detail Cell"), NSLocalizedString("Date", comment: "Book Detail Cell")]
     ]
     
@@ -40,11 +41,11 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
+        if indexPath.section <= 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath)
             cell.textLabel?.text = titles[indexPath.section][indexPath.row]
             cell.textLabel?.textAlignment = .center
-            cell.textLabel?.textColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
+            cell.textLabel?.textColor = indexPath.section == 0 ? #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1) : #colorLiteral(red: 0, green: 0.5898008943, blue: 1, alpha: 1)
             cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .medium)
             return cell
         } else {
@@ -52,9 +53,9 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
             cell.textLabel?.text = titles[indexPath.section][indexPath.row]
             cell.selectionStyle = .none
             switch (indexPath.section, indexPath.row) {
-            case (1,0):
+            case (2,0):
                 cell.detailTextLabel?.text = book?.fileSizeDescription
-            case (1,1):
+            case (2,1):
                 cell.detailTextLabel?.text = book?.dateDescription
             default:
                 break
