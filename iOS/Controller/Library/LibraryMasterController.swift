@@ -43,6 +43,14 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
         if #available(iOS 11.0, *) {
             navigationController?.navigationBar.prefersLargeTitles = true
         }
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "Globe"), style: .plain, target: self, action: #selector(languageFilterBottonTapped(sender:)))
+    }
+    
+    @objc func languageFilterBottonTapped(sender: UIBarButtonItem) {
+        let controller = UINavigationController(rootViewController: UITableViewController())
+        controller.modalPresentationStyle = .popover
+        controller.popoverPresentationController?.barButtonItem = sender
+        present(controller, animated: true, completion: nil)
     }
     
     // MARK: - UITableViewDataSource & Delegates
