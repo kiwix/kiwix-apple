@@ -15,7 +15,7 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
     let categories: [BookCategory] = [
         .wikipedia, .wikivoyage, .wikibooks, .wikiversity, .wikispecies, .wikinews,
         .vikidia, .ted, .stackExchange, .other]
-    let categoryImages = [#imageLiteral(resourceName: "Wikipedia"), #imageLiteral(resourceName: "Wikivoyage"), #imageLiteral(resourceName: "Wikibooks"), #imageLiteral(resourceName: "Wikiversity"), #imageLiteral(resourceName: "Wikispecies"), #imageLiteral(resourceName: "Wikinews"), #imageLiteral(resourceName: "Vikidia"), #imageLiteral(resourceName: "TED"), #imageLiteral(resourceName: "StackExchange"), #imageLiteral(resourceName: "Gutenberg"), #imageLiteral(resourceName: "Other")]
+    let categoryImages = [#imageLiteral(resourceName: "Wikipedia"), #imageLiteral(resourceName: "Wikivoyage"), #imageLiteral(resourceName: "Wikibooks"), #imageLiteral(resourceName: "Wikiversity"), #imageLiteral(resourceName: "Wikispecies"), #imageLiteral(resourceName: "Wikinews"), #imageLiteral(resourceName: "Vikidia"), #imageLiteral(resourceName: "TED"), #imageLiteral(resourceName: "StackExchange"), #imageLiteral(resourceName: "Other")]
     let categoryNames = [
         NSLocalizedString("Wikipedia", comment: "Zim File Types"),
         NSLocalizedString("Wikivoyage", comment: "Zim File Types"),
@@ -47,7 +47,7 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
     }
     
     @objc func languageFilterBottonTapped(sender: UIBarButtonItem) {
-        let controller = UINavigationController(rootViewController: UITableViewController())
+        let controller = UINavigationController(rootViewController: LibraryLanguageController())
         controller.modalPresentationStyle = .popover
         controller.popoverPresentationController?.barButtonItem = sender
         present(controller, animated: true, completion: nil)

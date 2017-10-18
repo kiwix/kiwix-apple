@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9702BE1E1F97F1C900E6B4EE /* LibraryLanguageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BE1D1F97F1C900E6B4EE /* LibraryLanguageController.swift */; };
+		9702BE1F1F97F1C900E6B4EE /* LibraryLanguageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BE1D1F97F1C900E6B4EE /* LibraryLanguageController.swift */; };
 		97041F821F96A3EE007D63F5 /* LibraryBookDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */; };
 		97041F831F96A3F3007D63F5 /* LibraryBookDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */; };
 		97050D011F6733400021DE78 /* WebKitTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97050D001F6733400021DE78 /* WebKitTabController.swift */; };
@@ -319,6 +321,7 @@
 		3577B1822471E1C4D5274B7D /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		7510393635E2E3EF2F7C29DB /* Pods-WikiMed.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WikiMed.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WikiMed/Pods-WikiMed.debug.xcconfig"; sourceTree = "<group>"; };
 		81DF90AB14037E242E284CA8 /* Pods_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9702BE1D1F97F1C900E6B4EE /* LibraryLanguageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryLanguageController.swift; sourceTree = "<group>"; };
 		97041F7E1F9652D4007D63F5 /* WikiMed.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WikiMed.plist; sourceTree = "<group>"; };
 		97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryBookDetailController.swift; sourceTree = "<group>"; };
 		97050D001F6733400021DE78 /* WebKitTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitTabController.swift; sourceTree = "<group>"; };
@@ -1250,6 +1253,7 @@
 				97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */,
 				97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */,
 				97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */,
+				9702BE1D1F97F1C900E6B4EE /* LibraryLanguageController.swift */,
 				97B104711F8FE0BC00488444 /* LibraryBlankDetailController.swift */,
 				97161A881F90072A00A89DE3 /* LibraryTableCells.swift */,
 			);
@@ -2233,6 +2237,7 @@
 				97A36C5C1F8EA6DE0079B452 /* Kiwix.xcdatamodeld in Sources */,
 				97A36C581F8D5FCD0079B452 /* LibraryController.swift in Sources */,
 				97A996DF1F630FBC007A6282 /* SearchResultView.swift in Sources */,
+				9702BE1F1F97F1C900E6B4EE /* LibraryLanguageController.swift in Sources */,
 				97161A871F8FFD1E00A89DE3 /* LibraryCategoryController.swift in Sources */,
 				97041F831F96A3F3007D63F5 /* LibraryBookDetailController.swift in Sources */,
 				976B4B3A1F94FAEE007F5E07 /* ZimReader.swift in Sources */,
@@ -2363,6 +2368,7 @@
 				97A36C291F8C21210079B452 /* ToolBarController.swift in Sources */,
 				97A36C2A1F8C21210079B452 /* MainController.swift in Sources */,
 				97161A8F1F9157D400A89DE3 /* DirectoryMonitor.swift in Sources */,
+				9702BE1E1F97F1C900E6B4EE /* LibraryLanguageController.swift in Sources */,
 				97A36C2B1F8C21210079B452 /* URLProtocol.swift in Sources */,
 				97B1046F1F8FC63C00488444 /* LibraryMasterController.swift in Sources */,
 				97A36C2C1F8C21210079B452 /* WebKitTabController.swift in Sources */,
