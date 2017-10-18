@@ -194,7 +194,6 @@ enum BookCategory: String {
     case wikivoyage
     case wiktionary
     
-    case gutenberg
     case ted
     case vikidia
     case stackExchange
