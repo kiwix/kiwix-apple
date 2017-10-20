@@ -8,10 +8,13 @@
 
 import UIKit
 import CoreData
+import ProcedureKit
 
 class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     let tableView = UITableView(frame: .zero, style: .grouped)
     let refreshControl = UIRefreshControl()
+    let queue = ProcedureQueue()
+    
     let categories: [BookCategory] = [
         .wikipedia, .wikivoyage, .wikibooks, .wikiversity, .wikispecies, .wikinews,
         .vikidia, .ted, .stackExchange, .other]
@@ -44,6 +47,7 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
             navigationController?.navigationBar.prefersLargeTitles = true
         }
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "Globe"), style: .plain, target: self, action: #selector(languageFilterBottonTapped(sender:)))
+        refreshControl.addTarget(self, action: #selector(refreshControlPulled(sender: )), for: .valueChanged)
     }
     
     @objc func languageFilterBottonTapped(sender: UIBarButtonItem) {
@@ -51,6 +55,16 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
         controller.modalPresentationStyle = .popover
         controller.popoverPresentationController?.barButtonItem = sender
         present(controller, animated: true, completion: nil)
+    }
+    
+    @objc func refreshControlPulled(sender: UIRefreshControl) {
+        let procedure = LibraryRefreshProcedure()
+        procedure.add(observer: DidFinishObserver(didFinish: { (procedure, errors) in
+            OperationQueue.main.addOperation({
+                sender.endRefreshing()
+            })
+        }))
+        queue.add(operation: procedure)
     }
     
     // MARK: - UITableViewDataSource & Delegates
@@ -67,13 +81,6 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
         }
     }
     
-    func configure(bookCell cell: LibraryBookCell, indexPath: IndexPath, animated: Bool = false) {
-        let book = fetchedResultController.object(at: indexPath)
-        cell.titleLabel.text = book.title
-        cell.subtitleLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
-        cell.logoView.image = UIImage(data: book.favIcon ?? Data())
-    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section < fetchedResultControllerSectionCount {
             let cell = tableView.dequeueReusableCell(withIdentifier: "BookCell", for: indexPath) as! LibraryBookCell
@@ -87,6 +94,13 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
             cell.logoView.image = categoryImages[indexPath.row]
             return cell
         }
+    }
+    
+    func configure(bookCell cell: LibraryBookCell, indexPath: IndexPath, animated: Bool = false) {
+        let book = fetchedResultController.object(at: indexPath)
+        cell.titleLabel.text = book.title
+        cell.subtitleLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
+        cell.logoView.image = UIImage(data: book.favIcon ?? Data())
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

@@ -17,64 +17,6 @@ import CoreData
 
 class Book: NSManagedObject {
 
-    // MARK: - Add
-    
-    class func add(meta: [String: String], in context: NSManagedObjectContext) -> Book? {
-        guard let id = meta["id"] else {return nil}
-        let book = Book(context: context)
-        
-        book.id = id
-        book.title = meta["title"]
-        book.creator = meta["creator"]
-        book.publisher = meta["publisher"]
-        book.desc = meta["description"]
-        book.meta4URL = meta["url"]
-        book.pid = meta["name"]
-        
-        book.articleCount = {
-            guard let string = meta["articleCount"], let value = Int64(string) else {return 0}
-            return value
-        }()
-        book.mediaCount = {
-            guard let string = meta["mediaCount"], let value = Int64(string) else {return 0}
-            return value
-        }()
-        book.fileSize = {
-            guard let string = meta["size"], let value = Int64(string) else {return 0}
-            return value * 1024
-        }()
-        
-        book.date = {
-            guard let date = meta["date"] else {return nil}
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            return dateFormatter.date(from: date)
-        }()
-        
-        book.favIcon = {
-            guard let favIcon = meta["favicon"] else {return nil}
-            return Data(base64Encoded: favIcon, options: .ignoreUnknownCharacters)
-        }()
-        
-        book.hasPic = {
-            if let tags = meta["tags"], tags.contains("nopic") {
-                return false
-            } else if let meta4url = book.meta4URL, meta4url.contains("nopic") {
-                return false
-            } else {
-                return true
-            }
-        }()
-        
-        book.language = {
-            guard let languageCode = meta["language"],
-                let language = Language.fetchOrAdd(languageCode, context: context) else {return nil}
-            return language
-        }()
-
-        return book
-    }
-    
     // MARK: - Fetch
     
     class func fetchAll(in context: NSManagedObjectContext) -> [Book] {

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		9702BE1E1F97F1C900E6B4EE /* LibraryLanguageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BE1D1F97F1C900E6B4EE /* LibraryLanguageController.swift */; };
 		9702BE1F1F97F1C900E6B4EE /* LibraryLanguageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BE1D1F97F1C900E6B4EE /* LibraryLanguageController.swift */; };
+		9702BE221F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BE211F97FA4300E6B4EE /* LibraryRefreshProcedure.swift */; };
+		9702BE231F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BE211F97FA4300E6B4EE /* LibraryRefreshProcedure.swift */; };
 		97041F821F96A3EE007D63F5 /* LibraryBookDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */; };
 		97041F831F96A3F3007D63F5 /* LibraryBookDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */; };
 		97050D011F6733400021DE78 /* WebKitTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97050D001F6733400021DE78 /* WebKitTabController.swift */; };
@@ -47,7 +49,6 @@
 		975FDADC1F6082DA00A10E8C /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDADB1F6082DA00A10E8C /* MainController.swift */; };
 		975FDAE11F6082DA00A10E8C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 975FDAE01F6082DA00A10E8C /* Assets.xcassets */; };
 		975FDAE41F6082DA00A10E8C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975FDAE21F6082DA00A10E8C /* LaunchScreen.storyboard */; };
-		975FDAF11F60877900A10E8C /* URLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767717D1F437BB9007ED0C2 /* URLProtocol.swift */; };
 		975FDAF51F608A2200A10E8C /* URLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767717D1F437BB9007ED0C2 /* URLProtocol.swift */; };
 		975FDAF61F608A2500A10E8C /* ZimManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 979681A81F46917E008A50FF /* ZimManager.mm */; };
 		975FDAF81F608A2A00A10E8C /* URLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767717D1F437BB9007ED0C2 /* URLProtocol.swift */; };
@@ -116,7 +117,6 @@
 		9779C3171D4575AE0064CC8E /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779C3161D4575AE0064CC8E /* TodayViewController.swift */; };
 		9779C31E1D4575AE0064CC8E /* Bookmarks.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9779C3131D4575AD0064CC8E /* Bookmarks.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		977B954D1DD4C40400F6F62B /* ScanProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6811E1D6F70AC00E5FA99 /* ScanProcedure.swift */; };
-		9780DE061E43BFF5009B6945 /* NetworkActivityIndicatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9780DE051E43BFF5009B6945 /* NetworkActivityIndicatorController.swift */; };
 		979681A91F46917E008A50FF /* ZimManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 979681A81F46917E008A50FF /* ZimManager.mm */; };
 		979681AA1F470E9B008A50FF /* ZimManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 979681A81F46917E008A50FF /* ZimManager.mm */; };
 		979D17831E6DE50C006AE496 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 979D17821E6DE50C006AE496 /* Assets.xcassets */; };
@@ -322,6 +322,7 @@
 		7510393635E2E3EF2F7C29DB /* Pods-WikiMed.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WikiMed.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WikiMed/Pods-WikiMed.debug.xcconfig"; sourceTree = "<group>"; };
 		81DF90AB14037E242E284CA8 /* Pods_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9702BE1D1F97F1C900E6B4EE /* LibraryLanguageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryLanguageController.swift; sourceTree = "<group>"; };
+		9702BE211F97FA4300E6B4EE /* LibraryRefreshProcedure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryRefreshProcedure.swift; sourceTree = "<group>"; };
 		97041F7E1F9652D4007D63F5 /* WikiMed.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WikiMed.plist; sourceTree = "<group>"; };
 		97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryBookDetailController.swift; sourceTree = "<group>"; };
 		97050D001F6733400021DE78 /* WebKitTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitTabController.swift; sourceTree = "<group>"; };
@@ -887,6 +888,14 @@
 			name = Libraries;
 			sourceTree = "<group>";
 		};
+		9702BE201F97FA2600E6B4EE /* Procedure */ = {
+			isa = PBXGroup;
+			children = (
+				9702BE211F97FA4300E6B4EE /* LibraryRefreshProcedure.swift */,
+			);
+			path = Procedure;
+			sourceTree = "<group>";
+		};
 		97050CFF1F6730010021DE78 /* Tab */ = {
 			isa = PBXGroup;
 			children = (
@@ -981,8 +990,10 @@
 		973BCD1F1CEB412E00F10B44 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				979D17821E6DE50C006AE496 /* Assets.xcassets */,
 				975FDB0A1F6092DE00A10E8C /* Loading */,
+				9702BE201F97FA2600E6B4EE /* Procedure */,
+				97161A8B1F91577300A89DE3 /* ZimManagement */,
+				979D17821E6DE50C006AE496 /* Assets.xcassets */,
 				97A6EE6C1F4A475F00926FD1 /* Bridging */,
 				97318E3D1E6780E7000B718B /* Help */,
 				9711872D1CEB507600B9909D /* CoreData */,
@@ -991,7 +1002,6 @@
 				97E5712A1CA0525300FF4F1D /* Operation */,
 				97A1FD3C1D6F728200A80EE2 /* Tools */,
 				97BAA8EA1D3D2D0A0038F57F /* URLProtocol */,
-				97161A8B1F91577300A89DE3 /* ZimManagement */,
 				97254FDD1C26442F0056950B /* ZimMultiReader */,
 			);
 			path = Shared;
@@ -2228,6 +2238,7 @@
 				97161A901F9157D400A89DE3 /* DirectoryMonitor.swift in Sources */,
 				97050D031F6735100021DE78 /* WebKitHandler.swift in Sources */,
 				976860251F6855C400755BFA /* SearchResult.swift in Sources */,
+				9702BE231F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */,
 				97A36C791F8EA6FE0079B452 /* CoreDataExtension.swift in Sources */,
 				97A36C6C1F8EA6F50079B452 /* 1.5.xcmappingmodel in Sources */,
 				975FDB051F608ADA00A10E8C /* ZimManager.swift in Sources */,
@@ -2302,13 +2313,11 @@
 				97D2318D1E677C6700DCD4A4 /* LibraryLanguageController.swift in Sources */,
 				97D231AA1E677CB300DCD4A4 /* Logo.swift in Sources */,
 				97D231AB1E677CB300DCD4A4 /* Others.swift in Sources */,
-				975FDAF11F60877900A10E8C /* URLProtocol.swift in Sources */,
 				97D231911E677C6700DCD4A4 /* JSInjection.swift in Sources */,
 				97A6EE6E1F4A99A700926FD1 /* ZimManager.swift in Sources */,
 				972F81571DDBFC79008D7289 /* SearchProcedure.swift in Sources */,
 				97D231961E677C6700DCD4A4 /* WelcomeController.swift in Sources */,
 				97DA5C1E1E6F420800873048 /* BrowsingHistoryController.swift in Sources */,
-				9780DE061E43BFF5009B6945 /* NetworkActivityIndicatorController.swift in Sources */,
 				97D231971E677C6700DCD4A4 /* RecentSearchController.swift in Sources */,
 				97A1FD451D6F728200A80EE2 /* Localized.swift in Sources */,
 				977B954D1DD4C40400F6F62B /* ScanProcedure.swift in Sources */,
@@ -2359,6 +2368,7 @@
 				97DEE7301F8F211400287124 /* 1.9.xcmappingmodel in Sources */,
 				97A36C6A1F8EA6F40079B452 /* 1.8.xcmappingmodel in Sources */,
 				97A36C601F8EA6E60079B452 /* Language.swift in Sources */,
+				9702BE221F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */,
 				97161A8D1F9157C700A89DE3 /* ZimMultiReader.swift in Sources */,
 				97A36C5D1F8EA6E60079B452 /* Article.swift in Sources */,
 				97A36C541F8D57380079B452 /* TabControllerProtocol.swift in Sources */,

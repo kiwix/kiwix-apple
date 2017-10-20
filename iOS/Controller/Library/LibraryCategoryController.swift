@@ -38,12 +38,15 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! LibraryBookCell
-        
+        configure(bookCell: cell, indexPath: indexPath)
+        return cell
+    }
+    
+    func configure(bookCell cell: LibraryBookCell, indexPath: IndexPath, animated: Bool = false) {
         let book = fetchedResultController.object(at: indexPath)
         cell.titleLabel.text = book.title
         cell.subtitleLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
         cell.logoView.image = UIImage(data: book.favIcon ?? Data())
-        return cell
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -52,6 +55,10 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
+    }
+    
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return numberOfSections(in: tableView) > 5 ? fetchedResultController.sectionIndexTitles : nil
     }
     
     // MARK: - NSFetchedResultsController
@@ -87,6 +94,43 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         fetchedResultController.fetchRequest.predicate = predicate
         try? fetchedResultController.performFetch()
         tableView.reloadData()
+    }
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        switch type {
+        case .insert:
+            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
+        case .delete:
+            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
+        default:
+            return
+        }
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            guard let newIndexPath = newIndexPath else {return}
+            tableView.insertRows(at: [newIndexPath], with: .fade)
+        case .delete:
+            guard let indexPath = indexPath else {return}
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        case .update:
+            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? LibraryBookCell else {return}
+            configure(bookCell: cell, indexPath: indexPath, animated: true)
+        case .move:
+            guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.insertRows(at: [newIndexPath], with: .fade)
+        }
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
     }
 }
 

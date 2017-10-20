@@ -39,3 +39,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
+import SwiftyUserDefaults
+extension DefaultsKeys {
+    static let hasShowGetStartedAlert = DefaultsKey<Bool>("hasShowGetStartedAlert")
+    static let hasSubscribedToCloudKitChanges = DefaultsKey<Bool>("hasSubscribedToCloudKitChanges")
+    static let recentSearchTerms = DefaultsKey<[String]>("recentSearchTerms")
+    static let webViewZoomScale = DefaultsKey<Double?>("webViewZoomScale")
+    static let activeUseHistory = DefaultsKey<[Date]>("activeUseHistory")
+    static let haveRateKiwix = DefaultsKey<Bool>("haveRateKiwix")
+    
+    static let libraryAutoRefreshDisabled = DefaultsKey<Bool>("libraryAutoRefreshDisabled")
+    static let libraryRefreshNotAllowCellularData = DefaultsKey<Bool>("libraryRefreshNotAllowCellularData")
+    static let libraryLastRefreshTime = DefaultsKey<Date?>("libraryLastRefreshTime")
+    static let libraryRefreshInterval = DefaultsKey<Double?>("libraryRefreshInterval")
+    static let preferredLanguageAlertPending = DefaultsKey<Bool>("preferredLanguageAlertPending")
+    static let langFilterSortByAlphabeticalAsc = DefaultsKey<Bool>("langFilterSortByAlphabeticalAsc")
+    static let langFilterNameDisplayInOriginalLocale = DefaultsKey<Bool>("langFilterNameDisplayInOriginalLocale")
+    
+    static let resumeData = DefaultsKey<[String: Any]>("resumeData")
+}
