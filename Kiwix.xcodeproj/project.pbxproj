@@ -66,7 +66,6 @@
 		975FDB041F608A9700A10E8C /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A621F44F451003F5431 /* libzim.a */; };
 		975FDB051F608ADA00A10E8C /* ZimManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A6EE6D1F4A99A700926FD1 /* ZimManager.swift */; };
 		975FDB071F608F4100A10E8C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 975FDB061F608F4100A10E8C /* WebKit.framework */; };
-		97642B991E380CC0003E2D0B /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97642B981E380CC0003E2D0B /* Network.swift */; };
 		9765D9801F50CC4700BFDC1E /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9765D97F1F50CC4700BFDC1E /* Search.storyboard */; };
 		976771791F4378FC007ED0C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 976771741F4378FC007ED0C2 /* Main.storyboard */; };
 		976860251F6855C400755BFA /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976860241F6855C400755BFA /* SearchResult.swift */; };
@@ -123,7 +122,6 @@
 		97A1FD191D6F71CE00A80EE2 /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD151D6F71CE00A80EE2 /* ZimMultiReader.swift */; };
 		97A1FD1C1D6F71D800A80EE2 /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD1A1D6F71D800A80EE2 /* KiwixURLProtocol.swift */; };
 		97A1FD421D6F728200A80EE2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD3D1D6F728200A80EE2 /* Extensions.swift */; };
-		97A1FD441D6F728200A80EE2 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD401D6F728200A80EE2 /* Preference.swift */; };
 		97A1FD451D6F728200A80EE2 /* Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD411D6F728200A80EE2 /* Localized.swift */; };
 		97A36C271F8C21210079B452 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996D31F61DB38007A6282 /* SearchController.swift */; };
 		97A36C281F8C21210079B452 /* ZimManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 979681A81F46917E008A50FF /* ZimManager.mm */; };
@@ -197,6 +195,9 @@
 		97B104701F8FC63C00488444 /* LibraryMasterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */; };
 		97B104721F8FE0BC00488444 /* LibraryBlankDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B104711F8FE0BC00488444 /* LibraryBlankDetailController.swift */; };
 		97B104731F8FE0BC00488444 /* LibraryBlankDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B104711F8FE0BC00488444 /* LibraryBlankDetailController.swift */; };
+		97B1D0B51F9A3AD3000C7848 /* NetworkActivityIndicatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9780DE051E43BFF5009B6945 /* NetworkActivityIndicatorController.swift */; };
+		97B1D0B61F9A3AE7000C7848 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97642B981E380CC0003E2D0B /* Network.swift */; };
+		97B1D0B91F9A3CB0000C7848 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD401D6F728200A80EE2 /* Preference.swift */; };
 		97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */; };
 		97C2C26A1DDCC58500A9CC64 /* ArticleProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764CBD21D8083AA00072D6A /* ArticleProcedure.swift */; };
 		97C459771F86C1360013AC22 /* wikipedia_en_medicine_novid.zim in Resources */ = {isa = PBXBuildFile; fileRef = 97C459761F86C1360013AC22 /* wikipedia_en_medicine_novid.zim */; };
@@ -991,14 +992,15 @@
 			isa = PBXGroup;
 			children = (
 				975FDB0A1F6092DE00A10E8C /* Loading */,
+				97DF259E1D6F9942001648A3 /* Network */,
 				9702BE201F97FA2600E6B4EE /* Procedure */,
 				97161A8B1F91577300A89DE3 /* ZimManagement */,
+				97A1FD401D6F728200A80EE2 /* Preference.swift */,
 				979D17821E6DE50C006AE496 /* Assets.xcassets */,
 				97A6EE6C1F4A475F00926FD1 /* Bridging */,
 				97318E3D1E6780E7000B718B /* Help */,
 				9711872D1CEB507600B9909D /* CoreData */,
 				976771821F437DB9007ED0C2 /* Dependencies */,
-				97DF259E1D6F9942001648A3 /* Network */,
 				97E5712A1CA0525300FF4F1D /* Operation */,
 				97A1FD3C1D6F728200A80EE2 /* Tools */,
 				97BAA8EA1D3D2D0A0038F57F /* URLProtocol */,
@@ -1204,7 +1206,6 @@
 				97C601DD1D7F342100362D4F /* HTMLHeading.swift */,
 				97A9F6F41E2E990500F423AA /* JSInject.js */,
 				97A1FD411D6F728200A80EE2 /* Localized.swift */,
-				97A1FD401D6F728200A80EE2 /* Preference.swift */,
 				9725345E1E43E2250005D169 /* UserHabit.swift */,
 			);
 			path = Tools;
@@ -2333,7 +2334,6 @@
 				97D231901E677C6700DCD4A4 /* Controllers.swift in Sources */,
 				97318E531E6780F9000B718B /* 1.8.xcmappingmodel in Sources */,
 				971A10521D022D9D007FC62C /* AppDelegate.swift in Sources */,
-				97642B991E380CC0003E2D0B /* Network.swift in Sources */,
 				97A1FD191D6F71CE00A80EE2 /* ZimMultiReader.swift in Sources */,
 				97D231941E677C6700DCD4A4 /* CoreDataCollectionBaseController.swift in Sources */,
 				97A36C671F8EA6E90079B452 /* DownloadTask.swift in Sources */,
@@ -2342,7 +2342,6 @@
 				97C2C26A1DDCC58500A9CC64 /* ArticleProcedure.swift in Sources */,
 				973208261DD21E9C00EDD3DC /* CoreDataContainer.swift in Sources */,
 				97D6813F1D6F712800E5FA99 /* ManagedObjectProperties.swift in Sources */,
-				97A1FD441D6F728200A80EE2 /* Preference.swift in Sources */,
 				97D2318B1E677C6700DCD4A4 /* LibraryBooksController.swift in Sources */,
 				9732075C1DD136BB00EDD3DC /* CoreDataExtension.swift in Sources */,
 				97D231A91E677CB300DCD4A4 /* Cells.swift in Sources */,
@@ -2385,7 +2384,10 @@
 				97A36C2D1F8C21210079B452 /* WebKitHandler.swift in Sources */,
 				97A36C2E1F8C21210079B452 /* SearchResult.swift in Sources */,
 				97A36C771F8EA6FD0079B452 /* CoreDataExtension.swift in Sources */,
+				97B1D0B51F9A3AD3000C7848 /* NetworkActivityIndicatorController.swift in Sources */,
+				97B1D0B91F9A3CB0000C7848 /* Preference.swift in Sources */,
 				97A36C691F8EA6F40079B452 /* 1.5.xcmappingmodel in Sources */,
+				97B1D0B61F9A3AE7000C7848 /* Network.swift in Sources */,
 				97A36C2F1F8C21210079B452 /* ZimManager.swift in Sources */,
 				97A36C5E1F8EA6E60079B452 /* Book.swift in Sources */,
 				97A36C301F8C21210079B452 /* LegacyTabController.swift in Sources */,

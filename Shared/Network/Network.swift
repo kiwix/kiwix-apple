@@ -15,7 +15,7 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
         _ = cellularSession
     }
     var progresses = [String: Int64]()
-    let managedObjectContext = AppDelegate.persistentContainer.viewContext
+    let managedObjectContext = CoreDataContainer.shared.viewContext
     var timer: Timer?
     
     lazy var wifiSession: URLSession = {
@@ -37,7 +37,7 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     
     func start(bookID: String, useWifiAndCellular: Bool?) {
         managedObjectContext.perform {
-            guard let book = Book.fetch(bookID, context: self.managedObjectContext),
+            guard let book = Book.fetch(id: bookID, context: self.managedObjectContext),
                 let url = book.url else {return}
             let session: URLSession = {
                 if let useWifiAndCellular = useWifiAndCellular {
@@ -51,7 +51,7 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
             task.resume()
             
             book.state = .downloading
-            let downloadTask = DownloadTask.fetch(bookID: bookID, context: self.managedObjectContext)
+            let downloadTask = DownloadTask.fetchAddIfNotExist(bookID: bookID, context: self.managedObjectContext)
             downloadTask?.state = .queued
             
             if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
@@ -68,7 +68,7 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
         cancelTask(in: cellularSession, taskDescription: bookID, producingResumingData: true)
         
         self.managedObjectContext.perform({
-            guard let book = Book.fetch(bookID, context: self.managedObjectContext) else {return}
+            guard let book = Book.fetch(id: bookID, context: self.managedObjectContext) else {return}
             if book.state != .downloading {book.state = .downloading}
             book.downloadTask?.state = .paused
             if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
@@ -80,7 +80,7 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
         cancelTask(in: cellularSession, taskDescription: bookID, producingResumingData: false)
         
         self.managedObjectContext.perform({
-            guard let book = Book.fetch(bookID, context: self.managedObjectContext) else {return}
+            guard let book = Book.fetch(id: bookID, context: self.managedObjectContext) else {return}
             book.meta4URL != nil ? book.state = .cloud : self.managedObjectContext.delete(book)
             if let downloadTask = book.downloadTask {self.managedObjectContext.delete(downloadTask)}
             if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
@@ -90,14 +90,14 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     func resume(bookID: String) {
         guard let data = Preference.resumeData[bookID] else {return}
         let bookSizeIsBig: Bool = {
-            guard let size = Book.fetch(bookID, context: self.managedObjectContext)?.fileSize else {return true}
+            guard let size = Book.fetch(id: bookID, context: self.managedObjectContext)?.fileSize else {return true}
             return size > bookSizeThreshold
         }()
         let task = (bookSizeIsBig ? wifiSession : cellularSession).downloadTask(withResumeData: data)
         task.taskDescription = bookID
         task.resume()
         
-        let downloadTask = DownloadTask.fetch(bookID: bookID, context: managedObjectContext)
+        let downloadTask = DownloadTask.fetchAddIfNotExist(bookID: bookID, context: managedObjectContext)
         downloadTask?.state = .queued
         
         if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
@@ -123,7 +123,7 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { (timer) in
             self.managedObjectContext.perform({ 
                 for (bookID, bytesWritten) in self.progresses {
-                    guard let book = Book.fetch(bookID, context: self.managedObjectContext) else {continue}
+                    guard let book = Book.fetch(id: bookID, context: self.managedObjectContext) else {continue}
                     book.downloadTask?.totalBytesWritten = bytesWritten
                 }
             })
@@ -159,7 +159,7 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
         managedObjectContext.perform { 
             guard let bookID = downloadTask.taskDescription,
-                let book = Book.fetch(bookID, context: self.managedObjectContext) else {return}
+                let book = Book.fetch(id: bookID, context: self.managedObjectContext) else {return}
             if book.state != .downloading {book.state = .downloading}
             if book.downloadTask?.state != .downloading {book.downloadTask?.state = .downloading}
             self.progresses[bookID] = totalBytesWritten
@@ -180,16 +180,16 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
         }
         
         managedObjectContext.perform {
-            guard let book = Book.fetch(bookID, context: self.managedObjectContext),
-                let downloadTask = DownloadTask.fetch(bookID: bookID, context: self.managedObjectContext) else {return}
+            guard let book = Book.fetch(id: bookID, context: self.managedObjectContext),
+                let downloadTask = DownloadTask.fetchAddIfNotExist(bookID: bookID, context: self.managedObjectContext) else {return}
             book.state = .local
             self.managedObjectContext.delete(downloadTask)
             if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
             
             if Preference.Notifications.bookDownloadFinish {
-                AppNotification.shared.downloadFinished(bookID: book.id,
-                                                        bookTitle: book.title ?? "Book",
-                                                        fileSizeDescription: book.fileSizeDescription)
+//                AppNotification.shared.downloadFinished(bookID: book.id,
+//                                                        bookTitle: book.title ?? "Book",
+//                                                        fileSizeDescription: book.fileSizeDescription)
             }
         }
     }

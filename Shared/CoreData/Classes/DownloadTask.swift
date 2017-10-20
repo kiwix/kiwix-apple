@@ -12,7 +12,7 @@ import CoreData
 
 class DownloadTask: NSManagedObject {
     
-    class func fetch(bookID: String, context: NSManagedObjectContext) -> DownloadTask? {
+    class func fetchAddIfNotExist(bookID: String, context: NSManagedObjectContext) -> DownloadTask? {
         let fetchRequest = DownloadTask.fetchRequest() as! NSFetchRequest<DownloadTask>
         guard let book = Book.fetch(id: bookID, context: context) else {return nil}
         fetchRequest.predicate = NSPredicate(format: "book = %@", book)

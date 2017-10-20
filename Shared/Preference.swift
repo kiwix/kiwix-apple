@@ -89,24 +89,41 @@ class Preference {
         set{Defaults[DefaultsKeys.resumeData] = newValue}}
 }
 
-
+extension DefaultsKeys {
+    static let hasShowGetStartedAlert = DefaultsKey<Bool>("hasShowGetStartedAlert")
+    static let hasSubscribedToCloudKitChanges = DefaultsKey<Bool>("hasSubscribedToCloudKitChanges")
+    static let recentSearchTerms = DefaultsKey<[String]>("recentSearchTerms")
+    static let webViewZoomScale = DefaultsKey<Double?>("webViewZoomScale")
+    static let activeUseHistory = DefaultsKey<[Date]>("activeUseHistory")
+    static let haveRateKiwix = DefaultsKey<Bool>("haveRateKiwix")
+    
+    static let libraryAutoRefreshDisabled = DefaultsKey<Bool>("libraryAutoRefreshDisabled")
+    static let libraryRefreshNotAllowCellularData = DefaultsKey<Bool>("libraryRefreshNotAllowCellularData")
+    static let libraryLastRefreshTime = DefaultsKey<Date?>("libraryLastRefreshTime")
+    static let libraryRefreshInterval = DefaultsKey<Double?>("libraryRefreshInterval")
+    static let preferredLanguageAlertPending = DefaultsKey<Bool>("preferredLanguageAlertPending")
+    static let langFilterSortByAlphabeticalAsc = DefaultsKey<Bool>("langFilterSortByAlphabeticalAsc")
+    static let langFilterNameDisplayInOriginalLocale = DefaultsKey<Bool>("langFilterNameDisplayInOriginalLocale")
+    
+    static let resumeData = DefaultsKey<[String: Any]>("resumeData")
+}
 
 // MARK: - Rate
 
 extension Preference {
-    class Rate {
-        private static var activeHistoryKey = "Rate.activeHistory-\(Bundle.appShortVersion)"
-        private static var hasRatedKey = "Rate.hasRated-\(Bundle.appShortVersion)"
-        class var activeHistory: [Date] {
-            get {return UserDefaults.standard.array(forKey: activeHistoryKey)?.flatMap({$0 as? Date}) ?? [Date]()}
-            set {UserDefaults.standard.set(newValue, forKey: activeHistoryKey)}
-        }
-        
-        class var hasRated: Bool {
-            get {return UserDefaults.standard.bool(forKey: hasRatedKey)}
-            set {UserDefaults.standard.set(newValue, forKey: hasRatedKey)}
-        }
-    }
+//    class Rate {
+//        private static var activeHistoryKey = "Rate.activeHistory-\(Bundle.appShortVersion)"
+//        private static var hasRatedKey = "Rate.hasRated-\(Bundle.appShortVersion)"
+//        class var activeHistory: [Date] {
+//            get {return UserDefaults.standard.array(forKey: activeHistoryKey)?.flatMap({$0 as? Date}) ?? [Date]()}
+//            set {UserDefaults.standard.set(newValue, forKey: activeHistoryKey)}
+//        }
+//        
+//        class var hasRated: Bool {
+//            get {return UserDefaults.standard.bool(forKey: hasRatedKey)}
+//            set {UserDefaults.standard.set(newValue, forKey: hasRatedKey)}
+//        }
+//    }
 }
 
 // MARK: - Notifications

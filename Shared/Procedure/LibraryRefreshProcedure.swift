@@ -26,7 +26,13 @@ private class DownloadProcedure: NetworkDataProcedure<URLSession> {
         var request = URLRequest(url: url)
         request.timeoutInterval = 30.0
         super.init(session: session, request: request)
-        add(observer: NetworkObserver())
+        
+        addWillExecuteBlockObserver { _, _ in
+            NetworkActivityController.shared.taskDidStart(identifier: "RetrieveLibrary")
+        }
+        addDidFinishBlockObserver { _, _ in
+            NetworkActivityController.shared.taskDidFinish(identifier: "RetrieveLibrary")
+        }
     }
 }
 

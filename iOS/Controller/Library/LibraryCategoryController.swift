@@ -53,12 +53,34 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         return fetchedResultController.sections?[section].name
     }
     
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return numberOfSections(in: tableView) > 5 ? fetchedResultController.sectionIndexTitles : nil
+    }
+    
+    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        return fetchedResultController.section(forSectionIndexTitle: title, at: index)
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
     }
     
-    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return numberOfSections(in: tableView) > 5 ? fetchedResultController.sectionIndexTitles : nil
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let cell = tableView.cellForRow(at: indexPath) as! LibraryBookCell
+        let book = fetchedResultController.object(at: indexPath)
+        let alert = UIAlertController(title: book.title, message: book.desc, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Download - Wifi Only", comment: "Download books"), style: .default, handler: { _ in
+            Network.shared.start(bookID: book.id, useWifiAndCellular: false)
+        }))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Download - Wifi & Cellular", comment: "Download books"), style: .default, handler: { _ in
+            Network.shared.start(bookID: book.id, useWifiAndCellular: true)
+        }))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Download books"), style: .cancel, handler: nil))
+        alert.popoverPresentationController?.sourceView = cell.logoView
+        alert.popoverPresentationController?.sourceRect = cell.logoView.bounds
+        alert.popoverPresentationController?.permittedArrowDirections = [.up, .down]
+        present(alert, animated: true, completion: nil)
     }
     
     // MARK: - NSFetchedResultsController
