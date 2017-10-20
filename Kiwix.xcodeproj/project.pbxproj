@@ -112,6 +112,8 @@
 		976D2A6C1F44F451003F5431 /* libxapian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A601F44F451003F5431 /* libxapian.a */; };
 		976D2A6D1F44F451003F5431 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A611F44F451003F5431 /* libz.a */; };
 		976D2A6E1F44F451003F5431 /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A621F44F451003F5431 /* libzim.a */; };
+		9773E5521F9A7669000972FC /* ZimSearcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9773E5511F9A7669000972FC /* ZimSearcher.mm */; };
+		9773E5531F9A7669000972FC /* ZimSearcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9773E5511F9A7669000972FC /* ZimSearcher.mm */; };
 		9779C3141D4575AD0064CC8E /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E609F01D103DED00EBCB9D /* NotificationCenter.framework */; };
 		9779C3171D4575AE0064CC8E /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779C3161D4575AE0064CC8E /* TodayViewController.swift */; };
 		9779C31E1D4575AE0064CC8E /* Bookmarks.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9779C3131D4575AD0064CC8E /* Bookmarks.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -403,6 +405,8 @@
 		976D2A601F44F451003F5431 /* libxapian.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libxapian.a; sourceTree = "<group>"; };
 		976D2A611F44F451003F5431 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libz.a; sourceTree = "<group>"; };
 		976D2A621F44F451003F5431 /* libzim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libzim.a; sourceTree = "<group>"; };
+		9773E5501F9A7669000972FC /* ZimSearcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZimSearcher.h; sourceTree = "<group>"; };
+		9773E5511F9A7669000972FC /* ZimSearcher.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ZimSearcher.mm; sourceTree = "<group>"; };
 		9779C3131D4575AD0064CC8E /* Bookmarks.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Bookmarks.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		9779C3161D4575AE0064CC8E /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		9779C31B1D4575AE0064CC8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1106,6 +1110,8 @@
 				976B4B351F9163B2007F5E07 /* ZimReader.h */,
 				976B4B341F9163B2007F5E07 /* ZimReader.mm */,
 				976B4B381F94FAEE007F5E07 /* ZimReader.swift */,
+				9773E5501F9A7669000972FC /* ZimSearcher.h */,
+				9773E5511F9A7669000972FC /* ZimSearcher.mm */,
 			);
 			path = Bridging;
 			sourceTree = "<group>";
@@ -2243,6 +2249,7 @@
 				97A36C791F8EA6FE0079B452 /* CoreDataExtension.swift in Sources */,
 				97A36C6C1F8EA6F50079B452 /* 1.5.xcmappingmodel in Sources */,
 				975FDB051F608ADA00A10E8C /* ZimManager.swift in Sources */,
+				9773E5531F9A7669000972FC /* ZimSearcher.mm in Sources */,
 				97A36C621F8EA6E70079B452 /* Book.swift in Sources */,
 				976B4B371F94F25B007F5E07 /* ZimReader.mm in Sources */,
 				97A996CE1F609C9F007A6282 /* LegacyTabController.swift in Sources */,
@@ -2385,6 +2392,7 @@
 				97A36C2E1F8C21210079B452 /* SearchResult.swift in Sources */,
 				97A36C771F8EA6FD0079B452 /* CoreDataExtension.swift in Sources */,
 				97B1D0B51F9A3AD3000C7848 /* NetworkActivityIndicatorController.swift in Sources */,
+				9773E5521F9A7669000972FC /* ZimSearcher.mm in Sources */,
 				97B1D0B91F9A3CB0000C7848 /* Preference.swift in Sources */,
 				97A36C691F8EA6F40079B452 /* 1.5.xcmappingmodel in Sources */,
 				97B1D0B61F9A3AE7000C7848 /* Network.swift in Sources */,
@@ -2795,13 +2803,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = Kiwix;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = c11;
 				INFOPLIST_FILE = iOS/Support/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -2827,13 +2835,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = Kiwix;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_C_LANGUAGE_STANDARD = c11;
 				INFOPLIST_FILE = iOS/Support/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

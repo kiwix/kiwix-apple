@@ -28,6 +28,18 @@ class DownloadTask: NSManagedObject {
         return fetch(fetchRequest, type: DownloadTask.self, context: context) ?? [DownloadTask]()
     }
     
+    override func willChangeValue(forKey key: String) {
+        super.willChangeValue(forKey: key)
+        guard key == "totalBytesWritten" else {return}
+        book?.willChangeValue(forKey: "downloadTask")
+    }
+    
+    override func didChangeValue(forKey key: String) {
+        super.didChangeValue(forKey: key)
+        guard key == "totalBytesWritten" else {return}
+        book?.didChangeValue(forKey: "downloadTask")
+    }
+    
     var state: DownloadTaskState {
         get {
             switch stateRaw {
@@ -41,17 +53,6 @@ class DownloadTask: NSManagedObject {
             stateRaw = Int16(newValue.rawValue)
         }
     }
-    
-    static let percentFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .percent
-        formatter.minimumFractionDigits = 1
-        formatter.maximumIntegerDigits = 3
-        formatter.minimumFractionDigits = 2
-        formatter.maximumIntegerDigits = 2
-        return formatter
-    }()
-
 }
 
 enum DownloadTaskState: Int {

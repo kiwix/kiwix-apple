@@ -31,6 +31,16 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
         NSLocalizedString("StackExchange", comment: "Zim File Types"),
         NSLocalizedString("Other", comment: "Zim File Types")]
     
+    let percentFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .percent
+        formatter.minimumFractionDigits = 1
+        formatter.maximumIntegerDigits = 3
+        formatter.minimumFractionDigits = 2
+        formatter.maximumIntegerDigits = 2
+        return formatter
+    }()
+    
     override func loadView() {
         view = tableView
         tableView.delegate = self
@@ -99,7 +109,20 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
     func configure(bookCell cell: LibraryBookCell, indexPath: IndexPath, animated: Bool = false) {
         let book = fetchedResultController.object(at: indexPath)
         cell.titleLabel.text = book.title
-        cell.subtitleLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
+        cell.subtitleLabel.text = {
+            if let downloadTask = book.downloadTask {
+                if let book = downloadTask.book,
+                    let total = book.fileSizeDescription,
+                    let percentage = percentFormatter.string(for: Double(downloadTask.totalBytesWritten) / Double(book.fileSize)) {
+                    let written = ByteCountFormatter.string(fromByteCount: downloadTask.totalBytesWritten, countStyle: .file)
+                    return "\(written)/\(total), \(percentage)"
+                } else {
+                    return NSLocalizedString("Downloading...", comment: "Library downloading default state")
+                }
+            } else {
+                return [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
+            }
+        }()
         cell.logoView.image = UIImage(data: book.favIcon ?? Data())
     }
     

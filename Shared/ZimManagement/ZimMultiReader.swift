@@ -123,8 +123,3 @@ class Scan: Procedure {
 }
 
 typealias ZimFileID = String
-
-extension URL {
-    static let documentDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-    static let resourceDirectory = Bundle.main.resourceURL!
-}
