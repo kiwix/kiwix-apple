@@ -29,7 +29,7 @@ class KiwixURLProtocol: URLProtocol {
                 return
         }
         
-        guard let content = ZimManager.shared.getContent(bookID: id, contentPath: contentPath) else {
+        guard let content = ZimMultiReader.shared.getContent(bookID: id, contentPath: contentPath) else {
             let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable, userInfo: nil)
             client?.urlProtocol(self, didFailWithError: error)
             return

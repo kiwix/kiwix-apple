@@ -19,7 +19,7 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
                 return
         }
         
-        guard let content = ZimManager.shared.getContent(bookID: id, contentPath: contentPath) else {
+        guard let content = ZimMultiReader.shared.getContent(bookID: id, contentPath: contentPath) else {
             urlSchemeTask.didFailWithError(ResourceLoadingError.contentNotFound)
             return
         }

@@ -33,12 +33,12 @@ class SearchProcedure: Procedure {
     }
     
     func indexedSearch() -> [SearchResult] {
-        defer {ZimManager.shared.stopSearch()}
+        defer {ZimMultiReader.shared.stopSearch()}
         
         guard !isCancelled else {return []}
         var results = [SearchResult]()
-        ZimManager.shared.startSearch(term: term)
-        while let result = ZimManager.shared.getNextSearchResult() {
+        ZimMultiReader.shared.startSearch(term: term)
+        while let result = ZimMultiReader.shared.getNextSearchResult() {
             guard !isCancelled else {return []}
             results.append(result)
         }
@@ -47,6 +47,6 @@ class SearchProcedure: Procedure {
     
     func titleSearch() -> [SearchResult]{
         guard !isCancelled else {return []}
-        return ZimManager.shared.getSearchSuggestions(term: term)
+        return ZimMultiReader.shared.getSearchSuggestions(term: term)
     }
 }

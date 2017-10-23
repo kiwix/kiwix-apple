@@ -1,5 +1,5 @@
 //
-//  ZimManager.h
+//  ZimMultiReader.h
 //  Kiwix
 //
 //  Created by Chris Li on 8/17/17.
@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ZimManager : NSObject
+@interface ZimMultiReader : NSObject
 
-+ (ZimManager *)sharedInstance NS_REFINED_FOR_SWIFT;
++ (ZimMultiReader *)sharedInstance NS_REFINED_FOR_SWIFT;
 
 - (void)scan;
 - (void)addBookByURL:(NSURL *)url NS_REFINED_FOR_SWIFT;

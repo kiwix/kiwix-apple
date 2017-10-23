@@ -1,5 +1,5 @@
 //
-//  ZimManager.mm
+//  ZimMultiReader.mm
 //  Kiwix
 //
 //  Created by Chris Li on 8/17/17.
@@ -10,9 +10,9 @@
 #include <unordered_map>
 #include "reader.h"
 #include "searcher.h"
-#import "ZimManager.h"
+#import "ZimMultiReader.h"
 
-@implementation ZimManager
+@implementation ZimMultiReader
 
 std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>> readers;
 kiwix::Searcher *searcher = NULL;
@@ -24,11 +24,11 @@ std::vector<std::string> *searcherZimIDs = NULL;
 
 #pragma mark - init
 
-+ (ZimManager *)sharedInstance {
-    static ZimManager *sharedInstance = nil;
++ (ZimMultiReader *)sharedInstance {
+    static ZimMultiReader *sharedInstance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedInstance = [[ZimManager alloc] init];
+        sharedInstance = [[ZimMultiReader alloc] init];
     });
     return sharedInstance;
 }

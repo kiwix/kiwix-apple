@@ -16,20 +16,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = UINavigationController(rootViewController: MainController())
         window?.makeKeyAndVisible()
         
-        URLProtocol.registerClass(KiwixURLProtocol.self)
-        ZimMultiReader.shared.startMonitoring(url: URL.documentDirectory)
-        ZimMultiReader.shared.scan(url: URL.documentDirectory)
+//        URLProtocol.registerClass(KiwixURLProtocol.self)
+//        ZimMultiReader.shared.startMonitoring(url: URL.documentDirectory)
+//        ZimMultiReader.shared.scan(url: URL.documentDirectory)
         return true
     }
     
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        ZimMultiReader.shared.startMonitoring(url: URL.documentDirectory)
-        ZimMultiReader.shared.scan(url: URL.documentDirectory)
-    }
-    
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        ZimMultiReader.shared.stopMonitoring(url: URL.documentDirectory)
-    }
+//    func applicationWillEnterForeground(_ application: UIApplication) {
+//        ZimMultiReader.shared.startMonitoring(url: URL.documentDirectory)
+//        ZimMultiReader.shared.scan(url: URL.documentDirectory)
+//    }
+//
+//    func applicationDidEnterBackground(_ application: UIApplication) {
+//        ZimMultiReader.shared.stopMonitoring(url: URL.documentDirectory)
+//    }
     
     func applicationWillTerminate(_ application: UIApplication) {
         let context = CoreDataContainer.shared.viewContext

@@ -63,8 +63,8 @@ class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     }
     
     func loadMainPage() {
-        guard let id = ZimManager.shared.getReaderIDs().first,
-            let url = ZimManager.shared.getMainPageURL(bookID: id) else {return}
+        guard let id = ZimMultiReader.shared.getReaderIDs().first,
+            let url = ZimMultiReader.shared.getMainPageURL(bookID: id) else {return}
         load(url: url)
     }
     

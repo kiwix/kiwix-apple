@@ -7,14 +7,14 @@
 //
 
 
-extension ZimManager {
-    class var shared: ZimManager {return ZimManager.__sharedInstance()}
+extension ZimMultiReader {
+    class var shared: ZimMultiReader {return ZimMultiReader.__sharedInstance()}
     
     func addBook(url: URL) {__addBook(by: url)}
     func addBook(urls: [URL]) {urls.forEach({__addBook(by: $0)})}
     func removeBook(id: String) {__removeBook(byID: id)}
     func removeBooks() {__removeAllBooks()}
-    func getReaderIDs() -> [String] {return __getReaderIdentifiers().flatMap({$0 as? String})}
+    func getReaderIDs() -> [String] {return __getIdentifiers().flatMap({$0 as? String})}
     
     func getContent(bookID: String, contentPath: String) -> (data: Data, mime: String, length: Int)? {
         guard let content = __getContent(bookID, contentURL: contentPath),
