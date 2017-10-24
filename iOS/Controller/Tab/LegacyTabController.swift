@@ -56,7 +56,7 @@ class LegacyTabController: UIViewController, UIWebViewDelegate, TabController {
     }
     
     func loadMainPage() {
-        guard let id = ZimMultiReader.shared.getReaderIDs().first,
+        guard let id = ZimMultiReader.shared.ids.first,
             let url = ZimMultiReader.shared.getMainPageURL(bookID: id) else {return}
         load(url: url)
     }

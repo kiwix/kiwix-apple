@@ -9,33 +9,40 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate {
     var window: UIWindow?
+    let monitor = DirectoryMonitor(url: URL.documentDirectory)
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = UINavigationController(rootViewController: MainController())
         window?.makeKeyAndVisible()
         
-//        URLProtocol.registerClass(KiwixURLProtocol.self)
-//        ZimMultiReader.shared.startMonitoring(url: URL.documentDirectory)
-//        ZimMultiReader.shared.scan(url: URL.documentDirectory)
+        URLProtocol.registerClass(KiwixURLProtocol.self)
+        monitor.delegate = self
+        Queue.shared.add(scanProcedure: ScanProcedure(url: URL.documentDirectory))
+        monitor.start()
         return true
     }
     
-//    func applicationWillEnterForeground(_ application: UIApplication) {
-//        ZimMultiReader.shared.startMonitoring(url: URL.documentDirectory)
-//        ZimMultiReader.shared.scan(url: URL.documentDirectory)
-//    }
-//
-//    func applicationDidEnterBackground(_ application: UIApplication) {
-//        ZimMultiReader.shared.stopMonitoring(url: URL.documentDirectory)
-//    }
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        Queue.shared.add(scanProcedure: ScanProcedure(url: URL.documentDirectory))
+        monitor.start()
+    }
+
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        monitor.stop()
+    }
     
     func applicationWillTerminate(_ application: UIApplication) {
         let context = CoreDataContainer.shared.viewContext
         if context.hasChanges {
             try? context.save()
         }
+    }
+    
+    func directoryContentDidChange(url: URL) {
+        Queue.shared.add(scanProcedure: ScanProcedure(url: url))
     }
 }
 

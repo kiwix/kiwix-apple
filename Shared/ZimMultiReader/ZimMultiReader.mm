@@ -15,106 +15,70 @@
 @implementation ZimMultiReader
 
 std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>> readers;
+NSMutableDictionary *urls = [[NSMutableDictionary alloc] init]; // [ID: URL]
 kiwix::Searcher *searcher = NULL;
 std::vector<std::string> *searcherZimIDs = NULL;
 
-#if TARGET_OS_MAC
-    NSMutableDictionary *zimURLs;
-#endif
-
 #pragma mark - init
-
-+ (ZimMultiReader *)sharedInstance {
-    static ZimMultiReader *sharedInstance = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [[ZimMultiReader alloc] init];
-    });
-    return sharedInstance;
-}
 
 - (instancetype)init {
     self = [super init];
     if (self) {
         readers.reserve(20);
-#if TARGET_OS_MAC
-        zimURLs = [[NSMutableDictionary alloc] init];
-#elif TARGET_OS_IPHONE
-        [self scan];
-#endif
     }
     return self;
 }
 
-- (void)dealloc {
-    [self removeAllBooks];
-}
-
 #pragma mark - reader management
-
-- (void)scan {
-    // TODO: reuse other functions
-    NSURL *docDirURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:NULL];
-    NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:docDirURL includingPropertiesForKeys:nil options:(NSDirectoryEnumerationSkipsSubdirectoryDescendants) error:nil];
-    
-    std::set<std::string> existing;
-    for(auto const &reader: readers) {
-        existing.insert(reader.first);
-    }
-    
-    for (NSURL *file in files) {
-        try {
-            std::shared_ptr<kiwix::Reader> reader = std::make_shared<kiwix::Reader>([file fileSystemRepresentation]);
-            std::string identifier = reader->getId();
-            readers.insert(std::make_pair(identifier, reader));
-            existing.erase(identifier);
-        } catch (const std::exception &e) { }
-    }
-    
-    for(std::string const &identifier: existing) {
-        readers.erase(identifier);
-    }
-}
 
 - (void)addBookByURL:(NSURL *)url {
     try {
+        // if url does not ends with "zim" or "zimaa", skip it
+        NSString *pathExtension = [[url pathExtension] lowercaseString];
+        if (![pathExtension isEqualToString:@"zim"] && ![pathExtension isEqualToString:@"zimaa"]) {
+            return;
+        }
+        
+        // if we have previously added this url, skip it
+        if ([[urls allKeysForObject:url] count] > 0) {
+            return;
+        }
+        
 #if TARGET_OS_MAC
         [url startAccessingSecurityScopedResource];
 #endif
+        
         std::shared_ptr<kiwix::Reader> reader = std::make_shared<kiwix::Reader>([url fileSystemRepresentation]);
-        std::string identifierC = reader->getId();
-        readers.insert(std::make_pair(identifierC, reader));
-
-#if TARGET_OS_MAC
-        NSString *identifier = [NSString stringWithCString:identifierC.c_str() encoding:NSUTF8StringEncoding];
-        zimURLs[identifier] = url;
-#endif
+        std::string identifier = reader->getId();
+        NSString *identifierObjC = [NSString stringWithCString:identifier.c_str() encoding:NSUTF8StringEncoding];
+        
+        readers.insert(std::make_pair(identifier, reader));
+        urls[identifierObjC] = url;
+        
     } catch (const std::exception &e) { }
 }
 
 - (void)removeBookByID:(NSString *)bookID {
-    std::string bookIDC = [bookID cStringUsingEncoding:NSUTF8StringEncoding];
-    readers.erase(bookIDC);
-
 #if TARGET_OS_MAC
-    [zimURLs[bookID] stopAccessingSecurityScopedResource];
-    [zimURLs removeObjectForKey:bookID];
+    [urls[bookID] stopAccessingSecurityScopedResource];
 #endif
+    
+    readers.erase([bookID cStringUsingEncoding:NSUTF8StringEncoding]);
+    [urls removeObjectForKey:bookID];
 }
 
-- (void)removeAllBooks {
-    for (NSString *bookID in zimURLs) {
-        [self removeBookByID:bookID];
+- (void)removeBookByURL:(NSURL *)url {
+    for (NSString *identifier in [urls allKeysForObject:url]) {
+        [self removeBookByID:identifier];
     }
 }
 
 - (NSArray *)getReaderIdentifiers {
-    NSMutableArray *identifiers = [[NSMutableArray alloc] init];
-    for(auto reader: readers) {
-        NSString *identifier = [NSString stringWithCString:reader.first.c_str() encoding:NSUTF8StringEncoding];
-        [identifiers addObject:identifier];
-    }
-    return identifiers;
+    return [urls allKeys];
+}
+
+- (NSArray *)getReaderURLs {
+    return [urls allValues];
 }
 
 # pragma mark - get content
