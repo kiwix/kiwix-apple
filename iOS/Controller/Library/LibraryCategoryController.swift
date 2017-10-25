@@ -26,6 +26,18 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         tableView.register(LibraryBookCell.self, forCellReuseIdentifier: "Cell")
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "Globe"), style: .plain, target: self, action: #selector(languageFilterBottonTapped(sender:)))
+    }
+    
+    @objc func languageFilterBottonTapped(sender: UIBarButtonItem) {
+        let controller = UINavigationController(rootViewController: LibraryLanguageController())
+        controller.modalPresentationStyle = .popover
+        controller.popoverPresentationController?.barButtonItem = sender
+        present(controller, animated: true, completion: nil)
+    }
+    
     // MARK: - UITableViewDataSource & Delagates
     
     func numberOfSections(in tableView: UITableView) -> Int {
