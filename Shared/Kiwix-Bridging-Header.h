@@ -3,3 +3,4 @@
 //
 
 #import "ZimMultiReader.h"
+#import "ZimMetaData.h"

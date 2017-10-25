@@ -29,6 +29,10 @@ std::vector<std::string> *searcherZimIDs = NULL;
     return self;
 }
 
+- (NSArray *)getReaderIdentifiers {
+    return [urls allKeys];
+}
+
 #pragma mark - reader management
 
 - (void)addBookByURL:(NSURL *)url {
@@ -67,27 +71,20 @@ std::vector<std::string> *searcherZimIDs = NULL;
     [urls removeObjectForKey:bookID];
 }
 
-- (void)removeBookByURL:(NSURL *)url {
-    for (NSString *identifier in [urls allKeysForObject:url]) {
-        [self removeBookByID:identifier];
+- (void)removeStaleReaders {
+    for (NSString *identifier in urls) {
+        NSURL *url = urls[identifier];
+        NSString *path = [url path];
+        if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+            [self removeBookByID:identifier];
+        }
     }
-}
-
-- (NSArray *)getReaderIdentifiers {
-    return [urls allKeys];
-}
-
-- (NSArray *)getReaderURLs {
-    return [urls allValues];
 }
 
 # pragma mark - get content
 
-- (NSDictionary *)getContent:(NSString *)bookID contentURL:(NSString *)contentURL {
-    std::string bookIDC = [bookID cStringUsingEncoding:NSUTF8StringEncoding];
-    std::string contentURLC = [contentURL cStringUsingEncoding:NSUTF8StringEncoding];
-    
-    auto found = readers.find(bookIDC);
+- (NSDictionary *)getContent:(NSString *)zimFileID contentURL:(NSString *)contentURL {
+    auto found = readers.find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
     if (found == readers.end()) {
         return nil;
     } else {
@@ -98,7 +95,7 @@ std::vector<std::string> *searcherZimIDs = NULL;
         unsigned int contentLength;
         std::string contentType;
         
-        bool success = reader->getContentByUrl(contentURLC, content, title, contentLength, contentType);
+        bool success = reader->getContentByUrl([contentURL cStringUsingEncoding:NSUTF8StringEncoding], content, title, contentLength, contentType);
         if (success) {
             NSData *data = [NSData dataWithBytes:content.data() length:contentLength];
             NSString *mime = [NSString stringWithUTF8String:contentType.c_str()];
@@ -108,6 +105,12 @@ std::vector<std::string> *searcherZimIDs = NULL;
             return nil;
         }
     }
+}
+
+- (ZimMetaData *)getMetaData:(NSString *)zimFileID {
+    NSURL *url = urls[zimFileID];
+    if (url == nil) {return nil;}
+    return [[ZimMetaData alloc] initWithZimFileURL:url];
 }
 
 # pragma mark - URL handling

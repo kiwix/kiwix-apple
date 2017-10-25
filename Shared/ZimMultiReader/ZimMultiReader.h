@@ -7,25 +7,25 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ZimMetaData.h"
 
 @interface ZimMultiReader : NSObject
 - (instancetype _Nonnull)init NS_REFINED_FOR_SWIFT;
 
+- (NSArray *_Nonnull)getReaderIdentifiers NS_REFINED_FOR_SWIFT;
+
 - (void)addBookByURL:(NSURL *_Nonnull)url NS_REFINED_FOR_SWIFT;
 - (void)removeBookByID:(NSString *_Nonnull)bookID NS_REFINED_FOR_SWIFT;
-- (void)removeBookByURL:(NSURL *_Nonnull)url NS_REFINED_FOR_SWIFT;
+- (void)removeStaleReaders;
 
-- (NSArray *_Nonnull)getReaderIdentifiers NS_REFINED_FOR_SWIFT;
-- (NSArray *_Nonnull)getReaderURLs NS_REFINED_FOR_SWIFT;
+- (NSDictionary *_Nullable)getContent:(NSString *_Nonnull)zimFileID contentURL:(NSString *_Nonnull)contentURL NS_REFINED_FOR_SWIFT;
+- (ZimMetaData *_Nullable)getMetaData:(NSString *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
 
-- (NSDictionary *)getContent:(NSString *)bookID contentURL:(NSString *)contentURL NS_REFINED_FOR_SWIFT;
+- (NSString *_Nullable)getMainPageURL:(NSString *_Nonnull)bookID NS_REFINED_FOR_SWIFT;
 
-- (NSString *)getMainPageURL:(NSString *)bookID NS_REFINED_FOR_SWIFT;
-
-- (void)startSearch:(NSString *)searchTerm NS_REFINED_FOR_SWIFT;
-- (NSDictionary *)getNextSearchResult NS_REFINED_FOR_SWIFT;
+- (void)startSearch:(NSString *_Nonnull)searchTerm NS_REFINED_FOR_SWIFT;
+- (NSDictionary *_Nullable)getNextSearchResult NS_REFINED_FOR_SWIFT;
 - (void)stopSearch;
-
-- (NSArray *)getSearchSuggestions:(NSString *)searchTerm NS_REFINED_FOR_SWIFT;
+- (NSArray *_Nonnull)getSearchSuggestions:(NSString *_Nonnull)searchTerm NS_REFINED_FOR_SWIFT;
 
 @end

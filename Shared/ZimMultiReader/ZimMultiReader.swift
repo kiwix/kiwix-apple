@@ -14,11 +14,9 @@ extension ZimMultiReader {
     static let shared = ZimMultiReader()
     
     var ids: [ZimFileID] {get{ return __getIdentifiers().flatMap({$0 as? ZimFileID}) }}
-    var urls: [URL] {get{ return __getURLs().flatMap({$0 as? URL}) }}
     
     func addBook(url: URL) {__addBook(by: url)}
     func removeBook(id: ZimFileID) {__removeBook(byID: id)}
-    func remove(url: URL) {__removeBook(by: url)}
     
     func getContent(bookID: String, contentPath: String) -> (data: Data, mime: String, length: Int)? {
         guard let content = __getContent(bookID, contentURL: contentPath),
@@ -28,10 +26,14 @@ extension ZimMultiReader {
         return (data, mime, length)
     }
     
+    func getMetaData(id: ZimFileID) -> ZimMetaData? {return __getMetaData(id)}
+    
     func getMainPageURL(bookID: String) -> URL? {
         guard let path = __getMainPageURL(bookID) else {return nil}
         return URL(bookID: bookID, contentPath: path)
     }
+    
+    
     
     func startSearch(term: String) {__startSearch(term)}
     
@@ -45,8 +47,7 @@ extension ZimMultiReader {
     }
     
     func getSearchSuggestions(term: String) -> [SearchResult] {
-        guard let suggestions = __getSearchSuggestions(term) else {return []}
-        return suggestions.flatMap { suggestion -> SearchResult? in
+        return __getSearchSuggestions(term).flatMap { suggestion -> SearchResult? in
             guard let suggestion = suggestion as? Dictionary<String, String>,
                 let id = suggestion["id"],
                 let title = suggestion["title"],

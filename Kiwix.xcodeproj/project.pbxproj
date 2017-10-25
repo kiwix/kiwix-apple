@@ -115,6 +115,10 @@
 		977D7BBC1F9E6A7A009A8703 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BBA1F9E6A7A009A8703 /* DirectoryMonitor.swift */; };
 		977D7BBE1F9FC618009A8703 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BBD1F9FC618009A8703 /* Queue.swift */; };
 		977D7BBF1F9FC618009A8703 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BBD1F9FC618009A8703 /* Queue.swift */; };
+		977D7BD01F9FE34E009A8703 /* ZimMetaData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BCF1F9FE34E009A8703 /* ZimMetaData.mm */; };
+		977D7BD11F9FE34E009A8703 /* ZimMetaData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BCF1F9FE34E009A8703 /* ZimMetaData.mm */; };
+		977D7BD31F9FE359009A8703 /* ZimMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BD21F9FE359009A8703 /* ZimMetaData.swift */; };
+		977D7BD41F9FE359009A8703 /* ZimMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BD21F9FE359009A8703 /* ZimMetaData.swift */; };
 		977F983E1F9E43EC002ABFCE /* ScanProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977F983D1F9E43EC002ABFCE /* ScanProcedure.swift */; };
 		977F983F1F9E43EC002ABFCE /* ScanProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977F983D1F9E43EC002ABFCE /* ScanProcedure.swift */; };
 		979D17831E6DE50C006AE496 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 979D17821E6DE50C006AE496 /* Assets.xcassets */; };
@@ -400,6 +404,9 @@
 		977D7BB31F9E6A43009A8703 /* ZimMultiReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZimMultiReader.swift; sourceTree = "<group>"; };
 		977D7BBA1F9E6A7A009A8703 /* DirectoryMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DirectoryMonitor.swift; path = ../../../../Desktop/ZimManagement/DirectoryMonitor.swift; sourceTree = "<group>"; };
 		977D7BBD1F9FC618009A8703 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
+		977D7BCE1F9FE34E009A8703 /* ZimMetaData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZimMetaData.h; sourceTree = "<group>"; };
+		977D7BCF1F9FE34E009A8703 /* ZimMetaData.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ZimMetaData.mm; sourceTree = "<group>"; };
+		977D7BD21F9FE359009A8703 /* ZimMetaData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimMetaData.swift; sourceTree = "<group>"; };
 		977F983D1F9E43EC002ABFCE /* ScanProcedure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanProcedure.swift; sourceTree = "<group>"; };
 		9780DE051E43BFF5009B6945 /* NetworkActivityIndicatorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkActivityIndicatorController.swift; sourceTree = "<group>"; };
 		9788419C1DA2FF2A00D22D3C /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
@@ -1127,6 +1134,9 @@
 				977D7BB01F9E6A43009A8703 /* ZimMultiReader.h */,
 				977D7BB21F9E6A43009A8703 /* ZimMultiReader.mm */,
 				977D7BB31F9E6A43009A8703 /* ZimMultiReader.swift */,
+				977D7BCE1F9FE34E009A8703 /* ZimMetaData.h */,
+				977D7BCF1F9FE34E009A8703 /* ZimMetaData.mm */,
+				977D7BD21F9FE359009A8703 /* ZimMetaData.swift */,
 				977D7BB11F9E6A43009A8703 /* SearchResult.swift */,
 				977D7BBA1F9E6A7A009A8703 /* DirectoryMonitor.swift */,
 			);
@@ -2186,6 +2196,7 @@
 				97B104701F8FC63C00488444 /* LibraryMasterController.swift in Sources */,
 				97A996D41F61DB38007A6282 /* SearchController.swift in Sources */,
 				97A36C6E1F8EA6F50079B452 /* MigrationPolicy.swift in Sources */,
+				977D7BD41F9FE359009A8703 /* ZimMetaData.swift in Sources */,
 				97161A8A1F90072A00A89DE3 /* LibraryTableCells.swift in Sources */,
 				97A36C6D1F8EA6F50079B452 /* 1.8.xcmappingmodel in Sources */,
 				97A36C641F8EA6E70079B452 /* Language.swift in Sources */,
@@ -2206,6 +2217,7 @@
 				977F983F1F9E43EC002ABFCE /* ScanProcedure.swift in Sources */,
 				97A36C621F8EA6E70079B452 /* Book.swift in Sources */,
 				97A996CE1F609C9F007A6282 /* LegacyTabController.swift in Sources */,
+				977D7BD11F9FE34E009A8703 /* ZimMetaData.mm in Sources */,
 				977D7BB51F9E6A43009A8703 /* SearchResult.swift in Sources */,
 				97A36C5C1F8EA6DE0079B452 /* Kiwix.xcdatamodeld in Sources */,
 				97A36C581F8D5FCD0079B452 /* LibraryController.swift in Sources */,
@@ -2322,6 +2334,7 @@
 				97DEE7301F8F211400287124 /* 1.9.xcmappingmodel in Sources */,
 				97A36C6A1F8EA6F40079B452 /* 1.8.xcmappingmodel in Sources */,
 				97A36C601F8EA6E60079B452 /* Language.swift in Sources */,
+				977D7BD31F9FE359009A8703 /* ZimMetaData.swift in Sources */,
 				9702BE221F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */,
 				97A36C5D1F8EA6E60079B452 /* Article.swift in Sources */,
 				97A36C541F8D57380079B452 /* TabControllerProtocol.swift in Sources */,
@@ -2341,6 +2354,7 @@
 				97B1D0B51F9A3AD3000C7848 /* NetworkActivityIndicatorController.swift in Sources */,
 				97B1D0B91F9A3CB0000C7848 /* Preference.swift in Sources */,
 				97A36C691F8EA6F40079B452 /* 1.5.xcmappingmodel in Sources */,
+				977D7BD01F9FE34E009A8703 /* ZimMetaData.mm in Sources */,
 				97B1D0B61F9A3AE7000C7848 /* Network.swift in Sources */,
 				97A36C5E1F8EA6E60079B452 /* Book.swift in Sources */,
 				977D7BBB1F9E6A7A009A8703 /* DirectoryMonitor.swift in Sources */,
