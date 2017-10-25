@@ -33,8 +33,6 @@ extension ZimMultiReader {
         return URL(bookID: bookID, contentPath: path)
     }
     
-    
-    
     func startSearch(term: String) {__startSearch(term)}
     
     func getNextSearchResult() -> SearchResult? {

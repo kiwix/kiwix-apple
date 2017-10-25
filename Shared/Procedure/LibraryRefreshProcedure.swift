@@ -30,7 +30,9 @@ private class DownloadProcedure: NetworkDataProcedure<URLSession> {
         addWillExecuteBlockObserver { _, _ in
             NetworkActivityController.shared.taskDidStart(identifier: "RetrieveLibrary")
         }
-        addDidFinishBlockObserver { _, _ in
+        
+        addDidFinishBlockObserver { _, errors in
+            errors.forEach({ print($0) })
             NetworkActivityController.shared.taskDidFinish(identifier: "RetrieveLibrary")
         }
     }
@@ -46,9 +48,9 @@ private class ProcessProcedure: Procedure, InputProcedure, XMLParserDelegate {
     private(set) var hasUpdate = false
     
     override init() {
-        self.context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        context.parent = CoreDataContainer.shared.viewContext
-        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        self.context = CoreDataContainer.shared.newBackgroundContext()
+        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        print((context.mergePolicy as? NSMergePolicy)?.mergeType.rawValue)
         super.init()
     }
     
@@ -58,22 +60,23 @@ private class ProcessProcedure: Procedure, InputProcedure, XMLParserDelegate {
             return
         }
         
-        storeBookIDs = Set(Book.fetchAll(in: context).map({ $0.id }))
-        
-        let parser = XMLParser(data: data)
-        parser.delegate = self
-        parser.parse()
-        
-        let toBeDeleted = storeBookIDs.subtracting(memoryBookIDs)
-        hasUpdate = toBeDeleted.count > 0 || hasUpdate
         context.performAndWait {
+            storeBookIDs = Set(Book.fetchAll(in: context).map({ $0.id }))
+            
+            let parser = XMLParser(data: data)
+            parser.delegate = self
+            parser.parse()
+            
+            let toBeDeleted = storeBookIDs.subtracting(memoryBookIDs)
+            hasUpdate = toBeDeleted.count > 0 || hasUpdate
+            
             for id in toBeDeleted {
                 guard let book = Book.fetch(id: id, context: self.context), book.state == .cloud else {continue}
                 self.context.delete(book)
             }
+            if context.hasChanges { try? context.save() }
         }
         
-        if context.hasChanges { try? context.save() }
         Defaults[.libraryLastRefreshTime] = Date()
         finish()
     }
