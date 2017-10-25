@@ -50,7 +50,6 @@ private class ProcessProcedure: Procedure, InputProcedure, XMLParserDelegate {
     override init() {
         self.context = CoreDataContainer.shared.newBackgroundContext()
         context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-        print((context.mergePolicy as? NSMergePolicy)?.mergeType.rawValue)
         super.init()
     }
     
