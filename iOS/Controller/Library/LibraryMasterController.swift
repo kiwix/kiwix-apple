@@ -41,88 +41,74 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
         return formatter
     }()
     
-//    override func loadView() {
-//        view = tableView
-//        tableView.delegate = self
-//        tableView.dataSource = self
-//        tableView.refreshControl = refreshControl
-//        tableView.register(LibraryBookCell.self, forCellReuseIdentifier: "BookCell")
-//        tableView.register(LibraryCategoryCell.self, forCellReuseIdentifier: "CategoryCell")
-//    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = NSLocalizedString("Library", comment: "Library title")
         if #available(iOS 11.0, *) {
             navigationController?.navigationBar.prefersLargeTitles = true
         }
-        configureInitialRefreshView()
-        refreshControl.addTarget(self, action: #selector(refreshControlPulled(sender: )), for: .valueChanged)
+        
+        if Preference.libraryLastRefreshTime == nil {
+            configureInitialRefreshView()
+        } else {
+            configureTableView()
+        }
     }
     
-    @objc func refreshControlPulled(sender: UIRefreshControl) {
+    private lazy var onboardingView = OnboardingView()
+    private func configureInitialRefreshView() {
+        onboardingView.button.addTarget(self, action: #selector(refreshControlPulled), for: .touchUpInside)
+        onboardingView.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .groupTableViewBackground
+        view.addSubview(onboardingView)
+        view.addConstraints([
+            view.readableContentGuide.leftAnchor.constraint(equalTo: onboardingView.leftAnchor, constant: 0),
+            view.readableContentGuide.rightAnchor.constraint(equalTo: onboardingView.rightAnchor, constant: 0)])
+        view.addConstraints([view.centerYAnchor.constraint(equalTo: onboardingView.centerYAnchor, constant: 0)])
+    }
+    
+    private func removeInitialRefreshView() {
+        onboardingView.button.removeTarget(self, action: #selector(refreshControlPulled), for: .touchUpInside)
+        onboardingView.removeFromSuperview()
+    }
+    
+    private func configureTableView() {
+        refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.refreshControl = refreshControl
+        tableView.register(LibraryBookCell.self, forCellReuseIdentifier: "BookCell")
+        tableView.register(LibraryCategoryCell.self, forCellReuseIdentifier: "CategoryCell")
+        view.addSubview(tableView)
+        view.addConstraints([
+            view.leftAnchor.constraint(equalTo: tableView.leftAnchor),
+            view.rightAnchor.constraint(equalTo: tableView.rightAnchor),
+            view.topAnchor.constraint(equalTo: tableView.topAnchor),
+            view.bottomAnchor.constraint(equalTo: tableView.bottomAnchor)])
+    }
+    
+    @objc func refreshControlPulled() {
         let procedure = LibraryRefreshProcedure()
+        procedure.add(observer: WillExecuteObserver(willExecute: { (_, event) in
+            OperationQueue.main.addOperation({
+                self.onboardingView.button.isEnabled = false
+            })
+        }))
         procedure.add(observer: DidFinishObserver(didFinish: { (procedure, errors) in
             OperationQueue.main.addOperation({
-                sender.endRefreshing()
+                if errors.count > 0 {
+                    self.onboardingView.button.isEnabled = true
+                } else {
+                    if self.view.subviews.contains(self.onboardingView) {
+                        self.removeInitialRefreshView()
+                        self.configureTableView()
+                    }
+                    self.refreshControl.endRefreshing()
+                }
             })
         }))
         queue.add(operation: procedure)
-    }
-    
-    let emptyView = EmptyLibraryView()
-    private func configureInitialRefreshView() {
-        guard Preference.libraryLastRefreshTime == nil else {return}
-        
-        emptyView.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .groupTableViewBackground
-        view.addSubview(emptyView)
-        view.addConstraints([
-            view.readableContentGuide.leftAnchor.constraint(equalTo: emptyView.leftAnchor, constant: 0),
-            view.readableContentGuide.rightAnchor.constraint(equalTo: emptyView.rightAnchor, constant: 0)])
-        view.addConstraints([view.centerYAnchor.constraint(equalTo: emptyView.centerYAnchor, constant: 0)])
-    }
-    
-    class EmptyLibraryView: UIStackView {
-        let button = RoundedButton()
-        
-        init() {
-            super.init(frame: .zero)
-            configure()
-        }
-        
-        required init(coder: NSCoder) {
-            super.init(coder: coder)
-            configure()
-        }
-        
-        private func configure() {
-            let imageView: UIImageView = {
-                let imageView = UIImageView(image: #imageLiteral(resourceName: "Library").withRenderingMode(.alwaysTemplate))
-                imageView.contentMode = .scaleAspectFit
-                imageView.tintColor = UIColor.gray
-                return imageView
-            }()
-            
-            let label: UILabel = {
-                let label = UILabel()
-                label.text = NSLocalizedString("Refresh library to see all books available for download or import zim files using iTunes File Sharing.", comment: "Empty Library Help")
-                label.textAlignment = .center
-                label.adjustsFontSizeToFitWidth = true
-                label.textColor = UIColor.gray
-                label.numberOfLines = 0
-                return label
-            }()
-            
-            button.setTitle(NSLocalizedString("Refresh Library", comment: "Empty Library Action"), for: .normal)
-            
-            axis = .vertical
-            distribution = .equalCentering
-            spacing = 20
-            [imageView, label, button].forEach { (view) in
-                addArrangedSubview(view)
-            }
-        }
     }
     
     // MARK: - UITableViewDataSource & Delegates
@@ -270,3 +256,45 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
     }
 }
 
+private class OnboardingView: UIStackView {
+    let button = RoundedButton()
+    
+    init() {
+        super.init(frame: .zero)
+        configure()
+    }
+    
+    required init(coder: NSCoder) {
+        super.init(coder: coder)
+        configure()
+    }
+    
+    private func configure() {
+        let imageView: UIImageView = {
+            let imageView = UIImageView(image: #imageLiteral(resourceName: "Library").withRenderingMode(.alwaysTemplate))
+            imageView.contentMode = .scaleAspectFit
+            imageView.tintColor = UIColor.gray
+            return imageView
+        }()
+        
+        let label: UILabel = {
+            let label = UILabel()
+            label.text = NSLocalizedString("Refresh library to see all books available for download or import zim files using iTunes File Sharing.", comment: "Empty Library Help")
+            label.textAlignment = .center
+            label.adjustsFontSizeToFitWidth = true
+            label.textColor = UIColor.gray
+            label.numberOfLines = 0
+            return label
+        }()
+        
+        button.setTitle(NSLocalizedString("Refresh Library", comment: "Empty Library Action"), for: .normal)
+        button.setTitle(NSLocalizedString("Refreshing...", comment: "Empty Library Action"), for: .disabled)
+        
+        axis = .vertical
+        distribution = .equalCentering
+        spacing = 20
+        [imageView, label, button].forEach { (view) in
+            addArrangedSubview(view)
+        }
+    }
+}

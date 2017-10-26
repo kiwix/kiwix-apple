@@ -33,6 +33,12 @@ class RoundedButton: UIButton {
         }
     }
     
+    override var isEnabled: Bool {
+        didSet {
+            backgroundColor = isEnabled ? #colorLiteral(red: 0, green: 0.3529411765, blue: 1, alpha: 1) : #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
+        }
+    }
+    
     override var intrinsicContentSize: CGSize {
         get {
             let size = super.intrinsicContentSize
