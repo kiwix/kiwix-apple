@@ -13,6 +13,7 @@ import ProcedureKit
 class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     let tableView = UITableView(frame: .zero, style: .grouped)
     let refreshControl = UIRefreshControl()
+    private lazy var onboardingView = OnboardingView()
     let queue = ProcedureQueue()
     
     let categories: [BookCategory] = [
@@ -55,7 +56,6 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
         }
     }
     
-    private lazy var onboardingView = OnboardingView()
     private func configureInitialRefreshView() {
         onboardingView.button.addTarget(self, action: #selector(refreshControlPulled), for: .touchUpInside)
         onboardingView.translatesAutoresizingMaskIntoConstraints = false

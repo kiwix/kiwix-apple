@@ -124,7 +124,6 @@
 		977F983F1F9E43EC002ABFCE /* ScanProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977F983D1F9E43EC002ABFCE /* ScanProcedure.swift */; };
 		979D17831E6DE50C006AE496 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 979D17821E6DE50C006AE496 /* Assets.xcassets */; };
 		97A1FD1C1D6F71D800A80EE2 /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD1A1D6F71D800A80EE2 /* KiwixURLProtocol.swift */; };
-		97A1FD421D6F728200A80EE2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD3D1D6F728200A80EE2 /* Extensions.swift */; };
 		97A1FD451D6F728200A80EE2 /* Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD411D6F728200A80EE2 /* Localized.swift */; };
 		97A36C271F8C21210079B452 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996D31F61DB38007A6282 /* SearchController.swift */; };
 		97A36C291F8C21210079B452 /* ToolBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996D11F60A1A0007A6282 /* ToolBarController.swift */; };
@@ -418,7 +417,6 @@
 		9793158C1E5127930093D3BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		979D17821E6DE50C006AE496 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97A1FD1A1D6F71D800A80EE2 /* KiwixURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KiwixURLProtocol.swift; sourceTree = "<group>"; };
-		97A1FD3D1D6F728200A80EE2 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		97A1FD401D6F728200A80EE2 /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		97A1FD411D6F728200A80EE2 /* Localized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localized.swift; sourceTree = "<group>"; };
 		97A2AB881C1B80FF00052E74 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1186,7 +1184,6 @@
 		97A1FD3C1D6F728200A80EE2 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				97A1FD3D1D6F728200A80EE2 /* Extensions.swift */,
 				97C601DD1D7F342100362D4F /* HTMLHeading.swift */,
 				97A9F6F41E2E990500F423AA /* JSInject.js */,
 				97A1FD411D6F728200A80EE2 /* Localized.swift */,
@@ -2280,7 +2277,6 @@
 				97D2319F1E677C6700DCD4A4 /* StaticWebController.swift in Sources */,
 				97D2318F1E677C6700DCD4A4 /* Buttons.swift in Sources */,
 				97D231A81E677CB300DCD4A4 /* BarButtonItems.swift in Sources */,
-				97A1FD421D6F728200A80EE2 /* Extensions.swift in Sources */,
 				97D231AC1E677CB300DCD4A4 /* RefreshLibControl.swift in Sources */,
 				97A36C681F8EA6E90079B452 /* Language.swift in Sources */,
 				97D2318D1E677C6700DCD4A4 /* LibraryLanguageController.swift in Sources */,

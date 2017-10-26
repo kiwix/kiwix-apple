@@ -32,10 +32,14 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     }
     
     @objc func languageFilterBottonTapped(sender: UIBarButtonItem) {
-        let controller = UINavigationController(rootViewController: LibraryLanguageController())
-        controller.modalPresentationStyle = .popover
-        controller.popoverPresentationController?.barButtonItem = sender
-        present(controller, animated: true, completion: nil)
+        let controller = LibraryLanguageController()
+        controller.dismissBlock = {[unowned self] in
+            self.reloadFetchedResultController()
+        }
+        let navigation = UINavigationController(rootViewController: controller)
+        navigation.modalPresentationStyle = .popover
+        navigation.popoverPresentationController?.barButtonItem = sender
+        present(navigation, animated: true, completion: nil)
     }
     
     // MARK: - UITableViewDataSource & Delagates
