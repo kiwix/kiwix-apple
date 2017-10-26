@@ -28,12 +28,12 @@ private class DownloadProcedure: NetworkDataProcedure<URLSession> {
         super.init(session: session, request: request)
         
         addWillExecuteBlockObserver { _, _ in
-            NetworkActivityController.shared.taskDidStart(identifier: "RetrieveLibrary")
+            NetworkActivityController.shared.taskDidStart(identifier: "DownloadLibrary")
         }
         
         addDidFinishBlockObserver { _, errors in
             errors.forEach({ print($0) })
-            NetworkActivityController.shared.taskDidFinish(identifier: "RetrieveLibrary")
+            NetworkActivityController.shared.taskDidFinish(identifier: "DownloadLibrary")
         }
     }
 }
