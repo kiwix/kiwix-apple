@@ -57,6 +57,7 @@ class ToolBarController: UIViewController {
         var buttons = [back, forward, home]
         if Bundle.main.infoDictionary?["CFBundleName"] as? String == "Kiwix" {
             buttons.append(library)
+            library.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         }
         
         buttons.forEach { (button) in
