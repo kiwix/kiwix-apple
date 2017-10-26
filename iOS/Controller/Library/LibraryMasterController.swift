@@ -41,14 +41,14 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
         return formatter
     }()
     
-    override func loadView() {
-        view = tableView
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.refreshControl = refreshControl
-        tableView.register(LibraryBookCell.self, forCellReuseIdentifier: "BookCell")
-        tableView.register(LibraryCategoryCell.self, forCellReuseIdentifier: "CategoryCell")
-    }
+//    override func loadView() {
+//        view = tableView
+//        tableView.delegate = self
+//        tableView.dataSource = self
+//        tableView.refreshControl = refreshControl
+//        tableView.register(LibraryBookCell.self, forCellReuseIdentifier: "BookCell")
+//        tableView.register(LibraryCategoryCell.self, forCellReuseIdentifier: "CategoryCell")
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,6 +56,7 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
         if #available(iOS 11.0, *) {
             navigationController?.navigationBar.prefersLargeTitles = true
         }
+        configureInitialRefreshView()
         refreshControl.addTarget(self, action: #selector(refreshControlPulled(sender: )), for: .valueChanged)
     }
     
@@ -67,6 +68,61 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
             })
         }))
         queue.add(operation: procedure)
+    }
+    
+    let emptyView = EmptyLibraryView()
+    private func configureInitialRefreshView() {
+        guard Preference.libraryLastRefreshTime == nil else {return}
+        
+        emptyView.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .groupTableViewBackground
+        view.addSubview(emptyView)
+        view.addConstraints([
+            view.readableContentGuide.leftAnchor.constraint(equalTo: emptyView.leftAnchor, constant: 0),
+            view.readableContentGuide.rightAnchor.constraint(equalTo: emptyView.rightAnchor, constant: 0)])
+        view.addConstraints([view.centerYAnchor.constraint(equalTo: emptyView.centerYAnchor, constant: 0)])
+    }
+    
+    class EmptyLibraryView: UIStackView {
+        let button = RoundedButton()
+        
+        init() {
+            super.init(frame: .zero)
+            configure()
+        }
+        
+        required init(coder: NSCoder) {
+            super.init(coder: coder)
+            configure()
+        }
+        
+        private func configure() {
+            let imageView: UIImageView = {
+                let imageView = UIImageView(image: #imageLiteral(resourceName: "Library").withRenderingMode(.alwaysTemplate))
+                imageView.contentMode = .scaleAspectFit
+                imageView.tintColor = UIColor.gray
+                return imageView
+            }()
+            
+            let label: UILabel = {
+                let label = UILabel()
+                label.text = NSLocalizedString("Refresh library to see all books available for download or import zim files using iTunes File Sharing.", comment: "Empty Library Help")
+                label.textAlignment = .center
+                label.adjustsFontSizeToFitWidth = true
+                label.textColor = UIColor.gray
+                label.numberOfLines = 0
+                return label
+            }()
+            
+            button.setTitle(NSLocalizedString("Refresh Library", comment: "Empty Library Action"), for: .normal)
+            
+            axis = .vertical
+            distribution = .equalCentering
+            spacing = 20
+            [imageView, label, button].forEach { (view) in
+                addArrangedSubview(view)
+            }
+        }
     }
     
     // MARK: - UITableViewDataSource & Delegates
