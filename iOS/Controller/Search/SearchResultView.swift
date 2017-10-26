@@ -28,8 +28,9 @@ class SearchResultTitleCell: UITableViewCell {
         contentView.addConstraints([
             titleLabel.leftAnchor.constraint(equalTo: contentView.readableContentGuide.leftAnchor),
             titleLabel.rightAnchor.constraint(equalTo: contentView.readableContentGuide.rightAnchor),
-            titleLabel.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            titleLabel.heightAnchor.constraint(equalToConstant: 44)
         ])
     }
 }

@@ -929,6 +929,15 @@
 			name = Classes;
 			sourceTree = "<group>";
 		};
+		972E6F651FA2872A00F5C927 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				97A996D31F61DB38007A6282 /* SearchController.swift */,
+				97A996DE1F630FBC007A6282 /* SearchResultView.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
 		97318E3D1E6780E7000B718B /* Help */ = {
 			isa = PBXGroup;
 			children = (
@@ -1040,8 +1049,8 @@
 			isa = PBXGroup;
 			children = (
 				975FDADB1F6082DA00A10E8C /* MainController.swift */,
-				97A996D31F61DB38007A6282 /* SearchController.swift */,
 				97A996D11F60A1A0007A6282 /* ToolBarController.swift */,
+				972E6F651FA2872A00F5C927 /* Search */,
 				97050CFF1F6730010021DE78 /* Tab */,
 				97B1046D1F8FC61400488444 /* Library */,
 			);
@@ -1221,7 +1230,6 @@
 		97A996D81F62F3C5007A6282 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				97A996DE1F630FBC007A6282 /* SearchResultView.swift */,
 				97A36C501F8D4FB80079B452 /* VisualEffectShadowView.swift */,
 				972E6F631FA11A6100F5C927 /* Buttons.swift */,
 			);
