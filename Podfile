@@ -4,10 +4,8 @@ target 'iOS' do
     platform :ios, '10.0'
     use_frameworks!
 
-    pod 'DZNEmptyDataSet'
     pod 'SwiftyUserDefaults'
     pod 'ProcedureKit/All', :path => 'submodules/ProcedureKit'
-    pod 'ProcedureKit/Mobile', :path => 'submodules/ProcedureKit'
 end
 
 target 'macOS' do

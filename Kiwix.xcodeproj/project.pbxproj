@@ -2047,7 +2047,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-macOS/Pods-macOS-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ProcedureKit-All-Cloud-Location-Network-Standard-macOS/ProcedureKit.framework",
+				"${BUILT_PRODUCTS_DIR}/ProcedureKit-macOS/ProcedureKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyUserDefaults-macOS/SwiftyUserDefaults.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -2121,13 +2121,11 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-iOS/Pods-iOS-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/DZNEmptyDataSet/DZNEmptyDataSet.framework",
-				"${BUILT_PRODUCTS_DIR}/ProcedureKit-All-Cloud-Location-Mobile-Network-Standard/ProcedureKit.framework",
+				"${BUILT_PRODUCTS_DIR}/ProcedureKit-iOS/ProcedureKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyUserDefaults-iOS/SwiftyUserDefaults.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DZNEmptyDataSet.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProcedureKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyUserDefaults.framework",
 			);
@@ -2158,7 +2156,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-WikiMed/Pods-WikiMed-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ProcedureKit-All-Cloud-Location-Network-Standard-iOS/ProcedureKit.framework",
+				"${BUILT_PRODUCTS_DIR}/ProcedureKit-iOS/ProcedureKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (

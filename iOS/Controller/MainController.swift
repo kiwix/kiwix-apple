@@ -67,6 +67,7 @@ class MainController: UIViewController, UISearchBarDelegate, TabLoadingActivity,
         
         tab.delegate = self
         currentTab = tab
+        tabs.append(tab)
         
         addChildViewController(tab)
         tab.view.translatesAutoresizingMaskIntoConstraints = false
