@@ -197,6 +197,10 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
         return 44
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 44
+    }
+    
     // MARK: - NSFetchedResultsController
     
     private let managedObjectContext = CoreDataContainer.shared.viewContext

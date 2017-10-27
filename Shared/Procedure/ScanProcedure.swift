@@ -17,17 +17,17 @@ class ScanProcedure: Procedure {
     }
     
     override func execute() {
-        urls.forEach({ updateReader(dir: $0) })
+        urls.forEach({ addReader(dir: $0) })
+        ZimMultiReader.shared.removeStaleReaders()
         updateDatabase()
         print("Scan Finished, number of readers: \(ZimMultiReader.shared.ids.count)")
         finish()
     }
     
-    func updateReader(dir: URL) {
+    func addReader(dir: URL) {
         let urls = (try? FileManager.default.contentsOfDirectory(at: dir, includingPropertiesForKeys: nil,
                                                                  options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants])) ?? []
         urls.forEach({ ZimMultiReader.shared.addBook(url: $0) })
-        ZimMultiReader.shared.removeStaleReaders()
     }
     
     func updateDatabase() {

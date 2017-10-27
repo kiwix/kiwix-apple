@@ -41,8 +41,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         }
     }
     
+    // MARK: - Directory Monitoring
+    
     func directoryContentDidChange(url: URL) {
         Queue.shared.add(scanProcedure: ScanProcedure(url: url))
+    }
+    
+    // MARK: - Background
+    
+    func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
+        Network.shared.backgroundEventsCompleteProcessing[identifier] = completionHandler
     }
 }
 

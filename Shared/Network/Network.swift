@@ -124,6 +124,8 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
             self.managedObjectContext.perform({ 
                 for (bookID, bytesWritten) in self.progresses {
                     guard let book = Book.fetch(id: bookID, context: self.managedObjectContext) else {continue}
+                    if book.state != .downloading {book.state = .downloading}
+                    if book.downloadTask?.state != .downloading {book.downloadTask?.state = .downloading}
                     book.downloadTask?.totalBytesWritten = bytesWritten
                 }
             })
@@ -140,9 +142,8 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
         
         if let error = error as NSError?, error.code == URLError.cancelled.rawValue {
             self.managedObjectContext.perform({
-                if let data = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data {
-                    Preference.resumeData[bookID] = data
-                }
+                guard let data = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data else {return}
+                Preference.resumeData[bookID] = data
             })
         }
         
@@ -157,13 +158,8 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     // MARK: - URLSessionDownloadDelegate
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
-        managedObjectContext.perform { 
-            guard let bookID = downloadTask.taskDescription,
-                let book = Book.fetch(id: bookID, context: self.managedObjectContext) else {return}
-            if book.state != .downloading {book.state = .downloading}
-            if book.downloadTask?.state != .downloading {book.downloadTask?.state = .downloading}
-            self.progresses[bookID] = totalBytesWritten
-        }
+        guard let bookID = downloadTask.taskDescription else {return}
+        self.progresses[bookID] = totalBytesWritten
     }
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
@@ -173,7 +169,7 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
             let fileName = {
                 return downloadTask.response?.suggestedFilename
                     ?? downloadTask.originalRequest?.url?.lastPathComponent
-                    ?? bookID
+                    ?? bookID + ".zim"
             }()
             let destination = docDirURL.appendingPathComponent(fileName)
             try? FileManager.default.moveItem(at: location, to: destination)
