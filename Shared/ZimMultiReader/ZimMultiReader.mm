@@ -72,7 +72,7 @@ std::vector<std::string> *searcherZimIDs = NULL;
 }
 
 - (void)removeStaleReaders {
-    for (NSString *identifier in urls) {
+    for (NSString *identifier in [urls allKeys]) {
         NSURL *url = urls[identifier];
         NSString *path = [url path];
         if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {

@@ -149,7 +149,7 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
                     let total = book.fileSizeDescription,
                     let percentage = percentFormatter.string(for: Double(downloadTask.totalBytesWritten) / Double(book.fileSize)) {
                     let written = ByteCountFormatter.string(fromByteCount: downloadTask.totalBytesWritten, countStyle: .file)
-                    return "\(written)/\(total), \(percentage)"
+                    return "\(downloadTask.state)" + "\(written)/\(total), \(percentage)"
                 } else {
                     return NSLocalizedString("Downloading...", comment: "Library downloading default state")
                 }

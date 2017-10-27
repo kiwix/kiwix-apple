@@ -9,11 +9,7 @@
 class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
     static let shared = Network()
     let bookSizeThreshold: Int64 = 100000000
-    private override init() {
-        super.init()
-        _ = wifiSession
-        _ = cellularSession
-    }
+    
     var progresses = [String: Int64]()
     let managedObjectContext = CoreDataContainer.shared.viewContext
     var timer: Timer?
@@ -32,6 +28,43 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     }()
     
     var backgroundEventsCompleteProcessing = [String: () -> Void]()
+    
+    // MARK: - management
+    
+    private override init() {}
+    
+    func restorePreviousState() {
+        var hasTask = false
+        [wifiSession, cellularSession].forEach { (session) in
+            session.getTasksWithCompletionHandler({ (_, _, downloadTasks) in
+                downloadTasks.forEach({ (task) in
+                    guard let bookID = task.taskDescription else {return}
+                    hasTask = true
+                    NetworkActivityController.shared.taskDidStart(identifier: bookID)
+                })
+            })
+        }
+        if hasTask && self.timer == nil {
+            self.startTimer()
+        }
+    }
+    
+    private func startTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { (timer) in
+            self.managedObjectContext.perform({
+                for (bookID, bytesWritten) in self.progresses {
+                    guard let book = Book.fetch(id: bookID, context: self.managedObjectContext) else {continue}
+                    if book.state != .downloading {book.state = .downloading}
+                    if bytesWritten > 0 {
+                        book.downloadTask?.state = .downloading 
+                        book.downloadTask?.totalBytesWritten = bytesWritten
+                    } else {
+                        book.downloadTask?.state = .queued
+                    }
+                }
+            })
+        })
+    }
     
     // MARK: - actions
     
@@ -103,7 +136,7 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
         if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
         
         progresses[bookID] = 0
-        if progresses.count == 1 { startTimer() }
+        if timer == nil { startTimer() }
         
         NetworkActivityController.shared.taskDidStart(identifier: bookID)
     }
@@ -117,19 +150,6 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
                 task.cancel()
             }
         }
-    }
-    
-    private func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { (timer) in
-            self.managedObjectContext.perform({ 
-                for (bookID, bytesWritten) in self.progresses {
-                    guard let book = Book.fetch(id: bookID, context: self.managedObjectContext) else {continue}
-                    if book.state != .downloading {book.state = .downloading}
-                    if book.downloadTask?.state != .downloading {book.downloadTask?.state = .downloading}
-                    book.downloadTask?.totalBytesWritten = bytesWritten
-                }
-            })
-        })
     }
     
     // MARK: - URLSessionTaskDelegate

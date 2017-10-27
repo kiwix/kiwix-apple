@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         window?.rootViewController = UINavigationController(rootViewController: MainController())
         window?.makeKeyAndVisible()
         
+        Network.shared.restorePreviousState()
         URLProtocol.registerClass(KiwixURLProtocol.self)
         monitor.delegate = self
         Queue.shared.add(scanProcedure: ScanProcedure(url: URL.documentDirectory))
