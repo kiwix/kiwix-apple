@@ -144,10 +144,10 @@ class LibraryLanguageController: BaseController, UITableViewDelegate, UITableVie
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
-            return showLanguages.count == 0 ? CGFloat.leastNormalMagnitude : 44
+        if showLanguages.count == 0 {
+            return section == 0 ? CGFloat.leastNormalMagnitude : 22
         } else {
-            return 30
+            return 44
         }
     }
 
