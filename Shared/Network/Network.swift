@@ -160,10 +160,28 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
         progresses[bookID] = nil
         if progresses.count == 0 { timer?.invalidate() }
         
-        if let error = error as NSError?, error.code == URLError.cancelled.rawValue {
+        if let error = error as NSError? {
             self.managedObjectContext.perform({
-                guard let data = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data else {return}
-                Preference.resumeData[bookID] = data
+                guard let book = Book.fetch(id: bookID, context: self.managedObjectContext) else {return}
+                if error.code == URLError.cancelled.rawValue {
+                    if let data = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data {
+                        // task is resumable
+                        Preference.resumeData[bookID] = data
+                        book.downloadTask?.state = .paused
+                    } else {
+                        // task is not resumable
+                        if let downloadTask = book.downloadTask {
+                            self.managedObjectContext.delete(downloadTask)
+                        }
+                        if let _ = book.url {
+                            book.state = .cloud
+                        } else {
+                            self.managedObjectContext.delete(book)
+                        }
+                    }
+                } else {
+                    book.downloadTask?.state = .error
+                }
             })
         }
         
