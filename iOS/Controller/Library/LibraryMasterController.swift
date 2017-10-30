@@ -165,7 +165,7 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
             guard let sectionTitle = fetchedResultController.sections?[section].name else {return nil}
             switch sectionTitle {
             case "1":
-                return NSLocalizedString("Downloading", comment: "Library section headers")
+                return NSLocalizedString("Downloads", comment: "Library section headers")
             case "2":
                 return NSLocalizedString("On Device", comment: "Library section headers")
             default:
@@ -181,6 +181,9 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
         if indexPath.section < fetchedResultControllerSectionCount {
             guard let sectionTitle = fetchedResultController.sections?[indexPath.section].name else {return}
             switch sectionTitle {
+            case "1":
+                let controller = LibraryBookDetailController(book: fetchedResultController.object(at: indexPath))
+                showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
             case "2":
                 let controller = LibraryBookDetailController(book: fetchedResultController.object(at: indexPath))
                 showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
