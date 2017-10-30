@@ -52,12 +52,6 @@ class Book: NSManagedObject {
         return urlComponents?.url
     }
     
-    // MARK: - Manage
-    
-    func removeResumeData() {
-//        Preference.resumeData[id] = nil
-    }
-    
     // MARK: - Properties Description
     
     static private let dateFormatter: DateFormatter = {

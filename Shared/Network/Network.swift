@@ -56,10 +56,10 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
                     guard let book = Book.fetch(id: bookID, context: self.managedObjectContext) else {continue}
                     if book.state != .downloading {book.state = .downloading}
                     if bytesWritten > 0 {
-                        book.downloadTask?.state = .downloading 
+                        if book.downloadTask?.state != .downloading {book.downloadTask?.state = .downloading; print("set state to downloading")}
                         book.downloadTask?.totalBytesWritten = bytesWritten
                     } else {
-                        book.downloadTask?.state = .queued
+                        if book.downloadTask?.state != .queued {book.downloadTask?.state = .queued}
                     }
                 }
             })
@@ -112,6 +112,8 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
         cancelTask(in: wifiSession, taskDescription: bookID, producingResumingData: false)
         cancelTask(in: cellularSession, taskDescription: bookID, producingResumingData: false)
         
+        Preference.resumeData[bookID] = nil
+        
         self.managedObjectContext.perform({
             guard let book = Book.fetch(id: bookID, context: self.managedObjectContext) else {return}
             book.meta4URL != nil ? book.state = .cloud : self.managedObjectContext.delete(book)
@@ -129,6 +131,8 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
         let task = (bookSizeIsBig ? wifiSession : cellularSession).downloadTask(withResumeData: data)
         task.taskDescription = bookID
         task.resume()
+        
+        Preference.resumeData[bookID] = nil
         
         let downloadTask = DownloadTask.fetchAddIfNotExist(bookID: bookID, context: managedObjectContext)
         downloadTask?.state = .queued

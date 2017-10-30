@@ -10,8 +10,10 @@ import UIKit
 
 class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     private(set) var book: Book?
-    private(set) var observer: NSKeyValueObservation?
     let tableView = UITableView(frame: .zero, style: .grouped)
+    
+    private(set) var bookStateObserver: NSKeyValueObservation?
+    private(set) var downloadTaskStateObserver: NSKeyValueObservation?
     
     var actions = [[Action]]()
     let metas: [[BookMeta]] = [
@@ -43,20 +45,45 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
     convenience init(book: Book) {
         self.init()
         self.book = book
-        self.observer = book.observe(\Book.stateRaw, options: [.initial, .new]) { (book, change) in
+        
+        self.bookStateObserver = book.observe(\Book.stateRaw, options: [.initial, .new, .old]) { (_, change) in
             guard change.newValue != change.oldValue, let newValue = change.newValue, let state = BookState(rawValue: Int(newValue)) else {return}
             switch state {
             case .cloud:
-                self.actions = [[.downloadWifiOnly, .downloadWifiAndCellular]]
-            case .downloading:
-                self.actions = [[.cancel, .pause]]
+                if #available(iOS 11.0, *), let free = (try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+                    .resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey]).volumeAvailableCapacityForImportantUsage) ?? nil {
+                    self.actions = book.fileSize <= free ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]]
+                } else {
+                    self.actions = [[.downloadWifiOnly, .downloadWifiAndCellular]]
+                }
             case .local:
                 self.actions = [[.deleteFile, .deleteBookmarks, .deleteFileAndBookmarks], [.openMainPage]]
             case .retained:
                 self.actions = [[.deleteBookmarks]]
+            default:
+                break
             }
-            self.tableView.reloadData()
+            self.tableView.reloadSections([0, 1], with: .automatic)
         }
+        self.downloadTaskStateObserver = book.observe(\Book.downloadTask?.stateRaw, options: [.initial, .new, .old], changeHandler: { (book, change) in
+            guard (change.newValue ?? nil) != (change.oldValue ?? nil), let newValue = change.newValue ?? nil, let state = DownloadTaskState(rawValue: Int(newValue)) else {return}
+            switch state {
+            case .queued:
+                self.actions = [[.cancel]]
+            case .downloading:
+                self.actions = [[.cancel, .pause]]
+            case .paused:
+                self.actions = [[.cancel, .resume]]
+            case .error:
+                if #available(iOS 11.0, *), let free = (try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+                    .resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey]).volumeAvailableCapacityForImportantUsage) ?? nil {
+                    self.actions = book.fileSize <= free ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]]
+                } else {
+                    self.actions = [[.downloadWifiOnly, .downloadWifiAndCellular]]
+                }
+            }
+            self.tableView.reloadSections([0], with: .automatic)
+        })
         title = book.title
     }
     
@@ -65,6 +92,13 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(LibraryActionCell.self, forCellReuseIdentifier: "ActionCell")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if #available(iOS 11.0, *) {
+            navigationController?.navigationBar.prefersLargeTitles = true
+        }
     }
     
     // MARK: - UITableViewDataSource & Delagates
@@ -80,9 +114,10 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section < actions.count {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! LibraryActionCell
+            cell.indentationLevel = 0
             let action = actions[indexPath.section][indexPath.row]
             if action.isDestructive {cell.isDestructive = true}
-            if action.isDestructive {cell.isDestructive = true}
+            if action.isDisabled {cell.isDisabled = true}
             switch action {
             case .downloadWifiOnly:
                 cell.textLabel?.text = NSLocalizedString("Download - Wifi Only", comment: "Book Detail Cell")
@@ -137,20 +172,20 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
         if indexPath.section < actions.count {
             let action = actions[indexPath.section][indexPath.row]
             switch action {
+            case .downloadWifiOnly:
+                Network.shared.start(bookID: book.id, useWifiAndCellular: false)
+            case .downloadWifiAndCellular:
+                Network.shared.start(bookID: book.id, useWifiAndCellular: true)
             case .cancel:
                 Network.shared.cancel(bookID: book.id)
+            case .pause:
+                Network.shared.pause(bookID: book.id)
+            case .resume:
+                Network.shared.resume(bookID: book.id)
             default:
                 break
             }
         }
-//        if indexPath.section == 0 {
-//            let alert = UIAlertController(title: NSLocalizedString("Confirmation", comment: "Book Delete Confirmation"), message: "", preferredStyle: .alert)
-//            alert.addAction(UIAlertAction(title: "Delete", style: UIAlertActionStyle.destructive, handler: { _ in
-//                print("book delete")
-//            }))
-//            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-//            present(alert, animated: true, completion: nil)
-//        }
     }
 }
 
