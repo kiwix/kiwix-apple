@@ -63,6 +63,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         cell.titleLabel.text = book.title
         cell.subtitleLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
         cell.logoView.image = UIImage(data: book.favIcon ?? Data())
+        cell.accessoryType = .disclosureIndicator
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -83,20 +84,8 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let cell = tableView.cellForRow(at: indexPath) as! LibraryBookCell
-        let book = fetchedResultController.object(at: indexPath)
-        let alert = UIAlertController(title: book.title, message: book.desc, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Download - Wifi Only", comment: "Download books"), style: .default, handler: { _ in
-            Network.shared.start(bookID: book.id, useWifiAndCellular: false)
-        }))
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Download - Wifi & Cellular", comment: "Download books"), style: .default, handler: { _ in
-            Network.shared.start(bookID: book.id, useWifiAndCellular: true)
-        }))
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Download books"), style: .cancel, handler: nil))
-        alert.popoverPresentationController?.sourceView = cell.logoView
-        alert.popoverPresentationController?.sourceRect = cell.logoView.bounds
-        alert.popoverPresentationController?.permittedArrowDirections = [.up, .down]
-        present(alert, animated: true, completion: nil)
+        let controller = LibraryBookDetailController(book: fetchedResultController.object(at: indexPath))
+        navigationController?.pushViewController(controller, animated: true)
     }
     
     // MARK: - NSFetchedResultsController

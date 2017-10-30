@@ -128,7 +128,6 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section < fetchedResultControllerSectionCount {
             let cell = tableView.dequeueReusableCell(withIdentifier: "BookCell", for: indexPath) as! LibraryBookCell
-            cell.accessoryType = .disclosureIndicator
             configure(bookCell: cell, indexPath: indexPath)
             return cell
         } else {
@@ -158,6 +157,7 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
             }
         }()
         cell.logoView.image = UIImage(data: book.favIcon ?? Data())
+        cell.accessoryType = .disclosureIndicator
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -179,17 +179,8 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section < fetchedResultControllerSectionCount {
-            guard let sectionTitle = fetchedResultController.sections?[indexPath.section].name else {return}
-            switch sectionTitle {
-            case "1":
-                let controller = LibraryBookDetailController(book: fetchedResultController.object(at: indexPath))
-                showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
-            case "2":
-                let controller = LibraryBookDetailController(book: fetchedResultController.object(at: indexPath))
-                showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
-            default:
-                return
-            }
+            let controller = LibraryBookDetailController(book: fetchedResultController.object(at: indexPath))
+            showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
         } else {
             let controller = LibraryCategoryController(category: categories[indexPath.row], title: categoryNames[indexPath.row])
             showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
