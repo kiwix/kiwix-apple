@@ -29,6 +29,16 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
         [.creator, .publisher]
     ]
     
+    static let percentFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .percent
+        formatter.minimumFractionDigits = 1
+        formatter.maximumIntegerDigits = 3
+        formatter.minimumFractionDigits = 2
+        formatter.maximumIntegerDigits = 2
+        return formatter
+    }()
+    
     enum BookMeta: String {
         case size, date, articleCount, mediaCount, creator, publisher
     }
@@ -77,19 +87,6 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
             default:
                 break
             }
-            
-            print(newValue)
-            
-            // Don't need to reload table if we are receiving initial values
-//            if let oldValue = change.newValue, let oldStatus = BookState(rawValue: Int(oldValue)), oldStatus != newState {
-//                if oldStatus == .local {
-//                    self.tableView.reloadSections([0], with: .automatic)
-//                    self.tableView.insertSections([1], with: .automatic)
-//                } else {
-//                    self.tableView.reloadSections([0], with: .automatic)
-//                    self.tableView.deleteSections([1], with: .automatic)
-//                }
-//            }
         }
         title = book.title
     }

@@ -32,16 +32,6 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
         NSLocalizedString("StackExchange", comment: "Zim File Types"),
         NSLocalizedString("Other", comment: "Zim File Types")]
     
-    let percentFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .percent
-        formatter.minimumFractionDigits = 1
-        formatter.maximumIntegerDigits = 3
-        formatter.minimumFractionDigits = 2
-        formatter.maximumIntegerDigits = 2
-        return formatter
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = NSLocalizedString("Library", comment: "Library title")
@@ -79,6 +69,7 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
         tableView.dataSource = self
         tableView.refreshControl = refreshControl
         tableView.register(LibraryBookCell.self, forCellReuseIdentifier: "BookCell")
+        tableView.register(LibraryDownloadCell.self, forCellReuseIdentifier: "DownloadCell")
         tableView.register(LibraryCategoryCell.self, forCellReuseIdentifier: "CategoryCell")
         view.addSubview(tableView)
         view.addConstraints([
@@ -127,9 +118,16 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section < fetchedResultControllerSectionCount {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "BookCell", for: indexPath) as! LibraryBookCell
-            configure(bookCell: cell, indexPath: indexPath)
-            return cell
+            let sectionTitle = fetchedResultController.sections?[indexPath.section].name
+            if sectionTitle == "1" {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "DownloadCell", for: indexPath) as! LibraryDownloadCell
+                configure(downloadCell: cell, indexPath: indexPath)
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "BookCell", for: indexPath) as! LibraryBookCell
+                configure(bookCell: cell, indexPath: indexPath)
+                return cell
+            }
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath) as! LibraryCategoryCell
             cell.accessoryType = .disclosureIndicator
@@ -139,10 +137,19 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
         }
     }
     
+    func configure(downloadCell cell: LibraryDownloadCell, indexPath: IndexPath, animated: Bool = false) {
+        let book = fetchedResultController.object(at: indexPath)
+        cell.titleLabel.text = book.title
+        cell.stateLabel.text = book.state.shortLocalizedDescription
+        cell.progressLabel.text = [book.totalBytesWritten, book.fileSize].map({ByteCountFormatter.string(fromByteCount: $0, countStyle: .file)}).joined(separator: " / ")
+        cell.logoView.image = UIImage(data: book.favIcon ?? Data())
+        cell.accessoryType = .disclosureIndicator
+    }
+    
     func configure(bookCell cell: LibraryBookCell, indexPath: IndexPath, animated: Bool = false) {
         let book = fetchedResultController.object(at: indexPath)
         cell.titleLabel.text = book.title
-        cell.subtitleLabel.text = ["\(book.stateRaw)", book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
+        cell.subtitleLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
         cell.logoView.image = UIImage(data: book.favIcon ?? Data())
         cell.accessoryType = .disclosureIndicator
     }
@@ -227,8 +234,14 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
             guard let indexPath = indexPath else {return}
             tableView.deleteRows(at: [indexPath], with: .fade)
         case .update:
-            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? LibraryBookCell else {return}
-            configure(bookCell: cell, indexPath: indexPath, animated: true)
+            guard let indexPath = indexPath else {return}
+            let sectionTitle = fetchedResultController.sections?[indexPath.section].name
+            if sectionTitle == "1", let cell = tableView.cellForRow(at: indexPath) as? LibraryDownloadCell {
+                configure(downloadCell: cell, indexPath: indexPath, animated: true)
+            } else if let cell = tableView.cellForRow(at: indexPath) as? LibraryBookCell {
+                configure(bookCell: cell, indexPath: indexPath, animated: true)
+            }
+            
         case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
             tableView.deleteRows(at: [indexPath], with: .fade)

@@ -111,6 +111,25 @@ class BookArticleCountFormatter {
 
 enum BookState: Int {
     case cloud = 0, downloadQueued, downloading, downloadPaused, downloadError, local, retained
+    
+    var shortLocalizedDescription: String {
+        switch self {
+        case .cloud:
+            return NSLocalizedString("Cloud", comment: "Book State")
+        case .downloadQueued:
+            return NSLocalizedString("Queued", comment: "Book State")
+        case .downloading:
+            return NSLocalizedString("Downloading", comment: "Book State")
+        case .downloadPaused:
+            return NSLocalizedString("Paused", comment: "Book State")
+        case .downloadError:
+            return NSLocalizedString("Error", comment: "Book State")
+        case .local:
+            return NSLocalizedString("Local", comment: "Book State")
+        case .retained:
+            return NSLocalizedString("Retained", comment: "Book State")
+        }
+    }
 }
 
 enum BookCategory: String {

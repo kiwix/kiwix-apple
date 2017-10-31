@@ -13,12 +13,6 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     private let managedObjectContext = CoreDataContainer.shared.viewContext
     private var timer: Timer?
     
-//    lazy var wifiSession: URLSession = {
-//        let configuration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.wifi")
-//        configuration.allowsCellularAccess = false
-//        configuration.isDiscretionary = false
-//        return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
-//    }()
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.background")
         configuration.allowsCellularAccess = true
@@ -53,7 +47,6 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
             self.managedObjectContext.perform({
                 for (bookID, bytesWritten) in self.progresses {
                     guard let book = Book.fetch(id: bookID, context: self.managedObjectContext) else {continue}
-                    if book.state != .downloading {book.state = .downloading}
                     if bytesWritten > 0 {
                         if book.state != .downloading {book.state = .downloading}
                         book.totalBytesWritten = bytesWritten
