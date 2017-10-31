@@ -43,7 +43,7 @@ extension Book {
     @NSManaged public var meta4URL: String?
     @NSManaged public var pid: String?
     @NSManaged public var publisher: String?
-    @NSManaged public var stateRaw: String
+    @NSManaged public var stateRaw: Int16
     @NSManaged public var title: String?
     @NSManaged public var totalBytesWritten: Int64
     

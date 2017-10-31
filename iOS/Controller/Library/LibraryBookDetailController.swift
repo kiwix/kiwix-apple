@@ -48,7 +48,7 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
         self.book = book
         
         self.bookStateObserver = book.observe(\Book.stateRaw, options: [.initial, .new, .old]) { (_, change) in
-            guard let newValue = change.newValue, let newState = BookState(rawValue: newValue) else {return}
+            guard let newValue = change.newValue, let newState = BookState(rawValue: Int(newValue)) else {return}
             switch newState {
             case .cloud:
                 if #available(iOS 11.0, *), let free = (try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
@@ -72,7 +72,7 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
             }
             
             // Don't need to reload table if we are receiving initial values
-            if let oldValue = change.newValue, let _ = BookState(rawValue: oldValue) {
+            if let oldValue = change.newValue, let _ = BookState(rawValue: Int(oldValue)) {
                 self.tableView.reloadSections([0, 1], with: .automatic)
             }
         }

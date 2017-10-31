@@ -122,8 +122,6 @@
 		977F983E1F9E43EC002ABFCE /* ScanProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977F983D1F9E43EC002ABFCE /* ScanProcedure.swift */; };
 		977F983F1F9E43EC002ABFCE /* ScanProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977F983D1F9E43EC002ABFCE /* ScanProcedure.swift */; };
 		979D17831E6DE50C006AE496 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 979D17821E6DE50C006AE496 /* Assets.xcassets */; };
-		979DE0F71FA7D1B70064ABF9 /* 1.9.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 979DE0F61FA7D1B70064ABF9 /* 1.9.xcmappingmodel */; };
-		979DE0F81FA7D1B70064ABF9 /* 1.9.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 979DE0F61FA7D1B70064ABF9 /* 1.9.xcmappingmodel */; };
 		97A1FD1C1D6F71D800A80EE2 /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD1A1D6F71D800A80EE2 /* KiwixURLProtocol.swift */; };
 		97A1FD451D6F728200A80EE2 /* Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD411D6F728200A80EE2 /* Localized.swift */; };
 		97A36C271F8C21210079B452 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996D31F61DB38007A6282 /* SearchController.swift */; };
@@ -232,6 +230,8 @@
 		97D231AB1E677CB300DCD4A4 /* Others.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D231A41E677CB300DCD4A4 /* Others.swift */; };
 		97D231AC1E677CB300DCD4A4 /* RefreshLibControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D231A51E677CB300DCD4A4 /* RefreshLibControl.swift */; };
 		97D6813F1D6F712800E5FA99 /* ManagedObjectProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813B1D6F712800E5FA99 /* ManagedObjectProperties.swift */; };
+		97D9D5641FA8F00E005B28F0 /* 1.9.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97D9D5631FA8F00E005B28F0 /* 1.9.xcmappingmodel */; };
+		97D9D5651FA8F00E005B28F0 /* 1.9.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97D9D5631FA8F00E005B28F0 /* 1.9.xcmappingmodel */; };
 		97DA5C1E1E6F420800873048 /* BrowsingHistoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DA5C1D1E6F420800873048 /* BrowsingHistoryController.swift */; };
 		97DB65DA1D4576B600A2CC42 /* BookmarkWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */; };
 		97E0A7B71E96CC3300320F06 /* TabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E0A7B61E96CC3300320F06 /* TabController.swift */; };
@@ -410,7 +410,7 @@
 		979315811E5127930093D3BA /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9793158C1E5127930093D3BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		979D17821E6DE50C006AE496 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		979DE0F61FA7D1B70064ABF9 /* 1.9.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = 1.9.xcmappingmodel; sourceTree = "<group>"; };
+		979DE0F61FA7D1B70064ABF9 /* 1.81.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = 1.81.xcmappingmodel; sourceTree = "<group>"; };
 		97A1FD1A1D6F71D800A80EE2 /* KiwixURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KiwixURLProtocol.swift; sourceTree = "<group>"; };
 		97A1FD401D6F728200A80EE2 /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		97A1FD411D6F728200A80EE2 /* Localized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localized.swift; sourceTree = "<group>"; };
@@ -737,6 +737,7 @@
 		97D9D4FF1F43813D00A8CBEF /* zimcreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zimcreator.h; sourceTree = "<group>"; };
 		97D9D5001F43813D00A8CBEF /* zim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zim.h; sourceTree = "<group>"; };
 		97D9D5011F43813D00A8CBEF /* zlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zlib.h; sourceTree = "<group>"; };
+		97D9D5631FA8F00E005B28F0 /* 1.9.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = 1.9.xcmappingmodel; sourceTree = "<group>"; };
 		97DA5C1D1E6F420800873048 /* BrowsingHistoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowsingHistoryController.swift; sourceTree = "<group>"; };
 		97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkWidgetCell.swift; sourceTree = "<group>"; };
 		97DEE72E1F8F1EA200287124 /* 1.9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.9.xcdatamodel; sourceTree = "<group>"; };
@@ -946,7 +947,8 @@
 			children = (
 				97318E4D1E6780F9000B718B /* 1.5.xcmappingmodel */,
 				97318E4F1E6780F9000B718B /* 1.8.xcmappingmodel */,
-				979DE0F61FA7D1B70064ABF9 /* 1.9.xcmappingmodel */,
+				979DE0F61FA7D1B70064ABF9 /* 1.81.xcmappingmodel */,
+				97D9D5631FA8F00E005B28F0 /* 1.9.xcmappingmodel */,
 				97318E501E6780F9000B718B /* MigrationPolicy.swift */,
 			);
 			path = Migration;
@@ -2203,7 +2205,6 @@
 				97A996D21F60A1A0007A6282 /* ToolBarController.swift in Sources */,
 				975FDADC1F6082DA00A10E8C /* MainController.swift in Sources */,
 				975FDAF51F608A2200A10E8C /* URLProtocol.swift in Sources */,
-				979DE0F81FA7D1B70064ABF9 /* 1.9.xcmappingmodel in Sources */,
 				97050D011F6733400021DE78 /* WebKitTabController.swift in Sources */,
 				97050D031F6735100021DE78 /* WebKitHandler.swift in Sources */,
 				9702BE231F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */,
@@ -2225,6 +2226,7 @@
 				975FDADA1F6082DA00A10E8C /* AppDelegate.swift in Sources */,
 				97A996D71F62F1B5007A6282 /* SearchProcedure.swift in Sources */,
 				977D7BBC1F9E6A7A009A8703 /* DirectoryMonitor.swift in Sources */,
+				97D9D5651FA8F00E005B28F0 /* 1.9.xcmappingmodel in Sources */,
 				97A36C521F8D4FB80079B452 /* VisualEffectShadowView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2349,13 +2351,13 @@
 				97B1D0B61F9A3AE7000C7848 /* Network.swift in Sources */,
 				97A36C5E1F8EA6E60079B452 /* Book.swift in Sources */,
 				977D7BBB1F9E6A7A009A8703 /* DirectoryMonitor.swift in Sources */,
+				97D9D5641FA8F00E005B28F0 /* 1.9.xcmappingmodel in Sources */,
 				97A36C301F8C21210079B452 /* LegacyTabController.swift in Sources */,
 				97A36C5B1F8EA6DD0079B452 /* Kiwix.xcdatamodeld in Sources */,
 				97A36C571F8D5FCD0079B452 /* LibraryController.swift in Sources */,
 				97A36C311F8C21210079B452 /* SearchResultView.swift in Sources */,
 				97A36C6F1F8EA6F90079B452 /* ManagedObjectProperties.swift in Sources */,
 				97A36C321F8C21210079B452 /* AppDelegate.swift in Sources */,
-				979DE0F71FA7D1B70064ABF9 /* 1.9.xcmappingmodel in Sources */,
 				977F983E1F9E43EC002ABFCE /* ScanProcedure.swift in Sources */,
 				97A36C331F8C21210079B452 /* SearchProcedure.swift in Sources */,
 				97A36C511F8D4FB80079B452 /* VisualEffectShadowView.swift in Sources */,

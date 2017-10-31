@@ -43,15 +43,19 @@ class MigrationPolicy1_9: NSEntityMigrationPolicy {
         }
     }
     
-    @objc func bookStateString(stateInt: NSNumber) -> String? {
-        if stateInt.isEqual(to: NSNumber(integerLiteral: 1)) {
-            return "downloading"
-        } else if stateInt.isEqual(to: NSNumber(integerLiteral: 2)) {
-            return "local"
-        } else if stateInt.isEqual(to: NSNumber(integerLiteral: 3)) {
-            return "retained"
-        } else {
-            return "cloud"
+    @objc func bookStateRaw(book: Book) -> NSNumber? {
+        var newStateRaw = BookState.cloud.rawValue
+        if let oldStateRaw = (book.value(forKey: "stateRaw") as? NSNumber)?.intValue {
+            if oldStateRaw == 1 {
+                newStateRaw = 2
+            } else if oldStateRaw == 2 {
+                newStateRaw = 5
+            } else if oldStateRaw == 3 {
+                newStateRaw = 6
+            }
         }
+        
+        
+        return NSNumber(integerLiteral: newStateRaw)
     }
 }

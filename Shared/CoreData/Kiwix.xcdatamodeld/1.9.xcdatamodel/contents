@@ -33,7 +33,8 @@
         <attribute name="meta4URL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="publisher" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="stateRaw" attributeType="String" defaultValueString="cloud" syncable="YES"/>
+        <attribute name="sectionIndex" optional="YES" transient="YES" attributeType="Integer 16" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="stateRaw" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="totalBytesWritten" optional="YES" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="articles" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Article" inverseName="book" inverseEntity="Article" syncable="YES"/>
@@ -76,8 +77,8 @@
     </entity>
     <elements>
         <element name="Article" positionX="-657" positionY="-153" width="128" height="223"/>
-        <element name="Book" positionX="-947" positionY="-142" width="128" height="345"/>
-        <element name="Language" positionX="-657" positionY="216" width="128" height="103"/>
+        <element name="Book" positionX="-947" positionY="-142" width="128" height="360"/>
+        <element name="Language" positionX="-657" positionY="216" width="128" height="105"/>
         <element name="Tag" positionX="-425" positionY="-18" width="128" height="73"/>
     </elements>
 </model>

@@ -188,12 +188,12 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
     private lazy var fetchedResultController: NSFetchedResultsController<Book> = {
         let fetchRequest = Book.fetchRequest()
         fetchRequest.sortDescriptors = [
-            NSSortDescriptor(key: "stateRaw", ascending: true),
-            NSSortDescriptor(key: "title", ascending: true)]
-        fetchRequest.predicate = NSPredicate(format: "stateRaw == 1 OR stateRaw == 2")
+            NSSortDescriptor(keyPath: \Book.stateRaw, ascending: true),
+            NSSortDescriptor(keyPath: \Book.title, ascending: true)]
+        fetchRequest.predicate = NSPredicate(format: "stateRaw > 0")
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                     managedObjectContext: self.managedObjectContext,
-                                                    sectionNameKeyPath: "stateRaw", cacheName: nil)
+                                                    sectionNameKeyPath: "sectionIndex", cacheName: nil)
         controller.delegate = self
         try? controller.performFetch()
         return controller as! NSFetchedResultsController<Book>

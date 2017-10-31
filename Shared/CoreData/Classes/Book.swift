@@ -52,6 +52,26 @@ class Book: NSManagedObject {
         return urlComponents?.url
     }
     
+    var state: BookState {
+        get { return BookState(rawValue: Int(stateRaw)) ?? .cloud }
+        set { stateRaw = Int16(newValue.rawValue) }
+    }
+    
+    @objc var sectionIndex: Int {
+        get {
+            switch state {
+            case .cloud:
+                return 0
+            case .downloading, .downloadPaused, .downloadQueued, .downloadError:
+                return 1
+            case .local:
+                return 2
+            case .retained:
+                return 3
+            }
+        }
+    }
+    
     // MARK: - Properties Description
     
     static private let dateFormatter: DateFormatter = {
@@ -75,17 +95,6 @@ class Book: NSManagedObject {
         guard articleCount != 0 else {return nil}
         return BookArticleCountFormatter.string(num: articleCount) + (articleCount > 1 ? " articles" : " article")
     }
-    
-    // MARK: - States
-    
-    var state: BookState {
-        get {
-            return BookState(rawValue: stateRaw) ?? .cloud
-        }
-        set {
-            stateRaw = newValue.rawValue
-        }
-    }
 }
 
 class BookArticleCountFormatter {
@@ -100,8 +109,8 @@ class BookArticleCountFormatter {
     }
 }
 
-enum BookState: String {
-    case cloud, local, retained, downloadQueued, downloading, downloadPaused, downloadError
+enum BookState: Int {
+    case cloud, downloadQueued, downloading, downloadPaused, downloadError, local, retained
 }
 
 enum BookCategory: String {

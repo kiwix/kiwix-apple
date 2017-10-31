@@ -33,7 +33,7 @@ class Language: NSManagedObject {
     
     class func fetch(displayed: Bool, context: NSManagedObjectContext) -> [Language] {
         let request = Language.fetchRequest() as! NSFetchRequest<Language>
-        request.predicate = NSPredicate(format: "isDisplayed == %@ AND name != nil", NSNumber(value: displayed))
+        request.predicate = NSPredicate(format: "isDisplayed == %@", NSNumber(value: displayed))
         return (try? context.fetch(request)) ?? [Language]()
     }
     
