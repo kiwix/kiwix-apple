@@ -46,25 +46,35 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
         self.init()
         self.book = book
         
-//        self.bookStateObserver = book.observe(\Book.stateRaw, options: [.initial, .new, .old]) { (_, change) in
-//            guard change.newValue != change.oldValue, let newValue = change.newValue, let state = BookState(rawValue: Int(newValue)) else {return}
-//            switch state {
-//            case .cloud:
-//                if #available(iOS 11.0, *), let free = (try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-//                    .resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey]).volumeAvailableCapacityForImportantUsage) ?? nil {
-//                    self.actions = book.fileSize <= free ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]]
-//                } else {
-//                    self.actions = [[.downloadWifiOnly, .downloadWifiAndCellular]]
-//                }
-//            case .local:
-//                self.actions = [[.deleteFile, .deleteBookmarks, .deleteFileAndBookmarks], [.openMainPage]]
-//            case .retained:
-//                self.actions = [[.deleteBookmarks]]
-//            default:
-//                break
-//            }
-//            self.tableView.reloadSections([0, 1], with: .automatic)
-//        }
+        self.bookStateObserver = book.observe(\Book.stateRaw, options: [.initial, .new, .old]) { (_, change) in
+            guard let newValue = change.newValue, let newState = BookState(rawValue: newValue) else {return}
+            switch newState {
+            case .cloud:
+                if #available(iOS 11.0, *), let free = (try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+                    .resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey]).volumeAvailableCapacityForImportantUsage) ?? nil {
+                    self.actions = book.fileSize <= free ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]]
+                } else {
+                    self.actions = [[.downloadWifiOnly, .downloadWifiAndCellular]]
+                }
+            case .local:
+                self.actions = [[.deleteFile, .deleteBookmarks, .deleteFileAndBookmarks], [.openMainPage]]
+            case .retained:
+                self.actions = [[.deleteBookmarks]]
+            case .downloadQueued:
+                self.actions = [[.cancel]]
+            case .downloading:
+                self.actions = [[.cancel, .pause]]
+            case .downloadPaused:
+                self.actions = [[.cancel, .resume]]
+            default:
+                break
+            }
+            
+            // Don't need to reload table if we are receiving initial values
+            if let oldValue = change.newValue, let oldState = BookState(rawValue: oldValue) {
+                self.tableView.reloadSections([0, 1], with: .automatic)
+            }
+        }
 //        self.downloadTaskStateObserver = book.observe(\Book.downloadTask?.stateRaw, options: [.initial, .new, .old], changeHandler: { (book, change) in
 //            guard (change.newValue ?? nil) != (change.oldValue ?? nil), let newValue = change.newValue ?? nil, let state = DownloadTaskState(rawValue: Int(newValue)) else {return}
 //            switch state {
@@ -173,9 +183,9 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
             let action = actions[indexPath.section][indexPath.row]
             switch action {
             case .downloadWifiOnly:
-                Network.shared.start(bookID: book.id, useWifiAndCellular: false)
+                Network.shared.start(bookID: book.id, allowsCellularAccess: false)
             case .downloadWifiAndCellular:
-                Network.shared.start(bookID: book.id, useWifiAndCellular: true)
+                Network.shared.start(bookID: book.id, allowsCellularAccess: true)
             case .cancel:
                 Network.shared.cancel(bookID: book.id)
             case .pause:

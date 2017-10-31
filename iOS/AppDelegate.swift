@@ -51,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     // MARK: - Background
     
     func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
-        Network.shared.backgroundEventsCompleteProcessing[identifier] = completionHandler
+        Network.shared.backgroundEventsCompleteProcessing = completionHandler
     }
 }
 

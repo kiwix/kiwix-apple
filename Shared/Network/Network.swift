@@ -8,45 +8,44 @@
 
 class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
     static let shared = Network()
-    let bookSizeThreshold: Int64 = 100000000
     
-    var progresses = [String: Int64]()
-    let managedObjectContext = CoreDataContainer.shared.viewContext
-    var timer: Timer?
+    private var progresses = [String: Int64]()
+    private let managedObjectContext = CoreDataContainer.shared.viewContext
+    private var timer: Timer?
     
-    lazy var wifiSession: URLSession = {
-        let configuration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.wifi")
-        configuration.allowsCellularAccess = false
-        configuration.isDiscretionary = false
-        return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
-    }()
-    lazy var cellularSession: URLSession = {
-        let configuration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.cellular")
+//    lazy var wifiSession: URLSession = {
+//        let configuration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.wifi")
+//        configuration.allowsCellularAccess = false
+//        configuration.isDiscretionary = false
+//        return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
+//    }()
+    private lazy var session: URLSession = {
+        let configuration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.background")
         configuration.allowsCellularAccess = true
         configuration.isDiscretionary = false
         return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }()
     
-    var backgroundEventsCompleteProcessing = [String: () -> Void]()
+    var backgroundEventsCompleteProcessing: (() -> Void)?
     
     // MARK: - management
     
     private override init() {}
     
     func restorePreviousState() {
-        var hasTask = false
-        [wifiSession, cellularSession].forEach { (session) in
-            session.getTasksWithCompletionHandler({ (_, _, downloadTasks) in
-                downloadTasks.forEach({ (task) in
-                    guard let bookID = task.taskDescription else {return}
-                    hasTask = true
-                    NetworkActivityController.shared.taskDidStart(identifier: bookID)
-                })
+        session.getTasksWithCompletionHandler({ (_, _, downloadTasks) in
+            var hasTask = false
+            downloadTasks.forEach({ (task) in
+                guard let bookID = task.taskDescription else {return}
+                hasTask = true
+                NetworkActivityController.shared.taskDidStart(identifier: bookID)
             })
-        }
-        if hasTask && self.timer == nil {
-            self.startTimer()
-        }
+            if hasTask && self.timer == nil {
+                OperationQueue.main.addOperation({
+                    self.startTimer()
+                })
+            }
+        })
     }
     
     private func startTimer() {
@@ -68,25 +67,18 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     
     // MARK: - actions
     
-    func start(bookID: String, useWifiAndCellular: Bool?) {
+    func start(bookID: String, allowsCellularAccess: Bool) {
         managedObjectContext.perform {
             guard let book = Book.fetch(id: bookID, context: self.managedObjectContext),
                 let url = book.url else {return}
-            let session: URLSession = {
-                if let useWifiAndCellular = useWifiAndCellular {
-                    return useWifiAndCellular ? self.cellularSession : self.wifiSession
-                } else {
-                    return book.fileSize > self.bookSizeThreshold ? self.wifiSession : self.cellularSession
-                }
-            }()
-
-            let task = session.downloadTask(with: url)
+            
+            var request = URLRequest(url: url)
+            request.allowsCellularAccess = allowsCellularAccess
+            let task = self.session.downloadTask(with: request)
             task.taskDescription = book.id
             task.resume()
             
-            self.progresses[bookID] = 0
-            if self.progresses.count == 1 { self.startTimer() }
-            
+            if self.timer == nil { self.startTimer() }
             NetworkActivityController.shared.taskDidStart(identifier: bookID)
             
             book.state = .downloadQueued
@@ -95,8 +87,7 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     }
     
     func pause(bookID: String) {
-        cancelTask(in: wifiSession, taskDescription: bookID, producingResumingData: true)
-        cancelTask(in: cellularSession, taskDescription: bookID, producingResumingData: true)
+        cancelTask(in: session, taskDescription: bookID, producingResumingData: true)
         
         self.managedObjectContext.perform({
             guard let book = Book.fetch(id: bookID, context: self.managedObjectContext) else {return}
@@ -106,8 +97,7 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     }
     
     func cancel(bookID: String) {
-        cancelTask(in: wifiSession, taskDescription: bookID, producingResumingData: false)
-        cancelTask(in: cellularSession, taskDescription: bookID, producingResumingData: false)
+        cancelTask(in: session, taskDescription: bookID, producingResumingData: false)
         
         Preference.resumeData[bookID] = nil
         
@@ -120,23 +110,19 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     
     func resume(bookID: String) {
         guard let data = Preference.resumeData[bookID] else {return}
-        
-        managedObjectContext.performAndWait {
+        managedObjectContext.perform {
             guard let book = Book.fetch(id: bookID, context: self.managedObjectContext) else {return}
-            let bookSizeIsBig = book.fileSize > bookSizeThreshold
-            let task = (bookSizeIsBig ? wifiSession : cellularSession).downloadTask(withResumeData: data)
+            let task = self.session.downloadTask(withResumeData: data)
             task.taskDescription = bookID
             task.resume()
             
             Preference.resumeData[bookID] = nil
             
+            if self.timer == nil { self.startTimer() }
+            NetworkActivityController.shared.taskDidStart(identifier: bookID)
+            
             book.state = .downloadQueued
             if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
-            
-            progresses[bookID] = 0
-            if timer == nil { startTimer() }
-            
-            NetworkActivityController.shared.taskDidStart(identifier: bookID)
         }
     }
     
@@ -154,10 +140,9 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     // MARK: - URLSessionTaskDelegate
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        if let error = error {print("Download error: \(error.localizedDescription)")}
         guard let bookID = task.taskDescription else {return}
         progresses[bookID] = nil
-        if progresses.count == 0 { timer?.invalidate() }
+        if progresses.count == 0 { timer?.invalidate(); self.timer = nil }
         
         if let error = error as NSError? {
             self.managedObjectContext.perform({
@@ -169,11 +154,7 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
                         book.state = .downloadPaused
                     } else {
                         // task is not resumable
-                        if let _ = book.url {
-                            book.state = .cloud
-                        } else {
-                            self.managedObjectContext.delete(book)
-                        }
+                        book.meta4URL != nil ? book.state = .cloud : self.managedObjectContext.delete(book)
                     }
                 } else {
                     book.state = .downloadError
@@ -181,8 +162,7 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
             })
         }
         
-        if let identifier = session.configuration.identifier,
-            let handler = backgroundEventsCompleteProcessing[identifier] {
+        if let handler = backgroundEventsCompleteProcessing {
             handler()
         }
         
@@ -209,16 +189,16 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
             try? FileManager.default.moveItem(at: location, to: destination)
         }
         
-        managedObjectContext.perform {
+//        managedObjectContext.perform {
 //            guard let book = Book.fetch(id: bookID, context: self.managedObjectContext) else {return}
 //            book.state = .local
 //            if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
-            
-            if Preference.Notifications.bookDownloadFinish {
+//
+//            if Preference.Notifications.bookDownloadFinish {
 //                AppNotification.shared.downloadFinished(bookID: book.id,
 //                                                        bookTitle: book.title ?? "Book",
 //                                                        fileSizeDescription: book.fileSizeDescription)
-            }
-        }
+//            }
+//        }
     }
 }
