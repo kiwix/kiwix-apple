@@ -18,8 +18,13 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
     var actions = [[Action]]()
     let metas: [[BookMeta]] = [
         [.size, .date],
-        [.articleCount, .mediaCount, .globalCount]
+        [.articleCount, .mediaCount],
+        [.creator, .publisher]
     ]
+    
+    enum BookMeta: String {
+        case size, date, articleCount, mediaCount, creator, publisher
+    }
     
     enum Action {
         case downloadWifiOnly, downloadWifiAndCellular, downloadSpaceNotEnough
@@ -36,10 +41,6 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
         var isDisabled: Bool {
             return self == .downloadSpaceNotEnough
         }
-    }
-    
-    enum BookMeta: String {
-        case size, date, articleCount, mediaCount, globalCount
     }
     
     convenience init(book: Book) {
@@ -71,29 +72,10 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
             }
             
             // Don't need to reload table if we are receiving initial values
-            if let oldValue = change.newValue, let oldState = BookState(rawValue: oldValue) {
+            if let oldValue = change.newValue, let _ = BookState(rawValue: oldValue) {
                 self.tableView.reloadSections([0, 1], with: .automatic)
             }
         }
-//        self.downloadTaskStateObserver = book.observe(\Book.downloadTask?.stateRaw, options: [.initial, .new, .old], changeHandler: { (book, change) in
-//            guard (change.newValue ?? nil) != (change.oldValue ?? nil), let newValue = change.newValue ?? nil, let state = DownloadTaskState(rawValue: Int(newValue)) else {return}
-//            switch state {
-//            case .queued:
-//                self.actions = [[.cancel]]
-//            case .downloading:
-//                self.actions = [[.cancel, .pause]]
-//            case .paused:
-//                self.actions = [[.cancel, .resume]]
-//            case .error:
-//                if #available(iOS 11.0, *), let free = (try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-//                    .resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey]).volumeAvailableCapacityForImportantUsage) ?? nil {
-//                    self.actions = book.fileSize <= free ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]]
-//                } else {
-//                    self.actions = [[.downloadWifiOnly, .downloadWifiAndCellular]]
-//                }
-//            }
-//            self.tableView.reloadSections([0], with: .automatic)
-//        })
         title = book.title
     }
     
@@ -152,7 +134,7 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
             }
             return cell
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") ?? UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "Cell")
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MetaCell") ?? UITableViewCell(style: .value1, reuseIdentifier: "MetaCell")
             let meta = metas[indexPath.section-actions.count][indexPath.row]
             cell.selectionStyle = .none
             switch meta {
@@ -168,9 +150,12 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
             case .mediaCount:
                 cell.textLabel?.text = NSLocalizedString("Media Count", comment: "Book Detail Cell")
                 if let count = book?.mediaCount {cell.detailTextLabel?.text = "\(count)"}
-            case .globalCount:
-                cell.textLabel?.text = NSLocalizedString("Global Count", comment: "Book Detail Cell")
-                if let count = book?.globalCount {cell.detailTextLabel?.text = "\(count)"}
+            case .creator:
+                cell.textLabel?.text = NSLocalizedString("Creator", comment: "Book Detail Cell")
+                cell.detailTextLabel?.text = book?.creator
+            case .publisher:
+                cell.textLabel?.text = NSLocalizedString("Publisher", comment: "Book Detail Cell")
+                cell.detailTextLabel?.text = book?.publisher
             }
             return cell
         }
