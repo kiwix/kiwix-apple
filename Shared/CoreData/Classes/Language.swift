@@ -19,27 +19,27 @@ class Language: NSManagedObject {
             return language
         }
         
-        guard let language = insert(Language.self, context: context) else {return nil}
+        let language = Language(context: context)
         language.code = code
         language.name = (Locale.current as NSLocale).displayName(forKey: NSLocale.Key.languageCode, value: code)
         return language
     }
     
     class func fetch(_ code: String, context: NSManagedObjectContext) -> Language? {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Language")
-        fetchRequest.predicate = NSPredicate(format: "code == %@", code)
-        return fetch(fetchRequest, type: Language.self, context: context)?.first
+        let request = Language.fetchRequest() as! NSFetchRequest<Language>
+        request.predicate = NSPredicate(format: "code == %@", code)
+        return (try? context.fetch(request))?.first
     }
     
     class func fetch(displayed: Bool, context: NSManagedObjectContext) -> [Language] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Language")
-        fetchRequest.predicate = NSPredicate(format: "isDisplayed == %@ AND name != nil", NSNumber(value: displayed))
-        return fetch(fetchRequest, type: Language.self, context: context) ?? [Language]()
+        let request = Language.fetchRequest() as! NSFetchRequest<Language>
+        request.predicate = NSPredicate(format: "isDisplayed == %@ AND name != nil", NSNumber(value: displayed))
+        return (try? context.fetch(request)) ?? [Language]()
     }
     
     class func fetchAll(_ context: NSManagedObjectContext) -> [Language] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Language")
-        return fetch(fetchRequest, type: Language.self, context: context) ?? [Language]()
+        let request = Language.fetchRequest() as! NSFetchRequest<Language>
+        return (try? context.fetch(request)) ?? [Language]()
     }
     
     // MARK: - Computed Properties

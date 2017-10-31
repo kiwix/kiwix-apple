@@ -31,7 +31,6 @@
 		97318E481E6780E7000B718B /* ImportBookLearnMore.html in Resources */ = {isa = PBXBuildFile; fileRef = 97318E411E6780E7000B718B /* ImportBookLearnMore.html */; };
 		97318E511E6780F9000B718B /* 1.5.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97318E4D1E6780F9000B718B /* 1.5.xcmappingmodel */; };
 		97318E531E6780F9000B718B /* 1.8.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97318E4F1E6780F9000B718B /* 1.8.xcmappingmodel */; };
-		9732075C1DD136BB00EDD3DC /* CoreDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9732075B1DD136BB00EDD3DC /* CoreDataExtension.swift */; };
 		973208231DD19C7600EDD3DC /* DownloadProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9726591A1D8DB91200D1DFFB /* DownloadProgress.swift */; };
 		973208261DD21E9C00EDD3DC /* CoreDataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973208251DD21E9C00EDD3DC /* CoreDataContainer.swift */; };
 		973208271DD2238B00EDD3DC /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6811C1D6F70AC00E5FA99 /* Queue.swift */; };
@@ -177,9 +176,7 @@
 		97A36C6E1F8EA6F50079B452 /* MigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97318E501E6780F9000B718B /* MigrationPolicy.swift */; };
 		97A36C6F1F8EA6F90079B452 /* ManagedObjectProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813B1D6F712800E5FA99 /* ManagedObjectProperties.swift */; };
 		97A36C731F8EA6FA0079B452 /* ManagedObjectProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6813B1D6F712800E5FA99 /* ManagedObjectProperties.swift */; };
-		97A36C771F8EA6FD0079B452 /* CoreDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9732075B1DD136BB00EDD3DC /* CoreDataExtension.swift */; };
 		97A36C781F8EA6FD0079B452 /* CoreDataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973208251DD21E9C00EDD3DC /* CoreDataContainer.swift */; };
-		97A36C791F8EA6FE0079B452 /* CoreDataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9732075B1DD136BB00EDD3DC /* CoreDataExtension.swift */; };
 		97A36C7A1F8EA6FE0079B452 /* CoreDataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973208251DD21E9C00EDD3DC /* CoreDataContainer.swift */; };
 		97A996CE1F609C9F007A6282 /* LegacyTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996CD1F609C9F007A6282 /* LegacyTabController.swift */; };
 		97A996D21F60A1A0007A6282 /* ToolBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996D11F60A1A0007A6282 /* ToolBarController.swift */; };
@@ -343,7 +340,6 @@
 		97318E4D1E6780F9000B718B /* 1.5.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = 1.5.xcmappingmodel; sourceTree = "<group>"; };
 		97318E4F1E6780F9000B718B /* 1.8.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = 1.8.xcmappingmodel; sourceTree = "<group>"; };
 		97318E501E6780F9000B718B /* MigrationPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MigrationPolicy.swift; sourceTree = "<group>"; };
-		9732075B1DD136BB00EDD3DC /* CoreDataExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataExtension.swift; sourceTree = "<group>"; };
 		973208251DD21E9C00EDD3DC /* CoreDataContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataContainer.swift; sourceTree = "<group>"; };
 		973208281DD223DB00EDD3DC /* LibraryProcedure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryProcedure.swift; sourceTree = "<group>"; };
 		973A5C931DEA6CA900C7804C /* URLResponseCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLResponseCache.swift; sourceTree = "<group>"; };
@@ -477,7 +473,6 @@
 		97D6812D1D6F70DE00E5FA99 /* Kiwix.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Kiwix.xcdatamodel; sourceTree = "<group>"; };
 		97D681331D6F711A00E5FA99 /* Article.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Article.swift; path = Classes/Article.swift; sourceTree = "<group>"; };
 		97D681341D6F711A00E5FA99 /* Book.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Book.swift; path = Classes/Book.swift; sourceTree = "<group>"; };
-		97D681351D6F711A00E5FA99 /* DownloadTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DownloadTask.swift; path = Classes/DownloadTask.swift; sourceTree = "<group>"; };
 		97D681361D6F711A00E5FA99 /* Language.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Language.swift; path = Classes/Language.swift; sourceTree = "<group>"; };
 		97D6813B1D6F712800E5FA99 /* ManagedObjectProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedObjectProperties.swift; sourceTree = "<group>"; };
 		97D9D3F71F43813D00A8CBEF /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
@@ -909,7 +904,6 @@
 				97D6812A1D6F70DE00E5FA99 /* Kiwix.xcdatamodeld */,
 				971187881CEB53CE00B9909D /* Classes */,
 				97318E4C1E6780F9000B718B /* Migration */,
-				9732075B1DD136BB00EDD3DC /* CoreDataExtension.swift */,
 				973208251DD21E9C00EDD3DC /* CoreDataContainer.swift */,
 				97D6813B1D6F712800E5FA99 /* ManagedObjectProperties.swift */,
 			);
@@ -921,7 +915,6 @@
 			children = (
 				97D681331D6F711A00E5FA99 /* Article.swift */,
 				97D681341D6F711A00E5FA99 /* Book.swift */,
-				97D681351D6F711A00E5FA99 /* DownloadTask.swift */,
 				97D681361D6F711A00E5FA99 /* Language.swift */,
 			);
 			name = Classes;
@@ -2216,7 +2209,6 @@
 				9702BE231F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */,
 				977D7BB91F9E6A43009A8703 /* ZimMultiReader.swift in Sources */,
 				977D7BBF1F9FC618009A8703 /* Queue.swift in Sources */,
-				97A36C791F8EA6FE0079B452 /* CoreDataExtension.swift in Sources */,
 				97A36C6C1F8EA6F50079B452 /* 1.5.xcmappingmodel in Sources */,
 				977F983F1F9E43EC002ABFCE /* ScanProcedure.swift in Sources */,
 				97A36C621F8EA6E70079B452 /* Book.swift in Sources */,
@@ -2312,7 +2304,6 @@
 				973208261DD21E9C00EDD3DC /* CoreDataContainer.swift in Sources */,
 				97D6813F1D6F712800E5FA99 /* ManagedObjectProperties.swift in Sources */,
 				97D2318B1E677C6700DCD4A4 /* LibraryBooksController.swift in Sources */,
-				9732075C1DD136BB00EDD3DC /* CoreDataExtension.swift in Sources */,
 				97D231A91E677CB300DCD4A4 /* Cells.swift in Sources */,
 				97D2318A1E677C6700DCD4A4 /* BookmarkHUD.swift in Sources */,
 				973208271DD2238B00EDD3DC /* Queue.swift in Sources */,
@@ -2351,7 +2342,6 @@
 				97A36C2C1F8C21210079B452 /* WebKitTabController.swift in Sources */,
 				977D7BBE1F9FC618009A8703 /* Queue.swift in Sources */,
 				97A36C2D1F8C21210079B452 /* WebKitHandler.swift in Sources */,
-				97A36C771F8EA6FD0079B452 /* CoreDataExtension.swift in Sources */,
 				97B1D0B51F9A3AD3000C7848 /* NetworkActivityIndicatorController.swift in Sources */,
 				97B1D0B91F9A3CB0000C7848 /* Preference.swift in Sources */,
 				97A36C691F8EA6F40079B452 /* 1.5.xcmappingmodel in Sources */,

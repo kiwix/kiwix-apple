@@ -28,18 +28,18 @@ class Article: NSManagedObject {
     }
     
     class func fetchRecentBookmarks(count: Int, context: NSManagedObjectContext) -> [Article] {
-        let fetchRequest = Article.fetchRequest() as! NSFetchRequest<Article>
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: false)]
-        fetchRequest.predicate = NSPredicate(format: "isBookmarked == true")
-        fetchRequest.fetchLimit = count
-        return (try? context.fetch(fetchRequest)) ?? [Article]()
+        let request = Article.fetchRequest() as! NSFetchRequest<Article>
+        request.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: false)]
+        request.predicate = NSPredicate(format: "isBookmarked == true")
+        request.fetchLimit = count
+        return (try? context.fetch(request)) ?? [Article]()
     }
     
     class func fetchBookmarked(in book: Book, with context: NSManagedObjectContext) -> [Article] {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
+        let request = Article.fetchRequest() as! NSFetchRequest<Article>
         request.predicate = NSPredicate(format: "book = %@ AND isBookmarked == true", book)
         request.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: false)]
-        return fetch(request, type: Article.self, context: context) ?? [Article]()
+        return (try? context.fetch(request)) ?? [Article]()
     }
     
     // MARK: - CoreSpotlight

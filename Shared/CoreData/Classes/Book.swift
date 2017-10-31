@@ -25,22 +25,22 @@ class Book: NSManagedObject {
     }
     
     class func fetchLocal(in context: NSManagedObjectContext) -> [Book] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Book")
-        fetchRequest.predicate = NSPredicate(format: "stateRaw == 2")
-        return fetch(fetchRequest, type: Book.self, context: context) ?? [Book]()
+        let request = Book.fetchRequest() as! NSFetchRequest<Book>
+        request.predicate = NSPredicate(format: "stateRaw == 2")
+        return (try? context.fetch(request)) ?? [Book]()
     }
     
     class func fetch(id: String, context: NSManagedObjectContext) -> Book? {
-        let fetchRequest = Book.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "id = %@", id)
-        return fetch(fetchRequest, type: Book.self, context: context)?.first
+        let request = Book.fetchRequest() as! NSFetchRequest<Book>
+        request.predicate = NSPredicate(format: "id = %@", id)
+        return (try? context.fetch(request))?.first
     }
     
     class func fetch(pid: String, context: NSManagedObjectContext) -> [Book] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Book")
-        fetchRequest.predicate = NSPredicate(format: "pid = %@", pid)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
-        return fetch(fetchRequest, type: Book.self, context: context) ?? [Book]()
+        let request = Book.fetchRequest() as! NSFetchRequest<Book>
+        request.predicate = NSPredicate(format: "pid = %@", pid)
+        request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+        return (try? context.fetch(request)) ?? [Book]()
     }
     
     // MARK: - Properties
