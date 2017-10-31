@@ -42,4 +42,16 @@ class MigrationPolicy1_9: NSEntityMigrationPolicy {
             return BookCategory.other.rawValue
         }
     }
+    
+    @objc func bookStateString(stateInt: NSNumber) -> String? {
+        if stateInt.isEqual(to: NSNumber(integerLiteral: 1)) {
+            return "downloading"
+        } else if stateInt.isEqual(to: NSNumber(integerLiteral: 2)) {
+            return "local"
+        } else if stateInt.isEqual(to: NSNumber(integerLiteral: 3)) {
+            return "retained"
+        } else {
+            return "cloud"
+        }
+    }
 }

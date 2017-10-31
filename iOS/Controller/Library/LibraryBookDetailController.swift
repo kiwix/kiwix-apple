@@ -46,44 +46,44 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
         self.init()
         self.book = book
         
-        self.bookStateObserver = book.observe(\Book.stateRaw, options: [.initial, .new, .old]) { (_, change) in
-            guard change.newValue != change.oldValue, let newValue = change.newValue, let state = BookState(rawValue: Int(newValue)) else {return}
-            switch state {
-            case .cloud:
-                if #available(iOS 11.0, *), let free = (try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-                    .resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey]).volumeAvailableCapacityForImportantUsage) ?? nil {
-                    self.actions = book.fileSize <= free ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]]
-                } else {
-                    self.actions = [[.downloadWifiOnly, .downloadWifiAndCellular]]
-                }
-            case .local:
-                self.actions = [[.deleteFile, .deleteBookmarks, .deleteFileAndBookmarks], [.openMainPage]]
-            case .retained:
-                self.actions = [[.deleteBookmarks]]
-            default:
-                break
-            }
-            self.tableView.reloadSections([0, 1], with: .automatic)
-        }
-        self.downloadTaskStateObserver = book.observe(\Book.downloadTask?.stateRaw, options: [.initial, .new, .old], changeHandler: { (book, change) in
-            guard (change.newValue ?? nil) != (change.oldValue ?? nil), let newValue = change.newValue ?? nil, let state = DownloadTaskState(rawValue: Int(newValue)) else {return}
-            switch state {
-            case .queued:
-                self.actions = [[.cancel]]
-            case .downloading:
-                self.actions = [[.cancel, .pause]]
-            case .paused:
-                self.actions = [[.cancel, .resume]]
-            case .error:
-                if #available(iOS 11.0, *), let free = (try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-                    .resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey]).volumeAvailableCapacityForImportantUsage) ?? nil {
-                    self.actions = book.fileSize <= free ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]]
-                } else {
-                    self.actions = [[.downloadWifiOnly, .downloadWifiAndCellular]]
-                }
-            }
-            self.tableView.reloadSections([0], with: .automatic)
-        })
+//        self.bookStateObserver = book.observe(\Book.stateRaw, options: [.initial, .new, .old]) { (_, change) in
+//            guard change.newValue != change.oldValue, let newValue = change.newValue, let state = BookState(rawValue: Int(newValue)) else {return}
+//            switch state {
+//            case .cloud:
+//                if #available(iOS 11.0, *), let free = (try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+//                    .resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey]).volumeAvailableCapacityForImportantUsage) ?? nil {
+//                    self.actions = book.fileSize <= free ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]]
+//                } else {
+//                    self.actions = [[.downloadWifiOnly, .downloadWifiAndCellular]]
+//                }
+//            case .local:
+//                self.actions = [[.deleteFile, .deleteBookmarks, .deleteFileAndBookmarks], [.openMainPage]]
+//            case .retained:
+//                self.actions = [[.deleteBookmarks]]
+//            default:
+//                break
+//            }
+//            self.tableView.reloadSections([0, 1], with: .automatic)
+//        }
+//        self.downloadTaskStateObserver = book.observe(\Book.downloadTask?.stateRaw, options: [.initial, .new, .old], changeHandler: { (book, change) in
+//            guard (change.newValue ?? nil) != (change.oldValue ?? nil), let newValue = change.newValue ?? nil, let state = DownloadTaskState(rawValue: Int(newValue)) else {return}
+//            switch state {
+//            case .queued:
+//                self.actions = [[.cancel]]
+//            case .downloading:
+//                self.actions = [[.cancel, .pause]]
+//            case .paused:
+//                self.actions = [[.cancel, .resume]]
+//            case .error:
+//                if #available(iOS 11.0, *), let free = (try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+//                    .resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey]).volumeAvailableCapacityForImportantUsage) ?? nil {
+//                    self.actions = book.fileSize <= free ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]]
+//                } else {
+//                    self.actions = [[.downloadWifiOnly, .downloadWifiAndCellular]]
+//                }
+//            }
+//            self.tableView.reloadSections([0], with: .automatic)
+//        })
         title = book.title
     }
     

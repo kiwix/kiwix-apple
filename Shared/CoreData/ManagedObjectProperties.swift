@@ -28,36 +28,27 @@ extension Article {
 }
 
 extension Book {
-    @NSManaged var articleCount: Int64
-    @NSManaged var category: String?
-    @NSManaged var creator: String?
-    @NSManaged var date: Date?
-    @NSManaged var desc: String?
-    @NSManaged var favIcon: Data?
-    @NSManaged var fileSize: Int64
-    @NSManaged var globalCount: Int64
-    @NSManaged var hasPic: Bool
-    @NSManaged var id: String
-    @NSManaged var includeInSearch: Bool
-    @NSManaged var mediaCount: Int64
-    @NSManaged var meta4URL: String?
-    @NSManaged var pid: String?
-    @NSManaged var publisher: String?
-    @NSManaged var stateRaw: Int16
-    @NSManaged var title: String?
+    @NSManaged public var articleCount: Int64
+    @NSManaged public var bookDescription: String?
+    @NSManaged public var category: String?
+    @NSManaged public var creator: String?
+    @NSManaged public var date: Date?
+    @NSManaged public var favIcon: Data?
+    @NSManaged public var fileSize: Int64
+    @NSManaged public var globalCount: Int64
+    @NSManaged public var hasPic: Bool
+    @NSManaged public var id: String
+    @NSManaged public var includeInSearch: Bool
+    @NSManaged public var mediaCount: Int64
+    @NSManaged public var meta4URL: String?
+    @NSManaged public var pid: String?
+    @NSManaged public var publisher: String?
+    @NSManaged public var stateRaw: String
+    @NSManaged public var title: String?
+    @NSManaged public var totalBytesWritten: Int64
     
-    @NSManaged var articles: Set<Article>
-    @NSManaged var downloadTask: DownloadTask?
-    @NSManaged var language: Language?
-    
-}
-
-extension DownloadTask {
-    @NSManaged var creationTime: Date
-    @NSManaged var stateRaw: Int16
-    @NSManaged var totalBytesWritten: Int64
-    @NSManaged var book: Book?
-    
+    @NSManaged public var articles: Set<Article>
+    @NSManaged public var language: Language?
 }
 
 extension Language {
@@ -66,5 +57,4 @@ extension Language {
     @NSManaged var name: String?
     
     @NSManaged var books: Set<Book>
-    
 }

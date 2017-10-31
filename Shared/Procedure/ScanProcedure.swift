@@ -41,7 +41,7 @@ class ScanProcedure: Procedure {
                     let book = Book(context: context)
                     book.id = id
                     book.title = meta.title
-                    book.desc = meta.bookDescription
+                    book.bookDescription = meta.bookDescription
                     book.pid = meta.name
                     book.date = meta.date
                     book.creator = meta.creator

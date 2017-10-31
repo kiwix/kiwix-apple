@@ -80,16 +80,10 @@ class Book: NSManagedObject {
     
     var state: BookState {
         get {
-            switch stateRaw {
-            case 0: return .cloud
-            case 1: return .downloading
-            case 2: return .local
-            case 3: return .retained
-            default: return .cloud
-            }
+            return BookState(rawValue: stateRaw) ?? .cloud
         }
         set {
-            stateRaw = Int16(newValue.rawValue)
+            stateRaw = newValue.rawValue
         }
     }
 }
@@ -106,17 +100,8 @@ class BookArticleCountFormatter {
     }
 }
 
-enum BookState: Int, CustomStringConvertible {
-    case cloud, downloading, local, retained
-    
-    var description: String {
-        switch self {
-            case .cloud: return "Cloud"
-            case .downloading: return "Downloading"
-            case .local: return "Local"
-            case .retained: return "Retained"
-        }
-    }
+enum BookState: String {
+    case cloud, local, retained, downloadQueued, downloading, downloadPaused, downloadError
 }
 
 enum BookCategory: String {

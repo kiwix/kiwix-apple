@@ -104,7 +104,7 @@ private class ProcessProcedure: Procedure, InputProcedure, XMLParserDelegate {
         book.title = meta["title"]
         book.creator = meta["creator"]
         book.publisher = meta["publisher"]
-        book.desc = meta["description"]
+        book.bookDescription = meta["description"]
         book.meta4URL = meta["url"]
         book.pid = meta["name"]
         
