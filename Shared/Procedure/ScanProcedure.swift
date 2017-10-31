@@ -6,6 +6,7 @@
 //  Copyright © 2017 Chris Li. All rights reserved.
 //
 
+import CoreData
 import ProcedureKit
 
 class ScanProcedure: Procedure {
@@ -27,11 +28,13 @@ class ScanProcedure: Procedure {
     func addReader(dir: URL) {
         let urls = (try? FileManager.default.contentsOfDirectory(at: dir, includingPropertiesForKeys: nil,
                                                                  options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants])) ?? []
-        urls.forEach({ ZimMultiReader.shared.addBook(url: $0) })
+        urls.forEach({ ZimMultiReader.shared.add(url: $0) })
     }
     
     func updateDatabase() {
-        let context = CoreDataContainer.shared.newBackgroundContext()
+        let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        context.parent = CoreDataContainer.shared.viewContext
+        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         context.performAndWait {
             for id in ZimMultiReader.shared.ids {
                 if let book = Book.fetch(id: id, context: context) {
@@ -55,7 +58,7 @@ class ScanProcedure: Procedure {
                 }
             }
 
-            for book in Book.fetchLocal(in: context) {
+            for book in Book.fetch(states: [.local], context: context) {
                 guard !ZimMultiReader.shared.ids.contains(book.id) else {continue}
                 if let _ = book.meta4URL {
                     book.state = .cloud

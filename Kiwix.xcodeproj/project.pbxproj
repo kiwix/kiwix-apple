@@ -410,7 +410,6 @@
 		979315811E5127930093D3BA /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9793158C1E5127930093D3BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		979D17821E6DE50C006AE496 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		979DE0F61FA7D1B70064ABF9 /* 1.81.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = 1.81.xcmappingmodel; sourceTree = "<group>"; };
 		97A1FD1A1D6F71D800A80EE2 /* KiwixURLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KiwixURLProtocol.swift; sourceTree = "<group>"; };
 		97A1FD401D6F728200A80EE2 /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		97A1FD411D6F728200A80EE2 /* Localized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localized.swift; sourceTree = "<group>"; };
@@ -947,7 +946,6 @@
 			children = (
 				97318E4D1E6780F9000B718B /* 1.5.xcmappingmodel */,
 				97318E4F1E6780F9000B718B /* 1.8.xcmappingmodel */,
-				979DE0F61FA7D1B70064ABF9 /* 1.81.xcmappingmodel */,
 				97D9D5631FA8F00E005B28F0 /* 1.9.xcmappingmodel */,
 				97318E501E6780F9000B718B /* MigrationPolicy.swift */,
 			);

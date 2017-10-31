@@ -24,9 +24,9 @@ class Book: NSManagedObject {
         return (try? context.fetch(request)) ?? [Book]()
     }
     
-    class func fetchLocal(in context: NSManagedObjectContext) -> [Book] {
+    class func fetch(states: [BookState], context: NSManagedObjectContext) -> [Book] {
         let request = Book.fetchRequest() as! NSFetchRequest<Book>
-        request.predicate = NSPredicate(format: "stateRaw == 2")
+        request.predicate = NSPredicate(format: "stateRaw IN %@", states.map({ $0.rawValue }) )
         return (try? context.fetch(request)) ?? [Book]()
     }
     
@@ -110,7 +110,7 @@ class BookArticleCountFormatter {
 }
 
 enum BookState: Int {
-    case cloud, downloadQueued, downloading, downloadPaused, downloadError, local, retained
+    case cloud = 0, downloadQueued, downloading, downloadPaused, downloadError, local, retained
 }
 
 enum BookCategory: String {

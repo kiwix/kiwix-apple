@@ -33,9 +33,13 @@ std::vector<std::string> *searcherZimIDs = NULL;
     return [urls allKeys];
 }
 
+- (NSURL *)getReaderFileURL:(NSString *)identifier {
+    return urls[identifier];
+}
+
 #pragma mark - reader management
 
-- (void)addBookByURL:(NSURL *)url {
+- (void)addReaderByURL:(NSURL *)url {
     try {
         // if url does not ends with "zim" or "zimaa", skip it
         NSString *pathExtension = [[url pathExtension] lowercaseString];
@@ -62,7 +66,7 @@ std::vector<std::string> *searcherZimIDs = NULL;
     } catch (const std::exception &e) { }
 }
 
-- (void)removeBookByID:(NSString *)bookID {
+- (void)removeReaderByID:(NSString *)bookID {
 #if TARGET_OS_MAC
     [urls[bookID] stopAccessingSecurityScopedResource];
 #endif
@@ -76,7 +80,7 @@ std::vector<std::string> *searcherZimIDs = NULL;
         NSURL *url = urls[identifier];
         NSString *path = [url path];
         if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
-            [self removeBookByID:identifier];
+            [self removeReaderByID:identifier];
         }
     }
 }

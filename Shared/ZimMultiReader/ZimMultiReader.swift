@@ -14,9 +14,10 @@ extension ZimMultiReader {
     static let shared = ZimMultiReader()
     
     var ids: [ZimFileID] {get{ return __getIdentifiers().flatMap({$0 as? ZimFileID}) }}
+    func getFileURL(zimFileID: ZimFileID) -> URL? { return __getFileURL(zimFileID) }
     
-    func addBook(url: URL) {__addBook(by: url)}
-    func removeBook(id: ZimFileID) {__removeBook(byID: id)}
+    func add(url: URL) {__add(by: url)}
+    func remove(id: ZimFileID) {__remove(byID: id)}
     
     func getContent(bookID: String, contentPath: String) -> (data: Data, mime: String, length: Int)? {
         guard let content = __getContent(bookID, contentURL: contentPath),

@@ -15,7 +15,14 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
     private(set) var bookStateObserver: NSKeyValueObservation?
     private(set) var downloadTaskStateObserver: NSKeyValueObservation?
     
-    var actions = [[Action]]()
+    var actions = [[Action]]() {
+        didSet(oldValue) {
+            tableView.beginUpdates()
+            tableView.deleteSections(IndexSet(integersIn: 0..<oldValue.count), with: .fade)
+            tableView.insertSections(IndexSet(integersIn: 0..<actions.count), with: .fade)
+            tableView.endUpdates()
+        }
+    }
     let metas: [[BookMeta]] = [
         [.size, .date],
         [.articleCount, .mediaCount],
@@ -71,10 +78,18 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
                 break
             }
             
+            print(newValue)
+            
             // Don't need to reload table if we are receiving initial values
-            if let oldValue = change.newValue, let _ = BookState(rawValue: Int(oldValue)) {
-                self.tableView.reloadSections([0, 1], with: .automatic)
-            }
+//            if let oldValue = change.newValue, let oldStatus = BookState(rawValue: Int(oldValue)), oldStatus != newState {
+//                if oldStatus == .local {
+//                    self.tableView.reloadSections([0], with: .automatic)
+//                    self.tableView.insertSections([1], with: .automatic)
+//                } else {
+//                    self.tableView.reloadSections([0], with: .automatic)
+//                    self.tableView.deleteSections([1], with: .automatic)
+//                }
+//            }
         }
         title = book.title
     }
@@ -171,13 +186,23 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
                 Network.shared.start(bookID: book.id, allowsCellularAccess: false)
             case .downloadWifiAndCellular:
                 Network.shared.start(bookID: book.id, allowsCellularAccess: true)
+            case .downloadSpaceNotEnough:
+                break
             case .cancel:
                 Network.shared.cancel(bookID: book.id)
             case .pause:
                 Network.shared.pause(bookID: book.id)
             case .resume:
                 Network.shared.resume(bookID: book.id)
-            default:
+            case .deleteFile:
+                guard let url = ZimMultiReader.shared.getFileURL(zimFileID: book.id) else {return}
+                try? FileManager.default.removeItem(at: url)
+            case .deleteBookmarks:
+                break
+            case .deleteFileAndBookmarks:
+                guard let url = ZimMultiReader.shared.getFileURL(zimFileID: book.id) else {return}
+                try? FileManager.default.removeItem(at: url)
+            case .openMainPage:
                 break
             }
         }

@@ -13,9 +13,10 @@
 - (instancetype _Nonnull)init NS_REFINED_FOR_SWIFT;
 
 - (NSArray *_Nonnull)getReaderIdentifiers NS_REFINED_FOR_SWIFT;
+- (NSURL *_Nullable)getReaderFileURL:(NSString *_Nonnull)identifier NS_REFINED_FOR_SWIFT;
 
-- (void)addBookByURL:(NSURL *_Nonnull)url NS_REFINED_FOR_SWIFT;
-- (void)removeBookByID:(NSString *_Nonnull)bookID NS_REFINED_FOR_SWIFT;
+- (void)addReaderByURL:(NSURL *_Nonnull)url NS_REFINED_FOR_SWIFT;
+- (void)removeReaderByID:(NSString *_Nonnull)bookID NS_REFINED_FOR_SWIFT;
 - (void)removeStaleReaders;
 
 - (NSDictionary *_Nullable)getContent:(NSString *_Nonnull)zimFileID contentURL:(NSString *_Nonnull)contentURL NS_REFINED_FOR_SWIFT;
