@@ -94,6 +94,9 @@ class LibraryOnboardingController: BaseController {
             let imageView = UIImageView(image: #imageLiteral(resourceName: "Library").withRenderingMode(.alwaysTemplate))
             imageView.contentMode = .scaleAspectFit
             imageView.tintColor = UIColor.gray
+            imageView.addConstraints([
+                imageView.widthAnchor.constraint(lessThanOrEqualToConstant: 120),
+                imageView.heightAnchor.constraint(lessThanOrEqualToConstant: 120)])
             return imageView
         }()
         
@@ -110,15 +113,19 @@ class LibraryOnboardingController: BaseController {
         button.setTitle(NSLocalizedString("Refresh Library", comment: "Empty Library Action"), for: .normal)
         button.setTitle(NSLocalizedString("Refreshing...", comment: "Empty Library Action"), for: .disabled)
         
-        topStackView.addArrangedSubview(StackViewBoundingView(subView: imageView))
+        topStackView.addArrangedSubview(imageView)
         topStackView.addArrangedSubview(StackViewBoundingView(subView: label))
         
         topStackView.axis = traitCollection.verticalSizeClass == .compact ? .horizontal : .vertical
         topStackView.spacing = 10
         topStackView.distribution = .equalSpacing
+        topStackView.alignment = .center
         
         stackView.axis = .vertical
+        stackView.spacing = 15
         stackView.distribution = .equalSpacing
+        stackView.alignment = .fill
+        
         stackView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(stackView)
         var constraints = [
@@ -132,7 +139,7 @@ class LibraryOnboardingController: BaseController {
         let widthConstraint = stackView.widthAnchor.constraint(equalToConstant: 500)
         widthConstraint.priority = .defaultHigh
         constraints.append(widthConstraint)
-        let heightConstraint = stackView.heightAnchor.constraint(equalTo: view.readableContentGuide.heightAnchor, multiplier: 0.5)
+        let heightConstraint = stackView.heightAnchor.constraint(equalTo: view.readableContentGuide.heightAnchor, multiplier: 0.4, constant: 80)
         heightConstraint.priority = .defaultHigh
         constraints.append(heightConstraint)
         view.addConstraints(constraints)

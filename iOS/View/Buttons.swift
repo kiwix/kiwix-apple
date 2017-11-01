@@ -42,7 +42,7 @@ class RoundedButton: UIButton {
     override var intrinsicContentSize: CGSize {
         get {
             let size = super.intrinsicContentSize
-            return CGSize(width: size.width, height: size.height + 18)
+            return CGSize(width: CGFloat.greatestFiniteMagnitude, height: size.height + 18)
         }
     }
 }
