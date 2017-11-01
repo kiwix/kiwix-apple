@@ -41,10 +41,14 @@ class LibraryLanguageController: BaseController, UITableViewDelegate, UITableVie
     }
     
     private func configureSegmentedControls() {
-        navigationItem.titleView = segmentedControl
+        let stackView = UIStackView()
         segmentedControl.apportionsSegmentWidthsByContent = true
         segmentedControl.selectedSegmentIndex = Preference.LangFilter.displayInOriginalLocale == true ? 1 : 0
         segmentedControl.addTarget(self, action: #selector(segmentedControlChanged(sender:)), for: .valueChanged)
+        segmentedControl.setContentHuggingPriority(.init(251), for: .horizontal)
+        stackView.addArrangedSubview(segmentedControl)
+        stackView.addArrangedSubview(UIView())
+        navigationItem.titleView = segmentedControl
     }
     
     @objc func segmentedControlChanged(sender: UISegmentedControl) {
