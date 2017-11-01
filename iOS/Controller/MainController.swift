@@ -132,7 +132,7 @@ class MainController: UIViewController, UISearchBarDelegate, TabLoadingActivity,
             if let textField = searchBar.value(forKey: "searchField") as? UITextField {
                 textField.selectAll(nil)
             }
-            self.navigationItem.setRightBarButton(self.cancelButton, animated: true)
+            self.navigationItem.setRightBarButtonItems([self.cancelButton], animated: true)
         }
         showSearchController()
     }
