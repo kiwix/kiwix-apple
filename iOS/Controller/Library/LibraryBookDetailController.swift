@@ -105,6 +105,32 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
         }
     }
     
+    private func showDeletionConfirmationAlert(action: Action, bookID: String, localizedTitle: String?) {
+        let message: String? = {
+            switch action {
+            case .deleteFile:
+                return NSLocalizedString("This will delete the zim file but keep the bookmarks.", comment: "Book deletion message")
+            case .deleteBookmarks:
+                return NSLocalizedString("This will delete all bookmarks related to that zim file, but the zim file will remain on disk.", comment: "Book deletion message")
+            case .deleteFileAndBookmarks:
+                return NSLocalizedString("This will delete both the zim file and all its bookmarks.", comment: "Book deletion message")
+            default:
+                return nil
+            }
+        }()
+        let controller = UIAlertController(title: localizedTitle, message: message, preferredStyle: .alert)
+        controller.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Book deletion confirmation"), style: .destructive, handler: { _ in
+            if action == .deleteFile || action == .deleteFileAndBookmarks {
+                guard let url = ZimMultiReader.shared.getFileURL(zimFileID: bookID) else {return}
+                try? FileManager.default.removeItem(at: url)
+            }
+            if action == .deleteBookmarks || action == .deleteFileAndBookmarks {
+            }
+        }))
+        controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Book deletion confirmation"), style: .cancel, handler: nil))
+        present(controller, animated: true)
+    }
+    
     // MARK: - UITableViewDataSource & Delagates
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -175,7 +201,7 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let book = book else {return}
+        guard let book = book, let cell = tableView.cellForRow(at: indexPath) as? LibraryActionCell else {return}
         if indexPath.section < actions.count {
             let action = actions[indexPath.section][indexPath.row]
             switch action {
@@ -192,15 +218,15 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
             case .resume:
                 Network.shared.resume(bookID: book.id)
             case .deleteFile:
-                guard let url = ZimMultiReader.shared.getFileURL(zimFileID: book.id) else {return}
-                try? FileManager.default.removeItem(at: url)
+                showDeletionConfirmationAlert(action: action, bookID: book.id, localizedTitle: cell.textLabel?.text)
             case .deleteBookmarks:
-                break
+                showDeletionConfirmationAlert(action: action, bookID: book.id, localizedTitle: cell.textLabel?.text)
             case .deleteFileAndBookmarks:
-                guard let url = ZimMultiReader.shared.getFileURL(zimFileID: book.id) else {return}
-                try? FileManager.default.removeItem(at: url)
+                showDeletionConfirmationAlert(action: action, bookID: book.id, localizedTitle: cell.textLabel?.text)
             case .openMainPage:
-                break
+                guard let main = (presentingViewController as? UINavigationController)?.topViewController as? MainController else {return}
+                main.currentTab?.loadMainPage()
+                dismiss(animated: true, completion: nil)
             }
         }
     }

@@ -95,8 +95,8 @@ class LibraryOnboardingController: BaseController {
             imageView.contentMode = .scaleAspectFit
             imageView.tintColor = UIColor.gray
             imageView.addConstraints([
-                imageView.widthAnchor.constraint(lessThanOrEqualToConstant: 120),
-                imageView.heightAnchor.constraint(lessThanOrEqualToConstant: 120)])
+                imageView.widthAnchor.constraint(lessThanOrEqualToConstant: 100),
+                imageView.heightAnchor.constraint(lessThanOrEqualToConstant: 100)])
             return imageView
         }()
         
