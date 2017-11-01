@@ -13,8 +13,6 @@ import ProcedureKit
 class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     let tableView = UITableView(frame: .zero, style: .grouped)
     let refreshControl = UIRefreshControl()
-    private lazy var onboardingView = OnboardingView()
-    let queue = ProcedureQueue()
     
     let categories: [BookCategory] = [
         .wikipedia, .wikivoyage, .wikibooks, .wikiversity, .wikispecies, .wikinews,
@@ -32,74 +30,33 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
         NSLocalizedString("StackExchange", comment: "Zim File Types"),
         NSLocalizedString("Other", comment: "Zim File Types")]
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = NSLocalizedString("Library", comment: "Library title")
-        if #available(iOS 11.0, *) {
-            navigationController?.navigationBar.prefersLargeTitles = true
-        }
-        
-        if Preference.libraryLastRefreshTime == nil {
-            configureInitialRefreshView()
-        } else {
-            configureTableView()
-        }
-    }
-    
-    private func configureInitialRefreshView() {
-        onboardingView.button.addTarget(self, action: #selector(refreshControlPulled), for: .touchUpInside)
-        onboardingView.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .groupTableViewBackground
-        view.addSubview(onboardingView)
-        view.addConstraints([
-            view.readableContentGuide.leftAnchor.constraint(equalTo: onboardingView.leftAnchor, constant: 0),
-            view.readableContentGuide.rightAnchor.constraint(equalTo: onboardingView.rightAnchor, constant: 0)])
-        view.addConstraints([view.centerYAnchor.constraint(equalTo: onboardingView.centerYAnchor, constant: 0)])
-    }
-    
-    private func removeInitialRefreshView() {
-        onboardingView.button.removeTarget(self, action: #selector(refreshControlPulled), for: .touchUpInside)
-        onboardingView.removeFromSuperview()
-    }
-    
-    private func configureTableView() {
-        refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+    override func loadView() {
+        view = tableView
         tableView.delegate = self
         tableView.dataSource = self
         tableView.refreshControl = refreshControl
         tableView.register(LibraryBookCell.self, forCellReuseIdentifier: "BookCell")
         tableView.register(LibraryDownloadCell.self, forCellReuseIdentifier: "DownloadCell")
         tableView.register(LibraryCategoryCell.self, forCellReuseIdentifier: "CategoryCell")
-        view.addSubview(tableView)
-        view.addConstraints([
-            view.leftAnchor.constraint(equalTo: tableView.leftAnchor),
-            view.rightAnchor.constraint(equalTo: tableView.rightAnchor),
-            view.topAnchor.constraint(equalTo: tableView.topAnchor),
-            view.bottomAnchor.constraint(equalTo: tableView.bottomAnchor)])
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = NSLocalizedString("Library", comment: "Library title")
+        if #available(iOS 11.0, *) {
+            navigationController?.navigationBar.prefersLargeTitles = true
+        }
+        refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
     }
     
     @objc func refreshControlPulled() {
         let procedure = LibraryRefreshProcedure()
-        procedure.add(observer: WillExecuteObserver(willExecute: { (_, event) in
-            OperationQueue.main.addOperation({
-                self.onboardingView.button.isEnabled = false
-            })
-        }))
         procedure.add(observer: DidFinishObserver(didFinish: { (procedure, errors) in
             OperationQueue.main.addOperation({
-                if errors.count > 0 {
-                    self.onboardingView.button.isEnabled = true
-                } else {
-                    if self.view.subviews.contains(self.onboardingView) {
-                        self.removeInitialRefreshView()
-                        self.configureTableView()
-                    }
-                    self.refreshControl.endRefreshing()
-                }
+                self.refreshControl.endRefreshing()
             })
         }))
-        queue.add(operation: procedure)
+        Queue.shared.add(libraryRefresh: procedure)
     }
     
     // MARK: - UITableViewDataSource & Delegates

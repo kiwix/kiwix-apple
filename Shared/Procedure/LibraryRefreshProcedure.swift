@@ -40,7 +40,7 @@ private class DownloadProcedure: NetworkDataProcedure<URLSession> {
 
 private class ProcessProcedure: Procedure, InputProcedure, XMLParserDelegate {
     var input: Pending<HTTPPayloadResponse<Data>> = .pending
-    let context: NSManagedObjectContext
+    private let context: NSManagedObjectContext
     
     private var storeBookIDs = Set<String>()
     private var memoryBookIDs = Set<String>()
@@ -48,9 +48,7 @@ private class ProcessProcedure: Procedure, InputProcedure, XMLParserDelegate {
     private(set) var hasUpdate = false
     
     override init() {
-        self.context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        context.parent = CoreDataContainer.shared.viewContext
-        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        self.context = CoreDataContainer.shared.newBackgroundContext()
         super.init()
     }
     

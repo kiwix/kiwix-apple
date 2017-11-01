@@ -184,8 +184,6 @@
 		97A9F6F51E2E990500F423AA /* JSInject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* JSInject.js */; };
 		97B1046F1F8FC63C00488444 /* LibraryMasterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */; };
 		97B104701F8FC63C00488444 /* LibraryMasterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */; };
-		97B104721F8FE0BC00488444 /* LibraryBlankDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B104711F8FE0BC00488444 /* LibraryBlankDetailController.swift */; };
-		97B104731F8FE0BC00488444 /* LibraryBlankDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B104711F8FE0BC00488444 /* LibraryBlankDetailController.swift */; };
 		97B1D0B51F9A3AD3000C7848 /* NetworkActivityIndicatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9780DE051E43BFF5009B6945 /* NetworkActivityIndicatorController.swift */; };
 		97B1D0B61F9A3AE7000C7848 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97642B981E380CC0003E2D0B /* Network.swift */; };
 		97B1D0B91F9A3CB0000C7848 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD401D6F728200A80EE2 /* Preference.swift */; };
@@ -425,7 +423,6 @@
 		97A996DE1F630FBC007A6282 /* SearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultView.swift; sourceTree = "<group>"; };
 		97A9F6F41E2E990500F423AA /* JSInject.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = JSInject.js; sourceTree = "<group>"; };
 		97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryMasterController.swift; sourceTree = "<group>"; };
-		97B104711F8FE0BC00488444 /* LibraryBlankDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryBlankDetailController.swift; sourceTree = "<group>"; };
 		97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		97C459761F86C1360013AC22 /* wikipedia_en_medicine_novid.zim */ = {isa = PBXFileReference; lastKnownFileType = file; path = wikipedia_en_medicine_novid.zim; sourceTree = "<group>"; };
 		97C601DD1D7F342100362D4F /* HTMLHeading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTMLHeading.swift; sourceTree = "<group>"; };
@@ -1235,7 +1232,6 @@
 				97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */,
 				97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */,
 				9702BE1D1F97F1C900E6B4EE /* LibraryLanguageController.swift */,
-				97B104711F8FE0BC00488444 /* LibraryBlankDetailController.swift */,
 				97161A881F90072A00A89DE3 /* LibraryTableCells.swift */,
 			);
 			path = Library;
@@ -2188,7 +2184,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97B104731F8FE0BC00488444 /* LibraryBlankDetailController.swift in Sources */,
 				97B104701F8FC63C00488444 /* LibraryMasterController.swift in Sources */,
 				97A996D41F61DB38007A6282 /* SearchController.swift in Sources */,
 				97A36C6E1F8EA6F50079B452 /* MigrationPolicy.swift in Sources */,
@@ -2317,7 +2312,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97B104721F8FE0BC00488444 /* LibraryBlankDetailController.swift in Sources */,
 				97161A891F90072A00A89DE3 /* LibraryTableCells.swift in Sources */,
 				972E6F641FA11A6100F5C927 /* Buttons.swift in Sources */,
 				977D7BB61F9E6A43009A8703 /* ZimMultiReader.mm in Sources */,

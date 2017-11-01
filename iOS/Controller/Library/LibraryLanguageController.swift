@@ -42,6 +42,7 @@ class LibraryLanguageController: BaseController, UITableViewDelegate, UITableVie
     
     private func configureSegmentedControls() {
         navigationItem.titleView = segmentedControl
+        segmentedControl.apportionsSegmentWidthsByContent = true
         segmentedControl.selectedSegmentIndex = Preference.LangFilter.displayInOriginalLocale == true ? 1 : 0
         segmentedControl.addTarget(self, action: #selector(segmentedControlChanged(sender:)), for: .valueChanged)
     }

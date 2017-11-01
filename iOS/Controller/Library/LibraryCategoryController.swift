@@ -13,7 +13,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     let tableView = UITableView()
     private(set) var category: BookCategory?
     
-    convenience init(category: BookCategory, title: String) {
+    convenience init(category: BookCategory?, title: String?) {
         self.init()
         self.category = category
         self.title = title
@@ -100,6 +100,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
         fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
         fetchRequest.predicate = self.predicate
+        fetchRequest.fetchBatchSize = 20
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                     managedObjectContext: self.managedObjectContext,
                                                     sectionNameKeyPath: "language.name", cacheName: nil)
