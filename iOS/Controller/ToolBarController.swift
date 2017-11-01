@@ -15,8 +15,9 @@ class ToolBarController: UIViewController {
     
     private(set) lazy var back = ToolBarButton(image: #imageLiteral(resourceName: "Left"))
     private(set) lazy var forward = ToolBarButton(image: #imageLiteral(resourceName: "Right"))
-    private(set) lazy var home = ToolBarButton(image: #imageLiteral(resourceName: "Home"))
-    private(set) lazy var library = ToolBarButton(image: #imageLiteral(resourceName: "Library"))
+    private(set) lazy var tableOfContents = ToolBarButton(image: #imageLiteral(resourceName: "TableOfContent"), insets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12))
+    private(set) lazy var home = ToolBarButton(image: #imageLiteral(resourceName: "Home"), insets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12))
+    private(set) lazy var library = ToolBarButton(image: #imageLiteral(resourceName: "Library"), insets: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,10 +55,9 @@ class ToolBarController: UIViewController {
     }
     
     private func addButtons() {
-        var buttons = [back, forward, home]
+        var buttons = [back, forward, tableOfContents, home]
         if Bundle.main.infoDictionary?["CFBundleName"] as? String == "Kiwix" {
             buttons.append(library)
-            library.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         }
         
         buttons.forEach { (button) in
@@ -93,8 +93,10 @@ protocol ToolBarControlEvents: class {
 }
 
 class ToolBarButton: UIButton {
-    convenience init(image: UIImage) {
+    convenience init(image: UIImage, insets: UIEdgeInsets = .zero) {
         self.init()
+        imageEdgeInsets = insets
+        imageView?.contentMode = .scaleAspectFit
         setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
     }
     
