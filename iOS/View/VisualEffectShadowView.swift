@@ -8,6 +8,7 @@
 
 import UIKit
 
+// A View similiar to a UIVisualEffectView but with shadow around it
 class VisualEffectShadowView: UIView {
     struct Shadow {
         let offset: CGSize
@@ -58,12 +59,10 @@ class VisualEffectShadowView: UIView {
         visual.layer.cornerRadius = cornerRadius
         visual.layer.masksToBounds = true
         addSubview(visual)
-        let constraints = [
+        addConstraints([
             visual.leftAnchor.constraint(equalTo: leftAnchor, constant: shadow.blur),
             visual.topAnchor.constraint(equalTo: topAnchor, constant: shadow.blur),
             visual.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -shadow.blur),
-            visual.rightAnchor.constraint(equalTo: rightAnchor, constant: -shadow.blur),
-            ]
-        addConstraints(constraints)
+            visual.rightAnchor.constraint(equalTo: rightAnchor, constant: -shadow.blur)])
     }
 }
