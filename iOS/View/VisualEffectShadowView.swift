@@ -17,15 +17,18 @@ class VisualEffectShadowView: UIView {
     }
     
     let shadow = Shadow(offset: CGSize.zero, blur: 4.0, color: .lightGray)
+    let roundingCorners: UIRectCorner
     let cornerRadius: CGFloat = 10.0
     private let visual = UIVisualEffectView()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(cornerRadius: CGFloat = 10, roundingCorners: UIRectCorner = .allCorners) {
+        self.roundingCorners = roundingCorners
+        super.init(frame: .zero)
         configure()
     }
     
     required init?(coder aDecoder: NSCoder) {
+        self.roundingCorners = .allCorners
         super.init(coder: aDecoder)
         configure()
     }
@@ -41,7 +44,7 @@ class VisualEffectShadowView: UIView {
     
     override func draw(_ rect: CGRect) {
         let contentRect = rect.insetBy(dx: shadow.blur, dy: shadow.blur)
-        let shadowPath = UIBezierPath(roundedRect: contentRect, cornerRadius: cornerRadius)
+        let shadowPath = UIBezierPath(roundedRect: contentRect, byRoundingCorners: roundingCorners, cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
         let context = UIGraphicsGetCurrentContext()!
         
         context.addRect(rect)
@@ -51,13 +54,17 @@ class VisualEffectShadowView: UIView {
         context.addPath(shadowPath.cgPath)
         context.setShadow(offset: CGSize.zero, blur: shadow.blur, color: shadow.color.cgColor)
         context.fillPath()
+        
+        // mask visualView
+        let maskPath = UIBezierPath(roundedRect: contentRect.offsetBy(dx: -contentRect.origin.x, dy: -contentRect.origin.y), byRoundingCorners: roundingCorners, cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
+        let visualViewMask = CAShapeLayer()
+        visualViewMask.path = maskPath.cgPath
+        visual.layer.mask = visualViewMask
     }
     
     private func addVisualEffectView() {
         visual.effect = UIBlurEffect(style: .extraLight)
         visual.translatesAutoresizingMaskIntoConstraints = false
-        visual.layer.cornerRadius = cornerRadius
-        visual.layer.masksToBounds = true
         addSubview(visual)
         addConstraints([
             visual.leftAnchor.constraint(equalTo: leftAnchor, constant: shadow.blur),
