@@ -41,9 +41,6 @@ class MainController: UIViewController, UISearchBarDelegate, TabLoadingActivity,
         toolBarController.delegate = self
         dimView.gestureRecognizer.addTarget(self, action: #selector(dimViewTapped))
         configureSearch()
-//        addTabController()
-//        loadMainPageForCustomApps()
-        
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -273,20 +270,21 @@ class MainController: UIViewController, UISearchBarDelegate, TabLoadingActivity,
     }
     
     private func showSearchController() {
+        if isShowingTableOfContent { toggleTableOfContent() }
         addChildViewController(searchController)
         let searchResult = searchController.view!
         searchResult.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(searchResult)
-        let constraints = [
-            searchResult.leftAnchor.constraint(equalTo: view.leftAnchor),
-            searchResult.rightAnchor.constraint(equalTo: view.rightAnchor),
-            searchResult.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-        ]
-        view.addConstraints(constraints)
+        view.insertSubview(searchResult, aboveSubview: toolBarController.view)
         if #available(iOS 11.0, *) {
-            view.addConstraint(searchResult.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor))
+            [searchResult.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+             searchResult.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+             searchResult.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+             searchResult.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)].forEach({ $0.isActive = true })
         } else {
-            view.addConstraint(searchResult.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor))
+            [searchResult.leftAnchor.constraint(equalTo: view.leftAnchor),
+             searchResult.rightAnchor.constraint(equalTo: view.rightAnchor),
+             searchResult.topAnchor.constraint(equalTo: view.topAnchor),
+             searchResult.bottomAnchor.constraint(equalTo: view.bottomAnchor)].forEach({ $0.isActive = true })
         }
         searchController.didMove(toParentViewController: self)
     }
