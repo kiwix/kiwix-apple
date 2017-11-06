@@ -36,21 +36,19 @@ class TableOfContentController: UIViewController {
         
         visualView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(visualView)
-        view.addConstraints([
-                view.topAnchor.constraint(equalTo: visualView.topAnchor, constant: visualView.shadow.blur),
-                view.leftAnchor.constraint(equalTo: visualView.leftAnchor, constant: visualView.shadow.blur),
-                view.bottomAnchor.constraint(equalTo: visualView.bottomAnchor, constant: -visualView.shadow.blur),
-                view.rightAnchor.constraint(equalTo: visualView.rightAnchor, constant: -visualView.shadow.blur)])
+        [view.topAnchor.constraint(equalTo: visualView.topAnchor, constant: visualView.shadow.blur),
+         view.leftAnchor.constraint(equalTo: visualView.leftAnchor, constant: visualView.shadow.blur),
+         view.bottomAnchor.constraint(equalTo: visualView.bottomAnchor, constant: -visualView.shadow.blur),
+         view.rightAnchor.constraint(equalTo: visualView.rightAnchor, constant: -visualView.shadow.blur)].forEach({ $0.isActive = true })
         
         let visualContent = visualView.contentView
         tableView.backgroundColor = .clear
         tableView.translatesAutoresizingMaskIntoConstraints = false
         visualContent.addSubview(tableView)
-        visualContent.addConstraints([
-            visualContent.topAnchor.constraint(equalTo: tableView.topAnchor),
-            visualContent.leftAnchor.constraint(equalTo: tableView.leftAnchor),
-            visualContent.bottomAnchor.constraint(equalTo: tableView.bottomAnchor),
-            visualContent.rightAnchor.constraint(equalTo: tableView.rightAnchor)])
+        [visualContent.topAnchor.constraint(equalTo: tableView.topAnchor),
+         visualContent.leftAnchor.constraint(equalTo: tableView.leftAnchor),
+         visualContent.bottomAnchor.constraint(equalTo: tableView.bottomAnchor),
+         visualContent.rightAnchor.constraint(equalTo: tableView.rightAnchor)].forEach({ $0.isActive = true })
     }
     
     private func configForHorizontalRegular() {

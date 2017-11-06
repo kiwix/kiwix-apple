@@ -61,6 +61,11 @@ class VisualEffectShadowView: UIView {
         visualViewMask.path = maskPath.cgPath
         visual.layer.mask = visualViewMask
     }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setNeedsDisplay()
+    }
     
     private func addVisualEffectView() {
         visual.effect = UIBlurEffect(style: .extraLight)

@@ -91,7 +91,7 @@ class MainController: UIViewController, UISearchBarDelegate, TabLoadingActivity,
         constraints += [dimView.topAnchor.constraint(equalTo: view.topAnchor),
                         dimView.leftAnchor.constraint(equalTo: view.leftAnchor),
                         dimView.rightAnchor.constraint(equalTo: view.rightAnchor),
-                        dimView.bottomAnchor.constraint(equalTo: tableOfContentController.view.topAnchor, constant: 0)]
+                        dimView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)]
         constraints += [tableOfContentController.view.leftAnchor.constraint(equalTo: view.leftAnchor),
                         tableOfContentController.view.rightAnchor.constraint(equalTo: view.rightAnchor),
                         tableOfContentController.view.heightAnchor.constraint(lessThanOrEqualTo: view.heightAnchor, multiplier: 0.7),
@@ -124,47 +124,49 @@ class MainController: UIViewController, UISearchBarDelegate, TabLoadingActivity,
     }
     
     private func configureForHorizontalRegular() {
-//        separatorView.backgroundColor = .gray
-//        view.subviews.forEach({ $0.removeFromSuperview() })
-//        childViewControllers.forEach({ $0.removeFromParentViewController() })
-//        [tableOfContentController, toolBarController].forEach({ addChildViewController($0) })
-//        [tableOfContentController.view!, separatorView, tabContainer, toolBarController.view!].forEach({
-//            $0.removeFromSuperview()
-//            $0.translatesAutoresizingMaskIntoConstraints = false
-//            view.addSubview($0)
-//        })
-//
-//        let tableOfContentLeadingConstraint = view.leadingAnchor.constraint(equalTo: tableOfContentController.view.leadingAnchor)
-//        let tabContainerLeadingConstraint = view.leadingAnchor.constraint(equalTo: tabContainer.leadingAnchor)
-//        var constraints = [
-//            tableOfContentController.view.topAnchor.constraint(equalTo: view.topAnchor),
-//            tableOfContentController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-//            separatorView.topAnchor.constraint(equalTo: view.topAnchor),
-//            separatorView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-//            tabContainer.topAnchor.constraint(equalTo: view.topAnchor),
-//            tabContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor)]
-//        constraints += [tableOfContentController.view.trailingAnchor.constraint(equalTo: separatorView.leadingAnchor),
-//                        separatorView.trailingAnchor.constraint(equalTo: tabContainer.leadingAnchor),
-//                        tabContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor)]
-//        constraints += [tableOfContentController.view.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.3),
-//                        separatorView.widthAnchor.constraint(equalToConstant: 1/UIScreen.main.scale)]
-//        constraints += [tabContainer.centerXAnchor.constraint(equalTo: toolBarController.view.centerXAnchor),
-//                        tabContainer.bottomAnchor.constraint(equalTo: toolBarController.view.bottomAnchor, constant: 10)]
-//        constraints.forEach({ $0.isActive = true })
-//
-//        [tableOfContentController, toolBarController].forEach({ $0.didMove(toParentViewController: self) })
-//
-//        showTableOfContent = {
-//            tabContainerLeadingConstraint.isActive = false
-//            tableOfContentLeadingConstraint.isActive = true
-//        }
-//
-//        hideTableOfContent = {
-//            tableOfContentLeadingConstraint.isActive = false
-//            tabContainerLeadingConstraint.isActive = true
-//        }
-//
-//        isShowingTableOfContent ? showTableOfContent() : hideTableOfContent()
+        view.subviews.forEach({ $0.removeFromSuperview() })
+        childViewControllers.forEach({ $0.removeFromParentViewController() })
+        
+        let controllers = [tableOfContentController, tabContainerController, toolBarController]
+        controllers.forEach({ addChildViewController($0) })
+        [tableOfContentController.view!, separatorView, tabContainerController.view!, toolBarController.view!].forEach({
+            $0.removeFromSuperview()
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview($0)
+        })
+
+        let tableOfContentShowConstraint = view.leadingAnchor.constraint(equalTo: tableOfContentController.view.leadingAnchor)
+        let tableOfContentHideConstraint = view.leadingAnchor.constraint(equalTo: tabContainerController.view.leadingAnchor)
+        var constraints = [
+            tableOfContentController.view.topAnchor.constraint(equalTo: view.topAnchor),
+            tableOfContentController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            separatorView.topAnchor.constraint(equalTo: view.topAnchor),
+            separatorView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tabContainerController.view.topAnchor.constraint(equalTo: view.topAnchor),
+            tabContainerController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)]
+        constraints += [tableOfContentController.view.trailingAnchor.constraint(equalTo: separatorView.leadingAnchor),
+                        separatorView.trailingAnchor.constraint(equalTo: tabContainerController.view.leadingAnchor),
+                        tabContainerController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)]
+        constraints += [tableOfContentController.view.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.3),
+                        separatorView.widthAnchor.constraint(equalToConstant: 2/UIScreen.main.scale)]
+        constraints += [tabContainerController.view.centerXAnchor.constraint(equalTo: toolBarController.view.centerXAnchor),
+                        tabContainerController.view.bottomAnchor.constraint(equalTo: toolBarController.view.bottomAnchor, constant: 10)]
+        constraints.forEach({ $0.isActive = true })
+
+        controllers.forEach({ $0.didMove(toParentViewController: self) })
+
+        configureToShowTableOfContent = {
+            tableOfContentHideConstraint.isActive = false
+            tableOfContentShowConstraint.isActive = true
+        }
+
+        configureToHideTableOfContent = {
+            tableOfContentShowConstraint.isActive = false
+            tableOfContentHideConstraint.isActive = true
+        }
+
+        isShowingTableOfContent ? configureToShowTableOfContent() : configureToHideTableOfContent()
+        separatorView.backgroundColor = .lightGray
     }
     
     private func configureSearch() {
@@ -204,7 +206,7 @@ class MainController: UIViewController, UISearchBarDelegate, TabLoadingActivity,
         view.layoutIfNeeded()
         isShowingTableOfContent ? configureToShowTableOfContent() : configureToHideTableOfContent()
         
-        UIView.animate(withDuration: 2, delay: 0.0, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseInOut, animations: {
             self.view.layoutIfNeeded()
             guard self.traitCollection.horizontalSizeClass == .compact else {return}
             self.dimView.isDimmed = self.isShowingTableOfContent
