@@ -13,20 +13,158 @@ class MainController: UIViewController, UISearchBarDelegate, TabLoadingActivity,
     let searchBar = UISearchBar()
     let searchController = SearchController()
     
-    private(set) var currentTab: (UIViewController & TabController)?
-    private(set) var tabs = [UIViewController & TabController]()
+    let tabContainerController = TabContainerController()
     let toolBarController = ToolBarController()
+    let tableOfContentController = TableOfContentController()
+    
+//    private(set) var currentTab: (UIViewController & TabController)?
+//    private(set) var tabs = [UIViewController & TabController]()
+//    private let tabContainer = UIView()
+    private let separatorView = UIView()
+    private let dimView = DimView()
+    
+    private var isShowingTableOfContent = false
+    private var configureToShowTableOfContent = {}
+    private var configureToHideTableOfContent = {}
+    private var setTableOfContentItems = { (items: [String]) in }
     
     private lazy var libraryController = LibraryController()
     
     lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
     
+    // MARK: -
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = .white
+        toolBarController.delegate = self
+        dimView.gestureRecognizer.addTarget(self, action: #selector(dimViewTapped))
         configureSearch()
-        configureToolBar()
-        addTab()
-        loadMainPageForCustomApps()
+//        addTabController()
+//        loadMainPageForCustomApps()
+        
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
+        switch traitCollection.horizontalSizeClass {
+        case .compact:
+            configureForHorizontalCompact()
+        case .regular:
+            configureForHorizontalRegular()
+        case .unspecified:
+            break
+        }
+    }
+    
+    private func configureForHorizontalCompact() {
+        view.subviews.forEach({ $0.removeFromSuperview() })
+        childViewControllers.forEach({ $0.removeFromParentViewController() })
+        
+        let controllers = [tabContainerController, tableOfContentController, toolBarController]
+        controllers.forEach({ addChildViewController($0) })
+        [tabContainerController.view!, toolBarController.view!, dimView, tableOfContentController.view!].forEach({
+            $0.removeFromSuperview()
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview($0)
+        })
+
+        let toolBarShowConstraint: NSLayoutConstraint = {
+            if #available(iOS 11.0, *) {
+                return view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: toolBarController.view.bottomAnchor, constant: 10)
+            } else {
+                return view.bottomAnchor.constraint(equalTo: toolBarController.view.bottomAnchor, constant: 10)
+            }
+        }()
+        let toolBarHideConstraint = toolBarController.view.topAnchor.constraint(equalTo: view.bottomAnchor, constant: toolBarController.visualView.shadow.blur)
+        let tableOfContentShowConstraint = tableOfContentController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        let tableOfContentHideConstraint = tableOfContentController.view.topAnchor.constraint(equalTo: view.bottomAnchor, constant: tableOfContentController.visualView.shadow.blur)
+        let tableOfContentHeightConstraint = tableOfContentController.view.heightAnchor.constraint(equalToConstant: 300)
+        tableOfContentHeightConstraint.priority = .defaultHigh
+
+        var constraints = [tabContainerController.view.topAnchor.constraint(equalTo: view.topAnchor),
+                           tabContainerController.view.leftAnchor.constraint(equalTo: view.leftAnchor),
+                           tabContainerController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                           tabContainerController.view.rightAnchor.constraint(equalTo: view.rightAnchor)]
+        constraints.append(toolBarController.view.centerXAnchor.constraint(equalTo: view.centerXAnchor))
+        constraints += [dimView.topAnchor.constraint(equalTo: view.topAnchor),
+                        dimView.leftAnchor.constraint(equalTo: view.leftAnchor),
+                        dimView.rightAnchor.constraint(equalTo: view.rightAnchor),
+                        dimView.bottomAnchor.constraint(equalTo: tableOfContentController.view.topAnchor, constant: 0)]
+        constraints += [tableOfContentController.view.leftAnchor.constraint(equalTo: view.leftAnchor),
+                        tableOfContentController.view.rightAnchor.constraint(equalTo: view.rightAnchor),
+                        tableOfContentController.view.heightAnchor.constraint(lessThanOrEqualTo: view.heightAnchor, multiplier: 0.7),
+                        tableOfContentHeightConstraint]
+        constraints.forEach({ $0.isActive = true })
+
+        controllers.forEach({ $0.didMove(toParentViewController: self) })
+
+        configureToShowTableOfContent = {
+            tableOfContentHideConstraint.isActive = false
+            tableOfContentShowConstraint.isActive = true
+            toolBarShowConstraint.isActive = false
+            toolBarHideConstraint.isActive = true
+        }
+
+        configureToHideTableOfContent = {
+            tableOfContentShowConstraint.isActive = false
+            tableOfContentHideConstraint.isActive = true
+            toolBarHideConstraint.isActive = false
+            toolBarShowConstraint.isActive = true
+        }
+
+//        setTableOfContentItems = { (items: [String]) in
+//            tableOfContentHeightConstraint.constant = items.count > 0 ? 44 * CGFloat(items.count) : 300
+//        }
+
+        isShowingTableOfContent ? configureToShowTableOfContent() : configureToHideTableOfContent()
+        dimView.isHidden = !isShowingTableOfContent
+        dimView.isDimmed = isShowingTableOfContent
+    }
+    
+    private func configureForHorizontalRegular() {
+//        separatorView.backgroundColor = .gray
+//        view.subviews.forEach({ $0.removeFromSuperview() })
+//        childViewControllers.forEach({ $0.removeFromParentViewController() })
+//        [tableOfContentController, toolBarController].forEach({ addChildViewController($0) })
+//        [tableOfContentController.view!, separatorView, tabContainer, toolBarController.view!].forEach({
+//            $0.removeFromSuperview()
+//            $0.translatesAutoresizingMaskIntoConstraints = false
+//            view.addSubview($0)
+//        })
+//
+//        let tableOfContentLeadingConstraint = view.leadingAnchor.constraint(equalTo: tableOfContentController.view.leadingAnchor)
+//        let tabContainerLeadingConstraint = view.leadingAnchor.constraint(equalTo: tabContainer.leadingAnchor)
+//        var constraints = [
+//            tableOfContentController.view.topAnchor.constraint(equalTo: view.topAnchor),
+//            tableOfContentController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+//            separatorView.topAnchor.constraint(equalTo: view.topAnchor),
+//            separatorView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+//            tabContainer.topAnchor.constraint(equalTo: view.topAnchor),
+//            tabContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor)]
+//        constraints += [tableOfContentController.view.trailingAnchor.constraint(equalTo: separatorView.leadingAnchor),
+//                        separatorView.trailingAnchor.constraint(equalTo: tabContainer.leadingAnchor),
+//                        tabContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor)]
+//        constraints += [tableOfContentController.view.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.3),
+//                        separatorView.widthAnchor.constraint(equalToConstant: 1/UIScreen.main.scale)]
+//        constraints += [tabContainer.centerXAnchor.constraint(equalTo: toolBarController.view.centerXAnchor),
+//                        tabContainer.bottomAnchor.constraint(equalTo: toolBarController.view.bottomAnchor, constant: 10)]
+//        constraints.forEach({ $0.isActive = true })
+//
+//        [tableOfContentController, toolBarController].forEach({ $0.didMove(toParentViewController: self) })
+//
+//        showTableOfContent = {
+//            tabContainerLeadingConstraint.isActive = false
+//            tableOfContentLeadingConstraint.isActive = true
+//        }
+//
+//        hideTableOfContent = {
+//            tableOfContentLeadingConstraint.isActive = false
+//            tabContainerLeadingConstraint.isActive = true
+//        }
+//
+//        isShowingTableOfContent ? showTableOfContent() : hideTableOfContent()
     }
     
     private func configureSearch() {
@@ -37,54 +175,11 @@ class MainController: UIViewController, UISearchBarDelegate, TabLoadingActivity,
         searchBar.autocorrectionType = .no
         navigationItem.titleView = searchBar
     }
-    
-    private func configureToolBar() {
-        toolBarController.delegate = self
-        addChildViewController(toolBarController)
-        let toolBar = toolBarController.view!
-        toolBar.translatesAutoresizingMaskIntoConstraints = false
-        view.insertSubview(toolBar, at: 0)
-        if #available(iOS 11.0, *) {
-            view.addConstraints([
-                view.safeAreaLayoutGuide.centerXAnchor.constraint(equalTo: toolBar.centerXAnchor),
-                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: toolBar.bottomAnchor, constant: 10)])
-        } else {
-            view.addConstraints([
-                view.centerXAnchor.constraint(equalTo: toolBar.centerXAnchor),
-                view.bottomAnchor.constraint(equalTo: toolBar.bottomAnchor, constant: 10)])
-        }
-        toolBarController.didMove(toParentViewController: self)
-    }
-    
-    private func addTab() {
-        var tab: UIViewController & TabController = {
-            if #available(iOS 11.0, *) {
-                return WebKitTabController()
-            } else {
-                return LegacyTabController()
-            }
-        }()
-        
-        tab.delegate = self
-        currentTab = tab
-        tabs.append(tab)
-        
-        addChildViewController(tab)
-        tab.view.translatesAutoresizingMaskIntoConstraints = false
-        view.insertSubview(tab.view, belowSubview: toolBarController.view)
-        view.addConstraints([
-            view.topAnchor.constraint(equalTo: tab.view.topAnchor),
-            view.leftAnchor.constraint(equalTo: tab.view.leftAnchor),
-            view.bottomAnchor.constraint(equalTo: tab.view.bottomAnchor),
-            view.rightAnchor.constraint(equalTo: tab.view.rightAnchor)])
-        tab.didMove(toParentViewController: self)
-        
-        updateToolBarButtons()
-    }
+
     
     private func loadMainPageForCustomApps() {
         if Bundle.main.infoDictionary?["CFBundleName"] as? String != "Kiwix" {
-            currentTab?.loadMainPage()
+            tabContainerController.currentTabController?.loadMainPage()
         }
     }
     
@@ -92,22 +187,50 @@ class MainController: UIViewController, UISearchBarDelegate, TabLoadingActivity,
         searchBar.resignFirstResponder()
     }
     
+    @objc func dimViewTapped() {
+        toggleTableOfContent()
+    }
+    
     func loadingFinished() {
         updateToolBarButtons()
+    }
+    
+    func toggleTableOfContent() {
+        isShowingTableOfContent = !self.isShowingTableOfContent
+        if isShowingTableOfContent {
+            dimView.isHidden = false
+            dimView.isDimmed = false
+        }
+        view.layoutIfNeeded()
+        isShowingTableOfContent ? configureToShowTableOfContent() : configureToHideTableOfContent()
+        
+        UIView.animate(withDuration: 2, delay: 0.0, options: .curveEaseInOut, animations: {
+            self.view.layoutIfNeeded()
+            guard self.traitCollection.horizontalSizeClass == .compact else {return}
+            self.dimView.isDimmed = self.isShowingTableOfContent
+        }, completion: { _ in
+            if !self.isShowingTableOfContent {
+                self.dimView.isHidden = true
+            }
+        })
     }
     
     // MARK: - ToolBar
     
     func backButtonTapped() {
-        currentTab?.goBack()
+        tabContainerController.currentTabController?.goBack()
     }
     
     func forwardButtonTapped() {
-        currentTab?.goForward()
+        tabContainerController.currentTabController?.goForward()
+    }
+    
+    func tableOfContentButtonTapped() {
+        toggleTableOfContent()
     }
     
     func homeButtonTapped() {
-        currentTab?.loadMainPage()
+        tabContainerController.currentTabController?.loadMainPage()
     }
     
     func libraryButtonTapped() {
@@ -115,7 +238,7 @@ class MainController: UIViewController, UISearchBarDelegate, TabLoadingActivity,
     }
     
     private func updateToolBarButtons() {
-        guard let tab = currentTab else {return}
+        guard let tab = tabContainerController.currentTabController else {return}
         toolBarController.back.tintColor = tab.canGoBack ? nil : .gray
         toolBarController.forward.tintColor = tab.canGoForward ? nil : .gray
     }
@@ -180,5 +303,25 @@ class BaseController: UIViewController {
     
     @objc func dismissController() {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+fileprivate class DimView: UIView {
+    var isDimmed: Bool = false {
+        didSet {
+            backgroundColor = isDimmed ? UIColor.lightGray.withAlphaComponent(0.5) : UIColor.clear
+        }
+    }
+    
+    let gestureRecognizer = UITapGestureRecognizer()
+    
+    init() {
+        super.init(frame: .zero)
+        addGestureRecognizer(gestureRecognizer)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        addGestureRecognizer(gestureRecognizer)
     }
 }

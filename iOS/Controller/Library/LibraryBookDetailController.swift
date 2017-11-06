@@ -225,7 +225,7 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
                 showDeletionConfirmationAlert(action: action, bookID: book.id, localizedTitle: cell.textLabel?.text)
             case .openMainPage:
                 guard let main = (presentingViewController as? UINavigationController)?.topViewController as? MainController else {return}
-                main.currentTab?.loadMainPage()
+                main.tabContainerController.currentTabController?.loadMainPage()
                 dismiss(animated: true, completion: nil)
             }
         }

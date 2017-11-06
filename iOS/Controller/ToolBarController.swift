@@ -8,20 +8,34 @@
 
 import UIKit
 
-class ToolBarController: PanelController {
+class ToolBarController: UIViewController {
+    let visualView = VisualEffectShadowView()
     private let stackView = UIStackView()
     weak var delegate: ToolBarControlEvents?
     
     private(set) lazy var back = ToolBarButton(image: #imageLiteral(resourceName: "Left"))
     private(set) lazy var forward = ToolBarButton(image: #imageLiteral(resourceName: "Right"))
-    private(set) lazy var tableOfContents = ToolBarButton(image: #imageLiteral(resourceName: "TableOfContent"), insets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12))
+    private(set) lazy var tableOfContent = ToolBarButton(image: #imageLiteral(resourceName: "TableOfContent"), insets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12))
     private(set) lazy var home = ToolBarButton(image: #imageLiteral(resourceName: "Home"), insets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12))
     private(set) lazy var library = ToolBarButton(image: #imageLiteral(resourceName: "Library"), insets: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configVisualView()
         configStackView()
         addButtons()
+    }
+    
+    private func configVisualView() {
+        visualView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(visualView)
+        let constraints = [
+            view.topAnchor.constraint(equalTo: visualView.topAnchor, constant: visualView.shadow.blur),
+            view.leftAnchor.constraint(equalTo: visualView.leftAnchor, constant: visualView.shadow.blur),
+            view.bottomAnchor.constraint(equalTo: visualView.bottomAnchor, constant: -visualView.shadow.blur),
+            view.rightAnchor.constraint(equalTo: visualView.rightAnchor, constant: -visualView.shadow.blur)
+        ]
+        view.addConstraints(constraints)
     }
     
     private func configStackView() {
@@ -41,7 +55,7 @@ class ToolBarController: PanelController {
     }
     
     private func addButtons() {
-        var buttons = [back, forward, tableOfContents, home]
+        var buttons = [back, forward, tableOfContent, home]
         if Bundle.main.infoDictionary?["CFBundleName"] as? String == "Kiwix" {
             buttons.append(library)
         }
@@ -61,6 +75,8 @@ class ToolBarController: PanelController {
             delegate?.backButtonTapped()
         case forward:
             delegate?.forwardButtonTapped()
+        case tableOfContent:
+            delegate?.tableOfContentButtonTapped()
         case home:
             delegate?.homeButtonTapped()
         case library:
@@ -74,6 +90,7 @@ class ToolBarController: PanelController {
 protocol ToolBarControlEvents: class {
     func backButtonTapped()
     func forwardButtonTapped()
+    func tableOfContentButtonTapped()
     func homeButtonTapped()
     func libraryButtonTapped()
 }
