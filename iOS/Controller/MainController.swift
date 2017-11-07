@@ -10,16 +10,14 @@ import UIKit
 import WebKit
 
 class MainController: UIViewController, UISearchBarDelegate, TabLoadingActivity, ToolBarControlEvents {
-    let searchBar = UISearchBar()
-    let searchController = SearchController()
+//    let searchBar = UISearchBar()
+//    let searchController = SearchController()
+    let searchController = UISearchController(searchResultsController: SearchResultController())
     
     let tabContainerController = TabContainerController()
     let toolBarController = ToolBarController()
     let tableOfContentController = TableOfContentController()
     
-//    private(set) var currentTab: (UIViewController & TabController)?
-//    private(set) var tabs = [UIViewController & TabController]()
-//    private let tabContainer = UIView()
     private let separatorView = UIView()
     private let dimView = DimView()
     
@@ -167,12 +165,15 @@ class MainController: UIViewController, UISearchBarDelegate, TabLoadingActivity,
     }
     
     private func configureSearch() {
-        searchBar.delegate = self
-        searchBar.placeholder = NSLocalizedString("Search", comment: "Search Promot")
-        searchBar.searchBarStyle = .minimal
-        searchBar.autocapitalizationType = .none
-        searchBar.autocorrectionType = .no
-        navigationItem.titleView = searchBar
+//        searchBar.delegate = self
+//        searchBar.placeholder = NSLocalizedString("Search", comment: "Search Promot")
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.autocorrectionType = .no
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.obscuresBackgroundDuringPresentation = true
+        navigationItem.titleView = searchController.searchBar
+        self.definesPresentationContext = true
     }
 
     
@@ -183,7 +184,7 @@ class MainController: UIViewController, UISearchBarDelegate, TabLoadingActivity,
     }
     
     @objc func cancelSearch() {
-        searchBar.resignFirstResponder()
+//        searchBar.resignFirstResponder()
     }
     
     @objc func dimViewTapped() {
@@ -244,55 +245,6 @@ class MainController: UIViewController, UISearchBarDelegate, TabLoadingActivity,
     
     // MARK: - SearchBar
     
-    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        searchBar.text = searchController.searchText
-        return true
-    }
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        DispatchQueue.main.async {
-            if let textField = searchBar.value(forKey: "searchField") as? UITextField {
-                textField.selectAll(nil)
-            }
-            self.navigationItem.setRightBarButtonItems([self.cancelButton], animated: true)
-        }
-        showSearchController()
-    }
-    
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchBar.text = nil
-        navigationItem.setRightBarButton(nil, animated: true)
-        hideSearchController()
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchController.startSearch(text: searchText)
-    }
-    
-    private func showSearchController() {
-        if isShowingTableOfContent { toggleTableOfContent() }
-        addChildViewController(searchController)
-        let searchResult = searchController.view!
-        searchResult.translatesAutoresizingMaskIntoConstraints = false
-        view.insertSubview(searchResult, aboveSubview: toolBarController.view)
-        if #available(iOS 11.0, *) {
-            [searchResult.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-             searchResult.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-             searchResult.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-             searchResult.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)].forEach({ $0.isActive = true })
-        } else {
-            [searchResult.leftAnchor.constraint(equalTo: view.leftAnchor),
-             searchResult.rightAnchor.constraint(equalTo: view.rightAnchor),
-             searchResult.topAnchor.constraint(equalTo: view.topAnchor),
-             searchResult.bottomAnchor.constraint(equalTo: view.bottomAnchor)].forEach({ $0.isActive = true })
-        }
-        searchController.didMove(toParentViewController: self)
-    }
-    
-    private func hideSearchController() {
-        searchController.view.removeFromSuperview()
-        searchController.removeFromParentViewController()
-    }
 }
 
 class BaseController: UIViewController {
@@ -325,3 +277,5 @@ fileprivate class DimView: UIView {
         addGestureRecognizer(gestureRecognizer)
     }
 }
+
+

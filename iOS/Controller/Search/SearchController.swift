@@ -112,7 +112,7 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     @objc func backgroundViewTapped() {
         guard let main = parent as? MainController else {return}
-        main.searchBar.resignFirstResponder()
+//        main.searchBar.resignFirstResponder()
     }
     
     // MARK: - Search
@@ -162,7 +162,7 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         guard let main = parent as? MainController else {return}
-        main.searchBar.resignFirstResponder()
+//        main.searchBar.resignFirstResponder()
         let url = results[indexPath.row].url
         main.tabContainerController.currentTabController?.load(url: url)
     }
