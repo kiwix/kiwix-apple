@@ -422,7 +422,6 @@
 		97A36C561F8D5FCD0079B452 /* LibraryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryController.swift; sourceTree = "<group>"; };
 		97A996CD1F609C9F007A6282 /* LegacyTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyTabController.swift; sourceTree = "<group>"; };
 		97A996D11F60A1A0007A6282 /* ToolBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarController.swift; sourceTree = "<group>"; };
-		97A996D31F61DB38007A6282 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		97A996DE1F630FBC007A6282 /* SearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultView.swift; sourceTree = "<group>"; };
 		97A9F6F41E2E990500F423AA /* JSInject.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = JSInject.js; sourceTree = "<group>"; };
 		97AFF7831FB0BBF9006B254A /* TabContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabContainerController.swift; sourceTree = "<group>"; };
@@ -930,7 +929,6 @@
 				97E412361FB1FFAB009585DC /* SearchResultController.swift */,
 				97A996DE1F630FBC007A6282 /* SearchResultView.swift */,
 				97E412391FB20DAB009585DC /* SearchResultCells.swift */,
-				97A996D31F61DB38007A6282 /* SearchController.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";

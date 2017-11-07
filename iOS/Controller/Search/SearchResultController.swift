@@ -7,19 +7,29 @@
 //
 
 import UIKit
+import ProcedureKit
 
-class SearchResultController: UIViewController {
+class SearchResultController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, ProcedureQueueDelegate {
     private let visualView = VisualEffectShadowView()
     private let searchResultView = SearchResultView()
     private let constraints = Constraints()
     private var observer: NSKeyValueObservation?
     
+    private let queue = ProcedureQueue()
+    private(set) var searchText = ""
+    private(set) var results: [SearchResult] = []
+    
     override func loadView() {
         view = SearchResultControllerBackgroundView()
+        searchResultView.tableView.register(SearchResultTitleCell.self, forCellReuseIdentifier: "TitleCell")
+        searchResultView.tableView.register(SearchResultTitleSnippetCell.self, forCellReuseIdentifier: "TitleSnippetCell")
+        searchResultView.tableView.dataSource = self
+        searchResultView.tableView.delegate = self
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        queue.delegate = self
         observer = view.observe(\.hidden, options: .new, changeHandler: { (view, change) in
             if change.newValue == true { view.isHidden = false }
         })
@@ -129,6 +139,81 @@ class SearchResultController: UIViewController {
         }
         
         NSLayoutConstraint.activate(constraints.horizontalRegular)
+    }
+    
+    // MARK: -
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return results.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let result = results[indexPath.row]
+        let identifier = result.hasSnippet ? "TitleSnippetCell" : "TitleCell"
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+        
+        if let cell = cell as? SearchResultTitleCell {
+            cell.titleLabel.text = result.title
+        } else if let cell = cell as? SearchResultTitleSnippetCell {
+            cell.titleLabel.text = result.title
+            if let snippet = result.snippet {
+                cell.snippetLabel.text = snippet
+            } else if let snippet = result.attributedSnippet {
+                cell.snippetLabel.attributedText = snippet
+            }
+        }
+        
+        return cell
+    }
+    
+    // MARK: - UISearchResultsUpdating
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text else {return}
+        let procedure = SearchProcedure(term: searchText)
+        procedure.add(condition: MutuallyExclusive<SearchResultController>())
+        procedure.add(observer: DidFinishObserver(didFinish: { [unowned self] (procedure, errors) in
+            guard let procedure = procedure as? SearchProcedure else {return}
+            OperationQueue.main.addOperation({
+                self.results = procedure.results
+            })
+        }))
+        queue.add(operation: procedure)
+    }
+    
+    // MARK: - ProcedureQueueDelegate
+    
+    func procedureQueue(_ queue: ProcedureQueue, willAddProcedure procedure: Procedure, context: Any?) -> ProcedureFuture? {
+        if queue.operationCount == 0 {
+            DispatchQueue.main.async {
+                self.searchResultView.tableView.isHidden = true
+                self.searchResultView.emptyResult.isHidden = true
+                self.searchResultView.searching.isHidden = false
+                self.searchResultView.searching.activityIndicator.startAnimating()
+            }
+        } else {
+            queue.operations.forEach({$0.cancel()})
+        }
+        return nil
+    }
+    
+    func procedureQueue(_ queue: ProcedureQueue, didFinishProcedure procedure: Procedure, withErrors errors: [Error]) {
+        guard queue.operationCount == 0 else {return}
+        DispatchQueue.main.async {
+            self.searchResultView.searching.activityIndicator.stopAnimating()
+            self.searchResultView.searching.isHidden = true
+            self.searchResultView.emptyResult.isHidden = self.results.count != 0
+            self.searchResultView.tableView.isHidden = self.results.count == 0
+            self.searchResultView.tableView.reloadData()
+            if self.results.count > 0 {
+                let firstRow = IndexPath(row: 0, section: 0)
+                self.searchResultView.tableView.scrollToRow(at: firstRow, at: .top, animated: false)
+            }
+        }
     }
     
     class SearchResultControllerBackgroundView: UIView {

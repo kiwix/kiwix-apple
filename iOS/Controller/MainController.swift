@@ -10,8 +10,6 @@ import UIKit
 import WebKit
 
 class MainController: UIViewController, UISearchBarDelegate, TabLoadingActivity, ToolBarControlEvents {
-//    let searchBar = UISearchBar()
-//    let searchController = SearchController()
     let searchController = UISearchController(searchResultsController: SearchResultController())
     
     let tabContainerController = TabContainerController()
@@ -38,7 +36,7 @@ class MainController: UIViewController, UISearchBarDelegate, TabLoadingActivity,
         view.backgroundColor = .white
         toolBarController.delegate = self
         dimView.gestureRecognizer.addTarget(self, action: #selector(dimViewTapped))
-        configureSearch()
+        configureSearchController()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -164,14 +162,13 @@ class MainController: UIViewController, UISearchBarDelegate, TabLoadingActivity,
         separatorView.backgroundColor = .lightGray
     }
     
-    private func configureSearch() {
-//        searchBar.delegate = self
-//        searchBar.placeholder = NSLocalizedString("Search", comment: "Search Promot")
+    private func configureSearchController() {
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.autocapitalizationType = .none
         searchController.searchBar.autocorrectionType = .no
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.obscuresBackgroundDuringPresentation = true
+        searchController.searchResultsUpdater = searchController.searchResultsController as? SearchResultController
         navigationItem.titleView = searchController.searchBar
         self.definesPresentationContext = true
     }
