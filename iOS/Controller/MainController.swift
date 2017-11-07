@@ -10,17 +10,19 @@ import UIKit
 import WebKit
 
 class MainController: UIViewController, UISearchControllerDelegate, TabLoadingActivity, ToolBarControlEvents {
+    // MARK: - Child Controllers
     let searchController = UISearchController(searchResultsController: SearchResultController())
     let tabContainerController = TabContainerController()
     let toolBarController = ToolBarController()
     let tableOfContentController = TableOfContentController()
     private lazy var libraryController = LibraryController()
     
+    // MARK: - Views
     private let separatorView = UIView()
     private let dimView = DimView()
     private lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
     
-    private let constraints = Constraints()
+    // MARK: - Constraints
     private var isShowingTableOfContent = false
     private var configureToShowTableOfContent = {}
     private var configureToHideTableOfContent = {}
@@ -254,17 +256,6 @@ class MainController: UIViewController, UISearchControllerDelegate, TabLoadingAc
     }
     
     // MARK: -
-    
-    private class Constraints {
-        var regular = ConstraintCollection()
-        var compact = ConstraintCollection()
-    }
-    
-    private class ConstraintCollection {
-        var general = [NSLayoutConstraint]()
-        var showTableOfContent = {}
-        var hideTableOfContent = {}
-    }
     
     private class DimView: UIView {
         var isDimmed: Bool = false {
