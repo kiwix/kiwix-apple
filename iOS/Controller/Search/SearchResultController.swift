@@ -25,11 +25,13 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
         searchResultView.tableView.register(SearchResultTitleSnippetCell.self, forCellReuseIdentifier: "TitleSnippetCell")
         searchResultView.tableView.dataSource = self
         searchResultView.tableView.delegate = self
+        searchResultView.tableView.rowHeight = 44
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         queue.delegate = self
+        searchResultView.isHidden = true
         observer = view.observe(\.hidden, options: .new, changeHandler: { (view, change) in
             if change.newValue == true { view.isHidden = false }
         })
@@ -86,6 +88,7 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
         NSLayoutConstraint.deactivate(constraints.horizontalRegular)
         view.subviews.forEach({ $0.removeFromSuperview() })
         searchResultView.removeFromSuperview()
+        view.backgroundColor = .white
         
         searchResultView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(searchResultView)
@@ -111,6 +114,7 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     private func configureForHorizontalRegular() {
         NSLayoutConstraint.deactivate(constraints.horizontalCompact)
         view.subviews.forEach({ $0.removeFromSuperview() })
+        view.backgroundColor = .clear
 
         visualView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(visualView)

@@ -25,13 +25,10 @@ class SearchResultTitleCell: UITableViewCell {
         titleLabel.font = UIFont.systemFont(ofSize: 17, weight: .medium)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(titleLabel)
-        contentView.addConstraints([
+        NSLayoutConstraint.activate([
             titleLabel.leftAnchor.constraint(equalTo: contentView.readableContentGuide.leftAnchor),
             titleLabel.rightAnchor.constraint(equalTo: contentView.readableContentGuide.rightAnchor),
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            titleLabel.heightAnchor.constraint(equalToConstant: 44)
-            ])
+            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)])
     }
 }
 
