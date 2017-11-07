@@ -56,10 +56,13 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
-        if traitCollection.horizontalSizeClass == .regular {
-            configureForHorizontalRegular()
-        } else if traitCollection.horizontalSizeClass == .compact {
+        switch traitCollection.horizontalSizeClass {
+        case .compact:
             configureForHorizontalCompact()
+        case .regular:
+            configureForHorizontalRegular()
+        case .unspecified:
+            break
         }
     }
     
@@ -85,15 +88,15 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     }
     
     private func configureForHorizontalCompact() {
-        NSLayoutConstraint.deactivate(constraints.horizontalRegular)
+        NSLayoutConstraint.deactivate(constraints.regular)
         view.subviews.forEach({ $0.removeFromSuperview() })
         searchResultView.removeFromSuperview()
         view.backgroundColor = .white
         
         searchResultView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(searchResultView)
-        if constraints.horizontalCompact.count == 0 {
-            constraints.horizontalCompact = {
+        if constraints.compact.count == 0 {
+            constraints.compact = {
                 if #available(iOS 11.0, *) {
                     return [searchResultView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
                             searchResultView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
@@ -108,11 +111,11 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
             }()
         }
         
-        NSLayoutConstraint.activate(constraints.horizontalCompact)
+        NSLayoutConstraint.activate(constraints.compact)
     }
     
     private func configureForHorizontalRegular() {
-        NSLayoutConstraint.deactivate(constraints.horizontalCompact)
+        NSLayoutConstraint.deactivate(constraints.compact)
         view.subviews.forEach({ $0.removeFromSuperview() })
         view.backgroundColor = .clear
 
@@ -120,7 +123,7 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
         view.addSubview(visualView)
         searchResultView.translatesAutoresizingMaskIntoConstraints = false
         visualView.contentView.addSubview(searchResultView)
-        if constraints.horizontalRegular.count == 0 {
+        if constraints.regular.count == 0 {
             var constraints = [visualView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                                visualView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.75),
                                visualView.widthAnchor.constraint(lessThanOrEqualToConstant: 800)]
@@ -139,10 +142,10 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
                             visualView.contentView.bottomAnchor.constraint(equalTo: searchResultView.bottomAnchor),
                             visualView.contentView.rightAnchor.constraint(equalTo: searchResultView.rightAnchor)]
             
-            self.constraints.horizontalRegular = constraints
+            self.constraints.regular = constraints
         }
         
-        NSLayoutConstraint.activate(constraints.horizontalRegular)
+        NSLayoutConstraint.activate(constraints.regular)
     }
     
     // MARK: -
@@ -220,15 +223,17 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    class SearchResultControllerBackgroundView: UIView {
+    // MARK: -
+    
+    private class Constraints {
+        var regular = [NSLayoutConstraint]()
+        var compact = [NSLayoutConstraint]()
+    }
+    
+    private class SearchResultControllerBackgroundView: UIView {
         override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
             return subviews.map({ $0.frame.contains(point) }).reduce(false, { $0 || $1 })
         }
-    }
-    
-    class Constraints {
-        var horizontalRegular = [NSLayoutConstraint]()
-        var horizontalCompact = [NSLayoutConstraint]()
     }
 }
 
