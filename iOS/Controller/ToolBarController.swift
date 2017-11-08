@@ -29,29 +29,24 @@ class ToolBarController: UIViewController {
     private func configVisualView() {
         visualView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(visualView)
-        let constraints = [
+        NSLayoutConstraint.activate([
+            view.centerXAnchor.constraint(equalTo: visualView.centerXAnchor),
             view.topAnchor.constraint(equalTo: visualView.topAnchor, constant: visualView.shadow.blur),
-            view.leftAnchor.constraint(equalTo: visualView.leftAnchor, constant: visualView.shadow.blur),
-            view.bottomAnchor.constraint(equalTo: visualView.bottomAnchor, constant: -visualView.shadow.blur),
-            view.rightAnchor.constraint(equalTo: visualView.rightAnchor, constant: -visualView.shadow.blur)
-        ]
-        view.addConstraints(constraints)
+            view.bottomAnchor.constraint(equalTo: visualView.bottomAnchor, constant: -visualView.shadow.blur)])
     }
     
     private func configStackView() {
         stackView.axis = .horizontal
         stackView.alignment = .fill
-        stackView.distribution = .equalSpacing
+        stackView.distribution = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         let visualContent = visualView.contentView
         visualContent.addSubview(stackView)
-        let constraints = [
+        NSLayoutConstraint.activate([
             visualContent.topAnchor.constraint(equalTo: stackView.topAnchor),
             visualContent.leftAnchor.constraint(equalTo: stackView.leftAnchor),
             visualContent.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
-            visualContent.rightAnchor.constraint(equalTo: stackView.rightAnchor)
-        ]
-        visualContent.addConstraints(constraints)
+            visualContent.rightAnchor.constraint(equalTo: stackView.rightAnchor)])
     }
     
     private func addButtons() {
@@ -103,10 +98,6 @@ class ToolBarButton: UIButton {
         setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
     }
     
-    override var intrinsicContentSize: CGSize {
-        return CGSize(width: 54, height: 50)
-    }
-    
     override var isHighlighted: Bool {
         didSet {
             self.backgroundColor = isHighlighted ? UIColor.lightGray.withAlphaComponent(0.5) : UIColor.clear
@@ -115,6 +106,10 @@ class ToolBarButton: UIButton {
     
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         return bounds.insetBy(dx: -10, dy: -10).contains(point)
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: 54, height: 50)
     }
 }
 
