@@ -18,12 +18,17 @@ class MainViewController: UIViewController, UISearchControllerDelegate, ToolBarC
     private var isShowingTableOfContent = false
     
     @IBOutlet weak var dimView: DimView!
+    @IBOutlet weak var panelContainer: UIView!
+    @IBOutlet weak var toolBarContainer: UIView!
+    @IBOutlet weak var panelCompactShowConstraint: NSLayoutConstraint!
+    @IBOutlet weak var panelCompactHideConstraint: NSLayoutConstraint!
+    @IBOutlet weak var panelRegularShowConstraint: NSLayoutConstraint!
+    @IBOutlet weak var panelRegularHideConstraint: NSLayoutConstraint!
+    @IBOutlet weak var toolBarShowConstraints: NSLayoutConstraint!
+    @IBOutlet weak var toolBarHideConstraints: NSLayoutConstraint!
     
-    @IBOutlet weak var tableOfContentCompactShowConstraint: NSLayoutConstraint!
-    @IBOutlet weak var tableOfContentCompactHideConstraint: NSLayoutConstraint!
     override func viewDidLoad() {
         super.viewDidLoad()
-
         configureSearchController()
     }
     
@@ -46,29 +51,32 @@ class MainViewController: UIViewController, UISearchControllerDelegate, ToolBarC
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
-        switch self.traitCollection.horizontalSizeClass {
-        case .compact:
-            if UIDevice.current.userInterfaceIdiom == .pad {
-                navigationItem.setRightBarButton(searchController.isActive ? cancelButton : nil, animated: false)
-            }
-        case .regular:
-            navigationItem.setRightBarButton(nil, animated: false)
-        case .unspecified:
-            break
-        }
+        navigationItem.setRightBarButton(searchController.isActive && traitCollection.horizontalSizeClass == .compact ? cancelButton : nil, animated: false)
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        view.setNeedsUpdateConstraints()
+    }
+    
+    override func updateViewConstraints() {
         switch self.traitCollection.horizontalSizeClass {
         case .compact:
-            tableOfContentCompactShowConstraint.isActive = isShowingTableOfContent
-            tableOfContentCompactHideConstraint.isActive = !isShowingTableOfContent
+            NSLayoutConstraint.deactivate([panelRegularShowConstraint, panelRegularHideConstraint])
+            panelCompactShowConstraint.isActive = isShowingTableOfContent
+            panelCompactHideConstraint.isActive = !isShowingTableOfContent
+            toolBarShowConstraints.isActive = !isShowingTableOfContent
+            toolBarHideConstraints.isActive = isShowingTableOfContent
         case .regular:
-            break
+            NSLayoutConstraint.deactivate([panelCompactShowConstraint, panelCompactHideConstraint])
+            panelRegularShowConstraint.isActive = isShowingTableOfContent
+            panelRegularHideConstraint.isActive = !isShowingTableOfContent
+            toolBarShowConstraints.isActive = true
+            toolBarHideConstraints.isActive = false
         case .unspecified:
             break
         }
+        super.updateViewConstraints()
     }
     
     private func configureSearchController() {
@@ -89,9 +97,9 @@ class MainViewController: UIViewController, UISearchControllerDelegate, ToolBarC
             dimView.isHidden = false
             dimView.isDimmed = false
         }
+        
         view.layoutIfNeeded()
-        tableOfContentCompactShowConstraint.isActive = isShowingTableOfContent
-        tableOfContentCompactHideConstraint.isActive = !isShowingTableOfContent
+        view.setNeedsUpdateConstraints()
         
         UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseInOut, animations: {
             self.view.layoutIfNeeded()
