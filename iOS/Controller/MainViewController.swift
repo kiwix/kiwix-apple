@@ -17,7 +17,7 @@ class MainViewController: UIViewController, UISearchControllerDelegate, ToolBarC
     
     private var isShowingTableOfContent = false
     
-    @IBOutlet weak var dimView: UIView!
+    @IBOutlet weak var dimView: DimView!
     
     @IBOutlet weak var tableOfContentCompactShowConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableOfContentCompactHideConstraint: NSLayoutConstraint!
@@ -87,7 +87,7 @@ class MainViewController: UIViewController, UISearchControllerDelegate, ToolBarC
         isShowingTableOfContent = !isShowingTableOfContent
         if isShowingTableOfContent {
             dimView.isHidden = false
-//            dimView.isDimmed = false
+            dimView.isDimmed = false
         }
         view.layoutIfNeeded()
         tableOfContentCompactShowConstraint.isActive = isShowingTableOfContent
@@ -95,7 +95,7 @@ class MainViewController: UIViewController, UISearchControllerDelegate, ToolBarC
         
         UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseInOut, animations: {
             self.view.layoutIfNeeded()
-//            self.dimView.isDimmed = self.isShowingTableOfContent
+            self.dimView.isDimmed = self.isShowingTableOfContent
         }, completion: { _ in
             if !self.isShowingTableOfContent {
                 self.dimView.isHidden = true
@@ -145,4 +145,12 @@ class MainViewController: UIViewController, UISearchControllerDelegate, ToolBarC
 //        present(libraryController, animated: true, completion: nil)
     }
     
+}
+
+class DimView: UIView {
+    var isDimmed: Bool = false {
+        didSet {
+            backgroundColor = isDimmed ? UIColor.lightGray.withAlphaComponent(0.5) : UIColor.clear
+        }
+    }
 }

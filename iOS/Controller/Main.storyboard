@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="84U-cN-X4E">
-    <device id="retina4_7" orientation="landscape">
+    <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -16,17 +16,17 @@
             <objects>
                 <viewController id="sgR-df-kDZ" customClass="MainViewController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Lnk-x9-o6o">
-                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="llU-2x-q9a">
-                                <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                                 <connections>
                                     <segue destination="Pgj-1E-dCA" kind="embed" identifier="" id="coI-i4-FHP"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RLM-hl-xOY">
-                                <rect key="frame" x="16" y="315" width="635" height="50"/>
+                                <rect key="frame" x="16" y="676" width="382" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="S5A-Bj-Erk"/>
                                 </constraints>
@@ -34,16 +34,16 @@
                                     <segue destination="15j-mk-g8H" kind="embed" identifier="ToolBarController" id="4sP-zV-gag"/>
                                 </connections>
                             </containerView>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wgu-PC-26L">
-                                <rect key="frame" x="0.0" y="32" width="667" height="343"/>
-                                <color key="backgroundColor" red="0.92502892017364502" green="0.79028570652008057" blue="0.61716973781585693" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wgu-PC-26L" customClass="DimView" customModule="Kiwix" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="64" width="414" height="672"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="1rC-kJ-KyG" appends="YES" id="LgW-Ci-BCf"/>
                                 </connections>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fih-kx-oKO">
-                                <rect key="frame" x="84" y="150" width="500" height="225"/>
+                                <rect key="frame" x="0.0" y="336" width="414" height="400"/>
                                 <constraints>
                                     <constraint firstAttribute="width" priority="750" constant="500" id="8B4-zG-89X"/>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="400" id="Xhe-xZ-gk5"/>
@@ -110,7 +110,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="84U-cN-X4E" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="RM6-7R-BiT">
-                        <rect key="frame" x="0.0" y="0.0" width="667" height="32"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -127,7 +127,7 @@
             <objects>
                 <viewController id="15j-mk-g8H" customClass="ToolBarController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="w2O-eH-qfJ">
-                        <rect key="frame" x="0.0" y="0.0" width="635" height="50"/>
+                        <rect key="frame" x="0.0" y="0.0" width="382" height="50"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                 </viewController>
@@ -140,7 +140,7 @@
             <objects>
                 <viewController id="Pgj-1E-dCA" customClass="TabContainerController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6Wm-IY-TSx">
-                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                 </viewController>
@@ -153,7 +153,7 @@
             <objects>
                 <viewController id="BxL-rj-MTR" customClass="TableOfContentController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="k0c-1a-OSA">
-                        <rect key="frame" x="0.0" y="0.0" width="500" height="225"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="400"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                 </viewController>
