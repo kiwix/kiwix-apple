@@ -18,7 +18,7 @@ class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
         return WKWebView(frame: .zero, configuration: config)
     }()
-    weak var delegate: TabLoadingActivity?
+    weak var delegate: TabControllerDelegate?
     
     override func loadView() {
         view = webView
@@ -31,7 +31,7 @@ class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-//        webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, toolBarController.view.frame.height + 20, 0)
+        webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 70, 0)
     }
     
     var canGoBack: Bool {
@@ -62,9 +62,8 @@ class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         webView.goForward()
     }
     
-    func loadMainPage() {
-        guard let id = ZimMultiReader.shared.ids.first,
-            let url = ZimMultiReader.shared.getMainPageURL(bookID: id) else {return}
+    func loadMainPage(id: ZimFileID) {
+        guard let url = ZimMultiReader.shared.getMainPageURL(bookID: id) else {return}
         load(url: url)
     }
     
@@ -87,7 +86,7 @@ class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        delegate?.loadingFinished()
+        delegate?.webViewDidFinishLoad(controller: self)
     }
 }
 

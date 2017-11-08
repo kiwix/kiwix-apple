@@ -11,7 +11,7 @@ import SafariServices
 
 class LegacyTabController: UIViewController, UIWebViewDelegate, TabController {
     private let webView = UIWebView()
-    weak var delegate: TabLoadingActivity?
+    weak var delegate: TabControllerDelegate?
     
     override func loadView() {
         view = webView
@@ -24,7 +24,7 @@ class LegacyTabController: UIViewController, UIWebViewDelegate, TabController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        //        webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, toolBarController.view.frame.height + 20, 0)
+        webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 70, 0)
     }
     
     var canGoBack: Bool {
@@ -55,9 +55,8 @@ class LegacyTabController: UIViewController, UIWebViewDelegate, TabController {
         webView.goForward()
     }
     
-    func loadMainPage() {
-        guard let id = ZimMultiReader.shared.ids.first,
-            let url = ZimMultiReader.shared.getMainPageURL(bookID: id) else {return}
+    func loadMainPage(id: ZimFileID) {
+        guard let url = ZimMultiReader.shared.getMainPageURL(bookID: id) else {return}
         load(url: url)
     }
     
@@ -80,6 +79,6 @@ class LegacyTabController: UIViewController, UIWebViewDelegate, TabController {
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
-        delegate?.loadingFinished()
+        delegate?.webViewDidFinishLoad(controller: self)
     }
 }
