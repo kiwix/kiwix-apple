@@ -26,6 +26,7 @@ class MainViewController: UIViewController, UISearchControllerDelegate, ToolBarC
     @IBOutlet weak var panelRegularHideConstraint: NSLayoutConstraint!
     @IBOutlet weak var toolBarShowConstraints: NSLayoutConstraint!
     @IBOutlet weak var toolBarHideConstraints: NSLayoutConstraint!
+    @IBOutlet weak var separatorViewWidthConstraints: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,6 +61,7 @@ class MainViewController: UIViewController, UISearchControllerDelegate, ToolBarC
     }
     
     override func updateViewConstraints() {
+        separatorViewWidthConstraints.constant = 1 / UIScreen.main.scale
         switch self.traitCollection.horizontalSizeClass {
         case .compact:
             NSLayoutConstraint.deactivate([panelRegularShowConstraint, panelRegularHideConstraint])

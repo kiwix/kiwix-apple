@@ -46,7 +46,6 @@
 		975415D41F54C1870007EA6C /* SearchProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975415D31F54C1870007EA6C /* SearchProcedure.swift */; };
 		975B90FE1CEB909100D13906 /* iOSExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975B90FD1CEB909100D13906 /* iOSExtensions.swift */; };
 		975FDADA1F6082DA00A10E8C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDAD91F6082DA00A10E8C /* AppDelegate.swift */; };
-		975FDADC1F6082DA00A10E8C /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDADB1F6082DA00A10E8C /* MainController.swift */; };
 		975FDAE11F6082DA00A10E8C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 975FDAE01F6082DA00A10E8C /* Assets.xcassets */; };
 		975FDAE41F6082DA00A10E8C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975FDAE21F6082DA00A10E8C /* LaunchScreen.storyboard */; };
 		975FDAF51F608A2200A10E8C /* URLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767717D1F437BB9007ED0C2 /* URLProtocol.swift */; };
@@ -129,7 +128,6 @@
 		97A1FD1C1D6F71D800A80EE2 /* KiwixURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD1A1D6F71D800A80EE2 /* KiwixURLProtocol.swift */; };
 		97A1FD451D6F728200A80EE2 /* Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD411D6F728200A80EE2 /* Localized.swift */; };
 		97A36C291F8C21210079B452 /* ToolBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996D11F60A1A0007A6282 /* ToolBarController.swift */; };
-		97A36C2A1F8C21210079B452 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDADB1F6082DA00A10E8C /* MainController.swift */; };
 		97A36C2B1F8C21210079B452 /* URLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767717D1F437BB9007ED0C2 /* URLProtocol.swift */; };
 		97A36C2C1F8C21210079B452 /* WebKitTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97050D001F6733400021DE78 /* WebKitTabController.swift */; };
 		97A36C2D1F8C21210079B452 /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDB0B1F60930A00A10E8C /* WebKitHandler.swift */; };
@@ -2214,7 +2212,6 @@
 				977D7BB71F9E6A43009A8703 /* ZimMultiReader.mm in Sources */,
 				97A996D21F60A1A0007A6282 /* ToolBarController.swift in Sources */,
 				97E412381FB1FFAB009585DC /* SearchResultController.swift in Sources */,
-				975FDADC1F6082DA00A10E8C /* MainController.swift in Sources */,
 				975FDAF51F608A2200A10E8C /* URLProtocol.swift in Sources */,
 				97050D011F6733400021DE78 /* WebKitTabController.swift in Sources */,
 				97050D031F6735100021DE78 /* WebKitHandler.swift in Sources */,
@@ -2349,7 +2346,6 @@
 				97E412371FB1FFAB009585DC /* SearchResultController.swift in Sources */,
 				97161A861F8FFD1E00A89DE3 /* LibraryCategoryController.swift in Sources */,
 				97A36C291F8C21210079B452 /* ToolBarController.swift in Sources */,
-				97A36C2A1F8C21210079B452 /* MainController.swift in Sources */,
 				9702BE1E1F97F1C900E6B4EE /* LibraryLanguageController.swift in Sources */,
 				97A36C2B1F8C21210079B452 /* URLProtocol.swift in Sources */,
 				97B1046F1F8FC63C00488444 /* LibraryMasterController.swift in Sources */,

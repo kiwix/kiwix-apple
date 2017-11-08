@@ -34,7 +34,7 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U1n-JF-wko">
                                 <rect key="frame" x="230" y="64" width="1" height="960"/>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" name="systemGrayColor" catalog="System" colorSpace="catalog"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="1" id="PNV-oZ-ILb"/>
                                 </constraints>
@@ -123,16 +123,9 @@
                                 <exclude reference="U1n-JF-wko"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="5Ls-vI-KOF"/>
-                                <exclude reference="6uI-bM-0AO"/>
-                                <exclude reference="Yb4-OO-wxD"/>
-                                <exclude reference="iKL-SQ-otC"/>
-                                <exclude reference="iNJ-I6-3f8"/>
-                                <exclude reference="iPD-vO-COl"/>
                                 <exclude reference="4Ur-zf-hUS"/>
                                 <exclude reference="6D3-C3-gNM"/>
                                 <exclude reference="M3v-hU-w87"/>
-                                <exclude reference="pEq-GD-PX3"/>
                                 <exclude reference="Bz2-F0-liN"/>
                                 <exclude reference="Hcc-Pq-REB"/>
                                 <exclude reference="S1N-yi-mlT"/>
@@ -144,9 +137,16 @@
                                 <exclude reference="lqI-Uw-Fhh"/>
                                 <exclude reference="q8k-2N-AaN"/>
                                 <exclude reference="Abx-RD-zup"/>
+                                <exclude reference="pEq-GD-PX3"/>
                                 <exclude reference="6ZF-Ab-esS"/>
                                 <exclude reference="LTs-TU-W3v"/>
                                 <exclude reference="Ye5-ye-sp8"/>
+                                <exclude reference="5Ls-vI-KOF"/>
+                                <exclude reference="6uI-bM-0AO"/>
+                                <exclude reference="Yb4-OO-wxD"/>
+                                <exclude reference="iKL-SQ-otC"/>
+                                <exclude reference="iNJ-I6-3f8"/>
+                                <exclude reference="iPD-vO-COl"/>
                                 <exclude reference="nWQ-gb-4Fa"/>
                                 <exclude reference="nyw-r6-LdE"/>
                                 <exclude reference="uXJ-YZ-loo"/>
@@ -157,19 +157,19 @@
                                 <include reference="Wgu-PC-26L"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="Yb4-OO-wxD"/>
-                                <include reference="iNJ-I6-3f8"/>
-                                <include reference="iPD-vO-COl"/>
                                 <include reference="4Ur-zf-hUS"/>
                                 <include reference="6D3-C3-gNM"/>
                                 <include reference="M3v-hU-w87"/>
-                                <include reference="pEq-GD-PX3"/>
                                 <include reference="Hcc-Pq-REB"/>
                                 <include reference="W7I-3Z-VcX"/>
                                 <include reference="ZHa-UK-r95"/>
                                 <include reference="cVr-7T-kgx"/>
                                 <include reference="lqI-Uw-Fhh"/>
                                 <exclude reference="q8k-2N-AaN"/>
+                                <include reference="pEq-GD-PX3"/>
+                                <include reference="Yb4-OO-wxD"/>
+                                <include reference="iNJ-I6-3f8"/>
+                                <include reference="iPD-vO-COl"/>
                                 <include reference="nyw-r6-LdE"/>
                             </mask>
                         </variation>
@@ -178,9 +178,6 @@
                                 <include reference="U1n-JF-wko"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="5Ls-vI-KOF"/>
-                                <include reference="6uI-bM-0AO"/>
-                                <include reference="iKL-SQ-otC"/>
                                 <include reference="Bz2-F0-liN"/>
                                 <include reference="S1N-yi-mlT"/>
                                 <include reference="WPk-KN-jy2"/>
@@ -188,6 +185,9 @@
                                 <include reference="6ZF-Ab-esS"/>
                                 <include reference="LTs-TU-W3v"/>
                                 <include reference="Ye5-ye-sp8"/>
+                                <include reference="5Ls-vI-KOF"/>
+                                <include reference="6uI-bM-0AO"/>
+                                <include reference="iKL-SQ-otC"/>
                                 <include reference="nWQ-gb-4Fa"/>
                                 <exclude reference="uXJ-YZ-loo"/>
                             </mask>
@@ -201,6 +201,7 @@
                         <outlet property="panelContainer" destination="fih-kx-oKO" id="RQf-am-tgG"/>
                         <outlet property="panelRegularHideConstraint" destination="uXJ-YZ-loo" id="96o-8o-njz"/>
                         <outlet property="panelRegularShowConstraint" destination="S1N-yi-mlT" id="q1g-76-SBt"/>
+                        <outlet property="separatorViewWidthConstraints" destination="PNV-oZ-ILb" id="ZL7-yo-XU0"/>
                         <outlet property="toolBarContainer" destination="RLM-hl-xOY" id="MG7-qH-gqS"/>
                         <outlet property="toolBarHideConstraints" destination="Abx-RD-zup" id="ZgB-EJ-Vz6"/>
                         <outlet property="toolBarShowConstraints" destination="Xs1-sp-Sxi" id="iqY-k6-ndV"/>
