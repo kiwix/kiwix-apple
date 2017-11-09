@@ -162,7 +162,11 @@ std::vector<std::string> *searcherZimIDs = NULL;
         NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
         NSString *snippet = [NSString stringWithCString:result->get_snippet().c_str() encoding:NSUTF8StringEncoding];
         delete result;
-        return @{@"id": identifier, @"title": title, @"path": path, @"snippet": snippet};
+        if ([snippet isEqualToString:@""]) {
+            return @{@"id": identifier, @"title": title, @"path": path};
+        } else {
+            return @{@"id": identifier, @"title": title, @"path": path, @"snippet": snippet};
+        }
     } else {
         return nil;
     }

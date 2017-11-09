@@ -14,6 +14,7 @@
 
 
 class SearchResult {
+    let zimID: String
     let url: URL
     let title: String
     let snippet: String?
@@ -25,6 +26,7 @@ class SearchResult {
     
     init?(bookID: String, path: String, title: String, snippet: String? = nil) {
         guard let url = URL(bookID: bookID, contentPath: path) else {return nil}
+        self.zimID = bookID
         self.url = url
         self.title = title
         

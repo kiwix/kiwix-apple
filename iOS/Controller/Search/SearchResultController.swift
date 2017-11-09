@@ -19,19 +19,25 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     private(set) var searchText = ""
     private(set) var results: [SearchResult] = []
     
+    let showIcon = true
+    
     override func loadView() {
         view = SearchResultControllerBackgroundView()
         searchResultView.tableView.register(SearchResultTitleCell.self, forCellReuseIdentifier: "TitleCell")
+        searchResultView.tableView.register(SearchResultTitleIconCell.self, forCellReuseIdentifier: "TitleIconCell")
         searchResultView.tableView.register(SearchResultTitleSnippetCell.self, forCellReuseIdentifier: "TitleSnippetCell")
+        searchResultView.tableView.register(SearchResultTitleIconSnippetCell.self, forCellReuseIdentifier: "TitleIconSnippetCell")
         searchResultView.tableView.dataSource = self
         searchResultView.tableView.delegate = self
-        searchResultView.tableView.rowHeight = 44
+        searchResultView.tableView.rowHeight = UITableViewAutomaticDimension
+        searchResultView.tableView.estimatedRowHeight = 80
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         queue.delegate = self
         searchResultView.isHidden = true
+        configureSearchResultTableViewInsets()
         observer = view.observe(\.hidden, options: .new, changeHandler: { (view, change) in
             if change.newValue == true { view.isHidden = false }
         })
@@ -85,6 +91,12 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     
     @objc func keyboardDidHide(notification: Notification) {
         searchResultView.isHidden = false
+    }
+    
+    private func configureSearchResultTableViewInsets() {
+        var separatorInset = searchResultView.tableView.separatorInset
+        separatorInset = UIEdgeInsets(top: separatorInset.top, left: separatorInset.left + 38, bottom: separatorInset.bottom, right: separatorInset.right)
+        searchResultView.tableView.separatorInset = separatorInset
     }
     
     private func configureForHorizontalCompact() {
@@ -160,11 +172,25 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let result = results[indexPath.row]
-        let identifier = result.hasSnippet ? "TitleSnippetCell" : "TitleCell"
+        let identifier: String = {
+            switch (showIcon, result.hasSnippet) {
+            case (true, true):
+                return "TitleIconSnippetCell"
+            case (true, false):
+                return "TitleIconCell"
+            case (false, true):
+                return "TitleSnippetCell"
+            case (false, false):
+                return "TitleCell"
+            }
+        }()
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
         
         if let cell = cell as? SearchResultTitleCell {
-            cell.titleLabel.text = result.title
+            cell.title.text = result.title
+        } else if let cell = cell as? SearchResultTitleIconCell {
+            cell.title.text = result.title
+            cell.icon.image = UIImage(data: Book.fetch(id: result.zimID, context: CoreDataContainer.shared.viewContext)?.favIcon ?? Data())
         } else if let cell = cell as? SearchResultTitleSnippetCell {
             cell.titleLabel.text = result.title
             if let snippet = result.snippet {
@@ -172,9 +198,21 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
             } else if let snippet = result.attributedSnippet {
                 cell.snippetLabel.attributedText = snippet
             }
+        } else if let cell = cell as? SearchResultTitleIconSnippetCell {
+            cell.title.text = result.title
+            cell.icon.image = UIImage(data: Book.fetch(id: result.zimID, context: CoreDataContainer.shared.viewContext)?.favIcon ?? Data())
+            if let snippet = result.snippet {
+                cell.snippet.text = snippet
+            } else if let snippet = result.attributedSnippet {
+                cell.snippet.attributedText = snippet
+            }
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
     }
     
     // MARK: - UISearchResultsUpdating

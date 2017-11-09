@@ -40,9 +40,8 @@ extension ZimMultiReader {
         guard let result = __getNextSearchResult() as? Dictionary<String, String>,
             let id = result["id"],
             let path = result["path"],
-            let title = result["title"],
-            let snippet = result["snippet"] else {return nil}
-        return SearchResult(bookID: id, path: path, title: title, snippet: snippet)
+            let title = result["title"] else {return nil}
+        return SearchResult(bookID: id, path: path, title: title, snippet: result["snippet"])
     }
     
     func getSearchSuggestions(term: String) -> [SearchResult] {
