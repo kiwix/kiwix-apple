@@ -38,12 +38,11 @@ class SearchResultView: UIView {
             view.backgroundColor = .clear
             addSubview(view)
             let bottomConstraint = view.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -bottomInset)
-            let constraints = [
+            NSLayoutConstraint.activate([
                 view.leftAnchor.constraint(equalTo: leftAnchor),
                 view.rightAnchor.constraint(equalTo: rightAnchor),
                 view.topAnchor.constraint(equalTo: topAnchor),
-                bottomConstraint
-            ]
+                bottomConstraint])
             addConstraints(constraints)
             bottomAnchorConstraints.append(bottomConstraint)
         }

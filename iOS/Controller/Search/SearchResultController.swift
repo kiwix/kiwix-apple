@@ -215,6 +215,7 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
             self.searchResultView.searching.isHidden = true
             self.searchResultView.emptyResult.isHidden = self.results.count != 0
             self.searchResultView.tableView.isHidden = self.results.count == 0
+            self.searchResultView.tableView.backgroundColor = .clear
             self.searchResultView.tableView.reloadData()
             if self.results.count > 0 {
                 let firstRow = IndexPath(row: 0, section: 0)
