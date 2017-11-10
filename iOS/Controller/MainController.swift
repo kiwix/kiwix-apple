@@ -9,7 +9,7 @@
 import UIKit
 
 class MainController: UIViewController, UISearchControllerDelegate, ToolBarControlEvents, TabContainerControllerDelegate {
-    private let searchController = UISearchController(searchResultsController: SearchResultController())
+    let searchController = UISearchController(searchResultsController: SearchResultController())
     private (set) var tabContainerController: TabContainerController!
     private var toolBarController: ToolBarController!
     private var tableOfContentController: TableOfContentController!

@@ -24,13 +24,11 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     override func loadView() {
         view = SearchResultControllerBackgroundView()
         searchResultView.tableView.register(SearchResultTitleCell.self, forCellReuseIdentifier: "TitleCell")
-        searchResultView.tableView.register(SearchResultTitleIconCell.self, forCellReuseIdentifier: "TitleIconCell")
         searchResultView.tableView.register(SearchResultTitleSnippetCell.self, forCellReuseIdentifier: "TitleSnippetCell")
         searchResultView.tableView.register(SearchResultTitleIconSnippetCell.self, forCellReuseIdentifier: "TitleIconSnippetCell")
         searchResultView.tableView.dataSource = self
         searchResultView.tableView.delegate = self
         searchResultView.tableView.rowHeight = UITableViewAutomaticDimension
-        searchResultView.tableView.estimatedRowHeight = 80
     }
     
     override func viewDidLoad() {
@@ -174,10 +172,8 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
         let result = results[indexPath.row]
         let identifier: String = {
             switch (showIcon, result.hasSnippet) {
-            case (true, true):
+            case (true, _):
                 return "TitleIconSnippetCell"
-            case (true, false):
-                return "TitleIconCell"
             case (false, true):
                 return "TitleSnippetCell"
             case (false, false):
@@ -185,12 +181,8 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
             }
         }()
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
-        
         if let cell = cell as? SearchResultTitleCell {
             cell.title.text = result.title
-        } else if let cell = cell as? SearchResultTitleIconCell {
-            cell.title.text = result.title
-            cell.icon.image = UIImage(data: Book.fetch(id: result.zimID, context: CoreDataContainer.shared.viewContext)?.favIcon ?? Data())
         } else if let cell = cell as? SearchResultTitleSnippetCell {
             cell.titleLabel.text = result.title
             if let snippet = result.snippet {
@@ -207,12 +199,21 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
                 cell.snippet.attributedText = snippet
             }
         }
-        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        guard let main = presentingViewController as? MainController else {return}
+        main.tabContainerController.currentTabController?.load(url: results[indexPath.row].url)
+        main.searchController.isActive = false
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        if results[indexPath.row].hasSnippet {
+            return traitCollection.horizontalSizeClass == .regular ? 120 : 190
+        } else {
+            return 44
+        }
     }
     
     // MARK: - UISearchResultsUpdating

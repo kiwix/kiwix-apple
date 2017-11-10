@@ -45,36 +45,6 @@ class SearchResultTitleCell: SearchResultCell {
     }
 }
 
-class SearchResultTitleIconCell: SearchResultCell {
-    let title = UILabel()
-    let icon = UIImageView()
-    
-    override func configure() {
-        title.font = UIFont.systemFont(ofSize: 17, weight: .medium)
-        icon.contentMode = .scaleAspectFit
-        [title, icon].forEach({
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            contentView.addSubview($0)
-        })
-        NSLayoutConstraint.activate([
-            icon.leftAnchor.constraint(equalTo: contentView.readableContentGuide.leftAnchor),
-            title.leftAnchor.constraint(equalTo: icon.rightAnchor, constant: 8),
-            title.rightAnchor.constraint(equalTo: contentView.readableContentGuide.rightAnchor),
-            icon.heightAnchor.constraint(equalToConstant: 30),
-            icon.widthAnchor.constraint(equalToConstant: 30),
-            title.heightAnchor.constraint(equalToConstant: 24),
-            icon.centerYAnchor.constraint(equalTo: title.centerYAnchor),
-            title.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            title.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)])
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        title.text = nil
-        icon.image = nil
-    }
-}
-
 class SearchResultTitleIconSnippetCell: SearchResultCell {
     let title = UILabel()
     let snippet = UILabel()
@@ -97,7 +67,6 @@ class SearchResultTitleIconSnippetCell: SearchResultCell {
             snippet.rightAnchor.constraint(equalTo: contentView.readableContentGuide.rightAnchor),
             icon.heightAnchor.constraint(equalToConstant: 30),
             icon.widthAnchor.constraint(equalToConstant: 30),
-            title.heightAnchor.constraint(equalToConstant: 24),
             icon.centerYAnchor.constraint(equalTo: title.centerYAnchor),
             title.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             snippet.topAnchor.constraint(equalTo: title.bottomAnchor),
@@ -107,6 +76,7 @@ class SearchResultTitleIconSnippetCell: SearchResultCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         title.text = nil
+        snippet.text = nil
         icon.image = nil
     }
 }
