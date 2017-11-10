@@ -262,47 +262,6 @@
             </objects>
             <point key="canvasLocation" x="900" y="179"/>
         </scene>
-        <!--Table View Controller-->
-        <scene sceneID="dqn-Mu-SKa">
-            <objects>
-                <tableViewController id="VIx-Rr-SdN" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="LVm-nv-x4z">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="eGY-14-H6p">
-                                <rect key="frame" x="0.0" y="28" width="414" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eGY-14-H6p" id="2e0-bL-6fu">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VSO-02-ShI">
-                                            <rect key="frame" x="66" y="11.666666666666666" width="43" height="20.333333333333336"/>
-                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="VSO-02-ShI" firstAttribute="top" secondItem="2e0-bL-6fu" secondAttribute="top" constant="11.666666666666666" id="Nrc-AL-zTW"/>
-                                        <constraint firstItem="VSO-02-ShI" firstAttribute="leading" secondItem="2e0-bL-6fu" secondAttribute="leading" constant="66" id="qMs-zj-rz8"/>
-                                        <constraint firstItem="VSO-02-ShI" firstAttribute="centerY" secondItem="2e0-bL-6fu" secondAttribute="centerY" id="ubX-fO-Skd"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="VIx-Rr-SdN" id="umh-NQ-Pdh"/>
-                            <outlet property="delegate" destination="VIx-Rr-SdN" id="tye-7w-1vp"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Yxd-UO-dIi" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1918.840579710145" y="460.59782608695656"/>
-        </scene>
         <!--Table Of Content Controller-->
         <scene sceneID="nRg-5V-YGl">
             <objects>
@@ -316,6 +275,120 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kQh-C9-O4t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="900" y="819"/>
+        </scene>
+        <!--Home Controller-->
+        <scene sceneID="Kmh-De-Gaf">
+            <objects>
+                <viewController storyboardIdentifier="Home" id="woF-ts-VWz" customClass="HomeController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="FN6-qU-FxF"/>
+                        <viewControllerLayoutGuide type="bottom" id="lss-5i-DgA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="9Ke-1P-yB2">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="edr-7J-o58">
+                                <rect key="frame" x="16" y="264" width="382" height="284.33333333333326"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ey7-6F-Nxe">
+                                        <rect key="frame" x="0.0" y="0.0" width="382" height="134.33333333333334"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aL9-To-3eY" customClass="Logo" customModule="Kiwix" customModuleProvider="target">
+                                                <rect key="frame" x="161" y="0.0" width="60" height="60"/>
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="60" id="53J-Lz-Knh"/>
+                                                    <constraint firstAttribute="width" constant="60" id="WWQ-Xo-sZY"/>
+                                                </constraints>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KIWIX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ykl-0N-bqQ">
+                                                <rect key="frame" x="128.66666666666666" y="60" width="124.66666666666666" height="58.666666666666657"/>
+                                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="49"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                                <variation key="heightClass=compact-widthClass=compact">
+                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="38"/>
+                                                </variation>
+                                                <variation key="heightClass=regular-widthClass=regular">
+                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="58"/>
+                                                </variation>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wikipedia Anywhere" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dqJ-IN-1cE">
+                                                <rect key="frame" x="129.66666666666666" y="118.66666666666669" width="122.66666666666666" height="15.666666666666657"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                                <variation key="heightClass=compact-widthClass=compact">
+                                                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                </variation>
+                                                <variation key="heightClass=regular-widthClass=regular">
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                </variation>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="dhs-jD-s9o">
+                                        <rect key="frame" x="0.0" y="194.33333333333331" width="382" height="90"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SKG-oI-EZj" customClass="RoundedButton" customModule="Kiwix" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="382" height="30"/>
+                                                <color key="backgroundColor" red="0.60646116729999999" green="0.79930049179999996" blue="0.98724311590000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <state key="normal" title="Botton"/>
+                                            </button>
+                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4fU-Ot-O0w">
+                                                <rect key="frame" x="0.0" y="40" width="382" height="50"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="50" id="s3r-tC-ABJ"/>
+                                                </constraints>
+                                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="phU-MV-62U">
+                                                    <size key="itemSize" width="50" height="50"/>
+                                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                </collectionViewFlowLayout>
+                                                <cells>
+                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="hlH-kk-gSq">
+                                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                        </view>
+                                                    </collectionViewCell>
+                                                </cells>
+                                            </collectionView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="400" id="czM-Rf-Gby"/>
+                                </constraints>
+                                <variation key="heightClass=compact" alignment="center" axis="horizontal" distribution="fillEqually" spacing="30"/>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="edr-7J-o58" firstAttribute="centerX" secondItem="9Ke-1P-yB2" secondAttribute="centerX" id="6aB-gj-77Y"/>
+                            <constraint firstItem="edr-7J-o58" firstAttribute="leading" secondItem="9Ke-1P-yB2" secondAttribute="leading" priority="750" constant="16" id="AND-ih-Ksi"/>
+                            <constraint firstAttribute="trailing" secondItem="edr-7J-o58" secondAttribute="trailing" priority="750" constant="16" id="GEp-RU-ozH"/>
+                            <constraint firstItem="ey7-6F-Nxe" firstAttribute="centerY" secondItem="9Ke-1P-yB2" secondAttribute="centerY" multiplier="0.9" id="uRo-Zx-ePU"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="UiY-s6-saw"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="ttS-bF-7lb"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="button" destination="SKG-oI-EZj" id="wfc-ux-SsA"/>
+                        <outlet property="collectionView" destination="4fU-Ot-O0w" id="iuU-1F-qii"/>
+                        <outlet property="stackView" destination="dhs-jD-s9o" id="7zr-1N-sg8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1P3-WN-WEM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1788" y="179"/>
         </scene>
     </scenes>
 </document>

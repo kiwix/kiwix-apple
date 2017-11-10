@@ -10,29 +10,46 @@ import UIKit
 
 class TabContainerController: UIViewController, TabControllerDelegate {
     weak var delegate: TabContainerControllerDelegate?
+    private lazy var home = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Home") as! HomeController
     private(set) weak var currentTabController: (UIViewController & TabController)?
-    private var tabControllers = [UIViewController & TabController]()
+    private var tabControllers = Set<UIViewController>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.orange.withAlphaComponent(0.3)
+        switchToHome()
     }
     
     func switchToNewTab() {
-        var tabController: UIViewController & TabController = {
+        let tabController: UIViewController & TabController = {
             if #available(iOS 11.0, *) {
                 return WebKitTabController()
             } else {
                 return LegacyTabController()
             }
         }()
-        tabController.delegate = self
-        setTab(controller: tabController)
+        setChildController(controller: tabController)
     }
     
-    private func setTab(controller: UIViewController & TabController) {
-        currentTabController = controller
-        tabControllers.append(controller)
+    func switchToHome() {
+        setChildController(controller: home)
+    }
+    
+    func switchToCurrentTab() {
+        if let tab = currentTabController {
+            setChildController(controller: tab)
+        } else {
+            switchToNewTab()
+        }
+    }
+    
+    private func setChildController(controller: UIViewController) {
+        childViewControllers.forEach { (controller) in
+            if var tab = controller as? TabController {
+                tab.delegate = nil
+            }
+            controller.removeFromParentViewController()
+        }
+        view.subviews.forEach({ $0.removeFromSuperview() })
         
         addChildViewController(controller)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
@@ -42,8 +59,12 @@ class TabContainerController: UIViewController, TabControllerDelegate {
                                      view.bottomAnchor.constraint(equalTo: controller.view.bottomAnchor),
                                      view.rightAnchor.constraint(equalTo: controller.view.rightAnchor)])
         controller.didMove(toParentViewController: self)
-        
-        delegate?.tabDidBecameCurrent(controller: controller)
+        if var tabController = controller as? UIViewController & TabController {
+            tabController.delegate = self
+            currentTabController = tabController
+            tabControllers.insert(tabController)
+            delegate?.tabDidBecameCurrent(controller: tabController)
+        }
     }
     
     // MARK: - TabControllerDelegate
