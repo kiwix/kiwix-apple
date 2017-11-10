@@ -24,6 +24,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(LibraryBookCell.self, forCellReuseIdentifier: "Cell")
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: tableView.separatorInset.left + 38, bottom: 0, right: 0)
     }
     
     override func viewDidLoad() {

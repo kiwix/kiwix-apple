@@ -38,6 +38,7 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
         tableView.register(LibraryBookCell.self, forCellReuseIdentifier: "BookCell")
         tableView.register(LibraryDownloadCell.self, forCellReuseIdentifier: "DownloadCell")
         tableView.register(LibraryCategoryCell.self, forCellReuseIdentifier: "CategoryCell")
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: tableView.separatorInset.left + 38, bottom: 0, right: 0)
     }
     
     override func viewDidLoad() {
