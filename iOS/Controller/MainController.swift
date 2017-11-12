@@ -139,11 +139,11 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     // MARK: - ToolBar
     
     func backButtonTapped() {
-        tabContainerController.currentTabController?.goBack()
+        tabContainerController.currentTab?.goBack()
     }
 
     func forwardButtonTapped() {
-        tabContainerController.currentTabController?.goForward()
+        tabContainerController.currentTab?.goForward()
     }
     
     func tableOfContentButtonTapped() {
@@ -151,7 +151,7 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     }
     
     func homeButtonTapped() {
-        tabContainerController.switchToNewTab()
+        tabContainerController.isDisplayingHome ? tabContainerController.switchToCurrentTab() : tabContainerController.switchToHome()
     }
 
     func libraryButtonTapped() {
@@ -159,6 +159,10 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     }
     
     // MARK: - TabContainerControllerDelegate
+    
+    func homeDidBecameCurrent() {
+        
+    }
     
     func tabDidBecameCurrent(controller: UIViewController & TabController) {
         toolBarController.back.isEnabled = controller.canGoBack

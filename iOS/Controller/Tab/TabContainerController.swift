@@ -10,45 +10,51 @@ import UIKit
 
 class TabContainerController: UIViewController, TabControllerDelegate {
     weak var delegate: TabContainerControllerDelegate?
+    private(set) var isDisplayingHome = true
+    
     private lazy var home = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Home") as! HomeController
-    private(set) weak var currentTabController: (UIViewController & TabController)?
-    private var tabControllers = Set<UIViewController>()
+    private(set) weak var currentTab: (UIViewController & TabController)?
+    private var tabs = Set<UIViewController>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         switchToHome()
     }
     
+    func switchToHome() {
+        isDisplayingHome = true
+        setChildController(controller: home)
+    }
+    
     func switchToNewTab() {
-        let tabController: UIViewController & TabController = {
+        let tab: UIViewController & TabController = {
             if #available(iOS 11.0, *) {
                 return WebKitTabController()
             } else {
                 return LegacyTabController()
             }
         }()
-        setChildController(controller: tabController)
-    }
-    
-    func switchToHome() {
-        setChildController(controller: home)
+        switchTo(tab: tab)
     }
     
     func switchToCurrentTab() {
-        if let tab = currentTabController {
-            setChildController(controller: tab)
+        if let tab = currentTab {
+            switchTo(tab: tab)
         } else {
             switchToNewTab()
         }
     }
     
+    private func switchTo(tab: UIViewController & TabController) {
+        isDisplayingHome = false
+        currentTab = tab
+        currentTab?.delegate = self
+        tabs.insert(tab)
+        setChildController(controller: tab)
+    }
+    
     private func setChildController(controller: UIViewController) {
-        childViewControllers.forEach { (controller) in
-            if var tab = controller as? TabController {
-                tab.delegate = nil
-            }
-            controller.removeFromParentViewController()
-        }
+        childViewControllers.forEach { $0.removeFromParentViewController() }
         view.subviews.forEach({ $0.removeFromSuperview() })
         
         addChildViewController(controller)
@@ -59,12 +65,24 @@ class TabContainerController: UIViewController, TabControllerDelegate {
                                      view.bottomAnchor.constraint(equalTo: controller.view.bottomAnchor),
                                      view.rightAnchor.constraint(equalTo: controller.view.rightAnchor)])
         controller.didMove(toParentViewController: self)
-        if var tabController = controller as? UIViewController & TabController {
-            tabController.delegate = self
-            currentTabController = tabController
-            tabControllers.insert(tabController)
+        if let tabController = controller as? UIViewController & TabController {
             delegate?.tabDidBecameCurrent(controller: tabController)
+        } else if let _ = controller as? HomeController {
+            delegate?.homeDidBecameCurrent()
         }
+    }
+    
+    func loadInCurrentTab(url: URL, animated: Bool) {
+        guard let tab = currentTab else {
+            loadInNewTab(url: url, animated: animated)
+            return
+        }
+        tab.load(url: url)
+    }
+    
+    func loadInNewTab(url: URL, animated: Bool) {
+        switchToNewTab()
+        loadInCurrentTab(url: url, animated: true)
     }
     
     // MARK: - TabControllerDelegate
@@ -75,6 +93,7 @@ class TabContainerController: UIViewController, TabControllerDelegate {
 }
 
 protocol TabContainerControllerDelegate: class {
+    func homeDidBecameCurrent()
     func tabDidBecameCurrent(controller: UIViewController & TabController)
     func tabDidFinishLoading(controller: UIViewController & TabController)
 }
