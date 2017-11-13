@@ -31,6 +31,7 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSearchController()
+        toolBar.home.isSelected = true
         tabContainer.switchToHome()
     }
     
@@ -155,6 +156,7 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     
     func homeButtonTapped() {
         tabContainer.isDisplayingHome ? tabContainer.switchToCurrentTab() : tabContainer.switchToHome()
+        toolBar.home.isSelected = tabContainer.isDisplayingHome
     }
 
     // MARK: - TabContainerControllerDelegate

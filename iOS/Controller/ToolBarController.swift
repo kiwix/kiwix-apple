@@ -15,7 +15,7 @@ class ToolBarController: UIViewController {
     
     private(set) lazy var back = ToolBarButton(image: #imageLiteral(resourceName: "Left"))
     private(set) lazy var forward = ToolBarButton(image: #imageLiteral(resourceName: "Right"))
-    private(set) lazy var home = ToolBarButton(image: #imageLiteral(resourceName: "Home"), insets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12))
+    private(set) lazy var home = ToolBarButton(image: #imageLiteral(resourceName: "Home"), insets: UIEdgeInsets(top: 10, left: 12, bottom: 10, right: 12))
     private(set) lazy var tableOfContent = ToolBarButton(image: #imageLiteral(resourceName: "TableOfContent"), insets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12))
     private(set) lazy var star = ToolBarButton(image: #imageLiteral(resourceName: "Star"), insets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12))
     
@@ -92,11 +92,20 @@ class ToolBarButton: UIButton {
         imageEdgeInsets = insets
         imageView?.contentMode = .scaleAspectFit
         setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
+        imageView?.layer.cornerRadius = 4
+        imageView?.clipsToBounds = true
     }
     
     override var isHighlighted: Bool {
         didSet {
             backgroundColor = isHighlighted ? UIColor.lightGray.withAlphaComponent(0.5) : UIColor.clear
+        }
+    }
+    
+    override var isSelected: Bool {
+        didSet {
+            imageView?.tintColor = isSelected ? UIColor.white : nil
+            imageView?.backgroundColor = isSelected ? UIColor.blue : UIColor.clear
         }
     }
     
