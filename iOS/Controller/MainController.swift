@@ -10,8 +10,8 @@ import UIKit
 
 class MainController: UIViewController, UISearchControllerDelegate, ToolBarControlEvents, TabContainerControllerDelegate {
     let searchController = UISearchController(searchResultsController: SearchResultController())
-    private (set) var tabContainerController: TabContainerController!
-    private var toolBarController: ToolBarController!
+    private (set) var tabContainer: TabContainerController!
+    private var toolBar: ToolBarController!
     private var tableOfContentController: TableOfContentController!
     private lazy var libraryController = LibraryController()
     
@@ -20,8 +20,6 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     private lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
     
     @IBOutlet weak var dimView: DimView!
-    @IBOutlet weak var panelContainer: UIView!
-    @IBOutlet weak var toolBarContainer: UIView!
     @IBOutlet weak var panelCompactShowConstraint: NSLayoutConstraint!
     @IBOutlet weak var panelCompactHideConstraint: NSLayoutConstraint!
     @IBOutlet weak var panelRegularShowConstraint: NSLayoutConstraint!
@@ -33,6 +31,7 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSearchController()
+        tabContainer.switchToHome()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -40,11 +39,11 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
         guard let identifier = segue.identifier else {return}
         switch identifier {
         case "TabContainerController":
-            tabContainerController = segue.destination as! TabContainerController
-            tabContainerController.delegate = self
+            tabContainer = segue.destination as! TabContainerController
+            tabContainer.delegate = self
         case "ToolBarController":
-            toolBarController = segue.destination as! ToolBarController
-            toolBarController.delegate = self
+            toolBar = segue.destination as! ToolBarController
+            toolBar.delegate = self
         case "TableOfContentController":
             tableOfContentController = segue.destination as! TableOfContentController
         default:
@@ -139,11 +138,11 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     // MARK: - ToolBar
     
     func backButtonTapped() {
-        tabContainerController.currentTab?.goBack()
+        tabContainer.go(.back, in: .current)
     }
 
     func forwardButtonTapped() {
-        tabContainerController.currentTab?.goForward()
+        tabContainer.go(.forward, in: .current)
     }
     
     func tableOfContentButtonTapped() {
@@ -151,7 +150,7 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     }
     
     func homeButtonTapped() {
-        tabContainerController.isDisplayingHome ? tabContainerController.switchToCurrentTab() : tabContainerController.switchToHome()
+        tabContainer.isDisplayingHome ? tabContainer.switchToCurrentTab() : tabContainer.switchToHome()
     }
 
     func libraryButtonTapped() {
@@ -160,18 +159,21 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     
     // MARK: - TabContainerControllerDelegate
     
-    func homeDidBecameCurrent() {
-        
+    func homeWillBecomeCurrent() {
+        toolBar.back.isEnabled = false
+        toolBar.forward.isEnabled = false
+        toolBar.tableOfContent.isEnabled = false
     }
     
-    func tabDidBecameCurrent(controller: UIViewController & TabController) {
-        toolBarController.back.isEnabled = controller.canGoBack
-        toolBarController.forward.isEnabled = controller.canGoForward
+    func tabWillBecomeCurrent(controller: UIViewController & TabController) {
+        toolBar.back.isEnabled = controller.canGoBack
+        toolBar.forward.isEnabled = controller.canGoForward
+        toolBar.tableOfContent.isEnabled = true
     }
     
     func tabDidFinishLoading(controller: UIViewController & TabController) {
-        toolBarController.back.isEnabled = controller.canGoBack
-        toolBarController.forward.isEnabled = controller.canGoForward
+        toolBar.back.isEnabled = controller.canGoBack
+        toolBar.forward.isEnabled = controller.canGoForward
     }
     
 }

@@ -13,13 +13,8 @@ class TabContainerController: UIViewController, TabControllerDelegate {
     private(set) var isDisplayingHome = true
     
     private lazy var home = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Home") as! HomeController
-    private(set) weak var currentTab: (UIViewController & TabController)?
+    private weak var currentTab: (UIViewController & TabController)?
     private var tabs = Set<UIViewController>()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        switchToHome()
-    }
     
     func switchToHome() {
         isDisplayingHome = true
@@ -66,23 +61,41 @@ class TabContainerController: UIViewController, TabControllerDelegate {
                                      view.rightAnchor.constraint(equalTo: controller.view.rightAnchor)])
         controller.didMove(toParentViewController: self)
         if let tabController = controller as? UIViewController & TabController {
-            delegate?.tabDidBecameCurrent(controller: tabController)
+            delegate?.tabWillBecomeCurrent(controller: tabController)
         } else if let _ = controller as? HomeController {
-            delegate?.homeDidBecameCurrent()
+            delegate?.homeWillBecomeCurrent()
         }
     }
     
-    func loadInCurrentTab(url: URL, animated: Bool) {
-        guard let tab = currentTab else {
-            loadInNewTab(url: url, animated: animated)
-            return
-        }
-        tab.load(url: url)
+    func go(_ direction: TabNavigationDirection, in tab: TabType) {
+        
     }
     
-    func loadInNewTab(url: URL, animated: Bool) {
-        switchToNewTab()
-        loadInCurrentTab(url: url, animated: true)
+    func load(url: URL, in tab: TabType, animated: Bool = true) {
+        if currentTab == nil {
+            switchToNewTab()
+        }
+        currentTab?.load(url: url)
+    }
+    
+    func loadMain(id: ZimFileID,  in tab: TabType, animated: Bool = true) {
+        if currentTab == nil {
+            switchToNewTab()
+        }
+        currentTab?.loadMainPage(id: id)
+    }
+    
+//    func loadInNewTab(url: URL, animated: Bool) {
+//        switchToNewTab()
+//        loadInCurrentTab(url: url, animated: true)
+//    }
+    
+    enum TabType {
+        case new, current, index(Int)
+    }
+    
+    enum TabNavigationDirection {
+        case back, forward
     }
     
     // MARK: - TabControllerDelegate
@@ -93,8 +106,8 @@ class TabContainerController: UIViewController, TabControllerDelegate {
 }
 
 protocol TabContainerControllerDelegate: class {
-    func homeDidBecameCurrent()
-    func tabDidBecameCurrent(controller: UIViewController & TabController)
+    func homeWillBecomeCurrent()
+    func tabWillBecomeCurrent(controller: UIViewController & TabController)
     func tabDidFinishLoading(controller: UIViewController & TabController)
 }
 

@@ -204,7 +204,7 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let main = presentingViewController as? MainController else {return}
-        main.tabContainerController.currentTab?.load(url: results[indexPath.row].url)
+        main.tabContainer.load(url: results[indexPath.row].url, in: .current)
         main.searchController.isActive = false
     }
     
