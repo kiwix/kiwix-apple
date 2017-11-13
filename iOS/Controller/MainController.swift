@@ -95,7 +95,7 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
         self.definesPresentationContext = true
     }
     
-    private func toggleTableOfContent() {
+    private func togglePanel() {
         isShowingTableOfContent = !isShowingTableOfContent
         if isShowingTableOfContent {
             dimView.isHidden = false
@@ -120,7 +120,7 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     }
     
     @IBAction func dimViewTapped(_ sender: UITapGestureRecognizer) {
-        toggleTableOfContent()
+        togglePanel()
     }
     
     // MARK: - UISearchControllerDelegate
@@ -146,29 +146,31 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     }
     
     func tableOfContentButtonTapped() {
-        toggleTableOfContent()
+        togglePanel()
+    }
+    
+    func bookmarkButtonTapped() {
+        
     }
     
     func homeButtonTapped() {
         tabContainer.isDisplayingHome ? tabContainer.switchToCurrentTab() : tabContainer.switchToHome()
     }
 
-    func libraryButtonTapped() {
-        present(libraryController, animated: true, completion: nil)
-    }
-    
     // MARK: - TabContainerControllerDelegate
     
     func homeWillBecomeCurrent() {
         toolBar.back.isEnabled = false
         toolBar.forward.isEnabled = false
         toolBar.tableOfContent.isEnabled = false
+        toolBar.star.isEnabled = false
     }
     
     func tabWillBecomeCurrent(controller: UIViewController & TabController) {
         toolBar.back.isEnabled = controller.canGoBack
         toolBar.forward.isEnabled = controller.canGoForward
         toolBar.tableOfContent.isEnabled = true
+        toolBar.star.isEnabled = true
     }
     
     func tabDidFinishLoading(controller: UIViewController & TabController) {
@@ -176,6 +178,9 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
         toolBar.forward.isEnabled = controller.canGoForward
     }
     
+    func libraryButtonTapped() {
+        present(libraryController, animated: true, completion: nil)
+    }
 }
 
 class DimView: UIView {
