@@ -14,8 +14,6 @@ class PanelController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        tableView.delegate = self
-//        tableView.dataSource = self
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -24,7 +22,7 @@ class PanelController: UIViewController {
         case .compact:
             configForHorizontalCompact()
         case .regular:
-            configForHorizontalRegular()
+            configForHorizontalCompact()
         case .unspecified:
             break
         }
