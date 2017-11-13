@@ -33,7 +33,7 @@
                                 </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U1n-JF-wko">
-                                <rect key="frame" x="230" y="64" width="1" height="960"/>
+                                <rect key="frame" x="230.5" y="64" width="1" height="960"/>
                                 <color key="backgroundColor" name="systemGrayColor" catalog="System" colorSpace="catalog"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="1" id="PNV-oZ-ILb"/>
@@ -103,7 +103,7 @@
                             <constraint firstAttribute="bottom" secondItem="llU-2x-q9a" secondAttribute="bottom" id="Yb4-OO-wxD"/>
                             <constraint firstItem="U1n-JF-wko" firstAttribute="bottom" secondItem="ShG-fd-wTm" secondAttribute="bottom" id="Ye5-ye-sp8"/>
                             <constraint firstItem="fih-kx-oKO" firstAttribute="height" secondItem="Lnk-x9-o6o" secondAttribute="height" multiplier="0.6" priority="750" id="ZHa-UK-r95"/>
-                            <constraint firstItem="fih-kx-oKO" firstAttribute="top" secondItem="Lnk-x9-o6o" secondAttribute="top" id="bIN-s6-WPr"/>
+                            <constraint firstItem="fih-kx-oKO" firstAttribute="top" secondItem="ShG-fd-wTm" secondAttribute="top" id="bIN-s6-WPr"/>
                             <constraint firstItem="fih-kx-oKO" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Lnk-x9-o6o" secondAttribute="leading" id="cVr-7T-kgx"/>
                             <constraint firstAttribute="bottom" secondItem="llU-2x-q9a" secondAttribute="bottom" id="iKL-SQ-otC"/>
                             <constraint firstItem="llU-2x-q9a" firstAttribute="top" secondItem="Lnk-x9-o6o" secondAttribute="top" id="iNJ-I6-3f8"/>
@@ -246,10 +246,10 @@
             </objects>
             <point key="canvasLocation" x="54" y="661"/>
         </scene>
-        <!--Tab Container Controller-->
+        <!--Tabs Controller-->
         <scene sceneID="hAN-hr-F4c">
             <objects>
-                <viewController id="Pgj-1E-dCA" customClass="TabContainerController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Pgj-1E-dCA" customClass="TabsController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6Wm-IY-TSx">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -287,13 +287,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="edr-7J-o58">
-                                <rect key="frame" x="7" y="264" width="400" height="284.33333333333326"/>
+                                <rect key="frame" x="16" y="263.33333333333331" width="382" height="224.33333333333331"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ey7-6F-Nxe">
-                                        <rect key="frame" x="0.0" y="0.0" width="400" height="134.33333333333334"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="382" height="134.33333333333334"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aL9-To-3eY" customClass="Logo" customModule="Kiwix" customModuleProvider="target">
-                                                <rect key="frame" x="170" y="0.0" width="60" height="60"/>
+                                                <rect key="frame" x="161" y="0.0" width="60" height="60"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="60" id="53J-Lz-Knh"/>
@@ -301,7 +301,7 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KIWIX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ykl-0N-bqQ">
-                                                <rect key="frame" x="137.66666666666666" y="60" width="124.66666666666666" height="58.666666666666657"/>
+                                                <rect key="frame" x="128.66666666666666" y="60" width="124.66666666666666" height="58.666666666666657"/>
                                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="49"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -313,7 +313,7 @@
                                                 </variation>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wikipedia Anywhere" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dqJ-IN-1cE">
-                                                <rect key="frame" x="138.66666666666666" y="118.66666666666669" width="122.66666666666666" height="15.666666666666657"/>
+                                                <rect key="frame" x="129.66666666666666" y="118.66666666666669" width="122.66666666666666" height="15.666666666666657"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -326,37 +326,18 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="dhs-jD-s9o">
-                                        <rect key="frame" x="0.0" y="194.33333333333331" width="400" height="90"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="dhs-jD-s9o">
+                                        <rect key="frame" x="0.0" y="194.33333333333337" width="382" height="30"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SKG-oI-EZj" customClass="RoundedButton" customModule="Kiwix" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="400" height="30"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="186" height="30"/>
                                                 <color key="backgroundColor" red="0.60646116729999999" green="0.79930049179999996" blue="0.98724311590000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" title="Botton"/>
                                             </button>
-                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4fU-Ot-O0w">
-                                                <rect key="frame" x="0.0" y="40" width="400" height="50"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="50" id="s3r-tC-ABJ"/>
-                                                </constraints>
-                                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="phU-MV-62U">
-                                                    <size key="itemSize" width="50" height="50"/>
-                                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                </collectionViewFlowLayout>
-                                                <cells>
-                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="hlH-kk-gSq">
-                                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                            <autoresizingMask key="autoresizingMask"/>
-                                                        </view>
-                                                    </collectionViewCell>
-                                                </cells>
-                                            </collectionView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e4T-Tz-XiG" customClass="RoundedButton" customModule="Kiwix" customModuleProvider="target">
+                                                <rect key="frame" x="196" y="0.0" width="186" height="30"/>
+                                                <state key="normal" title="Button"/>
+                                            </button>
                                         </subviews>
                                     </stackView>
                                 </subviews>
@@ -369,9 +350,9 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="edr-7J-o58" firstAttribute="centerX" secondItem="9Ke-1P-yB2" secondAttribute="centerX" id="6aB-gj-77Y"/>
+                            <constraint firstItem="edr-7J-o58" firstAttribute="centerY" secondItem="UiY-s6-saw" secondAttribute="centerY" id="9vU-Aq-Ok7"/>
                             <constraint firstItem="edr-7J-o58" firstAttribute="leading" secondItem="9Ke-1P-yB2" secondAttribute="leading" priority="750" constant="16" id="AND-ih-Ksi"/>
                             <constraint firstAttribute="trailing" secondItem="edr-7J-o58" secondAttribute="trailing" priority="750" constant="16" id="GEp-RU-ozH"/>
-                            <constraint firstItem="ey7-6F-Nxe" firstAttribute="centerY" secondItem="9Ke-1P-yB2" secondAttribute="centerY" multiplier="0.9" id="uRo-Zx-ePU"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="UiY-s6-saw"/>
                     </view>
@@ -379,8 +360,8 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="button" destination="SKG-oI-EZj" id="wfc-ux-SsA"/>
-                        <outlet property="collectionView" destination="4fU-Ot-O0w" id="iuU-1F-qii"/>
+                        <outlet property="libraryButton" destination="SKG-oI-EZj" id="5H7-cG-sPk"/>
+                        <outlet property="settingsButton" destination="e4T-Tz-XiG" id="hus-SG-8Xj"/>
                         <outlet property="stackView" destination="dhs-jD-s9o" id="7zr-1N-sg8"/>
                     </connections>
                 </viewController>

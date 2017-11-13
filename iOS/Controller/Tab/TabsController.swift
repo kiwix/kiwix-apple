@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TabContainerController: UIViewController, TabControllerDelegate {
+class TabsController: UIViewController, TabControllerDelegate {
     weak var delegate: TabContainerControllerDelegate?
     private(set) var isDisplayingHome = true
     

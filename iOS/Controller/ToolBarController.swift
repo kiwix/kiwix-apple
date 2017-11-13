@@ -105,7 +105,7 @@ class ToolBarButton: UIButton {
     override var isSelected: Bool {
         didSet {
             imageView?.tintColor = isSelected ? UIColor.white : nil
-            imageView?.backgroundColor = isSelected ? UIColor.blue : UIColor.clear
+            imageView?.backgroundColor = isSelected ? #colorLiteral(red: 0, green: 0.431372549, blue: 1, alpha: 1) : UIColor.clear
         }
     }
     

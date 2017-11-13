@@ -17,12 +17,11 @@ class VisualEffectShadowView: UIView {
     }
     
     let shadow = Shadow(offset: CGSize.zero, blur: 4.0, color: .lightGray)
-    let roundingCorners: UIRectCorner
-    let cornerRadius: CGFloat = 10.0
+    var roundingCorners: UIRectCorner? = .allCorners
+    var cornerRadius: CGFloat = 10.0
     private let visual = UIVisualEffectView()
     
-    init(cornerRadius: CGFloat = 10, roundingCorners: UIRectCorner = .allCorners) {
-        self.roundingCorners = roundingCorners
+    init() {
         super.init(frame: .zero)
         configure()
     }
@@ -43,9 +42,16 @@ class VisualEffectShadowView: UIView {
     }
     
     override func draw(_ rect: CGRect) {
-        let contentRect = rect.insetBy(dx: shadow.blur, dy: shadow.blur)
-        let shadowPath = UIBezierPath(roundedRect: contentRect, byRoundingCorners: roundingCorners, cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
         let context = UIGraphicsGetCurrentContext()!
+        guard let corners = roundingCorners else {
+            context.clear(rect)
+            visual.layer.mask = nil
+            return
+        }
+        
+        // shadow
+        let contentRect = rect.insetBy(dx: shadow.blur, dy: shadow.blur)
+        let shadowPath = UIBezierPath(roundedRect: contentRect, byRoundingCorners: corners, cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
         
         context.addRect(rect)
         context.addPath(shadowPath.cgPath)
@@ -56,7 +62,7 @@ class VisualEffectShadowView: UIView {
         context.fillPath()
         
         // mask visualView
-        let maskPath = UIBezierPath(roundedRect: contentRect.offsetBy(dx: -contentRect.origin.x, dy: -contentRect.origin.y), byRoundingCorners: roundingCorners, cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
+        let maskPath = UIBezierPath(roundedRect: contentRect.offsetBy(dx: -contentRect.origin.x, dy: -contentRect.origin.y), byRoundingCorners: corners, cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
         let visualViewMask = CAShapeLayer()
         visualViewMask.path = maskPath.cgPath
         visual.layer.mask = visualViewMask

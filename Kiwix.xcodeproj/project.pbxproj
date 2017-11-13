@@ -188,8 +188,8 @@
 		97A996D71F62F1B5007A6282 /* SearchProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975415D31F54C1870007EA6C /* SearchProcedure.swift */; };
 		97A996DF1F630FBC007A6282 /* SearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996DE1F630FBC007A6282 /* SearchResultView.swift */; };
 		97A9F6F51E2E990500F423AA /* JSInject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* JSInject.js */; };
-		97AFF7841FB0BBFA006B254A /* TabContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AFF7831FB0BBF9006B254A /* TabContainerController.swift */; };
-		97AFF7851FB0BBFA006B254A /* TabContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AFF7831FB0BBF9006B254A /* TabContainerController.swift */; };
+		97AFF7841FB0BBFA006B254A /* TabsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AFF7831FB0BBF9006B254A /* TabsController.swift */; };
+		97AFF7851FB0BBFA006B254A /* TabsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AFF7831FB0BBF9006B254A /* TabsController.swift */; };
 		97B1046F1F8FC63C00488444 /* LibraryMasterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */; };
 		97B104701F8FC63C00488444 /* LibraryMasterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */; };
 		97B1D0B51F9A3AD3000C7848 /* NetworkActivityIndicatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9780DE051E43BFF5009B6945 /* NetworkActivityIndicatorController.swift */; };
@@ -439,7 +439,7 @@
 		97A996D11F60A1A0007A6282 /* ToolBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarController.swift; sourceTree = "<group>"; };
 		97A996DE1F630FBC007A6282 /* SearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultView.swift; sourceTree = "<group>"; };
 		97A9F6F41E2E990500F423AA /* JSInject.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = JSInject.js; sourceTree = "<group>"; };
-		97AFF7831FB0BBF9006B254A /* TabContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabContainerController.swift; sourceTree = "<group>"; };
+		97AFF7831FB0BBF9006B254A /* TabsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsController.swift; sourceTree = "<group>"; };
 		97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryMasterController.swift; sourceTree = "<group>"; };
 		97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		97C353AB1FAB742B00230B3E /* PanelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelController.swift; sourceTree = "<group>"; };
@@ -909,7 +909,7 @@
 		97050CFF1F6730010021DE78 /* Tab */ = {
 			isa = PBXGroup;
 			children = (
-				97AFF7831FB0BBF9006B254A /* TabContainerController.swift */,
+				97AFF7831FB0BBF9006B254A /* TabsController.swift */,
 				971B1AA01FB6115E001EA99F /* HomeController.swift */,
 				97A996CD1F609C9F007A6282 /* LegacyTabController.swift */,
 				97050D001F6733400021DE78 /* WebKitTabController.swift */,
@@ -2256,7 +2256,7 @@
 				9702BE1F1F97F1C900E6B4EE /* LibraryLanguageController.swift in Sources */,
 				97161A871F8FFD1E00A89DE3 /* LibraryCategoryController.swift in Sources */,
 				97041F831F96A3F3007D63F5 /* LibraryBookDetailController.swift in Sources */,
-				97AFF7851FB0BBFA006B254A /* TabContainerController.swift in Sources */,
+				97AFF7851FB0BBFA006B254A /* TabsController.swift in Sources */,
 				97A36C731F8EA6FA0079B452 /* ManagedObjectProperties.swift in Sources */,
 				975FDADA1F6082DA00A10E8C /* AppDelegate.swift in Sources */,
 				97A996D71F62F1B5007A6282 /* SearchProcedure.swift in Sources */,
@@ -2377,7 +2377,7 @@
 				97A36C2B1F8C21210079B452 /* URLProtocol.swift in Sources */,
 				97B1046F1F8FC63C00488444 /* LibraryMasterController.swift in Sources */,
 				97A36C2C1F8C21210079B452 /* WebKitTabController.swift in Sources */,
-				97AFF7841FB0BBFA006B254A /* TabContainerController.swift in Sources */,
+				97AFF7841FB0BBFA006B254A /* TabsController.swift in Sources */,
 				977D7BBE1F9FC618009A8703 /* Queue.swift in Sources */,
 				979032051FBA23F800A565A6 /* TableOfContentController.swift in Sources */,
 				9717A2561FB25A1200837492 /* MainController.swift in Sources */,

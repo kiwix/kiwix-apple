@@ -10,12 +10,12 @@ import UIKit
 
 class MainController: UIViewController, UISearchControllerDelegate, ToolBarControlEvents, TabContainerControllerDelegate {
     let searchController = UISearchController(searchResultsController: SearchResultController())
-    private (set) var tabContainer: TabContainerController!
+    private (set) var tabs: TabsController!
     private var toolBar: ToolBarController!
-    private var tableOfContentController: PanelController!
+    private var panel: PanelController!
     private lazy var libraryController = LibraryController()
     
-    private var isShowingTableOfContent = false
+    private var isShowingPanel = false
     private var currentTabControllerObserver: NSKeyValueObservation?
     private lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
     
@@ -32,7 +32,7 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
         super.viewDidLoad()
         configureSearchController()
         toolBar.home.isSelected = true
-        tabContainer.switchToHome()
+        tabs.switchToHome()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -40,13 +40,13 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
         guard let identifier = segue.identifier else {return}
         switch identifier {
         case "TabContainerController":
-            tabContainer = segue.destination as! TabContainerController
-            tabContainer.delegate = self
+            tabs = segue.destination as! TabsController
+            tabs.delegate = self
         case "ToolBarController":
             toolBar = segue.destination as! ToolBarController
             toolBar.delegate = self
         case "PanelController":
-            tableOfContentController = segue.destination as! PanelController
+            panel = segue.destination as! PanelController
         default:
             break
         }
@@ -68,14 +68,14 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
         switch self.traitCollection.horizontalSizeClass {
         case .compact:
             NSLayoutConstraint.deactivate([panelRegularShowConstraint, panelRegularHideConstraint])
-            panelCompactShowConstraint.isActive = isShowingTableOfContent
-            panelCompactHideConstraint.isActive = !isShowingTableOfContent
-            toolBarShowConstraints.isActive = !isShowingTableOfContent
-            toolBarHideConstraints.isActive = isShowingTableOfContent
+            panelCompactShowConstraint.isActive = isShowingPanel
+            panelCompactHideConstraint.isActive = !isShowingPanel
+            toolBarShowConstraints.isActive = !isShowingPanel
+            toolBarHideConstraints.isActive = isShowingPanel
         case .regular:
             NSLayoutConstraint.deactivate([panelCompactShowConstraint, panelCompactHideConstraint])
-            panelRegularShowConstraint.isActive = isShowingTableOfContent
-            panelRegularHideConstraint.isActive = !isShowingTableOfContent
+            panelRegularShowConstraint.isActive = isShowingPanel
+            panelRegularHideConstraint.isActive = !isShowingPanel
             toolBarShowConstraints.isActive = true
             toolBarHideConstraints.isActive = false
         case .unspecified:
@@ -97,8 +97,8 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     }
     
     private func togglePanel() {
-        isShowingTableOfContent = !isShowingTableOfContent
-        if isShowingTableOfContent {
+        isShowingPanel = !isShowingPanel
+        if isShowingPanel {
             dimView.isHidden = false
             dimView.isDimmed = false
         }
@@ -108,9 +108,9 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
         
         UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseInOut, animations: {
             self.view.layoutIfNeeded()
-            self.dimView.isDimmed = self.isShowingTableOfContent
+            self.dimView.isDimmed = self.isShowingPanel
         }, completion: { _ in
-            if !self.isShowingTableOfContent {
+            if !self.isShowingPanel {
                 self.dimView.isHidden = true
             }
         })
@@ -139,11 +139,11 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     // MARK: - ToolBar
     
     func backButtonTapped() {
-        tabContainer.go(.back, in: .current)
+        tabs.go(.back, in: .current)
     }
 
     func forwardButtonTapped() {
-        tabContainer.go(.forward, in: .current)
+        tabs.go(.forward, in: .current)
     }
     
     func tableOfContentButtonTapped() {
@@ -155,8 +155,8 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     }
     
     func homeButtonTapped() {
-        tabContainer.isDisplayingHome ? tabContainer.switchToCurrentTab() : tabContainer.switchToHome()
-        toolBar.home.isSelected = tabContainer.isDisplayingHome
+        tabs.isDisplayingHome ? tabs.switchToCurrentTab() : tabs.switchToHome()
+        toolBar.home.isSelected = tabs.isDisplayingHome
     }
 
     // MARK: - TabContainerControllerDelegate
@@ -164,15 +164,13 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     func homeWillBecomeCurrent() {
         toolBar.back.isEnabled = false
         toolBar.forward.isEnabled = false
-        toolBar.tableOfContent.isEnabled = false
-        toolBar.star.isEnabled = false
+        toolBar.home.isSelected = true
     }
     
     func tabWillBecomeCurrent(controller: UIViewController & TabController) {
         toolBar.back.isEnabled = controller.canGoBack
         toolBar.forward.isEnabled = controller.canGoForward
-        toolBar.tableOfContent.isEnabled = true
-        toolBar.star.isEnabled = true
+        toolBar.home.isSelected = false
     }
     
     func tabDidFinishLoading(controller: UIViewController & TabController) {

@@ -10,12 +10,12 @@ import UIKit
 
 class HomeController: UIViewController {
     @IBOutlet weak var stackView: UIStackView!
-    @IBOutlet weak var button: RoundedButton!
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var libraryButton: RoundedButton!
+    @IBOutlet weak var settingsButton: RoundedButton!
     
     override func viewDidLoad() {
-        button.setTitle(NSLocalizedString("Open Library", comment: "Open Library"), for: .normal)
-        collectionView.isHidden = true
+        libraryButton.setTitle(NSLocalizedString("Open Library", comment: "Open Library"), for: .normal)
+        settingsButton.setTitle(NSLocalizedString("Open Settings", comment: "Open Library"), for: .normal)
     }
     
 }

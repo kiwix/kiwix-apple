@@ -9,26 +9,29 @@
 import UIKit
 
 class PanelController: UIViewController {
-    let visualView = VisualEffectShadowView(roundingCorners: [.topLeft, .topRight])
+    let visualView = VisualEffectShadowView()
     private let tableView = UITableView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        config()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
         switch traitCollection.horizontalSizeClass {
         case .compact:
-            configForHorizontalCompact()
+            visualView.roundingCorners = [.topLeft, .topRight]
+            visualView.setNeedsDisplay()
         case .regular:
-            configForHorizontalCompact()
+            visualView.roundingCorners = nil
+            visualView.setNeedsDisplay()
         case .unspecified:
             break
         }
     }
     
-    private func configForHorizontalCompact() {
+    private func config() {
         view.subviews.forEach({ $0.removeFromSuperview() })
         [visualView, tableView].forEach({ $0.removeFromSuperview() })
         
@@ -47,19 +50,5 @@ class PanelController: UIViewController {
          visualContent.leftAnchor.constraint(equalTo: tableView.leftAnchor),
          visualContent.bottomAnchor.constraint(equalTo: tableView.bottomAnchor),
          visualContent.rightAnchor.constraint(equalTo: tableView.rightAnchor)].forEach({ $0.isActive = true })
-    }
-    
-    private func configForHorizontalRegular() {
-        view.subviews.forEach({ $0.removeFromSuperview() })
-        tableView.removeFromSuperview()
-        
-        tableView.backgroundColor = .white
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(tableView)
-        view.addConstraints([
-            view.topAnchor.constraint(equalTo: tableView.topAnchor),
-            view.bottomAnchor.constraint(equalTo: tableView.bottomAnchor),
-            view.leftAnchor.constraint(equalTo: tableView.leftAnchor),
-            view.rightAnchor.constraint(equalTo: tableView.rightAnchor)])
     }
 }
