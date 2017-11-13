@@ -12,7 +12,7 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     let searchController = UISearchController(searchResultsController: SearchResultController())
     private (set) var tabContainer: TabContainerController!
     private var toolBar: ToolBarController!
-    private var tableOfContentController: TableOfContentController!
+    private var tableOfContentController: PanelController!
     private lazy var libraryController = LibraryController()
     
     private var isShowingTableOfContent = false
@@ -45,8 +45,8 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
         case "ToolBarController":
             toolBar = segue.destination as! ToolBarController
             toolBar.delegate = self
-        case "TableOfContentController":
-            tableOfContentController = segue.destination as! TableOfContentController
+        case "PanelController":
+            tableOfContentController = segue.destination as! PanelController
         default:
             break
         }

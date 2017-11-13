@@ -191,8 +191,8 @@
 		97B1D0B91F9A3CB0000C7848 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD401D6F728200A80EE2 /* Preference.swift */; };
 		97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */; };
 		97C2C26A1DDCC58500A9CC64 /* ArticleProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9764CBD21D8083AA00072D6A /* ArticleProcedure.swift */; };
-		97C353AC1FAB742B00230B3E /* TableOfContentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C353AB1FAB742B00230B3E /* TableOfContentController.swift */; };
-		97C353AD1FAB742B00230B3E /* TableOfContentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C353AB1FAB742B00230B3E /* TableOfContentController.swift */; };
+		97C353AC1FAB742B00230B3E /* PanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C353AB1FAB742B00230B3E /* PanelController.swift */; };
+		97C353AD1FAB742B00230B3E /* PanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C353AB1FAB742B00230B3E /* PanelController.swift */; };
 		97C459771F86C1360013AC22 /* wikipedia_en_medicine_novid.zim in Resources */ = {isa = PBXBuildFile; fileRef = 97C459761F86C1360013AC22 /* wikipedia_en_medicine_novid.zim */; };
 		97C459781F86C14A0013AC22 /* wikipedia_en_medicine_novid.zim in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97C459761F86C1360013AC22 /* wikipedia_en_medicine_novid.zim */; };
 		97C601DE1D7F342100362D4F /* HTMLHeading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C601DD1D7F342100362D4F /* HTMLHeading.swift */; };
@@ -433,7 +433,7 @@
 		97AFF7831FB0BBF9006B254A /* TabContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabContainerController.swift; sourceTree = "<group>"; };
 		97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryMasterController.swift; sourceTree = "<group>"; };
 		97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
-		97C353AB1FAB742B00230B3E /* TableOfContentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableOfContentController.swift; sourceTree = "<group>"; };
+		97C353AB1FAB742B00230B3E /* PanelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelController.swift; sourceTree = "<group>"; };
 		97C459761F86C1360013AC22 /* wikipedia_en_medicine_novid.zim */ = {isa = PBXFileReference; lastKnownFileType = file; path = wikipedia_en_medicine_novid.zim; sourceTree = "<group>"; };
 		97C601DD1D7F342100362D4F /* HTMLHeading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTMLHeading.swift; sourceTree = "<group>"; };
 		97D2315D1E677C5600DCD4A4 /* Bookmark.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Bookmark.storyboard; sourceTree = "<group>"; };
@@ -1053,7 +1053,7 @@
 				9717A2521FB2592D00837492 /* Main.storyboard */,
 				9717A2551FB25A1200837492 /* MainController.swift */,
 				97A996D11F60A1A0007A6282 /* ToolBarController.swift */,
-				97C353AB1FAB742B00230B3E /* TableOfContentController.swift */,
+				97C353AB1FAB742B00230B3E /* PanelController.swift */,
 				972E6F651FA2872A00F5C927 /* Search */,
 				97050CFF1F6730010021DE78 /* Tab */,
 				97B1046D1F8FC61400488444 /* Library */,
@@ -2205,7 +2205,7 @@
 				97B104701F8FC63C00488444 /* LibraryMasterController.swift in Sources */,
 				97A36C6E1F8EA6F50079B452 /* MigrationPolicy.swift in Sources */,
 				977D7BD41F9FE359009A8703 /* ZimMetaData.swift in Sources */,
-				97C353AD1FAB742B00230B3E /* TableOfContentController.swift in Sources */,
+				97C353AD1FAB742B00230B3E /* PanelController.swift in Sources */,
 				971B1AA21FB612BD001EA99F /* HomeController.swift in Sources */,
 				97161A8A1F90072A00A89DE3 /* LibraryTableCells.swift in Sources */,
 				97A36C6D1F8EA6F50079B452 /* 1.8.xcmappingmodel in Sources */,
@@ -2363,7 +2363,7 @@
 				97A36C691F8EA6F40079B452 /* 1.5.xcmappingmodel in Sources */,
 				977D7BD01F9FE34E009A8703 /* ZimMetaData.mm in Sources */,
 				97B1D0B61F9A3AE7000C7848 /* Network.swift in Sources */,
-				97C353AC1FAB742B00230B3E /* TableOfContentController.swift in Sources */,
+				97C353AC1FAB742B00230B3E /* PanelController.swift in Sources */,
 				97A36C5E1F8EA6E60079B452 /* Book.swift in Sources */,
 				977D7BBB1F9E6A7A009A8703 /* DirectoryMonitor.swift in Sources */,
 				97D9D5641FA8F00E005B28F0 /* 1.9.xcmappingmodel in Sources */,

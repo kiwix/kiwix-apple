@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TableOfContentController: UIViewController {
+class PanelController: UIViewController {
     let visualView = VisualEffectShadowView(roundingCorners: [.topLeft, .topRight])
     private let tableView = UITableView()
     

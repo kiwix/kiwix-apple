@@ -70,7 +70,7 @@
                                     </mask>
                                 </variation>
                                 <connections>
-                                    <segue destination="BxL-rj-MTR" kind="embed" identifier="TableOfContentController" id="qG8-XV-WEm"/>
+                                    <segue destination="BxL-rj-MTR" kind="embed" identifier="PanelController" id="qG8-XV-WEm"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RLM-hl-xOY">
@@ -260,10 +260,10 @@
             </objects>
             <point key="canvasLocation" x="900" y="179"/>
         </scene>
-        <!--Table Of Content Controller-->
+        <!--Panel Controller-->
         <scene sceneID="nRg-5V-YGl">
             <objects>
-                <viewController id="BxL-rj-MTR" customClass="TableOfContentController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BxL-rj-MTR" customClass="PanelController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="k0c-1a-OSA">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="400"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -287,13 +287,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="edr-7J-o58">
-                                <rect key="frame" x="16" y="264" width="382" height="284.33333333333326"/>
+                                <rect key="frame" x="7" y="264" width="400" height="284.33333333333326"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ey7-6F-Nxe">
-                                        <rect key="frame" x="0.0" y="0.0" width="382" height="134.33333333333334"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="400" height="134.33333333333334"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aL9-To-3eY" customClass="Logo" customModule="Kiwix" customModuleProvider="target">
-                                                <rect key="frame" x="161" y="0.0" width="60" height="60"/>
+                                                <rect key="frame" x="170" y="0.0" width="60" height="60"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="60" id="53J-Lz-Knh"/>
@@ -301,7 +301,7 @@
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KIWIX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ykl-0N-bqQ">
-                                                <rect key="frame" x="128.66666666666666" y="60" width="124.66666666666666" height="58.666666666666657"/>
+                                                <rect key="frame" x="137.66666666666666" y="60" width="124.66666666666666" height="58.666666666666657"/>
                                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="49"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -313,7 +313,7 @@
                                                 </variation>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wikipedia Anywhere" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dqJ-IN-1cE">
-                                                <rect key="frame" x="129.66666666666666" y="118.66666666666669" width="122.66666666666666" height="15.666666666666657"/>
+                                                <rect key="frame" x="138.66666666666666" y="118.66666666666669" width="122.66666666666666" height="15.666666666666657"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -327,15 +327,15 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="dhs-jD-s9o">
-                                        <rect key="frame" x="0.0" y="194.33333333333331" width="382" height="90"/>
+                                        <rect key="frame" x="0.0" y="194.33333333333331" width="400" height="90"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SKG-oI-EZj" customClass="RoundedButton" customModule="Kiwix" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="382" height="30"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="400" height="30"/>
                                                 <color key="backgroundColor" red="0.60646116729999999" green="0.79930049179999996" blue="0.98724311590000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" title="Botton"/>
                                             </button>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4fU-Ot-O0w">
-                                                <rect key="frame" x="0.0" y="40" width="382" height="50"/>
+                                                <rect key="frame" x="0.0" y="40" width="400" height="50"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="s3r-tC-ABJ"/>
