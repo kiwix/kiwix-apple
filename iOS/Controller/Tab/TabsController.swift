@@ -33,10 +33,6 @@ class TabsController: UIViewController, TabControllerDelegate {
         }
     }
     
-    enum TabNavigationDirection {
-        case back, forward
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -97,12 +93,6 @@ class TabsController: UIViewController, TabControllerDelegate {
     }
     
     // MARK: - Loading
-    
-//    func go(_ direction: TabNavigationDirection, in tab: TabType) {
-//        if tab == .current {
-//            direction == .back ? currentTab?.goBack() : currentTab?.goForward()
-//        }
-//    }
     
     func load(url: URL, in tab: TabType, animated: Bool = true) {
         if current == nil {
