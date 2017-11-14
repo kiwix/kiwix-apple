@@ -12,13 +12,42 @@ class TabsController: UIViewController, TabControllerDelegate {
     weak var delegate: TabContainerControllerDelegate?
     private(set) var isDisplayingHome = true
     
-    private lazy var home = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Home") as! HomeController
-    private weak var currentTab: (UIViewController & TabController)?
+    private let home = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Home") as! HomeController
+    private(set) weak var current: (UIViewController & TabController)?
     private var tabs = Set<UIViewController>()
+    
+    enum TabType {
+        case new, current, index(Int)
+        
+        static func == (lhs: TabType, rhs: TabType) -> Bool {
+            switch (lhs, rhs) {
+            case (.new, .new):
+                return true
+            case (.current, .current):
+                return true
+            case let (.index(lhsIndex), .index(rhsIndex)):
+                return lhsIndex == rhsIndex
+            default:
+                return false
+            }
+        }
+    }
+    
+    enum TabNavigationDirection {
+        case back, forward
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    // MARK: - Tab Management
     
     func switchToHome() {
         isDisplayingHome = true
         setChildController(controller: home)
+        home.libraryButton.addTarget(self, action: #selector(libraryButtonTapped), for: .touchUpInside)
+        home.settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
     }
     
     func switchToNewTab() {
@@ -33,7 +62,7 @@ class TabsController: UIViewController, TabControllerDelegate {
     }
     
     func switchToCurrentTab() {
-        if let tab = currentTab {
+        if let tab = current {
             switchTo(tab: tab)
         } else {
             switchToNewTab()
@@ -42,8 +71,8 @@ class TabsController: UIViewController, TabControllerDelegate {
     
     private func switchTo(tab: UIViewController & TabController) {
         isDisplayingHome = false
-        currentTab = tab
-        currentTab?.delegate = self
+        current = tab
+        current?.delegate = self
         tabs.insert(tab)
         setChildController(controller: tab)
     }
@@ -67,22 +96,26 @@ class TabsController: UIViewController, TabControllerDelegate {
         }
     }
     
-    func go(_ direction: TabNavigationDirection, in tab: TabType) {
-        
-    }
+    // MARK: - Loading
+    
+//    func go(_ direction: TabNavigationDirection, in tab: TabType) {
+//        if tab == .current {
+//            direction == .back ? currentTab?.goBack() : currentTab?.goForward()
+//        }
+//    }
     
     func load(url: URL, in tab: TabType, animated: Bool = true) {
-        if currentTab == nil {
+        if current == nil {
             switchToNewTab()
         }
-        currentTab?.load(url: url)
+        current?.load(url: url)
     }
     
     func loadMain(id: ZimFileID,  in tab: TabType, animated: Bool = true) {
-        if currentTab == nil {
+        if current == nil {
             switchToNewTab()
         }
-        currentTab?.loadMainPage(id: id)
+        current?.loadMainPage(id: id)
     }
     
 //    func loadInNewTab(url: URL, animated: Bool) {
@@ -90,12 +123,14 @@ class TabsController: UIViewController, TabControllerDelegate {
 //        loadInCurrentTab(url: url, animated: true)
 //    }
     
-    enum TabType {
-        case new, current, index(Int)
+    // MARK: - Button Actions
+    
+    @objc func libraryButtonTapped() {
+        delegate?.libraryButtonTapped()
     }
     
-    enum TabNavigationDirection {
-        case back, forward
+    @objc func settingsButtonTapped() {
+        delegate?.settingsButtonTapped()
     }
     
     // MARK: - TabControllerDelegate
@@ -105,10 +140,14 @@ class TabsController: UIViewController, TabControllerDelegate {
     }
 }
 
+// MARK: - Protocols
+
 protocol TabContainerControllerDelegate: class {
     func homeWillBecomeCurrent()
     func tabWillBecomeCurrent(controller: UIViewController & TabController)
     func tabDidFinishLoading(controller: UIViewController & TabController)
+    func libraryButtonTapped()
+    func settingsButtonTapped()
 }
 
 protocol TabController {

@@ -204,9 +204,10 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let main = presentingViewController as? MainController else {return}
-        if main.tabs.isDisplayingHome {main.tabs.switchToCurrentTab()}
+        if main.tabs.isDisplayingHome { main.tabs.switchToCurrentTab() }
+        if main.isShowingPanel && main.traitCollection.horizontalSizeClass == .compact { main.hidePanel() }
         main.tabs.load(url: results[indexPath.row].url, in: .current)
-        main.searchController.isActive = false
+        main.search.isActive = false
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {

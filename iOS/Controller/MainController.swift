@@ -9,16 +9,18 @@
 import UIKit
 
 class MainController: UIViewController, UISearchControllerDelegate, ToolBarControlEvents, TabContainerControllerDelegate {
-    let searchController = UISearchController(searchResultsController: SearchResultController())
-    private (set) var tabs: TabsController!
-    private var toolBar: ToolBarController!
-    private var panel: PanelController!
-    private lazy var libraryController = LibraryController()
-    
-    private var isShowingPanel = false
+    private (set) var isShowingPanel = false
     private var currentTabControllerObserver: NSKeyValueObservation?
     private lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
     
+    // MARK: - Controllers
+    let search = UISearchController(searchResultsController: SearchResultController())
+    private (set) var tabs: TabsController!
+    private var toolBar: ToolBarController!
+    private var panel: PanelController!
+    private lazy var library = LibraryController()
+    
+    // MARK: - IBOutlet
     @IBOutlet weak var dimView: DimView!
     @IBOutlet weak var panelCompactShowConstraint: NSLayoutConstraint!
     @IBOutlet weak var panelCompactHideConstraint: NSLayoutConstraint!
@@ -28,6 +30,7 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     @IBOutlet weak var toolBarHideConstraints: NSLayoutConstraint!
     @IBOutlet weak var separatorViewWidthConstraints: NSLayoutConstraint!
     
+    // MARK: - Overrides
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSearchController()
@@ -55,7 +58,7 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
-        navigationItem.setRightBarButton(searchController.isActive && traitCollection.horizontalSizeClass == .compact ? cancelButton : nil, animated: false)
+        navigationItem.setRightBarButton(search.isActive && traitCollection.horizontalSizeClass == .compact ? cancelButton : nil, animated: false)
     }
     
     override func viewWillLayoutSubviews() {
@@ -65,7 +68,7 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     
     override func updateViewConstraints() {
         separatorViewWidthConstraints.constant = 1 / UIScreen.main.scale
-        switch self.traitCollection.horizontalSizeClass {
+        switch traitCollection.horizontalSizeClass {
         case .compact:
             NSLayoutConstraint.deactivate([panelRegularShowConstraint, panelRegularHideConstraint])
             panelCompactShowConstraint.isActive = isShowingPanel
@@ -84,44 +87,72 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
         super.updateViewConstraints()
     }
     
+    // MARK: - Configure
+    
     private func configureSearchController() {
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.searchBar.autocapitalizationType = .none
-        searchController.searchBar.autocorrectionType = .no
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.obscuresBackgroundDuringPresentation = true
-        searchController.delegate = self
-        searchController.searchResultsUpdater = searchController.searchResultsController as? SearchResultController
-        navigationItem.titleView = searchController.searchBar
+        search.searchBar.searchBarStyle = .minimal
+        search.searchBar.autocapitalizationType = .none
+        search.searchBar.autocorrectionType = .no
+        search.hidesNavigationBarDuringPresentation = false
+        search.obscuresBackgroundDuringPresentation = true
+        search.delegate = self
+        search.searchResultsUpdater = search.searchResultsController as? SearchResultController
+        navigationItem.titleView = search.searchBar
         self.definesPresentationContext = true
     }
     
-    private func togglePanel() {
-        isShowingPanel = !isShowingPanel
-        if isShowingPanel {
-            dimView.isHidden = false
-            dimView.isDimmed = false
+    func showPanel(mode: PanelMode) {
+        panel.set(mode: mode)
+        switch mode {
+        case .tableOfContent:
+            toolBar.tableOfContent.isSelected = true
+            toolBar.bookmark.isSelected = false
+        case .bookmark:
+            toolBar.tableOfContent.isSelected = false
+            toolBar.bookmark.isSelected = true
+        case .history:
+            toolBar.tableOfContent.isSelected = false
+            toolBar.bookmark.isSelected = false
         }
+        
+        guard !isShowingPanel else {return}
+        isShowingPanel = true
+        dimView.isHidden = false
+        dimView.isDimmed = false
         
         view.layoutIfNeeded()
         view.setNeedsUpdateConstraints()
         
         UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseInOut, animations: {
             self.view.layoutIfNeeded()
-            self.dimView.isDimmed = self.isShowingPanel
+            self.dimView.isDimmed = true
+        })
+    }
+    
+    func hidePanel() {
+        panel.set(mode: nil)
+        toolBar.tableOfContent.isSelected = false
+        toolBar.bookmark.isSelected = false
+        
+        guard isShowingPanel else {return}
+        isShowingPanel = false
+        view.layoutIfNeeded()
+        view.setNeedsUpdateConstraints()
+        
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseInOut, animations: {
+            self.view.layoutIfNeeded()
+            self.dimView.isDimmed = false
         }, completion: { _ in
-            if !self.isShowingPanel {
-                self.dimView.isHidden = true
-            }
+            self.dimView.isHidden = true
         })
     }
     
     @objc func cancelSearch() {
-        searchController.isActive = false
+        search.isActive = false
     }
     
     @IBAction func dimViewTapped(_ sender: UITapGestureRecognizer) {
-        togglePanel()
+        hidePanel()
     }
     
     // MARK: - UISearchControllerDelegate
@@ -136,27 +167,26 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
         navigationItem.setRightBarButton(nil, animated: true)
     }
     
-    // MARK: - ToolBar
+    // MARK: - ToolBarDelegate
     
     func backButtonTapped() {
-        tabs.go(.back, in: .current)
+        tabs.current?.goBack()
     }
 
     func forwardButtonTapped() {
-        tabs.go(.forward, in: .current)
+        tabs.current?.goForward()
     }
     
     func tableOfContentButtonTapped() {
-        togglePanel()
+        panel.mode != .tableOfContent ? showPanel(mode: .tableOfContent) : hidePanel()
     }
     
     func bookmarkButtonTapped() {
-        
+        panel.mode != .bookmark ? showPanel(mode: .bookmark) : hidePanel()
     }
     
     func homeButtonTapped() {
         tabs.isDisplayingHome ? tabs.switchToCurrentTab() : tabs.switchToHome()
-        toolBar.home.isSelected = tabs.isDisplayingHome
     }
 
     // MARK: - TabContainerControllerDelegate
@@ -179,7 +209,10 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     }
     
     func libraryButtonTapped() {
-        present(libraryController, animated: true, completion: nil)
+        present(library, animated: true, completion: nil)
+    }
+    
+    func settingsButtonTapped() {
     }
 }
 

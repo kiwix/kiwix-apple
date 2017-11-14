@@ -17,7 +17,7 @@ class ToolBarController: UIViewController {
     private(set) lazy var forward = ToolBarButton(image: #imageLiteral(resourceName: "Right"))
     private(set) lazy var home = ToolBarButton(image: #imageLiteral(resourceName: "Home"), insets: UIEdgeInsets(top: 10, left: 12, bottom: 10, right: 12))
     private(set) lazy var tableOfContent = ToolBarButton(image: #imageLiteral(resourceName: "TableOfContent"), insets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12))
-    private(set) lazy var star = ToolBarButton(image: #imageLiteral(resourceName: "Star"), insets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12))
+    private(set) lazy var bookmark = ToolBarButton(image: #imageLiteral(resourceName: "Star"), insets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +50,7 @@ class ToolBarController: UIViewController {
     }
     
     private func addButtons() {
-        let buttons = [back, forward, home, tableOfContent, star]
+        let buttons = [back, forward, home, tableOfContent, bookmark]
         buttons.forEach { (button) in
             stackView.addArrangedSubview(button)
             button.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
@@ -68,7 +68,7 @@ class ToolBarController: UIViewController {
             delegate?.forwardButtonTapped()
         case tableOfContent:
             delegate?.tableOfContentButtonTapped()
-        case star:
+        case bookmark:
             delegate?.bookmarkButtonTapped()
         case home:
             delegate?.homeButtonTapped()
