@@ -178,7 +178,14 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     }
     
     func tableOfContentButtonTapped() {
-        panel.mode != .tableOfContent ? showPanel(mode: .tableOfContent) : hidePanel()
+        if panel.mode == .tableOfContent {
+            hidePanel()
+        } else {
+            showPanel(mode: .tableOfContent)
+            tabs.current?.getTableOfContent(completion: { (headings) in
+                print(headings)
+            })
+        }
     }
     
     func bookmarkButtonTapped() {

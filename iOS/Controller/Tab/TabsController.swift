@@ -149,6 +149,7 @@ protocol TabController {
     func goForward()
     func loadMainPage(id: ZimFileID)
     func load(url: URL)
+    func getTableOfContent(completion: @escaping (([HTMLHeading]) -> Void))
 }
 
 protocol TabControllerDelegate: class {

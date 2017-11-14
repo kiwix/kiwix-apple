@@ -8,6 +8,7 @@
 
 import UIKit
 import SafariServices
+import JavaScriptCore
 
 class LegacyTabController: UIViewController, UIWebViewDelegate, TabController {
     private let webView = UIWebView()
@@ -65,6 +66,15 @@ class LegacyTabController: UIViewController, UIWebViewDelegate, TabController {
         webView.loadRequest(request)
     }
     
+    // MARK: - Capabilities
+    
+    func getTableOfContent(completion: @escaping (([HTMLHeading]) -> Void)) {
+        let javascript = "tableOfContents.getHeadingObjects()"
+        guard let elements = webView.context.evaluateScript(javascript).toArray() as? [[String: Any]] else {completion([]); return}
+        let headings = elements.flatMap({ HTMLHeading(rawValue: $0) })
+        completion(headings)
+    }
+    
     // MARK: - UIWebViewDelegate
     
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
@@ -80,5 +90,11 @@ class LegacyTabController: UIViewController, UIWebViewDelegate, TabController {
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
         delegate?.webViewDidFinishLoad(controller: self)
+    }
+}
+
+fileprivate extension UIWebView {
+    var context: JSContext {
+        return value(forKeyPath: "documentView.webView.mainFrame.javaScriptContext") as! JSContext
     }
 }

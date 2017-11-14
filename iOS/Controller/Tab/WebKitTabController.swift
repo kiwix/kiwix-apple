@@ -72,6 +72,17 @@ class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         webView.load(request)
     }
     
+    // MARK: - Capabilities
+    
+    func getTableOfContent(completion: @escaping (([HTMLHeading]) -> Void)) {
+        let javascript = "tableOfContents.getHeadingObjects()"
+        webView.evaluateJavaScript(javascript, completionHandler: { (results, error) in
+            guard let elements = results as? [[String: Any]] else {completion([]); return}
+            let headings = elements.flatMap({ HTMLHeading(rawValue: $0) })
+            completion(headings)
+        })
+    }
+    
     // MARK: - WKNavigationDelegate
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -86,7 +97,14 @@ class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        delegate?.webViewDidFinishLoad(controller: self)
+        if let url = Bundle.main.url(forResource: "Inject", withExtension: "js"),
+            let javascript = try? String(contentsOf: url) {
+            webView.evaluateJavaScript(javascript, completionHandler: { (_, error) in
+                self.delegate?.webViewDidFinishLoad(controller: self)
+            })
+        } else {
+            delegate?.webViewDidFinishLoad(controller: self)
+        }
     }
 }
 
