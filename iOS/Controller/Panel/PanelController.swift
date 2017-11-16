@@ -11,9 +11,9 @@ import UIKit
 class PanelController: UIViewController {
     let visualView = VisualEffectShadowView()
     private(set) var mode: PanelMode?
-    private var tableOfContent: TableOfContentController?
-    private var bookmark: BookmarkController?
-    private var history: HistoryController?
+    private(set) var tableOfContent: TableOfContentController?
+    private(set) var bookmark: BookmarkController?
+    private(set) var history: HistoryController?
     
     override func viewDidLoad() {
         super.viewDidLoad()

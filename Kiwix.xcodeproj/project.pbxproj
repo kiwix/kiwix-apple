@@ -116,8 +116,6 @@
 		977D7BB71F9E6A43009A8703 /* ZimMultiReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BB21F9E6A43009A8703 /* ZimMultiReader.mm */; };
 		977D7BB81F9E6A43009A8703 /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BB31F9E6A43009A8703 /* ZimMultiReader.swift */; };
 		977D7BB91F9E6A43009A8703 /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BB31F9E6A43009A8703 /* ZimMultiReader.swift */; };
-		977D7BBB1F9E6A7A009A8703 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BBA1F9E6A7A009A8703 /* DirectoryMonitor.swift */; };
-		977D7BBC1F9E6A7A009A8703 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BBA1F9E6A7A009A8703 /* DirectoryMonitor.swift */; };
 		977D7BBE1F9FC618009A8703 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BBD1F9FC618009A8703 /* Queue.swift */; };
 		977D7BBF1F9FC618009A8703 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BBD1F9FC618009A8703 /* Queue.swift */; };
 		977D7BD01F9FE34E009A8703 /* ZimMetaData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BCF1F9FE34E009A8703 /* ZimMetaData.mm */; };
@@ -248,6 +246,8 @@
 		97E412381FB1FFAB009585DC /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E412361FB1FFAB009585DC /* SearchResultController.swift */; };
 		97E4123A1FB20DAB009585DC /* SearchResultCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E412391FB20DAB009585DC /* SearchResultCells.swift */; };
 		97E4123B1FB20DAB009585DC /* SearchResultCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E412391FB20DAB009585DC /* SearchResultCells.swift */; };
+		97E429901FBDF48800ABE62E /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E4298F1FBDF48800ABE62E /* DirectoryMonitor.swift */; };
+		97E429911FBDF48800ABE62E /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E4298F1FBDF48800ABE62E /* DirectoryMonitor.swift */; };
 		97E9834E1F4CA0A00021E96A /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9834D1F4CA0A00021E96A /* WebViewController.swift */; };
 		97E983501F4CA54A0021E96A /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9834F1F4CA54A0021E96A /* SearchController.swift */; };
 		97E983541F4DDB670021E96A /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E983531F4DDB670021E96A /* SearchView.swift */; };
@@ -412,7 +412,6 @@
 		977D7BB11F9E6A43009A8703 /* SearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		977D7BB21F9E6A43009A8703 /* ZimMultiReader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ZimMultiReader.mm; sourceTree = "<group>"; };
 		977D7BB31F9E6A43009A8703 /* ZimMultiReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZimMultiReader.swift; sourceTree = "<group>"; };
-		977D7BBA1F9E6A7A009A8703 /* DirectoryMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DirectoryMonitor.swift; path = ../../../../Desktop/ZimManagement/DirectoryMonitor.swift; sourceTree = "<group>"; };
 		977D7BBD1F9FC618009A8703 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		977D7BCE1F9FE34E009A8703 /* ZimMetaData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZimMetaData.h; sourceTree = "<group>"; };
 		977D7BCF1F9FE34E009A8703 /* ZimMetaData.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ZimMetaData.mm; sourceTree = "<group>"; };
@@ -760,6 +759,7 @@
 		97E0A7B61E96CC3300320F06 /* TabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabController.swift; sourceTree = "<group>"; };
 		97E412361FB1FFAB009585DC /* SearchResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultController.swift; sourceTree = "<group>"; };
 		97E412391FB20DAB009585DC /* SearchResultCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCells.swift; sourceTree = "<group>"; };
+		97E4298F1FBDF48800ABE62E /* DirectoryMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryMonitor.swift; sourceTree = "<group>"; };
 		97E609F01D103DED00EBCB9D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		97E9834D1F4CA0A00021E96A /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		97E9834F1F4CA54A0021E96A /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
@@ -1162,7 +1162,7 @@
 				977D7BCF1F9FE34E009A8703 /* ZimMetaData.mm */,
 				977D7BD21F9FE359009A8703 /* ZimMetaData.swift */,
 				977D7BB11F9E6A43009A8703 /* SearchResult.swift */,
-				977D7BBA1F9E6A7A009A8703 /* DirectoryMonitor.swift */,
+				97E4298F1FBDF48800ABE62E /* DirectoryMonitor.swift */,
 			);
 			path = ZimMultiReader;
 			sourceTree = "<group>";
@@ -2270,8 +2270,8 @@
 				97A36C731F8EA6FA0079B452 /* ManagedObjectProperties.swift in Sources */,
 				975FDADA1F6082DA00A10E8C /* AppDelegate.swift in Sources */,
 				97D00A801FBB92D400165629 /* HTMLHeading.swift in Sources */,
+				97E429911FBDF48800ABE62E /* DirectoryMonitor.swift in Sources */,
 				97A996D71F62F1B5007A6282 /* SearchProcedure.swift in Sources */,
-				977D7BBC1F9E6A7A009A8703 /* DirectoryMonitor.swift in Sources */,
 				97D9D5651FA8F00E005B28F0 /* 1.9.xcmappingmodel in Sources */,
 				9790320C1FBA243A00A565A6 /* HistoryController.swift in Sources */,
 				97A36C521F8D4FB80079B452 /* VisualEffectShadowView.swift in Sources */,
@@ -2400,7 +2400,6 @@
 				97C353AC1FAB742B00230B3E /* PanelController.swift in Sources */,
 				97D00A7F1FBB92D400165629 /* HTMLHeading.swift in Sources */,
 				97A36C5E1F8EA6E60079B452 /* Book.swift in Sources */,
-				977D7BBB1F9E6A7A009A8703 /* DirectoryMonitor.swift in Sources */,
 				97D9D5641FA8F00E005B28F0 /* 1.9.xcmappingmodel in Sources */,
 				97E4123A1FB20DAB009585DC /* SearchResultCells.swift in Sources */,
 				97A36C301F8C21210079B452 /* LegacyTabController.swift in Sources */,
@@ -2412,6 +2411,7 @@
 				97A36C321F8C21210079B452 /* AppDelegate.swift in Sources */,
 				977F983E1F9E43EC002ABFCE /* ScanProcedure.swift in Sources */,
 				97A36C331F8C21210079B452 /* SearchProcedure.swift in Sources */,
+				97E429901FBDF48800ABE62E /* DirectoryMonitor.swift in Sources */,
 				97A36C511F8D4FB80079B452 /* VisualEffectShadowView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

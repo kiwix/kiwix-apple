@@ -183,7 +183,7 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
         } else {
             showPanel(mode: .tableOfContent)
             tabs.current?.getTableOfContent(completion: { (headings) in
-                print(headings)
+                self.panel.tableOfContent?.headings = headings
             })
         }
     }
