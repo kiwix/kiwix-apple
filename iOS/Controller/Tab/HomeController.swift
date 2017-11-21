@@ -20,7 +20,7 @@ class HomeController: UIViewController {
     
 }
 
-@IBDesignable
+//@IBDesignable
 class Logo: UIView {
     override func draw(_ rect: CGRect) {
         let fillColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000)

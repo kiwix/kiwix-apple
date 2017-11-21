@@ -12,7 +12,7 @@ import SafariServices
 
 
 @available(iOS 11.0, *)
-class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate, TabController {
+class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate, WebViewController {
     private let webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")

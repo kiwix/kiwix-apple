@@ -10,7 +10,7 @@ import UIKit
 import SafariServices
 import JavaScriptCore
 
-class LegacyTabController: UIViewController, UIWebViewDelegate, TabController {
+class LegacyTabController: UIViewController, UIWebViewDelegate, WebViewController {
     private let webView = UIWebView()
     weak var delegate: TabControllerDelegate?
     

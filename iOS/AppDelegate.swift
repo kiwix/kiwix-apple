@@ -13,19 +13,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     var window: UIWindow?
     let monitor = DirectoryMonitor(url: URL.documentDirectory)
     
-//    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-//        window = UIWindow(frame: UIScreen.main.bounds)
-//        window?.rootViewController = UINavigationController(rootViewController: MainController())
-//        window?.makeKeyAndVisible()
-//
-//        Network.shared.restorePreviousState()
-//        URLProtocol.registerClass(KiwixURLProtocol.self)
-//        monitor.delegate = self
-//        Queue.shared.add(scanProcedure: ScanProcedure(url: URL.documentDirectory))
-//        monitor.start()
-//        return true
-//    }
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         Network.shared.restorePreviousState()
         URLProtocol.registerClass(KiwixURLProtocol.self)
@@ -49,6 +36,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         if context.hasChanges {
             try? context.save()
         }
+    }
+    
+    // MARK: - State Restoration
+    
+    func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
+        return true
+    }
+    
+    func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
+        return true
     }
     
     // MARK: - Directory Monitoring

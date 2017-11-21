@@ -2,231 +2,234 @@
 //  MainViewController.swift
 //  Kiwix
 //
-//  Created by Chris Li on 11/7/17.
+//  Created by Chris Li on 11/16/17.
 //  Copyright © 2017 Chris Li. All rights reserved.
 //
 
 import UIKit
 
-class MainController: UIViewController, UISearchControllerDelegate, ToolBarControlEvents, TabContainerControllerDelegate {
-    private (set) var isShowingPanel = false
-    private var currentTabControllerObserver: NSKeyValueObservation?
-    private lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
-    
-    // MARK: - Controllers
-    let search = UISearchController(searchResultsController: SearchResultController())
-    private (set) var tabs: TabsController!
-    private var toolBar: ToolBarController!
-    private var panel: PanelController!
-    private lazy var library = LibraryController()
-    
-    // MARK: - IBOutlet
-    @IBOutlet weak var dimView: DimView!
-    @IBOutlet weak var panelCompactShowConstraint: NSLayoutConstraint!
-    @IBOutlet weak var panelCompactHideConstraint: NSLayoutConstraint!
-    @IBOutlet weak var panelRegularShowConstraint: NSLayoutConstraint!
-    @IBOutlet weak var panelRegularHideConstraint: NSLayoutConstraint!
-    @IBOutlet weak var toolBarShowConstraints: NSLayoutConstraint!
-    @IBOutlet weak var toolBarHideConstraints: NSLayoutConstraint!
-    @IBOutlet weak var separatorViewWidthConstraints: NSLayoutConstraint!
-    
-    // MARK: - Overrides
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureSearchController()
-        toolBar.home.isSelected = true
-        tabs.switchToHome()
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        guard let identifier = segue.identifier else {return}
-        switch identifier {
-        case "TabContainerController":
-            tabs = segue.destination as! TabsController
-            tabs.delegate = self
-        case "ToolBarController":
-            toolBar = segue.destination as! ToolBarController
-            toolBar.delegate = self
-        case "PanelController":
-            panel = segue.destination as! PanelController
-        default:
-            break
-        }
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
-        navigationItem.setRightBarButton(search.isActive && traitCollection.horizontalSizeClass == .compact ? cancelButton : nil, animated: false)
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        view.setNeedsUpdateConstraints()
-    }
-    
-    override func updateViewConstraints() {
-        separatorViewWidthConstraints.constant = 1 / UIScreen.main.scale
-        switch traitCollection.horizontalSizeClass {
-        case .compact:
-            NSLayoutConstraint.deactivate([panelRegularShowConstraint, panelRegularHideConstraint])
-            panelCompactShowConstraint.isActive = isShowingPanel
-            panelCompactHideConstraint.isActive = !isShowingPanel
-            toolBarShowConstraints.isActive = !isShowingPanel
-            toolBarHideConstraints.isActive = isShowingPanel
-        case .regular:
-            NSLayoutConstraint.deactivate([panelCompactShowConstraint, panelCompactHideConstraint])
-            panelRegularShowConstraint.isActive = isShowingPanel
-            panelRegularHideConstraint.isActive = !isShowingPanel
-            toolBarShowConstraints.isActive = true
-            toolBarHideConstraints.isActive = false
-        case .unspecified:
-            break
-        }
-        super.updateViewConstraints()
-    }
-    
-    // MARK: - Configure
-    
-    private func configureSearchController() {
-        search.searchBar.searchBarStyle = .minimal
-        search.searchBar.autocapitalizationType = .none
-        search.searchBar.autocorrectionType = .no
-        search.hidesNavigationBarDuringPresentation = false
-        search.obscuresBackgroundDuringPresentation = true
-        search.delegate = self
-        search.searchResultsUpdater = search.searchResultsController as? SearchResultController
-        navigationItem.titleView = search.searchBar
-        self.definesPresentationContext = true
-    }
-    
-    func showPanel(mode: PanelMode) {
-        panel.set(mode: mode)
-        switch mode {
-        case .tableOfContent:
-            toolBar.tableOfContent.isSelected = true
-            toolBar.bookmark.isSelected = false
-        case .bookmark:
-            toolBar.tableOfContent.isSelected = false
-            toolBar.bookmark.isSelected = true
-        case .history:
-            toolBar.tableOfContent.isSelected = false
-            toolBar.bookmark.isSelected = false
-        }
-        
-        guard !isShowingPanel else {return}
-        isShowingPanel = true
-        dimView.isHidden = false
-        dimView.isDimmed = false
-        
-        view.layoutIfNeeded()
-        view.setNeedsUpdateConstraints()
-        
-        UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseInOut, animations: {
-            self.view.layoutIfNeeded()
-            self.dimView.isDimmed = true
-        })
-    }
-    
-    func hidePanel() {
-        panel.set(mode: nil)
-        toolBar.tableOfContent.isSelected = false
-        toolBar.bookmark.isSelected = false
-        
-        guard isShowingPanel else {return}
-        isShowingPanel = false
-        view.layoutIfNeeded()
-        view.setNeedsUpdateConstraints()
-        
-        UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseInOut, animations: {
-            self.view.layoutIfNeeded()
-            self.dimView.isDimmed = false
-        }, completion: { _ in
-            self.dimView.isHidden = true
-        })
-    }
-    
-    @objc func cancelSearch() {
-        search.isActive = false
-    }
-    
-    @IBAction func dimViewTapped(_ sender: UITapGestureRecognizer) {
-        hidePanel()
-    }
-    
-    // MARK: - UISearchControllerDelegate
-    
-    func willPresentSearchController(_ searchController: UISearchController) {
-        guard UIDevice.current.userInterfaceIdiom == .pad && traitCollection.horizontalSizeClass == .compact else {return}
-        navigationItem.setRightBarButton(cancelButton, animated: true)
-    }
-    
-    func willDismissSearchController(_ searchController: UISearchController) {
-        guard UIDevice.current.userInterfaceIdiom == .pad && traitCollection.horizontalSizeClass == .compact else {return}
-        navigationItem.setRightBarButton(nil, animated: true)
-    }
-    
-    // MARK: - ToolBarDelegate
-    
-    func backButtonTapped() {
-        tabs.current?.goBack()
-    }
 
-    func forwardButtonTapped() {
-        tabs.current?.goForward()
+class MainController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIViewControllerTransitioningDelegate {
+    @IBOutlet weak var collectionView: UICollectionView!
+    private var tabConfigs = [TabConfiguration]()
+    let tabNavigationController = UIStoryboard(name: "Tab", bundle: nil).instantiateInitialViewController() as! UINavigationController
+    private var cellSize = CGSize.zero
+    
+    @IBAction func add(_ sender: UIBarButtonItem) {
+        tabConfigs.append(TabConfiguration())
+        collectionView.reloadData()
     }
     
-    func tableOfContentButtonTapped() {
-        if panel.mode == .tableOfContent {
-            hidePanel()
-        } else {
-            showPanel(mode: .tableOfContent)
-            tabs.current?.getTableOfContent(completion: { (headings) in
-                self.panel.tableOfContent?.headings = headings
-            })
+    @IBAction func remove(_ sender: UIBarButtonItem) {
+        _ = tabConfigs.popLast()
+        collectionView.reloadData()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        calculateCellSize(collectionViewSize: collectionView.frame.size)
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        calculateCellSize(collectionViewSize: size)
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    private func calculateCellSize(collectionViewSize size: CGSize) {
+        let numberOfItemsPerRow: CGFloat = {
+            switch size.width {
+            case 0..<400:
+                return 1
+            case 400..<750:
+                return 2
+            case 750..<1300:
+                return 3
+            default:
+                return 4
+            }
+        }()
+        let width = ((size.width - (numberOfItemsPerRow + 1) * 10) / numberOfItemsPerRow).rounded(.down)
+        let height = traitCollection.horizontalSizeClass == .compact ? 280 : (size.height / size.width * width).rounded(.down)
+        cellSize = CGSize(width: width, height: height)
+    }
+    
+    // MARK: -
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return tabConfigs.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        if let tabController = tabNavigationController.topViewController as? TabController {
+            
         }
+        tabNavigationController.transitioningDelegate = self
+        present(tabNavigationController, animated: true, completion: nil)
     }
     
-    func bookmarkButtonTapped() {
-        panel.mode != .bookmark ? showPanel(mode: .bookmark) : hidePanel()
+    // MARK: - UICollectionViewDelegateFlowLayout
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return cellSize
     }
     
-    func homeButtonTapped() {
-        tabs.isDisplayingHome ? tabs.switchToCurrentTab() : tabs.switchToHome()
-    }
-
-    // MARK: - TabContainerControllerDelegate
-    
-    func homeWillBecomeCurrent() {
-        toolBar.back.isEnabled = false
-        toolBar.forward.isEnabled = false
-        toolBar.home.isSelected = true
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     }
     
-    func tabWillBecomeCurrent(controller: UIViewController & TabController) {
-        toolBar.back.isEnabled = controller.canGoBack
-        toolBar.forward.isEnabled = controller.canGoForward
-        toolBar.home.isSelected = false
+    // MARK: - UIViewControllerTransitioningDelegate
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return nil
+//        return TabTransitionAnimator(mode: .presenting)
     }
     
-    func tabDidFinishLoading(controller: UIViewController & TabController) {
-        toolBar.back.isEnabled = controller.canGoBack
-        toolBar.forward.isEnabled = controller.canGoForward
-    }
-    
-    func libraryButtonTapped() {
-        present(library, animated: true, completion: nil)
-    }
-    
-    func settingsButtonTapped() {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return nil
+//        return TabTransitionAnimator(mode: .dismissing)
     }
 }
 
-class DimView: UIView {
-    var isDimmed: Bool = false {
-        didSet {
-            backgroundColor = isDimmed ? UIColor.lightGray.withAlphaComponent(0.5) : UIColor.clear
+class TabTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+    let duration: TimeInterval = 4.0
+    let mode: Mode
+    
+    init(mode: Mode) {
+        self.mode = mode
+        super.init()
+    }
+    
+    enum Mode {
+        case presenting, dismissing
+    }
+    
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+        return 4
+    }
+    
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        switch mode {
+        case .presenting:
+            animateForPresenting(context: transitionContext)
+        case .dismissing:
+            animateForDismissing(context: transitionContext)
         }
+        
+        
+//
+//        toView.transform = CGAffineTransform(scaleX: initialFrame.width / finalFrame.width, y: initialFrame.height / finalFrame.height)
+//        toView.center = initialCenter
+//        toView.alpha = 0.0
+//        transitionContext.containerView.addSubview(toView)
+//        transitionContext.containerView.bringSubview(toFront: toView)
+//
+//        UIView.animate(withDuration: duration, animations: {
+//            toView.transform = .identity
+//            toView.frame = finalFrame
+//            toView.alpha = 1.0
+//            cell.transform = CGAffineTransform(scaleX: finalFrame.width / initialFrame.width, y: finalFrame.height / initialFrame.height)
+//            cell.frame = finalFrame
+//            cell.alpha = 0.0
+//        }) { _ in
+//            transitionContext.completeTransition(true)
+//        }
+    }
+    
+    private func animateForPresenting(context: UIViewControllerContextTransitioning) {
+//        let containerView = context.containerView
+//        guard let fromController = context.viewController(forKey: .from) as? TabsCollectionController,
+//            let toView = context.view(forKey: .to),
+//            let selected = fromController.collectionView.indexPathsForSelectedItems?.first,
+//            let cell = fromController.collectionView.cellForItem(at: selected),
+//            let snapshotView = toView.snapshotView(afterScreenUpdates: true) else {
+//                context.completeTransition(false)
+//                return
+//        }
+//
+//        let cellFrame = containerView.convert(cell.frame, from: fromController.collectionView)
+//
+//        toView.isHidden = true
+//        toView.frame = containerView.bounds
+//        containerView.addSubview(toView)
+//        containerView.bringSubview(toFront: toView)
+//
+//        let scale = cellFrame.width / containerView.bounds.width
+//        snapshotView.alpha = 0.0
+//        snapshotView.frame = containerView.bounds
+//        snapshotView.center = cell.center
+//        snapshotView.transform = CGAffineTransform(scaleX: scale, y: scale)
+//        containerView.addSubview(snapshotView)
+//        containerView.bringSubview(toFront: snapshotView)
+//
+//        UIView.animate(withDuration: duration, animations: {
+//            snapshotView.alpha = 1.0
+//            snapshotView.transform = .identity
+//            snapshotView.center = containerView.center
+//        }) { _ in
+//            toView.isHidden = false
+//            snapshotView.removeFromSuperview()
+//            context.completeTransition(true)
+//        }
+    }
+    
+    private func animateForDismissing(context: UIViewControllerContextTransitioning) {
+//        let containerView = context.containerView
+//
+//        guard let fromController = context.viewController(forKey: .from) as? UINavigationController,
+//            let topController = fromController.topViewController else {
+//            context.completeTransition(false)
+//            return
+//        }
+        
+//        guard let snapshotView = topController.view.resizableSnapshotView(from: topController.view.bounds, afterScreenUpdates: true, withCapInsets: .zero) else {
+//            context.completeTransition(false)
+//            return
+//        }
+//
+//
+//        guard let fromController = context.viewController(forKey: .from) as? UINavigationController,
+//            let toController = context.viewController(forKey: .to) as? MainViewController,
+//            let fromView = context.view(forKey: .from),
+//            let toView = context.view(forKey: .to) else {
+//                context.completeTransition(false)
+//                return
+//        }
+//
+//        guard let selected = toController.collectionView.indexPathsForSelectedItems?.first,
+//            let cell = toController.collectionView.cellForItem(at: selected) else {
+//                context.completeTransition(false)
+//                return
+//        }
+//
+//        guard  else {
+//            context.completeTransition(false)
+//            return
+//        }
+        
+//        snapshotView.frame = fromView.frame
+//        containerView.addSubview(snapshotView)
+//        containerView.bringSubview(toFront: snapshotView)
+//        fromView.removeFromSuperview()
+//        toView.frame = containerView.bounds
+//        containerView.insertSubview(toView, belowSubview: snapshotView)
+//
+//        UIView.animate(withDuration: duration, animations: {
+//            let scale = containerView.convert(cell.frame, from: toController.collectionView).width / containerView.frame.width
+//            snapshotView.transform = CGAffineTransform(scaleX: scale, y: scale)
+//            snapshotView.center = containerView.convert(cell.center, from: toController.collectionView)
+//        }) { _ in
+//            context.completeTransition(true)
+//        }
     }
 }

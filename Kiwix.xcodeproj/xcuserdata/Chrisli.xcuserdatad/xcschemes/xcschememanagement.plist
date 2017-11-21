@@ -33,11 +33,6 @@
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
-		<key>iOS_old.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>0</integer>
-		</dict>
 		<key>macOS.xcscheme</key>
 		<dict>
 			<key>orderHint</key>

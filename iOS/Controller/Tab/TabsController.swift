@@ -12,8 +12,8 @@ class TabsController: UIViewController, TabControllerDelegate {
     weak var delegate: TabContainerControllerDelegate?
     private(set) var isDisplayingHome = true
     
-    private let home = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Home") as! HomeController
-    private(set) weak var current: (UIViewController & TabController)?
+    private let home = UIStoryboard(name: "Tab", bundle: nil).instantiateViewController(withIdentifier: "Home") as! HomeController
+    private(set) weak var current: (UIViewController & WebViewController)?
     private var tabs = Set<UIViewController>()
     
     enum TabType {
@@ -47,7 +47,7 @@ class TabsController: UIViewController, TabControllerDelegate {
     }
     
     func switchToNewTab() {
-        let tab: UIViewController & TabController = {
+        let tab: UIViewController & WebViewController = {
             if #available(iOS 11.0, *) {
                 return WebKitTabController()
             } else {
@@ -65,7 +65,7 @@ class TabsController: UIViewController, TabControllerDelegate {
         }
     }
     
-    private func switchTo(tab: UIViewController & TabController) {
+    private func switchTo(tab: UIViewController & WebViewController) {
         isDisplayingHome = false
         current = tab
         current?.delegate = self
@@ -85,7 +85,7 @@ class TabsController: UIViewController, TabControllerDelegate {
                                      view.bottomAnchor.constraint(equalTo: controller.view.bottomAnchor),
                                      view.rightAnchor.constraint(equalTo: controller.view.rightAnchor)])
         controller.didMove(toParentViewController: self)
-        if let tabController = controller as? UIViewController & TabController {
+        if let tabController = controller as? UIViewController & WebViewController {
             delegate?.tabWillBecomeCurrent(controller: tabController)
         } else if let _ = controller as? HomeController {
             delegate?.homeWillBecomeCurrent()
@@ -125,7 +125,7 @@ class TabsController: UIViewController, TabControllerDelegate {
     
     // MARK: - TabControllerDelegate
     
-    func webViewDidFinishLoad(controller: UIViewController & TabController) {
+    func webViewDidFinishLoad(controller: UIViewController & WebViewController) {
         delegate?.tabDidFinishLoading(controller: controller)
     }
 }
@@ -134,13 +134,13 @@ class TabsController: UIViewController, TabControllerDelegate {
 
 protocol TabContainerControllerDelegate: class {
     func homeWillBecomeCurrent()
-    func tabWillBecomeCurrent(controller: UIViewController & TabController)
-    func tabDidFinishLoading(controller: UIViewController & TabController)
+    func tabWillBecomeCurrent(controller: UIViewController & WebViewController)
+    func tabDidFinishLoading(controller: UIViewController & WebViewController)
     func libraryButtonTapped()
     func settingsButtonTapped()
 }
 
-protocol TabController {
+protocol WebViewController {
     var canGoBack: Bool {get}
     var canGoForward: Bool {get}
     weak var delegate: TabControllerDelegate? {get set}
@@ -153,5 +153,5 @@ protocol TabController {
 }
 
 protocol TabControllerDelegate: class {
-    func webViewDidFinishLoad(controller: UIViewController & TabController)
+    func webViewDidFinishLoad(controller: UIViewController & WebViewController)
 }
