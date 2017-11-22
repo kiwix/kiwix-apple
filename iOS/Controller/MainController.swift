@@ -72,7 +72,7 @@ class MainController: UIViewController, UICollectionViewDataSource, UICollection
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         if let tabController = tabNavigationController.topViewController as? TabController {
-            
+            tabController.configure(config: tabConfigs[indexPath.item])
         }
         tabNavigationController.transitioningDelegate = self
         present(tabNavigationController, animated: true, completion: nil)

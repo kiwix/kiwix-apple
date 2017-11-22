@@ -10,7 +10,7 @@ import UIKit
 
 class TabController: UIViewController, UISearchControllerDelegate, ToolBarControlEvents, TabContainerControllerDelegate {
     private (set) var isShowingPanel = false
-    private lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
+    private lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearchButtonTapped))
     
     // MARK: - Controllers
     let search = UISearchController(searchResultsController: SearchResultController())
@@ -33,8 +33,6 @@ class TabController: UIViewController, UISearchControllerDelegate, ToolBarContro
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSearchController()
-        toolBar.home.isSelected = true
-//        container.switchToHome()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -101,7 +99,7 @@ class TabController: UIViewController, UISearchControllerDelegate, ToolBarContro
         search.delegate = self
         search.searchResultsUpdater = search.searchResultsController as? SearchResultController
         navigationItem.titleView = search.searchBar
-        self.definesPresentationContext = true
+        definesPresentationContext = true
     }
     
     func showPanel(mode: PanelMode) {
@@ -150,7 +148,7 @@ class TabController: UIViewController, UISearchControllerDelegate, ToolBarContro
         })
     }
     
-    @objc func cancelSearch() {
+    @objc func cancelSearchButtonTapped() {
         search.isActive = false
     }
     
