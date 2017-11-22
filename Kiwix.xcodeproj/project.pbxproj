@@ -63,6 +63,8 @@
 		975FDB031F608A9700A10E8C /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A611F44F451003F5431 /* libz.a */; };
 		975FDB041F608A9700A10E8C /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A621F44F451003F5431 /* libzim.a */; };
 		975FDB071F608F4100A10E8C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 975FDB061F608F4100A10E8C /* WebKit.framework */; };
+		976306F11FC5D050004B171A /* TabViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976306F01FC5D050004B171A /* TabViews.swift */; };
+		976306F21FC5D050004B171A /* TabViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976306F01FC5D050004B171A /* TabViews.swift */; };
 		9765D9801F50CC4700BFDC1E /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9765D97F1F50CC4700BFDC1E /* Search.storyboard */; };
 		976771791F4378FC007ED0C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 976771741F4378FC007ED0C2 /* Main.storyboard */; };
 		9768C2351F4B7BAC00FD499B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768C2341F4B7BAC00FD499B /* AppDelegate.swift */; };
@@ -332,6 +334,9 @@
 		975FDAE51F6082DA00A10E8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		975FDB061F608F4100A10E8C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		975FDB0B1F60930A00A10E8C /* WebKitHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitHandler.swift; sourceTree = "<group>"; };
+		976306EE1FC4DF7F004B171A /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		976306EF1FC4DF7F004B171A /* Bookmarks.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Bookmarks.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		976306F01FC5D050004B171A /* TabViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViews.swift; sourceTree = "<group>"; };
 		97642B981E380CC0003E2D0B /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		9764CBD21D8083AA00072D6A /* ArticleProcedure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleProcedure.swift; sourceTree = "<group>"; };
 		9765D97F1F50CC4700BFDC1E /* Search.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = "<group>"; };
@@ -366,7 +371,6 @@
 		976D2A601F44F451003F5431 /* libxapian.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libxapian.a; sourceTree = "<group>"; };
 		976D2A611F44F451003F5431 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libz.a; sourceTree = "<group>"; };
 		976D2A621F44F451003F5431 /* libzim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libzim.a; sourceTree = "<group>"; };
-		9779C3131D4575AD0064CC8E /* Bookmarks.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; name = Bookmarks.appex; path = "/Users/chrisli/Developer/Kiwix/build/Debug-iphoneos/Bookmarks.appex"; sourceTree = "<absolute>"; };
 		9779C3161D4575AE0064CC8E /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		9779C31B1D4575AE0064CC8E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		977D7BB01F9E6A43009A8703 /* ZimMultiReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZimMultiReader.h; sourceTree = "<group>"; };
@@ -392,7 +396,6 @@
 		979D17821E6DE50C006AE496 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97A1FD401D6F728200A80EE2 /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		97A1FD411D6F728200A80EE2 /* Localized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localized.swift; sourceTree = "<group>"; };
-		97A2AB881C1B80FF00052E74 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Kiwix.app; path = "/Users/chrisli/Developer/Kiwix/build/Debug-iphoneos/Kiwix.app"; sourceTree = "<absolute>"; };
 		97A36BAF1F8C0B590079B452 /* WikiMed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikiMed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A36C4E1F8C21210079B452 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A36C501F8D4FB80079B452 /* VisualEffectShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectShadowView.swift; sourceTree = "<group>"; };
@@ -1131,6 +1134,8 @@
 				3B93EAF9B5C5AA23046BDEAC /* Frameworks */,
 				97A36BAF1F8C0B590079B452 /* WikiMed.app */,
 				97A36C4E1F8C21210079B452 /* Kiwix.app */,
+				976306EE1FC4DF7F004B171A /* Kiwix.app */,
+				976306EF1FC4DF7F004B171A /* Bookmarks.appex */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1139,6 +1144,7 @@
 			children = (
 				97A36C501F8D4FB80079B452 /* VisualEffectShadowView.swift */,
 				972E6F631FA11A6100F5C927 /* Buttons.swift */,
+				976306F01FC5D050004B171A /* TabViews.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1643,7 +1649,7 @@
 			);
 			name = Bookmarks;
 			productName = Bookmarks;
-			productReference = 9779C3131D4575AD0064CC8E /* Bookmarks.appex */;
+			productReference = 976306EF1FC4DF7F004B171A /* Bookmarks.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		979315801E5127930093D3BA /* macOS */ = {
@@ -1684,7 +1690,7 @@
 			);
 			name = iOS_old;
 			productName = Kiwix;
-			productReference = 97A2AB881C1B80FF00052E74 /* Kiwix.app */;
+			productReference = 976306EE1FC4DF7F004B171A /* Kiwix.app */;
 			productType = "com.apple.product-type.application";
 		};
 		97A36C241F8C21210079B452 /* iOS */ = {
@@ -2044,6 +2050,7 @@
 				97050D011F6733400021DE78 /* WebKitTabController.swift in Sources */,
 				97050D031F6735100021DE78 /* WebKitHandler.swift in Sources */,
 				979032091FBA242F00A565A6 /* BookmarkController.swift in Sources */,
+				976306F21FC5D050004B171A /* TabViews.swift in Sources */,
 				9702BE231F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */,
 				977D7BB91F9E6A43009A8703 /* ZimMultiReader.swift in Sources */,
 				977D7BBF1F9FC618009A8703 /* Queue.swift in Sources */,
@@ -2135,6 +2142,7 @@
 				977D7BB41F9E6A43009A8703 /* SearchResult.swift in Sources */,
 				97A36C6A1F8EA6F40079B452 /* 1.8.xcmappingmodel in Sources */,
 				97A36C601F8EA6E60079B452 /* Language.swift in Sources */,
+				976306F11FC5D050004B171A /* TabViews.swift in Sources */,
 				977D7BD31F9FE359009A8703 /* ZimMetaData.swift in Sources */,
 				9702BE221F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */,
 				97A36C5D1F8EA6E60079B452 /* Article.swift in Sources */,

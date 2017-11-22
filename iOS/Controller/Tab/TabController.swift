@@ -25,8 +25,6 @@ class TabController: UIViewController, UISearchControllerDelegate, ToolBarContro
     @IBOutlet weak var panelCompactHideConstraint: NSLayoutConstraint!
     @IBOutlet weak var panelRegularShowConstraint: NSLayoutConstraint!
     @IBOutlet weak var panelRegularHideConstraint: NSLayoutConstraint!
-    @IBOutlet weak var toolBarShowConstraints: NSLayoutConstraint!
-    @IBOutlet weak var toolBarHideConstraints: NSLayoutConstraint!
     @IBOutlet weak var separatorViewWidthConstraints: NSLayoutConstraint!
     
     // MARK: - Overrides
@@ -70,14 +68,10 @@ class TabController: UIViewController, UISearchControllerDelegate, ToolBarContro
             NSLayoutConstraint.deactivate([panelRegularShowConstraint, panelRegularHideConstraint])
             panelCompactShowConstraint.isActive = isShowingPanel
             panelCompactHideConstraint.isActive = !isShowingPanel
-            toolBarShowConstraints.isActive = !isShowingPanel
-            toolBarHideConstraints.isActive = isShowingPanel
         case .regular:
             NSLayoutConstraint.deactivate([panelCompactShowConstraint, panelCompactHideConstraint])
             panelRegularShowConstraint.isActive = isShowingPanel
             panelRegularHideConstraint.isActive = !isShowingPanel
-            toolBarShowConstraints.isActive = true
-            toolBarHideConstraints.isActive = false
         case .unspecified:
             break
         }
@@ -101,6 +95,28 @@ class TabController: UIViewController, UISearchControllerDelegate, ToolBarContro
         navigationItem.titleView = search.searchBar
         definesPresentationContext = true
     }
+    
+    @objc func cancelSearchButtonTapped() {
+        search.isActive = false
+    }
+    
+    @IBAction func dimViewTapped(_ sender: UITapGestureRecognizer) {
+        hidePanel()
+    }
+    
+    // MARK: - UISearchControllerDelegate
+    
+    func willPresentSearchController(_ searchController: UISearchController) {
+        guard UIDevice.current.userInterfaceIdiom == .pad && traitCollection.horizontalSizeClass == .compact else {return}
+        navigationItem.setRightBarButton(cancelButton, animated: true)
+    }
+    
+    func willDismissSearchController(_ searchController: UISearchController) {
+        guard UIDevice.current.userInterfaceIdiom == .pad && traitCollection.horizontalSizeClass == .compact else {return}
+        navigationItem.setRightBarButton(nil, animated: true)
+    }
+    
+    // MARK: - Panel
     
     func showPanel(mode: PanelMode) {
         panel.set(mode: mode)
@@ -148,24 +164,17 @@ class TabController: UIViewController, UISearchControllerDelegate, ToolBarContro
         })
     }
     
-    @objc func cancelSearchButtonTapped() {
-        search.isActive = false
-    }
+    // MARK: - Toolbar
     
-    @IBAction func dimViewTapped(_ sender: UITapGestureRecognizer) {
-        hidePanel()
-    }
+    private lazy var leftButton = TabToolbarButton(image: #imageLiteral(resourceName: "Left"))
+    private lazy var rightButton = TabToolbarButton(image: #imageLiteral(resourceName: "Right"))
+    private lazy var mapButton = TabToolbarButton(image: #imageLiteral(resourceName: "Left"))
     
-    // MARK: - UISearchControllerDelegate
-    
-    func willPresentSearchController(_ searchController: UISearchController) {
-        guard UIDevice.current.userInterfaceIdiom == .pad && traitCollection.horizontalSizeClass == .compact else {return}
-        navigationItem.setRightBarButton(cancelButton, animated: true)
-    }
-    
-    func willDismissSearchController(_ searchController: UISearchController) {
-        guard UIDevice.current.userInterfaceIdiom == .pad && traitCollection.horizontalSizeClass == .compact else {return}
-        navigationItem.setRightBarButton(nil, animated: true)
+    private func configToolbar() {
+        func configureTargetAction(button: TabToolbarButton) {
+            button
+//            guard button.target
+        }
     }
     
     // MARK: - ToolBarDelegate
@@ -224,10 +233,3 @@ class TabController: UIViewController, UISearchControllerDelegate, ToolBarContro
     }
 }
 
-class DimView: UIView {
-    var isDimmed: Bool = false {
-        didSet {
-            backgroundColor = isDimmed ? UIColor.lightGray.withAlphaComponent(0.5) : UIColor.clear
-        }
-    }
-}
