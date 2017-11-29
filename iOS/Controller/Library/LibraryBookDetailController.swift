@@ -224,7 +224,7 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
             case .deleteFileAndBookmarks:
                 showDeletionConfirmationAlert(action: action, bookID: book.id, localizedTitle: cell.textLabel?.text)
             case .openMainPage:
-                guard let main = (presentingViewController as? UINavigationController)?.topViewController as? TabController else {return}
+                guard let main = (presentingViewController as? UINavigationController)?.topViewController as? MainController else {return}
 //                main.container.loadMain(id: book.id, in: .current)
                 dismiss(animated: true, completion: nil)
             }

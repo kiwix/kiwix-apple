@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TabController: UIViewController, UISearchControllerDelegate, ToolBarControlEvents, TabContainerControllerDelegate {
+class MainController: UIViewController, UISearchControllerDelegate, ToolBarControlEvents, TabContainerControllerDelegate {
     private (set) var isShowingPanel = false
     private lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearchButtonTapped))
     
@@ -166,15 +166,19 @@ class TabController: UIViewController, UISearchControllerDelegate, ToolBarContro
     
     // MARK: - Toolbar
     
-    private lazy var leftButton = TabToolbarButton(image: #imageLiteral(resourceName: "Left"))
-    private lazy var rightButton = TabToolbarButton(image: #imageLiteral(resourceName: "Right"))
-    private lazy var mapButton = TabToolbarButton(image: #imageLiteral(resourceName: "Left"))
+    private lazy var leftButton = TabToolbarButton(image: #imageLiteral(resourceName: "Left"), target: self)
+//    private lazy var rightButton = TabToolbarButton(image: #imageLiteral(resourceName: "Right"))
+//    private lazy var mapButton = TabToolbarButton(image: #imageLiteral(resourceName: "Left"))
+    private lazy var tabsButton = TabToolbarButton(image: #imageLiteral(resourceName: "Home"), action: { [unowned self] in
+        self.dismiss(animated: true, completion: nil)
+    })
     
     private func configToolbar() {
         func configureTargetAction(button: TabToolbarButton) {
-            button
+//            button.target
 //            guard button.target
         }
+        
     }
     
     // MARK: - ToolBarDelegate

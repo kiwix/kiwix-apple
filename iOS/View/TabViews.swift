@@ -20,7 +20,12 @@ class TabToolbarButton: UIBarButtonItem {
     private var button: UIButton {
         get {return customView as! UIButton}
     }
-    convenience init(image: UIImage, insets: UIEdgeInsets = .zero) {
+    
+    convenience init(image: UIImage, action: (() -> Void)) {
+        self.init(customView: UIButton())
+    }
+    
+    convenience init(image: UIImage, insets: UIEdgeInsets = .zero, target: Any? = nil, action: Selector? = nil) {
         self.init(customView: UIButton())
         button.imageEdgeInsets = insets
         button.imageView?.contentMode = .scaleAspectFit
