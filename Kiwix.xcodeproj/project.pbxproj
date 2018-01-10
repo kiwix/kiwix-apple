@@ -24,6 +24,7 @@
 		971ECEEA1FD05A1500FD0A84 /* TabViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976306F01FC5D050004B171A /* TabViews.swift */; };
 		97246C821FC4D12A0056AE5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9717A2521FB2592D00837492 /* Main.storyboard */; };
 		97246C831FC4D12B0056AE5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9717A2521FB2592D00837492 /* Main.storyboard */; };
+		972B66592006B1F0003F5365 /* BarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B66582006B1F0003F5365 /* BarButtonItem.swift */; };
 		972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972E6F631FA11A6100F5C927 /* RoundedButton.swift */; };
 		974000151DB008C6009A740D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9788419C1DA2FF2A00D22D3C /* MainInterface.storyboard */; };
 		97533B461F4C723900F6651A /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97533B451F4C723900F6651A /* MainWindowController.swift */; };
@@ -228,6 +229,7 @@
 		9717A2521FB2592D00837492 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		9717A2551FB25A1200837492 /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
 		9726591A1D8DB91200D1DFFB /* DownloadProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadProgress.swift; sourceTree = "<group>"; };
+		972B66582006B1F0003F5365 /* BarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtonItem.swift; sourceTree = "<group>"; };
 		972E6F631FA11A6100F5C927 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		97318E4D1E6780F9000B718B /* 1.5.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = 1.5.xcmappingmodel; sourceTree = "<group>"; };
 		97318E4F1E6780F9000B718B /* 1.8.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = 1.8.xcmappingmodel; sourceTree = "<group>"; };
@@ -988,6 +990,7 @@
 				97A36C501F8D4FB80079B452 /* VisualEffectShadowView.swift */,
 				972E6F631FA11A6100F5C927 /* RoundedButton.swift */,
 				976306F01FC5D050004B171A /* TabViews.swift */,
+				972B66582006B1F0003F5365 /* BarButtonItem.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1899,6 +1902,7 @@
 				971ECEEA1FD05A1500FD0A84 /* TabViews.swift in Sources */,
 				9790320B1FBA243A00A565A6 /* HistoryController.swift in Sources */,
 				97A36C571F8D5FCD0079B452 /* LibraryController.swift in Sources */,
+				972B66592006B1F0003F5365 /* BarButtonItem.swift in Sources */,
 				97A36C311F8C21210079B452 /* SearchResultView.swift in Sources */,
 				97A36C6F1F8EA6F90079B452 /* ManagedObjectProperties.swift in Sources */,
 				97A36C321F8C21210079B452 /* AppDelegate.swift in Sources */,

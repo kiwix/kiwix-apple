@@ -173,12 +173,12 @@ class MainController: UIViewController, UISearchControllerDelegate {
     
     // MARK: - Toolbar
     
-    private var navigationBackButton = BarButton(image: #imageLiteral(resourceName: "Left"), inset: 12, target: self, action: #selector(buttonTapped(button:)))
-    private var navigationForwardButton = BarButton(image: #imageLiteral(resourceName: "Right"), inset: 12, target: self, action: #selector(buttonTapped(button:)))
-    private var tableOfContentButton = BarButton(image: #imageLiteral(resourceName: "TableOfContent"), inset: 8, target: self, action: #selector(buttonTapped(button:)))
-    private var bookmarkButton = BarButton(image: #imageLiteral(resourceName: "Star"), highlightedImage: #imageLiteral(resourceName: "StarFilled"), inset: 8, target: self, action: #selector(buttonTapped(button:)))
-    private var libraryButton = BarButton(image: #imageLiteral(resourceName: "Library"), inset: 6, target: self, action: #selector(buttonTapped(button:)))
-    private var settingButton = BarButton(image: #imageLiteral(resourceName: "Setting"), inset: 8, target: self, action: #selector(buttonTapped(button:)))
+    private var navigationBackButton = BarButtonItem(image: #imageLiteral(resourceName: "Left"), inset: 12, target: self, action: #selector(buttonTapped(button:)))
+    private var navigationForwardButton = BarButtonItem(image: #imageLiteral(resourceName: "Right"), inset: 12, target: self, action: #selector(buttonTapped(button:)))
+    private var tableOfContentButton = BarButtonItem(image: #imageLiteral(resourceName: "TableOfContent"), inset: 8, target: self, action: #selector(buttonTapped(button:)))
+    private var bookmarkButton = BarButtonItem(image: #imageLiteral(resourceName: "Star"), highlightedImage: #imageLiteral(resourceName: "StarFilled"), inset: 8, target: self, action: #selector(buttonTapped(button:)))
+    private var libraryButton = BarButtonItem(image: #imageLiteral(resourceName: "Library"), inset: 6, target: self, action: #selector(buttonTapped(button:)))
+    private var settingButton = BarButtonItem(image: #imageLiteral(resourceName: "Setting"), inset: 8, target: self, action: #selector(buttonTapped(button:)))
     
     private func configureToolbar() {
         toolbarItems = nil
@@ -248,24 +248,4 @@ class MainController: UIViewController, UISearchControllerDelegate {
 //
 //    func settingsButtonTapped() {
 //    }
-}
-
-class BarButton: UIBarButtonItem {
-    convenience init(image: UIImage, highlightedImage: UIImage?=nil, inset: CGFloat, target: Any?, action: Selector?) {
-        let button = UIButton()
-        button.setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
-        button.setImage(highlightedImage?.withRenderingMode(.alwaysTemplate), for: .highlighted)
-        button.imageEdgeInsets = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
-        self.init(customView: button)
-        
-        if #available(iOS 11.0, *) {
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 1.0).isActive = true
-        } else {
-            button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
-        }
-        
-        self.target = target as AnyObject
-        self.action = action
-    }
 }
