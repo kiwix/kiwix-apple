@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainController: UIViewController, UISearchControllerDelegate, ToolBarControlEvents {
+class MainController: UIViewController, UISearchControllerDelegate {
     private (set) var isShowingPanel = false
     @IBOutlet weak var dimView: DimView!
     private lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearchButtonTapped))
@@ -18,13 +18,15 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     }
 
     // MARK: - Controllers
-    let search = UISearchController(searchResultsController: SearchResultController())
+    
+    let searchController = UISearchController(searchResultsController: SearchResultController())
+    private var toolBarController: ToolBarController!
 //    private (set) var container: TabContainerController!
-    private var toolBar: ToolBarController!
     private var panel: PanelController!
     private lazy var library = LibraryController()
     
     // MARK: - Constraints
+    
     @IBOutlet weak var panelCompactShowConstraint: NSLayoutConstraint!
     @IBOutlet weak var panelCompactHideConstraint: NSLayoutConstraint!
     @IBOutlet weak var panelRegularShowConstraint: NSLayoutConstraint!
@@ -32,6 +34,7 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     @IBOutlet weak var separatorViewWidthConstraints: NSLayoutConstraint!
     
     // MARK: - Overrides
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSearchController()
@@ -45,7 +48,7 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
             break
 //            container = segue.destination as! TabContainerController
         case "ToolBarController":
-            toolBar = segue.destination as! ToolBarController
+            toolBarController = segue.destination as! ToolBarController
         case "PanelController":
             panel = segue.destination as! PanelController
         default:
@@ -56,8 +59,12 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
-        navigationItem.setRightBarButton(search.isActive && traitCollection.horizontalSizeClass == .compact ? cancelButton : nil, animated: false)
-        configureToolbar()
+        DispatchQueue.main.async { self.configureToolbar() }
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        DispatchQueue.main.async { self.configureToolbar() }
     }
     
     override func viewWillLayoutSubviews() {
@@ -82,29 +89,22 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
         super.updateViewConstraints()
     }
     
-    // MARK: - Configure
+    // MARK: -
     
     private func configureSearchController() {
-        search.searchBar.searchBarStyle = .minimal
-        search.searchBar.autocapitalizationType = .none
-        search.searchBar.autocorrectionType = .no
-        search.hidesNavigationBarDuringPresentation = false
-        search.obscuresBackgroundDuringPresentation = true
-        search.delegate = self
-        search.searchResultsUpdater = search.searchResultsController as? SearchResultController
-        navigationItem.titleView = search.searchBar
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.autocorrectionType = .no
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.obscuresBackgroundDuringPresentation = true
+        searchController.delegate = self
+        searchController.searchResultsUpdater = searchController.searchResultsController as? SearchResultController
+        navigationItem.titleView = searchController.searchBar
         definesPresentationContext = true
     }
     
-    private func configureToolbar() {
-        guard let toolbar = navigationController?.toolbar else {return}
-        toolbar.items?.removeAll()
-        let buttons = [navigationBackButton, navigationForwardButton]
-        toolBar.set(buttons: buttons)
-    }
-    
     @objc func cancelSearchButtonTapped() {
-        search.isActive = false
+        searchController.isActive = false
     }
     
     @IBAction func dimViewTapped(_ sender: UITapGestureRecognizer) {
@@ -172,21 +172,41 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
     }
     
     // MARK: - Toolbar
-    private lazy var navigationBackButton = TabToolbarButton(image: #imageLiteral(resourceName: "Left"))
-    private lazy var navigationForwardButton = TabToolbarButton(image: #imageLiteral(resourceName: "Right"))
-//    private lazy var mapButton = TabToolbarButton(image: #imageLiteral(resourceName: "Left"))
-//    private lazy var tabsButton = TabToolbarButton(image: #imageLiteral(resourceName: "Home"), action: { [unowned self] in
-//        self.dismiss(animated: true, completion: nil)
-//    })
     
-    func backButtonTapped() {
-//        container.current?.goBack()
+    private var navigationBackButton = BarButton(image: #imageLiteral(resourceName: "Left"), inset: 12, target: self, action: #selector(buttonTapped(button:)))
+    private var navigationForwardButton = BarButton(image: #imageLiteral(resourceName: "Right"), inset: 12, target: self, action: #selector(buttonTapped(button:)))
+    private var tableOfContentButton = BarButton(image: #imageLiteral(resourceName: "TableOfContent"), inset: 8, target: self, action: #selector(buttonTapped(button:)))
+    private var bookmarkButton = BarButton(image: #imageLiteral(resourceName: "Star"), highlightedImage: #imageLiteral(resourceName: "StarFilled"), inset: 8, target: self, action: #selector(buttonTapped(button:)))
+    private var libraryButton = BarButton(image: #imageLiteral(resourceName: "Library"), inset: 6, target: self, action: #selector(buttonTapped(button:)))
+    private var settingButton = BarButton(image: #imageLiteral(resourceName: "Setting"), inset: 8, target: self, action: #selector(buttonTapped(button:)))
+    
+    private func configureToolbar() {
+        toolbarItems = nil
+        navigationItem.leftBarButtonItems = nil
+        navigationItem.rightBarButtonItems = nil
+        if traitCollection.horizontalSizeClass == .regular {
+            navigationController?.isToolbarHidden = true
+            navigationItem.leftBarButtonItems = [navigationBackButton, navigationForwardButton, tableOfContentButton]
+            navigationItem.rightBarButtonItems = [settingButton, libraryButton, bookmarkButton]
+        } else if traitCollection.horizontalSizeClass == .compact {
+            navigationController?.isToolbarHidden = false
+            toolbarItems = [navigationBackButton, navigationForwardButton, tableOfContentButton, bookmarkButton, libraryButton, settingButton].enumerated()
+                .reduce([], { $0 + ($1.offset > 0 ? [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), $1.element] : [$1.element]) })
+            if searchController.isActive {
+                navigationItem.setRightBarButton(cancelButton, animated: false)
+            }
+        }
+    }
+    
+    @objc func buttonTapped(button: UIBarButtonItem) {
+        switch button {
+        case navigationBackButton:
+            break
+        default:
+            break
+        }
     }
 
-    func forwardButtonTapped() {
-//        container.current?.goForward()
-    }
-    
     func tableOfContentButtonTapped() {
         if panel.mode == .tableOfContent {
             hidePanel()
@@ -202,9 +222,6 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
         panel.mode != .bookmark ? showPanel(mode: .bookmark) : hidePanel()
     }
     
-    func homeButtonTapped() {
-        dismiss(animated: true, completion: nil)
-    }
 
     // MARK: - TabContainerControllerDelegate
     
@@ -233,3 +250,22 @@ class MainController: UIViewController, UISearchControllerDelegate, ToolBarContr
 //    }
 }
 
+class BarButton: UIBarButtonItem {
+    convenience init(image: UIImage, highlightedImage: UIImage?=nil, inset: CGFloat, target: Any?, action: Selector?) {
+        let button = UIButton()
+        button.setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.setImage(highlightedImage?.withRenderingMode(.alwaysTemplate), for: .highlighted)
+        button.imageEdgeInsets = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
+        self.init(customView: button)
+        
+        if #available(iOS 11.0, *) {
+            button.translatesAutoresizingMaskIntoConstraints = false
+            button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 1.0).isActive = true
+        } else {
+            button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
+        }
+        
+        self.target = target as AnyObject
+        self.action = action
+    }
+}
