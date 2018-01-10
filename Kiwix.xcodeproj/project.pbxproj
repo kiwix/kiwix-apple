@@ -154,8 +154,6 @@
 		97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */; };
 		97C353AC1FAB742B00230B3E /* PanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C353AB1FAB742B00230B3E /* PanelController.swift */; };
 		97C353AD1FAB742B00230B3E /* PanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C353AB1FAB742B00230B3E /* PanelController.swift */; };
-		97C447151FC4BD6E00A21B4B /* MainOld.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C447141FC4BD6E00A21B4B /* MainOld.storyboard */; };
-		97C447161FC4BD6E00A21B4B /* MainOld.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C447141FC4BD6E00A21B4B /* MainOld.storyboard */; };
 		97D00A791FBB89F000165629 /* Inject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* Inject.js */; };
 		97D00A7D1FBB89FB00165629 /* Inject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* Inject.js */; };
 		97D00A7F1FBB92D400165629 /* HTMLHeading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D00A7E1FBB92D400165629 /* HTMLHeading.swift */; };
@@ -311,7 +309,6 @@
 		97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryMasterController.swift; sourceTree = "<group>"; };
 		97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		97C353AB1FAB742B00230B3E /* PanelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelController.swift; sourceTree = "<group>"; };
-		97C447141FC4BD6E00A21B4B /* MainOld.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainOld.storyboard; sourceTree = "<group>"; };
 		97D00A7E1FBB92D400165629 /* HTMLHeading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLHeading.swift; sourceTree = "<group>"; };
 		97D231761E677C6700DCD4A4 /* JSInjection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSInjection.swift; sourceTree = "<group>"; };
 		97D6812B1D6F70DE00E5FA99 /* 1.5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.5.xcdatamodel; sourceTree = "<group>"; };
@@ -1012,7 +1009,6 @@
 			isa = PBXGroup;
 			children = (
 				9717A2521FB2592D00837492 /* Main.storyboard */,
-				97C447141FC4BD6E00A21B4B /* MainOld.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -1587,7 +1583,6 @@
 			files = (
 				97246C831FC4D12B0056AE5D /* Main.storyboard in Resources */,
 				97D00A7D1FBB89FB00165629 /* Inject.js in Resources */,
-				97C447161FC4BD6E00A21B4B /* MainOld.storyboard in Resources */,
 				975FDAE41F6082DA00A10E8C /* LaunchScreen.storyboard in Resources */,
 				975FDAE11F6082DA00A10E8C /* Assets.xcassets in Resources */,
 			);
@@ -1618,7 +1613,6 @@
 			files = (
 				97246C821FC4D12A0056AE5D /* Main.storyboard in Resources */,
 				97D00A791FBB89F000165629 /* Inject.js in Resources */,
-				97C447151FC4BD6E00A21B4B /* MainOld.storyboard in Resources */,
 				97A36C441F8C21210079B452 /* LaunchScreen.storyboard in Resources */,
 				97A36C451F8C21210079B452 /* Assets.xcassets in Resources */,
 			);
