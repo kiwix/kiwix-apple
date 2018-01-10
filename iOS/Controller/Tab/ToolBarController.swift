@@ -13,17 +13,16 @@ class ToolBarController: UIViewController {
     private let stackView = UIStackView()
     weak var delegate: ToolBarControlEvents?
     
-    private(set) lazy var back = ToolBarButton(image: #imageLiteral(resourceName: "Left"))
-    private(set) lazy var forward = ToolBarButton(image: #imageLiteral(resourceName: "Right"))
-    private(set) lazy var home = ToolBarButton(image: #imageLiteral(resourceName: "Home"), insets: UIEdgeInsets(top: 10, left: 12, bottom: 10, right: 12))
-    private(set) lazy var tableOfContent = ToolBarButton(image: #imageLiteral(resourceName: "TableOfContent"), insets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12))
-    private(set) lazy var bookmark = ToolBarButton(image: #imageLiteral(resourceName: "Star"), insets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12))
+//    private(set) lazy var back = TabToolbarButton(image: #imageLiteral(resourceName: "Left"))
+//    private(set) lazy var forward = TabToolbarButton(image: #imageLiteral(resourceName: "Right"))
+//    private(set) lazy var home = TabToolbarButton(image: #imageLiteral(resourceName: "Home"), insets: UIEdgeInsets(top: 10, left: 12, bottom: 10, right: 12))
+//    private(set) lazy var tableOfContent = TabToolbarButton(image: #imageLiteral(resourceName: "TableOfContent"), insets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12))
+//    private(set) lazy var bookmark = TabToolbarButton(image: #imageLiteral(resourceName: "Star"), insets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12))
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configVisualView()
         configStackView()
-        addButtons()
     }
     
     private func configVisualView() {
@@ -49,11 +48,11 @@ class ToolBarController: UIViewController {
             visualContent.rightAnchor.constraint(equalTo: stackView.rightAnchor)])
     }
     
-    private func addButtons() {
-        let buttons = [back, forward, home, tableOfContent, bookmark]
+    func set(buttons: [TabToolbarButton]) {
+        stackView.arrangedSubviews.forEach({ stackView.removeArrangedSubview($0) })
         buttons.forEach { (button) in
             stackView.addArrangedSubview(button)
-            button.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
+//            button.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
             if button != buttons.last {
                 stackView.addArrangedSubview(ToolBarDivider())
             }
@@ -61,20 +60,20 @@ class ToolBarController: UIViewController {
     }
     
     @objc func buttonTapped(button: UIButton) {
-        switch button {
-        case back:
-            delegate?.backButtonTapped()
-        case forward:
-            delegate?.forwardButtonTapped()
-        case tableOfContent:
-            delegate?.tableOfContentButtonTapped()
-        case bookmark:
-            delegate?.bookmarkButtonTapped()
-        case home:
-            delegate?.homeButtonTapped()
-        default:
-            return
-        }
+//        switch button {
+//        case back:
+//            delegate?.backButtonTapped()
+//        case forward:
+//            delegate?.forwardButtonTapped()
+//        case tableOfContent:
+//            delegate?.tableOfContentButtonTapped()
+//        case bookmark:
+//            delegate?.bookmarkButtonTapped()
+//        case home:
+//            delegate?.homeButtonTapped()
+//        default:
+//            return
+//        }
     }
 }
 
@@ -84,34 +83,6 @@ protocol ToolBarControlEvents: class {
     func tableOfContentButtonTapped()
     func bookmarkButtonTapped()
     func homeButtonTapped()
-}
-
-class ToolBarButton: UIButton {
-    convenience init(image: UIImage, insets: UIEdgeInsets = .zero) {
-        self.init()
-        imageEdgeInsets = insets
-        imageView?.contentMode = .scaleAspectFit
-        setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
-        imageView?.layer.cornerRadius = 4
-        imageView?.clipsToBounds = true
-    }
-    
-    override var isHighlighted: Bool {
-        didSet {
-            backgroundColor = isHighlighted ? UIColor.lightGray.withAlphaComponent(0.5) : UIColor.clear
-        }
-    }
-    
-    override var isSelected: Bool {
-        didSet {
-            imageView?.tintColor = isSelected ? UIColor.white : nil
-            imageView?.backgroundColor = isSelected ? #colorLiteral(red: 0, green: 0.431372549, blue: 1, alpha: 1) : UIColor.clear
-        }
-    }
-    
-    override var intrinsicContentSize: CGSize {
-        return CGSize(width: 54, height: 50)
-    }
 }
 
 class ToolBarDivider: UIView {
