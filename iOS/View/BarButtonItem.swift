@@ -10,12 +10,16 @@ import UIKit
 
 class BarButtonItem: UIBarButtonItem {
     private var buttonBoundsObserver: NSKeyValueObservation? = nil
-    convenience init(image: UIImage, highlightedImage: UIImage?=nil, inset: CGFloat, target: Any?, action: Selector?) {
+    private weak var delegate: BarButtonItemDelegate? = nil
+    
+    convenience init(image: UIImage, highlightedImage: UIImage?=nil, inset: CGFloat, delegate: BarButtonItemDelegate?=nil) {
         let button = UIButton()
+        button.tintColor = UIColor.gray
         button.setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
         button.setImage(highlightedImage?.withRenderingMode(.alwaysTemplate), for: .highlighted)
         
         self.init(customView: button)
+        self.delegate = delegate
         
         if #available(iOS 11.0, *) {
             button.translatesAutoresizingMaskIntoConstraints = false
@@ -23,9 +27,6 @@ class BarButtonItem: UIBarButtonItem {
         } else {
             button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
         }
-        
-        self.target = target as AnyObject
-        self.action = action
         
         buttonBoundsObserver = button.observe(\.bounds, options: [.initial, .new]) { (button, change) in
             let inset: CGFloat = {
@@ -37,5 +38,16 @@ class BarButtonItem: UIBarButtonItem {
             }()
             button.imageEdgeInsets = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
         }
+        
+        button.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
     }
+    
+    @objc func buttonTapped(button: UIButton) {
+        delegate?.buttonTapped(item: self, button: customView as! UIButton)
+    }
+}
+
+
+protocol BarButtonItemDelegate: class {
+    func buttonTapped(item: BarButtonItem, button: UIButton)
 }

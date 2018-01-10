@@ -12,10 +12,6 @@ class MainController: UIViewController, UISearchControllerDelegate {
     private (set) var isShowingPanel = false
     @IBOutlet weak var dimView: DimView!
     private lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearchButtonTapped))
-    
-    @IBAction func togglePanel(_ sender: UIButton) {
-        isShowingPanel ? hidePanel() : showPanel(mode: .tableOfContent)
-    }
 
     // MARK: - Controllers
     
@@ -23,7 +19,7 @@ class MainController: UIViewController, UISearchControllerDelegate {
     private var toolBarController: ToolBarController!
 //    private (set) var container: TabContainerController!
     private var panel: PanelController!
-    private lazy var library = LibraryController()
+    private lazy var libraryController = LibraryController()
     
     // MARK: - Constraints
     
@@ -32,6 +28,15 @@ class MainController: UIViewController, UISearchControllerDelegate {
     @IBOutlet weak var panelRegularShowConstraint: NSLayoutConstraint!
     @IBOutlet weak var panelRegularHideConstraint: NSLayoutConstraint!
     @IBOutlet weak var separatorViewWidthConstraints: NSLayoutConstraint!
+    
+    // MARK: - Toolbar
+    
+    private lazy var navigationBackButton = BarButtonItem(image: #imageLiteral(resourceName: "Left"), inset: 12, delegate: self)
+    private lazy var navigationForwardButton = BarButtonItem(image: #imageLiteral(resourceName: "Right"), inset: 12, delegate: self)
+    private lazy var tableOfContentButton = BarButtonItem(image: #imageLiteral(resourceName: "TableOfContent"), inset: 8, delegate: self)
+    private lazy var bookmarkButton = BarButtonItem(image: #imageLiteral(resourceName: "Star"), highlightedImage: #imageLiteral(resourceName: "StarFilled"), inset: 8, delegate: self)
+    private lazy var libraryButton = BarButtonItem(image: #imageLiteral(resourceName: "Library"), inset: 6, delegate: self)
+    private lazy var settingButton = BarButtonItem(image: #imageLiteral(resourceName: "Setting"), inset: 8, delegate: self)
     
     // MARK: - Overrides
     
@@ -171,56 +176,9 @@ class MainController: UIViewController, UISearchControllerDelegate {
         })
     }
     
-    // MARK: - Toolbar
     
-    private var navigationBackButton = BarButtonItem(image: #imageLiteral(resourceName: "Left"), inset: 12, target: self, action: #selector(buttonTapped(button:)))
-    private var navigationForwardButton = BarButtonItem(image: #imageLiteral(resourceName: "Right"), inset: 12, target: self, action: #selector(buttonTapped(button:)))
-    private var tableOfContentButton = BarButtonItem(image: #imageLiteral(resourceName: "TableOfContent"), inset: 8, target: self, action: #selector(buttonTapped(button:)))
-    private var bookmarkButton = BarButtonItem(image: #imageLiteral(resourceName: "Star"), highlightedImage: #imageLiteral(resourceName: "StarFilled"), inset: 8, target: self, action: #selector(buttonTapped(button:)))
-    private var libraryButton = BarButtonItem(image: #imageLiteral(resourceName: "Library"), inset: 6, target: self, action: #selector(buttonTapped(button:)))
-    private var settingButton = BarButtonItem(image: #imageLiteral(resourceName: "Setting"), inset: 8, target: self, action: #selector(buttonTapped(button:)))
     
-    private func configureToolbar() {
-        toolbarItems = nil
-        navigationItem.leftBarButtonItems = nil
-        navigationItem.rightBarButtonItems = nil
-        if traitCollection.horizontalSizeClass == .regular {
-            navigationController?.isToolbarHidden = true
-            navigationItem.leftBarButtonItems = [navigationBackButton, navigationForwardButton, tableOfContentButton]
-            navigationItem.rightBarButtonItems = [settingButton, libraryButton, bookmarkButton]
-        } else if traitCollection.horizontalSizeClass == .compact {
-            navigationController?.isToolbarHidden = false
-            toolbarItems = [navigationBackButton, navigationForwardButton, tableOfContentButton, bookmarkButton, libraryButton, settingButton].enumerated()
-                .reduce([], { $0 + ($1.offset > 0 ? [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), $1.element] : [$1.element]) })
-            if searchController.isActive {
-                navigationItem.setRightBarButton(cancelButton, animated: false)
-            }
-        }
-    }
     
-    @objc func buttonTapped(button: UIBarButtonItem) {
-        switch button {
-        case navigationBackButton:
-            break
-        default:
-            break
-        }
-    }
-
-    func tableOfContentButtonTapped() {
-        if panel.mode == .tableOfContent {
-            hidePanel()
-        } else {
-            showPanel(mode: .tableOfContent)
-//            container.current?.getTableOfContent(completion: { (headings) in
-//                self.panel.tableOfContent?.headings = headings
-//            })
-        }
-    }
-    
-    func bookmarkButtonTapped() {
-        panel.mode != .bookmark ? showPanel(mode: .bookmark) : hidePanel()
-    }
     
 
     // MARK: - TabContainerControllerDelegate
@@ -247,5 +205,59 @@ class MainController: UIViewController, UISearchControllerDelegate {
 //    }
 //
 //    func settingsButtonTapped() {
+//    }
+}
+
+extension MainController: BarButtonItemDelegate {
+    private func configureToolbar() {
+        toolbarItems = nil
+        navigationItem.leftBarButtonItems = nil
+        navigationItem.rightBarButtonItems = nil
+        if traitCollection.horizontalSizeClass == .regular {
+            navigationController?.isToolbarHidden = true
+            navigationItem.leftBarButtonItems = [navigationBackButton, navigationForwardButton, tableOfContentButton]
+            navigationItem.rightBarButtonItems = [settingButton, libraryButton, bookmarkButton]
+        } else if traitCollection.horizontalSizeClass == .compact {
+            navigationController?.isToolbarHidden = false
+            toolbarItems = [navigationBackButton, navigationForwardButton, tableOfContentButton, bookmarkButton, libraryButton, settingButton].enumerated()
+                .reduce([], { $0 + ($1.offset > 0 ? [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), $1.element] : [$1.element]) })
+            if searchController.isActive {
+                navigationItem.setRightBarButton(cancelButton, animated: false)
+            }
+        }
+    }
+    
+    func buttonTapped(item: BarButtonItem, button: UIButton) {
+        switch item {
+        case navigationBackButton:
+            break
+        case navigationForwardButton:
+            break
+        case tableOfContentButton:
+            break
+        case bookmarkButton:
+            break
+        case libraryButton:
+            present(libraryController, animated: true, completion: nil)
+        case settingButton:
+            break
+        default:
+            break
+        }
+    }
+    
+//    func tableOfContentButtonTapped() {
+//        if panel.mode == .tableOfContent {
+//            hidePanel()
+//        } else {
+//            showPanel(mode: .tableOfContent)
+//            //            container.current?.getTableOfContent(completion: { (headings) in
+//            //                self.panel.tableOfContent?.headings = headings
+//            //            })
+//        }
+//    }
+//
+//    func bookmarkButtonTapped() {
+//        panel.mode != .bookmark ? showPanel(mode: .bookmark) : hidePanel()
 //    }
 }
