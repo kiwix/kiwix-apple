@@ -16,8 +16,7 @@ class MainController: UIViewController, UISearchControllerDelegate {
     // MARK: - Controllers
     
     let searchController = UISearchController(searchResultsController: SearchResultController())
-    private var toolBarController: ToolBarController!
-//    private (set) var container: TabContainerController!
+    private (set) var tabContainerController: TabContainerController!
     private var panel: PanelController!
     private lazy var libraryController = LibraryController()
     
@@ -43,6 +42,11 @@ class MainController: UIViewController, UISearchControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSearchController()
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: .UIApplicationWillEnterForeground, object: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -50,10 +54,7 @@ class MainController: UIViewController, UISearchControllerDelegate {
         guard let identifier = segue.identifier else {return}
         switch identifier {
         case "TabContainerController":
-            break
-//            container = segue.destination as! TabContainerController
-        case "ToolBarController":
-            toolBarController = segue.destination as! ToolBarController
+            tabContainerController = segue.destination as! TabContainerController
         case "PanelController":
             panel = segue.destination as! PanelController
         default:
@@ -94,6 +95,10 @@ class MainController: UIViewController, UISearchControllerDelegate {
         super.updateViewConstraints()
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil)
+    }
+    
     // MARK: -
     
     private func configureSearchController() {
@@ -110,6 +115,10 @@ class MainController: UIViewController, UISearchControllerDelegate {
     
     @objc func cancelSearchButtonTapped() {
         searchController.isActive = false
+    }
+    
+    @objc func appWillEnterForeground() {
+        DispatchQueue.main.async { self.configureToolbar() }
     }
     
     @IBAction func dimViewTapped(_ sender: UITapGestureRecognizer) {
@@ -198,13 +207,6 @@ class MainController: UIViewController, UISearchControllerDelegate {
 //    func tabDidFinishLoading(controller: UIViewController & WebViewController) {
 //        toolBar.back.isEnabled = controller.canGoBack
 //        toolBar.forward.isEnabled = controller.canGoForward
-//    }
-    
-//    func libraryButtonTapped() {
-//        present(library, animated: true, completion: nil)
-//    }
-//
-//    func settingsButtonTapped() {
 //    }
 }
 
