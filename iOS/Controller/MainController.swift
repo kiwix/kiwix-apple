@@ -115,11 +115,13 @@ class MainController: UIViewController, UISearchControllerDelegate {
         definesPresentationContext = true
     }
     
-    func updateTableOfContents() {
-        guard panelController.tableOfContent.url != tabContainerController.webController?.currentURL else {return}
-        tabContainerController.webController?.extractTableOfContents(completion: { (currentURL, items) in
+    func updateTableOfContents(completion: (() -> Void)? = nil) {
+        guard panelController.tableOfContent.url != tabContainerController.webController?.currentURL,
+            let webController = tabContainerController.webController else {completion?(); return}
+        webController.extractTableOfContents(completion: { (currentURL, items) in
             self.panelController.tableOfContent.url = currentURL
             self.panelController.tableOfContent.items = items
+            completion?()
         })
     }
     
@@ -133,6 +135,8 @@ class MainController: UIViewController, UISearchControllerDelegate {
     
     @IBAction func dimViewTapped(_ sender: UITapGestureRecognizer) {
         hidePanel()
+        tableOfContentButton.isFocused = false
+        bookmarkButton.isFocused = false
     }
     
     // MARK: - UISearchControllerDelegate
@@ -233,8 +237,9 @@ extension MainController: BarButtonItemDelegate {
             item.isFocused = !item.isFocused
             if item.isFocused {
                 bookmarkButton.isFocused = false
-                showPanel(mode: .tableOfContent)
-                updateTableOfContents()
+                updateTableOfContents(completion: {
+                    self.showPanel(mode: .tableOfContent)
+                })
             } else {
                 hidePanel()
             }

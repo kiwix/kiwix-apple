@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BookmarkController: UIViewController {
+class BookmarkController: PanelTabController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

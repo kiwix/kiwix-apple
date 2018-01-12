@@ -8,14 +8,19 @@
 
 import UIKit
 
-class TableOfContentController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TableOfContentController: PanelTabController, UITableViewDelegate, UITableViewDataSource {
     let tableView = UITableView()
-    private weak var stackView: UIStackView?
+    let emptyBackgroundView = BackgroundStackView(image: #imageLiteral(resourceName: "Compass"), text: NSLocalizedString("Table of content not available", comment: "Empty Library"))
     
     var url: URL?
     var items = [TableOfContentItem]() {
         didSet {
-            configure()
+            if items.count == 0 {
+                configure(stackView: emptyBackgroundView)
+            } else {
+                configure(tableView: tableView)
+            }
+            tableView.reloadData()
         }
     }
 
@@ -24,42 +29,7 @@ class TableOfContentController: UIViewController, UITableViewDelegate, UITableVi
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        configureTableView()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        configure()
-    }
-    
-    func configure() {
-        if items.count == 0 {
-            configure(stackView: BackgroundStackView(image: #imageLiteral(resourceName: "Compass"), text: NSLocalizedString("Table of content not available", comment: "Empty Library Help")))
-        } else {
-            configureTableView()
-        }
-    }
-
-    func configureTableView() {
-        view.subviews.forEach({ $0.removeFromSuperview() })
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(tableView)
-        NSLayoutConstraint.activate([
-            view.topAnchor.constraint(equalTo: tableView.topAnchor),
-            view.leftAnchor.constraint(equalTo: tableView.leftAnchor),
-            view.bottomAnchor.constraint(equalTo: tableView.bottomAnchor),
-            view.rightAnchor.constraint(equalTo: tableView.rightAnchor)])
-    }
-    
-    func configure(stackView : UIStackView) {
-        view.subviews.forEach({ $0.removeFromSuperview() })
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(stackView)
-        NSLayoutConstraint.activate([
-            view.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
-            view.centerYAnchor.constraint(equalTo: stackView.centerYAnchor),
-            view.leftAnchor.constraint(lessThanOrEqualTo: stackView.leftAnchor, constant: 20),
-            view.rightAnchor.constraint(greaterThanOrEqualTo: stackView.rightAnchor, constant: 20)])
+        configure(stackView: emptyBackgroundView)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -73,46 +43,20 @@ class TableOfContentController: UIViewController, UITableViewDelegate, UITableVi
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         let heading = items[indexPath.row]
-        cell.textLabel?.text = heading.textContent
+        cell.backgroundColor = .clear
         cell.indentationLevel = (heading.level - 1) * 2
+        cell.textLabel?.text = heading.textContent
+        cell.textLabel?.numberOfLines = 0
+        if cell.indentationLevel == 0 {
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        } else {
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        }
         return cell
     }
-}
-
-class BackgroundStackView: UIStackView {
-    init(image: UIImage, text: String) {
-        let imageView: UIImageView = {
-            let imageView = UIImageView(image: image)
-            imageView.contentMode = .scaleAspectFit
-            imageView.addConstraints([
-                imageView.widthAnchor.constraint(lessThanOrEqualToConstant: 100),
-                imageView.heightAnchor.constraint(lessThanOrEqualToConstant: 100)])
-            return imageView
-        }()
-        
-        let label: UILabel = {
-            let label = UILabel()
-            label.text = text
-            label.textAlignment = .center
-            label.adjustsFontSizeToFitWidth = true
-            label.textColor = UIColor.gray
-            label.font = UIFont.systemFont(ofSize: 22, weight: .medium)
-            label.numberOfLines = 0
-            return label
-        }()
-        
-        super.init(frame: .zero)
-        
-        axis = .vertical
-        spacing = 25
-        distribution = .equalSpacing
-        alignment = .center
-        
-        addArrangedSubview(imageView)
-        addArrangedSubview(label)
-    }
     
-    required init(coder: NSCoder) {
-        super.init(coder: coder)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
     }
 }

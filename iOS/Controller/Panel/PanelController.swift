@@ -74,6 +74,31 @@ class PanelController: UIViewController {
     }
 }
 
+class PanelTabController: UIViewController {
+    func configure(tableView: UITableView) {
+        tableView.backgroundColor = .clear
+        view.subviews.forEach({ $0.removeFromSuperview() })
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tableView)
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: tableView.topAnchor),
+            view.leftAnchor.constraint(equalTo: tableView.leftAnchor),
+            view.bottomAnchor.constraint(equalTo: tableView.bottomAnchor),
+            view.rightAnchor.constraint(equalTo: tableView.rightAnchor)])
+    }
+    
+    func configure(stackView : UIStackView) {
+        view.subviews.forEach({ $0.removeFromSuperview() })
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(stackView)
+        NSLayoutConstraint.activate([
+            view.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
+            view.centerYAnchor.constraint(equalTo: stackView.centerYAnchor),
+            view.leftAnchor.constraint(lessThanOrEqualTo: stackView.leftAnchor, constant: 20),
+            view.rightAnchor.constraint(greaterThanOrEqualTo: stackView.rightAnchor, constant: 20)])
+    }
+}
+
 enum PanelMode {
     case tableOfContent, bookmark, history
 }
