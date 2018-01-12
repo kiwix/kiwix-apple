@@ -16,9 +16,9 @@ class MainController: UIViewController, UISearchControllerDelegate {
     // MARK: - Controllers
     
     let searchController = UISearchController(searchResultsController: SearchResultController())
-    private (set) var tabContainerController: TabContainerController!
+    private(set) var tabContainerController: TabContainerController!
     private var panel: PanelController!
-    private lazy var libraryController = LibraryController()
+    private(set) lazy var libraryController = LibraryController()
     
     // MARK: - Constraints
     

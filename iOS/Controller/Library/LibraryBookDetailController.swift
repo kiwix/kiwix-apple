@@ -224,8 +224,9 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
             case .deleteFileAndBookmarks:
                 showDeletionConfirmationAlert(action: action, bookID: book.id, localizedTitle: cell.textLabel?.text)
             case .openMainPage:
-                guard let main = (presentingViewController as? UINavigationController)?.topViewController as? MainController else {return}
-//                main.container.loadMain(id: book.id, in: .current)
+                guard let main = (presentingViewController as? UINavigationController)?.topViewController as? MainController,
+                    let url = ZimMultiReader.shared.getMainPageURL(bookID: book.id) else {break}
+                main.tabContainerController.load(url: url)
                 dismiss(animated: true, completion: nil)
             }
         }

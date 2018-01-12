@@ -9,7 +9,7 @@
 import UIKit
 
 class TabContainerController: UIViewController {
-    private(set) var webController: (UIViewController & WebViewControls)? = nil
+    private var webController: (UIViewController & WebViewControls)? = nil
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     
     override func viewDidLoad() {
