@@ -12,9 +12,22 @@ class BarButtonItem: UIBarButtonItem {
     private var buttonBoundsObserver: NSKeyValueObservation? = nil
     private weak var delegate: BarButtonItemDelegate? = nil
     
+    var isGrayed: Bool = true {
+        didSet {
+            customView?.tintColor = isGrayed ? .gray : nil
+        }
+    }
+    
+//    var isHighlighted: Bool = false {
+//        didSet {
+//            customView?.tintColor = isHighlighted ? .white : (isGrayed ? .gray : nil)
+//            (customView as? UIButton)?.imageView?.backgroundColor = isHighlighted ? #colorLiteral(red: 0, green: 0.3529411765, blue: 1, alpha: 1) : nil
+//        }
+//    }
+    
     convenience init(image: UIImage, highlightedImage: UIImage?=nil, inset: CGFloat, delegate: BarButtonItemDelegate?=nil) {
         let button = UIButton()
-        button.tintColor = UIColor.gray
+        button.tintColor = .gray
         button.setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
         button.setImage(highlightedImage?.withRenderingMode(.alwaysTemplate), for: .highlighted)
         
@@ -47,6 +60,18 @@ class BarButtonItem: UIBarButtonItem {
     }
 }
 
+//class BarButton: UIButton {
+//    private let selectionLayer = CALayer()
+//
+//    override func draw(_ rect: CGRect) {
+//        selectionLayer.frame = rect.insetBy(dx: 6, dy: 6)
+//        selectionLayer.backgroundColor = #colorLiteral(red: 0, green: 0.3529411765, blue: 1, alpha: 1) .cgColor
+//        if let layers = layer.sublayers, !layers.contains(selectionLayer) {
+//            selectionLayer.cornerRadius = 4.0
+//            self.layer.insertSublayer(selectionLayer, at: 0)
+//        }
+//    }
+//}
 
 protocol BarButtonItemDelegate: class {
     func buttonTapped(item: BarButtonItem, button: UIButton)

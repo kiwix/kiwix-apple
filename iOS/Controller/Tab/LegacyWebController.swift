@@ -10,9 +10,9 @@ import UIKit
 import SafariServices
 import JavaScriptCore
 
-class LegacyWebController: UIViewController, UIWebViewDelegate, WebViewControls {
+class LegacyWebController: UIViewController, UIWebViewDelegate, WebViewController {
     private let webView = UIWebView()
-    weak var delegate: TabControllerDelegate?
+    weak var delegate: WebViewControllerDelegate?
     
     override func loadView() {
         view = webView
@@ -55,11 +55,6 @@ class LegacyWebController: UIViewController, UIWebViewDelegate, WebViewControls 
         webView.goForward()
     }
     
-    func loadMainPage(id: ZimFileID) {
-        guard let url = ZimMultiReader.shared.getMainPageURL(bookID: id) else {return}
-        load(url: url)
-    }
-    
     func load(url: URL) {
         let request = URLRequest(url: url)
         webView.loadRequest(request)
@@ -88,7 +83,7 @@ class LegacyWebController: UIViewController, UIWebViewDelegate, WebViewControls 
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
-        delegate?.webViewDidFinishLoad(controller: self)
+        delegate?.webViewDidFinishLoading(controller: self)
     }
 }
 

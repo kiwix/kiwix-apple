@@ -8,8 +8,9 @@
 
 import UIKit
 
-class TabContainerController: UIViewController {
-    private var webController: (UIViewController & WebViewControls)? = nil
+class TabContainerController: UIViewController, WebViewControllerDelegate {
+    weak var delegate: TabContainerControllerDelegate?
+    private(set) var webController: (UIViewController & WebViewController)? = nil
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     
     override func viewDidLoad() {
@@ -36,7 +37,7 @@ class TabContainerController: UIViewController {
         if let controller = webController {
             controller.load(url: url)
         } else {
-            let controller: (UIViewController & WebViewControls) = {
+            let controller: (UIViewController & WebViewController) = {
                 if #available(iOS 11.0, *) {
                     return WebKitWebController()
                 } else {
@@ -44,13 +45,23 @@ class TabContainerController: UIViewController {
                 }
             }()
             webController = controller
+            webController?.delegate = self
             configureChildController(controller: controller)
             load(url: url)
         }
     }
+    
+    func webViewDidFinishLoading(controller: WebViewController) {
+        delegate?.tabDidFinishLoading(controller: controller)
+    }
 }
 
-protocol WebViewControls {
+protocol TabContainerControllerDelegate: class {
+    func tabDidFinishLoading(controller: WebViewController)
+}
+
+protocol WebViewController {
+    weak var delegate: WebViewControllerDelegate? {get set}
     var canGoBack: Bool {get}
     var canGoForward: Bool {get}
     
@@ -59,6 +70,6 @@ protocol WebViewControls {
     func load(url: URL)
 }
 
-protocol TabControllerDelegate: class {
-    func webViewDidFinishLoad(controller: WebViewControls)
+protocol WebViewControllerDelegate: class {
+    func webViewDidFinishLoading(controller: WebViewController)
 }

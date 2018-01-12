@@ -12,12 +12,13 @@ class MainController: UIViewController, UISearchControllerDelegate {
     private (set) var isShowingPanel = false
     @IBOutlet weak var dimView: DimView!
     private lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearchButtonTapped))
+    private var webControllerObserver: NSKeyValueObservation? = nil
 
     // MARK: - Controllers
     
     let searchController = UISearchController(searchResultsController: SearchResultController())
     private(set) var tabContainerController: TabContainerController!
-    private var panel: PanelController!
+    private var panelController: PanelController!
     private(set) lazy var libraryController = LibraryController()
     
     // MARK: - Constraints
@@ -55,8 +56,9 @@ class MainController: UIViewController, UISearchControllerDelegate {
         switch identifier {
         case "TabContainerController":
             tabContainerController = segue.destination as! TabContainerController
+            tabContainerController.delegate = self
         case "PanelController":
-            panel = segue.destination as! PanelController
+            panelController = segue.destination as! PanelController
         default:
             break
         }
@@ -140,7 +142,7 @@ class MainController: UIViewController, UISearchControllerDelegate {
     // MARK: - Panel
     
     func showPanel(mode: PanelMode) {
-        panel.set(mode: mode)
+//        panel.set(mode: mode)
 //        switch mode {
 //        case .tableOfContent:
 //            toolBar.tableOfContent.isSelected = true
@@ -160,54 +162,40 @@ class MainController: UIViewController, UISearchControllerDelegate {
         
         view.layoutIfNeeded()
         view.setNeedsUpdateConstraints()
-        
+        self.navigationController?.setToolbarHidden(true, animated: true)
         UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseInOut, animations: {
             self.view.layoutIfNeeded()
             self.dimView.isDimmed = true
+            if self.traitCollection.horizontalSizeClass == .compact {
+                self.navigationController?.isToolbarHidden = true
+            }
         })
     }
     
     func hidePanel() {
-        panel.set(mode: nil)
-//        toolBar.tableOfContent.isSelected = false
-//        toolBar.bookmark.isSelected = false
-        
         guard isShowingPanel else {return}
         isShowingPanel = false
+        
         view.layoutIfNeeded()
         view.setNeedsUpdateConstraints()
         
         UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseInOut, animations: {
             self.view.layoutIfNeeded()
             self.dimView.isDimmed = false
+            if self.traitCollection.horizontalSizeClass == .compact {
+                self.navigationController?.isToolbarHidden = false
+            }
         }, completion: { _ in
             self.dimView.isHidden = true
         })
     }
-    
-    
-    
-    
-    
+}
 
-    // MARK: - TabContainerControllerDelegate
-    
-//    func homeWillBecomeCurrent() {
-//        toolBar.back.isEnabled = false
-//        toolBar.forward.isEnabled = false
-//        toolBar.home.isSelected = true
-//    }
-    
-//    func tabWillBecomeCurrent(controller: UIViewController & WebViewController) {
-//        toolBar.back.isEnabled = controller.canGoBack
-//        toolBar.forward.isEnabled = controller.canGoForward
-//        toolBar.home.isSelected = false
-//    }
-    
-//    func tabDidFinishLoading(controller: UIViewController & WebViewController) {
-//        toolBar.back.isEnabled = controller.canGoBack
-//        toolBar.forward.isEnabled = controller.canGoForward
-//    }
+extension MainController: TabContainerControllerDelegate {
+    func tabDidFinishLoading(controller: WebViewController) {
+        navigationBackButton.isGrayed = !controller.canGoBack
+        navigationForwardButton.isGrayed = !controller.canGoForward
+    }
 }
 
 extension MainController: BarButtonItemDelegate {
@@ -226,17 +214,20 @@ extension MainController: BarButtonItemDelegate {
             if searchController.isActive {
                 navigationItem.setRightBarButton(cancelButton, animated: false)
             }
+            if isShowingPanel {
+                self.navigationController?.isToolbarHidden = true
+            }
         }
     }
     
     func buttonTapped(item: BarButtonItem, button: UIButton) {
         switch item {
         case navigationBackButton:
-            break
+            tabContainerController.webController?.goBack()
         case navigationForwardButton:
-            break
+            tabContainerController.webController?.goForward()
         case tableOfContentButton:
-            break
+            !isShowingPanel ? showPanel(mode: .tableOfContent) : hidePanel()
         case bookmarkButton:
             break
         case libraryButton:
@@ -247,19 +238,4 @@ extension MainController: BarButtonItemDelegate {
             break
         }
     }
-    
-//    func tableOfContentButtonTapped() {
-//        if panel.mode == .tableOfContent {
-//            hidePanel()
-//        } else {
-//            showPanel(mode: .tableOfContent)
-//            //            container.current?.getTableOfContent(completion: { (headings) in
-//            //                self.panel.tableOfContent?.headings = headings
-//            //            })
-//        }
-//    }
-//
-//    func bookmarkButtonTapped() {
-//        panel.mode != .bookmark ? showPanel(mode: .bookmark) : hidePanel()
-//    }
 }

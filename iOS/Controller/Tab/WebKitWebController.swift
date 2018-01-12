@@ -12,13 +12,13 @@ import SafariServices
 
 
 @available(iOS 11.0, *)
-class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate, WebViewControls {
+class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate, WebViewController {
     private let webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
         return WKWebView(frame: .zero, configuration: config)
     }()
-    weak var delegate: TabControllerDelegate?
+    weak var delegate: WebViewControllerDelegate?
     
     override func loadView() {
         view = webView
@@ -61,11 +61,6 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         webView.goForward()
     }
     
-    func loadMainPage(id: ZimFileID) {
-        guard let url = ZimMultiReader.shared.getMainPageURL(bookID: id) else {return}
-        load(url: url)
-    }
-    
     func load(url: URL) {
         let request = URLRequest(url: url)
         webView.load(request)
@@ -99,10 +94,10 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         if let url = Bundle.main.url(forResource: "Inject", withExtension: "js"),
             let javascript = try? String(contentsOf: url) {
             webView.evaluateJavaScript(javascript, completionHandler: { (_, error) in
-                self.delegate?.webViewDidFinishLoad(controller: self)
+                self.delegate?.webViewDidFinishLoading(controller: self)
             })
         } else {
-            delegate?.webViewDidFinishLoad(controller: self)
+            delegate?.webViewDidFinishLoading(controller: self)
         }
     }
 }
