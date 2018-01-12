@@ -36,6 +36,10 @@ class LegacyWebController: UIViewController, UIWebViewDelegate, WebViewControlle
         get {return webView.canGoForward}
     }
     
+    var currentURL: URL? {
+        get {return webView.request?.url}
+    }
+    
     // MARK: - Configure
     
     private func configureWebView() {
@@ -62,11 +66,11 @@ class LegacyWebController: UIViewController, UIWebViewDelegate, WebViewControlle
     
     // MARK: - Capabilities
     
-    func getTableOfContent(completion: @escaping (([HTMLHeading]) -> Void)) {
+    func extractTableOfContents(completion: @escaping ((URL?, [TableOfContentItem]) -> Void)) {
         let javascript = "tableOfContents.getHeadingObjects()"
-        guard let elements = webView.context.evaluateScript(javascript).toArray() as? [[String: Any]] else {completion([]); return}
-        let headings = elements.flatMap({ HTMLHeading(rawValue: $0) })
-        completion(headings)
+        guard let elements = webView.context.evaluateScript(javascript).toArray() as? [[String: Any]] else {completion(currentURL, []); return}
+        let items = elements.flatMap({ TableOfContentItem(rawValue: $0) })
+        completion(currentURL, items)
     }
     
     // MARK: - UIWebViewDelegate

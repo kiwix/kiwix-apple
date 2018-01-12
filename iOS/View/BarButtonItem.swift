@@ -18,6 +18,8 @@ class BarButtonItem: UIBarButtonItem {
         }
     }
     
+    var isFocused: Bool = false
+    
 //    var isHighlighted: Bool = false {
 //        didSet {
 //            customView?.tintColor = isHighlighted ? .white : (isGrayed ? .gray : nil)

@@ -11,7 +11,9 @@ import UIKit
 class TableOfContentController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let tableView = UITableView()
     private weak var stackView: UIStackView?
-    var headings = [HTMLHeading]() {
+    
+    var url: URL?
+    var items = [TableOfContentItem]() {
         didSet {
             configure()
         }
@@ -31,7 +33,7 @@ class TableOfContentController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func configure() {
-        if headings.count == 0 {
+        if items.count == 0 {
             configure(stackView: BackgroundStackView(image: #imageLiteral(resourceName: "Compass"), text: NSLocalizedString("Table of content not available", comment: "Empty Library Help")))
         } else {
             configureTableView()
@@ -65,12 +67,12 @@ class TableOfContentController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return headings.count
+        return items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        let heading = headings[indexPath.row]
+        let heading = items[indexPath.row]
         cell.textLabel?.text = heading.textContent
         cell.indentationLevel = (heading.level - 1) * 2
         return cell

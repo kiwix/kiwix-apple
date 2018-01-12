@@ -6,7 +6,7 @@
 //  Copyright © 2017 Chris Li. All rights reserved.
 //
 
-class HTMLHeading {
+class TableOfContentItem {
     let index: Int!
     let tagName: String!
     let textContent: String!

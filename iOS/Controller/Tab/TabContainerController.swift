@@ -64,10 +64,12 @@ protocol WebViewController {
     weak var delegate: WebViewControllerDelegate? {get set}
     var canGoBack: Bool {get}
     var canGoForward: Bool {get}
+    var currentURL: URL? {get}
     
     func goBack()
     func goForward()
     func load(url: URL)
+    func extractTableOfContents(completion: @escaping ((URL?, [TableOfContentItem]) -> Void))
 }
 
 protocol WebViewControllerDelegate: class {

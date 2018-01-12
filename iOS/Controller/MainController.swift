@@ -115,6 +115,14 @@ class MainController: UIViewController, UISearchControllerDelegate {
         definesPresentationContext = true
     }
     
+    func updateTableOfContents() {
+        guard panelController.tableOfContent.url != tabContainerController.webController?.currentURL else {return}
+        tabContainerController.webController?.extractTableOfContents(completion: { (currentURL, items) in
+            self.panelController.tableOfContent.url = currentURL
+            self.panelController.tableOfContent.items = items
+        })
+    }
+    
     @objc func cancelSearchButtonTapped() {
         searchController.isActive = false
     }
@@ -142,21 +150,11 @@ class MainController: UIViewController, UISearchControllerDelegate {
     // MARK: - Panel
     
     func showPanel(mode: PanelMode) {
-//        panel.set(mode: mode)
-//        switch mode {
-//        case .tableOfContent:
-//            toolBar.tableOfContent.isSelected = true
-//            toolBar.bookmark.isSelected = false
-//        case .bookmark:
-//            toolBar.tableOfContent.isSelected = false
-//            toolBar.bookmark.isSelected = true
-//        case .history:
-//            toolBar.tableOfContent.isSelected = false
-//            toolBar.bookmark.isSelected = false
-//        }
+        panelController.set(mode: mode)
         
         guard !isShowingPanel else {return}
         isShowingPanel = true
+        
         dimView.isHidden = false
         dimView.isDimmed = false
         
@@ -173,6 +171,8 @@ class MainController: UIViewController, UISearchControllerDelegate {
     }
     
     func hidePanel() {
+        panelController.set(mode: nil)
+        
         guard isShowingPanel else {return}
         isShowingPanel = false
         
@@ -195,6 +195,9 @@ extension MainController: TabContainerControllerDelegate {
     func tabDidFinishLoading(controller: WebViewController) {
         navigationBackButton.isGrayed = !controller.canGoBack
         navigationForwardButton.isGrayed = !controller.canGoForward
+        if isShowingPanel && panelController.mode == .tableOfContent {
+            updateTableOfContents()
+        }
     }
 }
 
@@ -227,9 +230,22 @@ extension MainController: BarButtonItemDelegate {
         case navigationForwardButton:
             tabContainerController.webController?.goForward()
         case tableOfContentButton:
-            !isShowingPanel ? showPanel(mode: .tableOfContent) : hidePanel()
+            item.isFocused = !item.isFocused
+            if item.isFocused {
+                bookmarkButton.isFocused = false
+                showPanel(mode: .tableOfContent)
+                updateTableOfContents()
+            } else {
+                hidePanel()
+            }
         case bookmarkButton:
-            break
+            item.isFocused = !item.isFocused
+            if item.isFocused {
+                tableOfContentButton.isFocused = false
+                showPanel(mode: .bookmark)
+            } else {
+                hidePanel()
+            }
         case libraryButton:
             present(libraryController, animated: true, completion: nil)
         case settingButton:

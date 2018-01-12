@@ -11,20 +11,13 @@ import UIKit
 class PanelController: UIViewController {
     let visualView = VisualEffectShadowView()
     private(set) var mode: PanelMode?
-    private(set) var tableOfContent: TableOfContentController?
-    private(set) var bookmark: BookmarkController?
-    private(set) var history: HistoryController?
+    let tableOfContent = TableOfContentController()
+    let bookmark = BookmarkController()
+    let history = HistoryController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configVisualView()
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        tableOfContent = nil
-        bookmark = nil
-        history = nil
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -63,17 +56,11 @@ class PanelController: UIViewController {
         let controller: UIViewController = {
             switch mode {
             case .tableOfContent:
-                let controller = tableOfContent ?? TableOfContentController()
-                tableOfContent = controller
-                return controller
+                return tableOfContent
             case .bookmark:
-                let controller = bookmark ?? BookmarkController()
-                bookmark = controller
-                return controller
+                return bookmark
             case .history:
-                let controller = history ?? HistoryController()
-                history = controller
-                return controller
+                return history
             }
         }()
         addChildViewController(controller)

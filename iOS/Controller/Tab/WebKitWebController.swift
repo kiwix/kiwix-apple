@@ -42,6 +42,10 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         get {return webView.canGoForward}
     }
     
+    var currentURL: URL? {
+        get {return webView.url}
+    }
+    
     // MARK: - Configure
     
     private func configureWebView() {
@@ -68,12 +72,12 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     
     // MARK: - Capabilities
     
-    func getTableOfContent(completion: @escaping (([HTMLHeading]) -> Void)) {
+    func extractTableOfContents(completion: @escaping ((URL?, [TableOfContentItem]) -> Void)) {
         let javascript = "tableOfContents.getHeadingObjects()"
         webView.evaluateJavaScript(javascript, completionHandler: { (results, error) in
-            guard let elements = results as? [[String: Any]] else {completion([]); return}
-            let headings = elements.flatMap({ HTMLHeading(rawValue: $0) })
-            completion(headings)
+            guard let elements = results as? [[String: Any]] else {completion(self.currentURL, []); return}
+            let items = elements.flatMap({ TableOfContentItem(rawValue: $0) })
+            completion(self.currentURL, items)
         })
     }
     
