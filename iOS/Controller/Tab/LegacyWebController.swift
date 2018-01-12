@@ -73,6 +73,11 @@ class LegacyWebController: UIViewController, UIWebViewDelegate, WebViewControlle
         completion(currentURL, items)
     }
     
+    func scrollToTableOfContentItem(index: Int) {
+        let javascript = "tableOfContents.scrollToView(\(index))"
+        webView.context.evaluateScript(javascript)
+    }
+    
     // MARK: - UIWebViewDelegate
     
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {

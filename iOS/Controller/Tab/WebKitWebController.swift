@@ -81,6 +81,11 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         })
     }
     
+    func scrollToTableOfContentItem(index: Int) {
+        let javascript = "tableOfContents.scrollToView(\(index))"
+        webView.evaluateJavaScript(javascript, completionHandler: nil)
+    }
+    
     // MARK: - WKNavigationDelegate
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {

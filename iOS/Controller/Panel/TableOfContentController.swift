@@ -11,6 +11,7 @@ import UIKit
 class TableOfContentController: PanelTabController, UITableViewDelegate, UITableViewDataSource {
     let tableView = UITableView()
     let emptyBackgroundView = BackgroundStackView(image: #imageLiteral(resourceName: "Compass"), text: NSLocalizedString("Table of content not available", comment: "Empty Library"))
+    weak var delegate: TableOfContentControllerDelegate? = nil
     
     var url: URL?
     var items = [TableOfContentItem]() {
@@ -57,6 +58,10 @@ class TableOfContentController: PanelTabController, UITableViewDelegate, UITable
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
+        delegate?.didTapTableOfContentItem(index: indexPath.row, item: items[indexPath.row])
     }
+}
+
+protocol TableOfContentControllerDelegate: class {
+    func didTapTableOfContentItem(index: Int, item: TableOfContentItem)
 }

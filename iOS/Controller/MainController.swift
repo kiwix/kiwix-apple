@@ -17,7 +17,7 @@ class MainController: UIViewController, UISearchControllerDelegate {
     // MARK: - Controllers
     
     let searchController = UISearchController(searchResultsController: SearchResultController())
-    private(set) var tabContainerController: TabContainerController!
+    private(set) var tabsController: TabContainerController!
     private var panelController: PanelController!
     private(set) lazy var libraryController = LibraryController()
     
@@ -55,10 +55,11 @@ class MainController: UIViewController, UISearchControllerDelegate {
         guard let identifier = segue.identifier else {return}
         switch identifier {
         case "TabContainerController":
-            tabContainerController = segue.destination as! TabContainerController
-            tabContainerController.delegate = self
+            tabsController = segue.destination as! TabContainerController
+            tabsController.delegate = self
         case "PanelController":
             panelController = segue.destination as! PanelController
+            panelController.tableOfContent.delegate = self
         default:
             break
         }
@@ -116,8 +117,8 @@ class MainController: UIViewController, UISearchControllerDelegate {
     }
     
     func updateTableOfContents(completion: (() -> Void)? = nil) {
-        guard panelController.tableOfContent.url != tabContainerController.webController?.currentURL,
-            let webController = tabContainerController.webController else {completion?(); return}
+        guard panelController.tableOfContent.url != tabsController.webController?.currentURL,
+            let webController = tabsController.webController else {completion?(); return}
         webController.extractTableOfContents(completion: { (currentURL, items) in
             self.panelController.tableOfContent.url = currentURL
             self.panelController.tableOfContent.items = items
@@ -150,8 +151,18 @@ class MainController: UIViewController, UISearchControllerDelegate {
         guard UIDevice.current.userInterfaceIdiom == .pad && traitCollection.horizontalSizeClass == .compact else {return}
         navigationItem.setRightBarButton(nil, animated: true)
     }
-    
-    // MARK: - Panel
+}
+
+// MARK: - Panel Control
+
+extension MainController: TableOfContentControllerDelegate {
+    func didTapTableOfContentItem(index: Int, item: TableOfContentItem) {
+        tabsController.webController?.scrollToTableOfContentItem(index: index)
+        if traitCollection.horizontalSizeClass == .compact {
+            tableOfContentButton.isFocused = false
+            hidePanel()
+        }
+    }
     
     func showPanel(mode: PanelMode) {
         panelController.set(mode: mode)
@@ -195,6 +206,8 @@ class MainController: UIViewController, UISearchControllerDelegate {
     }
 }
 
+// MARK: - Tab Control
+
 extension MainController: TabContainerControllerDelegate {
     func tabDidFinishLoading(controller: WebViewController) {
         navigationBackButton.isGrayed = !controller.canGoBack
@@ -204,6 +217,8 @@ extension MainController: TabContainerControllerDelegate {
         }
     }
 }
+
+// MARK: - Bar Buttons
 
 extension MainController: BarButtonItemDelegate {
     private func configureToolbar() {
@@ -230,9 +245,9 @@ extension MainController: BarButtonItemDelegate {
     func buttonTapped(item: BarButtonItem, button: UIButton) {
         switch item {
         case navigationBackButton:
-            tabContainerController.webController?.goBack()
+            tabsController.webController?.goBack()
         case navigationForwardButton:
-            tabContainerController.webController?.goForward()
+            tabsController.webController?.goForward()
         case tableOfContentButton:
             item.isFocused = !item.isFocused
             if item.isFocused {

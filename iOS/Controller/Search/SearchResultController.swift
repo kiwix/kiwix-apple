@@ -206,7 +206,7 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
         guard let main = presentingViewController as? MainController else {return}
         
         if main.isShowingPanel && main.traitCollection.horizontalSizeClass == .compact { main.hidePanel() }
-        main.tabContainerController.load(url: results[indexPath.row].url)
+        main.tabsController.load(url: results[indexPath.row].url)
         main.searchController.isActive = false
     }
     
