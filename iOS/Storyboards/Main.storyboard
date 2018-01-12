@@ -249,100 +249,133 @@
             </objects>
             <point key="canvasLocation" x="900" y="860"/>
         </scene>
-        <!--Home Controller-->
-        <scene sceneID="Kmh-De-Gaf">
+        <!--Welcome Controller-->
+        <scene sceneID="MAQ-Q2-rYU">
             <objects>
-                <viewController storyboardIdentifier="Home" id="woF-ts-VWz" customClass="HomeController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="FN6-qU-FxF"/>
-                        <viewControllerLayoutGuide type="bottom" id="lss-5i-DgA"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="9Ke-1P-yB2">
+                <viewController storyboardIdentifier="WelcomeController" id="1qf-Qn-OTE" customClass="WelcomeController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hKl-AZ-y4g">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="edr-7J-o58">
-                                <rect key="frame" x="16" y="296.33333333333331" width="343" height="224.33333333333331"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="gqV-bc-IWP">
+                                <rect key="frame" x="16" y="316.66666666666669" width="343" height="179"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ey7-6F-Nxe">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="134.33333333333334"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="8pR-57-foL">
+                                        <rect key="frame" x="115.33333333333334" y="0.0" width="112.33333333333334" height="108"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aL9-To-3eY" customClass="Logo" customModule="Kiwix" customModuleProvider="target">
-                                                <rect key="frame" x="141.66666666666666" y="0.0" width="60" height="60"/>
-                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Kiwix" translatesAutoresizingMaskIntoConstraints="NO" id="tqt-hB-1ni">
+                                                <rect key="frame" x="26.333333333333314" y="0.0" width="60" height="60"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="60" id="53J-Lz-Knh"/>
-                                                    <constraint firstAttribute="width" constant="60" id="WWQ-Xo-sZY"/>
+                                                    <constraint firstAttribute="width" constant="60" id="DsZ-wM-gGQ"/>
+                                                    <constraint firstAttribute="height" constant="60" id="UCh-XH-DCh"/>
                                                 </constraints>
-                                            </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KIWIX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ykl-0N-bqQ">
-                                                <rect key="frame" x="109.33333333333331" y="60" width="124.66666666666669" height="58.666666666666657"/>
-                                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="49"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="KIWIX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QJS-qn-q6W">
+                                                <rect key="frame" x="0.0" y="60" width="112.33333333333333" height="48"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="40"/>
+                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
-                                                <variation key="heightClass=compact-widthClass=compact">
-                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="38"/>
-                                                </variation>
-                                                <variation key="heightClass=regular-widthClass=regular">
-                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="58"/>
-                                                </variation>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wikipedia Anywhere" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dqJ-IN-1cE">
-                                                <rect key="frame" x="110.33333333333331" y="118.66666666666669" width="122.66666666666669" height="15.666666666666657"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="highlightedColor"/>
-                                                <variation key="heightClass=compact-widthClass=compact">
-                                                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                                </variation>
-                                                <variation key="heightClass=regular-widthClass=regular">
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <variation key="widthClass=regular">
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="50"/>
                                                 </variation>
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="dhs-jD-s9o">
-                                        <rect key="frame" x="0.0" y="194.33333333333337" width="343" height="30"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FzP-vy-Q8J">
+                                        <rect key="frame" x="0.0" y="128" width="343" height="1"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="cQZ-xj-Vgm"/>
+                                        </constraints>
+                                    </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="eGK-bW-Ahk">
+                                        <rect key="frame" x="0.0" y="149" width="343" height="30"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SKG-oI-EZj" customClass="RoundedButton" customModule="Kiwix" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="npo-vi-gnv" customClass="RoundedButton" customModule="Kiwix" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="30"/>
-                                                <color key="backgroundColor" red="0.60646116729999999" green="0.79930049179999996" blue="0.98724311590000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <state key="normal" title="Botton"/>
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="leftButtonTapped:" destination="1qf-Qn-OTE" eventType="touchUpInside" id="nph-1r-lyL"/>
+                                                </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e4T-Tz-XiG" customClass="RoundedButton" customModule="Kiwix" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hpx-u3-l2O" customClass="RoundedButton" customModule="Kiwix" customModuleProvider="target">
                                                 <rect key="frame" x="176.66666666666663" y="0.0" width="166.33333333333337" height="30"/>
                                                 <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="rightButtonTapped:" destination="1qf-Qn-OTE" eventType="touchUpInside" id="P6F-IN-aDg"/>
+                                                </connections>
                                             </button>
                                         </subviews>
+                                        <variation key="widthClass=compact" spacing="10"/>
                                     </stackView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="400" id="czM-Rf-Gby"/>
+                                    <constraint firstItem="eGK-bW-Ahk" firstAttribute="width" secondItem="gqV-bc-IWP" secondAttribute="width" multiplier="0.8" id="8mB-LY-GS3"/>
+                                    <constraint firstAttribute="width" constant="600" id="OOA-SU-hoa"/>
+                                    <constraint firstItem="FzP-vy-Q8J" firstAttribute="width" secondItem="gqV-bc-IWP" secondAttribute="width" id="WnA-X7-Kl8"/>
+                                    <constraint firstItem="eGK-bW-Ahk" firstAttribute="width" secondItem="gqV-bc-IWP" secondAttribute="width" id="nq7-v9-C83"/>
                                 </constraints>
-                                <variation key="heightClass=compact" alignment="center" axis="horizontal" distribution="fillEqually" spacing="30"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="OOA-SU-hoa"/>
+                                        <exclude reference="8mB-LY-GS3"/>
+                                        <exclude reference="nq7-v9-C83"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="nq7-v9-C83"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="OOA-SU-hoa"/>
+                                        <include reference="8mB-LY-GS3"/>
+                                    </mask>
+                                </variation>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="edr-7J-o58" firstAttribute="centerX" secondItem="9Ke-1P-yB2" secondAttribute="centerX" id="6aB-gj-77Y"/>
-                            <constraint firstItem="edr-7J-o58" firstAttribute="centerY" secondItem="UiY-s6-saw" secondAttribute="centerY" id="9vU-Aq-Ok7"/>
-                            <constraint firstItem="edr-7J-o58" firstAttribute="leading" secondItem="9Ke-1P-yB2" secondAttribute="leading" priority="750" constant="16" id="AND-ih-Ksi"/>
-                            <constraint firstAttribute="trailing" secondItem="edr-7J-o58" secondAttribute="trailing" priority="750" constant="16" id="GEp-RU-ozH"/>
+                            <constraint firstItem="fkg-ea-ep8" firstAttribute="trailing" secondItem="gqV-bc-IWP" secondAttribute="trailing" constant="16" id="7kO-54-VNT"/>
+                            <constraint firstItem="gqV-bc-IWP" firstAttribute="centerY" secondItem="hKl-AZ-y4g" secondAttribute="centerY" id="B7S-1V-UCV"/>
+                            <constraint firstItem="gqV-bc-IWP" firstAttribute="centerX" secondItem="fkg-ea-ep8" secondAttribute="centerX" id="Tqa-C9-LQT"/>
+                            <constraint firstItem="gqV-bc-IWP" firstAttribute="leading" secondItem="fkg-ea-ep8" secondAttribute="leading" constant="16" id="rwN-SE-o7L"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="UiY-s6-saw"/>
+                        <viewLayoutGuide key="safeArea" id="fkg-ea-ep8"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="7kO-54-VNT"/>
+                                <exclude reference="Tqa-C9-LQT"/>
+                                <exclude reference="rwN-SE-o7L"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="constraints">
+                                <include reference="7kO-54-VNT"/>
+                                <include reference="rwN-SE-o7L"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=regular">
+                            <mask key="constraints">
+                                <include reference="Tqa-C9-LQT"/>
+                            </mask>
+                        </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="ttS-bF-7lb"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="libraryButton" destination="SKG-oI-EZj" id="5H7-cG-sPk"/>
-                        <outlet property="settingsButton" destination="e4T-Tz-XiG" id="hus-SG-8Xj"/>
-                        <outlet property="stackView" destination="dhs-jD-s9o" id="7zr-1N-sg8"/>
+                        <outlet property="leftButton" destination="npo-vi-gnv" id="iWG-Gj-nGs"/>
+                        <outlet property="logoImageView" destination="tqt-hB-1ni" id="v8I-ZS-Jrw"/>
+                        <outlet property="rightButton" destination="hpx-u3-l2O" id="Pca-Pf-xQT"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1P3-WN-WEM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YB1-rY-5jy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1801" y="177"/>
+            <point key="canvasLocation" x="1764" y="176.60098522167488"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Kiwix" width="612" height="612"/>
+    </resources>
 </document>

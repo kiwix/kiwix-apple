@@ -204,9 +204,9 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let main = presentingViewController as? MainController else {return}
-//        if main.container.isDisplayingHome { main.container.switchToCurrentTab() }
+        
         if main.isShowingPanel && main.traitCollection.horizontalSizeClass == .compact { main.hidePanel() }
-//        main.container.load(url: results[indexPath.row].url, in: .current)
+        main.tabContainerController.load(url: results[indexPath.row].url)
         main.searchController.isActive = false
     }
     

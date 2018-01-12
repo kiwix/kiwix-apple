@@ -10,7 +10,7 @@ import UIKit
 import SafariServices
 import JavaScriptCore
 
-class LegacyTabController: UIViewController, UIWebViewDelegate, WebViewController {
+class LegacyWebController: UIViewController, UIWebViewDelegate, WebViewControls {
     private let webView = UIWebView()
     weak var delegate: TabControllerDelegate?
     
@@ -43,7 +43,6 @@ class LegacyTabController: UIViewController, UIWebViewDelegate, WebViewControlle
         webView.isOpaque = false
         webView.backgroundColor = UIColor.clear
         webView.allowsLinkPreview = true
-        webView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     // MARK: - loading

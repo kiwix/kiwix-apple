@@ -12,7 +12,7 @@ import SafariServices
 
 
 @available(iOS 11.0, *)
-class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate, WebViewController {
+class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate, WebViewControls {
     private let webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
@@ -49,7 +49,6 @@ class WebKitTabController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         webView.navigationDelegate = self
         webView.allowsLinkPreview = true
         webView.allowsBackForwardNavigationGestures = true
-        webView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     // MARK: - loading
