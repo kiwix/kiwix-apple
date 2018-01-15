@@ -31,12 +31,12 @@ class MainController: UIViewController, UISearchControllerDelegate {
     
     // MARK: - Toolbar
     
-    private lazy var navigationBackButton = BarButtonItem(image: #imageLiteral(resourceName: "Left"), inset: 12, delegate: self)
-    private lazy var navigationForwardButton = BarButtonItem(image: #imageLiteral(resourceName: "Right"), inset: 12, delegate: self)
-    private lazy var tableOfContentButton = BarButtonItem(image: #imageLiteral(resourceName: "TableOfContent"), inset: 8, delegate: self)
-    private lazy var bookmarkButton = BarButtonItem(image: #imageLiteral(resourceName: "Star"), highlightedImage: #imageLiteral(resourceName: "StarFilled"), inset: 8, delegate: self)
-    private lazy var libraryButton = BarButtonItem(image: #imageLiteral(resourceName: "Library"), inset: 6, delegate: self)
-    private lazy var settingButton = BarButtonItem(image: #imageLiteral(resourceName: "Setting"), inset: 8, delegate: self)
+    private lazy var navigationBackButtonItem = BarButtonItem(image: #imageLiteral(resourceName: "Left"), inset: 12, delegate: self)
+    private lazy var navigationForwardButtonItem = BarButtonItem(image: #imageLiteral(resourceName: "Right"), inset: 12, delegate: self)
+    private lazy var tableOfContentButtonItem = BarButtonItem(image: #imageLiteral(resourceName: "TableOfContent"), inset: 8, delegate: self)
+    private lazy var bookmarkButtonItem = BookmarkButtonItem(delegate: self)
+    private lazy var libraryButtonItem = BarButtonItem(image: #imageLiteral(resourceName: "Library"), inset: 6, delegate: self)
+    private lazy var settingButtonItem = BarButtonItem(image: #imageLiteral(resourceName: "Setting"), inset: 8, delegate: self)
     
     // MARK: - Overrides
     
@@ -136,8 +136,8 @@ class MainController: UIViewController, UISearchControllerDelegate {
     
     @IBAction func dimViewTapped(_ sender: UITapGestureRecognizer) {
         hidePanel()
-        tableOfContentButton.isFocused = false
-        bookmarkButton.isFocused = false
+        tableOfContentButtonItem.isFocused = false
+        bookmarkButtonItem.isFocused = false
     }
     
     // MARK: - UISearchControllerDelegate
@@ -159,7 +159,7 @@ extension MainController: TableOfContentControllerDelegate {
     func didTapTableOfContentItem(index: Int, item: TableOfContentItem) {
         tabsController.webController?.scrollToTableOfContentItem(index: index)
         if traitCollection.horizontalSizeClass == .compact {
-            tableOfContentButton.isFocused = false
+            tableOfContentButtonItem.isFocused = false
             hidePanel()
         }
     }
@@ -210,8 +210,8 @@ extension MainController: TableOfContentControllerDelegate {
 
 extension MainController: TabContainerControllerDelegate {
     func tabDidFinishLoading(controller: WebViewController) {
-        navigationBackButton.isGrayed = !controller.canGoBack
-        navigationForwardButton.isGrayed = !controller.canGoForward
+        navigationBackButtonItem.button.isGrayed = !controller.canGoBack
+        navigationForwardButtonItem.button.isGrayed = !controller.canGoForward
         if isShowingPanel && panelController.mode == .tableOfContent {
             updateTableOfContents()
         }
@@ -227,11 +227,11 @@ extension MainController: BarButtonItemDelegate {
         navigationItem.rightBarButtonItems = nil
         if traitCollection.horizontalSizeClass == .regular {
             navigationController?.isToolbarHidden = true
-            navigationItem.leftBarButtonItems = [navigationBackButton, navigationForwardButton, tableOfContentButton]
-            navigationItem.rightBarButtonItems = [settingButton, libraryButton, bookmarkButton]
+            navigationItem.leftBarButtonItems = [navigationBackButtonItem, navigationForwardButtonItem, tableOfContentButtonItem]
+            navigationItem.rightBarButtonItems = [settingButtonItem, libraryButtonItem, bookmarkButtonItem]
         } else if traitCollection.horizontalSizeClass == .compact {
             navigationController?.isToolbarHidden = false
-            toolbarItems = [navigationBackButton, navigationForwardButton, tableOfContentButton, bookmarkButton, libraryButton, settingButton].enumerated()
+            toolbarItems = [navigationBackButtonItem, navigationForwardButtonItem, tableOfContentButtonItem, bookmarkButtonItem, libraryButtonItem, settingButtonItem].enumerated()
                 .reduce([], { $0 + ($1.offset > 0 ? [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), $1.element] : [$1.element]) })
             if searchController.isActive {
                 navigationItem.setRightBarButton(cancelButton, animated: false)
@@ -244,32 +244,42 @@ extension MainController: BarButtonItemDelegate {
     
     func buttonTapped(item: BarButtonItem, button: UIButton) {
         switch item {
-        case navigationBackButton:
+        case navigationBackButtonItem:
             tabsController.webController?.goBack()
-        case navigationForwardButton:
+        case navigationForwardButtonItem:
             tabsController.webController?.goForward()
-        case tableOfContentButton:
+        case tableOfContentButtonItem:
             item.isFocused = !item.isFocused
             if item.isFocused {
-                bookmarkButton.isFocused = false
+                bookmarkButtonItem.isFocused = false
                 updateTableOfContents(completion: {
                     self.showPanel(mode: .tableOfContent)
                 })
             } else {
                 hidePanel()
             }
-        case bookmarkButton:
+        case bookmarkButtonItem:
             item.isFocused = !item.isFocused
             if item.isFocused {
-                tableOfContentButton.isFocused = false
+                tableOfContentButtonItem.isFocused = false
                 showPanel(mode: .bookmark)
             } else {
                 hidePanel()
             }
-        case libraryButton:
+        case libraryButtonItem:
             present(libraryController, animated: true, completion: nil)
-        case settingButton:
+        case settingButtonItem:
             break
+        default:
+            break
+        }
+    }
+    
+    func buttonLongPresse(item: BarButtonItem, button: UIButton) {
+        switch item {
+        case bookmarkButtonItem:
+            guard let item = item as? BookmarkButtonItem else {return}
+            item.button.isBookmarked = !item.button.isBookmarked
         default:
             break
         }

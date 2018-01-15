@@ -9,32 +9,27 @@
 import UIKit
 
 class BarButtonItem: UIBarButtonItem {
-    private var buttonBoundsObserver: NSKeyValueObservation? = nil
-    private weak var delegate: BarButtonItemDelegate? = nil
     
-    var isGrayed: Bool = true {
-        didSet {
-            customView?.tintColor = isGrayed ? .gray : nil
-        }
+    private let gestureRecognizer = UILongPressGestureRecognizer()
+    fileprivate weak var delegate: BarButtonItemDelegate? = nil
+    
+    var button: BarButton {
+        get {return customView as! BarButton}
     }
     
     var isFocused: Bool = false
     
-//    var isHighlighted: Bool = false {
-//        didSet {
-//            customView?.tintColor = isHighlighted ? .white : (isGrayed ? .gray : nil)
-//            (customView as? UIButton)?.imageView?.backgroundColor = isHighlighted ? #colorLiteral(red: 0, green: 0.3529411765, blue: 1, alpha: 1) : nil
-//        }
-//    }
-    
-    convenience init(image: UIImage, highlightedImage: UIImage?=nil, inset: CGFloat, delegate: BarButtonItemDelegate?=nil) {
-        let button = UIButton()
-        button.tintColor = .gray
-        button.setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
-        button.setImage(highlightedImage?.withRenderingMode(.alwaysTemplate), for: .highlighted)
-        
-        self.init(customView: button)
+    convenience init(image: UIImage, inset: CGFloat, delegate: BarButtonItemDelegate?=nil) {
+        self.init(customView: BarButton(inset: inset))
         self.delegate = delegate
+        configure()
+        button.setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
+    }
+    
+    fileprivate func configure() {
+        button.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
+        button.addGestureRecognizer(gestureRecognizer)
+        gestureRecognizer.addTarget(self, action: #selector(buttonLongPressed(gestureRecognizer:)))
         
         if #available(iOS 11.0, *) {
             button.translatesAutoresizingMaskIntoConstraints = false
@@ -42,8 +37,52 @@ class BarButtonItem: UIBarButtonItem {
         } else {
             button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
         }
-        
-        buttonBoundsObserver = button.observe(\.bounds, options: [.initial, .new]) { (button, change) in
+    }
+    
+    @objc func buttonTapped(button: UIButton) {
+        delegate?.buttonTapped(item: self, button: customView as! UIButton)
+    }
+    
+    @objc func buttonLongPressed(gestureRecognizer: UILongPressGestureRecognizer) {
+        guard gestureRecognizer.state == .recognized else {return}
+        delegate?.buttonLongPresse(item: self, button: customView as! UIButton)
+    }
+}
+
+class BookmarkButtonItem: BarButtonItem {
+    override var button: BookmarkBarButton {
+        get {return customView as! BookmarkBarButton}
+    }
+    
+    convenience init(delegate: BarButtonItemDelegate?=nil) {
+        self.init(customView: BookmarkBarButton(inset: 8))
+        self.delegate = delegate
+        configure()
+        button.setImage(#imageLiteral(resourceName: "Star").withRenderingMode(.alwaysTemplate), for: .normal)
+        button.adjustsImageWhenHighlighted = false
+    }
+}
+
+class BarButton: UIButton {
+    private var boundsObserver: NSKeyValueObservation? = nil
+    
+    override var isHighlighted: Bool {
+        didSet {
+            tintColor = isHighlighted ? .darkGray : (isGrayed ? .gray : nil)
+        }
+    }
+    
+    var isGrayed: Bool = true {
+        didSet {
+            tintColor = isGrayed ? .gray : nil
+        }
+    }
+    
+    convenience init(inset: CGFloat) {
+        self.init(frame: .zero)
+        tintColor = .gray
+
+        boundsObserver = observe(\.bounds, options: [.initial, .new]) { (button, change) in
             let inset: CGFloat = {
                 if let height = change.newValue?.height, height < 44 {
                     return inset * 0.6
@@ -53,16 +92,8 @@ class BarButtonItem: UIBarButtonItem {
             }()
             button.imageEdgeInsets = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
         }
-        
-        button.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
     }
     
-    @objc func buttonTapped(button: UIButton) {
-        delegate?.buttonTapped(item: self, button: customView as! UIButton)
-    }
-}
-
-//class BarButton: UIButton {
 //    private let selectionLayer = CALayer()
 //
 //    override func draw(_ rect: CGRect) {
@@ -73,8 +104,33 @@ class BarButtonItem: UIBarButtonItem {
 //            self.layer.insertSublayer(selectionLayer, at: 0)
 //        }
 //    }
-//}
+}
+
+class BookmarkBarButton: BarButton {
+    override var isHighlighted: Bool {
+        didSet {
+            if isBookmarked {
+                tintColor = #colorLiteral(red: 1, green: 0.7960784314, blue: 0.2196078431, alpha: 1)
+            } else {
+                tintColor = isHighlighted ? .darkGray : (isGrayed ? .gray : nil)
+            }
+        }
+    }
+    
+    var isBookmarked: Bool = false {
+        didSet {
+            if isBookmarked {
+                setImage(#imageLiteral(resourceName: "StarFilled").withRenderingMode(.alwaysTemplate), for: .normal)
+                tintColor = #colorLiteral(red: 1, green: 0.7960784314, blue: 0.2196078431, alpha: 1)
+            } else {
+                setImage(#imageLiteral(resourceName: "Star").withRenderingMode(.alwaysTemplate), for: .normal)
+                tintColor = .gray
+            }
+        }
+    }
+}
 
 protocol BarButtonItemDelegate: class {
     func buttonTapped(item: BarButtonItem, button: UIButton)
+    func buttonLongPresse(item: BarButtonItem, button: UIButton)
 }
