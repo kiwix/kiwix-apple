@@ -44,7 +44,7 @@ class BarButtonItem: UIBarButtonItem {
     }
     
     @objc func buttonLongPressed(gestureRecognizer: UILongPressGestureRecognizer) {
-        guard gestureRecognizer.state == .recognized else {return}
+        guard gestureRecognizer.state == .began else {return}
         delegate?.buttonLongPresse(item: self, button: customView as! UIButton)
     }
 }

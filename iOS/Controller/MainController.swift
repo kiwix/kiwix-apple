@@ -279,7 +279,15 @@ extension MainController: BarButtonItemDelegate {
         switch item {
         case bookmarkButtonItem:
             guard let item = item as? BookmarkButtonItem else {return}
-            item.button.isBookmarked = !item.button.isBookmarked
+            
+            let controller = HUDController()
+            controller.modalPresentationStyle = .overFullScreen
+            present(controller, animated: true, completion: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {
+                    controller.dismiss(animated: true, completion: nil)
+                    item.button.isBookmarked = !item.button.isBookmarked
+                })
+            })
         default:
             break
         }
