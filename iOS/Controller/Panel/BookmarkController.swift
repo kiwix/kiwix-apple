@@ -9,20 +9,18 @@
 import UIKit
 
 class BookmarkController: PanelTabController {
+    let tableView = UITableView()
+    let emptyBackgroundView = BackgroundStackView(
+        image: #imageLiteral(resourceName: "StarColor"),
+        title: NSLocalizedString("Bookmark your favorite articles", comment: "Help message when there's no bookmark to show"),
+        subtitle: NSLocalizedString("To add, long press the star button on the tool bar.", comment: "Help message when there's no bookmark to show")
+    )
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        config()
+//        tableView.delegate = self
+//        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        configure(stackView: emptyBackgroundView)
     }
-    
-    func config() {
-        let label = UILabel()
-        label.text = "Bookmark"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(label)
-        NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: view.centerYAnchor)])
-    }
-
 }

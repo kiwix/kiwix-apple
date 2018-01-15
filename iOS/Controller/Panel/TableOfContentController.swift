@@ -10,7 +10,7 @@ import UIKit
 
 class TableOfContentController: PanelTabController, UITableViewDelegate, UITableViewDataSource {
     let tableView = UITableView()
-    let emptyBackgroundView = BackgroundStackView(image: #imageLiteral(resourceName: "Compass"), text: NSLocalizedString("Table of content not available", comment: "Empty Library"))
+    let emptyBackgroundView = BackgroundStackView(image: #imageLiteral(resourceName: "Compass"), title: NSLocalizedString("Table of content not available", comment: "Help message when table of content is not available"))
     weak var delegate: TableOfContentControllerDelegate? = nil
     
     var url: URL?

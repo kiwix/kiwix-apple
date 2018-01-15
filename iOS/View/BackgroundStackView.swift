@@ -9,7 +9,9 @@
 import UIKit
 
 class BackgroundStackView: UIStackView {
-    init(image: UIImage, text: String) {
+    let labels = UIStackView()
+    
+    init(image: UIImage, title: String, subtitle: String? = nil) {
         let imageView: UIImageView = {
             let imageView = UIImageView(image: image)
             imageView.contentMode = .scaleAspectFit
@@ -19,16 +21,31 @@ class BackgroundStackView: UIStackView {
             return imageView
         }()
         
-        let label: UILabel = {
+        let titleLabel: UILabel = {
             let label = UILabel()
-            label.text = text
+            label.text = title
             label.textAlignment = .center
             label.adjustsFontSizeToFitWidth = true
             label.textColor = UIColor.gray
-            label.font = UIFont.systemFont(ofSize: 22, weight: .medium)
+            label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
             label.numberOfLines = 0
             return label
         }()
+        labels.addArrangedSubview(titleLabel)
+        
+        if let subtitle = subtitle {
+            let subtitleLabel: UILabel = {
+                let label = UILabel()
+                label.text = subtitle
+                label.textAlignment = .center
+                label.adjustsFontSizeToFitWidth = true
+                label.textColor = UIColor.lightGray
+                label.font = UIFont.systemFont(ofSize: 15)
+                label.numberOfLines = 0
+                return label
+            }()
+            labels.addArrangedSubview(subtitleLabel)
+        }
         
         super.init(frame: .zero)
         
@@ -37,8 +54,11 @@ class BackgroundStackView: UIStackView {
         distribution = .equalSpacing
         alignment = .center
         
+        labels.axis = .vertical
+        labels.spacing = 5
+        
         addArrangedSubview(imageView)
-        addArrangedSubview(label)
+        addArrangedSubview(labels)
     }
     
     required init(coder: NSCoder) {
