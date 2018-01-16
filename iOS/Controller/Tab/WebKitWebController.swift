@@ -76,6 +76,13 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     
     // MARK: - Capabilities
     
+    func extractSnippet(completion: @escaping ((String?) -> Void)) {
+        let javascript = "snippet.parse()"
+        webView.evaluateJavaScript(javascript) { (result, error) in
+            completion(result as? String)
+        }
+    }
+    
     func extractTableOfContents(completion: @escaping ((URL?, [TableOfContentItem]) -> Void)) {
         let javascript = "tableOfContents.getHeadingObjects()"
         webView.evaluateJavaScript(javascript, completionHandler: { (results, error) in

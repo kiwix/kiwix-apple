@@ -21,6 +21,7 @@ class BookmarkController: PanelTabController, UITableViewDataSource, UITableView
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: tableView.separatorInset.left + 38, bottom: 0, right: 0)
         tableView.register(ArticleTableCell.self, forCellReuseIdentifier: "Cell")
         configure()
     }
@@ -69,7 +70,7 @@ class BookmarkController: PanelTabController, UITableViewDataSource, UITableView
     private let managedObjectContext = CoreDataContainer.shared.viewContext
     private lazy var fetchedResultController: NSFetchedResultsController<Article> = {
         let fetchRequest = Article.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: false)]
         fetchRequest.predicate = NSPredicate(format: "isBookmarked == true")
         fetchRequest.fetchBatchSize = 20
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest,

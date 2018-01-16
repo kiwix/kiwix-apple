@@ -70,8 +70,9 @@ protocol WebViewController {
     func goBack()
     func goForward()
     func load(url: URL)
-    func scrollToTableOfContentItem(index: Int)
+    func extractSnippet(completion: @escaping ((String?) -> Void))
     func extractTableOfContents(completion: @escaping ((URL?, [TableOfContentItem]) -> Void))
+    func scrollToTableOfContentItem(index: Int)
 }
 
 protocol WebViewControllerDelegate: class {

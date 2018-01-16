@@ -72,7 +72,7 @@ function Snippet () {
             var localSnippet = this.extractCleanText(elements[i]);
             if (snippet != '') {snippet += ' ';}
             snippet += localSnippet;
-            if (snippet.length > 400) {break;}
+            if (snippet.length > 200) {break;}
         }
         return snippet;
     }

@@ -71,6 +71,12 @@ class LegacyWebController: UIViewController, UIWebViewDelegate, WebViewControlle
     
     // MARK: - Capabilities
     
+    func extractSnippet(completion: @escaping ((String?) -> Void)) {
+        let javascript = "snippet.parse()"
+        let snippet = webView.stringByEvaluatingJavaScript(from: javascript)
+        completion(snippet)
+    }
+    
     func extractTableOfContents(completion: @escaping ((URL?, [TableOfContentItem]) -> Void)) {
         let javascript = "tableOfContents.getHeadingObjects()"
         guard let elements = webView.context.evaluateScript(javascript).toArray() as? [[String: Any]] else {completion(currentURL, []); return}

@@ -289,16 +289,23 @@ extension MainController: BarButtonItemDelegate {
     func buttonLongPresse(item: BarButtonItem, button: UIButton) {
         switch item {
         case bookmarkButtonItem:
+            let context = CoreDataContainer.shared.viewContext
             guard let item = item as? BookmarkButtonItem,
-                let url = tabsController.webController?.currentURL,
-                let title = tabsController.webController?.currentTitle,
-                let article = Article.fetch(url: url, insertIfNotExist: true, context: CoreDataContainer.shared.viewContext) else {return}
+                let webController = tabsController.webController,
+                let url = webController.currentURL,
+                let title = webController.currentTitle,
+                let article = Article.fetch(url: url, insertIfNotExist: true, context: context) else {return}
             
             article.title = title
             article.isBookmarked = !article.isBookmarked
             article.bookmarkDate = Date()
-            let isBookmarked = article.isBookmarked
+            webController.extractSnippet(completion: { (snippet) in
+                context.perform({
+                    article.snippet = snippet
+                })
+            })
             
+            let isBookmarked = article.isBookmarked
             let controller = HUDController()
             controller.direction = isBookmarked ? .down : .up
             controller.imageView.image = isBookmarked ? #imageLiteral(resourceName: "StarAdd") : #imageLiteral(resourceName: "StarRemove")
