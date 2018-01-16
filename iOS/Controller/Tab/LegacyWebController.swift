@@ -95,9 +95,13 @@ class LegacyWebController: UIViewController, UIWebViewDelegate, WebViewControlle
         guard let url = request.url else {return false}
         if url.isKiwixURL {
             return true
-        } else {
+        } else if url.scheme == "http" || url.scheme == "https" {
             let controller = SFSafariViewController(url: url)
             present(controller, animated: true, completion: nil)
+            return false
+        } else if url.scheme == "geo" {
+            return false
+        } else {
             return false
         }
     }

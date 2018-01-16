@@ -103,9 +103,14 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         guard let url = navigationAction.request.url else {return decisionHandler(.cancel)}
         if url.isKiwixURL {
             decisionHandler(.allow)
-        } else {
+        } else if url.scheme == "http" || url.scheme == "https" {
             let controller = SFSafariViewController(url: url)
             present(controller, animated: true, completion: nil)
+            decisionHandler(.cancel)
+        } else if url.scheme == "geo" {
+            // show map
+            decisionHandler(.cancel)
+        } else {
             decisionHandler(.cancel)
         }
     }
