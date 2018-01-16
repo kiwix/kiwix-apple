@@ -87,11 +87,8 @@ class HUDTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             hud.heightAnchor.constraint(lessThanOrEqualTo: container.heightAnchor, multiplier: 0.5),
             hud.widthAnchor.constraint(lessThanOrEqualTo: container.widthAnchor, multiplier: 0.5),
             hud.widthAnchor.constraint(equalTo: hud.heightAnchor),
+            hud.widthAnchor.constraint(lessThanOrEqualToConstant: 250),
             hud.centerXAnchor.constraint(equalTo: container.centerXAnchor)])
-        
-        let widthConstraint = hud.widthAnchor.constraint(equalToConstant: 250)
-        widthConstraint.priority = .defaultHigh
-        widthConstraint.isActive = true
         
         let topConstraint = hud.bottomAnchor.constraint(equalTo: container.topAnchor)
         let centerConstraint = hud.centerYAnchor.constraint(equalTo: container.centerYAnchor)

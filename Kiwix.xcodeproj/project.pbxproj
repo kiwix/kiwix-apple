@@ -160,8 +160,8 @@
 		97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */; };
 		97D00A791FBB89F000165629 /* Inject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* Inject.js */; };
 		97D00A7D1FBB89FB00165629 /* Inject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* Inject.js */; };
-		97D00A7F1FBB92D400165629 /* HTMLHeading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D00A7E1FBB92D400165629 /* HTMLHeading.swift */; };
-		97D00A801FBB92D400165629 /* HTMLHeading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D00A7E1FBB92D400165629 /* HTMLHeading.swift */; };
+		97D00A7F1FBB92D400165629 /* TableOfContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D00A7E1FBB92D400165629 /* TableOfContentItem.swift */; };
+		97D00A801FBB92D400165629 /* TableOfContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D00A7E1FBB92D400165629 /* TableOfContentItem.swift */; };
 		97D9D5641FA8F00E005B28F0 /* 1.9.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97D9D5631FA8F00E005B28F0 /* 1.9.xcmappingmodel */; };
 		97D9D5651FA8F00E005B28F0 /* 1.9.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97D9D5631FA8F00E005B28F0 /* 1.9.xcmappingmodel */; };
 		97DB65DA1D4576B600A2CC42 /* BookmarkWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */; };
@@ -316,7 +316,7 @@
 		97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryMasterController.swift; sourceTree = "<group>"; };
 		97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		97C353AB1FAB742B00230B3E /* PanelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelController.swift; sourceTree = "<group>"; };
-		97D00A7E1FBB92D400165629 /* HTMLHeading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLHeading.swift; sourceTree = "<group>"; };
+		97D00A7E1FBB92D400165629 /* TableOfContentItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableOfContentItem.swift; sourceTree = "<group>"; };
 		97D231761E677C6700DCD4A4 /* JSInjection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSInjection.swift; sourceTree = "<group>"; };
 		97D6812B1D6F70DE00E5FA99 /* 1.5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.5.xcdatamodel; sourceTree = "<group>"; };
 		97D6812C1D6F70DE00E5FA99 /* 1.7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.7.xcdatamodel; sourceTree = "<group>"; };
@@ -1028,7 +1028,7 @@
 			children = (
 				97A9F6F41E2E990500F423AA /* Inject.js */,
 				97D231761E677C6700DCD4A4 /* JSInjection.swift */,
-				97D00A7E1FBB92D400165629 /* HTMLHeading.swift */,
+				97D00A7E1FBB92D400165629 /* TableOfContentItem.swift */,
 			);
 			path = Javascript;
 			sourceTree = "<group>";
@@ -1829,7 +1829,7 @@
 				97A36C731F8EA6FA0079B452 /* ManagedObjectProperties.swift in Sources */,
 				975FDADA1F6082DA00A10E8C /* AppDelegate.swift in Sources */,
 				972520F82009434900B60A80 /* PanelController.swift in Sources */,
-				97D00A801FBB92D400165629 /* HTMLHeading.swift in Sources */,
+				97D00A801FBB92D400165629 /* TableOfContentItem.swift in Sources */,
 				97E429911FBDF48800ABE62E /* DirectoryMonitor.swift in Sources */,
 				97A996D71F62F1B5007A6282 /* SearchProcedure.swift in Sources */,
 				97D9D5651FA8F00E005B28F0 /* 1.9.xcmappingmodel in Sources */,
@@ -1900,7 +1900,7 @@
 				972520FE2009434900B60A80 /* BookmarkController.swift in Sources */,
 				97B1D0B61F9A3AE7000C7848 /* Network.swift in Sources */,
 				972520FF2009434900B60A80 /* HistoryController.swift in Sources */,
-				97D00A7F1FBB92D400165629 /* HTMLHeading.swift in Sources */,
+				97D00A7F1FBB92D400165629 /* TableOfContentItem.swift in Sources */,
 				97A36C5E1F8EA6E60079B452 /* Book.swift in Sources */,
 				97D9D5641FA8F00E005B28F0 /* 1.9.xcmappingmodel in Sources */,
 				97E4123A1FB20DAB009585DC /* SearchResultCells.swift in Sources */,
