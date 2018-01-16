@@ -9,11 +9,40 @@
 import UIKit
 
 class HUDController: UIViewController, UIViewControllerTransitioningDelegate {
-    let visualView = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
+    private let visualView = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
+    let stackView = UIStackView()
+    
+    let imageView = UIImageView(image: #imageLiteral(resourceName: "StarAdd"))
+    let label = UILabel()
     var direction: HUDAnimationDirection = .down
     
     override func loadView() {
         view = visualView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        imageView.contentMode = .scaleAspectFit
+        imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        label.setContentCompressionResistancePriority(.required, for: .vertical)
+        label.textColor = .gray
+        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        
+        stackView.axis = .vertical
+        stackView.spacing = 25
+        stackView.alignment = .center
+        stackView.distribution = .fillProportionally
+        stackView.addArrangedSubview(imageView)
+        stackView.addArrangedSubview(label)
+        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        visualView.contentView.addSubview(stackView)
+        NSLayoutConstraint.activate([
+            stackView.widthAnchor.constraint(equalTo: visualView.contentView.widthAnchor, multiplier: 0.8),
+            stackView.heightAnchor.constraint(equalTo: visualView.contentView.heightAnchor, multiplier: 0.8),
+            stackView.centerXAnchor.constraint(equalTo: visualView.contentView.centerXAnchor),
+            stackView.centerYAnchor.constraint(equalTo: visualView.contentView.centerYAnchor)])
     }
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
@@ -44,6 +73,8 @@ class HUDTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             transitionContext.completeTransition(false)
             return
         }
+        NSLayoutConstraint.deactivate(container.constraints)
+        NSLayoutConstraint.deactivate(hud.constraints)
         
         hud.layer.cornerRadius = 10
         hud.clipsToBounds = true
@@ -105,8 +136,6 @@ class HUDTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
                        options: presenting ? .curveEaseOut : .curveEaseIn,
                        animations:{ container.layoutIfNeeded()
         }) { (finished) in
-            NSLayoutConstraint.deactivate(container.constraints)
-            NSLayoutConstraint.deactivate(hud.constraints)
             transitionContext.completeTransition(true)
         }
     }

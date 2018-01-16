@@ -295,11 +295,13 @@ extension MainController: BarButtonItemDelegate {
             
             let controller = HUDController()
             controller.direction = isBookmarked ? .down : .up
+            controller.imageView.image = isBookmarked ? #imageLiteral(resourceName: "StarAdd") : #imageLiteral(resourceName: "StarRemove")
+            controller.label.text = isBookmarked ? NSLocalizedString("Added", comment: "Bookmark HUD") : NSLocalizedString("Removed", comment: "Bookmark HUD")
             controller.modalPresentationStyle = .overFullScreen
             controller.transitioningDelegate = controller
             present(controller, animated: true, completion: {
                 item.button.isBookmarked = isBookmarked
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
                     controller.dismiss(animated: true, completion: nil)
                 })
             })
