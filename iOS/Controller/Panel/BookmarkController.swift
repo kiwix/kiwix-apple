@@ -21,7 +21,7 @@ class BookmarkController: PanelTabController, UITableViewDataSource, UITableView
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(ArticleTableCell.self, forCellReuseIdentifier: "Cell")
         configure()
     }
     
@@ -45,17 +45,16 @@ class BookmarkController: PanelTabController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ArticleTableCell
         configure(bookCell: cell, indexPath: indexPath)
         return cell
     }
     
-    func configure(bookCell cell: UITableViewCell, indexPath: IndexPath, animated: Bool = false) {
+    func configure(bookCell cell: ArticleTableCell, indexPath: IndexPath, animated: Bool = false) {
         let article = fetchedResultController.object(at: indexPath)
-        
-        cell.textLabel?.text = article.title
-//        cell.subtitleLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
-//        cell.logoView.image = UIImage(data: book.favIcon ?? Data())
+        cell.titleLabel.text = article.title
+        cell.snippetLabel.text = article.snippet
+        cell.faviconImageView.image = UIImage(data: article.book?.favIcon ?? Data())
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -105,7 +104,7 @@ class BookmarkController: PanelTabController, UITableViewDataSource, UITableView
             guard let indexPath = indexPath else {return}
             tableView.deleteRows(at: [indexPath], with: .fade)
         case .update:
-            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) else {return}
+            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? ArticleTableCell else {return}
             configure(bookCell: cell, indexPath: indexPath, animated: true)
         case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}

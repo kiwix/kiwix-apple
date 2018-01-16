@@ -8,23 +8,7 @@
 
 import UIKit
 
-class SearchResultCell: UITableViewCell {
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = UIColor.clear
-        configure()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        backgroundColor = UIColor.clear
-        configure()
-    }
-    
-    func configure() {}
-}
-
-class SearchResultTitleCell: SearchResultCell {
+class SearchResultTitleCell: ArticleTableCell {
     let title = UILabel()
 
     override func configure() {
@@ -45,7 +29,7 @@ class SearchResultTitleCell: SearchResultCell {
     }
 }
 
-class SearchResultTitleIconSnippetCell: SearchResultCell {
+class SearchResultTitleIconSnippetCell: ArticleTableCell {
     let title = UILabel()
     let snippet = UILabel()
     let icon = UIImageView()
