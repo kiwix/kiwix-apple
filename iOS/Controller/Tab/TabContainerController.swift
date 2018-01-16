@@ -65,6 +65,7 @@ protocol WebViewController {
     var canGoBack: Bool {get}
     var canGoForward: Bool {get}
     var currentURL: URL? {get}
+    var currentTitle: String? {get}
     
     func goBack()
     func goForward()

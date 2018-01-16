@@ -34,7 +34,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     func applicationWillTerminate(_ application: UIApplication) {
         let context = CoreDataContainer.shared.viewContext
         if context.hasChanges {
-            try? context.save()
+            do {
+                try context.save()
+            } catch {
+                print(error)
+            }
         }
     }
     

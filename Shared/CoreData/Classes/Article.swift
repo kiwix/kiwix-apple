@@ -13,7 +13,7 @@ class Article: NSManagedObject {
     
     // MARK: - Fetch
     
-    class func fetch(url: URL, context: NSManagedObjectContext) -> Article? {
+    class func fetch(url: URL, insertIfNotExist: Bool, context: NSManagedObjectContext) -> Article? {
         guard let bookID = url.host,
             let book = Book.fetch(id: bookID, context: context) else {return nil}
         let path = url.path
@@ -21,10 +21,16 @@ class Article: NSManagedObject {
         let fetchRequest = Article.fetchRequest() as! NSFetchRequest<Article>
         fetchRequest.predicate = NSPredicate(format: "path = %@ AND book = %@", path, book)
         
-        guard let article = try? context.fetch(fetchRequest).first ?? Article(context: context) else {return nil}
-        article.path = path
-        article.book = book
-        return article
+        if let articles = try? context.fetch(fetchRequest), let article = articles.first {
+            return article
+        } else if insertIfNotExist {
+            let article = Article(context: context)
+            article.path = path
+            article.book = book
+            return article
+        } else {
+            return nil
+        }
     }
     
     class func fetchRecentBookmarks(count: Int, context: NSManagedObjectContext) -> [Article] {
@@ -35,12 +41,12 @@ class Article: NSManagedObject {
         return (try? context.fetch(request)) ?? [Article]()
     }
     
-    class func fetchBookmarked(in book: Book, with context: NSManagedObjectContext) -> [Article] {
-        let request = Article.fetchRequest() as! NSFetchRequest<Article>
-        request.predicate = NSPredicate(format: "book = %@ AND isBookmarked == true", book)
-        request.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: false)]
-        return (try? context.fetch(request)) ?? [Article]()
-    }
+//    class func fetchBookmarked(in book: Book, with context: NSManagedObjectContext) -> [Article] {
+//        let request = Article.fetchRequest() as! NSFetchRequest<Article>
+//        request.predicate = NSPredicate(format: "book = %@ AND isBookmarked == true", book)
+//        request.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: false)]
+//        return (try? context.fetch(request)) ?? [Article]()
+//    }
     
     // MARK: - CoreSpotlight
     

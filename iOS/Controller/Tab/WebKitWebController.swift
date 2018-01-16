@@ -46,6 +46,10 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         get {return webView.url}
     }
     
+    var currentTitle: String? {
+        return webView.title
+    }
+    
     // MARK: - Configure
     
     private func configureWebView() {

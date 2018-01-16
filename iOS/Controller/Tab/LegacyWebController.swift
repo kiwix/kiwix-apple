@@ -11,6 +11,7 @@ import SafariServices
 import JavaScriptCore
 
 class LegacyWebController: UIViewController, UIWebViewDelegate, WebViewController {
+    
     private let webView = UIWebView()
     weak var delegate: WebViewControllerDelegate?
     
@@ -38,6 +39,10 @@ class LegacyWebController: UIViewController, UIWebViewDelegate, WebViewControlle
     
     var currentURL: URL? {
         get {return webView.request?.url}
+    }
+    
+    var currentTitle: String? {
+        get {return webView.stringByEvaluatingJavaScript(from: "document.title")}
     }
     
     // MARK: - Configure

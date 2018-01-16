@@ -215,6 +215,12 @@ extension MainController: TabContainerControllerDelegate {
         if isShowingPanel && panelController.mode == .tableOfContent {
             updateTableOfContents()
         }
+        if let url = tabsController.webController?.currentURL,
+            let article = Article.fetch(url: url, insertIfNotExist: false, context: CoreDataContainer.shared.viewContext) {
+            bookmarkButtonItem.button.isBookmarked = article.isBookmarked
+        } else {
+            bookmarkButtonItem.button.isBookmarked = false
+        }
     }
 }
 
@@ -278,14 +284,23 @@ extension MainController: BarButtonItemDelegate {
     func buttonLongPresse(item: BarButtonItem, button: UIButton) {
         switch item {
         case bookmarkButtonItem:
-            guard let item = item as? BookmarkButtonItem else {return}
+            guard let item = item as? BookmarkButtonItem,
+                let url = tabsController.webController?.currentURL,
+                let title = tabsController.webController?.currentTitle,
+                let article = Article.fetch(url: url, insertIfNotExist: true, context: CoreDataContainer.shared.viewContext) else {return}
+            
+            article.title = title
+            article.isBookmarked = !article.isBookmarked
+            let isBookmarked = article.isBookmarked
             
             let controller = HUDController()
+            controller.direction = isBookmarked ? .down : .up
             controller.modalPresentationStyle = .overFullScreen
+            controller.transitioningDelegate = controller
             present(controller, animated: true, completion: {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {
+                item.button.isBookmarked = isBookmarked
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4, execute: {
                     controller.dismiss(animated: true, completion: nil)
-                    item.button.isBookmarked = !item.button.isBookmarked
                 })
             })
         default:
