@@ -60,6 +60,7 @@ class MainController: UIViewController, UISearchControllerDelegate {
         case "PanelController":
             panelController = segue.destination as! PanelController
             panelController.tableOfContent.delegate = self
+            panelController.bookmark.delegate = self
         default:
             break
         }
@@ -155,13 +156,17 @@ class MainController: UIViewController, UISearchControllerDelegate {
 
 // MARK: - Panel Control
 
-extension MainController: TableOfContentControllerDelegate {
+extension MainController: TableOfContentControllerDelegate, BookmarkControllerDelegate {
     func didTapTableOfContentItem(index: Int, item: TableOfContentItem) {
         tabsController.webController?.scrollToTableOfContentItem(index: index)
         if traitCollection.horizontalSizeClass == .compact {
             tableOfContentButtonItem.isFocused = false
             hidePanel()
         }
+    }
+    
+    func didTapBookmark(articleURL: URL) {
+        tabsController.load(url: articleURL)
     }
     
     func showPanel(mode: PanelMode) {
@@ -291,6 +296,7 @@ extension MainController: BarButtonItemDelegate {
             
             article.title = title
             article.isBookmarked = !article.isBookmarked
+            article.bookmarkDate = Date()
             let isBookmarked = article.isBookmarked
             
             let controller = HUDController()
