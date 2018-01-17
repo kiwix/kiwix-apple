@@ -24,9 +24,9 @@
 
 - (NSString *_Nullable)getMainPageURL:(NSString *_Nonnull)bookID NS_REFINED_FOR_SWIFT;
 
-- (void)startSearch:(NSString *_Nonnull)searchTerm NS_REFINED_FOR_SWIFT;
-- (NSDictionary *_Nullable)getNextSearchResult NS_REFINED_FOR_SWIFT;
-- (void)stopSearch;
-- (NSArray *_Nonnull)getSearchSuggestions:(NSString *_Nonnull)searchTerm NS_REFINED_FOR_SWIFT;
+- (void)startIndexSearch:(NSString *_Nonnull)searchTerm NS_REFINED_FOR_SWIFT;
+- (NSDictionary *_Nullable)getNextIndexSearchResult NS_REFINED_FOR_SWIFT;
+- (void)stopIndexSearch;
+- (NSArray *_Nonnull)getTitleSearchResults:(NSString *_Nonnull)searchTerm NS_REFINED_FOR_SWIFT;
 
 @end

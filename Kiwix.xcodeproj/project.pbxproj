@@ -56,7 +56,6 @@
 		972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972E6F631FA11A6100F5C927 /* RoundedButton.swift */; };
 		974000151DB008C6009A740D /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9788419C1DA2FF2A00D22D3C /* MainInterface.storyboard */; };
 		97533B461F4C723900F6651A /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97533B451F4C723900F6651A /* MainWindowController.swift */; };
-		975415D41F54C1870007EA6C /* SearchProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975415D31F54C1870007EA6C /* SearchProcedure.swift */; };
 		975FDADA1F6082DA00A10E8C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDAD91F6082DA00A10E8C /* AppDelegate.swift */; };
 		975FDAE11F6082DA00A10E8C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 975FDAE01F6082DA00A10E8C /* Assets.xcassets */; };
 		975FDAE41F6082DA00A10E8C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975FDAE21F6082DA00A10E8C /* LaunchScreen.storyboard */; };
@@ -724,6 +723,7 @@
 			children = (
 				977D7BBD1F9FC618009A8703 /* Queue.swift */,
 				9702BE211F97FA4300E6B4EE /* LibraryRefreshProcedure.swift */,
+				975415D31F54C1870007EA6C /* SearchProcedure.swift */,
 				977F983D1F9E43EC002ABFCE /* ScanProcedure.swift */,
 			);
 			path = Procedure;
@@ -972,7 +972,6 @@
 			isa = PBXGroup;
 			children = (
 				9768C2341F4B7BAC00FD499B /* AppDelegate.swift */,
-				975415D31F54C1870007EA6C /* SearchProcedure.swift */,
 				9767716E1F4378FC007ED0C2 /* Controller */,
 				97E983521F4DDB2C0021E96A /* View */,
 				976771731F4378FC007ED0C2 /* Storyboard */,
@@ -1871,7 +1870,6 @@
 				975FDAF81F608A2A00A10E8C /* URLProtocol.swift in Sources */,
 				9768C23B1F4B7F6300FD499B /* Preference.swift in Sources */,
 				97533B461F4C723900F6651A /* MainWindowController.swift in Sources */,
-				975415D41F54C1870007EA6C /* SearchProcedure.swift in Sources */,
 				97E983501F4CA54A0021E96A /* SearchController.swift in Sources */,
 				97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */,
 				97E9834E1F4CA0A00021E96A /* WebViewController.swift in Sources */,

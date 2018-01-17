@@ -9,12 +9,13 @@
 import ProcedureKit
 
 class SearchProcedure: Procedure {
-    
     let term: String
+    let ids: [ZimFileID]
     private(set) var results: [SearchResult] = []
     
-    init(term: String) {
+    init(term: String, ids: [ZimFileID] = []) {
         self.term = term
+        self.ids = ids
         super.init()
         name = "Search Procedure"
     }
@@ -33,12 +34,12 @@ class SearchProcedure: Procedure {
     }
     
     func indexedSearch() -> [SearchResult] {
-        defer {ZimMultiReader.shared.stopSearch()}
+        defer {ZimMultiReader.shared.stopIndexSearch()}
         
         guard !isCancelled else {return []}
         var results = [SearchResult]()
-        ZimMultiReader.shared.startSearch(term: term)
-        while let result = ZimMultiReader.shared.getNextSearchResult() {
+        ZimMultiReader.shared.startIndexSearch(term: term)
+        while let result = ZimMultiReader.shared.getNextIndexSearchResult() {
             guard !isCancelled else {return []}
             results.append(result)
         }
@@ -47,6 +48,6 @@ class SearchProcedure: Procedure {
     
     func titleSearch() -> [SearchResult]{
         guard !isCancelled else {return []}
-        return ZimMultiReader.shared.getSearchSuggestions(term: term)
+        return ZimMultiReader.shared.getTitleSearchResults(term: term)
     }
 }

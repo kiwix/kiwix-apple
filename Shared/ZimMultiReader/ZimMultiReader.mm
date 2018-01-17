@@ -132,7 +132,7 @@ std::vector<std::string> *searcherZimIDs = NULL;
 
 # pragma mark - Search
 
-- (void)startSearch:(NSString *)searchTerm {
+- (void)startIndexSearch:(NSString *)searchTerm {
     if (searcherZimIDs == NULL) {
         searcherZimIDs = new std::vector<std::string>;
     } else {
@@ -152,7 +152,7 @@ std::vector<std::string> *searcherZimIDs = NULL;
     searcher->search(searchTermC, offset, limit);
 }
 
-- (NSDictionary *)getNextSearchResult {
+- (NSDictionary *)getNextIndexSearchResult {
     if (searcher == NULL || searcherZimIDs == NULL) {return nil;}
     
     kiwix::Result *result = searcher->getNextResult();
@@ -172,14 +172,14 @@ std::vector<std::string> *searcherZimIDs = NULL;
     }
 }
 
-- (void)stopSearch {
+- (void)stopIndexSearch {
     delete searcher;
     delete searcherZimIDs;
     searcher = NULL;
     searcherZimIDs = NULL;
 }
 
-- (NSArray *)getSearchSuggestions:(NSString *)searchTerm {
+- (NSArray *)getTitleSearchResults:(NSString *)searchTerm {
     std::string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];
     NSMutableArray *suggestions = [[NSMutableArray alloc] init];
     
@@ -198,14 +198,6 @@ std::vector<std::string> *searcherZimIDs = NULL;
             NSString *path = [NSString stringWithCString:pathC.c_str() encoding:NSUTF8StringEncoding];
             [suggestions addObject:@{@"id": identifier, @"title": title, @"path": path}];
         }
-    }
-    
-    if (readers.size() > 1) {
-        [suggestions sortUsingComparator:^NSComparisonResult(NSDictionary * _Nonnull obj1, NSDictionary * _Nonnull obj2) {
-            NSString *title1 = [obj1 objectForKey:@"title"];
-            NSString *title2 = [obj2 objectForKey:@"title"];
-            return [title1 caseInsensitiveCompare:title2];
-        }];
     }
     
     return suggestions;

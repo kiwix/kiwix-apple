@@ -34,23 +34,23 @@ extension ZimMultiReader {
         return URL(bookID: bookID, contentPath: path)
     }
     
-    func startSearch(term: String) {__startSearch(term)}
+    func startIndexSearch(term: String) {__startIndexSearch(term)}
     
-    func getNextSearchResult() -> SearchResult? {
-        guard let result = __getNextSearchResult() as? Dictionary<String, String>,
+    func getNextIndexSearchResult() -> SearchResult? {
+        guard let result = __getNextIndexSearchResult() as? Dictionary<String, String>,
             let id = result["id"],
             let path = result["path"],
             let title = result["title"] else {return nil}
-        return SearchResult(bookID: id, path: path, title: title, snippet: result["snippet"])
+        return SearchResult(zimFileID: id, path: path, title: title, snippet: result["snippet"])
     }
     
-    func getSearchSuggestions(term: String) -> [SearchResult] {
-        return __getSearchSuggestions(term).flatMap { suggestion -> SearchResult? in
+    func getTitleSearchResults(term: String) -> [SearchResult] {
+        return __getTitleSearchResults(term).flatMap { suggestion -> SearchResult? in
             guard let suggestion = suggestion as? Dictionary<String, String>,
                 let id = suggestion["id"],
                 let title = suggestion["title"],
                 let path = suggestion["path"] else {return nil}
-            return SearchResult(bookID: id, path: path, title: title)
+            return SearchResult(zimFileID: id, path: path, title: title)
         }
     }
     

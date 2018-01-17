@@ -169,7 +169,7 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
         
         cell.titleLabel.text = result.title
         cell.snippetLabel.text = result.snippet
-        cell.faviconImageView.image = UIImage(data: Book.fetch(id: result.zimID, context: CoreDataContainer.shared.viewContext)?.favIcon ?? Data())
+        cell.faviconImageView.image = UIImage(data: Book.fetch(id: result.zimFileID, context: CoreDataContainer.shared.viewContext)?.favIcon ?? Data())
         cell.faviconImageView.contentMode = .scaleAspectFit
 
         return cell
@@ -184,7 +184,7 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        if results[indexPath.row].hasSnippet {
+        if results[indexPath.row].snippet != nil || results[indexPath.row].attributedSnippet != nil {
             return traitCollection.horizontalSizeClass == .regular ? 120 : 190
         } else {
             return 44

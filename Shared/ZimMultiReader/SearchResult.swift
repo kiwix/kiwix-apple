@@ -14,19 +14,15 @@
 
 
 class SearchResult {
-    let zimID: String
+    let zimFileID: ZimFileID
     let url: URL
     let title: String
     let snippet: String?
     let attributedSnippet: NSAttributedString?
     
-    var hasSnippet: Bool {
-        return snippet != nil || attributedSnippet != nil
-    }
-    
-    init?(bookID: String, path: String, title: String, snippet: String? = nil) {
-        guard let url = URL(bookID: bookID, contentPath: path) else {return nil}
-        self.zimID = bookID
+    init?(zimFileID: ZimFileID, path: String, title: String, snippet: String? = nil) {
+        guard let url = URL(bookID: zimFileID, contentPath: path) else {return nil}
+        self.zimFileID = zimFileID
         self.url = url
         self.title = title
         
