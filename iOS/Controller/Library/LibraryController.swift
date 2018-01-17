@@ -66,7 +66,7 @@ class LibraryController: UIViewController {
     }
 }
 
-class LibraryOnboardingController: BaseController {
+class LibraryOnboardingController: PresentationBaseController {
     let topStackView = UIStackView()
     let stackView = UIStackView()
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)

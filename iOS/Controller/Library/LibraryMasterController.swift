@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import ProcedureKit
 
-class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
+class LibraryMasterController: PresentationBaseController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     let tableView = UITableView(frame: .zero, style: .grouped)
     let refreshControl = UIRefreshControl()
     

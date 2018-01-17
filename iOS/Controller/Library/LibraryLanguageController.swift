@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LibraryLanguageController: BaseController, UITableViewDelegate, UITableViewDataSource {
+class LibraryLanguageController: PresentationBaseController, UITableViewDelegate, UITableViewDataSource {
     let tableView = UITableView(frame: .zero, style: .grouped)
     let segmentedControl = UISegmentedControl(items: [(Locale.current as NSLocale).displayName(forKey: .identifier, value: Locale.preferredLanguages[0])!,
                                                       NSLocalizedString("Original", comment: "Language lanuguage filter display name control")])

@@ -70,7 +70,7 @@ extension URL {
     static let resourceDirectory = Bundle.main.resourceURL!
 }
 
-class BaseController: UIViewController {
+class PresentationBaseController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
