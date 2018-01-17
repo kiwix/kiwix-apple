@@ -129,7 +129,6 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section < fetchedResultControllerSectionCount {
             let controller = LibraryBookDetailController(book: fetchedResultController.object(at: indexPath))
             showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
