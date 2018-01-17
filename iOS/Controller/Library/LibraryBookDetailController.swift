@@ -25,6 +25,7 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
     }
     let metas: [[BookMeta]] = [
         [.size, .date],
+        [.hasIndex, .hasPicture],
         [.articleCount, .mediaCount],
         [.creator, .publisher]
     ]
@@ -40,7 +41,7 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
     }()
     
     enum BookMeta: String {
-        case size, date, articleCount, mediaCount, creator, publisher
+        case size, date, hasIndex, hasPicture, articleCount, mediaCount, creator, publisher
     }
     
     enum Action {
@@ -173,27 +174,34 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MetaCell") ?? UITableViewCell(style: .value1, reuseIdentifier: "MetaCell")
-            let meta = metas[indexPath.section-actions.count][indexPath.row]
+            guard let book = book else {return cell}
+            let meta = metas[indexPath.section - actions.count][indexPath.row]
             cell.selectionStyle = .none
             switch meta {
             case .size:
                 cell.textLabel?.text = NSLocalizedString("Size", comment: "Book Detail Cell")
-                cell.detailTextLabel?.text = book?.fileSizeDescription
+                cell.detailTextLabel?.text = book.fileSizeDescription
             case .date:
                 cell.textLabel?.text = NSLocalizedString("Date", comment: "Book Detail Cell")
-                cell.detailTextLabel?.text = book?.dateDescription
+                cell.detailTextLabel?.text = book.dateDescription
+            case .hasIndex:
+                cell.textLabel?.text = NSLocalizedString("Indexed", comment: "Book Detail Cell")
+                cell.detailTextLabel?.text = ZimMultiReader.shared.hasIndex(id: book.id) ? NSLocalizedString("Yes", comment: "Book Detail Cell, has index") : NSLocalizedString("No", comment: "Book Detail Cell, does not have index")
+            case .hasPicture:
+                cell.textLabel?.text = NSLocalizedString("Picture", comment: "Book Detail Cell")
+                cell.detailTextLabel?.text = book.hasPic ? NSLocalizedString("Yes", comment: "Book Detail Cell, has picture") : NSLocalizedString("No", comment: "Book Detail Cell, does not have picture")
             case .articleCount:
                 cell.textLabel?.text = NSLocalizedString("Article Count", comment: "Book Detail Cell")
-                if let count = book?.articleCount {cell.detailTextLabel?.text = "\(count)"}
+                cell.detailTextLabel?.text = "\(book.articleCount)"
             case .mediaCount:
                 cell.textLabel?.text = NSLocalizedString("Media Count", comment: "Book Detail Cell")
-                if let count = book?.mediaCount {cell.detailTextLabel?.text = "\(count)"}
+                cell.detailTextLabel?.text = "\(book.mediaCount)"
             case .creator:
                 cell.textLabel?.text = NSLocalizedString("Creator", comment: "Book Detail Cell")
-                cell.detailTextLabel?.text = book?.creator
+                cell.detailTextLabel?.text = book.creator
             case .publisher:
                 cell.textLabel?.text = NSLocalizedString("Publisher", comment: "Book Detail Cell")
-                cell.detailTextLabel?.text = book?.publisher
+                cell.detailTextLabel?.text = book.publisher
             }
             return cell
         }
