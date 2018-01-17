@@ -26,6 +26,13 @@ class ArticleTableCell: UITableViewCell {
         configure()
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        titleLabel.text = nil
+        snippetLabel.text = nil
+        faviconImageView.image = nil
+    }
+    
     func configure() {
         titleLabel.setContentHuggingPriority(.defaultLow, for: .vertical)
         snippetLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)

@@ -21,8 +21,6 @@ class BookmarkController: PanelTabController, UITableViewDataSource, UITableView
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-//        tableView.rowHeight = UITableViewAutomaticDimension
-//        tableView.estimatedRowHeight = 80
         tableView.separatorInset = UIEdgeInsets(top: 0, left: tableView.separatorInset.left + 38, bottom: 0, right: 0)
         tableView.register(ArticleTableCell.self, forCellReuseIdentifier: "Cell")
         configure()

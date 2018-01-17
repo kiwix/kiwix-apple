@@ -19,16 +19,11 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     private(set) var searchText = ""
     private(set) var results: [SearchResult] = []
     
-    let showIcon = true
-    
     override func loadView() {
         view = SearchResultControllerBackgroundView()
-        searchResultView.tableView.register(SearchResultTitleCell.self, forCellReuseIdentifier: "TitleCell")
-        searchResultView.tableView.register(SearchResultTitleSnippetCell.self, forCellReuseIdentifier: "TitleSnippetCell")
-        searchResultView.tableView.register(SearchResultTitleIconSnippetCell.self, forCellReuseIdentifier: "TitleIconSnippetCell")
+        searchResultView.tableView.register(ArticleTableCell.self, forCellReuseIdentifier: "Cell")
         searchResultView.tableView.dataSource = self
         searchResultView.tableView.delegate = self
-        searchResultView.tableView.rowHeight = UITableViewAutomaticDimension
     }
     
     override func viewDidLoad() {
@@ -169,36 +164,14 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ArticleTableCell
         let result = results[indexPath.row]
-        let identifier: String = {
-            switch (showIcon, result.hasSnippet) {
-            case (true, _):
-                return "TitleIconSnippetCell"
-            case (false, true):
-                return "TitleSnippetCell"
-            case (false, false):
-                return "TitleCell"
-            }
-        }()
-        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
-        if let cell = cell as? SearchResultTitleCell {
-            cell.title.text = result.title
-        } else if let cell = cell as? SearchResultTitleSnippetCell {
-            cell.titleLabel.text = result.title
-            if let snippet = result.snippet {
-                cell.snippetLabel.text = snippet
-            } else if let snippet = result.attributedSnippet {
-                cell.snippetLabel.attributedText = snippet
-            }
-        } else if let cell = cell as? SearchResultTitleIconSnippetCell {
-            cell.title.text = result.title
-            cell.icon.image = UIImage(data: Book.fetch(id: result.zimID, context: CoreDataContainer.shared.viewContext)?.favIcon ?? Data())
-            if let snippet = result.snippet {
-                cell.snippet.text = snippet
-            } else if let snippet = result.attributedSnippet {
-                cell.snippet.attributedText = snippet
-            }
-        }
+        
+        cell.titleLabel.text = result.title
+        cell.snippetLabel.text = result.snippet
+        cell.faviconImageView.image = UIImage(data: Book.fetch(id: result.zimID, context: CoreDataContainer.shared.viewContext)?.favIcon ?? Data())
+        cell.faviconImageView.contentMode = .scaleAspectFit
+
         return cell
     }
     

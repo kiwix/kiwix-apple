@@ -198,7 +198,6 @@ class LibraryMasterController: BaseController, UITableViewDelegate, UITableViewD
             } else if let cell = tableView.cellForRow(at: indexPath) as? LibraryBookCell {
                 configure(bookCell: cell, indexPath: indexPath, animated: true)
             }
-            
         case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
             tableView.deleteRows(at: [indexPath], with: .fade)

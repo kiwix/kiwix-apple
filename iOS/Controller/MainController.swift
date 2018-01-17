@@ -20,6 +20,7 @@ class MainController: UIViewController, UISearchControllerDelegate {
     private(set) var tabsController: TabContainerController!
     private var panelController: PanelController!
     private(set) lazy var libraryController = LibraryController()
+    private lazy var settingController = SettingNavigationController()
     
     // MARK: - Constraints
     
@@ -280,7 +281,7 @@ extension MainController: BarButtonItemDelegate {
         case libraryButtonItem:
             present(libraryController, animated: true, completion: nil)
         case settingButtonItem:
-            break
+            present(settingController, animated: true, completion: nil)
         default:
             break
         }
