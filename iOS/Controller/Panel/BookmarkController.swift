@@ -21,6 +21,8 @@ class BookmarkController: PanelTabController, UITableViewDataSource, UITableView
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+//        tableView.rowHeight = UITableViewAutomaticDimension
+//        tableView.estimatedRowHeight = 80
         tableView.separatorInset = UIEdgeInsets(top: 0, left: tableView.separatorInset.left + 38, bottom: 0, right: 0)
         tableView.register(ArticleTableCell.self, forCellReuseIdentifier: "Cell")
         configure()
@@ -55,7 +57,13 @@ class BookmarkController: PanelTabController, UITableViewDataSource, UITableView
         let article = fetchedResultController.object(at: indexPath)
         cell.titleLabel.text = article.title
         cell.snippetLabel.text = article.snippet
-        cell.faviconImageView.image = UIImage(data: article.book?.favIcon ?? Data())
+        if let data = article.thumbnailData {
+            cell.faviconImageView.image = UIImage(data: data)
+            cell.faviconImageView.contentMode = .scaleAspectFill
+        } else {
+            cell.faviconImageView.image = UIImage(data: article.book?.favIcon ?? Data())
+            cell.faviconImageView.contentMode = .scaleAspectFit
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

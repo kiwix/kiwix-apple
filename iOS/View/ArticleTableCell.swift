@@ -31,7 +31,8 @@ class ArticleTableCell: UITableViewCell {
         snippetLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
         snippetLabel.numberOfLines = 0
         snippetLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
-        faviconImageView.contentMode = .scaleAspectFit
+        faviconImageView.clipsToBounds = true
+        faviconImageView.layer.cornerRadius = 4
 
         textStackView.axis = .vertical
         textStackView.alignment = .leading
@@ -44,14 +45,16 @@ class ArticleTableCell: UITableViewCell {
             contentView.addSubview($0)
         })
         NSLayoutConstraint.activate([
-            contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
-            faviconImageView.heightAnchor.constraint(equalToConstant: 30),
-            faviconImageView.widthAnchor.constraint(equalToConstant: 30),
+            faviconImageView.heightAnchor.constraint(equalToConstant: 34),
+            faviconImageView.widthAnchor.constraint(equalToConstant: 34),
             faviconImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             faviconImageView.leftAnchor.constraint(equalTo: contentView.readableContentGuide.leftAnchor),
             textStackView.leftAnchor.constraint(equalTo: faviconImageView.rightAnchor, constant: 8),
             textStackView.rightAnchor.constraint(equalTo: contentView.readableContentGuide.rightAnchor),
             textStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
             textStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6)])
+        let heightConstraint = contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 44)
+        heightConstraint.priority = .defaultHigh
+        heightConstraint.isActive = true
     }
 }

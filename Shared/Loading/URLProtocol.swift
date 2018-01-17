@@ -8,7 +8,7 @@
 
 class KiwixURLProtocol: URLProtocol {
     override class func canInit(with request: URLRequest) -> Bool {
-        return request.url?.scheme!.caseInsensitiveCompare("Kiwix") == .orderedSame ? true : false
+        return request.url?.scheme?.caseInsensitiveCompare("Kiwix") == .orderedSame ? true : false
     }
     
     override class func canonicalRequest(for request: URLRequest) -> URLRequest {
@@ -20,7 +20,6 @@ class KiwixURLProtocol: URLProtocol {
     }
     
     override func startLoading() {
-        print(request.url!)
         guard let url = request.url,
             let contentPath = url.path.removingPercentEncoding,
             let id = url.host else {

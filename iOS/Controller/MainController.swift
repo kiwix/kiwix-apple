@@ -305,6 +305,13 @@ extension MainController: BarButtonItemDelegate {
                 })
             })
             
+            webController.extractImageURLs(completion: { (urls) in
+                guard let url = urls.first else {return}
+                context.perform({
+                    article.thumbImagePath = url.path
+                })
+            })
+            
             let isBookmarked = article.isBookmarked
             let controller = HUDController()
             controller.direction = isBookmarked ? .down : .up

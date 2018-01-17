@@ -83,11 +83,18 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         }
     }
     
+    func extractImageURLs(completion: @escaping (([URL]) -> Void)) {
+        let javascript = "getImageURLs()"
+        webView.evaluateJavaScript(javascript, completionHandler: { (results, error) in
+            let urls = (results as? [String])?.flatMap({ URL(string: $0) }) ?? [URL]()
+            completion(urls)
+        })
+    }
+    
     func extractTableOfContents(completion: @escaping ((URL?, [TableOfContentItem]) -> Void)) {
         let javascript = "tableOfContents.getHeadingObjects()"
         webView.evaluateJavaScript(javascript, completionHandler: { (results, error) in
-            guard let elements = results as? [[String: Any]] else {completion(self.currentURL, []); return}
-            let items = elements.flatMap({ TableOfContentItem(rawValue: $0) })
+            let items = (results as? [[String: Any]])?.flatMap({ TableOfContentItem(rawValue: $0) }) ?? [TableOfContentItem]()
             completion(self.currentURL, items)
         })
     }

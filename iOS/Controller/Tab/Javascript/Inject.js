@@ -89,5 +89,9 @@ function Snippet () {
     }
 }
 
+function getImageURLs () {
+    return [...document.getElementsByTagName("img")].map(e => e.src)
+}
+
 var tableOfContents = new TableOfContents();
 var snippet = new Snippet();

@@ -54,11 +54,12 @@ class Article: NSManagedObject {
         let attributeSet = CSSearchableItemAttributeSet()
         attributeSet.title = title
         attributeSet.contentDescription = snippet
-        attributeSet.thumbnailData = thumbImageData
         attributeSet.creator = book?.title
         attributeSet.htmlContentData = htmlContentData
         attributeSet.lastUsedDate = bookmarkDate
         attributeSet.path = path
+        attributeSet.thumbnailData = thumbnailData
+
         return CSSearchableItem(uniqueIdentifier: url?.absoluteString, domainIdentifier: book?.id, attributeSet: attributeSet)
     }
     
@@ -90,14 +91,10 @@ class Article: NSManagedObject {
         return try? Data(contentsOf: url)
     }
     
-    var thumbImageData: Data? {
-        if let bookID = book?.id, let path = thumbImagePath,
+    var thumbnailData: Data? {
+        guard let bookID = book?.id, let path = thumbImagePath,
             let url = URL(bookID: bookID, contentPath: path),
-            let data = try? Data(contentsOf: url) {
-            return data
-        } else {
-            return book?.favIcon as Data?
-        }
+            let data = try? Data(contentsOf: url) else {return nil}
+        return data
     }
-    
 }

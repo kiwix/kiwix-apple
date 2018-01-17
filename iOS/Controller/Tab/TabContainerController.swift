@@ -71,6 +71,7 @@ protocol WebViewController {
     func goForward()
     func load(url: URL)
     func extractSnippet(completion: @escaping ((String?) -> Void))
+    func extractImageURLs(completion: @escaping (([URL]) -> Void))
     func extractTableOfContents(completion: @escaping ((URL?, [TableOfContentItem]) -> Void))
     func scrollToTableOfContentItem(index: Int)
 }
