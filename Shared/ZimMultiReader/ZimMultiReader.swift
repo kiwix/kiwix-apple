@@ -36,7 +36,9 @@ extension ZimMultiReader {
         return URL(bookID: bookID, contentPath: path)
     }
     
-    func startIndexSearch(term: String) {__startIndexSearch(term)}
+    func startIndexSearch(term: String, zimFileIDs: Set<ZimFileID>?) {
+        __startIndexSearch(term, zimFileIDs: zimFileIDs)
+    }
     
     func getNextIndexSearchResult() -> SearchResult? {
         guard let result = __getNextIndexSearchResult() as? Dictionary<String, String>,
@@ -46,8 +48,8 @@ extension ZimMultiReader {
         return SearchResult(zimFileID: id, path: path, title: title, snippet: result["snippet"])
     }
     
-    func getTitleSearchResults(term: String) -> [SearchResult] {
-        return __getTitleSearchResults(term).flatMap { suggestion -> SearchResult? in
+    func getTitleSearchResults(term: String, zimFileIDs: Set<ZimFileID>?) -> [SearchResult] {
+        return __getTitleSearchResults(term, zimFileIDs: zimFileIDs).flatMap { suggestion -> SearchResult? in
             guard let suggestion = suggestion as? Dictionary<String, String>,
                 let id = suggestion["id"],
                 let title = suggestion["title"],

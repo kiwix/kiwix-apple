@@ -17,7 +17,7 @@
 std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>> readers;
 NSMutableDictionary *urls = [[NSMutableDictionary alloc] init]; // [ID: URL]
 kiwix::Searcher *searcher = NULL;
-std::vector<std::string> *searcherZimIDs = NULL;
+std::vector<std::string> *searcherZimIDs = new std::vector<std::string>;
 
 #pragma mark - init
 
@@ -142,17 +142,14 @@ std::vector<std::string> *searcherZimIDs = NULL;
 
 # pragma mark - Search
 
-- (void)startIndexSearch:(NSString *)searchTerm {
-    if (searcherZimIDs == NULL) {
-        searcherZimIDs = new std::vector<std::string>;
-    } else {
-        searcherZimIDs->clear();
-    }
-    if (searcher == NULL) {
-        searcher = new kiwix::Searcher;
-        for(auto pair: readers) {
-            searcher->add_reader(pair.second.get(), pair.first);
-            searcherZimIDs->push_back(pair.first);
+- (void)startIndexSearch:(NSString *)searchTerm zimFileIDs:(NSSet *)zimFileIDs {
+    searcher = new kiwix::Searcher;
+    searcherZimIDs->clear();
+    
+    for(auto iter: readers) {
+        if (zimFileIDs == nil || [zimFileIDs containsObject:[NSString stringWithCString:iter.first.c_str() encoding:NSUTF8StringEncoding]]) {
+            searcher->add_reader(iter.second.get(), iter.first);
+            searcherZimIDs->push_back(iter.first);
         }
     }
     
@@ -184,29 +181,29 @@ std::vector<std::string> *searcherZimIDs = NULL;
 
 - (void)stopIndexSearch {
     delete searcher;
-    delete searcherZimIDs;
     searcher = NULL;
-    searcherZimIDs = NULL;
 }
 
-- (NSArray *)getTitleSearchResults:(NSString *)searchTerm {
+- (NSArray *)getTitleSearchResults:(NSString *)searchTerm zimFileIDs:(NSSet *)zimFileIDs {
     std::string searchTermC = [searchTerm cStringUsingEncoding:NSUTF8StringEncoding];
     NSMutableArray *suggestions = [[NSMutableArray alloc] init];
     
     unsigned int count = max(5, int(30 / readers.size()));
     
     for(auto iter: readers) {
-        std::shared_ptr<kiwix::Reader> reader = iter.second;
-        reader->searchSuggestionsSmart(searchTermC, count);
-        
-        std::string titleC;
-        std::string pathC;
-        
         NSString *identifier = [NSString stringWithCString:iter.first.c_str() encoding:NSUTF8StringEncoding];
-        while (reader->getNextSuggestion(titleC, pathC)) {
-            NSString *title = [NSString stringWithCString:titleC.c_str() encoding:NSUTF8StringEncoding];
-            NSString *path = [NSString stringWithCString:pathC.c_str() encoding:NSUTF8StringEncoding];
-            [suggestions addObject:@{@"id": identifier, @"title": title, @"path": path}];
+        if (zimFileIDs == NULL || [zimFileIDs containsObject:identifier]) {
+            std::shared_ptr<kiwix::Reader> reader = iter.second;
+            reader->searchSuggestionsSmart(searchTermC, count);
+            
+            std::string titleC;
+            std::string pathC;
+            
+            while (reader->getNextSuggestion(titleC, pathC)) {
+                NSString *title = [NSString stringWithCString:titleC.c_str() encoding:NSUTF8StringEncoding];
+                NSString *path = [NSString stringWithCString:pathC.c_str() encoding:NSUTF8StringEncoding];
+                [suggestions addObject:@{@"id": identifier, @"title": title, @"path": path}];
+            }
         }
     }
     

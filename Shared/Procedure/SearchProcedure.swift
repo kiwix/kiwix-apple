@@ -21,16 +21,11 @@ class SearchProcedure: Procedure {
     }
     
     override func execute() {
-        defer {finish()}
-        
-        guard term != "" else {return}
-        
-        var results = indexedSearch()
-        if results.count == 0 {
-            results = titleSearch()
+        if term.count > 0 {
+            results += indexedSearch()
+            results += titleSearch()
         }
-
-        self.results = results
+        finish()
     }
     
     func indexedSearch() -> [SearchResult] {
@@ -38,7 +33,7 @@ class SearchProcedure: Procedure {
         
         guard !isCancelled else {return []}
         var results = [SearchResult]()
-        ZimMultiReader.shared.startIndexSearch(term: term)
+        ZimMultiReader.shared.startIndexSearch(term: term, zimFileIDs: Set(ids))
         while let result = ZimMultiReader.shared.getNextIndexSearchResult() {
             guard !isCancelled else {return []}
             results.append(result)
@@ -48,6 +43,6 @@ class SearchProcedure: Procedure {
     
     func titleSearch() -> [SearchResult]{
         guard !isCancelled else {return []}
-        return ZimMultiReader.shared.getTitleSearchResults(term: term)
+        return ZimMultiReader.shared.getTitleSearchResults(term: term, zimFileIDs: Set(ids))
     }
 }
