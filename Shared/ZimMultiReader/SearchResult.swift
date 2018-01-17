@@ -17,14 +17,16 @@ class SearchResult {
     let zimFileID: ZimFileID
     let url: URL
     let title: String
+    let probability: Double?
     let snippet: String?
     let attributedSnippet: NSAttributedString?
     
-    init?(zimFileID: ZimFileID, path: String, title: String, snippet: String? = nil) {
+    init?(zimFileID: ZimFileID, path: String, title: String, probability: Double? = nil, snippet: String? = nil) {
         guard let url = URL(bookID: zimFileID, contentPath: path) else {return nil}
         self.zimFileID = zimFileID
         self.url = url
         self.title = title
+        self.probability = probability
         
         guard let snippet = snippet else {
             self.snippet = nil

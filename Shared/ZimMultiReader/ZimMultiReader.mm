@@ -167,13 +167,10 @@ std::vector<std::string> *searcherZimIDs = new std::vector<std::string>;
         NSString *identifier = [NSString stringWithCString:searcherZimIDs->at(result->get_readerIndex()).c_str() encoding:NSUTF8StringEncoding];
         NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
         NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
+        NSNumber *probability = [[NSNumber alloc] initWithDouble:(double)result->get_score() / double(100)];
         NSString *snippet = [NSString stringWithCString:result->get_snippet().c_str() encoding:NSUTF8StringEncoding];
         delete result;
-        if ([snippet isEqualToString:@""]) {
-            return @{@"id": identifier, @"title": title, @"path": path};
-        } else {
-            return @{@"id": identifier, @"title": title, @"path": path, @"snippet": snippet};
-        }
+        return @{@"id": identifier, @"title": title, @"path": path, @"probability": probability, @"snippet": snippet};
     } else {
         return nil;
     }

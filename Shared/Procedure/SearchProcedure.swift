@@ -50,6 +50,7 @@ class SearchProcedure: Procedure {
     func sort() {
         let levenshtein = Levenshtein()
         results = results.map { (result) -> (result: SearchResult, score: Double) in
+            print(result.probability)
             let distance = levenshtein.calculateDistance(a: result.title[...], b: term[...])
             return (result, Double(distance))
         }.sorted { $0.score < $1.score }.map {$0.result}

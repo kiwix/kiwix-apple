@@ -41,11 +41,11 @@ extension ZimMultiReader {
     }
     
     func getNextIndexSearchResult() -> SearchResult? {
-        guard let result = __getNextIndexSearchResult() as? Dictionary<String, String>,
-            let id = result["id"],
-            let path = result["path"],
-            let title = result["title"] else {return nil}
-        return SearchResult(zimFileID: id, path: path, title: title, snippet: result["snippet"])
+        guard let result = __getNextIndexSearchResult() as? Dictionary<String, Any>,
+            let id = result["id"] as? String,
+            let path = result["path"] as? String,
+            let title = result["title"] as? String else {return nil}
+        return SearchResult(zimFileID: id, path: path, title: title, probability: result["probability"] as? Double, snippet: result["snippet"] as? String)
     }
     
     func getTitleSearchResults(term: String, zimFileIDs: Set<ZimFileID>?) -> [SearchResult] {
