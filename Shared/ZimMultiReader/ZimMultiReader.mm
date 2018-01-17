@@ -87,6 +87,16 @@ std::vector<std::string> *searcherZimIDs = NULL;
 
 # pragma mark - get content
 
+- (BOOL)hasIndex:(NSString *_Nonnull)zimFileID {
+    auto found = readers.find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
+    if (found == readers.end()) {
+        return NO;
+    } else {
+        std::shared_ptr<kiwix::Reader> reader = found->second;
+        return reader->hasFulltextIndex();
+    }
+}
+
 - (NSDictionary *)getContent:(NSString *)zimFileID contentURL:(NSString *)contentURL {
     auto found = readers.find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
     if (found == readers.end()) {

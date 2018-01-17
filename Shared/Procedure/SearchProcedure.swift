@@ -15,7 +15,7 @@ class SearchProcedure: Procedure {
     
     init(term: String, ids: [ZimFileID] = []) {
         self.term = term
-        self.ids = ids
+        self.ids = ids.count == 0 ? ZimMultiReader.shared.ids : ids
         super.init()
         name = "Search Procedure"
     }
