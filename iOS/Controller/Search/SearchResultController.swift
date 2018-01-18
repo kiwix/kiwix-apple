@@ -12,7 +12,9 @@ import ProcedureKit
 class SearchResultController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, ProcedureQueueDelegate {
     private let visualView = VisualEffectShadowView()
     private let searchResultView = SearchResultView()
-    private let constraints = Constraints()
+    private var regularConstraints = [NSLayoutConstraint]()
+    private var compactConstraints = [NSLayoutConstraint]()
+    
     private var observer: NSKeyValueObservation?
     
     private let queue = ProcedureQueue()
@@ -93,34 +95,34 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     }
     
     private func configureForHorizontalCompact() {
-        NSLayoutConstraint.deactivate(constraints.regular)
+        NSLayoutConstraint.deactivate(regularConstraints)
         view.subviews.forEach({ $0.removeFromSuperview() })
         searchResultView.removeFromSuperview()
         view.backgroundColor = .white
         
         searchResultView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(searchResultView)
-        if constraints.compact.count == 0 {
-            constraints.compact = {
-                if #available(iOS 11.0, *) {
-                    return [searchResultView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                            searchResultView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-                            searchResultView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-                            searchResultView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)]
-                } else {
-                    return [searchResultView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
-                            searchResultView.leftAnchor.constraint(equalTo: view.leftAnchor),
-                            searchResultView.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor),
-                            searchResultView.rightAnchor.constraint(equalTo: view.rightAnchor)]
-                }
-            }()
+        if compactConstraints.count == 0 {
+            if #available(iOS 11.0, *) {
+                compactConstraints += [
+                    searchResultView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                    searchResultView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+                    searchResultView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                    searchResultView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)]
+            } else {
+                compactConstraints += [
+                    searchResultView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
+                    searchResultView.leftAnchor.constraint(equalTo: view.leftAnchor),
+                    searchResultView.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor),
+                    searchResultView.rightAnchor.constraint(equalTo: view.rightAnchor)]
+            }
         }
         
-        NSLayoutConstraint.activate(constraints.compact)
+        NSLayoutConstraint.activate(compactConstraints)
     }
     
     private func configureForHorizontalRegular() {
-        NSLayoutConstraint.deactivate(constraints.compact)
+        NSLayoutConstraint.deactivate(compactConstraints)
         view.subviews.forEach({ $0.removeFromSuperview() })
         view.backgroundColor = .clear
 
@@ -128,29 +130,29 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
         view.addSubview(visualView)
         searchResultView.translatesAutoresizingMaskIntoConstraints = false
         visualView.contentView.addSubview(searchResultView)
-        if constraints.regular.count == 0 {
-            var constraints = [visualView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                               visualView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.75),
-                               visualView.widthAnchor.constraint(lessThanOrEqualToConstant: 800)]
+        if regularConstraints.count == 0 {
+            regularConstraints += [
+                visualView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                visualView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.75),
+                visualView.widthAnchor.constraint(lessThanOrEqualToConstant: 800)]
             let widthConstraint = visualView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75)
             widthConstraint.priority = .defaultHigh
-            constraints.append(widthConstraint)
+            regularConstraints.append(widthConstraint)
             
             if #available(iOS 11.0, *) {
-                constraints.append(visualView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -visualView.shadow.blur))
+                regularConstraints.append(visualView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -visualView.shadow.blur))
             } else {
-                constraints.append(visualView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: -visualView.shadow.blur))
+                regularConstraints.append(visualView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: -visualView.shadow.blur))
             }
             
-            constraints += [visualView.contentView.topAnchor.constraint(equalTo: searchResultView.topAnchor),
-                            visualView.contentView.leftAnchor.constraint(equalTo: searchResultView.leftAnchor),
-                            visualView.contentView.bottomAnchor.constraint(equalTo: searchResultView.bottomAnchor),
-                            visualView.contentView.rightAnchor.constraint(equalTo: searchResultView.rightAnchor)]
-            
-            self.constraints.regular = constraints
+            regularConstraints += [
+                visualView.contentView.topAnchor.constraint(equalTo: searchResultView.topAnchor),
+                visualView.contentView.leftAnchor.constraint(equalTo: searchResultView.leftAnchor),
+                visualView.contentView.bottomAnchor.constraint(equalTo: searchResultView.bottomAnchor),
+                visualView.contentView.rightAnchor.constraint(equalTo: searchResultView.rightAnchor)]
         }
         
-        NSLayoutConstraint.activate(constraints.regular)
+        NSLayoutConstraint.activate(regularConstraints)
     }
     
     // MARK: -
@@ -238,18 +240,11 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
             }
         }
     }
-    
-    // MARK: -
-    
-    private class Constraints {
-        var regular = [NSLayoutConstraint]()
-        var compact = [NSLayoutConstraint]()
-    }
-    
-    private class SearchResultControllerBackgroundView: UIView {
-        override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-            return subviews.map({ $0.frame.contains(point) }).reduce(false, { $0 || $1 })
-        }
+}
+
+private class SearchResultControllerBackgroundView: UIView {
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        return subviews.map({ $0.frame.contains(point) }).reduce(false, { $0 || $1 })
     }
 }
 
