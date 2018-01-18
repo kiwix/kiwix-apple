@@ -32,6 +32,7 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
         tableView.register(ArticleTableCell.self, forCellReuseIdentifier: "Cell")
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.keyboardDismissMode = .onDrag
         tableView.separatorInset = {
             let separatorInset = tableView.separatorInset
             return UIEdgeInsets(top: separatorInset.top, left: separatorInset.left + 38, bottom: separatorInset.bottom, right: separatorInset.right)
@@ -77,7 +78,9 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func keyboardWillShow(notification: Notification)  {
-        searchResultContainer.isHidden = true
+        if !searchResultContainer.subviews.contains(tableView) {
+            searchResultContainer.isHidden = true
+        }
     }
     
     @objc func keyboardDidShow(notification: Notification) {
@@ -89,7 +92,9 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func keyboardWillHide(notification: Notification) {
-        searchResultContainer.isHidden = true
+        if !searchResultContainer.subviews.contains(tableView) {
+            searchResultContainer.isHidden = true
+        }
         searchResultContainer.bottomInset = 0
     }
     
