@@ -255,7 +255,7 @@ extension MainController: BarButtonItemDelegate {
                 navigationItem.setRightBarButton(cancelButton, animated: false)
             }
             if isShowingPanel {
-                self.navigationController?.isToolbarHidden = true
+                navigationController?.isToolbarHidden = true
             }
         }
     }
