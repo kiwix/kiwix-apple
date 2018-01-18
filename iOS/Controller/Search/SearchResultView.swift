@@ -8,92 +8,55 @@
 
 import UIKit
 
-class SearchResultView: UIView {
-    let tableView = UITableView()
-    let emptyResult = EmptyResultView()
-    let searching = SearchingView()
-    private var bottomAnchorConstraints = [NSLayoutConstraint]()
-    
-    init() {
-        super.init(frame: CGRect.zero)
-        configureViews()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        configureViews()
-    }
-    
+class SearchResultContainerView: UIView {
+    private var bottomConstraint: NSLayoutConstraint? = nil
     var bottomInset: CGFloat = 0 {
         didSet {
-            bottomAnchorConstraints.forEach({$0.constant = -bottomInset})
+            bottomConstraint?.constant = bottomInset
         }
     }
     
-    private func configureViews() {
-        translatesAutoresizingMaskIntoConstraints = false
-        let views = [tableView, emptyResult, searching]
-        views.forEach { view in
-            view.translatesAutoresizingMaskIntoConstraints = false
-            view.backgroundColor = .clear
-            addSubview(view)
-            let bottomConstraint = view.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -bottomInset)
-            NSLayoutConstraint.activate([
-                view.leftAnchor.constraint(equalTo: leftAnchor),
-                view.rightAnchor.constraint(equalTo: rightAnchor),
-                view.topAnchor.constraint(equalTo: topAnchor),
-                bottomConstraint])
-            addConstraints(constraints)
-            bottomAnchorConstraints.append(bottomConstraint)
-        }
-        emptyResult.isHidden = false
-        tableView.isHidden = true
-        searching.isHidden = true
+    func setContent(view: UIView) {
+        subviews.forEach({ $0.removeFromSuperview() })
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        addSubview(view)
+        
+        view.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        view.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        view.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        
+        bottomConstraint = bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: bottomInset)
+        bottomConstraint?.isActive = true
     }
 }
 
 class SearchingView: UIView {
     let activityIndicator = UIActivityIndicatorView()
     
-    init() {
-        super.init(frame: CGRect.zero)
-        addActivityIndicator()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-    private func addActivityIndicator() {
+    convenience init() {
+        self.init(frame: CGRect.zero)
         activityIndicator.activityIndicatorViewStyle = .gray
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         addSubview(activityIndicator)
-        addConstraints([
+        NSLayoutConstraint.activate([
             activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
-            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor),
-        ])
+            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor)])
     }
 }
 
 class EmptyResultView: UIView {
-    let noResult = UILabel()
+    private let noResult = UILabel()
     
-    init() {
-        super.init(frame: CGRect.zero)
-        addNoResultLabel()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-    private func addNoResultLabel() {
-        noResult.text = "No Results"
-        noResult.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(noResult)
-        addConstraints([
-            noResult.centerXAnchor.constraint(equalTo: centerXAnchor),
-            noResult.centerYAnchor.constraint(equalTo: centerYAnchor),
-        ])
+    convenience init() {
+        self.init(frame: CGRect.zero)
+        let label = UILabel()
+        label.text = NSLocalizedString("No Results", comment: "Search: no result")
+        label.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(label)
+        NSLayoutConstraint.activate([
+            label.centerXAnchor.constraint(equalTo: centerXAnchor),
+            label.centerYAnchor.constraint(equalTo: centerYAnchor)])
     }
 }

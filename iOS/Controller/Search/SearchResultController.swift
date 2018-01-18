@@ -11,7 +11,11 @@ import ProcedureKit
 
 class SearchResultController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, ProcedureQueueDelegate {
     private let visualView = VisualEffectShadowView()
-    private let searchResultView = SearchResultView()
+    private let searchResultContainer = SearchResultContainerView()
+    private let tableView = UITableView()
+    private let emptyResultView = EmptyResultView()
+    private let searchingView = SearchingView()
+    
     private var regularConstraints = [NSLayoutConstraint]()
     private var compactConstraints = [NSLayoutConstraint]()
     
@@ -23,16 +27,19 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     
     override func loadView() {
         view = SearchResultControllerBackgroundView()
-        searchResultView.tableView.register(ArticleTableCell.self, forCellReuseIdentifier: "Cell")
-        searchResultView.tableView.dataSource = self
-        searchResultView.tableView.delegate = self
+        tableView.register(ArticleTableCell.self, forCellReuseIdentifier: "Cell")
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.separatorInset = {
+            let separatorInset = tableView.separatorInset
+            return UIEdgeInsets(top: separatorInset.top, left: separatorInset.left + 38, bottom: separatorInset.bottom, right: separatorInset.right)
+        }()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         queue.delegate = self
-        searchResultView.isHidden = true
-        configureSearchResultTableViewInsets()
+        searchResultContainer.isHidden = true
         observer = view.observe(\.hidden, options: .new, changeHandler: { (view, change) in
             if change.newValue == true { view.isHidden = false }
         })
@@ -68,53 +75,47 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func keyboardWillShow(notification: Notification)  {
-        searchResultView.isHidden = true
+        searchResultContainer.isHidden = true
     }
     
     @objc func keyboardDidShow(notification: Notification) {
         guard let userInfo = notification.userInfo as? [String: NSValue],
             let origin = userInfo[UIKeyboardFrameEndUserInfoKey]?.cgRectValue.origin else {return}
-        let point = searchResultView.convert(origin, from: nil)
-        searchResultView.bottomInset = searchResultView.frame.height - point.y
-        searchResultView.isHidden = false
+        let point = searchResultContainer.convert(origin, from: nil)
+        searchResultContainer.bottomInset = searchResultContainer.frame.height - point.y
+        searchResultContainer.isHidden = false
     }
     
     @objc func keyboardWillHide(notification: Notification) {
-        searchResultView.isHidden = true
-        searchResultView.bottomInset = 0
+        searchResultContainer.isHidden = true
+        searchResultContainer.bottomInset = 0
     }
     
     @objc func keyboardDidHide(notification: Notification) {
-        searchResultView.isHidden = false
-    }
-    
-    private func configureSearchResultTableViewInsets() {
-        var separatorInset = searchResultView.tableView.separatorInset
-        separatorInset = UIEdgeInsets(top: separatorInset.top, left: separatorInset.left + 38, bottom: separatorInset.bottom, right: separatorInset.right)
-        searchResultView.tableView.separatorInset = separatorInset
+        searchResultContainer.isHidden = false
     }
     
     private func configureForHorizontalCompact() {
         NSLayoutConstraint.deactivate(regularConstraints)
         view.subviews.forEach({ $0.removeFromSuperview() })
-        searchResultView.removeFromSuperview()
+        searchResultContainer.removeFromSuperview()
         view.backgroundColor = .white
         
-        searchResultView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(searchResultView)
+        searchResultContainer.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(searchResultContainer)
         if compactConstraints.count == 0 {
             if #available(iOS 11.0, *) {
                 compactConstraints += [
-                    searchResultView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                    searchResultView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-                    searchResultView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-                    searchResultView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)]
+                    searchResultContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                    searchResultContainer.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+                    searchResultContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                    searchResultContainer.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)]
             } else {
                 compactConstraints += [
-                    searchResultView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
-                    searchResultView.leftAnchor.constraint(equalTo: view.leftAnchor),
-                    searchResultView.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor),
-                    searchResultView.rightAnchor.constraint(equalTo: view.rightAnchor)]
+                    searchResultContainer.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
+                    searchResultContainer.leftAnchor.constraint(equalTo: view.leftAnchor),
+                    searchResultContainer.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor),
+                    searchResultContainer.rightAnchor.constraint(equalTo: view.rightAnchor)]
             }
         }
         
@@ -128,8 +129,8 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
 
         visualView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(visualView)
-        searchResultView.translatesAutoresizingMaskIntoConstraints = false
-        visualView.contentView.addSubview(searchResultView)
+        searchResultContainer.translatesAutoresizingMaskIntoConstraints = false
+        visualView.contentView.addSubview(searchResultContainer)
         if regularConstraints.count == 0 {
             regularConstraints += [
                 visualView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -146,10 +147,10 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
             }
             
             regularConstraints += [
-                visualView.contentView.topAnchor.constraint(equalTo: searchResultView.topAnchor),
-                visualView.contentView.leftAnchor.constraint(equalTo: searchResultView.leftAnchor),
-                visualView.contentView.bottomAnchor.constraint(equalTo: searchResultView.bottomAnchor),
-                visualView.contentView.rightAnchor.constraint(equalTo: searchResultView.rightAnchor)]
+                visualView.contentView.topAnchor.constraint(equalTo: searchResultContainer.topAnchor),
+                visualView.contentView.leftAnchor.constraint(equalTo: searchResultContainer.leftAnchor),
+                visualView.contentView.bottomAnchor.constraint(equalTo: searchResultContainer.bottomAnchor),
+                visualView.contentView.rightAnchor.constraint(equalTo: searchResultContainer.rightAnchor)]
         }
         
         NSLayoutConstraint.activate(regularConstraints)
@@ -214,10 +215,8 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     func procedureQueue(_ queue: ProcedureQueue, willAddProcedure procedure: Procedure, context: Any?) -> ProcedureFuture? {
         if queue.operationCount == 0 {
             DispatchQueue.main.async {
-                self.searchResultView.tableView.isHidden = true
-                self.searchResultView.emptyResult.isHidden = true
-                self.searchResultView.searching.isHidden = false
-                self.searchResultView.searching.activityIndicator.startAnimating()
+                self.searchResultContainer.setContent(view: self.searchingView)
+                self.searchingView.activityIndicator.startAnimating()
             }
         } else {
             queue.operations.forEach({$0.cancel()})
@@ -228,15 +227,13 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     func procedureQueue(_ queue: ProcedureQueue, didFinishProcedure procedure: Procedure, withErrors errors: [Error]) {
         guard queue.operationCount == 0 else {return}
         DispatchQueue.main.async {
-            self.searchResultView.searching.activityIndicator.stopAnimating()
-            self.searchResultView.searching.isHidden = true
-            self.searchResultView.emptyResult.isHidden = self.results.count != 0
-            self.searchResultView.tableView.isHidden = self.results.count == 0
-            self.searchResultView.tableView.backgroundColor = .clear
-            self.searchResultView.tableView.reloadData()
             if self.results.count > 0 {
-                let firstRow = IndexPath(row: 0, section: 0)
-                self.searchResultView.tableView.scrollToRow(at: firstRow, at: .top, animated: false)
+                self.searchingView.activityIndicator.stopAnimating()
+                self.searchResultContainer.setContent(view: self.tableView)
+                self.tableView.reloadData()
+                self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            } else {
+                self.searchResultContainer.setContent(view: self.emptyResultView)
             }
         }
     }
