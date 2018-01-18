@@ -169,6 +169,7 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
         
         cell.titleLabel.text = result.title
         cell.snippetLabel.text = result.snippet
+        cell.snippetLabel.attributedText = result.attributedSnippet
         cell.faviconImageView.image = UIImage(data: Book.fetch(id: result.zimFileID, context: CoreDataContainer.shared.viewContext)?.favIcon ?? Data())
         cell.faviconImageView.contentMode = .scaleAspectFit
 
@@ -200,7 +201,7 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
         procedure.add(observer: DidFinishObserver(didFinish: { [unowned self] (procedure, errors) in
             guard let procedure = procedure as? SearchProcedure else {return}
             OperationQueue.main.addOperation({
-                self.results = procedure.results
+                self.results = procedure.sortedResults
             })
         }))
         queue.add(operation: procedure)

@@ -12,7 +12,8 @@ class SearchProcedure: Procedure {
     let term: String
     let ids: Set<ZimFileID>
     
-    private(set) var results: [SearchResult] = []
+    private var results = Set<SearchResult>()
+    private(set) var sortedResults: [SearchResult] = []
     
     init(term: String, ids: Set<ZimFileID> = Set()) {
         self.term = term
@@ -23,33 +24,29 @@ class SearchProcedure: Procedure {
     
     override func execute() {
         guard term.count > 0 else {finish(); return}
-        results += indexedSearch()
-        results += titleSearch()
+        addIndexedSearchResults()
+        addTitleSearchResults()
         sort()
         finish()
     }
     
-    func indexedSearch() -> [SearchResult] {
-        defer {ZimMultiReader.shared.stopIndexSearch()}
-        
-        guard !isCancelled else {return []}
-        var results = [SearchResult]()
-        ZimMultiReader.shared.startIndexSearch(term: term, zimFileIDs: Set(ids))
+    private func addIndexedSearchResults() {
+        guard !isCancelled else { ZimMultiReader.shared.stopIndexSearch(); return }
+        ZimMultiReader.shared.startIndexSearch(term: term, zimFileIDs: ids)
         while let result = ZimMultiReader.shared.getNextIndexSearchResult() {
-            guard !isCancelled else {return []}
-            results.append(result)
+            guard !isCancelled else { ZimMultiReader.shared.stopIndexSearch(); return }
+            results.insert(result)
         }
-        return results
     }
     
-    func titleSearch() -> [SearchResult]{
-        guard !isCancelled else {return []}
-        return ZimMultiReader.shared.getTitleSearchResults(term: term, zimFileIDs: Set(ids))
+    private func addTitleSearchResults() {
+        guard !isCancelled else {return}
+        ZimMultiReader.shared.getTitleSearchResults(term: term, zimFileIDs: Set(ids)).forEach({ results.insert($0) })
     }
     
     func sort() {
         let levenshtein = Levenshtein()
-        results = results.map { (result) -> (result: SearchResult, score: Double) in
+        sortedResults = results.map { (result) -> (result: SearchResult, score: Double) in
             var distance = Double(levenshtein.calculateDistance(a: result.title[...], b: term[...]))
             if let probability = result.probability {
                 distance = distance * Foundation.log(7.5576 - 6.4524 * probability)

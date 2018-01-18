@@ -13,7 +13,7 @@
 #endif
 
 
-class SearchResult {
+class SearchResult: Equatable, Hashable, CustomStringConvertible {
     let zimFileID: ZimFileID
     let url: URL
     let title: String
@@ -28,7 +28,7 @@ class SearchResult {
         self.title = title
         self.probability = probability
         
-        guard let snippet = snippet else {
+        guard let snippet = snippet, snippet != "" else {
             self.snippet = nil
             self.attributedSnippet = nil
             return
@@ -73,5 +73,17 @@ class SearchResult {
         #endif
         
         return snippet
+    }
+    
+    static func == (lhs: SearchResult, rhs: SearchResult) -> Bool {
+        return lhs.url.absoluteString == rhs.url.absoluteString
+    }
+    
+    var hashValue: Int {
+        return url.absoluteString.hashValue
+    }
+    
+    var description: String {
+        return url.absoluteString
     }
 }
