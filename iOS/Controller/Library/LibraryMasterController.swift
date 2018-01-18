@@ -50,6 +50,11 @@ class LibraryMasterController: PresentationBaseController, UITableViewDelegate, 
         refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.indexPathsForSelectedRows?.forEach({tableView.deselectRow(at: $0, animated: true)})
+    }
+    
     @objc func refreshControlPulled() {
         let procedure = LibraryRefreshProcedure()
         procedure.add(observer: DidFinishObserver(didFinish: { (procedure, errors) in
