@@ -25,6 +25,8 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     private(set) var searchText = ""
     private(set) var results: [SearchResult] = []
     
+    // MARK: - Overrides
+    
     override func loadView() {
         view = SearchResultControllerBackgroundView()
         tableView.register(ArticleTableCell.self, forCellReuseIdentifier: "Cell")
@@ -198,15 +200,9 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     // MARK: - UISearchResultsUpdating
     
     func updateSearchResults(for searchController: UISearchController) {
-        guard let searchText = searchController.searchBar.text else {return}
+        guard let searchText = searchController.searchBar.text, self.searchText != searchText else {return}
         let procedure = SearchProcedure(term: searchText)
         procedure.add(condition: MutuallyExclusive<SearchResultController>())
-        procedure.add(observer: DidFinishObserver(didFinish: { [unowned self] (procedure, errors) in
-            guard let procedure = procedure as? SearchProcedure else {return}
-            OperationQueue.main.addOperation({
-                self.results = procedure.sortedResults
-            })
-        }))
         queue.add(operation: procedure)
     }
     
@@ -225,13 +221,17 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func procedureQueue(_ queue: ProcedureQueue, didFinishProcedure procedure: Procedure, withErrors errors: [Error]) {
-        guard queue.operationCount == 0 else {return}
+        guard queue.operationCount == 0, let procedure = procedure as? SearchProcedure else {return}
         DispatchQueue.main.async {
+            self.searchText = procedure.term
+            self.results = procedure.sortedResults
             if self.results.count > 0 {
                 self.searchingView.activityIndicator.stopAnimating()
                 self.searchResultContainer.setContent(view: self.tableView)
                 self.tableView.reloadData()
                 self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            } else if procedure.term == "" {
+                self.searchResultContainer.setContent(view: UIView())
             } else {
                 self.searchResultContainer.setContent(view: self.emptyResultView)
             }
