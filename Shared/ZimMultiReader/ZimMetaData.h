@@ -23,6 +23,7 @@
 - (NSString *_Nonnull)getCreator NS_REFINED_FOR_SWIFT;
 - (NSString *_Nonnull)getPublisher NS_REFINED_FOR_SWIFT;
 - (NSData *_Nonnull)getFavicon NS_REFINED_FOR_SWIFT;
+- (unsigned int)getFileSize NS_REFINED_FOR_SWIFT;
 - (unsigned int)getArticleCount NS_REFINED_FOR_SWIFT;
 - (unsigned int)getMediaCount NS_REFINED_FOR_SWIFT;
 - (unsigned int)getGlobalCount NS_REFINED_FOR_SWIFT;

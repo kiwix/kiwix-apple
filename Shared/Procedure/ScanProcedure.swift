@@ -46,6 +46,7 @@ class ScanProcedure: Procedure {
                     book.title = meta.title
                     book.bookDescription = meta.bookDescription
                     book.pid = meta.name
+                    book.fileSize = meta.fileSize
                     book.date = meta.date
                     book.creator = meta.creator
                     book.publisher = meta.publisher
@@ -54,6 +55,7 @@ class ScanProcedure: Procedure {
                     book.mediaCount = meta.mediaCount
                     book.globalCount = meta.globalCount
                     
+                    book.language = Language.fetchOrAdd(meta.language, context: context)
                     book.state = .local
                 }
             }

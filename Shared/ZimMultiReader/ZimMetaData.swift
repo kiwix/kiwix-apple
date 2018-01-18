@@ -20,6 +20,8 @@ extension ZimMetaData {
     var creator: String { return __getCreator() }
     var publisher: String { return __getPublisher() }
     var favicon: Data? { return __getFavicon() }
+    
+    var fileSize: Int64 { return Int64(__getFileSize()) }
     var articleCount: Int64 { return Int64(__getArticleCount()) }
     var mediaCount: Int64 { return Int64(__getMediaCount()) }
     var globalCount: Int64 { return Int64(__getGlobalCount()) }
