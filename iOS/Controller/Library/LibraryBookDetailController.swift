@@ -24,7 +24,7 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
         }
     }
     let metas: [[BookMeta]] = [
-        [.size, .date],
+        [.language, .size, .date],
         [.hasIndex, .hasPicture],
         [.articleCount, .mediaCount],
         [.creator, .publisher]
@@ -41,7 +41,7 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
     }()
     
     enum BookMeta: String {
-        case size, date, hasIndex, hasPicture, articleCount, mediaCount, creator, publisher
+        case language, size, date, hasIndex, hasPicture, articleCount, mediaCount, creator, publisher
     }
     
     enum Action {
@@ -178,6 +178,9 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
             let meta = metas[indexPath.section - actions.count][indexPath.row]
             cell.selectionStyle = .none
             switch meta {
+            case .language:
+                cell.textLabel?.text = NSLocalizedString("Language", comment: "Book Detail Cell")
+                cell.detailTextLabel?.text = book.language?.nameInOriginalLocale
             case .size:
                 cell.textLabel?.text = NSLocalizedString("Size", comment: "Book Detail Cell")
                 cell.detailTextLabel?.text = book.fileSizeDescription
