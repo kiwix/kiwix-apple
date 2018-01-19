@@ -25,9 +25,9 @@
 
 - (NSString *_Nullable)getMainPageURL:(NSString *_Nonnull)bookID NS_REFINED_FOR_SWIFT;
 
-- (void)startIndexSearch:(NSString *_Nonnull)searchTerm zimFileIDs:(NSSet *_Nullable)zimFileIDs NS_REFINED_FOR_SWIFT;
+- (void)startIndexSearch:(NSString *_Nonnull)searchText zimFileIDs:(NSSet *_Nullable)zimFileIDs NS_REFINED_FOR_SWIFT;
 - (NSDictionary *_Nullable)getNextIndexSearchResult NS_REFINED_FOR_SWIFT;
 - (void)stopIndexSearch;
-- (NSArray *_Nonnull)getTitleSearchResults:(NSString *_Nonnull)searchTerm zimFileIDs:(NSSet *_Nullable)zimFileIDs NS_REFINED_FOR_SWIFT;
+- (NSArray *_Nonnull)getTitleSearchResults:(NSString *_Nonnull)searchText zimFileID:(NSString *_Nullable)zimFileID count:(unsigned int)count NS_REFINED_FOR_SWIFT;
 
 @end

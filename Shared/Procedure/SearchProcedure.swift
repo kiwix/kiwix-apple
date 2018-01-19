@@ -9,21 +9,21 @@
 import ProcedureKit
 
 class SearchProcedure: Procedure {
-    let term: String
+    let searchText: String
     let ids: Set<ZimFileID>
     
     private var results = Set<SearchResult>()
     private(set) var sortedResults: [SearchResult] = []
     
     init(term: String, ids: Set<ZimFileID> = Set()) {
-        self.term = term
+        self.searchText = term
         self.ids = ids.count == 0 ? Set(ZimMultiReader.shared.ids) : ids
         super.init()
         name = "Search Procedure"
     }
     
     override func execute() {
-        guard term.count > 0 else {finish(); return}
+        guard searchText.count > 0 else {finish(); return}
         addIndexedSearchResults()
         addTitleSearchResults()
         sort()
@@ -32,7 +32,7 @@ class SearchProcedure: Procedure {
     
     private func addIndexedSearchResults() {
         guard !isCancelled else { ZimMultiReader.shared.stopIndexSearch(); return }
-        ZimMultiReader.shared.startIndexSearch(term: term, zimFileIDs: ids)
+        ZimMultiReader.shared.startIndexSearch(searchText: searchText, zimFileIDs: ids)
         while let result = ZimMultiReader.shared.getNextIndexSearchResult() {
             guard !isCancelled else { ZimMultiReader.shared.stopIndexSearch(); return }
             results.insert(result)
@@ -41,15 +41,19 @@ class SearchProcedure: Procedure {
     }
     
     private func addTitleSearchResults() {
-        guard !isCancelled else {return}
-        ZimMultiReader.shared.getTitleSearchResults(term: term, zimFileIDs: Set(ids)).forEach({ results.insert($0) })
+        let ids = ZimMultiReader.shared.ids
+        let count = max(5, 30 / ids.count)
+        for id in ids {
+            guard !isCancelled else {return}
+            ZimMultiReader.shared.getTitleSearchResults(searchText: searchText, zimFileID: id, count: count).forEach({ results.insert($0) })
+        }
     }
     
     func sort() {
         guard !isCancelled else {return}
         let levenshtein = Levenshtein()
         sortedResults = results.map { (result) -> (result: SearchResult, score: Double) in
-            var distance = Double(levenshtein.calculateDistance(a: result.title[...], b: term[...]))
+            var distance = Double(levenshtein.calculateDistance(a: result.title[...], b: searchText[...]))
             if let probability = result.probability {
                 distance = distance * Foundation.log(7.5576 - 6.4524 * probability)
             }

@@ -228,14 +228,14 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     func procedureQueue(_ queue: ProcedureQueue, didFinishProcedure procedure: Procedure, withErrors errors: [Error]) {
         guard queue.operationCount == 0, let procedure = procedure as? SearchProcedure else {return}
         DispatchQueue.main.async {
-            self.searchText = procedure.term
+            self.searchText = procedure.searchText
             self.results = procedure.sortedResults
             if self.results.count > 0 {
                 self.searchingView.activityIndicator.stopAnimating()
                 self.searchResultContainer.setContent(view: self.tableView)
                 self.tableView.reloadData()
                 self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-            } else if procedure.term == "" {
+            } else if procedure.searchText == "" {
                 self.searchResultContainer.setContent(view: UIView())
             } else {
                 self.searchResultContainer.setContent(view: self.emptyResultView)
