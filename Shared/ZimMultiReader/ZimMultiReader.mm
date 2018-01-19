@@ -16,7 +16,7 @@
 
 std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>> readers;
 NSMutableDictionary *urls = [[NSMutableDictionary alloc] init]; // [ID: URL]
-kiwix::Searcher *searcher = NULL;
+kiwix::Searcher *searcher = new kiwix::Searcher;
 std::vector<std::string> *searcherZimIDs = new std::vector<std::string>;
 
 #pragma mark - init
@@ -143,12 +143,13 @@ std::vector<std::string> *searcherZimIDs = new std::vector<std::string>;
 # pragma mark - Search
 
 - (void)startIndexSearch:(NSString *)searchTerm zimFileIDs:(NSSet *)zimFileIDs {
-    searcher = new kiwix::Searcher;
-    searcherZimIDs->clear();
-    
     for(auto iter: readers) {
-        if (zimFileIDs == nil || [zimFileIDs containsObject:[NSString stringWithCString:iter.first.c_str() encoding:NSUTF8StringEncoding]]) {
-            searcher->add_reader(iter.second.get(), iter.first);
+        std::shared_ptr<kiwix::Reader> reader = iter.second;
+        if (!reader->hasFulltextIndex()) {
+            continue;
+        }
+        if (zimFileIDs == nil || zimFileIDs.count == 0 || [zimFileIDs containsObject:[NSString stringWithCString:iter.first.c_str() encoding:NSUTF8StringEncoding]]) {
+            searcher->add_reader(reader.get(), iter.first);
             searcherZimIDs->push_back(iter.first);
         }
     }
@@ -160,8 +161,6 @@ std::vector<std::string> *searcherZimIDs = new std::vector<std::string>;
 }
 
 - (NSDictionary *)getNextIndexSearchResult {
-    if (searcher == NULL || searcherZimIDs == NULL) {return nil;}
-    
     kiwix::Result *result = searcher->getNextResult();
     if (result != NULL) {
         NSString *identifier = [NSString stringWithCString:searcherZimIDs->at(result->get_readerIndex()).c_str() encoding:NSUTF8StringEncoding];
@@ -169,6 +168,7 @@ std::vector<std::string> *searcherZimIDs = new std::vector<std::string>;
         NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
         NSNumber *probability = [[NSNumber alloc] initWithDouble:(double)result->get_score() / double(100)];
         NSString *snippet = [NSString stringWithCString:result->get_snippet().c_str() encoding:NSUTF8StringEncoding];
+        NSLog(@"id: %@, index: %d, path: %@", [identifier substringToIndex:8], result->get_readerIndex(), path);
         delete result;
         return @{@"id": identifier, @"title": title, @"path": path, @"probability": probability, @"snippet": snippet};
     } else {
@@ -177,8 +177,8 @@ std::vector<std::string> *searcherZimIDs = new std::vector<std::string>;
 }
 
 - (void)stopIndexSearch {
-    delete searcher;
-    searcher = NULL;
+    searcher = new kiwix::Searcher;
+    searcherZimIDs->clear();
 }
 
 - (NSArray *)getTitleSearchResults:(NSString *)searchTerm zimFileIDs:(NSSet *)zimFileIDs {

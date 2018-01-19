@@ -37,6 +37,7 @@ class SearchProcedure: Procedure {
             guard !isCancelled else { ZimMultiReader.shared.stopIndexSearch(); return }
             results.insert(result)
         }
+        ZimMultiReader.shared.stopIndexSearch();
     }
     
     private func addTitleSearchResults() {
@@ -45,6 +46,7 @@ class SearchProcedure: Procedure {
     }
     
     func sort() {
+        guard !isCancelled else {return}
         let levenshtein = Levenshtein()
         sortedResults = results.map { (result) -> (result: SearchResult, score: Double) in
             var distance = Double(levenshtein.calculateDistance(a: result.title[...], b: term[...]))
