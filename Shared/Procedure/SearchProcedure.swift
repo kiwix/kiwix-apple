@@ -51,9 +51,10 @@ class SearchProcedure: Procedure {
     
     func sort() {
         guard !isCancelled else {return}
+        let lowercaseSearchText = searchText.lowercased()
         let levenshtein = Levenshtein()
         sortedResults = results.map { (result) -> (result: SearchResult, score: Double) in
-            var distance = Double(levenshtein.calculateDistance(a: result.title[...], b: searchText[...]))
+            var distance = Double(levenshtein.calculateDistance(a: result.title.lowercased()[...], b: lowercaseSearchText[...]))
             if let probability = result.probability {
                 distance = distance * Foundation.log(7.5576 - 6.4524 * probability)
             }
