@@ -177,6 +177,8 @@
 		97D9D5641FA8F00E005B28F0 /* 1.9.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97D9D5631FA8F00E005B28F0 /* 1.9.xcmappingmodel */; };
 		97D9D5651FA8F00E005B28F0 /* 1.9.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97D9D5631FA8F00E005B28F0 /* 1.9.xcmappingmodel */; };
 		97DB65DA1D4576B600A2CC42 /* BookmarkWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */; };
+		97E34E0C20124F33005080B2 /* SearchNoTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E34E0B20124F33005080B2 /* SearchNoTextController.swift */; };
+		97E34E0D20124F33005080B2 /* SearchNoTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E34E0B20124F33005080B2 /* SearchNoTextController.swift */; };
 		97E429901FBDF48800ABE62E /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E4298F1FBDF48800ABE62E /* DirectoryMonitor.swift */; };
 		97E429911FBDF48800ABE62E /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E4298F1FBDF48800ABE62E /* DirectoryMonitor.swift */; };
 		97E9834E1F4CA0A00021E96A /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9834D1F4CA0A00021E96A /* WebViewController.swift */; };
@@ -600,6 +602,7 @@
 		97D9D5631FA8F00E005B28F0 /* 1.9.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = 1.9.xcmappingmodel; sourceTree = "<group>"; };
 		97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkWidgetCell.swift; sourceTree = "<group>"; };
 		97DEE72E1F8F1EA200287124 /* 1.9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.9.xcdatamodel; sourceTree = "<group>"; };
+		97E34E0B20124F33005080B2 /* SearchNoTextController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNoTextController.swift; sourceTree = "<group>"; };
 		97E4298F1FBDF48800ABE62E /* DirectoryMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryMonitor.swift; sourceTree = "<group>"; };
 		97E609F01D103DED00EBCB9D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		97E9834D1F4CA0A00021E96A /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
@@ -776,6 +779,7 @@
 			isa = PBXGroup;
 			children = (
 				97CBE7322011056B00A1003C /* SearchResultController.swift */,
+				97E34E0B20124F33005080B2 /* SearchNoTextController.swift */,
 				97A996DE1F630FBC007A6282 /* SearchResultView.swift */,
 			);
 			path = Search;
@@ -1847,6 +1851,7 @@
 				975FDADA1F6082DA00A10E8C /* AppDelegate.swift in Sources */,
 				97252112200F9D7800B60A80 /* BackgroundStackView.swift in Sources */,
 				972520F82009434900B60A80 /* PanelController.swift in Sources */,
+				97E34E0D20124F33005080B2 /* SearchNoTextController.swift in Sources */,
 				97E429911FBDF48800ABE62E /* DirectoryMonitor.swift in Sources */,
 				97A996D71F62F1B5007A6282 /* SearchProcedure.swift in Sources */,
 				97D9D5651FA8F00E005B28F0 /* 1.9.xcmappingmodel in Sources */,
@@ -1901,6 +1906,7 @@
 				97161A861F8FFD1E00A89DE3 /* LibraryCategoryController.swift in Sources */,
 				9702BE1E1F97F1C900E6B4EE /* LibraryLanguageController.swift in Sources */,
 				97A36C2B1F8C21210079B452 /* URLProtocol.swift in Sources */,
+				97E34E0C20124F33005080B2 /* SearchNoTextController.swift in Sources */,
 				97B1046F1F8FC63C00488444 /* LibraryMasterController.swift in Sources */,
 				977D7BBE1F9FC618009A8703 /* Queue.swift in Sources */,
 				972B6662200808D6003F5365 /* WelcomeController.swift in Sources */,

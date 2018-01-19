@@ -46,7 +46,7 @@ class SearchingView: UIView {
     }
 }
 
-class EmptyResultView: UIView {
+class SearchEmptyResultView: UIView {
     private let noResult = UILabel()
     
     convenience init() {

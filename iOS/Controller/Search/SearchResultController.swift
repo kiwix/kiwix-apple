@@ -13,8 +13,9 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     private let visualView = VisualEffectShadowView()
     private let searchResultContainer = SearchResultContainerView()
     private let tableView = UITableView()
-    private let emptyResultView = EmptyResultView()
+    private let emptyResultView = SearchEmptyResultView()
     private let searchingView = SearchingView()
+    private let searchNoTextController = SearchNoTextController()
     
     private var regularConstraints = [NSLayoutConstraint]()
     private var compactConstraints = [NSLayoutConstraint]()
@@ -33,16 +34,15 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
         tableView.dataSource = self
         tableView.delegate = self
         tableView.keyboardDismissMode = .onDrag
-        tableView.separatorInset = {
-            let separatorInset = tableView.separatorInset
-            return UIEdgeInsets(top: separatorInset.top, left: separatorInset.left + 38, bottom: separatorInset.bottom, right: separatorInset.right)
-        }()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         queue.delegate = self
         searchResultContainer.isHidden = true
+        addChildViewController(searchNoTextController)
+        searchResultContainer.setContent(view: searchNoTextController.view)
+        searchNoTextController.didMove(toParentViewController: self)
         observer = view.observe(\.hidden, options: .new, changeHandler: { (view, change) in
             if change.newValue == true { view.isHidden = false }
         })
@@ -236,7 +236,7 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
                 self.tableView.reloadData()
                 self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
             } else if procedure.searchText == "" {
-                self.searchResultContainer.setContent(view: UIView())
+                self.searchResultContainer.setContent(view: self.searchNoTextController.view)
             } else {
                 self.searchResultContainer.setContent(view: self.emptyResultView)
             }

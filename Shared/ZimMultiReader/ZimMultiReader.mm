@@ -168,7 +168,7 @@ std::vector<std::string> *searcherZimIDs = new std::vector<std::string>;
         NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
         NSNumber *probability = [[NSNumber alloc] initWithDouble:(double)result->get_score() / double(100)];
         NSString *snippet = [NSString stringWithCString:result->get_snippet().c_str() encoding:NSUTF8StringEncoding];
-        NSLog(@"id: %@, index: %d, path: %@", [identifier substringToIndex:8], result->get_readerIndex(), path);
+        // NSLog(@"id: %@, index: %d, path: %@", [identifier substringToIndex:8], result->get_readerIndex(), path);
         delete result;
         return @{@"id": identifier, @"title": title, @"path": path, @"probability": probability, @"snippet": snippet};
     } else {
