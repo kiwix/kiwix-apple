@@ -17,7 +17,7 @@ class MainController: UIViewController, UISearchControllerDelegate {
     // MARK: - Controllers
     
     let searchController = UISearchController(searchResultsController: SearchResultController())
-    private(set) var tabsController: TabContainerController!
+    private(set) var tabContainerController: TabContainerController!
     private var panelController: PanelController!
     private(set) lazy var libraryController = LibraryController()
     private lazy var settingController = SettingNavigationController()
@@ -56,8 +56,8 @@ class MainController: UIViewController, UISearchControllerDelegate {
         guard let identifier = segue.identifier else {return}
         switch identifier {
         case "TabContainerController":
-            tabsController = segue.destination as! TabContainerController
-            tabsController.delegate = self
+            tabContainerController = segue.destination as! TabContainerController
+            tabContainerController.delegate = self
         case "PanelController":
             panelController = segue.destination as! PanelController
             panelController.tableOfContent.delegate = self
@@ -119,8 +119,8 @@ class MainController: UIViewController, UISearchControllerDelegate {
     }
     
     func updateTableOfContents(completion: (() -> Void)? = nil) {
-        guard panelController.tableOfContent.url != tabsController.webController?.currentURL,
-            let webController = tabsController.webController else {completion?(); return}
+        guard panelController.tableOfContent.url != tabContainerController.webController?.currentURL,
+            let webController = tabContainerController.webController else {completion?(); return}
         webController.extractTableOfContents(completion: { (currentURL, items) in
             self.panelController.tableOfContent.url = currentURL
             self.panelController.tableOfContent.items = items
@@ -165,7 +165,7 @@ class MainController: UIViewController, UISearchControllerDelegate {
 
 extension MainController: TableOfContentControllerDelegate, BookmarkControllerDelegate {
     func didTapTableOfContentItem(index: Int, item: TableOfContentItem) {
-        tabsController.webController?.scrollToTableOfContentItem(index: index)
+        tabContainerController.webController?.scrollToTableOfContentItem(index: index)
         if traitCollection.horizontalSizeClass == .compact {
             tableOfContentButtonItem.isFocused = false
             hidePanel()
@@ -173,7 +173,7 @@ extension MainController: TableOfContentControllerDelegate, BookmarkControllerDe
     }
     
     func didTapBookmark(articleURL: URL) {
-        tabsController.load(url: articleURL)
+        tabContainerController.load(url: articleURL)
     }
     
     func showPanel(mode: PanelMode) {
@@ -227,7 +227,7 @@ extension MainController: TabContainerControllerDelegate {
         if isShowingPanel && panelController.mode == .tableOfContent {
             updateTableOfContents()
         }
-        if let url = tabsController.webController?.currentURL,
+        if let url = tabContainerController.webController?.currentURL,
             let article = Article.fetch(url: url, insertIfNotExist: false, context: CoreDataContainer.shared.viewContext) {
             bookmarkButtonItem.button.isBookmarked = article.isBookmarked
         } else {
@@ -263,9 +263,9 @@ extension MainController: BarButtonItemDelegate {
     func buttonTapped(item: BarButtonItem, button: UIButton) {
         switch item {
         case navigationBackButtonItem:
-            tabsController.webController?.goBack()
+            tabContainerController.webController?.goBack()
         case navigationForwardButtonItem:
-            tabsController.webController?.goForward()
+            tabContainerController.webController?.goForward()
         case tableOfContentButtonItem:
             item.isFocused = !item.isFocused
             if item.isFocused {
@@ -298,7 +298,7 @@ extension MainController: BarButtonItemDelegate {
         case bookmarkButtonItem:
             let context = CoreDataContainer.shared.viewContext
             guard let item = item as? BookmarkButtonItem,
-                let webController = tabsController.webController,
+                let webController = tabContainerController.webController,
                 let url = webController.currentURL,
                 let title = webController.currentTitle,
                 let article = Article.fetch(url: url, insertIfNotExist: true, context: context) else {return}
