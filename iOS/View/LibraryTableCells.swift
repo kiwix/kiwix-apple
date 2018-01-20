@@ -44,41 +44,44 @@ class LibraryBookCell: UITableViewCell {
     let logoView = UIImageView()
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
+    private let textStackView = UIStackView()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configConstraints()
+        configure()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        configConstraints()
+        configure()
     }
     
-    private func configConstraints() {
-        logoView.translatesAutoresizingMaskIntoConstraints = false
+    private func configure() {
         logoView.contentMode = .scaleAspectFit
-        contentView.addSubview(logoView)
-        contentView.addConstraints([
+        subtitleLabel.font = UIFont.systemFont(ofSize: 12)
+        
+        textStackView.axis = .vertical
+        textStackView.alignment = .leading
+        textStackView.distribution = .fill
+        textStackView.addArrangedSubview(titleLabel)
+        textStackView.addArrangedSubview(subtitleLabel)
+        
+        [logoView, textStackView].forEach({
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview($0)
+        })
+        NSLayoutConstraint.activate([
+            logoView.heightAnchor.constraint(equalToConstant: 30),
+            logoView.widthAnchor.constraint(equalToConstant: 30),
             logoView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             logoView.leftAnchor.constraint(equalTo: contentView.readableContentGuide.leftAnchor),
-            logoView.heightAnchor.constraint(equalToConstant: 30),
-            logoView.widthAnchor.constraint(equalToConstant: 30)])
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(titleLabel)
-        contentView.addConstraints([
-            titleLabel.heightAnchor.constraint(equalToConstant: 20),
-            titleLabel.bottomAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 2),
-            titleLabel.leftAnchor.constraint(equalTo: logoView.rightAnchor, constant: 8),
-            titleLabel.rightAnchor.constraint(equalTo: contentView.readableContentGuide.rightAnchor)])
-        subtitleLabel.font = UIFont.systemFont(ofSize: 12)
-        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(subtitleLabel)
-        contentView.addConstraints([
-            subtitleLabel.heightAnchor.constraint(equalToConstant: 16),
-            subtitleLabel.topAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 2),
-            subtitleLabel.leftAnchor.constraint(equalTo: logoView.rightAnchor, constant: 8),
-            subtitleLabel.rightAnchor.constraint(equalTo: contentView.readableContentGuide.rightAnchor)])
+            textStackView.leftAnchor.constraint(equalTo: logoView.rightAnchor, constant: 8),
+            textStackView.rightAnchor.constraint(equalTo: contentView.readableContentGuide.rightAnchor),
+            textStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
+            textStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6)])
+        let heightConstraint = contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 44)
+        heightConstraint.priority = .defaultHigh
+        heightConstraint.isActive = true
     }
 }
 
