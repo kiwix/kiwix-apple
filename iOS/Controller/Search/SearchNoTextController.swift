@@ -66,7 +66,7 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         let book = fetchedResultController.object(at: IndexPath(item: indexPath.item, section: 0))
         cell.titleLabel.text = book.title
         cell.subtitleLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
-        cell.logoView.image = UIImage(data: book.favIcon ?? Data())
+        cell.faviconView.image = UIImage(data: book.favIcon ?? Data())
         cell.accessoryType = .checkmark
     }
     

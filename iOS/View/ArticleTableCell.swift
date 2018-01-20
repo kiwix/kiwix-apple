@@ -11,7 +11,7 @@ import UIKit
 class ArticleTableCell: UITableViewCell {
     let titleLabel = UILabel()
     let snippetLabel = UILabel()
-    let faviconImageView = UIImageView()
+    let thumbImageView = UIImageView()
     private let textStackView = UIStackView()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -30,7 +30,7 @@ class ArticleTableCell: UITableViewCell {
         super.prepareForReuse()
         titleLabel.text = nil
         snippetLabel.text = nil
-        faviconImageView.image = nil
+        thumbImageView.image = nil
     }
     
     func configure() {
@@ -38,8 +38,8 @@ class ArticleTableCell: UITableViewCell {
         snippetLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
         snippetLabel.numberOfLines = 0
         snippetLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
-        faviconImageView.clipsToBounds = true
-        faviconImageView.layer.cornerRadius = 4
+        thumbImageView.clipsToBounds = true
+        thumbImageView.layer.cornerRadius = 4
 
         textStackView.axis = .vertical
         textStackView.alignment = .leading
@@ -47,16 +47,16 @@ class ArticleTableCell: UITableViewCell {
         textStackView.addArrangedSubview(titleLabel)
         textStackView.addArrangedSubview(snippetLabel)
         
-        [faviconImageView, textStackView].forEach({
+        [thumbImageView, textStackView].forEach({
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         })
         NSLayoutConstraint.activate([
-            faviconImageView.heightAnchor.constraint(equalToConstant: 34),
-            faviconImageView.widthAnchor.constraint(equalToConstant: 34),
-            faviconImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            faviconImageView.leftAnchor.constraint(equalTo: contentView.readableContentGuide.leftAnchor),
-            textStackView.leftAnchor.constraint(equalTo: faviconImageView.rightAnchor, constant: 8),
+            thumbImageView.heightAnchor.constraint(equalToConstant: 34),
+            thumbImageView.widthAnchor.constraint(equalToConstant: 34),
+            thumbImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            thumbImageView.leftAnchor.constraint(equalTo: contentView.readableContentGuide.leftAnchor),
+            textStackView.leftAnchor.constraint(equalTo: thumbImageView.rightAnchor, constant: 8),
             textStackView.rightAnchor.constraint(equalTo: contentView.readableContentGuide.rightAnchor),
             textStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
             textStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6)])

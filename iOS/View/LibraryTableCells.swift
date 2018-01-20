@@ -41,7 +41,7 @@ class LibraryCategoryCell: UITableViewCell {
 }
 
 class LibraryBookCell: UITableViewCell {
-    let logoView = UIImageView()
+    let faviconView = UIImageView()
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
     private let textStackView = UIStackView()
@@ -57,7 +57,7 @@ class LibraryBookCell: UITableViewCell {
     }
     
     private func configure() {
-        logoView.contentMode = .scaleAspectFit
+        faviconView.contentMode = .scaleAspectFit
         subtitleLabel.font = UIFont.systemFont(ofSize: 12)
         
         textStackView.axis = .vertical
@@ -66,16 +66,16 @@ class LibraryBookCell: UITableViewCell {
         textStackView.addArrangedSubview(titleLabel)
         textStackView.addArrangedSubview(subtitleLabel)
         
-        [logoView, textStackView].forEach({
+        [faviconView, textStackView].forEach({
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         })
         NSLayoutConstraint.activate([
-            logoView.heightAnchor.constraint(equalToConstant: 30),
-            logoView.widthAnchor.constraint(equalToConstant: 30),
-            logoView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            logoView.leftAnchor.constraint(equalTo: contentView.readableContentGuide.leftAnchor),
-            textStackView.leftAnchor.constraint(equalTo: logoView.rightAnchor, constant: 8),
+            faviconView.heightAnchor.constraint(equalToConstant: 30),
+            faviconView.widthAnchor.constraint(equalToConstant: 30),
+            faviconView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            faviconView.leftAnchor.constraint(equalTo: contentView.readableContentGuide.leftAnchor),
+            textStackView.leftAnchor.constraint(equalTo: faviconView.rightAnchor, constant: 8),
             textStackView.rightAnchor.constraint(equalTo: contentView.readableContentGuide.rightAnchor),
             textStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
             textStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6)])

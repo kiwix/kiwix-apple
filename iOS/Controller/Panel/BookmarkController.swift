@@ -56,11 +56,11 @@ class BookmarkController: PanelTabController, UITableViewDataSource, UITableView
         cell.titleLabel.text = article.title
         cell.snippetLabel.text = article.snippet
         if let data = article.thumbnailData {
-            cell.faviconImageView.image = UIImage(data: data)
-            cell.faviconImageView.contentMode = .scaleAspectFill
+            cell.thumbImageView.image = UIImage(data: data)
+            cell.thumbImageView.contentMode = .scaleAspectFill
         } else {
-            cell.faviconImageView.image = UIImage(data: article.book?.favIcon ?? Data())
-            cell.faviconImageView.contentMode = .scaleAspectFit
+            cell.thumbImageView.image = UIImage(data: article.book?.favIcon ?? Data())
+            cell.thumbImageView.contentMode = .scaleAspectFit
         }
     }
     

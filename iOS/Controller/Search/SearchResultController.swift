@@ -180,8 +180,8 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
         cell.titleLabel.text = result.title
         cell.snippetLabel.text = result.snippet
         cell.snippetLabel.attributedText = result.attributedSnippet
-        cell.faviconImageView.image = UIImage(data: Book.fetch(id: result.zimFileID, context: CoreDataContainer.shared.viewContext)?.favIcon ?? Data())
-        cell.faviconImageView.contentMode = .scaleAspectFit
+        cell.thumbImageView.image = UIImage(data: Book.fetch(id: result.zimFileID, context: CoreDataContainer.shared.viewContext)?.favIcon ?? Data())
+        cell.thumbImageView.contentMode = .scaleAspectFit
 
         return cell
     }

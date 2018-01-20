@@ -113,7 +113,7 @@ class LibraryMasterController: PresentationBaseController, UITableViewDelegate, 
         let book = fetchedResultController.object(at: indexPath)
         cell.titleLabel.text = book.title
         cell.subtitleLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
-        cell.logoView.image = UIImage(data: book.favIcon ?? Data())
+        cell.faviconView.image = UIImage(data: book.favIcon ?? Data())
         cell.accessoryType = .disclosureIndicator
     }
     
