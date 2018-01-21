@@ -146,18 +146,14 @@ class MainController: UIViewController, UISearchControllerDelegate {
     
     func willPresentSearchController(_ searchController: UISearchController) {
         guard UIDevice.current.userInterfaceIdiom == .pad && traitCollection.horizontalSizeClass == .compact else {return}
-        if traitCollection.horizontalSizeClass == .compact {
-            navigationItem.setRightBarButton(cancelButton, animated: true)
-            navigationController?.setToolbarHidden(true, animated: true)
-        }
+        navigationItem.setRightBarButton(cancelButton, animated: true)
+        navigationController?.setToolbarHidden(true, animated: true)
     }
     
     func willDismissSearchController(_ searchController: UISearchController) {
         guard UIDevice.current.userInterfaceIdiom == .pad && traitCollection.horizontalSizeClass == .compact else {return}
-        if traitCollection.horizontalSizeClass == .compact {
-            navigationItem.setRightBarButton(nil, animated: true)
-            navigationController?.setToolbarHidden(false, animated: true)
-        }
+        navigationItem.setRightBarButton(nil, animated: true)
+        navigationController?.setToolbarHidden(false, animated: true)
     }
 }
 
@@ -251,7 +247,7 @@ extension MainController: BarButtonItemDelegate {
             navigationController?.isToolbarHidden = searchController.isActive ? true : false
             toolbarItems = [navigationBackButtonItem, navigationForwardButtonItem, tableOfContentButtonItem, bookmarkButtonItem, libraryButtonItem, settingButtonItem].enumerated()
                 .reduce([], { $0 + ($1.offset > 0 ? [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), $1.element] : [$1.element]) })
-            if searchController.isActive {
+            if searchController.isActive && UIDevice.current.userInterfaceIdiom == .pad {
                 navigationItem.setRightBarButton(cancelButton, animated: false)
             }
             if isShowingPanel {
