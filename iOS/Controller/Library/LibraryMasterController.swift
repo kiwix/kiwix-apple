@@ -35,7 +35,7 @@ class LibraryMasterController: PresentationBaseController, UITableViewDelegate, 
         tableView.delegate = self
         tableView.dataSource = self
         tableView.refreshControl = refreshControl
-        tableView.register(LibraryBookCell.self, forCellReuseIdentifier: "BookCell")
+        tableView.register(BookTableViewCell.self, forCellReuseIdentifier: "BookCell")
         tableView.register(LibraryDownloadCell.self, forCellReuseIdentifier: "DownloadCell")
         tableView.register(LibraryCategoryCell.self, forCellReuseIdentifier: "CategoryCell")
         tableView.separatorInset = UIEdgeInsets(top: 0, left: tableView.separatorInset.left + 38, bottom: 0, right: 0)
@@ -87,7 +87,7 @@ class LibraryMasterController: PresentationBaseController, UITableViewDelegate, 
                 configure(downloadCell: cell, indexPath: indexPath)
                 return cell
             } else {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "BookCell", for: indexPath) as! LibraryBookCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "BookCell", for: indexPath) as! BookTableViewCell
                 configure(bookCell: cell, indexPath: indexPath)
                 return cell
             }
@@ -109,7 +109,7 @@ class LibraryMasterController: PresentationBaseController, UITableViewDelegate, 
         cell.accessoryType = .disclosureIndicator
     }
     
-    func configure(bookCell cell: LibraryBookCell, indexPath: IndexPath, animated: Bool = false) {
+    func configure(bookCell cell: BookTableViewCell, indexPath: IndexPath, animated: Bool = false) {
         let book = fetchedResultController.object(at: indexPath)
         cell.titleLabel.text = book.title
         cell.subtitleLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
@@ -200,7 +200,7 @@ class LibraryMasterController: PresentationBaseController, UITableViewDelegate, 
             let sectionTitle = fetchedResultController.sections?[indexPath.section].name
             if sectionTitle == "1", let cell = tableView.cellForRow(at: indexPath) as? LibraryDownloadCell {
                 configure(downloadCell: cell, indexPath: indexPath, animated: true)
-            } else if let cell = tableView.cellForRow(at: indexPath) as? LibraryBookCell {
+            } else if let cell = tableView.cellForRow(at: indexPath) as? BookTableViewCell {
                 configure(bookCell: cell, indexPath: indexPath, animated: true)
             }
         case .move:

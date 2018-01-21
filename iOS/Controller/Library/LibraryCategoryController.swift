@@ -23,7 +23,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         view = tableView
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(LibraryBookCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(BookTableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.separatorInset = UIEdgeInsets(top: 0, left: tableView.separatorInset.left + 38, bottom: 0, right: 0)
     }
     
@@ -57,12 +57,12 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! LibraryBookCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! BookTableViewCell
         configure(bookCell: cell, indexPath: indexPath)
         return cell
     }
     
-    func configure(bookCell cell: LibraryBookCell, indexPath: IndexPath, animated: Bool = false) {
+    func configure(bookCell cell: BookTableViewCell, indexPath: IndexPath, animated: Bool = false) {
         let book = fetchedResultController.object(at: indexPath)
         cell.titleLabel.text = book.title
         cell.subtitleLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
@@ -152,7 +152,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
             guard let indexPath = indexPath else {return}
             tableView.deleteRows(at: [indexPath], with: .fade)
         case .update:
-            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? LibraryBookCell else {return}
+            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? BookTableViewCell else {return}
             configure(bookCell: cell, indexPath: indexPath, animated: true)
         case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}

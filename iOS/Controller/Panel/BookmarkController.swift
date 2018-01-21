@@ -22,7 +22,7 @@ class BookmarkController: PanelTabController, UITableViewDataSource, UITableView
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorInset = UIEdgeInsets(top: 0, left: tableView.separatorInset.left + 38, bottom: 0, right: 0)
-        tableView.register(ArticleTableCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(ArticleTableViewCell.self, forCellReuseIdentifier: "Cell")
         configure()
     }
     
@@ -46,12 +46,12 @@ class BookmarkController: PanelTabController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ArticleTableCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ArticleTableViewCell
         configure(bookCell: cell, indexPath: indexPath)
         return cell
     }
     
-    func configure(bookCell cell: ArticleTableCell, indexPath: IndexPath, animated: Bool = false) {
+    func configure(bookCell cell: ArticleTableViewCell, indexPath: IndexPath, animated: Bool = false) {
         let article = fetchedResultController.object(at: indexPath)
         cell.titleLabel.text = article.title
         cell.snippetLabel.text = article.snippet
@@ -111,7 +111,7 @@ class BookmarkController: PanelTabController, UITableViewDataSource, UITableView
             guard let indexPath = indexPath else {return}
             tableView.deleteRows(at: [indexPath], with: .fade)
         case .update:
-            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? ArticleTableCell else {return}
+            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? ArticleTableViewCell else {return}
             configure(bookCell: cell, indexPath: indexPath, animated: true)
         case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}

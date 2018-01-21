@@ -19,7 +19,7 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         collectionView.dataSource = self
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(LibraryBookCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(BookTableViewCell.self, forCellReuseIdentifier: "Cell")
     }
     
     override func viewDidLoad() {
@@ -56,17 +56,18 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! LibraryBookCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! BookTableViewCell
         configure(bookCell: cell, indexPath: indexPath)
         return cell
     }
     
-    func configure(bookCell cell: LibraryBookCell, indexPath: IndexPath, animated: Bool = false) {
+    func configure(bookCell cell: BookTableViewCell, indexPath: IndexPath, animated: Bool = false) {
         let book = fetchedResultController.object(at: IndexPath(item: indexPath.item, section: 0))
         cell.titleLabel.text = book.title
         cell.subtitleLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
         cell.faviconView.image = UIImage(data: book.favIcon ?? Data())
         cell.accessoryType = book.includeInSearch ? .checkmark : .none
+        cell.backgroundColor = .clear
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -113,7 +114,7 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
             guard let indexPath = indexPath else {return}
             tableView.deleteRows(at: [indexPath], with: .fade)
         case .update:
-            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: IndexPath(item: indexPath.item, section: 0)) as? LibraryBookCell else {return}
+            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: IndexPath(item: indexPath.item, section: 0)) as? BookTableViewCell else {return}
             configure(bookCell: cell, indexPath: indexPath, animated: true)
         case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}

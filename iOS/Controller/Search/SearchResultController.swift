@@ -30,7 +30,7 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     
     override func loadView() {
         view = SearchResultControllerBackgroundView()
-        tableView.register(ArticleTableCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(ArticleTableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.dataSource = self
         tableView.delegate = self
         tableView.keyboardDismissMode = .onDrag
@@ -174,7 +174,7 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ArticleTableCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ArticleTableViewCell
         let result = results[indexPath.row]
         
         cell.titleLabel.text = result.title

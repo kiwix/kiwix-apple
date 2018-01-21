@@ -40,7 +40,7 @@ class LibraryCategoryCell: UITableViewCell {
     }
 }
 
-class LibraryBookCell: UITableViewCell {
+class BookTableViewCell: UITableViewCell {
     let faviconView = UIImageView()
     let titleLabel = UILabel()
     let subtitleLabel = UILabel()
@@ -57,7 +57,6 @@ class LibraryBookCell: UITableViewCell {
     }
     
     private func configure() {
-        backgroundColor = .clear
         faviconView.contentMode = .scaleAspectFit
         subtitleLabel.font = UIFont.systemFont(ofSize: 12)
         
