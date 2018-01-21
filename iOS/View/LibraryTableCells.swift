@@ -57,6 +57,7 @@ class LibraryBookCell: UITableViewCell {
     }
     
     private func configure() {
+        backgroundColor = .clear
         faviconView.contentMode = .scaleAspectFit
         subtitleLabel.font = UIFont.systemFont(ofSize: 12)
         

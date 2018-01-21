@@ -57,7 +57,6 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! LibraryBookCell
-        
         configure(bookCell: cell, indexPath: indexPath)
         return cell
     }
@@ -67,7 +66,13 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         cell.titleLabel.text = book.title
         cell.subtitleLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
         cell.faviconView.image = UIImage(data: book.favIcon ?? Data())
-        cell.accessoryType = .checkmark
+        cell.accessoryType = book.includeInSearch ? .checkmark : .none
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let book = fetchedResultController.object(at: IndexPath(item: indexPath.item, section: 0))
+        book.includeInSearch = !book.includeInSearch
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     // MARK: - NSFetchedResultsController
@@ -83,4 +88,41 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         try? controller.performFetch()
         return controller as! NSFetchedResultsController<Book>
     }()
+    
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.beginUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+        switch type {
+        case .insert:
+            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
+        case .delete:
+            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
+        default:
+            return
+        }
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            guard let newIndexPath = newIndexPath else {return}
+            tableView.insertRows(at: [newIndexPath], with: .fade)
+        case .delete:
+            guard let indexPath = indexPath else {return}
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        case .update:
+            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: IndexPath(item: indexPath.item, section: 0)) as? LibraryBookCell else {return}
+            configure(bookCell: cell, indexPath: indexPath, animated: true)
+        case .move:
+            guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.insertRows(at: [newIndexPath], with: .fade)
+        }
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tableView.endUpdates()
+    }
 }
