@@ -119,6 +119,8 @@
 		977D7BD41F9FE359009A8703 /* ZimMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BD21F9FE359009A8703 /* ZimMetaData.swift */; };
 		977F983E1F9E43EC002ABFCE /* ScanProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977F983D1F9E43EC002ABFCE /* ScanProcedure.swift */; };
 		977F983F1F9E43EC002ABFCE /* ScanProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977F983D1F9E43EC002ABFCE /* ScanProcedure.swift */; };
+		979FD159201679C5007B5290 /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979FD158201679C5007B5290 /* SearchResultController.swift */; };
+		979FD15A201679C5007B5290 /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979FD158201679C5007B5290 /* SearchResultController.swift */; };
 		97A36C2B1F8C21210079B452 /* URLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767717D1F437BB9007ED0C2 /* URLProtocol.swift */; };
 		97A36C2D1F8C21210079B452 /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDB0B1F60930A00A10E8C /* WebKitHandler.swift */; };
 		97A36C311F8C21210079B452 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996DE1F630FBC007A6282 /* SearchView.swift */; };
@@ -317,6 +319,7 @@
 		9790320A1FBA243A00A565A6 /* HistoryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryController.swift; sourceTree = "<group>"; };
 		979315811E5127930093D3BA /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9793158C1E5127930093D3BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		979FD158201679C5007B5290 /* SearchResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultController.swift; sourceTree = "<group>"; };
 		97A1FD401D6F728200A80EE2 /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		97A36BAF1F8C0B590079B452 /* WikiMed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikiMed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A36C4E1F8C21210079B452 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -779,6 +782,7 @@
 			isa = PBXGroup;
 			children = (
 				97CBE7322011056B00A1003C /* SearchController.swift */,
+				979FD158201679C5007B5290 /* SearchResultController.swift */,
 				97E34E0B20124F33005080B2 /* SearchNoTextController.swift */,
 				97A996DE1F630FBC007A6282 /* SearchView.swift */,
 			);
@@ -1841,6 +1845,7 @@
 				97A36C5C1F8EA6DE0079B452 /* Kiwix.xcdatamodeld in Sources */,
 				97CBE7342011056B00A1003C /* SearchController.swift in Sources */,
 				97A36C581F8D5FCD0079B452 /* LibraryController.swift in Sources */,
+				979FD15A201679C5007B5290 /* SearchResultController.swift in Sources */,
 				9725210F200F9D7800B60A80 /* RoundedButton.swift in Sources */,
 				97A996DF1F630FBC007A6282 /* SearchView.swift in Sources */,
 				9702BE1F1F97F1C900E6B4EE /* LibraryLanguageController.swift in Sources */,
@@ -1935,6 +1940,7 @@
 				97A36C6F1F8EA6F90079B452 /* ManagedObjectProperties.swift in Sources */,
 				97A36C321F8C21210079B452 /* AppDelegate.swift in Sources */,
 				97CBE7332011056B00A1003C /* SearchController.swift in Sources */,
+				979FD159201679C5007B5290 /* SearchResultController.swift in Sources */,
 				972B66602007F9F7003F5365 /* WebKitWebController.swift in Sources */,
 				977F983E1F9E43EC002ABFCE /* ScanProcedure.swift in Sources */,
 				97A36C331F8C21210079B452 /* SearchProcedure.swift in Sources */,

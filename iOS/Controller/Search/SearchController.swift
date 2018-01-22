@@ -10,12 +10,12 @@ import UIKit
 import CoreData
 import ProcedureKit
 
-class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, ProcedureQueueDelegate {
+class SearchController: UIViewController, UISearchResultsUpdating, ProcedureQueueDelegate {
     private let visualView = VisualEffectShadowView()
     private let searchResultContainer = SearchResultContainerView()
-    private let tableView = UITableView()
     private let emptyResultView = SearchEmptyResultView()
     private let searchingView = SearchingView()
+    private let searchResultController = SearchResultController()
     private let searchNoTextController = SearchNoTextController()
     
     private var regularConstraints = [NSLayoutConstraint]()
@@ -26,16 +26,11 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     private let queue = ProcedureQueue()
     private var booksIncludedInSearch = Set<ZimFileID>()
     private(set) var searchText = ""
-    private(set) var results: [SearchResult] = []
     
     // MARK: - Overrides
     
     override func loadView() {
         view = SearchResultControllerBackgroundView()
-        tableView.register(ArticleTableViewCell.self, forCellReuseIdentifier: "Cell")
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.keyboardDismissMode = .onDrag
     }
     
     override func viewDidLoad() {
@@ -46,6 +41,9 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
         addChildViewController(searchNoTextController)
         searchResultContainer.setContent(view: searchNoTextController.view)
         searchNoTextController.didMove(toParentViewController: self)
+        
+        addChildViewController(searchResultController)
+        searchResultController.didMove(toParentViewController: self)
         
         observer = view.observe(\.hidden, options: .new, changeHandler: { (view, change) in
             if change.newValue == true { view.isHidden = false }
@@ -120,7 +118,7 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     // MARK: - Keyboard
     
     @objc func keyboardWillShow(notification: Notification)  {
-        if !searchResultContainer.subviews.contains(tableView) {
+        if !searchResultContainer.subviews.contains(searchResultController.tableView) {
             searchResultContainer.isHidden = true
         }
     }
@@ -134,7 +132,7 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     @objc func keyboardWillHide(notification: Notification) {
-        if !searchResultContainer.subviews.contains(tableView) {
+        if !searchResultContainer.subviews.contains(searchResultController.tableView) {
             searchResultContainer.isHidden = true
         }
         searchResultContainer.bottomInset = 0
@@ -207,45 +205,6 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
         NSLayoutConstraint.activate(regularConstraints)
     }
     
-    // MARK: -
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return results.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ArticleTableViewCell
-        let result = results[indexPath.row]
-        
-        cell.titleLabel.text = result.title
-        cell.snippetLabel.text = result.snippet
-        cell.snippetLabel.attributedText = result.attributedSnippet
-        cell.thumbImageView.image = UIImage(data: Book.fetch(id: result.zimFileID, context: CoreDataContainer.shared.viewContext)?.favIcon ?? Data())
-        cell.thumbImageView.contentMode = .scaleAspectFit
-
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let main = presentingViewController as? MainController else {return}
-        
-        if main.isShowingPanel && main.traitCollection.horizontalSizeClass == .compact { main.hidePanel() }
-        main.tabContainerController.load(url: results[indexPath.row].url)
-        main.searchController.isActive = false
-    }
-    
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        if results[indexPath.row].snippet != nil || results[indexPath.row].attributedSnippet != nil {
-            return traitCollection.horizontalSizeClass == .regular ? 120 : 190
-        } else {
-            return 44
-        }
-    }
-    
     // MARK: - UISearchResultsUpdating
     
     func updateSearchResults(for searchController: UISearchController) {
@@ -273,13 +232,13 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
         guard queue.operationCount == 0, let procedure = procedure as? SearchProcedure else {return}
         DispatchQueue.main.async {
             self.searchText = procedure.searchText
-            self.results = procedure.sortedResults
-            if self.results.count > 0 {
+            self.searchResultController.results = procedure.sortedResults
+            if self.searchResultController.results.count > 0 {
                 self.searchingView.activityIndicator.stopAnimating()
-                self.searchResultContainer.setContent(view: self.tableView)
-                self.tableView.reloadData()
+                self.searchResultContainer.setContent(view: self.searchResultController.tableView)
+                self.searchResultController.tableView.reloadData()
                 DispatchQueue.main.async {
-                    self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                    self.searchResultController.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
                 }
             } else if procedure.searchText == "" {
                 self.searchResultContainer.setContent(view: self.searchNoTextController.view)
