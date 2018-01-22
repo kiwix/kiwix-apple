@@ -53,6 +53,8 @@ class SearchEmptyResultView: UIView {
         self.init(frame: CGRect.zero)
         let label = UILabel()
         label.text = NSLocalizedString("No Results", comment: "Search: no result")
+        label.textColor = .gray
+        label.font = UIFont.systemFont(ofSize: 26, weight: .medium)
         label.translatesAutoresizingMaskIntoConstraints = false
         addSubview(label)
         NSLayoutConstraint.activate([
