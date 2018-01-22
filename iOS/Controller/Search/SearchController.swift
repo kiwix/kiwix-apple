@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 import ProcedureKit
 
 class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, ProcedureQueueDelegate {
@@ -23,6 +24,7 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     private var observer: NSKeyValueObservation?
     
     private let queue = ProcedureQueue()
+    private var booksIncludedInSearch = Set<ZimFileID>()
     private(set) var searchText = ""
     private(set) var results: [SearchResult] = []
     
@@ -40,12 +42,24 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
         super.viewDidLoad()
         queue.delegate = self
         searchResultContainer.isHidden = true
+        
         addChildViewController(searchNoTextController)
         searchResultContainer.setContent(view: searchNoTextController.view)
         searchNoTextController.didMove(toParentViewController: self)
+        
         observer = view.observe(\.hidden, options: .new, changeHandler: { (view, change) in
             if change.newValue == true { view.isHidden = false }
         })
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(managedObjectContextObjectsDidChange(notification:)),
+                                               name: .NSManagedObjectContextObjectsDidChange,
+                                               object: CoreDataContainer.shared.viewContext)
+        booksIncludedInSearch = Set(Book.fetch(states: [.local], context: CoreDataContainer.shared.viewContext).filter({ $0.includeInSearch }).map({ $0.id }))
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .NSManagedObjectContextObjectsDidChange, object: CoreDataContainer.shared.viewContext)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -77,6 +91,36 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
         }
     }
     
+    // MARK: - Search Scope Observing
+    
+    @objc func managedObjectContextObjectsDidChange(notification: Notification) {
+        guard let userInfo = notification.userInfo else { return }
+        if let inserts = (userInfo[NSInsertedObjectsKey] as? Set<NSManagedObject>)?.flatMap({ $0 as? Book }) {
+            inserts.forEach({ (book) in
+                guard book.includeInSearch else {return}
+                booksIncludedInSearch.insert(book.id)
+            })
+        }
+        
+        if let updates = (userInfo[NSUpdatedObjectsKey] as? Set<NSManagedObject>)?.flatMap({ $0 as? Book }) {
+            updates.forEach({ (book) in
+                if book.includeInSearch {
+                    booksIncludedInSearch.insert(book.id)
+                } else {
+                    booksIncludedInSearch.remove(book.id)
+                }
+            })
+        }
+        
+        if let deletes = (userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>)?.flatMap({ $0 as? Book }) {
+            deletes.forEach({ booksIncludedInSearch.remove($0.id) })
+        }
+        
+        print(booksIncludedInSearch)
+    }
+    
+    // MARK: - Keyboard
+    
     @objc func keyboardWillShow(notification: Notification)  {
         if !searchResultContainer.subviews.contains(tableView) {
             searchResultContainer.isHidden = true
@@ -101,6 +145,8 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     @objc func keyboardDidHide(notification: Notification) {
         searchResultContainer.isHidden = false
     }
+    
+    // MARK: - Constraints Configuration
     
     private func configureForHorizontalCompact() {
         NSLayoutConstraint.deactivate(regularConstraints)
