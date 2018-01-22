@@ -145,15 +145,21 @@ class MainController: UIViewController, UISearchControllerDelegate {
     // MARK: - UISearchControllerDelegate
     
     func willPresentSearchController(_ searchController: UISearchController) {
-        guard UIDevice.current.userInterfaceIdiom == .pad && traitCollection.horizontalSizeClass == .compact else {return}
-        navigationItem.setRightBarButton(cancelButton, animated: true)
-        navigationController?.setToolbarHidden(true, animated: true)
+        if UIDevice.current.userInterfaceIdiom == .pad && traitCollection.horizontalSizeClass == .compact {
+            navigationItem.setRightBarButton(cancelButton, animated: true)
+        }
+        if traitCollection.horizontalSizeClass == .compact {
+            navigationController?.setToolbarHidden(true, animated: true)
+        }
     }
     
     func willDismissSearchController(_ searchController: UISearchController) {
-        guard UIDevice.current.userInterfaceIdiom == .pad && traitCollection.horizontalSizeClass == .compact else {return}
-        navigationItem.setRightBarButton(nil, animated: true)
-        navigationController?.setToolbarHidden(false, animated: true)
+        if UIDevice.current.userInterfaceIdiom == .pad && traitCollection.horizontalSizeClass == .compact {
+            navigationItem.setRightBarButton(nil, animated: true)
+        }
+        if traitCollection.horizontalSizeClass == .compact {
+            navigationController?.setToolbarHidden(false, animated: true)
+        }
     }
 }
 
