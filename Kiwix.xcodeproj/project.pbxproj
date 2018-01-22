@@ -169,8 +169,8 @@
 		97B1D0B61F9A3AE7000C7848 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97642B981E380CC0003E2D0B /* Network.swift */; };
 		97B1D0B91F9A3CB0000C7848 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD401D6F728200A80EE2 /* Preference.swift */; };
 		97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */; };
-		97CBE7332011056B00A1003C /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CBE7322011056B00A1003C /* SearchResultController.swift */; };
-		97CBE7342011056B00A1003C /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CBE7322011056B00A1003C /* SearchResultController.swift */; };
+		97CBE7332011056B00A1003C /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CBE7322011056B00A1003C /* SearchController.swift */; };
+		97CBE7342011056B00A1003C /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CBE7322011056B00A1003C /* SearchController.swift */; };
 		97D00A791FBB89F000165629 /* Inject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* Inject.js */; };
 		97D00A7D1FBB89FB00165629 /* Inject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* Inject.js */; };
 		97D00A7F1FBB92D400165629 /* TableOfContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D00A7E1FBB92D400165629 /* TableOfContentItem.swift */; };
@@ -328,7 +328,7 @@
 		97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryMasterController.swift; sourceTree = "<group>"; };
 		97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		97C353AB1FAB742B00230B3E /* PanelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelController.swift; sourceTree = "<group>"; };
-		97CBE7322011056B00A1003C /* SearchResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultController.swift; sourceTree = "<group>"; };
+		97CBE7322011056B00A1003C /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		97D00A7E1FBB92D400165629 /* TableOfContentItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableOfContentItem.swift; sourceTree = "<group>"; };
 		97D6812B1D6F70DE00E5FA99 /* 1.5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.5.xcdatamodel; sourceTree = "<group>"; };
 		97D6812C1D6F70DE00E5FA99 /* 1.7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.7.xcdatamodel; sourceTree = "<group>"; };
@@ -778,7 +778,7 @@
 		972E6F651FA2872A00F5C927 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				97CBE7322011056B00A1003C /* SearchResultController.swift */,
+				97CBE7322011056B00A1003C /* SearchController.swift */,
 				97E34E0B20124F33005080B2 /* SearchNoTextController.swift */,
 				97A996DE1F630FBC007A6282 /* SearchResultView.swift */,
 			);
@@ -1839,7 +1839,7 @@
 				97252115200F9D7F00B60A80 /* TabContainerController.swift in Sources */,
 				972520F92009434900B60A80 /* TableOfContentController.swift in Sources */,
 				97A36C5C1F8EA6DE0079B452 /* Kiwix.xcdatamodeld in Sources */,
-				97CBE7342011056B00A1003C /* SearchResultController.swift in Sources */,
+				97CBE7342011056B00A1003C /* SearchController.swift in Sources */,
 				97A36C581F8D5FCD0079B452 /* LibraryController.swift in Sources */,
 				9725210F200F9D7800B60A80 /* RoundedButton.swift in Sources */,
 				97A996DF1F630FBC007A6282 /* SearchResultView.swift in Sources */,
@@ -1934,7 +1934,7 @@
 				97A36C311F8C21210079B452 /* SearchResultView.swift in Sources */,
 				97A36C6F1F8EA6F90079B452 /* ManagedObjectProperties.swift in Sources */,
 				97A36C321F8C21210079B452 /* AppDelegate.swift in Sources */,
-				97CBE7332011056B00A1003C /* SearchResultController.swift in Sources */,
+				97CBE7332011056B00A1003C /* SearchController.swift in Sources */,
 				972B66602007F9F7003F5365 /* WebKitWebController.swift in Sources */,
 				977F983E1F9E43EC002ABFCE /* ScanProcedure.swift in Sources */,
 				97A36C331F8C21210079B452 /* SearchProcedure.swift in Sources */,

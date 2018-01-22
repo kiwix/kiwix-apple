@@ -9,7 +9,7 @@
 import UIKit
 import ProcedureKit
 
-class SearchResultController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, ProcedureQueueDelegate {
+class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, ProcedureQueueDelegate {
     private let visualView = VisualEffectShadowView()
     private let searchResultContainer = SearchResultContainerView()
     private let tableView = UITableView()
@@ -207,7 +207,7 @@ class SearchResultController: UIViewController, UITableViewDelegate, UITableView
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text, self.searchText != searchText else {return}
         let procedure = SearchProcedure(term: searchText)
-        procedure.add(condition: MutuallyExclusive<SearchResultController>())
+        procedure.add(condition: MutuallyExclusive<SearchController>())
         queue.add(operation: procedure)
     }
     

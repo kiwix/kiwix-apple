@@ -16,7 +16,7 @@ class MainController: UIViewController, UISearchControllerDelegate {
 
     // MARK: - Controllers
     
-    let searchController = UISearchController(searchResultsController: SearchResultController())
+    let searchController = UISearchController(searchResultsController: SearchController())
     private(set) var tabContainerController: TabContainerController!
     private var panelController: PanelController!
     private(set) lazy var libraryController = LibraryController()
@@ -113,7 +113,7 @@ class MainController: UIViewController, UISearchControllerDelegate {
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.obscuresBackgroundDuringPresentation = true
         searchController.delegate = self
-        searchController.searchResultsUpdater = searchController.searchResultsController as? SearchResultController
+        searchController.searchResultsUpdater = searchController.searchResultsController as? SearchController
         navigationItem.titleView = searchController.searchBar
         definesPresentationContext = true
     }
