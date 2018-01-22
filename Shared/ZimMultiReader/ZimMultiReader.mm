@@ -202,27 +202,6 @@ std::vector<std::string> *searcherZimIDs = new std::vector<std::string>;
         }
         return suggestions;
     }
-    
-//    unsigned int count = max(5, int(30 / readers.size()));
-//
-//    for(auto iter: readers) {
-//        NSString *identifier = [NSString stringWithCString:iter.first.c_str() encoding:NSUTF8StringEncoding];
-//        if (zimFileIDs == NULL || [zimFileIDs containsObject:identifier]) {
-//            std::shared_ptr<kiwix::Reader> reader = iter.second;
-//            reader->searchSuggestionsSmart(searchTermC, count);
-//
-//            std::string titleC;
-//            std::string pathC;
-//
-//            while (reader->getNextSuggestion(titleC, pathC)) {
-//                NSString *title = [NSString stringWithCString:titleC.c_str() encoding:NSUTF8StringEncoding];
-//                NSString *path = [NSString stringWithCString:pathC.c_str() encoding:NSUTF8StringEncoding];
-//                [suggestions addObject:@{@"id": identifier, @"title": title, @"path": path}];
-//            }
-//        }
-//    }
-//
-//    return suggestions;
 }
 
 @end
