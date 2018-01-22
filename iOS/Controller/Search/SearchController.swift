@@ -115,8 +115,6 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
         if let deletes = (userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>)?.flatMap({ $0 as? Book }) {
             deletes.forEach({ booksIncludedInSearch.remove($0.id) })
         }
-        
-        print(booksIncludedInSearch)
     }
     
     // MARK: - Keyboard
@@ -252,7 +250,7 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text, self.searchText != searchText else {return}
-        let procedure = SearchProcedure(term: searchText)
+        let procedure = SearchProcedure(term: searchText, ids: booksIncludedInSearch)
         procedure.add(condition: MutuallyExclusive<SearchController>())
         queue.add(operation: procedure)
     }
@@ -280,7 +278,9 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
                 self.searchingView.activityIndicator.stopAnimating()
                 self.searchResultContainer.setContent(view: self.tableView)
                 self.tableView.reloadData()
-                self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                DispatchQueue.main.async {
+                    self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                }
             } else if procedure.searchText == "" {
                 self.searchResultContainer.setContent(view: self.searchNoTextController.view)
             } else {

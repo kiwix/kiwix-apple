@@ -41,7 +41,6 @@ class SearchProcedure: Procedure {
     }
     
     private func addTitleSearchResults() {
-        let ids = ZimMultiReader.shared.ids
         let count = max(5, 30 / ids.count)
         for id in ids {
             guard !isCancelled else {return}
