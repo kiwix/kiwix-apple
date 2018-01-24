@@ -43,7 +43,6 @@ class SearchResultController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let main = presentingViewController as? MainController else {return}
         
-        if main.isShowingPanel && main.traitCollection.horizontalSizeClass == .compact { main.hidePanel() }
         main.tabContainerController.load(url: results[indexPath.row].url)
         main.searchController.isActive = false
     }

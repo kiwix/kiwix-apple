@@ -9,8 +9,6 @@
 import UIKit
 
 class MainController: UIViewController, UISearchControllerDelegate {
-    private (set) var isShowingPanel = false
-    @IBOutlet weak var dimView: DimView!
     private lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearchButtonTapped))
     private var webControllerObserver: NSKeyValueObservation? = nil
 
@@ -18,17 +16,11 @@ class MainController: UIViewController, UISearchControllerDelegate {
     
     let searchController = UISearchController(searchResultsController: SearchController())
     private(set) var tabContainerController: TabContainerController!
-    private var panelController: PanelController!
+    private(set) var sidePanelController: SidePanelController!
+    private(set) lazy var bookmarkController = BookmarkViewController()
+    private(set) lazy var tableOfContentController = TableOfContentViewController()
     private(set) lazy var libraryController = LibraryController()
-    private lazy var settingController = SettingNavigationController()
-    
-    // MARK: - Constraints
-    
-    @IBOutlet weak var panelCompactShowConstraint: NSLayoutConstraint!
-    @IBOutlet weak var panelCompactHideConstraint: NSLayoutConstraint!
-    @IBOutlet weak var panelRegularShowConstraint: NSLayoutConstraint!
-    @IBOutlet weak var panelRegularHideConstraint: NSLayoutConstraint!
-    @IBOutlet weak var separatorViewWidthConstraints: NSLayoutConstraint!
+    private(set) lazy var settingController = SettingNavigationController()
     
     // MARK: - Toolbar
     
@@ -44,11 +36,9 @@ class MainController: UIViewController, UISearchControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSearchController()
+        definesPresentationContext = true
+        navigationItem.titleView = searchController.searchBar
         NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: .UIApplicationWillEnterForeground, object: nil)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -58,10 +48,6 @@ class MainController: UIViewController, UISearchControllerDelegate {
         case "TabContainerController":
             tabContainerController = segue.destination as! TabContainerController
             tabContainerController.delegate = self
-        case "PanelController":
-            panelController = segue.destination as! PanelController
-            panelController.tableOfContent.delegate = self
-            panelController.bookmark.delegate = self
         default:
             break
         }
@@ -78,28 +64,6 @@ class MainController: UIViewController, UISearchControllerDelegate {
         DispatchQueue.main.async { self.configureToolbar() }
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        view.setNeedsUpdateConstraints()
-    }
-    
-    override func updateViewConstraints() {
-        separatorViewWidthConstraints.constant = 1 / UIScreen.main.scale
-        switch traitCollection.horizontalSizeClass {
-        case .compact:
-            NSLayoutConstraint.deactivate([panelRegularShowConstraint, panelRegularHideConstraint])
-            panelCompactShowConstraint.isActive = isShowingPanel
-            panelCompactHideConstraint.isActive = !isShowingPanel
-        case .regular:
-            NSLayoutConstraint.deactivate([panelCompactShowConstraint, panelCompactHideConstraint])
-            panelRegularShowConstraint.isActive = isShowingPanel
-            panelRegularHideConstraint.isActive = !isShowingPanel
-        case .unspecified:
-            break
-        }
-        super.updateViewConstraints()
-    }
-    
     deinit {
         NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil)
     }
@@ -114,16 +78,14 @@ class MainController: UIViewController, UISearchControllerDelegate {
         searchController.obscuresBackgroundDuringPresentation = true
         searchController.delegate = self
         searchController.searchResultsUpdater = searchController.searchResultsController as? SearchController
-        navigationItem.titleView = searchController.searchBar
-        definesPresentationContext = true
     }
     
     func updateTableOfContents(completion: (() -> Void)? = nil) {
-        guard panelController.tableOfContent.url != tabContainerController.webController?.currentURL,
+        guard tableOfContentController.url != tabContainerController.webController?.currentURL,
             let webController = tabContainerController.webController else {completion?(); return}
         webController.extractTableOfContents(completion: { (currentURL, items) in
-            self.panelController.tableOfContent.url = currentURL
-            self.panelController.tableOfContent.items = items
+            self.tableOfContentController.url = currentURL
+            self.tableOfContentController.items = items
             completion?()
         })
     }
@@ -134,12 +96,6 @@ class MainController: UIViewController, UISearchControllerDelegate {
     
     @objc func appWillEnterForeground() {
         DispatchQueue.main.async { self.configureToolbar() }
-    }
-    
-    @IBAction func dimViewTapped(_ sender: UITapGestureRecognizer) {
-        hidePanel()
-        tableOfContentButtonItem.isFocused = false
-        bookmarkButtonItem.isFocused = false
     }
     
     // MARK: - UISearchControllerDelegate
@@ -168,55 +124,10 @@ class MainController: UIViewController, UISearchControllerDelegate {
 extension MainController: TableOfContentControllerDelegate, BookmarkControllerDelegate {
     func didTapTableOfContentItem(index: Int, item: TableOfContentItem) {
         tabContainerController.webController?.scrollToTableOfContentItem(index: index)
-        if traitCollection.horizontalSizeClass == .compact {
-            tableOfContentButtonItem.isFocused = false
-            hidePanel()
-        }
     }
     
     func didTapBookmark(articleURL: URL) {
         tabContainerController.load(url: articleURL)
-    }
-    
-    func showPanel(mode: PanelMode) {
-        panelController.set(mode: mode)
-        
-        guard !isShowingPanel else {return}
-        isShowingPanel = true
-        
-        dimView.isHidden = false
-        dimView.isDimmed = false
-        
-        view.layoutIfNeeded()
-        view.setNeedsUpdateConstraints()
-        self.navigationController?.setToolbarHidden(true, animated: true)
-        UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseInOut, animations: {
-            self.view.layoutIfNeeded()
-            self.dimView.isDimmed = true
-            if self.traitCollection.horizontalSizeClass == .compact {
-                self.navigationController?.isToolbarHidden = true
-            }
-        })
-    }
-    
-    func hidePanel() {
-        panelController.set(mode: nil)
-        
-        guard isShowingPanel else {return}
-        isShowingPanel = false
-        
-        view.layoutIfNeeded()
-        view.setNeedsUpdateConstraints()
-        
-        UIView.animate(withDuration: 0.2, delay: 0.0, options: .curveEaseInOut, animations: {
-            self.view.layoutIfNeeded()
-            self.dimView.isDimmed = false
-            if self.traitCollection.horizontalSizeClass == .compact {
-                self.navigationController?.isToolbarHidden = false
-            }
-        }, completion: { _ in
-            self.dimView.isHidden = true
-        })
     }
 }
 
@@ -226,9 +137,6 @@ extension MainController: TabContainerControllerDelegate {
     func tabDidFinishLoading(controller: WebViewController) {
         navigationBackButtonItem.button.isGrayed = !controller.canGoBack
         navigationForwardButtonItem.button.isGrayed = !controller.canGoForward
-        if isShowingPanel && panelController.mode == .tableOfContent {
-            updateTableOfContents()
-        }
         if let url = tabContainerController.webController?.currentURL,
             let article = Article.fetch(url: url, insertIfNotExist: false, context: CoreDataContainer.shared.viewContext) {
             bookmarkButtonItem.button.isBookmarked = article.isBookmarked
@@ -249,15 +157,22 @@ extension MainController: BarButtonItemDelegate {
             navigationController?.isToolbarHidden = true
             navigationItem.leftBarButtonItems = [navigationBackButtonItem, navigationForwardButtonItem, tableOfContentButtonItem]
             navigationItem.rightBarButtonItems = [settingButtonItem, libraryButtonItem, bookmarkButtonItem]
+            
+            if let presentedViewController = presentedViewController {
+                presentedViewController.dismiss(animated: false, completion: {
+                    if presentedViewController === self.tableOfContentController {
+                        self.presentTableOfContentController(animated: false)
+                    } else if presentedViewController === self.bookmarkController {
+                        self.presentBookmarkController(animated: false)
+                    }
+                })
+            }
         } else if traitCollection.horizontalSizeClass == .compact {
             navigationController?.isToolbarHidden = searchController.isActive ? true : false
             toolbarItems = [navigationBackButtonItem, navigationForwardButtonItem, tableOfContentButtonItem, bookmarkButtonItem, libraryButtonItem, settingButtonItem].enumerated()
                 .reduce([], { $0 + ($1.offset > 0 ? [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), $1.element] : [$1.element]) })
             if searchController.isActive && UIDevice.current.userInterfaceIdiom == .pad {
                 navigationItem.setRightBarButton(cancelButton, animated: false)
-            }
-            if isShowingPanel {
-                navigationController?.isToolbarHidden = true
             }
         }
     }
@@ -269,23 +184,9 @@ extension MainController: BarButtonItemDelegate {
         case navigationForwardButtonItem:
             tabContainerController.webController?.goForward()
         case tableOfContentButtonItem:
-            item.isFocused = !item.isFocused
-            if item.isFocused {
-                bookmarkButtonItem.isFocused = false
-                updateTableOfContents(completion: {
-                    self.showPanel(mode: .tableOfContent)
-                })
-            } else {
-                hidePanel()
-            }
+            presentTableOfContentController(animated: true)
         case bookmarkButtonItem:
-            item.isFocused = !item.isFocused
-            if item.isFocused {
-                tableOfContentButtonItem.isFocused = false
-                showPanel(mode: .bookmark)
-            } else {
-                hidePanel()
-            }
+            presentBookmarkController(animated: true)
         case libraryButtonItem:
             present(libraryController, animated: true, completion: nil)
         case settingButtonItem:
@@ -336,6 +237,37 @@ extension MainController: BarButtonItemDelegate {
             })
         default:
             break
+        }
+    }
+}
+
+// MARK: - Presentation
+
+extension MainController: UIPopoverPresentationControllerDelegate {
+    private func presentTableOfContentController(animated: Bool) {
+        updateTableOfContents(completion: {
+            self.tableOfContentController.delegate = self
+            self.tableOfContentController.modalPresentationStyle = .popover
+            self.tableOfContentController.popoverPresentationController?.barButtonItem = self.tableOfContentButtonItem
+            self.tableOfContentController.popoverPresentationController?.delegate = self
+            self.present(self.tableOfContentController, animated: animated)
+        })
+    }
+    
+    private func presentBookmarkController(animated: Bool) {
+        bookmarkController.modalPresentationStyle = .popover
+        bookmarkController.popoverPresentationController?.barButtonItem = bookmarkButtonItem
+        bookmarkController.popoverPresentationController?.delegate = self
+        present(bookmarkController, animated: animated)
+    }
+    
+    func presentationController(_ controller: UIPresentationController, viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle) -> UIViewController? {
+        if style == .popover {
+            return controller.presentedViewController
+        } else {
+            let navigationController = UINavigationController(rootViewController: controller.presentedViewController)
+            navigationController.view.backgroundColor = .white
+            return navigationController
         }
     }
 }

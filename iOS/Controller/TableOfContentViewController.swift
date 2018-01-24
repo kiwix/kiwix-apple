@@ -1,37 +1,39 @@
 //
-//  TableOfContentController.swift
-//  Kiwix
+//  TableOfContentViewController.swift
+//  iOS
 //
-//  Created by Chris Li on 11/13/17.
-//  Copyright © 2017 Chris Li. All rights reserved.
+//  Created by Chris Li on 1/24/18.
+//  Copyright © 2018 Chris Li. All rights reserved.
 //
 
 import UIKit
 
-class TableOfContentController: BaseController, UITableViewDelegate, UITableViewDataSource {
+class TableOfContentViewController: BaseController, UITableViewDelegate, UITableViewDataSource {
     let tableView = UITableView()
-    let emptyBackgroundView = BackgroundStackView(image: #imageLiteral(resourceName: "Compass"), title: NSLocalizedString("Table of content not available", comment: "Help message when table of content is not available"))
+    let emptyContentView = BackgroundStackView(image: #imageLiteral(resourceName: "Compass"), title: NSLocalizedString("Table of content not available", comment: "Help message when table of content is not available"))
     weak var delegate: TableOfContentControllerDelegate? = nil
     
     var url: URL?
     var items = [TableOfContentItem]() {
         didSet {
             if items.count == 0 {
-                configure(stackView: emptyBackgroundView)
+                configure(stackView: emptyContentView)
             } else {
                 configure(tableView: tableView)
+                tableView.reloadData()
             }
-            tableView.reloadData()
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        configure(stackView: emptyBackgroundView)
+        configure(stackView: emptyContentView)
     }
+    
+    // MARK: - UITableViewDataSource & Delegate
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -57,9 +59,13 @@ class TableOfContentController: BaseController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
         delegate?.didTapTableOfContentItem(index: indexPath.row, item: items[indexPath.row])
+        dismiss(animated: true) {
+            tableView.deselectRow(at: indexPath, animated: false)
+        }
     }
 }
 
-
+protocol TableOfContentControllerDelegate: class {
+    func didTapTableOfContentItem(index: Int, item: TableOfContentItem)
+}

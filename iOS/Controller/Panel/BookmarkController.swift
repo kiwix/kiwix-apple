@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class BookmarkController: PanelTabController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
+class BookmarkController: BaseController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
     let tableView = UITableView()
     let emptyBackgroundView = BackgroundStackView(
         image: #imageLiteral(resourceName: "StarColor"),
