@@ -152,7 +152,8 @@ extension MainController: BarButtonItemDelegate {
         toolbarItems = nil
         navigationItem.leftBarButtonItems = nil
         navigationItem.rightBarButtonItems = nil
-        if traitCollection.horizontalSizeClass == .regular {
+        switch traitCollection.horizontalSizeClass {
+        case .regular:
             navigationController?.isToolbarHidden = true
             navigationItem.leftBarButtonItems = [navigationBackButtonItem, navigationForwardButtonItem, tableOfContentButtonItem]
             navigationItem.rightBarButtonItems = [settingButtonItem, libraryButtonItem, bookmarkButtonItem]
@@ -166,13 +167,15 @@ extension MainController: BarButtonItemDelegate {
                     }
                 })
             }
-        } else if traitCollection.horizontalSizeClass == .compact {
+        case .compact:
             navigationController?.isToolbarHidden = searchController.isActive ? true : false
             toolbarItems = [navigationBackButtonItem, navigationForwardButtonItem, tableOfContentButtonItem, bookmarkButtonItem, libraryButtonItem, settingButtonItem].enumerated()
                 .reduce([], { $0 + ($1.offset > 0 ? [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), $1.element] : [$1.element]) })
             if searchController.isActive && UIDevice.current.userInterfaceIdiom == .pad {
                 navigationItem.setRightBarButton(cancelButton, animated: false)
             }
+        default:
+            break
         }
     }
     
@@ -208,28 +211,31 @@ extension MainController: BarButtonItemDelegate {
             article.title = title
             article.isBookmarked = !article.isBookmarked
             article.bookmarkDate = Date()
-            webController.extractSnippet(completion: { (snippet) in
-                context.perform({
-                    article.snippet = snippet
-                })
-            })
             
-            webController.extractImageURLs(completion: { (urls) in
-                guard let url = urls.first else {return}
-                context.perform({
-                    article.thumbImagePath = url.path
+            if article.isBookmarked {
+                webController.extractSnippet(completion: { (snippet) in
+                    context.perform({
+                        article.snippet = snippet
+                    })
                 })
-            })
-            
-            let isBookmarked = article.isBookmarked
+                
+                webController.extractImageURLs(completion: { (urls) in
+                    guard let url = urls.first else {return}
+                    context.perform({
+                        article.thumbImagePath = url.path
+                    })
+                })
+            }
+
             let controller = HUDController()
-            controller.direction = isBookmarked ? .down : .up
-            controller.imageView.image = isBookmarked ? #imageLiteral(resourceName: "StarAdd") : #imageLiteral(resourceName: "StarRemove")
-            controller.label.text = isBookmarked ? NSLocalizedString("Added", comment: "Bookmark HUD") : NSLocalizedString("Removed", comment: "Bookmark HUD")
-            controller.modalPresentationStyle = .overFullScreen
+            controller.modalPresentationStyle = .custom
             controller.transitioningDelegate = controller
+            controller.direction = article.isBookmarked ? .down : .up
+            controller.imageView.image = article.isBookmarked ? #imageLiteral(resourceName: "StarAdd") : #imageLiteral(resourceName: "StarRemove")
+            controller.label.text = article.isBookmarked ? NSLocalizedString("Added", comment: "Bookmark HUD") : NSLocalizedString("Removed", comment: "Bookmark HUD")
+            
             present(controller, animated: true, completion: {
-                item.button.isBookmarked = isBookmarked
+                item.button.isBookmarked = article.isBookmarked
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
                     controller.dismiss(animated: true, completion: nil)
                 })

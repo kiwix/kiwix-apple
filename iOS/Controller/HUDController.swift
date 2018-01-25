@@ -10,18 +10,16 @@ import UIKit
 
 class HUDController: UIViewController, UIViewControllerTransitioningDelegate {
     private let visualView = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
-    let stackView = UIStackView()
-    
-    let imageView = UIImageView(image: #imageLiteral(resourceName: "StarAdd"))
+    private let stackView = UIStackView()
+    let imageView = UIImageView()
     let label = UILabel()
+    
     var direction: HUDAnimationDirection = .down
     
     override func loadView() {
         view = visualView
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+        visualView.layer.cornerRadius = 10
+        visualView.clipsToBounds = true
         
         imageView.contentMode = .scaleAspectFit
         imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
@@ -45,22 +43,27 @@ class HUDController: UIViewController, UIViewControllerTransitioningDelegate {
             stackView.centerYAnchor.constraint(equalTo: visualView.contentView.centerYAnchor)])
     }
     
+    // MARK: - UIViewControllerTransitioningDelegate
+    
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return HUDTransitionAnimator(direction: direction, presenting: true)
+        return HUDAnimator(direction: direction, isPresentation: true)
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return HUDTransitionAnimator(direction: direction, presenting: false)
+        return HUDAnimator(direction: direction, isPresentation: false)
+    }
+    
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return HUDPresentationController(presentedViewController: presented, presenting: presenting)
     }
 }
-
-class HUDTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+class HUDAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     let direction: HUDAnimationDirection
-    let presenting: Bool
+    let isPresentation: Bool
     
-    init(direction: HUDAnimationDirection, presenting: Bool) {
+    init(direction: HUDAnimationDirection, isPresentation: Bool) {
         self.direction = direction
-        self.presenting = presenting
+        self.isPresentation = isPresentation
     }
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
@@ -68,73 +71,52 @@ class HUDTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        let container = transitionContext.containerView
-        guard let hud = transitionContext.view(forKey: presenting ? .to : .from) else {
-            transitionContext.completeTransition(false)
-            return
-        }
-        NSLayoutConstraint.deactivate(container.constraints)
-        NSLayoutConstraint.deactivate(hud.constraints)
-        
-        hud.layer.cornerRadius = 10
-        hud.clipsToBounds = true
-        
-        container.isUserInteractionEnabled = false
-        hud.translatesAutoresizingMaskIntoConstraints = false
-        container.addSubview(hud)
+        guard let presentedView = transitionContext.view(forKey: isPresentation ? .to : .from),
+            let presentedController = transitionContext.viewController(forKey: isPresentation ? .to : .from) else {return}
+        let containerView = transitionContext.containerView
 
-        NSLayoutConstraint.activate([
-            hud.heightAnchor.constraint(lessThanOrEqualTo: container.heightAnchor, multiplier: 0.5),
-            hud.widthAnchor.constraint(lessThanOrEqualTo: container.widthAnchor, multiplier: 0.5),
-            hud.widthAnchor.constraint(equalTo: hud.heightAnchor),
-            hud.widthAnchor.constraint(lessThanOrEqualToConstant: 250),
-            hud.centerXAnchor.constraint(equalTo: container.centerXAnchor)])
+        var initialFrame = transitionContext.initialFrame(for: presentedController)
+        var finalFrame = transitionContext.finalFrame(for: presentedController)
         
-        let topConstraint = hud.bottomAnchor.constraint(equalTo: container.topAnchor)
-        let centerConstraint = hud.centerYAnchor.constraint(equalTo: container.centerYAnchor)
-        let bottomConstraint = hud.topAnchor.constraint(equalTo: container.bottomAnchor)
-        
-        topConstraint.priority = .defaultLow
-        centerConstraint.priority = .defaultLow
-        bottomConstraint.priority = .defaultLow
-        
-        switch (presenting, direction) {
-        case (false, _):
-            centerConstraint.priority = .defaultHigh
-        case (true, .up):
-            bottomConstraint.priority = .defaultHigh
-        case (true, .down):
-            topConstraint.priority = .defaultHigh
+        if isPresentation {
+            let dy = direction == .up ? containerView.frame.height - finalFrame.minY : -finalFrame.maxY
+            initialFrame = finalFrame.offsetBy(dx: 0, dy: dy)
+        } else {
+            let dy = direction == .up ? -initialFrame.maxY : containerView.frame.height - initialFrame.minY
+            finalFrame = initialFrame.offsetBy(dx: 0, dy: dy)
         }
         
-        topConstraint.isActive = true
-        centerConstraint.isActive = true
-        bottomConstraint.isActive = true
-
-        container.layoutIfNeeded()
-
-        topConstraint.priority = .defaultLow
-        centerConstraint.priority = .defaultLow
-        bottomConstraint.priority = .defaultLow
-
-        switch (presenting, direction) {
-        case (true, _):
-            centerConstraint.priority = .defaultHigh
-        case (false, .up):
-            topConstraint.priority = .defaultHigh
-        case (false, .down):
-            bottomConstraint.priority = .defaultHigh
+        if isPresentation {
+            transitionContext.containerView.addSubview(presentedView)
         }
-        
+        presentedView.frame = initialFrame
         UIView.animate(withDuration: transitionDuration(using: transitionContext),
                        delay: 0.0,
-                       usingSpringWithDamping: presenting ? 0.7 : 1.0,
+                       usingSpringWithDamping: isPresentation ? 0.7 : 1.0,
                        initialSpringVelocity: 0.0,
-                       options: presenting ? .curveEaseOut : .curveEaseIn,
-                       animations:{ container.layoutIfNeeded()
+                       options: isPresentation ? .curveEaseOut : .curveEaseIn,
+                       animations:{ presentedView.frame = finalFrame
         }) { (finished) in
-            transitionContext.completeTransition(true)
+            transitionContext.completeTransition(finished)
         }
+    }
+}
+
+class HUDPresentationController: UIPresentationController {
+    override func size(forChildContentContainer container: UIContentContainer, withParentContainerSize parentSize: CGSize) -> CGSize {
+        let dimension = min(250, parentSize.height * 0.5, parentSize.width * 0.5)
+        return CGSize(width: dimension, height: dimension)
+    }
+    
+    override var frameOfPresentedViewInContainerView: CGRect {
+        guard let containerView = containerView else {return .zero}
+        var frame = CGRect.zero
+        frame.size = size(forChildContentContainer: presentedViewController, withParentContainerSize: containerView.bounds.size)
+        return frame.offsetBy(dx: (containerView.bounds.width - frame.width) / 2, dy: (containerView.bounds.height - frame.height) / 2)
+    }
+    
+    override func containerViewWillLayoutSubviews() {
+        presentedView?.frame = frameOfPresentedViewInContainerView
     }
 }
 
