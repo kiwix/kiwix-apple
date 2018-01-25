@@ -257,6 +257,7 @@ extension MainController: UIPopoverPresentationControllerDelegate {
         bookmarkController.modalPresentationStyle = .popover
         bookmarkController.popoverPresentationController?.barButtonItem = bookmarkButtonItem
         bookmarkController.popoverPresentationController?.delegate = self
+        bookmarkController.preferredContentSize = CGSize(width: 400, height: 600)
         present(bookmarkController, animated: animated)
     }
     

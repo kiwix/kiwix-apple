@@ -23,7 +23,8 @@ class BookmarkViewController: BaseController, UITableViewDataSource, UITableView
         title = NSLocalizedString("Bookmark", comment: "Bookmark view title")
         tableView.delegate = self
         tableView.dataSource = self
-//        tableView.estimatedRowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 80
+        tableView.rowHeight = UITableViewAutomaticDimension
         tableView.register(ArticleTableViewCell.self, forCellReuseIdentifier: "Cell")
         configure()
     }

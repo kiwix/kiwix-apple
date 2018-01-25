@@ -8,6 +8,13 @@
 
 import UIKit
 
+class ArticleTestCell: UITableViewCell {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        imageView?.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
+    }
+}
+
 class ArticleTableViewCell: UITableViewCell {
     let titleLabel = UILabel()
     let snippetLabel = UILabel()
@@ -53,19 +60,15 @@ class ArticleTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             thumbImageView.heightAnchor.constraint(equalToConstant: 34),
             thumbImageView.widthAnchor.constraint(equalToConstant: 34),
-            thumbImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            thumbImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-//            textStackView.leftAnchor.constraint(equalTo: thumbImageView.rightAnchor, constant: 8),
-//            textStackView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-//            textStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
-//            textStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6)
-            ])
-//        let heightConstraint = contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 44)
-//        heightConstraint.priority = .defaultHigh
-//        heightConstraint.isActive = true
-        let widthConstraint = contentView.widthAnchor.constraint(greaterThanOrEqualToConstant: 320)
-        widthConstraint.priority = .defaultHigh
-        widthConstraint.isActive = true
+            thumbImageView.centerYAnchor.constraint(equalTo: contentView.readableContentGuide.centerYAnchor),
+            thumbImageView.leftAnchor.constraint(equalTo: contentView.readableContentGuide.leftAnchor),
+            textStackView.leftAnchor.constraint(equalTo: thumbImageView.rightAnchor, constant: 8),
+            textStackView.rightAnchor.constraint(equalTo: contentView.readableContentGuide.rightAnchor),
+            textStackView.topAnchor.constraint(equalTo: contentView.readableContentGuide.topAnchor, constant: 6),
+            textStackView.bottomAnchor.constraint(equalTo: contentView.readableContentGuide.bottomAnchor, constant: -6)])
+        let heightConstraint = contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 44)
+        heightConstraint.priority = .defaultHigh
+        heightConstraint.isActive = true
 
     }
 }
