@@ -54,13 +54,18 @@ class ArticleTableViewCell: UITableViewCell {
             thumbImageView.heightAnchor.constraint(equalToConstant: 34),
             thumbImageView.widthAnchor.constraint(equalToConstant: 34),
             thumbImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            thumbImageView.leftAnchor.constraint(equalTo: contentView.readableContentGuide.leftAnchor),
-            textStackView.leftAnchor.constraint(equalTo: thumbImageView.rightAnchor, constant: 8),
-            textStackView.rightAnchor.constraint(equalTo: contentView.readableContentGuide.rightAnchor),
-            textStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
-            textStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6)])
-        let heightConstraint = contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 44)
-        heightConstraint.priority = .defaultHigh
-        heightConstraint.isActive = true
+            thumbImageView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+//            textStackView.leftAnchor.constraint(equalTo: thumbImageView.rightAnchor, constant: 8),
+//            textStackView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+//            textStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
+//            textStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6)
+            ])
+//        let heightConstraint = contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 44)
+//        heightConstraint.priority = .defaultHigh
+//        heightConstraint.isActive = true
+        let widthConstraint = contentView.widthAnchor.constraint(greaterThanOrEqualToConstant: 320)
+        widthConstraint.priority = .defaultHigh
+        widthConstraint.isActive = true
+
     }
 }

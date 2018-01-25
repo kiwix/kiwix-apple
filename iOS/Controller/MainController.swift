@@ -16,7 +16,6 @@ class MainController: UIViewController, UISearchControllerDelegate {
     
     let searchController = UISearchController(searchResultsController: SearchController())
     private(set) var tabContainerController: TabContainerController!
-    private(set) var sidePanelController: SidePanelController!
     private(set) lazy var bookmarkController = BookmarkViewController()
     private(set) lazy var tableOfContentController = TableOfContentViewController()
     private(set) lazy var libraryController = LibraryController()
@@ -267,6 +266,9 @@ extension MainController: UIPopoverPresentationControllerDelegate {
         } else {
             let navigationController = UINavigationController(rootViewController: controller.presentedViewController)
             navigationController.view.backgroundColor = .white
+            if #available(iOS 11.0, *) {
+                navigationController.navigationBar.prefersLargeTitles = true
+            }
             return navigationController
         }
     }

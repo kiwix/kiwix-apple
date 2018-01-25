@@ -27,6 +27,7 @@ class TableOfContentViewController: BaseController, UITableViewDelegate, UITable
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = NSLocalizedString("Table of Content", comment: "Table of Content view title")
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
