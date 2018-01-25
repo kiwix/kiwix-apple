@@ -22,8 +22,7 @@ class WelcomeController: UIViewController {
     }
     
     @IBAction func leftButtonTapped(_ sender: Any) {
-        guard let tabContainerController = parent as? TabContainerController,
-            let mainController = tabContainerController.parent as? MainController else {return}
+        guard let mainController = parent as? MainController else {return}
         mainController.present(mainController.libraryController, animated: true, completion: nil)
     }
     

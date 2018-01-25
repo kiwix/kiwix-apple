@@ -8,14 +8,16 @@
 
 import UIKit
 
-class MainController: UIViewController, UISearchControllerDelegate {
+class MainController: UIViewController {
     private lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearchButtonTapped))
     private var webControllerObserver: NSKeyValueObservation? = nil
 
     // MARK: - Controllers
     
     let searchController = UISearchController(searchResultsController: SearchController())
-    private(set) var tabContainerController: TabContainerController!
+    private weak var currentWebController: (UIViewController & WebViewController)? = nil
+    private(set) var webControllers = [(UIViewController & WebViewController)]()
+    private(set) lazy var welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     private(set) lazy var bookmarkController = BookmarkViewController()
     private(set) lazy var tableOfContentController = TableOfContentViewController()
     private(set) lazy var libraryController = LibraryController()
@@ -38,18 +40,9 @@ class MainController: UIViewController, UISearchControllerDelegate {
         definesPresentationContext = true
         navigationItem.titleView = searchController.searchBar
         NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: .UIApplicationWillEnterForeground, object: nil)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        guard let identifier = segue.identifier else {return}
-        switch identifier {
-        case "TabContainerController":
-            tabContainerController = segue.destination as! TabContainerController
-            tabContainerController.delegate = self
-        default:
-            break
-        }
+        setChildController(controller: welcomeController)
+        navigationBackButtonItem.button.isEnabled = false
+        navigationForwardButtonItem.button.isEnabled = false
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -79,14 +72,37 @@ class MainController: UIViewController, UISearchControllerDelegate {
         searchController.searchResultsUpdater = searchController.searchResultsController as? SearchController
     }
     
-    func updateTableOfContents(completion: (() -> Void)? = nil) {
-        guard tableOfContentController.url != tabContainerController.webController?.currentURL,
-            let webController = tabContainerController.webController else {completion?(); return}
+    private func updateTableOfContents(completion: (() -> Void)? = nil) {
+        guard let webController = currentWebController, tableOfContentController.url != webController.currentURL
+             else {completion?(); return}
         webController.extractTableOfContents(completion: { (currentURL, items) in
             self.tableOfContentController.url = currentURL
             self.tableOfContentController.items = items
             completion?()
         })
+    }
+    
+    private func setChildController(controller: UIViewController) {
+        view.subviews.forEach({ $0.removeFromSuperview() })
+        childViewControllers.forEach({ $0.removeFromParentViewController() })
+        
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        addChildViewController(controller)
+        view.addSubview(controller.view)
+        if let controller = controller as? WelcomeController {
+            NSLayoutConstraint.activate([
+                controller.view.topAnchor.constraint(equalTo: view.topAnchor),
+                controller.view.leftAnchor.constraint(equalTo: view.leftAnchor),
+                controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                controller.view.rightAnchor.constraint(equalTo: view.rightAnchor)])
+        } else {
+            NSLayoutConstraint.activate([
+                controller.view.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
+                controller.view.leftAnchor.constraint(equalTo: view.leftAnchor),
+                controller.view.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor),
+                controller.view.rightAnchor.constraint(equalTo: view.rightAnchor)])
+        }
+        controller.didMove(toParentViewController: self)
     }
     
     @objc func cancelSearchButtonTapped() {
@@ -96,9 +112,46 @@ class MainController: UIViewController, UISearchControllerDelegate {
     @objc func appWillEnterForeground() {
         DispatchQueue.main.async { self.configureToolbar() }
     }
+}
+
+// MARK: - Tab Management
+
+extension MainController: WebViewControllerDelegate {
+    func load(url: URL) {
+        if let controller = webControllers.first {
+            controller.load(url: url)
+        } else {
+            var controller: (UIViewController & WebViewController) = {
+                if #available(iOS 11.0, *) {
+                    return WebKitWebController()
+//                    return LegacyWebController()
+                } else {
+                    return LegacyWebController()
+                }
+            }()
+            controller.delegate = self
+            setChildController(controller: controller)
+            webControllers.append(controller)
+            currentWebController = controller
+            load(url: url)
+        }
+    }
     
-    // MARK: - UISearchControllerDelegate
-    
+    func webViewDidFinishLoading(controller: WebViewController) {
+        navigationBackButtonItem.button.isEnabled = controller.canGoBack
+        navigationForwardButtonItem.button.isEnabled = controller.canGoForward
+        if let url = currentWebController?.currentURL,
+            let article = Article.fetch(url: url, insertIfNotExist: false, context: CoreDataContainer.shared.viewContext) {
+            bookmarkButtonItem.button.isBookmarked = article.isBookmarked
+        } else {
+            bookmarkButtonItem.button.isBookmarked = false
+        }
+    }
+}
+
+// MARK: - UISearchControllerDelegate
+
+extension MainController: UISearchControllerDelegate {
     func willPresentSearchController(_ searchController: UISearchController) {
         if UIDevice.current.userInterfaceIdiom == .pad && traitCollection.horizontalSizeClass == .compact {
             navigationItem.setRightBarButton(cancelButton, animated: true)
@@ -122,31 +175,11 @@ class MainController: UIViewController, UISearchControllerDelegate {
 
 extension MainController: TableOfContentControllerDelegate, BookmarkControllerDelegate {
     func didTapTableOfContentItem(index: Int, item: TableOfContentItem) {
-        tabContainerController.webController?.scrollToTableOfContentItem(index: index)
+        currentWebController?.scrollToTableOfContentItem(index: index)
     }
     
     func didTapBookmark(articleURL: URL) {
-        tabContainerController.load(url: articleURL)
-    }
-}
-
-// MARK: - Tab Control
-
-extension MainController: TabContainerControllerDelegate {
-    func tabDidBecomeCurrent(controller: WebViewController?) {
-        navigationBackButtonItem.button.isEnabled = controller?.canGoBack ?? false
-        navigationForwardButtonItem.button.isEnabled = controller?.canGoForward ?? false
-    }
-    
-    func tabDidFinishLoading(controller: WebViewController) {
-        navigationBackButtonItem.button.isEnabled = controller.canGoBack
-        navigationForwardButtonItem.button.isEnabled = controller.canGoForward
-        if let url = tabContainerController.webController?.currentURL,
-            let article = Article.fetch(url: url, insertIfNotExist: false, context: CoreDataContainer.shared.viewContext) {
-            bookmarkButtonItem.button.isBookmarked = article.isBookmarked
-        } else {
-            bookmarkButtonItem.button.isBookmarked = false
-        }
+        load(url: articleURL)
     }
 }
 
@@ -187,9 +220,9 @@ extension MainController: BarButtonItemDelegate {
     func buttonTapped(item: BarButtonItem, button: UIButton) {
         switch item {
         case navigationBackButtonItem:
-            tabContainerController.webController?.goBack()
+            currentWebController?.goBack()
         case navigationForwardButtonItem:
-            tabContainerController.webController?.goForward()
+            currentWebController?.goForward()
         case tableOfContentButtonItem:
             presentTableOfContentController(animated: true)
         case bookmarkButtonItem:
@@ -208,7 +241,7 @@ extension MainController: BarButtonItemDelegate {
         case bookmarkButtonItem:
             let context = CoreDataContainer.shared.viewContext
             guard let item = item as? BookmarkButtonItem,
-                let webController = tabContainerController.webController,
+                let webController = currentWebController,
                 let url = webController.currentURL,
                 let title = webController.currentTitle,
                 let article = Article.fetch(url: url, insertIfNotExist: true, context: context) else {return}
@@ -258,19 +291,22 @@ extension MainController: UIPopoverPresentationControllerDelegate {
         updateTableOfContents(completion: {
             self.tableOfContentController.delegate = self
             self.tableOfContentController.modalPresentationStyle = .popover
-            self.tableOfContentController.popoverPresentationController?.barButtonItem = self.tableOfContentButtonItem
+            self.tableOfContentController.popoverPresentationController?.sourceView = self.tableOfContentButtonItem.button
+            self.tableOfContentController.popoverPresentationController?.sourceRect = self.tableOfContentButtonItem.button.bounds
             self.tableOfContentController.popoverPresentationController?.delegate = self
-            self.present(self.tableOfContentController, animated: animated)
+            self.tableOfContentController.preferredContentSize = CGSize(width: 300, height: 400)
+            self.present(self.tableOfContentController, animated: true)
         })
     }
     
     private func presentBookmarkController(animated: Bool) {
         bookmarkController.delegate = self
         bookmarkController.modalPresentationStyle = .popover
-        bookmarkController.popoverPresentationController?.barButtonItem = bookmarkButtonItem
+        bookmarkController.popoverPresentationController?.sourceView = bookmarkButtonItem.button
+        bookmarkController.popoverPresentationController?.sourceRect = bookmarkButtonItem.button.bounds
         bookmarkController.popoverPresentationController?.delegate = self
         bookmarkController.preferredContentSize = CGSize(width: 400, height: 600)
-        present(bookmarkController, animated: animated)
+        present(bookmarkController, animated: true)
     }
     
     func presentationController(_ controller: UIPresentationController, viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle) -> UIViewController? {

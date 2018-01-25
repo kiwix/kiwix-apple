@@ -18,21 +18,7 @@
                     <view key="view" contentMode="scaleToFill" id="Lnk-x9-o6o">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="llU-2x-q9a">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                                <connections>
-                                    <segue destination="Pgj-1E-dCA" kind="embed" identifier="TabContainerController" id="coI-i4-FHP"/>
-                                </connections>
-                            </containerView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="llU-2x-q9a" firstAttribute="top" secondItem="Lnk-x9-o6o" secondAttribute="top" id="6uI-bM-0AO"/>
-                            <constraint firstItem="llU-2x-q9a" firstAttribute="leading" secondItem="Lnk-x9-o6o" secondAttribute="leading" id="VDj-c0-YYc"/>
-                            <constraint firstAttribute="bottom" secondItem="llU-2x-q9a" secondAttribute="bottom" id="iKL-SQ-otC"/>
-                            <constraint firstAttribute="trailing" secondItem="llU-2x-q9a" secondAttribute="trailing" id="nWQ-gb-4Fa"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="ShG-fd-wTm"/>
                     </view>
                     <toolbarItems/>
@@ -40,13 +26,8 @@
                     <nil key="simulatedBottomBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bP1-1e-3AL" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="1rC-kJ-KyG">
-                    <connections>
-                        <action selector="dimViewTapped:" destination="sgR-df-kDZ" id="p8c-jz-pIh"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="80.46875" y="177.5390625"/>
+            <point key="canvasLocation" x="79.710144927536234" y="176.9021739130435"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="PK7-Ri-F2a">
@@ -68,54 +49,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zwK-JY-OU7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-753" y="180"/>
-        </scene>
-        <!--Tab Container Controller-->
-        <scene sceneID="hAN-hr-F4c">
-            <objects>
-                <viewController id="Pgj-1E-dCA" customClass="TabContainerController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="6Wm-IY-TSx">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="j7b-FI-jO3"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="riZ-7B-WM2" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="900" y="179"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="c1s-Vh-Toi">
-            <objects>
-                <viewController id="uYT-M6-LaS" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="gkH-of-5P8">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="lAH-5v-stP">
-                                <rect key="frame" x="0.0" y="10" width="414" height="736"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7AQ-qJ-VWV">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                            </stackView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="lAH-5v-stP" firstAttribute="centerX" secondItem="oSV-4j-4WX" secondAttribute="centerX" id="DlA-GW-ifd"/>
-                            <constraint firstItem="lAH-5v-stP" firstAttribute="height" secondItem="gkH-of-5P8" secondAttribute="height" id="cQn-AU-hnI"/>
-                            <constraint firstItem="lAH-5v-stP" firstAttribute="centerY" secondItem="oSV-4j-4WX" secondAttribute="centerY" id="fiE-lW-TjJ"/>
-                            <constraint firstItem="lAH-5v-stP" firstAttribute="width" secondItem="gkH-of-5P8" secondAttribute="width" id="qTn-Ie-fB8"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="oSV-4j-4WX"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="K5G-6r-kd6" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2328" y="1168"/>
         </scene>
         <!--Welcome Controller-->
         <scene sceneID="MAQ-Q2-rYU">
@@ -246,7 +179,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YB1-rY-5jy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1764" y="176.60098522167488"/>
+            <point key="canvasLocation" x="1665" y="177"/>
         </scene>
     </scenes>
     <resources>

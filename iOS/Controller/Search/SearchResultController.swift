@@ -45,7 +45,7 @@ class SearchResultController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let main = presentingViewController as? MainController else {return}
         
-        main.tabContainerController.load(url: results[indexPath.row].url)
+        main.load(url: results[indexPath.row].url)
         main.searchController.isActive = false
     }
     

@@ -237,7 +237,7 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
             case .openMainPage:
                 guard let main = (presentingViewController as? UINavigationController)?.topViewController as? MainController,
                     let url = ZimMultiReader.shared.getMainPageURL(bookID: book.id) else {break}
-                main.tabContainerController.load(url: url)
+                main.load(url: url)
                 dismiss(animated: true, completion: nil)
             }
         }

@@ -10,6 +10,8 @@
 		97028C4D2019200C001259CB /* BookmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97028C4C2019200C001259CB /* BookmarkViewController.swift */; };
 		97028C4F20192F65001259CB /* TableOfContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97028C4E20192F65001259CB /* TableOfContentViewController.swift */; };
 		97028C51201933CB001259CB /* BaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97028C50201933CB001259CB /* BaseController.swift */; };
+		97028C54201A7D43001259CB /* WebViewControllerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B665B2006BEBA003F5365 /* WebViewControllerProtocols.swift */; };
+		97028C55201A7D43001259CB /* WebViewControllerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B665B2006BEBA003F5365 /* WebViewControllerProtocols.swift */; };
 		9702BE1E1F97F1C900E6B4EE /* LibraryLanguageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BE1D1F97F1C900E6B4EE /* LibraryLanguageController.swift */; };
 		9702BE1F1F97F1C900E6B4EE /* LibraryLanguageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BE1D1F97F1C900E6B4EE /* LibraryLanguageController.swift */; };
 		9702BE221F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BE211F97FA4300E6B4EE /* LibraryRefreshProcedure.swift */; };
@@ -38,13 +40,11 @@
 		97252112200F9D7800B60A80 /* BackgroundStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972521002009616B00B60A80 /* BackgroundStackView.swift */; };
 		97252113200F9D7800B60A80 /* ArticleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252104200E908000B60A80 /* ArticleTableViewCell.swift */; };
 		97252114200F9D7800B60A80 /* LibraryTableCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97161A881F90072A00A89DE3 /* LibraryTableCells.swift */; };
-		97252115200F9D7F00B60A80 /* TabContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B665B2006BEBA003F5365 /* TabContainerController.swift */; };
 		97252116200F9D7F00B60A80 /* LegacyWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996CD1F609C9F007A6282 /* LegacyWebController.swift */; };
 		97252117200F9D7F00B60A80 /* WebKitWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97050D001F6733400021DE78 /* WebKitWebController.swift */; };
 		97252118200F9D7F00B60A80 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B6661200808D6003F5365 /* WelcomeController.swift */; };
 		97252119200F9D7F00B60A80 /* HUDController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252102200D3C4B00B60A80 /* HUDController.swift */; };
 		972B66592006B1F0003F5365 /* BarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B66582006B1F0003F5365 /* BarButtonItem.swift */; };
-		972B665C2006BEBA003F5365 /* TabContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B665B2006BEBA003F5365 /* TabContainerController.swift */; };
 		972B665F2007F9F5003F5365 /* LegacyWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996CD1F609C9F007A6282 /* LegacyWebController.swift */; };
 		972B66602007F9F7003F5365 /* WebKitWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97050D001F6733400021DE78 /* WebKitWebController.swift */; };
 		972B6662200808D6003F5365 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B6661200808D6003F5365 /* WelcomeController.swift */; };
@@ -246,7 +246,7 @@
 		97252107200F9D6A00B60A80 /* SettingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingController.swift; sourceTree = "<group>"; };
 		9726591A1D8DB91200D1DFFB /* DownloadProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadProgress.swift; sourceTree = "<group>"; };
 		972B66582006B1F0003F5365 /* BarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtonItem.swift; sourceTree = "<group>"; };
-		972B665B2006BEBA003F5365 /* TabContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabContainerController.swift; sourceTree = "<group>"; };
+		972B665B2006BEBA003F5365 /* WebViewControllerProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewControllerProtocols.swift; sourceTree = "<group>"; };
 		972B6661200808D6003F5365 /* WelcomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
 		972E6F631FA11A6100F5C927 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		97318E4D1E6780F9000B718B /* 1.5.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = 1.5.xcmappingmodel; sourceTree = "<group>"; };
@@ -732,10 +732,9 @@
 		97050CFF1F6730010021DE78 /* Tab */ = {
 			isa = PBXGroup;
 			children = (
-				972B665B2006BEBA003F5365 /* TabContainerController.swift */,
-				97A996CD1F609C9F007A6282 /* LegacyWebController.swift */,
+				972B665B2006BEBA003F5365 /* WebViewControllerProtocols.swift */,
 				97050D001F6733400021DE78 /* WebKitWebController.swift */,
-				972B6661200808D6003F5365 /* WelcomeController.swift */,
+				97A996CD1F609C9F007A6282 /* LegacyWebController.swift */,
 				97A9F6F41E2E990500F423AA /* Inject.js */,
 			);
 			path = Tab;
@@ -858,6 +857,7 @@
 				97028C4C2019200C001259CB /* BookmarkViewController.swift */,
 				97028C4E20192F65001259CB /* TableOfContentViewController.swift */,
 				97252102200D3C4B00B60A80 /* HUDController.swift */,
+				972B6661200808D6003F5365 /* WelcomeController.swift */,
 				97050CFF1F6730010021DE78 /* Tab */,
 				972E6F651FA2872A00F5C927 /* Search */,
 				97B1046D1F8FC61400488444 /* Library */,
@@ -1811,6 +1811,7 @@
 				975FDAF51F608A2200A10E8C /* URLProtocol.swift in Sources */,
 				97050D031F6735100021DE78 /* WebKitHandler.swift in Sources */,
 				9702BE231F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */,
+				97028C55201A7D43001259CB /* WebViewControllerProtocols.swift in Sources */,
 				977D7BB91F9E6A43009A8703 /* ZimMultiReader.swift in Sources */,
 				97252118200F9D7F00B60A80 /* WelcomeController.swift in Sources */,
 				977D7BBF1F9FC618009A8703 /* Queue.swift in Sources */,
@@ -1824,7 +1825,6 @@
 				977D7BB51F9E6A43009A8703 /* SearchResult.swift in Sources */,
 				9725210E200F9D7800B60A80 /* VisualEffectShadowView.swift in Sources */,
 				97252111200F9D7800B60A80 /* BarButtonItem.swift in Sources */,
-				97252115200F9D7F00B60A80 /* TabContainerController.swift in Sources */,
 				97A36C5C1F8EA6DE0079B452 /* Kiwix.xcdatamodeld in Sources */,
 				97CBE7342011056B00A1003C /* SearchController.swift in Sources */,
 				97A36C581F8D5FCD0079B452 /* LibraryController.swift in Sources */,
@@ -1889,7 +1889,6 @@
 				97A36C781F8EA6FD0079B452 /* CoreDataContainer.swift in Sources */,
 				977D7BB81F9E6A43009A8703 /* ZimMultiReader.swift in Sources */,
 				97028C4F20192F65001259CB /* TableOfContentViewController.swift in Sources */,
-				972B665C2006BEBA003F5365 /* TabContainerController.swift in Sources */,
 				97161A861F8FFD1E00A89DE3 /* LibraryCategoryController.swift in Sources */,
 				9702BE1E1F97F1C900E6B4EE /* LibraryLanguageController.swift in Sources */,
 				97A36C2B1F8C21210079B452 /* URLProtocol.swift in Sources */,
@@ -1922,6 +1921,7 @@
 				979FD159201679C5007B5290 /* SearchResultController.swift in Sources */,
 				972B66602007F9F7003F5365 /* WebKitWebController.swift in Sources */,
 				977F983E1F9E43EC002ABFCE /* ScanProcedure.swift in Sources */,
+				97028C54201A7D43001259CB /* WebViewControllerProtocols.swift in Sources */,
 				97028C4D2019200C001259CB /* BookmarkViewController.swift in Sources */,
 				97A36C331F8C21210079B452 /* SearchProcedure.swift in Sources */,
 				97E429901FBDF48800ABE62E /* DirectoryMonitor.swift in Sources */,
