@@ -133,9 +133,14 @@ extension MainController: TableOfContentControllerDelegate, BookmarkControllerDe
 // MARK: - Tab Control
 
 extension MainController: TabContainerControllerDelegate {
+    func tabDidBecomeCurrent(controller: WebViewController?) {
+        navigationBackButtonItem.button.isEnabled = controller?.canGoBack ?? false
+        navigationForwardButtonItem.button.isEnabled = controller?.canGoForward ?? false
+    }
+    
     func tabDidFinishLoading(controller: WebViewController) {
-        navigationBackButtonItem.button.isGrayed = !controller.canGoBack
-        navigationForwardButtonItem.button.isGrayed = !controller.canGoForward
+        navigationBackButtonItem.button.isEnabled = controller.canGoBack
+        navigationForwardButtonItem.button.isEnabled = controller.canGoForward
         if let url = tabContainerController.webController?.currentURL,
             let article = Article.fetch(url: url, insertIfNotExist: false, context: CoreDataContainer.shared.viewContext) {
             bookmarkButtonItem.button.isBookmarked = article.isBookmarked

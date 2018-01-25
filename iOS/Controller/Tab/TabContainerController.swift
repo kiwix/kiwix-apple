@@ -31,6 +31,8 @@ class TabContainerController: UIViewController, WebViewControllerDelegate {
             view.topAnchor.constraint(equalTo: controller.view.topAnchor),
             view.bottomAnchor.constraint(equalTo: controller.view.bottomAnchor)])
         controller.didMove(toParentViewController: self)
+        
+        delegate?.tabDidBecomeCurrent(controller: controller as? WebViewController)
     }
     
     func load(url: URL) {
@@ -47,6 +49,7 @@ class TabContainerController: UIViewController, WebViewControllerDelegate {
             webController = controller
             webController?.delegate = self
             configureChildController(controller: controller)
+            delegate?.tabDidBecomeCurrent(controller: controller)
             load(url: url)
         }
     }
@@ -57,6 +60,7 @@ class TabContainerController: UIViewController, WebViewControllerDelegate {
 }
 
 protocol TabContainerControllerDelegate: class {
+    func tabDidBecomeCurrent(controller: WebViewController?)
     func tabDidFinishLoading(controller: WebViewController)
 }
 

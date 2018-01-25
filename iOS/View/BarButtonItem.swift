@@ -66,21 +66,20 @@ class BookmarkButtonItem: BarButtonItem {
 class BarButton: UIButton {
     private var boundsObserver: NSKeyValueObservation? = nil
     
-    override var isHighlighted: Bool {
-        didSet {
-            tintColor = isHighlighted ? .darkGray : (isGrayed ? .gray : nil)
-        }
-    }
+//    override var isHighlighted: Bool {
+//        didSet {
+//            tintColor = isHighlighted ? .darkGray : (isGrayed ? .gray : nil)
+//        }
+//    }
     
-    var isGrayed: Bool = true {
-        didSet {
-            tintColor = isGrayed ? .gray : nil
-        }
-    }
+//    var isGrayed: Bool = true {
+//        didSet {
+//            tintColor = isGrayed ? .lightGray : nil
+//        }
+//    }
     
     convenience init(inset: CGFloat) {
         self.init(frame: .zero)
-        tintColor = .gray
 
         boundsObserver = observe(\.bounds, options: [.initial, .new]) { (button, change) in
             let inset: CGFloat = {
@@ -109,11 +108,7 @@ class BarButton: UIButton {
 class BookmarkBarButton: BarButton {
     override var isHighlighted: Bool {
         didSet {
-            if isBookmarked {
-                tintColor = #colorLiteral(red: 1, green: 0.7960784314, blue: 0.2196078431, alpha: 1)
-            } else {
-                tintColor = isHighlighted ? .darkGray : (isGrayed ? .gray : nil)
-            }
+            tintColor = isBookmarked ? #colorLiteral(red: 1, green: 0.7960784314, blue: 0.2196078431, alpha: 1) : nil
         }
     }
     
@@ -124,7 +119,7 @@ class BookmarkBarButton: BarButton {
                 tintColor = #colorLiteral(red: 1, green: 0.7960784314, blue: 0.2196078431, alpha: 1)
             } else {
                 setImage(#imageLiteral(resourceName: "Star").withRenderingMode(.alwaysTemplate), for: .normal)
-                tintColor = .gray
+                tintColor = nil
             }
         }
     }
