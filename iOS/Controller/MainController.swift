@@ -254,6 +254,7 @@ extension MainController: UIPopoverPresentationControllerDelegate {
     }
     
     private func presentBookmarkController(animated: Bool) {
+        bookmarkController.delegate = self
         bookmarkController.modalPresentationStyle = .popover
         bookmarkController.popoverPresentationController?.barButtonItem = bookmarkButtonItem
         bookmarkController.popoverPresentationController?.delegate = self

@@ -1,5 +1,5 @@
 //
-//  ArticleTableCells.swift
+//  ArticleTableViewCell.swift
 //  iOS
 //
 //  Created by Chris Li on 1/16/18.
@@ -7,13 +7,6 @@
 //
 
 import UIKit
-
-class ArticleTestCell: UITableViewCell {
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        imageView?.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
-    }
-}
 
 class ArticleTableViewCell: UITableViewCell {
     let titleLabel = UILabel()
@@ -66,9 +59,5 @@ class ArticleTableViewCell: UITableViewCell {
             textStackView.rightAnchor.constraint(equalTo: contentView.readableContentGuide.rightAnchor),
             textStackView.topAnchor.constraint(equalTo: contentView.readableContentGuide.topAnchor, constant: 6),
             textStackView.bottomAnchor.constraint(equalTo: contentView.readableContentGuide.bottomAnchor, constant: -6)])
-        let heightConstraint = contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 44)
-        heightConstraint.priority = .defaultHigh
-        heightConstraint.isActive = true
-
     }
 }

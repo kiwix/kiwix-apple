@@ -26,6 +26,10 @@ class BookmarkViewController: BaseController, UITableViewDataSource, UITableView
         tableView.estimatedRowHeight = 80
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.register(ArticleTableViewCell.self, forCellReuseIdentifier: "Cell")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         configure()
     }
     
@@ -71,6 +75,9 @@ class BookmarkViewController: BaseController, UITableViewDataSource, UITableView
         let article = fetchedResultController.object(at: indexPath)
         guard let url = article.url else {return}
         delegate?.didTapBookmark(articleURL: url)
+        dismiss(animated: true) {
+            tableView.deselectRow(at: indexPath, animated: false)
+        }
     }
     
     // MARK: - NSFetchedResultsController
