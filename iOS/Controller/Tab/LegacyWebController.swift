@@ -24,11 +24,6 @@ class LegacyWebController: UIViewController, UIWebViewDelegate, WebViewControlle
         configureWebView()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 70, 0)
-    }
-    
     var canGoBack: Bool {
         get {return webView.canGoBack}
     }
