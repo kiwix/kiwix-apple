@@ -21,6 +21,7 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         
         guard let content = ZimMultiReader.shared.getContent(bookID: id, contentPath: contentPath) else {
             urlSchemeTask.didFailWithError(ResourceLoadingError.contentNotFound)
+            print("Webkit loading failed (404) for url (\(url.absoluteString)")
             return
         }
         
