@@ -1,5 +1,5 @@
 //
-//  BackgroundStackView.swift
+//  EmptyContentView.swift
 //  iOS
 //
 //  Created by Chris Li on 1/12/18.
@@ -11,74 +11,61 @@ import UIKit
 class EmptyContentView: UIView {
     convenience init(image: UIImage, title: String, subtitle: String? = nil) {
         self.init(frame: .zero)
-        let stackView = BackgroundStackView(
-            image: #imageLiteral(resourceName: "StarColor"),
-            title: NSLocalizedString("Bookmark your favorite articles", comment: "Help message when there's no bookmark to show"),
-            subtitle: NSLocalizedString("To add, long press the star button on the tool bar.", comment: "Help message when there's no bookmark to show"))
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(stackView)
-        NSLayoutConstraint.activate([
-            centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
-            centerYAnchor.constraint(equalTo: stackView.centerYAnchor),
-            leftAnchor.constraint(lessThanOrEqualTo: stackView.leftAnchor, constant: 20),
-            rightAnchor.constraint(greaterThanOrEqualTo: stackView.rightAnchor, constant: 20)])
-    }
-}
-
-class BackgroundStackView: UIStackView {
-    let labels = UIStackView()
-    
-    init(image: UIImage, title: String, subtitle: String? = nil) {
+        
+        let labels: UIStackView = {
+            let stackView = UIStackView()
+            stackView.axis = .vertical
+            stackView.spacing = 5
+            
+            let titleLabel: UILabel = {
+                let label = UILabel()
+                label.text = title
+                label.textAlignment = .center
+                label.adjustsFontSizeToFitWidth = true
+                label.textColor = UIColor.gray
+                label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+                return label
+            }()
+            stackView.addArrangedSubview(titleLabel)
+            
+            if let subtitle = subtitle {
+                let subtitleLabel: UILabel = {
+                    let label = UILabel()
+                    label.text = subtitle
+                    label.textAlignment = .center
+                    label.adjustsFontSizeToFitWidth = true
+                    label.textColor = UIColor.lightGray
+                    label.font = UIFont.systemFont(ofSize: 15)
+                    label.numberOfLines = 0
+                    return label
+                }()
+                stackView.addArrangedSubview(subtitleLabel)
+            }
+            return stackView
+        }()
+        
         let imageView: UIImageView = {
             let imageView = UIImageView(image: image)
             imageView.contentMode = .scaleAspectFit
-            imageView.addConstraints([
-                imageView.widthAnchor.constraint(lessThanOrEqualToConstant: 100),
-                imageView.heightAnchor.constraint(lessThanOrEqualToConstant: 100)])
             return imageView
         }()
         
-        let titleLabel: UILabel = {
-            let label = UILabel()
-            label.text = title
-            label.textAlignment = .center
-            label.adjustsFontSizeToFitWidth = true
-            label.textColor = UIColor.gray
-            label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
-            label.numberOfLines = 0
-            return label
-        }()
-        labels.addArrangedSubview(titleLabel)
+        let content = UIStackView()
+        content.axis = .vertical
+        content.spacing = 25
+        content.distribution = .equalSpacing
+        content.alignment = .center
+        content.addArrangedSubview(imageView)
+        content.addArrangedSubview(labels)
         
-        if let subtitle = subtitle {
-            let subtitleLabel: UILabel = {
-                let label = UILabel()
-                label.text = subtitle
-                label.textAlignment = .center
-                label.adjustsFontSizeToFitWidth = true
-                label.textColor = UIColor.lightGray
-                label.font = UIFont.systemFont(ofSize: 15)
-                label.numberOfLines = 0
-                return label
-            }()
-            labels.addArrangedSubview(subtitleLabel)
-        }
-        
-        super.init(frame: .zero)
-        
-        axis = .vertical
-        spacing = 25
-        distribution = .equalSpacing
-        alignment = .center
-        
-        labels.axis = .vertical
-        labels.spacing = 5
-        
-        addArrangedSubview(imageView)
-        addArrangedSubview(labels)
-    }
-    
-    required init(coder: NSCoder) {
-        super.init(coder: coder)
+        content.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(content)
+        NSLayoutConstraint.activate([
+            imageView.widthAnchor.constraint(lessThanOrEqualToConstant: 100),
+            imageView.heightAnchor.constraint(lessThanOrEqualToConstant: 100),
+            centerXAnchor.constraint(equalTo: content.centerXAnchor),
+            centerYAnchor.constraint(equalTo: content.centerYAnchor),
+            leftAnchor.constraint(lessThanOrEqualTo: content.leftAnchor, constant: 20),
+            rightAnchor.constraint(greaterThanOrEqualTo: content.rightAnchor, constant: 20)])
     }
 }
