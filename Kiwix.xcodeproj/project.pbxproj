@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		97028C4D2019200C001259CB /* BookmarkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97028C4C2019200C001259CB /* BookmarkController.swift */; };
 		97028C4F20192F65001259CB /* TableOfContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97028C4E20192F65001259CB /* TableOfContentViewController.swift */; };
-		97028C51201933CB001259CB /* BaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97028C50201933CB001259CB /* BaseController.swift */; };
 		97028C54201A7D43001259CB /* WebViewControllerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B665B2006BEBA003F5365 /* WebViewControllerProtocols.swift */; };
 		97028C55201A7D43001259CB /* WebViewControllerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B665B2006BEBA003F5365 /* WebViewControllerProtocols.swift */; };
 		9702BE1E1F97F1C900E6B4EE /* LibraryLanguageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BE1D1F97F1C900E6B4EE /* LibraryLanguageController.swift */; };
@@ -227,7 +226,6 @@
 		81DF90AB14037E242E284CA8 /* Pods_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		97028C4C2019200C001259CB /* BookmarkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkController.swift; sourceTree = "<group>"; };
 		97028C4E20192F65001259CB /* TableOfContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableOfContentViewController.swift; sourceTree = "<group>"; };
-		97028C50201933CB001259CB /* BaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseController.swift; sourceTree = "<group>"; };
 		9702BE1D1F97F1C900E6B4EE /* LibraryLanguageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryLanguageController.swift; sourceTree = "<group>"; };
 		9702BE211F97FA4300E6B4EE /* LibraryRefreshProcedure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryRefreshProcedure.swift; sourceTree = "<group>"; };
 		97041F7E1F9652D4007D63F5 /* WikiMed.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WikiMed.plist; sourceTree = "<group>"; };
@@ -853,7 +851,6 @@
 			isa = PBXGroup;
 			children = (
 				9717A2551FB25A1200837492 /* MainController.swift */,
-				97028C50201933CB001259CB /* BaseController.swift */,
 				97028C4C2019200C001259CB /* BookmarkController.swift */,
 				97028C4E20192F65001259CB /* TableOfContentViewController.swift */,
 				97252102200D3C4B00B60A80 /* HUDController.swift */,
@@ -1875,7 +1872,6 @@
 			files = (
 				97161A891F90072A00A89DE3 /* LibraryTableCells.swift in Sources */,
 				972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */,
-				97028C51201933CB001259CB /* BaseController.swift in Sources */,
 				977D7BB61F9E6A43009A8703 /* ZimMultiReader.mm in Sources */,
 				97A36C6B1F8EA6F40079B452 /* MigrationPolicy.swift in Sources */,
 				97252103200D3C4B00B60A80 /* HUDController.swift in Sources */,
