@@ -23,7 +23,9 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         view = tableView
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(BookTableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.estimatedRowHeight = 44
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.separatorInset = UIEdgeInsets(top: 0, left: tableView.separatorInset.left + 38, bottom: 0, right: 0)
     }
     
@@ -57,16 +59,17 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! BookTableViewCell
-        configure(bookCell: cell, indexPath: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
+        configure(cell: cell, indexPath: indexPath)
         return cell
     }
     
-    func configure(bookCell cell: BookTableViewCell, indexPath: IndexPath, animated: Bool = false) {
+    func configure(cell: TableViewCell, indexPath: IndexPath, animated: Bool = false) {
         let book = fetchedResultController.object(at: indexPath)
         cell.titleLabel.text = book.title
-        cell.subtitleLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
-        cell.faviconView.image = UIImage(data: book.favIcon ?? Data())
+        cell.detailLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
+        cell.thumbImageView.image = UIImage(data: book.favIcon ?? Data())
+        cell.thumbImageView.contentMode = .scaleAspectFit
         cell.accessoryType = .disclosureIndicator
     }
     
@@ -152,8 +155,8 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
             guard let indexPath = indexPath else {return}
             tableView.deleteRows(at: [indexPath], with: .fade)
         case .update:
-            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? BookTableViewCell else {return}
-            configure(bookCell: cell, indexPath: indexPath, animated: true)
+            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
+            configure(cell: cell, indexPath: indexPath, animated: true)
         case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
             tableView.deleteRows(at: [indexPath], with: .fade)

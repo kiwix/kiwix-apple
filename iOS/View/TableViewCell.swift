@@ -45,6 +45,9 @@ class TableViewCell: UITableViewCell {
             textStackView.rightAnchor.constraint(equalTo: contentView.readableContentGuide.rightAnchor),
             textStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
             textStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6)])
+        let heightConstraint = contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 44)
+        heightConstraint.priority = .defaultHigh
+        heightConstraint.isActive = true
         
         configuredConstraints = true
     }

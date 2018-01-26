@@ -35,12 +35,11 @@ class LibraryMasterController: PresentationBaseController, UITableViewDelegate, 
         tableView.delegate = self
         tableView.dataSource = self
         tableView.refreshControl = refreshControl
-        tableView.estimatedRowHeight = 50
+        tableView.estimatedRowHeight = 44
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
-        tableView.register(BookTableViewCell.self, forCellReuseIdentifier: "BookCell")
         tableView.register(LibraryDownloadCell.self, forCellReuseIdentifier: "DownloadCell")
-        tableView.register(LibraryCategoryCell.self, forCellReuseIdentifier: "CategoryCell")
+        tableView.register(TableViewCell.self, forCellReuseIdentifier: "CategoryCell")
         tableView.separatorInset = UIEdgeInsets(top: 0, left: tableView.separatorInset.left + 38, bottom: 0, right: 0)
     }
     
@@ -95,13 +94,14 @@ class LibraryMasterController: PresentationBaseController, UITableViewDelegate, 
                 return cell
             }
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath) as! LibraryCategoryCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath) as! TableViewCell
             cell.accessoryType = .disclosureIndicator
             cell.titleLabel.text = categoryNames[indexPath.row]
-            cell.logoView.image = categoryImages[indexPath.row]
+            cell.thumbImageView.image = categoryImages[indexPath.row]
             return cell
         }
     }
+    
     func configure(cell: TableViewCell, indexPath: IndexPath, animated: Bool = false) {
         let book = fetchedResultController.object(at: indexPath)
         cell.titleLabel.text = book.title
@@ -144,10 +144,6 @@ class LibraryMasterController: PresentationBaseController, UITableViewDelegate, 
             let controller = LibraryCategoryController(category: categories[indexPath.row], title: categoryNames[indexPath.row])
             showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
         }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 44
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
