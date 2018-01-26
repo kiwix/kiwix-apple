@@ -10,7 +10,6 @@ import UIKit
 import CoreData
 
 class BookmarkController: UITableViewController, NSFetchedResultsControllerDelegate {
-    var emptyContentView: UIView? = nil
     weak var delegate: BookmarkControllerDelegate? = nil
 
     override func viewDidLoad() {
@@ -41,7 +40,11 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
             tableView.backgroundView = nil
             tableView.separatorStyle = .singleLine
         } else {
-            tableView.backgroundView = EmptyContentView()
+            let emptyContentView = EmptyContentView(
+                image: #imageLiteral(resourceName: "StarColor"),
+                title: NSLocalizedString("Bookmark your favorite articles", comment: "Help message when there's no bookmark to show"),
+                subtitle: NSLocalizedString("To add, long press the star button on the tool bar.", comment: "Help message when there's no bookmark to show"))
+            tableView.backgroundView = emptyContentView
             tableView.separatorStyle = .none
         }
     }
@@ -85,9 +88,7 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        let article = fetchedResultController.object(at: indexPath)
-        guard let url = article.url else {return}
+        guard let url = fetchedResultController.object(at: indexPath).url else {return}
         delegate?.didTapBookmark(articleURL: url)
         dismiss(animated: true) {
             tableView.deselectRow(at: indexPath, animated: false)

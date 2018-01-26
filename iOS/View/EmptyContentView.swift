@@ -9,7 +9,7 @@
 import UIKit
 
 class EmptyContentView: UIView {
-    convenience init() {
+    convenience init(image: UIImage, title: String, subtitle: String? = nil) {
         self.init(frame: .zero)
         let stackView = BackgroundStackView(
             image: #imageLiteral(resourceName: "StarColor"),
