@@ -25,7 +25,7 @@ class BookmarkViewController: BaseController, UITableViewDataSource, UITableView
         tableView.dataSource = self
         tableView.estimatedRowHeight = 80
         tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.register(ArticleTableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -52,12 +52,12 @@ class BookmarkViewController: BaseController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ArticleTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
         configure(bookCell: cell, indexPath: indexPath)
         return cell
     }
     
-    func configure(bookCell cell: ArticleTableViewCell, indexPath: IndexPath, animated: Bool = false) {
+    func configure(bookCell cell: TableViewCell, indexPath: IndexPath, animated: Bool = false) {
         let article = fetchedResultController.object(at: indexPath)
         cell.titleLabel.text = article.title
         cell.snippetLabel.text = article.snippet
@@ -120,7 +120,7 @@ class BookmarkViewController: BaseController, UITableViewDataSource, UITableView
             guard let indexPath = indexPath else {return}
             tableView.deleteRows(at: [indexPath], with: .fade)
         case .update:
-            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? ArticleTableViewCell else {return}
+            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
             configure(bookCell: cell, indexPath: indexPath, animated: true)
         case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}

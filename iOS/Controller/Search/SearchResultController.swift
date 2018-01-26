@@ -15,7 +15,7 @@ class SearchResultController: UITableViewController {
         super.viewDidLoad()
         tableView.estimatedRowHeight = 80
         tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.register(ArticleTableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.keyboardDismissMode = .onDrag
     }
 
@@ -30,7 +30,7 @@ class SearchResultController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ArticleTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
         let result = results[indexPath.row]
         
         cell.titleLabel.text = result.title

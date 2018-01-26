@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ArticleTableViewCell: UITableViewCell {
+class TableViewCell: UITableViewCell {
     let titleLabel = UILabel()
     let snippetLabel = UILabel()
     let thumbImageView = UIImageView()

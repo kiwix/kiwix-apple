@@ -30,7 +30,7 @@
 		97246C831FC4D12B0056AE5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9717A2521FB2592D00837492 /* Main.storyboard */; };
 		972521012009616B00B60A80 /* BackgroundStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972521002009616B00B60A80 /* BackgroundStackView.swift */; };
 		97252103200D3C4B00B60A80 /* HUDController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252102200D3C4B00B60A80 /* HUDController.swift */; };
-		97252105200E908000B60A80 /* ArticleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252104200E908000B60A80 /* ArticleTableViewCell.swift */; };
+		97252105200E908000B60A80 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252104200E908000B60A80 /* TableViewCell.swift */; };
 		97252108200F9D6A00B60A80 /* SettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252107200F9D6A00B60A80 /* SettingController.swift */; };
 		97252109200F9D6A00B60A80 /* SettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252107200F9D6A00B60A80 /* SettingController.swift */; };
 		9725210E200F9D7800B60A80 /* VisualEffectShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A36C501F8D4FB80079B452 /* VisualEffectShadowView.swift */; };
@@ -38,7 +38,7 @@
 		97252110200F9D7800B60A80 /* TabViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976306F01FC5D050004B171A /* TabViews.swift */; };
 		97252111200F9D7800B60A80 /* BarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B66582006B1F0003F5365 /* BarButtonItem.swift */; };
 		97252112200F9D7800B60A80 /* BackgroundStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972521002009616B00B60A80 /* BackgroundStackView.swift */; };
-		97252113200F9D7800B60A80 /* ArticleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252104200E908000B60A80 /* ArticleTableViewCell.swift */; };
+		97252113200F9D7800B60A80 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252104200E908000B60A80 /* TableViewCell.swift */; };
 		97252114200F9D7800B60A80 /* LibraryTableCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97161A881F90072A00A89DE3 /* LibraryTableCells.swift */; };
 		97252116200F9D7F00B60A80 /* LegacyWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996CD1F609C9F007A6282 /* LegacyWebController.swift */; };
 		97252117200F9D7F00B60A80 /* WebKitWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97050D001F6733400021DE78 /* WebKitWebController.swift */; };
@@ -242,7 +242,7 @@
 		9717A2551FB25A1200837492 /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
 		972521002009616B00B60A80 /* BackgroundStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundStackView.swift; sourceTree = "<group>"; };
 		97252102200D3C4B00B60A80 /* HUDController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDController.swift; sourceTree = "<group>"; };
-		97252104200E908000B60A80 /* ArticleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleTableViewCell.swift; sourceTree = "<group>"; };
+		97252104200E908000B60A80 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		97252107200F9D6A00B60A80 /* SettingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingController.swift; sourceTree = "<group>"; };
 		9726591A1D8DB91200D1DFFB /* DownloadProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadProgress.swift; sourceTree = "<group>"; };
 		972B66582006B1F0003F5365 /* BarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtonItem.swift; sourceTree = "<group>"; };
@@ -1008,7 +1008,7 @@
 				976306F01FC5D050004B171A /* TabViews.swift */,
 				972B66582006B1F0003F5365 /* BarButtonItem.swift */,
 				972521002009616B00B60A80 /* BackgroundStackView.swift */,
-				97252104200E908000B60A80 /* ArticleTableViewCell.swift */,
+				97252104200E908000B60A80 /* TableViewCell.swift */,
 				97161A881F90072A00A89DE3 /* LibraryTableCells.swift */,
 			);
 			path = View;
@@ -1796,7 +1796,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97252113200F9D7800B60A80 /* ArticleTableViewCell.swift in Sources */,
+				97252113200F9D7800B60A80 /* TableViewCell.swift in Sources */,
 				97B104701F8FC63C00488444 /* LibraryMasterController.swift in Sources */,
 				97A36C6E1F8EA6F50079B452 /* MigrationPolicy.swift in Sources */,
 				977D7BD41F9FE359009A8703 /* ZimMetaData.swift in Sources */,
@@ -1907,7 +1907,7 @@
 				97D00A7F1FBB92D400165629 /* TableOfContentItem.swift in Sources */,
 				97A36C5E1F8EA6E60079B452 /* Book.swift in Sources */,
 				97D9D5641FA8F00E005B28F0 /* 1.9.xcmappingmodel in Sources */,
-				97252105200E908000B60A80 /* ArticleTableViewCell.swift in Sources */,
+				97252105200E908000B60A80 /* TableViewCell.swift in Sources */,
 				97A36C5B1F8EA6DD0079B452 /* Kiwix.xcdatamodeld in Sources */,
 				971ECEEA1FD05A1500FD0A84 /* TabViews.swift in Sources */,
 				972B665F2007F9F5003F5365 /* LegacyWebController.swift in Sources */,
