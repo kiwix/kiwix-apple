@@ -25,13 +25,6 @@ class TableViewCell: UITableViewCell {
         configure()
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        titleLabel.text = nil
-        detailLabel.text = nil
-        thumbImageView.image = nil
-    }
-    
     override func updateConstraints() {
         defer { super.updateConstraints() }
         guard !configuredConstraints else { return }
@@ -53,10 +46,10 @@ class TableViewCell: UITableViewCell {
     }
     
     func configure() {
-        titleLabel.setContentHuggingPriority(.defaultLow, for: .vertical)
-        detailLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        titleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
-        detailLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        titleLabel.setContentHuggingPriority(UILayoutPriority(250), for: .vertical)
+        detailLabel.setContentHuggingPriority(UILayoutPriority(251), for: .vertical)
+        titleLabel.setContentCompressionResistancePriority(UILayoutPriority(750), for: .vertical)
+        detailLabel.setContentCompressionResistancePriority(UILayoutPriority(749), for: .vertical)
         detailLabel.numberOfLines = 0
         detailLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
         thumbImageView.clipsToBounds = true

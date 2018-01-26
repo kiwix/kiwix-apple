@@ -25,13 +25,19 @@ class BookmarkViewController: BaseController, UITableViewDataSource, UITableView
         tableView.dataSource = self
         tableView.estimatedRowHeight = 80
         tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "DefaultCell")
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        try? fetchedResultController.performFetch()
+        tableView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         configure()
-        tableView.setNeedsDisplay()
     }
     
     func configure() {
@@ -54,11 +60,19 @@ class BookmarkViewController: BaseController, UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
-        configure(bookCell: cell, indexPath: indexPath)
+        configure(cell: cell, indexPath: indexPath)
         return cell
     }
     
-    func configure(bookCell cell: TableViewCell, indexPath: IndexPath, animated: Bool = false) {
+    func configure(cell: UITableViewCell, indexPath: IndexPath, animated: Bool = false) {
+        let article = fetchedResultController.object(at: indexPath)
+        cell.textLabel?.text = article.snippet
+        cell.textLabel?.numberOfLines = 0
+        cell.detailTextLabel?.text = article.snippet
+        cell.backgroundColor = .clear
+    }
+    
+    func configure(cell: TableViewCell, indexPath: IndexPath, animated: Bool = false) {
         let article = fetchedResultController.object(at: indexPath)
         cell.titleLabel.text = article.title
         cell.detailLabel.text = article.snippet
@@ -93,7 +107,7 @@ class BookmarkViewController: BaseController, UITableViewDataSource, UITableView
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                     managedObjectContext: self.managedObjectContext,
                                                     sectionNameKeyPath: nil, cacheName: nil)
-        controller.delegate = self
+//        controller.delegate = self
         try? controller.performFetch()
         return controller as! NSFetchedResultsController<Article>
     }()
@@ -123,7 +137,10 @@ class BookmarkViewController: BaseController, UITableViewDataSource, UITableView
             tableView.deleteRows(at: [indexPath], with: .fade)
         case .update:
             guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
-            configure(bookCell: cell, indexPath: indexPath, animated: true)
+            if tableView.indexPathsForVisibleRows?.contains(indexPath) == true {
+                configure(cell: cell, indexPath: indexPath, animated: true)
+            }
+            
         case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
             tableView.deleteRows(at: [indexPath], with: .fade)
@@ -133,7 +150,7 @@ class BookmarkViewController: BaseController, UITableViewDataSource, UITableView
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
-        configure()
+//        configure()
     }
     
 }
