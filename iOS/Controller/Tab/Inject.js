@@ -75,7 +75,7 @@ function Snippet () {
             if (snippet.length > 200) {break;}
         }
         var parts = snippet.split(".");
-        if (parts.length > 0) {
+        if (parts.length > 0 && parts[0].length > 0) {
             snippet = parts[0] + ".";
         }
         return snippet;
