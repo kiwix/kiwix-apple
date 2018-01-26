@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import ProcedureKit
 
-class LibraryMasterController: PresentationBaseController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
+class LibraryMasterController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     let tableView = UITableView(frame: .zero, style: .grouped)
     let refreshControl = UIRefreshControl()
     
@@ -50,11 +50,16 @@ class LibraryMasterController: PresentationBaseController, UITableViewDelegate, 
             navigationController?.navigationBar.prefersLargeTitles = true
         }
         refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.indexPathsForSelectedRows?.forEach({tableView.deselectRow(at: $0, animated: true)})
+    }
+    
+    @objc func dismissController() {
+        dismiss(animated: true, completion: nil)
     }
     
     @objc func refreshControlPulled() {

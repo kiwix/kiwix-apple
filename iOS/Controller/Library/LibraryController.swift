@@ -10,7 +10,87 @@ import UIKit
 import ProcedureKit
 
 class LibraryController: UIViewController {
-    weak var onboardingController: LibraryOnboardingController?
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setChild(controller: UINavigationController(rootViewController: LibraryOnboardingController()))
+    }
+    
+    private func setChild(controller: UIViewController) {
+        view.subviews.forEach({ $0.removeFromSuperview() })
+        childViewControllers.forEach({ $0.removeFromParentViewController() })
+        
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        addChildViewController(controller)
+        view.addSubview(controller.view)
+        NSLayoutConstraint.activate([
+            view.leftAnchor.constraint(equalTo: controller.view.leftAnchor),
+            view.rightAnchor.constraint(equalTo: controller.view.rightAnchor),
+            view.topAnchor.constraint(equalTo: controller.view.topAnchor),
+            view.bottomAnchor.constraint(equalTo: controller.view.bottomAnchor)])
+        controller.didMove(toParentViewController: self)
+    }
+}
+
+class LibraryOnboardingController: UIViewController {
+    let stackView = UIStackView()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .groupTableViewBackground
+        title = NSLocalizedString("Library", comment: "Library title")
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
+        if #available(iOS 11.0, *) {
+            navigationController?.navigationBar.prefersLargeTitles = true
+        }
+        
+        configureStackView()
+        setStackViewAsContent()
+    }
+    
+    @objc func dismissController() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    private func configureStackView() {
+        stackView.axis = .vertical
+        
+        let emptyContentView = EmptyContentView(image: #imageLiteral(resourceName: "Book"), title: "Download Library Catalogue")
+        stackView.addArrangedSubview(emptyContentView)
+        
+    }
+    
+    private func setContent(title: String, content: UIView) {
+        view.subviews.forEach({ $0.removeFromSuperview() })
+        let label = UILabel()
+        
+        [label, content].forEach { (view) in
+            view.translatesAutoresizingMaskIntoConstraints = false
+            self.view.addSubview(view)
+        }
+        
+        NSLayoutConstraint.activate([
+            content.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            content.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            content.bottomAnchor.cons
+            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            content.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10) ])
+    }
+    
+    private func setStackViewAsContent() {
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(stackView)
+        NSLayoutConstraint.activate([
+            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            ])
+    }
+}
+
+
+
+class LibraryOldController: UIViewController {
+    weak var onboardingController: LibraryOldOnboardingController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,7 +99,7 @@ class LibraryController: UIViewController {
     
     private func configure() {
         if Preference.libraryLastRefreshTime == nil {
-            let onbaording = LibraryOnboardingController()
+            let onbaording = LibraryOldOnboardingController()
             setChild(controller: UINavigationController(rootViewController: onbaording))
             onbaording.button.addTarget(self, action: #selector(refreshButtonTapped), for: .touchUpInside)
             onboardingController = onbaording
@@ -66,7 +146,7 @@ class LibraryController: UIViewController {
     }
 }
 
-class LibraryOnboardingController: PresentationBaseController {
+class LibraryOldOnboardingController: PresentationBaseController {
     let topStackView = UIStackView()
     let stackView = UIStackView()
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
@@ -164,6 +244,14 @@ class LibrarySplitController: UISplitViewController, UISplitViewControllerDelega
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        definesPresentationContext = true
+        let controller = UIViewController()
+        controller.view.backgroundColor = .white
+        present(controller, animated: false, completion: nil)
     }
     
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {

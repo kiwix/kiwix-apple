@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -28,6 +29,53 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bP1-1e-3AL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="79.710144927536234" y="176.9021739130435"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Ytr-MX-IYV">
+            <objects>
+                <viewController id="S3h-2T-tU3" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="pXh-TZ-v3x">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="17L-5L-fSt">
+                                <rect key="frame" x="183" y="325.33333333333331" width="49.333333333333343" height="24"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="eGw-19-2ef">
+                                <rect key="frame" x="186.33333333333334" y="369.33333333333331" width="41.666666666666657" height="62"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Book" translatesAutoresizingMaskIntoConstraints="NO" id="LMW-Af-MjP">
+                                        <rect key="frame" x="0.0" y="0.0" width="41.666666666666664" height="41.666666666666664"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="LMW-Af-MjP" secondAttribute="height" multiplier="1:1" id="DGo-tc-9Hz"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BTF-UQ-IRl">
+                                        <rect key="frame" x="0.0" y="41.666666666666686" width="41.666666666666664" height="20.333333333333329"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="17L-5L-fSt" firstAttribute="centerX" secondItem="lyN-tk-pjD" secondAttribute="centerX" id="4Iz-fV-rpZ"/>
+                            <constraint firstItem="eGw-19-2ef" firstAttribute="top" secondItem="17L-5L-fSt" secondAttribute="bottom" constant="20" id="NFs-u9-gC9"/>
+                            <constraint firstItem="eGw-19-2ef" firstAttribute="centerY" secondItem="lyN-tk-pjD" secondAttribute="centerY" id="Wmj-n5-8N5"/>
+                            <constraint firstItem="eGw-19-2ef" firstAttribute="centerX" secondItem="lyN-tk-pjD" secondAttribute="centerX" id="ZiK-4R-atK"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="lyN-tk-pjD"/>
+                    </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yzh-7y-jOs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-222" y="887"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="PK7-Ri-F2a">
@@ -183,6 +231,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Book" width="30" height="30"/>
         <image name="Kiwix" width="612" height="612"/>
     </resources>
 </document>
