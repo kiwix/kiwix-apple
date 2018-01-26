@@ -39,18 +39,17 @@ class TableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             thumbImageView.heightAnchor.constraint(equalToConstant: 34),
             thumbImageView.widthAnchor.constraint(equalToConstant: 34),
-            thumbImageView.centerYAnchor.constraint(equalTo: contentView.readableContentGuide.centerYAnchor),
+            thumbImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             thumbImageView.leftAnchor.constraint(equalTo: contentView.readableContentGuide.leftAnchor),
             textStackView.leftAnchor.constraint(equalTo: thumbImageView.rightAnchor, constant: 8),
             textStackView.rightAnchor.constraint(equalTo: contentView.readableContentGuide.rightAnchor),
-            textStackView.topAnchor.constraint(equalTo: contentView.readableContentGuide.topAnchor, constant: 6),
-            textStackView.bottomAnchor.constraint(equalTo: contentView.readableContentGuide.bottomAnchor, constant: -6)])
+            textStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
+            textStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6)])
         
         configuredConstraints = true
     }
     
     func configure() {
-        backgroundColor = .clear
         titleLabel.setContentHuggingPriority(.defaultLow, for: .vertical)
         snippetLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
         titleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)

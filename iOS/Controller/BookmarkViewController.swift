@@ -61,6 +61,7 @@ class BookmarkViewController: BaseController, UITableViewDataSource, UITableView
         let article = fetchedResultController.object(at: indexPath)
         cell.titleLabel.text = article.title
         cell.snippetLabel.text = article.snippet
+        cell.backgroundColor = .clear
         if let data = article.thumbnailData {
             cell.thumbImageView.image = UIImage(data: data)
             cell.thumbImageView.contentMode = .scaleAspectFill

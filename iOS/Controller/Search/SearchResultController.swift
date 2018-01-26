@@ -33,6 +33,7 @@ class SearchResultController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
         let result = results[indexPath.row]
         
+        cell.backgroundColor = .clear
         cell.titleLabel.text = result.title
         cell.snippetLabel.text = result.snippet
         cell.snippetLabel.attributedText = result.attributedSnippet

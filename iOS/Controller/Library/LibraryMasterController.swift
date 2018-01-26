@@ -35,6 +35,9 @@ class LibraryMasterController: PresentationBaseController, UITableViewDelegate, 
         tableView.delegate = self
         tableView.dataSource = self
         tableView.refreshControl = refreshControl
+        tableView.estimatedRowHeight = 50
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.register(BookTableViewCell.self, forCellReuseIdentifier: "BookCell")
         tableView.register(LibraryDownloadCell.self, forCellReuseIdentifier: "DownloadCell")
         tableView.register(LibraryCategoryCell.self, forCellReuseIdentifier: "CategoryCell")
@@ -87,8 +90,8 @@ class LibraryMasterController: PresentationBaseController, UITableViewDelegate, 
                 configure(downloadCell: cell, indexPath: indexPath)
                 return cell
             } else {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "BookCell", for: indexPath) as! BookTableViewCell
-                configure(bookCell: cell, indexPath: indexPath)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
+                configure(cell: cell, indexPath: indexPath)
                 return cell
             }
         } else {
@@ -99,6 +102,14 @@ class LibraryMasterController: PresentationBaseController, UITableViewDelegate, 
             return cell
         }
     }
+    func configure(cell: TableViewCell, indexPath: IndexPath, animated: Bool = false) {
+        let book = fetchedResultController.object(at: indexPath)
+        cell.titleLabel.text = book.title
+        cell.snippetLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
+        cell.thumbImageView.image = UIImage(data: book.favIcon ?? Data())
+        cell.thumbImageView.contentMode = .scaleAspectFit
+        cell.accessoryType = .disclosureIndicator
+    }
     
     func configure(downloadCell cell: LibraryDownloadCell, indexPath: IndexPath, animated: Bool = false) {
         let book = fetchedResultController.object(at: indexPath)
@@ -106,14 +117,6 @@ class LibraryMasterController: PresentationBaseController, UITableViewDelegate, 
         cell.stateLabel.text = book.state.shortLocalizedDescription
         cell.progressLabel.text = [book.totalBytesWritten, book.fileSize].map({ByteCountFormatter.string(fromByteCount: $0, countStyle: .file)}).joined(separator: " / ")
         cell.logoView.image = UIImage(data: book.favIcon ?? Data())
-        cell.accessoryType = .disclosureIndicator
-    }
-    
-    func configure(bookCell cell: BookTableViewCell, indexPath: IndexPath, animated: Bool = false) {
-        let book = fetchedResultController.object(at: indexPath)
-        cell.titleLabel.text = book.title
-        cell.subtitleLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
-        cell.faviconView.image = UIImage(data: book.favIcon ?? Data())
         cell.accessoryType = .disclosureIndicator
     }
     
@@ -200,8 +203,8 @@ class LibraryMasterController: PresentationBaseController, UITableViewDelegate, 
             let sectionTitle = fetchedResultController.sections?[indexPath.section].name
             if sectionTitle == "1", let cell = tableView.cellForRow(at: indexPath) as? LibraryDownloadCell {
                 configure(downloadCell: cell, indexPath: indexPath, animated: true)
-            } else if let cell = tableView.cellForRow(at: indexPath) as? BookTableViewCell {
-                configure(bookCell: cell, indexPath: indexPath, animated: true)
+            } else if let cell = tableView.cellForRow(at: indexPath) as? TableViewCell {
+                configure(cell: cell, indexPath: indexPath, animated: true)
             }
         case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
