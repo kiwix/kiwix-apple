@@ -28,7 +28,7 @@
 		971ECEEA1FD05A1500FD0A84 /* TabViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976306F01FC5D050004B171A /* TabViews.swift */; };
 		97246C821FC4D12A0056AE5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9717A2521FB2592D00837492 /* Main.storyboard */; };
 		97246C831FC4D12B0056AE5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9717A2521FB2592D00837492 /* Main.storyboard */; };
-		972521012009616B00B60A80 /* BackgroundStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972521002009616B00B60A80 /* BackgroundStackView.swift */; };
+		972521012009616B00B60A80 /* EmptyContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972521002009616B00B60A80 /* EmptyContentView.swift */; };
 		97252103200D3C4B00B60A80 /* HUDController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252102200D3C4B00B60A80 /* HUDController.swift */; };
 		97252105200E908000B60A80 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252104200E908000B60A80 /* TableViewCell.swift */; };
 		97252108200F9D6A00B60A80 /* SettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252107200F9D6A00B60A80 /* SettingController.swift */; };
@@ -37,7 +37,7 @@
 		9725210F200F9D7800B60A80 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972E6F631FA11A6100F5C927 /* RoundedButton.swift */; };
 		97252110200F9D7800B60A80 /* TabViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976306F01FC5D050004B171A /* TabViews.swift */; };
 		97252111200F9D7800B60A80 /* BarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B66582006B1F0003F5365 /* BarButtonItem.swift */; };
-		97252112200F9D7800B60A80 /* BackgroundStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972521002009616B00B60A80 /* BackgroundStackView.swift */; };
+		97252112200F9D7800B60A80 /* EmptyContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972521002009616B00B60A80 /* EmptyContentView.swift */; };
 		97252113200F9D7800B60A80 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252104200E908000B60A80 /* TableViewCell.swift */; };
 		97252114200F9D7800B60A80 /* LibraryTableCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97161A881F90072A00A89DE3 /* LibraryTableCells.swift */; };
 		97252116200F9D7F00B60A80 /* LegacyWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996CD1F609C9F007A6282 /* LegacyWebController.swift */; };
@@ -240,7 +240,7 @@
 		97161A881F90072A00A89DE3 /* LibraryTableCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryTableCells.swift; sourceTree = "<group>"; };
 		9717A2521FB2592D00837492 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		9717A2551FB25A1200837492 /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
-		972521002009616B00B60A80 /* BackgroundStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundStackView.swift; sourceTree = "<group>"; };
+		972521002009616B00B60A80 /* EmptyContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyContentView.swift; sourceTree = "<group>"; };
 		97252102200D3C4B00B60A80 /* HUDController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDController.swift; sourceTree = "<group>"; };
 		97252104200E908000B60A80 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		97252107200F9D6A00B60A80 /* SettingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingController.swift; sourceTree = "<group>"; };
@@ -1007,7 +1007,7 @@
 				972E6F631FA11A6100F5C927 /* RoundedButton.swift */,
 				976306F01FC5D050004B171A /* TabViews.swift */,
 				972B66582006B1F0003F5365 /* BarButtonItem.swift */,
-				972521002009616B00B60A80 /* BackgroundStackView.swift */,
+				972521002009616B00B60A80 /* EmptyContentView.swift */,
 				97252104200E908000B60A80 /* TableViewCell.swift */,
 				97161A881F90072A00A89DE3 /* LibraryTableCells.swift */,
 			);
@@ -1836,7 +1836,7 @@
 				97041F831F96A3F3007D63F5 /* LibraryBookDetailController.swift in Sources */,
 				97A36C731F8EA6FA0079B452 /* ManagedObjectProperties.swift in Sources */,
 				975FDADA1F6082DA00A10E8C /* AppDelegate.swift in Sources */,
-				97252112200F9D7800B60A80 /* BackgroundStackView.swift in Sources */,
+				97252112200F9D7800B60A80 /* EmptyContentView.swift in Sources */,
 				97E34E0D20124F33005080B2 /* SearchNoTextController.swift in Sources */,
 				97E429911FBDF48800ABE62E /* DirectoryMonitor.swift in Sources */,
 				97A996D71F62F1B5007A6282 /* SearchProcedure.swift in Sources */,
@@ -1911,7 +1911,7 @@
 				97A36C5B1F8EA6DD0079B452 /* Kiwix.xcdatamodeld in Sources */,
 				971ECEEA1FD05A1500FD0A84 /* TabViews.swift in Sources */,
 				972B665F2007F9F5003F5365 /* LegacyWebController.swift in Sources */,
-				972521012009616B00B60A80 /* BackgroundStackView.swift in Sources */,
+				972521012009616B00B60A80 /* EmptyContentView.swift in Sources */,
 				97A36C571F8D5FCD0079B452 /* LibraryController.swift in Sources */,
 				972B66592006B1F0003F5365 /* BarButtonItem.swift in Sources */,
 				97A36C311F8C21210079B452 /* SearchView.swift in Sources */,

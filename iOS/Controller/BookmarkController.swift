@@ -9,23 +9,19 @@
 import UIKit
 import CoreData
 
-class BookmarkController: BaseController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
-    
-    let tableView = UITableView()
-    let emptyBackgroundView = BackgroundStackView(
-        image: #imageLiteral(resourceName: "StarColor"),
-        title: NSLocalizedString("Bookmark your favorite articles", comment: "Help message when there's no bookmark to show"),
-        subtitle: NSLocalizedString("To add, long press the star button on the tool bar.", comment: "Help message when there's no bookmark to show"))
+class BookmarkController: UITableViewController, NSFetchedResultsControllerDelegate {
+    var emptyContentView: UIView? = nil
     weak var delegate: BookmarkControllerDelegate? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = NSLocalizedString("Bookmarks", comment: "Bookmark view title")
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.backgroundColor = .clear
         tableView.estimatedRowHeight = 80
         tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "DefaultCell")
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
     }
     
@@ -33,32 +29,34 @@ class BookmarkController: BaseController, UITableViewDataSource, UITableViewDele
         super.viewWillAppear(animated)
         try? fetchedResultController.performFetch()
         tableView.reloadData()
+        configureEmptyContentView()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        configure()
+    @objc func dismissController() {
+        dismiss(animated: true, completion: nil)
     }
     
-    func configure() {
+    private func configureEmptyContentView() {
         if let numberOfArticles = fetchedResultController.sections?.first?.numberOfObjects, numberOfArticles > 0 {
-            configure(tableView: tableView)
+            tableView.backgroundView = nil
+            tableView.separatorStyle = .singleLine
         } else {
-            configure(stackView: emptyBackgroundView)
+            tableView.backgroundView = EmptyContentView()
+            tableView.separatorStyle = .none
         }
     }
     
     // MARK: - UITableViewDataSource & Delagate
     
-    func numberOfSections(in tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return fetchedResultController.sections?.count ?? 0
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return fetchedResultController.sections?[section].numberOfObjects ?? 0
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
         configure(cell: cell, indexPath: indexPath)
         return cell
@@ -86,7 +84,7 @@ class BookmarkController: BaseController, UITableViewDataSource, UITableViewDele
         }
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let article = fetchedResultController.object(at: indexPath)
         guard let url = article.url else {return}
@@ -108,7 +106,6 @@ class BookmarkController: BaseController, UITableViewDataSource, UITableViewDele
                                                     managedObjectContext: self.managedObjectContext,
                                                     sectionNameKeyPath: nil, cacheName: nil)
         controller.delegate = self
-        try? controller.performFetch()
         return controller as! NSFetchedResultsController<Article>
     }()
     
@@ -147,7 +144,7 @@ class BookmarkController: BaseController, UITableViewDataSource, UITableViewDele
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
-        configure()
+        configureEmptyContentView()
     }
     
 }

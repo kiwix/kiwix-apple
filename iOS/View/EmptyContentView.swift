@@ -8,6 +8,23 @@
 
 import UIKit
 
+class EmptyContentView: UIView {
+    convenience init() {
+        self.init(frame: .zero)
+        let stackView = BackgroundStackView(
+            image: #imageLiteral(resourceName: "StarColor"),
+            title: NSLocalizedString("Bookmark your favorite articles", comment: "Help message when there's no bookmark to show"),
+            subtitle: NSLocalizedString("To add, long press the star button on the tool bar.", comment: "Help message when there's no bookmark to show"))
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(stackView)
+        NSLayoutConstraint.activate([
+            centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
+            centerYAnchor.constraint(equalTo: stackView.centerYAnchor),
+            leftAnchor.constraint(lessThanOrEqualTo: stackView.leftAnchor, constant: 20),
+            rightAnchor.constraint(greaterThanOrEqualTo: stackView.rightAnchor, constant: 20)])
+    }
+}
+
 class BackgroundStackView: UIStackView {
     let labels = UIStackView()
     
