@@ -159,7 +159,6 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
         tableView.endUpdates()
         configureEmptyContentView()
     }
-    
 }
 
 protocol BookmarkControllerDelegate: class {
