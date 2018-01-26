@@ -74,6 +74,10 @@ function Snippet () {
             snippet += localSnippet;
             if (snippet.length > 200) {break;}
         }
+        var parts = snippet.split(".");
+        if (parts.length > 0) {
+            snippet = parts[0] + ".";
+        }
         return snippet;
     }
 
