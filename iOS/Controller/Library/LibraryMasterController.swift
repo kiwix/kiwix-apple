@@ -105,7 +105,7 @@ class LibraryMasterController: PresentationBaseController, UITableViewDelegate, 
     func configure(cell: TableViewCell, indexPath: IndexPath, animated: Bool = false) {
         let book = fetchedResultController.object(at: indexPath)
         cell.titleLabel.text = book.title
-        cell.snippetLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
+        cell.detailLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
         cell.thumbImageView.image = UIImage(data: book.favIcon ?? Data())
         cell.thumbImageView.contentMode = .scaleAspectFit
         cell.accessoryType = .disclosureIndicator

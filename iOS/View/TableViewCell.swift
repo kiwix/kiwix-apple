@@ -10,9 +10,9 @@ import UIKit
 
 class TableViewCell: UITableViewCell {
     let titleLabel = UILabel()
-    let snippetLabel = UILabel()
+    let detailLabel = UILabel()
     let thumbImageView = UIImageView()
-    let textStackView = UIStackView()
+    private let textStackView = UIStackView()
     private var configuredConstraints = false
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -28,7 +28,7 @@ class TableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         titleLabel.text = nil
-        snippetLabel.text = nil
+        detailLabel.text = nil
         thumbImageView.image = nil
     }
     
@@ -51,11 +51,11 @@ class TableViewCell: UITableViewCell {
     
     func configure() {
         titleLabel.setContentHuggingPriority(.defaultLow, for: .vertical)
-        snippetLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        detailLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
         titleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
-        snippetLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-        snippetLabel.numberOfLines = 0
-        snippetLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
+        detailLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        detailLabel.numberOfLines = 0
+        detailLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
         thumbImageView.clipsToBounds = true
         thumbImageView.layer.cornerRadius = 4
 
@@ -63,7 +63,7 @@ class TableViewCell: UITableViewCell {
         textStackView.alignment = .leading
         textStackView.distribution = .fill
         textStackView.addArrangedSubview(titleLabel)
-        textStackView.addArrangedSubview(snippetLabel)
+        textStackView.addArrangedSubview(detailLabel)
         
         [thumbImageView, textStackView].forEach({
             $0.translatesAutoresizingMaskIntoConstraints = false

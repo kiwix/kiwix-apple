@@ -60,7 +60,7 @@ class BookmarkViewController: BaseController, UITableViewDataSource, UITableView
     func configure(bookCell cell: TableViewCell, indexPath: IndexPath, animated: Bool = false) {
         let article = fetchedResultController.object(at: indexPath)
         cell.titleLabel.text = article.title
-        cell.snippetLabel.text = article.snippet
+        cell.detailLabel.text = article.snippet
         cell.backgroundColor = .clear
         if let data = article.thumbnailData {
             cell.thumbImageView.image = UIImage(data: data)

@@ -35,8 +35,8 @@ class SearchResultController: UITableViewController {
         
         cell.backgroundColor = .clear
         cell.titleLabel.text = result.title
-        cell.snippetLabel.text = result.snippet
-        cell.snippetLabel.attributedText = result.attributedSnippet
+        cell.detailLabel.text = result.snippet
+        cell.detailLabel.attributedText = result.attributedSnippet
         cell.thumbImageView.image = UIImage(data: Book.fetch(id: result.zimFileID, context: CoreDataContainer.shared.viewContext)?.favIcon ?? Data())
         cell.thumbImageView.contentMode = .scaleAspectFit
         
