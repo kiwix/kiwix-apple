@@ -20,7 +20,7 @@ class BookmarkViewController: BaseController, UITableViewDataSource, UITableView
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("Bookmark", comment: "Bookmark view title")
+        title = NSLocalizedString("Bookmarks", comment: "Bookmark view title")
         tableView.delegate = self
         tableView.dataSource = self
         tableView.estimatedRowHeight = 80
@@ -31,6 +31,7 @@ class BookmarkViewController: BaseController, UITableViewDataSource, UITableView
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         configure()
+        tableView.setNeedsDisplay()
     }
     
     func configure() {
