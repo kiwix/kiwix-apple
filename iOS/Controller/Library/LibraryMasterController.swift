@@ -17,7 +17,7 @@ class LibraryMasterController: PresentationBaseController, UITableViewDelegate, 
     let categories: [BookCategory] = [
         .wikipedia, .wikivoyage, .wikibooks, .wikiversity, .wikispecies, .wikinews,
         .vikidia, .ted, .stackExchange, .other]
-    let categoryImages = [#imageLiteral(resourceName: "Wikipedia"), #imageLiteral(resourceName: "Wikivoyage"), #imageLiteral(resourceName: "Wikibooks"), #imageLiteral(resourceName: "Wikiversity"), #imageLiteral(resourceName: "Wikispecies"), #imageLiteral(resourceName: "Wikinews"), #imageLiteral(resourceName: "Vikidia"), #imageLiteral(resourceName: "TED"), #imageLiteral(resourceName: "StackExchange"), #imageLiteral(resourceName: "Other")]
+    let categoryImages = [#imageLiteral(resourceName: "Wikipedia"), #imageLiteral(resourceName: "Wikivoyage"), #imageLiteral(resourceName: "Wikibooks"), #imageLiteral(resourceName: "Wikiversity"), #imageLiteral(resourceName: "Wikispecies"), #imageLiteral(resourceName: "Wikinews"), #imageLiteral(resourceName: "Vikidia"), #imageLiteral(resourceName: "TED"), #imageLiteral(resourceName: "StackExchange"), #imageLiteral(resourceName: "Book")]
     let categoryNames = [
         NSLocalizedString("Wikipedia", comment: "Zim File Types"),
         NSLocalizedString("Wikivoyage", comment: "Zim File Types"),
