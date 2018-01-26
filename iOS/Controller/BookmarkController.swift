@@ -40,12 +40,15 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
             tableView.backgroundView = nil
             tableView.separatorStyle = .singleLine
         } else {
-            let emptyContentView = EmptyContentView(
-                image: #imageLiteral(resourceName: "StarColor"),
-                title: NSLocalizedString("Bookmark your favorite articles", comment: "Help message when there's no bookmark to show"),
-                subtitle: NSLocalizedString("To add, long press the star button on the tool bar.", comment: "Help message when there's no bookmark to show"))
-            tableView.backgroundView = emptyContentView
             tableView.separatorStyle = .none
+            // have to delay a bit, since when tableview's last row is removed, we need to wait for the
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                let emptyContentView = EmptyContentView(
+                    image: #imageLiteral(resourceName: "StarColor"),
+                    title: NSLocalizedString("Bookmark your favorite articles", comment: "Help message when there's no bookmark to show"),
+                    subtitle: NSLocalizedString("To add, long press the star button on the tool bar.", comment: "Help message when there's no bookmark to show"))
+                self.tableView.backgroundView = emptyContentView
+            }
         }
     }
     
@@ -92,6 +95,15 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
         delegate?.didTapBookmark(articleURL: url)
         dismiss(animated: true) {
             tableView.deselectRow(at: indexPath, animated: false)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let context = CoreDataContainer.shared.viewContext
+            context.perform {
+                context.delete(self.fetchedResultController.object(at: indexPath))
+            }
         }
     }
     
