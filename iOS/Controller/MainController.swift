@@ -18,7 +18,7 @@ class MainController: UIViewController {
     private weak var currentWebController: (UIViewController & WebViewController)? = nil
     private(set) var webControllers = [(UIViewController & WebViewController)]()
     private(set) lazy var welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
-    private(set) lazy var bookmarkController = BookmarkViewController()
+    private(set) lazy var bookmarkController = BookmarkController()
     private(set) lazy var tableOfContentController = TableOfContentViewController()
     private(set) lazy var libraryController = LibraryController()
     private(set) lazy var settingController = SettingNavigationController()

@@ -1,5 +1,5 @@
 //
-//  BookmarkViewController.swift
+//  BookmarkController.swift
 //  iOS
 //
 //  Created by Chris Li on 1/24/18.
@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class BookmarkViewController: BaseController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
+class BookmarkController: BaseController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
     
     let tableView = UITableView()
     let emptyBackgroundView = BackgroundStackView(
@@ -107,7 +107,7 @@ class BookmarkViewController: BaseController, UITableViewDataSource, UITableView
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                     managedObjectContext: self.managedObjectContext,
                                                     sectionNameKeyPath: nil, cacheName: nil)
-//        controller.delegate = self
+        controller.delegate = self
         try? controller.performFetch()
         return controller as! NSFetchedResultsController<Article>
     }()
@@ -136,11 +136,8 @@ class BookmarkViewController: BaseController, UITableViewDataSource, UITableView
             guard let indexPath = indexPath else {return}
             tableView.deleteRows(at: [indexPath], with: .fade)
         case .update:
-            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
-            if tableView.indexPathsForVisibleRows?.contains(indexPath) == true {
-                configure(cell: cell, indexPath: indexPath, animated: true)
-            }
-            
+            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? TableViewCell, tableView.visibleCells.contains(cell) else {return}
+            configure(cell: cell, indexPath: indexPath, animated: true)
         case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
             tableView.deleteRows(at: [indexPath], with: .fade)
@@ -150,7 +147,7 @@ class BookmarkViewController: BaseController, UITableViewDataSource, UITableView
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
-//        configure()
+        configure()
     }
     
 }
