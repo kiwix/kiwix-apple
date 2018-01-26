@@ -8,43 +8,47 @@
 
 import UIKit
 
-class TableOfContentViewController: BaseController, UITableViewDelegate, UITableViewDataSource {
-    let tableView = UITableView()
-    let emptyContentView = BackgroundStackView(image: #imageLiteral(resourceName: "Compass"), title: NSLocalizedString("Table of content not available", comment: "Help message when table of content is not available"))
+class TableOfContentViewController: UITableViewController {
     weak var delegate: TableOfContentControllerDelegate? = nil
     
     var url: URL?
     var items = [TableOfContentItem]() {
         didSet {
-            if items.count == 0 {
-                configure(stackView: emptyContentView)
-            } else {
-                configure(tableView: tableView)
-                tableView.reloadData()
-            }
+            configureEmptyContentView()
+            tableView.reloadData()
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("Table of Content", comment: "Table of Content view title")
-        tableView.delegate = self
-        tableView.dataSource = self
+        title = NSLocalizedString("Table of Contents", comment: "Table of Content view title")
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        configure(stackView: emptyContentView)
+        configureEmptyContentView()
+        tableView.reloadData()
+    }
+    
+    private func configureEmptyContentView() {
+        if items.count > 0 {
+            tableView.backgroundView = nil
+            tableView.separatorStyle = .singleLine
+        } else {
+            tableView.separatorStyle = .none
+            let emptyContentView = EmptyContentView(image: #imageLiteral(resourceName: "Compass"), title: NSLocalizedString("Table of content not available", comment: "Help message when table of content is not available"))
+            tableView.backgroundView = emptyContentView
+        }
     }
     
     // MARK: - UITableViewDataSource & Delegate
     
-    func numberOfSections(in tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         let heading = items[indexPath.row]
         cell.backgroundColor = .clear
@@ -59,7 +63,7 @@ class TableOfContentViewController: BaseController, UITableViewDelegate, UITable
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         delegate?.didTapTableOfContentItem(index: indexPath.row, item: items[indexPath.row])
         dismiss(animated: true) {
             tableView.deselectRow(at: indexPath, animated: false)

@@ -28,21 +28,21 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
         super.viewWillAppear(animated)
         try? fetchedResultController.performFetch()
         tableView.reloadData()
-        configureEmptyContentView()
+        configureEmptyContentView(shouldDelay: false)
     }
     
     @objc func dismissController() {
         dismiss(animated: true, completion: nil)
     }
     
-    private func configureEmptyContentView() {
+    private func configureEmptyContentView(shouldDelay: Bool) {
         if let numberOfArticles = fetchedResultController.sections?.first?.numberOfObjects, numberOfArticles > 0 {
             tableView.backgroundView = nil
             tableView.separatorStyle = .singleLine
         } else {
             tableView.separatorStyle = .none
             // have to delay a bit, since when tableview's last row is removed, we need to wait for the
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + (shouldDelay ? 0.5 : 0)) {
                 let emptyContentView = EmptyContentView(
                     image: #imageLiteral(resourceName: "StarColor"),
                     title: NSLocalizedString("Bookmark your favorite articles", comment: "Help message when there's no bookmark to show"),
@@ -157,7 +157,7 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
-        configureEmptyContentView()
+        configureEmptyContentView(shouldDelay: true)
     }
 }
 
