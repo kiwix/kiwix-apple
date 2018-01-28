@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
@@ -191,10 +192,23 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="8oA-El-aTo">
-                                <rect key="frame" x="16" y="260.5" width="343" height="166"/>
+                                <rect key="frame" x="16" y="190.5" width="343" height="306"/>
                                 <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ztY-Ie-nWP">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="100"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Book" translatesAutoresizingMaskIntoConstraints="NO" id="LNA-fY-BDE">
+                                                <rect key="frame" x="121.5" y="0.0" width="100" height="100"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="100" id="7ru-TM-MZL"/>
+                                                    <constraint firstAttribute="width" secondItem="LNA-fY-BDE" secondAttribute="height" multiplier="1:1" id="OGB-G2-fSx"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <variation key="heightClass=compact" hidden="YES"/>
+                                    </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="v2d-zr-nei">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="54"/>
+                                        <rect key="frame" x="0.0" y="140" width="343" height="54"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z7u-05-WXc">
                                                 <rect key="frame" x="142" y="0.0" width="59" height="29"/>
@@ -212,7 +226,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="URz-zo-RNo">
-                                        <rect key="frame" x="0.0" y="94" width="343" height="2"/>
+                                        <rect key="frame" x="0.0" y="234" width="343" height="2"/>
                                         <subviews>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="YWU-Ug-NHw">
                                                 <rect key="frame" x="51.5" y="0.0" width="240" height="2"/>
@@ -223,7 +237,7 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="r89-Ga-igG">
-                                        <rect key="frame" x="0.0" y="136" width="343" height="30"/>
+                                        <rect key="frame" x="0.0" y="276" width="343" height="30"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FcF-Yh-Bcn" customClass="RoundedButton" customModule="Kiwix" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="167.5" height="30"/>
@@ -261,6 +275,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Book" width="320" height="320"/>
         <image name="Kiwix" width="612" height="612"/>
     </resources>
 </document>
