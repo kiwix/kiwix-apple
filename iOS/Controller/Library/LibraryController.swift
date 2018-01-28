@@ -12,7 +12,8 @@ import ProcedureKit
 class LibraryController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        setChild(controller: UINavigationController(rootViewController: LibraryOnboardingController()))
+        let onboardingController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LibraryOnboardingController")
+        setChild(controller: UINavigationController(rootViewController: onboardingController))
     }
     
     private func setChild(controller: UIViewController) {
@@ -32,7 +33,10 @@ class LibraryController: UIViewController {
 }
 
 class LibraryOnboardingController: UIViewController {
-    let stackView = UIStackView()
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var button: RoundedButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,48 +46,14 @@ class LibraryOnboardingController: UIViewController {
         if #available(iOS 11.0, *) {
             navigationController?.navigationBar.prefersLargeTitles = true
         }
+        titleLabel.text = NSLocalizedString("Download Library Catalogue", comment: "")
+        subtitleLabel.text = NSLocalizedString("After that, browse and download a book. Zim files added through iTunes File Sharing will automatically show up.", comment: "")
+        subtitleLabel.numberOfLines = 0
         
-        configureStackView()
-        setStackViewAsContent()
     }
     
     @objc func dismissController() {
         dismiss(animated: true, completion: nil)
-    }
-    
-    private func configureStackView() {
-        stackView.axis = .vertical
-        
-        let emptyContentView = EmptyContentView(image: #imageLiteral(resourceName: "Book"), title: "Download Library Catalogue")
-        stackView.addArrangedSubview(emptyContentView)
-        
-    }
-    
-    private func setContent(title: String, content: UIView) {
-        view.subviews.forEach({ $0.removeFromSuperview() })
-        let label = UILabel()
-        
-        [label, content].forEach { (view) in
-            view.translatesAutoresizingMaskIntoConstraints = false
-            self.view.addSubview(view)
-        }
-        
-        NSLayoutConstraint.activate([
-            content.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            content.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            content.bottomAnchor.cons
-            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            content.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10) ])
-    }
-    
-    private func setStackViewAsContent() {
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(stackView)
-        NSLayoutConstraint.activate([
-            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            
-            ])
     }
 }
 
