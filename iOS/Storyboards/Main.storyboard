@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="84U-cN-X4E">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina4_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -18,7 +18,7 @@
             <objects>
                 <viewController id="sgR-df-kDZ" customClass="MainController" customModule="Kiwix" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Lnk-x9-o6o">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="ShG-fd-wTm"/>
@@ -37,7 +37,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="84U-cN-X4E" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="RM6-7R-BiT">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="32"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -57,14 +57,14 @@
             <objects>
                 <viewController storyboardIdentifier="WelcomeController" id="1qf-Qn-OTE" customClass="WelcomeController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hKl-AZ-y4g">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="gqV-bc-IWP">
-                                <rect key="frame" x="16" y="244" width="343" height="179"/>
+                                <rect key="frame" x="16" y="98" width="635" height="179"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="8pR-57-foL">
-                                        <rect key="frame" x="115.5" y="0.0" width="112.5" height="108"/>
+                                        <rect key="frame" x="261.5" y="0.0" width="112.5" height="108"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Kiwix" translatesAutoresizingMaskIntoConstraints="NO" id="tqt-hB-1ni">
                                                 <rect key="frame" x="26" y="0.0" width="60" height="60"/>
@@ -85,24 +85,24 @@
                                         </subviews>
                                     </stackView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FzP-vy-Q8J">
-                                        <rect key="frame" x="0.0" y="128" width="343" height="1"/>
+                                        <rect key="frame" x="0.0" y="128" width="635" height="1"/>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="cQZ-xj-Vgm"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="eGK-bW-Ahk">
-                                        <rect key="frame" x="0.0" y="149" width="343" height="30"/>
+                                        <rect key="frame" x="0.0" y="149" width="635" height="30"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="npo-vi-gnv" customClass="RoundedButton" customModule="Kiwix" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="166.5" height="30"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="312.5" height="30"/>
                                                 <state key="normal" title="Button"/>
                                                 <connections>
                                                     <action selector="leftButtonTapped:" destination="1qf-Qn-OTE" eventType="touchUpInside" id="nph-1r-lyL"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hpx-u3-l2O" customClass="RoundedButton" customModule="Kiwix" customModuleProvider="target">
-                                                <rect key="frame" x="176.5" y="0.0" width="166.5" height="30"/>
+                                                <rect key="frame" x="322.5" y="0.0" width="312.5" height="30"/>
                                                 <state key="normal" title="Button"/>
                                                 <connections>
                                                     <action selector="rightButtonTapped:" destination="1qf-Qn-OTE" eventType="touchUpInside" id="P6F-IN-aDg"/>
@@ -188,17 +188,17 @@
             <objects>
                 <viewController storyboardIdentifier="LibraryOnboardingController" id="pDz-Ac-jhD" customClass="LibraryOnboardingController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Dwj-PX-Ijj">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="8oA-El-aTo">
-                                <rect key="frame" x="16" y="190.5" width="343" height="306"/>
+                                <rect key="frame" x="133.5" y="104.5" width="400" height="166"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ztY-Ie-nWP">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="100"/>
+                                        <rect key="frame" x="0.0" y="-100" width="400" height="100"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Book" translatesAutoresizingMaskIntoConstraints="NO" id="LNA-fY-BDE">
-                                                <rect key="frame" x="121.5" y="0.0" width="100" height="100"/>
+                                                <rect key="frame" x="150" y="0.0" width="100" height="100"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="100" id="7ru-TM-MZL"/>
                                                     <constraint firstAttribute="width" secondItem="LNA-fY-BDE" secondAttribute="height" multiplier="1:1" id="OGB-G2-fSx"/>
@@ -208,16 +208,16 @@
                                         <variation key="heightClass=compact" hidden="YES"/>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="v2d-zr-nei">
-                                        <rect key="frame" x="0.0" y="140" width="343" height="54"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="400" height="54"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z7u-05-WXc">
-                                                <rect key="frame" x="142" y="0.0" width="59" height="29"/>
+                                                <rect key="frame" x="170.5" y="0.0" width="59" height="29"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
                                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kLk-ns-EG2">
-                                                <rect key="frame" x="0.0" y="37" width="343" height="17"/>
+                                                <rect key="frame" x="0.0" y="37" width="400" height="17"/>
                                                 <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla tincidunt commodo enim, sed condimentum odio tristique vel. Pellentesque a mauris eu eros interdum pharetra. </string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -226,29 +226,24 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="URz-zo-RNo">
-                                        <rect key="frame" x="0.0" y="234" width="343" height="2"/>
+                                        <rect key="frame" x="0.0" y="94" width="400" height="2"/>
                                         <subviews>
-                                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="YWU-Ug-NHw">
-                                                <rect key="frame" x="51.5" y="0.0" width="240" height="2"/>
+                                            <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="YWU-Ug-NHw">
+                                                <rect key="frame" x="-133.5" y="-198.5" width="280" height="0.0"/>
                                             </progressView>
                                         </subviews>
                                         <constraints>
+                                            <constraint firstAttribute="height" constant="2" id="Mt6-jB-qMi"/>
                                             <constraint firstItem="YWU-Ug-NHw" firstAttribute="width" secondItem="URz-zo-RNo" secondAttribute="width" multiplier="0.7" id="nzx-Ib-tf7"/>
                                         </constraints>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="r89-Ga-igG">
-                                        <rect key="frame" x="0.0" y="276" width="343" height="30"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FcF-Yh-Bcn" customClass="RoundedButton" customModule="Kiwix" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="167.5" height="30"/>
-                                                <state key="normal" title="Button"/>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u7a-6a-1u8" customClass="RoundedButton" customModule="Kiwix" customModuleProvider="target">
-                                                <rect key="frame" x="175.5" y="0.0" width="167.5" height="30"/>
-                                                <state key="normal" title="Button"/>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FcF-Yh-Bcn" customClass="RoundedButton" customModule="Kiwix" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="136" width="400" height="30"/>
+                                        <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="downloadButtonTapped:" destination="pDz-Ac-jhD" eventType="touchUpInside" id="WbQ-dx-GPa"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="400" id="YwY-i0-2Ln"/>
@@ -265,6 +260,8 @@
                         <viewLayoutGuide key="safeArea" id="Bv3-7V-0On"/>
                     </view>
                     <connections>
+                        <outlet property="downloadButton" destination="FcF-Yh-Bcn" id="5vy-Wj-TJi"/>
+                        <outlet property="progressView" destination="YWU-Ug-NHw" id="c0W-5c-jgr"/>
                         <outlet property="subtitleLabel" destination="kLk-ns-EG2" id="ZhY-DJ-fpp"/>
                         <outlet property="titleLabel" destination="Z7u-05-WXc" id="TxU-c2-GvN"/>
                     </connections>

@@ -36,7 +36,7 @@ class LibraryOnboardingController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var progressView: UIProgressView!
-    @IBOutlet weak var button: RoundedButton!
+    @IBOutlet weak var downloadButton: RoundedButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,11 +49,15 @@ class LibraryOnboardingController: UIViewController {
         titleLabel.text = NSLocalizedString("Download Library Catalogue", comment: "")
         subtitleLabel.text = NSLocalizedString("After that, browse and download a book. Zim files added through iTunes File Sharing will automatically show up.", comment: "")
         subtitleLabel.numberOfLines = 0
-        
+        downloadButton.setTitle(NSLocalizedString("Download", comment: ""), for: .normal)
     }
     
     @objc func dismissController() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func downloadButtonTapped(_ sender: UIButton) {
+        
     }
 }
 
