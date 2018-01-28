@@ -35,8 +35,9 @@ class LibraryController: UIViewController {
 class LibraryOnboardingController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
-    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var downloadButton: RoundedButton!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,7 +58,62 @@ class LibraryOnboardingController: UIViewController {
     }
     
     @IBAction func downloadButtonTapped(_ sender: UIButton) {
+        let procedure = LibraryRefreshProcedure()
+        procedure.add(observer: WillExecuteObserver(willExecute: { (_, event) in
+            OperationQueue.main.addOperation({
+                self.activityIndicator.startAnimating()
+                self.downloadButton.isEnabled = false
+            })
+        }))
+        procedure.add(observer: DidFinishObserver(didFinish: { (procedure, errors) in
+            OperationQueue.main.addOperation({
+                self.activityIndicator.stopAnimating()
+                if errors.count == 0 {
+                    self.showLanguageFilter()
+                } else {
+                    self.downloadButton.isEnabled = true
+                }
+            })
+        }))
+        Queue.shared.add(libraryRefresh: procedure)
+    }
+    
+    private func showLanguageFilter() {
+        let deviceLanguageCode: [String] = {
+            let names = NSMutableOrderedSet()
+            Locale.preferredLanguages.forEach { (string) in
+                guard let code = string.components(separatedBy: "-").first,
+                    let name = (Locale.current as NSLocale).displayName(forKey: .identifier, value: code) else {return}
+                names.add(name)
+            }
+            return names.flatMap({ $0 as? String})
+        }()
         
+        let message = String(format: NSLocalizedString("You have set %@ as the preferred language(s) of the device. Would you like to hide books in other languages?", comment: "Language Filter"), deviceLanguageCode.joined(separator: ", "))
+        
+        func handleAlertAction(onlyShowDeviceLanguage: Bool) {
+            let context = CoreDataContainer.shared.viewContext
+            context.perform {
+                let languages = Language.fetchAll(context: context)
+                if onlyShowDeviceLanguage {
+                    languages.forEach({ $0.isDisplayed = deviceLanguageCode.contains($0.code) })
+                } else {
+                    languages.forEach({$0.isDisplayed = false})
+                }
+                if context.hasChanges {
+                    try? context.save()
+                }
+            }
+        }
+        
+        let alert = UIAlertController(title: NSLocalizedString("Language Filter", comment: "Language Filter"), message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Hide Other Language", comment: "Language Filter"), style: .default, handler: { (action) in
+            handleAlertAction(onlyShowDeviceLanguage: true)
+        }))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Skip and Show All", comment: "Language Filter"), style: .default, handler: { (action) in
+            handleAlertAction(onlyShowDeviceLanguage: false)
+        }))
+        present(alert, animated: true)
     }
 }
 

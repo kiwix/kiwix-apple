@@ -37,7 +37,7 @@ class Language: NSManagedObject {
         return (try? context.fetch(request)) ?? [Language]()
     }
     
-    class func fetchAll(_ context: NSManagedObjectContext) -> [Language] {
+    class func fetchAll(context: NSManagedObjectContext) -> [Language] {
         let request = Language.fetchRequest() as! NSFetchRequest<Language>
         return (try? context.fetch(request)) ?? [Language]()
     }
