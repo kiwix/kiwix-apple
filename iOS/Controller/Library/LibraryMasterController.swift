@@ -54,15 +54,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         
         if splitViewController?.traitCollection.horizontalSizeClass == .regular {
             let firstIndexPath = IndexPath(row: 0, section: 0)
-            tableView.selectRow(at: firstIndexPath, animated: false, scrollPosition: .none)
             tableView.delegate?.tableView?(tableView, didSelectRowAt: firstIndexPath)
-        }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if splitViewController?.traitCollection.horizontalSizeClass == .compact {
-            tableView.indexPathsForSelectedRows?.forEach({tableView.deselectRow(at: $0, animated: true)})
         }
     }
     
@@ -99,7 +91,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
             let sectionTitle = fetchedResultController.sections?[indexPath.section].name
             if sectionTitle == "1" {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DownloadCell", for: indexPath) as! LibraryDownloadCell
-                configure(downloadCell: cell, indexPath: indexPath)
+                configure(cell: cell, indexPath: indexPath)
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
@@ -125,7 +117,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         cell.accessoryType = .disclosureIndicator
     }
     
-    func configure(downloadCell cell: LibraryDownloadCell, indexPath: IndexPath, animated: Bool = false) {
+    func configure(cell: LibraryDownloadCell, indexPath: IndexPath, animated: Bool = false) {
         let book = fetchedResultController.object(at: indexPath)
         cell.titleLabel.text = book.title
         cell.stateLabel.text = book.state.shortLocalizedDescription
@@ -151,6 +143,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section < fetchedResultControllerSectionCount {
             let controller = LibraryBookDetailController(book: fetchedResultController.object(at: indexPath))
             showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
@@ -212,7 +205,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
             guard let indexPath = indexPath else {return}
             let sectionTitle = fetchedResultController.sections?[indexPath.section].name
             if sectionTitle == "1", let cell = tableView.cellForRow(at: indexPath) as? LibraryDownloadCell {
-                configure(downloadCell: cell, indexPath: indexPath, animated: true)
+                configure(cell: cell, indexPath: indexPath, animated: true)
             } else if let cell = tableView.cellForRow(at: indexPath) as? TableViewCell {
                 configure(cell: cell, indexPath: indexPath, animated: true)
             }
@@ -225,48 +218,5 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
-    }
-}
-
-private class OnboardingView: UIStackView {
-    let button = RoundedButton()
-    
-    init() {
-        super.init(frame: .zero)
-        configure()
-    }
-    
-    required init(coder: NSCoder) {
-        super.init(coder: coder)
-        configure()
-    }
-    
-    private func configure() {
-        let imageView: UIImageView = {
-            let imageView = UIImageView(image: #imageLiteral(resourceName: "Library").withRenderingMode(.alwaysTemplate))
-            imageView.contentMode = .scaleAspectFit
-            imageView.tintColor = UIColor.gray
-            return imageView
-        }()
-        
-        let label: UILabel = {
-            let label = UILabel()
-            label.text = NSLocalizedString("Refresh library to see all books available for download or import zim files using iTunes File Sharing.", comment: "Empty Library Help")
-            label.textAlignment = .center
-            label.adjustsFontSizeToFitWidth = true
-            label.textColor = UIColor.gray
-            label.numberOfLines = 0
-            return label
-        }()
-        
-        button.setTitle(NSLocalizedString("Refresh Library", comment: "Empty Library Action"), for: .normal)
-        button.setTitle(NSLocalizedString("Refreshing...", comment: "Empty Library Action"), for: .disabled)
-        
-        axis = .vertical
-        distribution = .equalCentering
-        spacing = 20
-        [imageView, label, button].forEach { (view) in
-            addArrangedSubview(view)
-        }
     }
 }

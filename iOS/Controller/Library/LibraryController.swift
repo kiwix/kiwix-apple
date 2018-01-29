@@ -29,7 +29,7 @@ class LibraryController: UIViewController {
     
     fileprivate func config() {
         // To show library split controller, either refresh the library, or add a book to the app
-        if (Defaults[.libraryLastRefreshTime] != nil && Defaults[.libraryHasShownLanguageFilterAlert]) || localBookIDs.count > 0 {
+        if Defaults[.libraryLastRefreshTime] != nil || localBookIDs.count > 0 {
             guard !(childViewControllers.first is LibrarySplitController) else {return}
             setChild(controller: librarySplitController)
         } else {
@@ -96,6 +96,7 @@ class LibraryOnboardingController: UIViewController {
         subtitleLabel.text = NSLocalizedString("After that, browse and download a book. Zim files added through iTunes File Sharing will automatically show up.", comment: "Library Onboarding")
         subtitleLabel.numberOfLines = 0
         downloadButton.setTitle(NSLocalizedString("Download", comment: ""), for: .normal)
+        downloadButton.setTitle(NSLocalizedString("Downloading...", comment: ""), for: .disabled)
     }
     
     @objc func dismissController() {
@@ -114,52 +115,15 @@ class LibraryOnboardingController: UIViewController {
             OperationQueue.main.addOperation({
                 self.activityIndicator.stopAnimating()
                 if errors.count == 0 {
-                    self.showLanguageFilter()
+                    if let libraryController = self.navigationController?.parent as? LibraryController {
+                        libraryController.config()
+                    }
                 } else {
                     self.downloadButton.isEnabled = true
                 }
             })
         }))
         Queue.shared.add(libraryRefresh: procedure)
-    }
-    
-    private func showLanguageFilter() {
-        let deviceLanguageCodes = Locale.preferredLanguages.flatMap({ $0.components(separatedBy: "-").first })
-        let deviceLanguageNames: [String] = {
-            let names = NSMutableOrderedSet()
-            deviceLanguageCodes.flatMap({ (Locale.current as NSLocale).displayName(forKey: .identifier, value: $0) }).forEach({ names.add($0) })
-            return names.flatMap({ $0 as? String})
-        }()
-        
-        let message = String(format: NSLocalizedString("You have set %@ as the preferred language(s) of the device. Would you like to hide books in other languages?", comment: "Language Filter"), deviceLanguageNames.joined(separator: ", "))
-        
-        func handleAlertAction(onlyShowDeviceLanguage: Bool) {
-            let context = CoreDataContainer.shared.viewContext
-            context.performAndWait {
-                let languages = Language.fetchAll(context: context)
-                if onlyShowDeviceLanguage {
-                    languages.forEach({ $0.isDisplayed = deviceLanguageCodes.contains($0.code) })
-                } else {
-                    languages.forEach({$0.isDisplayed = false})
-                }
-                if context.hasChanges {
-                    try? context.save()
-                }
-            }
-            Defaults[.libraryHasShownLanguageFilterAlert] = true
-            if let libraryController = navigationController?.parent as? LibraryController {
-                libraryController.config()
-            }
-        }
-        
-        let alert = UIAlertController(title: NSLocalizedString("Language Filter", comment: "Language Filter"), message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Hide Other Language", comment: "Language Filter"), style: .default, handler: { (action) in
-            handleAlertAction(onlyShowDeviceLanguage: true)
-        }))
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Skip and Show All", comment: "Language Filter"), style: .default, handler: { (action) in
-            handleAlertAction(onlyShowDeviceLanguage: false)
-        }))
-        present(alert, animated: true)
     }
 }
 
