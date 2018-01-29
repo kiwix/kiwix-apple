@@ -124,7 +124,6 @@ extension MainController: WebViewControllerDelegate {
             var controller: (UIViewController & WebViewController) = {
                 if #available(iOS 11.0, *) {
                     return WebKitWebController()
-//                    return LegacyWebController()
                 } else {
                     return LegacyWebController()
                 }
@@ -257,12 +256,14 @@ extension MainController: BarButtonItemDelegate {
                     })
                 })
                 
-                webController.extractImageURLs(completion: { (urls) in
-                    guard let url = urls.first else {return}
-                    context.perform({
-                        article.thumbImagePath = url.path
+                if article.book?.hasPic ?? false {
+                    webController.extractImageURLs(completion: { (urls) in
+                        guard let url = urls.first else {return}
+                        context.perform({
+                            article.thumbImagePath = url.path
+                        })
                     })
-                })
+                }
             }
 
             let controller = HUDController()
