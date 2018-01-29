@@ -69,12 +69,17 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
             guard let newValue = change.newValue, let newState = BookState(rawValue: Int(newValue)) else {return}
             switch newState {
             case .cloud:
-                if #available(iOS 11.0, *), let free = (try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-                    .resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey]).volumeAvailableCapacityForImportantUsage) ?? nil {
-                    self.actions = book.fileSize <= free ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]]
-                } else {
-                    self.actions = [[.downloadWifiOnly, .downloadWifiAndCellular]]
-                }
+                let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+                let freespace: Int64 = {
+                    if #available(iOS 11.0, *), let free = (try? url?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey]))??.volumeAvailableCapacityForImportantUsage {
+                        return free
+                    } else if let path = url?.path, let free = ((try? FileManager.default.attributesOfFileSystem(forPath: path))?[.systemFreeSize] as? NSNumber)?.int64Value {
+                        return free
+                    } else {
+                        return 0
+                    }
+                }()
+                self.actions = book.fileSize <= freespace ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]]
             case .local:
                 self.actions = [[.deleteFile, .deleteBookmarks, .deleteFileAndBookmarks], [.openMainPage]]
             case .retained:
