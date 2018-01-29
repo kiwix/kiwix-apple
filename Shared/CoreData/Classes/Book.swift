@@ -19,9 +19,14 @@ class Book: NSManagedObject {
 
     // MARK: - Fetch
     
-    class func fetchAll(in context: NSManagedObjectContext) -> [Book] {
+    class func fetchAll(context: NSManagedObjectContext) -> [Book] {
         let request = Book.fetchRequest() as! NSFetchRequest<Book>
         return (try? context.fetch(request)) ?? [Book]()
+    }
+    
+    class func fetchAllCount(context: NSManagedObjectContext) -> Int {
+        let request = Book.fetchRequest() as! NSFetchRequest<Book>
+        return (try? context.count(for: request)) ?? 0
     }
     
     class func fetch(states: [BookState], context: NSManagedObjectContext) -> [Book] {

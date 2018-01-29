@@ -7,18 +7,30 @@
 //
 
 import UIKit
+import CoreData
 import ProcedureKit
 import SwiftyUserDefaults
 
 class LibraryController: UIViewController {
+    private var bookCount = Book.fetchAllCount(context: CoreDataContainer.shared.viewContext)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         config()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(managedObjectContextObjectsDidChange(notification:)),
+                                               name: .NSManagedObjectContextObjectsDidChange,
+                                               object: CoreDataContainer.shared.viewContext)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .NSManagedObjectContextObjectsDidChange, object: CoreDataContainer.shared.viewContext)
     }
     
     fileprivate func config() {
         let controller: UIViewController = {
-            if let _ = Defaults[.libraryLastRefreshTime] {
+            // To show library split controller, either refresh the library, or add a book to the app
+            if Defaults[.libraryLastRefreshTime] != nil || bookCount > 0 {
                 return LibrarySplitController()
             } else {
                 let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LibraryOnboardingController")
@@ -42,6 +54,17 @@ class LibraryController: UIViewController {
             view.bottomAnchor.constraint(equalTo: controller.view.bottomAnchor)])
         controller.didMove(toParentViewController: self)
     }
+    
+    @objc func managedObjectContextObjectsDidChange(notification: Notification) {
+        guard let userInfo = notification.userInfo else { return }
+        if let inserts = (userInfo[NSInsertedObjectsKey] as? Set<NSManagedObject>)?.flatMap({ $0 as? Book }) {
+            bookCount += inserts.count
+        }
+        if let deletes = (userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>)?.flatMap({ $0 as? Book }) {
+            bookCount -= deletes.count
+        }
+        config()
+    }
 }
 
 class LibraryOnboardingController: UIViewController {
@@ -49,7 +72,6 @@ class LibraryOnboardingController: UIViewController {
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var downloadButton: RoundedButton!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -130,8 +152,17 @@ class LibraryOnboardingController: UIViewController {
 }
 
 class LibrarySplitController: UISplitViewController, UISplitViewControllerDelegate {
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        config()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        config()
+    }
+    
+    private func config() {
         delegate = self
         preferredDisplayMode = .allVisible
         
@@ -140,7 +171,6 @@ class LibrarySplitController: UISplitViewController, UISplitViewControllerDelega
         viewControllers = [
             UINavigationController(rootViewController: master),
             UINavigationController(rootViewController: detail)]
-
     }
     
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {

@@ -59,7 +59,7 @@ private class ProcessProcedure: Procedure, InputProcedure, XMLParserDelegate {
         }
         
         context.performAndWait {
-            storeBookIDs = Set(Book.fetchAll(in: context).map({ $0.id }))
+            storeBookIDs = Set(Book.fetchAll(context: context).map({ $0.id }))
             
             let parser = XMLParser(data: data)
             parser.delegate = self
