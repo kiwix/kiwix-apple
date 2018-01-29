@@ -13,7 +13,7 @@ import SwiftyUserDefaults
 
 class LibraryController: UIViewController {
     private var localBookIDs = Set(Book.fetch(states: [.local], context: CoreDataContainer.shared.viewContext).map({ $0.id }))
-    private let librarySplitController = LibrarySplitController()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         config()
@@ -31,7 +31,7 @@ class LibraryController: UIViewController {
         // To show library split controller, either refresh the library, or add a book to the app
         if Defaults[.libraryLastRefreshTime] != nil || localBookIDs.count > 0 {
             guard !(childViewControllers.first is LibrarySplitController) else {return}
-            setChild(controller: librarySplitController)
+            setChild(controller: LibrarySplitController())
         } else {
             guard !(childViewControllers.first is UINavigationController) else {return}
             let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LibraryOnboardingController")
@@ -86,17 +86,18 @@ class LibraryOnboardingController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .groupTableViewBackground
-        title = NSLocalizedString("Library", comment: "Library title")
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
         if #available(iOS 11.0, *) {
             navigationController?.navigationBar.prefersLargeTitles = true
         }
+        view.backgroundColor = .groupTableViewBackground
+        title = NSLocalizedString("Library", comment: "Library title")
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
+        
         titleLabel.text = NSLocalizedString("Download Library Catalogue", comment: "Library Onboarding")
         subtitleLabel.text = NSLocalizedString("After that, browse and download a book. Zim files added through iTunes File Sharing will automatically show up.", comment: "Library Onboarding")
         subtitleLabel.numberOfLines = 0
-        downloadButton.setTitle(NSLocalizedString("Download", comment: ""), for: .normal)
-        downloadButton.setTitle(NSLocalizedString("Downloading...", comment: ""), for: .disabled)
+        downloadButton.setTitle(NSLocalizedString("Download", comment: "Library Onboarding"), for: .normal)
+        downloadButton.setTitle(NSLocalizedString("Downloading...", comment: "Library Onboarding"), for: .disabled)
     }
     
     @objc func dismissController() {
@@ -105,13 +106,13 @@ class LibraryOnboardingController: UIViewController {
     
     @IBAction func downloadButtonTapped(_ sender: UIButton) {
         let procedure = LibraryRefreshProcedure()
-        procedure.add(observer: WillExecuteObserver(willExecute: { (_, event) in
+        procedure.add(observer: WillExecuteObserver(willExecute: { (_, _) in
             OperationQueue.main.addOperation({
                 self.activityIndicator.startAnimating()
                 self.downloadButton.isEnabled = false
             })
         }))
-        procedure.add(observer: DidFinishObserver(didFinish: { (procedure, errors) in
+        procedure.add(observer: DidFinishObserver(didFinish: { (_, errors) in
             OperationQueue.main.addOperation({
                 self.activityIndicator.stopAnimating()
                 if errors.count == 0 {

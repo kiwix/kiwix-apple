@@ -20,7 +20,6 @@ class SettingNavigationController: UINavigationController {
 
 class SettingController: PresentationBaseController {
     let tableView = UITableView(frame: .zero, style: .grouped)
-    let tapOutsideGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(outsideTapped(gestureRecognizer:)))
     override func loadView() {
         view = tableView
     }
@@ -28,9 +27,5 @@ class SettingController: PresentationBaseController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = NSLocalizedString("Setting", comment: "Setting title")
-    }
-    
-    @objc func outsideTapped(gestureRecognizer: UITapGestureRecognizer) {
-        dismiss(animated: true, completion: nil)
     }
 }
