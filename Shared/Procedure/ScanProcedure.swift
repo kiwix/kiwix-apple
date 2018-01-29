@@ -32,9 +32,7 @@ class ScanProcedure: Procedure {
     }
     
     func updateDatabase() {
-        let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        context.parent = CoreDataContainer.shared.viewContext
-        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+        let context = CoreDataContainer.shared.newBackgroundContext()
         context.performAndWait {
             for id in ZimMultiReader.shared.ids {
                 if let book = Book.fetch(id: id, context: context) {
@@ -57,6 +55,28 @@ class ScanProcedure: Procedure {
                     
                     book.language = Language.fetchOrAdd(meta.language, context: context)
                     book.state = .local
+                    
+                    book.category = {
+                        guard let components = ZimMultiReader.shared.getFileURL(zimFileID: id)?.pathComponents,
+                            components.indices ~= 2 else {return nil}
+                        if let category = BookCategory(rawValue: components[2]) {
+                            return category.rawValue
+                        } else if components[2] == "stack_exchange" {
+                            return BookCategory.stackExchange.rawValue
+                        } else {
+                            return BookCategory.other.rawValue
+                        }
+                    }()
+                    
+                    book.hasPic = {
+                        if meta.tags.contains("nopic") {
+                            return false
+                        } else if let fileName = ZimMultiReader.shared.getFileURL(zimFileID: id)?.pathComponents.last, fileName.contains("nopic") {
+                            return false
+                        } else {
+                            return true
+                        }
+                    }()
                 }
             }
 
