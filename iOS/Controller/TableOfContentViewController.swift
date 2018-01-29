@@ -22,9 +22,14 @@ class TableOfContentViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = NSLocalizedString("Table of Contents", comment: "Table of Content view title")
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         configureEmptyContentView()
         tableView.reloadData()
+    }
+    
+    @objc func dismissController() {
+        dismiss(animated: true, completion: nil)
     }
     
     private func configureEmptyContentView() {
