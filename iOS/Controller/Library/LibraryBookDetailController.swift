@@ -81,7 +81,7 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
                 }()
                 self.actions = book.fileSize <= freespace ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]]
             case .local:
-                self.actions = [[.deleteFile, .deleteBookmarks, .deleteFileAndBookmarks], [.openMainPage]]
+                self.actions = [[.deleteFile], [.openMainPage]]
             case .retained:
                 self.actions = [[.deleteBookmarks]]
             case .downloadQueued:
