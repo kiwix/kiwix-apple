@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import SwiftyUserDefaults
 
 class LibraryCategoryController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
     let tableView = UITableView()
@@ -26,7 +27,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         tableView.estimatedRowHeight = 44
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: tableView.separatorInset.left + 38, bottom: 0, right: 0)
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: tableView.separatorInset.left + 42, bottom: 0, right: 0)
     }
     
     override func viewDidLoad() {
@@ -35,6 +36,14 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
             navigationController?.navigationBar.prefersLargeTitles = true
         }
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "Globe"), style: .plain, target: self, action: #selector(languageFilterBottonTapped(sender:)))
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // if have refreshed library but have not shown language filter alert, show it
+        if Defaults[.libraryLastRefreshTime] != nil && !Defaults[.libraryHasShownLanguageFilterAlert] {
+            showLanguageFilter()
+        }
     }
     
     @objc func languageFilterBottonTapped(sender: UIBarButtonItem) {
@@ -46,6 +55,41 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         navigation.modalPresentationStyle = .popover
         navigation.popoverPresentationController?.barButtonItem = sender
         present(navigation, animated: true, completion: nil)
+    }
+    
+    private func showLanguageFilter() {
+        let deviceLanguageCodes = Locale.preferredLanguages.flatMap({ $0.components(separatedBy: "-").first })
+        let deviceLanguageNames: [String] = {
+            let names = NSMutableOrderedSet()
+            deviceLanguageCodes.flatMap({ (Locale.current as NSLocale).displayName(forKey: .identifier, value: $0) }).forEach({ names.add($0) })
+            return names.flatMap({ $0 as? String})
+        }()
+        
+        let message = String(format: NSLocalizedString("You have set %@ as the preferred language(s) of the device. Would you like to hide books in other languages?", comment: "Language Filter"), deviceLanguageNames.joined(separator: ", "))
+        
+        func handleAlertAction(onlyShowDeviceLanguage: Bool) {
+            let context = CoreDataContainer.shared.viewContext
+            let languages = Language.fetchAll(context: context)
+            if onlyShowDeviceLanguage {
+                languages.forEach({ $0.isDisplayed = deviceLanguageCodes.contains($0.code) })
+            } else {
+                languages.forEach({$0.isDisplayed = false})
+            }
+            if context.hasChanges {
+                try? context.save()
+            }
+            self.reloadFetchedResultController()
+        }
+        
+        let alert = UIAlertController(title: NSLocalizedString("Language Filter", comment: "Language Filter"), message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Hide Other Language", comment: "Language Filter"), style: .default, handler: { (action) in
+            handleAlertAction(onlyShowDeviceLanguage: true)
+        }))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Skip and Show All", comment: "Language Filter"), style: .default, handler: { (action) in
+            handleAlertAction(onlyShowDeviceLanguage: false)
+        }))
+        present(alert, animated: true)
+        Defaults[.libraryHasShownLanguageFilterAlert] = true
     }
     
     // MARK: - UITableViewDataSource & Delagates
