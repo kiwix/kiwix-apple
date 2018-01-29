@@ -55,6 +55,7 @@ class LibraryDownloadCell: UITableViewCell {
             progressLabel.heightAnchor.constraint(equalToConstant: 16),
             progressLabel.topAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 2),
             progressLabel.rightAnchor.constraint(equalTo: contentView.readableContentGuide.rightAnchor)])
+        contentView.addConstraint(contentView.heightAnchor.constraint(equalToConstant: 44))
     }
 }
 
