@@ -12,8 +12,8 @@ import ProcedureKit
 import SwiftyUserDefaults
 
 class LibraryController: UIViewController {
-    private var bookCount = Book.fetchAllCount(context: CoreDataContainer.shared.viewContext)
-    
+    private var localBookIDs = Set(Book.fetch(states: [.local], context: CoreDataContainer.shared.viewContext).map({ $0.id }))
+    private let librarySplitController = LibrarySplitController()
     override func viewDidLoad() {
         super.viewDidLoad()
         config()
@@ -28,16 +28,15 @@ class LibraryController: UIViewController {
     }
     
     fileprivate func config() {
-        let controller: UIViewController = {
-            // To show library split controller, either refresh the library, or add a book to the app
-            if Defaults[.libraryLastRefreshTime] != nil || bookCount > 0 {
-                return LibrarySplitController()
-            } else {
-                let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LibraryOnboardingController")
-                return UINavigationController(rootViewController: controller)
-            }
-        }()
-        setChild(controller: controller)
+        // To show library split controller, either refresh the library, or add a book to the app
+        if (Defaults[.libraryLastRefreshTime] != nil && Defaults[.libraryHasShownLanguageFilterAlert]) || localBookIDs.count > 0 {
+            guard !(childViewControllers.first is LibrarySplitController) else {return}
+            setChild(controller: librarySplitController)
+        } else {
+            guard !(childViewControllers.first is UINavigationController) else {return}
+            let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LibraryOnboardingController")
+            setChild(controller: UINavigationController(rootViewController: controller))
+        }
     }
     
     private func setChild(controller: UIViewController) {
@@ -57,12 +56,24 @@ class LibraryController: UIViewController {
     
     @objc func managedObjectContextObjectsDidChange(notification: Notification) {
         guard let userInfo = notification.userInfo else { return }
-        if let inserts = (userInfo[NSInsertedObjectsKey] as? Set<NSManagedObject>)?.flatMap({ $0 as? Book }) {
-            bookCount += inserts.count
+        if let inserts = (userInfo[NSInsertedObjectsKey] as? Set<NSManagedObject>)?.flatMap({ $0 as? Book }).filter({ $0.state == .local }) {
+            inserts.forEach({ localBookIDs.insert($0.id) })
         }
-        if let deletes = (userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>)?.flatMap({ $0 as? Book }) {
-            bookCount -= deletes.count
+
+        if let updates = (userInfo[NSUpdatedObjectsKey] as? Set<NSManagedObject>)?.flatMap({ $0 as? Book }) {
+            updates.forEach({ (book) in
+                if book.state == .local {
+                    localBookIDs.insert(book.id)
+                } else {
+                    localBookIDs.remove(book.id)
+                }
+            })
         }
+
+        if let deletes = (userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>)?.flatMap({ $0 as? Book }).filter({ $0.state == .local }) {
+            deletes.forEach({ localBookIDs.remove($0.id) })
+        }
+        
         config()
     }
 }
@@ -81,8 +92,8 @@ class LibraryOnboardingController: UIViewController {
         if #available(iOS 11.0, *) {
             navigationController?.navigationBar.prefersLargeTitles = true
         }
-        titleLabel.text = NSLocalizedString("Download Library Catalogue", comment: "")
-        subtitleLabel.text = NSLocalizedString("After that, browse and download a book. Zim files added through iTunes File Sharing will automatically show up.", comment: "")
+        titleLabel.text = NSLocalizedString("Download Library Catalogue", comment: "Library Onboarding")
+        subtitleLabel.text = NSLocalizedString("After that, browse and download a book. Zim files added through iTunes File Sharing will automatically show up.", comment: "Library Onboarding")
         subtitleLabel.numberOfLines = 0
         downloadButton.setTitle(NSLocalizedString("Download", comment: ""), for: .normal)
     }
@@ -135,6 +146,7 @@ class LibraryOnboardingController: UIViewController {
                     try? context.save()
                 }
             }
+            Defaults[.libraryHasShownLanguageFilterAlert] = true
             if let libraryController = navigationController?.parent as? LibraryController {
                 libraryController.config()
             }
@@ -163,11 +175,15 @@ class LibrarySplitController: UISplitViewController, UISplitViewControllerDelega
     }
     
     private func config() {
-        delegate = self
+        // set at least one view controller in viewControllers to supress a warning produced by split view controller
+        viewControllers = [UIViewController()]
+        
         preferredDisplayMode = .allVisible
+        delegate = self
         
         let master = LibraryMasterController()
-        let detail = LibraryCategoryController(category: master.categories.first, title: master.categoryNames.first)
+        let detail = UIViewController()
+        detail.view.backgroundColor = .groupTableViewBackground
         viewControllers = [
             UINavigationController(rootViewController: master),
             UINavigationController(rootViewController: detail)]

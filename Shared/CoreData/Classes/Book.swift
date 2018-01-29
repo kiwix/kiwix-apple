@@ -24,11 +24,6 @@ class Book: NSManagedObject {
         return (try? context.fetch(request)) ?? [Book]()
     }
     
-    class func fetchAllCount(context: NSManagedObjectContext) -> Int {
-        let request = Book.fetchRequest() as! NSFetchRequest<Book>
-        return (try? context.count(for: request)) ?? 0
-    }
-    
     class func fetch(states: [BookState], context: NSManagedObjectContext) -> [Book] {
         let request = Book.fetchRequest() as! NSFetchRequest<Book>
         request.predicate = NSPredicate(format: "stateRaw IN %@", states.map({ $0.rawValue }) )

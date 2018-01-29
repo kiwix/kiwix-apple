@@ -40,7 +40,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.register(LibraryDownloadCell.self, forCellReuseIdentifier: "DownloadCell")
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "CategoryCell")
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: tableView.separatorInset.left + 38, bottom: 0, right: 0)
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: tableView.separatorInset.left + 42, bottom: 0, right: 0)
     }
     
     override func viewDidLoad() {
@@ -51,11 +51,19 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         }
         refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
+        
+        if splitViewController?.traitCollection.horizontalSizeClass == .regular {
+            let firstIndexPath = IndexPath(row: 0, section: 0)
+            tableView.selectRow(at: firstIndexPath, animated: false, scrollPosition: .none)
+            tableView.delegate?.tableView?(tableView, didSelectRowAt: firstIndexPath)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.indexPathsForSelectedRows?.forEach({tableView.deselectRow(at: $0, animated: true)})
+        if splitViewController?.traitCollection.horizontalSizeClass == .compact {
+            tableView.indexPathsForSelectedRows?.forEach({tableView.deselectRow(at: $0, animated: true)})
+        }
     }
     
     @objc func dismissController() {
@@ -103,6 +111,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
             cell.accessoryType = .disclosureIndicator
             cell.titleLabel.text = categoryNames[indexPath.row]
             cell.thumbImageView.image = categoryImages[indexPath.row]
+            cell.thumbImageView.contentMode = .scaleAspectFit
             return cell
         }
     }
