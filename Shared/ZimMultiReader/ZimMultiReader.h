@@ -10,6 +10,7 @@
 #import "ZimMetaData.h"
 
 @interface ZimMultiReader : NSObject
+
 - (instancetype _Nonnull)init NS_REFINED_FOR_SWIFT;
 
 - (NSArray *_Nonnull)getReaderIdentifiers NS_REFINED_FOR_SWIFT;

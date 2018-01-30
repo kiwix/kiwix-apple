@@ -15,9 +15,10 @@
 @implementation ZimMultiReader
 
 std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>> readers;
-NSMutableDictionary *urls = [[NSMutableDictionary alloc] init]; // [ID: URL]
+std::unordered_map<std::string, std::shared_ptr<kiwix::Searcher>> externalSearchers;
 kiwix::Searcher *searcher = new kiwix::Searcher;
 std::vector<std::string> *searcherZimIDs = new std::vector<std::string>;
+NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: FileURL]
 
 #pragma mark - init
 
@@ -30,11 +31,11 @@ std::vector<std::string> *searcherZimIDs = new std::vector<std::string>;
 }
 
 - (NSArray *)getReaderIdentifiers {
-    return [urls allKeys];
+    return [fileURLs allKeys];
 }
 
 - (NSURL *)getReaderFileURL:(NSString *)identifier {
-    return urls[identifier];
+    return fileURLs[identifier];
 }
 
 #pragma mark - reader management
@@ -48,7 +49,7 @@ std::vector<std::string> *searcherZimIDs = new std::vector<std::string>;
         }
         
         // if we have previously added this url, skip it
-        if ([[urls allKeysForObject:url] count] > 0) {
+        if ([[fileURLs allKeysForObject:url] count] > 0) {
             return;
         }
         
@@ -56,28 +57,37 @@ std::vector<std::string> *searcherZimIDs = new std::vector<std::string>;
         [url startAccessingSecurityScopedResource];
 #endif
         
+        // add the reader
         std::shared_ptr<kiwix::Reader> reader = std::make_shared<kiwix::Reader>([url fileSystemRepresentation]);
         std::string identifier = reader->getId();
-        NSString *identifierObjC = [NSString stringWithCString:identifier.c_str() encoding:NSUTF8StringEncoding];
-        
         readers.insert(std::make_pair(identifier, reader));
-        urls[identifierObjC] = url;
         
+        // check if there is an external idx directory
+        NSString *idxDirName = [[[[url pathComponents] lastObject] stringByReplacingOccurrencesOfString:@".zimaa" withString:@".idx"] stringByReplacingOccurrencesOfString:@".zim" withString:@".idx"];
+        NSString *idxDirPath = [[[url URLByDeletingLastPathComponent] URLByAppendingPathComponent:idxDirName] path];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:idxDirPath]) {
+            searcher = new kiwix::Searcher([idxDirPath cStringUsingEncoding:NSUTF8StringEncoding], NULL, NULL);
+            externalSearchers.insert(std::make_pair(identifier, searcher));
+        }
+        
+        NSString *identifierObjC = [NSString stringWithCString:identifier.c_str() encoding:NSUTF8StringEncoding];
+        fileURLs[identifierObjC] = url;
     } catch (const std::exception &e) { }
 }
 
 - (void)removeReaderByID:(NSString *)bookID {
+    std::string identifier = [bookID cStringUsingEncoding:NSUTF8StringEncoding];
+    readers.erase(identifier);
+    externalSearchers.erase(identifier);
 #if TARGET_OS_MAC
-    [urls[bookID] stopAccessingSecurityScopedResource];
+    [fileURLs[bookID] stopAccessingSecurityScopedResource];
 #endif
-    
-    readers.erase([bookID cStringUsingEncoding:NSUTF8StringEncoding]);
-    [urls removeObjectForKey:bookID];
+    [fileURLs removeObjectForKey:bookID];
 }
 
 - (void)removeStaleReaders {
-    for (NSString *identifier in [urls allKeys]) {
-        NSURL *url = urls[identifier];
+    for (NSString *identifier in [fileURLs allKeys]) {
+        NSURL *url = fileURLs[identifier];
         NSString *path = [url path];
         if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
             [self removeReaderByID:identifier];
@@ -122,7 +132,7 @@ std::vector<std::string> *searcherZimIDs = new std::vector<std::string>;
 }
 
 - (ZimMetaData *)getMetaData:(NSString *)zimFileID {
-    NSURL *url = urls[zimFileID];
+    NSURL *url = fileURLs[zimFileID];
     if (url == nil) {return nil;}
     return [[ZimMetaData alloc] initWithZimFileURL:url];
 }
