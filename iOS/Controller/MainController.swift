@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class MainController: UIViewController {
     private lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearchButtonTapped))
@@ -43,6 +44,10 @@ class MainController: UIViewController {
         navigationBackButtonItem.button.isEnabled = false
         navigationForwardButtonItem.button.isEnabled = false
         NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: .UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(managedObjectContextObjectsDidChange(notification:)),
+                                               name: .NSManagedObjectContextObjectsDidChange,
+                                               object: CoreDataContainer.shared.viewContext)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -58,6 +63,7 @@ class MainController: UIViewController {
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .NSManagedObjectContextObjectsDidChange, object: CoreDataContainer.shared.viewContext)
     }
     
     // MARK: -
@@ -112,13 +118,22 @@ class MainController: UIViewController {
     @objc func appWillEnterForeground() {
         DispatchQueue.main.async { self.configureToolbar() }
     }
+    
+    @objc func managedObjectContextObjectsDidChange(notification: Notification) {
+        // update the bookmark button on the bar if the current article becomes bookmarked / unbookmarked
+        guard let userInfo = notification.userInfo,
+            let currentURL = currentWebController?.currentURL,
+            let article = (userInfo[NSUpdatedObjectsKey] as? Set<NSManagedObject>)?.flatMap({ $0 as? Article })
+                .filter({ $0.url?.absoluteString == currentURL.absoluteString }).first else { return }
+        bookmarkButtonItem.button.isBookmarked = article.isBookmarked
+    }
 }
 
 // MARK: - Tab Management
 
 extension MainController: WebViewControllerDelegate {
     func load(url: URL) {
-        if let controller = webControllers.first {
+        if let controller = currentWebController {
             controller.load(url: url)
         } else {
             var controller: (UIViewController & WebViewController) = {

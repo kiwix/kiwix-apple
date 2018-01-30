@@ -219,7 +219,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="URz-zo-RNo">
                                         <rect key="frame" x="0.0" y="233.66666666666666" width="382" height="20"/>
                                         <subviews>
-                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="gaI-kr-Za5">
+                                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="gaI-kr-Za5">
                                                 <rect key="frame" x="181" y="0.0" width="20" height="20"/>
                                             </activityIndicatorView>
                                         </subviews>
