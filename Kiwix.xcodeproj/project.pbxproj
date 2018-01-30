@@ -178,7 +178,6 @@
 		97E34E0C20124F33005080B2 /* SearchNoTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E34E0B20124F33005080B2 /* SearchNoTextController.swift */; };
 		97E34E0D20124F33005080B2 /* SearchNoTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E34E0B20124F33005080B2 /* SearchNoTextController.swift */; };
 		97E429901FBDF48800ABE62E /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E4298F1FBDF48800ABE62E /* DirectoryMonitor.swift */; };
-		97E429911FBDF48800ABE62E /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E4298F1FBDF48800ABE62E /* DirectoryMonitor.swift */; };
 		97E9834E1F4CA0A00021E96A /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9834D1F4CA0A00021E96A /* WebViewController.swift */; };
 		97E983501F4CA54A0021E96A /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9834F1F4CA54A0021E96A /* SearchController.swift */; };
 		97E983541F4DDB670021E96A /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E983531F4DDB670021E96A /* SearchView.swift */; };
@@ -806,6 +805,7 @@
 				976771821F437DB9007ED0C2 /* Dependencies */,
 				97A1FD401D6F728200A80EE2 /* Preference.swift */,
 				97D00A7E1FBB92D400165629 /* TableOfContentItem.swift */,
+				97E4298F1FBDF48800ABE62E /* DirectoryMonitor.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -959,7 +959,6 @@
 				977D7BCF1F9FE34E009A8703 /* ZimMetaData.mm */,
 				977D7BD21F9FE359009A8703 /* ZimMetaData.swift */,
 				977D7BB11F9E6A43009A8703 /* SearchResult.swift */,
-				97E4298F1FBDF48800ABE62E /* DirectoryMonitor.swift */,
 			);
 			path = ZimMultiReader;
 			sourceTree = "<group>";
@@ -1842,7 +1841,6 @@
 				975FDADA1F6082DA00A10E8C /* AppDelegate.swift in Sources */,
 				97252112200F9D7800B60A80 /* EmptyContentView.swift in Sources */,
 				97E34E0D20124F33005080B2 /* SearchNoTextController.swift in Sources */,
-				97E429911FBDF48800ABE62E /* DirectoryMonitor.swift in Sources */,
 				97A996D71F62F1B5007A6282 /* SearchProcedure.swift in Sources */,
 				97D9D5651FA8F00E005B28F0 /* 1.9.xcmappingmodel in Sources */,
 				9717A2571FB25A1200837492 /* MainController.swift in Sources */,
