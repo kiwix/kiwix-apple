@@ -68,6 +68,8 @@
 		975FDB031F608A9700A10E8C /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A611F44F451003F5431 /* libz.a */; };
 		975FDB041F608A9700A10E8C /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A621F44F451003F5431 /* libzim.a */; };
 		975FDB071F608F4100A10E8C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 975FDB061F608F4100A10E8C /* WebKit.framework */; };
+		9763EDC9201FCA6900F3A6D5 /* SettingWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9763EDC8201FCA6900F3A6D5 /* SettingWebController.swift */; };
+		9763EDCB201FCC3A00F3A6D5 /* About.html in Resources */ = {isa = PBXBuildFile; fileRef = 9763EDCA201FCC3900F3A6D5 /* About.html */; };
 		9765D9801F50CC4700BFDC1E /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9765D97F1F50CC4700BFDC1E /* Search.storyboard */; };
 		976771791F4378FC007ED0C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 976771741F4378FC007ED0C2 /* Main.storyboard */; };
 		9768C2351F4B7BAC00FD499B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768C2341F4B7BAC00FD499B /* AppDelegate.swift */; };
@@ -263,6 +265,8 @@
 		975FDB0B1F60930A00A10E8C /* WebKitHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitHandler.swift; sourceTree = "<group>"; };
 		976306EF1FC4DF7F004B171A /* Bookmarks.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Bookmarks.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		976306F01FC5D050004B171A /* TabViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViews.swift; sourceTree = "<group>"; };
+		9763EDC8201FCA6900F3A6D5 /* SettingWebController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingWebController.swift; sourceTree = "<group>"; };
+		9763EDCA201FCC3900F3A6D5 /* About.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = About.html; sourceTree = "<group>"; };
 		97642B981E380CC0003E2D0B /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		9765D97F1F50CC4700BFDC1E /* Search.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = "<group>"; };
 		976771741F4378FC007ED0C2 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -764,6 +768,7 @@
 			isa = PBXGroup;
 			children = (
 				97252107200F9D6A00B60A80 /* SettingController.swift */,
+				9763EDC8201FCA6900F3A6D5 /* SettingWebController.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -831,6 +836,7 @@
 		975FDAEA1F60839900A10E8C /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				9763EDCA201FCC3900F3A6D5 /* About.html */,
 				975FDAE21F6082DA00A10E8C /* LaunchScreen.storyboard */,
 				975FDAE51F6082DA00A10E8C /* Info.plist */,
 				97041F7E1F9652D4007D63F5 /* WikiMed.plist */,
@@ -1620,6 +1626,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				97246C821FC4D12A0056AE5D /* Main.storyboard in Resources */,
+				9763EDCB201FCC3A00F3A6D5 /* About.html in Resources */,
 				97D00A791FBB89F000165629 /* Inject.js in Resources */,
 				97A36C441F8C21210079B452 /* LaunchScreen.storyboard in Resources */,
 				97A36C451F8C21210079B452 /* Assets.xcassets in Resources */,
@@ -1916,6 +1923,7 @@
 				97CBE7332011056B00A1003C /* SearchController.swift in Sources */,
 				979FD159201679C5007B5290 /* SearchResultController.swift in Sources */,
 				972B66602007F9F7003F5365 /* WebKitWebController.swift in Sources */,
+				9763EDC9201FCA6900F3A6D5 /* SettingWebController.swift in Sources */,
 				977F983E1F9E43EC002ABFCE /* ScanProcedure.swift in Sources */,
 				97028C54201A7D43001259CB /* WebViewControllerProtocols.swift in Sources */,
 				97028C4D2019200C001259CB /* BookmarkController.swift in Sources */,

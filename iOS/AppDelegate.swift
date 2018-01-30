@@ -69,14 +69,3 @@ extension URL {
     static let documentDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
     static let resourceDirectory = Bundle.main.resourceURL!
 }
-
-class PresentationBaseController: UIViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
-    }
-    
-    @objc func dismissController() {
-        dismiss(animated: true, completion: nil)
-    }
-}

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LibraryLanguageController: PresentationBaseController, UITableViewDelegate, UITableViewDataSource {
+class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let tableView = UITableView(frame: .zero, style: .grouped)
     let segmentedControl = UISegmentedControl(items: [(Locale.current as NSLocale).displayName(forKey: .identifier, value: Locale.preferredLanguages[0])!,
                                                       NSLocalizedString("Original", comment: "Language lanuguage filter display name control")])
@@ -18,11 +18,13 @@ class LibraryLanguageController: PresentationBaseController, UITableViewDelegate
     private var showLanguages = [Language]()
     private var hideLanguages = [Language]()
     var dismissBlock: (() -> Void)?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureSegmentedControls()
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
+        
         showLanguages = Language.fetch(displayed: true, context: managedObjectContext)
         hideLanguages = Language.fetch(displayed: false, context: managedObjectContext)
         initialShowLanguageSet = Set(showLanguages)
@@ -54,6 +56,10 @@ class LibraryLanguageController: PresentationBaseController, UITableViewDelegate
     @objc func segmentedControlChanged(sender: UISegmentedControl) {
         Preference.LangFilter.displayInOriginalLocale = !Preference.LangFilter.displayInOriginalLocale
         tableView.reloadRows(at: tableView.indexPathsForVisibleRows ?? [IndexPath](), with: .automatic)
+    }
+    
+    @objc func dismissController() {
+        dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Sort
@@ -157,7 +163,7 @@ class LibraryLanguageController: PresentationBaseController, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat.leastNormalMagnitude
+        return .leastNormalMagnitude
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
