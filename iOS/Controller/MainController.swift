@@ -12,6 +12,16 @@ import CoreData
 class MainController: UIViewController {
     private lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearchButtonTapped))
     private var webControllerObserver: NSKeyValueObservation? = nil
+    private var currentArticleBookmarkObserver: NSKeyValueObservation? = nil
+    private var currentArticle: Article? = nil {
+        didSet {
+            guard let article = currentArticle else {return}
+            bookmarkButtonItem.button.isBookmarked = article.isBookmarked
+            currentArticleBookmarkObserver = article.observe(\.isBookmarked) { (article, change) in
+                self.bookmarkButtonItem.button.isBookmarked = article.isBookmarked
+            }
+        }
+    }
 
     // MARK: - Controllers
     
@@ -44,10 +54,6 @@ class MainController: UIViewController {
         navigationBackButtonItem.button.isEnabled = false
         navigationForwardButtonItem.button.isEnabled = false
         NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: .UIApplicationWillEnterForeground, object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(managedObjectContextObjectsDidChange(notification:)),
-                                               name: .NSManagedObjectContextObjectsDidChange,
-                                               object: CoreDataContainer.shared.viewContext)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -63,7 +69,6 @@ class MainController: UIViewController {
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .NSManagedObjectContextObjectsDidChange, object: CoreDataContainer.shared.viewContext)
     }
     
     // MARK: -
@@ -118,15 +123,6 @@ class MainController: UIViewController {
     @objc func appWillEnterForeground() {
         DispatchQueue.main.async { self.configureToolbar() }
     }
-    
-    @objc func managedObjectContextObjectsDidChange(notification: Notification) {
-        // update the bookmark button on the bar if the current article becomes bookmarked / unbookmarked
-        guard let userInfo = notification.userInfo,
-            let currentURL = currentWebController?.currentURL,
-            let article = (userInfo[NSUpdatedObjectsKey] as? Set<NSManagedObject>)?.flatMap({ $0 as? Article })
-                .filter({ $0.url?.absoluteString == currentURL.absoluteString }).first else { return }
-        bookmarkButtonItem.button.isBookmarked = article.isBookmarked
-    }
 }
 
 // MARK: - Tab Management
@@ -155,8 +151,10 @@ extension MainController: WebViewControllerDelegate {
         navigationBackButtonItem.button.isEnabled = controller.canGoBack
         navigationForwardButtonItem.button.isEnabled = controller.canGoForward
         if let url = currentWebController?.currentURL,
-            let article = Article.fetch(url: url, insertIfNotExist: false, context: CoreDataContainer.shared.viewContext) {
-            bookmarkButtonItem.button.isBookmarked = article.isBookmarked
+            let article = Article.fetch(url: url, insertIfNotExist: true, context: CoreDataContainer.shared.viewContext) {
+            article.title = controller.currentTitle
+            article.lastReadDate = Date()
+            currentArticle = article
         } else {
             bookmarkButtonItem.button.isBookmarked = false
         }
@@ -254,23 +252,19 @@ extension MainController: BarButtonItemDelegate {
         switch item {
         case bookmarkButtonItem:
             let context = CoreDataContainer.shared.viewContext
-            guard let item = item as? BookmarkButtonItem,
-                let webController = currentWebController,
-                let url = webController.currentURL,
-                let title = webController.currentTitle,
-                let article = Article.fetch(url: url, insertIfNotExist: true, context: context) else {return}
+            guard let webController = currentWebController,
+                let article = currentArticle else {return}
             
-            article.title = title
             article.isBookmarked = !article.isBookmarked
             article.bookmarkDate = Date()
-            
+
             if article.isBookmarked {
                 webController.extractSnippet(completion: { (snippet) in
                     context.perform({
                         article.snippet = snippet
                     })
                 })
-                
+
                 if article.book?.hasPic ?? false {
                     webController.extractImageURLs(completion: { (urls) in
                         guard let url = urls.first else {return}
@@ -287,9 +281,8 @@ extension MainController: BarButtonItemDelegate {
             controller.direction = article.isBookmarked ? .down : .up
             controller.imageView.image = article.isBookmarked ? #imageLiteral(resourceName: "StarAdd") : #imageLiteral(resourceName: "StarRemove")
             controller.label.text = article.isBookmarked ? NSLocalizedString("Added", comment: "Bookmark HUD") : NSLocalizedString("Removed", comment: "Bookmark HUD")
-            
+
             present(controller, animated: true, completion: {
-                item.button.isBookmarked = article.isBookmarked
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
                     controller.dismiss(animated: true, completion: nil)
                 })

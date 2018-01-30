@@ -100,10 +100,8 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let context = CoreDataContainer.shared.viewContext
-            context.perform {
-                context.delete(self.fetchedResultController.object(at: indexPath))
-            }
+            let article = fetchedResultController.object(at: indexPath)
+            article.isBookmarked = !article.isBookmarked
         }
     }
     
