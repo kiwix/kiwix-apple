@@ -1,5 +1,5 @@
 //
-//  TableOfContentViewController.swift
+//  TableOfContentController.swift
 //  iOS
 //
 //  Created by Chris Li on 1/24/18.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TableOfContentViewController: UITableViewController {
+class TableOfContentController: UITableViewController {
     weak var delegate: TableOfContentControllerDelegate? = nil
     
     var url: URL?
