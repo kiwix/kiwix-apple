@@ -45,7 +45,7 @@ class TableViewCell: UITableViewCell {
         configuredConstraints = true
     }
     
-    func configure() {
+    private func configure() {
         titleLabel.setContentHuggingPriority(UILayoutPriority(250), for: .vertical)
         detailLabel.setContentHuggingPriority(UILayoutPriority(251), for: .vertical)
         titleLabel.setContentCompressionResistancePriority(UILayoutPriority(750), for: .vertical)

@@ -9,58 +9,56 @@
 import UIKit
 import CoreData
 
+
 class SearchNoTextController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
-    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     let tableView = UITableView(frame: .zero, style: .grouped)
     
     override func loadView() {
         view = tableView
-        collectionView.delegate = self
-        collectionView.dataSource = self
         tableView.delegate = self
         tableView.dataSource = self
         tableView.estimatedRowHeight = 44
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(RecentSearchTableViewCell.self, forCellReuseIdentifier: "RecentSearchCell")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
-    // MARK: - UICollectionViewDataSource & Delegate
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return fetchedResultController.sections?.first?.numberOfObjects ?? 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 100, height: 100)
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
+        switch traitCollection.horizontalSizeClass {
+        case .compact:
+            tableView.backgroundColor = .groupTableViewBackground
+        case .regular:
+            tableView.backgroundColor = .clear
+        case .unspecified:
+            break
+        }
     }
     
     // MARK: - UITableViewDataSource & Delegate
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultController.sections?.first?.numberOfObjects ?? 0
+        if section == 1 {
+            return fetchedResultController.sections?.first?.numberOfObjects ?? 0
+        } else {
+            return 1
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
-        configure(cell: cell, indexPath: indexPath)
-        return cell
+        if indexPath.section == 1 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
+            configure(cell: cell, indexPath: IndexPath(row: indexPath.row, section: 0))
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "RecentSearchCell", for: indexPath) as! RecentSearchTableViewCell
+            return cell
+        }
     }
     
     func configure(cell: TableViewCell, indexPath: IndexPath, animated: Bool = false) {
@@ -72,10 +70,55 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         cell.accessoryType = book.includeInSearch ? .checkmark : .none
     }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.section == 0 {
+            guard let cell = cell as? RecentSearchTableViewCell else {return}
+            cell.collectionView.dataSource = self
+            cell.collectionView.delegate = self
+            cell.collectionView.tag = indexPath.section
+            
+            cell.collectionView.reloadData()
+            cell.collectionView.collectionViewLayout.invalidateLayout()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 0 {
+            return NSLocalizedString("Recent Search", comment: "")
+        } else {
+            return NSLocalizedString("Search Filter", comment: "")
+        }
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let book = fetchedResultController.object(at: IndexPath(item: indexPath.item, section: 0))
         book.includeInSearch = !book.includeInSearch
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    // MARK: - UICollectionViewDataSource & Delegate
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 20
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! RecentSearchCollectionViewCell
+        cell.label.text = "\(indexPath)"
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let string = "\(indexPath)"
+        let width = NSString(string: string).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 24),
+                                                         options: .usesLineFragmentOrigin,
+                                                         attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)],
+                                                         context: nil).size.width
+        return CGSize(width: width.rounded(.down) + 20, height: 24)
     }
     
     // MARK: - NSFetchedResultsController
