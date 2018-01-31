@@ -10,12 +10,12 @@ import UIKit
 import CoreData
 
 class MainController: UIViewController {
-    private lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearchButtonTapped))
-    private var webControllerObserver: NSKeyValueObservation? = nil
     private var currentArticleBookmarkObserver: NSKeyValueObservation? = nil
     private var currentArticle: Article? = nil {
         didSet {
             guard let article = currentArticle else {return}
+            
+            // update bookmark button when the bookmark state of current article is changed
             bookmarkButtonItem.button.isBookmarked = article.isBookmarked
             currentArticleBookmarkObserver = article.observe(\.isBookmarked) { (article, change) in
                 self.bookmarkButtonItem.button.isBookmarked = article.isBookmarked
@@ -42,6 +42,7 @@ class MainController: UIViewController {
     private lazy var bookmarkButtonItem = BookmarkButtonItem(delegate: self)
     private lazy var libraryButtonItem = BarButtonItem(image: #imageLiteral(resourceName: "Library"), inset: 6, delegate: self)
     private lazy var settingButtonItem = BarButtonItem(image: #imageLiteral(resourceName: "Setting"), inset: 8, delegate: self)
+    private lazy var cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearchButtonTapped))
     
     // MARK: - Overrides
     
@@ -67,30 +68,12 @@ class MainController: UIViewController {
         DispatchQueue.main.async { self.configureToolbar() }
     }
     
+    @objc func appWillEnterForeground() {
+        DispatchQueue.main.async { self.configureToolbar() }
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil)
-    }
-    
-    // MARK: -
-    
-    private func configureSearchController() {
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.searchBar.autocapitalizationType = .none
-        searchController.searchBar.autocorrectionType = .no
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.obscuresBackgroundDuringPresentation = true
-        searchController.delegate = self
-        searchController.searchResultsUpdater = searchController.searchResultsController as? SearchController
-    }
-    
-    private func updateTableOfContents(completion: (() -> Void)? = nil) {
-        guard let webController = currentWebController, tableOfContentController.url != webController.currentURL
-             else {completion?(); return}
-        webController.extractTableOfContents(completion: { (currentURL, items) in
-            self.tableOfContentController.url = currentURL
-            self.tableOfContentController.items = items
-            completion?()
-        })
     }
     
     private func setChildController(controller: UIViewController) {
@@ -114,14 +97,6 @@ class MainController: UIViewController {
                 controller.view.rightAnchor.constraint(equalTo: view.rightAnchor)])
         }
         controller.didMove(toParentViewController: self)
-    }
-    
-    @objc func cancelSearchButtonTapped() {
-        searchController.isActive = false
-    }
-    
-    @objc func appWillEnterForeground() {
-        DispatchQueue.main.async { self.configureToolbar() }
     }
 }
 
@@ -161,31 +136,60 @@ extension MainController: WebViewControllerDelegate {
     }
 }
 
-// MARK: - UISearchControllerDelegate
+// MARK: - Search
 
-extension MainController: UISearchControllerDelegate {
+extension MainController: UISearchControllerDelegate, UISearchBarDelegate {
+    private func configureSearchController() {
+        searchController.delegate = self
+        searchController.searchBar.delegate = self
+        searchController.searchBar.returnKeyType = .go
+        searchController.searchBar.autocorrectionType = .no
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.obscuresBackgroundDuringPresentation = true
+        searchController.searchResultsUpdater = searchController.searchResultsController as? SearchController
+    }
+    
+    @objc func cancelSearchButtonTapped() {
+        searchController.isActive = false
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        print("search button")
+    }
+    
     func willPresentSearchController(_ searchController: UISearchController) {
-        if UIDevice.current.userInterfaceIdiom == .pad && traitCollection.horizontalSizeClass == .compact {
-            navigationItem.setRightBarButton(cancelButton, animated: true)
-        }
         if traitCollection.horizontalSizeClass == .compact {
             navigationController?.setToolbarHidden(true, animated: true)
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                navigationItem.setRightBarButton(cancelButton, animated: true)
+            }
         }
     }
     
     func willDismissSearchController(_ searchController: UISearchController) {
-        if UIDevice.current.userInterfaceIdiom == .pad && traitCollection.horizontalSizeClass == .compact {
-            navigationItem.setRightBarButton(nil, animated: true)
-        }
         if traitCollection.horizontalSizeClass == .compact {
             navigationController?.setToolbarHidden(false, animated: true)
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                navigationItem.setRightBarButton(nil, animated: true)
+            }
         }
     }
 }
 
-// MARK: - Panel Control
+// MARK: - Functions
 
 extension MainController: TableOfContentControllerDelegate, BookmarkControllerDelegate {
+    private func updateTableOfContentsIfNeeded(completion: (() -> Void)? = nil) {
+        guard let webController = currentWebController, tableOfContentController.url != webController.currentURL else {completion?(); return}
+        webController.extractTableOfContents(completion: { (currentURL, items) in
+            self.tableOfContentController.url = currentURL
+            self.tableOfContentController.items = items
+            completion?()
+        })
+    }
+    
     func didTapTableOfContentItem(index: Int, item: TableOfContentItem) {
         currentWebController?.scrollToTableOfContentItem(index: index)
     }
@@ -208,19 +212,25 @@ extension MainController: BarButtonItemDelegate {
             navigationItem.leftBarButtonItems = [navigationBackButtonItem, navigationForwardButtonItem, tableOfContentButtonItem]
             navigationItem.rightBarButtonItems = [settingButtonItem, libraryButtonItem, bookmarkButtonItem]
             
-            if let presentedViewController = presentedViewController {
-                presentedViewController.dismiss(animated: false, completion: {
-                    if presentedViewController === self.tableOfContentController {
-                        self.presentTableOfContentController(animated: false)
-                    } else if presentedViewController === self.bookmarkController {
-                        self.presentBookmarkController(animated: false)
-                    }
+            /*
+             this following code snippet is for fixing position of popover when horizonal regular
+             we re-added all buttons and that is making popover forgetting about its position
+             */
+            if let presented = presentedViewController as? TableOfContentViewController {
+                presented.dismiss(animated: false, completion: {
+                    self.presentTableOfContentController(animated: false)
+                })
+            } else if let presented = presentedViewController as? BookmarkController {
+                presented.dismiss(animated: false, completion: {
+                    self.presentBookmarkController(animated: false)
                 })
             }
         case .compact:
             navigationController?.isToolbarHidden = searchController.isActive ? true : false
             toolbarItems = [navigationBackButtonItem, navigationForwardButtonItem, tableOfContentButtonItem, bookmarkButtonItem, libraryButtonItem, settingButtonItem].enumerated()
                 .reduce([], { $0 + ($1.offset > 0 ? [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil), $1.element] : [$1.element]) })
+            
+            // the search bar won't show cancel button on iPad when horizonal compact, we have to make one and add it ourselves
             if searchController.isActive && UIDevice.current.userInterfaceIdiom == .pad {
                 navigationItem.setRightBarButton(cancelButton, animated: false)
             }
@@ -280,7 +290,9 @@ extension MainController: BarButtonItemDelegate {
             controller.transitioningDelegate = controller
             controller.direction = article.isBookmarked ? .down : .up
             controller.imageView.image = article.isBookmarked ? #imageLiteral(resourceName: "StarAdd") : #imageLiteral(resourceName: "StarRemove")
-            controller.label.text = article.isBookmarked ? NSLocalizedString("Added", comment: "Bookmark HUD") : NSLocalizedString("Removed", comment: "Bookmark HUD")
+            controller.label.text = article.isBookmarked ?
+                NSLocalizedString("Added", comment: "Bookmark HUD") :
+                NSLocalizedString("Removed", comment: "Bookmark HUD")
 
             present(controller, animated: true, completion: {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
@@ -297,7 +309,7 @@ extension MainController: BarButtonItemDelegate {
 
 extension MainController: UIPopoverPresentationControllerDelegate {
     private func presentTableOfContentController(animated: Bool) {
-        updateTableOfContents(completion: {
+        updateTableOfContentsIfNeeded(completion: {
             self.tableOfContentController.delegate = self
             self.tableOfContentController.modalPresentationStyle = .popover
             self.tableOfContentController.popoverPresentationController?.sourceView = self.tableOfContentButtonItem.button

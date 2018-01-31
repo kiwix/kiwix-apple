@@ -41,6 +41,7 @@ class SearchProcedure: Procedure {
     }
     
     private func addTitleSearchResults() {
+        guard ids.count > 0 else {return}
         let count = max(5, 30 / ids.count)
         for id in ids {
             guard !isCancelled else {return}
