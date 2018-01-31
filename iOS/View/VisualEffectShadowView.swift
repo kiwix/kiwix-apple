@@ -21,24 +21,18 @@ class VisualEffectShadowView: UIView {
     var cornerRadius: CGFloat = 10.0
     private let visual = UIVisualEffectView()
     
+    var contentView: UIView {
+        get {return visual.contentView}
+    }
+    
     init() {
         super.init(frame: .zero)
-        configure()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        self.roundingCorners = .allCorners
-        super.init(coder: aDecoder)
-        configure()
-    }
-    
-    private func configure() {
-        backgroundColor = UIColor.clear
         addVisualEffectView()
     }
     
-    var contentView: UIView {
-        get {return visual.contentView}
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        addVisualEffectView()
     }
     
     override func draw(_ rect: CGRect) {
@@ -77,7 +71,7 @@ class VisualEffectShadowView: UIView {
         visual.effect = UIBlurEffect(style: .extraLight)
         visual.translatesAutoresizingMaskIntoConstraints = false
         addSubview(visual)
-        addConstraints([
+        NSLayoutConstraint.activate([
             visual.leftAnchor.constraint(equalTo: leftAnchor, constant: shadow.blur),
             visual.topAnchor.constraint(equalTo: topAnchor, constant: shadow.blur),
             visual.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -shadow.blur),
