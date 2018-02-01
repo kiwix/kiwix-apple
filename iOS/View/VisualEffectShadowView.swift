@@ -20,18 +20,27 @@ class VisualEffectShadowView: UIView {
     var roundingCorners: UIRectCorner? = .allCorners
     var cornerRadius: CGFloat = 10.0
     private let visual = UIVisualEffectView()
+    private var bottomConstraint: NSLayoutConstraint? = nil
     
     var contentView: UIView {
         get {return visual.contentView}
     }
     
+    var bottomInset: CGFloat = 0 {
+        didSet {
+            bottomConstraint?.constant = bottomInset
+        }
+    }
+    
     init() {
         super.init(frame: .zero)
+        backgroundColor = .clear
         addVisualEffectView()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        backgroundColor = .clear
         addVisualEffectView()
     }
     
@@ -45,14 +54,16 @@ class VisualEffectShadowView: UIView {
         
         // shadow
         let contentRect = rect.insetBy(dx: shadow.blur, dy: shadow.blur)
-        let shadowPath = UIBezierPath(roundedRect: contentRect, byRoundingCorners: corners, cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
+        let shadowPath = UIBezierPath(roundedRect: contentRect,
+                                      byRoundingCorners: corners,
+                                      cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
         
         context.addRect(rect)
         context.addPath(shadowPath.cgPath)
         context.clip(using: .evenOdd)
         
         context.addPath(shadowPath.cgPath)
-        context.setShadow(offset: CGSize.zero, blur: shadow.blur, color: shadow.color.cgColor)
+        context.setShadow(offset: .zero, blur: shadow.blur, color: shadow.color.cgColor)
         context.fillPath()
         
         // mask visualView
@@ -76,5 +87,19 @@ class VisualEffectShadowView: UIView {
             visual.topAnchor.constraint(equalTo: topAnchor, constant: shadow.blur),
             visual.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -shadow.blur),
             visual.rightAnchor.constraint(equalTo: rightAnchor, constant: -shadow.blur)])
+    }
+    
+    func setContent(view: UIView) {
+        contentView.subviews.forEach({ $0.removeFromSuperview() })
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(view)
+        
+        view.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        view.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        view.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        
+        bottomConstraint = contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: bottomInset)
+        bottomConstraint?.isActive = true
     }
 }

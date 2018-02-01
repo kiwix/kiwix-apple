@@ -11,7 +11,9 @@ import CoreData
 
 
 class SearchNoTextController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
-    let tableView = UITableView(frame: .zero, style: .grouped)
+    private let tableView = UITableView(frame: .zero, style: .grouped)
+    private var sections: [SearchNoTextControllerSections] = [.recentSearch, .searchFilter]
+    private var recentSearchTexts = [String]()
     
     override func loadView() {
         view = tableView
@@ -36,14 +38,18 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         }
     }
     
+    private func configureDynamicSections() {
+        
+    }
+    
     // MARK: - UITableViewDataSource & Delegate
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 1 {
+        if sections[section] == .searchFilter {
             return fetchedResultController.sections?.first?.numberOfObjects ?? 0
         } else {
             return 1
@@ -51,7 +57,7 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 1 {
+        if sections[indexPath.section] == .searchFilter {
             let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
             configure(cell: cell, indexPath: IndexPath(row: indexPath.row, section: 0))
             return cell
@@ -71,7 +77,7 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
+        if sections[indexPath.section] == .recentSearch {
             guard let cell = cell as? RecentSearchTableViewCell else {return}
             cell.collectionView.dataSource = self
             cell.collectionView.delegate = self
@@ -83,16 +89,19 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
+        switch sections[section] {
+        case .recentSearch:
             return NSLocalizedString("Recent Search", comment: "")
-        } else {
+        case .searchFilter:
             return NSLocalizedString("Search Filter", comment: "")
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let book = fetchedResultController.object(at: IndexPath(item: indexPath.item, section: 0))
-        book.includeInSearch = !book.includeInSearch
+        if sections[indexPath.section] == .searchFilter {
+            let book = fetchedResultController.object(at: IndexPath(item: indexPath.item, section: 0))
+            book.includeInSearch = !book.includeInSearch
+        }
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -103,17 +112,17 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        return recentSearchTexts.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! RecentSearchCollectionViewCell
-        cell.label.text = "\(indexPath)"
+        cell.label.text = recentSearchTexts[indexPath.row]
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let string = "\(indexPath)"
+        let string = recentSearchTexts[indexPath.row]
         let width = NSString(string: string).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 24),
                                                          options: .usesLineFragmentOrigin,
                                                          attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)],
@@ -122,6 +131,7 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     // MARK: - NSFetchedResultsController
+    
     private let managedObjectContext = CoreDataContainer.shared.viewContext
     private lazy var fetchedResultController: NSFetchedResultsController<Book> = {
         let fetchRequest = Book.fetchRequest()
@@ -159,7 +169,7 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
             guard let indexPath = indexPath else {return}
             tableView.deleteRows(at: [indexPath], with: .fade)
         case .update:
-            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
+            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: IndexPath(row: indexPath.row, section: 1)) as? TableViewCell else {return}
             configure(cell: cell, indexPath: indexPath, animated: true)
         case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
@@ -171,4 +181,8 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
     }
+}
+
+enum SearchNoTextControllerSections {
+    case recentSearch, searchFilter
 }

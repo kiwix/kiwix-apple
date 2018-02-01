@@ -12,14 +12,18 @@ import ProcedureKit
 
 class SearchController: UIViewController, UISearchResultsUpdating, ProcedureQueueDelegate {
     private let visualView = VisualEffectShadowView()
+    private let onboardingView = EmptyContentView(image: #imageLiteral(resourceName: "MagnifyingGlass"), title: "Download some books to get started")
+    private let emptyResultView = EmptyContentView(image: #imageLiteral(resourceName: "MagnifyingGlass"), title: "No Result")
+    
     private let searchResultContainer = SearchResultContainerView()
-    private let emptyResultView = SearchEmptyResultView()
     private let searchingView = SearchingView()
     private let searchResultController = SearchResultController()
     private let searchNoTextController = SearchNoTextController()
     
-    private var regularConstraints = [NSLayoutConstraint]()
-    private var compactConstraints = [NSLayoutConstraint]()
+    var proportionalWidthConstraint: NSLayoutConstraint? = nil
+    var equalWidthConstraint: NSLayoutConstraint? = nil
+    var proportionalHeightConstraint: NSLayoutConstraint? = nil
+    var bottomConstraint: NSLayoutConstraint? = nil
     
     private var observer: NSKeyValueObservation?
     
@@ -36,14 +40,18 @@ class SearchController: UIViewController, UISearchResultsUpdating, ProcedureQueu
     override func viewDidLoad() {
         super.viewDidLoad()
         queue.delegate = self
-        searchResultContainer.isHidden = true
+        configureConstraints()
+        visualView.setContent(view: onboardingView)
+        visualView.contentView.isHidden = true
         
-        addChildViewController(searchNoTextController)
-        searchResultContainer.setContent(view: searchNoTextController.view)
-        searchNoTextController.didMove(toParentViewController: self)
+//        searchResultContainer.isHidden = true
         
-        addChildViewController(searchResultController)
-        searchResultController.didMove(toParentViewController: self)
+//        addChildViewController(searchNoTextController)
+//        searchResultContainer.setContent(view: searchNoTextController.view)
+//        searchNoTextController.didMove(toParentViewController: self)
+//
+//        addChildViewController(searchResultController)
+//        searchResultController.didMove(toParentViewController: self)
         
         observer = view.observe(\.hidden, options: .new, changeHandler: { (view, change) in
             if change.newValue == true { view.isHidden = false }
@@ -54,6 +62,15 @@ class SearchController: UIViewController, UISearchResultsUpdating, ProcedureQueu
                                                name: .NSManagedObjectContextObjectsDidChange,
                                                object: CoreDataContainer.shared.viewContext)
         booksIncludedInSearch = Set(Book.fetch(states: [.local], context: CoreDataContainer.shared.viewContext).filter({ $0.includeInSearch }).map({ $0.id }))
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        guard traitCollection.horizontalSizeClass == .regular else {return}
+        coordinator.animate(alongsideTransition: { (context) in
+            self.visualView.isHidden = true
+        }, completion: { (context) in
+            self.visualView.isHidden = false
+        })
     }
     
     deinit {
@@ -81,12 +98,43 @@ class SearchController: UIViewController, UISearchResultsUpdating, ProcedureQueu
         guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
         switch traitCollection.horizontalSizeClass {
         case .compact:
-            configureForHorizontalCompact()
+            visualView.roundingCorners = nil
+            proportionalWidthConstraint?.priority = .defaultLow
+            equalWidthConstraint?.priority = .defaultHigh
+            proportionalHeightConstraint?.priority = .defaultLow
+            bottomConstraint?.priority = .defaultHigh
+            break
         case .regular:
-            configureForHorizontalRegular()
+            visualView.roundingCorners = .allCorners
+            proportionalWidthConstraint?.priority = .defaultHigh
+            equalWidthConstraint?.priority = .defaultLow
+            proportionalHeightConstraint?.priority = .defaultHigh
+            bottomConstraint?.priority = .defaultLow
         case .unspecified:
             break
         }
+    }
+    
+    private func configureConstraints() {
+        visualView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(visualView)
+        
+        visualView.contentView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
+        visualView.contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        visualView.widthAnchor.constraint(lessThanOrEqualToConstant: 800).isActive = true
+        
+        proportionalWidthConstraint = visualView.contentView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75)
+        proportionalWidthConstraint?.priority = traitCollection.horizontalSizeClass == .regular ? .defaultHigh : .defaultLow
+        proportionalWidthConstraint?.isActive = true
+        equalWidthConstraint = visualView.contentView.widthAnchor.constraint(equalTo: view.widthAnchor)
+        equalWidthConstraint?.priority = traitCollection.horizontalSizeClass == .compact ? .defaultHigh : .defaultLow
+        equalWidthConstraint?.isActive = true
+        proportionalHeightConstraint = visualView.contentView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.75)
+        proportionalHeightConstraint?.priority = traitCollection.horizontalSizeClass == .regular ? .defaultHigh : .defaultLow
+        proportionalHeightConstraint?.isActive = true
+        bottomConstraint = visualView.contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        bottomConstraint?.priority = traitCollection.horizontalSizeClass == .compact ? .defaultHigh : .defaultLow
+        bottomConstraint?.isActive = true
     }
     
     // MARK: - Search Scope Observing
@@ -118,91 +166,38 @@ class SearchController: UIViewController, UISearchResultsUpdating, ProcedureQueu
     // MARK: - Keyboard
     
     @objc func keyboardWillShow(notification: Notification)  {
-        if !searchResultContainer.subviews.contains(searchResultController.tableView) {
-            searchResultContainer.isHidden = true
-        }
+        visualView.contentView.isHidden = true
+        
+//        if !searchResultContainer.subviews.contains(searchResultController.tableView) {
+//            searchResultContainer.isHidden = true
+//        }
     }
     
     @objc func keyboardDidShow(notification: Notification) {
         guard let userInfo = notification.userInfo as? [String: NSValue],
             let origin = userInfo[UIKeyboardFrameEndUserInfoKey]?.cgRectValue.origin else {return}
-        let point = searchResultContainer.convert(origin, from: nil)
-        searchResultContainer.bottomInset = searchResultContainer.frame.height - point.y
-        searchResultContainer.isHidden = false
+        let point = visualView.contentView.convert(origin, from: nil)
+        visualView.bottomInset = visualView.contentView.bounds.height - point.y
+        visualView.contentView.isHidden = false
+//        guard let userInfo = notification.userInfo as? [String: NSValue],
+//            let origin = userInfo[UIKeyboardFrameEndUserInfoKey]?.cgRectValue.origin else {return}
+//        let point = searchResultContainer.convert(origin, from: nil)
+//        searchResultContainer.bottomInset = searchResultContainer.frame.height - point.y
+//        searchResultContainer.isHidden = false
     }
     
     @objc func keyboardWillHide(notification: Notification) {
-        if !searchResultContainer.subviews.contains(searchResultController.tableView) {
-            searchResultContainer.isHidden = true
-        }
-        searchResultContainer.bottomInset = 0
+        visualView.contentView.isHidden = true
+        visualView.bottomInset = 0
+//        if !searchResultContainer.subviews.contains(searchResultController.tableView) {
+//            searchResultContainer.isHidden = true
+//        }
+//        searchResultContainer.bottomInset = 0
     }
     
     @objc func keyboardDidHide(notification: Notification) {
-        searchResultContainer.isHidden = false
-    }
-    
-    // MARK: - Constraints Configuration
-    
-    private func configureForHorizontalCompact() {
-        NSLayoutConstraint.deactivate(regularConstraints)
-        view.subviews.forEach({ $0.removeFromSuperview() })
-        searchResultContainer.removeFromSuperview()
-        view.backgroundColor = .white
-        
-        searchResultContainer.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(searchResultContainer)
-        if compactConstraints.count == 0 {
-            if #available(iOS 11.0, *) {
-                compactConstraints += [
-                    searchResultContainer.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                    searchResultContainer.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-                    searchResultContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-                    searchResultContainer.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor)]
-            } else {
-                compactConstraints += [
-                    searchResultContainer.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
-                    searchResultContainer.leftAnchor.constraint(equalTo: view.leftAnchor),
-                    searchResultContainer.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor),
-                    searchResultContainer.rightAnchor.constraint(equalTo: view.rightAnchor)]
-            }
-        }
-        
-        NSLayoutConstraint.activate(compactConstraints)
-    }
-    
-    private func configureForHorizontalRegular() {
-        NSLayoutConstraint.deactivate(compactConstraints)
-        view.subviews.forEach({ $0.removeFromSuperview() })
-        view.backgroundColor = .clear
-
-        visualView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(visualView)
-        searchResultContainer.translatesAutoresizingMaskIntoConstraints = false
-        visualView.contentView.addSubview(searchResultContainer)
-        if regularConstraints.count == 0 {
-            regularConstraints += [
-                visualView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                visualView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.75),
-                visualView.widthAnchor.constraint(lessThanOrEqualToConstant: 800)]
-            let widthConstraint = visualView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75)
-            widthConstraint.priority = .defaultHigh
-            regularConstraints.append(widthConstraint)
-            
-            if #available(iOS 11.0, *) {
-                regularConstraints.append(visualView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -visualView.shadow.blur))
-            } else {
-                regularConstraints.append(visualView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: -visualView.shadow.blur))
-            }
-            
-            regularConstraints += [
-                visualView.contentView.topAnchor.constraint(equalTo: searchResultContainer.topAnchor),
-                visualView.contentView.leftAnchor.constraint(equalTo: searchResultContainer.leftAnchor),
-                visualView.contentView.bottomAnchor.constraint(equalTo: searchResultContainer.bottomAnchor),
-                visualView.contentView.rightAnchor.constraint(equalTo: searchResultContainer.rightAnchor)]
-        }
-        
-        NSLayoutConstraint.activate(regularConstraints)
+        visualView.contentView.isHidden = false
+//        searchResultContainer.isHidden = false
     }
     
     // MARK: - UISearchResultsUpdating
