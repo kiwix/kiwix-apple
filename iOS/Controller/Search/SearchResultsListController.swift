@@ -19,6 +19,19 @@ class SearchResultsListController: UITableViewController {
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.keyboardDismissMode = .onDrag
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
+        switch traitCollection.horizontalSizeClass {
+        case .compact:
+            tableView.backgroundColor = .groupTableViewBackground
+        case .regular:
+            tableView.backgroundColor = .clear
+        case .unspecified:
+            break
+        }
+    }
 
     // MARK: - Table view data source
 

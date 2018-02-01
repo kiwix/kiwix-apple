@@ -155,7 +155,7 @@ class SearchResultController: UIViewController, UISearchResultsUpdating, Procedu
     // MARK: - Keyboard
     
     @objc func keyboardWillShow(notification: Notification)  {
-        if let firstSubView = visualView.contentView.subviews.first, firstSubView !== searchResultsListController.view {
+        if let firstSubView = visualView.contentView.subviews.first, !(firstSubView is UITableView) {
             visualView.contentView.isHidden = true
         }
     }
@@ -169,7 +169,7 @@ class SearchResultController: UIViewController, UISearchResultsUpdating, Procedu
     }
     
     @objc func keyboardWillHide(notification: Notification) {
-        if let firstSubView = visualView.contentView.subviews.first, firstSubView !== searchResultsListController.view {
+        if let firstSubView = visualView.contentView.subviews.first, !(firstSubView is UITableView) {
             visualView.contentView.isHidden = true
         }
         visualView.bottomInset = 0
