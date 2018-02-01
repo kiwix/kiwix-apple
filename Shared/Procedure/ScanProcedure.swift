@@ -33,8 +33,13 @@ class ScanProcedure: Procedure {
     }
     
     func updateDatabase() {
-        let context = CoreDataContainer.shared.newBackgroundContext()
-        context.mergePolicy = NSMergePolicy(merge: .mergeByPropertyObjectTrumpMergePolicyType)
+        let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        context.parent = CoreDataContainer.shared.viewContext
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+//        let context = CoreDataContainer.shared.newBackgroundContext()
+//
+//        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+//        print(context.parent === CoreDataContainer.shared.viewContext.parent)
         context.performAndWait {
             for id in ZimMultiReader.shared.ids {
                 if let book = Book.fetch(id: id, context: context) {
@@ -93,12 +98,6 @@ class ScanProcedure: Procedure {
             
             guard context.hasChanges else {return}
             try? context.save()
-            
-//            if let parent = context.parent {
-//                parent.performAndWait {
-//                    parent.processPendingChanges()
-//                }
-//            }
         }
     }
 }

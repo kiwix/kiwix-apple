@@ -48,10 +48,8 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
                 for (bookID, bytesWritten) in self.progresses {
                     guard let book = Book.fetch(id: bookID, context: self.managedObjectContext) else {continue}
                     if bytesWritten > 0 {
-                        if book.state != .downloading {book.state = .downloading}
+                        if book.state != .downloading && book.state != .local {book.state = .downloading}
                         book.totalBytesWritten = bytesWritten
-                    } else {
-                        if book.state != .downloadQueued {book.state = .downloadQueued}
                     }
                 }
             })
@@ -181,17 +179,5 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
             let destination = docDirURL.appendingPathComponent(fileName)
             try? FileManager.default.moveItem(at: location, to: destination)
         }
-        
-//        managedObjectContext.perform {
-//            guard let book = Book.fetch(id: bookID, context: self.managedObjectContext) else {return}
-//            book.state = .local
-//            if self.managedObjectContext.hasChanges { try? self.managedObjectContext.save() }
-//
-//            if Preference.Notifications.bookDownloadFinish {
-//                AppNotification.shared.downloadFinished(bookID: book.id,
-//                                                        bookTitle: book.title ?? "Book",
-//                                                        fileSizeDescription: book.fileSizeDescription)
-//            }
-//        }
     }
 }
