@@ -16,7 +16,7 @@ class SearchResultController: UIViewController, UISearchResultsUpdating, Procedu
     private let emptyResultView = EmptyContentView(image: #imageLiteral(resourceName: "MagnifyingGlass"), title: "No Result")
     private let searchingView = SearchingView()
     private let searchNoTextController = SearchNoTextController()
-    private let searchResultController = SearchResultsListController()
+    let searchResultsListController = SearchResultsListController()
     
     var proportionalWidthConstraint: NSLayoutConstraint? = nil
     var equalWidthConstraint: NSLayoutConstraint? = nil
@@ -42,8 +42,8 @@ class SearchResultController: UIViewController, UISearchResultsUpdating, Procedu
         
         addChildViewController(searchNoTextController)
         searchNoTextController.didMove(toParentViewController: self)
-        addChildViewController(searchResultController)
-        searchResultController.didMove(toParentViewController: self)
+        addChildViewController(searchResultsListController)
+        searchResultsListController.didMove(toParentViewController: self)
         
         viewHiddenObserver = view.observe(\.hidden, options: .new, changeHandler: { (view, change) in
             if change.newValue == true { view.isHidden = false }
@@ -130,7 +130,7 @@ class SearchResultController: UIViewController, UISearchResultsUpdating, Procedu
                 case .searching:
                     return searchingView
                 case .results:
-                    return searchResultController.view
+                    return searchResultsListController.view
                 case .noResult:
                     return emptyResultView
                 }
@@ -142,9 +142,9 @@ class SearchResultController: UIViewController, UISearchResultsUpdating, Procedu
                 configureVisiualViewContent(mode: .noText)
             } else if searchText.count == 0 && searchNoTextController.localBookIDs.count == 0 {
                 configureVisiualViewContent(mode: .onboarding)
-            } else if searchText.count >= 0 && searchResultController.results.count > 0 {
+            } else if searchText.count >= 0 && searchResultsListController.results.count > 0 {
                 configureVisiualViewContent(mode: .results)
-            } else if searchText.count >= 0 && searchResultController.results.count == 0 {
+            } else if searchText.count >= 0 && searchResultsListController.results.count == 0 {
                 configureVisiualViewContent(mode: .noResult)
             } else {
                 visualView.setContent(view: nil)
@@ -155,7 +155,7 @@ class SearchResultController: UIViewController, UISearchResultsUpdating, Procedu
     // MARK: - Keyboard
     
     @objc func keyboardWillShow(notification: Notification)  {
-        if let firstSubView = visualView.contentView.subviews.first, firstSubView !== searchResultController.view {
+        if let firstSubView = visualView.contentView.subviews.first, firstSubView !== searchResultsListController.view {
             visualView.contentView.isHidden = true
         }
     }
@@ -169,7 +169,7 @@ class SearchResultController: UIViewController, UISearchResultsUpdating, Procedu
     }
     
     @objc func keyboardWillHide(notification: Notification) {
-        if let firstSubView = visualView.contentView.subviews.first, firstSubView !== searchResultController.view {
+        if let firstSubView = visualView.contentView.subviews.first, firstSubView !== searchResultsListController.view {
             visualView.contentView.isHidden = true
         }
         visualView.bottomInset = 0
@@ -206,14 +206,14 @@ class SearchResultController: UIViewController, UISearchResultsUpdating, Procedu
         guard queue.operationCount == 0, let procedure = procedure as? SearchProcedure else {return}
         DispatchQueue.main.async {
             self.searchText = procedure.searchText
-            self.searchResultController.results = procedure.sortedResults
+            self.searchResultsListController.results = procedure.sortedResults
             self.searchingView.activityIndicator.stopAnimating()
             
-            if self.searchResultController.results.count > 0 {
+            if self.searchResultsListController.results.count > 0 {
                 self.configureVisiualViewContent(mode: .results)
-                self.searchResultController.tableView.reloadData()
+                self.searchResultsListController.tableView.reloadData()
                 DispatchQueue.main.async {
-                    self.searchResultController.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                    self.searchResultsListController.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
                 }
             } else {
                 self.configureVisiualViewContent(mode: nil)

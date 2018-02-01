@@ -161,7 +161,9 @@ extension MainController: UISearchControllerDelegate, UISearchBarDelegate {
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        guard let searchRe
+//        guard let searchResultController = searchController.searchResultsController as? SearchResultController else {return}
+//        let tableView = searchResultController.searchResultsListController.tableView
+//        tableView?.delegate?.tableView(tableView, didSelectRowAt: )
     }
     
     func willPresentSearchController(_ searchController: UISearchController) {
