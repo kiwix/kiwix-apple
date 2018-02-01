@@ -27,7 +27,7 @@ class SearchResultWindow: NSWindow {
     override var canBecomeMain: Bool {return false}
 }
 
-class SearchController: NSViewController, ProcedureQueueDelegate, NSTableViewDataSource, NSTableViewDelegate {
+class SearchResultController: NSViewController, ProcedureQueueDelegate, NSTableViewDataSource, NSTableViewDelegate {
     @IBOutlet weak var visiualEffect: NSVisualEffectView!
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
     @IBOutlet weak var noResultLabel: NSTextField!

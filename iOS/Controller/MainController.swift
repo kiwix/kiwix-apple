@@ -25,7 +25,7 @@ class MainController: UIViewController {
 
     // MARK: - Controllers
     
-    let searchController = UISearchController(searchResultsController: SearchController())
+    let searchController = UISearchController(searchResultsController: SearchResultController())
     private weak var currentWebController: (UIViewController & WebViewController)? = nil
     private(set) var webControllers = [(UIViewController & WebViewController)]()
     private(set) lazy var welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
@@ -148,7 +148,7 @@ extension MainController: UISearchControllerDelegate, UISearchBarDelegate {
         searchController.searchBar.searchBarStyle = .minimal
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.obscuresBackgroundDuringPresentation = true
-        searchController.searchResultsUpdater = searchController.searchResultsController as? SearchController
+        searchController.searchResultsUpdater = searchController.searchResultsController as? SearchResultController
     }
     
     @objc func cancelSearchButtonTapped() {
@@ -157,7 +157,7 @@ extension MainController: UISearchControllerDelegate, UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         // when searchController become active, set searchBar.text to previous search text
-        searchBar.text = (searchController.searchResultsController as? SearchController)?.searchText
+        searchBar.text = (searchController.searchResultsController as? SearchResultController)?.searchText
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

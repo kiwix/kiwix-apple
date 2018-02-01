@@ -43,7 +43,7 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
         ZimManager.shared.removeBooks();
         ZimManager.shared.addBook(urls: urls)
         
-        guard let searchController = self.searchResultWindowController.contentViewController as? SearchController else {return}
+        guard let searchController = self.searchResultWindowController.contentViewController as? SearchResultController else {return}
         self.searchField.endSearch()
         self.searchField.searchTermCache = ""
         searchController.clearSearch()
@@ -105,7 +105,7 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
     }
     
     func searchTextDidClear() {
-        guard let searchController = self.searchResultWindowController.contentViewController as? SearchController else {return}
+        guard let searchController = self.searchResultWindowController.contentViewController as? SearchResultController else {return}
         searchController.clearSearch()
     }
     
@@ -116,7 +116,7 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
     
     @IBAction func searchFieldTextDidChange(_ sender: NSSearchField) {
         searchField.searchTermCache = sender.stringValue
-        guard let searchController = searchResultWindowController.contentViewController as? SearchController else {return}
+        guard let searchController = searchResultWindowController.contentViewController as? SearchResultController else {return}
         searchController.startSearch(searchTerm: sender.stringValue)
     }
     

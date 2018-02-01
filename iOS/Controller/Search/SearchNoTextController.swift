@@ -175,7 +175,7 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
-        (parent as? SearchController)?.configureVisiualViewContent(mode: nil)
+        (parent as? SearchResultController)?.configureVisiualViewContent(mode: nil)
     }
 }
 
