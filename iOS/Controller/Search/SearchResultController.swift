@@ -182,7 +182,10 @@ class SearchResultController: UIViewController, UISearchResultsUpdating, Procedu
     // MARK: - UISearchResultsUpdating
     
     func updateSearchResults(for searchController: UISearchController) {
-        guard let searchText = searchController.searchBar.text, searchText.count > 0, self.searchText != searchText else {return}
+        /* searchController will update results use empty string when it is being dismissed.
+           We choose not to do so in order to preserve user's previous search text. */
+        guard !searchController.isBeingDismissed else {return}
+        guard let searchText = searchController.searchBar.text, self.searchText != searchText else {return}
         let procedure = SearchProcedure(term: searchText, ids: searchNoTextController.includedInSearchBookIDs)
         procedure.add(condition: MutuallyExclusive<SearchResultController>())
         queue.add(operation: procedure)

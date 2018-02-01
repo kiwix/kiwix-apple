@@ -160,10 +160,14 @@ extension MainController: UISearchControllerDelegate, UISearchBarDelegate {
         searchBar.text = (searchController.searchResultsController as? SearchResultController)?.searchText
     }
     
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+    }
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        guard let searchResultController = searchController.searchResultsController as? SearchResultController else {return}
-//        let tableView = searchResultController.searchResultsListController.tableView
-//        tableView?.delegate?.tableView(tableView, didSelectRowAt: )
+        guard let searchResultController = searchController.searchResultsController as? SearchResultController,
+            let result = searchResultController.searchResultsListController.results.first else {return}
+        load(url: result.url)
+        searchController.isActive = false
     }
     
     func willPresentSearchController(_ searchController: UISearchController) {
@@ -182,6 +186,9 @@ extension MainController: UISearchControllerDelegate, UISearchBarDelegate {
                 navigationItem.setRightBarButton(nil, animated: true)
             }
         }
+    }
+    
+    func didDismissSearchController(_ searchController: UISearchController) {
     }
 }
 
