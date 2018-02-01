@@ -182,8 +182,7 @@ class SearchController: UIViewController, UISearchResultsUpdating, ProcedureQueu
     // MARK: - UISearchResultsUpdating
     
     func updateSearchResults(for searchController: UISearchController) {
-        print(searchController.searchBar.text)
-        guard let searchText = searchController.searchBar.text, self.searchText != searchText else {return}
+        guard let searchText = searchController.searchBar.text, searchText.count > 0, self.searchText != searchText else {return}
         let procedure = SearchProcedure(term: searchText, ids: searchNoTextController.includedInSearchBookIDs)
         procedure.add(condition: MutuallyExclusive<SearchController>())
         queue.add(operation: procedure)
