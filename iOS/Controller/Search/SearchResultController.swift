@@ -13,6 +13,7 @@ class SearchResultController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.backgroundColor = .clear
         tableView.estimatedRowHeight = 80
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")

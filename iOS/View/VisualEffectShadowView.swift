@@ -89,9 +89,10 @@ class VisualEffectShadowView: UIView {
             visual.rightAnchor.constraint(equalTo: rightAnchor, constant: -shadow.blur)])
     }
     
-    func setContent(view: UIView) {
+    func setContent(view: UIView?) {
         contentView.subviews.forEach({ $0.removeFromSuperview() })
         
+        guard let view = view else {return}
         view.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(view)
         

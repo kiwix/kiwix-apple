@@ -57,8 +57,6 @@
 		975FDAF91F608A9700A10E8C /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A571F44F451003F5431 /* libicudata.a */; };
 		975FDAFA1F608A9700A10E8C /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A581F44F451003F5431 /* libicui18n.a */; };
 		975FDAFB1F608A9700A10E8C /* libicuio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A591F44F451003F5431 /* libicuio.a */; };
-		975FDAFC1F608A9700A10E8C /* libicutest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A5A1F44F451003F5431 /* libicutest.a */; };
-		975FDAFD1F608A9700A10E8C /* libicutu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A5B1F44F451003F5431 /* libicutu.a */; };
 		975FDAFE1F608A9700A10E8C /* libicuuc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A5C1F44F451003F5431 /* libicuuc.a */; };
 		975FDAFF1F608A9700A10E8C /* libkiwix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A5D1F44F451003F5431 /* libkiwix.a */; };
 		975FDB001F608A9700A10E8C /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A5E1F44F451003F5431 /* liblzma.a */; };
@@ -118,13 +116,11 @@
 		979FD15A201679C5007B5290 /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979FD158201679C5007B5290 /* SearchResultController.swift */; };
 		97A36C2B1F8C21210079B452 /* URLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767717D1F437BB9007ED0C2 /* URLProtocol.swift */; };
 		97A36C2D1F8C21210079B452 /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDB0B1F60930A00A10E8C /* WebKitHandler.swift */; };
-		97A36C311F8C21210079B452 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996DE1F630FBC007A6282 /* SearchView.swift */; };
 		97A36C321F8C21210079B452 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDAD91F6082DA00A10E8C /* AppDelegate.swift */; };
 		97A36C331F8C21210079B452 /* SearchProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975415D31F54C1870007EA6C /* SearchProcedure.swift */; };
 		97A36C351F8C21210079B452 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 975FDB061F608F4100A10E8C /* WebKit.framework */; };
 		97A36C361F8C21210079B452 /* libicuio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A591F44F451003F5431 /* libicuio.a */; };
 		97A36C371F8C21210079B452 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A611F44F451003F5431 /* libz.a */; };
-		97A36C381F8C21210079B452 /* libicutu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A5B1F44F451003F5431 /* libicutu.a */; };
 		97A36C391F8C21210079B452 /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A571F44F451003F5431 /* libicudata.a */; };
 		97A36C3A1F8C21210079B452 /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A5E1F44F451003F5431 /* liblzma.a */; };
 		97A36C3B1F8C21210079B452 /* libpugixml.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A5F1F44F451003F5431 /* libpugixml.a */; };
@@ -133,7 +129,6 @@
 		97A36C3E1F8C21210079B452 /* libicuuc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A5C1F44F451003F5431 /* libicuuc.a */; };
 		97A36C3F1F8C21210079B452 /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A581F44F451003F5431 /* libicui18n.a */; };
 		97A36C401F8C21210079B452 /* libxapian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A601F44F451003F5431 /* libxapian.a */; };
-		97A36C411F8C21210079B452 /* libicutest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 976D2A5A1F44F451003F5431 /* libicutest.a */; };
 		97A36C421F8C21210079B452 /* Pods_WikiMed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14995D226EC82CFFBBB5B159 /* Pods_WikiMed.framework */; };
 		97A36C441F8C21210079B452 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975FDAE21F6082DA00A10E8C /* LaunchScreen.storyboard */; };
 		97A36C451F8C21210079B452 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 975FDAE01F6082DA00A10E8C /* Assets.xcassets */; };
@@ -159,18 +154,16 @@
 		97A36C781F8EA6FD0079B452 /* CoreDataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973208251DD21E9C00EDD3DC /* CoreDataContainer.swift */; };
 		97A36C7A1F8EA6FE0079B452 /* CoreDataContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973208251DD21E9C00EDD3DC /* CoreDataContainer.swift */; };
 		97A996D71F62F1B5007A6282 /* SearchProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975415D31F54C1870007EA6C /* SearchProcedure.swift */; };
-		97A996DF1F630FBC007A6282 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A996DE1F630FBC007A6282 /* SearchView.swift */; };
 		97B1046F1F8FC63C00488444 /* LibraryMasterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */; };
 		97B104701F8FC63C00488444 /* LibraryMasterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */; };
 		97B1D0B51F9A3AD3000C7848 /* NetworkActivityIndicatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9780DE051E43BFF5009B6945 /* NetworkActivityIndicatorController.swift */; };
 		97B1D0B61F9A3AE7000C7848 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97642B981E380CC0003E2D0B /* Network.swift */; };
 		97B1D0B91F9A3CB0000C7848 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD401D6F728200A80EE2 /* Preference.swift */; };
 		97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */; };
-		97CBE7332011056B00A1003C /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CBE7322011056B00A1003C /* SearchController.swift */; };
-		97CBE7342011056B00A1003C /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CBE7322011056B00A1003C /* SearchController.swift */; };
 		97D00A791FBB89F000165629 /* Inject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* Inject.js */; };
 		97D00A7D1FBB89FB00165629 /* Inject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* Inject.js */; };
 		97D00A7F1FBB92D400165629 /* TableOfContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D00A7E1FBB92D400165629 /* TableOfContentItem.swift */; };
+		97D3F6262023774A006D3FE6 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D3F62520237749006D3FE6 /* SearchController.swift */; };
 		97D9D5641FA8F00E005B28F0 /* 1.9.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97D9D5631FA8F00E005B28F0 /* 1.9.xcmappingmodel */; };
 		97D9D5651FA8F00E005B28F0 /* 1.9.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 97D9D5631FA8F00E005B28F0 /* 1.9.xcmappingmodel */; };
 		97DB65DA1D4576B600A2CC42 /* BookmarkWidgetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DB65D91D4576B600A2CC42 /* BookmarkWidgetCell.swift */; };
@@ -289,8 +282,6 @@
 		976D2A571F44F451003F5431 /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicudata.a; sourceTree = "<group>"; };
 		976D2A581F44F451003F5431 /* libicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicui18n.a; sourceTree = "<group>"; };
 		976D2A591F44F451003F5431 /* libicuio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicuio.a; sourceTree = "<group>"; };
-		976D2A5A1F44F451003F5431 /* libicutest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicutest.a; sourceTree = "<group>"; };
-		976D2A5B1F44F451003F5431 /* libicutu.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicutu.a; sourceTree = "<group>"; };
 		976D2A5C1F44F451003F5431 /* libicuuc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicuuc.a; sourceTree = "<group>"; };
 		976D2A5D1F44F451003F5431 /* libkiwix.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libkiwix.a; sourceTree = "<group>"; };
 		976D2A5E1F44F451003F5431 /* liblzma.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = liblzma.a; sourceTree = "<group>"; };
@@ -322,12 +313,11 @@
 		97A36C501F8D4FB80079B452 /* VisualEffectShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectShadowView.swift; sourceTree = "<group>"; };
 		97A36C561F8D5FCD0079B452 /* LibraryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryController.swift; sourceTree = "<group>"; };
 		97A996CD1F609C9F007A6282 /* LegacyWebController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyWebController.swift; sourceTree = "<group>"; };
-		97A996DE1F630FBC007A6282 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		97A9F6F41E2E990500F423AA /* Inject.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Inject.js; sourceTree = "<group>"; };
 		97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryMasterController.swift; sourceTree = "<group>"; };
 		97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
-		97CBE7322011056B00A1003C /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		97D00A7E1FBB92D400165629 /* TableOfContentItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableOfContentItem.swift; sourceTree = "<group>"; };
+		97D3F62520237749006D3FE6 /* SearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		97D6812B1D6F70DE00E5FA99 /* 1.5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.5.xcdatamodel; sourceTree = "<group>"; };
 		97D6812C1D6F70DE00E5FA99 /* 1.7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 1.7.xcdatamodel; sourceTree = "<group>"; };
 		97D6812D1D6F70DE00E5FA99 /* Kiwix.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Kiwix.xcdatamodel; sourceTree = "<group>"; };
@@ -632,7 +622,6 @@
 				975FDB071F608F4100A10E8C /* WebKit.framework in Frameworks */,
 				975FDAFB1F608A9700A10E8C /* libicuio.a in Frameworks */,
 				975FDB031F608A9700A10E8C /* libz.a in Frameworks */,
-				975FDAFD1F608A9700A10E8C /* libicutu.a in Frameworks */,
 				975FDAF91F608A9700A10E8C /* libicudata.a in Frameworks */,
 				975FDB001F608A9700A10E8C /* liblzma.a in Frameworks */,
 				975FDB011F608A9700A10E8C /* libpugixml.a in Frameworks */,
@@ -641,7 +630,6 @@
 				975FDAFE1F608A9700A10E8C /* libicuuc.a in Frameworks */,
 				975FDAFA1F608A9700A10E8C /* libicui18n.a in Frameworks */,
 				975FDB021F608A9700A10E8C /* libxapian.a in Frameworks */,
-				975FDAFC1F608A9700A10E8C /* libicutest.a in Frameworks */,
 				FA1E975E797443400EBF3EE8 /* Pods_WikiMed.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -681,7 +669,6 @@
 				97A36C351F8C21210079B452 /* WebKit.framework in Frameworks */,
 				97A36C361F8C21210079B452 /* libicuio.a in Frameworks */,
 				97A36C371F8C21210079B452 /* libz.a in Frameworks */,
-				97A36C381F8C21210079B452 /* libicutu.a in Frameworks */,
 				97A36C391F8C21210079B452 /* libicudata.a in Frameworks */,
 				97A36C3A1F8C21210079B452 /* liblzma.a in Frameworks */,
 				97A36C3B1F8C21210079B452 /* libpugixml.a in Frameworks */,
@@ -690,7 +677,6 @@
 				97A36C3E1F8C21210079B452 /* libicuuc.a in Frameworks */,
 				97A36C3F1F8C21210079B452 /* libicui18n.a in Frameworks */,
 				97A36C401F8C21210079B452 /* libxapian.a in Frameworks */,
-				97A36C411F8C21210079B452 /* libicutest.a in Frameworks */,
 				97A36C421F8C21210079B452 /* Pods_WikiMed.framework in Frameworks */,
 				A6319A23EDF403E99FCE6BE0 /* Pods_iOS.framework in Frameworks */,
 			);
@@ -775,10 +761,9 @@
 		972E6F651FA2872A00F5C927 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				97CBE7322011056B00A1003C /* SearchController.swift */,
+				97D3F62520237749006D3FE6 /* SearchController.swift */,
 				979FD158201679C5007B5290 /* SearchResultController.swift */,
 				97E34E0B20124F33005080B2 /* SearchNoTextController.swift */,
-				97A996DE1F630FBC007A6282 /* SearchView.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -924,8 +909,6 @@
 				976D2A571F44F451003F5431 /* libicudata.a */,
 				976D2A581F44F451003F5431 /* libicui18n.a */,
 				976D2A591F44F451003F5431 /* libicuio.a */,
-				976D2A5A1F44F451003F5431 /* libicutest.a */,
-				976D2A5B1F44F451003F5431 /* libicutu.a */,
 				976D2A5C1F44F451003F5431 /* libicuuc.a */,
 				976D2A5D1F44F451003F5431 /* libkiwix.a */,
 				976D2A5E1F44F451003F5431 /* liblzma.a */,
@@ -1829,11 +1812,9 @@
 				9725210E200F9D7800B60A80 /* VisualEffectShadowView.swift in Sources */,
 				97252111200F9D7800B60A80 /* BarButtonItem.swift in Sources */,
 				97A36C5C1F8EA6DE0079B452 /* Kiwix.xcdatamodeld in Sources */,
-				97CBE7342011056B00A1003C /* SearchController.swift in Sources */,
 				97A36C581F8D5FCD0079B452 /* LibraryController.swift in Sources */,
 				979FD15A201679C5007B5290 /* SearchResultController.swift in Sources */,
 				9725210F200F9D7800B60A80 /* RoundedButton.swift in Sources */,
-				97A996DF1F630FBC007A6282 /* SearchView.swift in Sources */,
 				9702BE1F1F97F1C900E6B4EE /* LibraryLanguageController.swift in Sources */,
 				97161A871F8FFD1E00A89DE3 /* LibraryCategoryController.swift in Sources */,
 				97041F831F96A3F3007D63F5 /* LibraryBookDetailController.swift in Sources */,
@@ -1915,15 +1896,14 @@
 				972521012009616B00B60A80 /* EmptyContentView.swift in Sources */,
 				97A36C571F8D5FCD0079B452 /* LibraryController.swift in Sources */,
 				972B66592006B1F0003F5365 /* BarButtonItem.swift in Sources */,
-				97A36C311F8C21210079B452 /* SearchView.swift in Sources */,
 				97A36C6F1F8EA6F90079B452 /* ManagedObjectProperties.swift in Sources */,
 				97A36C321F8C21210079B452 /* AppDelegate.swift in Sources */,
-				97CBE7332011056B00A1003C /* SearchController.swift in Sources */,
 				979FD159201679C5007B5290 /* SearchResultController.swift in Sources */,
 				972B66602007F9F7003F5365 /* WebKitWebController.swift in Sources */,
 				9763EDC9201FCA6900F3A6D5 /* SettingWebController.swift in Sources */,
 				977F983E1F9E43EC002ABFCE /* ScanProcedure.swift in Sources */,
 				97028C54201A7D43001259CB /* WebViewControllerProtocols.swift in Sources */,
+				97D3F6262023774A006D3FE6 /* SearchController.swift in Sources */,
 				97028C4D2019200C001259CB /* BookmarkController.swift in Sources */,
 				97A36C331F8C21210079B452 /* SearchProcedure.swift in Sources */,
 				97E429901FBDF48800ABE62E /* DirectoryMonitor.swift in Sources */,

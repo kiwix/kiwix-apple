@@ -14,21 +14,18 @@ class SearchController: UIViewController, UISearchResultsUpdating, ProcedureQueu
     private let visualView = VisualEffectShadowView()
     private let onboardingView = EmptyContentView(image: #imageLiteral(resourceName: "MagnifyingGlass"), title: "Download some books to get started")
     private let emptyResultView = EmptyContentView(image: #imageLiteral(resourceName: "MagnifyingGlass"), title: "No Result")
-    
-    private let searchResultContainer = SearchResultContainerView()
     private let searchingView = SearchingView()
-    private let searchResultController = SearchResultController()
     private let searchNoTextController = SearchNoTextController()
+    private let searchResultController = SearchResultController()
     
     var proportionalWidthConstraint: NSLayoutConstraint? = nil
     var equalWidthConstraint: NSLayoutConstraint? = nil
     var proportionalHeightConstraint: NSLayoutConstraint? = nil
     var bottomConstraint: NSLayoutConstraint? = nil
     
-    private var observer: NSKeyValueObservation?
+    private var viewHiddenObserver: NSKeyValueObservation?
     
     private let queue = ProcedureQueue()
-    private var booksIncludedInSearch = Set<ZimFileID>()
     private(set) var searchText = ""
     
     // MARK: - Overrides
@@ -41,27 +38,33 @@ class SearchController: UIViewController, UISearchResultsUpdating, ProcedureQueu
         super.viewDidLoad()
         queue.delegate = self
         configureConstraints()
-        visualView.setContent(view: onboardingView)
         visualView.contentView.isHidden = true
         
-//        searchResultContainer.isHidden = true
+        addChildViewController(searchNoTextController)
+        searchNoTextController.didMove(toParentViewController: self)
+        addChildViewController(searchResultController)
+        searchResultController.didMove(toParentViewController: self)
         
-//        addChildViewController(searchNoTextController)
-//        searchResultContainer.setContent(view: searchNoTextController.view)
-//        searchNoTextController.didMove(toParentViewController: self)
-//
-//        addChildViewController(searchResultController)
-//        searchResultController.didMove(toParentViewController: self)
-        
-        observer = view.observe(\.hidden, options: .new, changeHandler: { (view, change) in
+        viewHiddenObserver = view.observe(\.hidden, options: .new, changeHandler: { (view, change) in
             if change.newValue == true { view.isHidden = false }
         })
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(managedObjectContextObjectsDidChange(notification:)),
-                                               name: .NSManagedObjectContextObjectsDidChange,
-                                               object: CoreDataContainer.shared.viewContext)
-        booksIncludedInSearch = Set(Book.fetch(states: [.local], context: CoreDataContainer.shared.viewContext).filter({ $0.includeInSearch }).map({ $0.id }))
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(notification:)), name: .UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(notification:)), name: .UIKeyboardDidHide, object: nil)
+        configureVisiualViewContent(mode: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidHide, object: nil)
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -71,26 +74,6 @@ class SearchController: UIViewController, UISearchResultsUpdating, ProcedureQueu
         }, completion: { (context) in
             self.visualView.isHidden = false
         })
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: .NSManagedObjectContextObjectsDidChange, object: CoreDataContainer.shared.viewContext)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(notification:)), name: .UIKeyboardDidShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: .UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(notification:)), name: .UIKeyboardDidHide, object: nil)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidHide, object: nil)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -103,7 +86,6 @@ class SearchController: UIViewController, UISearchResultsUpdating, ProcedureQueu
             equalWidthConstraint?.priority = .defaultHigh
             proportionalHeightConstraint?.priority = .defaultLow
             bottomConstraint?.priority = .defaultHigh
-            break
         case .regular:
             visualView.roundingCorners = .allCorners
             proportionalWidthConstraint?.priority = .defaultHigh
@@ -137,40 +119,45 @@ class SearchController: UIViewController, UISearchResultsUpdating, ProcedureQueu
         bottomConstraint?.isActive = true
     }
     
-    // MARK: - Search Scope Observing
-    
-    @objc func managedObjectContextObjectsDidChange(notification: Notification) {
-        guard let userInfo = notification.userInfo else { return }
-        if let inserts = (userInfo[NSInsertedObjectsKey] as? Set<NSManagedObject>)?.flatMap({ $0 as? Book }) {
-            inserts.forEach({ (book) in
-                guard book.includeInSearch else {return}
-                booksIncludedInSearch.insert(book.id)
-            })
-        }
-        
-        if let updates = (userInfo[NSUpdatedObjectsKey] as? Set<NSManagedObject>)?.flatMap({ $0 as? Book }) {
-            updates.forEach({ (book) in
-                if book.includeInSearch {
-                    booksIncludedInSearch.insert(book.id)
-                } else {
-                    booksIncludedInSearch.remove(book.id)
+    func configureVisiualViewContent(mode: SearchControllerMode?) {
+        if let mode = mode {
+            let view: UIView = {
+                switch mode {
+                case .onboarding:
+                    return onboardingView
+                case .noText:
+                    return searchNoTextController.view
+                case .searching:
+                    return searchingView
+                case .results:
+                    return searchResultController.view
+                case .noResult:
+                    return emptyResultView
                 }
-            })
-        }
-        
-        if let deletes = (userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>)?.flatMap({ $0 as? Book }) {
-            deletes.forEach({ booksIncludedInSearch.remove($0.id) })
+            }()
+            guard !visualView.contentView.subviews.contains(view) else {return}
+            visualView.setContent(view: view)
+        } else {
+            if searchText.count == 0 && searchNoTextController.localBookIDs.count > 0 {
+                configureVisiualViewContent(mode: .noText)
+            } else if searchText.count == 0 && searchNoTextController.localBookIDs.count == 0 {
+                configureVisiualViewContent(mode: .onboarding)
+            } else if searchText.count >= 0 && searchResultController.results.count > 0 {
+                configureVisiualViewContent(mode: .results)
+            } else if searchText.count >= 0 && searchResultController.results.count == 0 {
+                configureVisiualViewContent(mode: .noResult)
+            } else {
+                visualView.setContent(view: nil)
+            }
         }
     }
     
     // MARK: - Keyboard
     
     @objc func keyboardWillShow(notification: Notification)  {
-        visualView.contentView.isHidden = true
-        
-//        if !searchResultContainer.subviews.contains(searchResultController.tableView) {
-//            searchResultContainer.isHidden = true
-//        }
+        if let firstSubView = visualView.contentView.subviews.first, firstSubView !== searchResultController.view {
+            visualView.contentView.isHidden = true
+        }
     }
     
     @objc func keyboardDidShow(notification: Notification) {
@@ -179,32 +166,25 @@ class SearchController: UIViewController, UISearchResultsUpdating, ProcedureQueu
         let point = visualView.contentView.convert(origin, from: nil)
         visualView.bottomInset = visualView.contentView.bounds.height - point.y
         visualView.contentView.isHidden = false
-//        guard let userInfo = notification.userInfo as? [String: NSValue],
-//            let origin = userInfo[UIKeyboardFrameEndUserInfoKey]?.cgRectValue.origin else {return}
-//        let point = searchResultContainer.convert(origin, from: nil)
-//        searchResultContainer.bottomInset = searchResultContainer.frame.height - point.y
-//        searchResultContainer.isHidden = false
     }
     
     @objc func keyboardWillHide(notification: Notification) {
-        visualView.contentView.isHidden = true
+        if let firstSubView = visualView.contentView.subviews.first, firstSubView !== searchResultController.view {
+            visualView.contentView.isHidden = true
+        }
         visualView.bottomInset = 0
-//        if !searchResultContainer.subviews.contains(searchResultController.tableView) {
-//            searchResultContainer.isHidden = true
-//        }
-//        searchResultContainer.bottomInset = 0
     }
     
     @objc func keyboardDidHide(notification: Notification) {
         visualView.contentView.isHidden = false
-//        searchResultContainer.isHidden = false
     }
     
     // MARK: - UISearchResultsUpdating
     
     func updateSearchResults(for searchController: UISearchController) {
+        print(searchController.searchBar.text)
         guard let searchText = searchController.searchBar.text, self.searchText != searchText else {return}
-        let procedure = SearchProcedure(term: searchText, ids: booksIncludedInSearch)
+        let procedure = SearchProcedure(term: searchText, ids: searchNoTextController.includedInSearchBookIDs)
         procedure.add(condition: MutuallyExclusive<SearchController>())
         queue.add(operation: procedure)
     }
@@ -214,11 +194,11 @@ class SearchController: UIViewController, UISearchResultsUpdating, ProcedureQueu
     func procedureQueue(_ queue: ProcedureQueue, willAddProcedure procedure: Procedure, context: Any?) -> ProcedureFuture? {
         if queue.operationCount == 0 {
             DispatchQueue.main.async {
-                self.searchResultContainer.setContent(view: self.searchingView)
+                self.configureVisiualViewContent(mode: .searching)
                 self.searchingView.activityIndicator.startAnimating()
             }
         } else {
-            queue.operations.forEach({$0.cancel()})
+            queue.operations.forEach({ $0.cancel() })
         }
         return nil
     }
@@ -228,17 +208,16 @@ class SearchController: UIViewController, UISearchResultsUpdating, ProcedureQueu
         DispatchQueue.main.async {
             self.searchText = procedure.searchText
             self.searchResultController.results = procedure.sortedResults
+            self.searchingView.activityIndicator.stopAnimating()
+            
             if self.searchResultController.results.count > 0 {
-                self.searchingView.activityIndicator.stopAnimating()
-                self.searchResultContainer.setContent(view: self.searchResultController.tableView)
+                self.configureVisiualViewContent(mode: .results)
                 self.searchResultController.tableView.reloadData()
                 DispatchQueue.main.async {
                     self.searchResultController.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
                 }
-            } else if procedure.searchText == "" {
-                self.searchResultContainer.setContent(view: self.searchNoTextController.view)
             } else {
-                self.searchResultContainer.setContent(view: self.emptyResultView)
+                self.configureVisiualViewContent(mode: nil)
             }
         }
     }
@@ -250,3 +229,20 @@ private class SearchResultControllerBackgroundView: UIView {
     }
 }
 
+class SearchingView: UIView {
+    let activityIndicator = UIActivityIndicatorView()
+    
+    convenience init() {
+        self.init(frame: CGRect.zero)
+        activityIndicator.activityIndicatorViewStyle = .gray
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(activityIndicator)
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor)])
+    }
+}
+
+enum SearchControllerMode {
+    case onboarding, noText, searching, results, noResult
+}

@@ -12,8 +12,17 @@ import CoreData
 
 class SearchNoTextController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     private let tableView = UITableView(frame: .zero, style: .grouped)
-    private var sections: [SearchNoTextControllerSections] = [.recentSearch, .searchFilter]
+    private var sections: [SearchNoTextControllerSections] = [.searchFilter]
     private var recentSearchTexts = [String]()
+    
+    var localBookIDs: Set<ZimFileID> {
+        let books = fetchedResultController.fetchedObjects ?? [Book]()
+        return Set(books.map({ $0.id }))
+    }
+    var includedInSearchBookIDs: Set<ZimFileID> {
+        let books = fetchedResultController.fetchedObjects ?? [Book]()
+        return Set(books.filter({ $0.includeInSearch }).map({ $0.id }))
+    }
     
     override func loadView() {
         view = tableView
@@ -36,10 +45,6 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         case .unspecified:
             break
         }
-    }
-    
-    private func configureDynamicSections() {
-        
     }
     
     // MARK: - UITableViewDataSource & Delegate
@@ -149,37 +154,28 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         tableView.beginUpdates()
     }
     
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-        switch type {
-        case .insert:
-            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
-        case .delete:
-            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
-        default:
-            return
-        }
-    }
-    
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        guard let sectionIndex = sections.index(of: .searchFilter) else {return}
         switch type {
         case .insert:
             guard let newIndexPath = newIndexPath else {return}
-            tableView.insertRows(at: [newIndexPath], with: .fade)
+            tableView.insertRows(at: [IndexPath(row: newIndexPath.row, section: sectionIndex)], with: .fade)
         case .delete:
             guard let indexPath = indexPath else {return}
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.deleteRows(at: [IndexPath(row: indexPath.row, section: sectionIndex)], with: .fade)
         case .update:
-            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: IndexPath(row: indexPath.row, section: 1)) as? TableViewCell else {return}
-            configure(cell: cell, indexPath: indexPath, animated: true)
+            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
+            configure(cell: cell, indexPath: IndexPath(row: indexPath.row, section: sectionIndex), animated: true)
         case .move:
             guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            tableView.insertRows(at: [newIndexPath], with: .fade)
+            tableView.deleteRows(at: [IndexPath(row: indexPath.row, section: sectionIndex)], with: .fade)
+            tableView.insertRows(at: [IndexPath(row: newIndexPath.row, section: sectionIndex)], with: .fade)
         }
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
+        (parent as? SearchController)?.configureVisiualViewContent(mode: nil)
     }
 }
 

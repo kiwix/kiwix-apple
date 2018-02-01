@@ -21,6 +21,7 @@ class ScanProcedure: Procedure {
         urls.forEach({ addReader(dir: $0) })
         ZimMultiReader.shared.removeStaleReaders()
         updateDatabase()
+        
         print("Scan Finished, number of readers: \(ZimMultiReader.shared.ids.count)")
         finish()
     }
@@ -33,6 +34,7 @@ class ScanProcedure: Procedure {
     
     func updateDatabase() {
         let context = CoreDataContainer.shared.newBackgroundContext()
+        context.mergePolicy = NSMergePolicy(merge: .mergeByPropertyObjectTrumpMergePolicyType)
         context.performAndWait {
             for id in ZimMultiReader.shared.ids {
                 if let book = Book.fetch(id: id, context: context) {
@@ -89,10 +91,14 @@ class ScanProcedure: Procedure {
                 }
             }
             
-            context.performAndWait {
-                guard context.hasChanges else {return}
-                try? context.save()
-            }
+            guard context.hasChanges else {return}
+            try? context.save()
+            
+//            if let parent = context.parent {
+//                parent.performAndWait {
+//                    parent.processPendingChanges()
+//                }
+//            }
         }
     }
 }
