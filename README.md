@@ -1,5 +1,5 @@
 # Kiwix for iOS & macOS
-<img src="https://img.shields.io/badge/Swift-3.1-orange.svg" alt="Drawing="/>
+<img src="https://img.shields.io/badge/Swift-4.0-orange.svg" alt="Drawing="/>
 
 This is the home for Kiwix apps on iOS and macOS. 
 - Download the iOS app on the [App Store](https://itunes.apple.com/us/app/kiwix/id997079563). 
@@ -7,7 +7,7 @@ This is the home for Kiwix apps on iOS and macOS.
 
 ## iOS
 
-![alt text](https://img.shields.io/badge/version-1.8.1-blue.svg) ![alt text](https://img.shields.io/badge/compatibility-iOS%2010.0-green.svg) ![alt text](https://img.shields.io/badge/release-04%2F17%2F2017-f4ae00.svg)
+![alt text](https://img.shields.io/badge/version-1.9_beta-blue.svg) ![alt text](https://img.shields.io/badge/compatibility-iOS%2010.0-green.svg) ![alt text](https://img.shields.io/badge/release-02%2F02%2F2018-f4ae00.svg)
 
 ## macOS Beta
 
