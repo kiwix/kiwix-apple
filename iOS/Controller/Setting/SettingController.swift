@@ -2,115 +2,158 @@
 //  SettingController.swift
 //  Kiwix
 //
-//  Created by Chris Li on 1/18/17.
-//  Copyright © 2017 Chris Li. All rights reserved.
+//  Created by Chris Li on 1/17/18.
+//  Copyright © 2018 Chris Li. All rights reserved.
 //
 
 import UIKit
 import StoreKit
 import MessageUI
-import ProcedureKit
 
-class SettingController: UITableViewController {
-    
-    let rows = [[Localized.Setting.fontSize, Localized.Setting.notifications, Localized.Setting.history],
-                [Localized.Setting.feedback, Localized.Setting.rateApp],
-                [Localized.Setting.about]]
-    
-    let percentageFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .percent
-        formatter.maximumFractionDigits = 0
-        formatter.maximumIntegerDigits = 3
-        return formatter
+class SettingNavigationController: UINavigationController {
+    convenience init() {
+        self.init(rootViewController: SettingController())
+        modalPresentationStyle = .formSheet
+        if #available(iOS 11.0, *) {
+            navigationBar.prefersLargeTitles = true
+        }
+    }
+}
+
+class SettingController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    let tableView = UITableView(frame: .zero, style: .grouped)
+    private let items: [[SettingMenuItem]] = {
+        var items: [[SettingMenuItem]] = []
+        
+        items.append([.fontSize(title: NSLocalizedString("Font Size", comment: "Setting Item Title"))])
+        
+        var section = [SettingMenuItem]()
+        if MFMailComposeViewController.canSendMail() {
+            section.append(.feedback(title: NSLocalizedString("Email us your suggestions", comment: "Setting Item Title")))
+        }
+        section.append(.rateApp(title: NSLocalizedString("Give Kiwix a rate", comment: "Setting Item Title")))
+        items.append(section)
+        
+        items.append([.about(title: NSLocalizedString("About", comment: "Setting Item Title"))])
+        return items
     }()
-
+    
+    override func loadView() {
+        view = tableView
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = Localized.Setting.title
+        title = NSLocalizedString("Settings", comment: "Setting title")
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData()
+        tableView.indexPathsForSelectedRows?.forEach({ tableView.deselectRow(at: $0, animated: false) })
     }
     
-    @IBAction func dismissButtonTapped(_ sender: UIBarButtonItem) {
+    @objc func dismissController() {
         dismiss(animated: true, completion: nil)
     }
-
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return rows.count
+    
+    // MARK: - UITableViewDataSource & Delegate
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return items.count
     }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return rows[section].count
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return items[section].count
     }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        let text = rows[indexPath.section][indexPath.row]
-        cell.textLabel?.text = text
-        switch text {
-        case Localized.Setting.fontSize:
-            cell.detailTextLabel?.text = percentageFormatter.string(from: NSNumber(value: Preference.webViewZoomScale))
-        default:
-            cell.detailTextLabel?.text = nil
+        let item = items[indexPath.section][indexPath.row]
+        
+        switch item {
+        case .fontSize(let title), .feedback(let title), .rateApp(let title), .about(let title):
+            cell.textLabel?.text = title
         }
+        cell.accessoryType = .disclosureIndicator
         return cell
     }
     
-    // MARK: - Table view delegate
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let text = rows[indexPath.section][indexPath.row]
-        switch text {
-        case Localized.Setting.fontSize:
-            let controller = UIStoryboard(name: "Setting", bundle: nil).instantiateViewController(withIdentifier: "FontSizeController") as! FontSizeController
+        let item = items[indexPath.section][indexPath.row]
+        switch item {
+        case .fontSize(let title):
+            let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SettingFontSizeViewController")
+            controller.title = title
             navigationController?.pushViewController(controller, animated: true)
-        case Localized.Setting.notifications:
-            let controller = UIStoryboard(name: "Setting", bundle: nil).instantiateViewController(withIdentifier: "NotificationSettingController") as! NotificationSettingController
+        case .feedback:
+            presentFeedbackEmailComposer()
+        case .rateApp(let title):
+            presentRateAppAlert(title: title)
+        case .about(let title):
+            guard let path = Bundle.main.path(forResource: "About", ofType: "html") else {return}
+            let url = URL(fileURLWithPath: path)
+            let controller = SettingWebController(fileURL: url)
+            controller.title = title
             navigationController?.pushViewController(controller, animated: true)
-        case Localized.Setting.history:
-            let controller = UIStoryboard(name: "Setting", bundle: nil).instantiateViewController(withIdentifier: "BrowsingHistoryController") as! BrowsingHistoryController
-            navigationController?.pushViewController(controller, animated: true)
-        case Localized.Setting.feedback:
-            if MFMailComposeViewController.canSendMail() {
-                UIQueue.shared.add(operation: FeedbackMailOperation(context: self))
-            } else {
-                UIQueue.shared.add(operation: AlertProcedure.Feedback.emailNotConfigured(context: self))
-            }
-        case Localized.Setting.rateApp:
-//            if #available(iOS 10.3, OSX 10.12.4, *) {
-//                SKStoreReviewController.requestReview()
-//            } else {
-//                UIQueue.shared.add(operation: AlertProcedure.rateKiwix(context: self))
-//            }
-            UIQueue.shared.add(operation: AlertProcedure.rateKiwix(context: self))
-        case Localized.Setting.about:
-            let controller = UIStoryboard(name: "Setting", bundle: nil).instantiateViewController(withIdentifier: "StaticWebController") as! StaticWebController
-            controller.title = Localized.Setting.about
-            controller.load(htmlFileName: "About")
-            navigationController?.pushViewController(controller, animated: true)
-        default:
-            return
         }
     }
     
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        guard section == tableView.numberOfSections - 1 else {return nil}
-        return String(format: Localized.Setting.version, Bundle.appShortVersion)
-    }
+    // MARK: -
     
-    override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        guard section == tableView.numberOfSections - 1 else {return}
-        if let view = view as? UITableViewHeaderFooterView {
-            view.textLabel?.textAlignment = .center
+    private func presentRateAppAlert(title: String) {
+        let alert = UIAlertController(title: title,
+                                      message: NSLocalizedString("We will redirect you to App Store. Thank you for using Kiwix!", comment: "Rate App"),
+                                      preferredStyle: .alert)
+        let action = UIAlertAction(title: NSLocalizedString("OK", comment: "Rate App"), style: .default) { action in
+            let url = URL(string: "itms-apps://itunes.apple.com/us/app/itunes-u/id997079563?action=write-review")!
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
+        alert.addAction(action)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Rate App"), style: .default))
+        
+        present(alert, animated: true)
     }
-
 }
 
+extension SettingController: MFMailComposeViewControllerDelegate {
+    private func presentFeedbackEmailComposer() {
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
+        let controller = MFMailComposeViewController()
+        controller.setToRecipients(["chris@kiwix.org"])
+        controller.setSubject(NSLocalizedString(String(format: "Feedback of Kiwix for iOS v%@", version), comment: "Feedback Email"))
+        controller.mailComposeDelegate = self
+        present(controller, animated: true)
+    }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
+        switch result {
+        case .sent:
+            let alert = UIAlertController(title: NSLocalizedString("Email Sent", comment: "Feedback Email"),
+                                          message: NSLocalizedString("We will read your message as soon as possible.", comment: "Feedback Email"),
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Feedback Email"), style: .default))
+            present(alert, animated: true)
+        case .failed:
+            guard let error = error else {break}
+            let alert = UIAlertController(title: NSLocalizedString("Email Not Sent", comment: "Feedback Email"),
+                                          message: error.localizedDescription,
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Feedback Email"), style: .default))
+            present(alert, animated: true)
+        default:
+            break
+        }
+    }
+}
+
+enum SettingMenuItem {
+    case fontSize(title: String)
+    case feedback(title: String), rateApp(title: String)
+    case about(title: String)
+}

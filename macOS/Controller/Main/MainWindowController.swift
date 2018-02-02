@@ -11,7 +11,7 @@ import SwiftyUserDefaults
 
 class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldDelegate, SearchFieldDelegate {
     @IBOutlet weak var searchField: SearchField!
-    let searchResultWindowController = NSStoryboard(name: "Search", bundle: nil).instantiateInitialController() as! NSWindowController
+    let searchResultWindowController = NSStoryboard(name: NSStoryboard.Name(rawValue: "Search"), bundle: nil).instantiateInitialController() as! NSWindowController
     private var localMouseDownEventMonitor: Any?
     private var lostFocusObserver: Any?
     
@@ -43,7 +43,7 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
         ZimManager.shared.removeBooks();
         ZimManager.shared.addBook(urls: urls)
         
-        guard let searchController = self.searchResultWindowController.contentViewController as? SearchController else {return}
+        guard let searchController = self.searchResultWindowController.contentViewController as? SearchResultController else {return}
         self.searchField.endSearch()
         self.searchField.searchTermCache = ""
         searchController.clearSearch()
@@ -92,7 +92,7 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
         openPanel.allowedFileTypes = ["zim", "zimaa"]
         
         openPanel.beginSheetModal(for: window!) { response in
-            guard response == NSFileHandlingPanelOKButton else {return}
+            guard response.rawValue == NSFileHandlingPanelOKButton else {return}
             let paths = openPanel.urls.map({$0.path})
             self.openBooks(paths: paths)
         }
@@ -105,7 +105,7 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
     }
     
     func searchTextDidClear() {
-        guard let searchController = self.searchResultWindowController.contentViewController as? SearchController else {return}
+        guard let searchController = self.searchResultWindowController.contentViewController as? SearchResultController else {return}
         searchController.clearSearch()
     }
     
@@ -116,7 +116,7 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
     
     @IBAction func searchFieldTextDidChange(_ sender: NSSearchField) {
         searchField.searchTermCache = sender.stringValue
-        guard let searchController = searchResultWindowController.contentViewController as? SearchController else {return}
+        guard let searchController = searchResultWindowController.contentViewController as? SearchResultController else {return}
         searchController.startSearch(searchTerm: sender.stringValue)
     }
     
@@ -133,7 +133,7 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
         resultWindow.setFrameTopLeftPoint(resultFrame.origin)
         mainWindow.addChildWindow(resultWindow, ordered: .above)
         
-        localMouseDownEventMonitor = NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown, .otherMouseDown]) { (event) -> NSEvent? in
+        localMouseDownEventMonitor = NSEvent.addLocalMonitorForEvents(matching: [NSEvent.EventTypeMask.leftMouseDown, NSEvent.EventTypeMask.rightMouseDown, NSEvent.EventTypeMask.otherMouseDown]) { (event) -> NSEvent? in
             if event.window == resultWindow {
                 return event
             } else if event.window == mainWindow {
@@ -149,7 +149,7 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
             }
         }
 
-        lostFocusObserver = NotificationCenter.default.addObserver(forName: .NSWindowDidResignKey, object: mainWindow, queue: nil) { (_) in
+        lostFocusObserver = NotificationCenter.default.addObserver(forName: NSWindow.didResignKeyNotification, object: mainWindow, queue: nil) { (_) in
             self.searchField.endSearch()
         }
     }
