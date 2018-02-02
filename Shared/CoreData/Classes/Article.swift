@@ -13,34 +13,40 @@ class Article: NSManagedObject {
     
     // MARK: - Fetch
     
-    class func fetch(url: URL, context: NSManagedObjectContext) -> Article? {
+    class func fetch(url: URL, insertIfNotExist: Bool, context: NSManagedObjectContext) -> Article? {
         guard let bookID = url.host,
-            let book = Book.fetch(bookID, context: context) else {return nil}
+            let book = Book.fetch(id: bookID, context: context) else {return nil}
         let path = url.path
         
         let fetchRequest = Article.fetchRequest() as! NSFetchRequest<Article>
         fetchRequest.predicate = NSPredicate(format: "path = %@ AND book = %@", path, book)
         
-        guard let article = try? context.fetch(fetchRequest).first ?? Article(context: context) else {return nil}
-        article.path = path
-        article.book = book
-        return article
+        if let articles = try? context.fetch(fetchRequest), let article = articles.first {
+            return article
+        } else if insertIfNotExist {
+            let article = Article(context: context)
+            article.path = path
+            article.book = book
+            return article
+        } else {
+            return nil
+        }
     }
     
     class func fetchRecentBookmarks(count: Int, context: NSManagedObjectContext) -> [Article] {
-        let fetchRequest = Article.fetchRequest() as! NSFetchRequest<Article>
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: false)]
-        fetchRequest.predicate = NSPredicate(format: "isBookmarked == true")
-        fetchRequest.fetchLimit = count
-        return (try? context.fetch(fetchRequest)) ?? [Article]()
+        let request = Article.fetchRequest() as! NSFetchRequest<Article>
+        request.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: false)]
+        request.predicate = NSPredicate(format: "isBookmarked == true")
+        request.fetchLimit = count
+        return (try? context.fetch(request)) ?? [Article]()
     }
     
-    class func fetchBookmarked(in book: Book, with context: NSManagedObjectContext) -> [Article] {
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
-        request.predicate = NSPredicate(format: "book = %@ AND isBookmarked == true", book)
-        request.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: false)]
-        return fetch(request, type: Article.self, context: context) ?? [Article]()
-    }
+//    class func fetchBookmarked(in book: Book, with context: NSManagedObjectContext) -> [Article] {
+//        let request = Article.fetchRequest() as! NSFetchRequest<Article>
+//        request.predicate = NSPredicate(format: "book = %@ AND isBookmarked == true", book)
+//        request.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: false)]
+//        return (try? context.fetch(request)) ?? [Article]()
+//    }
     
     // MARK: - CoreSpotlight
     
@@ -48,11 +54,12 @@ class Article: NSManagedObject {
         let attributeSet = CSSearchableItemAttributeSet()
         attributeSet.title = title
         attributeSet.contentDescription = snippet
-        attributeSet.thumbnailData = thumbImageData
         attributeSet.creator = book?.title
         attributeSet.htmlContentData = htmlContentData
         attributeSet.lastUsedDate = bookmarkDate
         attributeSet.path = path
+        attributeSet.thumbnailData = thumbnailData
+
         return CSSearchableItem(uniqueIdentifier: url?.absoluteString, domainIdentifier: book?.id, attributeSet: attributeSet)
     }
     
@@ -84,14 +91,10 @@ class Article: NSManagedObject {
         return try? Data(contentsOf: url)
     }
     
-    var thumbImageData: Data? {
-        if let bookID = book?.id, let path = thumbImagePath,
+    var thumbnailData: Data? {
+        guard let bookID = book?.id, let path = thumbImagePath,
             let url = URL(bookID: bookID, contentPath: path),
-            let data = try? Data(contentsOf: url) {
-            return data
-        } else {
-            return book?.favIcon as Data?
-        }
+            let data = try? Data(contentsOf: url) else {return nil}
+        return data
     }
-    
 }

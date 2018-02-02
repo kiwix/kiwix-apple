@@ -2,82 +2,88 @@
 //  SearchResult.swift
 //  Kiwix
 //
-//  Created by Chris Li on 7/11/16.
-//  Copyright © 2016 Chris Li. All rights reserved.
+//  Created by Chris Li on 9/12/17.
+//  Copyright © 2017 Chris Li. All rights reserved.
 //
 
-import UIKit
+#if os(OSX)
+    import Cocoa
+#elseif os(iOS)
+    import UIKit
+#endif
 
-class SearchResult: CustomStringConvertible {
-    let lowerCaseSearchTerm: String
+
+class SearchResult: Equatable, Hashable, CustomStringConvertible {
+    let zimFileID: ZimFileID
+    let url: URL
     let title: String
-    let path: ArticlePath
-    let bookID: ZimID
+    let probability: Double?
     let snippet: String?
+    let attributedSnippet: NSAttributedString?
     
-    let probability: Double? // range: 0.0 - 1.0
-    private(set) lazy var distance: Int = {
-        // Here we dont use the swift version of levenshtein, because it is slower than the C++ implementation
-        //return self.title.lowercaseString.levenshtein(string: self.lowerCaseSearchTerm)
-        return ZimReader.levenshtein(self.title.lowercased(), anotherString: self.lowerCaseSearchTerm)
-    }()
-    private(set) lazy var score: Double = {
-        if let probability = self.probability {
-            return WeightFactor.calculate(probability) * Double(self.distance)
-        } else {
-            return Double(self.distance)
-        }
-    }()
-    
-    init?(rawResult: [String: AnyObject], lowerCaseSearchTerm: String) {
-        self.lowerCaseSearchTerm = lowerCaseSearchTerm
-        let title = (rawResult["title"] as? String) ?? ""
-        let path = (rawResult["path"] as? String) ?? ""
-        let bookID = (rawResult["bookID"] as? ZimID) ?? ""
-        let snippet = rawResult["snippet"] as? String
-        
-        let probability: Double? = {
-            if let probability = (rawResult["probability"] as? NSNumber)?.doubleValue {
-                return probability / 100.0
-            } else {
-                return nil
-            }
-        }()
-        
+    init?(zimFileID: ZimFileID, path: String, title: String, probability: Double? = nil, snippet: String? = nil) {
+        guard let url = URL(bookID: zimFileID, contentPath: path) else {return nil}
+        self.zimFileID = zimFileID
+        self.url = url
         self.title = title
-        self.path = path
-        self.bookID = bookID
-        self.snippet = snippet
         self.probability = probability
         
-        if title == "" || bookID == "" {return nil}
+        guard let snippet = snippet, snippet != "" else {
+            self.snippet = nil
+            self.attributedSnippet = nil
+            return
+        }
+        if snippet.contains("<b>"), let snippet = SearchResult.parseSnippet(html: snippet) {
+            self.snippet = nil
+            self.attributedSnippet = snippet
+        } else {
+            self.snippet = snippet
+            self.attributedSnippet = nil
+        }
+    }
+    
+    private static func parseSnippet(html: String) -> NSAttributedString? {
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [.documentType: NSAttributedString.DocumentType.html,
+                                                                           .characterEncoding: String.Encoding.utf8.rawValue]
+        guard let snippetData = html.data(using: .utf8),
+            let snippet = try? NSMutableAttributedString(data: snippetData, options: options, documentAttributes: nil) else {return nil}
+        let wholeRange = NSRange(location: 0, length: snippet.length)
+        #if os(OSX)
+            snippet.enumerateAttribute(NSAttributedStringKey.font, in: wholeRange, options: .longestEffectiveRangeNotRequired, using: { (font, range, stop) in
+                guard let font = font as? NSFont else {return}
+                let isBold = font.fontDescriptor.symbolicTraits.contains(.bold)
+                let newFont: NSFont = {
+                    if #available(OSX 10.11, *) {
+                        return NSFont.systemFont(ofSize: 12, weight: isBold ? .semibold : .regular)
+                    } else {
+                        return isBold ? NSFont.boldSystemFont(ofSize: 12) : NSFont.systemFont(ofSize: 12)
+                    }
+                }()
+                snippet.addAttribute(NSAttributedStringKey.font, value: newFont, range: range)
+            })
+            snippet.addAttribute(NSAttributedStringKey.foregroundColor, value: NSColor.labelColor, range: wholeRange)
+        #elseif os(iOS)
+            snippet.enumerateAttribute(NSAttributedStringKey.font, in: wholeRange, options: .longestEffectiveRangeNotRequired, using: { (font, range, stop) in
+                guard let font = font as? UIFont else {return}
+                let isBold = font.fontDescriptor.symbolicTraits.contains(.traitBold)
+                let newFont = UIFont.systemFont(ofSize: 12, weight: isBold ? .semibold : .regular)
+                snippet.addAttribute(NSAttributedStringKey.font, value: newFont, range: range)
+            })
+            snippet.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.darkText, range: wholeRange)
+        #endif
+        
+        return snippet
+    }
+    
+    static func == (lhs: SearchResult, rhs: SearchResult) -> Bool {
+        return lhs.url.absoluteString == rhs.url.absoluteString
+    }
+    
+    var hashValue: Int {
+        return url.absoluteString.hashValue
     }
     
     var description: String {
-        var parts = [bookID, title]
-        if let probability = probability {parts.append("\(probability)%")}
-        parts.append("dist: \(distance)")
-        return parts.joined(separator: ", ")
-    }
-    
-    var rankInfo: String {
-        return "(\(distance), \(probability ?? -1), \(String(format: "%.4f", score)))"
-    }
-    
-    static func << (lhs: SearchResult, rhs: SearchResult) -> Bool {
-        return lhs.title.caseInsensitiveCompare(rhs.title) == ComparisonResult.orderedAscending
-    }
-}
-
-class WeightFactor {
-    class func calculate(_ prob: Double) -> Double {
-        let m = 6.4524436415334163
-        let n = 7.5576145596090623
-        return caluclateLog(m: m, n: n, prob: prob)
-    }
-    
-    private class func caluclateLog(m: Double, n: Double, prob: Double) -> Double {
-        let e = 2.718281828459
-        return log(n - m * prob) / log(e)
+        return url.absoluteString
     }
 }

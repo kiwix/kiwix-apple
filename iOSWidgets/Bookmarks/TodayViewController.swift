@@ -66,7 +66,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
         itemsPerRow = max(5, min(round(collectionViewWidth / 70), 10))
         let itemWidth = (collectionViewWidth - (itemsPerRow + 1) * hInset) / itemsPerRow
         let titles = bookmarks.flatMap({$0.object(forKey: "title") as? String})
-        let labelHeights = titles.map({$0.heightWithConstrainedWidth(itemWidth, font: UIFont.systemFont(ofSize: 10.0, weight: UIFontWeightMedium))})
+        let labelHeights = titles.map({$0.heightWithConstrainedWidth(itemWidth, font: UIFont.systemFont(ofSize: 10.0, weight: UIFont.Weight.medium))})
         let labelMaxHeight = max(12.0, min((labelHeights.max() ?? 12.0), 24.0))
         let itemHeight = itemWidth + 2.0 + labelMaxHeight // itemHeight (1:1 ration) + label top spacing + label height
         itemSize = CGSize(width: itemWidth, height: itemHeight)
@@ -153,7 +153,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
 private extension String {
     func heightWithConstrainedWidth(_ width: CGFloat, font: UIFont) -> CGFloat {
         let constraintRect = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
-        let boundingBox = self.boundingRect(with: constraintRect, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
+        let boundingBox = self.boundingRect(with: constraintRect, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: font], context: nil)
         return boundingBox.height
     }
 }

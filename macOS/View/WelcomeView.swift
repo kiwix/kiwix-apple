@@ -11,7 +11,7 @@ import Cocoa
 class WelcomeView: NSView {
     override func draw(_ dirtyRect: NSRect) {
         NSColor.white.setFill()
-        NSRectFill(dirtyRect)
+        dirtyRect.fill()
         super.draw(dirtyRect)
     }
 }

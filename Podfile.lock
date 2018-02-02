@@ -1,24 +1,19 @@
 PODS:
-  - DZNEmptyDataSet (1.8.1)
-  - ProcedureKit/All (4.3.1):
+  - ProcedureKit/All (4.4.0):
     - ProcedureKit/Cloud
     - ProcedureKit/Location
     - ProcedureKit/Network
-  - ProcedureKit/Cloud (4.3.1):
+  - ProcedureKit/Cloud (4.4.0):
     - ProcedureKit/Standard
-  - ProcedureKit/Location (4.3.1):
+  - ProcedureKit/Location (4.4.0):
     - ProcedureKit/Standard
-  - ProcedureKit/Mobile (4.3.1):
+  - ProcedureKit/Network (4.4.0):
     - ProcedureKit/Standard
-  - ProcedureKit/Network (4.3.1):
-    - ProcedureKit/Standard
-  - ProcedureKit/Standard (4.3.1)
+  - ProcedureKit/Standard (4.4.0)
   - SwiftyUserDefaults (3.0.0)
 
 DEPENDENCIES:
-  - DZNEmptyDataSet
   - ProcedureKit/All (from `submodules/ProcedureKit`)
-  - ProcedureKit/Mobile (from `submodules/ProcedureKit`)
   - SwiftyUserDefaults
 
 EXTERNAL SOURCES:
@@ -26,10 +21,9 @@ EXTERNAL SOURCES:
     :path: submodules/ProcedureKit
 
 SPEC CHECKSUMS:
-  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  ProcedureKit: be01656beb236373cd7874aee2b03c3149ed8041
+  ProcedureKit: 5f669bfcb430207af16433d4637612824499e61e
   SwiftyUserDefaults: 0f1d45fc3aafb9064dac661e367f8f83fe21a4b4
 
-PODFILE CHECKSUM: b913b0b32948ecced0b4aedbbdef5ae3e4b9b8cc
+PODFILE CHECKSUM: 2cbeaa7d32cc6f5f5f757fec0a8dbb00a0e30c23
 
 COCOAPODS: 1.3.1

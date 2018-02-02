@@ -31,7 +31,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "97A2AB871C1B80FF00052E74"
                BuildableName = "Kiwix.app"
-               BlueprintName = "iOS"
+               BlueprintName = "iOS_old"
                ReferencedContainer = "container:Kiwix.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -60,7 +60,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "97A2AB871C1B80FF00052E74"
             BuildableName = "Kiwix.app"
-            BlueprintName = "iOS"
+            BlueprintName = "iOS_old"
             ReferencedContainer = "container:Kiwix.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -85,7 +85,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "97A2AB871C1B80FF00052E74"
             BuildableName = "Kiwix.app"
-            BlueprintName = "iOS"
+            BlueprintName = "iOS_old"
             ReferencedContainer = "container:Kiwix.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -105,7 +105,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "97A2AB871C1B80FF00052E74"
             BuildableName = "Kiwix.app"
-            BlueprintName = "iOS"
+            BlueprintName = "iOS_old"
             ReferencedContainer = "container:Kiwix.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
