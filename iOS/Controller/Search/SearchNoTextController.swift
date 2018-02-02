@@ -158,6 +158,14 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         return CGSize(width: width.rounded(.down) + 20, height: 24)
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        let searchText = recentSearchTexts[indexPath.row]
+        if let main = presentingViewController as? MainController {
+            main.searchController.searchBar.text = searchText
+        }
+    }
+    
     // MARK: - NSFetchedResultsController
     
     private let managedObjectContext = CoreDataContainer.shared.viewContext
