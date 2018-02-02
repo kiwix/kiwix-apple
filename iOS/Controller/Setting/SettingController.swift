@@ -25,6 +25,8 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
     private let items: [[SettingMenuItem]] = {
         var items: [[SettingMenuItem]] = []
         
+        items.append([.fontSize(title: NSLocalizedString("Font Size", comment: "Setting Item Title"))])
+        
         var section = [SettingMenuItem]()
         if MFMailComposeViewController.canSendMail() {
             section.append(.feedback(title: NSLocalizedString("Email us your suggestions", comment: "Setting Item Title")))
@@ -73,7 +75,7 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
         let item = items[indexPath.section][indexPath.row]
         
         switch item {
-        case .feedback(let title), .rateApp(let title), .about(let title):
+        case .fontSize(let title), .feedback(let title), .rateApp(let title), .about(let title):
             cell.textLabel?.text = title
         }
         cell.accessoryType = .disclosureIndicator
@@ -84,6 +86,10 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
         tableView.deselectRow(at: indexPath, animated: true)
         let item = items[indexPath.section][indexPath.row]
         switch item {
+        case .fontSize(let title):
+            let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SettingFontSizeViewController")
+            controller.title = title
+            navigationController?.pushViewController(controller, animated: true)
         case .feedback:
             presentFeedbackEmailComposer()
         case .rateApp(let title):
@@ -147,6 +153,7 @@ extension SettingController: MFMailComposeViewControllerDelegate {
 }
 
 enum SettingMenuItem {
+    case fontSize(title: String)
     case feedback(title: String), rateApp(title: String)
     case about(title: String)
 }
