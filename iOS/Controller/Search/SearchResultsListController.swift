@@ -20,19 +20,6 @@ class SearchResultsListController: UITableViewController {
         tableView.keyboardDismissMode = .onDrag
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
-        switch traitCollection.horizontalSizeClass {
-        case .compact:
-            tableView.backgroundColor = .white
-        case .regular:
-            tableView.backgroundColor = .clear
-        case .unspecified:
-            break
-        }
-    }
-
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {

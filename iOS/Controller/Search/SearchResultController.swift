@@ -82,12 +82,14 @@ class SearchResultController: UIViewController, UISearchResultsUpdating, Procedu
         switch traitCollection.horizontalSizeClass {
         case .compact:
             visualView.roundingCorners = nil
+            visualView.contentView.backgroundColor = .white
             proportionalWidthConstraint?.priority = .defaultLow
             equalWidthConstraint?.priority = .defaultHigh
             proportionalHeightConstraint?.priority = .defaultLow
             bottomConstraint?.priority = .defaultHigh
         case .regular:
             visualView.roundingCorners = .allCorners
+            visualView.contentView.backgroundColor = .clear
             proportionalWidthConstraint?.priority = .defaultHigh
             equalWidthConstraint?.priority = .defaultLow
             proportionalHeightConstraint?.priority = .defaultHigh
