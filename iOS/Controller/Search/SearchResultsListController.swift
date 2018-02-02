@@ -25,7 +25,7 @@ class SearchResultsListController: UITableViewController {
         guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
         switch traitCollection.horizontalSizeClass {
         case .compact:
-            tableView.backgroundColor = .groupTableViewBackground
+            tableView.backgroundColor = .white
         case .regular:
             tableView.backgroundColor = .clear
         case .unspecified:
@@ -61,7 +61,7 @@ class SearchResultsListController: UITableViewController {
         guard let main = presentingViewController as? MainController else {return}
         
         if let parent = parent as? SearchResultController {
-            parent.searchNoTextController.recentSearchTexts.insert(parent.searchText, at: 0)
+            parent.searchNoTextController.add(recentSearchText: parent.searchText)
         }
         
         main.load(url: results[indexPath.row].url)

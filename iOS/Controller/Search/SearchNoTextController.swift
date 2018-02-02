@@ -13,9 +13,21 @@ import CoreData
 class SearchNoTextController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private var sections: [SearchNoTextControllerSections] = [.searchFilter]
-    var recentSearchTexts = [String]() {
+    private var recentSearchTexts = [String]() {
         didSet {
-            print(recentSearchTexts)
+            if recentSearchTexts.count == 0, let index = sections.index(of: .recentSearch) {
+                tableView.beginUpdates()
+                sections.remove(at: index)
+                tableView.deleteSections(IndexSet([index]), with: .automatic)
+                tableView.endUpdates()
+            } else if recentSearchTexts.count > 0 && !sections.contains(.recentSearch) {
+                tableView.beginUpdates()
+                sections.insert(.recentSearch, at: 0)
+                tableView.insertSections(IndexSet([0]), with: .none)
+                tableView.endUpdates()
+            } else if recentSearchTexts.count > 0, let index = sections.index(of: .recentSearch) {
+                tableView.reloadSections(IndexSet([index]), with: .none)
+            }
         }
     }
     
@@ -49,6 +61,13 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         case .unspecified:
             break
         }
+    }
+    
+    func add(recentSearchText: String) {
+        if let index = recentSearchTexts.index(of: recentSearchText), index > 0 {
+            recentSearchTexts.remove(at: index)
+        }
+        recentSearchTexts.insert(recentSearchText, at: 0)
     }
     
     // MARK: - UITableViewDataSource & Delegate
