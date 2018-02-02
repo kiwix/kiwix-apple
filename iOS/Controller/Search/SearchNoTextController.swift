@@ -80,6 +80,7 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
             recentSearchTexts.remove(at: index)
         }
         recentSearchTexts.insert(recentSearchText, at: 0)
+        recentSearchTexts = Array(recentSearchTexts[..<20])
     }
     
     @objc func appWillTerminate() {
