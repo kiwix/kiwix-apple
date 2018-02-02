@@ -96,9 +96,9 @@ class VisualEffectShadowView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(view)
         
-        view.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        view.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        view.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        view.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
+        view.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
+        view.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         
         bottomConstraint = contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: bottomInset)
         bottomConstraint?.isActive = true

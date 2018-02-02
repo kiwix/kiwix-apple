@@ -60,6 +60,10 @@ class SearchResultsListController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let main = presentingViewController as? MainController else {return}
         
+        if let parent = parent as? SearchResultController {
+            parent.searchNoTextController.recentSearchTexts.insert(parent.searchText, at: 0)
+        }
+        
         main.load(url: results[indexPath.row].url)
         main.searchController.isActive = false
     }

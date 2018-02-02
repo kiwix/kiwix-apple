@@ -15,7 +15,7 @@ class SearchResultController: UIViewController, UISearchResultsUpdating, Procedu
     private let onboardingView = EmptyContentView(image: #imageLiteral(resourceName: "MagnifyingGlass"), title: "Download some books to get started")
     private let emptyResultView = EmptyContentView(image: #imageLiteral(resourceName: "MagnifyingGlass"), title: "No Result")
     private let searchingView = SearchingView()
-    private let searchNoTextController = SearchNoTextController()
+    let searchNoTextController = SearchNoTextController()
     let searchResultsListController = SearchResultsListController()
     
     var proportionalWidthConstraint: NSLayoutConstraint? = nil
@@ -103,7 +103,6 @@ class SearchResultController: UIViewController, UISearchResultsUpdating, Procedu
         
         visualView.contentView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
         visualView.contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        visualView.widthAnchor.constraint(lessThanOrEqualToConstant: 800).isActive = true
         
         proportionalWidthConstraint = visualView.contentView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75)
         proportionalWidthConstraint?.priority = traitCollection.horizontalSizeClass == .regular ? .defaultHigh : .defaultLow

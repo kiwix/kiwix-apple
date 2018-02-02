@@ -13,7 +13,11 @@ import CoreData
 class SearchNoTextController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private var sections: [SearchNoTextControllerSections] = [.searchFilter]
-    private var recentSearchTexts = [String]()
+    var recentSearchTexts = [String]() {
+        didSet {
+            print(recentSearchTexts)
+        }
+    }
     
     var localBookIDs: Set<ZimFileID> {
         let books = fetchedResultController.fetchedObjects ?? [Book]()
