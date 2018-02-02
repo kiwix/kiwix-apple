@@ -99,6 +99,11 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         webView.evaluateJavaScript(javascript, completionHandler: nil)
     }
     
+    func adjustFontSize(scale: Double) {
+        let javascript = String(format: "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%.0f%%'", scale * 100)
+        webView.evaluateJavaScript(javascript, completionHandler: nil)
+    }
+    
     // MARK: - WKNavigationDelegate
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {

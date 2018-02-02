@@ -23,6 +23,7 @@ protocol WebViewController {
     func extractImageURLs(completion: @escaping (([URL]) -> Void))
     func extractTableOfContents(completion: @escaping ((URL?, [TableOfContentItem]) -> Void))
     func scrollToTableOfContentItem(index: Int)
+    func adjustFontSize(scale: Double)
 }
 
 protocol WebViewControllerDelegate: class {

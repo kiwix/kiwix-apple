@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import SwiftyUserDefaults
 
 class MainController: UIViewController {
     private var currentArticleBookmarkObserver: NSKeyValueObservation? = nil
@@ -26,7 +27,7 @@ class MainController: UIViewController {
     // MARK: - Controllers
     
     let searchController = UISearchController(searchResultsController: SearchResultController())
-    private weak var currentWebController: (UIViewController & WebViewController)? = nil
+    private(set) weak var currentWebController: (UIViewController & WebViewController)? = nil
     private(set) var webControllers = [(UIViewController & WebViewController)]()
     private(set) lazy var welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     private(set) lazy var bookmarkController = BookmarkController()
@@ -132,6 +133,10 @@ extension MainController: WebViewControllerDelegate {
             currentArticle = article
         } else {
             bookmarkButtonItem.button.isBookmarked = false
+        }
+        
+        if let scale = Defaults[.webViewZoomScale], scale != 1 {
+            currentWebController?.adjustFontSize(scale: scale)
         }
     }
 }

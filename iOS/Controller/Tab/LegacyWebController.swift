@@ -90,6 +90,11 @@ class LegacyWebController: UIViewController, UIWebViewDelegate, WebViewControlle
         webView.context.evaluateScript(javascript)
     }
     
+    func adjustFontSize(scale: Double) {
+        let javascript = String(format: "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%.0f%%'", scale * 100)
+        webView.stringByEvaluatingJavaScript(from: javascript)
+    }
+    
     // MARK: - UIWebViewDelegate
     
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {

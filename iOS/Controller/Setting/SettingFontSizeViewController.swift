@@ -33,7 +33,6 @@ class SettingFontSizeViewController: UIViewController, UITableViewDelegate, UITa
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-//        if Preference.webViewZoomScale != selected {Controllers.main.currentTab?.webView.reload()}
         Defaults[.webViewZoomScale] = selected
     }
     
@@ -73,5 +72,10 @@ class SettingFontSizeViewController: UIViewController, UITableViewDelegate, UITa
         selected = percentages[indexPath.row]
         tableView.reloadRows(at: indexPaths, with: .automatic)
         label.font = UIFont.systemFont(ofSize: CGFloat(14.0 * percentages[indexPath.row]))
+        
+        if let navigation = navigationController?.presentingViewController as? UINavigationController,
+            let main = navigation.topViewController as? MainController {
+            main.currentWebController?.adjustFontSize(scale: selected)
+        }
     }
 }
