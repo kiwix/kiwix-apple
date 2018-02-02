@@ -8,17 +8,17 @@
 
 import UIKit
 import CoreData
-
+import SwiftyUserDefaults
 
 class SearchNoTextController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private var sections: [SearchNoTextControllerSections] = [.searchFilter]
-    private var recentSearchTexts = [String]() {
+    private var recentSearchTexts = Defaults[.recentSearchTexts] {
         didSet {
             if recentSearchTexts.count == 0, let index = sections.index(of: .recentSearch) {
                 tableView.beginUpdates()
                 sections.remove(at: index)
-                tableView.deleteSections(IndexSet([index]), with: .automatic)
+                tableView.deleteSections(IndexSet([index]), with: .none)
                 tableView.endUpdates()
             } else if recentSearchTexts.count > 0 && !sections.contains(.recentSearch) {
                 tableView.beginUpdates()
@@ -50,6 +50,18 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         tableView.register(RecentSearchTableViewCell.self, forCellReuseIdentifier: "RecentSearchCell")
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillTerminate), name: .UIApplicationWillTerminate, object: nil)
+        if recentSearchTexts.count > 0 {
+            sections.insert(.recentSearch, at: 0)
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .UIApplicationWillTerminate, object: nil)
+    }
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
@@ -68,6 +80,10 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
             recentSearchTexts.remove(at: index)
         }
         recentSearchTexts.insert(recentSearchText, at: 0)
+    }
+    
+    @objc func appWillTerminate() {
+        Defaults[.recentSearchTexts] = recentSearchTexts
     }
     
     // MARK: - UITableViewDataSource & Delegate

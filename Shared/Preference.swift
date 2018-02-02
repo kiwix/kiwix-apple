@@ -87,6 +87,7 @@ class Preference {
 extension DefaultsKeys {
     static let hasShowGetStartedAlert = DefaultsKey<Bool>("hasShowGetStartedAlert")
     static let hasSubscribedToCloudKitChanges = DefaultsKey<Bool>("hasSubscribedToCloudKitChanges")
+    static let recentSearchTexts = DefaultsKey<[String]>("recentSearchTexts")
     static let recentSearchTerms = DefaultsKey<[String]>("recentSearchTerms")
     static let webViewZoomScale = DefaultsKey<Double?>("webViewZoomScale")
     static let activeUseHistory = DefaultsKey<[Date]>("activeUseHistory")
