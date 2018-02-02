@@ -49,6 +49,14 @@ class SearchProcedure: Procedure {
         }
     }
     
+    private func addExternalIndexSearchResults() {
+        for id in ZimMultiReader.shared.externalIndexZimIDs {
+            if ids.contains(id), !ZimMultiReader.shared.hasIndex(id: id) {
+                ZimMultiReader.shared.getExternalIndexSearchResults(searchText: searchText, zimFileID: id, count: 5).forEach({ results.insert($0) })
+            }
+        }
+    }
+    
     func sort() {
         guard !isCancelled else {return}
         let lowercaseSearchText = searchText.lowercased()

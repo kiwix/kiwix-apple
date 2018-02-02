@@ -31,4 +31,7 @@
 - (void)stopIndexSearch;
 - (NSArray *_Nonnull)getTitleSearchResults:(NSString *_Nonnull)searchText zimFileID:(NSString *_Nullable)zimFileID count:(unsigned int)count NS_REFINED_FOR_SWIFT;
 
+- (NSSet *_Nonnull)getExternalIndexZimIDs NS_REFINED_FOR_SWIFT;
+- (NSArray *_Nonnull)getExternalIndexSearchResults: (NSString *_Nonnull)searchText zimFileID:(NSString *_Nonnull)zimFileID count:(unsigned int)count NS_REFINED_FOR_SWIFT;
+
 @end

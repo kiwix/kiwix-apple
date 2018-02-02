@@ -158,7 +158,7 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
         if (!reader->hasFulltextIndex()) {
             continue;
         }
-        if (zimFileIDs == nil || zimFileIDs.count == 0 || [zimFileIDs containsObject:[NSString stringWithCString:iter.first.c_str() encoding:NSUTF8StringEncoding]]) {
+        if (zimFileIDs == nil || [zimFileIDs containsObject:[NSString stringWithCString:iter.first.c_str() encoding:NSUTF8StringEncoding]]) {
             searcher->add_reader(reader.get(), iter.first);
             searcherZimIDs->push_back(iter.first);
         }
@@ -212,6 +212,40 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
         }
         return suggestions;
     }
+}
+
+- (NSSet *)getExternalIndexZimIDs {
+    NSMutableSet *identifiers = [[NSMutableSet alloc] init];
+    for(auto pair: externalSearchers) {
+        NSString *identifier = [NSString stringWithCString:pair.first.c_str() encoding:NSUTF8StringEncoding];
+        [identifiers addObject:identifier];
+    }
+    return identifiers;
+}
+
+- (NSArray *)getExternalIndexSearchResults: (NSString *)searchText zimFileID:(NSString *)zimFileID count:(unsigned int)count {
+    std::string searchTermC = [searchText cStringUsingEncoding:NSUTF8StringEncoding];
+    NSMutableArray *suggestions = [[NSMutableArray alloc] init];
+    
+    auto found = externalSearchers.find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
+    if (found == externalSearchers.end()) {
+        return suggestions;
+    } else {
+        std::shared_ptr<kiwix::Searcher> searcher = found->second;
+        searcher->search(searchTermC, 0, count);
+        
+        kiwix::Result *result = searcher->getNextResult();
+        while (result != NULL) {
+            NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
+            NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
+            NSNumber *probability = [[NSNumber alloc] initWithDouble:(double)result->get_score() / double(100)];
+            NSString *snippet = [NSString stringWithCString:result->get_snippet().c_str() encoding:NSUTF8StringEncoding];
+            delete result;
+            [suggestions addObject:@{@"id": zimFileID, @"title": title, @"path": path, @"probability": probability, @"snippet": snippet}];
+        }
+    }
+
+    return suggestions;
 }
 
 @end
