@@ -128,6 +128,19 @@ class LibraryOnboardingController: UIViewController {
     }
 }
 
+class LibraryNavigationController: UINavigationController {
+    override init(rootViewController: UIViewController) {
+        super.init(rootViewController: rootViewController)
+        if #available(iOS 11.0, *) {
+            navigationBar.prefersLargeTitles = true
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+}
+
 class LibrarySplitController: UISplitViewController, UISplitViewControllerDelegate {
     init() {
         super.init(nibName: nil, bundle: nil)

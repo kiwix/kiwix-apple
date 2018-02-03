@@ -66,25 +66,17 @@ class BookmarkButtonItem: BarButtonItem {
 class BarButton: UIButton {
     private var boundsObserver: NSKeyValueObservation? = nil
     
-//    override var isHighlighted: Bool {
-//        didSet {
-//            tintColor = isHighlighted ? .darkGray : (isGrayed ? .gray : nil)
-//        }
-//    }
-    
-//    var isGrayed: Bool = true {
-//        didSet {
-//            tintColor = isGrayed ? .lightGray : nil
-//        }
-//    }
-    
     convenience init(inset: CGFloat) {
         self.init(frame: .zero)
 
         boundsObserver = observe(\.bounds, options: [.initial, .new]) { (button, change) in
             let inset: CGFloat = {
-                if let height = change.newValue?.height, height < 44 {
-                    return inset * 0.6
+                if #available(iOS 11.0, *) {
+                    if let height = change.newValue?.height, height < 44 {
+                        return inset * 0.6
+                    } else {
+                        return inset
+                    }
                 } else {
                     return inset
                 }

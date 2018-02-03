@@ -45,15 +45,8 @@ class SearchProcedure: Procedure {
         let count = max(5, 30 / ids.count)
         for id in ids {
             guard !isCancelled else {return}
-            ZimMultiReader.shared.getTitleSearchResults(searchText: searchText, zimFileID: id, count: count).forEach({ results.insert($0) })
-        }
-    }
-    
-    private func addExternalIndexSearchResults() {
-        for id in ZimMultiReader.shared.externalIndexZimIDs {
-            if ids.contains(id), !ZimMultiReader.shared.hasIndex(id: id) {
-                ZimMultiReader.shared.getExternalIndexSearchResults(searchText: searchText, zimFileID: id, count: 5).forEach({ results.insert($0) })
-            }
+            ZimMultiReader.shared.getTitleSearchResults(searchText: searchText, zimFileID: id, count: count)
+                .forEach({ results.insert($0) })
         }
     }
     

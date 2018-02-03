@@ -8,9 +8,11 @@
 
 import UIKit
 import CoreData
+import NotificationCenter
 import SwiftyUserDefaults
 
 class MainController: UIViewController {
+    var viewWillAppearPendingActions = [(() -> Void)]()
     private var currentArticleBookmarkObserver: NSKeyValueObservation? = nil
     private var currentArticle: Article? = nil {
         didSet {
@@ -77,9 +79,13 @@ class MainController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil)
     }
     
+    // MARK: -
+    
     private func setChildController(controller: UIViewController) {
-        view.subviews.forEach({ $0.removeFromSuperview() })
-        childViewControllers.forEach({ $0.removeFromParentViewController() })
+        childViewControllers.forEach { (controller) in
+            controller.view.removeFromSuperview()
+            controller.removeFromParentViewController()
+        }
         
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         addChildViewController(controller)
@@ -91,13 +97,37 @@ class MainController: UIViewController {
                 controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
                 controller.view.rightAnchor.constraint(equalTo: view.rightAnchor)])
         } else {
-            NSLayoutConstraint.activate([
-                controller.view.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
-                controller.view.leftAnchor.constraint(equalTo: view.leftAnchor),
-                controller.view.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor),
-                controller.view.rightAnchor.constraint(equalTo: view.rightAnchor)])
+            if #available(iOS 11.0, *) {
+                NSLayoutConstraint.activate([
+                    controller.view.leftAnchor.constraint(equalTo: view.leftAnchor),
+                    controller.view.rightAnchor.constraint(equalTo: view.rightAnchor),
+                    controller.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                    controller.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)])
+            } else {
+                automaticallyAdjustsScrollViewInsets = false
+                NSLayoutConstraint.activate([
+                    controller.view.leftAnchor.constraint(equalTo: view.leftAnchor),
+                    controller.view.rightAnchor.constraint(equalTo: view.rightAnchor),
+                    controller.view.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
+                    controller.view.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor)])
+            }
         }
         controller.didMove(toParentViewController: self)
+    }
+    
+    func updateBookmarkWidgetData() {
+        let context = CoreDataContainer.shared.viewContext
+        let bookmarks = Article.fetchRecentBookmarks(count: 8, context: context)
+            .map({ (article) -> [String: Any]? in
+                guard let title = article.title, let url = article.url else {return nil}
+                return [
+                    "title": title,
+                    "url": url.absoluteString,
+                    "thumbImageData": article.thumbnailData ?? article.book?.favIcon ?? Data()
+                ]
+            }).flatMap({ $0 })
+        UserDefaults(suiteName: "group.kiwix")?.set(bookmarks, forKey: "bookmarks")
+        NCWidgetController.widgetController().setHasContent(bookmarks.count > 0, forWidgetWithBundleIdentifier: "self.Kiwix.Bookmarks")
     }
 }
 
@@ -312,6 +342,7 @@ extension MainController: BarButtonItemDelegate {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
                     controller.dismiss(animated: true, completion: nil)
                 })
+                self.updateBookmarkWidgetData()
             })
         default:
             break
@@ -330,18 +361,18 @@ extension MainController: UIPopoverPresentationControllerDelegate {
             self.tableOfContentController.popoverPresentationController?.sourceRect = self.tableOfContentButtonItem.button.bounds
             self.tableOfContentController.popoverPresentationController?.delegate = self
             self.tableOfContentController.preferredContentSize = CGSize(width: 300, height: 400)
-            self.present(self.tableOfContentController, animated: true)
+            self.present(self.tableOfContentController, animated: animated)
         })
     }
     
-    private func presentBookmarkController(animated: Bool) {
+    func presentBookmarkController(animated: Bool) {
         bookmarkController.delegate = self
         bookmarkController.modalPresentationStyle = .popover
         bookmarkController.popoverPresentationController?.sourceView = bookmarkButtonItem.button
         bookmarkController.popoverPresentationController?.sourceRect = bookmarkButtonItem.button.bounds
         bookmarkController.popoverPresentationController?.delegate = self
         bookmarkController.preferredContentSize = CGSize(width: 400, height: 600)
-        present(bookmarkController, animated: true)
+        present(bookmarkController, animated: animated)
     }
     
     func presentationController(_ controller: UIPresentationController, viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle) -> UIViewController? {

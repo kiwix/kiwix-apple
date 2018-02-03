@@ -15,6 +15,7 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
     private var sections: [SearchNoTextControllerSections] = [.searchFilter]
     private var recentSearchTexts = Defaults[.recentSearchTexts] {
         didSet {
+            Defaults[.recentSearchTexts] = recentSearchTexts
             if recentSearchTexts.count == 0, let index = sections.index(of: .recentSearch) {
                 tableView.beginUpdates()
                 sections.remove(at: index)
@@ -53,14 +54,9 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(appWillTerminate), name: .UIApplicationWillTerminate, object: nil)
         if recentSearchTexts.count > 0 {
             sections.insert(.recentSearch, at: 0)
         }
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: .UIApplicationWillTerminate, object: nil)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -88,10 +84,6 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
             searchTexts = Array(recentSearchTexts[..<20])
         }
         recentSearchTexts = searchTexts
-    }
-    
-    @objc func appWillTerminate() {
-        Defaults[.recentSearchTexts] = recentSearchTexts
     }
     
     @objc private func buttonTapped(button: SectionHeaderButton) {

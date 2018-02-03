@@ -36,6 +36,7 @@ extension Book {
     @NSManaged public var favIcon: Data?
     @NSManaged public var fileSize: Int64
     @NSManaged public var globalCount: Int64
+    @NSManaged public var hasIndex: Bool
     @NSManaged public var hasPic: Bool
     @NSManaged public var id: String
     @NSManaged public var includeInSearch: Bool

@@ -39,6 +39,11 @@ class SearchResultController: UIViewController, UISearchResultsUpdating, Procedu
         queue.delegate = self
         configureConstraints()
         visualView.contentView.isHidden = true
+        if #available(iOS 11.0, *) {
+            edgesForExtendedLayout = .all
+        } else {
+            edgesForExtendedLayout = []
+        }
         
         addChildViewController(searchNoTextController)
         searchNoTextController.didMove(toParentViewController: self)
@@ -103,7 +108,12 @@ class SearchResultController: UIViewController, UISearchResultsUpdating, Procedu
         visualView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(visualView)
         
-        visualView.contentView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
+        if #available(iOS 11.0, *) {
+            visualView.contentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        } else {
+            visualView.contentView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        }
+        
         visualView.contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         proportionalWidthConstraint = visualView.contentView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75)
@@ -185,8 +195,11 @@ class SearchResultController: UIViewController, UISearchResultsUpdating, Procedu
     func updateSearchResults(for searchController: UISearchController) {
         /* searchController will update results use empty string when it is being dismissed.
            We choose not to do so in order to preserve user's previous search text. */
-        guard !searchController.isBeingDismissed else {return}
-        guard let searchText = searchController.searchBar.text, self.searchText != searchText else {return}
+        guard !searchController.isBeingDismissed,
+            let searchText = searchController.searchBar.text else {return}
+        /* if there is currently no search task being queued, we can trust self.searchText to be up to date.
+           And if self.searchText is the same with new searchText, we don't have to perform a search, simply reuse the existing result.*/
+        if queue.operationCount == 0 && searchText == self.searchText {return}
         let procedure = SearchProcedure(term: searchText, ids: searchNoTextController.includedInSearchBookIDs)
         procedure.add(condition: MutuallyExclusive<SearchResultController>())
         queue.add(operation: procedure)
@@ -227,8 +240,9 @@ class SearchResultController: UIViewController, UISearchResultsUpdating, Procedu
 }
 
 private class SearchResultControllerBackgroundView: UIView {
-    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        return subviews.map({ $0.frame.contains(point) }).reduce(false, { $0 || $1 })
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let view = super.hitTest(point, with: event)
+        return view === self ? nil : view
     }
 }
 

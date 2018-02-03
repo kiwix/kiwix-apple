@@ -154,6 +154,14 @@ private class ProcessProcedure: Procedure, InputProcedure, XMLParserDelegate {
             }
         }()
         
+        book.hasIndex = {
+            if let tags = meta["tags"], tags.contains("_ftindex") {
+                return true
+            } else {
+                return false
+            }
+        }()
+        
         book.language = {
             guard let languageCode = meta["language"],
                 let language = Language.fetchOrAdd(languageCode, context: context) else {return nil}

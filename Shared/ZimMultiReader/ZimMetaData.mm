@@ -79,8 +79,8 @@
     }
 }
 
-- (unsigned int)getFileSize {
-    return reader->getFileSize() * 1024;
+- (unsigned long long int)getFileSize {
+    return (unsigned long long int) reader->getFileSize() * 1024;
 }
 
 - (unsigned int)getArticleCount {

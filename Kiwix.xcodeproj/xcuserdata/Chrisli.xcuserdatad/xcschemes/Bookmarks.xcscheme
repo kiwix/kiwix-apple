@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0900"
+   LastUpgradeVersion = "0920"
    wasCreatedForAppExtension = "YES"
    version = "2.0">
    <BuildAction
@@ -15,7 +15,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9779C3121D4575AD0064CC8E"
+               BlueprintIdentifier = "97C575F1202CB0E800E37502"
                BuildableName = "Bookmarks.appex"
                BlueprintName = "Bookmarks"
                ReferencedContainer = "container:Kiwix.xcodeproj">
@@ -29,9 +29,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "97A2AB871C1B80FF00052E74"
+               BlueprintIdentifier = "97A36C241F8C21210079B452"
                BuildableName = "Kiwix.app"
-               BlueprintName = "iOS_old"
+               BlueprintName = "iOS"
                ReferencedContainer = "container:Kiwix.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -44,23 +44,13 @@
       language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "97FC27D01E69CE10008B2348"
-               BuildableName = "iOS_ScreenshotAutomator.xctest"
-               BlueprintName = "iOS_ScreenshotAutomator"
-               ReferencedContainer = "container:Kiwix.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "97A2AB871C1B80FF00052E74"
-            BuildableName = "Kiwix.app"
-            BlueprintName = "iOS_old"
+            BlueprintIdentifier = "97C575F1202CB0E800E37502"
+            BuildableName = "Bookmarks.appex"
+            BlueprintName = "Bookmarks"
             ReferencedContainer = "container:Kiwix.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -79,16 +69,26 @@
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES"
       launchAutomaticallySubstyle = "2">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.springboard">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "97A2AB871C1B80FF00052E74"
-            BuildableName = "Kiwix.app"
-            BlueprintName = "iOS_old"
+            BlueprintIdentifier = "97C575F1202CB0E800E37502"
+            BuildableName = "Bookmarks.appex"
+            BlueprintName = "Bookmarks"
             ReferencedContainer = "container:Kiwix.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "97C575F1202CB0E800E37502"
+            BuildableName = "Bookmarks.appex"
+            BlueprintName = "Bookmarks"
+            ReferencedContainer = "container:Kiwix.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -103,9 +103,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "97A2AB871C1B80FF00052E74"
+            BlueprintIdentifier = "97A36C241F8C21210079B452"
             BuildableName = "Kiwix.app"
-            BlueprintName = "iOS_old"
+            BlueprintName = "iOS"
             ReferencedContainer = "container:Kiwix.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

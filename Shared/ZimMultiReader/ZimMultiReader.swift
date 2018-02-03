@@ -19,7 +19,8 @@ extension ZimMultiReader {
     func add(url: URL) {__add(by: url)}
     func remove(id: ZimFileID) {__remove(byID: id)}
     
-    func hasIndex(id: ZimFileID) -> Bool {return __hasIndex(id)}
+    func hasEmbeddedIndex(id: ZimFileID) -> Bool {return __hasEmbeddedIndex(id)}
+    func hasExternalIndex(id: ZimFileID) -> Bool {return __hasExternalIndex(id)}
     
     func getContent(bookID: String, contentPath: String) -> (data: Data, mime: String, length: Int)? {
         guard let content = __getContent(bookID, contentURL: contentPath),
@@ -36,7 +37,7 @@ extension ZimMultiReader {
         return URL(bookID: bookID, contentPath: path)
     }
     
-    func startIndexSearch(searchText: String, zimFileIDs: Set<ZimFileID>?) {
+    func startIndexSearch(searchText: String, zimFileIDs: Set<ZimFileID>) {
         __startIndexSearch(searchText, zimFileIDs: zimFileIDs)
     }
     
@@ -55,20 +56,6 @@ extension ZimMultiReader {
                 let title = suggestion["title"],
                 let path = suggestion["path"] else {return nil}
             return SearchResult(zimFileID: id, path: path, title: title)
-        }
-    }
-    
-    
-    var externalIndexZimIDs: Set<ZimFileID> {
-        return __getExternalIndexZimIDs() as! Set<ZimFileID>
-    }
-    func getExternalIndexSearchResults(searchText: String, zimFileID: ZimFileID, count: Int) -> [SearchResult] {
-        return __getExternalIndexSearchResults(searchText, zimFileID: zimFileID, count: UInt32(count)).flatMap{ result -> SearchResult? in
-            guard let result = result as? Dictionary<String, Any>,
-                let id = result["id"] as? String,
-                let path = result["path"] as? String,
-                let title = result["title"] as? String else {return nil}
-            return SearchResult(zimFileID: id, path: path, title: title, probability: result["probability"] as? Double, snippet: result["snippet"] as? String)
         }
     }
 }

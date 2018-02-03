@@ -32,10 +32,10 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "Globe"), style: .plain, target: self, action: #selector(languageFilterBottonTapped(sender:)))
         if #available(iOS 11.0, *) {
             navigationController?.navigationBar.prefersLargeTitles = true
         }
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "Globe"), style: .plain, target: self, action: #selector(languageFilterBottonTapped(sender:)))
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -43,6 +43,10 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         // if have refreshed library but have not shown language filter alert, show it
         if Defaults[.libraryLastRefreshTime] != nil && !Defaults[.libraryHasShownLanguageFilterAlert] {
             showLanguageFilter()
+        }
+        
+        if #available(iOS 11.0, *) {
+            navigationItem.largeTitleDisplayMode = .always
         }
     }
     
@@ -155,10 +159,12 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     
     private var predicate: NSCompoundPredicate {
         let displayedLanguages = Language.fetch(displayed: true, context: managedObjectContext)
-        var subpredicates = [
-            NSPredicate(format: "stateRaw == %@", "cloud"),
-            displayedLanguages.count > 0 ? NSPredicate(format: "language IN %@", displayedLanguages) : NSPredicate(format: "language.name != nil")
-        ]
+        var subpredicates = [NSPredicate]()
+        if displayedLanguages.count > 0 {
+            subpredicates.append(NSPredicate(format: "language IN %@", displayedLanguages))
+        } else {
+            subpredicates.append(NSPredicate(format: "language.name != nil"))
+        }
         if let category = category {
             subpredicates.append(NSPredicate(format: "category == %@", category.rawValue))
         }

@@ -14,7 +14,7 @@ class SearchResultsListController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.backgroundColor = .clear
-        tableView.estimatedRowHeight = 80
+        tableView.estimatedRowHeight = 44
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.keyboardDismissMode = .onDrag
@@ -36,10 +36,16 @@ class SearchResultsListController: UITableViewController {
         
         cell.backgroundColor = .clear
         cell.titleLabel.text = result.title
-        cell.detailLabel.text = result.snippet
-        cell.detailLabel.attributedText = result.attributedSnippet
         cell.thumbImageView.image = UIImage(data: Book.fetch(id: result.zimFileID, context: CoreDataContainer.shared.viewContext)?.favIcon ?? Data())
         cell.thumbImageView.contentMode = .scaleAspectFit
+        
+        if let snippet = result.snippet {
+            cell.detailLabel.text = snippet
+        } else if let attributedSnippet = result.attributedSnippet {
+            cell.detailLabel.attributedText = attributedSnippet
+        } else {
+            cell.detailLabel.text = nil
+        }
         
         return cell
     }
