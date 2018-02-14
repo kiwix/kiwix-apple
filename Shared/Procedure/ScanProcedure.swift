@@ -24,7 +24,7 @@ class ScanProcedure: Procedure {
         BackupManager.updateExcludedFromBackupForDocumentDirectoryContents(isExcluded: !Defaults[.backupDocumentDirectory])
         
         let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        context.parent = CoreDataContainer.shared.viewContext
+        context.parent = PersistentContainer.shared.viewContext
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         context.performAndWait {
             self.updateDatabase(context: context)

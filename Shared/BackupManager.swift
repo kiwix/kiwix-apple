@@ -21,6 +21,6 @@ class BackupManager {
         let urls = (try? FileManager.default.contentsOfDirectory(at: documentDirectory, includingPropertiesForKeys: [.isExcludedFromBackupKey],
                                                                  options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants]))?
             .filter({ $0.pathExtension.contains("zim") || $0.pathExtension == "idx" }) ?? [URL]()
-        BackupManager.updateExcludedFromBackup(urls: urls, isExcluded: isExcluded)
+        updateExcludedFromBackup(urls: urls, isExcluded: isExcluded)
     }
 }

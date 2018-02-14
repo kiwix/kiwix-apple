@@ -113,6 +113,10 @@ class LegacyWebController: UIViewController, UIWebViewDelegate, WebViewControlle
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
+        if let url = Bundle.main.url(forResource: "Inject", withExtension: "js"),
+            let javascript = try? String(contentsOf: url) {
+            webView.stringByEvaluatingJavaScript(from: javascript)
+        }
         delegate?.webViewDidFinishLoading(controller: self)
     }
 }

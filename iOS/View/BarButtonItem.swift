@@ -45,7 +45,7 @@ class BarButtonItem: UIBarButtonItem {
     
     @objc func buttonLongPressed(gestureRecognizer: UILongPressGestureRecognizer) {
         guard gestureRecognizer.state == .began else {return}
-        delegate?.buttonLongPresse(item: self, button: customView as! UIButton)
+        delegate?.buttonLongPressed(item: self, button: customView as! UIButton)
     }
 }
 
@@ -119,5 +119,5 @@ class BookmarkBarButton: BarButton {
 
 protocol BarButtonItemDelegate: class {
     func buttonTapped(item: BarButtonItem, button: UIButton)
-    func buttonLongPresse(item: BarButtonItem, button: UIButton)
+    func buttonLongPressed(item: BarButtonItem, button: UIButton)
 }

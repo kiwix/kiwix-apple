@@ -10,7 +10,7 @@ class Network: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionD
     static let shared = Network()
     
     private var progresses = [String: Int64]()
-    private let managedObjectContext = CoreDataContainer.shared.viewContext
+    private let managedObjectContext = PersistentContainer.shared.viewContext
     private var timer: Timer?
     
     private lazy var session: URLSession = {
