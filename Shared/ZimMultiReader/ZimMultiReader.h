@@ -20,18 +20,17 @@
 - (void)removeReaderByID:(NSString *_Nonnull)bookID NS_REFINED_FOR_SWIFT;
 - (void)removeStaleReaders;
 
-- (BOOL)hasIndex:(NSString *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
+- (BOOL)hasEmbeddedIndex:(NSString *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
+- (BOOL)hasExternalIndex:(NSString *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
+
 - (NSDictionary *_Nullable)getContent:(NSString *_Nonnull)zimFileID contentURL:(NSString *_Nonnull)contentURL NS_REFINED_FOR_SWIFT;
 - (ZimMetaData *_Nullable)getMetaData:(NSString *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
 
 - (NSString *_Nullable)getMainPageURL:(NSString *_Nonnull)bookID NS_REFINED_FOR_SWIFT;
 
-- (void)startIndexSearch:(NSString *_Nonnull)searchText zimFileIDs:(NSSet *_Nullable)zimFileIDs NS_REFINED_FOR_SWIFT;
+- (void)startIndexSearch:(NSString *_Nonnull)searchText zimFileIDs:(NSSet *_Nonnull)zimFileIDs NS_REFINED_FOR_SWIFT;
 - (NSDictionary *_Nullable)getNextIndexSearchResult NS_REFINED_FOR_SWIFT;
 - (void)stopIndexSearch;
 - (NSArray *_Nonnull)getTitleSearchResults:(NSString *_Nonnull)searchText zimFileID:(NSString *_Nullable)zimFileID count:(unsigned int)count NS_REFINED_FOR_SWIFT;
-
-- (NSSet *_Nonnull)getExternalIndexZimIDs NS_REFINED_FOR_SWIFT;
-- (NSArray *_Nonnull)getExternalIndexSearchResults: (NSString *_Nonnull)searchText zimFileID:(NSString *_Nonnull)zimFileID count:(unsigned int)count NS_REFINED_FOR_SWIFT;
 
 @end

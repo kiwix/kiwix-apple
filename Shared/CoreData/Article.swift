@@ -41,13 +41,6 @@ class Article: NSManagedObject {
         return (try? context.fetch(request)) ?? [Article]()
     }
     
-//    class func fetchBookmarked(in book: Book, with context: NSManagedObjectContext) -> [Article] {
-//        let request = Article.fetchRequest() as! NSFetchRequest<Article>
-//        request.predicate = NSPredicate(format: "book = %@ AND isBookmarked == true", book)
-//        request.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: false)]
-//        return (try? context.fetch(request)) ?? [Article]()
-//    }
-    
     // MARK: - CoreSpotlight
     
     var searchableItem: CSSearchableItem {

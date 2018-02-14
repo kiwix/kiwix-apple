@@ -31,5 +31,16 @@ class CoreDataContainer: NSPersistentContainer {
         let urls = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask)
         return urls[urls.count-1]
     }
+    
+    class func saveViewContext() {
+        let context = CoreDataContainer.shared.viewContext
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                print(error)
+            }
+        }
+    }
 
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     private(set) var book: Book?
@@ -15,19 +16,35 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
     private(set) var bookStateObserver: NSKeyValueObservation?
     private(set) var downloadTaskStateObserver: NSKeyValueObservation?
     
-    var actions = [[Action]]() {
+    var actions = (top: [[Action]](), bottom: [[Action]]()) {
         didSet(oldValue) {
+            /*
+             Docs: Batch Insertion, Deletion, and Reloading of Rows and Sections
+             https://developer.apple.com/library/etc/redirect/xcode/content/1189/documentation/UserExperience/Conceptual/TableView_iPhone/ManageInsertDeleteRow/ManageInsertDeleteRow.html#//apple_ref/doc/uid/TP40007451-CH10-SW9
+             */
             tableView.beginUpdates()
-            tableView.deleteSections(IndexSet(integersIn: 0..<oldValue.count), with: .fade)
-            tableView.insertSections(IndexSet(integersIn: 0..<actions.count), with: .fade)
+            if actions.top.count > oldValue.top.count {
+                tableView.insertSections(IndexSet(integersIn: oldValue.top.count..<actions.top.count), with: .fade)
+            } else if oldValue.top.count > actions.top.count {
+                tableView.deleteSections(IndexSet(integersIn: actions.top.count..<oldValue.top.count), with: .fade)
+            }
+            if actions.bottom.count > oldValue.bottom.count {
+                tableView.insertSections(IndexSet(integersIn: actions.top.count + metas.count + oldValue.bottom.count..<actions.top.count + metas.count + actions.bottom.count), with: .fade)
+            } else if oldValue.bottom.count > actions.bottom.count {
+                tableView.deleteSections(IndexSet(integersIn: oldValue.top.count + metas.count + actions.bottom.count..<oldValue.top.count + metas.count + oldValue.bottom.count), with: .fade)
+            }
+            tableView.reloadSections(IndexSet(integersIn: 0..<actions.top.count), with: .automatic)
+//            tableView.reloadSections(IndexSet(integersIn: aboveSectionCount..<aboveSectionCount + actions.bottom.count), with: .automatic)
             tableView.endUpdates()
         }
     }
-    let metas: [[BookMeta]] = [
+    
+    private let metas: [[BookMeta]] = [
         [.language, .size, .date],
-        [.hasIndex, .hasPicture],
+        [.hasPicture, .hasIndex],
         [.articleCount, .mediaCount],
-        [.creator, .publisher]
+        [.creator, .publisher],
+        [.id]
     ]
     
     static let percentFormatter: NumberFormatter = {
@@ -40,8 +57,10 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
         return formatter
     }()
     
+    // MARK: - Enums
+    
     enum BookMeta: String {
-        case language, size, date, hasIndex, hasPicture, articleCount, mediaCount, creator, publisher
+        case language, size, date, hasIndex, hasPicture, articleCount, mediaCount, creator, publisher, id
     }
     
     enum Action {
@@ -65,7 +84,7 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
         self.init()
         self.book = book
         
-        self.bookStateObserver = book.observe(\Book.stateRaw, options: [.initial, .new, .old]) { (_, change) in
+        bookStateObserver = book.observe(\Book.stateRaw, options: [.initial, .new, .old]) { (_, change) in
             guard let newValue = change.newValue, let newState = BookState(rawValue: Int(newValue)) else {return}
             switch newState {
             case .cloud:
@@ -79,17 +98,17 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
                         return 0
                     }
                 }()
-                self.actions = book.fileSize <= freespace ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]]
+                self.actions = (book.fileSize <= freespace ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]], [])
             case .local:
-                self.actions = [[.deleteFile], [.openMainPage]]
+                self.actions = ([[.openMainPage]], [[.deleteFile]])
             case .retained:
-                self.actions = [[.deleteBookmarks]]
+                self.actions = ([], [[.deleteBookmarks]])
             case .downloadQueued:
-                self.actions = [[.cancel]]
+                self.actions = ([[.cancel]], [])
             case .downloading:
-                self.actions = [[.cancel, .pause]]
+                self.actions = ([[.cancel, .pause]], [])
             case .downloadPaused:
-                self.actions = [[.cancel, .resume]]
+                self.actions = ([[.cancel, .resume]], [])
             default:
                 break
             }
@@ -106,10 +125,27 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        NotificationCenter.default.addObserver(self, selector: #selector(managedObjectContextObjectsDidChange),
+//                                               name: .NSManagedObjectContextObjectsDidChange, object: book?.managedObjectContext)
         if #available(iOS 11.0, *) {
             navigationController?.navigationBar.prefersLargeTitles = true
         }
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if #available(iOS 11.0, *) {
+            navigationItem.largeTitleDisplayMode = .always
+        }
+    }
+    
+//    @objc func managedObjectContextObjectsDidChange(notification: NSNotification) {
+//        guard let userInfo = notification.userInfo, let book = book,
+//            let deletes = (userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>)?.flatMap({ $0 as? Book }).filter({ $0.id == book.id }) else { return }
+//        if deletes.count == 1 {
+//            navigationController?.popViewController(animated: true)
+//        }
+//    }
     
     private func showDeletionConfirmationAlert(action: Action, bookID: String, localizedTitle: String?) {
         let message: String? = {
@@ -128,7 +164,12 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
         controller.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Book deletion confirmation"), style: .destructive, handler: { _ in
             if action == .deleteFile || action == .deleteFileAndBookmarks {
                 guard let url = ZimMultiReader.shared.getFileURL(zimFileID: bookID) else {return}
-                try? FileManager.default.removeItem(at: url)
+                let directoryURL = url.deletingLastPathComponent()
+                let fileName = url.deletingPathExtension().lastPathComponent
+                
+                let urls = try? FileManager.default.contentsOfDirectory(at: directoryURL, includingPropertiesForKeys: [.isExcludedFromBackupKey],
+                                                                        options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants])
+                urls?.filter({ $0.lastPathComponent.contains(fileName) }).forEach({ try? FileManager.default.removeItem(at: $0) })
             }
             if action == .deleteBookmarks || action == .deleteFileAndBookmarks {
             }
@@ -140,20 +181,21 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
     // MARK: - UITableViewDataSource & Delagates
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return actions.count + metas.count
+        return actions.top.count + metas.count + actions.bottom.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section < actions.count ? actions[section].count : metas[section-actions.count].count
+        if section < actions.top.count {
+            return actions.top[section].count
+        } else if section < actions.top.count + metas.count {
+            return metas[section - actions.top.count].count
+        } else {
+            return actions.bottom[section - metas.count - actions.top.count].count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section < actions.count {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! LibraryActionCell
-            cell.indentationLevel = 0
-            let action = actions[indexPath.section][indexPath.row]
-            if action.isDestructive {cell.isDestructive = true}
-            if action.isDisabled {cell.isDisabled = true}
+        func configureCell(cell: LibraryActionCell, action: Action) {
             switch action {
             case .downloadWifiOnly:
                 cell.textLabel?.text = NSLocalizedString("Download - Wifi Only", comment: "Book Detail Cell")
@@ -176,11 +218,26 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
             case .openMainPage:
                 cell.textLabel?.text = NSLocalizedString("Open Main Page", comment: "Book Detail Cell")
             }
+            if action.isDestructive {cell.isDestructive = true}
+            if action.isDisabled {cell.isDisabled = true}
+        }
+        
+        if indexPath.section < actions.top.count {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! LibraryActionCell
+            cell.indentationLevel = 0
+            let action = actions.top[indexPath.section][indexPath.row]
+            configureCell(cell: cell, action: action)
+            return cell
+        } else if indexPath.section >= actions.top.count + metas.count {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! LibraryActionCell
+            cell.indentationLevel = 0
+            let action = actions.bottom[indexPath.section - actions.top.count - metas.count][indexPath.row]
+            configureCell(cell: cell, action: action)
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MetaCell") ?? UITableViewCell(style: .value1, reuseIdentifier: "MetaCell")
             guard let book = book else {return cell}
-            let meta = metas[indexPath.section - actions.count][indexPath.row]
+            let meta = metas[indexPath.section - actions.top.count][indexPath.row]
             cell.selectionStyle = .none
             switch meta {
             case .language:
@@ -194,9 +251,25 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
                 cell.detailTextLabel?.text = book.dateDescription
             case .hasIndex:
                 cell.textLabel?.text = NSLocalizedString("Indexed", comment: "Book Detail Cell")
-                cell.detailTextLabel?.text = ZimMultiReader.shared.hasIndex(id: book.id) ? NSLocalizedString("Yes", comment: "Book Detail Cell, has index") : NSLocalizedString("No", comment: "Book Detail Cell, does not have index")
+                cell.detailTextLabel?.text = {
+                    if book.state == .local {
+                        if ZimMultiReader.shared.hasEmbeddedIndex(id: book.id) {
+                            return NSLocalizedString("Embedded", comment: "Book Detail Cell, has index")
+                        } else if ZimMultiReader.shared.hasExternalIndex(id: book.id) {
+                            return NSLocalizedString("External", comment: "Book Detail Cell, has index")
+                        } else {
+                            return NSLocalizedString("No", comment: "Book Detail Cell, has index")
+                        }
+                    } else {
+                        if book.hasIndex {
+                            return NSLocalizedString("Embedded", comment: "Book Detail Cell, does not have index")
+                        } else {
+                            return NSLocalizedString("No", comment: "Book Detail Cell, does not have index")
+                        }
+                    }
+                }()
             case .hasPicture:
-                cell.textLabel?.text = NSLocalizedString("Picture", comment: "Book Detail Cell")
+                cell.textLabel?.text = NSLocalizedString("Pictures", comment: "Book Detail Cell")
                 cell.detailTextLabel?.text = book.hasPic ? NSLocalizedString("Yes", comment: "Book Detail Cell, has picture") : NSLocalizedString("No", comment: "Book Detail Cell, does not have picture")
             case .articleCount:
                 cell.textLabel?.text = NSLocalizedString("Article Count", comment: "Book Detail Cell")
@@ -210,16 +283,16 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
             case .publisher:
                 cell.textLabel?.text = NSLocalizedString("Publisher", comment: "Book Detail Cell")
                 cell.detailTextLabel?.text = book.publisher
+            case .id:
+                cell.textLabel?.text = NSLocalizedString("ID", comment: "Book Detail Cell")
+                cell.detailTextLabel?.text = String(book.id.prefix(8))
             }
             return cell
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        guard let book = book, let cell = tableView.cellForRow(at: indexPath) as? LibraryActionCell else {return}
-        if indexPath.section < actions.count {
-            let action = actions[indexPath.section][indexPath.row]
+        func handle(action: Action, book: Book, cell: LibraryActionCell) {
             switch action {
             case .downloadWifiOnly:
                 Network.shared.start(bookID: book.id, allowsCellularAccess: false)
@@ -245,6 +318,16 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
                 main.load(url: url)
                 dismiss(animated: true, completion: nil)
             }
+        }
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let book = book, let cell = tableView.cellForRow(at: indexPath) as? LibraryActionCell else {return}
+        if indexPath.section < actions.top.count {
+            let action = actions.top[indexPath.section][indexPath.row]
+            handle(action: action, book: book, cell: cell)
+        } else if indexPath.section >= actions.top.count + metas.count {
+            let action = actions.bottom[indexPath.section - actions.top.count - metas.count][indexPath.row]
+            handle(action: action, book: book, cell: cell)
         }
     }
 }

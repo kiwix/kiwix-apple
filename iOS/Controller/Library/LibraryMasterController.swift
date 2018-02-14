@@ -45,9 +45,6 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if #available(iOS 11.0, *) {
-            navigationController?.navigationBar.prefersLargeTitles = true
-        }
         title = NSLocalizedString("Library", comment: "Library title")
         refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
@@ -55,6 +52,17 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         if splitViewController?.traitCollection.horizontalSizeClass == .regular {
             let firstIndexPath = IndexPath(row: 0, section: 0)
             tableView.delegate?.tableView?(tableView, didSelectRowAt: firstIndexPath)
+        }
+        
+        if #available(iOS 11.0, *) {
+            navigationController?.navigationBar.prefersLargeTitles = true
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if #available(iOS 11.0, *) {
+            navigationItem.largeTitleDisplayMode = .always
         }
     }
     
@@ -202,7 +210,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
             guard let indexPath = indexPath else {return}
             tableView.deleteRows(at: [indexPath], with: .fade)
         case .update:
-            guard let indexPath = indexPath else {return}
+            guard let indexPath = indexPath, tableView.indexPathsForVisibleRows?.contains(indexPath) == true else {return}
             let sectionTitle = fetchedResultController.sections?[indexPath.section].name
             if sectionTitle == "1", let cell = tableView.cellForRow(at: indexPath) as? LibraryDownloadCell {
                 configure(cell: cell, indexPath: indexPath, animated: true)

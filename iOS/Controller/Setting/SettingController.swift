@@ -22,19 +22,24 @@ class SettingNavigationController: UINavigationController {
 
 class SettingController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let tableView = UITableView(frame: .zero, style: .grouped)
+    let titles: [SettingMenuItem: String] = {
+        var titles = [SettingMenuItem: String]()
+        titles[.fontSize] = NSLocalizedString("Font Size", comment: "Setting Item Title")
+        titles[.backup] = NSLocalizedString("Backup", comment: "Setting Item Title")
+        titles[.feedback] = NSLocalizedString("Email us your suggestions", comment: "Setting Item Title")
+        titles[.rateApp] = NSLocalizedString("Give Kiwix a rate", comment: "Setting Item Title")
+        titles[.about] = NSLocalizedString("About", comment: "Setting Item Title")
+        return titles
+    }()
     private let items: [[SettingMenuItem]] = {
-        var items: [[SettingMenuItem]] = []
-        
-        items.append([.fontSize(title: NSLocalizedString("Font Size", comment: "Setting Item Title"))])
-        
-        var section = [SettingMenuItem]()
+        var items: [[SettingMenuItem]] = [
+            [.fontSize, .backup],
+            [.rateApp],
+            [.about]
+        ]
         if MFMailComposeViewController.canSendMail() {
-            section.append(.feedback(title: NSLocalizedString("Email us your suggestions", comment: "Setting Item Title")))
+            items[1].append(.feedback)
         }
-        section.append(.rateApp(title: NSLocalizedString("Give Kiwix a rate", comment: "Setting Item Title")))
-        items.append(section)
-        
-        items.append([.about(title: NSLocalizedString("About", comment: "Setting Item Title"))])
         return items
     }()
     
@@ -73,32 +78,45 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         let item = items[indexPath.section][indexPath.row]
-        
-        switch item {
-        case .fontSize(let title), .feedback(let title), .rateApp(let title), .about(let title):
-            cell.textLabel?.text = title
-        }
+        cell.textLabel?.text = titles[item]
         cell.accessoryType = .disclosureIndicator
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard section == items.count - 1 else {return nil}
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
+        let label = UILabel()
+        label.textAlignment = .center
+        label.textColor = UIColor.darkGray
+        label.font = UIFont.systemFont(ofSize: 13)
+        label.text = NSLocalizedString(String(format: "Kiwix for iOS v%@", version), comment: "Setting App Version")
+        return label
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return section == items.count - 1 ? 30 : 10
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = items[indexPath.section][indexPath.row]
         switch item {
-        case .fontSize(let title):
+        case .fontSize:
             let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SettingFontSizeViewController")
-            controller.title = title
+            controller.title = titles[item]
             navigationController?.pushViewController(controller, animated: true)
+        case.backup:
+            navigationController?.pushViewController(SettingBackupController(title: titles[item]), animated: true)
         case .feedback:
             presentFeedbackEmailComposer()
-        case .rateApp(let title):
-            presentRateAppAlert(title: title)
-        case .about(let title):
+        case .rateApp:
+            presentRateAppAlert(title: titles[item]!)
+        case .about:
             guard let path = Bundle.main.path(forResource: "About", ofType: "html") else {return}
             let url = URL(fileURLWithPath: path)
             let controller = SettingWebController(fileURL: url)
-            controller.title = title
+            controller.title = titles[item]
             navigationController?.pushViewController(controller, animated: true)
         }
     }
@@ -153,7 +171,7 @@ extension SettingController: MFMailComposeViewControllerDelegate {
 }
 
 enum SettingMenuItem {
-    case fontSize(title: String)
-    case feedback(title: String), rateApp(title: String)
-    case about(title: String)
+    case fontSize, backup
+    case feedback, rateApp
+    case about
 }

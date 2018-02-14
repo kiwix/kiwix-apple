@@ -102,6 +102,7 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
         if editingStyle == .delete {
             let article = fetchedResultController.object(at: indexPath)
             article.isBookmarked = !article.isBookmarked
+            (presentingViewController as? MainController)?.updateBookmarkWidgetData()
         }
     }
     
