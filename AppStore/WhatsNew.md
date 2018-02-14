@@ -1,7 +1,7 @@
 # 1.8.1
 - Clear search history & browsing history
 - Now remember scroll position when go back / forward when browsing
-- Fix: zim files no longer got backed up to iCloud ot iTunes
+- Fix: zim files no longer getting backed up to iCloud or iTunes
 
 # 1.8
 We have improved Kiwix for you:
