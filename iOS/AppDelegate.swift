@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         monitor.delegate = self
         Queue.shared.add(scanProcedure: ScanProcedure(directoryURL: URL.documentDirectory))
         monitor.start()
+        print(URL.documentDirectory.path)
         Preference.upgrade()
     }
     
@@ -33,11 +34,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         monitor.stop()
-        CoreDataContainer.saveViewContext()
+        PersistentContainer.saveViewContext()
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-        CoreDataContainer.saveViewContext()
+        PersistentContainer.saveViewContext()
     }
     
     // MARK: - URL Handling
@@ -84,7 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
             break
         case .bookmark:
             mainController.presentedViewController?.dismiss(animated: false)
-            mainController.presentBookmarkController(animated: false)
+//            mainController.presentBookmarkController(animated: false)
         case .continueReading:
             break
         }

@@ -36,7 +36,7 @@ class SearchResultsListController: UITableViewController {
         
         cell.backgroundColor = .clear
         cell.titleLabel.text = result.title
-        cell.thumbImageView.image = UIImage(data: Book.fetch(id: result.zimFileID, context: CoreDataContainer.shared.viewContext)?.favIcon ?? Data())
+        cell.thumbImageView.image = UIImage(data: Book.fetch(id: result.zimFileID, context: PersistentContainer.shared.viewContext)?.favIcon ?? Data())
         cell.thumbImageView.contentMode = .scaleAspectFit
         
         if let snippet = result.snippet {

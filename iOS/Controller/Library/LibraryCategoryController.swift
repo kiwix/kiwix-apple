@@ -72,7 +72,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         let message = String(format: NSLocalizedString("You have set %@ as the preferred language(s) of the device. Would you like to hide books in other languages?", comment: "Language Filter"), deviceLanguageNames.joined(separator: ", "))
         
         func handleAlertAction(onlyShowDeviceLanguage: Bool) {
-            let context = CoreDataContainer.shared.viewContext
+            let context = PersistentContainer.shared.viewContext
             let languages = Language.fetchAll(context: context)
             if onlyShowDeviceLanguage {
                 languages.forEach({ $0.isDisplayed = deviceLanguageCodes.contains($0.code) })
@@ -141,7 +141,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: - NSFetchedResultsController
     
-    private let managedObjectContext = CoreDataContainer.shared.viewContext
+    private let managedObjectContext = PersistentContainer.shared.viewContext
     private lazy var fetchedResultController: NSFetchedResultsController<Book> = {
         let fetchRequest = Book.fetchRequest()
         let langDescriptor = NSSortDescriptor(key: "language.name", ascending: true)

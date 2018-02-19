@@ -12,7 +12,7 @@ import ProcedureKit
 import SwiftyUserDefaults
 
 class LibraryController: UIViewController {
-    private var localBookIDs = Set(Book.fetch(states: [.local], context: CoreDataContainer.shared.viewContext).map({ $0.id }))
+    private var localBookIDs = Set(Book.fetch(states: [.local], context: PersistentContainer.shared.viewContext).map({ $0.id }))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,11 +20,11 @@ class LibraryController: UIViewController {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(managedObjectContextObjectsDidChange(notification:)),
                                                name: .NSManagedObjectContextObjectsDidChange,
-                                               object: CoreDataContainer.shared.viewContext)
+                                               object: PersistentContainer.shared.viewContext)
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: .NSManagedObjectContextObjectsDidChange, object: CoreDataContainer.shared.viewContext)
+        NotificationCenter.default.removeObserver(self, name: .NSManagedObjectContextObjectsDidChange, object: PersistentContainer.shared.viewContext)
     }
     
     fileprivate func config() {

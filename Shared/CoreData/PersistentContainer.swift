@@ -1,5 +1,5 @@
 //
-//  CoreDataContainer.swift
+//  PersistentContainer.swift
 //  Kiwix
 //
 //  Created by Chris Li on 11/8/16.
@@ -8,8 +8,8 @@
 
 import CoreData
 
-class CoreDataContainer: NSPersistentContainer {
-    static let shared = CoreDataContainer()
+class PersistentContainer: NSPersistentContainer {
+    static let shared = PersistentContainer()
     
     private init() {
         let modelURL = Bundle.main.url(forResource: "Kiwix", withExtension: "momd")!
@@ -28,12 +28,11 @@ class CoreDataContainer: NSPersistentContainer {
     }
     
     override class func defaultDirectoryURL() -> URL {
-        let urls = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask)
-        return urls[urls.count-1]
+        return try! FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
     }
     
     class func saveViewContext() {
-        let context = CoreDataContainer.shared.viewContext
+        let context = PersistentContainer.shared.viewContext
         if context.hasChanges {
             do {
                 try context.save()

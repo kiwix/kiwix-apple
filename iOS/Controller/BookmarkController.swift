@@ -92,6 +92,7 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let url = fetchedResultController.object(at: indexPath).url else {return}
+        tableView.deselectRow(at: indexPath, animated: true)
         delegate?.didTapBookmark(articleURL: url)
         dismiss(animated: true) {
             tableView.deselectRow(at: indexPath, animated: false)
@@ -108,7 +109,7 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
     
     // MARK: - NSFetchedResultsController
     
-    private let managedObjectContext = CoreDataContainer.shared.viewContext
+    private let managedObjectContext = PersistentContainer.shared.viewContext
     private lazy var fetchedResultController: NSFetchedResultsController<Article> = {
         let fetchRequest = Article.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: false)]

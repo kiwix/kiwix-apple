@@ -13,7 +13,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     let segmentedControl = UISegmentedControl(items: [(Locale.current as NSLocale).displayName(forKey: .identifier, value: Locale.preferredLanguages[0])!,
                                                       NSLocalizedString("Original", comment: "Language lanuguage filter display name control")])
     
-    private let managedObjectContext = CoreDataContainer.shared.viewContext
+    private let managedObjectContext = PersistentContainer.shared.viewContext
     private var initialShowLanguageSet = Set<Language>()
     private var showLanguages = [Language]()
     private var hideLanguages = [Language]()

@@ -12,7 +12,6 @@ import NotificationCenter
 import SwiftyUserDefaults
 
 class MainController: UIViewController {
-    var viewWillAppearPendingActions = [(() -> Void)]()
     private var currentArticleBookmarkObserver: NSKeyValueObservation? = nil
     private var currentArticle: Article? = nil {
         didSet {
@@ -25,17 +24,30 @@ class MainController: UIViewController {
             }
         }
     }
-
+    
+    var isShowingPanel: Bool {
+        return panelContainerLeadingConstraint.priority.rawValue > 750
+    }
+    
+    @IBOutlet weak var panelContainerLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var dividerWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var panelContainer: UIView!
+    @IBOutlet weak var tabContainer: UIView!
+    
     // MARK: - Controllers
     
-    let searchController = UISearchController(searchResultsController: SearchResultController())
     private(set) weak var currentWebController: (UIViewController & WebViewController)? = nil
     private(set) var webControllers = [(UIViewController & WebViewController)]()
+    
+    let searchController = UISearchController(searchResultsController: SearchResultController())
     private(set) lazy var welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     private(set) lazy var bookmarkController = BookmarkController()
     private(set) lazy var tableOfContentController = TableOfContentController()
     private(set) lazy var libraryController = LibraryController()
     private(set) lazy var settingController = SettingNavigationController()
+    
+    private(set) weak var currentPanelController: UIViewController? = nil
+    private(set) weak var currentTabController: UIViewController? = nil
     
     // MARK: - Toolbar
     
@@ -54,21 +66,52 @@ class MainController: UIViewController {
         configureSearchController()
         definesPresentationContext = true
         navigationItem.titleView = searchController.searchBar
-        setChildController(controller: welcomeController)
         navigationBackButtonItem.button.isEnabled = false
         navigationForwardButtonItem.button.isEnabled = false
         NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: .UIApplicationWillEnterForeground, object: nil)
+        setTabContainerChild(controller: welcomeController)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
-        DispatchQueue.main.async { self.configureToolbar() }
+        if traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass {
+            DispatchQueue.main.async { self.configureToolbar() }
+        }
+        
+        /*
+         When horizontalSizeClass has changed,
+         if table of content or bookmark is presented,
+         we dismiss the presentation and show the view controller in side panel.
+        */
+        if traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass {
+            if let presentedNavigationController = navigationController?.presentedViewController as? UINavigationController,
+                let topController = presentedNavigationController.topViewController {
+                guard topController === tableOfContentController || topController === bookmarkController else {return}
+                presentedNavigationController.setViewControllers([], animated: false)
+                presentedNavigationController.dismiss(animated: false, completion: {
+                    self.setPanelContainerChild(controller: topController)
+                    self.showPanel(animated: false)
+                })
+            }
+        }
+        
+        /*
+         When horizontally compact, hide whatever view controller the side panel is showing
+         */
+        if traitCollection.horizontalSizeClass == .compact {
+            hidePanel(animated: false)
+            setPanelContainerChild(controller: nil)
+        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         DispatchQueue.main.async { self.configureToolbar() }
+    }
+    
+    override func viewWillLayoutSubviews() {
+        dividerWidthConstraint.constant = 1 / UIScreen.main.scale
+        super.viewWillLayoutSubviews()
     }
     
     @objc func appWillEnterForeground() {
@@ -77,57 +120,6 @@ class MainController: UIViewController {
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil)
-    }
-    
-    // MARK: -
-    
-    private func setChildController(controller: UIViewController) {
-        childViewControllers.forEach { (controller) in
-            controller.view.removeFromSuperview()
-            controller.removeFromParentViewController()
-        }
-        
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        addChildViewController(controller)
-        view.addSubview(controller.view)
-        if let controller = controller as? WelcomeController {
-            NSLayoutConstraint.activate([
-                controller.view.topAnchor.constraint(equalTo: view.topAnchor),
-                controller.view.leftAnchor.constraint(equalTo: view.leftAnchor),
-                controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                controller.view.rightAnchor.constraint(equalTo: view.rightAnchor)])
-        } else {
-            if #available(iOS 11.0, *) {
-                NSLayoutConstraint.activate([
-                    controller.view.leftAnchor.constraint(equalTo: view.leftAnchor),
-                    controller.view.rightAnchor.constraint(equalTo: view.rightAnchor),
-                    controller.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                    controller.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)])
-            } else {
-                automaticallyAdjustsScrollViewInsets = false
-                NSLayoutConstraint.activate([
-                    controller.view.leftAnchor.constraint(equalTo: view.leftAnchor),
-                    controller.view.rightAnchor.constraint(equalTo: view.rightAnchor),
-                    controller.view.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
-                    controller.view.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor)])
-            }
-        }
-        controller.didMove(toParentViewController: self)
-    }
-    
-    func updateBookmarkWidgetData() {
-        let context = CoreDataContainer.shared.viewContext
-        let bookmarks = Article.fetchRecentBookmarks(count: 8, context: context)
-            .map({ (article) -> [String: Any]? in
-                guard let title = article.title, let url = article.url else {return nil}
-                return [
-                    "title": title,
-                    "url": url.absoluteString,
-                    "thumbImageData": article.thumbnailData ?? article.book?.favIcon ?? Data()
-                ]
-            }).flatMap({ $0 })
-        UserDefaults(suiteName: "group.kiwix")?.set(bookmarks, forKey: "bookmarks")
-        NCWidgetController.widgetController().setHasContent(bookmarks.count > 0, forWidgetWithBundleIdentifier: "self.Kiwix.Bookmarks")
     }
 }
 
@@ -146,7 +138,7 @@ extension MainController: WebViewControllerDelegate {
                 }
             }()
             controller.delegate = self
-            setChildController(controller: controller)
+            setTabContainerChild(controller: controller)
             webControllers.append(controller)
             currentWebController = controller
             load(url: url)
@@ -157,12 +149,16 @@ extension MainController: WebViewControllerDelegate {
         navigationBackButtonItem.button.isEnabled = controller.canGoBack
         navigationForwardButtonItem.button.isEnabled = controller.canGoForward
         if let url = currentWebController?.currentURL,
-            let article = Article.fetch(url: url, insertIfNotExist: true, context: CoreDataContainer.shared.viewContext) {
+            let article = Article.fetch(url: url, insertIfNotExist: true, context: PersistentContainer.shared.viewContext) {
             article.title = controller.currentTitle
             article.lastReadDate = Date()
             currentArticle = article
         } else {
             bookmarkButtonItem.button.isBookmarked = false
+        }
+        
+        if currentPanelController === tableOfContentController {
+            updateTableOfContentsIfNeeded()
         }
         
         if let scale = Defaults[.webViewZoomScale], scale != 1 {
@@ -241,6 +237,21 @@ extension MainController: TableOfContentControllerDelegate, BookmarkControllerDe
     func didTapBookmark(articleURL: URL) {
         load(url: articleURL)
     }
+    
+    func updateBookmarkWidgetData() {
+        let context = PersistentContainer.shared.viewContext
+        let bookmarks = Article.fetchRecentBookmarks(count: 8, context: context)
+            .map({ (article) -> [String: Any]? in
+                guard let title = article.title, let url = article.url else {return nil}
+                return [
+                    "title": title,
+                    "url": url.absoluteString,
+                    "thumbImageData": article.thumbnailData ?? article.book?.favIcon ?? Data()
+                ]
+            }).flatMap({ $0 })
+        UserDefaults(suiteName: "group.kiwix")?.set(bookmarks, forKey: "bookmarks")
+        NCWidgetController.widgetController().setHasContent(bookmarks.count > 0, forWidgetWithBundleIdentifier: "self.Kiwix.Bookmarks")
+    }
 }
 
 // MARK: - Bar Buttons
@@ -255,20 +266,6 @@ extension MainController: BarButtonItemDelegate {
             navigationController?.isToolbarHidden = true
             navigationItem.leftBarButtonItems = [navigationBackButtonItem, navigationForwardButtonItem, tableOfContentButtonItem]
             navigationItem.rightBarButtonItems = [settingButtonItem, libraryButtonItem, bookmarkButtonItem]
-            
-            /*
-             this following code snippet is for fixing position of popover when horizonal regular
-             we re-added all buttons and that is making popover forgetting about its position
-             */
-            if let presented = presentedViewController as? TableOfContentController {
-                presented.dismiss(animated: false, completion: {
-                    self.presentTableOfContentController(animated: false)
-                })
-            } else if let presented = presentedViewController as? BookmarkController {
-                presented.dismiss(animated: false, completion: {
-                    self.presentBookmarkController(animated: false)
-                })
-            }
         case .compact:
             navigationController?.isToolbarHidden = searchController.isActive ? true : false
             toolbarItems = [navigationBackButtonItem, navigationForwardButtonItem, tableOfContentButtonItem, bookmarkButtonItem, libraryButtonItem, settingButtonItem].enumerated()
@@ -290,9 +287,13 @@ extension MainController: BarButtonItemDelegate {
         case navigationForwardButtonItem:
             currentWebController?.goForward()
         case tableOfContentButtonItem:
-            presentTableOfContentController(animated: true)
+            tableOfContentController.delegate = self
+            updateTableOfContentsIfNeeded(completion: {
+                self.presentAdaptively(controller: self.tableOfContentController, animated: true)
+            })
         case bookmarkButtonItem:
-            presentBookmarkController(animated: true)
+            bookmarkController.delegate = self
+            presentAdaptively(controller: bookmarkController, animated: true)
         case libraryButtonItem:
             present(libraryController, animated: true, completion: nil)
         case settingButtonItem:
@@ -302,10 +303,10 @@ extension MainController: BarButtonItemDelegate {
         }
     }
     
-    func buttonLongPresse(item: BarButtonItem, button: UIButton) {
+    func buttonLongPressed(item: BarButtonItem, button: UIButton) {
         switch item {
         case bookmarkButtonItem:
-            let context = CoreDataContainer.shared.viewContext
+            let context = PersistentContainer.shared.viewContext
             guard let webController = currentWebController,
                 let article = currentArticle else {return}
             
@@ -350,41 +351,119 @@ extension MainController: BarButtonItemDelegate {
     }
 }
 
-// MARK: - Presentation
+// MARK: - View Manipulation
 
-extension MainController: UIPopoverPresentationControllerDelegate {
-    private func presentTableOfContentController(animated: Bool) {
-        updateTableOfContentsIfNeeded(completion: {
-            self.tableOfContentController.delegate = self
-            self.tableOfContentController.modalPresentationStyle = .popover
-            self.tableOfContentController.popoverPresentationController?.sourceView = self.tableOfContentButtonItem.button
-            self.tableOfContentController.popoverPresentationController?.sourceRect = self.tableOfContentButtonItem.button.bounds
-            self.tableOfContentController.popoverPresentationController?.delegate = self
-            self.tableOfContentController.preferredContentSize = CGSize(width: 300, height: 400)
-            self.present(self.tableOfContentController, animated: animated)
-        })
-    }
-    
-    func presentBookmarkController(animated: Bool) {
-        bookmarkController.delegate = self
-        bookmarkController.modalPresentationStyle = .popover
-        bookmarkController.popoverPresentationController?.sourceView = bookmarkButtonItem.button
-        bookmarkController.popoverPresentationController?.sourceRect = bookmarkButtonItem.button.bounds
-        bookmarkController.popoverPresentationController?.delegate = self
-        bookmarkController.preferredContentSize = CGSize(width: 400, height: 600)
-        present(bookmarkController, animated: animated)
-    }
-    
-    func presentationController(_ controller: UIPresentationController, viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle) -> UIViewController? {
-        if style == .popover {
-            return controller.presentedViewController
+extension MainController {
+    private func showPanel(animated: Bool) {
+        view.layoutIfNeeded()
+        panelContainerLeadingConstraint.priority = UILayoutPriority(751)
+        
+        if animated {
+            UIView.animateKeyframes(withDuration: 0.2, delay: 0.0, options: .calculationModeCubic, animations: {
+                self.view.layoutIfNeeded()
+                UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.25, animations: {
+                    if self.currentTabController is WebViewController {
+                        self.tabContainer.alpha = 0.5
+                    }
+                })
+                UIView.addKeyframe(withRelativeStartTime: 0.25, relativeDuration: 0.75, animations: {
+                    if self.currentTabController is WebViewController {
+                        self.tabContainer.alpha = 1.0
+                    }
+                })
+            })
         } else {
-            let navigationController = UINavigationController(rootViewController: controller.presentedViewController)
-            navigationController.view.backgroundColor = .white
-            if #available(iOS 11.0, *) {
-                navigationController.navigationBar.prefersLargeTitles = true
-            }
-            return navigationController
+            view.layoutIfNeeded()
         }
+    }
+    
+    private func hidePanel(animated: Bool, completion: ((Bool) -> Void)? = nil) {
+        view.layoutIfNeeded()
+        panelContainerLeadingConstraint.priority = UILayoutPriority(749)
+        
+        if animated {
+            UIView.animateKeyframes(withDuration: 0.2, delay: 0.0, options: .calculationModeCubic, animations: {
+                self.view.layoutIfNeeded()
+                UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.25, animations: {
+                    if self.currentTabController is WebViewController {
+                        self.tabContainer.alpha = 0.5
+                    }
+                })
+                UIView.addKeyframe(withRelativeStartTime: 0.25, relativeDuration: 0.75, animations: {
+                    if self.currentTabController is WebViewController {
+                        self.tabContainer.alpha = 1.0
+                    }
+                })
+            }, completion: completion)
+        } else {
+            view.layoutIfNeeded()
+            completion?(true)
+        }
+    }
+    
+    private func setPanelContainerChild(controller: UIViewController?) {
+        defer {currentPanelController = controller}
+        guard currentPanelController !== controller else {return}
+        currentPanelController?.view.removeFromSuperview()
+        currentPanelController?.removeFromParentViewController()
+        
+        guard let controller = controller else {return}
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        panelContainer.addSubview(controller.view)
+        addChildViewController(controller)
+        NSLayoutConstraint.activate([
+            controller.view.leftAnchor.constraint(equalTo: panelContainer.leftAnchor),
+            controller.view.rightAnchor.constraint(equalTo: panelContainer.rightAnchor),
+            controller.view.topAnchor.constraint(equalTo: panelContainer.topAnchor),
+            controller.view.bottomAnchor.constraint(equalTo: panelContainer.bottomAnchor)])
+        controller.didMove(toParentViewController: self)
+    }
+    
+    private func setTabContainerChild(controller: UIViewController?) {
+        defer {currentTabController = controller}
+        guard currentTabController !== controller else {return}
+        currentTabController?.view.removeFromSuperview()
+        currentTabController?.removeFromParentViewController()
+        
+        guard let controller = controller else {return}
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        tabContainer.addSubview(controller.view)
+        addChildViewController(controller)
+        NSLayoutConstraint.activate([
+            controller.view.leftAnchor.constraint(equalTo: tabContainer.leftAnchor),
+            controller.view.rightAnchor.constraint(equalTo: tabContainer.rightAnchor),
+            controller.view.topAnchor.constraint(equalTo: tabContainer.topAnchor),
+            controller.view.bottomAnchor.constraint(equalTo: tabContainer.bottomAnchor)])
+        controller.didMove(toParentViewController: self)
+    }
+    
+    private func presentAdaptively(controller: UIViewController, animated: Bool) {
+        if traitCollection.horizontalSizeClass == .compact {
+            presentModally(controller: controller, animated: animated)
+        } else {
+            if isShowingPanel {
+                if currentPanelController === controller {
+                    hidePanel(animated: animated, completion: { _ in
+                        self.setPanelContainerChild(controller: nil)
+                    })
+                } else {
+                    setPanelContainerChild(controller: controller)
+                }
+            } else {
+                setPanelContainerChild(controller: controller)
+                showPanel(animated: animated)
+            }
+        }
+    }
+    
+    private func presentModally(controller: UIViewController, animated: Bool, completion: (() -> Void)? = nil) {
+        controller.view.translatesAutoresizingMaskIntoConstraints = true
+        let navigationController = UINavigationController(rootViewController: controller)
+        navigationController.view.backgroundColor = .white
+        navigationController.modalPresentationStyle = .overFullScreen
+        if #available(iOS 11.0, *) {
+            navigationController.navigationBar.prefersLargeTitles = true
+        }
+        self.navigationController?.present(navigationController, animated: animated, completion: completion)
     }
 }

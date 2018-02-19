@@ -10,6 +10,74 @@ import CoreData
 import ProcedureKit
 import SwiftyUserDefaults
 
+class LibraryRefreshProcedureNew: Procedure {
+    let progress = Progress(totalUnitCount: 100)
+    private let processingProgress = Progress()
+    
+    override func execute() {
+        let request: URLRequest = {
+            let url = URL(string: "https://download.kiwix.org/library/library_zim.xml")!
+            var request = URLRequest(url: url)
+            request.timeoutInterval = 30.0
+            return request
+        }()
+        
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            NetworkActivityController.shared.taskDidFinish(identifier: "LibraryRefreshProcedure")
+            if let error = error {
+                self.finish(withError: error)
+            } else if let data = data {
+                let context = PersistentContainer.shared.newBackgroundContext()
+                let processor = LibraryXMLProcessor(data: data, context: context, isOverwriting: false)
+                processor.parser.parse()
+            }
+        }
+        if #available(iOS 11.0, *) {
+            progress.addChild(task.progress, withPendingUnitCount: 40)
+        }
+        NetworkActivityController.shared.taskDidStart(identifier: "LibraryRefreshProcedure")
+        task.resume()
+    }
+}
+
+private class LibraryXMLProcessor: NSObject, XMLParserDelegate {
+    let parser: XMLParser
+    let context: NSManagedObjectContext
+    
+    init(data: Data, context: NSManagedObjectContext, isOverwriting: Bool) {
+        self.parser = XMLParser(data: data)
+        self.context = context
+        
+        super.init()
+        parser.delegate = self
+    }
+    
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?,
+                qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+        
+    }
+}
+
+class BookMetaDataParser {
+    class func getArticleCount(attributes: [String : String]) -> Int64 {
+        guard let string = attributes["articleCount"], let value = Int64(string) else {return 0}
+        return value
+    }
+    
+    class func getMediaCount(attributes: [String : String]) -> Int64 {
+        guard let string = attributes["mediaCount"], let value = Int64(string) else {return 0}
+        return value
+    }
+    
+    class func getFileSize(attributes: [String : String]) -> Int64 {
+        guard let string = attributes["size"], let value = Int64(string) else {return 0}
+        return value * 1024
+    }
+}
+
+
+
+
 class LibraryRefreshProcedure: GroupProcedure {
     init() {
         let download = DownloadProcedure()
@@ -48,7 +116,7 @@ private class ProcessProcedure: Procedure, InputProcedure, XMLParserDelegate {
     private(set) var hasUpdate = false
     
     override init() {
-        self.context = CoreDataContainer.shared.newBackgroundContext()
+        self.context = PersistentContainer.shared.newBackgroundContext()
         super.init()
     }
     
@@ -107,18 +175,9 @@ private class ProcessProcedure: Procedure, InputProcedure, XMLParserDelegate {
         book.meta4URL = meta["url"]
         book.pid = meta["name"]
         
-        book.articleCount = {
-            guard let string = meta["articleCount"], let value = Int64(string) else {return 0}
-            return value
-        }()
-        book.mediaCount = {
-            guard let string = meta["mediaCount"], let value = Int64(string) else {return 0}
-            return value
-        }()
-        book.fileSize = {
-            guard let string = meta["size"], let value = Int64(string) else {return 0}
-            return value * 1024
-        }()
+        book.articleCount = BookMetaDataParser.getArticleCount(attributes: meta)
+        book.mediaCount = BookMetaDataParser.getMediaCount(attributes: meta)
+        book.fileSize = BookMetaDataParser.getFileSize(attributes: meta)
         book.category = {
             guard let urlString = meta["url"],
                 let components = URL(string: urlString)?.pathComponents,

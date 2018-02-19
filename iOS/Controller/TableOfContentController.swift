@@ -70,6 +70,7 @@ class TableOfContentController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         delegate?.didTapTableOfContentItem(index: indexPath.row, item: items[indexPath.row])
+        tableView.deselectRow(at: indexPath, animated: true)
         dismiss(animated: true) {
             tableView.deselectRow(at: indexPath, animated: false)
         }
