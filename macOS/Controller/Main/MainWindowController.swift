@@ -40,8 +40,8 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
         
         var isStale = false
         let urls = bookmarks.flatMap({try? URL(resolvingBookmarkData: $0, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)}).flatMap({$0})
-        ZimManager.shared.removeBooks();
-        ZimManager.shared.addBook(urls: urls)
+//        ZimManager.shared.removeBooks();
+//        ZimManager.shared.addBook(urls: urls)
         
         guard let searchController = self.searchResultWindowController.contentViewController as? SearchResultController else {return}
         self.searchField.endSearch()
@@ -50,19 +50,19 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
         
         guard let split = self.contentViewController as? NSSplitViewController,
             let webController = split.splitViewItems.last?.viewController as? WebViewController else {return}
-        if ZimManager.shared.getReaderIDs().count > 0 {
-            webController.loadMainPage()
-        } else {
-            self.searchField.title = nil
-            self.searchField.searchTermCache = ""
-            self.searchTextDidClear()
-            webController.webView.isHidden = true
-            let alert = NSAlert()
-            alert.messageText = "Cannot Open Book"
-            alert.informativeText = "The file you selected is not a valid zim file."
-            alert.addButton(withTitle: "Ok")
-            alert.runModal()
-        }
+//        if ZimManager.shared.getReaderIDs().count > 0 {
+//            webController.loadMainPage()
+//        } else {
+//            self.searchField.title = nil
+//            self.searchField.searchTermCache = ""
+//            self.searchTextDidClear()
+//            webController.webView.isHidden = true
+//            let alert = NSAlert()
+//            alert.messageText = "Cannot Open Book"
+//            alert.informativeText = "The file you selected is not a valid zim file."
+//            alert.addButton(withTitle: "Ok")
+//            alert.runModal()
+//        }
     }
     
     // MARK: - Actions

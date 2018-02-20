@@ -49,4 +49,8 @@ class SettingBackupController: UIViewController, UITableViewDataSource, UITableV
         cell.accessoryView = switchControl
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return NSLocalizedString("When disabled, zim files and external indexes would not be backed up to iTunes or iCloud.", comment: "Setting: External Link")
+    }
 }

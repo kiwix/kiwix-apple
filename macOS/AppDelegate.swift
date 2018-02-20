@@ -22,7 +22,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         var isStale = false
         let urls = Defaults[.zimBookmarks].flatMap({try? URL(resolvingBookmarkData: $0, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)}).flatMap({$0})
-        ZimManager.shared.addBook(urls: urls)
+//        ZimManager.shared.addBook(urls: urls)
 
         guard let split = NSApplication.shared.mainWindow?.contentViewController as? NSSplitViewController,
             let controller = split.splitViewItems.last?.viewController as? WebViewController else {return}

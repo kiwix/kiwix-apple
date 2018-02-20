@@ -57,6 +57,12 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
         return formatter
     }()
     
+    static let countFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
+    
     // MARK: - Enums
     
     enum BookMeta: String {
@@ -273,10 +279,10 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
                 cell.detailTextLabel?.text = book.hasPic ? NSLocalizedString("Yes", comment: "Book Detail Cell, has picture") : NSLocalizedString("No", comment: "Book Detail Cell, does not have picture")
             case .articleCount:
                 cell.textLabel?.text = NSLocalizedString("Article Count", comment: "Book Detail Cell")
-                cell.detailTextLabel?.text = "\(book.articleCount)"
+                cell.detailTextLabel?.text = LibraryBookDetailController.countFormatter.string(from: NSNumber(value: book.articleCount))
             case .mediaCount:
                 cell.textLabel?.text = NSLocalizedString("Media Count", comment: "Book Detail Cell")
-                cell.detailTextLabel?.text = "\(book.mediaCount)"
+                cell.detailTextLabel?.text = LibraryBookDetailController.countFormatter.string(from: NSNumber(value: book.mediaCount))
             case .creator:
                 cell.textLabel?.text = NSLocalizedString("Creator", comment: "Book Detail Cell")
                 cell.detailTextLabel?.text = book.creator

@@ -8,6 +8,7 @@
 
 #include <set>
 #include <unordered_map>
+#include "entry.h"
 #include "reader.h"
 #include "searcher.h"
 #import "ZimMultiReader.h"
@@ -117,6 +118,36 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
     }
 }
 
+# pragma mark - check redirection
+
+- (NSString *_Nullable)getRedirectedPath:(NSString *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath {
+    auto found = readers.find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
+    if (found == readers.end()) {
+        return nil;
+    } else {
+        std::shared_ptr<kiwix::Reader> reader = found->second;
+        std::string contentPathC = [contentPath cStringUsingEncoding:NSUTF8StringEncoding];
+        
+        try {
+            kiwix::Entry entry = reader->getEntryFromUrl(contentPathC);
+            entry = entry.getFinalEntry();
+            
+            std::string redirectedContentPathC = entry.getUrl();
+            if (redirectedContentPathC.substr(0, 1) != "/") {
+                redirectedContentPathC = "/" + redirectedContentPathC;
+            }
+            
+            if (contentPathC == redirectedContentPathC) {
+                return nil;
+            } else {
+                return [NSString stringWithUTF8String:redirectedContentPathC.c_str()];
+            }
+        } catch (kiwix::NoEntry) {
+            return nil;
+        }
+    }
+}
+
 # pragma mark - get content
 
 - (NSDictionary *)getContent:(NSString *)zimFileID contentURL:(NSString *)contentURL {
@@ -126,18 +157,13 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
     } else {
         std::shared_ptr<kiwix::Reader> reader = found->second;
         
-        std::string content;
-        std::string title;
-        unsigned int contentLength;
-        std::string contentType;
-        
-        bool success = reader->getContentByUrl([contentURL cStringUsingEncoding:NSUTF8StringEncoding], content, title, contentLength, contentType);
-        if (success) {
-            NSData *data = [NSData dataWithBytes:content.data() length:contentLength];
-            NSString *mime = [NSString stringWithUTF8String:contentType.c_str()];
-            NSNumber *length = [NSNumber numberWithUnsignedInt:contentLength];
+        try {
+            kiwix::Entry entry = reader->getEntryFromUrl([contentURL cStringUsingEncoding:NSUTF8StringEncoding]);
+            NSData *data = [NSData dataWithBytes:entry.getContent().data() length:entry.getSize()];
+            NSString *mime = [NSString stringWithUTF8String:entry.getMimetype().c_str()];
+            NSNumber *length = [NSNumber numberWithUnsignedInt:entry.getSize()];
             return @{@"data": data, @"mime": mime, @"length": length};
-        } else {
+        } catch (kiwix::NoEntry) {
             return nil;
         }
     }

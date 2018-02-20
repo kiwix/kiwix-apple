@@ -6,8 +6,6 @@
 //  Copyright © 2017 Chris Li. All rights reserved.
 //
 
-import UIKit
-
 extension ZimMetaData {
     var id: String { return __getID() }
     var mainPageURL: URL? { return URL(string: __getMainPageURL()) }

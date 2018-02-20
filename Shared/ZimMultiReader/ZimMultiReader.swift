@@ -13,7 +13,7 @@ typealias ZimFileID = String
 extension ZimMultiReader {
     static let shared = ZimMultiReader()
     
-    var ids: [ZimFileID] {get{ return __getIdentifiers().flatMap({$0 as? ZimFileID}) }}
+    var ids: [ZimFileID] {get{ return __getIdentifiers().compactMap({$0 as? ZimFileID}) }}
     func getFileURL(zimFileID: ZimFileID) -> URL? { return __getFileURL(zimFileID) }
     
     func add(url: URL) {__add(by: url)}
@@ -21,6 +21,10 @@ extension ZimMultiReader {
     
     func hasEmbeddedIndex(id: ZimFileID) -> Bool {return __hasEmbeddedIndex(id)}
     func hasExternalIndex(id: ZimFileID) -> Bool {return __hasExternalIndex(id)}
+    
+    func getRedirectedPath(zimFileID: ZimFileID, contentPath: String) -> String? {
+        return __getRedirectedPath(zimFileID, contentPath: contentPath)
+    }
     
     func getContent(bookID: String, contentPath: String) -> (data: Data, mime: String, length: Int)? {
         guard let content = __getContent(bookID, contentURL: contentPath),

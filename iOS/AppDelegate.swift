@@ -82,10 +82,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
             let shortcutItemType = ShortcutItemType(rawValue: shortcutItem.type) else { completionHandler(false); return }
         switch shortcutItemType {
         case .search:
-            break
+            mainController.shouldShowSearch = true
         case .bookmark:
             mainController.presentedViewController?.dismiss(animated: false)
-//            mainController.presentBookmarkController(animated: false)
+            mainController.presentAdaptively(controller: mainController.bookmarkController, animated: true)
         case .continueReading:
             break
         }
@@ -94,8 +94,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     
     private func updateShortcutItems(application: UIApplication) {
         let bookmark = UIApplicationShortcutItem(type: ShortcutItemType.bookmark.rawValue, localizedTitle: NSLocalizedString("Bookmark", comment: "3D Touch Menu Title"))
-//        let search = UIApplicationShortcutItem(type: ShortcutItemType.search.rawValue, localizedTitle: NSLocalizedString("Search", comment: "3D Touch Menu Title"))
-        var shortcutItems = [bookmark]
+        let search = UIApplicationShortcutItem(type: ShortcutItemType.search.rawValue, localizedTitle: NSLocalizedString("Search", comment: "3D Touch Menu Title"))
+        var shortcutItems = [search, bookmark]
         
         if let rootNavigationController = window?.rootViewController as? UINavigationController,
             let mainController = rootNavigationController.topViewController as? MainController,
