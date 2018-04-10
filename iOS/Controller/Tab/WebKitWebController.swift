@@ -9,6 +9,7 @@
 import UIKit
 import WebKit
 import SafariServices
+import SwiftyUserDefaults
 
 
 @available(iOS 11.0, *)
@@ -107,12 +108,27 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     // MARK: - WKNavigationDelegate
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        guard let url = navigationAction.request.url else {return decisionHandler(.cancel)}
+        guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
         if url.isKiwixURL {
-            decisionHandler(.allow)
+            guard let zimFileID = url.host else { decisionHandler(.cancel); return }
+            if let redirectedPath = ZimMultiReader.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
+                let redirectedURL = URL(bookID: zimFileID, contentPath: redirectedPath) {
+                decisionHandler(.cancel)
+                load(url: redirectedURL)
+            } else {
+                decisionHandler(.allow)
+            }
         } else if url.scheme == "http" || url.scheme == "https" {
-            let controller = SFSafariViewController(url: url)
-            present(controller, animated: true, completion: nil)
+            let policy = ExternalLinkLoadingPolicy(rawValue: Defaults[.externalLinkLoadingPolicy]) ?? .alwaysAsk
+            if policy == .alwaysLoad {
+                let controller = SFSafariViewController(url: url)
+                self.present(controller, animated: true, completion: nil)
+            } else {
+                present(ExternalLinkAlertController(policy: policy, action: {
+                    let controller = SFSafariViewController(url: url)
+                    self.present(controller, animated: true, completion: nil)
+                }), animated: true)
+            }
             decisionHandler(.cancel)
         } else if url.scheme == "geo" {
             // show map

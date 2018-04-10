@@ -8,6 +8,7 @@
 
 import WebKit
 
+@available(OSX 10.13, *)
 @available(iOS 11.0, *)
 class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
@@ -15,30 +16,23 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
             url.isKiwixURL,
             let contentPath = url.path.removingPercentEncoding,
             let id = url.host else {
-                urlSchemeTask.didFailWithError(ResourceLoadingError.invalidURL)
+                let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorUnsupportedURL, userInfo: nil)
+                urlSchemeTask.didFailWithError(error)
                 return
         }
         
-        guard var content = ZimMultiReader.shared.getContent(bookID: id, contentPath: contentPath) else {
-            urlSchemeTask.didFailWithError(ResourceLoadingError.contentNotFound)
-            print("Webkit loading failed (404) for url (\(url.absoluteString)")
-            return
+        guard let content = ZimMultiReader.shared.getContent(bookID: id, contentPath: contentPath),
+            let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: ["Content-Type": content.mime, "Content-Length": "\(content.length)"]) else {
+                let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable, userInfo: nil)
+                print("Webkit loading failed (404) for url (\(url.absoluteString)")
+                urlSchemeTask.didFailWithError(error)
+                return
         }
         
-        if content.mime.contains("text/html") {
-            content.mime = "text/html"
-        }
-        
-        let response = URLResponse(url: url, mimeType: content.mime, expectedContentLength: content.length, textEncodingName: nil)
         urlSchemeTask.didReceive(response)
         urlSchemeTask.didReceive(content.data)
         urlSchemeTask.didFinish()
     }
     
     func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {}
-}
-
-enum ResourceLoadingError: Error {
-    case invalidURL
-    case contentNotFound
 }

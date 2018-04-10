@@ -26,6 +26,7 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
         var titles = [SettingMenuItem: String]()
         titles[.fontSize] = NSLocalizedString("Font Size", comment: "Setting Item Title")
         titles[.backup] = NSLocalizedString("Backup", comment: "Setting Item Title")
+        titles[.externalLink] = NSLocalizedString("External Link", comment: "Setting Item Title")
         titles[.feedback] = NSLocalizedString("Email us your suggestions", comment: "Setting Item Title")
         titles[.rateApp] = NSLocalizedString("Give Kiwix a rate", comment: "Setting Item Title")
         titles[.about] = NSLocalizedString("About", comment: "Setting Item Title")
@@ -33,7 +34,7 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
     }()
     private let items: [[SettingMenuItem]] = {
         var items: [[SettingMenuItem]] = [
-            [.fontSize, .backup],
+            [.fontSize, .backup, .externalLink],
             [.rateApp],
             [.about]
         ]
@@ -108,6 +109,8 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
             navigationController?.pushViewController(controller, animated: true)
         case.backup:
             navigationController?.pushViewController(SettingBackupController(title: titles[item]), animated: true)
+        case .externalLink:
+            navigationController?.pushViewController(SettingExternalLinkController(title: titles[item]), animated: true)
         case .feedback:
             presentFeedbackEmailComposer()
         case .rateApp:
@@ -171,7 +174,7 @@ extension SettingController: MFMailComposeViewControllerDelegate {
 }
 
 enum SettingMenuItem {
-    case fontSize, backup
+    case fontSize, backup, externalLink
     case feedback, rateApp
     case about
 }

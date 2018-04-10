@@ -35,7 +35,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nGW-m1-b0h">
-                                <rect key="frame" x="0.0" y="64" width="694" height="704"/>
+                                <rect key="frame" x="0.0" y="0.0" width="694" height="768"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -43,14 +43,14 @@
                             <constraint firstItem="nGW-m1-b0h" firstAttribute="leading" secondItem="W03-ad-Ivv" secondAttribute="trailing" id="Hvn-LZ-Jxg"/>
                             <constraint firstItem="W03-ad-Ivv" firstAttribute="leading" secondItem="Lnk-x9-o6o" secondAttribute="leading" priority="749" id="IpL-UP-th7"/>
                             <constraint firstItem="ShV-5f-7OD" firstAttribute="trailing" secondItem="W03-ad-Ivv" secondAttribute="trailing" id="J7w-tz-VZ8"/>
-                            <constraint firstItem="nGW-m1-b0h" firstAttribute="top" secondItem="ShG-fd-wTm" secondAttribute="top" id="Psw-UJ-9vR"/>
+                            <constraint firstItem="nGW-m1-b0h" firstAttribute="top" secondItem="Lnk-x9-o6o" secondAttribute="top" id="Psw-UJ-9vR"/>
                             <constraint firstItem="ShV-5f-7OD" firstAttribute="top" secondItem="ShG-fd-wTm" secondAttribute="top" id="Rgg-g8-yRb"/>
                             <constraint firstItem="W03-ad-Ivv" firstAttribute="width" secondItem="Lnk-x9-o6o" secondAttribute="width" multiplier="0.3" priority="750" id="X0R-Kv-r41"/>
                             <constraint firstItem="ShV-5f-7OD" firstAttribute="bottom" secondItem="ShG-fd-wTm" secondAttribute="bottom" id="Yph-lr-YIn"/>
                             <constraint firstItem="W03-ad-Ivv" firstAttribute="top" secondItem="ShG-fd-wTm" secondAttribute="top" id="aFz-Eq-LS3"/>
                             <constraint firstItem="nGW-m1-b0h" firstAttribute="trailing" secondItem="Lnk-x9-o6o" secondAttribute="trailing" id="evi-r6-it8"/>
                             <constraint firstItem="W03-ad-Ivv" firstAttribute="bottom" secondItem="ShG-fd-wTm" secondAttribute="bottom" id="oBn-BB-0Qv"/>
-                            <constraint firstItem="nGW-m1-b0h" firstAttribute="bottom" secondItem="ShG-fd-wTm" secondAttribute="bottom" id="vx0-C9-nXC"/>
+                            <constraint firstItem="nGW-m1-b0h" firstAttribute="bottom" secondItem="Lnk-x9-o6o" secondAttribute="bottom" id="vx0-C9-nXC"/>
                             <constraint firstItem="nGW-m1-b0h" firstAttribute="leading" secondItem="Lnk-x9-o6o" secondAttribute="leading" priority="750" id="y5F-LB-jjq"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ShG-fd-wTm"/>

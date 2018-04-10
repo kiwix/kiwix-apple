@@ -9,6 +9,8 @@
 import UIKit
 import SafariServices
 import JavaScriptCore
+import SwiftyUserDefaults
+
 
 class LegacyWebController: UIViewController, UIWebViewDelegate, WebViewController {
     
@@ -100,10 +102,27 @@ class LegacyWebController: UIViewController, UIWebViewDelegate, WebViewControlle
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         guard let url = request.url else {return false}
         if url.isKiwixURL {
-            return true
+            guard let zimFileID = url.host else { return false }
+            if let redirectedPath = ZimMultiReader.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
+                let redirectedURL = URL(bookID: zimFileID, contentPath: redirectedPath) {
+                DispatchQueue.main.async {
+                    self.load(url: redirectedURL)
+                }
+                return false
+            } else {
+                return false
+            }
         } else if url.scheme == "http" || url.scheme == "https" {
-            let controller = SFSafariViewController(url: url)
-            present(controller, animated: true, completion: nil)
+            let policy = ExternalLinkLoadingPolicy(rawValue: Defaults[.externalLinkLoadingPolicy]) ?? .alwaysAsk
+            if policy == .alwaysLoad {
+                let controller = SFSafariViewController(url: url)
+                self.present(controller, animated: true, completion: nil)
+            } else {
+                present(ExternalLinkAlertController(policy: policy, action: {
+                    let controller = SFSafariViewController(url: url)
+                    self.present(controller, animated: true, completion: nil)
+                }), animated: true)
+            }
             return false
         } else if url.scheme == "geo" {
             return false

@@ -28,13 +28,13 @@ class KiwixURLProtocol: URLProtocol {
                 return
         }
         
-        guard let content = ZimMultiReader.shared.getContent(bookID: id, contentPath: contentPath) else {
+        guard let content = ZimMultiReader.shared.getContent(bookID: id, contentPath: contentPath),
+            let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: ["Content-Type": content.mime, "Content-Length": "\(content.length)"]) else {
             let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable, userInfo: nil)
             client?.urlProtocol(self, didFailWithError: error)
             return
         }
         
-        let response = URLResponse(url: url, mimeType: content.mime, expectedContentLength: content.length, textEncodingName: nil)
         client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .allowed)
         client?.urlProtocol(self, didLoad: content.data)
         client?.urlProtocolDidFinishLoading(self)

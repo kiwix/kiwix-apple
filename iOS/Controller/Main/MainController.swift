@@ -25,6 +25,7 @@ class MainController: UIViewController {
         }
     }
     
+    var shouldShowSearch = false
     var isShowingPanel: Bool {
         return panelContainerLeadingConstraint.priority.rawValue > 750
     }
@@ -68,8 +69,9 @@ class MainController: UIViewController {
         navigationItem.titleView = searchController.searchBar
         navigationBackButtonItem.button.isEnabled = false
         navigationForwardButtonItem.button.isEnabled = false
-        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: .UIApplicationWillEnterForeground, object: nil)
         setTabContainerChild(controller: welcomeController)
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: .UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: .UIApplicationDidBecomeActive, object: nil)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -118,8 +120,17 @@ class MainController: UIViewController {
         DispatchQueue.main.async { self.configureToolbar() }
     }
     
+    @objc func appDidBecomeActive() {
+        DispatchQueue.main.async {
+            guard self.shouldShowSearch && !self.searchController.isActive else {return}
+            self.searchController.isActive = true
+            self.shouldShowSearch = false
+        }
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIApplicationDidBecomeActive, object: nil)
     }
 }
 
@@ -208,6 +219,14 @@ extension MainController: UISearchControllerDelegate, UISearchBarDelegate {
         }
     }
     
+    func didPresentSearchController(_ searchController: UISearchController) {
+        /* Used to focus on the search bar and show keyboard when searchController is actived using the isActive property */
+        DispatchQueue.main.async {
+            guard !searchController.searchBar.isFirstResponder else {return}
+            self.searchController.searchBar.becomeFirstResponder()
+        }
+    }
+    
     func willDismissSearchController(_ searchController: UISearchController) {
         if traitCollection.horizontalSizeClass == .compact {
             navigationController?.setToolbarHidden(false, animated: true)
@@ -250,7 +269,7 @@ extension MainController: TableOfContentControllerDelegate, BookmarkControllerDe
                 ]
             }).flatMap({ $0 })
         UserDefaults(suiteName: "group.kiwix")?.set(bookmarks, forKey: "bookmarks")
-        NCWidgetController.widgetController().setHasContent(bookmarks.count > 0, forWidgetWithBundleIdentifier: "self.Kiwix.Bookmarks")
+        NCWidgetController().setHasContent(bookmarks.count > 0, forWidgetWithBundleIdentifier: "self.Kiwix.Bookmarks")
     }
 }
 
@@ -429,15 +448,33 @@ extension MainController {
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         tabContainer.addSubview(controller.view)
         addChildViewController(controller)
-        NSLayoutConstraint.activate([
-            controller.view.leftAnchor.constraint(equalTo: tabContainer.leftAnchor),
-            controller.view.rightAnchor.constraint(equalTo: tabContainer.rightAnchor),
-            controller.view.topAnchor.constraint(equalTo: tabContainer.topAnchor),
-            controller.view.bottomAnchor.constraint(equalTo: tabContainer.bottomAnchor)])
+        if controller is WelcomeController {
+            NSLayoutConstraint.activate([
+                controller.view.leftAnchor.constraint(equalTo: tabContainer.leftAnchor),
+                controller.view.rightAnchor.constraint(equalTo: tabContainer.rightAnchor),
+                controller.view.topAnchor.constraint(equalTo: tabContainer.topAnchor),
+                controller.view.bottomAnchor.constraint(equalTo: tabContainer.bottomAnchor)])
+        } else {
+            if #available(iOS 11.0, *) {
+                NSLayoutConstraint.activate([
+                    controller.view.leftAnchor.constraint(equalTo: tabContainer.leftAnchor),
+                    controller.view.rightAnchor.constraint(equalTo: tabContainer.rightAnchor),
+                    controller.view.topAnchor.constraint(equalTo: tabContainer.safeAreaLayoutGuide.topAnchor),
+                    controller.view.bottomAnchor.constraint(equalTo: tabContainer.safeAreaLayoutGuide.bottomAnchor)])
+            } else {
+                automaticallyAdjustsScrollViewInsets = false
+                NSLayoutConstraint.activate([
+                    controller.view.leftAnchor.constraint(equalTo: tabContainer.leftAnchor),
+                    controller.view.rightAnchor.constraint(equalTo: tabContainer.rightAnchor),
+                    controller.view.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
+                    controller.view.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor)])
+            }
+        }
+        
         controller.didMove(toParentViewController: self)
     }
     
-    private func presentAdaptively(controller: UIViewController, animated: Bool) {
+    func presentAdaptively(controller: UIViewController, animated: Bool) {
         if traitCollection.horizontalSizeClass == .compact {
             presentModally(controller: controller, animated: animated)
         } else {

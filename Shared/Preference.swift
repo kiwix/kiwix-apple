@@ -57,9 +57,12 @@ extension DefaultsKeys {
     static let activeUseHistory = DefaultsKey<[Date]>("activeUseHistory")
     static let haveRateKiwix = DefaultsKey<Bool>("haveRateKiwix")
     
-    static let backupDocumentDirectory = DefaultsKey<Bool>("backupDocumentDirectory")
+    
     static let recentSearchTexts = DefaultsKey<[String]>("recentSearchTexts")
+    
     static let webViewZoomScale = DefaultsKey<Double?>("webViewZoomScale")
+    static let backupDocumentDirectory = DefaultsKey<Bool>("backupDocumentDirectory")
+    static let externalLinkLoadingPolicy = DefaultsKey<Int>("externalLinkLoadingPolicy")
     
     static let libraryAutoRefreshDisabled = DefaultsKey<Bool>("libraryAutoRefreshDisabled")
     static let libraryRefreshNotAllowCellularData = DefaultsKey<Bool>("libraryRefreshNotAllowCellularData")

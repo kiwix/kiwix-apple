@@ -65,15 +65,15 @@ class SearchResultController: NSViewController, ProcedureQueueDelegate, NSTableV
     }
     
     func startSearch(searchTerm: String) {
-        let procedure = SearchProcedure(term: searchTerm)
-        procedure.add(condition: MutuallyExclusive<SearchController>())
-        procedure.add(observer: DidFinishObserver(didFinish: { [unowned self] (procedure, errors) in
-            guard let procedure = procedure as? SearchProcedure else {return}
-            OperationQueue.main.addOperation({
-                self.results = procedure.results
-            })
-        }))
-        queue.add(operation: procedure)
+//        let procedure = SearchProcedure(term: searchTerm)
+//        procedure.add(condition: MutuallyExclusive<SearchController>())
+//        procedure.add(observer: DidFinishObserver(didFinish: { [unowned self] (procedure, errors) in
+//            guard let procedure = procedure as? SearchProcedure else {return}
+//            OperationQueue.main.addOperation({
+//                self.results = procedure.results
+//            })
+//        }))
+//        queue.add(operation: procedure)
     }
     
     func clearSearch() {
@@ -143,25 +143,27 @@ class SearchResultController: NSViewController, ProcedureQueueDelegate, NSTableV
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let result = results[row]
-        if result.hasSnippet {
-            let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "TitleSnippetResult"), owner: self) as! SearchTitleSnippetResultTableCellView
-            cell.titleField.stringValue = result.title
-            if let snippet = result.snippet {
-                cell.snippetField.stringValue = snippet
-            } else if let snippet = result.attributedSnippet {
-                cell.snippetField.attributedStringValue = snippet
-            } else {
-                cell.snippetField.stringValue = ""
-            }
-            return cell
-        } else {
-            let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "TitleResult"), owner: self) as! SearchTitleResultTableCellView
-            cell.titleField.stringValue = result.title
-            return cell
-        }
+//        if result.hasSnippet {
+//            let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "TitleSnippetResult"), owner: self) as! SearchTitleSnippetResultTableCellView
+//            cell.titleField.stringValue = result.title
+//            if let snippet = result.snippet {
+//                cell.snippetField.stringValue = snippet
+//            } else if let snippet = result.attributedSnippet {
+//                cell.snippetField.attributedStringValue = snippet
+//            } else {
+//                cell.snippetField.stringValue = ""
+//            }
+//            return cell
+//        } else {
+//            let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "TitleResult"), owner: self) as! SearchTitleResultTableCellView
+//            cell.titleField.stringValue = result.title
+//            return cell
+//        }
+        return nil
     }
     
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        return results[row].hasSnippet ? 92 : 26
+        return 100
+//        return results[row].hasSnippet ? 92 : 26
     }
 }
