@@ -110,7 +110,7 @@ class LegacyWebController: UIViewController, UIWebViewDelegate, WebViewControlle
                 }
                 return false
             } else {
-                return false
+                return true
             }
         } else if url.scheme == "http" || url.scheme == "https" {
             let policy = ExternalLinkLoadingPolicy(rawValue: Defaults[.externalLinkLoadingPolicy]) ?? .alwaysAsk
