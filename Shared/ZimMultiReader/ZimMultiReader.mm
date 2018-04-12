@@ -175,6 +175,8 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
     return [[ZimMetaData alloc] initWithZimFileURL:url];
 }
 
+
+
 # pragma mark - URL handling
 
 - (NSString *)getMainPageURL:(NSString *)bookID {

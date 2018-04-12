@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate {
@@ -14,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     let monitor = DirectoryMonitor(url: URL.documentDirectory)
     
     func applicationDidFinishLaunching(_ application: UIApplication) {
+        Realm.configureDefaultRealm()
         Network.shared.restorePreviousState()
         URLProtocol.registerClass(KiwixURLProtocol.self)
         monitor.delegate = self

@@ -7,37 +7,60 @@
 //
 
 import CoreData
+import RealmSwift
 import ProcedureKit
 import SwiftyUserDefaults
 
 class ScanProcedure: Procedure {
-    let urls: [URL]
+    let directories: [URL]
     
     init(directoryURL: URL) {
-        self.urls = [directoryURL]
+        self.directories = [directoryURL]
         super.init()
     }
     
     override func execute() {
-        urls.forEach({ addReader(directoryURL: $0) })
-        ZimMultiReader.shared.removeStaleReaders()
+        updateReaders()
+        updateRealm()
+        
         BackupManager.updateExcludedFromBackupForDocumentDirectoryContents(isExcluded: !Defaults[.backupDocumentDirectory])
-        
-        let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        context.parent = PersistentContainer.shared.viewContext
-        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        context.performAndWait {
-            self.updateDatabase(context: context)
-        }
-        
-        print("Scan Finished, number of readers: \(ZimMultiReader.shared.ids.count)")
+
+//        let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+//        context.parent = PersistentContainer.shared.viewContext
+//        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+//        context.performAndWait {
+//            self.updateDatabase(context: context)
+//        }
+//
+//        print("Scan Finished, number of readers: \(ZimMultiReader.shared.ids.count)")
         finish()
     }
     
-    private func addReader(directoryURL: URL) {
-        let urls = try? FileManager.default.contentsOfDirectory(at: directoryURL, includingPropertiesForKeys: [.isExcludedFromBackupKey],
-                                                                options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants])
-        urls?.filter({ $0.pathExtension.contains("zim") }).forEach({ ZimMultiReader.shared.add(url: $0) })
+    private func updateReaders() {
+        let zimFileURLs = directories.map({ directory -> [URL] in
+            let contents = try? FileManager.default
+                .contentsOfDirectory(at: directory,
+                                     includingPropertiesForKeys: [.isExcludedFromBackupKey],
+                                     options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants])
+            return contents ?? []
+        }).flatMap({ $0 }).filter({ $0.pathExtension == "zim" || $0.pathExtension == "zimaa" })
+        zimFileURLs.forEach({ ZimMultiReader.shared.add(url: $0) })
+        ZimMultiReader.shared.removeStaleReaders()
+    }
+    
+    private func updateRealm() {
+        do {
+            let database = try Realm()
+            for id in ZimMultiReader.shared.ids {
+                if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: id) {
+                    zimFile.state = .local
+                } else {
+                    
+                }
+            }
+        } catch {
+            
+        }
     }
     
     private func updateDatabase(context: NSManagedObjectContext) {

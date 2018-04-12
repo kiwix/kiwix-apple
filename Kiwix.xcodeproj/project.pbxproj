@@ -90,6 +90,7 @@
 		97A36C581F8D5FCD0079B452 /* LibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A36C561F8D5FCD0079B452 /* LibraryController.swift */; };
 		97A6882E207D3DE300DBBE0D /* ZimFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A6882D207D3DE300DBBE0D /* ZimFile.swift */; };
 		97A68830207D40F500DBBE0D /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97A6882F207D40F500DBBE0D /* Pods_iOS.framework */; };
+		97A68832207D4D6700DBBE0D /* RealmConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A68831207D4D6700DBBE0D /* RealmConfig.swift */; };
 		97A996D71F62F1B5007A6282 /* SearchProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975415D31F54C1870007EA6C /* SearchProcedure.swift */; };
 		97B1046F1F8FC63C00488444 /* LibraryMasterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */; };
 		97B104701F8FC63C00488444 /* LibraryMasterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */; };
@@ -281,6 +282,7 @@
 		97A36C561F8D5FCD0079B452 /* LibraryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryController.swift; sourceTree = "<group>"; };
 		97A6882D207D3DE300DBBE0D /* ZimFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFile.swift; sourceTree = "<group>"; };
 		97A6882F207D40F500DBBE0D /* Pods_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		97A68831207D4D6700DBBE0D /* RealmConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmConfig.swift; sourceTree = "<group>"; };
 		97A996CD1F609C9F007A6282 /* LegacyWebController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyWebController.swift; sourceTree = "<group>"; };
 		97A9F6F41E2E990500F423AA /* Inject.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Inject.js; sourceTree = "<group>"; };
 		97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryMasterController.swift; sourceTree = "<group>"; };
@@ -728,7 +730,7 @@
 			isa = PBXGroup;
 			children = (
 				97C5760D202CB86800E37502 /* CoreData */,
-				97A6882C207D3D5300DBBE0D /* Database */,
+				97A6882C207D3D5300DBBE0D /* Model */,
 				976771821F437DB9007ED0C2 /* Dependencies */,
 				975FDB0A1F6092DE00A10E8C /* Loading */,
 				97DF259E1D6F9942001648A3 /* Network */,
@@ -904,12 +906,13 @@
 			);
 			sourceTree = "<group>";
 		};
-		97A6882C207D3D5300DBBE0D /* Database */ = {
+		97A6882C207D3D5300DBBE0D /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				97A68831207D4D6700DBBE0D /* RealmConfig.swift */,
 				97A6882D207D3DE300DBBE0D /* ZimFile.swift */,
 			);
-			path = Database;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		97A996D81F62F3C5007A6282 /* View */ = {
@@ -1774,6 +1777,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97A68832207D4D6700DBBE0D /* RealmConfig.swift in Sources */,
 				97161A891F90072A00A89DE3 /* LibraryTableCells.swift in Sources */,
 				972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */,
 				977D7BB61F9E6A43009A8703 /* ZimMultiReader.mm in Sources */,
