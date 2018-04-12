@@ -69,10 +69,6 @@
 		977D7BB91F9E6A43009A8703 /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BB31F9E6A43009A8703 /* ZimMultiReader.swift */; };
 		977D7BBE1F9FC618009A8703 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BBD1F9FC618009A8703 /* Queue.swift */; };
 		977D7BBF1F9FC618009A8703 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BBD1F9FC618009A8703 /* Queue.swift */; };
-		977D7BD01F9FE34E009A8703 /* ZimMetaData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BCF1F9FE34E009A8703 /* ZimMetaData.mm */; };
-		977D7BD11F9FE34E009A8703 /* ZimMetaData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BCF1F9FE34E009A8703 /* ZimMetaData.mm */; };
-		977D7BD31F9FE359009A8703 /* ZimMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BD21F9FE359009A8703 /* ZimMetaData.swift */; };
-		977D7BD41F9FE359009A8703 /* ZimMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BD21F9FE359009A8703 /* ZimMetaData.swift */; };
 		977F983E1F9E43EC002ABFCE /* ScanProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977F983D1F9E43EC002ABFCE /* ScanProcedure.swift */; };
 		977F983F1F9E43EC002ABFCE /* ScanProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977F983D1F9E43EC002ABFCE /* ScanProcedure.swift */; };
 		979FD159201679C5007B5290 /* SearchResultsListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979FD158201679C5007B5290 /* SearchResultsListController.swift */; };
@@ -139,8 +135,6 @@
 		97CAFA892051EBF700AC1F68 /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDB0B1F60930A00A10E8C /* WebKitHandler.swift */; };
 		97CAFA8F2051EC4800AC1F68 /* ZimMultiReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BB21F9E6A43009A8703 /* ZimMultiReader.mm */; };
 		97CAFA902051EC4800AC1F68 /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BB31F9E6A43009A8703 /* ZimMultiReader.swift */; };
-		97CAFA912051EC4800AC1F68 /* ZimMetaData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BCF1F9FE34E009A8703 /* ZimMetaData.mm */; };
-		97CAFA922051EC4800AC1F68 /* ZimMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BD21F9FE359009A8703 /* ZimMetaData.swift */; };
 		97CAFA932051EC4800AC1F68 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BB11F9E6A43009A8703 /* SearchResult.swift */; };
 		97CAFA942051EC4B00AC1F68 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97598E08202B60E0005A9055 /* BackupManager.swift */; };
 		97CAFA952051EC4E00AC1F68 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E4298F1FBDF48800ABE62E /* DirectoryMonitor.swift */; };
@@ -267,9 +261,6 @@
 		977D7BB21F9E6A43009A8703 /* ZimMultiReader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ZimMultiReader.mm; sourceTree = "<group>"; };
 		977D7BB31F9E6A43009A8703 /* ZimMultiReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZimMultiReader.swift; sourceTree = "<group>"; };
 		977D7BBD1F9FC618009A8703 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
-		977D7BCE1F9FE34E009A8703 /* ZimMetaData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZimMetaData.h; sourceTree = "<group>"; };
-		977D7BCF1F9FE34E009A8703 /* ZimMetaData.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ZimMetaData.mm; sourceTree = "<group>"; };
-		977D7BD21F9FE359009A8703 /* ZimMetaData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimMetaData.swift; sourceTree = "<group>"; };
 		977F983D1F9E43EC002ABFCE /* ScanProcedure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanProcedure.swift; sourceTree = "<group>"; };
 		9780DE051E43BFF5009B6945 /* NetworkActivityIndicatorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkActivityIndicatorController.swift; sourceTree = "<group>"; };
 		979315811E5127930093D3BA /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -861,9 +852,6 @@
 				977D7BB01F9E6A43009A8703 /* ZimMultiReader.h */,
 				977D7BB21F9E6A43009A8703 /* ZimMultiReader.mm */,
 				977D7BB31F9E6A43009A8703 /* ZimMultiReader.swift */,
-				977D7BCE1F9FE34E009A8703 /* ZimMetaData.h */,
-				977D7BCF1F9FE34E009A8703 /* ZimMetaData.mm */,
-				977D7BD21F9FE359009A8703 /* ZimMetaData.swift */,
 				977D7BB11F9E6A43009A8703 /* SearchResult.swift */,
 			);
 			path = ZimMultiReader;
@@ -1706,7 +1694,6 @@
 			files = (
 				97252113200F9D7800B60A80 /* TableViewCell.swift in Sources */,
 				97B104701F8FC63C00488444 /* LibraryMasterController.swift in Sources */,
-				977D7BD41F9FE359009A8703 /* ZimMetaData.swift in Sources */,
 				97252117200F9D7F00B60A80 /* WebKitWebController.swift in Sources */,
 				97252114200F9D7800B60A80 /* LibraryTableCells.swift in Sources */,
 				977D7BB71F9E6A43009A8703 /* ZimMultiReader.mm in Sources */,
@@ -1730,7 +1717,6 @@
 				977F983F1F9E43EC002ABFCE /* ScanProcedure.swift in Sources */,
 				97252116200F9D7F00B60A80 /* LegacyWebController.swift in Sources */,
 				97252109200F9D6A00B60A80 /* SettingController.swift in Sources */,
-				977D7BD11F9FE34E009A8703 /* ZimMetaData.mm in Sources */,
 				977D7BB51F9E6A43009A8703 /* SearchResult.swift in Sources */,
 				9725210E200F9D7800B60A80 /* VisualEffectShadowView.swift in Sources */,
 				97252111200F9D7800B60A80 /* BarButtonItem.swift in Sources */,
@@ -1753,7 +1739,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97CAFA912051EC4800AC1F68 /* ZimMetaData.mm in Sources */,
 				975FDAF81F608A2A00A10E8C /* URLProtocol.swift in Sources */,
 				97CAFA942051EC4B00AC1F68 /* BackupManager.swift in Sources */,
 				9768C23B1F4B7F6300FD499B /* Preference.swift in Sources */,
@@ -1761,7 +1746,6 @@
 				97533B461F4C723900F6651A /* MainWindowController.swift in Sources */,
 				97CAFA932051EC4800AC1F68 /* SearchResult.swift in Sources */,
 				97CAFA952051EC4E00AC1F68 /* DirectoryMonitor.swift in Sources */,
-				97CAFA922051EC4800AC1F68 /* ZimMetaData.swift in Sources */,
 				97E983501F4CA54A0021E96A /* SearchResultController.swift in Sources */,
 				97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */,
 				97E9834E1F4CA0A00021E96A /* WebViewController.swift in Sources */,
@@ -1784,7 +1768,6 @@
 				97252103200D3C4B00B60A80 /* HUDController.swift in Sources */,
 				97C57629202CB86800E37502 /* MigrationPolicy.swift in Sources */,
 				977D7BB41F9E6A43009A8703 /* SearchResult.swift in Sources */,
-				977D7BD31F9FE359009A8703 /* ZimMetaData.swift in Sources */,
 				97A2180C2024EC3800D1E67B /* SettingFontSizeViewController.swift in Sources */,
 				97C5762F202CB86800E37502 /* 1.9.xcmappingmodel in Sources */,
 				9702BE221F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */,
@@ -1808,7 +1791,6 @@
 				97B1D0B51F9A3AD3000C7848 /* NetworkActivityIndicatorController.swift in Sources */,
 				97C57623202CB86800E37502 /* Kiwix.xcdatamodeld in Sources */,
 				97B1D0B91F9A3CB0000C7848 /* Preference.swift in Sources */,
-				977D7BD01F9FE34E009A8703 /* ZimMetaData.mm in Sources */,
 				97BAA542202B4C5E00500644 /* SettingBackupController.swift in Sources */,
 				97B1D0B61F9A3AE7000C7848 /* Network.swift in Sources */,
 				97C5763B202CB86800E37502 /* PersistentContainer.swift in Sources */,

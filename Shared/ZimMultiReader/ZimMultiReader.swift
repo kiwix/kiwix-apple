@@ -34,7 +34,7 @@ extension ZimMultiReader {
         return (data, mime, length)
     }
     
-    func getMetaData(id: ZimFileID) -> ZimMetaData? {return __getMetaData(id)}
+    func getMetaData(id: ZimFileID) -> [String: Any] {return ( __getMetaData(id) as? [String: Any]) ?? [String: Any]() }
     
     func getMainPageURL(bookID: String) -> URL? {
         guard let path = __getMainPageURL(bookID) else {return nil}

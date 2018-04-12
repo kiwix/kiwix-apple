@@ -21,18 +21,8 @@ class ScanProcedure: Procedure {
     
     override func execute() {
         updateReaders()
-        updateRealm()
-        
+        updateDatabase()
         BackupManager.updateExcludedFromBackupForDocumentDirectoryContents(isExcluded: !Defaults[.backupDocumentDirectory])
-
-//        let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-//        context.parent = PersistentContainer.shared.viewContext
-//        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-//        context.performAndWait {
-//            self.updateDatabase(context: context)
-//        }
-//
-//        print("Scan Finished, number of readers: \(ZimMultiReader.shared.ids.count)")
         finish()
     }
     
@@ -48,14 +38,52 @@ class ScanProcedure: Procedure {
         ZimMultiReader.shared.removeStaleReaders()
     }
     
-    private func updateRealm() {
+    private func updateDatabase() {
         do {
+            let zimFileIDs = ZimMultiReader.shared.ids
             let database = try Realm()
-            for id in ZimMultiReader.shared.ids {
-                if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: id) {
-                    zimFile.state = .local
+            
+            for zimFileID in zimFileIDs {
+                if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) {
+                    try database.write {
+                        zimFile.state = .local
+                    }
                 } else {
+                    var meta = ZimMultiReader.shared.getMetaData(id: zimFileID)
+                    clean(meta: &meta)
                     
+                    let zimFile = ZimFile(value: meta)
+                    try database.write {
+                        zimFile.state = .local
+                        zimFile.category = {
+                            if let pid = zimFile.pid,
+                                let categoryRaw = pid.split(separator: ".").last?.split(separator: "_").first {
+                                return ZimFile.Category(rawValue: String(categoryRaw)) ?? .other
+                            } else if let categoryRaw = ZimMultiReader.shared.getFileURL(zimFileID: zimFileID)?.pathComponents.last?.split(separator: "_").first {
+                                if categoryRaw.contains("stackexchange") {
+                                    return .stackExchange
+                                } else {
+                                    return ZimFile.Category(rawValue: String(categoryRaw)) ?? .other
+                                }
+                            } else {
+                                return .other
+                            }
+                        }()
+                        database.add(zimFile)
+                    }
+                }
+            }
+            
+            for zimFile in database.objects(ZimFile.self).filter("stateRaw == 'local'") {
+                print(zimFile)
+                if !zimFileIDs.contains(zimFile.id) {
+                    try database.write {
+                        if let _ = zimFile.remoteURL {
+                            zimFile.state = .cloud
+                        } else {
+                            database.delete(zimFile)
+                        }
+                    }
                 }
             }
         } catch {
@@ -63,72 +91,32 @@ class ScanProcedure: Procedure {
         }
     }
     
-    private func updateDatabase(context: NSManagedObjectContext) {
-        for id in ZimMultiReader.shared.ids {
-            if let book = Book.fetch(id: id, context: context) {
-                book.state = .local
-            } else {
-                guard let meta = ZimMultiReader.shared.getMetaData(id: id) else {return}
-                let book = Book(context: context)
-                book.id = id
-                book.title = meta.title
-                book.bookDescription = meta.bookDescription
-                book.pid = meta.name
-                book.fileSize = meta.fileSize
-                book.date = meta.date
-                book.creator = meta.creator
-                book.publisher = meta.publisher
-                book.favIcon = meta.favicon
-                book.articleCount = meta.articleCount
-                book.mediaCount = meta.mediaCount
-                book.globalCount = meta.globalCount
-                
-                book.language = Language.fetchOrAdd(meta.language, context: context)
-                book.state = .local
-                
-                book.category = {
-                    guard let components = ZimMultiReader.shared.getFileURL(zimFileID: id)?.pathComponents,
-                        components.indices ~= 2 else {return nil}
-                    if let category = BookCategory(rawValue: components[2]) {
-                        return category.rawValue
-                    } else if components[2] == "stack_exchange" {
-                        return BookCategory.stackExchange.rawValue
-                    } else {
-                        return BookCategory.other.rawValue
-                    }
-                }()
-                
-                book.hasPic = {
-                    if meta.tags.contains("nopic") {
-                        return false
-                    } else if let fileName = ZimMultiReader.shared.getFileURL(zimFileID: id)?.pathComponents.last, fileName.contains("nopic") {
-                        return false
-                    } else {
-                        return true
-                    }
-                }()
-                
-                book.hasIndex = {
-                    if meta.tags.contains("_ftindex") {
-                        return true
-                    } else {
-                        return false
-                    }
-                }()
-            }
+    private func clean(meta: inout [String: Any]) {
+        if let name = meta["name"] as? String, name != "" { meta["pid"] = name }
+        
+        if let description = meta["description"] as? String { meta["bookDescription"] = description }
+        if let language = meta["language"] as? String {
+            meta["languageCode"] = Locale.canonicalLanguageIdentifier(from: language)
+        }
+        if let date = meta["date"] as? String {
+            meta["creationDate"] = ScanProcedure.dateFormatter.date(from: date)
         }
         
-        for book in Book.fetch(states: [.local], context: context) {
-            guard !ZimMultiReader.shared.ids.contains(book.id) else {continue}
-            if let _ = book.meta4URL {
-                book.state = .cloud
-            } else {
-                context.delete(book)
-            }
-        }
+        if let articleCount = meta["articleCount"] as? NSNumber { meta["articleCount"] = articleCount.int64Value }
+        if let mediaCount = meta["mediaCount"] as? NSNumber { meta["mediaCount"] = mediaCount.int64Value }
+        if let globalCount = meta["globalCount"] as? NSNumber { meta["globalCount"] = globalCount.int64Value }
+        if let fileSize = meta["fileSize"] as? NSNumber { meta["fileSize"] = fileSize.int64Value }
         
-        guard context.hasChanges else {return}
-        try? context.save()
+        if let tags = meta["tags"] as? String {
+            meta["hasPicture"] = !tags.contains("nopic")
+            meta["hasEmbeddedIndex"] = tags.contains("_ftindex")
+        }
     }
+    
+    static private let dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter
+    }()
 }
 
