@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ZimMetaData.h"
 
 @interface ZimMultiReader : NSObject
 

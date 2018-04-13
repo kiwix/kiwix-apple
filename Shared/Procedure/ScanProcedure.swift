@@ -74,15 +74,14 @@ class ScanProcedure: Procedure {
                 }
             }
             
-            for zimFile in database.objects(ZimFile.self).filter("stateRaw == 'local'") {
-                print(zimFile)
-                if !zimFileIDs.contains(zimFile.id) {
-                    try database.write {
-                        if let _ = zimFile.remoteURL {
-                            zimFile.state = .cloud
-                        } else {
-                            database.delete(zimFile)
-                        }
+            for zimFile in database.objects(ZimFile.self).filter(NSPredicate(format: "stateRaw == %@", ZimFile.State.local.rawValue)) {
+                guard !zimFileIDs.contains(zimFile.id) else {continue}
+                
+                try database.write {
+                    if let _ = zimFile.remoteURL {
+                        zimFile.state = .cloud
+                    } else {
+                        database.delete(zimFile)
                     }
                 }
             }
