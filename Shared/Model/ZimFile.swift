@@ -50,6 +50,27 @@ class ZimFile: Object {
         set { categoryRaw = newValue.rawValue }
     }
     
+    // MARK: - Descriptions
+    
+    static private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM-dd-yyyy"
+        formatter.dateStyle = .medium
+        return formatter
+    }()
+    
+    var creationDateDescription: String {
+        return ZimFile.dateFormatter.string(from: creationDate)
+    }
+    
+    var fileSizeDescription: String {
+        return ByteCountFormatter.string(fromByteCount: fileSize, countStyle: .file)
+    }
+    
+    var articleCountDescription: String {
+        return NumberAbbrevationFormatter.string(from: Int(articleCount)) + (articleCount > 1 ? " articles" : " article")
+    }
+    
     
 //    @NSManaged public var totalBytesWritten: Int64
 //    
@@ -95,5 +116,17 @@ class ZimFile: Object {
         case stackExchange
         
         case other
+    }
+    
+    class NumberAbbrevationFormatter {
+        static func string(from value: Int) -> String {
+            let sign = ((value < 0) ? "-" : "" )
+            let abs = Swift.abs(value)
+            guard abs >= 1000 else {return "\(sign)\(abs)"}
+            let exp = Int(log10(Double(abs)) / log10(1000))
+            let units = ["K","M","G","T","P","E"]
+            let rounded = round(10 * Double(abs) / pow(1000.0,Double(exp))) / 10;
+            return "\(sign)\(rounded)\(units[exp-1])"
+        }
     }
 }
