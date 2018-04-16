@@ -43,17 +43,15 @@ class ScanProcedure: Procedure {
             let zimFileIDs = ZimMultiReader.shared.ids
             let database = try Realm()
             
-            for zimFileID in zimFileIDs {
-                if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) {
-                    try database.write {
+            try database.write {
+                for zimFileID in zimFileIDs {
+                    if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) {
                         zimFile.state = .local
-                    }
-                } else {
-                    var meta = ZimMultiReader.shared.getMetaData(id: zimFileID)
-                    clean(meta: &meta)
-                    
-                    let zimFile = ZimFile(value: meta)
-                    try database.write {
+                    } else {
+                        var meta = ZimMultiReader.shared.getMetaData(id: zimFileID)
+                        clean(meta: &meta)
+                        
+                        let zimFile = ZimFile(value: meta)
                         zimFile.state = .local
                         zimFile.category = {
                             if let pid = zimFile.pid,
@@ -72,12 +70,10 @@ class ScanProcedure: Procedure {
                         database.add(zimFile)
                     }
                 }
-            }
-            
-            for zimFile in database.objects(ZimFile.self).filter(NSPredicate(format: "stateRaw == %@", ZimFile.State.local.rawValue)) {
-                guard !zimFileIDs.contains(zimFile.id) else {continue}
                 
-                try database.write {
+                let localPredicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.local.rawValue)
+                for zimFile in database.objects(ZimFile.self).filter(localPredicate) {
+                    guard !zimFileIDs.contains(zimFile.id) else {continue}
                     if let _ = zimFile.remoteURL {
                         zimFile.state = .cloud
                     } else {
