@@ -13,8 +13,16 @@ import SwiftyUserDefaults
 class SearchNoTextController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDelegate, UITableViewDataSource {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     
-    enum Sections { case recentSearch, searchFilter }
-    private var sections: [Sections] = [.searchFilter]
+    private class SectionHeaderButton: UIButton {
+        private(set) var section: Section? = nil
+        convenience init(section: Section) {
+            self.init(frame: .zero)
+            self.section = section
+        }
+    }
+    
+    enum Section { case recentSearch, searchFilter }
+    private var sections: [Section] = [.searchFilter]
     
     private var recentSearchTexts = Defaults[.recentSearchTexts] {
         didSet {
@@ -91,7 +99,6 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         } catch {}
         
         token = localZimFiles?.observe({ (changes) in
-            print(changes)
             switch changes {
             case .initial:
                 self.tableView.reloadData()
@@ -135,7 +142,10 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
             do {
                 let database = try Realm()
                 try database.write {
-                    localZimFiles?.forEach({ $0.includeInSearch = true })
+                    localZimFiles?.forEach({ (zimFile) in
+                        guard !zimFile.includeInSearch else {return}
+                        zimFile.includeInSearch = true
+                    })
                 }
             } catch {}
         }
@@ -279,13 +289,5 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         if let main = presentingViewController as? MainController {
             main.searchController.searchBar.text = searchText
         }
-    }
-}
-
-private class SectionHeaderButton: UIButton {
-    private(set) var section: SearchNoTextController.Sections? = nil
-    convenience init(section: SearchNoTextController.Sections) {
-        self.init(frame: .zero)
-        self.section = section
     }
 }
