@@ -44,19 +44,14 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         }
     }
     
-    private var localZimFiles: Results<ZimFile>?
+    private var localZimFiles: Results<ZimFile>? = {
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            let predicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.local.rawValue)
+            return database.objects(ZimFile.self).filter(predicate)
+        } catch { return nil }
+    }()
     private var token: NotificationToken?
-    
-    var localBookIDs: Set<ZimFileID> {
-        let database = try! Realm()
-        let predicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.local.rawValue)
-        return Set(database.objects(ZimFile.self).filter(predicate).map({$0.id}))
-    }
-    var includedInSearchBookIDs: Set<ZimFileID> {
-        let database = try! Realm()
-        let predicate = NSPredicate(format: "stateRaw == %@ AND includeInSearch == true", ZimFile.State.local.rawValue)
-        return Set(database.objects(ZimFile.self).filter(predicate).map({$0.id}))
-    }
     
     // MARK: - Functions
     
@@ -92,12 +87,6 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     func configureDatabase() {
-        do {
-            let database = try Realm()
-            let predicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.local.rawValue)
-            localZimFiles = database.objects(ZimFile.self).filter(predicate)
-        } catch {}
-        
         token = localZimFiles?.observe({ (changes) in
             switch changes {
             case .initial:
@@ -119,19 +108,7 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         })
     }
     
-    func add(recentSearchText newSearchText: String) {
-        /* we make a local copy of `recentSearchTexts` to process search texts and save it back,
-         so that we prevent tableView operations from being triggered too many times. */
-        var searchTexts = recentSearchTexts
-        if let index = searchTexts.index(of: newSearchText) {
-            searchTexts.remove(at: index)
-        }
-        searchTexts.insert(newSearchText, at: 0)
-        if searchTexts.count > 20 {
-            searchTexts = Array(searchTexts[..<20])
-        }
-        recentSearchTexts = searchTexts
-    }
+    
     
     @objc private func buttonTapped(button: SectionHeaderButton) {
         guard let section = button.section else {return}

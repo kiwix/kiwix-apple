@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import SwiftyUserDefaults
 
 class SearchResultsListController: UITableViewController {
-    var results: [SearchResult] = []
+    private(set) var searchText: String = ""
+    private(set) var results: [SearchResult] = []
+    private weak var clearResultTimer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,6 +21,36 @@ class SearchResultsListController: UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.keyboardDismissMode = .onDrag
+    }
+    
+    func update(searchText: String, results: [SearchResult]) {
+        self.searchText = searchText
+        self.results = results
+        tableView.reloadData()
+    }
+    
+    func update(recentSearchText newSearchText: String) {
+        var searchTexts = Defaults[.recentSearchTexts]
+        if let index = searchTexts.index(of: newSearchText) {
+            searchTexts.remove(at: index)
+        }
+        searchTexts.insert(newSearchText, at: 0)
+        if searchTexts.count > 20 {
+            searchTexts = Array(searchTexts[..<20])
+        }
+        Defaults[.recentSearchTexts] = searchTexts
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        clearResultTimer?.invalidate()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        clearResultTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: false, block: { (_) in
+            self.update(searchText: "", results: [])
+        })
     }
     
     // MARK: - Table view data source
@@ -52,11 +85,7 @@ class SearchResultsListController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let main = presentingViewController as? MainController else {return}
-        
-        if let parent = parent as? SearchResultController {
-            parent.searchNoTextController.add(recentSearchText: parent.searchText)
-        }
-        
+        update(recentSearchText: searchText)
         main.load(url: results[indexPath.row].url)
         main.searchController.isActive = false
     }

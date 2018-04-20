@@ -199,15 +199,16 @@ extension MainController: UISearchControllerDelegate, UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         // when searchController become active, set searchBar.text to previous search text
-        searchBar.text = (searchController.searchResultsController as? SearchResultController)?.searchText
+        guard let searchResultController = searchController.searchResultsController as? SearchResultController else {return}
+        searchBar.text = searchResultController.contentController.resultsListController.searchText
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let searchResultController = searchController.searchResultsController as? SearchResultController,
-            let result = searchResultController.searchResultsListController.results.first else {return}
-        searchResultController.searchNoTextController.add(recentSearchText: searchResultController.searchText)
-        load(url: result.url)
-        searchController.isActive = false
+//        guard let searchResultController = searchController.searchResultsController as? SearchResultController,
+//            let result = searchResultController.searchResultsListController.results.first else {return}
+//        searchResultController.searchNoTextController.add(recentSearchText: searchResultController.searchText)
+//        load(url: result.url)
+//        searchController.isActive = false
     }
     
     func willPresentSearchController(_ searchController: UISearchController) {
