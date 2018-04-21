@@ -22,13 +22,17 @@ class SearchQueue: ProcedureQueue, ProcedureQueueDelegate {
         add(operation: procedure)
     }
     
+    func cancelAll() {
+        operations.forEach({ $0.cancel() })
+    }
+    
     func procedureQueue(_ queue: ProcedureQueue, willAddProcedure procedure: Procedure, context: Any?) -> ProcedureFuture? {
         if queue.operationCount == 0 {
             DispatchQueue.main.async {
                 self.eventDelegate?.searchStarted()
             }
         } else {
-            queue.operations.forEach({ $0.cancel() })
+            cancelAll()
         }
         return nil
     }
@@ -36,7 +40,11 @@ class SearchQueue: ProcedureQueue, ProcedureQueueDelegate {
     func procedureQueue(_ queue: ProcedureQueue, didFinishProcedure procedure: Procedure, withErrors errors: [Error]) {
         guard queue.operationCount == 0, let procedure = procedure as? SearchProcedure else {return}
         DispatchQueue.main.async {
-            self.eventDelegate?.searchFinished(searchText: procedure.searchText, results: procedure.sortedResults)
+            if procedure.isCancelled {
+                self.eventDelegate?.searchFinished(searchText: "", results: [])
+            } else {
+                self.eventDelegate?.searchFinished(searchText: procedure.searchText, results: procedure.sortedResults)
+            }
         }
     }
 }

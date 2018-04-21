@@ -192,12 +192,22 @@ class SearchResultController: UIViewController, SearchQueueEvents, UISearchResul
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text else {return}
         
-        /* searchController will update results use empty string when it is being dismissed.
+        /* UISearchController will update results using empty string when it is being dismissed.
          We choose not to do so in order to preserve user's previous search text. */
         if searchController.isBeingDismissed && searchText == "" {return}
         
-        /* If search text is the same as search text of cached result, we don't have to redo the search. */
-        if searchText == contentController.resultsListController.searchText {return}
+        /* If UISearchController is not being dismissed and the search text is set to empty string,
+         that means user is trying to clear the search field. We immediately cancel all search tasks
+         and change content back to no text mode. */
+        if !searchController.isBeingDismissed && searchText == "" {
+            configureContent(mode: .noText)
+            queue.cancelAll()
+            return
+        }
+        
+        /* If there is no search operation in queue (no pending result updates which makes current cached result up to date)
+         and search text is the same as search text of cached result, we don't have to redo the search. */
+        if queue.operationCount == 0 && searchText == contentController.resultsListController.searchText {return}
 
         /* Perform the search! */
         let zimFileIDs: Set<String> = {
