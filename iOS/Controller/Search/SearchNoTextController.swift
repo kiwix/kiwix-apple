@@ -63,8 +63,8 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
             case .update(_, let deletions, let insertions, let updates):
                 guard let sectionIndex = self.sections.index(of: .searchFilter) else {return}
                 self.tableView.beginUpdates()
-                self.tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .automatic)
-                self.tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .automatic)
+                self.tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
+                self.tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
                 updates.forEach({ (row) in
                     let indexPath = IndexPath(row: row, section: sectionIndex)
                     guard let cell = self.tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
