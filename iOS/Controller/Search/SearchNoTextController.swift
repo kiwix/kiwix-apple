@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 import SwiftyUserDefaults
 
-class SearchNoTextController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class SearchNoTextController: UIViewController, UITableViewDelegate, UITableViewDataSource, SearchNoTextControllerSectionHeaderDelegate {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private var sections: [Section] = [.searchFilter]
     
@@ -77,6 +77,26 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
         })
     }
     
+    // MARK: - SearchNoTextControllerSectionHeaderDelegate
+    
+    func sectionHeaderButtonTapped(button: UIButton, section: SearchNoTextController.Section) {
+        switch section {
+        case .recentSearch:
+            break
+//            recentSearchTexts.removeAll()
+        case .searchFilter:
+            do {
+                let database = try Realm()
+                try database.write {
+                    zimFiles?.forEach({ (zimFile) in
+                        guard !zimFile.includeInSearch else {return}
+                        zimFile.includeInSearch = true
+                    })
+                }
+            } catch {}
+        }
+    }
+    
     // MARK: - UITableViewDataSource & Delegate
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -111,6 +131,32 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
         cell.accessoryType = zimFile.includeInSearch ? .checkmark : .none
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let text: String = {
+            switch sections[section] {
+            case .recentSearch:
+                return NSLocalizedString("Recent Search", comment: "Search Interface")
+            case .searchFilter:
+                return NSLocalizedString("Search Filter", comment: "Search Interface")
+            }
+        }()
+        let buttonText: String = {
+            switch sections[section] {
+            case .recentSearch:
+                return NSLocalizedString("Clear", comment: "Clear Recent Search Texts")
+            case .searchFilter:
+                return NSLocalizedString("All", comment: "Select All Books in Search Filter")
+            }
+        }()
+        let view = SectionHeaderView(text: text, buttonText: buttonText, section: sections[section])
+        view.delegate = self
+        return view
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return section == 0 ? 50 : 30
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if sections[indexPath.section] == .searchFilter {
             guard let zimFile = zimFiles?[indexPath.row], let token = changeToken else {return}
@@ -129,4 +175,52 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
     // MARK: - Type Definition
     
     enum Section { case recentSearch, searchFilter }
+    
+    class SectionHeaderView: UIStackView {
+        private let label = UILabel()
+        private let button = UIButton()
+        private let section: Section
+        weak var delegate: SearchNoTextControllerSectionHeaderDelegate?
+        
+        init(text: String, buttonText: String, section: Section) {
+            self.section = section
+            super.init(frame: .zero)
+            label.text = text.uppercased()
+            button.setTitle(buttonText, for: .normal)
+            configure()
+        }
+        
+        required init(coder: NSCoder) {
+            self.section = .searchFilter
+            super.init(coder: coder)
+            configure()
+        }
+        
+        private func configure() {
+            label.font = UIFont.systemFont(ofSize: 13)
+            label.textColor = .darkGray
+            label.setContentHuggingPriority(UILayoutPriority(rawValue: 250), for: .horizontal)
+
+            button.setTitleColor(.gray, for: .normal)
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+            button.setContentHuggingPriority(UILayoutPriority(rawValue: 251), for: .horizontal)
+            button.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
+            
+            alignment = .bottom
+            preservesSuperviewLayoutMargins = true
+            isLayoutMarginsRelativeArrangement = true
+            
+            addArrangedSubview(label)
+            addArrangedSubview(button)
+            label.heightAnchor.constraint(equalTo: button.heightAnchor).isActive = true
+        }
+        
+        @objc private func buttonTapped(button: UIButton) {
+            delegate?.sectionHeaderButtonTapped(button: button, section: section)
+        }
+    }
+}
+
+protocol SearchNoTextControllerSectionHeaderDelegate: class {
+    func sectionHeaderButtonTapped(button: UIButton, section: SearchNoTextController.Section)
 }
