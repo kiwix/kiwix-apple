@@ -24,6 +24,12 @@ class ScanProcedure: Procedure {
         updateDatabase()
         BackupManager.updateExcludedFromBackupForDocumentDirectoryContents(isExcluded: !Defaults[.backupDocumentDirectory])
         finish()
+        for id in ZimMultiReader.shared.ids {
+            let meta = ZimMultiReader.shared.getMetaData(id: id)
+            let fileName = ZimMultiReader.shared.getFileURL(zimFileID: id)?.lastPathComponent
+            
+            print(fileName, meta["title"], meta["tags"], meta["name"])
+        }
     }
     
     private func updateReaders() {
@@ -81,9 +87,7 @@ class ScanProcedure: Procedure {
                     }
                 }
             }
-        } catch {
-            
-        }
+        } catch {}
     }
     
     private func clean(meta: inout [String: Any]) {

@@ -37,7 +37,8 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureDatabase()
+        configureDatabaseObserver()
+        configureUserDefaultsObserver()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -53,9 +54,9 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    // MARK: - Database
+    // MARK: - Observer
     
-    func configureDatabase() {
+    func configureDatabaseObserver() {
         changeToken = zimFiles?.observe({ (changes) in
             switch changes {
             case .initial:
@@ -75,6 +76,18 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
                 break
             }
         })
+    }
+    
+    func configureUserDefaultsObserver() {
+//
+//
+//        let t = UserDefaults.standard.observe("test") { (defaults, change) in
+//
+//        }
+//
+//        observer = UserDefaults.standard.observe(\.greetingsCount, options: [.initial, .new], changeHandler: { (defaults, change) in
+//            // your change logic here
+//        })
     }
     
     // MARK: - SearchNoTextControllerSectionHeaderDelegate
