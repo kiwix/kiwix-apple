@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 import SwiftyUserDefaults
 
-class SearchNoTextController: UIViewController, UITableViewDelegate, UITableViewDataSource, SearchNoTextControllerSectionHeaderDelegate {
+class SearchNoTextController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, SearchNoTextControllerSectionHeaderDelegate {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private var sections: [Section] = [.searchFilter]
     
@@ -22,6 +22,25 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
         } catch { return nil }
     }()
     private var changeToken: NotificationToken?
+    
+    private var recentSearchTexts = Defaults[.recentSearchTexts] {
+        didSet {
+            if recentSearchTexts.count == 0, let index = sections.index(of: .recentSearch) {
+                tableView.beginUpdates()
+                sections.remove(at: index)
+                tableView.deleteSections(IndexSet([index]), with: .fade)
+                tableView.endUpdates()
+            } else if recentSearchTexts.count > 0 && !sections.contains(.recentSearch) {
+                tableView.beginUpdates()
+                sections.insert(.recentSearch, at: 0)
+                tableView.insertSections(IndexSet([0]), with: .none)
+                tableView.endUpdates()
+            } else if recentSearchTexts.count > 0, let index = sections.index(of: .recentSearch) {
+                guard recentSearchTexts != oldValue else {return}
+                tableView.reloadSections(IndexSet([index]), with: .none)
+            }
+        }
+    }
     
     // MARK: - Overrides
     
@@ -38,7 +57,14 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         configureDatabaseObserver()
-        configureUserDefaultsObserver()
+        if recentSearchTexts.count > 0 {
+            sections.insert(.recentSearch, at: 0)
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        recentSearchTexts = Defaults[.recentSearchTexts]
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -78,25 +104,13 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
         })
     }
     
-    func configureUserDefaultsObserver() {
-//
-//
-//        let t = UserDefaults.standard.observe("test") { (defaults, change) in
-//
-//        }
-//
-//        observer = UserDefaults.standard.observe(\.greetingsCount, options: [.initial, .new], changeHandler: { (defaults, change) in
-//            // your change logic here
-//        })
-    }
-    
     // MARK: - SearchNoTextControllerSectionHeaderDelegate
     
     func sectionHeaderButtonTapped(button: UIButton, section: SearchNoTextController.Section) {
         switch section {
         case .recentSearch:
-            break
-//            recentSearchTexts.removeAll()
+            Defaults[.recentSearchTexts] = []
+            recentSearchTexts.removeAll()
         case .searchFilter:
             do {
                 let database = try Realm()
@@ -166,6 +180,18 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
         return view
     }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if sections[indexPath.section] == .recentSearch {
+            guard let cell = cell as? RecentSearchTableViewCell else {return}
+            cell.collectionView.dataSource = self
+            cell.collectionView.delegate = self
+            cell.collectionView.tag = indexPath.section
+            
+            cell.collectionView.reloadData()
+            cell.collectionView.collectionViewLayout.invalidateLayout()
+        }
+    }
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return section == 0 ? 50 : 30
     }
@@ -183,6 +209,39 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
             } catch {}
         }
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    // MARK: - UICollectionViewDataSource & Delegate
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return recentSearchTexts.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! RecentSearchCollectionViewCell
+        cell.label.text = recentSearchTexts[indexPath.row]
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let string = recentSearchTexts[indexPath.row]
+        let width = NSString(string: string).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 24),
+                                                          options: .usesLineFragmentOrigin,
+                                                          attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)],
+                                                          context: nil).size.width
+        return CGSize(width: width.rounded(.down) + 20, height: 24)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        let searchText = recentSearchTexts[indexPath.row]
+        if let main = presentingViewController as? MainController {
+            main.searchController.searchBar.text = searchText
+        }
     }
     
     // MARK: - Type Definition

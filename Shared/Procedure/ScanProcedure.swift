@@ -27,8 +27,6 @@ class ScanProcedure: Procedure {
         for id in ZimMultiReader.shared.ids {
             let meta = ZimMultiReader.shared.getMetaData(id: id)
             let fileName = ZimMultiReader.shared.getFileURL(zimFileID: id)?.lastPathComponent
-            
-            print(fileName, meta["title"], meta["tags"], meta["name"])
         }
     }
     
