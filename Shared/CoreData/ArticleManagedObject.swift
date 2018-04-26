@@ -9,22 +9,22 @@
 import CoreData
 import CoreSpotlight
 
-class Article: NSManagedObject {
+class ArticleManagedObject: NSManagedObject {
     
     // MARK: - Fetch
     
-    class func fetch(url: URL, insertIfNotExist: Bool, context: NSManagedObjectContext) -> Article? {
+    class func fetch(url: URL, insertIfNotExist: Bool, context: NSManagedObjectContext) -> ArticleManagedObject? {
         guard let bookID = url.host,
             let book = Book.fetch(id: bookID, context: context) else {return nil}
         let path = url.path
         
-        let fetchRequest = Article.fetchRequest() as! NSFetchRequest<Article>
+        let fetchRequest = ArticleManagedObject.fetchRequest() as! NSFetchRequest<ArticleManagedObject>
         fetchRequest.predicate = NSPredicate(format: "path = %@ AND book = %@", path, book)
         
         if let articles = try? context.fetch(fetchRequest), let article = articles.first {
             return article
         } else if insertIfNotExist {
-            let article = Article(context: context)
+            let article = ArticleManagedObject(context: context)
             article.path = path
             article.book = book
             return article
@@ -33,12 +33,12 @@ class Article: NSManagedObject {
         }
     }
     
-    class func fetchRecentBookmarks(count: Int, context: NSManagedObjectContext) -> [Article] {
-        let request = Article.fetchRequest() as! NSFetchRequest<Article>
+    class func fetchRecentBookmarks(count: Int, context: NSManagedObjectContext) -> [ArticleManagedObject] {
+        let request = ArticleManagedObject.fetchRequest() as! NSFetchRequest<ArticleManagedObject>
         request.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: false)]
         request.predicate = NSPredicate(format: "isBookmarked == true")
         request.fetchLimit = count
-        return (try? context.fetch(request)) ?? [Article]()
+        return (try? context.fetch(request)) ?? [ArticleManagedObject]()
     }
     
     // MARK: - CoreSpotlight

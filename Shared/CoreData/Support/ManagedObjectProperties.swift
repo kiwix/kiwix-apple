@@ -12,7 +12,7 @@
 import Foundation
 import CoreData
 
-extension Article {
+extension ArticleManagedObject {
     @NSManaged var bookmarkDate: Date?
     @NSManaged var isBookmarked: Bool
     @NSManaged var isMainPage: Bool
@@ -48,7 +48,7 @@ extension Book {
     @NSManaged public var title: String?
     @NSManaged public var totalBytesWritten: Int64
     
-    @NSManaged public var articles: Set<Article>
+    @NSManaged public var articles: Set<ArticleManagedObject>
     @NSManaged public var language: Language?
 }
 
