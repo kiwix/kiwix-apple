@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     let monitor = DirectoryMonitor(url: URL.documentDirectory)
     
     func applicationDidFinishLaunching(_ application: UIApplication) {
-        Realm.configureDefaultRealm()
+        Realm.resetDatabase()
         Network.shared.restorePreviousState()
         URLProtocol.registerClass(KiwixURLProtocol.self)
         monitor.delegate = self
