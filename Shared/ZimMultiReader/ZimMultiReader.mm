@@ -279,7 +279,8 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
     searcher = new kiwix::Searcher;
     [searcherZimIDs removeAllObjects];
     for(auto iter: externalSearchers) {
-        iter.second->restart_search();
+        std::string empty = "";
+        iter.second->search(empty, 0, 0);
     }
 }
 
