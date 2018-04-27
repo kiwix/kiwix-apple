@@ -13,7 +13,7 @@ import SwiftyUserDefaults
 
 class MainController: UIViewController {
     private var currentArticleBookmarkObserver: NSKeyValueObservation? = nil
-    private var currentArticle: ArticleManagedObject? = nil {
+    private var currentArticle: Article? = nil {
         didSet {
             guard let article = currentArticle else {return}
             
@@ -160,7 +160,7 @@ extension MainController: WebViewControllerDelegate {
         navigationBackButtonItem.button.isEnabled = controller.canGoBack
         navigationForwardButtonItem.button.isEnabled = controller.canGoForward
         if let url = currentWebController?.currentURL,
-            let article = ArticleManagedObject.fetch(url: url, insertIfNotExist: true, context: PersistentContainer.shared.viewContext) {
+            let article = Article.fetch(url: url, insertIfNotExist: true, context: PersistentContainer.shared.viewContext) {
             article.title = controller.currentTitle
             article.lastReadDate = Date()
             currentArticle = article
@@ -260,7 +260,7 @@ extension MainController: TableOfContentControllerDelegate, BookmarkControllerDe
     
     func updateBookmarkWidgetData() {
         let context = PersistentContainer.shared.viewContext
-        let bookmarks = ArticleManagedObject.fetchRecentBookmarks(count: 8, context: context)
+        let bookmarks = Article.fetchRecentBookmarks(count: 8, context: context)
             .map({ (article) -> [String: Any]? in
                 guard let title = article.title, let url = article.url else {return nil}
                 return [

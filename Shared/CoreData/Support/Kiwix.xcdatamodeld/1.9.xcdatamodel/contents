@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14133" systemVersion="17E199" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1.9">
-    <entity name="Article" representedClassName=".ArticleManagedObject" syncable="YES">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17D47" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1.9">
+    <entity name="Article" representedClassName=".Article" syncable="YES">
         <attribute name="bookmarkDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="isBookmarked" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isMainPage" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
@@ -76,7 +76,7 @@
         <relationship name="articles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Article" inverseName="tags" inverseEntity="Article" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Article" positionX="-657" positionY="-153" width="128" height="225"/>
+        <element name="Article" positionX="-657" positionY="-153" width="128" height="223"/>
         <element name="Book" positionX="-947" positionY="-142" width="128" height="360"/>
         <element name="Language" positionX="-657" positionY="216" width="128" height="105"/>
         <element name="Tag" positionX="-425" positionY="-18" width="128" height="73"/>

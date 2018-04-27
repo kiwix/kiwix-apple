@@ -110,8 +110,8 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
     // MARK: - NSFetchedResultsController
     
     private let managedObjectContext = PersistentContainer.shared.viewContext
-    private lazy var fetchedResultController: NSFetchedResultsController<ArticleManagedObject> = {
-        let fetchRequest = ArticleManagedObject.fetchRequest()
+    private lazy var fetchedResultController: NSFetchedResultsController<Article> = {
+        let fetchRequest = Article.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "bookmarkDate", ascending: false)]
         fetchRequest.predicate = NSPredicate(format: "isBookmarked == true")
         fetchRequest.fetchBatchSize = 20
@@ -119,7 +119,7 @@ class BookmarkController: UITableViewController, NSFetchedResultsControllerDeleg
                                                     managedObjectContext: self.managedObjectContext,
                                                     sectionNameKeyPath: nil, cacheName: nil)
         controller.delegate = self
-        return controller as! NSFetchedResultsController<ArticleManagedObject>
+        return controller as! NSFetchedResultsController<Article>
     }()
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
