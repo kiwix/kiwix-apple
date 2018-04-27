@@ -9,6 +9,8 @@
 import RealmSwift
 
 class ZimFile: Object {
+    // MARK: -  Properties
+    
     @objc dynamic var id = ""
     @objc dynamic var pid: String?
     
@@ -36,10 +38,6 @@ class ZimFile: Object {
     @objc dynamic var stateRaw = ""
     @objc dynamic var categoryRaw = ""
     
-    override static func primaryKey() -> String? {
-        return "id"
-    }
-    
     var state: State {
         get { return State(rawValue:stateRaw) ?? .cloud }
         set { stateRaw = newValue.rawValue }
@@ -50,17 +48,19 @@ class ZimFile: Object {
         set { categoryRaw = newValue.rawValue }
     }
     
+    // MARK: - Overrides
+    
+    override static func primaryKey() -> String? {
+        return "id"
+    }
+    
     // MARK: - Descriptions
     
-    static private let dateFormatter: DateFormatter = {
+    var creationDateDescription: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM-dd-yyyy"
         formatter.dateStyle = .medium
-        return formatter
-    }()
-    
-    var creationDateDescription: String {
-        return ZimFile.dateFormatter.string(from: creationDate)
+        return formatter.string(from: creationDate)
     }
     
     var fileSizeDescription: String {
@@ -76,6 +76,8 @@ class ZimFile: Object {
 //    
 //    @NSManaged public var articles: Set<Article>
 //    @NSManaged public var language: Language?
+    
+    // MARK: - Type Definition
     
     enum State: String, CustomStringConvertible {
         case cloud, downloadQueued, downloading, downloadPaused, downloadError, local, retained

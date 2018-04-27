@@ -41,7 +41,7 @@ class ScanProcedure: Procedure {
     private func updateDatabase() {
         do {
             let zimFileIDs = ZimMultiReader.shared.ids
-            let database = try Realm()
+            let database = try Realm(configuration: Realm.defaultConfig)
             
             try database.write {
                 for zimFileID in zimFileIDs {

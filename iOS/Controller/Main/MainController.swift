@@ -204,11 +204,14 @@ extension MainController: UISearchControllerDelegate, UISearchBarDelegate {
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        guard let searchResultController = searchController.searchResultsController as? SearchResultController,
-//            let result = searchResultController.searchResultsListController.results.first else {return}
-//        searchResultController.searchNoTextController.add(recentSearchText: searchResultController.searchText)
-//        load(url: result.url)
-//        searchController.isActive = false
+        // when return button on the keyboard is tapped, we load the first article in search result
+        guard let controller = searchController.searchResultsController as? SearchResultController else {return}
+        let resultsListController = controller.contentController.resultsListController
+        guard let firstResult = resultsListController.results.first else {return}
+        
+        load(url: firstResult.url)
+        resultsListController.update(recentSearchText: resultsListController.searchText)
+        searchController.isActive = false
     }
     
     func willPresentSearchController(_ searchController: UISearchController) {
