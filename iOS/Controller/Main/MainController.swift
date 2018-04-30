@@ -160,21 +160,16 @@ extension MainController: WebViewControllerDelegate {
         navigationBackButtonItem.button.isEnabled = controller.canGoBack
         navigationForwardButtonItem.button.isEnabled = controller.canGoForward
 
-        if let url = currentWebController?.currentURL, let zimFileID = url.host,
-            let _ = Bookmark.fetch(zimFileID: zimFileID, path: url.path) {
-            bookmarkButtonItem.button.isBookmarked = true
+        if let url = currentWebController?.currentURL, let zimFileID = url.host {
+            do {
+                let database = try Realm(configuration: Realm.defaultConfig)
+                let predicate = NSPredicate(format: "zimFile.id == %@ AND path == %@", zimFileID, url.path)
+                let resultCount = database.objects(Bookmark.self).filter(predicate).count
+                bookmarkButtonItem.button.isBookmarked = resultCount > 0
+            } catch {}
         } else {
             bookmarkButtonItem.button.isBookmarked = false
         }
-
-//        if let url = currentWebController?.currentURL,
-//            let article = Article.fetch(url: url, insertIfNotExist: true, context: PersistentContainer.shared.viewContext) {
-//            article.title = controller.currentTitle
-//            article.lastReadDate = Date()
-//            currentArticle = article
-//        } else {
-//            bookmarkButtonItem.button.isBookmarked = false
-//        }
         
         if currentPanelController === tableOfContentController {
             updateTableOfContentsIfNeeded()
