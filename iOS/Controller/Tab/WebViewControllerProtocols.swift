@@ -10,7 +10,7 @@ import UIKit
 
 
 protocol WebViewController {
-    weak var delegate: WebViewControllerDelegate? {get set}
+    var delegate: WebViewControllerDelegate? {get set}
     var canGoBack: Bool {get}
     var canGoForward: Bool {get}
     var currentURL: URL? {get}

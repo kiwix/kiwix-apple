@@ -77,13 +77,13 @@ class LegacyWebController: UIViewController, UIWebViewDelegate, WebViewControlle
     func extractImageURLs(completion: @escaping (([URL]) -> Void)) {
         let javascript = "getImageURLs()"
         guard let urls = webView.context.evaluateScript(javascript).toArray() as? [String] else {completion([]); return}
-        completion(urls.flatMap({ URL(string: $0) }))
+        completion(urls.compactMap({ URL(string: $0) }))
     }
     
     func extractTableOfContents(completion: @escaping ((URL?, [TableOfContentItem]) -> Void)) {
         let javascript = "tableOfContents.getHeadingObjects()"
         guard let elements = webView.context.evaluateScript(javascript).toArray() as? [[String: Any]] else {completion(currentURL, []); return}
-        let items = elements.flatMap({ TableOfContentItem(rawValue: $0) })
+        let items = elements.compactMap({ TableOfContentItem(rawValue: $0) })
         completion(currentURL, items)
     }
     
