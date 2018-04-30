@@ -12,19 +12,6 @@ import RealmSwift
 import SwiftyUserDefaults
 
 class MainController: UIViewController {
-//    private var currentArticleBookmarkObserver: NSKeyValueObservation? = nil
-//    private var currentArticle: Article? = nil {
-//        didSet {
-//            guard let article = currentArticle else {return}
-//
-//            // update bookmark button when the bookmark state of current article is changed
-//            bookmarkButtonItem.button.isBookmarked = article.isBookmarked
-//            currentArticleBookmarkObserver = article.observe(\.isBookmarked) { (article, change) in
-//                self.bookmarkButtonItem.button.isBookmarked = article.isBookmarked
-//            }
-//        }
-//    }
-    
     var shouldShowSearch = false
     var isShowingPanel: Bool {
         return panelContainerLeadingConstraint.priority.rawValue > 750
