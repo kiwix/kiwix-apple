@@ -7,23 +7,23 @@
 //
 
 import UIKit
-import CoreData
 import NotificationCenter
+import RealmSwift
 import SwiftyUserDefaults
 
 class MainController: UIViewController {
-    private var currentArticleBookmarkObserver: NSKeyValueObservation? = nil
-    private var currentArticle: Article? = nil {
-        didSet {
-            guard let article = currentArticle else {return}
-            
-            // update bookmark button when the bookmark state of current article is changed
-            bookmarkButtonItem.button.isBookmarked = article.isBookmarked
-            currentArticleBookmarkObserver = article.observe(\.isBookmarked) { (article, change) in
-                self.bookmarkButtonItem.button.isBookmarked = article.isBookmarked
-            }
-        }
-    }
+//    private var currentArticleBookmarkObserver: NSKeyValueObservation? = nil
+//    private var currentArticle: Article? = nil {
+//        didSet {
+//            guard let article = currentArticle else {return}
+//
+//            // update bookmark button when the bookmark state of current article is changed
+//            bookmarkButtonItem.button.isBookmarked = article.isBookmarked
+//            currentArticleBookmarkObserver = article.observe(\.isBookmarked) { (article, change) in
+//                self.bookmarkButtonItem.button.isBookmarked = article.isBookmarked
+//            }
+//        }
+//    }
     
     var shouldShowSearch = false
     var isShowingPanel: Bool {
@@ -159,14 +159,22 @@ extension MainController: WebViewControllerDelegate {
     func webViewDidFinishLoading(controller: WebViewController) {
         navigationBackButtonItem.button.isEnabled = controller.canGoBack
         navigationForwardButtonItem.button.isEnabled = controller.canGoForward
-        if let url = currentWebController?.currentURL,
-            let article = Article.fetch(url: url, insertIfNotExist: true, context: PersistentContainer.shared.viewContext) {
-            article.title = controller.currentTitle
-            article.lastReadDate = Date()
-            currentArticle = article
+
+        if let url = currentWebController?.currentURL, let zimFileID = url.host,
+            let _ = Bookmark.fetch(zimFileID: zimFileID, path: url.path) {
+            bookmarkButtonItem.button.isBookmarked = true
         } else {
             bookmarkButtonItem.button.isBookmarked = false
         }
+
+//        if let url = currentWebController?.currentURL,
+//            let article = Article.fetch(url: url, insertIfNotExist: true, context: PersistentContainer.shared.viewContext) {
+//            article.title = controller.currentTitle
+//            article.lastReadDate = Date()
+//            currentArticle = article
+//        } else {
+//            bookmarkButtonItem.button.isBookmarked = false
+//        }
         
         if currentPanelController === tableOfContentController {
             updateTableOfContentsIfNeeded()
@@ -271,7 +279,7 @@ extension MainController: TableOfContentControllerDelegate, BookmarkControllerDe
                     "url": url.absoluteString,
                     "thumbImageData": article.thumbnailData ?? article.book?.favIcon ?? Data()
                 ]
-            }).flatMap({ $0 })
+            }).compactMap({ $0 })
         UserDefaults(suiteName: "group.kiwix")?.set(bookmarks, forKey: "bookmarks")
         NCWidgetController().setHasContent(bookmarks.count > 0, forWidgetWithBundleIdentifier: "self.Kiwix.Bookmarks")
     }
@@ -329,45 +337,53 @@ extension MainController: BarButtonItemDelegate {
     func buttonLongPressed(item: BarButtonItem, button: UIButton) {
         switch item {
         case bookmarkButtonItem:
-            let context = PersistentContainer.shared.viewContext
-            guard let webController = currentWebController,
-                let article = currentArticle else {return}
+            guard let url = currentWebController?.currentURL, let zimFileID = url.host else {return}
+            let path = url.path
             
-            article.isBookmarked = !article.isBookmarked
-            article.bookmarkDate = Date()
-
-            if article.isBookmarked {
-                webController.extractSnippet(completion: { (snippet) in
-                    context.perform({
-                        article.snippet = snippet
+            do {
+                let database = try Realm(configuration: Realm.defaultConfig)
+                let predicate = NSPredicate(format: "zimFile.id == %@ AND path == %@", zimFileID, path)
+                if let bookmark = database.objects(Bookmark.self).filter(predicate).first {
+                    presentBookmarkHUDController(isBookmarked: false, completion: nil)
+                    try database.write {
+                        database.delete(bookmark)
+                    }
+                } else {
+                    guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID),
+                        let webController = currentWebController else {return}
+                    let bookmark = Bookmark()
+                    bookmark.zimFile = zimFile
+                    bookmark.path = path
+                    bookmark.title = webController.currentTitle ?? ""
+                    bookmark.date = Date()
+                    
+                    let gathering = DispatchGroup()
+                    
+                    gathering.enter()
+                    webController.extractSnippet(completion: { (snippet) in
+                        bookmark.snippet = snippet
+                        gathering.leave()
                     })
-                })
-
-                if article.book?.hasPic ?? false {
-                    webController.extractImageURLs(completion: { (urls) in
-                        guard let url = urls.first else {return}
-                        context.perform({
-                            article.thumbImagePath = url.path
+                    
+                    if zimFile.hasPicture {
+                        gathering.enter()
+                        webController.extractImageURLs(completion: { (urls) in
+                            bookmark.thumbImagePath = urls.first?.path
+                            gathering.leave()
                         })
+                    }
+                    
+                    gathering.notify(queue: .main, execute: {
+                        self.presentBookmarkHUDController(isBookmarked: true, completion: nil)
+                        do {
+                            let database = try Realm(configuration: Realm.defaultConfig)
+                            try database.write {
+                                database.add(bookmark)
+                            }
+                        } catch {}
                     })
                 }
-            }
-
-            let controller = HUDController()
-            controller.modalPresentationStyle = .custom
-            controller.transitioningDelegate = controller
-            controller.direction = article.isBookmarked ? .down : .up
-            controller.imageView.image = article.isBookmarked ? #imageLiteral(resourceName: "StarAdd") : #imageLiteral(resourceName: "StarRemove")
-            controller.label.text = article.isBookmarked ?
-                NSLocalizedString("Added", comment: "Bookmark HUD") :
-                NSLocalizedString("Removed", comment: "Bookmark HUD")
-
-            present(controller, animated: true, completion: {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                    controller.dismiss(animated: true, completion: nil)
-                })
-                self.updateBookmarkWidgetData()
-            })
+            } catch {return}
         default:
             break
         }
@@ -506,5 +522,24 @@ extension MainController {
             navigationController.navigationBar.prefersLargeTitles = true
         }
         self.navigationController?.present(navigationController, animated: animated, completion: completion)
+    }
+    
+    private func presentBookmarkHUDController(isBookmarked: Bool, completion: (() -> Void)?) {
+        let controller = HUDController()
+        controller.modalPresentationStyle = .custom
+        controller.transitioningDelegate = controller
+        controller.direction = isBookmarked ? .down : .up
+        controller.imageView.image = isBookmarked ? #imageLiteral(resourceName: "StarAdd") : #imageLiteral(resourceName: "StarRemove")
+        controller.label.text = isBookmarked ?
+            NSLocalizedString("Added", comment: "Bookmark HUD") :
+            NSLocalizedString("Removed", comment: "Bookmark HUD")
+
+        present(controller, animated: true, completion: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                controller.dismiss(animated: true, completion: nil)
+            })
+            self.bookmarkButtonItem.button.isBookmarked = isBookmarked
+            self.updateBookmarkWidgetData()
+        })
     }
 }
