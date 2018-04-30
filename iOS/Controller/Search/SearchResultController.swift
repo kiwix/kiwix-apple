@@ -58,7 +58,6 @@ class SearchResultController: UIViewController, SearchQueueEvents, UISearchResul
         edgesForExtendedLayout = []
         configureChildViewControllers()
         configureConstraints()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -82,7 +82,7 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
     
     // MARK: - Observer
     
-    func configureDatabaseObserver() {
+    private func configureDatabaseObserver() {
         changeToken = zimFiles?.observe({ (changes) in
             switch changes {
             case .initial:
