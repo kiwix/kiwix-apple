@@ -7,76 +7,9 @@
 //
 
 import CoreData
+import RealmSwift
 import ProcedureKit
 import SwiftyUserDefaults
-
-class LibraryRefreshProcedureNew: Procedure {
-    let progress = Progress(totalUnitCount: 100)
-    private let processingProgress = Progress()
-    
-    override func execute() {
-        let request: URLRequest = {
-            let url = URL(string: "https://download.kiwix.org/library/library_zim.xml")!
-            var request = URLRequest(url: url)
-            request.timeoutInterval = 30.0
-            return request
-        }()
-        
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            NetworkActivityController.shared.taskDidFinish(identifier: "LibraryRefreshProcedure")
-            if let error = error {
-                self.finish(withError: error)
-            } else if let data = data {
-                let context = PersistentContainer.shared.newBackgroundContext()
-                let processor = LibraryXMLProcessor(data: data, context: context, isOverwriting: false)
-                processor.parser.parse()
-            }
-        }
-        if #available(iOS 11.0, *) {
-            progress.addChild(task.progress, withPendingUnitCount: 40)
-        }
-        NetworkActivityController.shared.taskDidStart(identifier: "LibraryRefreshProcedure")
-        task.resume()
-    }
-}
-
-private class LibraryXMLProcessor: NSObject, XMLParserDelegate {
-    let parser: XMLParser
-    let context: NSManagedObjectContext
-    
-    init(data: Data, context: NSManagedObjectContext, isOverwriting: Bool) {
-        self.parser = XMLParser(data: data)
-        self.context = context
-        
-        super.init()
-        parser.delegate = self
-    }
-    
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?,
-                qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
-        
-    }
-}
-
-class BookMetaDataParser {
-    class func getArticleCount(attributes: [String : String]) -> Int64 {
-        guard let string = attributes["articleCount"], let value = Int64(string) else {return 0}
-        return value
-    }
-    
-    class func getMediaCount(attributes: [String : String]) -> Int64 {
-        guard let string = attributes["mediaCount"], let value = Int64(string) else {return 0}
-        return value
-    }
-    
-    class func getFileSize(attributes: [String : String]) -> Int64 {
-        guard let string = attributes["size"], let value = Int64(string) else {return 0}
-        return value * 1024
-    }
-}
-
-
-
 
 class LibraryRefreshProcedure: GroupProcedure {
     init() {
@@ -108,17 +41,13 @@ private class DownloadProcedure: NetworkDataProcedure<URLSession> {
 
 private class ProcessProcedure: Procedure, InputProcedure, XMLParserDelegate {
     var input: Pending<HTTPPayloadResponse<Data>> = .pending
-    private let context: NSManagedObjectContext
+    private var latest = [String: [String: Any]]()
     
-    private var storeBookIDs = Set<String>()
-    private var memoryBookIDs = Set<String>()
-    
-    private(set) var hasUpdate = false
-    
-    override init() {
-        self.context = PersistentContainer.shared.newBackgroundContext()
-        super.init()
-    }
+    private let dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter
+    }()
     
     override func execute() {
         guard let data = input.value?.payload else {
@@ -126,21 +55,34 @@ private class ProcessProcedure: Procedure, InputProcedure, XMLParserDelegate {
             return
         }
         
-        context.performAndWait {
-            storeBookIDs = Set(Book.fetchAll(context: context).map({ $0.id }))
+        // prase xml
+        let parser = XMLParser(data: data)
+        parser.delegate = self
+        parser.parse()
+        
+        // update database
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
             
-            let parser = XMLParser(data: data)
-            parser.delegate = self
-            parser.parse()
+            let predicate = NSPredicate(format: "NOT id IN %@ AND stateRaw == %@", Set(latest.keys), ZimFile.State.cloud.rawValue)
+            let oldZimFiles = database.objects(ZimFile.self).filter(predicate)
             
-            let toBeDeleted = storeBookIDs.subtracting(memoryBookIDs)
-            hasUpdate = toBeDeleted.count > 0 || hasUpdate
-            
-            for id in toBeDeleted {
-                guard let book = Book.fetch(id: id, context: self.context), book.state == .cloud else {continue}
-                self.context.delete(book)
+            try database.write {
+                // remove old zim files from database
+                oldZimFiles.forEach({ database.delete($0) })
+                
+                // add new zim files to database
+                for (zimFileID, meta) in latest {
+                    guard database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) == nil else {continue}
+                    
+                    var meta = meta
+                    clean(meta: &meta)
+                    let zimFile = ZimFile(value: meta)
+                    database.add(zimFile)
+                }
             }
-            if context.hasChanges { try? context.save() }
+        } catch {
+            finish(withError: error)
         }
         
         Defaults[.libraryLastRefreshTime] = Date()
@@ -149,83 +91,47 @@ private class ProcessProcedure: Procedure, InputProcedure, XMLParserDelegate {
     
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?,
                 qualifiedName qName: String?, attributes attributeDict: [String : String]) {
-        guard elementName == "book", let id = attributeDict["id"] else {return}
-        if !storeBookIDs.contains(id) {
-            hasUpdate = true
-            context.performAndWait({
-                self.addBook(meta: attributeDict, in: self.context)
-            })
-        }
-        memoryBookIDs.insert(id)
+        guard elementName == "book", let zimFileID = attributeDict["id"] else {return}
+        latest[zimFileID] = attributeDict
     }
     
     func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
         finish(withError: parseError)
     }
     
-    func addBook(meta: [String: String], in context: NSManagedObjectContext) {
-        guard let id = meta["id"] else {return}
-        let book = Book(context: context)
+    private func clean( meta: inout [String: Any]) {
+        meta["pid"] = meta["name"]
+        meta["bookDescription"] = meta["description"]
         
-        book.id = id
-        book.title = meta["title"]
-        book.creator = meta["creator"]
-        book.publisher = meta["publisher"]
-        book.bookDescription = meta["description"]
-        book.meta4URL = meta["url"]
-        book.pid = meta["name"]
+        if let language = meta["language"] as? String {
+            meta["languageCode"] = Locale.canonicalLanguageIdentifier(from: language)
+        }
         
-        book.articleCount = BookMetaDataParser.getArticleCount(attributes: meta)
-        book.mediaCount = BookMetaDataParser.getMediaCount(attributes: meta)
-        book.fileSize = BookMetaDataParser.getFileSize(attributes: meta)
-        book.category = {
-            guard let urlString = meta["url"],
-                let components = URL(string: urlString)?.pathComponents,
-                components.indices ~= 2 else {return nil}
-            if let category = BookCategory(rawValue: components[2]) {
-                return category.rawValue
-            } else if components[2] == "stack_exchange" {
-                return BookCategory.stackExchange.rawValue
-            } else {
-                return BookCategory.other.rawValue
-            }
-        }()
+        if let date = meta["date"] as? String {
+            meta["creationDate"] = dateFormatter.date(from: date)
+        }
         
-        book.date = {
-            guard let date = meta["date"] else {return nil}
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            return dateFormatter.date(from: date)
-        }()
+        if let articleCount = meta["articleCount"] as? String, let count = Int64(articleCount) {
+            meta["articleCount"] = count
+        }
         
-        book.favIcon = {
-            guard let favIcon = meta["favicon"] else {return nil}
-            return Data(base64Encoded: favIcon, options: .ignoreUnknownCharacters)
-        }()
+        if let mediaCount = meta["mediaCount"] as? String, let count = Int64(mediaCount) {
+            meta["mediaCount"] = count
+        }
+        if let size = meta["size"] as? String, let fileSize = Int64(size) {
+            meta["fileSize"] = fileSize * 1024
+        }
         
-        book.hasPic = {
-            if let tags = meta["tags"], tags.contains("nopic") {
-                return false
-            } else if let meta4url = book.meta4URL, meta4url.contains("nopic") {
-                return false
-            } else {
-                return true
-            }
-        }()
+        if let tags = meta["tags"] as? String {
+            meta["hasPicture"] = !tags.contains("nopic")
+            meta["hasEmbeddedIndex"] = tags.contains("_ftindex")
+        }
         
-        book.hasIndex = {
-            if let tags = meta["tags"], tags.contains("_ftindex") {
-                return true
-            } else {
-                return false
-            }
-        }()
+        if let favIcon = meta["favicon"] as? String, let icon = Data(base64Encoded: favIcon, options: .ignoreUnknownCharacters) {
+            meta["icon"] = icon
+        }
         
-        book.language = {
-            guard let languageCode = meta["language"],
-                let language = Language.fetchOrAdd(languageCode, context: context) else {return nil}
-            return language
-        }()
+        meta["remoteURL"] = meta["url"]
     }
 }
 
