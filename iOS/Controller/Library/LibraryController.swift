@@ -34,8 +34,8 @@ class LibraryController: UIViewController {
                     self.currentMode = .split
                 } else {
                     guard self.currentMode != .onboarding else {return}
-                    let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LibraryOnboardingController")
-                    self.setChild(controller: UINavigationController(rootViewController: controller))
+                    let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LibraryOnboardingNavController")
+                    self.setChild(controller: controller)
                     self.currentMode = .onboarding
                 }
             default:
@@ -59,7 +59,7 @@ class LibraryController: UIViewController {
         controller.didMove(toParentViewController: self)
     }
     
-    enum Mode {
+    private enum Mode {
         case onboarding, split
     }
 }
