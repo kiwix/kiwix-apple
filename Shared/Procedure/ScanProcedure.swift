@@ -46,8 +46,10 @@ class ScanProcedure: Procedure {
             try database.write {
                 for zimFileID in zimFileIDs {
                     if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) {
+                        // if zim file already exist in database, simply set its state to local
                         zimFile.state = .local
                     } else {
+                        // if zim file does not exist in database, create the object
                         var meta = ZimMultiReader.shared.getMetaData(id: zimFileID)
                         clean(meta: &meta)
                         
