@@ -46,13 +46,10 @@ class LibraryOnboardingController: UIViewController {
         procedure.add(observer: DidFinishObserver(didFinish: { (_, errors) in
             OperationQueue.main.addOperation({
                 self.activityIndicator.stopAnimating()
-                if errors.count == 0 {
-                    //                    if let libraryController = self.navigationController?.parent as? LibraryController {
-                    //                        libraryController.config()
-                    //                    }
-                } else {
+                if errors.count > 0 {
                     self.downloadButton.isEnabled = true
                 }
+                // TODO: - show alert
             })
         }))
         Queue.shared.add(libraryRefresh: procedure)
