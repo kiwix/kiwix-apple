@@ -25,7 +25,7 @@ class LibraryOnboardingController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
         
         titleLabel.text = NSLocalizedString("Download Library Catalog", comment: "Library Onboarding")
-        subtitleLabel.text = NSLocalizedString("After that, browse and download a book. Zim files added through iTunes File Sharing will automatically show up.", comment: "Library Onboarding")
+        subtitleLabel.text = NSLocalizedString("After that, browse and download a book. Zim files added through iTunes File Sharing will automatically appear.", comment: "Library Onboarding")
         subtitleLabel.numberOfLines = 0
         downloadButton.setTitle(NSLocalizedString("Download", comment: "Library Onboarding"), for: .normal)
         downloadButton.setTitle(NSLocalizedString("Downloading...", comment: "Library Onboarding"), for: .disabled)
