@@ -355,7 +355,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FcF-Yh-Bcn" customClass="RoundedButton" customModule="Kiwix" customModuleProvider="target">
                                         <rect key="frame" x="121" y="294" width="46" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="360" id="D21-SR-4MG"/>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="300" id="D21-SR-4MG"/>
                                         </constraints>
                                         <state key="normal" title="Button"/>
                                         <connections>
