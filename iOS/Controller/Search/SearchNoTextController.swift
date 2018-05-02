@@ -54,17 +54,20 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
         tableView.register(RecentSearchTableViewCell.self, forCellReuseIdentifier: "RecentSearchCell")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureDatabaseObserver()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        recentSearchTexts = Defaults[.recentSearchTexts]
         if recentSearchTexts.count > 0 {
             sections.insert(.recentSearch, at: 0)
         }
+        tableView.reloadData()
+        configureChangeToken()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        recentSearchTexts = Defaults[.recentSearchTexts]
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        changeToken = nil
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -82,11 +85,9 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
     
     // MARK: - Observer
     
-    private func configureDatabaseObserver() {
+    private func configureChangeToken() {
         changeToken = zimFiles?.observe({ (changes) in
             switch changes {
-            case .initial:
-                self.tableView.reloadData()
             case .update(_, let deletions, let insertions, let updates):
                 guard let sectionIndex = self.sections.index(of: .searchFilter) else {return}
                 self.tableView.beginUpdates()
