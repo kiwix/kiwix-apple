@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import RealmSwift
 import ProcedureKit
 
 class LibraryMasterController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
@@ -156,8 +157,8 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
             let controller = LibraryBookDetailController(book: fetchedResultController.object(at: indexPath))
             showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
         } else {
-            let controller = LibraryCategoryController(category: categories[indexPath.row], title: categoryNames[indexPath.row])
-            showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
+//            let controller = LibraryCategoryController(category: categories[indexPath.row], title: categoryNames[indexPath.row])
+//            showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
         }
     }
     

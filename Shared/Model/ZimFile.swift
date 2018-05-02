@@ -171,7 +171,7 @@ class ZimFile: Object {
             case .wiktionary:
                 return #imageLiteral(resourceName: "Book")
             case .ted:
-                return #imageLiteral(resourceName: "Vikidia")
+                return #imageLiteral(resourceName: "TED")
             case .vikidia:
                 return #imageLiteral(resourceName: "Vikidia")
             case .stackExchange:
