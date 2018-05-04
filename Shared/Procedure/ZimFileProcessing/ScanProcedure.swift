@@ -54,6 +54,20 @@ class ScanProcedure: Procedure {
                         clean(meta: &meta)
                         
                         let zimFile = ZimFile(value: meta)
+                        
+                        zimFile.language = {
+                            guard let code = meta["languageCode"] as? String else {return nil}
+                            if let language = database.object(ofType: ZimFileLanguage.self, forPrimaryKey: code) {
+                                return language
+                            } else {
+                                let language = ZimFileLanguage()
+                                language.code = code
+                                database.add(language)
+                                return language
+                            }
+                        }()
+                        
+                        
                         zimFile.state = .local
                         zimFile.category = {
                             if let pid = zimFile.pid,
@@ -93,6 +107,7 @@ class ScanProcedure: Procedure {
         if let language = meta["language"] as? String {
             meta["languageCode"] = Locale.canonicalLanguageIdentifier(from: language)
         }
+        meta.removeValue(forKey: "language")
         if let date = meta["date"] as? String {
             meta["creationDate"] = ScanProcedure.dateFormatter.date(from: date)
         }

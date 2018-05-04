@@ -6,7 +6,6 @@
 //  Copyright © 2017 Chris Li. All rights reserved.
 //
 
-import CoreData
 import RealmSwift
 import ProcedureKit
 import SwiftyUserDefaults
@@ -39,7 +38,7 @@ private class DownloadProcedure: NetworkDataProcedure<URLSession> {
     }
 }
 
-private class ProcessProcedure: Procedure, InputProcedure, XMLParserDelegate {
+private class ProcessProcedure: ZimFileProcessingProcedure, InputProcedure, XMLParserDelegate {
     var input: Pending<HTTPPayloadResponse<Data>> = .pending
     private var latest = [String: [String: Any]]()
     
@@ -75,10 +74,9 @@ private class ProcessProcedure: Procedure, InputProcedure, XMLParserDelegate {
                 for (zimFileID, meta) in latest {
                     guard database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) == nil else {continue}
                     
-                    var meta = meta
-                    clean(meta: &meta)
-                    let zimFile = ZimFile(value: meta)
-                    database.add(zimFile)
+                    let zimFile = createZimFile(database: database, meta: meta)
+                    zimFile.state = .cloud
+                    print(zimFile)
                 }
             }
         } catch {
@@ -97,41 +95,6 @@ private class ProcessProcedure: Procedure, InputProcedure, XMLParserDelegate {
     
     func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
         finish(withError: parseError)
-    }
-    
-    private func clean( meta: inout [String: Any]) {
-        meta["pid"] = meta["name"]
-        meta["bookDescription"] = meta["description"]
-        
-        if let language = meta["language"] as? String {
-            meta["languageCode"] = Locale.canonicalLanguageIdentifier(from: language)
-        }
-        
-        if let date = meta["date"] as? String {
-            meta["creationDate"] = dateFormatter.date(from: date)
-        }
-        
-        if let articleCount = meta["articleCount"] as? String, let count = Int64(articleCount) {
-            meta["articleCount"] = count
-        }
-        
-        if let mediaCount = meta["mediaCount"] as? String, let count = Int64(mediaCount) {
-            meta["mediaCount"] = count
-        }
-        if let size = meta["size"] as? String, let fileSize = Int64(size) {
-            meta["fileSize"] = fileSize * 1024
-        }
-        
-        if let tags = meta["tags"] as? String {
-            meta["hasPicture"] = !tags.contains("nopic")
-            meta["hasEmbeddedIndex"] = tags.contains("_ftindex")
-        }
-        
-        if let favIcon = meta["favicon"] as? String, let icon = Data(base64Encoded: favIcon, options: .ignoreUnknownCharacters) {
-            meta["icon"] = icon
-        }
-        
-        meta["remoteURL"] = meta["url"]
     }
 }
 
