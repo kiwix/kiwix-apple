@@ -224,6 +224,26 @@
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		97CA46F4209CA921008CEA6D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				97CA46F5209CA950008CEA6D /* libaria2.0.dylib in CopyFiles */,
+				97CA46F6209CA950008CEA6D /* libicudata.58.2.dylib in CopyFiles */,
+				97CA46F7209CA950008CEA6D /* libicui18n.58.2.dylib in CopyFiles */,
+				97CA46F8209CA950008CEA6D /* libicuio.58.2.dylib in CopyFiles */,
+				97CA46F9209CA950008CEA6D /* libicuuc.58.2.dylib in CopyFiles */,
+				97CA46FA209CA950008CEA6D /* libkiwix.2.dylib in CopyFiles */,
+				97CA46FB209CA950008CEA6D /* liblzma.5.dylib in CopyFiles */,
+				97CA46FC209CA950008CEA6D /* libpugixml.dylib in CopyFiles */,
+				97CA46FD209CA950008CEA6D /* libxapian.30.dylib in CopyFiles */,
+				97CA46FE209CA950008CEA6D /* libz.1.2.8.dylib in CopyFiles */,
+				97CA46FF209CA950008CEA6D /* libzim.3.dylib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -656,7 +676,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97CA45E7209CA6B9008CEA6D /* libzim.3.dylib in Frameworks */,
+				97CA45E2209CA6B9008CEA6D /* liblzma.5.dylib in Frameworks */,
+				97CA45DF209CA6B9008CEA6D /* libicudata.58.2.dylib in Frameworks */,
 				97A68830207D40F500DBBE0D /* Pods_iOS.framework in Frameworks */,
+				97CA45E4209CA6B9008CEA6D /* libxapian.30.dylib in Frameworks */,
+				97CA45E5209CA6B9008CEA6D /* libicui18n.58.2.dylib in Frameworks */,
+				97CA45E1209CA6B9008CEA6D /* libaria2.0.dylib in Frameworks */,
 				97C5763D202CD9C000E37502 /* NotificationCenter.framework in Frameworks */,
 				97CA4947209D5E53008CEA6D /* libicudata.a in Frameworks */,
 				97CA4949209D5E53008CEA6D /* libxapian.a in Frameworks */,
@@ -705,8 +731,7 @@
 				977D7BBD1F9FC618009A8703 /* Queue.swift */,
 				97AC121420879252004779D1 /* SearchQueue.swift */,
 				975415D31F54C1870007EA6C /* SearchProcedure.swift */,
-				9702BE211F97FA4300E6B4EE /* LibraryRefreshProcedure.swift */,
-				977F983D1F9E43EC002ABFCE /* ScanProcedure.swift */,
+				97CA45D3209BB247008CEA6D /* ZimFileProcessing */,
 			);
 			path = Procedure;
 			sourceTree = "<group>";
@@ -927,6 +952,7 @@
 			children = (
 				97A68831207D4D6700DBBE0D /* RealmConfig.swift */,
 				97A6882D207D3DE300DBBE0D /* ZimFile.swift */,
+				97CA45CF209B9CB7008CEA6D /* ZimFileLanguage.swift */,
 				97242E152093A9AC00AA4436 /* Bookmark.swift */,
 			);
 			path = Model;
@@ -1443,6 +1469,7 @@
 				97A36C341F8C21210079B452 /* Frameworks */,
 				97A36C431F8C21210079B452 /* Resources */,
 				97A36C491F8C21210079B452 /* [CP] Embed Pods Frameworks */,
+				97CA46F4209CA921008CEA6D /* CopyFiles */,
 				97C57602202CB0E900E37502 /* Embed App Extensions */,
 				97242E282093AC2500AA4436 /* Embed Frameworks */,
 			);
@@ -1828,6 +1855,7 @@
 				97BAA542202B4C5E00500644 /* SettingBackupController.swift in Sources */,
 				97B1D0B61F9A3AE7000C7848 /* Network.swift in Sources */,
 				97C5763B202CB86800E37502 /* PersistentContainer.swift in Sources */,
+				97CA45D2209BB23F008CEA6D /* ZimFileProcessingProcedure.swift in Sources */,
 				97A6882E207D3DE300DBBE0D /* ZimFile.swift in Sources */,
 				971B8E58202246ED00C5C939 /* RecentSearchCells.swift in Sources */,
 				97242E162093A9AC00AA4436 /* Bookmark.swift in Sources */,
@@ -1841,6 +1869,7 @@
 				972521012009616B00B60A80 /* EmptyContentView.swift in Sources */,
 				97A36C571F8D5FCD0079B452 /* LibraryController.swift in Sources */,
 				972B66592006B1F0003F5365 /* BarButtonItem.swift in Sources */,
+				97CA45D0209B9CB7008CEA6D /* ZimFileLanguage.swift in Sources */,
 				97A36C321F8C21210079B452 /* AppDelegate.swift in Sources */,
 				979FD159201679C5007B5290 /* SearchResultsListController.swift in Sources */,
 				972B66602007F9F7003F5365 /* WebKitWebController.swift in Sources */,
@@ -2153,7 +2182,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = c11;
 				INFOPLIST_FILE = iOS/Support/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -2189,7 +2218,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = c11;
 				INFOPLIST_FILE = iOS/Support/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;

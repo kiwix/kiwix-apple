@@ -30,6 +30,41 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
+<<<<<<< HEAD
+=======
+            filePath = "iOS/Controller/Library/LibraryCategoryController.swift"
+            timestampString = "547138809.582791"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "162"
+            endingLineNumber = "162"
+            landmarkName = "configure(cell:indexPath:animated:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iOS/Controller/Library/LibraryCategoryController.swift"
+            timestampString = "547138809.582848"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "152"
+            endingLineNumber = "152"
+            landmarkName = "tableView(_:numberOfRowsInSection:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+>>>>>>> use new version of libkiwix
             filePath = "Shared/Procedure/LibraryRefreshProcedure.swift"
             timestampString = "547074450.8264019"
             startingColumnNumber = "9223372036854775807"
@@ -38,6 +73,7 @@
             endingLineNumber = "108"
             landmarkName = "execute()"
             landmarkType = "7">
+<<<<<<< HEAD
             <Locations>
                <Location
                   shouldBeEnabled = "Yes"
@@ -85,6 +121,8 @@
                   offsetFromSymbolStart = "16">
                </Location>
             </Locations>
+=======
+>>>>>>> use new version of libkiwix
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
