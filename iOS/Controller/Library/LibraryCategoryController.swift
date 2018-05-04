@@ -7,17 +7,26 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 import SwiftyUserDefaults
 
-class LibraryCategoryController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
-    let tableView = UITableView()
-    private(set) var category: BookCategory?
+class LibraryCategoryController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    private let tableView = UITableView()
+    private let category: ZimFile.Category
     
-    convenience init(category: BookCategory?, title: String?) {
-        self.init()
+    private var zimFiles: Results<ZimFile>?
+    private var changeToken: NotificationToken?
+    
+    // MARK: - Override
+    
+    init(category: ZimFile.Category) {
         self.category = category
-        self.title = title
+        super.init(nibName: nil, bundle: nil)
+        title = category.description
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func loadView() {
@@ -36,6 +45,12 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         if #available(iOS 11.0, *) {
             navigationController?.navigationBar.prefersLargeTitles = true
         }
+        configureDatabase()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureChangeToken()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -50,10 +65,41 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         }
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        changeToken = nil
+    }
+    
+    // MARK: -
+    
+    private func configureDatabase() {
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            let predicate = NSPredicate(format: "categoryRaw == %@", category.rawValue)
+            zimFiles = database.objects(ZimFile.self).filter(predicate)
+            changeToken = nil
+        } catch { return }
+    }
+    
+    private func configureChangeToken() {
+        changeToken = zimFiles?.observe({ (changes) in
+            switch changes {
+            case .initial:
+                self.tableView.reloadData()
+            case .update(let results, let deletions, let insertions, let updates):
+                self.tableView.beginUpdates()
+                
+                self.tableView.endUpdates()
+            default:
+                break
+            }
+        })
+    }
+    
     @objc func languageFilterBottonTapped(sender: UIBarButtonItem) {
         let controller = LibraryLanguageController()
         controller.dismissBlock = {[unowned self] in
-            self.reloadFetchedResultController()
+            self.configureDatabase()
         }
         let navigation = UINavigationController(rootViewController: controller)
         navigation.modalPresentationStyle = .popover
@@ -62,11 +108,11 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     }
     
     private func showLanguageFilter() {
-        let deviceLanguageCodes = Locale.preferredLanguages.flatMap({ $0.components(separatedBy: "-").first })
+        let deviceLanguageCodes = Locale.preferredLanguages.compactMap({ $0.components(separatedBy: "-").first })
         let deviceLanguageNames: [String] = {
             let names = NSMutableOrderedSet()
-            deviceLanguageCodes.flatMap({ (Locale.current as NSLocale).displayName(forKey: .identifier, value: $0) }).forEach({ names.add($0) })
-            return names.flatMap({ $0 as? String})
+            deviceLanguageCodes.compactMap({ (Locale.current as NSLocale).displayName(forKey: .identifier, value: $0) }).forEach({ names.add($0) })
+            return names.compactMap({ $0 as? String })
         }()
         
         let message = String(format: NSLocalizedString("You have set %@ as the preferred language(s) of the device. Would you like to hide books in other languages?", comment: "Language Filter"), deviceLanguageNames.joined(separator: ", "))
@@ -82,7 +128,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
             if context.hasChanges {
                 try? context.save()
             }
-            self.reloadFetchedResultController()
+            self.configureDatabase()
         }
         
         let alert = UIAlertController(title: NSLocalizedString("Language Filter", comment: "Language Filter"), message: message, preferredStyle: .alert)
@@ -99,11 +145,11 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     // MARK: - UITableViewDataSource & Delagates
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return fetchedResultController.sections?.count ?? 0
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultController.sections?[section].numberOfObjects ?? 0
+        return zimFiles?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -113,105 +159,30 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func configure(cell: TableViewCell, indexPath: IndexPath, animated: Bool = false) {
-        let book = fetchedResultController.object(at: indexPath)
-        cell.titleLabel.text = book.title
-        cell.detailLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
-        cell.thumbImageView.image = UIImage(data: book.favIcon ?? Data())
+        guard let zimFile = zimFiles?[indexPath.row] else {return}
+        cell.titleLabel.text = zimFile.title
+        cell.detailLabel.text = [zimFile.fileSizeDescription, zimFile.creationDateDescription, zimFile.articleCountDescription].joined(separator: ", ")
+        cell.thumbImageView.image = UIImage(data: zimFile.icon)
         cell.thumbImageView.contentMode = .scaleAspectFit
         cell.accessoryType = .disclosureIndicator
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return fetchedResultController.sections?[section].name
-    }
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        return fetchedResultController.sections?[section].name
+//    }
     
-    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return numberOfSections(in: tableView) > 5 ? fetchedResultController.sectionIndexTitles : nil
-    }
+//    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+//        return numberOfSections(in: tableView) > 5 ? fetchedResultController.sectionIndexTitles : nil
+//    }
     
-    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        return fetchedResultController.section(forSectionIndexTitle: title, at: index)
-    }
+//    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+//        return fetchedResultController.section(forSectionIndexTitle: title, at: index)
+//    }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        let controller = LibraryBookDetailController(book: fetchedResultController.object(at: indexPath))
-        navigationController?.pushViewController(controller, animated: true)
-    }
-    
-    // MARK: - NSFetchedResultsController
-    
-    private let managedObjectContext = PersistentContainer.shared.viewContext
-    private lazy var fetchedResultController: NSFetchedResultsController<Book> = {
-        let fetchRequest = Book.fetchRequest()
-        let langDescriptor = NSSortDescriptor(key: "language.name", ascending: true)
-        let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
-        fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
-        fetchRequest.predicate = self.predicate
-        fetchRequest.fetchBatchSize = 20
-        let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                    managedObjectContext: self.managedObjectContext,
-                                                    sectionNameKeyPath: "language.name", cacheName: nil)
-        controller.delegate = self
-        try? controller.performFetch()
-        return controller as! NSFetchedResultsController<Book>
-    }()
-    
-    private var predicate: NSCompoundPredicate {
-        let displayedLanguages = Language.fetch(displayed: true, context: managedObjectContext)
-        var subpredicates = [NSPredicate]()
-        if displayedLanguages.count > 0 {
-            subpredicates.append(NSPredicate(format: "language IN %@", displayedLanguages))
-        } else {
-            subpredicates.append(NSPredicate(format: "language.name != nil"))
-        }
-        if let category = category {
-            subpredicates.append(NSPredicate(format: "category == %@", category.rawValue))
-        }
-        return NSCompoundPredicate(andPredicateWithSubpredicates: subpredicates)
-    }
-    
-    func reloadFetchedResultController() {
-        fetchedResultController.fetchRequest.predicate = predicate
-        try? fetchedResultController.performFetch()
-        tableView.reloadData()
-    }
-    
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-        switch type {
-        case .insert:
-            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
-        case .delete:
-            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
-        default:
-            return
-        }
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch type {
-        case .insert:
-            guard let newIndexPath = newIndexPath else {return}
-            tableView.insertRows(at: [newIndexPath], with: .fade)
-        case .delete:
-            guard let indexPath = indexPath else {return}
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        case .update:
-            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
-            configure(cell: cell, indexPath: indexPath, animated: true)
-        case .move:
-            guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            tableView.insertRows(at: [newIndexPath], with: .fade)
-        }
-    }
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
-    }
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        tableView.deselectRow(at: indexPath, animated: true)
+//        let controller = LibraryBookDetailController(book: fetchedResultController.object(at: indexPath))
+//        navigationController?.pushViewController(controller, animated: true)
+//    }
 }
 

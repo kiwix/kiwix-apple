@@ -211,12 +211,19 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        tableView.deselectRow(at: indexPath, animated: true)
+        switch sections[indexPath.section] {
+        case .localZimFile:
+            break
+        case .downloadTask:
+            break
+        case .category:
+            let controller = LibraryCategoryController(category: categories[indexPath.row])
+            showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
+        }
 //        if indexPath.section < fetchedResultControllerSectionCount {
 //            let controller = LibraryBookDetailController(book: fetchedResultController.object(at: indexPath))
 //            showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
 //        } else {
-//            let controller = LibraryCategoryController(category: categories[indexPath.row], title: categoryNames[indexPath.row])
-//            showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
 //        }
     }
     
