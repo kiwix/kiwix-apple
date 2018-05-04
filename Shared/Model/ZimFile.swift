@@ -16,7 +16,7 @@ class ZimFile: Object {
     
     @objc dynamic var title = ""
     @objc dynamic var bookDescription = ""
-    @objc dynamic var languageCode = ""
+    @objc dynamic var language: ZimFileLanguage?
     @objc dynamic var creationDate = Date()
     
     @objc dynamic var creator = ""
@@ -24,7 +24,6 @@ class ZimFile: Object {
     
     @objc dynamic var articleCount: Int64 = 0
     @objc dynamic var mediaCount: Int64 = 0
-    @objc dynamic var globalCount: Int64 = 0
     @objc dynamic var fileSize: Int64 = 0
     
     @objc dynamic var hasPicture = false
@@ -35,8 +34,8 @@ class ZimFile: Object {
     
     @objc dynamic var remoteURL: String?
     
-    @objc dynamic var stateRaw = ""
-    @objc dynamic var categoryRaw = ""
+    @objc dynamic var stateRaw = State.cloud.rawValue
+    @objc dynamic var categoryRaw = Category.other.rawValue
     
     var state: State {
         get { return State(rawValue:stateRaw) ?? .cloud }
