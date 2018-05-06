@@ -129,10 +129,10 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
         std::string contentPathC = [contentPath cStringUsingEncoding:NSUTF8StringEncoding];
         
         try {
-            kiwix::Entry entry = reader->getEntryFromUrl(contentPathC);
+            kiwix::Entry entry = reader->getEntryFromPath(contentPathC);
             entry = entry.getFinalEntry();
             
-            std::string redirectedContentPathC = entry.getUrl();
+            std::string redirectedContentPathC = entry.getPath();
             if (redirectedContentPathC.substr(0, 1) != "/") {
                 redirectedContentPathC = "/" + redirectedContentPathC;
             }
@@ -158,10 +158,10 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
         std::shared_ptr<kiwix::Reader> reader = found->second;
         
         try {
-            kiwix::Entry entry = reader->getEntryFromUrl([contentURL cStringUsingEncoding:NSUTF8StringEncoding]);
+            kiwix::Entry entry = reader->getEntryFromPath([contentURL cStringUsingEncoding:NSUTF8StringEncoding]);
             NSData *data = [NSData dataWithBytes:entry.getContent().data() length:entry.getSize()];
             NSString *mime = [NSString stringWithUTF8String:entry.getMimetype().c_str()];
-            NSNumber *length = [NSNumber numberWithUnsignedInt:entry.getSize()];
+            NSNumber *length = [NSNumber numberWithUnsignedLongLong:entry.getSize()];
             return @{@"data": data, @"mime": mime, @"length": length};
         } catch (kiwix::NoEntry) {
             return nil;

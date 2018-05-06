@@ -256,7 +256,7 @@ class LibraryBookDetailController: UIViewController, UITableViewDelegate, UITabl
                 cell.textLabel?.text = NSLocalizedString("Date", comment: "Book Detail Cell")
                 cell.detailTextLabel?.text = book.dateDescription
             case .hasIndex:
-                cell.textLabel?.text = NSLocalizedString("Indexed", comment: "Book Detail Cell")
+                cell.textLabel?.text = NSLocalizedString("Index", comment: "Book Detail Cell")
                 cell.detailTextLabel?.text = {
                     if book.state == .local {
                         if ZimMultiReader.shared.hasEmbeddedIndex(id: book.id) {
