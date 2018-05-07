@@ -11,7 +11,7 @@ import RealmSwift
 import ProcedureKit
 import SwiftyUserDefaults
 
-class ScanProcedure: Procedure {
+class ScanProcedure: ZimFileProcessingProcedure {
     let directories: [URL]
     
     init(directoryURL: URL) {
@@ -50,40 +50,9 @@ class ScanProcedure: Procedure {
                         if zimFile.state != .local { zimFile.state = .local }
                     } else {
                         // if zim file does not exist in database, create the object
-                        var meta = ZimMultiReader.shared.getMetaData(id: zimFileID)
-                        clean(meta: &meta)
-                        
-                        let zimFile = ZimFile(value: meta)
-                        
-                        zimFile.language = {
-                            guard let code = meta["languageCode"] as? String else {return nil}
-                            if let language = database.object(ofType: ZimFileLanguage.self, forPrimaryKey: code) {
-                                return language
-                            } else {
-                                let language = ZimFileLanguage()
-                                language.code = code
-                                database.add(language)
-                                return language
-                            }
-                        }()
-                        
-                        
+                        let meta = ZimMultiReader.shared.getMetaData(id: zimFileID)
+                        let zimFile = createZimFile(database: database, meta: meta)
                         zimFile.state = .local
-                        zimFile.category = {
-                            if let pid = zimFile.pid,
-                                let categoryRaw = pid.split(separator: ".").last?.split(separator: "_").first {
-                                return ZimFile.Category(rawValue: String(categoryRaw)) ?? .other
-                            } else if let categoryRaw = ZimMultiReader.shared.getFileURL(zimFileID: zimFileID)?.pathComponents.last?.split(separator: "_").first {
-                                if categoryRaw.contains("stackexchange") {
-                                    return .stackExchange
-                                } else {
-                                    return ZimFile.Category(rawValue: String(categoryRaw)) ?? .other
-                                }
-                            } else {
-                                return .other
-                            }
-                        }()
-                        database.add(zimFile)
                     }
                 }
                 
@@ -99,34 +68,5 @@ class ScanProcedure: Procedure {
             }
         } catch {}
     }
-    
-    private func clean(meta: inout [String: Any]) {
-        if let name = meta["name"] as? String, name != "" { meta["pid"] = name }
-        
-        if let description = meta["description"] as? String { meta["bookDescription"] = description }
-        if let language = meta["language"] as? String {
-            meta["languageCode"] = Locale.canonicalLanguageIdentifier(from: language)
-        }
-        meta.removeValue(forKey: "language")
-        if let date = meta["date"] as? String {
-            meta["creationDate"] = ScanProcedure.dateFormatter.date(from: date)
-        }
-        
-        if let articleCount = meta["articleCount"] as? NSNumber { meta["articleCount"] = articleCount.int64Value }
-        if let mediaCount = meta["mediaCount"] as? NSNumber { meta["mediaCount"] = mediaCount.int64Value }
-        if let globalCount = meta["globalCount"] as? NSNumber { meta["globalCount"] = globalCount.int64Value }
-        if let fileSize = meta["fileSize"] as? NSNumber { meta["fileSize"] = fileSize.int64Value }
-        
-        if let tags = meta["tags"] as? String {
-            meta["hasPicture"] = !tags.contains("nopic")
-            meta["hasEmbeddedIndex"] = tags.contains("_ftindex")
-        }
-    }
-    
-    static private let dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        return dateFormatter
-    }()
 }
 

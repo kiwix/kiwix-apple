@@ -57,13 +57,20 @@ class ZimFileProcessingProcedure: Procedure {
         
         if let articleCount = meta["articleCount"] as? String, let count = Int64(articleCount) {
             zimFile.articleCount = count
+        } else if let articleCount = meta["articleCount"] as? NSNumber {
+            zimFile.articleCount = articleCount.int64Value
         }
         
         if let mediaCount = meta["mediaCount"] as? String, let count = Int64(mediaCount) {
             zimFile.mediaCount = count
+        } else if let mediaCount = meta["mediaCount"] as? NSNumber {
+            zimFile.mediaCount = mediaCount.int64Value
         }
-        if let size = meta["size"] as? String, let fileSize = Int64(size) {
-            zimFile.fileSize = fileSize * 1024
+        
+        if let size = meta["size"] as? String, let kiloByteCount = Int64(size) {
+            zimFile.fileSize = kiloByteCount * 1024
+        } else if let byteCount = meta["fileSize"] as? NSNumber {
+            zimFile.fileSize = byteCount.int64Value
         }
         
         if let tags = meta["tags"] as? String {
@@ -72,6 +79,8 @@ class ZimFileProcessingProcedure: Procedure {
         }
         
         if let favIcon = meta["favicon"] as? String, let icon = Data(base64Encoded: favIcon, options: .ignoreUnknownCharacters) {
+            zimFile.icon = icon
+        } else if let icon = meta["icon"] as? Data {
             zimFile.icon = icon
         }
         

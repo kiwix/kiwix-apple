@@ -42,12 +42,6 @@ private class ProcessProcedure: ZimFileProcessingProcedure, InputProcedure, XMLP
     var input: Pending<HTTPPayloadResponse<Data>> = .pending
     private var latest = [String: [String: Any]]()
     
-    private let dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        return dateFormatter
-    }()
-    
     override func execute() {
         guard let data = input.value?.payload else {
             finish(withError: ProcedureKitError.requirementNotSatisfied())
@@ -76,7 +70,6 @@ private class ProcessProcedure: ZimFileProcessingProcedure, InputProcedure, XMLP
                     
                     let zimFile = createZimFile(database: database, meta: meta)
                     zimFile.state = .cloud
-                    print(zimFile)
                 }
             }
         } catch {
