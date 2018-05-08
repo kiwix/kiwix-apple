@@ -14,6 +14,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     private let tableView = UITableView()
     private let category: ZimFile.Category
     
+    private var languages: Results<ZimFileLanguage>?
     private var zimFiles: Results<ZimFile>?
     private var changeToken: NotificationToken?
     
@@ -75,32 +76,29 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     private func configureDatabase() {
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
-            let predicate = NSPredicate(format: "categoryRaw == %@", category.rawValue)
-            zimFiles = database.objects(ZimFile.self).filter(predicate)
-            changeToken = nil
+            languages = database.objects(ZimFileLanguage.self)
+                .filter("SUBQUERY(zimFiles, $zimFile, $zimFile.categoryRaw = %@).@count > 0", category.rawValue)
+                .sorted(byKeyPath: "code", ascending: true)
+            zimFiles = database.objects(ZimFile.self).filter("categoryRaw = %@", category.rawValue)
         } catch { return }
     }
     
     private func configureChangeToken() {
         changeToken = zimFiles?.observe({ (changes) in
             switch changes {
-            case .initial:
+            case .update:
                 self.tableView.reloadData()
-            case .update(let results, let deletions, let insertions, let updates):
-                self.tableView.beginUpdates()
-                
-                self.tableView.endUpdates()
             default:
                 break
             }
-        })
+        })        
     }
     
     @objc func languageFilterBottonTapped(sender: UIBarButtonItem) {
         let controller = LibraryLanguageController()
-        controller.dismissBlock = {[unowned self] in
-            self.configureDatabase()
-        }
+//        controller.dismissBlock = {[unowned self] in
+//            self.configureDatabase()
+//        }
         let navigation = UINavigationController(rootViewController: controller)
         navigation.modalPresentationStyle = .popover
         navigation.popoverPresentationController?.barButtonItem = sender
@@ -145,11 +143,13 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     // MARK: - UITableViewDataSource & Delagates
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        guard let languages = languages else {return 0}
+        return languages.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return zimFiles?.count ?? 0
+        guard let language = languages?[section], let zimFiles = zimFiles?.filter("language == %@", language) else {return 0}
+        return zimFiles.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -159,7 +159,9 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func configure(cell: TableViewCell, indexPath: IndexPath, animated: Bool = false) {
-        guard let zimFile = zimFiles?[indexPath.row] else {return}
+        guard let language = languages?[indexPath.section],
+            let zimFiles = zimFiles?.filter("language == %@", language).sorted(byKeyPath: "title", ascending: true) else {return}
+        let zimFile = zimFiles[indexPath.row]
         cell.titleLabel.text = zimFile.title
         cell.detailLabel.text = [zimFile.fileSizeDescription, zimFile.creationDateDescription, zimFile.articleCountDescription].joined(separator: ", ")
         cell.thumbImageView.image = UIImage(data: zimFile.icon)
@@ -167,17 +169,10 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         cell.accessoryType = .disclosureIndicator
     }
     
-//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        return fetchedResultController.sections?[section].name
-//    }
-    
-//    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-//        return numberOfSections(in: tableView) > 5 ? fetchedResultController.sectionIndexTitles : nil
-//    }
-    
-//    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-//        return fetchedResultController.section(forSectionIndexTitle: title, at: index)
-//    }
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard let language = languages?[section] else {return nil}
+        return Locale.current.localizedString(forLanguageCode: language.code)
+    }
     
 //    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        tableView.deselectRow(at: indexPath, animated: true)
