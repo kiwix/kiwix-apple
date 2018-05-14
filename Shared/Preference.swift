@@ -69,6 +69,8 @@ extension DefaultsKeys {
     static let libraryLastRefreshTime = DefaultsKey<Date?>("libraryLastRefreshTime")
     static let libraryHasShownLanguageFilterAlert = DefaultsKey<Bool>("libraryHasShownLanguageFilterAlert")
     static let libraryRefreshInterval = DefaultsKey<Double?>("libraryRefreshInterval")
+    static let libraryFilterLanguageCodes = DefaultsKey<[String]>("libraryFilterLanguageCodes")
+    
     static let langFilterSortByAlphabeticalAsc = DefaultsKey<Bool>("langFilterSortByAlphabeticalAsc")
     static let langFilterNameDisplayInOriginalLocale = DefaultsKey<Bool>("langFilterNameDisplayInOriginalLocale")
     

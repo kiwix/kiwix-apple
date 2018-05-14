@@ -244,7 +244,6 @@
 		81DF90AB14037E242E284CA8 /* Pods_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		97028C4C2019200C001259CB /* BookmarkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkController.swift; sourceTree = "<group>"; };
 		97028C4E20192F65001259CB /* TableOfContentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableOfContentController.swift; sourceTree = "<group>"; };
-		9702BE1D1F97F1C900E6B4EE /* LibraryLanguageControllerOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryLanguageControllerOld.swift; sourceTree = "<group>"; };
 		9702BE211F97FA4300E6B4EE /* LibraryRefreshProcedure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryRefreshProcedure.swift; sourceTree = "<group>"; };
 		97041F7E1F9652D4007D63F5 /* WikiMed.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WikiMed.plist; sourceTree = "<group>"; };
 		97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryBookDetailController.swift; sourceTree = "<group>"; };
@@ -964,7 +963,6 @@
 				97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */,
 				97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */,
 				97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */,
-				9702BE1D1F97F1C900E6B4EE /* LibraryLanguageControllerOld.swift */,
 				97CA4A7120A21D24008CEA6D /* LibraryLanguageController.swift */,
 			);
 			path = Library;

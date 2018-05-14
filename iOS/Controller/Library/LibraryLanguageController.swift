@@ -1,177 +1,159 @@
 //
 //  LibraryLanguageController.swift
-//  Kiwix
+//  iOS
 //
-//  Created by Chris Li on 10/18/17.
-//  Copyright © 2017 Chris Li. All rights reserved.
+//  Created by Chris Li on 5/8/18.
+//  Copyright © 2018 Chris Li. All rights reserved.
 //
 
 import UIKit
+import RealmSwift
+import SwiftyUserDefaults
 
 class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let tableView = UITableView(frame: .zero, style: .grouped)
-    let segmentedControl = UISegmentedControl(items: [(Locale.current as NSLocale).displayName(forKey: .identifier, value: Locale.preferredLanguages[0])!,
-                                                      NSLocalizedString("Original", comment: "Language lanuguage filter display name control")])
     
-    private let managedObjectContext = PersistentContainer.shared.viewContext
-    private var initialShowLanguageSet = Set<Language>()
-    private var showLanguages = [Language]()
-    private var hideLanguages = [Language]()
-    var dismissBlock: (() -> Void)?
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        configureSegmentedControls()
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
-        
-        showLanguages = Language.fetch(displayed: true, context: managedObjectContext)
-        hideLanguages = Language.fetch(displayed: false, context: managedObjectContext)
-        initialShowLanguageSet = Set(showLanguages)
-        sort()
-    }
+    private var visible = [String]()
+    private var hidden = [String]()
+    private var count = [String: Int]()
+    var dismissCallback: ((_ visibleLanguageCode: [String]) -> Void)?
+    
+    // MARK: - Overrides
     
     override func loadView() {
         view = tableView
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.register(Cell.self, forCellReuseIdentifier: "Cell")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
+        populateLanguages()
+        sortLanguagesByCountDescending(languages: &visible)
+        sortLanguagesByCountDescending(languages: &hidden)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        dismissBlock?()
+        Defaults[.libraryFilterLanguageCodes] = visible
+        dismissCallback?(visible)
     }
     
-    private func configureSegmentedControls() {
-        let stackView = UIStackView()
-        segmentedControl.apportionsSegmentWidthsByContent = true
-        segmentedControl.selectedSegmentIndex = Preference.LangFilter.displayInOriginalLocale == true ? 1 : 0
-        segmentedControl.addTarget(self, action: #selector(segmentedControlChanged(sender:)), for: .valueChanged)
-        segmentedControl.setContentHuggingPriority(.init(251), for: .horizontal)
-        stackView.addArrangedSubview(segmentedControl)
-        stackView.addArrangedSubview(UIView())
-        navigationItem.titleView = segmentedControl
-    }
-    
-    @objc func segmentedControlChanged(sender: UISegmentedControl) {
-        Preference.LangFilter.displayInOriginalLocale = !Preference.LangFilter.displayInOriginalLocale
-        tableView.reloadRows(at: tableView.indexPathsForVisibleRows ?? [IndexPath](), with: .automatic)
-    }
+    // MARK: -
     
     @objc func dismissController() {
         dismiss(animated: true, completion: nil)
     }
     
-    // MARK: - Sort
-    
-    private func sort() {
-        showLanguages = sortByCountDesc(languages: showLanguages)
-        hideLanguages = sortByCountDesc(languages: hideLanguages)
+    private func populateLanguages() {
+        let visibleLanguageCodes = Defaults[.libraryFilterLanguageCodes]
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            let codes = database.objects(ZimFile.self).distinct(by: ["languageCode"]).map({ $0.languageCode })
+            for code in codes {
+                if visibleLanguageCodes.contains(code) {
+                    visible.append(code)
+                } else {
+                    hidden.append(code)
+                }
+                self.count[code] = database.objects(ZimFile.self).filter("languageCode = %@", code).count
+            }
+        } catch { return }
     }
     
-    private func sortByCountDesc(languages: [Language]) -> [Language] {
-        return languages.sorted {
-            let count0 = $0.books.count
-            let count1 = $1.books.count
-            guard $0.books.count != $1.books.count else {
-                if Preference.LangFilter.displayInOriginalLocale {
-                    guard let name0 = $0.nameInOriginalLocale,
-                        let name1 = $1.nameInOriginalLocale else {return false}
-                    return name0.compare(name1) == .orderedAscending
-                } else {
-                    guard let name0 = $0.nameInCurrentLocale,
-                        let name1 = $1.nameInCurrentLocale else {return false}
-                    return name0.compare(name1) == .orderedAscending
-                }
+    private func sortLanguagesByCountDescending(languages: inout[String]) {
+        languages.sort {
+            if let count0 = count[$0], let count1 = count[$1], count0 != count1 {
+                return count0 > count1
+            } else {
+                guard let name0 = Locale.current.localizedString(forLanguageCode: $0),
+                    let name1 = Locale.current.localizedString(forLanguageCode: $1) else {return false}
+                return name0 < name1
             }
-            return count0 > count1
         }
     }
-
+    
     // MARK: - UITableViewDataSource & Delegates
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 0 ? showLanguages.count : hideLanguages.count
+        if section == 0 {
+            return visible.count
+        } else {
+            return hidden.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") ?? UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "Cell")
-        if indexPath.section == 0 {
-            configure(cell: cell, atIndexPath: indexPath, language: showLanguages[indexPath.row])
-        } else {
-            configure(cell: cell, atIndexPath: indexPath, language: hideLanguages[indexPath.row])
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! Cell
+        let code: String = {
+            if indexPath.section == 0 {
+                return visible[indexPath.row]
+            } else {
+                return hidden[indexPath.row]
+            }
+        }()
+        cell.textLabel?.text = Locale.current.localizedString(forLanguageCode: code) ?? code
+        cell.detailTextLabel?.text = "\(count[code] ?? 0)"
         return cell
     }
     
-    func configure(cell: UITableViewCell, atIndexPath indexPath: IndexPath, language: Language) {
-        cell.textLabel?.text = Preference.LangFilter.displayInOriginalLocale ? language.nameInOriginalLocale : language.nameInCurrentLocale
-        cell.detailTextLabel?.text = language.books.count.description
-    }
-    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if showLanguages.count == 0 {
-            return section == 0 ? "" : "All" + "       "
+        if visible.count == 0 {
+            return section == 0 ? "" : NSLocalizedString("All", comment: "Library Language Filter Section Header") + "        "
         } else {
-            return section == 0 ? "Showing" : "Hiding"
+            return section == 0 ? NSLocalizedString("Showing", comment: "Library Language Filter Section Header")
+                : NSLocalizedString("Hiding", comment: "Library Language Filter Section Header")
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        func animateUpdates(_ originalIndexPath: IndexPath, destinationIndexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        func animateUpdates(deleted: IndexPath, inserted: IndexPath) {
             tableView.beginUpdates()
-            tableView.deleteRows(at: [indexPath], with: .right)
-            tableView.insertRows(at: [destinationIndexPath], with: .right)
+            tableView.deleteRows(at: [deleted], with: .right)
+            tableView.insertRows(at: [inserted], with: .right)
             tableView.headerView(forSection: 0)?.textLabel?.text = self.tableView(tableView, titleForHeaderInSection: 0)?.uppercased()
             tableView.headerView(forSection: 1)?.textLabel?.text = self.tableView(tableView, titleForHeaderInSection: 1)?.uppercased()
             tableView.endUpdates()
         }
         
         if indexPath.section == 0 {
-            let language = showLanguages[indexPath.row]
-            language.isDisplayed = false
-            hideLanguages.append(language)
-            showLanguages.remove(at: indexPath.row)
-            hideLanguages = sortByCountDesc(languages: hideLanguages)
+            let language = visible[indexPath.row]
+            hidden.append(language)
+            visible.remove(at: indexPath.row)
+            sortLanguagesByCountDescending(languages: &hidden)
             
-            guard let row = hideLanguages.index(of: language) else {tableView.reloadData(); return}
-            let destinationIndexPath = IndexPath(row: row, section: 1)
-            animateUpdates(indexPath, destinationIndexPath: destinationIndexPath)
+            guard let insertedRowIndex = hidden.index(of: language) else {tableView.reloadData(); return}
+            let insertedIndexPath = IndexPath(row: insertedRowIndex, section: 1)
+            animateUpdates(deleted: indexPath, inserted: insertedIndexPath)
         } else {
-            let language = hideLanguages[indexPath.row]
-            language.isDisplayed = true
-            showLanguages.append(language)
-            hideLanguages.remove(at: indexPath.row)
-            showLanguages = sortByCountDesc(languages: showLanguages)
+            let language = hidden[indexPath.row]
+            visible.append(language)
+            hidden.remove(at: indexPath.row)
+            sortLanguagesByCountDescending(languages: &visible)
             
-            guard let row = showLanguages.index(of: language) else {tableView.reloadData(); return}
-            let destinationIndexPath = IndexPath(row: row, section: 0)
-            animateUpdates(indexPath, destinationIndexPath: destinationIndexPath)
+            guard let insertedRowIndex = visible.index(of: language) else {tableView.reloadData(); return}
+            let insertedIndexPath = IndexPath(row: insertedRowIndex, section: 0)
+            animateUpdates(deleted: indexPath, inserted: insertedIndexPath)
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if showLanguages.count == 0 {
-            return section == 0 ? CGFloat.leastNormalMagnitude : 36
-        } else {
-            return 36
+    // MARK: -
+    
+    private class Cell: UITableViewCell {
+        override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+            super.init(style: .value1, reuseIdentifier: reuseIdentifier)
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
         }
     }
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return .leastNormalMagnitude
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return nil
-    }
-    
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return nil
-    }
-
 }
