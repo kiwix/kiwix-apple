@@ -11,8 +11,6 @@
 		97028C4F20192F65001259CB /* TableOfContentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97028C4E20192F65001259CB /* TableOfContentController.swift */; };
 		97028C54201A7D43001259CB /* WebViewControllerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B665B2006BEBA003F5365 /* WebViewControllerProtocols.swift */; };
 		97028C55201A7D43001259CB /* WebViewControllerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B665B2006BEBA003F5365 /* WebViewControllerProtocols.swift */; };
-		9702BE1E1F97F1C900E6B4EE /* LibraryLanguageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BE1D1F97F1C900E6B4EE /* LibraryLanguageController.swift */; };
-		9702BE1F1F97F1C900E6B4EE /* LibraryLanguageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BE1D1F97F1C900E6B4EE /* LibraryLanguageController.swift */; };
 		9702BE221F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BE211F97FA4300E6B4EE /* LibraryRefreshProcedure.swift */; };
 		9702BE231F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BE211F97FA4300E6B4EE /* LibraryRefreshProcedure.swift */; };
 		97041F821F96A3EE007D63F5 /* LibraryBookDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */; };
@@ -129,7 +127,6 @@
 		97C5763C202CB86800E37502 /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C5761E202CB86800E37502 /* PersistentContainer.swift */; };
 		97C5763D202CD9C000E37502 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C575F3202CB0E800E37502 /* NotificationCenter.framework */; };
 		97C99B49205AF58D00439C77 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C99B47205AF58D00439C77 /* MainController.swift */; };
-		97CA45D0209B9CB7008CEA6D /* ZimFileLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CA45CF209B9CB7008CEA6D /* ZimFileLanguage.swift */; };
 		97CA45D2209BB23F008CEA6D /* ZimFileProcessingProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CA45D1209BB23F008CEA6D /* ZimFileProcessingProcedure.swift */; };
 		97CA4A6620A0F583008CEA6D /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97CA495120A0F583008CEA6D /* libicui18n.a */; };
 		97CA4A6720A0F583008CEA6D /* libicuio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97CA495220A0F583008CEA6D /* libicuio.a */; };
@@ -142,6 +139,7 @@
 		97CA4A6E20A0F583008CEA6D /* libkiwix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97CA495920A0F583008CEA6D /* libkiwix.a */; };
 		97CA4A6F20A0F583008CEA6D /* libicuuc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97CA495A20A0F583008CEA6D /* libicuuc.a */; };
 		97CA4A7020A0F583008CEA6D /* libpugixml.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97CA495B20A0F583008CEA6D /* libpugixml.a */; };
+		97CA4A7220A21D24008CEA6D /* LibraryLanguageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CA4A7120A21D24008CEA6D /* LibraryLanguageController.swift */; };
 		97CAFA892051EBF700AC1F68 /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDB0B1F60930A00A10E8C /* WebKitHandler.swift */; };
 		97CAFA8F2051EC4800AC1F68 /* ZimMultiReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BB21F9E6A43009A8703 /* ZimMultiReader.mm */; };
 		97CAFA902051EC4800AC1F68 /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BB31F9E6A43009A8703 /* ZimMultiReader.swift */; };
@@ -246,7 +244,7 @@
 		81DF90AB14037E242E284CA8 /* Pods_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		97028C4C2019200C001259CB /* BookmarkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkController.swift; sourceTree = "<group>"; };
 		97028C4E20192F65001259CB /* TableOfContentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableOfContentController.swift; sourceTree = "<group>"; };
-		9702BE1D1F97F1C900E6B4EE /* LibraryLanguageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryLanguageController.swift; sourceTree = "<group>"; };
+		9702BE1D1F97F1C900E6B4EE /* LibraryLanguageControllerOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryLanguageControllerOld.swift; sourceTree = "<group>"; };
 		9702BE211F97FA4300E6B4EE /* LibraryRefreshProcedure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryRefreshProcedure.swift; sourceTree = "<group>"; };
 		97041F7E1F9652D4007D63F5 /* WikiMed.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WikiMed.plist; sourceTree = "<group>"; };
 		97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryBookDetailController.swift; sourceTree = "<group>"; };
@@ -338,7 +336,6 @@
 		97C5761D202CB86800E37502 /* Article.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
 		97C5761E202CB86800E37502 /* PersistentContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentContainer.swift; sourceTree = "<group>"; };
 		97C99B47205AF58D00439C77 /* MainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
-		97CA45CF209B9CB7008CEA6D /* ZimFileLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileLanguage.swift; sourceTree = "<group>"; };
 		97CA45D1209BB23F008CEA6D /* ZimFileProcessingProcedure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileProcessingProcedure.swift; sourceTree = "<group>"; };
 		97CA495120A0F583008CEA6D /* libicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicui18n.a; sourceTree = "<group>"; };
 		97CA495220A0F583008CEA6D /* libicuio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicuio.a; sourceTree = "<group>"; };
@@ -608,6 +605,7 @@
 		97CA4A6320A0F583008CEA6D /* postingiterator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = postingiterator.h; sourceTree = "<group>"; };
 		97CA4A6420A0F583008CEA6D /* valuesetmatchdecider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = valuesetmatchdecider.h; sourceTree = "<group>"; };
 		97CA4A6520A0F583008CEA6D /* queryparser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = queryparser.h; sourceTree = "<group>"; };
+		97CA4A7120A21D24008CEA6D /* LibraryLanguageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryLanguageController.swift; sourceTree = "<group>"; };
 		97CAFA972051EF8C00AC1F68 /* libpugixml.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpugixml.dylib; sourceTree = "<group>"; };
 		97CAFA982051EF8C00AC1F68 /* liblzma.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = liblzma.5.dylib; sourceTree = "<group>"; };
 		97CAFA992051EF8C00AC1F68 /* libxapian.30.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libxapian.30.dylib; sourceTree = "<group>"; };
@@ -937,7 +935,6 @@
 			children = (
 				97A68831207D4D6700DBBE0D /* RealmConfig.swift */,
 				97A6882D207D3DE300DBBE0D /* ZimFile.swift */,
-				97CA45CF209B9CB7008CEA6D /* ZimFileLanguage.swift */,
 				97242E152093A9AC00AA4436 /* Bookmark.swift */,
 			);
 			path = Model;
@@ -967,7 +964,8 @@
 				97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */,
 				97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */,
 				97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */,
-				9702BE1D1F97F1C900E6B4EE /* LibraryLanguageController.swift */,
+				9702BE1D1F97F1C900E6B4EE /* LibraryLanguageControllerOld.swift */,
+				97CA4A7120A21D24008CEA6D /* LibraryLanguageController.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -1780,7 +1778,6 @@
 				979FD15A201679C5007B5290 /* SearchResultsListController.swift in Sources */,
 				9725210F200F9D7800B60A80 /* RoundedButton.swift in Sources */,
 				97C57621202CB86800E37502 /* Language.swift in Sources */,
-				9702BE1F1F97F1C900E6B4EE /* LibraryLanguageController.swift in Sources */,
 				97161A871F8FFD1E00A89DE3 /* LibraryCategoryController.swift in Sources */,
 				97041F831F96A3F3007D63F5 /* LibraryBookDetailController.swift in Sources */,
 				975FDADA1F6082DA00A10E8C /* AppDelegate.swift in Sources */,
@@ -1828,12 +1825,12 @@
 				97C5762F202CB86800E37502 /* 1.9.xcmappingmodel in Sources */,
 				9702BE221F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */,
 				97242E2B2093B38A00AA4436 /* Preference.swift in Sources */,
+				97CA4A7220A21D24008CEA6D /* LibraryLanguageController.swift in Sources */,
 				97041F821F96A3EE007D63F5 /* LibraryBookDetailController.swift in Sources */,
 				97DBCF9D203CA254004EE274 /* SettingExternalLinkControllerTableViewController.swift in Sources */,
 				977D7BB81F9E6A43009A8703 /* ZimMultiReader.swift in Sources */,
 				97028C4F20192F65001259CB /* TableOfContentController.swift in Sources */,
 				97161A861F8FFD1E00A89DE3 /* LibraryCategoryController.swift in Sources */,
-				9702BE1E1F97F1C900E6B4EE /* LibraryLanguageController.swift in Sources */,
 				97A36C2B1F8C21210079B452 /* URLProtocol.swift in Sources */,
 				97E34E0C20124F33005080B2 /* SearchNoTextController.swift in Sources */,
 				97B1046F1F8FC63C00488444 /* LibraryMasterController.swift in Sources */,
@@ -1864,7 +1861,6 @@
 				972521012009616B00B60A80 /* EmptyContentView.swift in Sources */,
 				97A36C571F8D5FCD0079B452 /* LibraryController.swift in Sources */,
 				972B66592006B1F0003F5365 /* BarButtonItem.swift in Sources */,
-				97CA45D0209B9CB7008CEA6D /* ZimFileLanguage.swift in Sources */,
 				97A36C321F8C21210079B452 /* AppDelegate.swift in Sources */,
 				979FD159201679C5007B5290 /* SearchResultsListController.swift in Sources */,
 				972B66602007F9F7003F5365 /* WebKitWebController.swift in Sources */,

@@ -30,17 +30,7 @@ class ZimFileProcessingProcedure: Procedure {
         }
         
         if var languageCode = meta["language"] as? String {
-            languageCode = Locale.canonicalLanguageIdentifier(from: languageCode)
-            zimFile.language = {
-                if let language = database.object(ofType: ZimFileLanguage.self, forPrimaryKey: languageCode) {
-                    return language
-                } else {
-                    let language = ZimFileLanguage()
-                    language.code = languageCode
-                    database.add(language)
-                    return language
-                }
-            }()
+            zimFile.languageCode = Locale.canonicalLanguageIdentifier(from: languageCode)
         }
         
         if let date = meta["date"] as? String, let creationDate = dateFormatter.date(from: date) {

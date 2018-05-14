@@ -16,7 +16,7 @@ class ZimFile: Object {
     
     @objc dynamic var title = ""
     @objc dynamic var bookDescription = ""
-    @objc dynamic var language: ZimFileLanguage?
+    @objc dynamic var languageCode: String = ""
     @objc dynamic var creationDate = Date()
     
     @objc dynamic var creator = ""
@@ -51,6 +51,10 @@ class ZimFile: Object {
     
     override static func primaryKey() -> String? {
         return "id"
+    }
+    
+    override static func indexedProperties() -> [String] {
+        return ["categoryRaw"]
     }
     
     // MARK: - Descriptions
