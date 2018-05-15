@@ -81,11 +81,15 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         let visibleLanguageCodes = Defaults[.libraryFilterLanguageCodes]
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
-            languageCodes = database.objects(ZimFile.self).distinct(by: ["languageCode"]).map({ $0.languageCode })
-            if visibleLanguageCodes.count > 0 {
-                languageCodes = languageCodes.filter({ visibleLanguageCodes.contains($0) })
-            }
-            languageCodes.sort()
+            languageCodes = database.objects(ZimFile.self).distinct(by: ["languageCode"])
+                .map({ $0.languageCode })
+                .filter({ visibleLanguageCodes.count > 0 ? visibleLanguageCodes.contains($0) : true })
+                .filter({ (self.zimFiles?.filter("languageCode == %@", $0).count ?? 0) > 0 })
+                .sorted(by: { (code0, code1) -> Bool in
+                    guard let name0 = Locale.current.localizedString(forLanguageCode: code0),
+                        let name1 = Locale.current.localizedString(forLanguageCode: code1) else {return code0 < code1}
+                    return name0 < name1
+                })
         } catch { return }
     }
     
