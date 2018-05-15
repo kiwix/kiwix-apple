@@ -90,7 +90,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
                         let name1 = Locale.current.localizedString(forLanguageCode: code1) else {return code0 < code1}
                     return name0 < name1
                 })
-        } catch { return }
+        } catch { languageCodes = [] }
     }
     
     private func configureChangeToken() {
