@@ -14,14 +14,18 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     private let tableView = UITableView()
     private let category: ZimFile.Category
     
-    private var languages: Results<ZimFileLanguage>?
-    private var zimFiles: Results<ZimFile>?
+    private var languageCodes = [String]()
+    private let zimFiles: Results<ZimFile>?
     private var changeToken: NotificationToken?
     
     // MARK: - Override
     
     init(category: ZimFile.Category) {
         self.category = category
+        
+        let database = try? Realm(configuration: Realm.defaultConfig)
+        self.zimFiles = database?.objects(ZimFile.self).filter("categoryRaw = %@", category.rawValue)
+        
         super.init(nibName: nil, bundle: nil)
         title = category.description
     }
@@ -46,7 +50,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         if #available(iOS 11.0, *) {
             navigationController?.navigationBar.prefersLargeTitles = true
         }
-        configureDatabase()
+        configureLanguageCodes()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -73,20 +77,22 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     
     // MARK: -
     
-    private func configureDatabase() {
+    private func configureLanguageCodes() {
+        let visibleLanguageCodes = Defaults[.libraryFilterLanguageCodes]
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
-            languages = database.objects(ZimFileLanguage.self)
-                .filter("SUBQUERY(zimFiles, $zimFile, $zimFile.categoryRaw = %@).@count > 0", category.rawValue)
-                .sorted(byKeyPath: "code", ascending: true)
-            zimFiles = database.objects(ZimFile.self).filter("categoryRaw = %@", category.rawValue)
+            languageCodes = database.objects(ZimFile.self).distinct(by: ["languageCode"]).map({ $0.languageCode })
+            if visibleLanguageCodes.count > 0 {
+                languageCodes = languageCodes.filter({ visibleLanguageCodes.contains($0) })
+            }
+            languageCodes.sort()
         } catch { return }
     }
     
     private func configureChangeToken() {
         changeToken = zimFiles?.observe({ (changes) in
             switch changes {
-            case .update:
+            case .initial, .update:
                 self.tableView.reloadData()
             default:
                 break
@@ -96,9 +102,11 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     
     @objc func languageFilterBottonTapped(sender: UIBarButtonItem) {
         let controller = LibraryLanguageController()
-//        controller.dismissBlock = {[unowned self] in
-//            self.configureDatabase()
-//        }
+        controller.dismissCallback = {[unowned self] in
+            self.configureLanguageCodes()
+            self.changeToken = nil
+            self.configureChangeToken()
+        }
         let navigation = UINavigationController(rootViewController: controller)
         navigation.modalPresentationStyle = .popover
         navigation.popoverPresentationController?.barButtonItem = sender
@@ -126,7 +134,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
             if context.hasChanges {
                 try? context.save()
             }
-            self.configureDatabase()
+            self.configureLanguageCodes()
         }
         
         let alert = UIAlertController(title: NSLocalizedString("Language Filter", comment: "Language Filter"), message: message, preferredStyle: .alert)
@@ -143,12 +151,11 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     // MARK: - UITableViewDataSource & Delagates
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        guard let languages = languages else {return 0}
-        return languages.count
+        return languageCodes.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let language = languages?[section], let zimFiles = zimFiles?.filter("language == %@", language) else {return 0}
+        guard let zimFiles = zimFiles?.filter("languageCode == %@", languageCodes[section]) else {return 0}
         return zimFiles.count
     }
     
@@ -159,8 +166,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func configure(cell: TableViewCell, indexPath: IndexPath, animated: Bool = false) {
-        guard let language = languages?[indexPath.section],
-            let zimFiles = zimFiles?.filter("language == %@", language).sorted(byKeyPath: "title", ascending: true) else {return}
+        guard let zimFiles = zimFiles?.filter("languageCode == %@", languageCodes[indexPath.section]).sorted(byKeyPath: "title", ascending: true) else {return}
         let zimFile = zimFiles[indexPath.row]
         cell.titleLabel.text = zimFile.title
         cell.detailLabel.text = [zimFile.fileSizeDescription, zimFile.creationDateDescription, zimFile.articleCountDescription].joined(separator: ", ")
@@ -170,8 +176,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        guard let language = languages?[section] else {return nil}
-        return Locale.current.localizedString(forLanguageCode: language.code)
+        return Locale.current.localizedString(forLanguageCode: languageCodes[section])
     }
     
 //    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
