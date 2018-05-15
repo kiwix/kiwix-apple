@@ -60,11 +60,6 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // if have refreshed library but have not shown language filter alert, show it
-        if Defaults[.libraryLastRefreshTime] != nil && !Defaults[.libraryHasShownLanguageFilterAlert] {
-            showLanguageFilter()
-        }
-        
         if #available(iOS 11.0, *) {
             navigationItem.largeTitleDisplayMode = .always
         }
@@ -79,18 +74,14 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     
     private func configureLanguageCodes() {
         let visibleLanguageCodes = Defaults[.libraryFilterLanguageCodes]
-        do {
-            let database = try Realm(configuration: Realm.defaultConfig)
-            languageCodes = database.objects(ZimFile.self).distinct(by: ["languageCode"])
-                .map({ $0.languageCode })
-                .filter({ visibleLanguageCodes.count > 0 ? visibleLanguageCodes.contains($0) : true })
-                .filter({ (self.zimFiles?.filter("languageCode == %@", $0).count ?? 0) > 0 })
-                .sorted(by: { (code0, code1) -> Bool in
-                    guard let name0 = Locale.current.localizedString(forLanguageCode: code0),
-                        let name1 = Locale.current.localizedString(forLanguageCode: code1) else {return code0 < code1}
-                    return name0 < name1
-                })
-        } catch { languageCodes = [] }
+        languageCodes = zimFiles?.distinct(by: ["languageCode"]).map({ $0.languageCode }) ?? []
+        if visibleLanguageCodes.count > 0 {languageCodes = languageCodes.filter({ visibleLanguageCodes.contains($0) })}
+        languageCodes = languageCodes.filter({ (self.zimFiles?.filter("languageCode == %@", $0).count ?? 0) > 0 })
+            .sorted(by: { (code0, code1) -> Bool in
+                guard let name0 = Locale.current.localizedString(forLanguageCode: code0),
+                    let name1 = Locale.current.localizedString(forLanguageCode: code1) else {return code0 < code1}
+                return name0 < name1
+            })
     }
     
     private func configureChangeToken() {
@@ -108,48 +99,14 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         let controller = LibraryLanguageController()
         controller.dismissCallback = {[unowned self] in
             self.configureLanguageCodes()
-            self.changeToken = nil
             self.configureChangeToken()
         }
+        changeToken = nil
+        
         let navigation = UINavigationController(rootViewController: controller)
         navigation.modalPresentationStyle = .popover
         navigation.popoverPresentationController?.barButtonItem = sender
         present(navigation, animated: true, completion: nil)
-    }
-    
-    private func showLanguageFilter() {
-        let deviceLanguageCodes = Locale.preferredLanguages.compactMap({ $0.components(separatedBy: "-").first })
-        let deviceLanguageNames: [String] = {
-            let names = NSMutableOrderedSet()
-            deviceLanguageCodes.compactMap({ (Locale.current as NSLocale).displayName(forKey: .identifier, value: $0) }).forEach({ names.add($0) })
-            return names.compactMap({ $0 as? String })
-        }()
-        
-        let message = String(format: NSLocalizedString("You have set %@ as the preferred language(s) of the device. Would you like to hide books in other languages?", comment: "Language Filter"), deviceLanguageNames.joined(separator: ", "))
-        
-        func handleAlertAction(onlyShowDeviceLanguage: Bool) {
-            let context = PersistentContainer.shared.viewContext
-            let languages = Language.fetchAll(context: context)
-            if onlyShowDeviceLanguage {
-                languages.forEach({ $0.isDisplayed = deviceLanguageCodes.contains($0.code) })
-            } else {
-                languages.forEach({$0.isDisplayed = false})
-            }
-            if context.hasChanges {
-                try? context.save()
-            }
-            self.configureLanguageCodes()
-        }
-        
-        let alert = UIAlertController(title: NSLocalizedString("Language Filter", comment: "Language Filter"), message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Hide Other Language", comment: "Language Filter"), style: .default, handler: { (action) in
-            handleAlertAction(onlyShowDeviceLanguage: true)
-        }))
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Skip and Show All", comment: "Language Filter"), style: .default, handler: { (action) in
-            handleAlertAction(onlyShowDeviceLanguage: false)
-        }))
-        present(alert, animated: true)
-        Defaults[.libraryHasShownLanguageFilterAlert] = true
     }
     
     // MARK: - UITableViewDataSource & Delagates

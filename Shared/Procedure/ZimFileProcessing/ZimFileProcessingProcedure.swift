@@ -29,7 +29,7 @@ class ZimFileProcessingProcedure: Procedure {
             zimFile.bookDescription = description
         }
         
-        if var languageCode = meta["language"] as? String {
+        if let languageCode = meta["language"] as? String {
             zimFile.languageCode = Locale.canonicalLanguageIdentifier(from: languageCode)
         }
         
@@ -82,18 +82,35 @@ class ZimFileProcessingProcedure: Procedure {
         }
         
         zimFile.category = {
-            if let pid = zimFile.pid,
-                let categoryRaw = pid.split(separator: ".").last?.split(separator: "_").first {
-                return ZimFile.Category(rawValue: String(categoryRaw)) ?? .other
-            } else if let categoryRaw = ZimMultiReader.shared.getFileURL(zimFileID: zimFile.id)?.pathComponents.last?.split(separator: "_").first {
-                if categoryRaw.contains("stackexchange") {
+            func getFromTags() -> ZimFile.Category? {
+                guard let tags = meta["tags"] as? String, let categoryRaw = tags.split(separator: ";").first else {return nil}
+                return ZimFile.Category(rawValue: String(categoryRaw))
+            }
+            func getFromName() -> ZimFile.Category? {
+                guard let name = meta["name"] as? String,
+                    let categoryRaw = name.split(separator: ".").last?.split(separator: "_").first else {return nil}
+                return ZimFile.Category(rawValue: String(categoryRaw))
+            }
+            func getFromURL() -> ZimFile.Category? {
+                guard let urlString = meta["url"] as? String, let url = URL(string: urlString) else {return nil}
+                let compoenents = url.pathComponents
+                guard compoenents.count > 2 else {return nil}
+                let categoryRaw = String(compoenents[2]) 
+                if categoryRaw.contains("stack") && categoryRaw.contains("exchange") {
                     return .stackExchange
                 } else {
-                    return ZimFile.Category(rawValue: String(categoryRaw)) ?? .other
+                    return ZimFile.Category(rawValue: String(categoryRaw))
                 }
-            } else {
-                return .other
             }
+            func getFromFileName() -> ZimFile.Category? {
+                guard let categoryRaw = ZimMultiReader.shared.getFileURL(zimFileID: zimFile.id)?.pathComponents.last?.split(separator: "_").first else {return nil}
+                if categoryRaw.contains("stack") && categoryRaw.contains("exchange") {
+                    return .stackExchange
+                } else {
+                    return ZimFile.Category(rawValue: String(categoryRaw))
+                }
+            }
+            return getFromTags() ?? getFromName() ?? getFromURL() ?? getFromFileName() ?? .other
         }()
         
         database.add(zimFile)
