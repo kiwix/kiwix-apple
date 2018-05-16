@@ -16,7 +16,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
     private let refreshControl = UIRefreshControl()
     private var sections: [Section] = [.category]
     private let categories: [ZimFile.Category] = [
-        .wikipedia, .wikivoyage, .wikibooks, .wikiversity, .wikispecies, .wikinews,
+        .wikipedia, .wikivoyage, .wikibooks, .wikiversity, .wikispecies, .wikinews, .wiktionary, .wikiquote, .wikisource,
         .vikidia, .ted, .stackExchange, .other]
     
     // MARK: - Database
