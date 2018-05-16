@@ -74,12 +74,6 @@ class ZimFile: Object {
         return NumberAbbrevationFormatter.string(from: Int(articleCount)) + (articleCount > 1 ? " articles" : " article")
     }
     
-    
-//    @NSManaged public var totalBytesWritten: Int64
-//    
-//    @NSManaged public var articles: Set<Article>
-//    @NSManaged public var language: Language?
-    
     // MARK: - Type Definition
     
     enum State: String {

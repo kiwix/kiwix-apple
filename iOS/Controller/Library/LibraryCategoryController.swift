@@ -140,10 +140,12 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         return Locale.current.localizedString(forLanguageCode: languageCodes[section])
     }
     
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        tableView.deselectRow(at: indexPath, animated: true)
-//        let controller = LibraryBookDetailController(book: fetchedResultController.object(at: indexPath))
-//        navigationController?.pushViewController(controller, animated: true)
-//    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let zimFiles = zimFiles?.filter("languageCode == %@", languageCodes[indexPath.section]).sorted(byKeyPath: "title", ascending: true) else {return}
+        let zimFile = zimFiles[indexPath.row]
+        let controller = LibraryZimFileDetailController(zimFile: zimFile)
+        navigationController?.pushViewController(controller, animated: true)
+    }
 }
 
