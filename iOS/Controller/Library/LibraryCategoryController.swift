@@ -131,7 +131,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         let zimFile = zimFiles[indexPath.row]
         cell.titleLabel.text = zimFile.title
         cell.detailLabel.text = [zimFile.fileSizeDescription, zimFile.creationDateDescription, zimFile.articleCountDescription].joined(separator: ", ")
-        cell.thumbImageView.image = UIImage(data: zimFile.icon)
+        cell.thumbImageView.image = UIImage(data: zimFile.icon) ?? #imageLiteral(resourceName: "GenericZimFile")
         cell.thumbImageView.contentMode = .scaleAspectFit
         cell.accessoryType = .disclosureIndicator
     }
