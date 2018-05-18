@@ -135,29 +135,26 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         localZimFilesChangeToken = localZimFiles?.observe({ (changes) in
             switch changes {
             case .update(let results, let deletions, let insertions, let updates):
-                self.tableView.beginUpdates()
-                
                 if results.count > 0, self.sections.index(of: .local) == nil {
                     self.sections.insert(.local, at: 0)
                     self.tableView.insertSections(IndexSet([0]), with: .fade)
                 }
                 
                 if let sectionIndex = self.sections.index(of: .local) {
-                    self.tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
-                    self.tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
-                    updates.forEach({ row in
-                        let indexPath = IndexPath(row: row, section: sectionIndex)
-                        guard let cell = self.tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
-                        self.configure(localCell: cell, row: row)
-                    })
+                    self.tableView.reloadSections(IndexSet([0,1]), with: .fade)
+//                    self.tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
+//                    self.tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
+//                    updates.forEach({ row in
+//                        let indexPath = IndexPath(row: row, section: sectionIndex)
+//                        guard let cell = self.tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
+//                        self.configure(localCell: cell, row: row)
+//                    })
                 }
                 
                 if results.count == 0, let sectionIndex = self.sections.index(of: .local) {
                     self.sections.remove(at: sectionIndex)
                     self.tableView.deleteSections(IndexSet([sectionIndex]), with: .fade)
                 }
-                
-                self.tableView.endUpdates()
             default:
                 break
             }
@@ -165,8 +162,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         downloadZimFilesChangeToken = downloadZimFiles?.observe({ (changes) in
             switch changes {
             case .update(let results, let deletions, let insertions, let updates):
-                self.tableView.beginUpdates()
-                
+
                 if results.count > 0, !self.sections.contains(.download) {
                     let sectionIndex = self.sections.contains(.local) ? 1 : 0
                     self.sections.insert(.download, at: sectionIndex)
@@ -174,13 +170,8 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
                 }
                 
                 if let sectionIndex = self.sections.index(of: .download) {
-                    self.tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
-                    self.tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
-                    updates.forEach({ row in
-                        let indexPath = IndexPath(row: row, section: sectionIndex)
-                        guard let cell = self.tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
-                        self.configure(downloadCell: cell, row: row)
-                    })
+                    self.tableView.reloadSections(IndexSet([0, 1]), with: .fade)
+
                 }
                 
                 if results.count == 0, let sectionIndex = self.sections.index(of: .download) {
@@ -188,7 +179,6 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
                     self.tableView.deleteSections(IndexSet([sectionIndex]), with: .fade)
                 }
                 
-                self.tableView.endUpdates()
             default:
                 break
             }
@@ -245,12 +235,25 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
     func configure(downloadCell cell: TableViewCell, row: Int, animated: Bool = false) {
         guard let zimFile = downloadZimFiles?[row] else {return}
         cell.titleLabel.text = zimFile.title
-        cell.detailLabel.text = "\(zimFile.stateRaw), \(zimFile.downloadTotalBytesWritten)"
+        cell.detailLabel.text = {
+            switch zimFile.state {
+            case .downloadQueued:
+                return NSLocalizedString("Queued", comment: "Zim file download state")
+            case .downloadInProgress:
+                let written = ByteCountFormatter.string(fromByteCount: zimFile.downloadTotalBytesWritten, countStyle: .file)
+                let percent = NumberFormatter.localizedString(from: NSNumber(value: Double(zimFile.downloadTotalBytesWritten) / Double(zimFile.fileSize)), number: .percent)
+                return "\(written) / \(zimFile.fileSizeDescription), \(percent)"
+            case .downloadPaused:
+                return NSLocalizedString("Paused", comment: "Zim file download state")
+            case .downloadError:
+                return NSLocalizedString("Error", comment: "Zim file download state")
+            default:
+                return nil
+            }
+        }()
         cell.thumbImageView.image = UIImage(data: zimFile.icon) ?? #imageLiteral(resourceName: "GenericZimFile")
         cell.thumbImageView.contentMode = .scaleAspectFit
         cell.accessoryType = .disclosureIndicator
-//        cell.stateLabel.text = book.state.shortLocalizedDescription
-//        cell.progressLabel.text = [book.totalBytesWritten, book.fileSize].map({ByteCountFormatter.string(fromByteCount: $0, countStyle: .file)}).joined(separator: " / ")
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -270,11 +273,11 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         case .local:
             guard let zimFile = localZimFiles?[indexPath.row] else {return}
             let controller = LibraryZimFileDetailController(zimFile: zimFile)
-            navigationController?.pushViewController(controller, animated: true)
+            showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
         case .download:
             guard let zimFile = downloadZimFiles?[indexPath.row] else {return}
             let controller = LibraryZimFileDetailController(zimFile: zimFile)
-            navigationController?.pushViewController(controller, animated: true)
+            showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
         case .category:
             let controller = LibraryCategoryController(category: categories[indexPath.row])
             showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
