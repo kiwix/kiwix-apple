@@ -16,11 +16,13 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
     private let refreshControl = UIRefreshControl()
     private var sections: [Section] = [.category]
     private let categories: [ZimFile.Category] = [
-        .wikipedia, .wikivoyage, .wikibooks, .wikiversity, .wikispecies, .wikinews, .wiktionary, .wikiquote, .wikisource,
+        .wikipedia, .wikibooks, .wikinews, .wikiquote, .wikisource, .wikispecies, .wikiversity, .wikivoyage, .wiktionary,
         .vikidia, .ted, .stackExchange, .other]
     
     // MARK: - Database
     
+    private var localZimFilesCount: Int = 0
+    private var downloadZimFilesCount: Int = 0
     private let localZimFiles: Results<ZimFile>? = {
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
@@ -66,6 +68,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         
         if #available(iOS 11.0, *) {
             navigationController?.navigationBar.prefersLargeTitles = true
+            navigationItem.largeTitleDisplayMode = .always
         }
     }
     
@@ -73,13 +76,6 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         super.viewWillAppear(animated)
         configureSections()
         configureChangeToken()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if #available(iOS 11.0, *) {
-            navigationItem.largeTitleDisplayMode = .always
-        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -106,55 +102,52 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
  
     
     private func configureSections() {
-        var hasUpdates = false
         if let localZimFiles = localZimFiles {
+            localZimFilesCount = localZimFiles.count
             if localZimFiles.count > 0, sections.index(of: .local) == nil {
                 sections.insert(.local, at: 0)
-                hasUpdates = true
             } else if localZimFiles.count == 0, let sectionIndex = sections.index(of: .local) {
                 sections.remove(at: sectionIndex)
-                hasUpdates = true
             }
         }
         if let downlaodZimFiles = downloadZimFiles {
+            downloadZimFilesCount = downlaodZimFiles.count
             if downlaodZimFiles.count > 0, !sections.contains(.download) {
                 let sectionIndex = self.sections.contains(.local) ? 1 : 0
                 sections.insert(.download, at: sectionIndex)
-                hasUpdates = true
             } else if downlaodZimFiles.count == 0, let sectionIndex = sections.index(of: .download) {
                 sections.remove(at: sectionIndex)
-                hasUpdates = true
             }
         }
-        if hasUpdates {
-            tableView.reloadData()
-        }
+        tableView.reloadData()
     }
     
     private func configureChangeToken() {
         localZimFilesChangeToken = localZimFiles?.observe({ (changes) in
             switch changes {
             case .update(let results, let deletions, let insertions, let updates):
+                self.localZimFilesCount = results.count
+                self.tableView.beginUpdates()
                 if results.count > 0, self.sections.index(of: .local) == nil {
                     self.sections.insert(.local, at: 0)
                     self.tableView.insertSections(IndexSet([0]), with: .fade)
-                }
-                
-                if let sectionIndex = self.sections.index(of: .local) {
-                    self.tableView.reloadSections(IndexSet([0,1]), with: .fade)
-//                    self.tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
-//                    self.tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
-//                    updates.forEach({ row in
-//                        let indexPath = IndexPath(row: row, section: sectionIndex)
-//                        guard let cell = self.tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
-//                        self.configure(localCell: cell, row: row)
-//                    })
                 }
                 
                 if results.count == 0, let sectionIndex = self.sections.index(of: .local) {
                     self.sections.remove(at: sectionIndex)
                     self.tableView.deleteSections(IndexSet([sectionIndex]), with: .fade)
                 }
+                
+                if let sectionIndex = self.sections.index(of: .local) {
+                    self.tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
+                    self.tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
+                    updates.forEach({ row in
+                        let indexPath = IndexPath(row: row, section: sectionIndex)
+                        guard let cell = self.tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
+                        self.configure(localCell: cell, row: row)
+                    })
+                }
+                self.tableView.endUpdates()
             default:
                 break
             }
@@ -162,16 +155,12 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         downloadZimFilesChangeToken = downloadZimFiles?.observe({ (changes) in
             switch changes {
             case .update(let results, let deletions, let insertions, let updates):
-
+                self.downloadZimFilesCount = results.count
+                self.tableView.beginUpdates()
                 if results.count > 0, !self.sections.contains(.download) {
                     let sectionIndex = self.sections.contains(.local) ? 1 : 0
                     self.sections.insert(.download, at: sectionIndex)
                     self.tableView.insertSections(IndexSet([sectionIndex]), with: .fade)
-                }
-                
-                if let sectionIndex = self.sections.index(of: .download) {
-                    self.tableView.reloadSections(IndexSet([0, 1]), with: .fade)
-
                 }
                 
                 if results.count == 0, let sectionIndex = self.sections.index(of: .download) {
@@ -179,6 +168,16 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
                     self.tableView.deleteSections(IndexSet([sectionIndex]), with: .fade)
                 }
                 
+                if let sectionIndex = self.sections.index(of: .download) {
+                    self.tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
+                    self.tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
+                    updates.forEach({ row in
+                        let indexPath = IndexPath(row: row, section: sectionIndex)
+                        guard let cell = self.tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
+                        self.configure(downloadCell: cell, row: row)
+                    })
+                }
+                self.tableView.endUpdates()
             default:
                 break
             }
@@ -194,9 +193,9 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch sections[section] {
         case .local:
-            return localZimFiles?.count ?? 0
+            return localZimFilesCount
         case .download:
-            return downloadZimFiles?.count ?? 0
+            return downloadZimFilesCount
         case .category:
             return categories.count
         }
