@@ -211,8 +211,9 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
         return nil;
     } else {
         std::shared_ptr<kiwix::Reader> reader = found->second;
-        std::string mainPageURLC = reader->getMainPageUrl();
-        return [NSString stringWithCString:mainPageURLC.c_str() encoding:NSUTF8StringEncoding];
+        kiwix::Entry mainPageEntry = reader->getMainPage();
+        std::string mainPagePath = mainPageEntry.getPath();
+        return [NSString stringWithCString:mainPagePath.c_str() encoding:NSUTF8StringEncoding];
     }
 }
 
