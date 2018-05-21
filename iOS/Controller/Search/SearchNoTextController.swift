@@ -23,14 +23,14 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
     }()
     private var changeToken: NotificationToken?
     
-    private var recentSearchTexts = Defaults[.recentSearchTexts] {
+    private var recentSearchTexts = [String]() {
         didSet {
             if recentSearchTexts.count == 0, let index = sections.index(of: .recentSearch) {
                 tableView.beginUpdates()
                 sections.remove(at: index)
                 tableView.deleteSections(IndexSet([index]), with: .fade)
                 tableView.endUpdates()
-            } else if recentSearchTexts.count > 0 && !sections.contains(.recentSearch) {
+            } else if recentSearchTexts.count > 0, !sections.contains(.recentSearch) {
                 tableView.beginUpdates()
                 sections.insert(.recentSearch, at: 0)
                 tableView.insertSections(IndexSet([0]), with: .none)
@@ -56,12 +56,7 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         recentSearchTexts = Defaults[.recentSearchTexts]
-        if recentSearchTexts.count > 0 {
-            sections.insert(.recentSearch, at: 0)
-        }
-        tableView.reloadData()
         configureChangeToken()
     }
     
