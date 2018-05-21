@@ -37,6 +37,10 @@ class ZimFile: Object {
     @objc dynamic var stateRaw = State.cloud.rawValue
     @objc dynamic var categoryRaw = Category.other.rawValue
     
+    @objc dynamic var downloadTotalBytesWritten: Int64 = 0
+    @objc dynamic var downloadResumeData: Data?
+    @objc dynamic var downloadErrorDescription: String?
+    
     var state: State {
         get { return State(rawValue:stateRaw) ?? .cloud }
         set { stateRaw = newValue.rawValue }
@@ -54,7 +58,7 @@ class ZimFile: Object {
     }
     
     override static func indexedProperties() -> [String] {
-        return ["categoryRaw"]
+        return ["pid", "title", "languageCode", "creationDate", "includeInSearch", "categoryRaw", "stateRaw"]
     }
     
     // MARK: - Descriptions
@@ -77,7 +81,7 @@ class ZimFile: Object {
     // MARK: - Type Definition
     
     enum State: String {
-        case cloud, local, retained
+        case cloud, local, retained, downloadQueued, downloadInProgress, downloadPaused, downloadError
     }
     
     enum Category: String, CustomStringConvertible {
@@ -137,9 +141,9 @@ class ZimFile: Object {
             case .wikipedia:
                 return #imageLiteral(resourceName: "Wikipedia")
             case .wikiquote:
-                return #imageLiteral(resourceName: "Book")
+                return #imageLiteral(resourceName: "Wikiquote")
             case .wikisource:
-                return #imageLiteral(resourceName: "Book")
+                return #imageLiteral(resourceName: "Wikisource")
             case .wikispecies:
                 return #imageLiteral(resourceName: "Wikispecies")
             case .wikiversity:
@@ -147,7 +151,7 @@ class ZimFile: Object {
             case .wikivoyage:
                 return #imageLiteral(resourceName: "Wikivoyage")
             case .wiktionary:
-                return #imageLiteral(resourceName: "Book")
+                return #imageLiteral(resourceName: "Wiktionary")
             case .ted:
                 return #imageLiteral(resourceName: "TED")
             case .vikidia:
