@@ -236,7 +236,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                 present(DeleteConfirmationController(zimFile: zimFile, action: action), animated: true)
             case .openMainPage:
                 guard let main = (presentingViewController as? UINavigationController)?.topViewController as? MainController,
-                    let url = ZimMultiReader.shared.getMainPageURL(bookID: zimFile.id) else {break}
+                    let url = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFile.id) else {break}
                 main.load(url: url)
                 dismiss(animated: true, completion: nil)
             }

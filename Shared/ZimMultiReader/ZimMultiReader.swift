@@ -36,9 +36,9 @@ extension ZimMultiReader {
     
     func getMetaData(id: ZimFileID) -> [String: Any] {return ( __getMetaData(id) as? [String: Any]) ?? [String: Any]() }
     
-    func getMainPageURL(bookID: String) -> URL? {
-        guard let path = __getMainPageURL(bookID) else {return nil}
-        return URL(bookID: bookID, contentPath: path)
+    func getMainPageURL(zimFileID: String) -> URL? {
+        guard let path = __getMainPagePath(zimFileID) else {return nil}
+        return URL(bookID: zimFileID, contentPath: path)
     }
     
     func startIndexSearch(searchText: String, zimFileIDs: Set<ZimFileID>) {
@@ -54,7 +54,7 @@ extension ZimMultiReader {
     }
     
     func getTitleSearchResults(searchText: String, zimFileID: ZimFileID, count: Int) -> [SearchResult] {
-        return __getTitleSearchResults(searchText, zimFileID: zimFileID, count: UInt32(count)).flatMap { suggestion -> SearchResult? in
+        return __getTitleSearchResults(searchText, zimFileID: zimFileID, count: UInt32(count)).compactMap { suggestion -> SearchResult? in
             guard let suggestion = suggestion as? Dictionary<String, String>,
                 let id = suggestion["id"],
                 let title = suggestion["title"],

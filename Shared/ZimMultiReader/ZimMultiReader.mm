@@ -205,7 +205,7 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
 
 # pragma mark - URL handling
 
-- (NSString *)getMainPageURL:(NSString *)bookID {
+- (NSString *)getMainPagePath:(NSString *)bookID {
     auto found = readers.find([bookID cStringUsingEncoding:NSUTF8StringEncoding]);
     if (found == readers.end()) {
         return nil;
