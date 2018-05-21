@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 import SwiftyUserDefaults
 
 class SearchResultsListController: UITableViewController {
@@ -69,8 +70,13 @@ class SearchResultsListController: UITableViewController {
         
         cell.backgroundColor = .clear
         cell.titleLabel.text = result.title
-        cell.thumbImageView.image = UIImage(data: Book.fetch(id: result.zimFileID, context: PersistentContainer.shared.viewContext)?.favIcon ?? Data())
-        cell.thumbImageView.contentMode = .scaleAspectFit
+        
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: result.zimFileID)
+            cell.thumbImageView.image = UIImage(data: zimFile?.icon ?? Data()) ?? #imageLiteral(resourceName: "GenericZimFile")
+            cell.thumbImageView.contentMode = .scaleAspectFit
+        } catch {}
         
         if let snippet = result.snippet {
             cell.detailLabel.text = snippet
