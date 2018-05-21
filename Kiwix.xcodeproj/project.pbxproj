@@ -13,8 +13,6 @@
 		97028C55201A7D43001259CB /* WebViewControllerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B665B2006BEBA003F5365 /* WebViewControllerProtocols.swift */; };
 		9702BE221F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BE211F97FA4300E6B4EE /* LibraryRefreshProcedure.swift */; };
 		9702BE231F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BE211F97FA4300E6B4EE /* LibraryRefreshProcedure.swift */; };
-		97041F821F96A3EE007D63F5 /* LibraryBookDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */; };
-		97041F831F96A3F3007D63F5 /* LibraryBookDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */; };
 		97050D031F6735100021DE78 /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDB0B1F60930A00A10E8C /* WebKitHandler.swift */; };
 		9707B8F61F4B4F1500075D4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9707B8F51F4B4F1500075D4F /* Assets.xcassets */; };
 		97161A861F8FFD1E00A89DE3 /* LibraryCategoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */; };
@@ -247,7 +245,6 @@
 		97028C4E20192F65001259CB /* TableOfContentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableOfContentController.swift; sourceTree = "<group>"; };
 		9702BE211F97FA4300E6B4EE /* LibraryRefreshProcedure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryRefreshProcedure.swift; sourceTree = "<group>"; };
 		97041F7E1F9652D4007D63F5 /* WikiMed.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WikiMed.plist; sourceTree = "<group>"; };
-		97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryBookDetailController.swift; sourceTree = "<group>"; };
 		97050D001F6733400021DE78 /* WebKitWebController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitWebController.swift; sourceTree = "<group>"; };
 		9707B8F51F4B4F1500075D4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryCategoryController.swift; sourceTree = "<group>"; };
@@ -965,7 +962,6 @@
 				97242E2C2097A4EE00AA4436 /* LibrarySplitController.swift */,
 				97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */,
 				97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */,
-				97041F811F96A3EE007D63F5 /* LibraryBookDetailController.swift */,
 				97F4D10520AB80740038FC87 /* LibraryZimFileDetailController.swift */,
 				97CA4A7120A21D24008CEA6D /* LibraryLanguageController.swift */,
 			);
@@ -1781,7 +1777,6 @@
 				9725210F200F9D7800B60A80 /* RoundedButton.swift in Sources */,
 				97C57621202CB86800E37502 /* Language.swift in Sources */,
 				97161A871F8FFD1E00A89DE3 /* LibraryCategoryController.swift in Sources */,
-				97041F831F96A3F3007D63F5 /* LibraryBookDetailController.swift in Sources */,
 				975FDADA1F6082DA00A10E8C /* AppDelegate.swift in Sources */,
 				97252112200F9D7800B60A80 /* EmptyContentView.swift in Sources */,
 				97E34E0D20124F33005080B2 /* SearchNoTextController.swift in Sources */,
@@ -1828,7 +1823,6 @@
 				9702BE221F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */,
 				97242E2B2093B38A00AA4436 /* Preference.swift in Sources */,
 				97CA4A7220A21D24008CEA6D /* LibraryLanguageController.swift in Sources */,
-				97041F821F96A3EE007D63F5 /* LibraryBookDetailController.swift in Sources */,
 				97DBCF9D203CA254004EE274 /* SettingExternalLinkControllerTableViewController.swift in Sources */,
 				977D7BB81F9E6A43009A8703 /* ZimMultiReader.swift in Sources */,
 				97028C4F20192F65001259CB /* TableOfContentController.swift in Sources */,
