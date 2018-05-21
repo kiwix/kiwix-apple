@@ -109,7 +109,7 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
             recentSearchTexts.removeAll()
         case .searchFilter:
             do {
-                let database = try Realm()
+                let database = try Realm(configuration: Realm.defaultConfig)
                 try database.write {
                     zimFiles?.forEach({ (zimFile) in
                         guard !zimFile.includeInSearch else {return}
@@ -198,7 +198,7 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
             let includeInSearch = !zimFile.includeInSearch
             tableView.cellForRow(at: indexPath)?.accessoryType = includeInSearch ? .checkmark : .none
             do {
-                let database = try Realm()
+                let database = try Realm(configuration: Realm.defaultConfig)
                 database.beginWrite()
                 zimFile.includeInSearch = includeInSearch
                 try database.commitWrite(withoutNotifying: [token])
