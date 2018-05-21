@@ -94,7 +94,6 @@
 		97B1046F1F8FC63C00488444 /* LibraryMasterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */; };
 		97B104701F8FC63C00488444 /* LibraryMasterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */; };
 		97B1D0B51F9A3AD3000C7848 /* NetworkActivityIndicatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9780DE051E43BFF5009B6945 /* NetworkActivityIndicatorController.swift */; };
-		97B1D0B61F9A3AE7000C7848 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97642B981E380CC0003E2D0B /* Network.swift */; };
 		97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */; };
 		97BAA542202B4C5E00500644 /* SettingBackupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BAA541202B4C5E00500644 /* SettingBackupController.swift */; };
 		97C575F4202CB0E800E37502 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C575F3202CB0E800E37502 /* NotificationCenter.framework */; };
@@ -276,7 +275,6 @@
 		976306F01FC5D050004B171A /* TabViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViews.swift; sourceTree = "<group>"; };
 		9763EDC8201FCA6900F3A6D5 /* SettingWebController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingWebController.swift; sourceTree = "<group>"; };
 		9763EDCA201FCC3900F3A6D5 /* About.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = About.html; sourceTree = "<group>"; };
-		97642B981E380CC0003E2D0B /* Network.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		9765D97F1F50CC4700BFDC1E /* Search.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = "<group>"; };
 		976771741F4378FC007ED0C2 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		9767717D1F437BB9007ED0C2 /* URLProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLProtocol.swift; sourceTree = "<group>"; };
@@ -1379,7 +1377,6 @@
 		97DF259E1D6F9942001648A3 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				97642B981E380CC0003E2D0B /* Network.swift */,
 				97F4D10920ADD0F00038FC87 /* DownloadManager.swift */,
 				9726591A1D8DB91200D1DFFB /* DownloadProgress.swift */,
 				9780DE051E43BFF5009B6945 /* NetworkActivityIndicatorController.swift */,
@@ -1841,7 +1838,6 @@
 				97B1D0B51F9A3AD3000C7848 /* NetworkActivityIndicatorController.swift in Sources */,
 				97C57623202CB86800E37502 /* Kiwix.xcdatamodeld in Sources */,
 				97BAA542202B4C5E00500644 /* SettingBackupController.swift in Sources */,
-				97B1D0B61F9A3AE7000C7848 /* Network.swift in Sources */,
 				97C5763B202CB86800E37502 /* PersistentContainer.swift in Sources */,
 				97CA45D2209BB23F008CEA6D /* ZimFileProcessingProcedure.swift in Sources */,
 				97A6882E207D3DE300DBBE0D /* ZimFile.swift in Sources */,

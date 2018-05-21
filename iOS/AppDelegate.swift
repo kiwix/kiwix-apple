@@ -15,8 +15,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     let monitor = DirectoryMonitor(url: URL.documentDirectory)
     
     func applicationDidFinishLaunching(_ application: UIApplication) {
-        Realm.resetDatabase()
-        Network.shared.restorePreviousState()
+//        Realm.resetDatabase()
+        DownloadManager.shared.restorePreviousState()
         URLProtocol.registerClass(KiwixURLProtocol.self)
         monitor.delegate = self
         Queue.shared.add(scanProcedure: ScanProcedure(directoryURL: URL.documentDirectory))
@@ -73,7 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     // MARK: - Background
     
     func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
-        Network.shared.backgroundEventsCompleteProcessing = completionHandler
+        DownloadManager.shared.backgroundEventsCompleteProcessing = completionHandler
     }
     
     // MARK: - Home Screen Quick Actions
