@@ -146,12 +146,17 @@ class BookmarkController: UIViewController, UITableViewDataSource, UITableViewDe
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         guard let bookmark = bookmarks?[indexPath.row] else {return}
+        let url: URL? = {
+            guard let zimFileID = bookmark.zimFile?.id else {return nil}
+            return URL(bookID: zimFileID, contentPath: bookmark.path)
+        }()
         if editingStyle == .delete {
             do {
                 let database = try Realm(configuration: Realm.defaultConfig)
                 try database.write {
                     database.delete(bookmark)
                 }
+                if let url = url { delegate?.didDeleteBookmark(url: url) }
             } catch {}
         }
     }
@@ -161,4 +166,5 @@ class BookmarkController: UIViewController, UITableViewDataSource, UITableViewDe
 
 protocol BookmarkControllerDelegate: class {
     func didTapBookmark(articleURL: URL)
+    func didDeleteBookmark(url: URL)
 }

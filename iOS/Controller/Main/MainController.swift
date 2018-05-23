@@ -251,6 +251,11 @@ extension MainController: TableOfContentControllerDelegate, BookmarkControllerDe
         load(url: articleURL)
     }
     
+    func didDeleteBookmark(url: URL) {
+        guard currentWebController?.currentURL?.absoluteString == url.absoluteString else {return}
+        bookmarkButtonItem.button.isBookmarked = false
+    }
+    
     func updateBookmarkWidgetData() {
         let context = PersistentContainer.shared.viewContext
         let bookmarks = Article.fetchRecentBookmarks(count: 8, context: context)
