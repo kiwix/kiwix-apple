@@ -99,8 +99,8 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     }
     
     private func showAdditionalLanguageAlert() {
-        let alert = UIAlertController(title: NSLocalizedString("Language Filter", comment: "Library: Additional Language Alert"),
-                                      message: NSLocalizedString("View additional languages by tapping the filter button on the top right of the screen.",
+        let alert = UIAlertController(title: NSLocalizedString("More Languages", comment: "Library: Additional Language Alert"),
+                                      message: NSLocalizedString("Contents in other languages are also available. Visit language filter at the top of the screen to enable them.",
                                                                  comment: "Library: Additional Language Alert"),
                                       preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
@@ -160,40 +160,5 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         let controller = LibraryZimFileDetailController(zimFile: zimFile)
         navigationController?.pushViewController(controller, animated: true)
     }
-    
-//    private func showLanguageFilter() {
-//        let deviceLanguageCodes = Locale.preferredLanguages.flatMap({ $0.components(separatedBy: "-").first })
-//        let deviceLanguageNames: [String] = {
-//            let names = NSMutableOrderedSet()
-//            deviceLanguageCodes.flatMap({ (Locale.current as NSLocale).displayName(forKey: .identifier, value: $0) }).forEach({ names.add($0) })
-//            return names.flatMap({ $0 as? String})
-//        }()
-//
-//        let message = String(format: NSLocalizedString("You have set %@ as the preferred language(s) of the device. Would you like to hide books in other languages?", comment: "Language Filter"), deviceLanguageNames.joined(separator: ", "))
-//
-//        func handleAlertAction(onlyShowDeviceLanguage: Bool) {
-//            let context = PersistentContainer.shared.viewContext
-//            let languages = Language.fetchAll(context: context)
-//            if onlyShowDeviceLanguage {
-//                languages.forEach({ $0.isDisplayed = deviceLanguageCodes.contains($0.code) })
-//            } else {
-//                languages.forEach({$0.isDisplayed = false})
-//            }
-//            if context.hasChanges {
-//                try? context.save()
-//            }
-//            self.reloadFetchedResultController()
-//        }
-//
-//        let alert = UIAlertController(title: NSLocalizedString("Language Filter", comment: "Language Filter"), message: message, preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: NSLocalizedString("Hide Other Language", comment: "Language Filter"), style: .default, handler: { (action) in
-//            handleAlertAction(onlyShowDeviceLanguage: true)
-//        }))
-//        alert.addAction(UIAlertAction(title: NSLocalizedString("Skip and Show All", comment: "Language Filter"), style: .default, handler: { (action) in
-//            handleAlertAction(onlyShowDeviceLanguage: false)
-//        }))
-//        present(alert, animated: true)
-//        Defaults[.libraryHasShownLanguageFilterAlert] = true
-//    }
 }
 

@@ -76,6 +76,12 @@ private class ProcessProcedure: ZimFileProcessingProcedure, InputProcedure, XMLP
             finish(withError: error)
         }
         
+        // apply language filter if library has never been refreshed
+        if Defaults[.libraryLastRefreshTime] == nil, let code = Locale.current.languageCode {
+            Defaults[.libraryFilterLanguageCodes] = [code]
+        }
+        
+        // update last library refresh time
         Defaults[.libraryLastRefreshTime] = Date()
         finish()
     }
