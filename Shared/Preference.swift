@@ -10,12 +10,6 @@ import SwiftyUserDefaults
 
 class Preference {
     
-    class func upgrade() {
-        if UserDefaults.standard.hasKey("libraryLastRefreshTime") {
-            Defaults[.libraryHasShownLanguageFilterAlert] = true
-        }
-    }
-    
     // MARK: - Library
     
     class var libraryAutoRefreshDisabled: Bool {
