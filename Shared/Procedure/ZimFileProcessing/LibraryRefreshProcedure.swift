@@ -67,8 +67,7 @@ private class ProcessProcedure: ZimFileProcessingProcedure, InputProcedure, XMLP
                 // add new zim files to database
                 for (zimFileID, meta) in latest {
                     guard database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) == nil else {continue}
-                    
-                    let zimFile = createZimFile(database: database, meta: meta)
+                    let zimFile = create(database: database, id: zimFileID, meta: meta)
                     zimFile.state = .cloud
                 }
             }

@@ -51,7 +51,7 @@ class ScanProcedure: ZimFileProcessingProcedure {
                     } else {
                         // if zim file does not exist in database, create the object
                         let meta = ZimMultiReader.shared.getMetaData(id: zimFileID)
-                        let zimFile = createZimFile(database: database, meta: meta)
+                        let zimFile = create(database: database, id: zimFileID, meta: meta)
                         zimFile.state = .local
                     }
                 }

@@ -10,13 +10,15 @@ import RealmSwift
 import ProcedureKit
 
 class ZimFileProcessingProcedure: Procedure {
-    func createZimFile(database: Realm, meta: [String: Any]) -> ZimFile {
+    func create(database: Realm, id: String, meta: [String: Any]) -> ZimFile {
         let zimFile = ZimFile()
-        
-        if let id = meta["id"] as? String {
-            zimFile.id = id
-        }
-        
+        zimFile.id = id
+        update(zimFile: zimFile, meta: meta)
+        database.add(zimFile)
+        return zimFile
+    }
+    
+    func update(zimFile: ZimFile, meta: [String: Any]) {
         if let pid = meta["name"] as? String {
             zimFile.pid = pid
         }
@@ -95,7 +97,7 @@ class ZimFileProcessingProcedure: Procedure {
                 guard let urlString = meta["url"] as? String, let url = URL(string: urlString) else {return nil}
                 let compoenents = url.pathComponents
                 guard compoenents.count > 2 else {return nil}
-                let categoryRaw = String(compoenents[2]) 
+                let categoryRaw = String(compoenents[2])
                 if categoryRaw.contains("stack") && categoryRaw.contains("exchange") {
                     return .stackExchange
                 } else {
@@ -112,9 +114,6 @@ class ZimFileProcessingProcedure: Procedure {
             }
             return getFromTags() ?? getFromName() ?? getFromURL() ?? getFromFileName() ?? .other
         }()
-        
-        database.add(zimFile)
-        return zimFile
     }
     
     private let dateFormatter: DateFormatter = {
