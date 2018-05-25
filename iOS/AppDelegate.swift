@@ -12,17 +12,25 @@ import RealmSwift
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate {
     var window: UIWindow?
-    let monitor = DirectoryMonitor(url: URL.documentDirectory)
+    let fileMonitor = DirectoryMonitor(url: URL.documentDirectory)
     
     func applicationDidFinishLaunching(_ application: UIApplication) {
 //        Realm.resetDatabase()
-        DownloadManager.shared.restorePreviousState()
+        
         URLProtocol.registerClass(KiwixURLProtocol.self)
-        monitor.delegate = self
-        Queue.shared.add(scanProcedure: ScanProcedure(directoryURL: URL.documentDirectory))
-        monitor.start()
-        print(URL.documentDirectory.path)
-        Preference.upgrade()
+        DownloadManager.shared.restorePreviousState()
+        
+        fileMonitor.delegate = self
+        fileMonitor.start()
+        
+        let scan = ScanProcedure(directoryURL: URL.documentDirectory)
+        let migrate = BookmarkMigrationOperation()
+        let refresh = LibraryRefreshProcedure()
+        migrate.add(dependency: scan)
+        refresh.add(dependency: migrate)
+        Queue.shared.add(operations: scan, migrate, refresh)
+//        Queue.shared.add(scanProcedure: ScanProcedure(directoryURL: URL.documentDirectory))
+        
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
@@ -31,16 +39,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         Queue.shared.add(scanProcedure: ScanProcedure(directoryURL: URL.documentDirectory))
-        monitor.start()
+        fileMonitor.start()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        monitor.stop()
-        PersistentContainer.saveViewContext()
-    }
-    
-    func applicationWillTerminate(_ application: UIApplication) {
-        PersistentContainer.saveViewContext()
+        fileMonitor.stop()
     }
     
     // MARK: - URL Handling
