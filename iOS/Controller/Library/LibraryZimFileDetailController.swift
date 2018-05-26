@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import RealmSwift
 
 class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private let zimFile: ZimFile
+    private var zimFileObserver: NotificationToken?
     private var zimFileStateRawObserver:  NSKeyValueObservation?
     
     private let tableView = UITableView(frame: .zero, style: .grouped)
@@ -79,7 +81,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        configureZimFileStatusObserver()
+        configureZimFileObservers()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -91,7 +93,15 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
     
     // MARK: -
     
-    func configureZimFileStatusObserver() {
+    func configureZimFileObservers() {
+        zimFileObserver = zimFile.observe { (change) in
+            switch change {
+            case .deleted:
+                self.navigationController?.popViewController(animated: true)
+            default:
+                break
+            }
+        }
         zimFileStateRawObserver = zimFile.observe(\.stateRaw, options: [.initial, .new], changeHandler: { (zimFile, change) in
             guard let state = ZimFile.State(rawValue: zimFile.stateRaw) else {
                 self.actions = ([[]], [[]])
