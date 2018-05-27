@@ -44,6 +44,9 @@ class BookmarkMigrationOperation: Operation {
     }
     
     private func migrateVisibleLanguage() {
+        // do not migrate if language filter is already set
+        guard Defaults[.libraryFilterLanguageCodes].count == 0 else {return}
+        
         let context = PersistentContainer.shared.newBackgroundContext()
         let request = Language.fetchRequest() as! NSFetchRequest<Language>
         request.predicate = NSPredicate(format: "isDisplayed == true")
