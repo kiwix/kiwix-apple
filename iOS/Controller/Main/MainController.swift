@@ -257,18 +257,24 @@ extension MainController: TableOfContentControllerDelegate, BookmarkControllerDe
     }
     
     func updateBookmarkWidgetData() {
-        let context = PersistentContainer.shared.viewContext
-        let bookmarks = Article.fetchRecentBookmarks(count: 8, context: context)
-            .map({ (article) -> [String: Any]? in
-                guard let title = article.title, let url = article.url else {return nil}
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            var bookmarks = [Bookmark]()
+            for bookmark in database.objects(Bookmark.self).sorted(byKeyPath: "date", ascending: false) {
+                guard bookmarks.count < 8 else {continue}
+                bookmarks.append(bookmark)
+            }
+            let bookmarksData = bookmarks.compactMap { (bookmark) -> [String: Any]? in
+                guard let zimFile = bookmark.zimFile, let url = URL(bookID: zimFile.id, contentPath: bookmark.path) else {return nil}
                 return [
-                    "title": title,
-                    "url": url.absoluteString,
-                    "thumbImageData": article.thumbnailData ?? article.book?.favIcon ?? Data()
+                    "title": bookmark.title,
+                    "url": url,
+                    "thumbImageData": bookmark.thumbImageData ?? bookmark.zimFile?.icon ?? Data()
                 ]
-            }).compactMap({ $0 })
-        UserDefaults(suiteName: "group.kiwix")?.set(bookmarks, forKey: "bookmarks")
-        NCWidgetController().setHasContent(bookmarks.count > 0, forWidgetWithBundleIdentifier: "self.Kiwix.Bookmarks")
+            }
+            UserDefaults(suiteName: "group.kiwix")?.set(bookmarksData, forKey: "bookmarks")
+            NCWidgetController().setHasContent(bookmarks.count > 0, forWidgetWithBundleIdentifier: "self.Kiwix.Bookmarks")
+        } catch {}
     }
 }
 
