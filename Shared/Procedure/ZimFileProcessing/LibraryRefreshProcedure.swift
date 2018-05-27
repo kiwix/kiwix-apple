@@ -11,9 +11,9 @@ import ProcedureKit
 import SwiftyUserDefaults
 
 class LibraryRefreshProcedure: GroupProcedure {
-    init() {
+    init(updateExistingZimFiles: Bool = true) {
         let download = DownloadProcedure()
-        let process = ProcessProcedure()
+        let process = ProcessProcedure(updateExistingZimFiles: updateExistingZimFiles)
         process.injectResult(from: download)
         super.init(operations: [download, process])
     }
@@ -41,6 +41,12 @@ private class DownloadProcedure: NetworkDataProcedure<URLSession> {
 private class ProcessProcedure: ZimFileProcessingProcedure, InputProcedure, XMLParserDelegate {
     var input: Pending<HTTPPayloadResponse<Data>> = .pending
     private var latest = [String: [String: Any]]()
+    private let updateExistingZimFiles: Bool
+    
+    init(updateExistingZimFiles: Bool) {
+        self.updateExistingZimFiles = updateExistingZimFiles
+        super.init()
+    }
     
     override func execute() {
         guard let data = input.value?.payload else {
@@ -64,11 +70,16 @@ private class ProcessProcedure: ZimFileProcessingProcedure, InputProcedure, XMLP
                 // remove old zim files from database
                 oldZimFiles.forEach({ database.delete($0) })
                 
-                // add new zim files to database
                 for (zimFileID, meta) in latest {
-                    guard database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) == nil else {continue}
-                    let zimFile = create(database: database, id: zimFileID, meta: meta)
-                    zimFile.state = .cloud
+                    if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) {
+                        guard updateExistingZimFiles else {continue}
+                        // update existing zim files
+                        update(zimFile: zimFile, meta: meta)
+                    } else {
+                        // add new zim files to database
+                        let zimFile = create(database: database, id: zimFileID, meta: meta)
+                        zimFile.state = .cloud
+                    }
                 }
             }
         } catch {
