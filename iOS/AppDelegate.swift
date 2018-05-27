@@ -23,14 +23,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         fileMonitor.delegate = self
         fileMonitor.start()
         
-        let scan = ScanProcedure(directoryURL: URL.documentDirectory)
-        let migrate = BookmarkMigrationOperation()
-        let refresh = LibraryRefreshProcedure()
-        migrate.add(dependency: scan)
-        refresh.add(dependency: migrate)
-        Queue.shared.add(operations: scan, migrate, refresh)
-//        Queue.shared.add(scanProcedure: ScanProcedure(directoryURL: URL.documentDirectory))
-        
+        if UserDefaults.standard.bool(forKey: "MigratedToRealm") {
+            let scan = ScanProcedure(directoryURL: URL.documentDirectory)
+            Queue.shared.add(operations: scan)
+        } else {
+            let scan = ScanProcedure(directoryURL: URL.documentDirectory)
+            let migrate = BookmarkMigrationOperation()
+            let refresh = LibraryRefreshProcedure()
+            migrate.completionBlock = {
+                UserDefaults.standard.set(true, forKey: "MigratedToRealm")
+            }
+            migrate.add(dependency: scan)
+            refresh.add(dependency: migrate)
+            Queue.shared.add(operations: scan, migrate, refresh)
+        }
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
