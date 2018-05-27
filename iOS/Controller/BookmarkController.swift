@@ -123,15 +123,8 @@ class BookmarkController: UIViewController, UITableViewDataSource, UITableViewDe
         guard let bookmark = bookmarks?[indexPath.row] else {return}
         cell.titleLabel.text = bookmark.title
         cell.detailLabel.text = bookmark.snippet
-        if let thumbImagePath = bookmark.thumbImagePath, let zimFile = bookmark.zimFile,
-            let url = URL(bookID: zimFile.id, contentPath: thumbImagePath),
-            let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
-            cell.thumbImageView.image = image
-            cell.thumbImageView.contentMode = .scaleAspectFill
-        } else {
-            cell.thumbImageView.image = #imageLiteral(resourceName: "GenericZimFile")
-            cell.thumbImageView.contentMode = .scaleAspectFill
-        }
+        cell.thumbImageView.image = UIImage(data: bookmark.thumbImageData ?? Data()) ?? #imageLiteral(resourceName: "GenericZimFile")
+        cell.thumbImageView.contentMode = .scaleAspectFill
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
