@@ -268,7 +268,7 @@ extension MainController: TableOfContentControllerDelegate, BookmarkControllerDe
                 guard let zimFile = bookmark.zimFile, let url = URL(bookID: zimFile.id, contentPath: bookmark.path) else {return nil}
                 return [
                     "title": bookmark.title,
-                    "url": url,
+                    "url": url.absoluteString,
                     "thumbImageData": bookmark.thumbImageData ?? bookmark.zimFile?.icon ?? Data()
                 ]
             }
