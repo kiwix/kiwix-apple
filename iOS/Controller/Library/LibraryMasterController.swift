@@ -8,27 +8,40 @@
 
 import UIKit
 import CoreData
+import RealmSwift
 import ProcedureKit
 
 class LibraryMasterController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
-    let tableView = UITableView(frame: .zero, style: .grouped)
-    let refreshControl = UIRefreshControl()
-    
-    let categories: [BookCategory] = [
-        .wikipedia, .wikivoyage, .wikibooks, .wikiversity, .wikispecies, .wikinews,
+    private let tableView = UITableView(frame: .zero, style: .grouped)
+    private let refreshControl = UIRefreshControl()
+    private var sections: [Section] = [.category]
+    private let categories: [ZimFile.Category] = [
+        .wikipedia, .wikibooks, .wikinews, .wikiquote, .wikisource, .wikispecies, .wikiversity, .wikivoyage, .wiktionary,
         .vikidia, .ted, .stackExchange, .other]
-    let categoryImages = [#imageLiteral(resourceName: "Wikipedia"), #imageLiteral(resourceName: "Wikivoyage"), #imageLiteral(resourceName: "Wikibooks"), #imageLiteral(resourceName: "Wikiversity"), #imageLiteral(resourceName: "Wikispecies"), #imageLiteral(resourceName: "Wikinews"), #imageLiteral(resourceName: "Vikidia"), #imageLiteral(resourceName: "TED"), #imageLiteral(resourceName: "StackExchange"), #imageLiteral(resourceName: "Book")]
-    let categoryNames = [
-        NSLocalizedString("Wikipedia", comment: "Zim File Types"),
-        NSLocalizedString("Wikivoyage", comment: "Zim File Types"),
-        NSLocalizedString("Wikibooks", comment: "Zim File Types"),
-        NSLocalizedString("Wikiversity", comment: "Zim File Types"),
-        NSLocalizedString("Wikispecies", comment: "Zim File Types"),
-        NSLocalizedString("Wikinews", comment: "Zim File Types"),
-        NSLocalizedString("Vikidia", comment: "Zim File Types"),
-        NSLocalizedString("TED", comment: "Zim File Types"),
-        NSLocalizedString("StackExchange", comment: "Zim File Types"),
-        NSLocalizedString("Other", comment: "Zim File Types")]
+    
+    // MARK: - Database
+    
+    private var localZimFilesCount: Int = 0
+    private var downloadZimFilesCount: Int = 0
+    private let localZimFiles: Results<ZimFile>? = {
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            let predicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.local.rawValue)
+            return database.objects(ZimFile.self).filter(predicate)
+        } catch { return nil }
+    }()
+    private let downloadZimFiles: Results<ZimFile>? = {
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            let states: [ZimFile.State] = [.downloadQueued, .downloadInProgress, .downloadPaused, .downloadError]
+            let predicate = NSPredicate(format: "stateRaw IN %@", states.map({ $0.rawValue }))
+            return database.objects(ZimFile.self).filter(predicate)
+        } catch { return nil }
+    }()
+    private var localZimFilesChangeToken: NotificationToken?
+    private var downloadZimFilesChangeToken: NotificationToken?
+    
+    // MARK: - Overrides
     
     override func loadView() {
         view = tableView
@@ -38,7 +51,6 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         tableView.estimatedRowHeight = 44
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
-        tableView.register(LibraryDownloadCell.self, forCellReuseIdentifier: "DownloadCell")
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "CategoryCell")
         tableView.separatorInset = UIEdgeInsets(top: 0, left: tableView.separatorInset.left + 42, bottom: 0, right: 0)
     }
@@ -56,15 +68,23 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         
         if #available(iOS 11.0, *) {
             navigationController?.navigationBar.prefersLargeTitles = true
-        }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if #available(iOS 11.0, *) {
             navigationItem.largeTitleDisplayMode = .always
         }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureSections()
+        configureChangeToken()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        localZimFilesChangeToken = nil
+        downloadZimFilesChangeToken = nil
+    }
+    
+    // MARK: -
     
     @objc func dismissController() {
         dismiss(animated: true, completion: nil)
@@ -79,152 +99,191 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         }))
         Queue.shared.add(libraryRefresh: procedure)
     }
+ 
+    
+    private func configureSections() {
+        if let localZimFiles = localZimFiles {
+            localZimFilesCount = localZimFiles.count
+            if localZimFiles.count > 0, sections.index(of: .local) == nil {
+                sections.insert(.local, at: 0)
+            } else if localZimFiles.count == 0, let sectionIndex = sections.index(of: .local) {
+                sections.remove(at: sectionIndex)
+            }
+        }
+        if let downlaodZimFiles = downloadZimFiles {
+            downloadZimFilesCount = downlaodZimFiles.count
+            if downlaodZimFiles.count > 0, !sections.contains(.download) {
+                let sectionIndex = self.sections.contains(.local) ? 1 : 0
+                sections.insert(.download, at: sectionIndex)
+            } else if downlaodZimFiles.count == 0, let sectionIndex = sections.index(of: .download) {
+                sections.remove(at: sectionIndex)
+            }
+        }
+        tableView.reloadData()
+    }
+    
+    private func configureChangeToken() {
+        localZimFilesChangeToken = localZimFiles?.observe({ (changes) in
+            switch changes {
+            case .update(let results, let deletions, let insertions, let updates):
+                self.localZimFilesCount = results.count
+                self.tableView.beginUpdates()
+                if results.count > 0, self.sections.index(of: .local) == nil {
+                    self.sections.insert(.local, at: 0)
+                    self.tableView.insertSections(IndexSet([0]), with: .fade)
+                }
+                
+                if results.count == 0, let sectionIndex = self.sections.index(of: .local) {
+                    self.sections.remove(at: sectionIndex)
+                    self.tableView.deleteSections(IndexSet([sectionIndex]), with: .fade)
+                }
+                
+                if let sectionIndex = self.sections.index(of: .local) {
+                    self.tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
+                    self.tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
+                    updates.forEach({ row in
+                        let indexPath = IndexPath(row: row, section: sectionIndex)
+                        guard let cell = self.tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
+                        self.configure(localCell: cell, row: row)
+                    })
+                }
+                self.tableView.endUpdates()
+            default:
+                break
+            }
+        })
+        downloadZimFilesChangeToken = downloadZimFiles?.observe({ (changes) in
+            switch changes {
+            case .update(let results, let deletions, let insertions, let updates):
+                self.downloadZimFilesCount = results.count
+                self.tableView.beginUpdates()
+                if results.count > 0, !self.sections.contains(.download) {
+                    let sectionIndex = self.sections.contains(.local) ? 1 : 0
+                    self.sections.insert(.download, at: sectionIndex)
+                    self.tableView.insertSections(IndexSet([sectionIndex]), with: .fade)
+                }
+                
+                if results.count == 0, let sectionIndex = self.sections.index(of: .download) {
+                    self.sections.remove(at: sectionIndex)
+                    self.tableView.deleteSections(IndexSet([sectionIndex]), with: .fade)
+                }
+                
+                if let sectionIndex = self.sections.index(of: .download) {
+                    self.tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
+                    self.tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
+                    updates.forEach({ row in
+                        let indexPath = IndexPath(row: row, section: sectionIndex)
+                        guard let cell = self.tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
+                        self.configure(downloadCell: cell, row: row)
+                    })
+                }
+                self.tableView.endUpdates()
+            default:
+                break
+            }
+        })
+    }
     
     // MARK: - UITableViewDataSource & Delegates
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return fetchedResultControllerSectionCount + 1
+        return sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section < fetchedResultControllerSectionCount {
-            return fetchedResultController.sections?[section].numberOfObjects ?? 0
-        } else {
+        switch sections[section] {
+        case .local:
+            return localZimFilesCount
+        case .download:
+            return downloadZimFilesCount
+        case .category:
             return categories.count
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section < fetchedResultControllerSectionCount {
-            let sectionTitle = fetchedResultController.sections?[indexPath.section].name
-            if sectionTitle == "1" {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "DownloadCell", for: indexPath) as! LibraryDownloadCell
-                configure(cell: cell, indexPath: indexPath)
-                return cell
-            } else {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
-                configure(cell: cell, indexPath: indexPath)
-                return cell
-            }
-        } else {
+        switch sections[indexPath.section] {
+        case .local:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
+            configure(localCell: cell, row: indexPath.row)
+            return cell
+        case .download:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
+            configure(downloadCell: cell, row: indexPath.row)
+            return cell
+        case .category:
             let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath) as! TableViewCell
+            let category = categories[indexPath.row]
             cell.accessoryType = .disclosureIndicator
-            cell.titleLabel.text = categoryNames[indexPath.row]
-            cell.thumbImageView.image = categoryImages[indexPath.row]
+            cell.titleLabel.text = category.description
+            cell.thumbImageView.image = category.icon
             cell.thumbImageView.contentMode = .scaleAspectFit
             return cell
         }
     }
     
-    func configure(cell: TableViewCell, indexPath: IndexPath, animated: Bool = false) {
-        let book = fetchedResultController.object(at: indexPath)
-        cell.titleLabel.text = book.title
-        cell.detailLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
-        cell.thumbImageView.image = UIImage(data: book.favIcon ?? Data())
+    func configure(localCell cell: TableViewCell, row: Int, animated: Bool = false) {
+        guard let zimFile = localZimFiles?[row] else {return}
+        cell.titleLabel.text = zimFile.title
+        cell.detailLabel.text = [zimFile.fileSizeDescription, zimFile.creationDateDescription, zimFile.articleCountDescription].joined(separator: ", ")
+        cell.thumbImageView.image = UIImage(data: zimFile.icon) ?? #imageLiteral(resourceName: "GenericZimFile")
         cell.thumbImageView.contentMode = .scaleAspectFit
         cell.accessoryType = .disclosureIndicator
     }
     
-    func configure(cell: LibraryDownloadCell, indexPath: IndexPath, animated: Bool = false) {
-        let book = fetchedResultController.object(at: indexPath)
-        cell.titleLabel.text = book.title
-        cell.stateLabel.text = book.state.shortLocalizedDescription
-        cell.progressLabel.text = [book.totalBytesWritten, book.fileSize].map({ByteCountFormatter.string(fromByteCount: $0, countStyle: .file)}).joined(separator: " / ")
-        cell.logoView.image = UIImage(data: book.favIcon ?? Data())
+    func configure(downloadCell cell: TableViewCell, row: Int, animated: Bool = false) {
+        guard let zimFile = downloadZimFiles?[row] else {return}
+        cell.titleLabel.text = zimFile.title
+        cell.detailLabel.text = {
+            switch zimFile.state {
+            case .downloadQueued:
+                return NSLocalizedString("Queued", comment: "Zim file download state")
+            case .downloadInProgress:
+                let written = ByteCountFormatter.string(fromByteCount: zimFile.downloadTotalBytesWritten, countStyle: .file)
+                let percent = NumberFormatter.localizedString(from: NSNumber(value: Double(zimFile.downloadTotalBytesWritten) / Double(zimFile.fileSize)), number: .percent)
+                return "\(written) / \(zimFile.fileSizeDescription), \(percent)"
+            case .downloadPaused:
+                return NSLocalizedString("Paused", comment: "Zim file download state")
+            case .downloadError:
+                return NSLocalizedString("Error", comment: "Zim file download state")
+            default:
+                return nil
+            }
+        }()
+        cell.thumbImageView.image = UIImage(data: zimFile.icon) ?? #imageLiteral(resourceName: "GenericZimFile")
+        cell.thumbImageView.contentMode = .scaleAspectFit
         cell.accessoryType = .disclosureIndicator
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section < fetchedResultControllerSectionCount {
-            guard let sectionTitle = fetchedResultController.sections?[section].name else {return nil}
-            switch sectionTitle {
-            case "1":
-                return NSLocalizedString("Downloads", comment: "Library section headers")
-            case "2":
-                return NSLocalizedString("On Device", comment: "Library section headers")
-            default:
-                return nil
-            }
-        } else {
+        switch sections[section] {
+        case .local:
+            return NSLocalizedString("On Device", comment: "Library section headers")
+        case .download:
+            return NSLocalizedString("Downloads", comment: "Library section headers")
+        case .category:
             return NSLocalizedString("Categories", comment: "Library section headers")
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.section < fetchedResultControllerSectionCount {
-            let controller = LibraryBookDetailController(book: fetchedResultController.object(at: indexPath))
+        switch sections[indexPath.section] {
+        case .local:
+            guard let zimFile = localZimFiles?[indexPath.row] else {return}
+            let controller = LibraryZimFileDetailController(zimFile: zimFile)
             showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
-        } else {
-            let controller = LibraryCategoryController(category: categories[indexPath.row], title: categoryNames[indexPath.row])
+        case .download:
+            guard let zimFile = downloadZimFiles?[indexPath.row] else {return}
+            let controller = LibraryZimFileDetailController(zimFile: zimFile)
+            showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
+        case .category:
+            let controller = LibraryCategoryController(category: categories[indexPath.row])
             showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 44
-    }
+    // MARK: - Type Definition
     
-    // MARK: - NSFetchedResultsController
-    
-    private let managedObjectContext = PersistentContainer.shared.viewContext
-    private lazy var fetchedResultController: NSFetchedResultsController<Book> = {
-        let fetchRequest = Book.fetchRequest()
-        fetchRequest.sortDescriptors = [
-            NSSortDescriptor(keyPath: \Book.stateRaw, ascending: true),
-            NSSortDescriptor(keyPath: \Book.title, ascending: true)]
-        fetchRequest.predicate = NSPredicate(format: "stateRaw > 0")
-        let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                    managedObjectContext: self.managedObjectContext,
-                                                    sectionNameKeyPath: "sectionIndex", cacheName: nil)
-        controller.delegate = self
-        try? controller.performFetch()
-        return controller as! NSFetchedResultsController<Book>
-    }()
-    
-    private var fetchedResultControllerSectionCount: Int {
-        return fetchedResultController.sections?.count ?? 0
-    }
-    
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-        switch type {
-        case .insert:
-            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
-        case .delete:
-            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
-        default:
-            return
-        }
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch type {
-        case .insert:
-            guard let newIndexPath = newIndexPath else {return}
-            tableView.insertRows(at: [newIndexPath], with: .fade)
-        case .delete:
-            guard let indexPath = indexPath else {return}
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        case .update:
-            guard let indexPath = indexPath, tableView.indexPathsForVisibleRows?.contains(indexPath) == true else {return}
-            let sectionTitle = fetchedResultController.sections?[indexPath.section].name
-            if sectionTitle == "1", let cell = tableView.cellForRow(at: indexPath) as? LibraryDownloadCell {
-                configure(cell: cell, indexPath: indexPath, animated: true)
-            } else if let cell = tableView.cellForRow(at: indexPath) as? TableViewCell {
-                configure(cell: cell, indexPath: indexPath, animated: true)
-            }
-        case .move:
-            guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            tableView.insertRows(at: [newIndexPath], with: .fade)
-        }
-    }
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
-    }
+    enum Section { case local, download, category }
 }

@@ -7,20 +7,36 @@
 //
 
 import UIKit
+import RealmSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate {
     var window: UIWindow?
-    let monitor = DirectoryMonitor(url: URL.documentDirectory)
+    let fileMonitor = DirectoryMonitor(url: URL.documentDirectory)
     
     func applicationDidFinishLaunching(_ application: UIApplication) {
-        Network.shared.restorePreviousState()
+//        Realm.resetDatabase()
+        
         URLProtocol.registerClass(KiwixURLProtocol.self)
-        monitor.delegate = self
-        Queue.shared.add(scanProcedure: ScanProcedure(directoryURL: URL.documentDirectory))
-        monitor.start()
-        print(URL.documentDirectory.path)
-        Preference.upgrade()
+        DownloadManager.shared.restorePreviousState()
+        
+        fileMonitor.delegate = self
+        fileMonitor.start()
+        
+        if UserDefaults.standard.bool(forKey: "MigratedToRealm") {
+            let scan = ScanProcedure(directoryURL: URL.documentDirectory)
+            Queue.shared.add(operations: scan)
+        } else {
+            let scan = ScanProcedure(directoryURL: URL.documentDirectory)
+            let migrate = BookmarkMigrationOperation()
+            let refresh = LibraryRefreshProcedure()
+            migrate.completionBlock = {
+                UserDefaults.standard.set(true, forKey: "MigratedToRealm")
+            }
+            migrate.add(dependency: scan)
+            refresh.add(dependency: migrate)
+            Queue.shared.add(operations: scan, migrate, refresh)
+        }
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
@@ -29,16 +45,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         Queue.shared.add(scanProcedure: ScanProcedure(directoryURL: URL.documentDirectory))
-        monitor.start()
+        fileMonitor.start()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        monitor.stop()
-        PersistentContainer.saveViewContext()
-    }
-    
-    func applicationWillTerminate(_ application: UIApplication) {
-        PersistentContainer.saveViewContext()
+        fileMonitor.stop()
     }
     
     // MARK: - URL Handling
@@ -71,7 +82,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     // MARK: - Background
     
     func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
-        Network.shared.backgroundEventsCompleteProcessing = completionHandler
+        DownloadManager.shared.backgroundEventsCompleteProcessing = completionHandler
     }
     
     // MARK: - Home Screen Quick Actions

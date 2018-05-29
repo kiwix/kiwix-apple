@@ -6,6 +6,7 @@ target 'iOS' do
 
     pod 'SwiftyUserDefaults'
     pod 'ProcedureKit/All', :path => 'submodules/ProcedureKit'
+    pod 'RealmSwift'
 end
 
 target 'macOS' do
@@ -14,7 +15,6 @@ target 'macOS' do
     
     pod 'SwiftyUserDefaults'
     pod 'ProcedureKit/All', :path => 'submodules/ProcedureKit'
-    pod 'Realm', :inhibit_warnings => true
     pod 'RealmSwift'
 end
 

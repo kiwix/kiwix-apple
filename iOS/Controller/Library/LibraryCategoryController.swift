@@ -7,17 +7,31 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 import SwiftyUserDefaults
 
-class LibraryCategoryController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
-    let tableView = UITableView()
-    private(set) var category: BookCategory?
+class LibraryCategoryController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    private let tableView = UITableView()
+    private let category: ZimFile.Category
     
-    convenience init(category: BookCategory?, title: String?) {
-        self.init()
+    private var languageCodes = [String]()
+    private let zimFiles: Results<ZimFile>?
+    private var changeToken: NotificationToken?
+    
+    // MARK: - Override
+    
+    init(category: ZimFile.Category) {
         self.category = category
-        self.title = title
+        
+        let database = try? Realm(configuration: Realm.defaultConfig)
+        self.zimFiles = database?.objects(ZimFile.self).filter("categoryRaw = %@", category.rawValue)
+        
+        super.init(nibName: nil, bundle: nil)
+        title = category.description
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func loadView() {
@@ -36,74 +50,87 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         if #available(iOS 11.0, *) {
             navigationController?.navigationBar.prefersLargeTitles = true
         }
+        configureLanguageCodes()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureChangeToken()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // if have refreshed library but have not shown language filter alert, show it
-        if Defaults[.libraryLastRefreshTime] != nil && !Defaults[.libraryHasShownLanguageFilterAlert] {
-            showLanguageFilter()
-        }
-        
         if #available(iOS 11.0, *) {
             navigationItem.largeTitleDisplayMode = .always
         }
+        if !Defaults[.libraryHasShownLanguageFilterAlert] {
+            showAdditionalLanguageAlert()
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        changeToken = nil
+    }
+    
+    // MARK: -
+    
+    private func configureLanguageCodes() {
+        let visibleLanguageCodes = Defaults[.libraryFilterLanguageCodes]
+        languageCodes = zimFiles?.distinct(by: ["languageCode"]).map({ $0.languageCode }) ?? []
+        if visibleLanguageCodes.count > 0 {languageCodes = languageCodes.filter({ visibleLanguageCodes.contains($0) })}
+        languageCodes = languageCodes.filter({ (self.zimFiles?.filter("languageCode == %@", $0).count ?? 0) > 0 })
+            .sorted(by: { (code0, code1) -> Bool in
+                guard let name0 = Locale.current.localizedString(forLanguageCode: code0),
+                    let name1 = Locale.current.localizedString(forLanguageCode: code1) else {return code0 < code1}
+                return name0 < name1
+            })
+    }
+    
+    private func configureChangeToken() {
+        changeToken = zimFiles?.observe({ (changes) in
+            switch changes {
+            case .initial, .update:
+                self.tableView.reloadData()
+            default:
+                break
+            }
+        })        
+    }
+    
+    private func showAdditionalLanguageAlert() {
+        let alert = UIAlertController(title: NSLocalizedString("More Languages", comment: "Library: Additional Language Alert"),
+                                      message: NSLocalizedString("Contents in other languages are also available. Visit language filter at the top of the screen to enable them.",
+                                                                 comment: "Library: Additional Language Alert"),
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+        Defaults[.libraryHasShownLanguageFilterAlert] = true
     }
     
     @objc func languageFilterBottonTapped(sender: UIBarButtonItem) {
         let controller = LibraryLanguageController()
-        controller.dismissBlock = {[unowned self] in
-            self.reloadFetchedResultController()
+        controller.dismissCallback = {[unowned self] in
+            self.configureLanguageCodes()
+            self.configureChangeToken()
         }
+        changeToken = nil
+        
         let navigation = UINavigationController(rootViewController: controller)
         navigation.modalPresentationStyle = .popover
         navigation.popoverPresentationController?.barButtonItem = sender
         present(navigation, animated: true, completion: nil)
     }
     
-    private func showLanguageFilter() {
-        let deviceLanguageCodes = Locale.preferredLanguages.flatMap({ $0.components(separatedBy: "-").first })
-        let deviceLanguageNames: [String] = {
-            let names = NSMutableOrderedSet()
-            deviceLanguageCodes.flatMap({ (Locale.current as NSLocale).displayName(forKey: .identifier, value: $0) }).forEach({ names.add($0) })
-            return names.flatMap({ $0 as? String})
-        }()
-        
-        let message = String(format: NSLocalizedString("You have set %@ as the preferred language(s) of the device. Would you like to hide books in other languages?", comment: "Language Filter"), deviceLanguageNames.joined(separator: ", "))
-        
-        func handleAlertAction(onlyShowDeviceLanguage: Bool) {
-            let context = PersistentContainer.shared.viewContext
-            let languages = Language.fetchAll(context: context)
-            if onlyShowDeviceLanguage {
-                languages.forEach({ $0.isDisplayed = deviceLanguageCodes.contains($0.code) })
-            } else {
-                languages.forEach({$0.isDisplayed = false})
-            }
-            if context.hasChanges {
-                try? context.save()
-            }
-            self.reloadFetchedResultController()
-        }
-        
-        let alert = UIAlertController(title: NSLocalizedString("Language Filter", comment: "Language Filter"), message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Hide Other Language", comment: "Language Filter"), style: .default, handler: { (action) in
-            handleAlertAction(onlyShowDeviceLanguage: true)
-        }))
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Skip and Show All", comment: "Language Filter"), style: .default, handler: { (action) in
-            handleAlertAction(onlyShowDeviceLanguage: false)
-        }))
-        present(alert, animated: true)
-        Defaults[.libraryHasShownLanguageFilterAlert] = true
-    }
-    
     // MARK: - UITableViewDataSource & Delagates
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return fetchedResultController.sections?.count ?? 0
+        return languageCodes.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultController.sections?[section].numberOfObjects ?? 0
+        guard let zimFiles = zimFiles?.filter("languageCode == %@", languageCodes[section]) else {return 0}
+        return zimFiles.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -113,105 +140,25 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     }
     
     func configure(cell: TableViewCell, indexPath: IndexPath, animated: Bool = false) {
-        let book = fetchedResultController.object(at: indexPath)
-        cell.titleLabel.text = book.title
-        cell.detailLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
-        cell.thumbImageView.image = UIImage(data: book.favIcon ?? Data())
+        guard let zimFiles = zimFiles?.filter("languageCode == %@", languageCodes[indexPath.section]).sorted(byKeyPath: "title", ascending: true) else {return}
+        let zimFile = zimFiles[indexPath.row]
+        cell.titleLabel.text = zimFile.title
+        cell.detailLabel.text = [zimFile.fileSizeDescription, zimFile.creationDateDescription, zimFile.articleCountDescription].joined(separator: ", ")
+        cell.thumbImageView.image = UIImage(data: zimFile.icon) ?? #imageLiteral(resourceName: "GenericZimFile")
         cell.thumbImageView.contentMode = .scaleAspectFit
         cell.accessoryType = .disclosureIndicator
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return fetchedResultController.sections?[section].name
-    }
-    
-    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return numberOfSections(in: tableView) > 5 ? fetchedResultController.sectionIndexTitles : nil
-    }
-    
-    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        return fetchedResultController.section(forSectionIndexTitle: title, at: index)
+        return Locale.current.localizedString(forLanguageCode: languageCodes[section])
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let controller = LibraryBookDetailController(book: fetchedResultController.object(at: indexPath))
+        guard let zimFiles = zimFiles?.filter("languageCode == %@", languageCodes[indexPath.section]).sorted(byKeyPath: "title", ascending: true) else {return}
+        let zimFile = zimFiles[indexPath.row]
+        let controller = LibraryZimFileDetailController(zimFile: zimFile)
         navigationController?.pushViewController(controller, animated: true)
-    }
-    
-    // MARK: - NSFetchedResultsController
-    
-    private let managedObjectContext = PersistentContainer.shared.viewContext
-    private lazy var fetchedResultController: NSFetchedResultsController<Book> = {
-        let fetchRequest = Book.fetchRequest()
-        let langDescriptor = NSSortDescriptor(key: "language.name", ascending: true)
-        let titleDescriptor = NSSortDescriptor(key: "title", ascending: true)
-        fetchRequest.sortDescriptors = [langDescriptor, titleDescriptor]
-        fetchRequest.predicate = self.predicate
-        fetchRequest.fetchBatchSize = 20
-        let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                    managedObjectContext: self.managedObjectContext,
-                                                    sectionNameKeyPath: "language.name", cacheName: nil)
-        controller.delegate = self
-        try? controller.performFetch()
-        return controller as! NSFetchedResultsController<Book>
-    }()
-    
-    private var predicate: NSCompoundPredicate {
-        let displayedLanguages = Language.fetch(displayed: true, context: managedObjectContext)
-        var subpredicates = [NSPredicate]()
-        if displayedLanguages.count > 0 {
-            subpredicates.append(NSPredicate(format: "language IN %@", displayedLanguages))
-        } else {
-            subpredicates.append(NSPredicate(format: "language.name != nil"))
-        }
-        if let category = category {
-            subpredicates.append(NSPredicate(format: "category == %@", category.rawValue))
-        }
-        return NSCompoundPredicate(andPredicateWithSubpredicates: subpredicates)
-    }
-    
-    func reloadFetchedResultController() {
-        fetchedResultController.fetchRequest.predicate = predicate
-        try? fetchedResultController.performFetch()
-        tableView.reloadData()
-    }
-    
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-        switch type {
-        case .insert:
-            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
-        case .delete:
-            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
-        default:
-            return
-        }
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch type {
-        case .insert:
-            guard let newIndexPath = newIndexPath else {return}
-            tableView.insertRows(at: [newIndexPath], with: .fade)
-        case .delete:
-            guard let indexPath = indexPath else {return}
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        case .update:
-            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
-            configure(cell: cell, indexPath: indexPath, animated: true)
-        case .move:
-            guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            tableView.insertRows(at: [newIndexPath], with: .fade)
-        }
-    }
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
     }
 }
 

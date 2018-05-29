@@ -7,21 +7,30 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 import SwiftyUserDefaults
 
-class SearchNoTextController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
+class SearchNoTextController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, SearchNoTextControllerSectionHeaderDelegate {
     private let tableView = UITableView(frame: .zero, style: .grouped)
-    private var sections: [SearchNoTextControllerSections] = [.searchFilter]
-    private var recentSearchTexts = Defaults[.recentSearchTexts] {
+    private var sections: [Section] = [.searchFilter]
+    
+    private let zimFiles: Results<ZimFile>? = {
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            let predicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.local.rawValue)
+            return database.objects(ZimFile.self).filter(predicate)
+        } catch { return nil }
+    }()
+    private var changeToken: NotificationToken?
+    
+    private var recentSearchTexts = [String]() {
         didSet {
-            Defaults[.recentSearchTexts] = recentSearchTexts
             if recentSearchTexts.count == 0, let index = sections.index(of: .recentSearch) {
                 tableView.beginUpdates()
                 sections.remove(at: index)
                 tableView.deleteSections(IndexSet([index]), with: .fade)
                 tableView.endUpdates()
-            } else if recentSearchTexts.count > 0 && !sections.contains(.recentSearch) {
+            } else if recentSearchTexts.count > 0, !sections.contains(.recentSearch) {
                 tableView.beginUpdates()
                 sections.insert(.recentSearch, at: 0)
                 tableView.insertSections(IndexSet([0]), with: .none)
@@ -33,14 +42,7 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         }
     }
     
-    var localBookIDs: Set<ZimFileID> {
-        let books = fetchedResultController.fetchedObjects ?? [Book]()
-        return Set(books.map({ $0.id }))
-    }
-    var includedInSearchBookIDs: Set<ZimFileID> {
-        let books = fetchedResultController.fetchedObjects ?? [Book]()
-        return Set(books.filter({ $0.includeInSearch }).map({ $0.id }))
-    }
+    // MARK: - Overrides
     
     override func loadView() {
         view = tableView
@@ -52,11 +54,15 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         tableView.register(RecentSearchTableViewCell.self, forCellReuseIdentifier: "RecentSearchCell")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        if recentSearchTexts.count > 0 {
-            sections.insert(.recentSearch, at: 0)
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        recentSearchTexts = Defaults[.recentSearchTexts]
+        configureChangeToken()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        changeToken = nil
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -72,27 +78,45 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         }
     }
     
-    func add(recentSearchText: String) {
-        /* we make a local copy of `recentSearchTexts` to prevent tableView operations
-         being triggered too many times during update of search texts */
-        var searchTexts = recentSearchTexts
-        if let index = searchTexts.index(of: recentSearchText) {
-            searchTexts.remove(at: index)
-        }
-        searchTexts.insert(recentSearchText, at: 0)
-        if searchTexts.count > 20 {
-            searchTexts = Array(recentSearchTexts[..<20])
-        }
-        recentSearchTexts = searchTexts
+    // MARK: - Observer
+    
+    private func configureChangeToken() {
+        changeToken = zimFiles?.observe({ (changes) in
+            switch changes {
+            case .update(_, let deletions, let insertions, let updates):
+                guard let sectionIndex = self.sections.index(of: .searchFilter) else {return}
+                self.tableView.beginUpdates()
+                self.tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
+                self.tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
+                updates.forEach({ (row) in
+                    let indexPath = IndexPath(row: row, section: sectionIndex)
+                    guard let cell = self.tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
+                    self.configure(cell: cell, indexPath: indexPath)
+                })
+                self.tableView.endUpdates()
+            default:
+                break
+            }
+        })
     }
     
-    @objc private func buttonTapped(button: SectionHeaderButton) {
-        guard let section = button.section else {return}
+    // MARK: - SearchNoTextControllerSectionHeaderDelegate
+    
+    func sectionHeaderButtonTapped(button: UIButton, section: SearchNoTextController.Section) {
         switch section {
         case .recentSearch:
+            Defaults[.recentSearchTexts] = []
             recentSearchTexts.removeAll()
         case .searchFilter:
-            fetchedResultController.fetchedObjects?.forEach({ $0.includeInSearch = true })
+            do {
+                let database = try Realm(configuration: Realm.defaultConfig)
+                try database.write {
+                    zimFiles?.forEach({ (zimFile) in
+                        guard !zimFile.includeInSearch else {return}
+                        zimFile.includeInSearch = true
+                    })
+                }
+            } catch {}
         }
     }
     
@@ -104,7 +128,7 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if sections[section] == .searchFilter {
-            return fetchedResultController.sections?.first?.numberOfObjects ?? 0
+            return zimFiles?.count ?? 0
         } else {
             return 1
         }
@@ -121,13 +145,35 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         }
     }
     
-    func configure(cell: TableViewCell, indexPath: IndexPath, animated: Bool = false) {
-        let book = fetchedResultController.object(at: IndexPath(row: indexPath.row, section: 0))
-        cell.titleLabel.text = book.title
-        cell.detailLabel.text = [book.fileSizeDescription, book.dateDescription, book.articleCountDescription].flatMap({$0}).joined(separator: ", ")
-        cell.thumbImageView.image = UIImage(data: book.favIcon ?? Data())
+    func configure(cell: TableViewCell, indexPath: IndexPath) {
+        guard let zimFile = zimFiles?[indexPath.row] else {return}
+        cell.titleLabel.text = zimFile.title
+        cell.detailLabel.text = [zimFile.fileSizeDescription, zimFile.creationDateDescription, zimFile.articleCountDescription].joined(separator: ", ")
+        cell.thumbImageView.image = UIImage(data: zimFile.icon) ?? #imageLiteral(resourceName: "GenericZimFile")
         cell.thumbImageView.contentMode = .scaleAspectFit
-        cell.accessoryType = book.includeInSearch ? .checkmark : .none
+        cell.accessoryType = zimFile.includeInSearch ? .checkmark : .none
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let text: String = {
+            switch sections[section] {
+            case .recentSearch:
+                return NSLocalizedString("Recent Search", comment: "Search Interface")
+            case .searchFilter:
+                return NSLocalizedString("Search Filter", comment: "Search Interface")
+            }
+        }()
+        let buttonText: String = {
+            switch sections[section] {
+            case .recentSearch:
+                return NSLocalizedString("Clear", comment: "Clear Recent Search Texts")
+            case .searchFilter:
+                return NSLocalizedString("All", comment: "Select All Books in Search Filter")
+            }
+        }()
+        let view = SectionHeaderView(text: text, buttonText: buttonText, section: sections[section])
+        view.delegate = self
+        return view
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -142,56 +188,21 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         }
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let label = UILabel()
-        let labelText: String = {
-            switch sections[section] {
-            case .recentSearch:
-                return NSLocalizedString("Recent Search", comment: "Search Interface")
-            case .searchFilter:
-                return NSLocalizedString("Search Filter", comment: "Search Interface")
-            }
-        }()
-        label.text = labelText.uppercased()
-        label.font = UIFont.systemFont(ofSize: 13)
-        label.textColor = UIColor.darkGray
-        label.setContentHuggingPriority(UILayoutPriority(rawValue: 250), for: .horizontal)
-        
-        let button = SectionHeaderButton(section: sections[section])
-        let buttonText: String = {
-            switch sections[section] {
-            case .recentSearch:
-                return NSLocalizedString("Clear", comment: "Clear Recent Search Texts")
-            case .searchFilter:
-                return NSLocalizedString("All", comment: "Select All Books in Search Filter")
-            }
-        }()
-        button.setTitle(buttonText, for: .normal)
-        button.setTitleColor(UIColor.gray, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
-        button.setContentHuggingPriority(UILayoutPriority(rawValue: 251), for: .horizontal)
-        button.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
-        
-        let stackView = UIStackView()
-        stackView.alignment = .bottom
-        stackView.preservesSuperviewLayoutMargins = true
-        stackView.isLayoutMarginsRelativeArrangement = true
-        
-        stackView.addArrangedSubview(label)
-        stackView.addArrangedSubview(button)
-        label.heightAnchor.constraint(equalTo: button.heightAnchor).isActive = true
-        
-        return stackView
-    }
-    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return section == 0 ? 50 : 30
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if sections[indexPath.section] == .searchFilter {
-            let book = fetchedResultController.object(at: IndexPath(item: indexPath.item, section: 0))
-            book.includeInSearch = !book.includeInSearch
+            guard let zimFile = zimFiles?[indexPath.row], let token = changeToken else {return}
+            let includeInSearch = !zimFile.includeInSearch
+            tableView.cellForRow(at: indexPath)?.accessoryType = includeInSearch ? .checkmark : .none
+            do {
+                let database = try Realm(configuration: Realm.defaultConfig)
+                database.beginWrite()
+                zimFile.includeInSearch = includeInSearch
+                try database.commitWrite(withoutNotifying: [token])
+            } catch {}
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -215,9 +226,9 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let string = recentSearchTexts[indexPath.row]
         let width = NSString(string: string).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 24),
-                                                         options: .usesLineFragmentOrigin,
-                                                         attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)],
-                                                         context: nil).size.width
+                                                          options: .usesLineFragmentOrigin,
+                                                          attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)],
+                                                          context: nil).size.width
         return CGSize(width: width.rounded(.down) + 20, height: 24)
     }
     
@@ -229,58 +240,57 @@ class SearchNoTextController: UIViewController, UICollectionViewDelegate, UIColl
         }
     }
     
-    // MARK: - NSFetchedResultsController
+    // MARK: - Type Definition
     
-    private let managedObjectContext = PersistentContainer.shared.viewContext
-    private lazy var fetchedResultController: NSFetchedResultsController<Book> = {
-        let fetchRequest = Book.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Book.title, ascending: true)]
-        fetchRequest.predicate = NSPredicate(format: "stateRaw == %d", BookState.local.rawValue)
-        let controller = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                    managedObjectContext: self.managedObjectContext,
-                                                    sectionNameKeyPath: nil, cacheName: nil)
-        controller.delegate = self
-        try? controller.performFetch()
-        return controller as! NSFetchedResultsController<Book>
-    }()
+    enum Section { case recentSearch, searchFilter }
     
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        guard let sectionIndex = sections.index(of: .searchFilter) else {return}
-        switch type {
-        case .insert:
-            guard let newIndexPath = newIndexPath else {return}
-            tableView.insertRows(at: [IndexPath(row: newIndexPath.row, section: sectionIndex)], with: .fade)
-        case .delete:
-            guard let indexPath = indexPath else {return}
-            tableView.deleteRows(at: [IndexPath(row: indexPath.row, section: sectionIndex)], with: .fade)
-        case .update:
-            guard let indexPath = indexPath, let cell = tableView.cellForRow(at: IndexPath(row: indexPath.row, section: sectionIndex)) as? TableViewCell else {return}
-            configure(cell: cell, indexPath: IndexPath(row: indexPath.row, section: sectionIndex), animated: true)
-        case .move:
-            guard let indexPath = indexPath, let newIndexPath = newIndexPath else {return}
-            tableView.deleteRows(at: [IndexPath(row: indexPath.row, section: sectionIndex)], with: .fade)
-            tableView.insertRows(at: [IndexPath(row: newIndexPath.row, section: sectionIndex)], with: .fade)
+    class SectionHeaderView: UIStackView {
+        private let label = UILabel()
+        private let button = UIButton()
+        private let section: Section
+        weak var delegate: SearchNoTextControllerSectionHeaderDelegate?
+        
+        init(text: String, buttonText: String, section: Section) {
+            self.section = section
+            super.init(frame: .zero)
+            label.text = text.uppercased()
+            button.setTitle(buttonText, for: .normal)
+            configure()
+        }
+        
+        required init(coder: NSCoder) {
+            self.section = .searchFilter
+            super.init(coder: coder)
+            configure()
+        }
+        
+        private func configure() {
+            label.font = UIFont.systemFont(ofSize: 13)
+            label.textColor = .darkGray
+            label.setContentHuggingPriority(UILayoutPriority(rawValue: 250), for: .horizontal)
+
+            button.setTitleColor(.gray, for: .normal)
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+            button.setContentHuggingPriority(UILayoutPriority(rawValue: 251), for: .horizontal)
+            button.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
+            
+            alignment = .bottom
+            preservesSuperviewLayoutMargins = true
+            isLayoutMarginsRelativeArrangement = true
+            
+            addArrangedSubview(label)
+            addArrangedSubview(button)
+            label.heightAnchor.constraint(equalTo: button.heightAnchor).isActive = true
+        }
+        
+        @objc private func buttonTapped(button: UIButton) {
+            delegate?.sectionHeaderButtonTapped(button: button, section: section)
         }
     }
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
-        (parent as? SearchResultController)?.configureVisiualViewContent(mode: nil)
-    }
 }
 
-private class SectionHeaderButton: UIButton {
-    private(set) var section: SearchNoTextControllerSections? = nil
-    convenience init(section: SearchNoTextControllerSections) {
-        self.init(frame: .zero)
-        self.section = section
-    }
-}
+// MARK: - Protocols
 
-enum SearchNoTextControllerSections {
-    case recentSearch, searchFilter
+protocol SearchNoTextControllerSectionHeaderDelegate: class {
+    func sectionHeaderButtonTapped(button: UIButton, section: SearchNoTextController.Section)
 }
