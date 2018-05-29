@@ -10,11 +10,11 @@ import UIKit
 import MapKit
 
 class MapController: UIViewController {
-    let location: CLLocationCoordinate2D
+    let coordinate: CLLocationCoordinate2D
     private let mapView = MKMapView()
     
-    init(location: CLLocationCoordinate2D, title: String?) {
-        self.location = location
+    init(coordinate: CLLocationCoordinate2D, title: String?) {
+        self.coordinate = coordinate
         super.init(nibName: nil, bundle: nil)
         self.title = title
     }
@@ -30,8 +30,13 @@ class MapController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
-        let region = MKCoordinateRegion(center: self.location, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+        
+        let region = MKCoordinateRegion(center: self.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
         mapView.setRegion(region, animated: false)
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = self.coordinate
+        annotation.title = title
+        mapView.addAnnotation(annotation)
     }
     
     @objc func dismissController() {

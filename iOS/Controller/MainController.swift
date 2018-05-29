@@ -148,9 +148,9 @@ extension MainController: WebViewControllerDelegate {
         guard let components = URLComponents(string: url.absoluteString) else {return}
         let parts = components.path.split(separator: ",")
         guard parts.count == 2, let latitude = CLLocationDegrees(parts[0]), let longitude = CLLocationDegrees(parts[1]) else {return}
-        let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         
-        let mapController = MapController(location: location, title: controller.currentTitle)
+        let mapController = MapController(coordinate: coordinate, title: controller.currentTitle)
         let navigationController = UINavigationController(rootViewController: mapController)
         self.navigationController?.present(navigationController, animated: true)
     }
