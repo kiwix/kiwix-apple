@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MapKit
 import NotificationCenter
 import RealmSwift
 import SwiftyUserDefaults
@@ -141,6 +142,14 @@ extension MainController: WebViewControllerDelegate {
             currentWebController = controller
             load(url: url)
         }
+    }
+    
+    func webViewDidTapOnGeoLocation(url: URL) {
+        guard let components = URLComponents(string: url.absoluteString) else {return}
+        let parts = components.path.split(separator: ",")
+        guard parts.count == 2, let latitude = CLLocationDegrees(parts[0]), let longitude = CLLocationDegrees(parts[1]) else {return}
+        let location = CLLocation(latitude: latitude, longitude: longitude)
+        print(location)
     }
     
     func webViewDidFinishLoading(controller: WebViewController) {
