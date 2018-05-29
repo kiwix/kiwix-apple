@@ -125,6 +125,7 @@ class LegacyWebController: UIViewController, UIWebViewDelegate, WebViewControlle
             }
             return false
         } else if url.scheme == "geo" {
+            delegate?.webViewDidTapOnGeoLocation(url: url)
             return false
         } else {
             return false

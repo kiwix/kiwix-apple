@@ -131,7 +131,7 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
             }
             decisionHandler(.cancel)
         } else if url.scheme == "geo" {
-            // show map
+            delegate?.webViewDidTapOnGeoLocation(url: url)
             decisionHandler(.cancel)
         } else {
             decisionHandler(.cancel)
