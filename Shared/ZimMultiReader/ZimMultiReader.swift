@@ -45,8 +45,8 @@ extension ZimMultiReader {
         __startIndexSearch(searchText, zimFileIDs: zimFileIDs)
     }
     
-    func getNextIndexSearchResult() -> SearchResult? {
-        guard let result = __getNextIndexSearchResult() as? Dictionary<String, Any>,
+    func getNextIndexSearchResult(extractSnippet: Bool) -> SearchResult? {
+        guard let result = __getNextIndexSearchResult(withSnippet: extractSnippet) as? Dictionary<String, Any>,
             let id = result["id"] as? String,
             let path = result["path"] as? String,
             let title = result["title"] as? String else {return nil}

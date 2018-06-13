@@ -7,6 +7,7 @@
 //
 
 import ProcedureKit
+import SwiftyUserDefaults
 
 class SearchQueue: ProcedureQueue, ProcedureQueueDelegate {
     weak var eventDelegate: SearchQueueEvents?
@@ -18,7 +19,7 @@ class SearchQueue: ProcedureQueue, ProcedureQueueDelegate {
     }
     
     func enqueue(searchText: String, zimFileIDs: Set<ZimFileID>) {
-        let procedure = SearchProcedure(term: searchText, ids: zimFileIDs)
+        let procedure = SearchProcedure(term: searchText, ids: zimFileIDs, extractSnippet: !Defaults[.searchResultExcludeSnippet])
         add(operation: procedure)
     }
     
