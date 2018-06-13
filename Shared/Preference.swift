@@ -38,12 +38,6 @@ class Preference {
             set{Defaults[.langFilterNameDisplayInOriginalLocale] = newValue}
         }
     }
-    
-    // MARK: - Resume Data
-    
-    class var resumeData: [String: Data] {
-        get{return Defaults[DefaultsKeys.resumeData] as? [String: Data] ?? [String: Data]()}
-        set{Defaults[DefaultsKeys.resumeData] = newValue}}
 }
 
 extension DefaultsKeys {
@@ -68,7 +62,7 @@ extension DefaultsKeys {
     static let langFilterSortByAlphabeticalAsc = DefaultsKey<Bool>("langFilterSortByAlphabeticalAsc")
     static let langFilterNameDisplayInOriginalLocale = DefaultsKey<Bool>("langFilterNameDisplayInOriginalLocale")
     
-    static let resumeData = DefaultsKey<[String: Any]>("resumeData")
+    
 }
 
 // MARK: - Rate
