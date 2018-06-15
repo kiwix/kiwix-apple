@@ -744,8 +744,8 @@
 				9763EDC8201FCA6900F3A6D5 /* SettingWebController.swift */,
 				97A2180B2024EC3800D1E67B /* SettingFontSizeViewController.swift */,
 				97BAA541202B4C5E00500644 /* SettingBackupController.swift */,
-				97DBCF9C203CA254004EE274 /* SettingExternalLinkControllerTableViewController.swift */,
 				975F97A720D00EAE0005D642 /* SettingSearchController.swift */,
+				97DBCF9C203CA254004EE274 /* SettingExternalLinkControllerTableViewController.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
