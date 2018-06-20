@@ -129,7 +129,7 @@ class DownloadManager: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         session.getTasksWithCompletionHandler { (_, _, downloadTasks) in
             guard let task = downloadTasks.filter({$0.taskDescription == taskDescription}).first else {return}
             if producingResumingData {
-                task.cancel(byProducingResumeData: {data in Preference.resumeData[taskDescription] = data })
+                task.cancel(byProducingResumeData: {data in })
             } else {
                 task.cancel()
             }

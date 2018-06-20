@@ -22,19 +22,9 @@ class SettingNavigationController: UINavigationController {
 
 class SettingController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let tableView = UITableView(frame: .zero, style: .grouped)
-    let titles: [SettingMenuItem: String] = {
-        var titles = [SettingMenuItem: String]()
-        titles[.fontSize] = NSLocalizedString("Font Size", comment: "Setting Item Title")
-        titles[.backup] = NSLocalizedString("Backup", comment: "Setting Item Title")
-        titles[.externalLink] = NSLocalizedString("External Link", comment: "Setting Item Title")
-        titles[.feedback] = NSLocalizedString("Email us your suggestions", comment: "Setting Item Title")
-        titles[.rateApp] = NSLocalizedString("Give Kiwix a rate", comment: "Setting Item Title")
-        titles[.about] = NSLocalizedString("About", comment: "Setting Item Title")
-        return titles
-    }()
-    private let items: [[SettingMenuItem]] = {
-        var items: [[SettingMenuItem]] = [
-            [.fontSize, .backup, .externalLink],
+    private let items: [[MenuItem]] = {
+        var items: [[MenuItem]] = [
+            [.fontSize, .backup, .search, .externalLink],
             [.rateApp],
             [.about]
         ]
@@ -79,7 +69,7 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         let item = items[indexPath.section][indexPath.row]
-        cell.textLabel?.text = titles[item]
+        cell.textLabel?.text = item.description
         cell.accessoryType = .disclosureIndicator
         return cell
     }
@@ -105,21 +95,23 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
         switch item {
         case .fontSize:
             let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SettingFontSizeViewController")
-            controller.title = titles[item]
+            controller.title = item.description
             navigationController?.pushViewController(controller, animated: true)
         case.backup:
-            navigationController?.pushViewController(SettingBackupController(title: titles[item]), animated: true)
+            navigationController?.pushViewController(SettingBackupController(title: item.description), animated: true)
         case .externalLink:
-            navigationController?.pushViewController(SettingExternalLinkController(title: titles[item]), animated: true)
+            navigationController?.pushViewController(SettingExternalLinkController(title: item.description), animated: true)
+        case .search:
+            navigationController?.pushViewController(SettingSearchController(title: item.description), animated: true)
         case .feedback:
             presentFeedbackEmailComposer()
         case .rateApp:
-            presentRateAppAlert(title: titles[item]!)
+            presentRateAppAlert(title: item.description)
         case .about:
             guard let path = Bundle.main.path(forResource: "About", ofType: "html") else {return}
             let url = URL(fileURLWithPath: path)
             let controller = SettingWebController(fileURL: url)
-            controller.title = titles[item]
+            controller.title = item.description
             navigationController?.pushViewController(controller, animated: true)
         }
     }
@@ -138,6 +130,33 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
         alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Rate App"), style: .default))
         
         present(alert, animated: true)
+    }
+    
+    // MARK: - Type Definition
+    
+    enum MenuItem: CustomStringConvertible {
+        case fontSize, backup, externalLink, search
+        case feedback, rateApp
+        case about
+        
+        var description: String {
+            switch self {
+            case .fontSize:
+                return NSLocalizedString("Font Size", comment: "Setting Item Title")
+            case .backup:
+                return NSLocalizedString("Backup", comment: "Setting Item Title")
+            case .externalLink:
+                return NSLocalizedString("External Link", comment: "Setting Item Title")
+            case .search:
+                return NSLocalizedString("Search", comment: "Setting Item Title")
+            case .feedback:
+                return NSLocalizedString("Email us your suggestions", comment: "Setting Item Title")
+            case .rateApp:
+                return NSLocalizedString("Give Kiwix a rate", comment: "Setting Item Title")
+            case .about:
+                return NSLocalizedString("About", comment: "Setting Item Title")
+            }
+        }
     }
 }
 
@@ -171,10 +190,4 @@ extension SettingController: MFMailComposeViewControllerDelegate {
             break
         }
     }
-}
-
-enum SettingMenuItem {
-    case fontSize, backup, externalLink
-    case feedback, rateApp
-    case about
 }

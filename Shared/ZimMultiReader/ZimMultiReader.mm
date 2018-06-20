@@ -217,7 +217,7 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
     }
 }
 
-# pragma mark - Search
+# pragma mark - Text Search
 
 - (void)startIndexSearch:(NSString *)searchText zimFileIDs:(NSSet *)zimFileIDs {
     std::string searchTextC = [searchText cStringUsingEncoding:NSUTF8StringEncoding];
@@ -250,26 +250,31 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
     searcher->search(searchTextC, 0, 20);
 }
 
-- (NSDictionary *)convertSearchResultWithIndentifier:(NSString *)identifier result:(kiwix::Result *)result {
+- (NSDictionary *)convertSearchResultWithIndentifier:(NSString *)identifier result:(kiwix::Result *)result extractSnippet:(BOOL)extractSnippet {
     NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
     NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
     NSNumber *probability = [[NSNumber alloc] initWithDouble:(double)result->get_score() / double(100)];
-    NSString *snippet = [NSString stringWithCString:result->get_snippet().c_str() encoding:NSUTF8StringEncoding];
+    NSString *snippet = @"";
+
+    if (extractSnippet) {
+        snippet = [NSString stringWithCString:result->get_snippet().c_str() encoding:NSUTF8StringEncoding];
+    }
+
     delete result;
     return @{@"id": identifier, @"title": title, @"path": path, @"probability": probability, @"snippet": snippet};
 }
 
-- (NSDictionary *)getNextIndexSearchResult {
+- (NSDictionary *)getNextIndexSearchResultWithSnippet:(BOOL)extractSnippet {
     kiwix::Result *result = searcher->getNextResult();
     if (result != NULL) {
         NSString *identifier = searcherZimIDs[result->get_readerIndex()];
-        return [self convertSearchResultWithIndentifier:identifier result:result];
+        return [self convertSearchResultWithIndentifier:identifier result:result extractSnippet:extractSnippet];
     } else {
         for(auto iter: externalSearchers) {
             NSString *identifier = [NSString stringWithCString:iter.first.c_str() encoding:NSUTF8StringEncoding];
             result = iter.second->getNextResult();
             if (result != NULL) {
-                return [self convertSearchResultWithIndentifier:identifier result:result];
+                return [self convertSearchResultWithIndentifier:identifier result:result extractSnippet:extractSnippet];
             }
         }
         return nil;
@@ -307,5 +312,8 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
         return suggestions;
     }
 }
+
+# pragma mark - Geo Search
+
 
 @end

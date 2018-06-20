@@ -33,7 +33,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UICollectionView
     
     func getBookmarks() -> [(title: String, url: String, thumbImageData: Data)] {
         return UserDefaults(suiteName: "group.kiwix")?.array(forKey: "bookmarks")?
-            .flatMap({ $0 as? [String: Any] }).flatMap({ (bookmark) -> (title: String, url: String, thumbImageData: Data)? in
+            .compactMap({ $0 as? [String: Any] }).compactMap({ (bookmark) -> (title: String, url: String, thumbImageData: Data)? in
                 guard let title = bookmark["title"] as? String,
                     let url = bookmark["url"] as? String,
                     let thumbImageData = bookmark["thumbImageData"] as? Data else {return nil}

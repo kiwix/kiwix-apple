@@ -27,6 +27,7 @@ protocol WebViewController {
 }
 
 protocol WebViewControllerDelegate: class {
+    func webViewDidTapOnGeoLocation(controller: WebViewController, url: URL)
     func webViewDidFinishLoading(controller: WebViewController)
 }
 
