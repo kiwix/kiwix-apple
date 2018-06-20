@@ -27,19 +27,19 @@ class SearchResultWindow: NSWindow {
     override var canBecomeMain: Bool {return false}
 }
 
-class SearchResultController: NSViewController, ProcedureQueueDelegate, NSTableViewDataSource, NSTableViewDelegate {
+class SearchResultController: NSViewController, SearchQueueEvents, NSTableViewDataSource, NSTableViewDelegate {
     @IBOutlet weak var visiualEffect: NSVisualEffectView!
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
     @IBOutlet weak var noResultLabel: NSTextField!
     @IBOutlet weak var tableView: NSTableView!
     
-    let queue = ProcedureQueue()
+    private let queue = SearchQueue()
     private(set) var results: [SearchResult] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureVisiualEffectView()
-        queue.delegate = self
+        queue.eventDelegate = self
     }
     
     override func viewWillAppear() {
@@ -64,16 +64,9 @@ class SearchResultController: NSViewController, ProcedureQueueDelegate, NSTableV
         visiualEffect.layer?.cornerRadius = 4.0
     }
     
-    func startSearch(searchTerm: String) {
-//        let procedure = SearchProcedure(term: searchTerm)
-//        procedure.add(condition: MutuallyExclusive<SearchController>())
-//        procedure.add(observer: DidFinishObserver(didFinish: { [unowned self] (procedure, errors) in
-//            guard let procedure = procedure as? SearchProcedure else {return}
-//            OperationQueue.main.addOperation({
-//                self.results = procedure.results
-//            })
-//        }))
-//        queue.add(operation: procedure)
+    func startSearch(searchText: String) {
+        let zimFileIDs: Set<String> = Set(ZimMultiReader.shared.ids)
+        queue.enqueue(searchText: searchText, zimFileIDs: zimFileIDs)
     }
     
     func clearSearch() {
@@ -103,26 +96,21 @@ class SearchResultController: NSViewController, ProcedureQueueDelegate, NSTableV
         tableView.selectRowIndexes(IndexSet(integer: tableView.row(at: point)), byExtendingSelection: false)
     }
 
-    // MARK: - ProcedureQueueDelegate
+    // MARK: - SearchQueueEvents
     
-    func procedureQueue(_ queue: ProcedureQueue, willAddProcedure procedure: Procedure, context: Any?) -> ProcedureFuture? {
-        guard queue.operationCount == 0 else {return nil}
-        DispatchQueue.main.async {
-            self.progressIndicator.startAnimation(nil)
-            self.tableView.isHidden = true
-            self.noResultLabel.isHidden = true
-        }
-        return nil
+    func searchStarted() {
+        self.progressIndicator.startAnimation(nil)
+        self.tableView.isHidden = true
+        self.noResultLabel.isHidden = true
+
     }
     
-    func procedureQueue(_ queue: ProcedureQueue, didFinishProcedure procedure: Procedure, withErrors errors: [Error]) {
-        guard queue.operationCount == 0 else {return}
-        DispatchQueue.main.async {
-            self.progressIndicator.stopAnimation(nil)
-            self.tableView.isHidden = self.results.count == 0
-            self.noResultLabel.isHidden = !self.tableView.isHidden
-            self.tableView.reloadData()
-        }
+    func searchFinished(searchText: String, results: [SearchResult]) {
+        self.results = results
+        self.progressIndicator.stopAnimation(nil)
+        self.tableView.isHidden = self.results.count == 0
+        self.noResultLabel.isHidden = !self.tableView.isHidden
+        self.tableView.reloadData()
     }
     
     // MARK: - NSTableViewDataSource & NSTableViewDelegate
@@ -143,27 +131,26 @@ class SearchResultController: NSViewController, ProcedureQueueDelegate, NSTableV
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let result = results[row]
-//        if result.hasSnippet {
-//            let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "TitleSnippetResult"), owner: self) as! SearchTitleSnippetResultTableCellView
-//            cell.titleField.stringValue = result.title
-//            if let snippet = result.snippet {
-//                cell.snippetField.stringValue = snippet
-//            } else if let snippet = result.attributedSnippet {
-//                cell.snippetField.attributedStringValue = snippet
-//            } else {
-//                cell.snippetField.stringValue = ""
-//            }
-//            return cell
-//        } else {
-//            let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "TitleResult"), owner: self) as! SearchTitleResultTableCellView
-//            cell.titleField.stringValue = result.title
-//            return cell
-//        }
-        return nil
+        if result.snippet != nil || result.attributedSnippet != nil {
+            let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "TitleSnippetResult"), owner: self) as! SearchTitleSnippetResultTableCellView
+            cell.titleField.stringValue = result.title
+            if let snippet = result.snippet {
+                cell.snippetField.stringValue = snippet
+            } else if let snippet = result.attributedSnippet {
+                cell.snippetField.attributedStringValue = snippet
+            } else {
+                cell.snippetField.stringValue = ""
+            }
+            return cell
+        } else {
+            let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "TitleResult"), owner: self) as! SearchTitleResultTableCellView
+            cell.titleField.stringValue = result.title
+            return cell
+        }
     }
     
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        return 100
-//        return results[row].hasSnippet ? 92 : 26
+        let hasSnippet = results[row].snippet != nil || results[row].attributedSnippet != nil
+        return hasSnippet ? 92 : 26
     }
 }

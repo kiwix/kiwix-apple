@@ -31,6 +31,7 @@ extension ZimMultiReader {
             let data = content["data"] as? Data,
             let mime = content["mime"] as? String,
             let length = content["length"] as? Int else {return nil}
+        print(contentPath, mime, length)
         return (data, mime, length)
     }
     

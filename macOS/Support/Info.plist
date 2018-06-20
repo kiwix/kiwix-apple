@@ -56,7 +56,7 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2017 Kiwix and authors</string>
 	<key>NSMainStoryboardFile</key>
-	<string>Storyboard</string>
+	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>UTExportedTypeDeclarations</key>
