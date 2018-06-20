@@ -45,6 +45,7 @@ class SettingSearchController: UIViewController, UITableViewDataSource, UITableV
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         cell.textLabel?.text = NSLocalizedString("Snippet", comment: "Setting: Search")
+        cell.selectionStyle = .none
         let switchControl = UISwitch()
         switchControl.addTarget(self, action: #selector(switchValueChanged(switchControl:)), for: .valueChanged)
         switchControl.isOn = !Defaults[.searchResultExcludeSnippet]
