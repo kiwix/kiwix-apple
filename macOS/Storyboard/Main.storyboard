@@ -954,7 +954,7 @@
     <resources>
         <image name="Back" width="19.200000762939453" height="19.200000762939453"/>
         <image name="Forward" width="19.200000762939453" height="19.200000762939453"/>
-        <image name="Home" width="410" height="410"/>
+        <image name="Home" width="25.600000381469727" height="25.600000381469727"/>
         <image name="LogoMac" width="200" height="200"/>
         <image name="Open" width="25.600000381469727" height="25.600000381469727"/>
     </resources>

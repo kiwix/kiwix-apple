@@ -120,6 +120,7 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
     func searchWillEnd() {
         hideSearchResultWindow()
         window?.makeFirstResponder(nil)
+//        searchField.alignment = .natural
     }
     
     @IBAction func searchFieldTextDidChange(_ sender: NSSearchField) {
