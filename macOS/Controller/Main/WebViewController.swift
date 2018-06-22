@@ -21,9 +21,9 @@ class WebViewController: NSViewController, WebFrameLoadDelegate {
     }
     
     func loadMainPage() {
-//        guard let id = ZimManager.shared.getReaderIDs().first,
-//            let mainPageURL = ZimManager.shared.getMainPageURL(bookID: id) else {return}
-//        load(url: mainPageURL)
+        guard let id = ZimMultiReader.shared.ids.first,
+            let mainPageURL = ZimMultiReader.shared.getMainPageURL(zimFileID: id) else {return}
+        load(url: mainPageURL)
     }
     
     func load(url: URL) {
@@ -33,6 +33,24 @@ class WebViewController: NSViewController, WebFrameLoadDelegate {
     }
     
     // MARK: - WebFrameLoadDelegate
+    
+    func webView(_ sender: WebView!, didStartProvisionalLoadFor frame: WebFrame!) {
+        guard let url = URL(string: webView.mainFrameURL) else { webView.stopLoading(nil); return }
+        if url.isKiwixURL {
+            guard let zimFileID = url.host else { webView.stopLoading(nil); return }
+            if let redirectedPath = ZimMultiReader.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
+                let redirectedURL = URL(bookID: zimFileID, contentPath: redirectedPath) {
+                DispatchQueue.main.async {
+                    self.load(url: redirectedURL)
+                }
+                webView.stopLoading(nil)
+            }
+        } else if url.scheme == "http" || url.scheme == "https" {
+            webView.stopLoading(nil)
+        } else {
+            webView.stopLoading(nil)
+        }
+    }
     
     func webView(_ sender: WebView!, didFinishLoadFor frame: WebFrame!) {
         guard let controller = view.window?.windowController as? MainWindowController else {return}

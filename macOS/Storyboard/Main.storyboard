@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="13178.6" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13178.6"/>
-        <plugIn identifier="com.apple.WebKitIBPlugin" version="13178.6"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <plugIn identifier="com.apple.WebKitIBPlugin" version="14113"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
         <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
@@ -847,11 +847,11 @@
             <objects>
                 <viewController id="jmg-Am-8VV" sceneMemberID="viewController">
                     <view key="view" id="U3f-Mp-NGl" customClass="WelcomeView" customModule="Kiwix" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="503" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="503" height="393"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="equalSpacing" orientation="vertical" alignment="centerX" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q6a-uM-LFi">
-                                <rect key="frame" x="149" y="29" width="205" height="336"/>
+                                <rect key="frame" x="149" y="80" width="205" height="336"/>
                                 <subviews>
                                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DiV-IB-4Fz">
                                         <rect key="frame" x="3" y="136" width="200" height="200"/>
@@ -870,7 +870,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XeJ-gj-UmK">
-                                        <rect key="frame" x="1" y="0.0" width="204" height="27"/>
+                                        <rect key="frame" x="3" y="0.0" width="199" height="27"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Wikipedia Anywhere" id="BJd-s8-giH">
                                             <font key="font" metaFont="system" size="22"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -889,9 +889,9 @@
                                     <real value="3.4028234663852886e+38"/>
                                 </customSpacing>
                             </stackView>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="82H-H3-bsH">
-                                <rect key="frame" x="198" y="-39" width="107" height="32"/>
-                                <buttonCell key="cell" type="push" title="Open Book" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ax2-gK-j18">
+                            <button focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="82H-H3-bsH">
+                                <rect key="frame" x="198" y="12" width="107" height="32"/>
+                                <buttonCell key="cell" type="push" title="Open Book" bezelStyle="rounded" alignment="center" borderStyle="border" focusRingType="none" imageScaling="proportionallyDown" inset="2" id="ax2-gK-j18">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                     <connections>
@@ -910,7 +910,7 @@
                 </viewController>
                 <customObject id="k04-dN-Z6a" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="478" y="2033"/>
+            <point key="canvasLocation" x="477.5" y="2079.5"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="zG3-xs-ODq">
@@ -954,7 +954,7 @@
     <resources>
         <image name="Back" width="19.200000762939453" height="19.200000762939453"/>
         <image name="Forward" width="19.200000762939453" height="19.200000762939453"/>
-        <image name="Home" width="25.600000381469727" height="25.600000381469727"/>
+        <image name="Home" width="410" height="410"/>
         <image name="LogoMac" width="200" height="200"/>
         <image name="Open" width="25.600000381469727" height="25.600000381469727"/>
     </resources>

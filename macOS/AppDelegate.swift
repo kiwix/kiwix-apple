@@ -15,14 +15,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         URLProtocol.registerClass(KiwixURLProtocol.self)
         
+        // if app crashed previously, do not reopen zim files
         if (!Defaults[.terminated]) {
-            Defaults[.bookPaths] = []
+            Defaults[.zimFilePaths] = []
         }
         Defaults[.terminated] = false
         
-        var isStale = false
-        let urls = Defaults[.zimBookmarks].flatMap({try? URL(resolvingBookmarkData: $0, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)}).flatMap({$0})
-//        ZimManager.shared.addBook(urls: urls)
+        let urls = Defaults[.zimFileBookmarks].compactMap { (data) -> URL? in
+            var isStale = false
+            let url = (try? URL(resolvingBookmarkData: data, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)) ?? nil
+            return isStale ? nil : url
+        }
+        urls.forEach({ ZimMultiReader.shared.add(url: $0)})
 
         guard let split = NSApplication.shared.mainWindow?.contentViewController as? NSSplitViewController,
             let controller = split.splitViewItems.last?.viewController as? WebViewController else {return}
@@ -39,12 +43,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func application(_ sender: NSApplication, openFiles filenames: [String]) {
         guard let controller = NSApplication.shared.mainWindow?.windowController as? MainWindowController else {return}
-        controller.openBooks(paths: filenames)
+        controller.openZimFiles(paths: filenames)
     }
 }
 
 extension DefaultsKeys {
-    static let bookPaths = DefaultsKey<[String]>("bookPaths")
-    static let zimBookmarks = DefaultsKey<[Data]>("zimBookmarks")
+    static let zimFilePaths = DefaultsKey<[String]>("zimFilePaths")
+    static let zimFileBookmarks = DefaultsKey<[Data]>("zimFileBookmarks")
     static let terminated = DefaultsKey<Bool>("terminated")
 }

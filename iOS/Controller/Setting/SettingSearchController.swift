@@ -60,9 +60,4 @@ class SettingSearchController: UIViewController, UITableViewDataSource, UITableV
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return NSLocalizedString("If search performance issue is encountered, disable snippets to improve the situation.", comment: "Setting: Search")
     }
-    
-}
-
-extension DefaultsKeys {
-    static let searchResultExcludeSnippet = DefaultsKey<Bool>("searchResultExcludeSnippet")
 }

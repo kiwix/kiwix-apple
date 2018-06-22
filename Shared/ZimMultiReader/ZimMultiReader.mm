@@ -156,7 +156,7 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
         return nil;
     } else {
         std::shared_ptr<kiwix::Reader> reader = found->second;
-        
+
         try {
             kiwix::Entry entry = reader->getEntryFromPath([contentURL cStringUsingEncoding:NSUTF8StringEncoding]);
             NSData *data = [NSData dataWithBytes:entry.getContent().data() length:entry.getSize()];
@@ -164,6 +164,8 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
             NSNumber *length = [NSNumber numberWithUnsignedLongLong:entry.getSize()];
             return @{@"data": data, @"mime": mime, @"length": length};
         } catch (kiwix::NoEntry) {
+            return nil;
+        } catch (std::exception) {
             return nil;
         }
     }

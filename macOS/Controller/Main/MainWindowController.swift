@@ -34,14 +34,22 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
         }
     }
     
-    func openBooks(paths: [String]) {
-        let bookmarks = paths.flatMap({try? URL(fileURLWithPath: $0).bookmarkData(options: [.withSecurityScope, .securityScopeAllowOnlyReadAccess], includingResourceValuesForKeys: nil, relativeTo: nil)})
-        Defaults[.zimBookmarks] = bookmarks
+    func openZimFiles(paths: [String]) {
+        let zimFileBookmarks = paths.compactMap { (path) -> Data? in
+            return try? URL(fileURLWithPath: path).bookmarkData(options: [.withSecurityScope, .securityScopeAllowOnlyReadAccess],
+                                                              includingResourceValuesForKeys: nil,
+                                                              relativeTo: nil)
+        }
+        Defaults[.zimFileBookmarks] = zimFileBookmarks
         
-        var isStale = false
-        let urls = bookmarks.flatMap({try? URL(resolvingBookmarkData: $0, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)}).flatMap({$0})
-//        ZimManager.shared.removeBooks();
-//        ZimManager.shared.addBook(urls: urls)
+        let urls = zimFileBookmarks.compactMap { (data) -> URL? in
+            var isStale = false
+            let url = (try? URL(resolvingBookmarkData: data, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)) ?? nil
+            return isStale ? nil : url
+        }
+        
+        ZimMultiReader.shared.ids.forEach({ ZimMultiReader.shared.remove(id: $0) })
+        urls.forEach({ ZimMultiReader.shared.add(url: $0)})
         
         guard let searchController = self.searchResultWindowController.contentViewController as? SearchResultController else {return}
         self.searchField.endSearch()
@@ -50,19 +58,19 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
         
         guard let split = self.contentViewController as? NSSplitViewController,
             let webController = split.splitViewItems.last?.viewController as? WebViewController else {return}
-//        if ZimManager.shared.getReaderIDs().count > 0 {
-//            webController.loadMainPage()
-//        } else {
-//            self.searchField.title = nil
-//            self.searchField.searchTermCache = ""
-//            self.searchTextDidClear()
-//            webController.webView.isHidden = true
-//            let alert = NSAlert()
-//            alert.messageText = "Cannot Open Book"
-//            alert.informativeText = "The file you selected is not a valid zim file."
-//            alert.addButton(withTitle: "Ok")
-//            alert.runModal()
-//        }
+        if ZimMultiReader.shared.ids.count > 0 {
+            webController.loadMainPage()
+        } else {
+            self.searchField.title = nil
+            self.searchField.searchTermCache = ""
+            self.searchTextDidClear()
+            webController.webView.isHidden = true
+            let alert = NSAlert()
+            alert.messageText = "Cannot Open Book"
+            alert.informativeText = "The file you selected is not a valid zim file."
+            alert.addButton(withTitle: "Ok")
+            alert.runModal()
+        }
     }
     
     // MARK: - Actions
@@ -94,7 +102,7 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
         openPanel.beginSheetModal(for: window!) { response in
             guard response.rawValue == NSFileHandlingPanelOKButton else {return}
             let paths = openPanel.urls.map({$0.path})
-            self.openBooks(paths: paths)
+            self.openZimFiles(paths: paths)
         }
     }
     
@@ -112,12 +120,13 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
     func searchWillEnd() {
         hideSearchResultWindow()
         window?.makeFirstResponder(nil)
+//        searchField.alignment = .natural
     }
     
     @IBAction func searchFieldTextDidChange(_ sender: NSSearchField) {
         searchField.searchTermCache = sender.stringValue
         guard let searchController = searchResultWindowController.contentViewController as? SearchResultController else {return}
-        searchController.startSearch(searchTerm: sender.stringValue)
+        searchController.startSearch(searchText: sender.stringValue)
     }
     
     private func showSearchResultWindow() {
