@@ -46,7 +46,7 @@ class WebViewController: NSViewController, WebFrameLoadDelegate {
                 webView.stopLoading(nil)
             }
         } else if url.scheme == "http" || url.scheme == "https" {
-            return
+            webView.stopLoading(nil)
         } else {
             webView.stopLoading(nil)
         }
