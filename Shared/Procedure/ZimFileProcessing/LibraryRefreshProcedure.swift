@@ -23,8 +23,7 @@ private class DownloadProcedure: NetworkDataProcedure<URLSession> {
     init() {
         let session = URLSession.shared
         let url = URL(string: "https://download.kiwix.org/library/library_zim.xml")!
-        var request = URLRequest(url: url)
-        request.timeoutInterval = 30.0
+        let request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 30)
         super.init(session: session, request: request)
         
         addWillExecuteBlockObserver { _, _ in
