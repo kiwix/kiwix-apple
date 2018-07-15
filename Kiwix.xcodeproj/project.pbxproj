@@ -52,6 +52,7 @@
 		97533B461F4C723900F6651A /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97533B451F4C723900F6651A /* MainWindowController.swift */; };
 		97598E09202B60E0005A9055 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97598E08202B60E0005A9055 /* BackupManager.swift */; };
 		97598E0A202B60E0005A9055 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97598E08202B60E0005A9055 /* BackupManager.swift */; };
+		975C0A4220FAA5580010AC17 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 975C0A4120FAA5580010AC17 /* MapKit.framework */; };
 		975F97A820D00EAE0005D642 /* SettingSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F97A720D00EAE0005D642 /* SettingSearchController.swift */; };
 		975FDADA1F6082DA00A10E8C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDAD91F6082DA00A10E8C /* AppDelegate.swift */; };
 		975FDAE41F6082DA00A10E8C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975FDAE21F6082DA00A10E8C /* LaunchScreen.storyboard */; };
@@ -302,6 +303,7 @@
 		975415D31F54C1870007EA6C /* SearchProcedure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchProcedure.swift; sourceTree = "<group>"; };
 		97598E08202B60E0005A9055 /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		9759D4211F4F278800705779 /* Kiwix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
+		975C0A4120FAA5580010AC17 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/MapKit.framework; sourceTree = DEVELOPER_DIR; };
 		975F97A720D00EAE0005D642 /* SettingSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSearchController.swift; sourceTree = "<group>"; };
 		975FDAD91F6082DA00A10E8C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		975FDAE31F6082DA00A10E8C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -691,6 +693,7 @@
 				97B86D7020DADC2D00320394 /* libicui18n.58.2.dylib in Frameworks */,
 				97B86D7120DADC2D00320394 /* libkiwix.2.dylib in Frameworks */,
 				97B86D6F20DADC2D00320394 /* libaria2.0.dylib in Frameworks */,
+				975C0A4220FAA5580010AC17 /* MapKit.framework in Frameworks */,
 				97B86D7320DADC2D00320394 /* libicuio.58.2.dylib in Frameworks */,
 				97B86D7420DADC2D00320394 /* libicutest.58.2.dylib in Frameworks */,
 				DFD371610877B5817E9C9FEB /* Pods_macOS.framework in Frameworks */,
@@ -737,6 +740,7 @@
 		3B93EAF9B5C5AA23046BDEAC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				975C0A4120FAA5580010AC17 /* MapKit.framework */,
 				97F6CC5020BD960F005CDBD2 /* MapKit.framework */,
 				97A6882F207D40F500DBBE0D /* Pods_iOS.framework */,
 				975FDB061F608F4100A10E8C /* WebKit.framework */,
@@ -1553,6 +1557,9 @@
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.Mac = {
 								enabled = 0;
+							};
+							com.apple.Maps.Mac = {
+								enabled = 1;
 							};
 							com.apple.Push = {
 								enabled = 0;
