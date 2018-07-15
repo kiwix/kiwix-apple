@@ -1,5 +1,5 @@
 //
-//  SettingExternalLinkControllerTableViewController.swift
+//  SettingExternalLinkController.swift
 //  iOS
 //
 //  Created by Chris Li on 2/20/18.
