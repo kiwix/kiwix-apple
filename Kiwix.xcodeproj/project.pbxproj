@@ -49,6 +49,7 @@
 		972B66602007F9F7003F5365 /* WebKitWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97050D001F6733400021DE78 /* WebKitWebController.swift */; };
 		972B6662200808D6003F5365 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B6661200808D6003F5365 /* WelcomeController.swift */; };
 		972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972E6F631FA11A6100F5C927 /* RoundedButton.swift */; };
+		9742596920FCE7BA000BB88A /* SettingLibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9742596820FCE7BA000BB88A /* SettingLibraryController.swift */; };
 		97533B461F4C723900F6651A /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97533B451F4C723900F6651A /* MainWindowController.swift */; };
 		97598E09202B60E0005A9055 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97598E08202B60E0005A9055 /* BackupManager.swift */; };
 		97598E0A202B60E0005A9055 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97598E08202B60E0005A9055 /* BackupManager.swift */; };
@@ -298,6 +299,7 @@
 		972B665B2006BEBA003F5365 /* WebViewControllerProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewControllerProtocols.swift; sourceTree = "<group>"; };
 		972B6661200808D6003F5365 /* WelcomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
 		972E6F631FA11A6100F5C927 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
+		9742596820FCE7BA000BB88A /* SettingLibraryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingLibraryController.swift; sourceTree = "<group>"; };
 		9743C30120878C70006981FB /* SearchResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultController.swift; sourceTree = "<group>"; };
 		97533B451F4C723900F6651A /* MainWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
 		975415D31F54C1870007EA6C /* SearchProcedure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchProcedure.swift; sourceTree = "<group>"; };
@@ -785,6 +787,7 @@
 				97BAA541202B4C5E00500644 /* SettingBackupController.swift */,
 				975F97A720D00EAE0005D642 /* SettingSearchController.swift */,
 				97DBCF9C203CA254004EE274 /* SettingExternalLinkController.swift */,
+				9742596820FCE7BA000BB88A /* SettingLibraryController.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -1873,6 +1876,7 @@
 				97A2180C2024EC3800D1E67B /* SettingFontSizeController.swift in Sources */,
 				97C5762F202CB86800E37502 /* 1.9.xcmappingmodel in Sources */,
 				9702BE221F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */,
+				9742596920FCE7BA000BB88A /* SettingLibraryController.swift in Sources */,
 				97242E2B2093B38A00AA4436 /* Preference.swift in Sources */,
 				97CA4A7220A21D24008CEA6D /* LibraryLanguageController.swift in Sources */,
 				979D6E0C20B34FD700B08DE7 /* BookmarkController.swift in Sources */,
