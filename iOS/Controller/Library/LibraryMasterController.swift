@@ -11,9 +11,11 @@ import CoreData
 import RealmSwift
 import ProcedureKit
 
+
 class LibraryMasterController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let refreshControl = UIRefreshControl()
+    
     private var sections: [Section] = [.category]
     private let categories: [ZimFile.Category] = [
         .wikipedia, .wikibooks, .wikinews, .wikiquote, .wikisource, .wikispecies, .wikiversity, .wikivoyage, .wiktionary,
@@ -58,8 +60,9 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         title = NSLocalizedString("Library", comment: "Library title")
-        refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
+        refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
+        refreshControl.attributedTitle = NSAttributedString(string: NSLocalizedString("Pull to refresh", comment: "Library: refresh control"))
         
         if splitViewController?.traitCollection.horizontalSizeClass == .regular {
             let firstIndexPath = IndexPath(row: 0, section: 0)
@@ -84,7 +87,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         downloadZimFilesChangeToken = nil
     }
     
-    // MARK: -
+    // MARK: - UIControl Actions
     
     @objc func dismissController() {
         dismiss(animated: true, completion: nil)
@@ -100,6 +103,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         Queue.shared.add(libraryRefresh: procedure)
     }
  
+    // MARK: - Configurations
     
     private func configureSections() {
         if let localZimFiles = localZimFiles {
