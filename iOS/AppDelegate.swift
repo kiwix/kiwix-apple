@@ -8,6 +8,8 @@
 
 import UIKit
 import RealmSwift
+import ProcedureKit
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate {
@@ -87,7 +89,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     }
     
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        
+        let procedure = LibraryRefreshProcedure()
+        procedure.add(observer: DidFinishObserver(didFinish: { (procedure, errors) in
+            completionHandler(.newData)
+        }))
+        Queue.shared.add(libraryRefresh: procedure)
     }
     
     // MARK: - Home Screen Quick Actions
