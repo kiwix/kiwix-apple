@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         
         URLProtocol.registerClass(KiwixURLProtocol.self)
         DownloadManager.shared.restorePreviousState()
+        application.setMinimumBackgroundFetchInterval(3600 * 24)
         
         fileMonitor.delegate = self
         fileMonitor.start()
@@ -83,6 +84,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     
     func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
         DownloadManager.shared.backgroundEventsCompleteProcessing = completionHandler
+    }
+    
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        
     }
     
     // MARK: - Home Screen Quick Actions
