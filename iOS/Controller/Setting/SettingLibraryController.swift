@@ -8,33 +8,33 @@
 
 import UIKit
 
-class SettingLibraryController: UITableViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+class SettingLibraryController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    let tableView = UITableView(frame: .zero, style: .grouped)
+    
+    convenience init(title: String?) {
+        self.init()
+        self.title = title
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    override func loadView() {
+        view = tableView
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.dataSource = self
+        tableView.delegate = self
     }
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 0
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return UITableViewCell()
     }
 
     func configureRefreshTokenTitle() {
@@ -62,6 +62,19 @@ class SettingLibraryController: UITableViewController {
 //        guard let formatted = formatter.string(from: components) else {return}
 //        refreshControl.attributedTitle = NSAttributedString(string: NSLocalizedString(
 //            String(format: "Last refresh: %@ ago", formatted), comment: "Time elapsed since last library refresh"))
+    }
+    
+    enum MenuItem: CustomStringConvertible {
+        case lastRefreshTimeStamp, lastRefreshAgo
+        
+        var description: String {
+            switch self {
+            case .lastRefreshTimeStamp:
+                return NSLocalizedString("Backup", comment: "Setting Item Title")
+            case .lastRefreshAgo:
+                return NSLocalizedString("External Link", comment: "Setting Item Title")
+            }
+        }
     }
 
 }
