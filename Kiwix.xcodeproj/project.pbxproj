@@ -25,8 +25,6 @@
 		971B8E58202246ED00C5C939 /* RecentSearchCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971B8E57202246ED00C5C939 /* RecentSearchCells.swift */; };
 		97242E162093A9AC00AA4436 /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97242E152093A9AC00AA4436 /* Bookmark.swift */; };
 		97242E2B2093B38A00AA4436 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD401D6F728200A80EE2 /* Preference.swift */; };
-		97242E2D2097A4EE00AA4436 /* LibrarySplitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97242E2C2097A4EE00AA4436 /* LibrarySplitController.swift */; };
-		97242E2F2097A50800AA4436 /* LibraryOnboardingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97242E2E2097A50800AA4436 /* LibraryOnboardingController.swift */; };
 		97246C821FC4D12A0056AE5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9717A2521FB2592D00837492 /* Main.storyboard */; };
 		97246C831FC4D12B0056AE5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9717A2521FB2592D00837492 /* Main.storyboard */; };
 		972521012009616B00B60A80 /* EmptyContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972521002009616B00B60A80 /* EmptyContentView.swift */; };
@@ -288,8 +286,6 @@
 		9719F60520DAF82200B5D0EB /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		971B8E57202246ED00C5C939 /* RecentSearchCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchCells.swift; sourceTree = "<group>"; };
 		97242E152093A9AC00AA4436 /* Bookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmark.swift; sourceTree = "<group>"; };
-		97242E2C2097A4EE00AA4436 /* LibrarySplitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarySplitController.swift; sourceTree = "<group>"; };
-		97242E2E2097A50800AA4436 /* LibraryOnboardingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryOnboardingController.swift; sourceTree = "<group>"; };
 		972521002009616B00B60A80 /* EmptyContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyContentView.swift; sourceTree = "<group>"; };
 		97252102200D3C4B00B60A80 /* HUDController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDController.swift; sourceTree = "<group>"; };
 		97252104200E908000B60A80 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
@@ -1012,8 +1008,6 @@
 			isa = PBXGroup;
 			children = (
 				97A36C561F8D5FCD0079B452 /* LibraryController.swift */,
-				97242E2E2097A50800AA4436 /* LibraryOnboardingController.swift */,
-				97242E2C2097A4EE00AA4436 /* LibrarySplitController.swift */,
 				97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */,
 				97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */,
 				97F4D10520AB80740038FC87 /* LibraryZimFileDetailController.swift */,
@@ -1870,7 +1864,6 @@
 				977D7BB61F9E6A43009A8703 /* ZimMultiReader.mm in Sources */,
 				97252103200D3C4B00B60A80 /* HUDController.swift in Sources */,
 				97C57629202CB86800E37502 /* MigrationPolicy.swift in Sources */,
-				97242E2F2097A50800AA4436 /* LibraryOnboardingController.swift in Sources */,
 				977D7BB41F9E6A43009A8703 /* SearchResult.swift in Sources */,
 				979D6E0F20B7585B00B08DE7 /* PersistentContainer.swift in Sources */,
 				97A2180C2024EC3800D1E67B /* SettingFontSizeController.swift in Sources */,
@@ -1926,7 +1919,6 @@
 				97AC121320878F8B004779D1 /* SearchResultController.swift in Sources */,
 				977F983E1F9E43EC002ABFCE /* ScanProcedure.swift in Sources */,
 				97C57620202CB86800E37502 /* Language.swift in Sources */,
-				97242E2D2097A4EE00AA4436 /* LibrarySplitController.swift in Sources */,
 				97028C54201A7D43001259CB /* WebViewControllerProtocols.swift in Sources */,
 				97C57635202CB86800E37502 /* Book.swift in Sources */,
 				97A36C331F8C21210079B452 /* SearchProcedure.swift in Sources */,
