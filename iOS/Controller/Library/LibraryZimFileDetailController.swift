@@ -68,8 +68,8 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
         view = tableView
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(Cell.self, forCellReuseIdentifier: "Cell")
-        tableView.register(ActionCell.self, forCellReuseIdentifier: "ActionCell")
+        tableView.register(UIRightDetailTableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(UIActionTableViewCell.self, forCellReuseIdentifier: "ActionCell")
     }
     
     override func viewDidLoad() {
@@ -154,32 +154,32 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section < actions.top.count {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! ActionCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! UIActionTableViewCell
             cell.indentationLevel = 0
             let action = actions.top[indexPath.section][indexPath.row]
             configure(cell: cell, action: action)
             return cell
         } else if indexPath.section >= actions.top.count + metas.count {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! ActionCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! UIActionTableViewCell
             cell.indentationLevel = 0
             let action = actions.bottom[indexPath.section - actions.top.count - metas.count][indexPath.row]
             configure(cell: cell, action: action)
             return cell
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! Cell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! UIRightDetailTableViewCell
             let meta = metas[indexPath.section - actions.top.count][indexPath.row]
             configure(cell: cell, meta: meta)
             return cell
         }
     }
     
-    func configure(cell: ActionCell, action: Action) {
+    func configure(cell: UIActionTableViewCell, action: Action) {
         cell.textLabel?.text = action.description
         if action.isDestructive {cell.isDestructive = true}
         if action.isDisabled {cell.isDisabled = true}
     }
     
-    func configure(cell: Cell, meta: Meta) {
+    func configure(cell: UIRightDetailTableViewCell, meta: Meta) {
         cell.selectionStyle = .none
         switch meta {
         case .language:
@@ -307,52 +307,6 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
             case .openMainPage:
                 return NSLocalizedString("Open Main Page", comment: "Book Detail Cell")
             }
-        }
-    }
-    
-    class ActionCell: UITableViewCell {
-        override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-            super.init(style: style, reuseIdentifier: reuseIdentifier)
-            config()
-        }
-        
-        required init?(coder aDecoder: NSCoder) {
-            super.init(coder: aDecoder)
-            config()
-        }
-        
-        private func config() {
-            textLabel?.textAlignment = .center
-            textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .medium)
-            textLabel?.textColor = #colorLiteral(red: 0, green: 0.5898008943, blue: 1, alpha: 1)
-        }
-        
-        var isDestructive: Bool = false {
-            didSet {
-                textLabel?.textColor = isDestructive ? #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1) : #colorLiteral(red: 0, green: 0.5898008943, blue: 1, alpha: 1)
-            }
-        }
-        
-        var isDisabled: Bool = false {
-            didSet {
-                textLabel?.textColor = isDisabled ? #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1) : #colorLiteral(red: 0, green: 0.5898008943, blue: 1, alpha: 1)
-            }
-        }
-        
-        override func prepareForReuse() {
-            textLabel?.text = nil
-            isDestructive = false
-            isDisabled = false
-        }
-    }
-    
-    class Cell: UITableViewCell {
-        override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-            super.init(style: .value1, reuseIdentifier: reuseIdentifier)
-        }
-        
-        required init?(coder aDecoder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
         }
     }
     

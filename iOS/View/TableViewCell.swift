@@ -79,7 +79,7 @@ class UIRightDetailTableViewCell: UITableViewCell {
     }
 }
 
-class LibraryActionCell: UITableViewCell {
+class UIActionTableViewCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         config()
