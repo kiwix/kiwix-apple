@@ -68,3 +68,49 @@ class TableViewCell: UITableViewCell {
         setNeedsUpdateConstraints()
     }
 }
+
+class UIRightDetailTableViewCell: UITableViewCell {
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: .value1, reuseIdentifier: reuseIdentifier)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class LibraryActionCell: UITableViewCell {
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        config()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        config()
+    }
+    
+    private func config() {
+        textLabel?.textAlignment = .center
+        textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .medium)
+        textLabel?.textColor = #colorLiteral(red: 0, green: 0.5898008943, blue: 1, alpha: 1)
+    }
+    
+    var isDestructive: Bool = false {
+        didSet {
+            textLabel?.textColor = isDestructive ? #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1) : #colorLiteral(red: 0, green: 0.5898008943, blue: 1, alpha: 1)
+        }
+    }
+    
+    var isDisabled: Bool = false {
+        didSet {
+            textLabel?.textColor = isDisabled ? #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1) : #colorLiteral(red: 0, green: 0.5898008943, blue: 1, alpha: 1)
+        }
+    }
+    
+    override func prepareForReuse() {
+        textLabel?.text = nil
+        isDestructive = false
+        isDisabled = false
+    }
+}

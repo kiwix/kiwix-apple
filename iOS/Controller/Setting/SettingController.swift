@@ -24,7 +24,7 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
     let tableView = UITableView(frame: .zero, style: .grouped)
     private let items: [[MenuItem]] = {
         var items: [[MenuItem]] = [
-            [.fontSize, .backup, .search, .externalLink],
+            [.fontSize, .backup, .externalLink, .library, .search],
             [.rateApp],
             [.about]
         ]
