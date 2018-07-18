@@ -178,7 +178,6 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
     }
     
     func configure(cell: UIRightDetailTableViewCell, meta: Meta) {
-        cell.selectionStyle = .none
         switch meta {
         case .language:
             cell.textLabel?.text = NSLocalizedString("Language", comment: "Book Detail Cell")

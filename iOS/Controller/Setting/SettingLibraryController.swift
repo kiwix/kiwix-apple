@@ -11,9 +11,11 @@ import SwiftyUserDefaults
 
 class SettingLibraryController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let tableView = UITableView(frame: .zero, style: .grouped)
+    let sections: [MenuItem] = [.lastRefresh, .refreshNow]
     
     var lastRefreshTimeFormatted: String {
         guard let lastRefreshTime = Defaults[.libraryLastRefreshTime] else {return "Unknown"}
+        print(lastRefreshTime)
         
         let components = Calendar.current.dateComponents([.year, .month, .weekOfMonth, .day, .hour, .minute, .second], from: lastRefreshTime, to: Date())
         let formatter = DateComponentsFormatter()
@@ -45,8 +47,8 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
     
     override func loadView() {
         view = tableView
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.register(UIRightDetailTableViewCell.self, forCellReuseIdentifier: "RightDetailCell")
+        tableView.register(UIActionTableViewCell.self, forCellReuseIdentifier: "ActionCell")
         tableView.dataSource = self
         tableView.delegate = self
     }
@@ -54,7 +56,7 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
     // MARK: - Table view data source
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return sections.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -62,10 +64,22 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "RightDetailCell") as! UIRightDetailTableViewCell
-        cell.textLabel?.text = "Last refresh:"
-        cell.detailTextLabel?.text = lastRefreshTimeFormatted
-        return cell
+        let item = sections[indexPath.section]
+        switch item {
+        case .lastRefresh:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "RightDetailCell") as! UIRightDetailTableViewCell
+            cell.textLabel?.text = item.description
+            cell.detailTextLabel?.text = lastRefreshTimeFormatted
+            return cell
+        case .refreshNow:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell") as! UIActionTableViewCell
+            cell.textLabel?.text = item.description
+            return cell
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     enum MenuItem: CustomStringConvertible {
