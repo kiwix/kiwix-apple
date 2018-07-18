@@ -155,13 +155,11 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section < actions.top.count {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! UIActionTableViewCell
-            cell.indentationLevel = 0
             let action = actions.top[indexPath.section][indexPath.row]
             configure(cell: cell, action: action)
             return cell
         } else if indexPath.section >= actions.top.count + metas.count {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! UIActionTableViewCell
-            cell.indentationLevel = 0
             let action = actions.bottom[indexPath.section - actions.top.count - metas.count][indexPath.row]
             configure(cell: cell, action: action)
             return cell
@@ -175,8 +173,8 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
     
     func configure(cell: UIActionTableViewCell, action: Action) {
         cell.textLabel?.text = action.description
-        if action.isDestructive {cell.isDestructive = true}
-        if action.isDisabled {cell.isDisabled = true}
+        cell.isDestructive = action.isDestructive
+        cell.isDisabled = action.isDisabled
     }
     
     func configure(cell: UIRightDetailTableViewCell, meta: Meta) {

@@ -82,18 +82,14 @@ class UIRightDetailTableViewCell: UITableViewCell {
 class UIActionTableViewCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        config()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        config()
-    }
-    
-    private func config() {
+        
         textLabel?.textAlignment = .center
         textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .medium)
         textLabel?.textColor = #colorLiteral(red: 0, green: 0.5898008943, blue: 1, alpha: 1)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     var isDestructive: Bool = false {
