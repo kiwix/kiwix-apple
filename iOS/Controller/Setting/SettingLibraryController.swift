@@ -10,34 +10,40 @@ import UIKit
 import SwiftyUserDefaults
 
 class SettingLibraryController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    let tableView = UITableView(frame: .zero, style: .grouped)
-    let sections: [MenuItem] = [.lastRefresh, .refreshNow]
+    private let tableView = UITableView(frame: .zero, style: .grouped)
+    private let sections: [MenuItem] = [.lastRefresh, .refreshNow]
+    private var timer: Timer?
     
     var lastRefreshTimeFormatted: String {
-        guard let lastRefreshTime = Defaults[.libraryLastRefreshTime] else {return "Unknown"}
-        print(lastRefreshTime)
+        let unknown = NSLocalizedString("Unknown", comment: "Library refresh time, unknown")
+        guard let lastRefreshTime = Defaults[.libraryLastRefreshTime] else { return unknown }
         
-        let components = Calendar.current.dateComponents([.year, .month, .weekOfMonth, .day, .hour, .minute, .second], from: lastRefreshTime, to: Date())
-        let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .full
-        if let year = components.year, year > 0 {
-            formatter.allowedUnits = .year
-        } else if let month = components.month, month > 0 {
-            formatter.allowedUnits = .month
-        } else if let week = components.weekOfMonth, week > 0 {
-            formatter.allowedUnits = .weekOfMonth
-        } else if let day = components.day, day > 0 {
-            formatter.allowedUnits = .day
-        } else if let hour = components.hour, hour > 0 {
-            formatter.allowedUnits = [.hour]
-        } else if let minute = components.minute, minute > 0 {
-            formatter.allowedUnits = .minute
+        if lastRefreshTime.timeIntervalSinceNow * -1 > 60 {
+            let components = Calendar.current.dateComponents([.year, .month, .weekOfMonth, .day, .hour, .minute, .second],
+                                                             from: lastRefreshTime, to: Date())
+            let formatter = DateComponentsFormatter()
+            formatter.unitsStyle = .full
+            if let year = components.year, year > 0 {
+                formatter.allowedUnits = .year
+            } else if let month = components.month, month > 0 {
+                formatter.allowedUnits = .month
+            } else if let week = components.weekOfMonth, week > 0 {
+                formatter.allowedUnits = .weekOfMonth
+            } else if let day = components.day, day > 0 {
+                formatter.allowedUnits = .day
+            } else if let hour = components.hour, hour > 0 {
+                formatter.allowedUnits = [.hour]
+            } else if let minute = components.minute, minute > 0 {
+                formatter.allowedUnits = .minute
+            } else {
+                formatter.allowedUnits = .second
+            }
+            
+            guard let formatted = formatter.string(from: components) else { return unknown }
+            return NSLocalizedString(String(format: "%@ ago", formatted), comment: "Library refresh time")
         } else {
-            formatter.allowedUnits = .second
+            return NSLocalizedString("Just now", comment: "Library refresh time")
         }
-        
-        guard let formatted = formatter.string(from: components) else {return "Unknown"}
-        return NSLocalizedString(String(format: "%@ ago", formatted), comment: "")
     }
     
     convenience init(title: String?) {
@@ -52,8 +58,17 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
         tableView.dataSource = self
         tableView.delegate = self
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true, block: { [unowned self] _ in
+            guard let sectionIndex = self.sections.index(of: .lastRefresh),
+                let cell = self.tableView.cellForRow(at: IndexPath(row: 0, section: sectionIndex)) as? UIRightDetailTableViewCell else {return}
+            self.configure(lastRefreshCell: cell)
+        })
+    }
 
-    // MARK: - Table view data source
+    // MARK: - UITableViewDataSource & Delegate
 
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
@@ -69,7 +84,7 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
         case .lastRefresh:
             let cell = tableView.dequeueReusableCell(withIdentifier: "RightDetailCell") as! UIRightDetailTableViewCell
             cell.textLabel?.text = item.description
-            cell.detailTextLabel?.text = lastRefreshTimeFormatted
+            configure(lastRefreshCell: cell)
             return cell
         case .refreshNow:
             let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell") as! UIActionTableViewCell
@@ -78,8 +93,20 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
+    func configure(lastRefreshCell cell: UIRightDetailTableViewCell) {
+        cell.detailTextLabel?.text = lastRefreshTimeFormatted
+        print(Date(), lastRefreshTimeFormatted)
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        if sections[indexPath.section] == .refreshNow {
+//            let procedure = LibraryRefreshProcedure()
+//            procedure.add(observer: DidFinishObserver(didFinish: { (procedure, errors) in
+//                completionHandler(.newData)
+//            }))
+//            Queue.shared.add(libraryRefresh: procedure)
+        }
     }
     
     enum MenuItem: CustomStringConvertible {
@@ -94,5 +121,4 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
             }
         }
     }
-
 }
