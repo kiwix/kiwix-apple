@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         } else {
             let scan = ScanProcedure(directoryURL: URL.documentDirectory)
             let migrate = BookmarkMigrationOperation()
-            let refresh = LibraryRefreshProcedure()
+            let refresh = LibraryRefreshProcedure(updateExisting: true)
             migrate.completionBlock = {
                 UserDefaults.standard.set(true, forKey: "MigratedToRealm")
             }
@@ -89,7 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     }
     
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        let procedure = LibraryRefreshProcedure()
+        let procedure = LibraryRefreshProcedure(updateExisting: false)
         procedure.add(observer: DidFinishObserver(didFinish: { (procedure, errors) in
             completionHandler(.newData)
         }))
