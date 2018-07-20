@@ -59,13 +59,18 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
         tableView.delegate = self
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true, block: { [unowned self] _ in
             guard let sectionIndex = self.sections.index(of: .lastRefresh),
                 let cell = self.tableView.cellForRow(at: IndexPath(row: 0, section: sectionIndex)) as? UIRightDetailTableViewCell else {return}
             self.configure(lastRefreshCell: cell)
         })
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        timer?.invalidate()
     }
 
     // MARK: - UITableViewDataSource & Delegate
@@ -95,7 +100,6 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
     
     func configure(lastRefreshCell cell: UIRightDetailTableViewCell) {
         cell.detailTextLabel?.text = lastRefreshTimeFormatted
-        print(Date(), lastRefreshTimeFormatted)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
