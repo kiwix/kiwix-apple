@@ -91,7 +91,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         let procedure = LibraryRefreshProcedure(updateExisting: false)
         procedure.add(observer: DidFinishObserver(didFinish: { (procedure, errors) in
-            completionHandler(.newData)
+            if let procedure = procedure as? LibraryRefreshProcedure, errors.count == 0 {
+                completionHandler(procedure.hasUpdates ? .newData : .noData)
+            } else {
+                completionHandler(.failed)
+            }
         }))
         Queue.shared.add(libraryRefresh: procedure)
     }
