@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6261A760D2741FBCF22BDE82 /* Pods_WikiMed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14995D226EC82CFFBBB5B159 /* Pods_WikiMed.framework */; };
 		97028C4F20192F65001259CB /* TableOfContentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97028C4E20192F65001259CB /* TableOfContentController.swift */; };
 		97028C54201A7D43001259CB /* WebViewControllerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B665B2006BEBA003F5365 /* WebViewControllerProtocols.swift */; };
 		9702BE221F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BE211F97FA4300E6B4EE /* LibraryRefreshProcedure.swift */; };
@@ -674,6 +675,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6261A760D2741FBCF22BDE82 /* Pods_WikiMed.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1464,10 +1466,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97B448A3210FBC2E0004B056 /* Build configuration list for PBXNativeTarget "WikiMed" */;
 			buildPhases = (
+				902D753CDF5B49F50A4C2727 /* [CP] Check Pods Manifest.lock */,
 				97B44890210FBC2C0004B056 /* Sources */,
 				97B44891210FBC2C0004B056 /* Frameworks */,
 				97B44892210FBC2C0004B056 /* Resources */,
 				97B448AB2110A5480004B056 /* Embed Frameworks */,
+				3DEC884342B1E43D509F359D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1624,6 +1628,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		3DEC884342B1E43D509F359D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-WikiMed/Pods-WikiMed-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ProcedureKit-iOS/ProcedureKit.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProcedureKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WikiMed/Pods-WikiMed-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		5A8EC2FD57777D5372AF50EF /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1646,6 +1668,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-macOS/Pods-macOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		902D753CDF5B49F50A4C2727 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WikiMed-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		906581036364E72561BA6457 /* [CP] Check Pods Manifest.lock */ = {
@@ -2122,6 +2162,7 @@
 		};
 		97B448A4210FBC2E0004B056 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7510393635E2E3EF2F7C29DB /* Pods-WikiMed.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2147,6 +2188,7 @@
 		};
 		97B448A5210FBC2E0004B056 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EC89D040865EE325CEE40811 /* Pods-WikiMed.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_NONNULL = YES;
