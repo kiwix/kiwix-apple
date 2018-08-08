@@ -10,4 +10,5 @@ import SwiftyUserDefaults
 
 extension DefaultsKeys {
     static let searchResultExcludeSnippet = DefaultsKey<Bool>("searchResultExcludeSnippet")
+    static let libraryLanguageSortingMode = DefaultsKey<String>("libraryLanguageSortingMode")
 }

@@ -15,7 +15,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let sortBy: UISegmentedControl
-    private let sortStyles: [SortingMode] = [.alphabetically, .byCount]
+    private let sortingModes: [SortingMode] = [.alphabetically, .byCount]
     
     private let zimFileCount: [LanguageCode: Int]
     private var visible: [LanguageCode]
@@ -37,8 +37,9 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
         visible = Defaults[.libraryFilterLanguageCodes]
         hidden = Array(Set(zimFileCount.keys).subtracting(visible))
         
-        sortBy = UISegmentedControl(items: Array(sortStyles.map({ $0.description }) ))
-        sortBy.selectedSegmentIndex = 0
+        let sortingMode = SortingMode(rawValue: Defaults[.libraryLanguageSortingMode]) ?? .alphabetically
+        sortBy = UISegmentedControl(items: Array(sortingModes.map({ $0.localizedDescription }) ))
+        sortBy.selectedSegmentIndex = sortingModes.firstIndex(of: sortingMode) ?? 0
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -84,7 +85,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
             return name0 < name1
         }
         
-        switch sortStyles[sortBy.selectedSegmentIndex] {
+        switch sortingModes[sortBy.selectedSegmentIndex] {
         case .alphabetically:
             codes.sort { return compareLocalizedName(code0: $0, code1: $1) }
         case .byCount:
@@ -99,6 +100,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     }
     
     @objc func sortByValueChanged(segmentedControl: UISegmentedControl) {
+        Defaults[.libraryLanguageSortingMode] = sortingModes[segmentedControl.selectedSegmentIndex].rawValue
         sortLanguageCodes(codes: &visible)
         sortLanguageCodes(codes: &hidden)
         tableView.reloadData()
@@ -176,10 +178,10 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     
     // MARK: - Type Definition
     
-    private enum SortingMode: CustomStringConvertible {
+    private enum SortingMode: String {
         case alphabetically, byCount
         
-        var description: String {
+        var localizedDescription: String {
             switch self {
             case .alphabetically:
                 return NSLocalizedString("A-Z", comment: "Library: Language Filter Sorting")
