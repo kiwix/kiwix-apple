@@ -46,7 +46,7 @@ class SearchResultController: UIViewController, SearchQueueEvents, UISearchResul
         view = BackgroundView()
         
         /* Prevent SearchResultController view from being automatically hidden by the UISearchController */
-        viewAlwaysVisibleObserver = view.observe(\.hidden, options: .new, changeHandler: { (view, change) in
+        viewAlwaysVisibleObserver = view.observe(\.isHidden, options: .new, changeHandler: { (view, change) in
             if change.newValue == true { view.isHidden = false }
         })
     }
