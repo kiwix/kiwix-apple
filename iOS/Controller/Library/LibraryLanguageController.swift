@@ -15,7 +15,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let sortBy: UISegmentedControl
-    private let sortStyles: [SortStyle] = [.alphabetically, .byCount]
+    private let sortStyles: [SortingMode] = [.alphabetically, .byCount]
     
     private let zimFileCount: [LanguageCode: Int]
     private var visible: [LanguageCode]
@@ -176,7 +176,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     
     // MARK: - Type Definition
     
-    private enum SortStyle: CustomStringConvertible {
+    private enum SortingMode: CustomStringConvertible {
         case alphabetically, byCount
         
         var description: String {
