@@ -24,7 +24,7 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
     let tableView = UITableView(frame: .zero, style: .grouped)
     private let items: [[MenuItem]] = {
         var items: [[MenuItem]] = [
-            [.fontSize, .backup, .externalLink, .search],
+            [.fontSize, .backup, .externalLink, .library, .search],
             [.rateApp],
             [.about]
         ]
@@ -86,7 +86,7 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return section == items.count - 1 ? 30 : 10
+        return section == items.count - 1 ? 30 : UITableViewAutomaticDimension
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
