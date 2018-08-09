@@ -11,7 +11,7 @@ import SwiftyUserDefaults
 
 class SettingLibraryController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private let tableView = UITableView(frame: .zero, style: .grouped)
-    private let sections: [MenuItem] = [.lastRefresh, .refreshNow]
+    private let items: [[MenuItem]] = [[.refreshNow], [.languageFilter]]
     private var timer: Timer?
     
     var lastRefreshTimeFormatted: String {
@@ -46,6 +46,8 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
+    // MARK: - Override
+    
     convenience init(title: String?) {
         self.init()
         self.title = title
@@ -53,47 +55,34 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
     
     override func loadView() {
         view = tableView
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.register(UIRightDetailTableViewCell.self, forCellReuseIdentifier: "RightDetailCell")
         tableView.register(UIActionTableViewCell.self, forCellReuseIdentifier: "ActionCell")
         tableView.dataSource = self
         tableView.delegate = self
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        timer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true, block: { [unowned self] _ in
-            guard let sectionIndex = self.sections.index(of: .lastRefresh),
-                let cell = self.tableView.cellForRow(at: IndexPath(row: 0, section: sectionIndex)) as? UIRightDetailTableViewCell else {return}
-            self.configure(lastRefreshCell: cell)
-        })
+    // MARK: - UITableViewDataSource & Delegate
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return items.count
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        timer?.invalidate()
-    }
-
-    // MARK: - UITableViewDataSource & Delegate
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
-    }
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return items[section].count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = sections[indexPath.section]
+        let item = items[indexPath.section][indexPath.row]
         switch item {
-        case .lastRefresh:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "RightDetailCell") as! UIRightDetailTableViewCell
-            cell.textLabel?.text = item.description
-            configure(lastRefreshCell: cell)
-            return cell
         case .refreshNow:
             let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell") as! UIActionTableViewCell
-            cell.textLabel?.text = item.description
+            cell.textLabel?.text = NSLocalizedString("Refresh Now", comment: "Setting Item Title")
+            return cell
+        case .languageFilter:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")!
+            cell.textLabel?.text = NSLocalizedString("Language Filter", comment: "Setting Item Title")
+            cell.accessoryType = .disclosureIndicator
             return cell
         }
     }
@@ -102,27 +91,27 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
         cell.detailTextLabel?.text = lastRefreshTimeFormatted
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        if sections[indexPath.section] == .refreshNow {
-//            let procedure = LibraryRefreshProcedure()
-//            procedure.add(observer: DidFinishObserver(didFinish: { (procedure, errors) in
-//                completionHandler(.newData)
-//            }))
-//            Queue.shared.add(libraryRefresh: procedure)
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if section == 0 {
+            let label = UITableViewSectionFooterLabel()
+            label.text = "Last refresh: " + lastRefreshTimeFormatted
+            return label
+        } else {
+            return nil
         }
     }
     
-    enum MenuItem: CustomStringConvertible {
-        case lastRefresh, refreshNow
-        
-        var description: String {
-            switch self {
-            case .lastRefresh:
-                return NSLocalizedString("Last Refresh", comment: "Setting Item Title")
-            case .refreshNow:
-                return NSLocalizedString("Refresh Now", comment: "Setting Item Title")
-            }
-        }
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return section == 0 ? 30 : UITableViewAutomaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    // MARK: - Type Definition
+    
+    enum MenuItem {
+        case refreshNow, languageFilter
     }
 }
