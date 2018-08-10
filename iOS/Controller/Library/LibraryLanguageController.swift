@@ -58,7 +58,13 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
+        if #available(iOS 11.0, *) {
+            navigationItem.largeTitleDisplayMode = .never
+        }
+        if popoverPresentationController != nil {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
+        }
+        
         navigationItem.titleView = sortBy
         sortBy.addTarget(self, action: #selector(sortByValueChanged(segmentedControl:)), for: .valueChanged)
         
