@@ -61,7 +61,7 @@ class LibraryRefreshProcedure: ZimFileProcessingProcedure, XMLParserDelegate {
             // update last library refresh time
             Defaults[.libraryLastRefreshTime] = Date()
             
-            print(hasUpdates)
+            print("Library Refresh Procedure finished, has updates: \(hasUpdates)")
             finish()
         } catch {
             finish(withError: error)
