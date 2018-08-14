@@ -18,6 +18,7 @@ class LibraryRefreshProcedure: ZimFileProcessingProcedure, XMLParserDelegate {
     init(updateExisting: Bool = false) {
         self.updateExisting = updateExisting
         super.init()
+        add(condition: MutuallyExclusive<LibraryRefreshProcedure>())
     }
     
     override func execute() {
