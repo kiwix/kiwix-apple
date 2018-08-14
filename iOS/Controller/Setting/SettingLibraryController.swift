@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ProcedureKit
 import SwiftyUserDefaults
 
 class SettingLibraryController: UIViewController, UITableViewDataSource, UITableViewDelegate {
@@ -56,10 +57,17 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
     override func loadView() {
         view = tableView
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        tableView.register(UIRightDetailTableViewCell.self, forCellReuseIdentifier: "RightDetailCell")
         tableView.register(UIActionTableViewCell.self, forCellReuseIdentifier: "ActionCell")
+        tableView.register(UIRightDetailTableViewCell.self, forCellReuseIdentifier: "RightDetailCell")
         tableView.dataSource = self
         tableView.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: selectedIndexPath, animated: false)
+        }
     }
     
     // MARK: - UITableViewDataSource & Delegate
@@ -77,7 +85,15 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
         switch item {
         case .refreshNow:
             let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell") as! UIActionTableViewCell
-            cell.textLabel?.text = NSLocalizedString("Refresh Now", comment: "Setting Item Title")
+            if Queue.shared.isRefreshingLibrary {
+                cell.textLabel?.text = NSLocalizedString("Refreshing...", comment: "Setting Item Title")
+                cell.isDisabled = true
+                cell.isUserInteractionEnabled = false
+            } else {
+                cell.textLabel?.text = NSLocalizedString("Refresh Now", comment: "Setting Item Title")
+                cell.isDisabled = false
+                cell.isUserInteractionEnabled = true
+            }
             return cell
         case .languageFilter:
             let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")!
@@ -87,14 +103,10 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    func configure(lastRefreshCell cell: UIRightDetailTableViewCell) {
-        cell.detailTextLabel?.text = lastRefreshTimeFormatted
-    }
-    
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == 0 {
             let label = UITableViewSectionFooterLabel()
-            label.text = "Last refresh: " + lastRefreshTimeFormatted
+            label.text = String(format: NSLocalizedString("Last refresh: %@", comment: ""), lastRefreshTimeFormatted)
             return label
         } else {
             return nil
@@ -106,7 +118,15 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        let item = items[indexPath.section][indexPath.row]
+        switch item {
+        case .refreshNow:
+            let procedure = LibraryRefreshProcedure()
+            Queue.shared.add(libraryRefreshProcedure: procedure)
+        case .languageFilter:
+            let controller = LibraryLanguageController()
+            navigationController?.pushViewController(controller, animated: true)
+        }
     }
     
     // MARK: - Type Definition
