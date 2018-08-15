@@ -19,17 +19,11 @@ class LibrarySearchController: UITableViewController, UISearchResultsUpdating {
         self.database = try? Realm(configuration: Realm.defaultConfig)
         super.init(style: .plain)
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.keyboardDismissMode = .onDrag
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
     }
     
     // MARK: - UISearchResultsUpdating
@@ -82,5 +76,13 @@ class LibrarySearchController: UITableViewController, UISearchResultsUpdating {
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return Locale.current.localizedString(forLanguageCode: languageCodes[section])
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let zimFiles = zimFiles?.filter("languageCode == %@", languageCodes[indexPath.section]) else {return}
+        let zimFile = zimFiles[indexPath.row]
+        let controller = LibraryZimFileDetailController(zimFile: zimFile)
+        presentingViewController?.showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
     }
 }
