@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6261A760D2741FBCF22BDE82 /* Pods_WikiMed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14995D226EC82CFFBBB5B159 /* Pods_WikiMed.framework */; };
+		97018985212357F200F8A6DD /* LibrarySearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97018984212357F200F8A6DD /* LibrarySearchController.swift */; };
 		97028C4F20192F65001259CB /* TableOfContentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97028C4E20192F65001259CB /* TableOfContentController.swift */; };
 		97028C54201A7D43001259CB /* WebViewControllerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B665B2006BEBA003F5365 /* WebViewControllerProtocols.swift */; };
 		9702BE221F97FA4300E6B4EE /* LibraryRefreshProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9702BE211F97FA4300E6B4EE /* LibraryRefreshProcedure.swift */; };
@@ -229,6 +230,7 @@
 		3577B1822471E1C4D5274B7D /* Pods-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS/Pods-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		7510393635E2E3EF2F7C29DB /* Pods-WikiMed.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WikiMed.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WikiMed/Pods-WikiMed.debug.xcconfig"; sourceTree = "<group>"; };
 		81DF90AB14037E242E284CA8 /* Pods_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		97018984212357F200F8A6DD /* LibrarySearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarySearchController.swift; sourceTree = "<group>"; };
 		97028C4E20192F65001259CB /* TableOfContentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableOfContentController.swift; sourceTree = "<group>"; };
 		9702BE211F97FA4300E6B4EE /* LibraryRefreshProcedure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryRefreshProcedure.swift; sourceTree = "<group>"; };
 		97041F7E1F9652D4007D63F5 /* WikiMed.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WikiMed.plist; sourceTree = "<group>"; };
@@ -968,6 +970,7 @@
 			children = (
 				97A36C561F8D5FCD0079B452 /* LibraryController.swift */,
 				97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */,
+				97018984212357F200F8A6DD /* LibrarySearchController.swift */,
 				97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */,
 				97F4D10520AB80740038FC87 /* LibraryZimFileDetailController.swift */,
 				97CA4A7120A21D24008CEA6D /* LibraryLanguageController.swift */,
@@ -1822,6 +1825,7 @@
 				975F97A820D00EAE0005D642 /* SettingSearchController.swift in Sources */,
 				97242E162093A9AC00AA4436 /* Bookmark.swift in Sources */,
 				97D00A7F1FBB92D400165629 /* TableOfContentItem.swift in Sources */,
+				97018985212357F200F8A6DD /* LibrarySearchController.swift in Sources */,
 				97A5C1412089115D009CA5F9 /* SearchResultContainerController.swift in Sources */,
 				97252105200E908000B60A80 /* TableViewCell.swift in Sources */,
 				97F4D10A20ADD0F00038FC87 /* DownloadManager.swift in Sources */,

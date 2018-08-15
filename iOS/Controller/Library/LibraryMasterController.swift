@@ -15,6 +15,7 @@ import ProcedureKit
 class LibraryMasterController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let refreshControl = UIRefreshControl()
+    private let searchController = UISearchController(searchResultsController: LibrarySearchController())
     
     private var sections: [Section] = [.category]
     private let categories: [ZimFile.Category] = [
@@ -63,6 +64,14 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
         refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
         refreshControl.attributedTitle = NSAttributedString(string: NSLocalizedString("Pull to refresh", comment: "Library: refresh control"))
+        
+        if #available(iOS 11.0, *) {
+            navigationItem.searchController = searchController
+            searchController.searchBar.autocapitalizationType = .none
+            searchController.searchBar.placeholder = NSLocalizedString("Search by Name", comment: "Library: search placeholder")
+            searchController.searchResultsUpdater = searchController.searchResultsController as? LibrarySearchController
+            definesPresentationContext = true
+        }
         
         if splitViewController?.traitCollection.horizontalSizeClass == .regular {
             let firstIndexPath = IndexPath(row: 0, section: 0)
