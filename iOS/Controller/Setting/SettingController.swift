@@ -87,6 +87,7 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return section == items.count - 1 ? 30 : UITableViewAutomaticDimension
+        return section == items.count - 1 ? 30 : UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

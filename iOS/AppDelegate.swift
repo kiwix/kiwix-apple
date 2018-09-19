@@ -129,7 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
             let title = mainController.currentWebController?.currentTitle, let url = mainController.currentWebController?.currentURL {
             shortcutItems.append(UIApplicationShortcutItem(type: ShortcutItemType.continueReading.rawValue,
                                                            localizedTitle: title , localizedSubtitle: NSLocalizedString("Continue Reading", comment: "3D Touch Menu Title"),
-                                                           icon: nil, userInfo: ["URL": url.absoluteString]))
+                                                           icon: nil, userInfo: ["URL": url.absoluteString as NSSecureCoding]))
         }
         application.shortcutItems = shortcutItems
     }
