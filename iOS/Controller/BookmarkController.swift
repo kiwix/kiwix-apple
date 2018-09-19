@@ -137,7 +137,7 @@ class BookmarkController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
 
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard let bookmark = bookmarks?[indexPath.row] else {return}
         let url: URL? = {
             guard let zimFileID = bookmark.zimFile?.id else {return nil}

@@ -52,7 +52,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         tableView.dataSource = self
         tableView.refreshControl = refreshControl
         tableView.estimatedRowHeight = 44
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "CategoryCell")
         tableView.separatorInset = UIEdgeInsets(top: 0, left: tableView.separatorInset.left + 42, bottom: 0, right: 0)

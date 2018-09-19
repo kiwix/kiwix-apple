@@ -62,17 +62,17 @@ class SearchResultController: UIViewController, SearchQueueEvents, UISearchResul
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(notification:)), name: .UIKeyboardDidShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: .UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(notification:)), name: .UIKeyboardDidHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(notification:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(notification:)), name: UIResponder.keyboardDidHideNotification, object: nil)
         configureContent()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidHideNotification, object: nil)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -96,7 +96,7 @@ class SearchResultController: UIViewController, SearchQueueEvents, UISearchResul
     
     @objc func keyboardDidShow(notification: Notification) {
         guard let userInfo = notification.userInfo as? [String: NSValue],
-            let origin = userInfo[UIKeyboardFrameEndUserInfoKey]?.cgRectValue.origin else {return}
+            let origin = userInfo[UIResponder.keyboardFrameEndUserInfoKey]?.cgRectValue.origin else {return}
         let point = visualView.contentView.convert(origin, from: nil)
         visualView.bottomInset = visualView.contentView.bounds.height - point.y
         if contentController.view.isHidden { contentController.view.isHidden = false }
@@ -118,9 +118,9 @@ class SearchResultController: UIViewController, SearchQueueEvents, UISearchResul
     // MARK: - View Manipulation
     
     private func configureChildViewControllers() {
-        guard !childViewControllers.contains(contentController) else {return}
-        addChildViewController(contentController)
-        contentController.didMove(toParentViewController: self)
+        guard !children.contains(contentController) else {return}
+        addChild(contentController)
+        contentController.didMove(toParent: self)
     }
     
     private func configureConstraints() {

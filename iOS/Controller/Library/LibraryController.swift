@@ -65,17 +65,17 @@ class LibraryController: UIViewController {
 
     private func setChild(controller: UIViewController) {
         view.subviews.forEach({ $0.removeFromSuperview() })
-        childViewControllers.forEach({ $0.removeFromParentViewController() })
+        children.forEach({ $0.removeFromParent() })
         
         controller.view.translatesAutoresizingMaskIntoConstraints = false
-        addChildViewController(controller)
+        addChild(controller)
         view.addSubview(controller.view)
         NSLayoutConstraint.activate([
             view.leftAnchor.constraint(equalTo: controller.view.leftAnchor),
             view.rightAnchor.constraint(equalTo: controller.view.rightAnchor),
             view.topAnchor.constraint(equalTo: controller.view.topAnchor),
             view.bottomAnchor.constraint(equalTo: controller.view.bottomAnchor)])
-        controller.didMove(toParentViewController: self)
+        controller.didMove(toParent: self)
     }
     
     private enum Mode {

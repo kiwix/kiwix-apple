@@ -63,13 +63,13 @@ class SearchResult: Equatable, Hashable, CustomStringConvertible {
             })
             snippet.addAttribute(NSAttributedStringKey.foregroundColor, value: NSColor.labelColor, range: wholeRange)
         #elseif os(iOS)
-            snippet.enumerateAttribute(NSAttributedStringKey.font, in: wholeRange, options: .longestEffectiveRangeNotRequired, using: { (font, range, stop) in
+            snippet.enumerateAttribute(NSAttributedString.Key.font, in: wholeRange, options: .longestEffectiveRangeNotRequired, using: { (font, range, stop) in
                 guard let font = font as? UIFont else {return}
                 let isBold = font.fontDescriptor.symbolicTraits.contains(.traitBold)
                 let newFont = UIFont.systemFont(ofSize: 12, weight: isBold ? .semibold : .regular)
-                snippet.addAttribute(NSAttributedStringKey.font, value: newFont, range: range)
+                snippet.addAttribute(NSAttributedString.Key.font, value: newFont, range: range)
             })
-            snippet.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.darkText, range: wholeRange)
+            snippet.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.darkText, range: wholeRange)
         #endif
         
         return snippet

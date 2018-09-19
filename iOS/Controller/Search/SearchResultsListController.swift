@@ -19,7 +19,7 @@ class SearchResultsListController: UITableViewController {
         super.viewDidLoad()
         tableView.backgroundColor = .clear
         tableView.estimatedRowHeight = 44
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.keyboardDismissMode = .onDrag
     }

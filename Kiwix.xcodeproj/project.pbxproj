@@ -1540,6 +1540,7 @@
 					};
 					97A36C241F8C21210079B452 = {
 						DevelopmentTeam = L7HWM3SP3L;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -1558,6 +1559,7 @@
 					97C575F1202CB0E800E37502 = {
 						CreatedOnToolsVersion = 9.2;
 						DevelopmentTeam = L7HWM3SP3L;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -2126,7 +2128,7 @@
 				PRODUCT_NAME = Kiwix;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Kiwix-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Shared/Dependencies/include";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7";
@@ -2161,7 +2163,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix;
 				PRODUCT_NAME = Kiwix;
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Kiwix-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Shared/Dependencies/include";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7";
@@ -2239,7 +2241,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -2263,7 +2265,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.Bookmarks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     
     // MARK: - URL Handling
     
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         guard url.scheme?.caseInsensitiveCompare("kiwix") == .orderedSame else {return false}
         guard let rootNavigationController = window?.rootViewController as? UINavigationController,
             let mainController = rootNavigationController.topViewController as? MainController else {return false}

@@ -15,7 +15,7 @@ class TableViewCell: UITableViewCell {
     private let textStackView = UIStackView()
     private var configuredConstraints = false
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
     }
@@ -70,7 +70,7 @@ class TableViewCell: UITableViewCell {
 }
 
 class UIRightDetailTableViewCell: UITableViewCell {
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
     }
@@ -81,7 +81,7 @@ class UIRightDetailTableViewCell: UITableViewCell {
 }
 
 class UIActionTableViewCell: UITableViewCell {
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         textLabel?.textAlignment = .center

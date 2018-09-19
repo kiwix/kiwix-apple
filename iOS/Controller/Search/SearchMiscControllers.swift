@@ -20,7 +20,7 @@ class SearchInProgressController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        indicator.activityIndicatorViewStyle = .gray
+        indicator.style = .gray
         indicator.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(indicator)
         indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
