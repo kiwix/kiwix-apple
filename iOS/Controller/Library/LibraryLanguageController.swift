@@ -39,7 +39,8 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
         
         let sortingMode = SortingMode(rawValue: Defaults[.libraryLanguageSortingMode]) ?? .alphabetically
         sortBy = UISegmentedControl(items: Array(sortingModes.map({ $0.localizedDescription }) ))
-        sortBy.selectedSegmentIndex = sortingModes.firstIndex(of: sortingMode) ?? 0
+//        sortBy.selectedSegmentIndex = sortingModes.firstIndex(of: sortingMode) ?? 0
+        sortBy.selectedSegmentIndex = sortingModes.index(of: sortingMode) ?? 0
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -61,7 +62,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
         if #available(iOS 11.0, *) {
             navigationItem.largeTitleDisplayMode = .never
         }
-        if popoverPresentationController != nil {
+        if navigationController?.topViewController === self {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
         }
         
