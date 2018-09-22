@@ -25,14 +25,14 @@ class Queue: ProcedureQueue {
     
     func add(libraryRefreshProcedure procedure: LibraryRefreshProcedure) {
         guard currentRefreshLibraryProcedure == nil else {return}
-        add(operation: procedure)
+        addOperation(procedure)
         currentRefreshLibraryProcedure = procedure
     }
     
     private (set) weak var refreshLibraryProcedure: LibraryRefreshProcedure?
     func add(libraryRefresh procedure: LibraryRefreshProcedure) {
         guard refreshLibraryProcedure == nil else {return}
-        add(operation: procedure)
+        addOperation(procedure)
         self.refreshLibraryProcedure = procedure
     }
     
@@ -41,7 +41,7 @@ class Queue: ProcedureQueue {
         if let previous = scan {
             scanProcedure.addDependency(previous)
         }
-        add(operation: scanProcedure)
+        addOperation(scanProcedure)
         self.scan = scanProcedure
     }
 }

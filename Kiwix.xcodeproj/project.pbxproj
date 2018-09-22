@@ -1435,7 +1435,7 @@
 				9793157E1E5127930093D3BA /* Frameworks */,
 				9793157F1E5127930093D3BA /* Resources */,
 				976D297B1F44A776003F5431 /* CopyFiles */,
-				5A8EC2FD57777D5372AF50EF /* [CP] Embed Pods Frameworks */,
+				3A3582477F537FC969B0F553 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1477,7 +1477,7 @@
 				97B44891210FBC2C0004B056 /* Frameworks */,
 				97B44892210FBC2C0004B056 /* Resources */,
 				97B448AB2110A5480004B056 /* Embed Frameworks */,
-				3DEC884342B1E43D509F359D /* [CP] Embed Pods Frameworks */,
+				922B01085C2C51D0EAC5338A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1636,39 +1636,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3DEC884342B1E43D509F359D /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-WikiMed/Pods-WikiMed-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ProcedureKit-iOS/ProcedureKit.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProcedureKit.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WikiMed/Pods-WikiMed-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5A8EC2FD57777D5372AF50EF /* [CP] Embed Pods Frameworks */ = {
+		3A3582477F537FC969B0F553 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-macOS/Pods-macOS-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ProcedureKit-macOS/ProcedureKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm-macOS/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift-macOS/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyUserDefaults-macOS/SwiftyUserDefaults.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProcedureKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyUserDefaults.framework",
@@ -1714,6 +1694,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		922B01085C2C51D0EAC5338A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-WikiMed/Pods-WikiMed-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ProcedureKit/ProcedureKit.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProcedureKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WikiMed/Pods-WikiMed-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		97A36C251F8C21210079B452 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1739,7 +1737,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-iOS/Pods-iOS-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ProcedureKit.default-Network/ProcedureKit.framework",
+				"${BUILT_PRODUCTS_DIR}/ProcedureKit/ProcedureKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm-iOS/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift-iOS/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyUserDefaults-iOS/SwiftyUserDefaults.framework",

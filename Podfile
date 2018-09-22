@@ -6,7 +6,6 @@ target 'iOS' do
 
     pod 'SwiftyUserDefaults'
     pod 'ProcedureKit', :path => 'submodules/ProcedureKit'
-    pod 'ProcedureKit/Network', :path => 'submodules/ProcedureKit'
     pod 'RealmSwift'
 end
 
@@ -15,7 +14,7 @@ target 'macOS' do
     use_frameworks!
     
     pod 'SwiftyUserDefaults'
-    pod 'ProcedureKit', :path => 'submodules/ProcedureKit'
+#    pod 'ProcedureKit', :path => 'submodules/ProcedureKit'
     pod 'RealmSwift'
 end
 

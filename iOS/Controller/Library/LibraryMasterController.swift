@@ -104,7 +104,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
     
     @objc func refreshControlPulled() {
         let procedure = LibraryRefreshProcedure(updateExisting: true)
-        procedure.add(observer: DidFinishObserver(didFinish: { (procedure, errors) in
+        procedure.addObserver(DidFinishObserver(didFinish: { (procedure, errors) in
             OperationQueue.main.addOperation({
                 self.refreshControl.endRefreshing()
             })

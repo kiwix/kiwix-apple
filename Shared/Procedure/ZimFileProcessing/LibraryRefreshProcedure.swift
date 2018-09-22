@@ -18,7 +18,7 @@ class LibraryRefreshProcedure: ZimFileProcessingProcedure, XMLParserDelegate {
     init(updateExisting: Bool = false) {
         self.updateExisting = updateExisting
         super.init()
-        add(condition: MutuallyExclusive<LibraryRefreshProcedure>())
+        addCondition(MutuallyExclusive<LibraryRefreshProcedure>())
     }
     
     override func execute() {
@@ -65,7 +65,7 @@ class LibraryRefreshProcedure: ZimFileProcessingProcedure, XMLParserDelegate {
             print("Library Refresh Procedure finished, has updates: \(hasUpdates)")
             finish()
         } catch {
-            finish(withError: error)
+            finish(with: error)
         }
     }
     

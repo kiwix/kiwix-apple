@@ -112,16 +112,16 @@ class LibraryOnboardingController: UIViewController {
     
     @IBAction func downloadButtonTapped(_ sender: UIButton) {
         let procedure = LibraryRefreshProcedure(updateExisting: false)
-        procedure.add(observer: WillExecuteObserver(willExecute: { (_, _) in
+        procedure.addObserver(WillExecuteObserver(willExecute: { (_, _) in
             OperationQueue.main.addOperation({
                 self.activityIndicator.startAnimating()
                 self.downloadButton.isEnabled = false
             })
         }))
-        procedure.add(observer: DidFinishObserver(didFinish: { (_, errors) in
+        procedure.addObserver(DidFinishObserver(didFinish: { (_, errors) in
             OperationQueue.main.addOperation({
                 self.activityIndicator.stopAnimating()
-                if errors.count > 0 {
+                if errors != nil {
                     self.downloadButton.isEnabled = true
                 }
                 // TODO: - show alert

@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         
         if UserDefaults.standard.bool(forKey: "MigratedToRealm") {
             let scan = ScanProcedure(directoryURL: URL.documentDirectory)
-            Queue.shared.add(operations: scan)
+            Queue.shared.addOperations(scan)
         } else {
             let scan = ScanProcedure(directoryURL: URL.documentDirectory)
             let migrate = BookmarkMigrationOperation()
@@ -37,9 +37,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
             migrate.completionBlock = {
                 UserDefaults.standard.set(true, forKey: "MigratedToRealm")
             }
-            migrate.add(dependency: scan)
-            refresh.add(dependency: migrate)
-            Queue.shared.add(operations: scan, migrate, refresh)
+            migrate.addDependency(scan)
+            refresh.addDependency(migrate)
+            Queue.shared.addOperations(scan, migrate, refresh)
         }
     }
     
@@ -91,8 +91,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         let procedure = LibraryRefreshProcedure(updateExisting: false)
-        procedure.add(observer: DidFinishObserver(didFinish: { (procedure, errors) in
-            if let procedure = procedure as? LibraryRefreshProcedure, errors.count == 0 {
+        procedure.addObserver(DidFinishObserver(didFinish: { (procedure, errors) in
+            if let procedure = procedure as? LibraryRefreshProcedure, errors != nil {
                 completionHandler(procedure.hasUpdates ? .newData : .noData)
             } else {
                 completionHandler(.failed)

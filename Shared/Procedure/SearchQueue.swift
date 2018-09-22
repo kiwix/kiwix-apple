@@ -20,7 +20,7 @@ class SearchQueue: ProcedureQueue, ProcedureQueueDelegate {
     
     func enqueue(searchText: String, zimFileIDs: Set<ZimFileID>) {
         let procedure = SearchProcedure(term: searchText, ids: zimFileIDs, extractSnippet: !Defaults[.searchResultExcludeSnippet])
-        add(operation: procedure)
+        addOperation(procedure)
     }
     
     func cancelAll() {
