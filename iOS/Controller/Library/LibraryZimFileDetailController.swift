@@ -97,7 +97,18 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
         zimFileObserver = zimFile.observe { (change) in
             switch change {
             case .deleted:
-                self.navigationController?.popViewController(animated: true)
+                guard let splitViewController = self.splitViewController,
+                    let masterNavigationController = splitViewController.viewControllers.first as? UINavigationController else {return}
+                if splitViewController.isCollapsed {
+                    masterNavigationController.popViewController(animated: true)
+                } else {
+                    if self.navigationController?.topViewController == self {
+                        // current controller is the top controller in the navigtion stack, cannot pop
+                        (masterNavigationController.topViewController as? LibraryMasterController)?.selectFirstCategory()
+                    } else {
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                }
             default:
                 break
             }
@@ -173,8 +184,8 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
     
     func configure(cell: UIActionTableViewCell, action: Action) {
         cell.textLabel?.text = action.description
-        cell.isDestructive = action.isDestructive
         cell.isDisabled = action.isDisabled
+        cell.isDestructive = action.isDestructive
     }
     
     func configure(cell: UIRightDetailTableViewCell, meta: Meta) {

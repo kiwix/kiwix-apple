@@ -96,6 +96,14 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         downloadZimFilesChangeToken = nil
     }
     
+    // MARK: -
+    
+    func selectFirstCategory() {
+        guard let index = sections.firstIndex(of: .category) else {return}
+        let indexPath = IndexPath(row: 0, section: index)
+        tableView.delegate?.tableView?(tableView, didSelectRowAt: indexPath)
+    }
+    
     // MARK: - UIControl Actions
     
     @objc func dismissController() {
