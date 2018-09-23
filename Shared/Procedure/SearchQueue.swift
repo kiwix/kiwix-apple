@@ -38,7 +38,7 @@ class SearchQueue: ProcedureQueue, ProcedureQueueDelegate {
         return nil
     }
     
-    func procedureQueue(_ queue: ProcedureQueue, didFinishProcedure procedure: Procedure, withErrors errors: [Error]) {
+    func procedureQueue(_ queue: ProcedureQueue, didFinishProcedure procedure: Procedure, with error: Error?) {
         guard queue.operationCount == 0, let procedure = procedure as? SearchProcedure else {return}
         DispatchQueue.main.async {
             if procedure.isCancelled {

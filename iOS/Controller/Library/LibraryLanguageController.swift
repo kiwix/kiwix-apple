@@ -39,7 +39,6 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
         
         let sortingMode = SortingMode(rawValue: Defaults[.libraryLanguageSortingMode]) ?? .alphabetically
         sortBy = UISegmentedControl(items: Array(sortingModes.map({ $0.localizedDescription }) ))
-//        sortBy.selectedSegmentIndex = sortingModes.firstIndex(of: sortingMode) ?? 0
         sortBy.selectedSegmentIndex = sortingModes.index(of: sortingMode) ?? 0
         
         super.init(nibName: nil, bundle: nil)
