@@ -168,7 +168,7 @@ extension SettingController: MFMailComposeViewControllerDelegate {
     private func presentFeedbackEmailComposer() {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
         let controller = MFMailComposeViewController()
-        controller.setToRecipients(["chris@kiwix.org"])
+        controller.setToRecipients(["feedback@kiwix.org"])
         controller.setSubject(NSLocalizedString(String(format: "Feedback of Kiwix for iOS v%@", version), comment: "Feedback Email"))
         controller.mailComposeDelegate = self
         present(controller, animated: true)

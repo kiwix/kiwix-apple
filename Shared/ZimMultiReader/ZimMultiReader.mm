@@ -69,11 +69,11 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
         fileURLs[identifierObjC] = url;
         
         // check if there is an external idx directory
-        NSURL *idxDirURL = [[url URLByDeletingPathExtension] URLByAppendingPathExtension:@"zim.idx"];
-        if ([[NSFileManager defaultManager] fileExistsAtPath:[idxDirURL path]]) {
-            kiwix::Searcher *searcher = new kiwix::Searcher([idxDirURL fileSystemRepresentation], reader.get(), identifier);
-            externalSearchers.insert(std::make_pair(identifier, searcher));
-        }
+//        NSURL *idxDirURL = [[url URLByDeletingPathExtension] URLByAppendingPathExtension:@"zim.idx"];
+//        if ([[NSFileManager defaultManager] fileExistsAtPath:[idxDirURL path]]) {
+//            kiwix::Searcher *searcher = new kiwix::Searcher([idxDirURL fileSystemRepresentation], reader.get(), identifier);
+//            externalSearchers.insert(std::make_pair(identifier, searcher));
+//        }
     } catch (...) { }
 }
 

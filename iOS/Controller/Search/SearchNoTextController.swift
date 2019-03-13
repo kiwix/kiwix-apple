@@ -50,6 +50,7 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
         tableView.dataSource = self
         tableView.estimatedRowHeight = 44
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.register(RecentSearchTableViewCell.self, forCellReuseIdentifier: "RecentSearchCell")
     }
