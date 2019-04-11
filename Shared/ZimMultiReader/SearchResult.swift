@@ -79,8 +79,8 @@ class SearchResult: Equatable, Hashable, CustomStringConvertible {
         return lhs.url.absoluteString == rhs.url.absoluteString
     }
     
-    var hashValue: Int {
-        return url.absoluteString.hashValue
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(url.absoluteString)
     }
     
     var description: String {
