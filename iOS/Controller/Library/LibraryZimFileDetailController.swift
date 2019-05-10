@@ -203,9 +203,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
             cell.textLabel?.text = NSLocalizedString("Index", comment: "Book Detail Cell")
             cell.detailTextLabel?.text = {
                 if zimFile.hasEmbeddedIndex {
-                    return NSLocalizedString("Embedded", comment: "Book Detail Cell, has index")
-                } else if ZimMultiReader.shared.hasExternalIndex(id: zimFile.id) {
-                    return NSLocalizedString("External", comment: "Book Detail Cell, has index")
+                    return NSLocalizedString("Yes", comment: "Book Detail Cell, has index")
                 } else {
                     return NSLocalizedString("No", comment: "Book Detail Cell, has index")
                 }
