@@ -12,10 +12,27 @@ class Queue: ProcedureQueue {
     static let shared = Queue()
     override private init() {}
     
+    var isRefreshingLibrary: Bool {
+        if let procedure = currentRefreshLibraryProcedure {
+            print("getter unwrapped: \(operations.contains(procedure))")
+            return operations.contains(procedure)
+        } else {
+            return false
+        }
+    }
+    
+    private(set) weak var currentRefreshLibraryProcedure: LibraryRefreshProcedure?
+    
+    func add(libraryRefreshProcedure procedure: LibraryRefreshProcedure) {
+        guard currentRefreshLibraryProcedure == nil else {return}
+        addOperation(procedure)
+        currentRefreshLibraryProcedure = procedure
+    }
+    
     private (set) weak var refreshLibraryProcedure: LibraryRefreshProcedure?
     func add(libraryRefresh procedure: LibraryRefreshProcedure) {
         guard refreshLibraryProcedure == nil else {return}
-        add(operation: procedure)
+        addOperation(procedure)
         self.refreshLibraryProcedure = procedure
     }
     
@@ -24,7 +41,7 @@ class Queue: ProcedureQueue {
         if let previous = scan {
             scanProcedure.addDependency(previous)
         }
-        add(operation: scanProcedure)
+        addOperation(scanProcedure)
         self.scan = scanProcedure
     }
 }

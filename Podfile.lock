@@ -1,29 +1,21 @@
 PODS:
-  - ProcedureKit/All (4.5.0):
-    - ProcedureKit/Cloud
-    - ProcedureKit/Location
-    - ProcedureKit/Network
-  - ProcedureKit/Cloud (4.5.0):
-    - ProcedureKit/Standard
-  - ProcedureKit/Location (4.5.0):
-    - ProcedureKit/Standard
-  - ProcedureKit/Network (4.5.0):
-    - ProcedureKit/Standard
-  - ProcedureKit/Standard (4.5.0)
-  - Realm (3.5.0):
-    - Realm/Headers (= 3.5.0)
-  - Realm/Headers (3.5.0)
-  - RealmSwift (3.5.0):
-    - Realm (= 3.5.0)
+  - ProcedureKit (5.2.0):
+    - ProcedureKit/Standard (= 5.2.0)
+  - ProcedureKit/Standard (5.2.0)
+  - Realm (3.14.1):
+    - Realm/Headers (= 3.14.1)
+  - Realm/Headers (3.14.1)
+  - RealmSwift (3.14.1):
+    - Realm (= 3.14.1)
   - SwiftyUserDefaults (3.0.1)
 
 DEPENDENCIES:
-  - ProcedureKit/All (from `submodules/ProcedureKit`)
+  - ProcedureKit (from `submodules/ProcedureKit`)
   - RealmSwift
   - SwiftyUserDefaults
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - Realm
     - RealmSwift
     - SwiftyUserDefaults
@@ -33,11 +25,11 @@ EXTERNAL SOURCES:
     :path: submodules/ProcedureKit
 
 SPEC CHECKSUMS:
-  ProcedureKit: e881776c3769cf189ff3ceff90aabef2a44be8b9
-  Realm: 0378021c424e4e2bd6a0e63b27881e929d9b9ad1
-  RealmSwift: 3322562622fda2ad596985ead4d8d8be30cf838c
+  ProcedureKit: deafeab083a0c5e45e4b02379e0ffa316d03db29
+  Realm: e12c9c2387d05c5bba3a9c394838f5870e85763b
+  RealmSwift: a82eab9b04c3e1616082c7e17aa300740847769c
   SwiftyUserDefaults: 3d273b1739b68ada3145dc754a70ec775bc5c8be
 
-PODFILE CHECKSUM: 9108d5cd0a7e2decd6f81e0c4683dd82d886e0ec
+PODFILE CHECKSUM: a61f112cfe6e38dfdd6bce8817f1cd1e124cf7d7
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.6.1

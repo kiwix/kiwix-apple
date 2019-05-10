@@ -24,7 +24,7 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
     let tableView = UITableView(frame: .zero, style: .grouped)
     private let items: [[MenuItem]] = {
         var items: [[MenuItem]] = [
-            [.fontSize, .backup, .search, .externalLink],
+            [.fontSize, .backup, .externalLink, .search],
             [.rateApp],
             [.about]
         ]
@@ -86,21 +86,23 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return section == items.count - 1 ? 30 : 10
+        return section == items.count - 1 ? 30 : UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = items[indexPath.section][indexPath.row]
         switch item {
-        case .fontSize:
-            let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SettingFontSizeViewController")
-            controller.title = item.description
-            navigationController?.pushViewController(controller, animated: true)
         case.backup:
             navigationController?.pushViewController(SettingBackupController(title: item.description), animated: true)
         case .externalLink:
             navigationController?.pushViewController(SettingExternalLinkController(title: item.description), animated: true)
+        case .fontSize:
+            let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SettingFontSizeViewController")
+            controller.title = item.description
+            navigationController?.pushViewController(controller, animated: true)
+        case .library:
+            navigationController?.pushViewController(SettingLibraryController(title: item.description), animated: true)
         case .search:
             navigationController?.pushViewController(SettingSearchController(title: item.description), animated: true)
         case .feedback:
@@ -135,18 +137,20 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
     // MARK: - Type Definition
     
     enum MenuItem: CustomStringConvertible {
-        case fontSize, backup, externalLink, search
+        case backup, externalLink, fontSize, library, search
         case feedback, rateApp
         case about
         
         var description: String {
             switch self {
-            case .fontSize:
-                return NSLocalizedString("Font Size", comment: "Setting Item Title")
             case .backup:
                 return NSLocalizedString("Backup", comment: "Setting Item Title")
             case .externalLink:
                 return NSLocalizedString("External Link", comment: "Setting Item Title")
+            case .fontSize:
+                return NSLocalizedString("Font Size", comment: "Setting Item Title")
+            case .library:
+                return NSLocalizedString("Library", comment: "Setting Item Title")
             case .search:
                 return NSLocalizedString("Search", comment: "Setting Item Title")
             case .feedback:
@@ -164,7 +168,7 @@ extension SettingController: MFMailComposeViewControllerDelegate {
     private func presentFeedbackEmailComposer() {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
         let controller = MFMailComposeViewController()
-        controller.setToRecipients(["chris@kiwix.org"])
+        controller.setToRecipients(["feedback@kiwix.org"])
         controller.setSubject(NSLocalizedString(String(format: "Feedback of Kiwix for iOS v%@", version), comment: "Feedback Email"))
         controller.mailComposeDelegate = self
         present(controller, animated: true)

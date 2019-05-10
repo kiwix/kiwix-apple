@@ -15,7 +15,7 @@ class TableViewCell: UITableViewCell {
     private let textStackView = UIStackView()
     private var configuredConstraints = false
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
     }
@@ -66,5 +66,48 @@ class TableViewCell: UITableViewCell {
             contentView.addSubview($0)
         })
         setNeedsUpdateConstraints()
+    }
+}
+
+class UIRightDetailTableViewCell: UITableViewCell {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: .value1, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class UIActionTableViewCell: UITableViewCell {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        textLabel?.textAlignment = .center
+        textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .medium)
+        textLabel?.textColor = #colorLiteral(red: 0, green: 0.5898008943, blue: 1, alpha: 1)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    var isDestructive: Bool = false {
+        didSet {
+            textLabel?.textColor = isDestructive ? #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1) : #colorLiteral(red: 0, green: 0.5898008943, blue: 1, alpha: 1)
+        }
+    }
+    
+    var isDisabled: Bool = false {
+        didSet {
+            textLabel?.textColor = isDisabled ? #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1) : #colorLiteral(red: 0, green: 0.5898008943, blue: 1, alpha: 1)
+        }
+    }
+    
+    override func prepareForReuse() {
+        textLabel?.text = nil
+        isDestructive = false
+        isDisabled = false
     }
 }

@@ -49,7 +49,8 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
         tableView.delegate = self
         tableView.dataSource = self
         tableView.estimatedRowHeight = 44
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.register(RecentSearchTableViewCell.self, forCellReuseIdentifier: "RecentSearchCell")
     }
@@ -227,7 +228,7 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
         let string = recentSearchTexts[indexPath.row]
         let width = NSString(string: string).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 24),
                                                           options: .usesLineFragmentOrigin,
-                                                          attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)],
+                                                          attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)],
                                                           context: nil).size.width
         return CGSize(width: width.rounded(.down) + 20, height: 24)
     }

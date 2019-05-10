@@ -1,5 +1,5 @@
 //
-//  SettingFontSizeViewController.swift
+//  SettingFontSizeController.swift
 //  iOS
 //
 //  Created by Chris Li on 2/2/18.

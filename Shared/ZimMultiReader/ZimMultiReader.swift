@@ -6,8 +6,6 @@
 //  Copyright © 2017 Chris Li. All rights reserved.
 //
 
-import ProcedureKit
-
 typealias ZimFileID = String
 
 extension ZimMultiReader {
@@ -20,6 +18,8 @@ extension ZimMultiReader {
     func remove(id: ZimFileID) {__remove(byID: id)}
     
     func hasEmbeddedIndex(id: ZimFileID) -> Bool {return __hasEmbeddedIndex(id)}
+    
+    @available(*, deprecated, message: "External index is no longer supported")
     func hasExternalIndex(id: ZimFileID) -> Bool {return __hasExternalIndex(id)}
     
     func getRedirectedPath(zimFileID: ZimFileID, contentPath: String) -> String? {

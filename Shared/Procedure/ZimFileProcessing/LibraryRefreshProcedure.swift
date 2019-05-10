@@ -10,100 +10,106 @@ import RealmSwift
 import ProcedureKit
 import SwiftyUserDefaults
 
-class LibraryRefreshProcedure: GroupProcedure {
-    init(updateExistingZimFiles: Bool = true) {
-        let download = DownloadProcedure()
-        let process = ProcessProcedure(updateExistingZimFiles: updateExistingZimFiles)
-        process.injectResult(from: download)
-        super.init(operations: [download, process])
-    }
-}
-
-private class DownloadProcedure: NetworkDataProcedure<URLSession> {
-    init() {
-        let session = URLSession.shared
-        let url = URL(string: "https://download.kiwix.org/library/library_zim.xml")!
-        var request = URLRequest(url: url)
-        request.timeoutInterval = 30.0
-        super.init(session: session, request: request)
-        
-        addWillExecuteBlockObserver { _, _ in
-            NetworkActivityController.shared.taskDidStart(identifier: "DownloadLibrary")
-        }
-        
-        addDidFinishBlockObserver { _, errors in
-            errors.forEach({ print($0) })
-            NetworkActivityController.shared.taskDidFinish(identifier: "DownloadLibrary")
-        }
-    }
-}
-
-private class ProcessProcedure: ZimFileProcessingProcedure, InputProcedure, XMLParserDelegate {
-    var input: Pending<HTTPPayloadResponse<Data>> = .pending
-    private var latest = [String: [String: Any]]()
-    private let updateExistingZimFiles: Bool
+class LibraryRefreshProcedure: ZimFileProcessingProcedure, XMLParserDelegate {
+    private(set) var hasUpdates = false // true only when zim files are added or removed, not including updates
+    private let updateExisting: Bool
+    private var zimFileMetas = [String: [String: Any]]()
     
-    init(updateExistingZimFiles: Bool) {
-        self.updateExistingZimFiles = updateExistingZimFiles
+    init(updateExisting: Bool = false) {
+        self.updateExisting = updateExisting
         super.init()
+        addCondition(MutuallyExclusive<LibraryRefreshProcedure>())
     }
     
     override func execute() {
-        guard let data = input.value?.payload else {
-            finish(withError: ProcedureKitError.requirementNotSatisfied())
-            return
-        }
-        
-        // prase xml
-        let parser = XMLParser(data: data)
-        parser.delegate = self
-        parser.parse()
-        
-        // update database
         do {
+            let data = try fetchData()
+            
+            // parse response data
+            let parser = XMLParser(data: data)
+            parser.delegate = self
+            parser.parse()
+            
+            // database
             let database = try Realm(configuration: Realm.defaultConfig)
-            
-            let predicate = NSPredicate(format: "NOT id IN %@ AND stateRaw == %@", Set(latest.keys), ZimFile.State.cloud.rawValue)
-            let oldZimFiles = database.objects(ZimFile.self).filter(predicate)
-            
             try database.write {
-                // remove old zim files from database
-                oldZimFiles.forEach({ database.delete($0) })
-                
-                for (zimFileID, meta) in latest {
+                // remove old zimFiles
+                let predicate = NSPredicate(format: "NOT id IN %@ AND stateRaw == %@", Set(zimFileMetas.keys), ZimFile.State.cloud.rawValue)
+                database.objects(ZimFile.self).filter(predicate).forEach({
+                    database.delete($0)
+                    self.hasUpdates = true
+                })
+
+                // upsert zimFiles
+                for (zimFileID, meta) in zimFileMetas {
                     if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) {
-                        guard updateExistingZimFiles else {continue}
-                        // update existing zim files
-                        update(zimFile: zimFile, meta: meta)
+                        if updateExisting {
+                            update(zimFile: zimFile, meta: meta)
+                        }
                     } else {
-                        // add new zim files to database
                         let zimFile = create(database: database, id: zimFileID, meta: meta)
                         zimFile.state = .cloud
+                        self.hasUpdates = true
                     }
                 }
             }
+
+            // apply language filter if library has never been refreshed
+            if Defaults[.libraryLastRefreshTime] == nil, let code = Locale.current.languageCode {
+                Defaults[.libraryFilterLanguageCodes] = [code]
+            }
+
+            // update last library refresh time
+            Defaults[.libraryLastRefreshTime] = Date()
+            
+            print("Library Refresh Procedure finished, has updates: \(hasUpdates)")
+            finish()
         } catch {
-            finish(withError: error)
+            finish(with: error)
         }
+    }
+    
+    private func fetchData() throws -> Data {
+        NetworkActivityController.shared.taskDidStart(identifier: "DownloadLibrary")
+        defer { NetworkActivityController.shared.taskDidFinish(identifier: "DownloadLibrary") }
         
-        // apply language filter if library has never been refreshed
-        if Defaults[.libraryLastRefreshTime] == nil, let code = Locale.current.languageCode {
-            Defaults[.libraryFilterLanguageCodes] = [code]
+        var data: Data?
+        var error: Swift.Error?
+        
+        let semaphore = DispatchSemaphore(value: 0)
+        let url = URL(string: "https://download.kiwix.org/library/library_zim.xml")!
+        let request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 30)
+        
+        URLSession.shared.dataTask(with: request) {
+            data = $0
+            error = $2
+            semaphore.signal()
+        }.resume()
+        semaphore.wait()
+        
+        if let data = data {
+            return data
+        } else {
+            throw Error(title: NSLocalizedString("Library Refresh", comment: "Library Refresh Error"),
+                        description: error?.localizedDescription ?? NSLocalizedString("Unable to fetch data", comment: "Library Refresh Error"))
         }
-        
-        // update last library refresh time
-        Defaults[.libraryLastRefreshTime] = Date()
-        finish()
     }
     
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?,
                 qualifiedName qName: String?, attributes attributeDict: [String : String]) {
         guard elementName == "book", let zimFileID = attributeDict["id"] else {return}
-        latest[zimFileID] = attributeDict
+        zimFileMetas[zimFileID] = attributeDict
     }
+
+    // MARK: -
     
-    func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
-        finish(withError: parseError)
+    struct Error: Swift.Error {
+        let title: String
+        let description: String
+        
+        init(title: String, description: String) {
+            self.title = title
+            self.description = description
+        }
     }
 }
-

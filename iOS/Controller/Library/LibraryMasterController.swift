@@ -11,9 +11,12 @@ import CoreData
 import RealmSwift
 import ProcedureKit
 
+
 class LibraryMasterController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let refreshControl = UIRefreshControl()
+    private let searchController = UISearchController(searchResultsController: LibrarySearchController())
+    
     private var sections: [Section] = [.category]
     private let categories: [ZimFile.Category] = [
         .wikipedia, .wikibooks, .wikinews, .wikiquote, .wikisource, .wikispecies, .wikiversity, .wikivoyage, .wiktionary,
@@ -49,7 +52,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         tableView.dataSource = self
         tableView.refreshControl = refreshControl
         tableView.estimatedRowHeight = 44
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "CategoryCell")
         tableView.separatorInset = UIEdgeInsets(top: 0, left: tableView.separatorInset.left + 42, bottom: 0, right: 0)
@@ -58,8 +61,17 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         title = NSLocalizedString("Library", comment: "Library title")
-        refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
+        refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
+        refreshControl.attributedTitle = NSAttributedString(string: NSLocalizedString("Pull to refresh", comment: "Library: refresh control"))
+        
+        if #available(iOS 11.0, *) {
+            navigationItem.searchController = searchController
+            searchController.searchBar.autocapitalizationType = .none
+            searchController.searchBar.placeholder = NSLocalizedString("Search by Name", comment: "Library: search placeholder")
+            searchController.searchResultsUpdater = searchController.searchResultsController as? LibrarySearchController
+            definesPresentationContext = true
+        }
         
         if splitViewController?.traitCollection.horizontalSizeClass == .regular {
             let firstIndexPath = IndexPath(row: 0, section: 0)
@@ -86,13 +98,21 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
     
     // MARK: -
     
+    func selectFirstCategory() {
+        guard let index = sections.firstIndex(of: .category) else {return}
+        let indexPath = IndexPath(row: 0, section: index)
+        tableView.delegate?.tableView?(tableView, didSelectRowAt: indexPath)
+    }
+    
+    // MARK: - UIControl Actions
+    
     @objc func dismissController() {
         dismiss(animated: true, completion: nil)
     }
     
     @objc func refreshControlPulled() {
-        let procedure = LibraryRefreshProcedure()
-        procedure.add(observer: DidFinishObserver(didFinish: { (procedure, errors) in
+        let procedure = LibraryRefreshProcedure(updateExisting: true)
+        procedure.addObserver(DidFinishObserver(didFinish: { (procedure, errors) in
             OperationQueue.main.addOperation({
                 self.refreshControl.endRefreshing()
             })
@@ -100,6 +120,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         Queue.shared.add(libraryRefresh: procedure)
     }
  
+    // MARK: - Configurations
     
     private func configureSections() {
         if let localZimFiles = localZimFiles {

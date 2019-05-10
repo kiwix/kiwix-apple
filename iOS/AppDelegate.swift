@@ -8,6 +8,8 @@
 
 import UIKit
 import RealmSwift
+import ProcedureKit
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate {
@@ -16,26 +18,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     
     func applicationDidFinishLaunching(_ application: UIApplication) {
 //        Realm.resetDatabase()
+        print(URL.documentDirectory)
         
         URLProtocol.registerClass(KiwixURLProtocol.self)
         DownloadManager.shared.restorePreviousState()
+        application.setMinimumBackgroundFetchInterval(3600 * 24)
         
         fileMonitor.delegate = self
         fileMonitor.start()
         
         if UserDefaults.standard.bool(forKey: "MigratedToRealm") {
             let scan = ScanProcedure(directoryURL: URL.documentDirectory)
-            Queue.shared.add(operations: scan)
+            Queue.shared.addOperations(scan)
         } else {
             let scan = ScanProcedure(directoryURL: URL.documentDirectory)
             let migrate = BookmarkMigrationOperation()
-            let refresh = LibraryRefreshProcedure()
+            let refresh = LibraryRefreshProcedure(updateExisting: true)
             migrate.completionBlock = {
                 UserDefaults.standard.set(true, forKey: "MigratedToRealm")
             }
-            migrate.add(dependency: scan)
-            refresh.add(dependency: migrate)
-            Queue.shared.add(operations: scan, migrate, refresh)
+            migrate.addDependency(scan)
+            refresh.addDependency(migrate)
+            Queue.shared.addOperations(scan, migrate, refresh)
         }
     }
     
@@ -54,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     
     // MARK: - URL Handling
     
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         guard url.scheme?.caseInsensitiveCompare("kiwix") == .orderedSame else {return false}
         guard let rootNavigationController = window?.rootViewController as? UINavigationController,
             let mainController = rootNavigationController.topViewController as? MainController else {return false}
@@ -85,6 +89,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         DownloadManager.shared.backgroundEventsCompleteProcessing = completionHandler
     }
     
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        let procedure = LibraryRefreshProcedure(updateExisting: false)
+        procedure.addObserver(DidFinishObserver(didFinish: { (procedure, errors) in
+            if let procedure = procedure as? LibraryRefreshProcedure, errors != nil {
+                completionHandler(procedure.hasUpdates ? .newData : .noData)
+            } else {
+                completionHandler(.failed)
+            }
+        }))
+        Queue.shared.add(libraryRefresh: procedure)
+    }
+    
     // MARK: - Home Screen Quick Actions
     
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
@@ -113,7 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
             let title = mainController.currentWebController?.currentTitle, let url = mainController.currentWebController?.currentURL {
             shortcutItems.append(UIApplicationShortcutItem(type: ShortcutItemType.continueReading.rawValue,
                                                            localizedTitle: title , localizedSubtitle: NSLocalizedString("Continue Reading", comment: "3D Touch Menu Title"),
-                                                           icon: nil, userInfo: ["URL": url.absoluteString]))
+                                                           icon: nil, userInfo: ["URL": url.absoluteString as NSSecureCoding]))
         }
         application.shortcutItems = shortcutItems
     }

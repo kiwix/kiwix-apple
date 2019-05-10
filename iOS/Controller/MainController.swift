@@ -58,8 +58,8 @@ class MainController: UIViewController {
         navigationBackButtonItem.button.isEnabled = false
         navigationForwardButtonItem.button.isEnabled = false
         setTabContainerChild(controller: welcomeController)
-        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: .UIApplicationWillEnterForeground, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: .UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -117,8 +117,8 @@ class MainController: UIViewController {
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: .UIApplicationWillEnterForeground, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
     }
 }
 
@@ -449,30 +449,30 @@ extension MainController {
         defer {currentPanelController = controller}
         guard currentPanelController !== controller else {return}
         currentPanelController?.view.removeFromSuperview()
-        currentPanelController?.removeFromParentViewController()
+        currentPanelController?.removeFromParent()
         
         guard let controller = controller else {return}
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         panelContainer.addSubview(controller.view)
-        addChildViewController(controller)
+        addChild(controller)
         NSLayoutConstraint.activate([
             controller.view.leftAnchor.constraint(equalTo: panelContainer.leftAnchor),
             controller.view.rightAnchor.constraint(equalTo: panelContainer.rightAnchor),
             controller.view.topAnchor.constraint(equalTo: panelContainer.topAnchor),
             controller.view.bottomAnchor.constraint(equalTo: panelContainer.bottomAnchor)])
-        controller.didMove(toParentViewController: self)
+        controller.didMove(toParent: self)
     }
     
     private func setTabContainerChild(controller: UIViewController?) {
         defer {currentTabController = controller}
         guard currentTabController !== controller else {return}
         currentTabController?.view.removeFromSuperview()
-        currentTabController?.removeFromParentViewController()
+        currentTabController?.removeFromParent()
         
         guard let controller = controller else {return}
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         tabContainer.addSubview(controller.view)
-        addChildViewController(controller)
+        addChild(controller)
         if controller is WelcomeController {
             NSLayoutConstraint.activate([
                 controller.view.leftAnchor.constraint(equalTo: tabContainer.leftAnchor),
@@ -496,7 +496,7 @@ extension MainController {
             }
         }
         
-        controller.didMove(toParentViewController: self)
+        controller.didMove(toParent: self)
     }
     
     func presentAdaptively(controller: UIViewController, animated: Bool) {
