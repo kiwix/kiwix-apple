@@ -199,7 +199,7 @@ class SearchResultController: UIViewController, SearchQueueEvents, UISearchResul
          that means user is trying to clear the search field. We immediately cancel all search tasks
          and change content back to no text mode. */
         if !searchController.isBeingDismissed && searchText == "" {
-            queue.cancelAll()
+            queue.cancelAllOperations()
             configureContent(mode: .noText)
             contentController.resultsListController.update(searchText: "", results: [])
             return
