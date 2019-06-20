@@ -16,9 +16,7 @@
 @implementation ZimMultiReader
 
 std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>> readers;
-std::unordered_map<std::string, std::shared_ptr<kiwix::Searcher>> externalSearchers;
-kiwix::Searcher *searcher = new kiwix::Searcher;
-//std::vector<std::string> *searcherZimIDs = new std::vector<std::string>;
+kiwix::Searcher *searcher = nullptr;
 NSMutableArray *searcherZimIDs = [[NSMutableArray alloc] init];
 NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: FileURL]
 
@@ -80,7 +78,6 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
 - (void)removeReaderByID:(NSString *)bookID {
     std::string identifier = [bookID cStringUsingEncoding:NSUTF8StringEncoding];
     readers.erase(identifier);
-    externalSearchers.erase(identifier);
 #if TARGET_OS_MAC
     [fileURLs[bookID] stopAccessingSecurityScopedResource];
 #endif
@@ -110,12 +107,7 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
 }
 
 - (BOOL)hasExternalIndex:(NSString *_Nonnull)zimFileID {
-    auto found = externalSearchers.find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
-    if (found == externalSearchers.end()) {
-        return NO;
-    } else {
-        return YES;
-    }
+    return NO;
 }
 
 # pragma mark - check redirection
@@ -222,6 +214,7 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
 # pragma mark - Text Search
 
 - (void)startIndexSearch:(NSString *)searchText zimFileIDs:(NSSet *)zimFileIDs {
+    searcher = new kiwix::Searcher;
     std::string searchTextC = [searchText cStringUsingEncoding:NSUTF8StringEncoding];
     
     for(auto iter: readers) {
@@ -232,64 +225,36 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
         
         std::shared_ptr<kiwix::Reader> reader = iter.second;
         if (reader->hasFulltextIndex()) {
-            // file have embedded index, we will let searcher handle this situation
             searcher->add_reader(reader.get(), iter.first);
             [searcherZimIDs addObject:identifier];
-        } else {
-            // file does not have embedded index, try find an external index
-            auto found = externalSearchers.find(iter.first);
-            if (found == externalSearchers.end()) {
-                // did not find an external index for this zim file
-                continue;
-            } else {
-                // found an external index
-                std::shared_ptr<kiwix::Searcher> searcher = found->second;
-                searcher->search(searchTextC, 0, 10);
-            }
         }
     }
     
     searcher->search(searchTextC, 0, 20);
 }
 
-- (NSDictionary *)convertSearchResultWithIndentifier:(NSString *)identifier result:(kiwix::Result *)result extractSnippet:(BOOL)extractSnippet {
+- (NSDictionary *)getNextIndexSearchResultWithSnippet:(BOOL)extractSnippet {
+    kiwix::Result *result = searcher->getNextResult();
+    if (result == NULL) {
+        return nil;
+    }
+    
+    NSString *identifier = searcherZimIDs[result->get_readerIndex()];
     NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
     NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
     NSNumber *probability = [[NSNumber alloc] initWithDouble:(double)result->get_score() / double(100)];
     NSString *snippet = @"";
-
     if (extractSnippet) {
         snippet = [NSString stringWithCString:result->get_snippet().c_str() encoding:NSUTF8StringEncoding];
     }
-
+    
     delete result;
     return @{@"id": identifier, @"title": title, @"path": path, @"probability": probability, @"snippet": snippet};
 }
 
-- (NSDictionary *)getNextIndexSearchResultWithSnippet:(BOOL)extractSnippet {
-    kiwix::Result *result = searcher->getNextResult();
-    if (result != NULL) {
-        NSString *identifier = searcherZimIDs[result->get_readerIndex()];
-        return [self convertSearchResultWithIndentifier:identifier result:result extractSnippet:extractSnippet];
-    } else {
-        for(auto iter: externalSearchers) {
-            NSString *identifier = [NSString stringWithCString:iter.first.c_str() encoding:NSUTF8StringEncoding];
-            result = iter.second->getNextResult();
-            if (result != NULL) {
-                return [self convertSearchResultWithIndentifier:identifier result:result extractSnippet:extractSnippet];
-            }
-        }
-        return nil;
-    }
-}
-
 - (void)stopIndexSearch {
-    searcher = new kiwix::Searcher;
+    delete searcher;
     [searcherZimIDs removeAllObjects];
-    for(auto iter: externalSearchers) {
-        std::string empty = "";
-        iter.second->search(empty, 0, 0);
-    }
 }
 
 - (NSArray *)getTitleSearchResults:(NSString *)searchText zimFileID:(NSString *)zimFileID count:(unsigned int)count {
