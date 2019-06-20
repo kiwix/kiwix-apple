@@ -6,9 +6,8 @@
 //  Copyright © 2017 Chris Li. All rights reserved.
 //
 
-import ProcedureKit
 
-class SearchProcedure: Procedure {
+class SearchProcedure: Operation {
     let searchText: String
     let ids: Set<ZimFileID>
     let extractSnippet: Bool
@@ -24,22 +23,21 @@ class SearchProcedure: Procedure {
         name = "Search Procedure"
     }
     
-    override func execute() {
-        guard searchText.count > 0 else {finish(); return}
+    override func main() {
+        guard searchText.count > 0 else {return}
         addIndexedSearchResults()
         addTitleSearchResults()
         sort()
-        finish()
     }
     
     private func addIndexedSearchResults() {
-        guard !isCancelled else { ZimMultiReader.shared.stopIndexSearch(); return }
+        defer { ZimMultiReader.shared.stopIndexSearch() }
+        guard !isCancelled else { return }
         ZimMultiReader.shared.startIndexSearch(searchText: searchText, zimFileIDs: ids)
         while let result = ZimMultiReader.shared.getNextIndexSearchResult(extractSnippet: extractSnippet) {
-            guard !isCancelled else { ZimMultiReader.shared.stopIndexSearch(); return }
+            guard !isCancelled else { return }
             results.insert(result)
         }
-        ZimMultiReader.shared.stopIndexSearch();
     }
     
     private func addTitleSearchResults() {

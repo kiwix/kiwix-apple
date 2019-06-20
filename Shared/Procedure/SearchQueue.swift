@@ -6,10 +6,9 @@
 //  Copyright © 2018 Chris Li. All rights reserved.
 //
 
-import ProcedureKit
 import SwiftyUserDefaults
 
-class SearchQueue: ProcedureQueue {
+class SearchQueue: OperationQueue {
     weak var eventDelegate: SearchQueueEvents?
     private var operationsObserver: NSKeyValueObservation?
     
