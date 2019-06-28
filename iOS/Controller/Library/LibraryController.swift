@@ -111,23 +111,19 @@ class LibraryOnboardingController: UIViewController {
     }
     
     @IBAction func downloadButtonTapped(_ sender: UIButton) {
-        let procedure = LibraryRefreshProcedure(updateExisting: false)
-        procedure.addObserver(WillExecuteObserver(willExecute: { (_, _) in
-            OperationQueue.main.addOperation({
-                self.activityIndicator.startAnimating()
-                self.downloadButton.isEnabled = false
-            })
-        }))
-        procedure.addObserver(DidFinishObserver(didFinish: { (_, errors) in
+        activityIndicator.startAnimating()
+        sender.isEnabled = false
+
+        let operation = LibraryRefreshOperation(updateExisting: true)
+        operation.completionBlock = {
             OperationQueue.main.addOperation({
                 self.activityIndicator.stopAnimating()
-                if errors != nil {
-                    self.downloadButton.isEnabled = true
+                if operation.error != nil {
+                    sender.isEnabled = true
                 }
-                // TODO: - show alert
             })
-        }))
-        Queue.shared.add(libraryRefresh: procedure)
+        }
+        LibraryOperationQueue.shared.addOperation(operation)
     }
 }
 

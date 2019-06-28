@@ -7,9 +7,13 @@
 //
 
 import RealmSwift
-import ProcedureKit
 
-class ZimFileProcessingProcedure: Procedure {
+protocol ZimFileProcessing {
+    func create(database: Realm, id: String, meta: [String: Any]) -> ZimFile
+    func update(zimFile: ZimFile, meta: [String: Any])
+}
+
+extension ZimFileProcessing {
     func create(database: Realm, id: String, meta: [String: Any]) -> ZimFile {
         let zimFile = ZimFile()
         zimFile.id = id
@@ -35,6 +39,11 @@ class ZimFileProcessingProcedure: Procedure {
             zimFile.languageCode = Locale.canonicalLanguageIdentifier(from: languageCode)
         }
         
+        let dateFormatter: DateFormatter = {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            return dateFormatter
+        }()
         if let date = meta["date"] as? String, let creationDate = dateFormatter.date(from: date) {
             zimFile.creationDate = creationDate
         }
@@ -115,10 +124,4 @@ class ZimFileProcessingProcedure: Procedure {
             return getFromTags() ?? getFromName() ?? getFromURL() ?? getFromFileName() ?? .other
         }()
     }
-    
-    private let dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        return dateFormatter
-    }()
 }

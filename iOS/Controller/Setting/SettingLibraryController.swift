@@ -85,15 +85,15 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
         switch item {
         case .refreshNow:
             let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell") as! UIActionTableViewCell
-            if Queue.shared.isRefreshingLibrary {
-                cell.textLabel?.text = NSLocalizedString("Refreshing...", comment: "Setting Item Title")
-                cell.isDisabled = true
-                cell.isUserInteractionEnabled = false
-            } else {
-                cell.textLabel?.text = NSLocalizedString("Refresh Now", comment: "Setting Item Title")
-                cell.isDisabled = false
-                cell.isUserInteractionEnabled = true
-            }
+//            if Queue.shared.isRefreshingLibrary {
+//                cell.textLabel?.text = NSLocalizedString("Refreshing...", comment: "Setting Item Title")
+//                cell.isDisabled = true
+//                cell.isUserInteractionEnabled = false
+//            } else {
+//                cell.textLabel?.text = NSLocalizedString("Refresh Now", comment: "Setting Item Title")
+//                cell.isDisabled = false
+//                cell.isUserInteractionEnabled = true
+//            }
             return cell
         case .languageFilter:
             let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")!
@@ -121,8 +121,7 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
         let item = items[indexPath.section][indexPath.row]
         switch item {
         case .refreshNow:
-            let procedure = LibraryRefreshProcedure()
-            Queue.shared.add(libraryRefreshProcedure: procedure)
+            break
         case .languageFilter:
             let controller = LibraryLanguageController()
             navigationController?.pushViewController(controller, animated: true)

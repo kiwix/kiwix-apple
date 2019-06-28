@@ -28,18 +28,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         fileMonitor.start()
         
         if UserDefaults.standard.bool(forKey: "MigratedToRealm") {
-            let scan = ScanProcedure(directoryURL: URL.documentDirectory)
-            Queue.shared.addOperations(scan)
+            let scan = LibraryScanOperation(directoryURL: URL.documentDirectory)
+            LibraryOperationQueue.shared.addOperation(scan)
         } else {
-            let scan = ScanProcedure(directoryURL: URL.documentDirectory)
+            let scan = LibraryScanOperation(directoryURL: URL.documentDirectory)
             let migrate = BookmarkMigrationOperation()
-            let refresh = LibraryRefreshProcedure(updateExisting: true)
+            let refresh = LibraryRefreshOperation(updateExisting: true)
             migrate.completionBlock = {
                 UserDefaults.standard.set(true, forKey: "MigratedToRealm")
             }
             migrate.addDependency(scan)
             refresh.addDependency(migrate)
-            Queue.shared.addOperations(scan, migrate, refresh)
+            LibraryOperationQueue.shared.addOperation(scan)
+            LibraryOperationQueue.shared.addOperation(migrate)
+            LibraryOperationQueue.shared.addOperation(refresh)
         }
     }
     
@@ -48,7 +50,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
-        Queue.shared.add(scanProcedure: ScanProcedure(directoryURL: URL.documentDirectory))
+        let scan = LibraryScanOperation(directoryURL: URL.documentDirectory)
+        LibraryOperationQueue.shared.addOperation(scan)
         fileMonitor.start()
     }
 
@@ -80,7 +83,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     // MARK: - Directory Monitoring
     
     func directoryContentDidChange(url: URL) {
-        Queue.shared.add(scanProcedure: ScanProcedure(directoryURL: url))
+        let scan = LibraryScanOperation(directoryURL: URL.documentDirectory)
+        LibraryOperationQueue.shared.addOperation(scan)
     }
     
     // MARK: - Background
@@ -90,15 +94,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     }
     
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        let procedure = LibraryRefreshProcedure(updateExisting: false)
-        procedure.addObserver(DidFinishObserver(didFinish: { (procedure, errors) in
-            if let procedure = procedure as? LibraryRefreshProcedure, errors != nil {
-                completionHandler(procedure.hasUpdates ? .newData : .noData)
+        let operation = LibraryRefreshOperation(updateExisting: false)
+        operation.completionBlock = {
+            if operation.error != nil {
+                completionHandler(operation.hasUpdates ? .newData : .noData)
             } else {
                 completionHandler(.failed)
             }
-        }))
-        Queue.shared.add(libraryRefresh: procedure)
+        }
+        LibraryOperationQueue.shared.addOperation(operation)
     }
     
     // MARK: - Home Screen Quick Actions
