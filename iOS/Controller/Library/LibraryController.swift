@@ -8,7 +8,6 @@
 
 import UIKit
 import RealmSwift
-import ProcedureKit
 
 /**
  The container for library controllers.

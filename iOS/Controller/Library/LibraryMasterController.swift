@@ -9,7 +9,6 @@
 import UIKit
 import CoreData
 import RealmSwift
-import ProcedureKit
 
 
 class LibraryMasterController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {

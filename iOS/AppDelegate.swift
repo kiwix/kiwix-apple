@@ -8,7 +8,6 @@
 
 import UIKit
 import RealmSwift
-import ProcedureKit
 
 
 @UIApplicationMain

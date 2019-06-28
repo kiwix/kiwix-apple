@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import ProcedureKit
 import SwiftyUserDefaults
 
 class SettingLibraryController: UIViewController, UITableViewDataSource, UITableViewDelegate {
