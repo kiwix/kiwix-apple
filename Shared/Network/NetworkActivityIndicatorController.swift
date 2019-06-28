@@ -25,7 +25,7 @@ class NetworkActivityController {
     }
     
     func taskDidFinish(identifier: String) {
-        guard let index = taskIdentifiers.index(of: identifier) else {
+        guard let index = taskIdentifiers.firstIndex(of: identifier) else {
             return
         }
         taskIdentifiers.remove(at: index)

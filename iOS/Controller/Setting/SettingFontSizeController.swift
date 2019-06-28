@@ -65,7 +65,7 @@ class SettingFontSizeViewController: UIViewController, UITableViewDelegate, UITa
         
         var indexPaths = [indexPath]
         
-        if let previousIndex = percentages.index(of: selected) {
+        if let previousIndex = percentages.firstIndex(of: selected) {
             indexPaths.append(IndexPath(row: previousIndex, section: 0))
         }
         

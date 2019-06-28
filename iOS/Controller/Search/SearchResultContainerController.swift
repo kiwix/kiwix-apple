@@ -21,7 +21,7 @@ class SearchResultContainerController: UITabBarController {
     
     var mode: Mode = .noText {
         didSet {
-            guard let index = modes.index(of: mode) else {return}
+            guard let index = modes.firstIndex(of: mode) else {return}
             selectedIndex = index
         }
     }

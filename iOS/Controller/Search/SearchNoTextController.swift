@@ -25,7 +25,7 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
     
     private var recentSearchTexts = [String]() {
         didSet {
-            if recentSearchTexts.count == 0, let index = sections.index(of: .recentSearch) {
+            if recentSearchTexts.count == 0, let index = sections.firstIndex(of: .recentSearch) {
                 tableView.beginUpdates()
                 sections.remove(at: index)
                 tableView.deleteSections(IndexSet([index]), with: .fade)
@@ -35,7 +35,7 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
                 sections.insert(.recentSearch, at: 0)
                 tableView.insertSections(IndexSet([0]), with: .none)
                 tableView.endUpdates()
-            } else if recentSearchTexts.count > 0, let index = sections.index(of: .recentSearch) {
+            } else if recentSearchTexts.count > 0, let index = sections.firstIndex(of: .recentSearch) {
                 guard recentSearchTexts != oldValue else {return}
                 tableView.reloadSections(IndexSet([index]), with: .none)
             }
@@ -85,7 +85,7 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
         changeToken = zimFiles?.observe({ (changes) in
             switch changes {
             case .update(_, let deletions, let insertions, let updates):
-                guard let sectionIndex = self.sections.index(of: .searchFilter) else {return}
+                guard let sectionIndex = self.sections.firstIndex(of: .searchFilter) else {return}
                 self.tableView.beginUpdates()
                 self.tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
                 self.tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)

@@ -124,9 +124,9 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
     private func configureSections() {
         if let localZimFiles = localZimFiles {
             localZimFilesCount = localZimFiles.count
-            if localZimFiles.count > 0, sections.index(of: .local) == nil {
+            if localZimFiles.count > 0, sections.firstIndex(of: .local) == nil {
                 sections.insert(.local, at: 0)
-            } else if localZimFiles.count == 0, let sectionIndex = sections.index(of: .local) {
+            } else if localZimFiles.count == 0, let sectionIndex = sections.firstIndex(of: .local) {
                 sections.remove(at: sectionIndex)
             }
         }
@@ -135,7 +135,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
             if downlaodZimFiles.count > 0, !sections.contains(.download) {
                 let sectionIndex = self.sections.contains(.local) ? 1 : 0
                 sections.insert(.download, at: sectionIndex)
-            } else if downlaodZimFiles.count == 0, let sectionIndex = sections.index(of: .download) {
+            } else if downlaodZimFiles.count == 0, let sectionIndex = sections.firstIndex(of: .download) {
                 sections.remove(at: sectionIndex)
             }
         }
@@ -148,17 +148,17 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
             case .update(let results, let deletions, let insertions, let updates):
                 self.localZimFilesCount = results.count
                 self.tableView.beginUpdates()
-                if results.count > 0, self.sections.index(of: .local) == nil {
+                if results.count > 0, self.sections.firstIndex(of: .local) == nil {
                     self.sections.insert(.local, at: 0)
                     self.tableView.insertSections(IndexSet([0]), with: .fade)
                 }
                 
-                if results.count == 0, let sectionIndex = self.sections.index(of: .local) {
+                if results.count == 0, let sectionIndex = self.sections.firstIndex(of: .local) {
                     self.sections.remove(at: sectionIndex)
                     self.tableView.deleteSections(IndexSet([sectionIndex]), with: .fade)
                 }
                 
-                if let sectionIndex = self.sections.index(of: .local) {
+                if let sectionIndex = self.sections.firstIndex(of: .local) {
                     self.tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
                     self.tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
                     updates.forEach({ row in
@@ -183,12 +183,12 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
                     self.tableView.insertSections(IndexSet([sectionIndex]), with: .fade)
                 }
                 
-                if results.count == 0, let sectionIndex = self.sections.index(of: .download) {
+                if results.count == 0, let sectionIndex = self.sections.firstIndex(of: .download) {
                     self.sections.remove(at: sectionIndex)
                     self.tableView.deleteSections(IndexSet([sectionIndex]), with: .fade)
                 }
                 
-                if let sectionIndex = self.sections.index(of: .download) {
+                if let sectionIndex = self.sections.firstIndex(of: .download) {
                     self.tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
                     self.tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
                     updates.forEach({ row in

@@ -32,7 +32,7 @@ class SearchResultsListController: UITableViewController {
     
     func update(recentSearchText newSearchText: String) {
         var searchTexts = Defaults[.recentSearchTexts]
-        if let index = searchTexts.index(of: newSearchText) {
+        if let index = searchTexts.firstIndex(of: newSearchText) {
             searchTexts.remove(at: index)
         }
         searchTexts.insert(newSearchText, at: 0)
