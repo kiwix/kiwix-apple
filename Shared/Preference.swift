@@ -26,18 +26,6 @@ class Preference {
 //        get{return Defaults[.libraryRefreshInterval] ?? 3600.0 * 24}
 //        set{Defaults[.libraryRefreshInterval] = newValue}
 //    }
-    
-//    class LangFilter {
-//        class var sortByAlphabeticalAsc: Bool {
-//            get{return Defaults[.langFilterSortByAlphabeticalAsc]}
-//            set{Defaults[.langFilterSortByAlphabeticalAsc] = newValue}
-//        }
-//
-//        class var displayInOriginalLocale: Bool {
-//            get{return Defaults[.langFilterNameDisplayInOriginalLocale]}
-//            set{Defaults[.langFilterNameDisplayInOriginalLocale] = newValue}
-//        }
-//    }
 }
 
 extension DefaultsKeys {
@@ -46,23 +34,11 @@ extension DefaultsKeys {
 //    static let haveRateKiwix = DefaultsKey<Bool>("haveRateKiwix")
 //
 //
-//    
-//
-//    static let webViewZoomScale = DefaultsKey<Double?>("webViewZoomScale")
-//    static let backupDocumentDirectory = DefaultsKey<Bool>("backupDocumentDirectory")
-//    static let externalLinkLoadingPolicy = DefaultsKey<Int>("externalLinkLoadingPolicy")
-//
 //    static let libraryAutoRefreshDisabled = DefaultsKey<Bool>("libraryAutoRefreshDisabled")
 //    static let libraryRefreshNotAllowCellularData = DefaultsKey<Bool>("libraryRefreshNotAllowCellularData")
 //    static let libraryLastRefreshTime = DefaultsKey<Date?>("libraryLastRefreshTime")
 //    static let libraryHasShownLanguageFilterAlert = DefaultsKey<Bool>("libraryHasShownLanguageFilterAlert")
 //    static let libraryRefreshInterval = DefaultsKey<Double?>("libraryRefreshInterval")
-//    
-//
-//    static let langFilterSortByAlphabeticalAsc = DefaultsKey<Bool>("langFilterSortByAlphabeticalAsc")
-//    static let langFilterNameDisplayInOriginalLocale = DefaultsKey<Bool>("langFilterNameDisplayInOriginalLocale")
-//
-//
 }
 
 // MARK: - Rate
