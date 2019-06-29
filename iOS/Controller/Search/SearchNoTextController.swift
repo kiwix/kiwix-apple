@@ -74,7 +74,7 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
             tableView.backgroundColor = .groupTableViewBackground
         case .regular:
             tableView.backgroundColor = .clear
-        case .unspecified:
+        default:
             break
         }
     }

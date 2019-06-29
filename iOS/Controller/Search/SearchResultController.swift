@@ -87,7 +87,7 @@ class SearchResultController: UIViewController, SearchQueueEvents, UISearchResul
             visualView.roundingCorners = .allCorners
             visualView.contentView.backgroundColor = .clear
             updateConstraintPriorities()
-        case .unspecified:
+        default:
             break
         }
     }
