@@ -184,7 +184,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     
     // MARK: - Type Definition
     
-    private enum SortingMode: String {
+    enum SortingMode: String {
         case alphabetically, byCount
         
         var localizedDescription: String {

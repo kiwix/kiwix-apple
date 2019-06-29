@@ -4,11 +4,11 @@ PODS:
   - Realm/Headers (3.14.1)
   - RealmSwift (3.14.1):
     - Realm (= 3.14.1)
-  - SwiftyUserDefaults (3.0.1)
+  - SwiftyUserDefaults (4.0.0)
 
 DEPENDENCIES:
   - RealmSwift
-  - SwiftyUserDefaults
+  - SwiftyUserDefaults (~> 4.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -19,8 +19,8 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Realm: e12c9c2387d05c5bba3a9c394838f5870e85763b
   RealmSwift: a82eab9b04c3e1616082c7e17aa300740847769c
-  SwiftyUserDefaults: 3d273b1739b68ada3145dc754a70ec775bc5c8be
+  SwiftyUserDefaults: 6a1951df1daa19337862b677dd9a4b9bd4c288cd
 
-PODFILE CHECKSUM: ed9be6f7dbdb8cba3618d24cc72197d1700345ad
+PODFILE CHECKSUM: aef950eaf9fe0f90666e247d9c0e3157ac76b317
 
 COCOAPODS: 1.7.2
