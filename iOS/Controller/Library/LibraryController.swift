@@ -9,9 +9,11 @@
 import UIKit
 import RealmSwift
 
+
 /**
  The container for library controllers.
- It has two modes, depending on the  number of `ZimFile` objects in the database:
+ 
+ It has two modes, depending on the number of `ZimFile` objects in the database:
  - one or more, LibrarySplitController
  - zero, LibraryOnboardingController
  */
@@ -128,11 +130,11 @@ class LibraryOnboardingController: UIViewController {
 
 
 /**
- The controller to show when there are one or more `ZimFile` object in database.
- - left panel: `LibraryMasterController`
- - right panel:
-   - `LibraryCategoryController`
-   - `LibraryZimFileDetailController`
+ The library split view controller.
+ 
+ The master controller lists zim files that are on device or being downloaded,
+ along with all available zim files grouped by categories.
+ The detail controller could be detail of a zim file or all zim files belong to one category.
  */
 class LibrarySplitController: UISplitViewController, UISplitViewControllerDelegate {
     init() {
@@ -156,7 +158,9 @@ class LibrarySplitController: UISplitViewController, UISplitViewControllerDelega
         fatalError("init(coder:) has not been implemented")
     }
     
-    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
+    func splitViewController(_ splitViewController: UISplitViewController,
+                             collapseSecondary secondaryViewController: UIViewController,
+                             onto primaryViewController: UIViewController) -> Bool {
         return true
     }
 }
