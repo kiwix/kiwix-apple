@@ -18,45 +18,45 @@ import CoreData
 class Book: NSManagedObject {
 
     // MARK: - Fetch
-    
+
     class func fetchAll(context: NSManagedObjectContext) -> [Book] {
         let request = Book.fetchRequest() as! NSFetchRequest<Book>
         return (try? context.fetch(request)) ?? [Book]()
     }
-    
+
     class func fetch(states: [BookState], context: NSManagedObjectContext) -> [Book] {
         let request = Book.fetchRequest() as! NSFetchRequest<Book>
         request.predicate = NSPredicate(format: "stateRaw IN %@", states.map({ $0.rawValue }) )
         return (try? context.fetch(request)) ?? [Book]()
     }
-    
+
     class func fetch(id: String, context: NSManagedObjectContext) -> Book? {
         let request = Book.fetchRequest() as! NSFetchRequest<Book>
         request.predicate = NSPredicate(format: "id = %@", id)
         return (try? context.fetch(request))?.first
     }
-    
+
     class func fetch(pid: String, context: NSManagedObjectContext) -> [Book] {
         let request = Book.fetchRequest() as! NSFetchRequest<Book>
         request.predicate = NSPredicate(format: "pid = %@", pid)
         request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         return (try? context.fetch(request)) ?? [Book]()
     }
-    
+
     // MARK: - Properties
-    
+
     var url: URL? {
         guard let meta4URL = meta4URL else {return nil}
         var urlComponents = URLComponents(string: meta4URL.replacingOccurrences(of: ".meta4", with: ""))
         urlComponents?.scheme = "https"
         return urlComponents?.url
     }
-    
+
     var state: BookState {
         get { return BookState(rawValue: Int(stateRaw)) ?? .cloud }
         set { stateRaw = Int16(newValue.rawValue) }
     }
-    
+
     @objc var sectionIndex: Int {
         get {
             switch state {
@@ -71,26 +71,26 @@ class Book: NSManagedObject {
             }
         }
     }
-    
+
     // MARK: - Properties Description
-    
+
     static private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM-dd-yyyy"
         formatter.dateStyle = .medium
         return formatter
     }()
-    
+
     var dateDescription: String? {
         guard let date = date else {return nil}
         return Book.dateFormatter.string(from: date)
     }
-    
+
     var fileSizeDescription: String? {
         guard fileSize != 0 else {return nil}
         return ByteCountFormatter.string(fromByteCount: fileSize, countStyle: .file)
     }
-    
+
     var articleCountDescription: String? {
         guard articleCount != 0 else {return nil}
         return BookArticleCountFormatter.string(num: articleCount) + (articleCount > 1 ? " articles" : " article")
@@ -111,7 +111,7 @@ class BookArticleCountFormatter {
 
 enum BookState: Int {
     case cloud = 0, downloadQueued, downloading, downloadPaused, downloadError, local, retained
-    
+
     var shortLocalizedDescription: String {
         switch self {
         case .cloud:
@@ -138,14 +138,13 @@ enum BookCategory: String {
     case wikipedia
     case wikiquote
     case wikisource
-    case wikispecies
     case wikiversity
     case wikivoyage
     case wiktionary
-    
+
     case ted
     case vikidia
     case stackExchange
-    
+
     case other
 }
