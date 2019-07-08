@@ -8,11 +8,12 @@
 
 import UIKit
 import RealmSwift
-import ProcedureKit
+
 
 /**
  The container for library controllers.
- It has two modes, depending on the  number of `ZimFile` objects in the database:
+ 
+ It has two modes, depending on the number of `ZimFile` objects in the database:
  - one or more, LibrarySplitController
  - zero, LibraryOnboardingController
  */
@@ -111,33 +112,29 @@ class LibraryOnboardingController: UIViewController {
     }
     
     @IBAction func downloadButtonTapped(_ sender: UIButton) {
-        let procedure = LibraryRefreshProcedure(updateExisting: false)
-        procedure.addObserver(WillExecuteObserver(willExecute: { (_, _) in
-            OperationQueue.main.addOperation({
-                self.activityIndicator.startAnimating()
-                self.downloadButton.isEnabled = false
-            })
-        }))
-        procedure.addObserver(DidFinishObserver(didFinish: { (_, errors) in
+        activityIndicator.startAnimating()
+        sender.isEnabled = false
+
+        let operation = LibraryRefreshOperation(updateExisting: true)
+        operation.completionBlock = {
             OperationQueue.main.addOperation({
                 self.activityIndicator.stopAnimating()
-                if errors != nil {
-                    self.downloadButton.isEnabled = true
+                if operation.error != nil {
+                    sender.isEnabled = true
                 }
-                // TODO: - show alert
             })
-        }))
-        Queue.shared.add(libraryRefresh: procedure)
+        }
+        LibraryOperationQueue.shared.addOperation(operation)
     }
 }
 
 
 /**
- The controller to show when there are one or more `ZimFile` object in database.
- - left panel: `LibraryMasterController`
- - right panel:
-   - `LibraryCategoryController`
-   - `LibraryZimFileDetailController`
+ The library split view controller.
+ 
+ The master controller lists zim files that are on device or being downloaded,
+ along with all available zim files grouped by categories.
+ The detail controller could be detail of a zim file or all zim files belong to one category.
  */
 class LibrarySplitController: UISplitViewController, UISplitViewControllerDelegate {
     init() {
@@ -161,7 +158,9 @@ class LibrarySplitController: UISplitViewController, UISplitViewControllerDelega
         fatalError("init(coder:) has not been implemented")
     }
     
-    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
+    func splitViewController(_ splitViewController: UISplitViewController,
+                             collapseSecondary secondaryViewController: UIViewController,
+                             onto primaryViewController: UIViewController) -> Bool {
         return true
     }
 }

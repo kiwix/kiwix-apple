@@ -12,57 +12,33 @@ class Preference {
     
     // MARK: - Library
     
-    class var libraryAutoRefreshDisabled: Bool {
-        get{return Defaults[.libraryAutoRefreshDisabled]}
-        set{Defaults[.libraryAutoRefreshDisabled] = newValue}
-    }
-    
-    class var libraryRefreshAllowCellularData: Bool {
-        get{return !Defaults[.libraryRefreshNotAllowCellularData]}
-        set{Defaults[.libraryRefreshNotAllowCellularData] = !newValue}
-    }
-    
-    class var libraryRefreshInterval: TimeInterval {
-        get{return Defaults[.libraryRefreshInterval] ?? 3600.0 * 24}
-        set{Defaults[.libraryRefreshInterval] = newValue}
-    }
-    
-    class LangFilter {
-        class var sortByAlphabeticalAsc: Bool {
-            get{return Defaults[.langFilterSortByAlphabeticalAsc]}
-            set{Defaults[.langFilterSortByAlphabeticalAsc] = newValue}
-        }
-        
-        class var displayInOriginalLocale: Bool {
-            get{return Defaults[.langFilterNameDisplayInOriginalLocale]}
-            set{Defaults[.langFilterNameDisplayInOriginalLocale] = newValue}
-        }
-    }
+//    class var libraryAutoRefreshDisabled: Bool {
+//        get{return Defaults[.libraryAutoRefreshDisabled]}
+//        set{Defaults[.libraryAutoRefreshDisabled] = newValue}
+//    }
+//    
+//    class var libraryRefreshAllowCellularData: Bool {
+//        get{return !Defaults[.libraryRefreshNotAllowCellularData]}
+//        set{Defaults[.libraryRefreshNotAllowCellularData] = !newValue}
+//    }
+//    
+//    class var libraryRefreshInterval: TimeInterval {
+//        get{return Defaults[.libraryRefreshInterval] ?? 3600.0 * 24}
+//        set{Defaults[.libraryRefreshInterval] = newValue}
+//    }
 }
 
 extension DefaultsKeys {
-    static let hasSubscribedToCloudKitChanges = DefaultsKey<Bool>("hasSubscribedToCloudKitChanges")
-    static let activeUseHistory = DefaultsKey<[Date]>("activeUseHistory")
-    static let haveRateKiwix = DefaultsKey<Bool>("haveRateKiwix")
-    
-    
-    static let recentSearchTexts = DefaultsKey<[String]>("recentSearchTexts")
-    
-    static let webViewZoomScale = DefaultsKey<Double?>("webViewZoomScale")
-    static let backupDocumentDirectory = DefaultsKey<Bool>("backupDocumentDirectory")
-    static let externalLinkLoadingPolicy = DefaultsKey<Int>("externalLinkLoadingPolicy")
-    
-    static let libraryAutoRefreshDisabled = DefaultsKey<Bool>("libraryAutoRefreshDisabled")
-    static let libraryRefreshNotAllowCellularData = DefaultsKey<Bool>("libraryRefreshNotAllowCellularData")
-    static let libraryLastRefreshTime = DefaultsKey<Date?>("libraryLastRefreshTime")
-    static let libraryHasShownLanguageFilterAlert = DefaultsKey<Bool>("libraryHasShownLanguageFilterAlert")
-    static let libraryRefreshInterval = DefaultsKey<Double?>("libraryRefreshInterval")
-    static let libraryFilterLanguageCodes = DefaultsKey<[String]>("libraryFilterLanguageCodes")
-    
-    static let langFilterSortByAlphabeticalAsc = DefaultsKey<Bool>("langFilterSortByAlphabeticalAsc")
-    static let langFilterNameDisplayInOriginalLocale = DefaultsKey<Bool>("langFilterNameDisplayInOriginalLocale")
-    
-    
+//    static let hasSubscribedToCloudKitChanges = DefaultsKey<Bool>("hasSubscribedToCloudKitChanges")
+//    static let activeUseHistory = DefaultsKey<[Date]>("activeUseHistory")
+//    static let haveRateKiwix = DefaultsKey<Bool>("haveRateKiwix")
+//
+//
+//    static let libraryAutoRefreshDisabled = DefaultsKey<Bool>("libraryAutoRefreshDisabled")
+//    static let libraryRefreshNotAllowCellularData = DefaultsKey<Bool>("libraryRefreshNotAllowCellularData")
+//    static let libraryLastRefreshTime = DefaultsKey<Date?>("libraryLastRefreshTime")
+//    static let libraryHasShownLanguageFilterAlert = DefaultsKey<Bool>("libraryHasShownLanguageFilterAlert")
+//    static let libraryRefreshInterval = DefaultsKey<Double?>("libraryRefreshInterval")
 }
 
 // MARK: - Rate

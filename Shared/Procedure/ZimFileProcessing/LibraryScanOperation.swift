@@ -1,17 +1,15 @@
 //
-//  ScanProcedure.swift
+//  LibraryScanOperation.swift
 //  Kiwix
 //
 //  Created by Chris Li on 10/23/17.
 //  Copyright © 2017 Chris Li. All rights reserved.
 //
 
-import CoreData
 import RealmSwift
-import ProcedureKit
 import SwiftyUserDefaults
 
-class ScanProcedure: ZimFileProcessingProcedure {
+class LibraryScanOperation: Operation, XMLParserDelegate, ZimFileProcessing {
     let directories: [URL]
     
     init(directoryURL: URL) {
@@ -19,11 +17,10 @@ class ScanProcedure: ZimFileProcessingProcedure {
         super.init()
     }
     
-    override func execute() {
+    override func main() {
         updateReaders()
         updateDatabase()
         BackupManager.updateExcludedFromBackupForDocumentDirectoryContents(isExcluded: !Defaults[.backupDocumentDirectory])
-        finish()
     }
     
     private func updateReaders() {

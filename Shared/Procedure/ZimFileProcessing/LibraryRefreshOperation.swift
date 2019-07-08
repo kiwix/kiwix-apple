@@ -1,5 +1,5 @@
 //
-//  LibraryRefreshProcedure.swift
+//  LibraryRefreshOperation.swift
 //  Kiwix
 //
 //  Created by Chris Li on 10/18/17.
@@ -7,21 +7,24 @@
 //
 
 import RealmSwift
-import ProcedureKit
 import SwiftyUserDefaults
 
-class LibraryRefreshProcedure: ZimFileProcessingProcedure, XMLParserDelegate {
+class LibraryRefreshOperation: Operation, XMLParserDelegate, ZimFileProcessing {
     private(set) var hasUpdates = false // true only when zim files are added or removed, not including updates
+    private(set) var error: Error?
     private let updateExisting: Bool
     private var zimFileMetas = [String: [String: Any]]()
     
     init(updateExisting: Bool = false) {
         self.updateExisting = updateExisting
         super.init()
-        addCondition(MutuallyExclusive<LibraryRefreshProcedure>())
     }
     
-    override func execute() {
+    override func main() {
+        execute()
+    }
+    
+    func execute() {
         do {
             let data = try fetchData()
             
@@ -63,9 +66,7 @@ class LibraryRefreshProcedure: ZimFileProcessingProcedure, XMLParserDelegate {
             Defaults[.libraryLastRefreshTime] = Date()
             
             print("Library Refresh Procedure finished, has updates: \(hasUpdates)")
-            finish()
         } catch {
-            finish(with: error)
         }
     }
     

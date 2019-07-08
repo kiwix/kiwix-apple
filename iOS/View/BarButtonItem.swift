@@ -65,23 +65,27 @@ class BookmarkButtonItem: BarButtonItem {
 
 class BarButton: UIButton {
     private var boundsObserver: NSKeyValueObservation? = nil
+    private(set) var inset: CGFloat = 0
     
     convenience init(inset: CGFloat) {
         self.init(frame: .zero)
-
-        boundsObserver = observe(\.bounds, options: [.initial, .new]) { (button, change) in
+        self.inset = inset
+    }
+    
+    override var bounds: CGRect {
+        didSet {
             let inset: CGFloat = {
                 if #available(iOS 11.0, *) {
-                    if let height = change.newValue?.height, height < 44 {
-                        return inset * 0.6
+                    if bounds.height < 44 {
+                        return self.inset * 0.6
                     } else {
-                        return inset
+                        return self.inset
                     }
                 } else {
-                    return inset
+                    return self.inset
                 }
             }()
-            button.imageEdgeInsets = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
+            imageEdgeInsets = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
         }
     }
     

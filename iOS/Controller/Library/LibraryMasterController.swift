@@ -7,25 +7,21 @@
 //
 
 import UIKit
-import CoreData
 import RealmSwift
-import ProcedureKit
 
 
-class LibraryMasterController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
+class LibraryMasterController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let refreshControl = UIRefreshControl()
     private let searchController = UISearchController(searchResultsController: LibrarySearchController())
     
     private var sections: [Section] = [.category]
     private let categories: [ZimFile.Category] = [
-        .wikipedia, .wikibooks, .wikinews, .wikiquote, .wikisource, .wikispecies, .wikiversity, .wikivoyage, .wiktionary,
-        .vikidia, .ted, .stackExchange, .other]
+        .wikipedia, .wikibooks, .wikinews, .wikiquote, .wikisource, .wikispecies,
+        .wikiversity, .wikivoyage, .wiktionary, .vikidia, .ted, .stackExchange, .other]
     
     // MARK: - Database
     
-    private var localZimFilesCount: Int = 0
-    private var downloadZimFilesCount: Int = 0
     private let localZimFiles: Results<ZimFile>? = {
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
@@ -96,7 +92,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         downloadZimFilesChangeToken = nil
     }
     
-    // MARK: -
+    // MARK: - Utilities
     
     func selectFirstCategory() {
         guard let index = sections.firstIndex(of: .category) else {return}
@@ -111,32 +107,30 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     @objc func refreshControlPulled() {
-        let procedure = LibraryRefreshProcedure(updateExisting: true)
-        procedure.addObserver(DidFinishObserver(didFinish: { (procedure, errors) in
+        let operation = LibraryRefreshOperation(updateExisting: true)
+        operation.completionBlock = {
             OperationQueue.main.addOperation({
                 self.refreshControl.endRefreshing()
             })
-        }))
-        Queue.shared.add(libraryRefresh: procedure)
+        }
+        LibraryOperationQueue.shared.addOperation(operation)
     }
  
     // MARK: - Configurations
     
     private func configureSections() {
         if let localZimFiles = localZimFiles {
-            localZimFilesCount = localZimFiles.count
-            if localZimFiles.count > 0, sections.index(of: .local) == nil {
+            if localZimFiles.count > 0, sections.firstIndex(of: .local) == nil {
                 sections.insert(.local, at: 0)
-            } else if localZimFiles.count == 0, let sectionIndex = sections.index(of: .local) {
+            } else if localZimFiles.count == 0, let sectionIndex = sections.firstIndex(of: .local) {
                 sections.remove(at: sectionIndex)
             }
         }
         if let downlaodZimFiles = downloadZimFiles {
-            downloadZimFilesCount = downlaodZimFiles.count
             if downlaodZimFiles.count > 0, !sections.contains(.download) {
                 let sectionIndex = self.sections.contains(.local) ? 1 : 0
                 sections.insert(.download, at: sectionIndex)
-            } else if downlaodZimFiles.count == 0, let sectionIndex = sections.index(of: .download) {
+            } else if downlaodZimFiles.count == 0, let sectionIndex = sections.firstIndex(of: .download) {
                 sections.remove(at: sectionIndex)
             }
         }
@@ -147,19 +141,18 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         localZimFilesChangeToken = localZimFiles?.observe({ (changes) in
             switch changes {
             case .update(let results, let deletions, let insertions, let updates):
-                self.localZimFilesCount = results.count
                 self.tableView.beginUpdates()
-                if results.count > 0, self.sections.index(of: .local) == nil {
+                if results.count > 0, self.sections.firstIndex(of: .local) == nil {
                     self.sections.insert(.local, at: 0)
                     self.tableView.insertSections(IndexSet([0]), with: .fade)
                 }
                 
-                if results.count == 0, let sectionIndex = self.sections.index(of: .local) {
+                if results.count == 0, let sectionIndex = self.sections.firstIndex(of: .local) {
                     self.sections.remove(at: sectionIndex)
                     self.tableView.deleteSections(IndexSet([sectionIndex]), with: .fade)
                 }
                 
-                if let sectionIndex = self.sections.index(of: .local) {
+                if let sectionIndex = self.sections.firstIndex(of: .local) {
                     self.tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
                     self.tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
                     updates.forEach({ row in
@@ -176,7 +169,6 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         downloadZimFilesChangeToken = downloadZimFiles?.observe({ (changes) in
             switch changes {
             case .update(let results, let deletions, let insertions, let updates):
-                self.downloadZimFilesCount = results.count
                 self.tableView.beginUpdates()
                 if results.count > 0, !self.sections.contains(.download) {
                     let sectionIndex = self.sections.contains(.local) ? 1 : 0
@@ -184,12 +176,12 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
                     self.tableView.insertSections(IndexSet([sectionIndex]), with: .fade)
                 }
                 
-                if results.count == 0, let sectionIndex = self.sections.index(of: .download) {
+                if results.count == 0, let sectionIndex = self.sections.firstIndex(of: .download) {
                     self.sections.remove(at: sectionIndex)
                     self.tableView.deleteSections(IndexSet([sectionIndex]), with: .fade)
                 }
                 
-                if let sectionIndex = self.sections.index(of: .download) {
+                if let sectionIndex = self.sections.firstIndex(of: .download) {
                     self.tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
                     self.tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
                     updates.forEach({ row in
@@ -214,9 +206,9 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch sections[section] {
         case .local:
-            return localZimFilesCount
+            return localZimFiles?.count ?? 0
         case .download:
-            return downloadZimFilesCount
+            return downloadZimFiles?.count ?? 0
         case .category:
             return categories.count
         }

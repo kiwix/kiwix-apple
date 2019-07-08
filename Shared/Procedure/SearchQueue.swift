@@ -6,47 +6,41 @@
 //  Copyright © 2018 Chris Li. All rights reserved.
 //
 
-import ProcedureKit
 import SwiftyUserDefaults
 
-class SearchQueue: ProcedureQueue, ProcedureQueueDelegate {
+class SearchQueue: OperationQueue {
     weak var eventDelegate: SearchQueueEvents?
+    private var operationsObserver: NSKeyValueObservation?
     
     override init() {
         super.init()
-        delegate = self
         maxConcurrentOperationCount = 1
+        operationsObserver = observe(\.operations, options: [.new, .old], changeHandler: { (operation, change) in
+            guard let oldOperations = change.oldValue, let newOperations = change.newValue else {return}
+            if (newOperations.count > oldOperations.count) {
+                // did start search
+                guard oldOperations.count == 0 else {return}
+                DispatchQueue.main.async {
+                    self.eventDelegate?.searchStarted()
+                }
+            } else {
+                // did finish search operation
+                guard newOperations.count == 0, let operation = oldOperations.last as? SearchProcedure else {return}
+                DispatchQueue.main.async {
+                    if operation.isCancelled {
+                        self.eventDelegate?.searchFinished(searchText: "", results: [])
+                    } else {
+                        self.eventDelegate?.searchFinished(searchText: operation.searchText, results: operation.sortedResults)
+                    }
+                }
+            }
+        })
     }
     
     func enqueue(searchText: String, zimFileIDs: Set<ZimFileID>) {
+        cancelAllOperations()
         let procedure = SearchProcedure(term: searchText, ids: zimFileIDs, extractSnippet: !Defaults[.searchResultExcludeSnippet])
         addOperation(procedure)
-    }
-    
-    func cancelAll() {
-        operations.forEach({ $0.cancel() })
-    }
-    
-    func procedureQueue(_ queue: ProcedureQueue, willAddProcedure procedure: Procedure, context: Any?) -> ProcedureFuture? {
-        if queue.operationCount == 0 {
-            DispatchQueue.main.async {
-                self.eventDelegate?.searchStarted()
-            }
-        } else {
-            cancelAll()
-        }
-        return nil
-    }
-    
-    func procedureQueue(_ queue: ProcedureQueue, didFinishProcedure procedure: Procedure, with error: Error?) {
-        guard queue.operationCount == 0, let procedure = procedure as? SearchProcedure else {return}
-        DispatchQueue.main.async {
-            if procedure.isCancelled {
-                self.eventDelegate?.searchFinished(searchText: "", results: [])
-            } else {
-                self.eventDelegate?.searchFinished(searchText: procedure.searchText, results: procedure.sortedResults)
-            }
-        }
     }
 }
 

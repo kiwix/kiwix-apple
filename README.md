@@ -1,5 +1,5 @@
 # Kiwix for iOS & macOS
-<img src="https://img.shields.io/badge/Swift-4.1-orange.svg" alt="Drawing="/>
+<img src="https://img.shields.io/badge/Swift-5.2-orange.svg" alt="Drawing="/>
 
 This is the home for Kiwix apps on iOS and macOS.
 

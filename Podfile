@@ -4,18 +4,15 @@ target 'iOS' do
     platform :ios, '10.0'
     use_frameworks!
 
-    pod 'SwiftyUserDefaults'
-    pod 'ProcedureKit', :path => 'submodules/ProcedureKit'
-#    pod 'ProcedureKit/All', :path => 'submodules/ProcedureKit'
+    pod 'SwiftyUserDefaults', '~> 4.0'
     pod 'RealmSwift'
 end
 
 target 'macOS' do
-    platform :osx, '10.10'
+    platform :osx, '10.11'
     use_frameworks!
     
-    pod 'SwiftyUserDefaults'
-#    pod 'ProcedureKit', :path => 'submodules/ProcedureKit'
+    pod 'SwiftyUserDefaults', '~> 4.0'
     pod 'RealmSwift'
 end
 
@@ -23,5 +20,4 @@ target 'WikiMed' do
     platform :ios, '10.0'
     use_frameworks!
     
-    pod 'ProcedureKit', :path => 'submodules/ProcedureKit'
 end

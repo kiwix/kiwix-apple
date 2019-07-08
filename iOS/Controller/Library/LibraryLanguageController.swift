@@ -39,7 +39,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
         
         let sortingMode = SortingMode(rawValue: Defaults[.libraryLanguageSortingMode]) ?? .alphabetically
         sortBy = UISegmentedControl(items: Array(sortingModes.map({ $0.localizedDescription }) ))
-        sortBy.selectedSegmentIndex = sortingModes.index(of: sortingMode) ?? 0
+        sortBy.selectedSegmentIndex = sortingModes.firstIndex(of: sortingMode) ?? 0
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -167,7 +167,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
             visible.remove(at: indexPath.row)
             sortLanguageCodes(codes: &hidden)
             
-            guard let insertedRowIndex = hidden.index(of: language) else {tableView.reloadData(); return}
+            guard let insertedRowIndex = hidden.firstIndex(of: language) else {tableView.reloadData(); return}
             let insertedIndexPath = IndexPath(row: insertedRowIndex, section: 1)
             animateUpdates(deleted: indexPath, inserted: insertedIndexPath)
         } else {
@@ -176,7 +176,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
             hidden.remove(at: indexPath.row)
             sortLanguageCodes(codes: &visible)
             
-            guard let insertedRowIndex = visible.index(of: language) else {tableView.reloadData(); return}
+            guard let insertedRowIndex = visible.firstIndex(of: language) else {tableView.reloadData(); return}
             let insertedIndexPath = IndexPath(row: insertedRowIndex, section: 0)
             animateUpdates(deleted: indexPath, inserted: insertedIndexPath)
         }
@@ -184,7 +184,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     
     // MARK: - Type Definition
     
-    private enum SortingMode: String {
+    enum SortingMode: String {
         case alphabetically, byCount
         
         var localizedDescription: String {

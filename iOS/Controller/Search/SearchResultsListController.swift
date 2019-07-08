@@ -20,6 +20,7 @@ class SearchResultsListController: UITableViewController {
         tableView.backgroundColor = .clear
         tableView.estimatedRowHeight = 44
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.keyboardDismissMode = .onDrag
     }
@@ -32,7 +33,7 @@ class SearchResultsListController: UITableViewController {
     
     func update(recentSearchText newSearchText: String) {
         var searchTexts = Defaults[.recentSearchTexts]
-        if let index = searchTexts.index(of: newSearchText) {
+        if let index = searchTexts.firstIndex(of: newSearchText) {
             searchTexts.remove(at: index)
         }
         searchTexts.insert(newSearchText, at: 0)
