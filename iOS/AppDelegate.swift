@@ -60,13 +60,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     
     // MARK: - URL Handling
     
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        guard url.scheme?.caseInsensitiveCompare("kiwix") == .orderedSame else {return false}
-        guard let rootNavigationController = window?.rootViewController as? UINavigationController,
-            let mainController = rootNavigationController.topViewController as? MainController else {return false}
-        mainController.presentedViewController?.dismiss(animated: false)
-        mainController.load(url: url)
-        return true
+    func application(_ app: UIApplication, open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        if url.scheme?.caseInsensitiveCompare("kiwix") == .orderedSame {
+            guard let rootNavigationController = window?.rootViewController as? UINavigationController,
+                let mainController = rootNavigationController.topViewController as? MainController else {return false}
+            mainController.presentedViewController?.dismiss(animated: false)
+            mainController.load(url: url)
+            return true
+        } else if url.scheme == "file" {
+            let canOpenInPlace = options[.openInPlace] as? Bool ?? false
+            if !canOpenInPlace {
+                // must copy file
+            }
+            print(url)
+            return true
+        } else {
+            print(url)
+            return false
+        }
     }
     
     // MARK: - State Restoration
