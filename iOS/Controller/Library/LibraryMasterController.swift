@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MobileCoreServices
 import RealmSwift
 
 
@@ -64,6 +65,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         super.viewDidLoad()
         title = NSLocalizedString("Library", comment: "Library title")
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openDocumentPicker))
         refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
         refreshControl.attributedTitle = NSAttributedString(string: NSLocalizedString("Pull to refresh", comment: "Library: refresh control"))
         
@@ -120,6 +122,11 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
             })
         }
         LibraryOperationQueue.shared.addOperation(operation)
+    }
+    
+    @objc func openDocumentPicker() {
+        let controller = UIDocumentPickerViewController(documentTypes: ["org.openzim.zim"], in: .open)
+        present(controller, animated: true)
     }
  
     // MARK: - Configurations
