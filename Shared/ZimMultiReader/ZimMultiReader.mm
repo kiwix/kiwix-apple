@@ -44,7 +44,7 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
     try {
         // if url does not ends with "zim" or "zimaa", skip it
         NSString *pathExtension = [[url pathExtension] lowercaseString];
-        if (![pathExtension isEqualToString:@"zim"] && ![pathExtension isEqualToString:@"zimaa"]) {
+        if (![pathExtension isEqualToString:@"zim"]) {
             return;
         }
         
@@ -65,13 +65,6 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
         // store file URL
         NSString *identifierObjC = [NSString stringWithCString:identifier.c_str() encoding:NSUTF8StringEncoding];
         fileURLs[identifierObjC] = url;
-        
-        // check if there is an external idx directory
-//        NSURL *idxDirURL = [[url URLByDeletingPathExtension] URLByAppendingPathExtension:@"zim.idx"];
-//        if ([[NSFileManager defaultManager] fileExistsAtPath:[idxDirURL path]]) {
-//            kiwix::Searcher *searcher = new kiwix::Searcher([idxDirURL fileSystemRepresentation], reader.get(), identifier);
-//            externalSearchers.insert(std::make_pair(identifier, searcher));
-//        }
     } catch (...) { }
 }
 

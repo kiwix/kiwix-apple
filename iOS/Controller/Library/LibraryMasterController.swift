@@ -11,7 +11,7 @@ import MobileCoreServices
 import RealmSwift
 
 
-class LibraryMasterController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITableViewDelegate, UITableViewDataSource {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let refreshControl = UIRefreshControl()
     private let searchController = UISearchController(searchResultsController: LibrarySearchController())
@@ -126,6 +126,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
     
     @objc func openDocumentPicker() {
         let controller = UIDocumentPickerViewController(documentTypes: ["org.openzim.zim"], in: .open)
+        controller.delegate = self
         present(controller, animated: true)
     }
  
@@ -212,6 +213,12 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
                 break
             }
         })
+    }
+    
+    // MARK: - UIDocumentPickerDelegate
+    
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+        LibraryOperationQueue.shared.addOperation(LibraryScanOperation(url: url))
     }
     
     // MARK: - UITableViewDataSource & Delegates

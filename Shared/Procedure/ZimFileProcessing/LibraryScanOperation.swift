@@ -9,12 +9,20 @@
 import RealmSwift
 import SwiftyUserDefaults
 
-class LibraryScanOperation: Operation, XMLParserDelegate, ZimFileProcessing {
-    let directories: [URL]
+class LibraryScanOperation: Operation, ZimFileProcessing {
+    let urls: [URL]
     
-    init(directoryURL: URL) {
-        self.directories = [directoryURL]
+    init(urls: [URL] = []) {
+        self.urls = urls
         super.init()
+    }
+    
+    convenience init(url: URL) {
+        self.init(urls: [url])
+    }
+    
+    convenience init(directoryURL: URL) {
+        self.init(urls: [directoryURL])
     }
     
     override func main() {
@@ -24,13 +32,19 @@ class LibraryScanOperation: Operation, XMLParserDelegate, ZimFileProcessing {
     }
     
     private func updateReaders() {
-        let zimFileURLs = directories.map({ directory -> [URL] in
-            let contents = try? FileManager.default
-                .contentsOfDirectory(at: directory,
-                                     includingPropertiesForKeys: [.isExcludedFromBackupKey],
-                                     options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants])
-            return contents ?? []
-        }).flatMap({ $0 }).filter({ $0.pathExtension == "zim" || $0.pathExtension == "zimaa" })
+        let zimFileURLs = urls.map({ url -> [URL] in
+            if url.hasDirectoryPath {
+                let contents = try? FileManager.default.contentsOfDirectory(
+                    at: url,
+                    includingPropertiesForKeys: [],
+                    options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants])
+                return contents ?? []
+            } else if url.isFileURL {
+                return [url]
+            } else {
+                return []
+            }
+        }).flatMap({ $0 }).filter({ $0.pathExtension == "zim" })
         zimFileURLs.forEach({ ZimMultiReader.shared.add(url: $0) })
         ZimMultiReader.shared.removeStaleReaders()
     }
@@ -53,6 +67,8 @@ class LibraryScanOperation: Operation, XMLParserDelegate, ZimFileProcessing {
                     }
                 }
                 
+                // for all zim file objects that are currently local, if the actual file is no longer on disk,
+                // set the object's state to cloud or delete the object depending on if it can be re-downloaded.
                 let localPredicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.local.rawValue)
                 for zimFile in database.objects(ZimFile.self).filter(localPredicate) {
                     guard !zimFileIDs.contains(zimFile.id) else {continue}
@@ -66,4 +82,3 @@ class LibraryScanOperation: Operation, XMLParserDelegate, ZimFileProcessing {
         } catch {}
     }
 }
-
