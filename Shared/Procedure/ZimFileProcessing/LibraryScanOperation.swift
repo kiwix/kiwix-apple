@@ -56,15 +56,19 @@ class LibraryScanOperation: Operation, ZimFileProcessing {
             
             try database.write {
                 for zimFileID in zimFileIDs {
-                    if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) {
-                        // if zim file already exist in database, simply set its state to local
-                        if zimFile.state != .local { zimFile.state = .local }
-                    } else {
-                        // if zim file does not exist in database, create the object
-                        let meta = ZimMultiReader.shared.getMetaData(id: zimFileID)
-                        let zimFile = create(database: database, id: zimFileID, meta: meta)
-                        zimFile.state = .local
-                    }
+                    let zimFile: ZimFile = {
+                        if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) {
+                            // if zim file already exist in database, simply set its state to local
+                            return zimFile
+                        } else {
+                            // if zim file does not exist in database, create the object
+                            let meta = ZimMultiReader.shared.getMetaData(id: zimFileID)
+                            let zimFile = self.create(database: database, id: zimFileID, meta: meta)
+                            return zimFile
+                        }
+                    }()
+                    if zimFile.state != .local { zimFile.state = .local }
+                    zimFile.localURL = ZimMultiReader.shared.getFileURL(zimFileID: zimFileID)?.absoluteString
                 }
                 
                 // for all zim file objects that are currently local, if the actual file is no longer on disk,

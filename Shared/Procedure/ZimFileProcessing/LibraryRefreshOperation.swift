@@ -91,6 +91,7 @@ class LibraryRefreshOperation: Operation, XMLParserDelegate, ZimFileProcessing {
         if let data = data {
             return data
         } else {
+            print("Library Refresh Failed: \(error?.localizedDescription ?? "unknown")")
             throw Error(title: NSLocalizedString("Library Refresh", comment: "Library Refresh Error"),
                         description: error?.localizedDescription ?? NSLocalizedString("Unable to fetch data", comment: "Library Refresh Error"))
         }
