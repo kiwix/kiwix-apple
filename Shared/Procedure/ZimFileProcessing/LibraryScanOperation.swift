@@ -11,6 +11,8 @@ import SwiftyUserDefaults
 
 class LibraryScanOperation: Operation, ZimFileProcessing {
     let urls: [URL]
+    private let documentDirectoryURL = try! FileManager.default.url(
+        for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
     
     init(urls: [URL] = []) {
         self.urls = urls
@@ -26,12 +28,18 @@ class LibraryScanOperation: Operation, ZimFileProcessing {
     }
     
     override func main() {
-        updateReaders()
+        addReadersFromURLs()
+        addReadersFromBookmarkData()
+        ZimMultiReader.shared.removeStaleReaders()
+        
         updateDatabase()
         BackupManager.updateExcludedFromBackupForDocumentDirectoryContents(isExcluded: !Defaults[.backupDocumentDirectory])
     }
     
-    private func updateReaders() {
+    /**
+     Add readers by scanning the urls specified.
+     */
+    private func addReadersFromURLs() {
         let zimFileURLs = urls.map({ url -> [URL] in
             if url.hasDirectoryPath {
                 let contents = try? FileManager.default.contentsOfDirectory(
@@ -46,7 +54,31 @@ class LibraryScanOperation: Operation, ZimFileProcessing {
             }
         }).flatMap({ $0 }).filter({ $0.pathExtension == "zim" })
         zimFileURLs.forEach({ ZimMultiReader.shared.add(url: $0) })
-        ZimMultiReader.shared.removeStaleReaders()
+    }
+    
+    /**
+     Add readers for all open in place zim files from bookmark data.
+     */
+    private func addReadersFromBookmarkData() {
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            let predicate = NSPredicate(format: "stateRaw == %@ AND openInPlaceURLBookmark != nil",
+                                        ZimFile.State.local.rawValue)
+            for zimFile in database.objects(ZimFile.self).filter(predicate) {
+                var isStale: ObjCBool = false
+                guard let bookmarkData = zimFile.openInPlaceURLBookmark,
+                    let fileURL = try? NSURL(resolvingBookmarkData: bookmarkData,
+                                             options: [],
+                                             relativeTo: nil,
+                                             bookmarkDataIsStale: &isStale) as URL else {return}
+                ZimMultiReader.shared.add(url: fileURL)
+                if isStale.boolValue {
+                    try database.write {
+                        saveBookmarkData(zimFile: zimFile)
+                    }
+                }
+            }
+        } catch {}
     }
     
     private func updateDatabase() {
@@ -68,7 +100,7 @@ class LibraryScanOperation: Operation, ZimFileProcessing {
                         }
                     }()
                     if zimFile.state != .local { zimFile.state = .local }
-                    zimFile.localURL = ZimMultiReader.shared.getFileURL(zimFileID: zimFileID)?.absoluteString
+                    if zimFile.openInPlaceURLBookmark == nil { saveBookmarkData(zimFile: zimFile) }
                 }
                 
                 // for all zim file objects that are currently local, if the actual file is no longer on disk,
@@ -78,11 +110,18 @@ class LibraryScanOperation: Operation, ZimFileProcessing {
                     guard !zimFileIDs.contains(zimFile.id) else {continue}
                     if let _ = zimFile.remoteURL {
                         zimFile.state = .cloud
+                        zimFile.openInPlaceURLBookmark = nil
                     } else {
                         database.delete(zimFile)
                     }
                 }
             }
         } catch {}
+    }
+    
+    private func saveBookmarkData(zimFile: ZimFile) {
+        guard let fileURL = ZimMultiReader.shared.getFileURL(zimFileID: zimFile.id),
+            !fileURL.absoluteString.hasPrefix(documentDirectoryURL.absoluteString) else {return}
+        zimFile.openInPlaceURLBookmark = try? fileURL.bookmarkData()
     }
 }

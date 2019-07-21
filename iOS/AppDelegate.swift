@@ -26,8 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         fileMonitor.start()
         
         if UserDefaults.standard.bool(forKey: "MigratedToRealm") {
-            let scan = LibraryScanOperation(directoryURL: URL.documentDirectory)
-            LibraryOperationQueue.shared.addOperation(scan)
+            let operation = LibraryScanOperation(url: URL.documentDirectory)
+            LibraryOperationQueue.shared.addOperation(operation)
         } else {
             let scan = LibraryScanOperation(directoryURL: URL.documentDirectory)
             let migrate = BookmarkMigrationOperation()

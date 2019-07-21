@@ -32,8 +32,8 @@ class ZimFile: Object {
     
     @objc dynamic var icon = Data()
     
-    @objc dynamic var localURL: String?
     @objc dynamic var remoteURL: String?
+    @objc dynamic var openInPlaceURLBookmark: Data?
     
     @objc dynamic var stateRaw = State.cloud.rawValue
     @objc dynamic var categoryRaw = Category.other.rawValue

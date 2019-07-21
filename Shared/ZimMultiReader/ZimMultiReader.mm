@@ -20,6 +20,7 @@ kiwix::Searcher *searcher = nullptr;
 NSMutableArray *searcherZimIDs = [[NSMutableArray alloc] init];
 NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: FileURL]
 
+
 #pragma mark - init
 
 - (instancetype)init {
@@ -52,12 +53,9 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
         if ([[fileURLs allKeysForObject:url] count] > 0) {
             return;
         }
-        
-#if TARGET_OS_MAC
-        [url startAccessingSecurityScopedResource];
-#endif
-        
+
         // add the reader
+        [url startAccessingSecurityScopedResource];
         std::shared_ptr<kiwix::Reader> reader = std::make_shared<kiwix::Reader>([url fileSystemRepresentation]);
         std::string identifier = reader->getId();
         readers.insert(std::make_pair(identifier, reader));
@@ -65,15 +63,15 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
         // store file URL
         NSString *identifierObjC = [NSString stringWithCString:identifier.c_str() encoding:NSUTF8StringEncoding];
         fileURLs[identifierObjC] = url;
-    } catch (...) { }
+    } catch (std::exception e) {
+
+    }
 }
 
 - (void)removeReaderByID:(NSString *)bookID {
     std::string identifier = [bookID cStringUsingEncoding:NSUTF8StringEncoding];
     readers.erase(identifier);
-#if TARGET_OS_MAC
     [fileURLs[bookID] stopAccessingSecurityScopedResource];
-#endif
     [fileURLs removeObjectForKey:bookID];
 }
 
