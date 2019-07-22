@@ -52,6 +52,19 @@ class ZimFile: Object {
         set { categoryRaw = newValue.rawValue }
     }
     
+    var isInDocumentDirectory: Bool {
+        get {
+            if let fileName = ZimMultiReader.shared.getFileURL(zimFileID: self.id)?.lastPathComponent,
+                let documentDirectoryURL = try? FileManager.default.url(
+                    for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) {
+                let fileURL = documentDirectoryURL.appendingPathComponent(fileName)
+                return FileManager.default.fileExists(atPath: fileURL.path)
+            } else {
+                return false
+            }
+        }
+    }
+    
     // MARK: - Overrides
     
     override static func primaryKey() -> String? {

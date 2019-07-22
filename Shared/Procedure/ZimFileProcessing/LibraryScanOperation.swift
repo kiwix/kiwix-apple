@@ -121,7 +121,7 @@ class LibraryScanOperation: Operation, ZimFileProcessing {
     
     private func saveBookmarkData(zimFile: ZimFile) {
         guard let fileURL = ZimMultiReader.shared.getFileURL(zimFileID: zimFile.id),
-            !fileURL.absoluteString.hasPrefix(documentDirectoryURL.absoluteString) else {return}
+            !zimFile.isInDocumentDirectory else {return}
         zimFile.openInPlaceURLBookmark = try? fileURL.bookmarkData()
     }
 }

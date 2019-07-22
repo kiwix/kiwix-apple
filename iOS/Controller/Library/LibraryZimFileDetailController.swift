@@ -13,6 +13,8 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
     private let zimFile: ZimFile
     private var zimFileObserver: NotificationToken?
     private var zimFileStateRawObserver:  NSKeyValueObservation?
+    private let documentDirectoryURL = try! FileManager.default.url(
+        for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
     
     private let tableView = UITableView(frame: .zero, style: .grouped)
     var actions = (top: [[Action]](), bottom: [[Action]]()) {
@@ -132,7 +134,11 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                 }()
                 self.actions = (zimFile.fileSize <= freespace ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]], [])
             case .local:
-                self.actions = ([[.openMainPage]], [[.deleteFile]])
+                if zimFile.isInDocumentDirectory {
+                    self.actions = ([[.openMainPage]], [[.deleteFile]])
+                } else {
+                    self.actions = ([[.openMainPage]], [[.unlink]])
+                }
             case .retained:
                 self.actions = ([], [[.deleteBookmarks]])
             case .downloadQueued:
@@ -244,12 +250,8 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                 DownloadManager.shared.pause(zimFileID: zimFile.id)
             case .resume:
                 DownloadManager.shared.resume(zimFileID: zimFile.id)
-            case .deleteFile:
-                present(DeleteConfirmationController(zimFile: zimFile, action: action), animated: true)
-            case .deleteBookmarks:
-                present(DeleteConfirmationController(zimFile: zimFile, action: action), animated: true)
-            case .deleteFileAndBookmarks:
-                present(DeleteConfirmationController(zimFile: zimFile, action: action), animated: true)
+            case .deleteFile, .deleteBookmarks, .deleteFileAndBookmarks, .unlink:
+                present(ActionConfirmationController(zimFile: zimFile, action: action), animated: true)
             case .openMainPage:
                 guard let main = (presentingViewController as? UINavigationController)?.topViewController as? MainController,
                     let url = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFile.id) else {break}
@@ -278,6 +280,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
         case downloadWifiOnly, downloadWifiAndCellular, downloadSpaceNotEnough
         case cancel, resume, pause
         case deleteFile, deleteBookmarks, deleteFileAndBookmarks
+        case unlink
         case openMainPage
         
         static let destructives: [Action] = [.cancel, .deleteFile, .deleteBookmarks, .deleteFileAndBookmarks]
@@ -310,13 +313,15 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                 return NSLocalizedString("Delete Bookmarks", comment: "Book Detail Cell")
             case .deleteFileAndBookmarks:
                 return NSLocalizedString("Delete File and Bookmarks", comment: "Book Detail Cell")
+            case .unlink:
+                return NSLocalizedString("Unlink", comment: "Book Detail Cell")
             case .openMainPage:
                 return NSLocalizedString("Open Main Page", comment: "Book Detail Cell")
             }
         }
     }
     
-    class DeleteConfirmationController: UIAlertController {
+    class ActionConfirmationController: UIAlertController {
         convenience init(zimFile: ZimFile, action: Action) {
             let message: String? = {
                 switch action {
@@ -341,7 +346,19 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                                                                             options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants])
                     urls?.filter({ $0.lastPathComponent.contains(fileName) }).forEach({ try? FileManager.default.removeItem(at: $0) })
                 }
-                if action == .deleteBookmarks || action == .deleteFileAndBookmarks {
+                if action == .unlink {
+                    do {
+                        let database = try Realm(configuration: Realm.defaultConfig)
+                        try database.write {
+                            if zimFile.remoteURL != nil {
+                                zimFile.state = .cloud
+                                zimFile.openInPlaceURLBookmark = nil
+                            } else {
+                                database.delete(zimFile)
+                            }
+                        }
+                        ZimMultiReader.shared.remove(id: zimFile.id)
+                    } catch {}
                 }
             }))
             addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Book deletion confirmation"), style: .cancel))
