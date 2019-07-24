@@ -69,10 +69,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
             return true
         } else if url.scheme == "file" {
             let canOpenInPlace = options[.openInPlace] as? Bool ?? false
-            if !canOpenInPlace {
+            if canOpenInPlace {
+                LibraryOperationQueue.shared.addOperation(LibraryScanOperation(url: url))
+            } else {
                 // must copy file
             }
-            print(url)
             return true
         } else {
             print(url)
