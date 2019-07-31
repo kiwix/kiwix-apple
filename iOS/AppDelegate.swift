@@ -61,19 +61,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     
     func application(_ app: UIApplication, open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        guard let rootNavigationController = window?.rootViewController as? UINavigationController,
+            let mainController = rootNavigationController.topViewController as? MainController else {return false}
+        window?.rootViewController?.dismiss(animated: false)
         if url.scheme?.caseInsensitiveCompare("kiwix") == .orderedSame {
-            guard let rootNavigationController = window?.rootViewController as? UINavigationController,
-                let mainController = rootNavigationController.topViewController as? MainController else {return false}
-            mainController.presentedViewController?.dismiss(animated: false)
             mainController.load(url: url)
             return true
         } else if url.scheme == "file" {
             let canOpenInPlace = options[.openInPlace] as? Bool ?? false
-            if canOpenInPlace {
-                LibraryOperationQueue.shared.addOperation(LibraryScanOperation(url: url))
-            } else {
-                // must copy file
-            }
+            let fileImportController = FileImportController(fileURL: url, canOpenInPlace: canOpenInPlace)
+            mainController.present(fileImportController, animated: true)
             return true
         } else {
             print(url)

@@ -218,7 +218,7 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
     // MARK: - UIDocumentPickerDelegate
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
-        LibraryOperationQueue.shared.addOperation(LibraryScanOperation(url: url))
+        present(FileImportController(fileURL: url), animated: true)
     }
     
     // MARK: - UITableViewDataSource & Delegates
