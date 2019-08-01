@@ -148,9 +148,9 @@ fileprivate enum Action: Item {
         case .move:
             return NSLocalizedString("Move to Kiwix", comment: "")
         case .copy:
-            return NSLocalizedString("Copy to Kiwix", comment: "")
+            return NSLocalizedString("Make a Duplicate", comment: "")
         case .openInPlace:
-            return NSLocalizedString("Open In Place", comment: "")
+            return NSLocalizedString("Open in Place", comment: "")
         }
     }
 }
