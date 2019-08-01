@@ -283,7 +283,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
         case unlink
         case openMainPage
         
-        static let destructives: [Action] = [.cancel, .deleteFile, .deleteBookmarks, .deleteFileAndBookmarks]
+        static let destructives: [Action] = [.cancel, .deleteFile, .deleteBookmarks, .deleteFileAndBookmarks, .unlink]
         
         var isDestructive: Bool {
             return Action.destructives.contains(self)
@@ -348,6 +348,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                 }
                 if action == .unlink {
                     do {
+                        ZimMultiReader.shared.remove(id: zimFile.id)
                         let database = try Realm(configuration: Realm.defaultConfig)
                         try database.write {
                             if zimFile.remoteURL != nil {
@@ -357,7 +358,6 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                                 database.delete(zimFile)
                             }
                         }
-                        ZimMultiReader.shared.remove(id: zimFile.id)
                     } catch {}
                 }
             }))
