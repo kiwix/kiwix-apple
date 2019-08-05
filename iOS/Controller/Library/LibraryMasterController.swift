@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import MobileCoreServices
 import RealmSwift
 
 
-class LibraryMasterController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITableViewDelegate, UITableViewDataSource {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let refreshControl = UIRefreshControl()
     private let searchController = UISearchController(searchResultsController: LibrarySearchController())
@@ -64,6 +65,7 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
         super.viewDidLoad()
         title = NSLocalizedString("Library", comment: "Library title")
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openDocumentPicker))
         refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
         refreshControl.attributedTitle = NSAttributedString(string: NSLocalizedString("Pull to refresh", comment: "Library: refresh control"))
         
@@ -120,6 +122,12 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
             })
         }
         LibraryOperationQueue.shared.addOperation(operation)
+    }
+    
+    @objc func openDocumentPicker() {
+        let controller = UIDocumentPickerViewController(documentTypes: ["org.openzim.zim"], in: .open)
+        controller.delegate = self
+        present(controller, animated: true)
     }
  
     // MARK: - Configurations
@@ -205,6 +213,12 @@ class LibraryMasterController: UIViewController, UITableViewDelegate, UITableVie
                 break
             }
         })
+    }
+    
+    // MARK: - UIDocumentPickerDelegate
+    
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+        present(FileImportController(fileURL: url), animated: true)
     }
     
     // MARK: - UITableViewDataSource & Delegates

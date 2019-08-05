@@ -16,7 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     let fileMonitor = DirectoryMonitor(url: URL.documentDirectory)
     
     func applicationDidFinishLaunching(_ application: UIApplication) {
-//        Realm.resetDatabase()
         print(URL.documentDirectory)
         
         URLProtocol.registerClass(KiwixURLProtocol.self)
@@ -27,8 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         fileMonitor.start()
         
         if UserDefaults.standard.bool(forKey: "MigratedToRealm") {
-            let scan = LibraryScanOperation(directoryURL: URL.documentDirectory)
-            LibraryOperationQueue.shared.addOperation(scan)
+            let operation = LibraryScanOperation(url: URL.documentDirectory)
+            LibraryOperationQueue.shared.addOperation(operation)
         } else {
             let scan = LibraryScanOperation(directoryURL: URL.documentDirectory)
             let migrate = BookmarkMigrationOperation()
@@ -60,13 +59,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     
     // MARK: - URL Handling
     
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        guard url.scheme?.caseInsensitiveCompare("kiwix") == .orderedSame else {return false}
+    func application(_ app: UIApplication, open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         guard let rootNavigationController = window?.rootViewController as? UINavigationController,
             let mainController = rootNavigationController.topViewController as? MainController else {return false}
-        mainController.presentedViewController?.dismiss(animated: false)
-        mainController.load(url: url)
-        return true
+        window?.rootViewController?.dismiss(animated: false)
+        if url.scheme?.caseInsensitiveCompare("kiwix") == .orderedSame {
+            mainController.load(url: url)
+            return true
+        } else if url.scheme == "file" {
+            let canOpenInPlace = options[.openInPlace] as? Bool ?? false
+            let fileImportController = FileImportController(fileURL: url, canOpenInPlace: canOpenInPlace)
+            mainController.present(fileImportController, animated: true)
+            return true
+        } else {
+            print(url)
+            return false
+        }
     }
     
     // MARK: - State Restoration

@@ -33,6 +33,7 @@ class ZimFile: Object {
     @objc dynamic var icon = Data()
     
     @objc dynamic var remoteURL: String?
+    @objc dynamic var openInPlaceURLBookmark: Data?
     
     @objc dynamic var stateRaw = State.cloud.rawValue
     @objc dynamic var categoryRaw = Category.other.rawValue
@@ -49,6 +50,19 @@ class ZimFile: Object {
     var category: Category {
         get { return Category(rawValue:stateRaw) ?? .other }
         set { categoryRaw = newValue.rawValue }
+    }
+    
+    var isInDocumentDirectory: Bool {
+        get {
+            if let fileName = ZimMultiReader.shared.getFileURL(zimFileID: self.id)?.lastPathComponent,
+                let documentDirectoryURL = try? FileManager.default.url(
+                    for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) {
+                let fileURL = documentDirectoryURL.appendingPathComponent(fileName)
+                return FileManager.default.fileExists(atPath: fileURL.path)
+            } else {
+                return false
+            }
+        }
     }
     
     // MARK: - Overrides
