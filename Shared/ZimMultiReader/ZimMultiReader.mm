@@ -154,37 +154,13 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
     }
 }
 
-- (NSDictionary *_Nullable)getMetaData:(NSString *_Nonnull)zimFileID {
+- (NSDictionary *)getMetaData:(NSString *_Nonnull)zimFileID {
     auto found = readers.find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
     if (found == readers.end()) {
         return nil;
     } else {
         std::shared_ptr<kiwix::Reader> reader = found->second;
-        
-        NSMutableDictionary *meta = [[NSMutableDictionary alloc] init];
-        
-        meta[@"id"] = [NSString stringWithCString:reader->getId().c_str() encoding:NSUTF8StringEncoding];
-        meta[@"name"] = [NSString stringWithCString:reader->getName().c_str() encoding:NSUTF8StringEncoding];
-        
-        meta[@"title"] = [NSString stringWithCString:reader->getTitle().c_str() encoding:NSUTF8StringEncoding];
-        meta[@"description"] = [NSString stringWithCString:reader->getDescription().c_str() encoding:NSUTF8StringEncoding];
-        meta[@"language"] = [NSString stringWithCString:reader->getLanguage().c_str() encoding:NSUTF8StringEncoding];
-        
-        meta[@"tags"] = [NSString stringWithCString:reader->getTags().c_str() encoding:NSUTF8StringEncoding];
-        meta[@"date"] = [NSString stringWithCString:reader->getDate().c_str() encoding:NSUTF8StringEncoding];
-        meta[@"creator"] = [NSString stringWithCString:reader->getCreator().c_str() encoding:NSUTF8StringEncoding];
-        meta[@"publisher"] = [NSString stringWithCString:reader->getPublisher().c_str() encoding:NSUTF8StringEncoding];
-        meta[@"fileSize"] = [[NSNumber alloc] initWithLongLong:(long long)reader->getFileSize() * 1024];
-        meta[@"articleCount"] = [[NSNumber alloc] initWithLongLong:reader->getArticleCount()];
-        meta[@"mediaCount"] = [[NSNumber alloc] initWithLongLong:reader->getMediaCount()];
-        meta[@"globalCount"] = [[NSNumber alloc] initWithLongLong:reader->getGlobalCount()];
-
-        string faviconEncoded;
-        string mimeType;
-        if (reader->getFavicon(faviconEncoded, mimeType)) {
-            meta[@"icon"] = [NSData dataWithBytes:faviconEncoded.c_str() length:faviconEncoded.length()];
-        }
-        return meta;
+        return [ZimMultiReader getMetaDataWithReader:reader];
     }
 }
 
@@ -271,7 +247,46 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
     }
 }
 
-# pragma mark - Geo Search
+# pragma mark - class methods
 
++ (NSDictionary *)getMetaDataWithFileURL:(NSURL *)url {
+    [url startAccessingSecurityScopedResource];
+    try {
+        std::shared_ptr<kiwix::Reader> reader = std::make_shared<kiwix::Reader>([url fileSystemRepresentation]);
+        [url stopAccessingSecurityScopedResource];
+        return [ZimMultiReader getMetaDataWithReader:reader];
+    } catch (std::exception e) {
+        [url stopAccessingSecurityScopedResource];
+        return nil;
+    }
+}
+
++ (NSDictionary *)getMetaDataWithReader:(std::shared_ptr<kiwix::Reader>)reader {
+    NSMutableDictionary *meta = [[NSMutableDictionary alloc] init];
+    
+    meta[@"id"] = [NSString stringWithCString:reader->getId().c_str() encoding:NSUTF8StringEncoding];
+    meta[@"name"] = [NSString stringWithCString:reader->getName().c_str() encoding:NSUTF8StringEncoding];
+    
+    meta[@"title"] = [NSString stringWithCString:reader->getTitle().c_str() encoding:NSUTF8StringEncoding];
+    meta[@"description"] = [NSString stringWithCString:reader->getDescription().c_str() encoding:NSUTF8StringEncoding];
+    meta[@"language"] = [NSString stringWithCString:reader->getLanguage().c_str() encoding:NSUTF8StringEncoding];
+    
+    meta[@"tags"] = [NSString stringWithCString:reader->getTags().c_str() encoding:NSUTF8StringEncoding];
+    meta[@"date"] = [NSString stringWithCString:reader->getDate().c_str() encoding:NSUTF8StringEncoding];
+    meta[@"creator"] = [NSString stringWithCString:reader->getCreator().c_str() encoding:NSUTF8StringEncoding];
+    meta[@"publisher"] = [NSString stringWithCString:reader->getPublisher().c_str() encoding:NSUTF8StringEncoding];
+    meta[@"fileSize"] = [[NSNumber alloc] initWithLongLong:(long long)reader->getFileSize() * 1024];
+    meta[@"articleCount"] = [[NSNumber alloc] initWithLongLong:reader->getArticleCount()];
+    meta[@"mediaCount"] = [[NSNumber alloc] initWithLongLong:reader->getMediaCount()];
+    meta[@"globalCount"] = [[NSNumber alloc] initWithLongLong:reader->getGlobalCount()];
+    
+    string faviconEncoded;
+    string mimeType;
+    if (reader->getFavicon(faviconEncoded, mimeType)) {
+        meta[@"icon"] = [NSData dataWithBytes:faviconEncoded.c_str() length:faviconEncoded.length()];
+    }
+    
+    return meta;
+}
 
 @end
