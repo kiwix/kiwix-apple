@@ -68,12 +68,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
             mainController.load(url: url)
             return true
         } else if url.scheme == "file" {
-            let canOpenInPlace = options[.openInPlace] as? Bool ?? false
-            let fileImportController = FileImportController(fileURL: url, canOpenInPlace: canOpenInPlace)
-            mainController.present(fileImportController, animated: true)
+            if let _ = ZimMultiReader.getMetaData(url: url) {
+                let canOpenInPlace = options[.openInPlace] as? Bool ?? false
+                let fileImportController = FileImportController(fileURL: url, canOpenInPlace: canOpenInPlace)
+                mainController.present(fileImportController, animated: true)
+            } else {
+                mainController.present(FileImportAlertController(fileName: url.lastPathComponent), animated: true)
+            }
             return true
         } else {
-            print(url)
             return false
         }
     }

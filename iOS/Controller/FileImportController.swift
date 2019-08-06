@@ -100,7 +100,6 @@ fileprivate class ContentController: UIViewController, UITableViewDelegate, UITa
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         defer {
             tableView.deselectRow(at: indexPath, animated: true)
-            dismiss(animated: true)
         }
         guard indexPath.section == items.count - 1,
             let action = items[indexPath.section][indexPath.row] as? Action else {return}
@@ -116,9 +115,34 @@ fileprivate class ContentController: UIViewController, UITableViewDelegate, UITa
             case .openInPlace:
                 LibraryOperationQueue.shared.addOperation(LibraryScanOperation(url: url))
             }
+            dismiss(animated: true)
         } catch {
-            print(error)
+            present(FileImportAlertController(error: error), animated: true)
         }
+    }
+}
+
+
+class FileImportAlertController: UIAlertController {
+    convenience init(message: String) {
+        self.init(title: NSLocalizedString("File Import Error", comment: "File Import Error"),
+                  message: message,
+                  preferredStyle: .alert)
+        let ok = NSLocalizedString("OK", comment: "File Import Error")
+        addAction(UIAlertAction(title: ok, style: .default, handler: { action in
+            self.dismiss(animated: true)
+        }))
+    }
+    
+    convenience init(fileName: String) {
+        let message = NSLocalizedString(
+            "The file \"\(fileName)\" seems to be corrupt and Kiwix was unable to open it.",
+            comment: "File Import Error")
+        self.init(message: message)
+    }
+    
+    convenience init(error: Error) {
+        self.init(message: error.localizedDescription)
     }
 }
 
