@@ -62,4 +62,8 @@ extension ZimMultiReader {
             return SearchResult(zimFileID: id, path: path, title: title)
         }
     }
+    
+    static func getMetaData(url: URL) -> [String: Any]? {
+        return __getMetaData(withFileURL: url) as? [String: Any]
+    }
 }
