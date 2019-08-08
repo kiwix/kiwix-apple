@@ -1,6 +1,6 @@
-# Kiwix for iOS & macOS
+# Kiwix for iOS & MacOS
 
-This is the home for Kiwix apps on iOS and macOS.
+This is the home for Kiwix apps on iOS and MacOS.
 
 [![CodeFactor](https://www.codefactor.io/repository/github/kiwix/apple/badge)](https://www.codefactor.io/repository/github/kiwix/apple)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) 
@@ -9,6 +9,6 @@ This is the home for Kiwix apps on iOS and macOS.
 ### Mobile app for iPads & iPhones ###
 - Download the iOS mobile app on [iTunes App Store](http://ios.kiwix.org)
 
-### Kiwix Desktop for macOS ###
+### Kiwix Desktop for MacOS ###
 - Download Kiwix Desktop on [iTunes App Store](http://macos.kiwix.org) 
 - Download Kiwix Desktop [DMG file](https://download.kiwix.org/release/kiwix-desktop-macos/)
