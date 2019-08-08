@@ -54,7 +54,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
         return formatter
     }()
     
-    // Overrides
+    // MARK: - Overrides
     
     init(zimFile: ZimFile) {
         self.zimFile = zimFile
@@ -95,7 +95,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
     
     // MARK: -
     
-    func configureZimFileObservers() {
+    private func configureZimFileObservers() {
         zimFileObserver = zimFile.observe { (change) in
             switch change {
             case .deleted:
@@ -115,7 +115,9 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                 break
             }
         }
-        zimFileStateRawObserver = zimFile.observe(\.stateRaw, options: [.initial, .new], changeHandler: { (zimFile, change) in
+        zimFileStateRawObserver = zimFile.observe(\.stateRaw,
+                                                  options: [.initial, .old],
+                                                  changeHandler: { (zimFile, change) in
             guard let state = ZimFile.State(rawValue: zimFile.stateRaw) else {
                 self.actions = ([[]], [[]])
                 return
@@ -133,6 +135,16 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                     }
                 }()
                 self.actions = (zimFile.fileSize <= freespace ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]], [])
+                
+                // when state changed from local to cloud, and when split view controller is collapsed
+                // pop this view controller
+                if let oldState = ZimFile.State(rawValue: change.oldValue ?? ""),
+                    oldState == .local,
+                    let splitViewController = self.splitViewController,
+                    splitViewController.isCollapsed,
+                    let masterNavigationController = splitViewController.viewControllers.first as? UINavigationController {
+                    masterNavigationController.popViewController(animated: true)
+                }
             case .local:
                 if zimFile.isInDocumentDirectory {
                     self.actions = ([[.openMainPage]], [[.deleteFile]])
