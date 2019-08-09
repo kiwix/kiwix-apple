@@ -67,6 +67,20 @@
 				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 			</dict>
+			<key>mirror.isoc.org.il</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<false/>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+			<key>wiki.mirror.tn</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<false/>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
 		</dict>
 	</dict>
 	<key>UIBackgroundModes</key>
