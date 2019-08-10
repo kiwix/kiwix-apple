@@ -1,3 +1,11 @@
+## 1.10 (Aug 10, 2019)
+
+Now you can importing zim files by:
+- open a zim file in the Files app
+- use "open in" feature from any app
+Better Files app integration:
+- manage files stored in kiwix in Files app
+
 ## 1.9.7 (Jul 7, 2019)
 
 - fix: memory usage issue when performing searches
