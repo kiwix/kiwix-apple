@@ -17,6 +17,7 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     private let webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
+        config.mediaTypesRequiringUserActionForPlayback = []
         return WKWebView(frame: .zero, configuration: config)
     }()
     weak var delegate: WebViewControllerDelegate?
