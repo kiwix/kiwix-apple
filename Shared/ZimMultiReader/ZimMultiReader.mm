@@ -192,7 +192,7 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
         
         std::shared_ptr<kiwix::Reader> reader = iter.second;
         if (reader->hasFulltextIndex()) {
-            searcher->add_reader(reader.get(), iter.first);
+            searcher->add_reader(reader.get());
             [searcherZimIDs addObject:identifier];
         }
     }
