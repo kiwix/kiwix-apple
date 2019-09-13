@@ -15,18 +15,19 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let refreshControl = UIRefreshControl()
     private let searchController = UISearchController(searchResultsController: LibrarySearchController())
-    
+
     private var sections: [Section] = [.category]
     private let categories: [ZimFile.Category] = [
-        .wikipedia, .wikibooks, .wikinews, .wikiquote, .wikisource, .wikispecies,
-        .wikiversity, .wikivoyage, .wiktionary, .vikidia, .ted, .stackExchange, .other]
-    
+        .wikipedia, .wikibooks, .wikinews, .wikiquote, .wikisource, .wikiversity,
+        .wikivoyage, .wiktionary, .vikidia, .ted, .stackExchange, .other]
+
     // MARK: - Database
-    
+
     /*
      Note: localZimFilesCount & downloadZimFilesCount are kept here as a cache of the row count of each section,
      since tableview update for each section is submitted separately.
      */
+
     private var localZimFilesCount: Int = 0
     private var downloadZimFilesCount: Int = 0
     private let localZimFiles: Results<ZimFile>? = {
@@ -46,9 +47,9 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
     }()
     private var localZimFilesChangeToken: NotificationToken?
     private var downloadZimFilesChangeToken: NotificationToken?
-    
+
     // MARK: - Overrides
-    
+
     override func loadView() {
         view = tableView
         tableView.delegate = self
@@ -60,7 +61,7 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "CategoryCell")
         tableView.separatorInset = UIEdgeInsets(top: 0, left: tableView.separatorInset.left + 42, bottom: 0, right: 0)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = NSLocalizedString("Library", comment: "Library title")
@@ -68,7 +69,7 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(openDocumentPicker))
         refreshControl.addTarget(self, action: #selector(refreshControlPulled), for: .valueChanged)
         refreshControl.attributedTitle = NSAttributedString(string: NSLocalizedString("Pull to refresh", comment: "Library: refresh control"))
-        
+
         if #available(iOS 11.0, *) {
             navigationItem.searchController = searchController
             searchController.searchBar.autocapitalizationType = .none
@@ -76,44 +77,44 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
             searchController.searchResultsUpdater = searchController.searchResultsController as? LibrarySearchController
             definesPresentationContext = true
         }
-        
+
         if splitViewController?.traitCollection.horizontalSizeClass == .regular {
             let firstIndexPath = IndexPath(row: 0, section: 0)
             tableView.delegate?.tableView?(tableView, didSelectRowAt: firstIndexPath)
         }
-        
+
         if #available(iOS 11.0, *) {
             navigationController?.navigationBar.prefersLargeTitles = true
             navigationItem.largeTitleDisplayMode = .always
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureSections()
         configureChangeToken()
     }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         localZimFilesChangeToken = nil
         downloadZimFilesChangeToken = nil
     }
-    
+
     // MARK: - Utilities
-    
+
     func selectFirstCategory() {
         guard let index = sections.firstIndex(of: .category) else {return}
         let indexPath = IndexPath(row: 0, section: index)
         tableView.delegate?.tableView?(tableView, didSelectRowAt: indexPath)
     }
-    
+
     // MARK: - UIControl Actions
-    
+
     @objc func dismissController() {
         dismiss(animated: true, completion: nil)
     }
-    
+
     @objc func refreshControlPulled() {
         let operation = LibraryRefreshOperation(updateExisting: true)
         operation.completionBlock = {
@@ -129,9 +130,9 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
         controller.delegate = self
         present(controller, animated: true)
     }
- 
+
     // MARK: - Configurations
-    
+
     private func configureSections() {
         if let localZimFiles = localZimFiles {
             localZimFilesCount = localZimFiles.count
@@ -152,7 +153,7 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
         }
         tableView.reloadData()
     }
-    
+
     private func configureChangeToken() {
         localZimFilesChangeToken = localZimFiles?.observe({ (changes) in
             switch changes {
@@ -163,12 +164,12 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
                     self.sections.insert(.local, at: 0)
                     self.tableView.insertSections(IndexSet([0]), with: .fade)
                 }
-                
+
                 if results.count == 0, let sectionIndex = self.sections.firstIndex(of: .local) {
                     self.sections.remove(at: sectionIndex)
                     self.tableView.deleteSections(IndexSet([sectionIndex]), with: .fade)
                 }
-                
+
                 if let sectionIndex = self.sections.firstIndex(of: .local) {
                     self.tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
                     self.tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
@@ -193,12 +194,12 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
                     self.sections.insert(.download, at: sectionIndex)
                     self.tableView.insertSections(IndexSet([sectionIndex]), with: .fade)
                 }
-                
+
                 if results.count == 0, let sectionIndex = self.sections.firstIndex(of: .download) {
                     self.sections.remove(at: sectionIndex)
                     self.tableView.deleteSections(IndexSet([sectionIndex]), with: .fade)
                 }
-                
+
                 if let sectionIndex = self.sections.firstIndex(of: .download) {
                     self.tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
                     self.tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: sectionIndex) }), with: .fade)
@@ -214,9 +215,9 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
             }
         })
     }
-    
+
     // MARK: - UIDocumentPickerDelegate
-    
+
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
         if let _ = ZimMultiReader.getMetaData(url: url) {
             present(FileImportController(fileURL: url), animated: true)
@@ -224,13 +225,13 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
             present(FileImportAlertController(fileName: url.lastPathComponent), animated: true)
         }
     }
-    
+
     // MARK: - UITableViewDataSource & Delegates
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch sections[section] {
         case .local:
@@ -241,7 +242,7 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
             return categories.count
         }
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch sections[indexPath.section] {
         case .local:
@@ -262,7 +263,7 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
             return cell
         }
     }
-    
+
     func configure(localCell cell: TableViewCell, row: Int, animated: Bool = false) {
         guard let zimFile = localZimFiles?[row] else {return}
         cell.titleLabel.text = zimFile.title
@@ -271,7 +272,7 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
         cell.thumbImageView.contentMode = .scaleAspectFit
         cell.accessoryType = .disclosureIndicator
     }
-    
+
     func configure(downloadCell cell: TableViewCell, row: Int, animated: Bool = false) {
         guard let zimFile = downloadZimFiles?[row] else {return}
         cell.titleLabel.text = zimFile.title
@@ -295,7 +296,7 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
         cell.thumbImageView.contentMode = .scaleAspectFit
         cell.accessoryType = .disclosureIndicator
     }
-    
+
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch sections[section] {
         case .local:
@@ -306,7 +307,7 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
             return NSLocalizedString("Categories", comment: "Library section headers")
         }
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         switch sections[indexPath.section] {
@@ -323,8 +324,8 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
             showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
         }
     }
-    
+
     // MARK: - Type Definition
-    
+
     enum Section { case local, download, category }
 }

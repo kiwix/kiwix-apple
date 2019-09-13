@@ -104,7 +104,6 @@ class ZimFile: Object {
         case wikipedia
         case wikiquote
         case wikisource
-        case wikispecies
         case wikiversity
         case wikivoyage
         case wiktionary
@@ -127,8 +126,6 @@ class ZimFile: Object {
                 return NSLocalizedString("Wikiquote", comment: "Zim File Category")
             case .wikisource:
                 return NSLocalizedString("Wikisource", comment: "Zim File Category")
-            case .wikispecies:
-                return NSLocalizedString("Wikispecies", comment: "Zim File Category")
             case .wikiversity:
                 return NSLocalizedString("Wikiversity", comment: "Zim File Category")
             case .wikivoyage:
@@ -158,8 +155,6 @@ class ZimFile: Object {
                 return #imageLiteral(resourceName: "Wikiquote")
             case .wikisource:
                 return #imageLiteral(resourceName: "Wikisource")
-            case .wikispecies:
-                return #imageLiteral(resourceName: "Wikispecies")
             case .wikiversity:
                 return #imageLiteral(resourceName: "Wikiversity")
             case .wikivoyage:
