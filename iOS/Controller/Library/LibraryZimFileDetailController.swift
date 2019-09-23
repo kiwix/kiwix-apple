@@ -15,7 +15,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
     private var zimFileStateRawObserver:  NSKeyValueObservation?
     private let documentDirectoryURL = try! FileManager.default.url(
         for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-    
+
     private let tableView = UITableView(frame: .zero, style: .grouped)
     var actions = (top: [[Action]](), bottom: [[Action]]()) {
         didSet(oldValue) {
@@ -53,19 +53,19 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
         formatter.numberStyle = .decimal
         return formatter
     }()
-    
+
     // MARK: - Overrides
-    
+
     init(zimFile: ZimFile) {
         self.zimFile = zimFile
         super.init(nibName: nil, bundle: nil)
         title = zimFile.title
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func loadView() {
         view = tableView
         tableView.delegate = self
@@ -73,28 +73,28 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
         tableView.register(UIRightDetailTableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.register(UIActionTableViewCell.self, forCellReuseIdentifier: "ActionCell")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         if #available(iOS 11.0, *) {
             navigationController?.navigationBar.prefersLargeTitles = true
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureZimFileObservers()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if #available(iOS 11.0, *) {
             navigationItem.largeTitleDisplayMode = .always
         }
     }
-    
+
     // MARK: -
-    
+
     private func configureZimFileObservers() {
         zimFileObserver = zimFile.observe { (change) in
             switch change {
@@ -135,7 +135,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                     }
                 }()
                 self.actions = (zimFile.fileSize <= freespace ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]], [])
-                
+
                 // when state changed from local to cloud, and when split view controller is collapsed
                 // pop this view controller
                 if let oldState = ZimFile.State(rawValue: change.oldValue ?? ""),
@@ -164,13 +164,13 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
             }
         })
     }
-    
+
     // MARK: - UITableViewDataSource & Delagates
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return actions.top.count + metas.count + actions.bottom.count
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section < actions.top.count {
             return actions.top[section].count
@@ -180,7 +180,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
             return actions.bottom[section - metas.count - actions.top.count].count
         }
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section < actions.top.count {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! UIActionTableViewCell
@@ -199,13 +199,13 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
             return cell
         }
     }
-    
+
     func configure(cell: UIActionTableViewCell, action: Action) {
         cell.textLabel?.text = action.description
         cell.isDisabled = action.isDisabled
         cell.isDestructive = action.isDestructive
     }
-    
+
     func configure(cell: UIRightDetailTableViewCell, meta: Meta) {
         switch meta {
         case .language:
@@ -246,7 +246,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
             cell.detailTextLabel?.text = String(zimFile.id.prefix(8))
         }
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         func handle(action: Action) {
             switch action {
@@ -271,7 +271,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                 dismiss(animated: true, completion: nil)
             }
         }
-        
+
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section < actions.top.count {
             let action = actions.top[indexPath.section][indexPath.row]
@@ -281,30 +281,30 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
             handle(action: action)
         }
     }
-    
+
     // MARK: - Type Definition
-    
+
     enum Meta: String {
         case language, size, date, hasIndex, hasPicture, articleCount, mediaCount, creator, publisher, id
     }
-    
+
     enum Action: CustomStringConvertible {
         case downloadWifiOnly, downloadWifiAndCellular, downloadSpaceNotEnough
         case cancel, resume, pause
         case deleteFile, deleteBookmarks, deleteFileAndBookmarks
         case unlink
         case openMainPage
-        
+
         static let destructives: [Action] = [.cancel, .deleteFile, .deleteBookmarks, .deleteFileAndBookmarks, .unlink]
-        
+
         var isDestructive: Bool {
             return Action.destructives.contains(self)
         }
-        
+
         var isDisabled: Bool {
             return self == .downloadSpaceNotEnough
         }
-        
+
         var description: String {
             switch self {
             case .downloadWifiOnly:
@@ -312,7 +312,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
             case .downloadWifiAndCellular:
                 return NSLocalizedString("Download - Wifi & Cellular", comment: "Book Detail Cell")
             case .downloadSpaceNotEnough:
-                return NSLocalizedString("Download - Space Not Enough", comment: "Book Detail Cell")
+                return NSLocalizedString("Download - Not Enough Space", comment: "Book Detail Cell")
             case .cancel:
                 return NSLocalizedString("Cancel", comment: "Book Detail Cell")
             case .resume:
@@ -332,7 +332,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
             }
         }
     }
-    
+
     class ActionConfirmationController: UIAlertController {
         convenience init(zimFile: ZimFile, action: Action) {
             let message: String? = {
@@ -353,7 +353,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                     guard let url = ZimMultiReader.shared.getFileURL(zimFileID: zimFile.id) else {return}
                     let directoryURL = url.deletingLastPathComponent()
                     let fileName = url.deletingPathExtension().lastPathComponent
-                    
+
                     let urls = try? FileManager.default.contentsOfDirectory(at: directoryURL, includingPropertiesForKeys: [.isExcludedFromBackupKey],
                                                                             options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants])
                     urls?.filter({ $0.lastPathComponent.contains(fileName) }).forEach({ try? FileManager.default.removeItem(at: $0) })
