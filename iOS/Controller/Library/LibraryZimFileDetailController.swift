@@ -312,7 +312,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
             case .downloadWifiAndCellular:
                 return NSLocalizedString("Download - Wifi & Cellular", comment: "Book Detail Cell")
             case .downloadSpaceNotEnough:
-                return NSLocalizedString("Download - Space Not Enough", comment: "Book Detail Cell")
+                return NSLocalizedString("Download - Not Enough Space", comment: "Book Detail Cell")
             case .cancel:
                 return NSLocalizedString("Cancel", comment: "Book Detail Cell")
             case .resume:
