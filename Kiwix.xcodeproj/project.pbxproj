@@ -18,7 +18,6 @@
 		9719F60320DAF7A600B5D0EB /* SearchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AC121420879252004779D1 /* SearchQueue.swift */; };
 		9719F60420DAF7C000B5D0EB /* SearchProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975415D31F54C1870007EA6C /* SearchProcedure.swift */; };
 		9719F60620DAF82200B5D0EB /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9719F60520DAF82200B5D0EB /* Settings.swift */; };
-		9719F60720DAF83700B5D0EB /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9719F60520DAF82200B5D0EB /* Settings.swift */; };
 		971B8E58202246ED00C5C939 /* RecentSearchCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971B8E57202246ED00C5C939 /* RecentSearchCells.swift */; };
 		97242E162093A9AC00AA4436 /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97242E152093A9AC00AA4436 /* Bookmark.swift */; };
 		97242E2B2093B38A00AA4436 /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A1FD401D6F728200A80EE2 /* Preference.swift */; };
@@ -33,6 +32,19 @@
 		972B6662200808D6003F5365 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B6661200808D6003F5365 /* WelcomeController.swift */; };
 		972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972E6F631FA11A6100F5C927 /* RoundedButton.swift */; };
 		9742596920FCE7BA000BB88A /* SettingLibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9742596820FCE7BA000BB88A /* SettingLibraryController.swift */; };
+		9750B81C233AEBE5007B019C /* libicudata.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B80F233AEBE5007B019C /* libicudata.58.2.dylib */; };
+		9750B81D233AEBE5007B019C /* libicutest.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B810233AEBE5007B019C /* libicutest.58.2.dylib */; };
+		9750B81E233AEBE5007B019C /* libicuuc.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B811233AEBE5007B019C /* libicuuc.58.2.dylib */; };
+		9750B81F233AEBE5007B019C /* libz.1.2.8.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B812233AEBE5007B019C /* libz.1.2.8.dylib */; };
+		9750B820233AEBE5007B019C /* libzim.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B813233AEBE5007B019C /* libzim.6.dylib */; };
+		9750B821233AEBE5007B019C /* libmicrohttpd.12.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B814233AEBE5007B019C /* libmicrohttpd.12.dylib */; };
+		9750B822233AEBE5007B019C /* libicutu.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B815233AEBE5007B019C /* libicutu.58.2.dylib */; };
+		9750B823233AEBE5007B019C /* libpugixml.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B816233AEBE5007B019C /* libpugixml.dylib */; };
+		9750B824233AEBE5007B019C /* libxapian.30.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B817233AEBE5007B019C /* libxapian.30.dylib */; };
+		9750B825233AEBE5007B019C /* libicui18n.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B818233AEBE5007B019C /* libicui18n.58.2.dylib */; };
+		9750B826233AEBE5007B019C /* libcurl.4.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B819233AEBE5007B019C /* libcurl.4.dylib */; };
+		9750B827233AEBE5007B019C /* liblzma.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B81A233AEBE5007B019C /* liblzma.5.dylib */; };
+		9750B828233AEBE5007B019C /* libkiwix.8.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B81B233AEBE5007B019C /* libkiwix.8.dylib */; };
 		97533B461F4C723900F6651A /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97533B451F4C723900F6651A /* MainWindowController.swift */; };
 		97598E09202B60E0005A9055 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97598E08202B60E0005A9055 /* BackupManager.swift */; };
 		975F97A820D00EAE0005D642 /* SettingSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F97A720D00EAE0005D642 /* SettingSearchController.swift */; };
@@ -78,32 +90,6 @@
 		97B4489E210FBC2E0004B056 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97B4489D210FBC2E0004B056 /* Assets.xcassets */; };
 		97B448A1210FBC2E0004B056 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97B4489F210FBC2E0004B056 /* LaunchScreen.storyboard */; };
 		97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */; };
-		97B86D6F20DADC2D00320394 /* libaria2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 97B86D6220DADC2C00320394 /* libaria2.0.dylib */; };
-		97B86D7020DADC2D00320394 /* libicui18n.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 97B86D6320DADC2C00320394 /* libicui18n.58.2.dylib */; };
-		97B86D7120DADC2D00320394 /* libkiwix.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 97B86D6420DADC2C00320394 /* libkiwix.2.dylib */; };
-		97B86D7220DADC2D00320394 /* libicudata.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 97B86D6520DADC2C00320394 /* libicudata.58.2.dylib */; };
-		97B86D7320DADC2D00320394 /* libicuio.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 97B86D6620DADC2C00320394 /* libicuio.58.2.dylib */; };
-		97B86D7420DADC2D00320394 /* libicutest.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 97B86D6720DADC2C00320394 /* libicutest.58.2.dylib */; };
-		97B86D7520DADC2D00320394 /* libicutu.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 97B86D6820DADC2D00320394 /* libicutu.58.2.dylib */; };
-		97B86D7620DADC2D00320394 /* liblzma.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 97B86D6920DADC2D00320394 /* liblzma.5.dylib */; };
-		97B86D7720DADC2D00320394 /* libxapian.30.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 97B86D6A20DADC2D00320394 /* libxapian.30.dylib */; };
-		97B86D7820DADC2D00320394 /* libzim.4.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 97B86D6B20DADC2D00320394 /* libzim.4.dylib */; };
-		97B86D7920DADC2D00320394 /* libz.1.2.8.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 97B86D6C20DADC2D00320394 /* libz.1.2.8.dylib */; };
-		97B86D7A20DADC2D00320394 /* libpugixml.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 97B86D6D20DADC2D00320394 /* libpugixml.dylib */; };
-		97B86D7B20DADC2D00320394 /* libicuuc.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 97B86D6E20DADC2D00320394 /* libicuuc.58.2.dylib */; };
-		97B86D7C20DADC4700320394 /* libaria2.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97B86D6220DADC2C00320394 /* libaria2.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		97B86D7D20DADC4700320394 /* libicudata.58.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97B86D6520DADC2C00320394 /* libicudata.58.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		97B86D7E20DADC4700320394 /* libicui18n.58.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97B86D6320DADC2C00320394 /* libicui18n.58.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		97B86D7F20DADC4700320394 /* libicuio.58.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97B86D6620DADC2C00320394 /* libicuio.58.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		97B86D8020DADC4700320394 /* libicutest.58.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97B86D6720DADC2C00320394 /* libicutest.58.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		97B86D8120DADC4700320394 /* libicutu.58.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97B86D6820DADC2D00320394 /* libicutu.58.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		97B86D8220DADC4700320394 /* libicuuc.58.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97B86D6E20DADC2D00320394 /* libicuuc.58.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		97B86D8320DADC4700320394 /* libkiwix.2.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97B86D6420DADC2C00320394 /* libkiwix.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		97B86D8420DADC4700320394 /* liblzma.5.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97B86D6920DADC2D00320394 /* liblzma.5.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		97B86D8520DADC4700320394 /* libpugixml.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97B86D6D20DADC2D00320394 /* libpugixml.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		97B86D8620DADC4700320394 /* libxapian.30.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97B86D6A20DADC2D00320394 /* libxapian.30.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		97B86D8720DADC4700320394 /* libz.1.2.8.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97B86D6C20DADC2D00320394 /* libz.1.2.8.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		97B86D8820DADC4700320394 /* libzim.4.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 97B86D6B20DADC2D00320394 /* libzim.4.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		97BAA542202B4C5E00500644 /* SettingBackupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BAA541202B4C5E00500644 /* SettingBackupController.swift */; };
 		97C575F4202CB0E800E37502 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C575F3202CB0E800E37502 /* NotificationCenter.framework */; };
 		97C575F7202CB0E800E37502 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C575F6202CB0E800E37502 /* TodayViewController.swift */; };
@@ -183,19 +169,6 @@
 			dstPath = libkiwix;
 			dstSubfolderSpec = 10;
 			files = (
-				97B86D7C20DADC4700320394 /* libaria2.0.dylib in CopyFiles */,
-				97B86D7D20DADC4700320394 /* libicudata.58.2.dylib in CopyFiles */,
-				97B86D7E20DADC4700320394 /* libicui18n.58.2.dylib in CopyFiles */,
-				97B86D7F20DADC4700320394 /* libicuio.58.2.dylib in CopyFiles */,
-				97B86D8020DADC4700320394 /* libicutest.58.2.dylib in CopyFiles */,
-				97B86D8120DADC4700320394 /* libicutu.58.2.dylib in CopyFiles */,
-				97B86D8220DADC4700320394 /* libicuuc.58.2.dylib in CopyFiles */,
-				97B86D8320DADC4700320394 /* libkiwix.2.dylib in CopyFiles */,
-				97B86D8420DADC4700320394 /* liblzma.5.dylib in CopyFiles */,
-				97B86D8520DADC4700320394 /* libpugixml.dylib in CopyFiles */,
-				97B86D8620DADC4700320394 /* libxapian.30.dylib in CopyFiles */,
-				97B86D8720DADC4700320394 /* libz.1.2.8.dylib in CopyFiles */,
-				97B86D8820DADC4700320394 /* libzim.4.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,6 +225,19 @@
 		972E6F631FA11A6100F5C927 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		9742596820FCE7BA000BB88A /* SettingLibraryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingLibraryController.swift; sourceTree = "<group>"; };
 		9743C30120878C70006981FB /* SearchResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultController.swift; sourceTree = "<group>"; };
+		9750B80F233AEBE5007B019C /* libicudata.58.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicudata.58.2.dylib; sourceTree = "<group>"; };
+		9750B810233AEBE5007B019C /* libicutest.58.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicutest.58.2.dylib; sourceTree = "<group>"; };
+		9750B811233AEBE5007B019C /* libicuuc.58.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicuuc.58.2.dylib; sourceTree = "<group>"; };
+		9750B812233AEBE5007B019C /* libz.1.2.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libz.1.2.8.dylib; sourceTree = "<group>"; };
+		9750B813233AEBE5007B019C /* libzim.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzim.6.dylib; sourceTree = "<group>"; };
+		9750B814233AEBE5007B019C /* libmicrohttpd.12.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libmicrohttpd.12.dylib; sourceTree = "<group>"; };
+		9750B815233AEBE5007B019C /* libicutu.58.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicutu.58.2.dylib; sourceTree = "<group>"; };
+		9750B816233AEBE5007B019C /* libpugixml.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpugixml.dylib; sourceTree = "<group>"; };
+		9750B817233AEBE5007B019C /* libxapian.30.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libxapian.30.dylib; sourceTree = "<group>"; };
+		9750B818233AEBE5007B019C /* libicui18n.58.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicui18n.58.2.dylib; sourceTree = "<group>"; };
+		9750B819233AEBE5007B019C /* libcurl.4.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcurl.4.dylib; sourceTree = "<group>"; };
+		9750B81A233AEBE5007B019C /* liblzma.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = liblzma.5.dylib; sourceTree = "<group>"; };
+		9750B81B233AEBE5007B019C /* libkiwix.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libkiwix.8.dylib; sourceTree = "<group>"; };
 		97533B451F4C723900F6651A /* MainWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowController.swift; sourceTree = "<group>"; };
 		975415D31F54C1870007EA6C /* SearchProcedure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchProcedure.swift; sourceTree = "<group>"; };
 		97598E08202B60E0005A9055 /* BackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
@@ -306,19 +292,6 @@
 		97B448A0210FBC2E0004B056 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97B448A2210FBC2E0004B056 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
-		97B86D6220DADC2C00320394 /* libaria2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libaria2.0.dylib; sourceTree = "<group>"; };
-		97B86D6320DADC2C00320394 /* libicui18n.58.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicui18n.58.2.dylib; sourceTree = "<group>"; };
-		97B86D6420DADC2C00320394 /* libkiwix.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libkiwix.2.dylib; sourceTree = "<group>"; };
-		97B86D6520DADC2C00320394 /* libicudata.58.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicudata.58.2.dylib; sourceTree = "<group>"; };
-		97B86D6620DADC2C00320394 /* libicuio.58.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicuio.58.2.dylib; sourceTree = "<group>"; };
-		97B86D6720DADC2C00320394 /* libicutest.58.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicutest.58.2.dylib; sourceTree = "<group>"; };
-		97B86D6820DADC2D00320394 /* libicutu.58.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicutu.58.2.dylib; sourceTree = "<group>"; };
-		97B86D6920DADC2D00320394 /* liblzma.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = liblzma.5.dylib; sourceTree = "<group>"; };
-		97B86D6A20DADC2D00320394 /* libxapian.30.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libxapian.30.dylib; sourceTree = "<group>"; };
-		97B86D6B20DADC2D00320394 /* libzim.4.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzim.4.dylib; sourceTree = "<group>"; };
-		97B86D6C20DADC2D00320394 /* libz.1.2.8.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libz.1.2.8.dylib; sourceTree = "<group>"; };
-		97B86D6D20DADC2D00320394 /* libpugixml.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpugixml.dylib; sourceTree = "<group>"; };
-		97B86D6E20DADC2D00320394 /* libicuuc.58.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicuuc.58.2.dylib; sourceTree = "<group>"; };
 		97BAA541202B4C5E00500644 /* SettingBackupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingBackupController.swift; sourceTree = "<group>"; };
 		97C575F2202CB0E800E37502 /* Bookmarks.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Bookmarks.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		97C575F3202CB0E800E37502 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -344,11 +317,9 @@
 		97C99B47205AF58D00439C77 /* MainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
 		97CA45D1209BB23F008CEA6D /* ZimFileProcessing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileProcessing.swift; sourceTree = "<group>"; };
 		97CA495120A0F583008CEA6D /* libicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicui18n.a; sourceTree = "<group>"; };
-		97CA495220A0F583008CEA6D /* libicuio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicuio.a; sourceTree = "<group>"; };
 		97CA495320A0F583008CEA6D /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicudata.a; sourceTree = "<group>"; };
 		97CA495420A0F583008CEA6D /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libz.a; sourceTree = "<group>"; };
 		97CA495520A0F583008CEA6D /* libxapian.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libxapian.a; sourceTree = "<group>"; };
-		97CA495620A0F583008CEA6D /* libaria2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libaria2.a; sourceTree = "<group>"; };
 		97CA495720A0F583008CEA6D /* liblzma.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = liblzma.a; sourceTree = "<group>"; };
 		97CA495820A0F583008CEA6D /* libzim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libzim.a; sourceTree = "<group>"; };
 		97CA495920A0F583008CEA6D /* libkiwix.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libkiwix.a; sourceTree = "<group>"; };
@@ -621,7 +592,7 @@
 		97E9834D1F4CA0A00021E96A /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		97E9834F1F4CA54A0021E96A /* SearchResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultController.swift; sourceTree = "<group>"; };
 		97E983531F4DDB670021E96A /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
-		97F4210D22EE5590001E41F9 /* FileImportController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FileImportController.swift; path = FileImportController.swift; sourceTree = "<group>"; };
+		97F4210D22EE5590001E41F9 /* FileImportController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImportController.swift; sourceTree = "<group>"; };
 		97F4D10520AB80740038FC87 /* LibraryZimFileDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryZimFileDetailController.swift; sourceTree = "<group>"; };
 		97F4D10920ADD0F00038FC87 /* DownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
 		97F4D10B20ADFE370038FC87 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -637,20 +608,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97B86D7920DADC2D00320394 /* libz.1.2.8.dylib in Frameworks */,
-				97B86D7220DADC2D00320394 /* libicudata.58.2.dylib in Frameworks */,
-				97B86D7520DADC2D00320394 /* libicutu.58.2.dylib in Frameworks */,
-				97B86D7820DADC2D00320394 /* libzim.4.dylib in Frameworks */,
-				97B86D7020DADC2D00320394 /* libicui18n.58.2.dylib in Frameworks */,
-				97B86D7120DADC2D00320394 /* libkiwix.2.dylib in Frameworks */,
-				97B86D6F20DADC2D00320394 /* libaria2.0.dylib in Frameworks */,
-				97B86D7320DADC2D00320394 /* libicuio.58.2.dylib in Frameworks */,
-				97B86D7420DADC2D00320394 /* libicutest.58.2.dylib in Frameworks */,
+				9750B823233AEBE5007B019C /* libpugixml.dylib in Frameworks */,
+				9750B821233AEBE5007B019C /* libmicrohttpd.12.dylib in Frameworks */,
+				9750B827233AEBE5007B019C /* liblzma.5.dylib in Frameworks */,
+				9750B828233AEBE5007B019C /* libkiwix.8.dylib in Frameworks */,
+				9750B822233AEBE5007B019C /* libicutu.58.2.dylib in Frameworks */,
+				9750B825233AEBE5007B019C /* libicui18n.58.2.dylib in Frameworks */,
+				9750B81E233AEBE5007B019C /* libicuuc.58.2.dylib in Frameworks */,
+				9750B81C233AEBE5007B019C /* libicudata.58.2.dylib in Frameworks */,
+				9750B81D233AEBE5007B019C /* libicutest.58.2.dylib in Frameworks */,
+				9750B820233AEBE5007B019C /* libzim.6.dylib in Frameworks */,
+				9750B826233AEBE5007B019C /* libcurl.4.dylib in Frameworks */,
+				9750B81F233AEBE5007B019C /* libz.1.2.8.dylib in Frameworks */,
 				DFD371610877B5817E9C9FEB /* Pods_macOS.framework in Frameworks */,
-				97B86D7A20DADC2D00320394 /* libpugixml.dylib in Frameworks */,
-				97B86D7620DADC2D00320394 /* liblzma.5.dylib in Frameworks */,
-				97B86D7B20DADC2D00320394 /* libicuuc.58.2.dylib in Frameworks */,
-				97B86D7720DADC2D00320394 /* libxapian.30.dylib in Frameworks */,
+				9750B824233AEBE5007B019C /* libxapian.30.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -776,6 +747,26 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
+		9750B80E233AEBE5007B019C /* macOS_lib */ = {
+			isa = PBXGroup;
+			children = (
+				9750B80F233AEBE5007B019C /* libicudata.58.2.dylib */,
+				9750B810233AEBE5007B019C /* libicutest.58.2.dylib */,
+				9750B811233AEBE5007B019C /* libicuuc.58.2.dylib */,
+				9750B812233AEBE5007B019C /* libz.1.2.8.dylib */,
+				9750B813233AEBE5007B019C /* libzim.6.dylib */,
+				9750B814233AEBE5007B019C /* libmicrohttpd.12.dylib */,
+				9750B815233AEBE5007B019C /* libicutu.58.2.dylib */,
+				9750B816233AEBE5007B019C /* libpugixml.dylib */,
+				9750B817233AEBE5007B019C /* libxapian.30.dylib */,
+				9750B818233AEBE5007B019C /* libicui18n.58.2.dylib */,
+				9750B819233AEBE5007B019C /* libcurl.4.dylib */,
+				9750B81A233AEBE5007B019C /* liblzma.5.dylib */,
+				9750B81B233AEBE5007B019C /* libkiwix.8.dylib */,
+			);
+			path = macOS_lib;
+			sourceTree = "<group>";
+		};
 		97533B441F4C721D00F6651A /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -864,29 +855,9 @@
 			children = (
 				97CA495C20A0F583008CEA6D /* include */,
 				97CA495020A0F583008CEA6D /* iOS_lib */,
-				976D29D11F44B46D003F5431 /* macOS_lib */,
+				9750B80E233AEBE5007B019C /* macOS_lib */,
 			);
 			path = Dependencies;
-			sourceTree = "<group>";
-		};
-		976D29D11F44B46D003F5431 /* macOS_lib */ = {
-			isa = PBXGroup;
-			children = (
-				97B86D6220DADC2C00320394 /* libaria2.0.dylib */,
-				97B86D6520DADC2C00320394 /* libicudata.58.2.dylib */,
-				97B86D6320DADC2C00320394 /* libicui18n.58.2.dylib */,
-				97B86D6620DADC2C00320394 /* libicuio.58.2.dylib */,
-				97B86D6720DADC2C00320394 /* libicutest.58.2.dylib */,
-				97B86D6820DADC2D00320394 /* libicutu.58.2.dylib */,
-				97B86D6E20DADC2D00320394 /* libicuuc.58.2.dylib */,
-				97B86D6420DADC2C00320394 /* libkiwix.2.dylib */,
-				97B86D6920DADC2D00320394 /* liblzma.5.dylib */,
-				97B86D6D20DADC2D00320394 /* libpugixml.dylib */,
-				97B86D6A20DADC2D00320394 /* libxapian.30.dylib */,
-				97B86D6C20DADC2D00320394 /* libz.1.2.8.dylib */,
-				97B86D6B20DADC2D00320394 /* libzim.4.dylib */,
-			);
-			path = macOS_lib;
 			sourceTree = "<group>";
 		};
 		977D7BAF1F9E6A43009A8703 /* ZimMultiReader */ = {
@@ -937,6 +908,7 @@
 				97B44894210FBC2C0004B056 /* WikiMed.app */,
 			);
 			sourceTree = "<group>";
+			wrapsLines = 0;
 		};
 		97A6882C207D3D5300DBBE0D /* Model */ = {
 			isa = PBXGroup;
@@ -1048,11 +1020,9 @@
 			isa = PBXGroup;
 			children = (
 				97CA495120A0F583008CEA6D /* libicui18n.a */,
-				97CA495220A0F583008CEA6D /* libicuio.a */,
 				97CA495320A0F583008CEA6D /* libicudata.a */,
 				97CA495420A0F583008CEA6D /* libz.a */,
 				97CA495520A0F583008CEA6D /* libxapian.a */,
-				97CA495620A0F583008CEA6D /* libaria2.a */,
 				97CA495720A0F583008CEA6D /* liblzma.a */,
 				97CA495820A0F583008CEA6D /* libzim.a */,
 				97CA495920A0F583008CEA6D /* libkiwix.a */,
@@ -1745,7 +1715,6 @@
 				97CAFA892051EBF700AC1F68 /* WebKitHandler.swift in Sources */,
 				97533B461F4C723900F6651A /* MainWindowController.swift in Sources */,
 				97CAFA932051EC4800AC1F68 /* SearchResult.swift in Sources */,
-				9719F60720DAF83700B5D0EB /* Settings.swift in Sources */,
 				97CAFA952051EC4E00AC1F68 /* DirectoryMonitor.swift in Sources */,
 				9719F60420DAF7C000B5D0EB /* SearchProcedure.swift in Sources */,
 				9719F60320DAF7A600B5D0EB /* SearchQueue.swift in Sources */,
@@ -1912,7 +1881,6 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = macOS/Support/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../Frameworks/libkiwix";
 				LIBRARY_SEARCH_PATHS = (
@@ -1947,7 +1915,6 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = macOS/Support/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../Frameworks/libkiwix";
 				LIBRARY_SEARCH_PATHS = (

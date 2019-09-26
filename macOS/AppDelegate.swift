@@ -48,7 +48,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 }
 
 extension DefaultsKeys {
-    static let zimFilePaths = DefaultsKey<[String]>("zimFilePaths")
-    static let zimFileBookmarks = DefaultsKey<[Data]>("zimFileBookmarks")
-    static let terminated = DefaultsKey<Bool>("terminated")
+    static let zimFilePaths = DefaultsKey<[String]>("zimFilePaths", defaultValue: [])
+    static let zimFileBookmarks = DefaultsKey<[Data]>("zimFileBookmarks", defaultValue: [])
+    static let terminated = DefaultsKey<Bool>("terminated", defaultValue: false)
+    static let searchResultExcludeSnippet = DefaultsKey<Bool>("searchResultExcludeSnippet", defaultValue: false)
 }

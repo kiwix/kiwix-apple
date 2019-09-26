@@ -7,7 +7,6 @@
 //
 
 import Cocoa
-import ProcedureKit
 
 class SearchResultWindowController: NSWindowController {
     override func windowDidLoad() {
