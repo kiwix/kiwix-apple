@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
-        <plugIn identifier="com.apple.WebKitIBPlugin" version="14113"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14868"/>
+        <plugIn identifier="com.apple.WebKitIBPlugin" version="14868"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
-        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
-        <capability name="system font weights other than Regular or Bold" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -598,7 +595,7 @@
                                         <menuItem title="Show Sidebar" hidden="YES" enabled="NO" keyEquivalent="s" id="kIP-vf-haE">
                                             <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
                                             <connections>
-                                                <action selector="toggleSourceList:" target="Ady-hI-5gd" id="iwa-gc-5KM"/>
+                                                <action selector="toggleSidebar:" target="Ady-hI-5gd" id="iwa-gc-5KM"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Enter Full Screen" keyEquivalent="f" id="4J7-dP-txa">
@@ -670,7 +667,7 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController id="B8D-0N-5wS" customClass="MainWindowController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
-                    <window key="window" title="Kiwix" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
+                    <window key="window" title="Kiwix" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="490" y="210" width="800" height="600"/>
@@ -846,10 +843,10 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="equalSpacing" orientation="vertical" alignment="centerX" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q6a-uM-LFi">
-                                <rect key="frame" x="149" y="80" width="205" height="336"/>
+                                <rect key="frame" x="149" y="82" width="205" height="334"/>
                                 <subviews>
                                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DiV-IB-4Fz">
-                                        <rect key="frame" x="3" y="136" width="200" height="200"/>
+                                        <rect key="frame" x="3" y="134" width="200" height="200"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="Scq-5a-GfQ"/>
                                             <constraint firstAttribute="height" constant="200" id="uC8-6Q-dKX"/>
@@ -857,7 +854,7 @@
                                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="bottom" image="LogoMac" id="dW4-wk-ohG"/>
                                     </imageView>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="P8j-EL-u5L">
-                                        <rect key="frame" x="-2" y="37" width="209" height="89"/>
+                                        <rect key="frame" x="-2" y="36" width="209" height="88"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="KIWIX" id="1tN-QT-pI1">
                                             <font key="font" metaFont="systemSemibold" size="74"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -865,7 +862,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XeJ-gj-UmK">
-                                        <rect key="frame" x="3" y="0.0" width="199" height="27"/>
+                                        <rect key="frame" x="6" y="0.0" width="193" height="26"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Wikipedia Anywhere" id="BJd-s8-giH">
                                             <font key="font" metaFont="system" size="22"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -885,7 +882,7 @@
                                 </customSpacing>
                             </stackView>
                             <button focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="82H-H3-bsH">
-                                <rect key="frame" x="198" y="12" width="107" height="32"/>
+                                <rect key="frame" x="198" y="14" width="107" height="32"/>
                                 <buttonCell key="cell" type="push" title="Open Book" bezelStyle="rounded" alignment="center" borderStyle="border" focusRingType="none" imageScaling="proportionallyDown" inset="2" id="ax2-gK-j18">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -947,10 +944,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Back" width="19.200000762939453" height="19.200000762939453"/>
-        <image name="Forward" width="19.200000762939453" height="19.200000762939453"/>
-        <image name="Home" width="25.600000381469727" height="25.600000381469727"/>
-        <image name="LogoMac" width="200" height="200"/>
-        <image name="Open" width="25.600000381469727" height="25.600000381469727"/>
+        <image name="Back" width="12" height="12"/>
+        <image name="Forward" width="12" height="12"/>
+        <image name="Home" width="16" height="16"/>
+        <image name="LogoMac" width="100" height="100"/>
+        <image name="Open" width="16" height="16"/>
     </resources>
 </document>
