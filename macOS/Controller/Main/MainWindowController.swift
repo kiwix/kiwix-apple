@@ -11,7 +11,7 @@ import SwiftyUserDefaults
 
 class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldDelegate, SearchFieldDelegate {
     @IBOutlet weak var searchField: SearchField!
-    let searchResultWindowController = NSStoryboard(name: NSStoryboard.Name(rawValue: "Search"), bundle: nil).instantiateInitialController() as! NSWindowController
+    let searchResultWindowController = NSStoryboard(name: "Search", bundle: nil).instantiateInitialController() as! NSWindowController
     private var localMouseDownEventMonitor: Any?
     private var lostFocusObserver: Any?
     
@@ -44,7 +44,7 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
         
         let urls = zimFileBookmarks.compactMap { (data) -> URL? in
             var isStale = false
-            let url = (try? URL(resolvingBookmarkData: data, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)) ?? nil
+            let url = (((try? URL(resolvingBookmarkData: data, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)) as URL??)) ?? nil
             return isStale ? nil : url
         }
         

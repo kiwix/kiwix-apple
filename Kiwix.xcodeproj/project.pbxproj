@@ -1523,7 +1523,7 @@
 					979315801E5127930093D3BA = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = L7HWM3SP3L;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1100;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.Mac = {
@@ -1934,7 +1934,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Kiwix-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Shared/Dependencies/include";
 			};
 			name = Debug;
@@ -1967,7 +1967,7 @@
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Kiwix-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Shared/Dependencies/include";
 			};
 			name = Release;
