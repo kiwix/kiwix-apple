@@ -23,7 +23,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         let urls = Defaults[.zimFileBookmarks].compactMap { (data) -> URL? in
             var isStale = false
-            let url = (try? URL(resolvingBookmarkData: data, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)) ?? nil
+            let url = (((try? URL(resolvingBookmarkData: data, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)) as URL??)) ?? nil
             return isStale ? nil : url
         }
         urls.forEach({ ZimMultiReader.shared.add(url: $0)})

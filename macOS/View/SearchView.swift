@@ -18,7 +18,7 @@ class SearchTitleSnippetResultTableCellView: NSTableCellView {
             let snippetColor = backgroundStyle == .light ? NSColor.labelColor : NSColor.textBackgroundColor
             let snippet = NSMutableAttributedString(attributedString: snippetField.attributedStringValue)
             let range = NSRange(location: 0, length: snippet.length)
-            snippet.addAttribute(NSAttributedStringKey.foregroundColor, value: snippetColor, range: range)
+            snippet.addAttribute(NSAttributedString.Key.foregroundColor, value: snippetColor, range: range)
             snippetField.attributedStringValue = snippet
         }
     }
