@@ -9,7 +9,7 @@
 import Cocoa
 import WebKit
 
-class WebViewController: NSViewController, WebFrameLoadDelegate {
+class LegacyWebViewController: NSViewController, WebFrameLoadDelegate {
     @IBOutlet weak var webView: WebView!
     
     override func viewWillAppear() {

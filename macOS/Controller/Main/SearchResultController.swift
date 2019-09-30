@@ -78,7 +78,7 @@ class SearchResultController: NSViewController, SearchQueueEvents, NSTableViewDa
         guard let mainController = NSApplication.shared.mainWindow?.windowController as? MainWindowController else {return}
         mainController.searchField.endSearch()
         guard let split = NSApplication.shared.mainWindow?.contentViewController as? NSSplitViewController,
-            let controller = split.splitViewItems.last?.viewController as? WebViewController else {return}
+            let controller = split.splitViewItems.last?.viewController as? LegacyWebViewController else {return}
         controller.load(url: results[tableView.selectedRow].url)
     }
     

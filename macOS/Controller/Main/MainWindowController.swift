@@ -57,7 +57,7 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
         searchController.clearSearch()
         
         guard let split = self.contentViewController as? NSSplitViewController,
-            let webController = split.splitViewItems.last?.viewController as? WebViewController else {return}
+            let webController = split.splitViewItems.last?.viewController as? LegacyWebViewController else {return}
         if ZimMultiReader.shared.ids.count > 0 {
             webController.loadMainPage()
         } else {
@@ -77,13 +77,13 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
     
     @IBAction func mainPageButtonTapped(_ sender: NSToolbarItem) {
         guard let split = contentViewController as? NSSplitViewController,
-            let controller = split.splitViewItems.last?.viewController as? WebViewController else {return}
+            let controller = split.splitViewItems.last?.viewController as? LegacyWebViewController else {return}
         controller.loadMainPage()
     }
     
     @IBAction func backForwardControlClicked(_ sender: NSSegmentedControl) {
         guard let split = contentViewController as? NSSplitViewController,
-            let controller = split.splitViewItems.last?.viewController as? WebViewController else {return}
+            let controller = split.splitViewItems.last?.viewController as? LegacyWebViewController else {return}
         if sender.selectedSegment == 0 {
             controller.webView.goBack()
         } else if sender.selectedSegment == 1 {
