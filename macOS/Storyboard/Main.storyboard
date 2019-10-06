@@ -779,10 +779,10 @@
             </objects>
             <point key="canvasLocation" x="229" y="319"/>
         </scene>
-        <!--Web View Controller-->
+        <!--Legacy Web View Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController id="XfG-lQ-9wD" customClass="WebViewController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="XfG-lQ-9wD" customClass="LegacyWebViewController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="503" height="361"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -862,7 +862,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XeJ-gj-UmK">
-                                        <rect key="frame" x="6" y="0.0" width="193" height="26"/>
+                                        <rect key="frame" x="3" y="0.0" width="199" height="26"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Wikipedia Anywhere" id="BJd-s8-giH">
                                             <font key="font" metaFont="system" size="22"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>

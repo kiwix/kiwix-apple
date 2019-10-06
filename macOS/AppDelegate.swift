@@ -29,7 +29,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         urls.forEach({ ZimMultiReader.shared.add(url: $0)})
 
         guard let split = NSApplication.shared.mainWindow?.contentViewController as? NSSplitViewController,
-            let controller = split.splitViewItems.last?.viewController as? WebViewController else {return}
+            let controller = split.splitViewItems.last?.viewController as? LegacyWebViewController else {return}
         controller.loadMainPage()
     }
 
