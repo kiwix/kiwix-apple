@@ -8,6 +8,8 @@
 
 import Cocoa
 import WebKit
+import SwiftyUserDefaults
+import SwiftUI
 
 class Mainv2WindowController: NSWindowController {
 
@@ -33,7 +35,7 @@ class Mainv2WindowController: NSWindowController {
         openPanel.beginSheetModal(for: window!) { response in
             guard response.rawValue == NSFileHandlingPanelOKButton else {return}
             let paths = openPanel.urls.map({$0.path})
-//            self.openZimFiles(paths: paths)
+            self.openZimFiles(paths: paths)
         }
     }
     
@@ -41,6 +43,20 @@ class Mainv2WindowController: NSWindowController {
         let windowController = self.storyboard?.instantiateInitialController() as! Mainv2WindowController
         let newWindow = windowController.window!
         self.window?.addTabbedWindow(newWindow, ordered: .above)
+    }
+    
+    func openZimFiles(paths: [String]) {
+        let zimFileBookmarks = paths.compactMap { (path) -> Data? in
+            return try? URL(fileURLWithPath: path).bookmarkData(options: [.withSecurityScope, .securityScopeAllowOnlyReadAccess],
+                                                              includingResourceValuesForKeys: nil,
+                                                              relativeTo: nil)
+        }
+        Defaults[.zimFileBookmarks] += zimFileBookmarks
+        
+        if let contentViewController = contentViewController as? NSSplitViewController,
+            let manager = contentViewController.splitViewItems[0].viewController as? ZimFileManagerViewController {
+            manager.reloadData()
+        }
     }
 }
 
@@ -54,17 +70,21 @@ class ZimFileManagerViewController: NSViewController, NSOutlineViewDelegate, NSO
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        items = [
-            OutlineItem(name: "Recent Files", children: [
-                OutlineItem(name: "a"),
-                OutlineItem(name: "b"),
-                OutlineItem(name: "c")
-            ])
-        ]
+        items = [OutlineItem(name: "Files", children: [])]
+        reloadData()
+    }
+    
+    func reloadData() {
+        let zimFileBookmarks = Defaults[.zimFileBookmarks]
+        let urls = zimFileBookmarks.compactMap { (data) -> URL? in
+            var isStale = false
+            let url = (((try? URL(resolvingBookmarkData: data, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)) as URL??)) ?? nil
+            return isStale ? nil : url
+        }
+        items[0].children = urls.map({ OutlineItem(name: $0.lastPathComponent) })
         outlineView.reloadData()
         outlineView.expandItem(nil, expandChildren: true)
     }
-    var recentZimFiles = ["a", "b", "c"]
     
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         if let item = item as? OutlineItem {
@@ -107,7 +127,7 @@ class ZimFileManagerViewController: NSViewController, NSOutlineViewDelegate, NSO
 
 private class OutlineItem {
     let name: String
-    let children: [OutlineItem]
+    var children: [OutlineItem]
     
     init(name: String, children: [OutlineItem] = []) {
         self.name = name
