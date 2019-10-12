@@ -177,10 +177,10 @@
             </objects>
             <point key="canvasLocation" x="1818" y="-260"/>
         </scene>
-        <!--Zim File Manager View Controller-->
+        <!--Zim File Manager Controller-->
         <scene sceneID="H4w-8f-egO">
             <objects>
-                <viewController id="814-He-2cH" customClass="ZimFileManagerViewController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="814-He-2cH" customClass="ZimFileManagerController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="ZFv-AX-Zv8">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
