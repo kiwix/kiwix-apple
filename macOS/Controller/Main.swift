@@ -59,10 +59,19 @@ class Mainv2WindowController: NSWindowController {
             manager.reloadData()
         }
     }
+    
+    var zimFileManagerController: ZimFileManagerController? {
+        get {
+            let splitViewController = contentViewController as? NSSplitViewController
+            let leftSplitViewController = splitViewController?.splitViewItems.first?.viewController as? NSSplitViewController
+            return leftSplitViewController?.splitViewItems.last?.viewController as? ZimFileManagerController
+        }
+    }
+    
+    var webViewController: WebViewController? {
+        get {
+            let splitViewController = contentViewController as? NSSplitViewController
+            return splitViewController?.splitViewItems.last?.viewController as? WebViewController
+        }
+    }
 }
-
-class WebViewController: NSViewController {
-    @IBOutlet weak var webView: WKWebView!
-}
-
-

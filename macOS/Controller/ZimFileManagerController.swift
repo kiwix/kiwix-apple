@@ -68,6 +68,14 @@ class ZimFileManagerController: NSViewController, NSOutlineViewDelegate, NSOutli
         guard let item = item as? OutlineItem else {return false}
         return item.children.count == 0
     }
+    
+    func outlineViewSelectionDidChange(_ notification: Notification) {
+        guard let outlineView = notification.object as? NSOutlineView else {return}
+        let item = outlineView.item(atRow: outlineView.selectedRow)
+        
+        guard let windowController = view.window?.windowController as? Mainv2WindowController else {return}
+        windowController.webViewController?.loadMainPage(id: "")
+    }
 }
 
 private class OutlineItem {
