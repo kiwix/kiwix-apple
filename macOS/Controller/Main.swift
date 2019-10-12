@@ -54,7 +54,8 @@ class Mainv2WindowController: NSWindowController {
         Defaults[.zimFileBookmarks] += zimFileBookmarks
         
         if let contentViewController = contentViewController as? NSSplitViewController,
-            let manager = contentViewController.splitViewItems[0].viewController as? ZimFileManagerViewController {
+            let navigationSplitViewController = contentViewController.splitViewItems[0].viewController as? NSSplitViewController,
+            let manager = navigationSplitViewController.splitViewItems[1].viewController as? ZimFileManagerViewController {
             manager.reloadData()
         }
     }
