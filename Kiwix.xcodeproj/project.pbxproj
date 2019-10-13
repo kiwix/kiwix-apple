@@ -37,6 +37,12 @@
 		974FFE5923526FB700F6BF28 /* URLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767717D1F437BB9007ED0C2 /* URLProtocol.swift */; };
 		974FFE5B2352704600F6BF28 /* ZimFileManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */; };
 		974FFE612352744800F6BF28 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE602352744800F6BF28 /* WebViewController.swift */; };
+		974FFE6323527CA900F6BF28 /* ZimFileProcessing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CA45D1209BB23F008CEA6D /* ZimFileProcessing.swift */; };
+		974FFE6423527CB800F6BF28 /* RealmConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A68831207D4D6700DBBE0D /* RealmConfig.swift */; };
+		974FFE6523527CB800F6BF28 /* ZimFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A6882D207D3DE300DBBE0D /* ZimFile.swift */; };
+		974FFE6623527CB800F6BF28 /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97242E152093A9AC00AA4436 /* Bookmark.swift */; };
+		974FFE672352829000F6BF28 /* LibraryScanOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977F983D1F9E43EC002ABFCE /* LibraryScanOperation.swift */; };
+		974FFE6A23533E8D00F6BF28 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE6823533E8D00F6BF28 /* SearchController.swift */; };
 		9750B81C233AEBE5007B019C /* libicudata.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B80F233AEBE5007B019C /* libicudata.58.2.dylib */; };
 		9750B81D233AEBE5007B019C /* libicutest.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B810233AEBE5007B019C /* libicutest.58.2.dylib */; };
 		9750B81E233AEBE5007B019C /* libicuuc.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B811233AEBE5007B019C /* libicuuc.58.2.dylib */; };
@@ -269,6 +275,7 @@
 		974FD5CE23405C3700FFDEEC /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 		974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileManagerController.swift; sourceTree = "<group>"; };
 		974FFE602352744800F6BF28 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		974FFE6823533E8D00F6BF28 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		9750B80F233AEBE5007B019C /* libicudata.58.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicudata.58.2.dylib; sourceTree = "<group>"; };
 		9750B810233AEBE5007B019C /* libicutest.58.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicutest.58.2.dylib; sourceTree = "<group>"; };
 		9750B811233AEBE5007B019C /* libicuuc.58.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicuuc.58.2.dylib; sourceTree = "<group>"; };
@@ -882,6 +889,7 @@
 				974FD5CE23405C3700FFDEEC /* Main.swift */,
 				974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */,
 				974FFE602352744800F6BF28 /* WebViewController.swift */,
+				974FFE6823533E8D00F6BF28 /* SearchController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1759,8 +1767,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				974FFE6623527CB800F6BF28 /* Bookmark.swift in Sources */,
 				974FD5CF23405C3700FFDEEC /* Main.swift in Sources */,
 				97CAFA942051EC4B00AC1F68 /* BackupManager.swift in Sources */,
+				974FFE6A23533E8D00F6BF28 /* SearchController.swift in Sources */,
 				9768C23B1F4B7F6300FD499B /* Preference.swift in Sources */,
 				974FFE612352744800F6BF28 /* WebViewController.swift in Sources */,
 				974FFE5923526FB700F6BF28 /* URLProtocol.swift in Sources */,
@@ -1773,9 +1783,13 @@
 				9719F60320DAF7A600B5D0EB /* SearchQueue.swift in Sources */,
 				97E983501F4CA54A0021E96A /* SearchResultController.swift in Sources */,
 				97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */,
+				974FFE6323527CA900F6BF28 /* ZimFileProcessing.swift in Sources */,
+				974FFE6523527CB800F6BF28 /* ZimFile.swift in Sources */,
 				97E9834E1F4CA0A00021E96A /* LegacyWebViewController.swift in Sources */,
 				9768C2351F4B7BAC00FD499B /* AppDelegate.swift in Sources */,
+				974FFE672352829000F6BF28 /* LibraryScanOperation.swift in Sources */,
 				97CAFA962051EC5100AC1F68 /* TableOfContentItem.swift in Sources */,
+				974FFE6423527CB800F6BF28 /* RealmConfig.swift in Sources */,
 				97CAFA902051EC4800AC1F68 /* ZimMultiReader.swift in Sources */,
 				97E983541F4DDB670021E96A /* SearchView.swift in Sources */,
 				97CAFA8F2051EC4800AC1F68 /* ZimMultiReader.mm in Sources */,

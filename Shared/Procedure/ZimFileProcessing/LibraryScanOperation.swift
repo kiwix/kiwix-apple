@@ -33,7 +33,9 @@ class LibraryScanOperation: Operation, ZimFileProcessing {
         ZimMultiReader.shared.removeStaleReaders()
         
         updateDatabase()
-        BackupManager.updateExcludedFromBackupForDocumentDirectoryContents(isExcluded: !Defaults[.backupDocumentDirectory])
+        #if os(iOS)
+            BackupManager.updateExcludedFromBackupForDocumentDirectoryContents(isExcluded: !Defaults[.backupDocumentDirectory])
+        #endif
     }
     
     /**

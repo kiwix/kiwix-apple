@@ -10,13 +10,13 @@ import Cocoa
 import WebKit
 import SwiftyUserDefaults
 import SwiftUI
+import RealmSwift
 
 class Mainv2WindowController: NSWindowController {
+    let queue = OperationQueue()
 
     override func windowDidLoad() {
         super.windowDidLoad()
-        
-        // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
     }
     
     @IBAction func toggleSidebar(_ sender: NSToolbarItem) {
@@ -33,9 +33,8 @@ class Mainv2WindowController: NSWindowController {
         openPanel.allowedFileTypes = ["zim"]
         
         openPanel.beginSheetModal(for: window!) { response in
-            guard response.rawValue == NSFileHandlingPanelOKButton else {return}
-            let paths = openPanel.urls.map({$0.path})
-            self.openZimFiles(paths: paths)
+            guard response == .OK, openPanel.urls.count > 0 else {return}
+            self.openZimFiles(urls: openPanel.urls)
         }
     }
     
@@ -45,19 +44,9 @@ class Mainv2WindowController: NSWindowController {
         self.window?.addTabbedWindow(newWindow, ordered: .above)
     }
     
-    func openZimFiles(paths: [String]) {
-        let zimFileBookmarks = paths.compactMap { (path) -> Data? in
-            return try? URL(fileURLWithPath: path).bookmarkData(options: [.withSecurityScope, .securityScopeAllowOnlyReadAccess],
-                                                              includingResourceValuesForKeys: nil,
-                                                              relativeTo: nil)
-        }
-        Defaults[.zimFileBookmarks] += zimFileBookmarks
-        
-        if let contentViewController = contentViewController as? NSSplitViewController,
-            let navigationSplitViewController = contentViewController.splitViewItems[0].viewController as? NSSplitViewController,
-            let manager = navigationSplitViewController.splitViewItems[1].viewController as? ZimFileManagerController {
-            manager.reloadData()
-        }
+    func openZimFiles(urls: [URL]) {
+        let operation = LibraryScanOperation(urls: urls)
+        queue.addOperation(operation)
     }
     
     var zimFileManagerController: ZimFileManagerController? {
@@ -73,5 +62,19 @@ class Mainv2WindowController: NSWindowController {
             let splitViewController = contentViewController as? NSSplitViewController
             return splitViewController?.splitViewItems.last?.viewController as? WebViewController
         }
+    }
+}
+
+class MainSplitViewController: NSSplitViewController {
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        splitView.setPosition(300, ofDividerAt: 0)
+    }
+}
+
+class NavigationSplitViewController: NSSplitViewController {
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        splitView.setPosition(400, ofDividerAt: 0)
     }
 }

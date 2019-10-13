@@ -10,7 +10,6 @@
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>zim</string>
-				<string>zimaa</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>ZimFile.icns</string>
@@ -56,7 +55,7 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2017 Kiwix and authors</string>
 	<key>NSMainStoryboardFile</key>
-	<string>Mainv2</string>
+	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>UTExportedTypeDeclarations</key>
@@ -68,7 +67,7 @@
 				<string>public.content</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>Zim File</string>
+			<string>OpenZIM Content File</string>
 			<key>UTTypeIconFile</key>
 			<string>ZimFile.icns</string>
 			<key>UTTypeIdentifier</key>
@@ -80,7 +79,6 @@
 				<key>public.filename-extension</key>
 				<array>
 					<string>zim</string>
-					<string>zimaa</string>
 				</array>
 			</dict>
 		</dict>
