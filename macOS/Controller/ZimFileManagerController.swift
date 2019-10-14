@@ -1,70 +1,15 @@
 //
-//  Main.swift
+//  ZimFileManagerController.swift
 //  macOS
 //
-//  Created by Chris Li on 9/28/19.
+//  Created by Chris Li on 10/12/19.
 //  Copyright © 2019 Chris Li. All rights reserved.
 //
 
 import Cocoa
-import WebKit
 import SwiftyUserDefaults
-import SwiftUI
 
-class Mainv2WindowController: NSWindowController {
-
-    override func windowDidLoad() {
-        super.windowDidLoad()
-        
-        // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
-    }
-    
-    @IBAction func toggleSidebar(_ sender: NSToolbarItem) {
-        guard let controller = window?.contentViewController as? NSSplitViewController? else {return}
-        controller?.toggleSidebar(sender)
-    }
-    
-    @IBAction func openFile(_ sender: NSToolbarItem) {
-        let openPanel = NSOpenPanel()
-        openPanel.showsHiddenFiles = false
-        openPanel.canChooseFiles = true
-        openPanel.canChooseDirectories = false
-        openPanel.allowsMultipleSelection = false
-        openPanel.allowedFileTypes = ["zim"]
-        
-        openPanel.beginSheetModal(for: window!) { response in
-            guard response.rawValue == NSFileHandlingPanelOKButton else {return}
-            let paths = openPanel.urls.map({$0.path})
-            self.openZimFiles(paths: paths)
-        }
-    }
-    
-    @IBAction override func newWindowForTab(_ sender: Any?) {
-        let windowController = self.storyboard?.instantiateInitialController() as! Mainv2WindowController
-        let newWindow = windowController.window!
-        self.window?.addTabbedWindow(newWindow, ordered: .above)
-    }
-    
-    func openZimFiles(paths: [String]) {
-        let zimFileBookmarks = paths.compactMap { (path) -> Data? in
-            return try? URL(fileURLWithPath: path).bookmarkData(options: [.withSecurityScope, .securityScopeAllowOnlyReadAccess],
-                                                              includingResourceValuesForKeys: nil,
-                                                              relativeTo: nil)
-        }
-        Defaults[.zimFileBookmarks] += zimFileBookmarks
-        
-        if let contentViewController = contentViewController as? NSSplitViewController,
-            let manager = contentViewController.splitViewItems[0].viewController as? ZimFileManagerViewController {
-            manager.reloadData()
-        }
-    }
-}
-
-class WebViewController: NSViewController {
-    @IBOutlet weak var webView: WKWebView!
-}
-
-class ZimFileManagerViewController: NSViewController, NSOutlineViewDelegate, NSOutlineViewDataSource {
+class ZimFileManagerController: NSViewController, NSOutlineViewDelegate, NSOutlineViewDataSource {
     @IBOutlet weak var outlineView: NSOutlineView!
     private var items = [OutlineItem]()
     
@@ -122,6 +67,14 @@ class ZimFileManagerViewController: NSViewController, NSOutlineViewDelegate, NSO
     func outlineView(_ outlineView: NSOutlineView, shouldSelectItem item: Any) -> Bool {
         guard let item = item as? OutlineItem else {return false}
         return item.children.count == 0
+    }
+    
+    func outlineViewSelectionDidChange(_ notification: Notification) {
+        guard let outlineView = notification.object as? NSOutlineView else {return}
+        let item = outlineView.item(atRow: outlineView.selectedRow)
+        
+        guard let windowController = view.window?.windowController as? WindowController else {return}
+        windowController.webViewController?.loadMainPage(id: "")
     }
 }
 

@@ -8,7 +8,6 @@
 
 import WebKit
 
-@available(OSX 10.13, *)
 @available(iOS 11.0, *)
 class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
