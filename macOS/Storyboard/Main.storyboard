@@ -64,9 +64,15 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="File" id="bib-Uj-vzu">
                                     <items>
-                                        <menuItem title="Open…" keyEquivalent="o" id="IAo-SY-fd9">
+                                        <menuItem title="New Window" keyEquivalent="n" id="IAo-SY-fd9"/>
+                                        <menuItem title="New Tab" keyEquivalent="t" id="7Qf-xa-mOp">
                                             <connections>
-                                                <action selector="openBook:" target="Ady-hI-5gd" id="e2A-PH-bdi"/>
+                                                <action selector="newWindowForTab:" target="Ady-hI-5gd" id="bR1-0S-twx"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Open…" keyEquivalent="o" id="nw8-EO-xxg">
+                                            <connections>
+                                                <action selector="openFile:" target="Ady-hI-5gd" id="PvR-85-eqI"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Open Recent" id="tXI-mr-wws">
@@ -86,28 +92,6 @@
                                         <menuItem title="Close" keyEquivalent="w" id="DVo-aG-piG">
                                             <connections>
                                                 <action selector="performClose:" target="Ady-hI-5gd" id="HmO-Ls-i7Q"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Save…" hidden="YES" enabled="NO" keyEquivalent="s" id="pxx-59-PXV">
-                                            <connections>
-                                                <action selector="saveDocument:" target="Ady-hI-5gd" id="teZ-XB-qJY"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Save As…" hidden="YES" enabled="NO" keyEquivalent="S" id="Bw7-FT-i3A">
-                                            <connections>
-                                                <action selector="saveDocumentAs:" target="Ady-hI-5gd" id="mDf-zr-I0C"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Revert to Saved" hidden="YES" enabled="NO" keyEquivalent="r" id="KaW-ft-85H">
-                                            <connections>
-                                                <action selector="revertDocumentToSaved:" target="Ady-hI-5gd" id="iJ3-Pv-kwq"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="aJh-i4-bef"/>
-                                        <menuItem title="Page Setup…" hidden="YES" enabled="NO" keyEquivalent="P" id="qIS-W8-SiK">
-                                            <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
-                                            <connections>
-                                                <action selector="runPageLayout:" target="Ady-hI-5gd" id="Din-rz-gC5"/>
                                             </connections>
                                         </menuItem>
                                     </items>
@@ -679,7 +663,7 @@
                                 <toolbarItem implicitItemIdentifier="153CBDE8-AAD7-4988-BBF4-DCB6C88DDAF9" label="Toggle Sidebar" paletteLabel="Toggle Sidebar" image="NSListViewTemplate" sizingBehavior="auto" id="Zb5-oj-enX">
                                     <nil key="toolTip"/>
                                     <button key="view" verticalHuggingPriority="750" id="b8e-oI-y8S">
-                                        <rect key="frame" x="24" y="14" width="39" height="25"/>
+                                        <rect key="frame" x="23" y="14" width="40" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="roundTextured" title="Textured Rounded" bezelStyle="texturedRounded" image="NSListViewTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dFl-14-lkm">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -718,24 +702,42 @@
                                         <action selector="newWindowForTab:" target="95r-g6-5ej" id="7z0-AT-LZ2"/>
                                     </connections>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="A3B5FD40-CCAB-41CA-B43D-0488134AD52A" label="Search" paletteLabel="Search" sizingBehavior="auto" id="bmt-M2-2M5">
-                                    <nil key="toolTip"/>
-                                    <searchField key="view" wantsLayer="YES" verticalHuggingPriority="750" textCompletion="NO" id="WZ6-ZH-0xR">
-                                        <rect key="frame" x="0.0" y="14" width="96" height="22"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="uKD-Ia-T9Z">
-                                            <font key="font" metaFont="system"/>
-                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </searchFieldCell>
-                                    </searchField>
-                                </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="KCZ-vA-EeL"/>
                                 <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="eV8-aW-dfd"/>
+                                <toolbarItem implicitItemIdentifier="197C3397-8D26-47F6-AAB5-E4B5761323EF" label="Go Back" paletteLabel="Go Back" image="NSGoBackTemplate" sizingBehavior="auto" id="7kK-IG-w2y">
+                                    <nil key="toolTip"/>
+                                    <button key="view" verticalHuggingPriority="750" id="8uQ-RR-thi">
+                                        <rect key="frame" x="10" y="14" width="31" height="24"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="roundTextured" title="Textured Rounded" bezelStyle="texturedRounded" image="NSGoBackTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Nax-T2-hE8">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                    </button>
+                                    <connections>
+                                        <action selector="goBack:" target="iJ4-iv-ysw" id="S4G-nV-5gM"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="4C82EE7B-660F-476E-9D81-2548189099F2" label="Go Forward" paletteLabel="Go Forward" image="NSGoForwardTemplate" sizingBehavior="auto" id="ogq-9s-Tj8">
+                                    <nil key="toolTip"/>
+                                    <button key="view" verticalHuggingPriority="750" id="ZqK-Ls-ajc">
+                                        <rect key="frame" x="20" y="14" width="28" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="roundTextured" title="Textured Rounded" bezelStyle="texturedRounded" image="NSGoForwardTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Jzc-IN-o6V">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                    </button>
+                                    <connections>
+                                        <action selector="goForward:" target="iJ4-iv-ysw" id="Sq9-zV-fdO"/>
+                                    </connections>
+                                </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
+                                <toolbarItem reference="7kK-IG-w2y"/>
+                                <toolbarItem reference="ogq-9s-Tj8"/>
+                                <toolbarItem reference="eV8-aW-dfd"/>
                                 <toolbarItem reference="Zb5-oj-enX"/>
-                                <toolbarItem reference="tNq-SQ-omF"/>
                                 <toolbarItem reference="eV8-aW-dfd"/>
                                 <toolbarItem reference="5Z5-mr-XNo"/>
                             </defaultToolbarItems>
@@ -948,6 +950,8 @@
     <resources>
         <image name="NSActionTemplate" width="14" height="14"/>
         <image name="NSAddTemplate" width="11" height="11"/>
+        <image name="NSGoBackTemplate" width="9" height="12"/>
+        <image name="NSGoForwardTemplate" width="9" height="12"/>
         <image name="NSListViewTemplate" width="14" height="10"/>
         <image name="Open" width="16" height="16"/>
     </resources>

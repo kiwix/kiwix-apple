@@ -36,6 +36,14 @@ class WebViewController: NSViewController, WKNavigationDelegate {
         
     }
     
+    @IBAction func goBack(_ sender: Any?) {
+        webView.goBack()
+    }
+    
+    @IBAction func goForward(_ sender: Any?) {
+        webView.goForward()
+    }
+    
     // MARK: - WKNavigationDelegate
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
