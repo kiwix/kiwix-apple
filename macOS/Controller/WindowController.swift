@@ -12,11 +12,21 @@ import SwiftyUserDefaults
 import SwiftUI
 import RealmSwift
 
-class Mainv2WindowController: NSWindowController {
-    let queue = OperationQueue()
+class WindowController: NSWindowController {
+    weak var tabManager: TabManagement?
+    private var windowWillCloseObserver: NSObjectProtocol?
 
     override func windowDidLoad() {
         super.windowDidLoad()
+        
+        windowWillCloseObserver = NotificationCenter.default.addObserver(
+            forName: NSWindow.willCloseNotification,
+            object: self.window!,
+            queue: OperationQueue.main,
+            using: {[unowned self] (notification) in
+                self.tabManager?.willCloseTab(controller: self)
+                NotificationCenter.default.removeObserver(self.windowWillCloseObserver!)
+        })
     }
     
     @IBAction func toggleSidebar(_ sender: NSToolbarItem) {
@@ -34,19 +44,12 @@ class Mainv2WindowController: NSWindowController {
         
         openPanel.beginSheetModal(for: window!) { response in
             guard response == .OK, openPanel.urls.count > 0 else {return}
-            self.openZimFiles(urls: openPanel.urls)
+            (NSApplication.shared.delegate as? AppDelegate)?.openFile(urls: openPanel.urls)
         }
     }
     
     @IBAction override func newWindowForTab(_ sender: Any?) {
-        let windowController = self.storyboard?.instantiateInitialController() as! Mainv2WindowController
-        let newWindow = windowController.window!
-        self.window?.addTabbedWindow(newWindow, ordered: .above)
-    }
-    
-    func openZimFiles(urls: [URL]) {
-        let operation = LibraryScanOperation(urls: urls)
-        queue.addOperation(operation)
+        tabManager?.createTab(window: window!)
     }
     
     var zimFileManagerController: ZimFileManagerController? {

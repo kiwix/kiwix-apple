@@ -67,7 +67,7 @@ class SearchController: NSViewController, NSSearchFieldDelegate, NSOutlineViewDa
     func outlineViewSelectionDidChange(_ notification: Notification) {
         guard let outlineView = notification.object as? NSOutlineView,
             let searchResult = outlineView.item(atRow: outlineView.selectedRow) as? SearchResult,
-            let windowController = view.window?.windowController as? Mainv2WindowController else {return}
+            let windowController = view.window?.windowController as? WindowController else {return}
         windowController.webViewController?.load(url: searchResult.url)
     }
     

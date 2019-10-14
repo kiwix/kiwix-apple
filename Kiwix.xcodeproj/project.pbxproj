@@ -32,8 +32,7 @@
 		972B6662200808D6003F5365 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B6661200808D6003F5365 /* WelcomeController.swift */; };
 		972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972E6F631FA11A6100F5C927 /* RoundedButton.swift */; };
 		9742596920FCE7BA000BB88A /* SettingLibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9742596820FCE7BA000BB88A /* SettingLibraryController.swift */; };
-		974FD5CD2340572400FFDEEC /* Mainv2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 974FD5CC2340572400FFDEEC /* Mainv2.storyboard */; };
-		974FD5CF23405C3700FFDEEC /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FD5CE23405C3700FFDEEC /* Main.swift */; };
+		974FD5CF23405C3700FFDEEC /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FD5CE23405C3700FFDEEC /* WindowController.swift */; };
 		974FFE5923526FB700F6BF28 /* URLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767717D1F437BB9007ED0C2 /* URLProtocol.swift */; };
 		974FFE5B2352704600F6BF28 /* ZimFileManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */; };
 		974FFE612352744800F6BF28 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE602352744800F6BF28 /* WebViewController.swift */; };
@@ -43,6 +42,8 @@
 		974FFE6623527CB800F6BF28 /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97242E152093A9AC00AA4436 /* Bookmark.swift */; };
 		974FFE672352829000F6BF28 /* LibraryScanOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977F983D1F9E43EC002ABFCE /* LibraryScanOperation.swift */; };
 		974FFE6A23533E8D00F6BF28 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE6823533E8D00F6BF28 /* SearchController.swift */; };
+		974FFE6D2353AA3200F6BF28 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 974FFE6C2353AA3200F6BF28 /* Foundation.framework */; };
+		974FFE6F2353AA3900F6BF28 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 974FFE6E2353AA3900F6BF28 /* WebKit.framework */; };
 		9750B81C233AEBE5007B019C /* libicudata.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B80F233AEBE5007B019C /* libicudata.58.2.dylib */; };
 		9750B81D233AEBE5007B019C /* libicutest.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B810233AEBE5007B019C /* libicutest.58.2.dylib */; };
 		9750B81E233AEBE5007B019C /* libicuuc.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B811233AEBE5007B019C /* libicuuc.58.2.dylib */; };
@@ -147,7 +148,6 @@
 		97CAFA942051EC4B00AC1F68 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97598E08202B60E0005A9055 /* BackupManager.swift */; };
 		97CAFA952051EC4E00AC1F68 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E4298F1FBDF48800ABE62E /* DirectoryMonitor.swift */; };
 		97CAFA962051EC5100AC1F68 /* TableOfContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D00A7E1FBB92D400165629 /* TableOfContentItem.swift */; };
-		97CAFAB22052DE6200AC1F68 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97CAFAB12052DE6200AC1F68 /* Storyboard.storyboard */; };
 		97D00A791FBB89F000165629 /* Inject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* Inject.js */; };
 		97D00A7F1FBB92D400165629 /* TableOfContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D00A7E1FBB92D400165629 /* TableOfContentItem.swift */; };
 		97D0C4DD211BF72B00B00DAA /* TableViewSectionFooterLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D0C4DC211BF72B00B00DAA /* TableViewSectionFooterLabel.swift */; };
@@ -271,11 +271,12 @@
 		972E6F631FA11A6100F5C927 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		9742596820FCE7BA000BB88A /* SettingLibraryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingLibraryController.swift; sourceTree = "<group>"; };
 		9743C30120878C70006981FB /* SearchResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultController.swift; sourceTree = "<group>"; };
-		974FD5CC2340572400FFDEEC /* Mainv2.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Mainv2.storyboard; sourceTree = "<group>"; };
-		974FD5CE23405C3700FFDEEC /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
+		974FD5CE23405C3700FFDEEC /* WindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
 		974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileManagerController.swift; sourceTree = "<group>"; };
 		974FFE602352744800F6BF28 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		974FFE6823533E8D00F6BF28 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
+		974FFE6C2353AA3200F6BF28 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		974FFE6E2353AA3900F6BF28 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
 		9750B80F233AEBE5007B019C /* libicudata.58.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicudata.58.2.dylib; sourceTree = "<group>"; };
 		9750B810233AEBE5007B019C /* libicutest.58.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicutest.58.2.dylib; sourceTree = "<group>"; };
 		9750B811233AEBE5007B019C /* libicuuc.58.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libicuuc.58.2.dylib; sourceTree = "<group>"; };
@@ -634,7 +635,6 @@
 		97CA4A6420A0F583008CEA6D /* valuesetmatchdecider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = valuesetmatchdecider.h; sourceTree = "<group>"; };
 		97CA4A6520A0F583008CEA6D /* queryparser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = queryparser.h; sourceTree = "<group>"; };
 		97CA4A7120A21D24008CEA6D /* LibraryLanguageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryLanguageController.swift; sourceTree = "<group>"; };
-		97CAFAB12052DE6200AC1F68 /* Storyboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 		97D00A7E1FBB92D400165629 /* TableOfContentItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableOfContentItem.swift; sourceTree = "<group>"; };
 		97D0C4DC211BF72B00B00DAA /* TableViewSectionFooterLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewSectionFooterLabel.swift; sourceTree = "<group>"; };
 		97DBCF9C203CA254004EE274 /* SettingExternalLinkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingExternalLinkController.swift; sourceTree = "<group>"; };
@@ -661,6 +661,7 @@
 			files = (
 				9750B823233AEBE5007B019C /* libpugixml.dylib in Frameworks */,
 				9750B821233AEBE5007B019C /* libmicrohttpd.12.dylib in Frameworks */,
+				974FFE6F2353AA3900F6BF28 /* WebKit.framework in Frameworks */,
 				9750B827233AEBE5007B019C /* liblzma.5.dylib in Frameworks */,
 				9750B828233AEBE5007B019C /* libkiwix.8.dylib in Frameworks */,
 				9750B822233AEBE5007B019C /* libicutu.58.2.dylib in Frameworks */,
@@ -669,6 +670,7 @@
 				9750B81C233AEBE5007B019C /* libicudata.58.2.dylib in Frameworks */,
 				9750B81D233AEBE5007B019C /* libicutest.58.2.dylib in Frameworks */,
 				9750B820233AEBE5007B019C /* libzim.6.dylib in Frameworks */,
+				974FFE6D2353AA3200F6BF28 /* Foundation.framework in Frameworks */,
 				9750B826233AEBE5007B019C /* libcurl.4.dylib in Frameworks */,
 				9750B81F233AEBE5007B019C /* libz.1.2.8.dylib in Frameworks */,
 				DFD371610877B5817E9C9FEB /* Pods_macOS.framework in Frameworks */,
@@ -718,6 +720,8 @@
 		3B93EAF9B5C5AA23046BDEAC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				974FFE6E2353AA3900F6BF28 /* WebKit.framework */,
+				974FFE6C2353AA3200F6BF28 /* Foundation.framework */,
 				97F6CC5020BD960F005CDBD2 /* MapKit.framework */,
 				97A6882F207D40F500DBBE0D /* Pods_iOS.framework */,
 				975FDB061F608F4100A10E8C /* WebKit.framework */,
@@ -885,11 +889,11 @@
 			isa = PBXGroup;
 			children = (
 				97533B441F4C721D00F6651A /* Main */,
-				9768C23A1F4B7F6300FD499B /* Preference.swift */,
-				974FD5CE23405C3700FFDEEC /* Main.swift */,
-				974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */,
-				974FFE602352744800F6BF28 /* WebViewController.swift */,
+				974FD5CE23405C3700FFDEEC /* WindowController.swift */,
 				974FFE6823533E8D00F6BF28 /* SearchController.swift */,
+				974FFE602352744800F6BF28 /* WebViewController.swift */,
+				974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */,
+				9768C23A1F4B7F6300FD499B /* Preference.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -898,8 +902,6 @@
 			isa = PBXGroup;
 			children = (
 				976771741F4378FC007ED0C2 /* Main.storyboard */,
-				974FD5CC2340572400FFDEEC /* Mainv2.storyboard */,
-				97CAFAB12052DE6200AC1F68 /* Storyboard.storyboard */,
 				9765D97F1F50CC4700BFDC1E /* Search.storyboard */,
 				9768C2361F4B7E9900FD499B /* Preference.storyboard */,
 			);
@@ -1623,9 +1625,7 @@
 				9707B8F61F4B4F1500075D4F /* Assets.xcassets in Resources */,
 				976771791F4378FC007ED0C2 /* Main.storyboard in Resources */,
 				9768C2371F4B7E9900FD499B /* Preference.storyboard in Resources */,
-				974FD5CD2340572400FFDEEC /* Mainv2.storyboard in Resources */,
 				9765D9801F50CC4700BFDC1E /* Search.storyboard in Resources */,
-				97CAFAB22052DE6200AC1F68 /* Storyboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1768,7 +1768,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				974FFE6623527CB800F6BF28 /* Bookmark.swift in Sources */,
-				974FD5CF23405C3700FFDEEC /* Main.swift in Sources */,
+				974FD5CF23405C3700FFDEEC /* WindowController.swift in Sources */,
 				97CAFA942051EC4B00AC1F68 /* BackupManager.swift in Sources */,
 				974FFE6A23533E8D00F6BF28 /* SearchController.swift in Sources */,
 				9768C23B1F4B7F6300FD499B /* Preference.swift in Sources */,

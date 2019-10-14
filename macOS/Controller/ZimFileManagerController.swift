@@ -73,7 +73,7 @@ class ZimFileManagerController: NSViewController, NSOutlineViewDelegate, NSOutli
         guard let outlineView = notification.object as? NSOutlineView else {return}
         let item = outlineView.item(atRow: outlineView.selectedRow)
         
-        guard let windowController = view.window?.windowController as? Mainv2WindowController else {return}
+        guard let windowController = view.window?.windowController as? WindowController else {return}
         windowController.webViewController?.loadMainPage(id: "")
     }
 }

@@ -11,7 +11,9 @@ import RealmSwift
 import SwiftyUserDefaults
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, TabManagement {
+    private let queue = OperationQueue()
+    private var windowControllers = Set<NSWindowController>()
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // if app crashed previously, do not reopen zim files
@@ -19,6 +21,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             Defaults[.zimFilePaths] = []
         }
         Defaults[.terminated] = false
+        
+        // scan zim files
+        queue.addOperation(LibraryScanOperation())
+        
+        // set up initial window controller
+        if let windowController = NSApplication.shared.mainWindow?.windowController as? WindowController {
+            windowControllers.insert(windowController)
+            windowController.tabManager = self
+        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -30,11 +41,37 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func application(_ sender: NSApplication, openFile filename: String) -> Bool {
-        guard let controller = NSApplication.shared.mainWindow?.windowController as? Mainv2WindowController,
-            let url = URL(string: filename) else {return false}
-        controller.openZimFiles(urls: [url])
+        guard let url = URL(string: filename) else {return false}
+        openFile(urls: [url])
         return true
     }
+    
+    // MARK: - TabManagment
+    
+    func createTab(window: NSWindow) {
+        let storyboard = NSStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateInitialController() as! WindowController
+        windowControllers.insert(controller)
+        controller.tabManager = self
+        window.addTabbedWindow(controller.window!, ordered: .above)
+        controller.window?.makeKeyAndOrderFront(nil)
+    }
+    
+    func willCloseTab(controller: NSWindowController) {
+        windowControllers.remove(controller)
+    }
+    
+    // MARK: - open file
+    
+    func openFile(urls: [URL]) {
+        let operation = LibraryScanOperation(urls: urls)
+        queue.addOperation(operation)
+    }
+}
+
+protocol TabManagement: class {
+    func createTab(window: NSWindow)
+    func willCloseTab(controller: NSWindowController)
 }
 
 extension DefaultsKeys {

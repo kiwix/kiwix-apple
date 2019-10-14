@@ -100,7 +100,7 @@ class MainWindowController: NSWindowController, NSWindowDelegate, NSSearchFieldD
         openPanel.allowedFileTypes = ["zim", "zimaa"]
         
         openPanel.beginSheetModal(for: window!) { response in
-            guard response.rawValue == NSFileHandlingPanelOKButton else {return}
+            guard response == NSApplication.ModalResponse.OK else {return}
             let paths = openPanel.urls.map({$0.path})
             self.openZimFiles(paths: paths)
         }

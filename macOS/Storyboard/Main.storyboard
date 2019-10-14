@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14868"/>
-        <plugIn identifier="com.apple.WebKit2IBPlugin" version="14868"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -666,13 +665,12 @@
         <!--Window Controller-->
         <scene sceneID="RfV-d4-Op0">
             <objects>
-                <windowController id="95r-g6-5ej" customClass="Mainv2WindowController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <windowController id="95r-g6-5ej" customClass="WindowController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <window key="window" title="Welcome to Kiwix" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" tabbingMode="preferred" titleVisibility="hidden" id="Rv4-VQ-fOi">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="900" y="400" width="437" height="297"/>
+                        <rect key="contentRect" x="664" y="400" width="437" height="297"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1050"/>
-                        <value key="minSize" type="size" width="700" height="400"/>
                         <toolbar key="toolbar" implicitIdentifier="C56383F3-F639-473C-BEC3-C7D71A808BD0" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="regular" id="i5B-xS-JhS">
                             <allowedToolbarItems>
                                 <toolbarItem implicitItemIdentifier="NSToolbarShowColorsItem" id="Dc7-xv-uOM"/>
@@ -740,7 +738,6 @@
                                 <toolbarItem reference="tNq-SQ-omF"/>
                                 <toolbarItem reference="eV8-aW-dfd"/>
                                 <toolbarItem reference="5Z5-mr-XNo"/>
-                                <toolbarItem reference="bmt-M2-2M5"/>
                             </defaultToolbarItems>
                         </toolbar>
                         <connections>
@@ -753,7 +750,7 @@
                 </windowController>
                 <customObject id="iJ4-iv-ysw" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-47" y="-95"/>
+            <point key="canvasLocation" x="-47" y="-81"/>
         </scene>
         <!--Main Split View Controller-->
         <scene sceneID="0QK-dl-yLx">
@@ -824,13 +821,13 @@
                                     <outlet property="delegate" destination="yPa-Gm-cWg" id="daR-TX-Pt6"/>
                                 </connections>
                             </searchField>
-                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="26" horizontalPageScroll="10" verticalLineScroll="26" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2IM-Gp-bZA">
+                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2IM-Gp-bZA">
                                 <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
                                 <clipView key="contentView" drawsBackground="NO" id="v0g-tH-RNw">
                                     <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="automatic" viewBased="YES" outlineTableColumn="qpN-cS-dcY" id="snG-0d-uhr">
+                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" outlineTableColumn="qpN-cS-dcY" id="snG-0d-uhr">
                                             <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
@@ -941,25 +938,7 @@
                     <view key="view" id="vzN-uc-75D">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <wkWebView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="38S-JV-6IP">
-                                <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
-                                <wkWebViewConfiguration key="configuration">
-                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                    <wkPreferences key="preferences"/>
-                                </wkWebViewConfiguration>
-                            </wkWebView>
-                        </subviews>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="38S-JV-6IP" secondAttribute="trailing" id="5RF-gm-LQ0"/>
-                            <constraint firstAttribute="bottom" secondItem="38S-JV-6IP" secondAttribute="bottom" id="7fS-ME-og0"/>
-                            <constraint firstItem="38S-JV-6IP" firstAttribute="top" secondItem="vzN-uc-75D" secondAttribute="top" id="C1F-zP-veJ"/>
-                            <constraint firstItem="38S-JV-6IP" firstAttribute="leading" secondItem="vzN-uc-75D" secondAttribute="leading" id="afs-9t-tnT"/>
-                        </constraints>
                     </view>
-                    <connections>
-                        <outlet property="webView" destination="38S-JV-6IP" id="cvl-7H-dih"/>
-                    </connections>
                 </viewController>
                 <customObject id="dpb-TR-zus" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
