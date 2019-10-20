@@ -157,6 +157,7 @@
 		97E9834E1F4CA0A00021E96A /* LegacyWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9834D1F4CA0A00021E96A /* LegacyWebViewController.swift */; };
 		97E983501F4CA54A0021E96A /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9834F1F4CA54A0021E96A /* SearchResultController.swift */; };
 		97E983541F4DDB670021E96A /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E983531F4DDB670021E96A /* SearchView.swift */; };
+		97EFF05E235CAEFC00FBB7A4 /* ContentTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EFF05D235CAEFC00FBB7A4 /* ContentTabController.swift */; };
 		97F4210E22EE5590001E41F9 /* FileImportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4210D22EE5590001E41F9 /* FileImportController.swift */; };
 		97F4D10620AB80740038FC87 /* LibraryZimFileDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4D10520AB80740038FC87 /* LibraryZimFileDetailController.swift */; };
 		97F4D10A20ADD0F00038FC87 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4D10920ADD0F00038FC87 /* DownloadManager.swift */; };
@@ -643,6 +644,7 @@
 		97E9834D1F4CA0A00021E96A /* LegacyWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyWebViewController.swift; sourceTree = "<group>"; };
 		97E9834F1F4CA54A0021E96A /* SearchResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultController.swift; sourceTree = "<group>"; };
 		97E983531F4DDB670021E96A /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		97EFF05D235CAEFC00FBB7A4 /* ContentTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTabController.swift; sourceTree = "<group>"; };
 		97F4210D22EE5590001E41F9 /* FileImportController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImportController.swift; sourceTree = "<group>"; };
 		97F4D10520AB80740038FC87 /* LibraryZimFileDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryZimFileDetailController.swift; sourceTree = "<group>"; };
 		97F4D10920ADD0F00038FC87 /* DownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
@@ -892,6 +894,7 @@
 				974FD5CE23405C3700FFDEEC /* WindowController.swift */,
 				974FFE6823533E8D00F6BF28 /* SearchController.swift */,
 				974FFE602352744800F6BF28 /* WebViewController.swift */,
+				97EFF05D235CAEFC00FBB7A4 /* ContentTabController.swift */,
 				974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */,
 				9768C23A1F4B7F6300FD499B /* Preference.swift */,
 			);
@@ -1789,6 +1792,7 @@
 				9768C2351F4B7BAC00FD499B /* AppDelegate.swift in Sources */,
 				974FFE672352829000F6BF28 /* LibraryScanOperation.swift in Sources */,
 				97CAFA962051EC5100AC1F68 /* TableOfContentItem.swift in Sources */,
+				97EFF05E235CAEFC00FBB7A4 /* ContentTabController.swift in Sources */,
 				974FFE6423527CB800F6BF28 /* RealmConfig.swift in Sources */,
 				97CAFA902051EC4800AC1F68 /* ZimMultiReader.swift in Sources */,
 				97E983541F4DDB670021E96A /* SearchView.swift in Sources */,
