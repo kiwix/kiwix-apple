@@ -893,8 +893,8 @@
 				97533B441F4C721D00F6651A /* Main */,
 				974FD5CE23405C3700FFDEEC /* WindowController.swift */,
 				974FFE6823533E8D00F6BF28 /* SearchController.swift */,
-				974FFE602352744800F6BF28 /* WebViewController.swift */,
 				97EFF05D235CAEFC00FBB7A4 /* ContentTabController.swift */,
+				974FFE602352744800F6BF28 /* WebViewController.swift */,
 				974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */,
 				9768C23A1F4B7F6300FD499B /* Preference.swift */,
 			);
