@@ -663,7 +663,7 @@
                                 <toolbarItem implicitItemIdentifier="153CBDE8-AAD7-4988-BBF4-DCB6C88DDAF9" label="Toggle Sidebar" paletteLabel="Toggle Sidebar" image="NSListViewTemplate" sizingBehavior="auto" id="Zb5-oj-enX">
                                     <nil key="toolTip"/>
                                     <button key="view" verticalHuggingPriority="750" id="b8e-oI-y8S">
-                                        <rect key="frame" x="23" y="14" width="40" height="25"/>
+                                        <rect key="frame" x="24" y="14" width="39" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="roundTextured" title="Textured Rounded" bezelStyle="texturedRounded" image="NSListViewTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dFl-14-lkm">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -677,7 +677,7 @@
                                 <toolbarItem implicitItemIdentifier="8B4F0FF6-083D-40EC-8C22-804091EA1403" label="Open File" paletteLabel="Open File" image="Open" sizingBehavior="auto" id="tNq-SQ-omF">
                                     <nil key="toolTip"/>
                                     <button key="view" verticalHuggingPriority="750" id="Zum-W1-UTm">
-                                        <rect key="frame" x="9" y="14" width="39" height="25"/>
+                                        <rect key="frame" x="10" y="14" width="38" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="roundTextured" title="Textured Rounded" bezelStyle="texturedRounded" image="Open" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dHD-4E-W1K">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -691,7 +691,7 @@
                                 <toolbarItem implicitItemIdentifier="79EE8B2D-7890-41EC-BA1B-51CFA0C4287B" label="New Tab" paletteLabel="New Tab" image="NSAddTemplate" sizingBehavior="auto" id="5Z5-mr-XNo">
                                     <nil key="toolTip"/>
                                     <button key="view" verticalHuggingPriority="750" id="knm-Z7-9tj">
-                                        <rect key="frame" x="7" y="14" width="39" height="25"/>
+                                        <rect key="frame" x="8" y="14" width="38" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="roundTextured" title="Textured Rounded" bezelStyle="texturedRounded" image="NSAddTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Zuv-au-hfa">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -707,7 +707,7 @@
                                 <toolbarItem implicitItemIdentifier="DED39C18-9615-461D-BF75-66038BACBD77" label="Navigation" paletteLabel="Navigation" sizingBehavior="auto" id="F23-9f-GJg">
                                     <nil key="toolTip"/>
                                     <segmentedControl key="view" verticalHuggingPriority="750" id="2gP-m5-iUo">
-                                        <rect key="frame" x="0.0" y="14" width="72" height="24"/>
+                                        <rect key="frame" x="0.0" y="14" width="71" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="momentary" id="Ko5-Xh-kk9">
                                             <font key="font" metaFont="system"/>
@@ -724,7 +724,7 @@
                                 <toolbarItem implicitItemIdentifier="8ABE0FA0-E07C-471B-8D42-0B7054EEE30E" label="Library" paletteLabel="Library" image="NSFolder" sizingBehavior="auto" id="l4b-Ba-dQc">
                                     <nil key="toolTip"/>
                                     <button key="view" verticalHuggingPriority="750" id="GqL-Ei-9Jf">
-                                        <rect key="frame" x="0.0" y="14" width="46" height="25"/>
+                                        <rect key="frame" x="0.0" y="14" width="45" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <buttonCell key="cell" type="roundTextured" title="Textured Rounded" bezelStyle="texturedRounded" image="NSFolder" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="W6J-8k-lb9">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
@@ -750,6 +750,7 @@
                         </connections>
                     </window>
                     <connections>
+                        <outlet property="libraryButton" destination="GqL-Ei-9Jf" id="7SR-Q9-eTT"/>
                         <segue destination="mzK-Jj-OIq" kind="relationship" relationship="window.shadowedContentViewController" id="2V3-7Q-PIG"/>
                     </connections>
                 </windowController>
@@ -812,11 +813,11 @@
             <objects>
                 <viewController id="yPa-Gm-cWg" customClass="SearchController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="qMM-Z0-eVD">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="301"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <searchField wantsLayer="YES" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nmm-df-5pY">
-                                <rect key="frame" x="10" y="268" width="430" height="22"/>
+                                <rect key="frame" x="10" y="269" width="430" height="22"/>
                                 <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="yGL-Az-Jjd">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -827,7 +828,7 @@
                                 </connections>
                             </searchField>
                             <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="uEq-m8-jYH">
-                                <rect key="frame" x="0.0" y="255" width="450" height="5"/>
+                                <rect key="frame" x="0.0" y="256" width="450" height="5"/>
                             </box>
                             <tabView type="noTabsNoBorder" initialItem="eyc-10-Fip" translatesAutoresizingMaskIntoConstraints="NO" id="2IG-iy-o4e">
                                 <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
@@ -838,13 +839,13 @@
                                             <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="26" horizontalPageScroll="10" verticalLineScroll="26" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DwF-UR-SH6">
+                                                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="24" horizontalPageScroll="10" verticalLineScroll="24" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DwF-UR-SH6">
                                                     <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
                                                     <clipView key="contentView" drawsBackground="NO" id="iDg-5Y-i2Y">
                                                         <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
-                                                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="automatic" viewBased="YES" outlineTableColumn="1Og-YN-wc2" id="uI9-iN-vFI">
+                                                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="22" rowSizeStyle="automatic" viewBased="YES" outlineTableColumn="1Og-YN-wc2" id="uI9-iN-vFI">
                                                                 <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <size key="intercellSpacing" width="3" height="2"/>
@@ -949,13 +950,13 @@
                                             <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="26" horizontalPageScroll="10" verticalLineScroll="26" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h9A-OM-SFB">
+                                                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h9A-OM-SFB">
                                                     <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
                                                     <clipView key="contentView" drawsBackground="NO" id="2xl-WZ-y4U">
                                                         <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
-                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
-                                                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="automatic" viewBased="YES" outlineTableColumn="0aS-t7-Z8j" id="m9c-rA-boG">
+                                                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" outlineTableColumn="0aS-t7-Z8j" id="m9c-rA-boG">
                                                                 <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <size key="intercellSpacing" width="3" height="2"/>
@@ -1065,16 +1066,16 @@
                             </tabView>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="uEq-m8-jYH" firstAttribute="top" secondItem="nmm-df-5pY" secondAttribute="bottom" constant="10" id="1v0-x9-iKa"/>
                             <constraint firstAttribute="bottom" secondItem="2IG-iy-o4e" secondAttribute="bottom" id="2Yl-Qj-ijT"/>
                             <constraint firstItem="uEq-m8-jYH" firstAttribute="leading" secondItem="qMM-Z0-eVD" secondAttribute="leading" id="Elj-Mx-FFh"/>
-                            <constraint firstItem="uEq-m8-jYH" firstAttribute="top" secondItem="2IG-iy-o4e" secondAttribute="top" id="G3E-Tj-GFk"/>
                             <constraint firstAttribute="trailing" secondItem="2IG-iy-o4e" secondAttribute="trailing" id="Jd1-np-B4k"/>
                             <constraint firstItem="2IG-iy-o4e" firstAttribute="leading" secondItem="qMM-Z0-eVD" secondAttribute="leading" id="N4H-nP-Egz"/>
                             <constraint firstAttribute="trailing" secondItem="uEq-m8-jYH" secondAttribute="trailing" id="QIc-Kc-pio"/>
-                            <constraint firstItem="2IG-iy-o4e" firstAttribute="top" secondItem="nmm-df-5pY" secondAttribute="bottom" constant="10" id="Spx-Ab-sTi"/>
                             <constraint firstItem="nmm-df-5pY" firstAttribute="leading" secondItem="qMM-Z0-eVD" secondAttribute="leading" constant="10" id="fiu-1X-06d"/>
                             <constraint firstAttribute="trailing" secondItem="nmm-df-5pY" secondAttribute="trailing" constant="10" id="l69-re-p1v"/>
                             <constraint firstItem="nmm-df-5pY" firstAttribute="top" secondItem="qMM-Z0-eVD" secondAttribute="top" constant="10" placeholder="YES" id="mWi-AF-Wip"/>
+                            <constraint firstItem="2IG-iy-o4e" firstAttribute="top" secondItem="uEq-m8-jYH" secondAttribute="bottom" id="tIu-iD-HJi"/>
                         </constraints>
                     </view>
                     <connections>
@@ -1120,8 +1121,8 @@
             <objects>
                 <tabViewController selectedTabViewItemIndex="0" tabStyle="unspecified" id="0ox-PQ-qcl" customClass="ContentTabController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <tabViewItems>
-                        <tabViewItem identifier="" id="4uN-UD-XCy"/>
-                        <tabViewItem id="eYY-NL-rfX"/>
+                        <tabViewItem label="Library" identifier="Library" id="4uN-UD-XCy"/>
+                        <tabViewItem label="Reader" identifier="Reader" id="eYY-NL-rfX"/>
                     </tabViewItems>
                     <tabView key="tabView" type="noTabsNoBorder" id="sAB-F2-QxH">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>

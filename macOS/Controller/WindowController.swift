@@ -16,6 +16,8 @@ class WindowController: NSWindowController {
     weak var tabManager: TabManagement?
     private var windowWillCloseObserver: NSObjectProtocol?
     
+    @IBOutlet weak var libraryButton: NSButton!
+    
     // MARK: - controllers
     
     var navigationSplitViewController: NSSplitViewController? {

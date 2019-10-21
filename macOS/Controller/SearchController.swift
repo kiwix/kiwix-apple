@@ -20,6 +20,12 @@ class SearchController: NSViewController, NSSearchFieldDelegate, NSOutlineViewDa
     private let queue = SearchQueue()
     private var results = [SearchResult]()
     
+    private enum Mode: String {
+        case onDevice = "OnDevice"
+        case results = "Results"
+        case inProgress = "InProgress"
+    }
+    
     // MARK: - Database
     
     private let localZimFiles: Results<ZimFile>? = {
@@ -63,12 +69,12 @@ class SearchController: NSViewController, NSSearchFieldDelegate, NSOutlineViewDa
     // MARK: - SearchQueueEvents
     
     func searchStarted() {
-        tabView.selectTabViewItem(withIdentifier: Tabs.InProgress.rawValue)
+        tabView.selectTabViewItem(withIdentifier: Mode.inProgress.rawValue)
         progressIndicator.startAnimation(nil)
     }
     
     func searchFinished(searchText: String, results: [SearchResult]) {
-        let tab = searchText.count > 0 ? Tabs.Results : Tabs.OnDevice
+        let tab = searchText.count > 0 ? Mode.results : Mode.onDevice
         self.results = results
         resultsOutlineView.reloadData()
         progressIndicator.stopAnimation(nil)
@@ -128,21 +134,19 @@ class SearchController: NSViewController, NSSearchFieldDelegate, NSOutlineViewDa
     }
     
     func outlineViewSelectionDidChange(_ notification: Notification) {
-        guard let outlineView = notification.object as? NSOutlineView else {return}
+        guard let outlineView = notification.object as? NSOutlineView,
+            let windowController = view.window?.windowController as? WindowController else {return}
         if outlineView == onDeviceOutlineView {
-            return
+            guard let zimFile = outlineView.item(atRow: outlineView.selectedRow) as? ZimFile,
+                let url = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFile.id) else {return}
+            windowController.contentTabController?.setMode(.reader)
+            windowController.webViewController?.load(url: url)
         } else if outlineView == resultsOutlineView {
-            guard let searchResult = outlineView.item(atRow: outlineView.selectedRow) as? SearchResult,
-                let windowController = view.window?.windowController as? WindowController else {return}
+            guard let searchResult = outlineView.item(atRow: outlineView.selectedRow) as? SearchResult else {return}
+            windowController.contentTabController?.setMode(.reader)
             windowController.webViewController?.load(url: searchResult.url)
         } else {
             return
         }
     }
-}
-
-private enum Tabs: String {
-    case OnDevice = "OnDevice"
-    case Results = "Results"
-    case InProgress = "InProgress"
 }
