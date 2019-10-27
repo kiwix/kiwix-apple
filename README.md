@@ -3,16 +3,15 @@
 This is the home for Kiwix apps on iOS and macOS.
 
 [![CodeFactor](https://www.codefactor.io/repository/github/kiwix/apple/badge)](https://www.codefactor.io/repository/github/kiwix/apple)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 <img src="https://img.shields.io/badge/Swift-5.2-orange.svg" alt="Drawing="/>
 
 ### Mobile app for iPads & iPhones ###
 - Download the iOS mobile app on [iTunes App Store](https://ios.kiwix.org)
 
 ### Kiwix Desktop for macOS ###
-- Download Kiwix Desktop on [iTunes App Store](https://macos.kiwix.org) 
+- Download Kiwix Desktop on [iTunes App Store](https://macos.kiwix.org)
 - Download Kiwix Desktop [DMG file](https://download.kiwix.org/release/kiwix-desktop-macos/)
-
 
 ## Developers
 
@@ -22,13 +21,13 @@ This is the home for Kiwix apps on iOS and macOS.
 * Latest Apple Developers Tools ([Xcode](https://developer.apple.com/xcode/))
 * Its command-line utilities (`xcode-select --install`)
 * [CocoaPods](https://cocoapods.org/) `sudo gem install cocoapods && pod repo update`
-* [kiwix-lib](https://cocoapods.org/)
+* [kiwix-lib](https://github.com/kiwix/kiwix-lib)
 
 ### Building kiwix-lib
 
 Instructions are available [on the kiwix-build repo](https://github.com/kiwix/kiwix-build).
 
-```
+```bash
 git clone https://github.com/kiwix/kiwix-build.git
 cd kiwix-build
 # if on macOS mojave (10.14), install headers to standard location
