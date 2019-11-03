@@ -834,18 +834,18 @@
                                 <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
                                 <font key="font" metaFont="system"/>
                                 <tabViewItems>
-                                    <tabViewItem label="OnDevice" identifier="OnDevice" id="eyc-10-Fip">
+                                    <tabViewItem label="Local" identifier="Local" id="eyc-10-Fip">
                                         <view key="view" id="uUh-Q7-Cu9">
                                             <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="24" horizontalPageScroll="10" verticalLineScroll="24" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DwF-UR-SH6">
+                                                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="46" horizontalPageScroll="10" verticalLineScroll="46" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DwF-UR-SH6">
                                                     <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
                                                     <clipView key="contentView" drawsBackground="NO" id="iDg-5Y-i2Y">
                                                         <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
-                                                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="22" rowSizeStyle="automatic" viewBased="YES" outlineTableColumn="1Og-YN-wc2" id="uI9-iN-vFI">
+                                                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="44" rowSizeStyle="automatic" viewBased="YES" outlineTableColumn="1Og-YN-wc2" id="uI9-iN-vFI">
                                                                 <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <size key="intercellSpacing" width="3" height="2"/>
@@ -880,7 +880,7 @@
                                                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BUe-Cq-wg2">
                                                                                         <rect key="frame" x="40" y="5" width="405" height="14"/>
                                                                                         <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="KtM-Bu-EQD">
-                                                                                            <font key="font" metaFont="system" size="11"/>
+                                                                                            <font key="font" metaFont="smallSystem"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                         </textFieldCell>
@@ -1093,7 +1093,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="onDeviceOutlineView" destination="uI9-iN-vFI" id="4Uc-Ej-2aN"/>
+                        <outlet property="localOutlineView" destination="uI9-iN-vFI" id="qvn-Bj-hPC"/>
                         <outlet property="progressIndicator" destination="Ybo-AM-7QC" id="dHD-na-AAS"/>
                         <outlet property="resultsOutlineView" destination="m9c-rA-boG" id="jyP-ko-OmB"/>
                         <outlet property="searchField" destination="nmm-df-5pY" id="xyh-0s-PZ9"/>

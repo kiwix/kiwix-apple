@@ -12,7 +12,7 @@ import RealmSwift
 class SearchController: NSViewController, NSSearchFieldDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate, SearchQueueEvents {
     @IBOutlet weak var searchField: NSSearchField!
     @IBOutlet weak var tabView: NSTabView!
-    @IBOutlet weak var onDeviceOutlineView: NSOutlineView!
+    @IBOutlet weak var localOutlineView: NSOutlineView!
     @IBOutlet weak var resultsOutlineView: NSOutlineView!
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
     
@@ -45,7 +45,7 @@ class SearchController: NSViewController, NSSearchFieldDelegate, NSOutlineViewDa
         
         localZimFilesChangeToken = localZimFiles?.observe({ (change) in
             if case .update = change {
-                self.onDeviceOutlineView.reloadData()
+                self.localOutlineView.reloadData()
             }
         })
     }
@@ -85,7 +85,7 @@ class SearchController: NSViewController, NSSearchFieldDelegate, NSOutlineViewDa
     // MARK: - NSOutlineViewDataSource
     
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
-        if outlineView == onDeviceOutlineView {
+        if outlineView == localOutlineView {
             return item == nil ? (localZimFiles?.count ?? 0) : 0
         } else if outlineView == resultsOutlineView {
             return item == nil ? results.count : 0
@@ -95,7 +95,7 @@ class SearchController: NSViewController, NSSearchFieldDelegate, NSOutlineViewDa
     }
     
     func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-        if outlineView == onDeviceOutlineView {
+        if outlineView == localOutlineView {
             return localZimFiles?[index] ?? Object()
         } else if outlineView == resultsOutlineView {
             return results[index]
@@ -111,7 +111,7 @@ class SearchController: NSViewController, NSSearchFieldDelegate, NSOutlineViewDa
     // MARK: - NSOutlineViewDelegate
     
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-        if outlineView == onDeviceOutlineView {
+        if outlineView == localOutlineView {
             guard let item = item as? ZimFile else {return nil}
             let identifier = NSUserInterfaceItemIdentifier("ZimFileCell")
             let view = outlineView.makeView(withIdentifier: identifier, owner: self) as! ZimFileTableCellView
@@ -138,7 +138,7 @@ class SearchController: NSViewController, NSSearchFieldDelegate, NSOutlineViewDa
     func outlineViewSelectionDidChange(_ notification: Notification) {
         guard let outlineView = notification.object as? NSOutlineView,
             let windowController = view.window?.windowController as? WindowController else {return}
-        if outlineView == onDeviceOutlineView {
+        if outlineView == localOutlineView {
             guard let zimFile = outlineView.item(atRow: outlineView.selectedRow) as? ZimFile,
                 let url = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFile.id) else {return}
             windowController.contentTabController?.setMode(.reader)
