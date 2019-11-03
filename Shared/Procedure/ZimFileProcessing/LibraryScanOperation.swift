@@ -49,10 +49,8 @@ class LibraryScanOperation: Operation, ZimFileProcessing {
                     includingPropertiesForKeys: [],
                     options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants])
                 return contents ?? []
-            } else if url.isFileURL {
-                return [url]
             } else {
-                return []
+                return [url]
             }
         }).flatMap({ $0 }).filter({ $0.pathExtension == "zim" })
         zimFileURLs.forEach({ ZimMultiReader.shared.add(url: $0) })
