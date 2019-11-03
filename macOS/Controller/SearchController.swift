@@ -157,9 +157,3 @@ class ZimFileTableCellView: NSTableCellView {
     @IBOutlet weak var titleTextField: NSTextField!
     @IBOutlet weak var subtitleTextField: NSTextField!
 }
-
-class ArticleSearchField: NSSearchField {
-    override func keyDown(with event: NSEvent) {
-        print(event)
-    }
-}

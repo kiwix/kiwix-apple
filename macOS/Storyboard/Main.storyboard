@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15400"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -816,7 +817,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="450" height="301"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <searchField wantsLayer="YES" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nmm-df-5pY" customClass="ArticleSearchField" customModule="Kiwix" customModuleProvider="target">
+                            <searchField wantsLayer="YES" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nmm-df-5pY">
                                 <rect key="frame" x="10" y="269" width="430" height="22"/>
                                 <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="yGL-Az-Jjd">
                                     <font key="font" metaFont="system"/>
@@ -910,7 +911,7 @@
                                                                                             <constraint firstAttribute="height" constant="30" id="cHB-kK-nOL"/>
                                                                                         </constraints>
                                                                                         <color key="borderColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                                                                        <color key="fillColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                                        <color key="fillColor" name="FaviconBackgroundColor"/>
                                                                                     </box>
                                                                                 </subviews>
                                                                                 <constraints>
@@ -1282,5 +1283,8 @@
         <image name="NSGoForwardTemplate" width="9" height="12"/>
         <image name="NSListViewTemplate" width="14" height="10"/>
         <image name="Open" width="16" height="16"/>
+        <namedColor name="FaviconBackgroundColor">
+            <color red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>
