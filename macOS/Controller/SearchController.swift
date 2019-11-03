@@ -19,6 +19,7 @@ class SearchController: NSViewController, NSSearchFieldDelegate, NSOutlineViewDa
     private var searchFieldTopConstraint: NSLayoutConstraint?
     private let queue = SearchQueue()
     private var results = [SearchResult]()
+    private var localZimFilesChangeToken: NotificationToken?
     
     private enum Mode: String {
         case onDevice = "OnDevice"
@@ -36,17 +37,17 @@ class SearchController: NSViewController, NSSearchFieldDelegate, NSOutlineViewDa
         } catch { return nil }
     }()
     
-    private let localIncludedInSearchZimFiles: Results<ZimFile>? = {
-        do {
-            let database = try Realm(configuration: Realm.defaultConfig)
-            let predicate = NSPredicate(format: "stateRaw == %@ AND includeInSearch == true", ZimFile.State.local.rawValue)
-            return database.objects(ZimFile.self).filter(predicate)
-        } catch { return nil }
-    }()
+    // MARK: - Override
     
     override func viewDidLoad() {
         super.viewDidLoad()
         queue.eventDelegate = self
+        
+        localZimFilesChangeToken = localZimFiles?.observe({ (change) in
+            if case .update = change {
+                self.onDeviceOutlineView.reloadData()
+            }
+        })
     }
     
     override func updateViewConstraints() {
@@ -112,9 +113,10 @@ class SearchController: NSViewController, NSSearchFieldDelegate, NSOutlineViewDa
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
         if outlineView == onDeviceOutlineView {
             guard let item = item as? ZimFile else {return nil}
-            let identifier = NSUserInterfaceItemIdentifier("DataCell")
-            let view = outlineView.makeView(withIdentifier: identifier, owner: self) as! NSTableCellView
-            view.textField?.stringValue = item.title
+            let identifier = NSUserInterfaceItemIdentifier("ZimFileCell")
+            let view = outlineView.makeView(withIdentifier: identifier, owner: self) as! ZimFileTableCellView
+            view.titleTextField.stringValue = item.title
+            view.subtitleTextField.stringValue = "\(item.creationDateDescription), \(item.fileSizeDescription)"
             view.imageView?.image = NSImage(data: item.icon)
             return view
         } else if outlineView == resultsOutlineView {
@@ -148,5 +150,16 @@ class SearchController: NSViewController, NSSearchFieldDelegate, NSOutlineViewDa
         } else {
             return
         }
+    }
+}
+
+class ZimFileTableCellView: NSTableCellView {
+    @IBOutlet weak var titleTextField: NSTextField!
+    @IBOutlet weak var subtitleTextField: NSTextField!
+}
+
+class ArticleSearchField: NSSearchField {
+    override func keyDown(with event: NSEvent) {
+        print(event)
     }
 }
