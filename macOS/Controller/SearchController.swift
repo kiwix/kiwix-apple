@@ -22,7 +22,7 @@ class SearchController: NSViewController, NSSearchFieldDelegate, NSOutlineViewDa
     private var localZimFilesChangeToken: NotificationToken?
     
     private enum Mode: String {
-        case onDevice = "OnDevice"
+        case local = "Local"
         case results = "Results"
         case inProgress = "InProgress"
     }
@@ -75,7 +75,7 @@ class SearchController: NSViewController, NSSearchFieldDelegate, NSOutlineViewDa
     }
     
     func searchFinished(searchText: String, results: [SearchResult]) {
-        let tab = searchText.count > 0 ? Mode.results : Mode.onDevice
+        let tab = searchText.count > 0 ? Mode.results : Mode.local
         self.results = results
         resultsOutlineView.reloadData()
         progressIndicator.stopAnimation(nil)

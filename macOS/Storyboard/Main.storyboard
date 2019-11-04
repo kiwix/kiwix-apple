@@ -870,6 +870,31 @@
                                                                                 <rect key="frame" x="1" y="1" width="447" height="44"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
+                                                                                    <box boxType="custom" borderType="none" cornerRadius="4" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="7XC-uj-0RI">
+                                                                                        <rect key="frame" x="4" y="7" width="30" height="30"/>
+                                                                                        <view key="contentView" id="sRR-zH-IpY">
+                                                                                            <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                                            <subviews>
+                                                                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wbj-fR-ERV">
+                                                                                                    <rect key="frame" x="2" y="2" width="26" height="26"/>
+                                                                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="NSActionTemplate" id="sj0-b8-1lp"/>
+                                                                                                </imageView>
+                                                                                            </subviews>
+                                                                                            <constraints>
+                                                                                                <constraint firstItem="wbj-fR-ERV" firstAttribute="height" secondItem="sRR-zH-IpY" secondAttribute="height" multiplier="0.9" id="EB4-Ex-GLr"/>
+                                                                                                <constraint firstItem="wbj-fR-ERV" firstAttribute="centerY" secondItem="sRR-zH-IpY" secondAttribute="centerY" id="KD5-9e-LJH"/>
+                                                                                                <constraint firstItem="wbj-fR-ERV" firstAttribute="width" secondItem="sRR-zH-IpY" secondAttribute="width" multiplier="0.9" id="c5m-am-dkK"/>
+                                                                                                <constraint firstItem="wbj-fR-ERV" firstAttribute="centerX" secondItem="sRR-zH-IpY" secondAttribute="centerX" id="gK0-4P-Hst"/>
+                                                                                            </constraints>
+                                                                                        </view>
+                                                                                        <constraints>
+                                                                                            <constraint firstAttribute="width" constant="30" id="PgN-h1-Y1v"/>
+                                                                                            <constraint firstAttribute="height" constant="30" id="cHB-kK-nOL"/>
+                                                                                        </constraints>
+                                                                                        <color key="borderColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                                                        <color key="fillColor" name="FaviconBackgroundColor"/>
+                                                                                    </box>
                                                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WKC-T9-rtP">
                                                                                         <rect key="frame" x="40" y="20" width="405" height="19"/>
                                                                                         <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="IRH-by-OX1">
@@ -886,33 +911,6 @@
                                                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                                         </textFieldCell>
                                                                                     </textField>
-                                                                                    <box boxType="custom" borderType="none" cornerRadius="4" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="7XC-uj-0RI">
-                                                                                        <rect key="frame" x="4" y="7" width="30" height="30"/>
-                                                                                        <view key="contentView" id="sRR-zH-IpY">
-                                                                                            <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
-                                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                                            <subviews>
-                                                                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wbj-fR-ERV">
-                                                                                                    <rect key="frame" x="3" y="3" width="24" height="24"/>
-                                                                                                    <constraints>
-                                                                                                        <constraint firstAttribute="height" constant="24" id="1BZ-rP-SOq"/>
-                                                                                                        <constraint firstAttribute="width" constant="24" id="Jm5-TD-Mah"/>
-                                                                                                    </constraints>
-                                                                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="NSActionTemplate" id="sj0-b8-1lp"/>
-                                                                                                </imageView>
-                                                                                            </subviews>
-                                                                                            <constraints>
-                                                                                                <constraint firstItem="wbj-fR-ERV" firstAttribute="centerY" secondItem="sRR-zH-IpY" secondAttribute="centerY" id="KD5-9e-LJH"/>
-                                                                                                <constraint firstItem="wbj-fR-ERV" firstAttribute="centerX" secondItem="sRR-zH-IpY" secondAttribute="centerX" id="gK0-4P-Hst"/>
-                                                                                            </constraints>
-                                                                                        </view>
-                                                                                        <constraints>
-                                                                                            <constraint firstAttribute="width" constant="30" id="PgN-h1-Y1v"/>
-                                                                                            <constraint firstAttribute="height" constant="30" id="cHB-kK-nOL"/>
-                                                                                        </constraints>
-                                                                                        <color key="borderColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                                                                        <color key="fillColor" name="FaviconBackgroundColor"/>
-                                                                                    </box>
                                                                                 </subviews>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="bottom" secondItem="BUe-Cq-wg2" secondAttribute="bottom" constant="5" id="BIs-xE-7Gc"/>
@@ -969,7 +967,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
                                                     <clipView key="contentView" drawsBackground="NO" id="2xl-WZ-y4U">
                                                         <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
-                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
                                                             <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" outlineTableColumn="0aS-t7-Z8j" id="m9c-rA-boG">
                                                                 <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
@@ -991,36 +989,36 @@
                                                                         </textFieldCell>
                                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                         <prototypeCellViews>
-                                                                            <tableCellView identifier="HeaderCell" id="ihl-SS-bJO">
-                                                                                <rect key="frame" x="1" y="1" width="447" height="17"/>
-                                                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                                <subviews>
-                                                                                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JUY-7y-nLc">
-                                                                                        <rect key="frame" x="0.0" y="1" width="447" height="14"/>
-                                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="HEADER CELL" id="mcl-PE-g1k">
-                                                                                            <font key="font" metaFont="smallSystemBold"/>
-                                                                                            <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
-                                                                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                                        </textFieldCell>
-                                                                                    </textField>
-                                                                                </subviews>
-                                                                                <connections>
-                                                                                    <outlet property="textField" destination="JUY-7y-nLc" id="k0y-tX-8Xh"/>
-                                                                                </connections>
-                                                                            </tableCellView>
                                                                             <tableCellView identifier="DataCell" id="2qn-gQ-voH">
-                                                                                <rect key="frame" x="1" y="20" width="447" height="17"/>
+                                                                                <rect key="frame" x="1" y="1" width="447" height="32"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
-                                                                                    <imageView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d45-wa-wfr">
-                                                                                        <rect key="frame" x="3" y="0.0" width="17" height="17"/>
-                                                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                                                        <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyDown" image="NSActionTemplate" id="5xp-ic-Xvc"/>
-                                                                                    </imageView>
-                                                                                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uS5-tx-mZU">
-                                                                                        <rect key="frame" x="25" y="0.0" width="422" height="17"/>
-                                                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                                    <box boxType="custom" cornerRadius="4" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="GLe-Qf-rKH">
+                                                                                        <rect key="frame" x="4" y="3" width="26" height="26"/>
+                                                                                        <view key="contentView" id="x15-rp-q2V">
+                                                                                            <rect key="frame" x="1" y="1" width="24" height="24"/>
+                                                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                                                            <subviews>
+                                                                                                <imageView translatesAutoresizingMaskIntoConstraints="NO" id="d45-wa-wfr">
+                                                                                                    <rect key="frame" x="1" y="1" width="22" height="22"/>
+                                                                                                    <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyUpOrDown" image="NSActionTemplate" id="5xp-ic-Xvc"/>
+                                                                                                </imageView>
+                                                                                            </subviews>
+                                                                                            <constraints>
+                                                                                                <constraint firstItem="d45-wa-wfr" firstAttribute="height" secondItem="x15-rp-q2V" secondAttribute="height" multiplier="0.9" id="C0O-CS-zkS"/>
+                                                                                                <constraint firstItem="d45-wa-wfr" firstAttribute="centerX" secondItem="x15-rp-q2V" secondAttribute="centerX" id="MFS-RI-vPX"/>
+                                                                                                <constraint firstItem="d45-wa-wfr" firstAttribute="width" secondItem="x15-rp-q2V" secondAttribute="width" multiplier="0.9" id="MfQ-zt-Bsa"/>
+                                                                                                <constraint firstItem="d45-wa-wfr" firstAttribute="centerY" secondItem="x15-rp-q2V" secondAttribute="centerY" id="cWA-TN-NMf"/>
+                                                                                            </constraints>
+                                                                                        </view>
+                                                                                        <constraints>
+                                                                                            <constraint firstAttribute="width" constant="26" id="3w7-aA-fLD"/>
+                                                                                            <constraint firstAttribute="height" constant="26" id="MIF-qC-oh3"/>
+                                                                                        </constraints>
+                                                                                        <color key="fillColor" name="FaviconBackgroundColor"/>
+                                                                                    </box>
+                                                                                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uS5-tx-mZU">
+                                                                                        <rect key="frame" x="36" y="8" width="409" height="16"/>
                                                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="blb-Og-gok">
                                                                                             <font key="font" metaFont="system"/>
                                                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -1028,6 +1026,13 @@
                                                                                         </textFieldCell>
                                                                                     </textField>
                                                                                 </subviews>
+                                                                                <constraints>
+                                                                                    <constraint firstItem="uS5-tx-mZU" firstAttribute="centerY" secondItem="2qn-gQ-voH" secondAttribute="centerY" id="1fX-qa-P9e"/>
+                                                                                    <constraint firstItem="GLe-Qf-rKH" firstAttribute="centerY" secondItem="2qn-gQ-voH" secondAttribute="centerY" id="cQe-oV-15g"/>
+                                                                                    <constraint firstItem="uS5-tx-mZU" firstAttribute="leading" secondItem="GLe-Qf-rKH" secondAttribute="trailing" constant="8" id="gIy-oR-ZiL"/>
+                                                                                    <constraint firstItem="GLe-Qf-rKH" firstAttribute="leading" secondItem="2qn-gQ-voH" secondAttribute="leading" constant="4" id="hmf-Hy-0G3"/>
+                                                                                    <constraint firstAttribute="trailing" secondItem="uS5-tx-mZU" secondAttribute="trailing" constant="4" id="qiK-Hv-NEi"/>
+                                                                                </constraints>
                                                                                 <connections>
                                                                                     <outlet property="imageView" destination="d45-wa-wfr" id="J36-RL-UXb"/>
                                                                                     <outlet property="textField" destination="uS5-tx-mZU" id="QgN-bS-gmS"/>
@@ -1284,7 +1289,7 @@
         <image name="NSListViewTemplate" width="14" height="10"/>
         <image name="Open" width="16" height="16"/>
         <namedColor name="FaviconBackgroundColor">
-            <color red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
