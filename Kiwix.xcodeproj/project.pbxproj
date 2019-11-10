@@ -32,7 +32,7 @@
 		972B6662200808D6003F5365 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B6661200808D6003F5365 /* WelcomeController.swift */; };
 		972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972E6F631FA11A6100F5C927 /* RoundedButton.swift */; };
 		9742596920FCE7BA000BB88A /* SettingLibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9742596820FCE7BA000BB88A /* SettingLibraryController.swift */; };
-		974FD5CF23405C3700FFDEEC /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FD5CE23405C3700FFDEEC /* WindowController.swift */; };
+		974FD5CF23405C3700FFDEEC /* WindowControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FD5CE23405C3700FFDEEC /* WindowControllers.swift */; };
 		974FFE5923526FB700F6BF28 /* URLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9767717D1F437BB9007ED0C2 /* URLProtocol.swift */; };
 		974FFE5B2352704600F6BF28 /* ZimFileManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */; };
 		974FFE612352744800F6BF28 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE602352744800F6BF28 /* WebViewController.swift */; };
@@ -272,7 +272,7 @@
 		972E6F631FA11A6100F5C927 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		9742596820FCE7BA000BB88A /* SettingLibraryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingLibraryController.swift; sourceTree = "<group>"; };
 		9743C30120878C70006981FB /* SearchResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultController.swift; sourceTree = "<group>"; };
-		974FD5CE23405C3700FFDEEC /* WindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
+		974FD5CE23405C3700FFDEEC /* WindowControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowControllers.swift; sourceTree = "<group>"; };
 		974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileManagerController.swift; sourceTree = "<group>"; };
 		974FFE602352744800F6BF28 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		974FFE6823533E8D00F6BF28 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
@@ -891,7 +891,7 @@
 			isa = PBXGroup;
 			children = (
 				97533B441F4C721D00F6651A /* Main */,
-				974FD5CE23405C3700FFDEEC /* WindowController.swift */,
+				974FD5CE23405C3700FFDEEC /* WindowControllers.swift */,
 				974FFE6823533E8D00F6BF28 /* SearchController.swift */,
 				97EFF05D235CAEFC00FBB7A4 /* ContentTabController.swift */,
 				974FFE602352744800F6BF28 /* WebViewController.swift */,
@@ -1771,7 +1771,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				974FFE6623527CB800F6BF28 /* Bookmark.swift in Sources */,
-				974FD5CF23405C3700FFDEEC /* WindowController.swift in Sources */,
+				974FD5CF23405C3700FFDEEC /* WindowControllers.swift in Sources */,
 				97CAFA942051EC4B00AC1F68 /* BackupManager.swift in Sources */,
 				974FFE6A23533E8D00F6BF28 /* SearchController.swift in Sources */,
 				9768C23B1F4B7F6300FD499B /* Preference.swift in Sources */,

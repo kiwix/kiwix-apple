@@ -16,6 +16,8 @@ class WindowController: NSWindowController {
     weak var tabManager: TabManagement?
     private var windowWillCloseObserver: NSObjectProtocol?
     
+    let searchWindowController = NSStoryboard(name: "Main", bundle: nil).instantiateController(withIdentifier: "Search") as! NSWindowController
+    
     @IBOutlet weak var libraryButton: NSButton!
     
     // MARK: - controllers

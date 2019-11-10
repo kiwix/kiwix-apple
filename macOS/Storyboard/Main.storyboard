@@ -637,7 +637,7 @@
                 <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Kiwix" customModuleProvider="target"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-603" y="-70"/>
+            <point key="canvasLocation" x="-85" y="-468"/>
         </scene>
         <!--Preference-->
         <scene sceneID="OBR-1i-rmw">
@@ -645,7 +645,7 @@
                 <controllerPlaceholder storyboardName="Preference" id="W9u-Fw-XBg" sceneMemberID="viewController"/>
                 <customObject id="iFG-Mf-RqZ" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-603" y="111"/>
+            <point key="canvasLocation" x="311" y="-471"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="RfV-d4-Op0">
@@ -654,7 +654,7 @@
                     <window key="window" title="Welcome to Kiwix" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" tabbingMode="preferred" titleVisibility="hidden" id="Rv4-VQ-fOi">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="664" y="400" width="437" height="297"/>
+                        <rect key="contentRect" x="664" y="400" width="480" height="297"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1050"/>
                         <toolbar key="toolbar" implicitIdentifier="C56383F3-F639-473C-BEC3-C7D71A808BD0" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="regular" id="i5B-xS-JhS">
                             <allowedToolbarItems>
@@ -736,11 +736,24 @@
                                         </connections>
                                     </button>
                                 </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="2537CB11-FD69-4460-B165-49663B148544" label="Search" paletteLabel="Search" sizingBehavior="auto" id="I0U-gc-4Ys">
+                                    <nil key="toolTip"/>
+                                    <searchField key="view" wantsLayer="YES" verticalHuggingPriority="750" textCompletion="NO" id="xtt-xW-e0J">
+                                        <rect key="frame" x="0.0" y="14" width="96" height="22"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" usesSingleLineMode="YES" bezelStyle="round" id="xar-EC-mDA">
+                                            <font key="font" metaFont="system"/>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </searchFieldCell>
+                                    </searchField>
+                                </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
                                 <toolbarItem reference="F23-9f-GJg"/>
-                                <toolbarItem reference="eV8-aW-dfd"/>
                                 <toolbarItem reference="Zb5-oj-enX"/>
+                                <toolbarItem reference="eV8-aW-dfd"/>
+                                <toolbarItem reference="I0U-gc-4Ys"/>
                                 <toolbarItem reference="eV8-aW-dfd"/>
                                 <toolbarItem reference="l4b-Ba-dQc"/>
                                 <toolbarItem reference="5Z5-mr-XNo"/>
@@ -758,6 +771,75 @@
                 <customObject id="iJ4-iv-ysw" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-47.5" y="-81.5"/>
+        </scene>
+        <!--Window Controller-->
+        <scene sceneID="Tif-K7-pAQ">
+            <objects>
+                <windowController id="698-iE-VJr" sceneMemberID="viewController">
+                    <window key="window" identifier="Search" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="qIs-MU-ObJ">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="372" y="411" width="480" height="270"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="2304" height="1296"/>
+                        <connections>
+                            <outlet property="delegate" destination="698-iE-VJr" id="QP8-J7-qz8"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="xOV-uK-zth" kind="relationship" relationship="window.shadowedContentViewController" id="5Hj-YQ-D7Y"/>
+                    </connections>
+                </windowController>
+                <customObject id="kjV-5k-OB5" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-48" y="348"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="z4n-tM-ogG">
+            <objects>
+                <viewController id="xOV-uK-zth" sceneMemberID="viewController">
+                    <view key="view" id="HTz-mV-qaZ">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <tabView type="noTabsNoBorder" initialItem="QFA-1g-SAy" translatesAutoresizingMaskIntoConstraints="NO" id="N6c-s1-M6g">
+                                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                                <font key="font" metaFont="system"/>
+                                <tabViewItems>
+                                    <tabViewItem label="InProgress" identifier="InProgress" id="QFA-1g-SAy">
+                                        <view key="view" id="6Dv-Fn-Atv">
+                                            <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <progressIndicator wantsLayer="YES" maxValue="100" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="S1f-bk-YpU">
+                                                    <rect key="frame" x="232" y="127" width="16" height="16"/>
+                                                </progressIndicator>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="S1f-bk-YpU" firstAttribute="centerX" secondItem="6Dv-Fn-Atv" secondAttribute="centerX" id="PRx-hp-SAr"/>
+                                                <constraint firstItem="S1f-bk-YpU" firstAttribute="centerY" secondItem="6Dv-Fn-Atv" secondAttribute="centerY" id="tOX-pv-uZt"/>
+                                            </constraints>
+                                        </view>
+                                    </tabViewItem>
+                                    <tabViewItem label="View" identifier="" id="5LT-4f-Baf">
+                                        <view key="view" id="Axk-JC-nih">
+                                            <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        </view>
+                                    </tabViewItem>
+                                </tabViewItems>
+                            </tabView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="N6c-s1-M6g" firstAttribute="leading" secondItem="HTz-mV-qaZ" secondAttribute="leading" id="NCv-kb-5el"/>
+                            <constraint firstAttribute="bottom" secondItem="N6c-s1-M6g" secondAttribute="bottom" id="Rpv-QW-cM0"/>
+                            <constraint firstItem="N6c-s1-M6g" firstAttribute="top" secondItem="HTz-mV-qaZ" secondAttribute="top" id="TBA-Gr-ET8"/>
+                            <constraint firstAttribute="trailing" secondItem="N6c-s1-M6g" secondAttribute="trailing" id="y67-Wb-YRw"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <customObject id="nDX-hp-Hov" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-48" y="798"/>
         </scene>
         <!--Main Split View Controller-->
         <scene sceneID="0QK-dl-yLx">
