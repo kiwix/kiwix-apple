@@ -20,7 +20,7 @@ class WindowController: NSWindowController {
     
     @IBOutlet weak var libraryButton: NSButton!
     
-    // MARK: - controllers
+    // MARK: controller shortcuts
     
     var navigationSplitViewController: NSSplitViewController? {
         get {
@@ -47,6 +47,8 @@ class WindowController: NSWindowController {
             return contentTabController?.tabViewItems.last?.viewController as? WebViewController
         }
     }
+    
+    // MARK: overrides
 
     override func windowDidLoad() {
         super.windowDidLoad()
@@ -60,6 +62,8 @@ class WindowController: NSWindowController {
                 NotificationCenter.default.removeObserver(self.windowWillCloseObserver!)
         })
     }
+    
+    // MARK: IBActions
     
     @IBAction func toggleNavigation(_ sender: NSSegmentedControl) {
         if sender.selectedSegment == 0 {
@@ -103,6 +107,8 @@ class WindowController: NSWindowController {
         tabManager?.createTab(window: window!)
     }
 }
+
+// MARK: - View Controllers
 
 class MainSplitViewController: NSSplitViewController {
     override func viewWillAppear() {
