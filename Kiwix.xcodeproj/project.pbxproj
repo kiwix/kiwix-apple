@@ -57,7 +57,6 @@
 		9750B826233AEBE5007B019C /* libcurl.4.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B819233AEBE5007B019C /* libcurl.4.dylib */; };
 		9750B827233AEBE5007B019C /* liblzma.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B81A233AEBE5007B019C /* liblzma.5.dylib */; };
 		9750B828233AEBE5007B019C /* libkiwix.8.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B81B233AEBE5007B019C /* libkiwix.8.dylib */; };
-		97533B461F4C723900F6651A /* MainWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97533B451F4C723900F6651A /* MainWindowController.swift */; };
 		97598E09202B60E0005A9055 /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97598E08202B60E0005A9055 /* BackupManager.swift */; };
 		975F97A820D00EAE0005D642 /* SettingSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F97A720D00EAE0005D642 /* SettingSearchController.swift */; };
 		9763EDC9201FCA6900F3A6D5 /* SettingWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9763EDC8201FCA6900F3A6D5 /* SettingWebController.swift */; };
@@ -154,8 +153,6 @@
 		97DBCF9D203CA254004EE274 /* SettingExternalLinkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DBCF9C203CA254004EE274 /* SettingExternalLinkController.swift */; };
 		97E34E0C20124F33005080B2 /* SearchNoTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E34E0B20124F33005080B2 /* SearchNoTextController.swift */; };
 		97E429901FBDF48800ABE62E /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E4298F1FBDF48800ABE62E /* DirectoryMonitor.swift */; };
-		97E9834E1F4CA0A00021E96A /* LegacyWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9834D1F4CA0A00021E96A /* LegacyWebViewController.swift */; };
-		97E983501F4CA54A0021E96A /* SearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E9834F1F4CA54A0021E96A /* SearchResultController.swift */; };
 		97E983541F4DDB670021E96A /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E983531F4DDB670021E96A /* SearchView.swift */; };
 		97EFF05E235CAEFC00FBB7A4 /* ContentTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EFF05D235CAEFC00FBB7A4 /* ContentTabController.swift */; };
 		97F4210E22EE5590001E41F9 /* FileImportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4210D22EE5590001E41F9 /* FileImportController.swift */; };
@@ -1778,17 +1775,14 @@
 				974FFE612352744800F6BF28 /* WebViewController.swift in Sources */,
 				974FFE5923526FB700F6BF28 /* URLProtocol.swift in Sources */,
 				97CAFA892051EBF700AC1F68 /* WebKitHandler.swift in Sources */,
-				97533B461F4C723900F6651A /* MainWindowController.swift in Sources */,
 				97CAFA932051EC4800AC1F68 /* SearchResult.swift in Sources */,
 				974FFE5B2352704600F6BF28 /* ZimFileManagerController.swift in Sources */,
 				97CAFA952051EC4E00AC1F68 /* DirectoryMonitor.swift in Sources */,
 				9719F60420DAF7C000B5D0EB /* SearchProcedure.swift in Sources */,
 				9719F60320DAF7A600B5D0EB /* SearchQueue.swift in Sources */,
-				97E983501F4CA54A0021E96A /* SearchResultController.swift in Sources */,
 				97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */,
 				974FFE6323527CA900F6BF28 /* ZimFileProcessing.swift in Sources */,
 				974FFE6523527CB800F6BF28 /* ZimFile.swift in Sources */,
-				97E9834E1F4CA0A00021E96A /* LegacyWebViewController.swift in Sources */,
 				9768C2351F4B7BAC00FD499B /* AppDelegate.swift in Sources */,
 				974FFE672352829000F6BF28 /* LibraryScanOperation.swift in Sources */,
 				97CAFA962051EC5100AC1F68 /* TableOfContentItem.swift in Sources */,

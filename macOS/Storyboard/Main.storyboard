@@ -740,7 +740,7 @@
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="100" height="22"/>
                                     <size key="maxSize" width="600" height="22"/>
-                                    <customView key="view" id="HPj-tN-IKm" customClass="SearchFieldContainer" customModule="Kiwix" customModuleProvider="target">
+                                    <customView key="view" id="HPj-tN-IKm">
                                         <rect key="frame" x="0.0" y="14" width="100" height="22"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
