@@ -36,22 +36,22 @@ class SearchTitleResultTableCellView: NSTableCellView {
 
 class SearchField: NSSearchField, NSSearchFieldDelegate {
     weak var eventDelegate: SearchFieldEvent?
-    private var searchTermCache = ""
-    private let prompt = "Search"
+//    private var searchTermCache = ""
+//    private let prompt = "Search"
     
     private(set) var searchStarted = false {
         didSet {
             if searchStarted {
-                placeholderString = prompt
+//                placeholderString = prompt
             } else {
-                placeholderString = title
+//                placeholderString = title
             }
         }
     }
     
     var title: String? = "" {
         didSet {
-            placeholderString = title ?? prompt
+//            placeholderString = title ?? prompt
         }
     }
     
@@ -68,7 +68,7 @@ class SearchField: NSSearchField, NSSearchFieldDelegate {
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
         if !searchStarted {
-            stringValue = searchTermCache
+//            stringValue = searchTermCache
             eventDelegate?.searchWillStart()
             searchStarted = true
         }
@@ -82,13 +82,13 @@ class SearchField: NSSearchField, NSSearchFieldDelegate {
     }
     
     @objc func searchFieldTextDidChange(_ sender: NSSearchField) {
-        searchTermCache = sender.stringValue
+//        searchTermCache = sender.stringValue
         self.eventDelegate?.searchTextDidChange(searchText: sender.stringValue)
     }
     
     @objc func cancelButtonClicked() {
         stringValue = ""
-        searchTermCache = ""
+//        searchTermCache = ""
         eventDelegate?.searchTextDidClear()
     }
     

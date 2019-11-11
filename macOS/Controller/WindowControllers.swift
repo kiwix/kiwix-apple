@@ -125,7 +125,7 @@ class WindowController: NSWindowController, NSWindowDelegate, SearchFieldEvent {
         }
     }
     
-    // MARK: NSSearchFieldDelegate
+    // MARK: SearchFieldEvent
     
     func searchWillStart() {
         showSearchResultWindow()
@@ -142,7 +142,7 @@ class WindowController: NSWindowController, NSWindowDelegate, SearchFieldEvent {
     func searchWillEnd() {
         hideSearchResultWindow()
         window?.makeFirstResponder(nil)
-//        searchField.alignment = .natural
+        searchField.alignment = .natural
     }
     
     // MARK: Search Window Management
@@ -172,6 +172,7 @@ class WindowController: NSWindowController, NSWindowDelegate, SearchFieldEvent {
         searchWindow.setFrame(resultFrame, display: true)
         searchWindow.setFrameTopLeftPoint(resultFrame.origin)
         mainWindow.addChildWindow(searchWindow, ordered: .above)
+        searchWindow.orderFront(self)
         
         let events: NSEvent.EventTypeMask = [.leftMouseDown, .rightMouseDown, .otherMouseDown]
         mouseDownEventMonitor = NSEvent.addLocalMonitorForEvents(matching: events) { (event) -> NSEvent? in
@@ -195,6 +196,11 @@ class WindowController: NSWindowController, NSWindowDelegate, SearchFieldEvent {
         guard let searchWindow = searchWindowController.window, searchWindow.isVisible else {return}
         searchWindow.parent?.removeChildWindow(searchWindow)
         searchWindow.orderOut(nil)
+        
+        if let monitor = mouseDownEventMonitor {
+            NSEvent.removeMonitor(monitor)
+            mouseDownEventMonitor = nil
+        }
     }
 }
 
@@ -210,6 +216,6 @@ class MainSplitViewController: NSSplitViewController {
 class NavigationSplitViewController: NSSplitViewController {
     override func viewWillAppear() {
         super.viewWillAppear()
-//        splitView.setPosition(400, ofDividerAt: 0)
+        splitView.setPosition(400, ofDividerAt: 0)
     }
 }
