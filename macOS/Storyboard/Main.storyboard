@@ -789,7 +789,7 @@
         <scene sceneID="7az-S1-GHZ">
             <objects>
                 <windowController storyboardIdentifier="Search" id="2M8-X4-1d6" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titlebarAppearsTransparent="YES" titleVisibility="hidden" id="19Z-mX-IKz">
+                    <window key="window" title="Search" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" titlebarAppearsTransparent="YES" titleVisibility="hidden" id="19Z-mX-IKz">
                         <windowStyleMask key="styleMask" titled="YES" fullSizeContentView="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="372" y="411" width="480" height="270"/>
@@ -810,10 +810,65 @@
         <scene sceneID="00u-Oj-xoP">
             <objects>
                 <viewController id="IJv-yE-Q4V" sceneMemberID="viewController">
-                    <view key="view" id="WNg-yz-tdG">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                    <visualEffectView key="view" blendingMode="behindWindow" material="appearanceBased" state="active" id="3Pk-1T-xXf">
+                        <rect key="frame" x="0.0" y="0.0" width="490" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
-                    </view>
+                        <subviews>
+                            <tabView type="noTabsNoBorder" initialItem="hpA-Et-nyw" translatesAutoresizingMaskIntoConstraints="NO" id="H1l-K1-NgS">
+                                <rect key="frame" x="0.0" y="0.0" width="490" height="300"/>
+                                <font key="font" metaFont="system"/>
+                                <tabViewItems>
+                                    <tabViewItem label="Results" identifier="Results" id="MRq-Y4-uP5">
+                                        <view key="view" id="JpS-nA-hEh">
+                                            <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        </view>
+                                    </tabViewItem>
+                                    <tabViewItem label="InProgress" identifier="InProgress" id="sga-Ay-b8B">
+                                        <view key="view" id="Tiu-IR-Kgf">
+                                            <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <progressIndicator wantsLayer="YES" maxValue="100" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="JlT-GE-i6o">
+                                                    <rect key="frame" x="217" y="142" width="16" height="16"/>
+                                                </progressIndicator>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="JlT-GE-i6o" firstAttribute="centerX" secondItem="Tiu-IR-Kgf" secondAttribute="centerX" id="WdU-yR-Jnm"/>
+                                                <constraint firstItem="JlT-GE-i6o" firstAttribute="centerY" secondItem="Tiu-IR-Kgf" secondAttribute="centerY" id="qwh-di-Led"/>
+                                            </constraints>
+                                        </view>
+                                    </tabViewItem>
+                                    <tabViewItem label="NoResult" identifier="NoResult" id="hpA-Et-nyw">
+                                        <view key="view" id="wIg-Aq-jiW">
+                                            <rect key="frame" x="0.0" y="0.0" width="490" height="300"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DLt-xI-tSK">
+                                                    <rect key="frame" x="182" y="133" width="126" height="35"/>
+                                                    <textFieldCell key="cell" lineBreakMode="clipping" title="No Result" id="mtK-sc-j38">
+                                                        <font key="font" metaFont="system" size="30"/>
+                                                        <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="DLt-xI-tSK" firstAttribute="centerY" secondItem="wIg-Aq-jiW" secondAttribute="centerY" id="0DB-HO-Lff"/>
+                                                <constraint firstItem="DLt-xI-tSK" firstAttribute="centerX" secondItem="wIg-Aq-jiW" secondAttribute="centerX" id="TwB-9d-lFN"/>
+                                            </constraints>
+                                        </view>
+                                    </tabViewItem>
+                                </tabViewItems>
+                            </tabView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="H1l-K1-NgS" firstAttribute="top" secondItem="3Pk-1T-xXf" secondAttribute="top" id="0RI-gU-6yP"/>
+                            <constraint firstAttribute="bottom" secondItem="H1l-K1-NgS" secondAttribute="bottom" id="6VR-Ir-sHo"/>
+                            <constraint firstItem="H1l-K1-NgS" firstAttribute="leading" secondItem="3Pk-1T-xXf" secondAttribute="leading" id="fdy-Vm-jVJ"/>
+                            <constraint firstAttribute="trailing" secondItem="H1l-K1-NgS" secondAttribute="trailing" id="tFC-z8-ZOM"/>
+                        </constraints>
+                    </visualEffectView>
                 </viewController>
                 <customObject id="tzj-GM-VAz" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1349,7 +1404,7 @@
         <image name="NSListViewTemplate" width="14" height="10"/>
         <image name="Open" width="16" height="16"/>
         <namedColor name="FaviconBackgroundColor">
-            <color red="0.92100000381469727" green="0.92100000381469727" blue="0.92100000381469727" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
