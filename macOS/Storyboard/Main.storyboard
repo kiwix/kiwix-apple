@@ -924,10 +924,10 @@
             </objects>
             <point key="canvasLocation" x="1208" y="-359"/>
         </scene>
-        <!--Search Controller-->
+        <!--Article Navigation Controller-->
         <scene sceneID="2gK-c7-Lqj">
             <objects>
-                <viewController id="yPa-Gm-cWg" customClass="SearchController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="yPa-Gm-cWg" customClass="ArticleNavigationController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="qMM-Z0-eVD">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="301"/>
                         <autoresizingMask key="autoresizingMask"/>
