@@ -34,17 +34,10 @@ class SearchTitleResultTableCellView: NSTableCellView {
     }
 }
 
-class SearchFieldContainer: NSView {
-    override func draw(_ dirtyRect: NSRect) {
-        /* We are putting NSSearhField into a plain NSView to get around the NSSearhField in toolbar resizing bug. By removing the view's mask, the search field woun't be clipped. Otherwise, the gray rounded rect border of the NSSearhField will be clipped.
-         */
-        wantsLayer = true
-        layer?.masksToBounds = false
-    }
-}
-
-class SearchField: NSSearchField {
-    weak var fieldDelegate: SearchFieldDelegate?
+class SearchField: NSSearchField, NSSearchFieldDelegate {
+    weak var eventDelegate: SearchFieldEvent?
+    private var searchTermCache = ""
+    private let prompt = "Search"
     
     private(set) var searchStarted = false {
         didSet {
@@ -62,43 +55,52 @@ class SearchField: NSSearchField {
         }
     }
     
-    var searchTermCache = ""
-    let prompt = "Search"
-    
     override func awakeFromNib() {
-        /* Override default cancel button behavior. By default, the search field loses focus when cancel button is clicked. However, in this case, we want the search text to be cleared and keep focus on search field.
-         */
-        guard let cell = (cell as? NSSearchFieldCell)?.cancelButtonCell else {return}
-        cell.target = self
-        cell.action = #selector(cancelButtonClicked)
+        self.delegate = self
+        self.target = self
+        self.action = #selector(searchFieldTextDidChange)
+        if let cell = (cell as? NSSearchFieldCell)?.cancelButtonCell {
+            cell.target = self
+            cell.action = #selector(cancelButtonClicked)
+        }
     }
     
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
         if !searchStarted {
             stringValue = searchTermCache
-            fieldDelegate?.searchWillStart()
+            eventDelegate?.searchWillStart()
             searchStarted = true
         }
     }
     
     func endSearch() {
-        if searchStarted {
-            stringValue = ""
-            fieldDelegate?.searchWillEnd()
-            searchStarted = false
-        }
+        guard searchStarted else {return}
+        stringValue = ""
+        eventDelegate?.searchWillEnd()
+        searchStarted = false
+    }
+    
+    @objc func searchFieldTextDidChange(_ sender: NSSearchField) {
+        searchTermCache = sender.stringValue
+        self.eventDelegate?.searchTextDidChange(searchText: sender.stringValue)
     }
     
     @objc func cancelButtonClicked() {
         stringValue = ""
         searchTermCache = ""
-        fieldDelegate?.searchTextDidClear()
+        eventDelegate?.searchTextDidClear()
+    }
+    
+    func controlTextDidEndEditing(_ obj: Notification) {
+        guard let searchField = obj.object as? NSSearchField, searchField == self else {return}
+        // when enter key is pressed, currently do nothing
     }
 }
 
-protocol SearchFieldDelegate: class {
+protocol SearchFieldEvent: class {
     func searchWillStart()
+    func searchTextDidChange(searchText: String)
     func searchTextDidClear()
     func searchWillEnd()
 }
