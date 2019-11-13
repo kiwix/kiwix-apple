@@ -29,6 +29,11 @@ class SearchController: NSViewController, SearchQueueEvents {
         queue.eventDelegate = self
     }
     
+    func startSearch(searchText: String) {
+        let zimFileIDs: Set<String> = Set(ZimMultiReader.shared.ids)
+        queue.enqueue(searchText: searchText, zimFileIDs: zimFileIDs)
+    }
+    
     // MARK: SearchQueueEvents
     
     func searchStarted() {

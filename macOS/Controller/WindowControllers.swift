@@ -132,6 +132,8 @@ class WindowController: NSWindowController, NSWindowDelegate, SearchFieldEvent {
     }
     
     func searchTextDidChange(searchField: NSSearchField) {
+        guard let controller = self.searchWindowController.contentViewController as? SearchController else {return}
+        controller.startSearch(searchText: searchField.stringValue)
     }
     
     func searchTextDidClear(searchField: NSSearchField) {
