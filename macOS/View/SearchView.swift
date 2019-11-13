@@ -69,7 +69,7 @@ class SearchField: NSSearchField, NSSearchFieldDelegate {
         super.mouseDown(with: event)
         if !searchStarted {
 //            stringValue = searchTermCache
-            eventDelegate?.searchWillStart()
+            eventDelegate?.searchWillStart(searchField: self)
             searchStarted = true
         }
     }
@@ -77,19 +77,19 @@ class SearchField: NSSearchField, NSSearchFieldDelegate {
     func endSearch() {
         guard searchStarted else {return}
         stringValue = ""
-        eventDelegate?.searchWillEnd()
+        eventDelegate?.searchWillEnd(searchField: self)
         searchStarted = false
     }
     
     @objc func searchFieldTextDidChange(_ sender: NSSearchField) {
 //        searchTermCache = sender.stringValue
-        self.eventDelegate?.searchTextDidChange(searchText: sender.stringValue)
+        self.eventDelegate?.searchTextDidChange(searchField: self)
     }
     
     @objc func cancelButtonClicked() {
         stringValue = ""
 //        searchTermCache = ""
-        eventDelegate?.searchTextDidClear()
+        eventDelegate?.searchTextDidClear(searchField: self)
     }
     
     func controlTextDidEndEditing(_ obj: Notification) {
@@ -99,8 +99,8 @@ class SearchField: NSSearchField, NSSearchFieldDelegate {
 }
 
 protocol SearchFieldEvent: class {
-    func searchWillStart()
-    func searchTextDidChange(searchText: String)
-    func searchTextDidClear()
-    func searchWillEnd()
+    func searchWillStart(searchField: NSSearchField)
+    func searchTextDidChange(searchField: NSSearchField)
+    func searchTextDidClear(searchField: NSSearchField)
+    func searchWillEnd(searchField: NSSearchField)
 }

@@ -127,19 +127,19 @@ class WindowController: NSWindowController, NSWindowDelegate, SearchFieldEvent {
     
     // MARK: SearchFieldEvent
     
-    func searchWillStart() {
+    func searchWillStart(searchField: NSSearchField) {
         showSearchResultWindow()
     }
     
-    func searchTextDidChange(searchText: String) {
+    func searchTextDidChange(searchField: NSSearchField) {
     }
     
-    func searchTextDidClear() {
+    func searchTextDidClear(searchField: NSSearchField) {
 //        guard let searchController = self.searchResultWindowController.contentViewController as? SearchResultController else {return}
 //        searchController.clearSearch()
     }
     
-    func searchWillEnd() {
+    func searchWillEnd(searchField: NSSearchField) {
         hideSearchResultWindow()
         window?.makeFirstResponder(nil)
         searchField.alignment = .natural
