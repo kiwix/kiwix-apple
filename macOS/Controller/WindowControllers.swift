@@ -16,7 +16,8 @@ class WindowController: NSWindowController, NSWindowDelegate, SearchFieldEvent {
     weak var tabManager: TabManagement?
     private var windowWillCloseObserver: NSObjectProtocol?
     
-    let searchWindowController = NSStoryboard(name: "Main", bundle: nil).instantiateController(withIdentifier: "Search") as! NSWindowController
+    let searchWindowController = NSStoryboard(name: "Main", bundle: nil).instantiateController(
+        withIdentifier: "Search") as! NSWindowController
     
     @IBOutlet weak var libraryButton: NSButton!
     @IBOutlet weak var searchField: SearchField!
@@ -61,6 +62,7 @@ class WindowController: NSWindowController, NSWindowDelegate, SearchFieldEvent {
         super.windowDidLoad()
         
         searchField.eventDelegate = self
+        searchController.windowController = self
         windowWillCloseObserver = NotificationCenter.default.addObserver(
             forName: NSWindow.willCloseNotification,
             object: self.window!,
@@ -124,8 +126,6 @@ class WindowController: NSWindowController, NSWindowDelegate, SearchFieldEvent {
     }
 
     func windowDidEndLiveResize(_ notification: Notification) {
-        let f = CGRect(x: searchField.frame.origin.x, y: searchField.frame.origin.y, width: 800, height: searchField.frame.height)
-        searchField.frame = f
         if searchField.searchStarted {
             showSearchResultWindow()
         }
@@ -176,6 +176,7 @@ class WindowController: NSWindowController, NSWindowDelegate, SearchFieldEvent {
         searchWindow.setFrame(resultFrame, display: true)
         searchWindow.setFrameTopLeftPoint(resultFrame.origin)
         mainWindow.addChildWindow(searchWindow, ordered: .above)
+        searchWindow.makeKeyAndOrderFront(nil)
         
         let events: NSEvent.EventTypeMask = [.leftMouseDown, .rightMouseDown, .otherMouseDown]
         mouseDownEventMonitor = NSEvent.addLocalMonitorForEvents(matching: events) { (event) -> NSEvent? in

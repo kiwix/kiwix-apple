@@ -10,9 +10,8 @@ import Cocoa
 import RealmSwift
 
 class SearchWindow: NSWindow {
-    override var canBecomeKey: Bool {
-        return false
-    }
+    override var canBecomeKey: Bool {return false}
+    override var canBecomeMain: Bool {return false}
 }
 
 
@@ -24,6 +23,7 @@ class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineView
     private let queue = SearchQueue()
     private(set) var searchText: String = ""
     private var results = [SearchResult]()
+    weak var windowController: WindowController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,11 +59,10 @@ class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineView
     }
     
     @IBAction func resultsOutlineViewClicked(_ sender: NSOutlineView) {
-        guard let windowController = view.window?.parent?.windowController as? WindowController,
-            let searchResult = sender.item(atRow: sender.selectedRow) as? SearchResult else {return}
-        windowController.contentTabController?.setMode(.reader)
-        windowController.webViewController?.load(url: searchResult.url)
-        windowController.searchField.endSearch()
+        guard let searchResult = sender.item(atRow: sender.selectedRow) as? SearchResult else {return}
+        windowController?.contentTabController?.setMode(.reader)
+        windowController?.webViewController?.load(url: searchResult.url)
+        windowController?.searchField.endSearch()
     }
     
     // MARK: SearchQueueEvents
