@@ -36,39 +36,17 @@ class SearchTitleResultTableCellView: NSTableCellView {
 
 class SearchField: NSSearchField, NSSearchFieldDelegate {
     weak var eventDelegate: SearchFieldEvent?
-//    private var searchTermCache = ""
-//    private let prompt = "Search"
-    
-    private(set) var searchStarted = false {
-        didSet {
-            if searchStarted {
-//                placeholderString = prompt
-            } else {
-//                placeholderString = title
-            }
-        }
-    }
-    
-    var title: String? = "" {
-        didSet {
-//            placeholderString = title ?? prompt
-        }
-    }
+    private(set) var searchStarted = false
     
     override func awakeFromNib() {
         self.delegate = self
         self.target = self
         self.action = #selector(searchFieldTextDidChange)
-        if let cell = (cell as? NSSearchFieldCell)?.cancelButtonCell {
-            cell.target = self
-            cell.action = #selector(cancelButtonClicked)
-        }
     }
     
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
         if !searchStarted {
-//            stringValue = searchTermCache
             eventDelegate?.searchWillStart(searchField: self)
             searchStarted = true
         }
@@ -82,14 +60,7 @@ class SearchField: NSSearchField, NSSearchFieldDelegate {
     }
     
     @objc func searchFieldTextDidChange(_ sender: NSSearchField) {
-//        searchTermCache = sender.stringValue
         self.eventDelegate?.searchTextDidChange(searchField: self)
-    }
-    
-    @objc func cancelButtonClicked() {
-        stringValue = ""
-//        searchTermCache = ""
-        eventDelegate?.searchTextDidClear(searchField: self)
     }
     
     func controlTextDidEndEditing(_ obj: Notification) {
@@ -101,6 +72,5 @@ class SearchField: NSSearchField, NSSearchFieldDelegate {
 protocol SearchFieldEvent: class {
     func searchWillStart(searchField: NSSearchField)
     func searchTextDidChange(searchField: NSSearchField)
-    func searchTextDidClear(searchField: NSSearchField)
     func searchWillEnd(searchField: NSSearchField)
 }

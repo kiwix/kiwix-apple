@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="95r-g6-5ej">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="95r-g6-5ej">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15400"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -823,16 +823,16 @@
                                             <rect key="frame" x="0.0" y="0.0" width="490" height="300"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <scrollView autohidesScrollers="YES" horizontalLineScroll="26" horizontalPageScroll="10" verticalLineScroll="26" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7dY-kj-vNP">
+                                                <scrollView autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7dY-kj-vNP">
                                                     <rect key="frame" x="0.0" y="0.0" width="490" height="300"/>
                                                     <clipView key="contentView" drawsBackground="NO" id="VPT-SC-X2X">
                                                         <rect key="frame" x="1" y="1" width="488" height="298"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
-                                                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" outlineTableColumn="gSM-vu-o9B" id="UtR-18-Cii">
+                                                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowHeight="22" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="14" outlineTableColumn="gSM-vu-o9B" id="UtR-18-Cii">
                                                                 <rect key="frame" x="0.0" y="0.0" width="488" height="298"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                                <size key="intercellSpacing" width="3" height="2"/>
+                                                                <size key="intercellSpacing" width="3" height="0.0"/>
                                                                 <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                 <tableColumns>
@@ -850,7 +850,7 @@
                                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                         <prototypeCellViews>
                                                                             <tableCellView identifier="DataCell" id="vdC-P1-Bcy">
-                                                                                <rect key="frame" x="1" y="1" width="485" height="32"/>
+                                                                                <rect key="frame" x="1" y="0.0" width="485" height="32"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
                                                                                     <box boxType="custom" cornerRadius="4" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="jh0-b4-FCH">
@@ -875,6 +875,7 @@
                                                                                             <constraint firstAttribute="width" constant="26" id="gHy-Wq-pL8"/>
                                                                                             <constraint firstAttribute="height" constant="26" id="vhd-vT-a5Z"/>
                                                                                         </constraints>
+                                                                                        <color key="borderColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                                                         <color key="fillColor" name="FaviconBackgroundColor"/>
                                                                                     </box>
                                                                                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lYB-fO-uFI">
@@ -901,6 +902,11 @@
                                                                         </prototypeCellViews>
                                                                     </tableColumn>
                                                                 </tableColumns>
+                                                                <connections>
+                                                                    <action selector="resultsOutlineViewClicked:" target="IJv-yE-Q4V" id="JkY-l0-oJe"/>
+                                                                    <outlet property="dataSource" destination="IJv-yE-Q4V" id="9vX-pC-3c1"/>
+                                                                    <outlet property="delegate" destination="IJv-yE-Q4V" id="lkO-aX-JyY"/>
+                                                                </connections>
                                                             </outlineView>
                                                         </subviews>
                                                         <nil key="backgroundColor"/>
@@ -1186,7 +1192,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
                                                     <clipView key="contentView" drawsBackground="NO" id="2xl-WZ-y4U">
                                                         <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
-                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
                                                             <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="32" rowSizeStyle="automatic" viewBased="YES" outlineTableColumn="0aS-t7-Z8j" id="m9c-rA-boG">
                                                                 <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
@@ -1508,7 +1514,7 @@
         <image name="NSListViewTemplate" width="14" height="10"/>
         <image name="Open" width="16" height="16"/>
         <namedColor name="FaviconBackgroundColor">
-            <color red="0.92100000381469727" green="0.92100000381469727" blue="0.92100000381469727" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

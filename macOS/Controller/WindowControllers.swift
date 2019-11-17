@@ -49,6 +49,12 @@ class WindowController: NSWindowController, NSWindowDelegate, SearchFieldEvent {
         }
     }
     
+    var searchController: SearchController {
+        get{
+            return searchWindowController.contentViewController as! SearchController
+        }
+    }
+    
     // MARK: overrides
 
     override func windowDidLoad() {
@@ -128,17 +134,13 @@ class WindowController: NSWindowController, NSWindowDelegate, SearchFieldEvent {
     // MARK: SearchFieldEvent
     
     func searchWillStart(searchField: NSSearchField) {
+        searchField.stringValue = searchController.searchText
         showSearchResultWindow()
     }
     
     func searchTextDidChange(searchField: NSSearchField) {
         guard let controller = self.searchWindowController.contentViewController as? SearchController else {return}
         controller.startSearch(searchText: searchField.stringValue)
-    }
-    
-    func searchTextDidClear(searchField: NSSearchField) {
-//        guard let searchController = self.searchResultWindowController.contentViewController as? SearchResultController else {return}
-//        searchController.clearSearch()
     }
     
     func searchWillEnd(searchField: NSSearchField) {
@@ -174,7 +176,6 @@ class WindowController: NSWindowController, NSWindowDelegate, SearchFieldEvent {
         searchWindow.setFrame(resultFrame, display: true)
         searchWindow.setFrameTopLeftPoint(resultFrame.origin)
         mainWindow.addChildWindow(searchWindow, ordered: .above)
-        searchWindow.orderFront(self)
         
         let events: NSEvent.EventTypeMask = [.leftMouseDown, .rightMouseDown, .otherMouseDown]
         mouseDownEventMonitor = NSEvent.addLocalMonitorForEvents(matching: events) { (event) -> NSEvent? in
@@ -183,13 +184,15 @@ class WindowController: NSWindowController, NSWindowDelegate, SearchFieldEvent {
             } else if event.window == mainWindow {
                 let point = self.searchField.convert(event.locationInWindow, from: nil)
                 let inSearchField = self.searchField.bounds.contains(point)
-                if !inSearchField {
+                if inSearchField {
+                    return event
+                } else {
                     self.searchField.endSearch()
+                    return nil
                 }
-                return event
             } else {
                 self.searchField.endSearch()
-                return event
+                return nil
             }
         }
     }
