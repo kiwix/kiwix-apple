@@ -11,7 +11,7 @@ DEPENDENCIES:
   - SwiftyUserDefaults (~> 4.0)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - Realm
     - RealmSwift
     - SwiftyUserDefaults
@@ -23,4 +23,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: aef950eaf9fe0f90666e247d9c0e3157ac76b317
 
-COCOAPODS: 1.7.2
+COCOAPODS: 1.8.1
