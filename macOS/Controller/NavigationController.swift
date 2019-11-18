@@ -13,9 +13,6 @@ class ArticleNavigationController: NSViewController, NSOutlineViewDataSource, NS
     @IBOutlet weak var tabView: NSTabView!
     @IBOutlet weak var localOutlineView: NSOutlineView!
     
-    private var tabViewTopLayoutConstraint: NSLayoutConstraint?
-    private let queue = SearchQueue()
-    private var results = [SearchResult]()
     private var localZimFilesChangeToken: NotificationToken?
     
     // MARK: - Database
@@ -39,15 +36,6 @@ class ArticleNavigationController: NSViewController, NSOutlineViewDataSource, NS
             }
         })
     }
-    
-//    override func updateViewConstraints() {
-//        if tabViewTopLayoutConstraint == nil,
-//            let contentLayoutGuide = view.window?.contentLayoutGuide as? NSLayoutGuide {
-//            tabViewTopLayoutConstraint = tabView.topAnchor.constraint(equalTo: contentLayoutGuide.topAnchor, constant: 10)
-//            tabViewTopLayoutConstraint?.isActive = true
-//        }
-//        super.updateViewConstraints()
-//    }
     
     // MARK: - NSOutlineViewDataSource
     
@@ -78,14 +66,10 @@ class ArticleNavigationController: NSViewController, NSOutlineViewDataSource, NS
     func outlineViewSelectionDidChange(_ notification: Notification) {
         guard let outlineView = notification.object as? NSOutlineView,
             let windowController = view.window?.windowController as? WindowController else {return}
-        if outlineView == localOutlineView {
-            guard let zimFile = outlineView.item(atRow: outlineView.selectedRow) as? ZimFile,
-                let url = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFile.id) else {return}
-            windowController.contentTabController?.setMode(.reader)
-            windowController.webViewController?.load(url: url)
-        } else {
-            return
-        }
+        guard let zimFile = outlineView.item(atRow: outlineView.selectedRow) as? ZimFile,
+            let url = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFile.id) else {return}
+        windowController.contentTabController?.setMode(.reader)
+        windowController.webViewController?.load(url: url)
     }
 }
 
