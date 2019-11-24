@@ -739,7 +739,7 @@
                                 <toolbarItem implicitItemIdentifier="DE68DB57-6857-4743-8E69-B274A57138D6" label="Search" paletteLabel="Search" tag="-1" id="MQR-le-F9p">
                                     <nil key="toolTip"/>
                                     <size key="minSize" width="100" height="22"/>
-                                    <size key="maxSize" width="600" height="22"/>
+                                    <size key="maxSize" width="500" height="22"/>
                                     <customView key="view" id="HPj-tN-IKm">
                                         <rect key="frame" x="0.0" y="14" width="100" height="22"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -760,6 +760,20 @@
                                         </constraints>
                                     </customView>
                                 </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="83A087AD-2B72-4052-999C-8AE2C7ABBB46" label="Open" paletteLabel="Open" image="NSFolder" sizingBehavior="auto" id="00F-OE-8qN">
+                                    <nil key="toolTip"/>
+                                    <button key="view" verticalHuggingPriority="750" id="EaA-HV-0za">
+                                        <rect key="frame" x="0.0" y="14" width="47" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <buttonCell key="cell" type="roundTextured" title="Textured Rounded" bezelStyle="texturedRounded" image="NSFolder" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dNG-jJ-EpU">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                    </button>
+                                    <connections>
+                                        <action selector="openFile:" target="95r-g6-5ej" id="LTI-hq-QLh"/>
+                                    </connections>
+                                </toolbarItem>
                             </allowedToolbarItems>
                             <defaultToolbarItems>
                                 <toolbarItem reference="F23-9f-GJg"/>
@@ -767,7 +781,7 @@
                                 <toolbarItem reference="eV8-aW-dfd"/>
                                 <toolbarItem reference="MQR-le-F9p"/>
                                 <toolbarItem reference="eV8-aW-dfd"/>
-                                <toolbarItem reference="l4b-Ba-dQc"/>
+                                <toolbarItem reference="00F-OE-8qN"/>
                                 <toolbarItem reference="5Z5-mr-XNo"/>
                             </defaultToolbarItems>
                         </toolbar>
@@ -950,7 +964,7 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DLt-xI-tSK">
-                                                    <rect key="frame" x="180" y="133" width="129" height="35"/>
+                                                    <rect key="frame" x="181" y="133" width="126" height="35"/>
                                                     <textFieldCell key="cell" lineBreakMode="clipping" title="No Result" id="mtK-sc-j38">
                                                         <font key="font" metaFont="system" size="30"/>
                                                         <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
@@ -1280,6 +1294,70 @@
                     <view key="view" id="gnp-Of-tyw">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="25" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fvI-rV-kxz">
+                                <rect key="frame" x="78" y="41" width="295" height="218"/>
+                                <subviews>
+                                    <box boxType="custom" borderWidth="2" cornerRadius="50" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="p5S-XN-9rf">
+                                        <rect key="frame" x="97" y="118" width="100" height="100"/>
+                                        <view key="contentView" id="mCs-iJ-R7p">
+                                            <rect key="frame" x="2" y="2" width="96" height="96"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dND-oq-XGO">
+                                                    <rect key="frame" x="19" y="19" width="58" height="58"/>
+                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="Logo" id="3hW-7M-V60"/>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="dND-oq-XGO" firstAttribute="centerY" secondItem="mCs-iJ-R7p" secondAttribute="centerY" id="4ph-n6-NjK"/>
+                                                <constraint firstItem="dND-oq-XGO" firstAttribute="centerX" secondItem="mCs-iJ-R7p" secondAttribute="centerX" id="Muv-tw-hwj"/>
+                                                <constraint firstItem="dND-oq-XGO" firstAttribute="width" secondItem="mCs-iJ-R7p" secondAttribute="width" multiplier="0.6" id="aXd-NV-Nyr"/>
+                                                <constraint firstItem="dND-oq-XGO" firstAttribute="height" secondItem="mCs-iJ-R7p" secondAttribute="height" multiplier="0.6" id="qgR-3r-NH3"/>
+                                            </constraints>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="100" id="M54-Dl-Nsy"/>
+                                            <constraint firstAttribute="height" constant="100" id="yug-6h-sn9"/>
+                                        </constraints>
+                                        <color key="borderColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="fillColor" name="FaviconBackgroundColor"/>
+                                    </box>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EjA-3V-96R">
+                                        <rect key="frame" x="-2" y="46" width="299" height="47"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" title="Welcome to Kiwix" id="EvF-q6-PPS">
+                                            <font key="font" metaFont="system" size="40"/>
+                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oBH-VH-kWo">
+                                        <rect key="frame" x="98" y="-7" width="98" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Open File" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="P7T-3Z-ez7">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="openFile:" target="UhR-T9-pYL" id="jAU-G4-bpf"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="fvI-rV-kxz" firstAttribute="centerY" secondItem="gnp-Of-tyw" secondAttribute="centerY" id="NAG-6Q-x9I"/>
+                            <constraint firstItem="fvI-rV-kxz" firstAttribute="centerX" secondItem="gnp-Of-tyw" secondAttribute="centerX" id="NSf-xj-zol"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <customObject id="UhR-T9-pYL" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -1288,6 +1366,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Logo" width="100" height="100"/>
         <image name="NSActionTemplate" width="14" height="14"/>
         <image name="NSAddTemplate" width="11" height="11"/>
         <image name="NSFolder" width="32" height="32"/>
