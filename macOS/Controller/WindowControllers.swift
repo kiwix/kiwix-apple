@@ -222,6 +222,6 @@ class MainSplitViewController: NSSplitViewController {
 class NavigationSplitViewController: NSSplitViewController {
     override func viewWillAppear() {
         super.viewWillAppear()
-        splitView.setPosition(400, ofDividerAt: 0)
+//        splitView.setPosition(400, ofDividerAt: 0)
     }
 }

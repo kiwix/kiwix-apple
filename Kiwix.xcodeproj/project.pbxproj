@@ -42,7 +42,6 @@
 		974FFE6623527CB800F6BF28 /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97242E152093A9AC00AA4436 /* Bookmark.swift */; };
 		974FFE672352829000F6BF28 /* LibraryScanOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977F983D1F9E43EC002ABFCE /* LibraryScanOperation.swift */; };
 		974FFE6A23533E8D00F6BF28 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE6823533E8D00F6BF28 /* NavigationController.swift */; };
-		974FFE6D2353AA3200F6BF28 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 974FFE6C2353AA3200F6BF28 /* Foundation.framework */; };
 		974FFE6F2353AA3900F6BF28 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 974FFE6E2353AA3900F6BF28 /* WebKit.framework */; };
 		9750B81C233AEBE5007B019C /* libicudata.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B80F233AEBE5007B019C /* libicudata.58.2.dylib */; };
 		9750B81D233AEBE5007B019C /* libicutest.58.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9750B810233AEBE5007B019C /* libicutest.58.2.dylib */; };
@@ -671,7 +670,6 @@
 				9750B81C233AEBE5007B019C /* libicudata.58.2.dylib in Frameworks */,
 				9750B81D233AEBE5007B019C /* libicutest.58.2.dylib in Frameworks */,
 				9750B820233AEBE5007B019C /* libzim.6.dylib in Frameworks */,
-				974FFE6D2353AA3200F6BF28 /* Foundation.framework in Frameworks */,
 				9750B826233AEBE5007B019C /* libcurl.4.dylib in Frameworks */,
 				9750B81F233AEBE5007B019C /* libz.1.2.8.dylib in Frameworks */,
 				DFD371610877B5817E9C9FEB /* Pods_macOS.framework in Frameworks */,
