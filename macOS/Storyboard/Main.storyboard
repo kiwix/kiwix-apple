@@ -1046,7 +1046,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
                                 <font key="font" metaFont="system"/>
                                 <tabViewItems>
-                                    <tabViewItem label="Local" identifier="Local" id="eyc-10-Fip">
+                                    <tabViewItem label="ZimFileLocal" identifier="ZimFileLocal" id="eyc-10-Fip">
                                         <view key="view" id="uUh-Q7-Cu9">
                                             <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1167,6 +1167,26 @@
                                                 <constraint firstAttribute="bottom" secondItem="DwF-UR-SH6" secondAttribute="bottom" id="igr-2a-kAY"/>
                                                 <constraint firstItem="DwF-UR-SH6" firstAttribute="top" secondItem="uUh-Q7-Cu9" secondAttribute="top" id="tXa-QX-4GH"/>
                                                 <constraint firstAttribute="trailing" secondItem="DwF-UR-SH6" secondAttribute="trailing" id="yzr-Ve-8tf"/>
+                                            </constraints>
+                                        </view>
+                                    </tabViewItem>
+                                    <tabViewItem label="ZimFileLocalEmpty" identifier="ZimFileLocalEmpty" id="yR6-Dj-SyK">
+                                        <view key="view" id="fEX-8M-PJD">
+                                            <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <subviews>
+                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aks-Sb-Lra">
+                                                    <rect key="frame" x="173" y="119" width="104" height="21"/>
+                                                    <textFieldCell key="cell" lineBreakMode="clipping" title="No Zim Files" id="np7-xL-Km8">
+                                                        <font key="font" metaFont="system" size="18"/>
+                                                        <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </textFieldCell>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="aks-Sb-Lra" firstAttribute="centerY" secondItem="fEX-8M-PJD" secondAttribute="centerY" id="4gz-Mp-2Xc"/>
+                                                <constraint firstItem="aks-Sb-Lra" firstAttribute="centerX" secondItem="fEX-8M-PJD" secondAttribute="centerX" id="hqE-P6-iWm"/>
                                             </constraints>
                                         </view>
                                     </tabViewItem>
