@@ -47,17 +47,32 @@ class ArticleNavigationController: NSViewController, NSMenuDelegate, NSOutlineVi
     // MARK: - Action
     
     @objc func removeZimFile() {
-        guard let localOutlineView = localOutlineView,
+        guard let window = view.window,
+            let localOutlineView = localOutlineView,
             let zimFile = localOutlineView.item(atRow: localOutlineView.clickedRow) as? ZimFile else {return}
-        let index = IndexSet(integer: localOutlineView.childIndex(forItem: zimFile))
-        localOutlineView.removeItems(at: index, inParent: nil, withAnimation: NSTableView.AnimationOptions.slideLeft)
-        ZimMultiReader.shared.remove(id: zimFile.id)
-        do {
-            let database = try Realm(configuration: Realm.defaultConfig)
-            try database.write {
-                database.delete(zimFile)
+        
+        let alert = NSAlert()
+        alert.messageText = "Do you want to remove zim file from Kiwix?"
+        alert.informativeText = "Your file won't be deleted."
+        alert.alertStyle = .critical
+        alert.addButton(withTitle: "Remove")
+        alert.addButton(withTitle: "Cancel")
+        alert.beginSheetModal(for: window) { (response) in
+            switch(response) {
+            case NSApplication.ModalResponse.alertFirstButtonReturn:
+                let index = IndexSet(integer: localOutlineView.childIndex(forItem: zimFile))
+                localOutlineView.removeItems(at: index, inParent: nil, withAnimation: NSTableView.AnimationOptions.slideLeft)
+                ZimMultiReader.shared.remove(id: zimFile.id)
+                do {
+                    let database = try Realm(configuration: Realm.defaultConfig)
+                    try database.write {
+                        database.delete(zimFile)
+                    }
+                } catch {}
+            default:
+                break
             }
-        } catch {}
+        }
     }
     
     // MARK: - NSMenuDelegate
