@@ -661,32 +661,18 @@
                                 <toolbarItem implicitItemIdentifier="NSToolbarShowColorsItem" id="Dc7-xv-uOM"/>
                                 <toolbarItem implicitItemIdentifier="NSToolbarShowFontsItem" id="Nd5-o7-2Oy"/>
                                 <toolbarItem implicitItemIdentifier="NSToolbarPrintItem" id="DdE-rT-INJ"/>
-                                <toolbarItem implicitItemIdentifier="153CBDE8-AAD7-4988-BBF4-DCB6C88DDAF9" label="Toggle Sidebar" paletteLabel="Toggle Sidebar" image="sidebar_menu" sizingBehavior="auto" id="Zb5-oj-enX">
+                                <toolbarItem implicitItemIdentifier="153CBDE8-AAD7-4988-BBF4-DCB6C88DDAF9" label="Toggle Sidebar" paletteLabel="Toggle Sidebar" image="Sidebar" sizingBehavior="auto" id="Zb5-oj-enX">
                                     <nil key="toolTip"/>
                                     <button key="view" verticalHuggingPriority="750" id="b8e-oI-y8S">
                                         <rect key="frame" x="24" y="14" width="38" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="roundTextured" title="Textured Rounded" bezelStyle="texturedRounded" image="sidebar_menu" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dFl-14-lkm">
+                                        <buttonCell key="cell" type="roundTextured" title="Textured Rounded" bezelStyle="texturedRounded" image="Sidebar" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dFl-14-lkm">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
                                     </button>
                                     <connections>
                                         <action selector="toggleSidebar:" target="95r-g6-5ej" id="OMF-Wn-fMV"/>
-                                    </connections>
-                                </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="8B4F0FF6-083D-40EC-8C22-804091EA1403" label="Open File" paletteLabel="Open File" image="folder" sizingBehavior="auto" id="tNq-SQ-omF">
-                                    <nil key="toolTip"/>
-                                    <button key="view" verticalHuggingPriority="750" id="Zum-W1-UTm">
-                                        <rect key="frame" x="10" y="14" width="37" height="25"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="roundTextured" title="Textured Rounded" bezelStyle="texturedRounded" image="folder" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dHD-4E-W1K">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                    </button>
-                                    <connections>
-                                        <action selector="openFile:" target="95r-g6-5ej" id="Ru5-8i-sBL"/>
                                     </connections>
                                 </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="79EE8B2D-7890-41EC-BA1B-51CFA0C4287B" label="New Tab" paletteLabel="New Tab" image="NSAddTemplate" sizingBehavior="auto" id="5Z5-mr-XNo">
@@ -760,12 +746,12 @@
                                         </constraints>
                                     </customView>
                                 </toolbarItem>
-                                <toolbarItem implicitItemIdentifier="83A087AD-2B72-4052-999C-8AE2C7ABBB46" label="Open" paletteLabel="Open" image="folder" sizingBehavior="auto" id="00F-OE-8qN">
+                                <toolbarItem implicitItemIdentifier="83A087AD-2B72-4052-999C-8AE2C7ABBB46" label="Open" paletteLabel="Open" image="Folder" sizingBehavior="auto" id="00F-OE-8qN">
                                     <nil key="toolTip"/>
                                     <button key="view" verticalHuggingPriority="750" id="EaA-HV-0za">
                                         <rect key="frame" x="0.0" y="14" width="46" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                        <buttonCell key="cell" type="roundTextured" title="Textured Rounded" bezelStyle="texturedRounded" image="folder" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dNG-jJ-EpU">
+                                        <buttonCell key="cell" type="roundTextured" title="Textured Rounded" bezelStyle="texturedRounded" image="Folder" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="dNG-jJ-EpU">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
@@ -1377,14 +1363,14 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Folder" width="128" height="128"/>
         <image name="Logo" width="100" height="100"/>
         <image name="NSActionTemplate" width="14" height="14"/>
         <image name="NSAddTemplate" width="11" height="11"/>
         <image name="NSFolder" width="32" height="32"/>
         <image name="NSGoBackTemplate" width="9" height="12"/>
         <image name="NSGoForwardTemplate" width="9" height="12"/>
-        <image name="folder" width="100" height="100"/>
-        <image name="sidebar_menu" width="100" height="100"/>
+        <image name="Sidebar" width="100" height="100"/>
         <namedColor name="FaviconBackgroundColor">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
