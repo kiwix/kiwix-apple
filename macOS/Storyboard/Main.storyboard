@@ -1160,6 +1160,7 @@
                                                                 <connections>
                                                                     <outlet property="dataSource" destination="yPa-Gm-cWg" id="dPc-DZ-RAJ"/>
                                                                     <outlet property="delegate" destination="yPa-Gm-cWg" id="P5f-XR-CbA"/>
+                                                                    <outlet property="menu" destination="sIj-cr-8VK" id="DJL-Gu-C8T"/>
                                                                 </connections>
                                                             </outlineView>
                                                         </subviews>
@@ -1199,6 +1200,16 @@
                     </connections>
                 </viewController>
                 <customObject id="d1z-e6-37R" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <menu id="sIj-cr-8VK">
+                    <items>
+                        <menuItem title="Remove" id="3dY-Eg-649">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                        </menuItem>
+                    </items>
+                    <connections>
+                        <outlet property="delegate" destination="yPa-Gm-cWg" id="cZ1-3j-g3s"/>
+                    </connections>
+                </menu>
             </objects>
             <point key="canvasLocation" x="1877" y="-677.5"/>
         </scene>

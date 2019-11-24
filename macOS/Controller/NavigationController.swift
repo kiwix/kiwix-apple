@@ -9,7 +9,7 @@
 import Cocoa
 import RealmSwift
 
-class ArticleNavigationController: NSViewController, NSOutlineViewDataSource, NSOutlineViewDelegate {
+class ArticleNavigationController: NSViewController, NSMenuDelegate, NSOutlineViewDataSource, NSOutlineViewDelegate {
     @IBOutlet weak var tabView: NSTabView!
     @IBOutlet weak var localOutlineView: NSOutlineView!
     
@@ -31,10 +31,43 @@ class ArticleNavigationController: NSViewController, NSOutlineViewDataSource, NS
         super.viewDidLoad()
         
         localZimFilesChangeToken = localZimFiles?.observe({ (change) in
-            if case .update = change {
-                self.localOutlineView.reloadData()
+            
+            if case .update(_, let deletions, let insertions, let modifications) = change {
+                self.localOutlineView.beginUpdates()
+                self.localOutlineView.insertItems(at: IndexSet(insertions), inParent: nil, withAnimation: NSTableView.AnimationOptions.slideLeft)
+                self.localOutlineView.endUpdates()
             }
         })
+    }
+    
+    deinit {
+        localZimFilesChangeToken?.invalidate()
+    }
+    
+    // MARK: - Action
+    
+    @objc func removeZimFile() {
+        guard let localOutlineView = localOutlineView,
+            let zimFile = localOutlineView.item(atRow: localOutlineView.clickedRow) as? ZimFile else {return}
+        let index = IndexSet(integer: localOutlineView.childIndex(forItem: zimFile))
+        localOutlineView.removeItems(at: index, inParent: nil, withAnimation: NSTableView.AnimationOptions.slideLeft)
+        ZimMultiReader.shared.remove(id: zimFile.id)
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            try database.write {
+                database.delete(zimFile)
+            }
+        } catch {}
+    }
+    
+    // MARK: - NSMenuDelegate
+    
+    func menuNeedsUpdate(_ menu: NSMenu) {
+        menu.removeAllItems()
+        if let clickedRow = localOutlineView?.clickedRow, clickedRow >= 0 {
+            let menuItem = NSMenuItem(title: "Remove", action: #selector(removeZimFile), keyEquivalent: "")
+            menu.addItem(menuItem)
+        }
     }
     
     // MARK: - NSOutlineViewDataSource
