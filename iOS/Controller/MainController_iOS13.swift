@@ -61,6 +61,7 @@ class RootCompactController: UIViewController {
     
 }
 
+@available(iOS 13.0, *)
 class RootRegularController: UISplitViewController, UISplitViewControllerDelegate {
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -68,14 +69,47 @@ class RootRegularController: UISplitViewController, UISplitViewControllerDelegat
         preferredDisplayMode = .allVisible
         delegate = self
         
-        let master = UIViewController()
-        let detail = UIViewController()
+        let master = UITableViewController()
+        let detail = WebView13Controller()
         viewControllers = [
-            UITableViewController(),
+            UINavigationController(rootViewController: master),
             UINavigationController(rootViewController: detail)]
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+@available(iOS 13.0, *)
+class WebView13Controller: UITableViewController {
+    let searchController = UISearchController(searchResultsController: UITableViewController())
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+//        navigationItem.searchController = searchController
+        navigationItem.titleView = searchController.searchBar
+//        navigationController?.navigationBar.prefersLargeTitles = false
+        
+        searchController.hidesNavigationBarDuringPresentation = false
+        definesPresentationContext = true
+        
+        
+//        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: nil, action: nil)
+    }
+    
+//    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+//        super.willTransition(to: newCollection, with: coordinator)
+//
+//    }
+//
+//    private func configureNavigationBar(_traitCollection: UITraitCollection) {
+//        switch traitCollection.horizontalSizeClass {
+//        case .compact:
+//
+//        default:
+//            <#code#>
+//        }
+//
+//    }
 }
