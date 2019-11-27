@@ -62,18 +62,15 @@ class RootCompactController: UIViewController {
 }
 
 @available(iOS 13.0, *)
-class RootRegularController: UISplitViewController, UISplitViewControllerDelegate {
+class RootRegularController: UISplitViewController {
     init() {
         super.init(nibName: nil, bundle: nil)
 
         preferredDisplayMode = .allVisible
-        delegate = self
-        
-        let master = UITableViewController()
-        let detail = WebView13Controller()
         viewControllers = [
-            UINavigationController(rootViewController: master),
-            UINavigationController(rootViewController: detail)]
+            SideBarController(),
+            UINavigationController(rootViewController: ContentRegularController())
+        ]
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -82,34 +79,52 @@ class RootRegularController: UISplitViewController, UISplitViewControllerDelegat
 }
 
 @available(iOS 13.0, *)
-class WebView13Controller: UITableViewController {
-    let searchController = UISearchController(searchResultsController: UITableViewController())
+class ContentRegularController: UIViewController, UISearchControllerDelegate {
+    private let searchController = UISearchController(searchResultsController: SearchResultContainerController())
+    private lazy var searchCancelButton = UIBarButtonItem(barButtonSystemItem: .cancel,
+                                                          target: self,
+                                                          action: #selector(cancelSearch))
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        navigationItem.searchController = searchController
-        navigationItem.titleView = searchController.searchBar
-//        navigationController?.navigationBar.prefersLargeTitles = false
         
+        navigationItem.titleView = searchController.searchBar
+        searchController.delegate = self
         searchController.hidesNavigationBarDuringPresentation = false
+        searchController.showsSearchResultsController = true
         definesPresentationContext = true
         
-        
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: nil, action: nil)
+        navigationController?.isToolbarHidden = false
+        toolbarItems = [
+            UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), style: .plain, target: self, action: #selector(toggleSideBar)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        ]
     }
     
-//    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-//        super.willTransition(to: newCollection, with: coordinator)
-//
-//    }
-//
-//    private func configureNavigationBar(_traitCollection: UITraitCollection) {
-//        switch traitCollection.horizontalSizeClass {
-//        case .compact:
-//
-//        default:
-//            <#code#>
-//        }
-//
-//    }
+    // MARK: UISearchControllerDelegate
+    
+    func willPresentSearchController(_ searchController: UISearchController) {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            navigationItem.setRightBarButton(searchCancelButton, animated: true)
+        }
+    }
+    
+    func willDismissSearchController(_ searchController: UISearchController) {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            navigationItem.setRightBarButton(nil, animated: true)
+        }
+    }
+    
+    // MARK: Actions
+    
+    @objc func cancelSearch() {
+        searchController.isActive = false
+    }
+    
+    @objc func toggleSideBar() {
+        UIView.animate(withDuration: 0.2) {
+            let currentMode = self.splitViewController?.preferredDisplayMode
+            self.splitViewController?.preferredDisplayMode = currentMode == .primaryHidden ? .allVisible : .primaryHidden
+        }
+    }
 }
