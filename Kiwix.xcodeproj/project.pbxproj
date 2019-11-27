@@ -99,7 +99,6 @@
 		97A36C511F8D4FB80079B452 /* VisualEffectShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A36C501F8D4FB80079B452 /* VisualEffectShadowView.swift */; };
 		97A36C571F8D5FCD0079B452 /* LibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A36C561F8D5FCD0079B452 /* LibraryController.swift */; };
 		97A5C1412089115D009CA5F9 /* SearchResultContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A5C1402089115D009CA5F9 /* SearchResultContainerController.swift */; };
-		97A5C1432089194B009CA5F9 /* SearchMiscControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A5C1422089194B009CA5F9 /* SearchMiscControllers.swift */; };
 		97A6882E207D3DE300DBBE0D /* ZimFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A6882D207D3DE300DBBE0D /* ZimFile.swift */; };
 		97A68830207D40F500DBBE0D /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97A6882F207D40F500DBBE0D /* Pods_iOS.framework */; };
 		97A68832207D4D6700DBBE0D /* RealmConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A68831207D4D6700DBBE0D /* RealmConfig.swift */; };
@@ -329,7 +328,6 @@
 		97A36C501F8D4FB80079B452 /* VisualEffectShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectShadowView.swift; sourceTree = "<group>"; };
 		97A36C561F8D5FCD0079B452 /* LibraryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryController.swift; sourceTree = "<group>"; };
 		97A5C1402089115D009CA5F9 /* SearchResultContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultContainerController.swift; sourceTree = "<group>"; };
-		97A5C1422089194B009CA5F9 /* SearchMiscControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMiscControllers.swift; sourceTree = "<group>"; };
 		97A6882D207D3DE300DBBE0D /* ZimFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFile.swift; sourceTree = "<group>"; };
 		97A6882F207D40F500DBBE0D /* Pods_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A68831207D4D6700DBBE0D /* RealmConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmConfig.swift; sourceTree = "<group>"; };
@@ -781,7 +779,6 @@
 				97A5C1402089115D009CA5F9 /* SearchResultContainerController.swift */,
 				97E34E0B20124F33005080B2 /* SearchNoTextController.swift */,
 				979FD158201679C5007B5290 /* SearchResultsListController.swift */,
-				97A5C1422089194B009CA5F9 /* SearchMiscControllers.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -1860,7 +1857,6 @@
 				97F4D10A20ADD0F00038FC87 /* DownloadManager.swift in Sources */,
 				97D757E5238F3161008FB7E2 /* SideBarController.swift in Sources */,
 				97D0C4DD211BF72B00B00DAA /* TableViewSectionFooterLabel.swift in Sources */,
-				97A5C1432089194B009CA5F9 /* SearchMiscControllers.swift in Sources */,
 				97598E09202B60E0005A9055 /* BackupManager.swift in Sources */,
 				97F4D10620AB80740038FC87 /* LibraryZimFileDetailController.swift in Sources */,
 				972B665F2007F9F5003F5365 /* LegacyWebController.swift in Sources */,
