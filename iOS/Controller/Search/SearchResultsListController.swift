@@ -104,10 +104,16 @@ class SearchResultsListController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let main = presentingViewController as? MainController else {return}
-        update(recentSearchText: searchText)
-        main.load(url: results[indexPath.row].url)
-        main.searchController.isActive = false
+        if #available(iOS 13, *) {
+            guard let rootController = rootViewController else {return}
+            update(recentSearchText: searchText)
+            rootController.currentWebController.load(url: results[indexPath.row].url)
+        } else {
+            guard let main = presentingViewController as? MainController else {return}
+            update(recentSearchText: searchText)
+            main.load(url: results[indexPath.row].url)
+            main.searchController.isActive = false
+        }
     }
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
