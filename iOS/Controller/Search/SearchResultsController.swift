@@ -9,10 +9,10 @@
 import UIKit
 import RealmSwift
 
-class SearchResultController: UIViewController, SearchQueueEvents, UISearchResultsUpdating {
+class SearchResultsController: UIViewController, SearchQueueEvents, UISearchResultsUpdating {
     private let queue = SearchQueue()
     private let visualView = VisualEffectShadowView()
-    let contentController = SearchResultContainerController()
+    let contentController = SearchResultContents()
     private var viewAlwaysVisibleObserver: NSKeyValueObservation?
     
     // MARK: - Constraints
@@ -45,10 +45,12 @@ class SearchResultController: UIViewController, SearchQueueEvents, UISearchResul
     override func loadView() {
         view = BackgroundView()
         
-        /* Prevent SearchResultController view from being automatically hidden by the UISearchController */
-        viewAlwaysVisibleObserver = view.observe(\.isHidden, options: .new, changeHandler: { (view, change) in
-            if change.newValue == true { view.isHidden = false }
-        })
+        if #available(iOS 13, *) {} else {
+            /* Prevent SearchResultsController view from being automatically hidden by the UISearchController */
+            viewAlwaysVisibleObserver = view.observe(\.isHidden, options: .new, changeHandler: { (view, change) in
+                if change.newValue == true { view.isHidden = false }
+            })
+        }
     }
     
     override func viewDidLoad() {
@@ -154,7 +156,7 @@ class SearchResultController: UIViewController, SearchQueueEvents, UISearchResul
         bottomConstraint?.priority = traitCollection.horizontalSizeClass == .compact ? .defaultHigh : .defaultLow
     }
     
-    private func configureContent(mode: SearchResultContainerController.Mode? = nil) {
+    private func configureContent(mode: SearchResultContents.Mode? = nil) {
         if let mode = mode {
             contentController.mode = mode
             /*

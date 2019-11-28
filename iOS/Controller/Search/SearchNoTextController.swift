@@ -10,8 +10,16 @@ import UIKit
 import RealmSwift
 import SwiftyUserDefaults
 
-class SearchNoTextController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, SearchNoTextControllerSectionHeaderDelegate {
-    private let tableView = UITableView(frame: .zero, style: .grouped)
+class SearchNoTextController: UIViewController, UITableViewDelegate, UITableViewDataSource,
+                              UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,
+                              SearchNoTextControllerSectionHeaderDelegate {
+    private let tableView: UITableView = {
+        if #available(iOS 13.0, *) {
+            return UITableView(frame: .zero, style: .insetGrouped)
+        } else {
+            return UITableView(frame: .zero, style: .grouped)
+        }
+    }()
     private var sections: [Section] = [.searchFilter]
     
     private let zimFiles: Results<ZimFile>? = {

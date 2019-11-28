@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SearchResultContainerController: UITabBarController {
+class SearchResultContents: UITabBarController {
     enum Mode {
         case onboarding, noText, inProgress, results, noResult
         

@@ -28,7 +28,7 @@ class MainController: UIViewController {
     private(set) weak var currentWebController: (UIViewController & WebViewController)? = nil
     private(set) var webControllers = [(UIViewController & WebViewController)]()
     
-    let searchController = UISearchController(searchResultsController: SearchResultController())
+    let searchController = UISearchController(searchResultsController: SearchResultsController())
     private(set) lazy var welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     private(set) lazy var bookmarkController = BookmarkController()
     private(set) lazy var tableOfContentController = TableOfContentController()
@@ -192,7 +192,7 @@ extension MainController: UISearchControllerDelegate, UISearchBarDelegate {
         searchController.searchBar.searchBarStyle = .minimal
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.obscuresBackgroundDuringPresentation = true
-        searchController.searchResultsUpdater = searchController.searchResultsController as? SearchResultController
+        searchController.searchResultsUpdater = searchController.searchResultsController as? SearchResultsController
     }
     
     @objc func cancelSearchButtonTapped() {
@@ -201,13 +201,13 @@ extension MainController: UISearchControllerDelegate, UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         // when searchController become active, set searchBar.text to previous search text
-        guard let searchResultController = searchController.searchResultsController as? SearchResultController else {return}
+        guard let searchResultController = searchController.searchResultsController as? SearchResultsController else {return}
         searchBar.text = searchResultController.contentController.resultsListController.searchText
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // when return button on the keyboard is tapped, we load the first article in search result
-        guard let controller = searchController.searchResultsController as? SearchResultController else {return}
+        guard let controller = searchController.searchResultsController as? SearchResultsController else {return}
         let resultsListController = controller.contentController.resultsListController
         guard let firstResult = resultsListController.results.first else {return}
         

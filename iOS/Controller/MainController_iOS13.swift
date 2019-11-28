@@ -27,15 +27,15 @@ class RootController: UIViewController {
     private func setupContent(traitCollection: UITraitCollection) {
         switch traitCollection.horizontalSizeClass {
         case .compact:
-            makeChildController(compactController)
+            setChildController(compactController)
         case .regular:
-            makeChildController(regularController)
+            setChildController(regularController)
         default:
-            makeChildController(nil)
+            setChildController(nil)
         }
     }
     
-    private func makeChildController(_ newChild: UIViewController?) {
+    private func setChildController(_ newChild: UIViewController?) {
         for child in children {
             child.willMove(toParent: nil)
             child.view.removeFromSuperview()
@@ -63,24 +63,32 @@ class RootCompactController: UIViewController {
 
 @available(iOS 13.0, *)
 class RootRegularController: UISplitViewController {
+    let masterController = SideBarController()
+    let detailController = UINavigationController(rootViewController: ContentRegularController())
+    
     init() {
         super.init(nibName: nil, bundle: nil)
-
         preferredDisplayMode = .allVisible
-        viewControllers = [
-            SideBarController(),
-            UINavigationController(rootViewController: ContentRegularController())
-        ]
+        viewControllers = [masterController, detailController]
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func overrideTraitCollection(forChild childViewController: UIViewController) -> UITraitCollection? {
+        let traitCollection = super.overrideTraitCollection(forChild: childViewController)
+        if childViewController == detailController, preferredDisplayMode == .allVisible {
+            return UITraitCollection(horizontalSizeClass: .compact)
+        }
+        return traitCollection
+    }
 }
 
 @available(iOS 13.0, *)
 class ContentRegularController: UIViewController, UISearchControllerDelegate {
-    private let searchController = UISearchController(searchResultsController: SearchResultContainerController())
+    private let searchController = UISearchController(searchResultsController: SearchResultsController())
+    private let searchResultsController = SearchResultsController()
     private lazy var searchCancelButton = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                           target: self,
                                                           action: #selector(cancelSearch))
@@ -92,6 +100,7 @@ class ContentRegularController: UIViewController, UISearchControllerDelegate {
         searchController.delegate = self
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.showsSearchResultsController = true
+        searchController.searchResultsUpdater = searchResultsController
         definesPresentationContext = true
         
         navigationController?.isToolbarHidden = false
