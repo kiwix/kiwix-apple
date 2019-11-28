@@ -87,11 +87,20 @@ class RootRegularController: UISplitViewController {
 
 @available(iOS 13.0, *)
 class ContentRegularController: UIViewController, UISearchControllerDelegate {
-    private let searchController = UISearchController(searchResultsController: SearchResultsController())
-    private let searchResultsController = SearchResultsController()
+    private let searchController: UISearchController
+    private let searchResultsController: SearchResultsController
     private lazy var searchCancelButton = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                           target: self,
                                                           action: #selector(cancelSearch))
+    init() {
+        self.searchResultsController = SearchResultsController()
+        self.searchController = UISearchController(searchResultsController: self.searchResultsController)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -127,6 +136,12 @@ class ContentRegularController: UIViewController, UISearchControllerDelegate {
     // MARK: Actions
     
     @objc func cancelSearch() {
+        /*
+         We have to dismiss the `searchController` first, so that the `isBeingDismissed` property is correct on the
+         `searchResultsController`. We rely on `isBeingDismissed` to understand if the search text is cleared because
+         of user tapped cancel button or manually cleared the serach field.
+         */
+        searchController.dismiss(animated: true)
         searchController.isActive = false
     }
     

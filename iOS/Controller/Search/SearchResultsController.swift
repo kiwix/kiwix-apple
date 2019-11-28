@@ -55,7 +55,6 @@ class SearchResultsController: UIViewController, SearchQueueEvents, UISearchResu
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        queue.eventDelegate = self
         
         edgesForExtendedLayout = []
         configureChildViewControllers()
@@ -67,6 +66,7 @@ class SearchResultsController: UIViewController, SearchQueueEvents, UISearchResu
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(notification:)), name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(notification:)), name: UIResponder.keyboardDidHideNotification, object: nil)
+        queue.eventDelegate = self
         configureContent()
     }
     
@@ -75,6 +75,7 @@ class SearchResultsController: UIViewController, SearchQueueEvents, UISearchResu
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidHideNotification, object: nil)
+        queue.eventDelegate = nil
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
