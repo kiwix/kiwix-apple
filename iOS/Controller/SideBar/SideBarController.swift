@@ -15,7 +15,7 @@ class SideBarController: UITabBarController {
         viewControllers = [
             SessionController(),
             FavoriteController(),
-            MapViewController(),
+            MapController(),
         ]
     }
     
@@ -49,7 +49,7 @@ class FavoriteController: UITableViewController {
 }
 
 @available(iOS 13.0, *)
-class MapViewController: UIViewController {
+class MapController: UIViewController {
     init() {
         super.init(nibName: nil, bundle: nil)
         tabBarItem = UITabBarItem(title: "Map", image: UIImage(systemName: "map"), tag: 2)

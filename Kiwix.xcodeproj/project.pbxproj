@@ -70,7 +70,6 @@
 		977D7BB61F9E6A43009A8703 /* ZimMultiReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BB21F9E6A43009A8703 /* ZimMultiReader.mm */; };
 		977D7BB81F9E6A43009A8703 /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BB31F9E6A43009A8703 /* ZimMultiReader.swift */; };
 		977D7BBE1F9FC618009A8703 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BBD1F9FC618009A8703 /* Queue.swift */; };
-		977ED8C820BD9BCB009A2FB2 /* MapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977ED8C720BD9BCB009A2FB2 /* MapController.swift */; };
 		977F983E1F9E43EC002ABFCE /* LibraryScanOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977F983D1F9E43EC002ABFCE /* LibraryScanOperation.swift */; };
 		9781430923400C4000E0937C /* libcurl.4.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 9750B819233AEBE5007B019C /* libcurl.4.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		9781430B23400C4100E0937C /* libicudata.58.2.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 9750B80F233AEBE5007B019C /* libicudata.58.2.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -1870,7 +1869,6 @@
 				97A36C321F8C21210079B452 /* AppDelegate.swift in Sources */,
 				979FD159201679C5007B5290 /* SearchResultsListController.swift in Sources */,
 				972B66602007F9F7003F5365 /* WebKitWebController.swift in Sources */,
-				977ED8C820BD9BCB009A2FB2 /* MapController.swift in Sources */,
 				97C57638202CB86800E37502 /* Article.swift in Sources */,
 				9763EDC9201FCA6900F3A6D5 /* SettingWebController.swift in Sources */,
 				97AC121320878F8B004779D1 /* SearchResultsController.swift in Sources */,

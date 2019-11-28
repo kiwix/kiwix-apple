@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import WebKit
 
 @available(iOS 13.0, *)
 class RootController: UIViewController {
@@ -64,7 +65,7 @@ class RootCompactController: UIViewController {
 @available(iOS 13.0, *)
 class RootRegularController: UISplitViewController {
     let masterController = SideBarController()
-    let detailController = UINavigationController(rootViewController: ContentRegularController())
+    let detailController = UINavigationController(rootViewController: SplitDetailController())
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -86,12 +87,14 @@ class RootRegularController: UISplitViewController {
 }
 
 @available(iOS 13.0, *)
-class ContentRegularController: UIViewController, UISearchControllerDelegate {
+class SplitDetailController: UIViewController, UISearchControllerDelegate {
+    var contentMode: ContentMode = .welcome { didSet { configureContent(contentMode) } }
     private let searchController: UISearchController
     private let searchResultsController: SearchResultsController
     private lazy var searchCancelButton = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                           target: self,
                                                           action: #selector(cancelSearch))
+    
     init() {
         self.searchResultsController = SearchResultsController()
         self.searchController = UISearchController(searchResultsController: self.searchResultsController)
@@ -111,12 +114,34 @@ class ContentRegularController: UIViewController, UISearchControllerDelegate {
         searchController.showsSearchResultsController = true
         searchController.searchResultsUpdater = searchResultsController
         definesPresentationContext = true
+        configureContent(contentMode)
         
         navigationController?.isToolbarHidden = false
         toolbarItems = [
             UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), style: .plain, target: self, action: #selector(toggleSideBar)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         ]
+    }
+    
+    private func configureContent(_ contentMode: ContentMode) {
+        switch contentMode {
+        case .welcome:
+            setView(UITableView())
+        case .web(let webView):
+            setView(webView)
+        }
+    }
+    
+    private func setView(_ subView: UIView) {
+        view.subviews.forEach({ $0.removeFromSuperview() })
+        subView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(subView)
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: subView.topAnchor),
+            view.leftAnchor.constraint(equalTo: subView.leftAnchor),
+            view.bottomAnchor.constraint(equalTo: subView.bottomAnchor),
+            view.rightAnchor.constraint(equalTo: subView.rightAnchor),
+        ])
     }
     
     // MARK: UISearchControllerDelegate
@@ -150,5 +175,12 @@ class ContentRegularController: UIViewController, UISearchControllerDelegate {
             let currentMode = self.splitViewController?.preferredDisplayMode
             self.splitViewController?.preferredDisplayMode = currentMode == .primaryHidden ? .allVisible : .primaryHidden
         }
+    }
+    
+    // MARK: Type Definition
+    
+    enum ContentMode {
+        case web(WKWebView)
+        case welcome
     }
 }
