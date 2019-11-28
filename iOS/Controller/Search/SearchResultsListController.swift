@@ -15,9 +15,22 @@ class SearchResultsListController: UITableViewController {
     private(set) var results: [SearchResult] = []
     private weak var clearResultTimer: Timer?
     
+    init() {
+        super.init(style: {
+            if #available(iOS 13, *) {
+                return .insetGrouped
+            } else {
+                return .plain
+            }
+        }())
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.backgroundColor = .clear
         tableView.estimatedRowHeight = 44
         tableView.rowHeight = UITableView.automaticDimension
         tableView.cellLayoutMarginsFollowReadableWidth = true
@@ -69,7 +82,7 @@ class SearchResultsListController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
         let result = results[indexPath.row]
         
-        cell.backgroundColor = .clear
+//        if traitCollection.horizontalSizeClass == .regular {cell.backgroundColor = .clear}
         cell.titleLabel.text = result.title
         
         do {

@@ -137,7 +137,7 @@ class SearchResultsController: UIViewController, SearchQueueEvents, UISearchResu
         
         visualView.contentView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
         visualView.contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        proportionalWidthConstraint = visualView.contentView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75)
+        proportionalWidthConstraint = visualView.contentView.widthAnchor.constraint(equalTo: view.readableContentGuide.widthAnchor, multiplier: 1.0, constant: 90)
         equalWidthConstraint = visualView.contentView.widthAnchor.constraint(equalTo: view.widthAnchor)
         proportionalHeightConstraint = visualView.contentView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.75)
         bottomConstraint = visualView.contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
