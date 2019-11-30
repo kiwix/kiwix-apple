@@ -10,77 +10,19 @@ import UIKit
 import WebKit
 
 @available(iOS 13.0, *)
-extension UIViewController {
-    var rootViewController: RootController? {
-        return view.window?.rootViewController as? RootController
-    }
-    
-    func setChildController(_ newChild: UIViewController?) {
-        for child in children {
-            child.willMove(toParent: nil)
-            child.view.removeFromSuperview()
-            child.removeFromParent()
-        }
-        
-        if let child = newChild {
-            child.view.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(child.view)
-            NSLayoutConstraint.activate([
-                view.topAnchor.constraint(equalTo: child.view.topAnchor),
-                view.leftAnchor.constraint(equalTo: child.view.leftAnchor),
-                view.bottomAnchor.constraint(equalTo: child.view.bottomAnchor),
-                view.rightAnchor.constraint(equalTo: child.view.rightAnchor),
-            ])
-            addChild(child)
-            child.didMove(toParent: self)
-        }
-    }
-}
-
-@available(iOS 13.0, *)
-class RootController: UIViewController {
-    private let compactController = RootCompactController()
-    private let splitController = MainSplitController()
-    private var webControllers = [WebKitWebController()]
-    var currentWebController: WebKitWebController {return webControllers[0]}
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupContent(traitCollection: traitCollection)
-    }
-    
-    override func willTransition(to newCollection: UITraitCollection,
-                                 with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-        setupContent(traitCollection: newCollection)
-    }
-
-    private func setupContent(traitCollection: UITraitCollection) {
-        switch traitCollection.horizontalSizeClass {
-        case .compact:
-            setChildController(compactController)
-        case .regular:
-            setChildController(splitController)
-        default:
-            setChildController(nil)
-        }
-    }
-}
-
-class RootCompactController: UITableViewController {
-    
-}
-
-@available(iOS 13.0, *)
-class MainSplitController: UISplitViewController {
-    let masterController = SideBarController()
-    let detailController = UINavigationController(rootViewController: SplitDetailController())
-    var rootController: RootController { return parent as! RootController }
+class TestController: UISplitViewController, UISplitViewControllerDelegate {
+    let sideBarViewController = SideBarController()
+    let contentViewController = ContentViewController()
     
     init() {
         super.init(nibName: nil, bundle: nil)
         preferredDisplayMode = .allVisible
-        viewControllers = [masterController, detailController]
+        
+        let contentNavController = UINavigationController(rootViewController: contentViewController)
+        contentNavController.isToolbarHidden = false
+        viewControllers = [sideBarViewController, contentNavController]
+        
+        delegate = self
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -89,23 +31,43 @@ class MainSplitController: UISplitViewController {
     
     override func overrideTraitCollection(forChild childViewController: UIViewController) -> UITraitCollection? {
         let traitCollection = super.overrideTraitCollection(forChild: childViewController)
-        if childViewController == detailController, preferredDisplayMode == .allVisible {
+        if viewControllers.count > 1,
+            childViewController == viewControllers.last,
+            preferredDisplayMode == .allVisible {
             return UITraitCollection(horizontalSizeClass: .compact)
         }
         return traitCollection
     }
+    
+    // MARK: UISplitViewControllerDelegate
+    
+    func primaryViewController(forExpanding splitViewController: UISplitViewController) -> UIViewController? {
+        return sideBarViewController
+    }
+    
+    func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
+        let navigationController = UINavigationController(rootViewController: contentViewController)
+        navigationController.isToolbarHidden = false
+        return navigationController
+    }
+    
+    func splitViewController(_ splitViewController: UISplitViewController,
+                             separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
+        let navigationController = UINavigationController(rootViewController: contentViewController)
+        navigationController.isToolbarHidden = false
+        return navigationController
+    }
 }
 
 @available(iOS 13.0, *)
-class SplitDetailController: UIViewController, UISearchControllerDelegate {
-    private var contentMode: ContentMode = .empty
-    private let searchController: UISearchController
+class ContentViewController: UIViewController, UISearchControllerDelegate {
+    let searchController: UISearchController
     private let searchResultsController: SearchResultsController
-    var rootController: RootController { return (splitViewController as! MainSplitController).rootController }
-    
     private lazy var searchCancelButton = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                           target: self,
                                                           action: #selector(cancelSearch))
+    private var webViewControllers = [WebKitWebController()]
+    private var currentWebViewController: WebKitWebController {return webViewControllers[0]}
     
     init() {
         self.searchResultsController = SearchResultsController()
@@ -120,32 +82,31 @@ class SplitDetailController: UIViewController, UISearchControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.hidesBackButton = true
         navigationItem.titleView = searchController.searchBar
+        definesPresentationContext = true
         searchController.delegate = self
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.showsSearchResultsController = true
         searchController.searchResultsUpdater = searchResultsController
-        definesPresentationContext = true
-        
-        navigationController?.isToolbarHidden = false
-        toolbarItems = [
-            UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), style: .plain, target: self, action: #selector(toggleSideBar)),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        ]
+        configureToolbar()
     }
     
-    func setContentMode(_ contentMode: ContentMode) {
-        guard contentMode != self.contentMode else {return}
-        self.contentMode = contentMode
-        switch contentMode {
-        case .welcome:
-            setView(UITableView())
-        case .web:
-            print(rootController)
-            setChildController(rootController.currentWebController)
-        case .empty:
-            setView(nil)
-        }
+    func load(url: URL) {
+        setChildController(currentWebViewController)
+        currentWebViewController.load(url: url)
+    }
+    
+    // MARK: View Configuration
+    
+    private func configureToolbar() {
+        toolbarItems = [
+            UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), style: .plain, target: self, action: #selector(toggleSideBar)),
+            UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(goBack)),
+            UIBarButtonItem(image: UIImage(systemName: "chevron.right"), style: .plain, target: self, action: #selector(goForward)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: UIImage(systemName: "square.on.square"), style: .plain, target: self, action: #selector(toggleTabsView)),
+        ]
     }
     
     private func setView(_ subView: UIView?) {
@@ -159,6 +120,29 @@ class SplitDetailController: UIViewController, UISearchControllerDelegate {
                 view.bottomAnchor.constraint(equalTo: subView.bottomAnchor),
                 view.rightAnchor.constraint(equalTo: subView.rightAnchor),
             ])
+        }
+    }
+    
+    private func setChildController(_ newChild: UIViewController?) {
+        if let newChild = newChild, children.contains(newChild) {return}
+        
+        for child in children {
+            child.willMove(toParent: nil)
+            child.view.removeFromSuperview()
+            child.removeFromParent()
+        }
+        
+        if let child = newChild {
+            child.view.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(child.view)
+            NSLayoutConstraint.activate([
+                topLayoutGuide.bottomAnchor.constraint(equalTo: child.view.topAnchor),
+                view.leftAnchor.constraint(equalTo: child.view.leftAnchor),
+                bottomLayoutGuide.topAnchor.constraint(equalTo: child.view.bottomAnchor),
+                view.rightAnchor.constraint(equalTo: child.view.rightAnchor),
+            ])
+            addChild(child)
+            child.didMove(toParent: self)
         }
     }
     
@@ -193,6 +177,18 @@ class SplitDetailController: UIViewController, UISearchControllerDelegate {
             let current = self.splitViewController?.preferredDisplayMode
             self.splitViewController?.preferredDisplayMode = current == .primaryHidden ? .allVisible : .primaryHidden
         }
+    }
+    
+    @objc func goBack() {
+        currentWebViewController.goBack()
+    }
+    
+    @objc func goForward() {
+        currentWebViewController.goForward()
+    }
+    
+    @objc func toggleTabsView() {
+        
     }
     
     // MARK: Type Definition

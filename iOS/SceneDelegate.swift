@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                options connectionOptions: UIScene.ConnectionOptions) {
         if let windowScene = scene as? UIWindowScene {
             window = UIWindow(windowScene: windowScene)
-            window?.rootViewController = RootController()
+            window?.rootViewController = TestController()
             window?.makeKeyAndVisible()
         }
     }

@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     func applicationDidFinishLaunching(_ application: UIApplication) {
         let mainController: UIViewController = {
             if #available(iOS 13.0, *) {
-                return RootController()
+                return UIViewController()
             } else {
                 return UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()!
             }
