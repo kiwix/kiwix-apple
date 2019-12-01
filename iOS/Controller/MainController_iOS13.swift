@@ -85,6 +85,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate {
         navigationItem.hidesBackButton = true
         navigationItem.titleView = searchController.searchBar
         definesPresentationContext = true
+        view.backgroundColor = .systemBackground
         searchController.delegate = self
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.showsSearchResultsController = true

@@ -83,8 +83,12 @@ class SearchResultsController: UIViewController, SearchQueueEvents, UISearchResu
         guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
         switch traitCollection.horizontalSizeClass {
         case .compact:
+            if #available(iOS 13.0, *) {
+                visualView.contentView.backgroundColor = .systemBackground
+            } else {
+                visualView.contentView.backgroundColor = .white
+            }
             visualView.roundingCorners = nil
-            visualView.contentView.backgroundColor = .white
             updateConstraintPriorities()
         case .regular:
             visualView.roundingCorners = .allCorners

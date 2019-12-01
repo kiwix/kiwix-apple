@@ -53,7 +53,11 @@ class SearchInProgressController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        indicator.style = .gray
+        if #available(iOS 13.0, *) {
+            indicator.style = .large
+        } else {
+            indicator.style = .gray
+        }
         indicator.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(indicator)
         NSLayoutConstraint.activate([
