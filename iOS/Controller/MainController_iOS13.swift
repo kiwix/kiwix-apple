@@ -102,7 +102,9 @@ class ContentViewController: UIViewController, UISearchControllerDelegate {
     private func configureToolbar() {
         toolbarItems = [
             UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), style: .plain, target: self, action: #selector(toggleSideBar)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(goBack)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(image: UIImage(systemName: "chevron.right"), style: .plain, target: self, action: #selector(goForward)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(image: UIImage(systemName: "square.on.square"), style: .plain, target: self, action: #selector(toggleTabsView)),
@@ -189,13 +191,5 @@ class ContentViewController: UIViewController, UISearchControllerDelegate {
     
     @objc func toggleTabsView() {
         
-    }
-    
-    // MARK: Type Definition
-    
-    enum ContentMode {
-        case web
-        case welcome
-        case empty
     }
 }

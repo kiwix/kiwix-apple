@@ -22,39 +22,3 @@ class SideBarController: UITabBarController {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
-@available(iOS 13.0, *)
-class FavoriteController: UITableViewController {
-    init() {
-        super.init(nibName: nil, bundle: nil)
-        tabBarItem = UITabBarItem(title: "Favorite", image: UIImage(systemName: "star"), tag: 1)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = "Favorite"
-        navigationController?.navigationBar.prefersLargeTitles = true
-    }
-}
-
-@available(iOS 13.0, *)
-class MapController: UIViewController {
-    init() {
-        super.init(nibName: nil, bundle: nil)
-        tabBarItem = UITabBarItem(title: "Map", image: UIImage(systemName: "map"), tag: 2)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = "Map"
-        navigationController?.navigationBar.prefersLargeTitles = true
-    }
-}
