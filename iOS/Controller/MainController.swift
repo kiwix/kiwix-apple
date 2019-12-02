@@ -30,7 +30,7 @@ class MainController: UIViewController {
     
     let searchController = UISearchController(searchResultsController: SearchResultsController())
     private(set) lazy var welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
-    private(set) lazy var bookmarkController = BookmarkController()
+    private(set) lazy var bookmarkController = FavoriteController()
     private(set) lazy var tableOfContentController = TableOfContentController()
     private(set) lazy var libraryController = LibraryController()
     private(set) lazy var settingController = SettingNavigationController()
