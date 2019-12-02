@@ -17,7 +17,7 @@ class SearchResultsController: UIViewController, SearchQueueEvents, UISearchResu
     
     // MARK: - Constraints
     
-    var proportionalWidthConstraint: NSLayoutConstraint? = nil
+    var readableContentWidthConstraint: NSLayoutConstraint? = nil
     var equalWidthConstraint: NSLayoutConstraint? = nil
     var proportionalHeightConstraint: NSLayoutConstraint? = nil
     var bottomConstraint: NSLayoutConstraint? = nil
@@ -121,8 +121,8 @@ class SearchResultsController: UIViewController, SearchQueueEvents, UISearchResu
             }
             visualView.roundingCorners = nil
         case .regular:
-            visualView.roundingCorners = .allCorners
             visualView.contentView.backgroundColor = .clear
+            visualView.roundingCorners = .allCorners
         default:
             break
         }
@@ -145,21 +145,21 @@ class SearchResultsController: UIViewController, SearchQueueEvents, UISearchResu
         
         visualView.contentView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
         visualView.contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        proportionalWidthConstraint = visualView.contentView.widthAnchor.constraint(equalTo: view.readableContentGuide.widthAnchor, multiplier: 1.0, constant: 90)
+        readableContentWidthConstraint = visualView.contentView.widthAnchor.constraint(equalTo: view.readableContentGuide.widthAnchor, multiplier: 1.0, constant: 90)
         equalWidthConstraint = visualView.contentView.widthAnchor.constraint(equalTo: view.widthAnchor)
         proportionalHeightConstraint = visualView.contentView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.75)
         bottomConstraint = visualView.contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         
         updateConstraintPriorities()
         
-        proportionalWidthConstraint?.isActive = true
+        readableContentWidthConstraint?.isActive = true
         equalWidthConstraint?.isActive = true
         proportionalHeightConstraint?.isActive = true
         bottomConstraint?.isActive = true
     }
     
     private func updateConstraintPriorities() {
-        proportionalWidthConstraint?.priority = traitCollection.horizontalSizeClass == .regular ? .defaultHigh : .defaultLow
+        readableContentWidthConstraint?.priority = traitCollection.horizontalSizeClass == .regular ? .defaultHigh : .defaultLow
         equalWidthConstraint?.priority = traitCollection.horizontalSizeClass == .compact ? .defaultHigh : .defaultLow
         proportionalHeightConstraint?.priority = traitCollection.horizontalSizeClass == .regular ? .defaultHigh : .defaultLow
         bottomConstraint?.priority = traitCollection.horizontalSizeClass == .compact ? .defaultHigh : .defaultLow

@@ -34,11 +34,13 @@ class VisualEffectShadowView: UIView {
     
     init() {
         super.init(frame: .zero)
+        backgroundColor = .clear
         addVisualEffectView()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        backgroundColor = .clear
         addVisualEffectView()
     }
     
