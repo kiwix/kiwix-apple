@@ -67,6 +67,7 @@ class SearchResultsController: UIViewController, SearchQueueEvents, UISearchResu
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(notification:)), name: UIResponder.keyboardDidHideNotification, object: nil)
         queue.eventDelegate = self
+        configureVisualView()
         configureContent()
     }
     
@@ -81,22 +82,8 @@ class SearchResultsController: UIViewController, SearchQueueEvents, UISearchResu
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
-        switch traitCollection.horizontalSizeClass {
-        case .compact:
-            if #available(iOS 13.0, *) {
-                visualView.contentView.backgroundColor = .systemBackground
-            } else {
-                visualView.contentView.backgroundColor = .white
-            }
-            visualView.roundingCorners = nil
-            updateConstraintPriorities()
-        case .regular:
-            visualView.roundingCorners = .allCorners
-            visualView.contentView.backgroundColor = .clear
-            updateConstraintPriorities()
-        default:
-            break
-        }
+        configureVisualView()
+        updateConstraintPriorities()
     }
     
     // MARK: - Keyboard Events
@@ -123,6 +110,23 @@ class SearchResultsController: UIViewController, SearchQueueEvents, UISearchResu
     }
     
     // MARK: - View Manipulation
+    
+    private func configureVisualView() {
+        switch traitCollection.horizontalSizeClass {
+        case .compact:
+            if #available(iOS 13.0, *) {
+                visualView.contentView.backgroundColor = .systemBackground
+            } else {
+                visualView.contentView.backgroundColor = .white
+            }
+            visualView.roundingCorners = nil
+        case .regular:
+            visualView.roundingCorners = .allCorners
+            visualView.contentView.backgroundColor = .clear
+        default:
+            break
+        }
+    }
     
     private func configureChildViewControllers() {
         guard !children.contains(contentController) else {return}
