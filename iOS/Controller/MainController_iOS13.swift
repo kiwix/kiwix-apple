@@ -155,12 +155,14 @@ class ContentViewController: UIViewController, UISearchControllerDelegate {
         if UIDevice.current.userInterfaceIdiom == .pad {
             navigationItem.setRightBarButton(searchCancelButton, animated: true)
         }
+        navigationController?.isToolbarHidden = true
     }
     
     func willDismissSearchController(_ searchController: UISearchController) {
         if UIDevice.current.userInterfaceIdiom == .pad {
             navigationItem.setRightBarButton(nil, animated: true)
         }
+        navigationController?.isToolbarHidden = false
     }
     
     // MARK: Actions
