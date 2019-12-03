@@ -87,6 +87,8 @@ class ContentViewController: UIViewController, UISearchControllerDelegate {
         definesPresentationContext = true
         view.backgroundColor = .systemBackground
         searchController.delegate = self
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.automaticallyShowsCancelButton = false
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.showsSearchResultsController = true
         searchController.searchResultsUpdater = searchResultsController
@@ -152,16 +154,12 @@ class ContentViewController: UIViewController, UISearchControllerDelegate {
     // MARK: UISearchControllerDelegate
     
     func willPresentSearchController(_ searchController: UISearchController) {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            navigationItem.setRightBarButton(searchCancelButton, animated: true)
-        }
+        navigationItem.setRightBarButton(searchCancelButton, animated: true)
         navigationController?.isToolbarHidden = true
     }
     
     func willDismissSearchController(_ searchController: UISearchController) {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            navigationItem.setRightBarButton(nil, animated: true)
-        }
+        navigationItem.setRightBarButton(nil, animated: true)
         navigationController?.isToolbarHidden = false
     }
     

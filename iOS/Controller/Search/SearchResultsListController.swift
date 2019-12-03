@@ -108,6 +108,7 @@ class SearchResultsListController: UITableViewController {
             guard let content = presentingViewController as? ContentViewController else {return}
             update(recentSearchText: searchText)
             content.load(url: results[indexPath.row].url)
+            content.searchController.dismiss(animated: true)
             content.searchController.isActive = false
         } else {
             guard let main = presentingViewController as? MainController else {return}
