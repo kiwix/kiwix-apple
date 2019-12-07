@@ -111,6 +111,10 @@ class ContentViewController: UIViewController, UISearchControllerDelegate {
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(image: UIImage(systemName: "chevron.right"), style: .plain, target: self, action: #selector(goForward)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(openOutline)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(openFavorite)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(image: UIImage(systemName: "folder"), style: .plain, target: self, action: #selector(openLibrary)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(openSettings)),
@@ -193,6 +197,15 @@ class ContentViewController: UIViewController, UISearchControllerDelegate {
     
     @objc func goForward() {
         currentWebViewController.goForward()
+    }
+    
+    @objc func openOutline() {
+        
+    }
+    
+    @objc func openFavorite() {
+        let controller = UINavigationController(rootViewController: FavoriteController())
+        splitViewController?.present(controller, animated: true)
     }
     
     @objc func openLibrary() {
