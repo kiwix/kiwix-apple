@@ -13,6 +13,7 @@ import WebKit
 class TestController: UISplitViewController, UISplitViewControllerDelegate {
     let sideBarViewController = SideBarController()
     let contentViewController = ContentViewController()
+    private(set) lazy var libraryController = LibraryController()
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -110,7 +111,11 @@ class ContentViewController: UIViewController, UISearchControllerDelegate {
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(image: UIImage(systemName: "chevron.right"), style: .plain, target: self, action: #selector(goForward)),
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(image: UIImage(systemName: "square.on.square"), style: .plain, target: self, action: #selector(toggleTabsView)),
+            UIBarButtonItem(image: UIImage(systemName: "folder"), style: .plain, target: self, action: #selector(openLibrary)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(openSettings)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: UIImage(systemName: "square.on.square"), style: .plain, target: self, action: #selector(openTabsView)),
         ]
     }
     
@@ -190,7 +195,16 @@ class ContentViewController: UIViewController, UISearchControllerDelegate {
         currentWebViewController.goForward()
     }
     
-    @objc func toggleTabsView() {
+    @objc func openLibrary() {
+        guard let splitController = splitViewController as? TestController else {return}
+        splitController.present(splitController.libraryController, animated: true)
+    }
+    
+    @objc func openSettings() {
+        splitViewController?.present(SettingNavigationController(), animated: true)
+    }
+    
+    @objc func openTabsView() {
         
     }
 }
