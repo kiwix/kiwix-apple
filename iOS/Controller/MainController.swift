@@ -255,7 +255,7 @@ extension MainController: OutlineControllerDelegate, BookmarkControllerDelegate 
         })
     }
     
-    func didTapTableOfContentItem(index: Int, item: TableOfContentItem) {
+    func didTapOutlineItem(index: Int, item: TableOfContentItem) {
         currentWebController?.scrollToTableOfContentItem(index: index)
     }
     

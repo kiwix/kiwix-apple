@@ -25,6 +25,7 @@ class RootSplitController: UISplitViewController, UISplitViewControllerDelegate,
         
         delegate = self
         sideBarViewController.delegate = self
+        sideBarViewController.outlineController.delegate = contentViewController
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -63,21 +64,21 @@ class RootSplitController: UISplitViewController, UISplitViewControllerDelegate,
     // MARK: UITabBarControllerDelegate
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        guard let navigationController = viewController as? UINavigationController else {return}
-        if let outlineController = navigationController.topViewController as? OutlineController {
-            if let currentWebViewController = contentViewController.currentWebViewController {
-                currentWebViewController.extractTableOfContents(completion: { (url, items) in
-                    outlineController.items = items
-                })
-            } else {
-                outlineController.items = []
-            }
-        }
+//        guard let navigationController = viewController as? UINavigationController else {return}
+//        if let outlineController = navigationController.topViewController as? OutlineController {
+//            if let currentWebViewController = contentViewController.currentWebViewController {
+//                currentWebViewController.extractTableOfContents(completion: { (url, items) in
+//                    outlineController.items = items
+//                })
+//            } else {
+//                outlineController.items = []
+//            }
+//        }
     }
 }
 
 @available(iOS 13.0, *)
-class ContentViewController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate {
+class ContentViewController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate, OutlineControllerDelegate {
     
     let searchController: UISearchController
     private let searchResultsController: SearchResultsController
@@ -210,10 +211,14 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         let selectedNavController = rootSplitController.sideBarViewController.selectedViewController
         let selectedController = (selectedNavController as? UINavigationController)?.topViewController
         if let outlineController = selectedController as? OutlineController {
-            controller.extractTableOfContents { (url, items) in
-                outlineController.items = items
-            }
+            outlineController.updateContent()
         }
+    }
+    
+    // MARK: OutlineControllerDelegate
+    
+    func didTapOutlineItem(index: Int, item: TableOfContentItem) {
+        currentWebViewController?.scrollToTableOfContentItem(index: index)
     }
     
     // MARK: Actions
@@ -246,10 +251,8 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     @objc func openOutline() {
         let outlineController = OutlineController()
         let navigationController = UINavigationController(rootViewController: outlineController)
-        self.splitViewController?.present(navigationController, animated: true)
-        currentWebViewController?.extractTableOfContents(completion: { (url, items) in
-            outlineController.items = items
-        })
+        outlineController.delegate = self
+        splitViewController?.present(navigationController, animated: true)
     }
     
     @objc func openFavorite() {

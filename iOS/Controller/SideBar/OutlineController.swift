@@ -42,13 +42,37 @@ class OutlineController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        tableView.separatorStyle = .none
         
         if let _ = presentingViewController {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
             target: self,
             action: #selector(dismissController))
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateContent()
+    }
+    
+    func updateContent() {
+        tableView.separatorStyle = .none
+        tableView.backgroundView = nil
+        
+        // update items
+        if #available(iOS 13.0, *) {
+            if let rootSplitController = (splitViewController ?? presentingViewController) as? RootSplitController,
+                let currentWebViewController = rootSplitController.contentViewController.currentWebViewController {
+                currentWebViewController.extractTableOfContents(completion: { (url, items) in
+                    self.items = items
+                })
+            } else {
+                self.items = []
+            }
+        } else {
+            // Fallback on earlier versions
+        }
+        
     }
     
     @objc func dismissController() {
@@ -81,14 +105,12 @@ class OutlineController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        delegate?.didTapTableOfContentItem(index: indexPath.row, item: items[indexPath.row])
+        delegate?.didTapOutlineItem(index: indexPath.row, item: items[indexPath.row])
         tableView.deselectRow(at: indexPath, animated: true)
-        dismiss(animated: true) {
-            tableView.deselectRow(at: indexPath, animated: false)
-        }
+        dismiss(animated: true)
     }
 }
 
 protocol OutlineControllerDelegate: class {
-    func didTapTableOfContentItem(index: Int, item: TableOfContentItem)
+    func didTapOutlineItem(index: Int, item: TableOfContentItem)
 }
