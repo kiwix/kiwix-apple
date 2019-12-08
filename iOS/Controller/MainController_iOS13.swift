@@ -10,7 +10,7 @@ import UIKit
 import WebKit
 
 @available(iOS 13.0, *)
-class RootSplitController: UISplitViewController, UISplitViewControllerDelegate, UITabBarControllerDelegate {
+class RootSplitController: UISplitViewController, UISplitViewControllerDelegate {
     let sideBarViewController = SideBarController()
     let contentViewController = ContentViewController()
     private(set) lazy var libraryController = LibraryController()
@@ -59,21 +59,6 @@ class RootSplitController: UISplitViewController, UISplitViewControllerDelegate,
         let navigationController = UINavigationController(rootViewController: contentViewController)
         navigationController.isToolbarHidden = false
         return navigationController
-    }
-    
-    // MARK: UITabBarControllerDelegate
-    
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-//        guard let navigationController = viewController as? UINavigationController else {return}
-//        if let outlineController = navigationController.topViewController as? OutlineController {
-//            if let currentWebViewController = contentViewController.currentWebViewController {
-//                currentWebViewController.extractTableOfContents(completion: { (url, items) in
-//                    outlineController.items = items
-//                })
-//            } else {
-//                outlineController.items = []
-//            }
-//        }
     }
 }
 
