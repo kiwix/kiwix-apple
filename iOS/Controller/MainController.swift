@@ -245,7 +245,7 @@ extension MainController: UISearchControllerDelegate, UISearchBarDelegate {
 
 // MARK: - Functions
 
-extension MainController: OutlineControllerDelegate, BookmarkControllerDelegate {
+extension MainController: OutlineControllerDelegate, FavoriteControllerDelegate {
     private func updateTableOfContentsIfNeeded(completion: (() -> Void)? = nil) {
         guard let webController = currentWebController, outlineController.url != webController.currentURL else {completion?(); return}
         webController.extractTableOfContents(completion: { (currentURL, items) in

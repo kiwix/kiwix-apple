@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 
 class FavoriteController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    weak var delegate: BookmarkControllerDelegate? = nil
+    weak var delegate: FavoriteControllerDelegate? = nil
     private let tableView = UITableView()
     private lazy var emptyContentView = EmptyContentView(
         image: #imageLiteral(resourceName: "StarColor"),
@@ -165,7 +165,7 @@ class FavoriteController: UIViewController, UITableViewDataSource, UITableViewDe
 
 // MARK: - Protocols
 
-protocol BookmarkControllerDelegate: class {
+protocol FavoriteControllerDelegate: class {
     func didTapBookmark(articleURL: URL)
     func didDeleteBookmark(url: URL)
 }
