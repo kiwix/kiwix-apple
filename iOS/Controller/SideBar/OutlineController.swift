@@ -1,5 +1,5 @@
 //
-//  TableOfContentController.swift
+//  OutlineController.swift
 //  iOS
 //
 //  Created by Chris Li on 1/24/18.
@@ -8,8 +8,8 @@
 
 import UIKit
 
-class TableOfContentController: UITableViewController {
-    weak var delegate: TableOfContentControllerDelegate? = nil
+class OutlineController: UITableViewController {
+    weak var delegate: OutlineControllerDelegate? = nil
     
     var url: URL?
     var items = [TableOfContentItem]() {
@@ -21,7 +21,7 @@ class TableOfContentController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("Table of Contents", comment: "Table of Content view title")
+        title = NSLocalizedString("Outline", comment: "Outline view title")
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         configureEmptyContentView()
@@ -77,6 +77,6 @@ class TableOfContentController: UITableViewController {
     }
 }
 
-protocol TableOfContentControllerDelegate: class {
+protocol OutlineControllerDelegate: class {
     func didTapTableOfContentItem(index: Int, item: TableOfContentItem)
 }
