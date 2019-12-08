@@ -19,10 +19,26 @@ class OutlineController: UITableViewController {
         }
     }
     
+    init(zimFiles: [ZimFile]? = nil) {
+        super.init(nibName: nil, bundle: nil)
+        title = NSLocalizedString("Outline", comment: "Favorite view title")
+        if #available(iOS 13.0, *) {
+            tabBarItem = UITabBarItem(title: "Outline",
+                                      image: UIImage(systemName: "list.bullet"),
+                                      selectedImage: UIImage(systemName: "list.bullet"))
+        } else {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
+                                                               target: self,
+                                                               action: #selector(dismissController))
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("Outline", comment: "Outline view title")
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         configureEmptyContentView()
         tableView.reloadData()
