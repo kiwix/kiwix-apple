@@ -10,7 +10,7 @@ import UIKit
 import WebKit
 
 @available(iOS 13.0, *)
-class TestController: UISplitViewController, UISplitViewControllerDelegate {
+class RootSplitController: UISplitViewController, UISplitViewControllerDelegate, UITabBarControllerDelegate {
     let sideBarViewController = SideBarController()
     let contentViewController = ContentViewController()
     private(set) lazy var libraryController = LibraryController()
@@ -24,6 +24,7 @@ class TestController: UISplitViewController, UISplitViewControllerDelegate {
         viewControllers = [sideBarViewController, contentNavController]
         
         delegate = self
+        sideBarViewController.delegate = self
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -58,17 +59,33 @@ class TestController: UISplitViewController, UISplitViewControllerDelegate {
         navigationController.isToolbarHidden = false
         return navigationController
     }
+    
+    // MARK: UITabBarControllerDelegate
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        guard let navigationController = viewController as? UINavigationController else {return}
+        if let outlineController = navigationController.topViewController as? OutlineController {
+            if let currentWebViewController = contentViewController.currentWebViewController {
+                currentWebViewController.extractTableOfContents(completion: { (url, items) in
+                    outlineController.items = items
+                })
+            } else {
+                outlineController.items = []
+            }
+        }
+    }
 }
 
 @available(iOS 13.0, *)
-class ContentViewController: UIViewController, UISearchControllerDelegate {
+class ContentViewController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate {
+    
     let searchController: UISearchController
     private let searchResultsController: SearchResultsController
     private lazy var searchCancelButton = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                           target: self,
                                                           action: #selector(cancelSearch))
-    private var webViewControllers = [WebKitWebController()]
-    private var currentWebViewController: WebKitWebController {return webViewControllers[0]}
+    private var webViewControllers: [WebKitWebController] = []
+    var currentWebViewController: WebKitWebController? { return webViewControllers.first }
     
     init() {
         self.searchResultsController = SearchResultsController()
@@ -93,15 +110,17 @@ class ContentViewController: UIViewController, UISearchControllerDelegate {
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.showsSearchResultsController = true
         searchController.searchResultsUpdater = searchResultsController
+        
         configureToolbar()
+        makeWebViewControllerAndBecomeCurrent()
     }
     
     func load(url: URL) {
-        setChildController(currentWebViewController)
-        currentWebViewController.load(url: url)
+        setChildControllerIfNeeded(currentWebViewController)
+        currentWebViewController?.load(url: url)
     }
     
-    // MARK: View Configuration
+    // MARK: View and Controller Management
     
     private func configureToolbar() {
         toolbarItems = [
@@ -137,7 +156,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate {
         }
     }
     
-    private func setChildController(_ newChild: UIViewController?) {
+    private func setChildControllerIfNeeded(_ newChild: UIViewController?) {
         if let newChild = newChild, children.contains(newChild) {return}
         
         for child in children {
@@ -160,6 +179,12 @@ class ContentViewController: UIViewController, UISearchControllerDelegate {
         }
     }
     
+    private func makeWebViewControllerAndBecomeCurrent() {
+        let controller = WebKitWebController()
+        controller.delegate = self
+        webViewControllers.append(controller)
+    }
+    
     // MARK: UISearchControllerDelegate
     
     func willPresentSearchController(_ searchController: UISearchController) {
@@ -170,6 +195,25 @@ class ContentViewController: UIViewController, UISearchControllerDelegate {
     func willDismissSearchController(_ searchController: UISearchController) {
         navigationItem.setRightBarButton(nil, animated: true)
         navigationController?.isToolbarHidden = false
+    }
+    
+    // MARK: WebViewControllerDelegate
+    
+    func webViewDidTapOnGeoLocation(controller: WebViewController, url: URL) {
+        
+    }
+    
+    func webViewDidFinishLoading(controller: WebViewController) {
+        guard let rootSplitController = splitViewController as? RootSplitController,
+            !rootSplitController.isCollapsed,
+            rootSplitController.displayMode != .primaryHidden else {return}
+        let selectedNavController = rootSplitController.sideBarViewController.selectedViewController
+        let selectedController = (selectedNavController as? UINavigationController)?.topViewController
+        if let outlineController = selectedController as? OutlineController {
+            controller.extractTableOfContents { (url, items) in
+                outlineController.items = items
+            }
+        }
     }
     
     // MARK: Actions
@@ -192,15 +236,20 @@ class ContentViewController: UIViewController, UISearchControllerDelegate {
     }
     
     @objc func goBack() {
-        currentWebViewController.goBack()
+        currentWebViewController?.goBack()
     }
     
     @objc func goForward() {
-        currentWebViewController.goForward()
+        currentWebViewController?.goForward()
     }
     
     @objc func openOutline() {
-        
+        let outlineController = OutlineController()
+        let navigationController = UINavigationController(rootViewController: outlineController)
+        self.splitViewController?.present(navigationController, animated: true)
+        currentWebViewController?.extractTableOfContents(completion: { (url, items) in
+            outlineController.items = items
+        })
     }
     
     @objc func openFavorite() {
@@ -209,7 +258,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate {
     }
     
     @objc func openLibrary() {
-        guard let splitController = splitViewController as? TestController else {return}
+        guard let splitController = splitViewController as? RootSplitController else {return}
         splitController.present(splitController.libraryController, animated: true)
     }
     
@@ -218,6 +267,6 @@ class ContentViewController: UIViewController, UISearchControllerDelegate {
     }
     
     @objc func openTabsView() {
-        
+        splitViewController?.present(TabsController(), animated: true)
     }
 }

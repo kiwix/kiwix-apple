@@ -10,26 +10,28 @@ import UIKit
 
 class OutlineController: UITableViewController {
     weak var delegate: OutlineControllerDelegate? = nil
-    
     var url: URL?
     var items = [TableOfContentItem]() {
         didSet {
-            configureEmptyContentView()
+            if items.count > 0 {
+                tableView.backgroundView = nil
+                tableView.separatorStyle = .singleLine
+            } else {
+                tableView.separatorStyle = .none
+                let emptyContentView = EmptyContentView(image: #imageLiteral(resourceName: "Compass"), title: NSLocalizedString("Table of content not available", comment: "Help message when table of content is not available"))
+                tableView.backgroundView = emptyContentView
+            }
             tableView.reloadData()
         }
     }
     
-    init(zimFiles: [ZimFile]? = nil) {
+    init() {
         super.init(nibName: nil, bundle: nil)
         title = NSLocalizedString("Outline", comment: "Favorite view title")
         if #available(iOS 13.0, *) {
             tabBarItem = UITabBarItem(title: "Outline",
                                       image: UIImage(systemName: "list.bullet"),
                                       selectedImage: UIImage(systemName: "list.bullet"))
-        } else {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
-                                                               target: self,
-                                                               action: #selector(dismissController))
         }
     }
     
@@ -40,23 +42,17 @@ class OutlineController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        configureEmptyContentView()
-        tableView.reloadData()
+        tableView.separatorStyle = .none
+        
+        if let _ = presentingViewController {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
+            target: self,
+            action: #selector(dismissController))
+        }
     }
     
     @objc func dismissController() {
         dismiss(animated: true, completion: nil)
-    }
-    
-    private func configureEmptyContentView() {
-        if items.count > 0 {
-            tableView.backgroundView = nil
-            tableView.separatorStyle = .singleLine
-        } else {
-            tableView.separatorStyle = .none
-            let emptyContentView = EmptyContentView(image: #imageLiteral(resourceName: "Compass"), title: NSLocalizedString("Table of content not available", comment: "Help message when table of content is not available"))
-            tableView.backgroundView = emptyContentView
-        }
     }
     
     // MARK: - UITableViewDataSource & Delegate

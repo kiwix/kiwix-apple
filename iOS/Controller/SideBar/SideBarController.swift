@@ -14,8 +14,8 @@ class SideBarController: UITabBarController {
         super.init(nibName: nil, bundle: nil)
         viewControllers = [
             UINavigationController(rootViewController: FavoriteController()),
-            UINavigationController(rootViewController: OutlineController()),
             UINavigationController(rootViewController: MapController()),
+            UINavigationController(rootViewController: OutlineController()),
         ]
     }
     
