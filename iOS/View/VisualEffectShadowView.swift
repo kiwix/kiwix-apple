@@ -79,7 +79,11 @@ class VisualEffectShadowView: UIView {
     }
     
     private func addVisualEffectView() {
-        visual.effect = UIBlurEffect(style: .extraLight)
+        if #available(iOS 13.0, *) {
+            visual.effect = UIBlurEffect(style: .systemThickMaterial)
+        } else {
+            visual.effect = UIBlurEffect(style: .extraLight)
+        }
         visual.translatesAutoresizingMaskIntoConstraints = false
         addSubview(visual)
         NSLayoutConstraint.activate([

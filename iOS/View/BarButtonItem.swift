@@ -26,6 +26,13 @@ class BarButtonItem: UIBarButtonItem {
         button.setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
     }
     
+    convenience init(image: UIImage, inset: CGFloat, target: Any?, action: Selector?) {
+        self.init(customView: BarButton(inset: inset))
+        configure()
+        button.setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
+        if let action = action {button.addTarget(target, action: action, for: .touchUpInside)}
+    }
+    
     fileprivate func configure() {
         button.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
         button.addGestureRecognizer(gestureRecognizer)

@@ -28,10 +28,10 @@ class MainController: UIViewController {
     private(set) weak var currentWebController: (UIViewController & WebViewController)? = nil
     private(set) var webControllers = [(UIViewController & WebViewController)]()
     
-    let searchController = UISearchController(searchResultsController: SearchResultController())
+    let searchController = UISearchController(searchResultsController: SearchResultsController())
     private(set) lazy var welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
-    private(set) lazy var bookmarkController = BookmarkController()
-    private(set) lazy var tableOfContentController = TableOfContentController()
+    private(set) lazy var bookmarkController = FavoriteController()
+    private(set) lazy var outlineController = OutlineController()
     private(set) lazy var libraryController = LibraryController()
     private(set) lazy var settingController = SettingNavigationController()
     
@@ -76,7 +76,7 @@ class MainController: UIViewController {
         if traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass {
             if let presentedNavigationController = navigationController?.presentedViewController as? UINavigationController,
                 let topController = presentedNavigationController.topViewController {
-                guard topController === tableOfContentController || topController === bookmarkController else {return}
+                guard topController === outlineController || topController === bookmarkController else {return}
                 presentedNavigationController.setViewControllers([], animated: false)
                 presentedNavigationController.dismiss(animated: false, completion: {
                     self.setPanelContainerChild(controller: topController)
@@ -170,7 +170,7 @@ extension MainController: WebViewControllerDelegate {
             bookmarkButtonItem.button.isBookmarked = false
         }
         
-        if currentPanelController === tableOfContentController {
+        if currentPanelController === outlineController {
             updateTableOfContentsIfNeeded()
         }
         
@@ -192,7 +192,7 @@ extension MainController: UISearchControllerDelegate, UISearchBarDelegate {
         searchController.searchBar.searchBarStyle = .minimal
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.obscuresBackgroundDuringPresentation = true
-        searchController.searchResultsUpdater = searchController.searchResultsController as? SearchResultController
+        searchController.searchResultsUpdater = searchController.searchResultsController as? SearchResultsController
     }
     
     @objc func cancelSearchButtonTapped() {
@@ -201,13 +201,13 @@ extension MainController: UISearchControllerDelegate, UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         // when searchController become active, set searchBar.text to previous search text
-        guard let searchResultController = searchController.searchResultsController as? SearchResultController else {return}
+        guard let searchResultController = searchController.searchResultsController as? SearchResultsController else {return}
         searchBar.text = searchResultController.contentController.resultsListController.searchText
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // when return button on the keyboard is tapped, we load the first article in search result
-        guard let controller = searchController.searchResultsController as? SearchResultController else {return}
+        guard let controller = searchController.searchResultsController as? SearchResultsController else {return}
         let resultsListController = controller.contentController.resultsListController
         guard let firstResult = resultsListController.results.first else {return}
         
@@ -245,17 +245,17 @@ extension MainController: UISearchControllerDelegate, UISearchBarDelegate {
 
 // MARK: - Functions
 
-extension MainController: TableOfContentControllerDelegate, BookmarkControllerDelegate {
+extension MainController: OutlineControllerDelegate, BookmarkControllerDelegate {
     private func updateTableOfContentsIfNeeded(completion: (() -> Void)? = nil) {
-        guard let webController = currentWebController, tableOfContentController.url != webController.currentURL else {completion?(); return}
+        guard let webController = currentWebController, outlineController.url != webController.currentURL else {completion?(); return}
         webController.extractTableOfContents(completion: { (currentURL, items) in
-            self.tableOfContentController.url = currentURL
-            self.tableOfContentController.items = items
+            self.outlineController.url = currentURL
+            self.outlineController.items = items
             completion?()
         })
     }
     
-    func didTapTableOfContentItem(index: Int, item: TableOfContentItem) {
+    func didTapOutlineItem(index: Int, item: TableOfContentItem) {
         currentWebController?.scrollToTableOfContentItem(index: index)
     }
     
@@ -323,9 +323,9 @@ extension MainController: BarButtonItemDelegate {
         case navigationForwardButtonItem:
             currentWebController?.goForward()
         case tableOfContentButtonItem:
-            tableOfContentController.delegate = self
+            outlineController.delegate = self
             updateTableOfContentsIfNeeded(completion: {
-                self.presentAdaptively(controller: self.tableOfContentController, animated: true)
+                self.presentAdaptively(controller: self.outlineController, animated: true)
             })
         case bookmarkButtonItem:
             bookmarkController.delegate = self

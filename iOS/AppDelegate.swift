@@ -16,6 +16,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     let fileMonitor = DirectoryMonitor(url: URL.documentDirectory)
     
     func applicationDidFinishLaunching(_ application: UIApplication) {
+        let mainController: UIViewController = {
+            if #available(iOS 13.0, *) {
+                return UIViewController()
+            } else {
+                return UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()!
+            }
+        }()
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.rootViewController = mainController
+        window?.makeKeyAndVisible()
+        
         print(URL.documentDirectory)
         
         URLProtocol.registerClass(KiwixURLProtocol.self)

@@ -10,8 +10,16 @@ import UIKit
 import RealmSwift
 import SwiftyUserDefaults
 
-class SearchNoTextController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, SearchNoTextControllerSectionHeaderDelegate {
-    private let tableView = UITableView(frame: .zero, style: .grouped)
+class SearchNoTextController: UIViewController, UITableViewDelegate, UITableViewDataSource,
+                              UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,
+                              SearchNoTextControllerSectionHeaderDelegate {
+    private let tableView: UITableView = {
+        if #available(iOS 13.0, *) {
+            return UITableView(frame: .zero, style: .insetGrouped)
+        } else {
+            return UITableView(frame: .zero, style: .grouped)
+        }
+    }()
     private var sections: [Section] = [.searchFilter]
     
     private let zimFiles: Results<ZimFile>? = {
@@ -236,7 +244,9 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         let searchText = recentSearchTexts[indexPath.row]
-        if let main = presentingViewController as? MainController {
+        if #available(iOS 13.0, *), let controller = presentingViewController as? ContentViewController {
+            controller.searchController.searchBar.text = searchText
+        } else if let main = presentingViewController as? MainController {
             main.searchController.searchBar.text = searchText
         }
     }

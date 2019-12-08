@@ -9,15 +9,15 @@
 import UIKit
 import RealmSwift
 
-class SearchResultController: UIViewController, SearchQueueEvents, UISearchResultsUpdating {
+class SearchResultsController: UIViewController, SearchQueueEvents, UISearchResultsUpdating {
     private let queue = SearchQueue()
     private let visualView = VisualEffectShadowView()
-    let contentController = SearchResultContainerController()
+    let contentController = SearchResultContents()
     private var viewAlwaysVisibleObserver: NSKeyValueObservation?
     
     // MARK: - Constraints
     
-    var proportionalWidthConstraint: NSLayoutConstraint? = nil
+    var readableContentWidthConstraint: NSLayoutConstraint? = nil
     var equalWidthConstraint: NSLayoutConstraint? = nil
     var proportionalHeightConstraint: NSLayoutConstraint? = nil
     var bottomConstraint: NSLayoutConstraint? = nil
@@ -45,15 +45,16 @@ class SearchResultController: UIViewController, SearchQueueEvents, UISearchResul
     override func loadView() {
         view = BackgroundView()
         
-        /* Prevent SearchResultController view from being automatically hidden by the UISearchController */
-        viewAlwaysVisibleObserver = view.observe(\.isHidden, options: .new, changeHandler: { (view, change) in
-            if change.newValue == true { view.isHidden = false }
-        })
+        if #available(iOS 13, *) {} else {
+            /* Prevent SearchResultsController view from being automatically hidden by the UISearchController */
+            viewAlwaysVisibleObserver = view.observe(\.isHidden, options: .new, changeHandler: { (view, change) in
+                if change.newValue == true { view.isHidden = false }
+            })
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        queue.eventDelegate = self
         
         edgesForExtendedLayout = []
         configureChildViewControllers()
@@ -65,6 +66,8 @@ class SearchResultController: UIViewController, SearchQueueEvents, UISearchResul
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(notification:)), name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(notification:)), name: UIResponder.keyboardDidHideNotification, object: nil)
+        queue.eventDelegate = self
+        configureVisualView()
         configureContent()
     }
     
@@ -73,23 +76,14 @@ class SearchResultController: UIViewController, SearchQueueEvents, UISearchResul
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidHideNotification, object: nil)
+        queue.eventDelegate = nil
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
-        switch traitCollection.horizontalSizeClass {
-        case .compact:
-            visualView.roundingCorners = nil
-            visualView.contentView.backgroundColor = .white
-            updateConstraintPriorities()
-        case .regular:
-            visualView.roundingCorners = .allCorners
-            visualView.contentView.backgroundColor = .clear
-            updateConstraintPriorities()
-        default:
-            break
-        }
+        configureVisualView()
+        updateConstraintPriorities()
     }
     
     // MARK: - Keyboard Events
@@ -117,6 +111,23 @@ class SearchResultController: UIViewController, SearchQueueEvents, UISearchResul
     
     // MARK: - View Manipulation
     
+    private func configureVisualView() {
+        switch traitCollection.horizontalSizeClass {
+        case .compact:
+            if #available(iOS 13.0, *) {
+                visualView.contentView.backgroundColor = .systemBackground
+            } else {
+                visualView.contentView.backgroundColor = .white
+            }
+            visualView.roundingCorners = nil
+        case .regular:
+            visualView.contentView.backgroundColor = .clear
+            visualView.roundingCorners = .allCorners
+        default:
+            break
+        }
+    }
+    
     private func configureChildViewControllers() {
         guard !children.contains(contentController) else {return}
         addChild(contentController)
@@ -134,27 +145,27 @@ class SearchResultController: UIViewController, SearchQueueEvents, UISearchResul
         
         visualView.contentView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
         visualView.contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        proportionalWidthConstraint = visualView.contentView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.75)
+        readableContentWidthConstraint = visualView.contentView.widthAnchor.constraint(equalTo: view.readableContentGuide.widthAnchor, multiplier: 1.0, constant: 90)
         equalWidthConstraint = visualView.contentView.widthAnchor.constraint(equalTo: view.widthAnchor)
         proportionalHeightConstraint = visualView.contentView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.75)
         bottomConstraint = visualView.contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         
         updateConstraintPriorities()
         
-        proportionalWidthConstraint?.isActive = true
+        readableContentWidthConstraint?.isActive = true
         equalWidthConstraint?.isActive = true
         proportionalHeightConstraint?.isActive = true
         bottomConstraint?.isActive = true
     }
     
     private func updateConstraintPriorities() {
-        proportionalWidthConstraint?.priority = traitCollection.horizontalSizeClass == .regular ? .defaultHigh : .defaultLow
+        readableContentWidthConstraint?.priority = traitCollection.horizontalSizeClass == .regular ? .defaultHigh : .defaultLow
         equalWidthConstraint?.priority = traitCollection.horizontalSizeClass == .compact ? .defaultHigh : .defaultLow
         proportionalHeightConstraint?.priority = traitCollection.horizontalSizeClass == .regular ? .defaultHigh : .defaultLow
         bottomConstraint?.priority = traitCollection.horizontalSizeClass == .compact ? .defaultHigh : .defaultLow
     }
     
-    private func configureContent(mode: SearchResultContainerController.Mode? = nil) {
+    private func configureContent(mode: SearchResultContents.Mode? = nil) {
         if let mode = mode {
             contentController.mode = mode
             /*
