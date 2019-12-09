@@ -172,7 +172,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     // MARK: FavoriteControllerDelegate
     
     func didTapFavorite(url: URL) {
-        
+        load(url: url)
     }
     
     func didDeleteFavorite(url: URL) {
@@ -214,8 +214,10 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     }
     
     @objc func openFavorite() {
-        let controller = UINavigationController(rootViewController: FavoriteController())
-        splitViewController?.present(controller, animated: true)
+        let favoriteController = FavoriteController()
+        let navigationController = UINavigationController(rootViewController: favoriteController)
+        favoriteController.delegate = self
+        splitViewController?.present(navigationController, animated: true)
     }
     
     @objc func openLibrary() {

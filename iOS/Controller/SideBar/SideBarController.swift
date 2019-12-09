@@ -10,12 +10,13 @@ import UIKit
 
 @available(iOS 13.0, *)
 class SideBarController: UITabBarController {
+    let favoriteController = FavoriteController()
     let outlineController = OutlineController()
     
     init() {
         super.init(nibName: nil, bundle: nil)
         viewControllers = [
-            UINavigationController(rootViewController: FavoriteController()),
+            UINavigationController(rootViewController: favoriteController),
             UINavigationController(rootViewController: MapController()),
             UINavigationController(rootViewController: outlineController),
         ]
