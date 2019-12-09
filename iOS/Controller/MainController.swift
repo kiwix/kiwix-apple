@@ -259,11 +259,11 @@ extension MainController: OutlineControllerDelegate, FavoriteControllerDelegate 
         currentWebController?.scrollToTableOfContentItem(index: index)
     }
     
-    func didTapBookmark(articleURL: URL) {
-        load(url: articleURL)
+    func didTapFavorite(url: URL) {
+        load(url: url)
     }
     
-    func didDeleteBookmark(url: URL) {
+    func didDeleteFavorite(url: URL) {
         guard currentWebController?.currentURL?.absoluteString == url.absoluteString else {return}
         bookmarkButtonItem.button.isBookmarked = false
     }

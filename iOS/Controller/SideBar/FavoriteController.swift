@@ -139,7 +139,7 @@ class FavoriteController: UIViewController, UITableViewDataSource, UITableViewDe
         guard let bookmark = bookmarks?[indexPath.row], let zimFileID = bookmark.zimFile?.id,
             let url = URL(bookID: zimFileID, contentPath: bookmark.path) else {return}
         tableView.deselectRow(at: indexPath, animated: true)
-        delegate?.didTapBookmark(articleURL: url)
+        delegate?.didTapFavorite(url: url)
         dismiss(animated: true) {
             tableView.deselectRow(at: indexPath, animated: false)
         }
@@ -157,7 +157,7 @@ class FavoriteController: UIViewController, UITableViewDataSource, UITableViewDe
                 try database.write {
                     database.delete(bookmark)
                 }
-                if let url = url { delegate?.didDeleteBookmark(url: url) }
+                if let url = url { delegate?.didDeleteFavorite(url: url) }
             } catch {}
         }
     }
@@ -166,6 +166,6 @@ class FavoriteController: UIViewController, UITableViewDataSource, UITableViewDe
 // MARK: - Protocols
 
 protocol FavoriteControllerDelegate: class {
-    func didTapBookmark(articleURL: URL)
-    func didDeleteBookmark(url: URL)
+    func didTapFavorite(url: URL)
+    func didDeleteFavorite(url: URL)
 }

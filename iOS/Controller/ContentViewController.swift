@@ -9,7 +9,8 @@
 import UIKit
 
 @available(iOS 13.0, *)
-class ContentViewController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate, OutlineControllerDelegate {
+class ContentViewController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate,
+    OutlineControllerDelegate, FavoriteControllerDelegate {
     
     let searchController: UISearchController
     private let searchResultsController: SearchResultsController
@@ -166,6 +167,16 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     
     func didTapOutlineItem(index: Int, item: TableOfContentItem) {
         currentWebViewController?.scrollToTableOfContentItem(index: index)
+    }
+    
+    // MARK: FavoriteControllerDelegate
+    
+    func didTapFavorite(url: URL) {
+        
+    }
+    
+    func didDeleteFavorite(url: URL) {
+        
     }
     
     // MARK: Actions
