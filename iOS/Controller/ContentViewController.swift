@@ -11,6 +11,10 @@ import UIKit
 @available(iOS 13.0, *)
 class ContentViewController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate,
     OutlineControllerDelegate, FavoriteControllerDelegate {
+    lazy var chevronLeftButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(goBack))
+    lazy var chevronRightButton = UIBarButtonItem(image: UIImage(systemName: "chevron.right"), style: .plain, target: self, action: #selector(goForward))
+    lazy var favoriteButton = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(openFavorite))
+    lazy var favoriteButton2 = FavoriteBarButtonItem(target: self, action: #selector(openFavorite))
     
     let searchController: UISearchController
     private let searchResultsController: SearchResultsController
@@ -45,7 +49,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         searchController.searchResultsUpdater = searchResultsController
         
         configureToolbar()
-        makeWebViewControllerAndBecomeCurrent()
+        createNewTab()
     }
     
     func load(url: URL) {
@@ -53,18 +57,18 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         currentWebViewController?.load(url: url)
     }
     
-    // MARK: View and Controller Management
+    // MARK: - View and Controller Management
     
     func configureToolbar() {
         if splitViewController?.isCollapsed == true {
             toolbarItems = [
-                UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(goBack)),
+                chevronLeftButton,
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "chevron.right"), style: .plain, target: self, action: #selector(goForward)),
+                chevronRightButton,
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
                 UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(openOutline)),
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(openFavorite)),
+                favoriteButton2,
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
                 UIBarButtonItem(image: UIImage(systemName: "folder"), style: .plain, target: self, action: #selector(openLibrary)),
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
@@ -76,11 +80,11 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
             toolbarItems = [
                 UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), style: .plain, target: self, action: #selector(toggleSideBar)),
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(goBack)),
+                chevronLeftButton,
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "chevron.right"), style: .plain, target: self, action: #selector(goForward)),
+                chevronRightButton,
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(openFavorite)),
+                favoriteButton,
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
                 UIBarButtonItem(image: UIImage(systemName: "folder"), style: .plain, target: self, action: #selector(openLibrary)),
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
@@ -89,6 +93,20 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
                 UIBarButtonItem(image: UIImage(systemName: "square.on.square"), style: .plain, target: self, action: #selector(openTabsView)),
             ]
         }
+    }
+    
+    private func createNewTab() {
+        let controller = WebKitWebController()
+        webViewControllers.append(controller)
+        switchToTab(controller: controller)
+    }
+    
+    private func switchToTab(controller: WebViewController) {
+        var controller = controller
+        controller.delegate = self
+        
+        chevronLeftButton.isEnabled = controller.canGoBack
+        chevronRightButton.isEnabled = controller.canGoForward
     }
     
     private func setView(_ subView: UIView?) {
@@ -128,13 +146,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         }
     }
     
-    private func makeWebViewControllerAndBecomeCurrent() {
-        let controller = WebKitWebController()
-        controller.delegate = self
-        webViewControllers.append(controller)
-    }
-    
-    // MARK: UISearchControllerDelegate
+    // MARK: - UISearchControllerDelegate
     
     func willPresentSearchController(_ searchController: UISearchController) {
         navigationItem.setRightBarButton(searchCancelButton, animated: true)
@@ -153,13 +165,20 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     }
     
     func webViewDidFinishLoading(controller: WebViewController) {
-        guard let rootSplitController = splitViewController as? RootSplitController,
+        // update buttons
+        chevronLeftButton.isEnabled = controller.canGoBack
+        chevronRightButton.isEnabled = controller.canGoForward
+//        favoriteButton
+        
+        // if outline view is visible, update outline items
+        if let rootSplitController = splitViewController as? RootSplitController,
             !rootSplitController.isCollapsed,
-            rootSplitController.displayMode != .primaryHidden else {return}
-        let selectedNavController = rootSplitController.sideBarViewController.selectedViewController
-        let selectedController = (selectedNavController as? UINavigationController)?.topViewController
-        if let outlineController = selectedController as? OutlineController {
-            outlineController.updateContent()
+            rootSplitController.displayMode != .primaryHidden {
+            let selectedNavController = rootSplitController.sideBarViewController.selectedViewController
+            let selectedController = (selectedNavController as? UINavigationController)?.topViewController
+            if let outlineController = selectedController as? OutlineController {
+                outlineController.updateContent()
+            }
         }
     }
     
@@ -179,7 +198,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         
     }
     
-    // MARK: Actions
+    // MARK: - Actions
     
     @objc func cancelSearch() {
         /*
@@ -213,11 +232,16 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         splitViewController?.present(navigationController, animated: true)
     }
     
-    @objc func openFavorite() {
-        let favoriteController = FavoriteController()
-        let navigationController = UINavigationController(rootViewController: favoriteController)
-        favoriteController.delegate = self
-        splitViewController?.present(navigationController, animated: true)
+    @objc func openFavorite(sender: UIBarButtonItem, forEvent event: UIEvent) {
+        guard let touch = event.allTouches?.first else {return}
+        if touch.tapCount == 1 {
+            let favoriteController = FavoriteController()
+            let navigationController = UINavigationController(rootViewController: favoriteController)
+            favoriteController.delegate = self
+            splitViewController?.present(navigationController, animated: true)
+        } else if touch.tapCount == 0 {
+            print("long pressed")
+        }
     }
     
     @objc func openLibrary() {
@@ -231,5 +255,21 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     
     @objc func openTabsView() {
         splitViewController?.present(TabsController(), animated: true)
+    }
+}
+
+// MARK: - BarButton
+
+@available(iOS 13.0, *)
+class FavoriteBarButtonItem: UIBarButtonItem {
+    var button: UIButton {
+        get {return customView as! UIButton}
+    }
+    
+    convenience init(target: Any, action: Selector) {
+        self.init(customView: UIButton())
+        button.addTarget(target, action: action, for: .touchUpInside)
+        button.setImage(UIImage(systemName: "star"), for: .normal)
+        button.setImage(UIImage(systemName: "star.slash.fill"), for: .highlighted)
     }
 }
