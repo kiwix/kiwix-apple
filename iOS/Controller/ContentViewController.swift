@@ -60,7 +60,19 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     // MARK: - View and Controller Management
     
     func configureToolbar() {
+        class Button: UIButton {
+            override var intrinsicContentSize: CGSize {
+                return CGSize(width: 40, height: 40)
+            }
+        }
         if splitViewController?.isCollapsed == true {
+            let stackView = UIStackView(arrangedSubviews: [
+                Button(type: .detailDisclosure),
+                Button(type: .contactAdd)
+            ])
+            stackView.distribution = .equalCentering
+//
+//            toolbarItems = [UIBarButtonItem(customView: stackView)]
             toolbarItems = [
                 chevronLeftButton,
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
@@ -75,6 +87,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
                 UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(openSettings)),
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
                 UIBarButtonItem(image: UIImage(systemName: "square.on.square"), style: .plain, target: self, action: #selector(openTabsView)),
+                UIBarButtonItem(customView: stackView),
             ]
         } else {
             toolbarItems = [
