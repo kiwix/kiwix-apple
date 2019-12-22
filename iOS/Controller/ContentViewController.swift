@@ -11,23 +11,38 @@ import UIKit
 @available(iOS 13.0, *)
 class ContentViewController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate,
     OutlineControllerDelegate, FavoriteControllerDelegate {
-    lazy var chevronLeftButton = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(goBack))
-    lazy var chevronRightButton = UIBarButtonItem(image: UIImage(systemName: "chevron.right"), style: .plain, target: self, action: #selector(goForward))
-    lazy var favoriteButton = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(openFavorite))
-    lazy var favoriteButton2 = FavoriteBarButtonItem(target: self, action: #selector(openFavorite))
-    
+    private let sideBarButton = Button(imageSystemName: "sidebar.left")
+    private let chevronLeftButton = Button(imageSystemName: "chevron.left")
+    private let chevronRightButton = Button(imageSystemName: "chevron.right")
+    private let outlineButton = Button(imageSystemName: "list.bullet")
+    private let favoriteButton = FavoriteButton()
+    private let libraryButton = Button(imageSystemName: "folder")
+    private let settingButton = Button(imageSystemName: "gear")
+    private let favoriteLongPressGestureRecognizer = UILongPressGestureRecognizer()
+     
     let searchController: UISearchController
     private let searchResultsController: SearchResultsController
-    private lazy var searchCancelButton = UIBarButtonItem(barButtonSystemItem: .cancel,
-                                                          target: self,
-                                                          action: #selector(cancelSearch))
+    private lazy var searchCancelButton = UIBarButtonItem(
+        barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
     private var webViewControllers: [WebKitWebController] = []
     var currentWebViewController: WebKitWebController? { return webViewControllers.first }
     
     init() {
         self.searchResultsController = SearchResultsController()
         self.searchController = UISearchController(searchResultsController: self.searchResultsController)
+        
         super.init(nibName: nil, bundle: nil)
+        
+        sideBarButton.addTarget(self, action: #selector(toggleSideBar), for: .touchUpInside)
+        chevronLeftButton.addTarget(self, action: #selector(toggleSideBar), for: .touchUpInside)
+        chevronRightButton.addTarget(self, action: #selector(toggleSideBar), for: .touchUpInside)
+        outlineButton.addTarget(self, action: #selector(openOutline), for: .touchUpInside)
+        favoriteButton.addTarget(self, action: #selector(openFavorite), for: .touchUpInside)
+        libraryButton.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
+        settingButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
+        
+        favoriteButton.addGestureRecognizer(favoriteLongPressGestureRecognizer)
+        favoriteLongPressGestureRecognizer.addTarget(self, action: #selector(toggleFavorite))
     }
     
     required init?(coder: NSCoder) {
@@ -60,50 +75,19 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     // MARK: - View and Controller Management
     
     func configureToolbar() {
-        class Button: UIButton {
-            override var intrinsicContentSize: CGSize {
-                return CGSize(width: 40, height: 40)
-            }
-        }
         if splitViewController?.isCollapsed == true {
-            let stackView = UIStackView(arrangedSubviews: [
-                Button(type: .detailDisclosure),
-                Button(type: .contactAdd)
+            let group = ButtonGroupView(buttons: [
+                chevronLeftButton, chevronRightButton, outlineButton, favoriteButton, libraryButton, settingButton,
             ])
-            stackView.distribution = .equalCentering
-//
-//            toolbarItems = [UIBarButtonItem(customView: stackView)]
-            toolbarItems = [
-                chevronLeftButton,
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                chevronRightButton,
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(openOutline)),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                favoriteButton2,
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "folder"), style: .plain, target: self, action: #selector(openLibrary)),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(openSettings)),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "square.on.square"), style: .plain, target: self, action: #selector(openTabsView)),
-                UIBarButtonItem(customView: stackView),
-            ]
+            toolbarItems = [UIBarButtonItem(customView: group)]
         } else {
+            let left = ButtonGroupView(buttons: [sideBarButton, chevronLeftButton, chevronRightButton], spacing: 10)
+            let right = ButtonGroupView(buttons: [favoriteButton, libraryButton, settingButton], spacing: 10)
+
             toolbarItems = [
-                UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), style: .plain, target: self, action: #selector(toggleSideBar)),
+                UIBarButtonItem(customView: left),
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                chevronLeftButton,
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                chevronRightButton,
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                favoriteButton,
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "folder"), style: .plain, target: self, action: #selector(openLibrary)),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(openSettings)),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "square.on.square"), style: .plain, target: self, action: #selector(openTabsView)),
+                UIBarButtonItem(customView: right),
             ]
         }
     }
@@ -181,7 +165,6 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         // update buttons
         chevronLeftButton.isEnabled = controller.canGoBack
         chevronRightButton.isEnabled = controller.canGoForward
-//        favoriteButton
         
         // if outline view is visible, update outline items
         if let rootSplitController = splitViewController as? RootSplitController,
@@ -245,17 +228,14 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         splitViewController?.present(navigationController, animated: true)
     }
     
-    @objc func openFavorite(sender: UIBarButtonItem, forEvent event: UIEvent) {
-        guard let touch = event.allTouches?.first else {return}
-        if touch.tapCount == 1 {
-            let favoriteController = FavoriteController()
-            let navigationController = UINavigationController(rootViewController: favoriteController)
-            favoriteController.delegate = self
-            splitViewController?.present(navigationController, animated: true)
-        } else if touch.tapCount == 0 {
-            print("long pressed")
-        }
+    @objc func openFavorite() {
+        let favoriteController = FavoriteController()
+        let navigationController = UINavigationController(rootViewController: favoriteController)
+        favoriteController.delegate = self
+        splitViewController?.present(navigationController, animated: true)
     }
+    
+    @objc func toggleFavorite() {}
     
     @objc func openLibrary() {
         guard let splitController = splitViewController as? RootSplitController else {return}
@@ -273,16 +253,36 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
 
 // MARK: - BarButton
 
+private class ButtonGroupView: UIStackView {
+    convenience init(buttons: [UIButton], spacing: CGFloat? = nil) {
+        self.init(arrangedSubviews: buttons)
+        distribution = .equalCentering
+        if let spacing = spacing {
+            self.spacing = spacing
+        }
+    }
+}
+
 @available(iOS 13.0, *)
-class FavoriteBarButtonItem: UIBarButtonItem {
-    var button: UIButton {
-        get {return customView as! UIButton}
+private class Button: UIButton {
+    convenience init(imageSystemName: String) {
+        self.init(type: .system)
+        let image = UIImage(systemName: imageSystemName,
+                            withConfiguration: UIImage.SymbolConfiguration(scale: .large))
+        setImage(image, for: .normal)
     }
     
-    convenience init(target: Any, action: Selector) {
-        self.init(customView: UIButton())
-        button.addTarget(target, action: action, for: .touchUpInside)
-        button.setImage(UIImage(systemName: "star"), for: .normal)
-        button.setImage(UIImage(systemName: "star.slash.fill"), for: .highlighted)
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: 36, height: 44)
+    }
+}
+
+@available(iOS 13.0, *)
+private class FavoriteButton: Button {
+    convenience init() {
+        self.init(imageSystemName: "star")
+//        button.addTarget(target, action: action, for: .touchUpInside)
+//        button.setImage(UIImage(systemName: "star"), for: .normal)
+//        button.setImage(UIImage(systemName: "star.slash.fill"), for: .highlighted)
     }
 }
