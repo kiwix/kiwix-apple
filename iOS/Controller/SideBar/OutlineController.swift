@@ -27,7 +27,7 @@ class OutlineController: UITableViewController {
     
     init() {
         super.init(nibName: nil, bundle: nil)
-        title = NSLocalizedString("Outline", comment: "Favorite view title")
+        title = NSLocalizedString("Outline", comment: "Outline view title")
         if #available(iOS 13.0, *) {
             tabBarItem = UITabBarItem(title: "Outline",
                                       image: UIImage(systemName: "list.bullet"),

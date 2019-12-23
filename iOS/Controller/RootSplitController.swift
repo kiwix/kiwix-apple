@@ -24,6 +24,7 @@ class RootSplitController: UISplitViewController, UISplitViewControllerDelegate 
         viewControllers = [sideBarViewController, contentNavController]
         
         delegate = self
+        sideBarViewController.favoriteController.delegate = contentViewController
         sideBarViewController.outlineController.delegate = contentViewController
     }
     

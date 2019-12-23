@@ -144,16 +144,7 @@ extension MainController: WebViewControllerDelegate {
         }
     }
     
-    func webViewDidTapOnGeoLocation(controller: WebViewController, url: URL) {
-//        guard let components = URLComponents(string: url.absoluteString) else {return}
-//        let parts = components.path.split(separator: ",")
-//        guard parts.count == 2, let latitude = CLLocationDegrees(parts[0]), let longitude = CLLocationDegrees(parts[1]) else {return}
-//        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-//
-//        let mapController = MapController(coordinate: coordinate, title: controller.currentTitle)
-//        let navigationController = UINavigationController(rootViewController: mapController)
-//        self.navigationController?.present(navigationController, animated: true)
-    }
+    func webViewDidTapOnGeoLocation(controller: WebViewController, url: URL) {}
     
     func webViewDidFinishLoading(controller: WebViewController) {
         navigationBackButtonItem.button.isEnabled = controller.canGoBack
@@ -245,7 +236,7 @@ extension MainController: UISearchControllerDelegate, UISearchBarDelegate {
 
 // MARK: - Functions
 
-extension MainController: OutlineControllerDelegate, BookmarkControllerDelegate {
+extension MainController: OutlineControllerDelegate, FavoriteControllerDelegate {
     private func updateTableOfContentsIfNeeded(completion: (() -> Void)? = nil) {
         guard let webController = currentWebController, outlineController.url != webController.currentURL else {completion?(); return}
         webController.extractTableOfContents(completion: { (currentURL, items) in
@@ -259,11 +250,11 @@ extension MainController: OutlineControllerDelegate, BookmarkControllerDelegate 
         currentWebController?.scrollToTableOfContentItem(index: index)
     }
     
-    func didTapBookmark(articleURL: URL) {
-        load(url: articleURL)
+    func didTapFavorite(url: URL) {
+        load(url: url)
     }
     
-    func didDeleteBookmark(url: URL) {
+    func didDeleteFavorite(url: URL) {
         guard currentWebController?.currentURL?.absoluteString == url.absoluteString else {return}
         bookmarkButtonItem.button.isBookmarked = false
     }

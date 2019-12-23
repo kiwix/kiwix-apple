@@ -7,22 +7,43 @@
 //
 
 import UIKit
+import RealmSwift
 
 @available(iOS 13.0, *)
-class ContentViewController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate, OutlineControllerDelegate {
-    
+class ContentViewController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate,
+    OutlineControllerDelegate, FavoriteControllerDelegate {
+    private let sideBarButton = Button(imageSystemName: "sidebar.left")
+    private let chevronLeftButton = Button(imageSystemName: "chevron.left")
+    private let chevronRightButton = Button(imageSystemName: "chevron.right")
+    private let outlineButton = Button(imageSystemName: "list.bullet")
+    private let favoriteButton = FavoriteButton()
+    private let libraryButton = Button(imageSystemName: "folder")
+    private let settingButton = Button(imageSystemName: "gear")
+    private let favoriteLongPressGestureRecognizer = UILongPressGestureRecognizer()
+     
     let searchController: UISearchController
     private let searchResultsController: SearchResultsController
-    private lazy var searchCancelButton = UIBarButtonItem(barButtonSystemItem: .cancel,
-                                                          target: self,
-                                                          action: #selector(cancelSearch))
+    private lazy var searchCancelButton = UIBarButtonItem(
+        barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
     private var webViewControllers: [WebKitWebController] = []
     var currentWebViewController: WebKitWebController? { return webViewControllers.first }
     
     init() {
         self.searchResultsController = SearchResultsController()
         self.searchController = UISearchController(searchResultsController: self.searchResultsController)
+        
         super.init(nibName: nil, bundle: nil)
+        
+        sideBarButton.addTarget(self, action: #selector(toggleSideBar), for: .touchUpInside)
+        chevronLeftButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
+        chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
+        outlineButton.addTarget(self, action: #selector(openOutline), for: .touchUpInside)
+        favoriteButton.addTarget(self, action: #selector(openFavorite), for: .touchUpInside)
+        libraryButton.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
+        settingButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
+        
+        favoriteButton.addGestureRecognizer(favoriteLongPressGestureRecognizer)
+        favoriteLongPressGestureRecognizer.addTarget(self, action: #selector(toggleFavorite))
     }
     
     required init?(coder: NSCoder) {
@@ -44,7 +65,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         searchController.searchResultsUpdater = searchResultsController
         
         configureToolbar()
-        makeWebViewControllerAndBecomeCurrent()
+        createNewTab()
     }
     
     func load(url: URL) {
@@ -52,42 +73,38 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         currentWebViewController?.load(url: url)
     }
     
-    // MARK: View and Controller Management
+    // MARK: - View and Controller Management
     
     func configureToolbar() {
         if splitViewController?.isCollapsed == true {
-            toolbarItems = [
-                UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(goBack)),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "chevron.right"), style: .plain, target: self, action: #selector(goForward)),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self, action: #selector(openOutline)),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(openFavorite)),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "folder"), style: .plain, target: self, action: #selector(openLibrary)),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(openSettings)),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "square.on.square"), style: .plain, target: self, action: #selector(openTabsView)),
-            ]
+            let group = ButtonGroupView(buttons: [
+                chevronLeftButton, chevronRightButton, outlineButton, favoriteButton, libraryButton, settingButton,
+            ])
+            toolbarItems = [UIBarButtonItem(customView: group)]
         } else {
+            let left = ButtonGroupView(buttons: [sideBarButton, chevronLeftButton, chevronRightButton], spacing: 10)
+            let right = ButtonGroupView(buttons: [favoriteButton, libraryButton, settingButton], spacing: 10)
             toolbarItems = [
-                UIBarButtonItem(image: UIImage(systemName: "sidebar.left"), style: .plain, target: self, action: #selector(toggleSideBar)),
+                UIBarButtonItem(customView: left),
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(goBack)),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "chevron.right"), style: .plain, target: self, action: #selector(goForward)),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(openFavorite)),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "folder"), style: .plain, target: self, action: #selector(openLibrary)),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(openSettings)),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(image: UIImage(systemName: "square.on.square"), style: .plain, target: self, action: #selector(openTabsView)),
+                UIBarButtonItem(customView: right),
             ]
         }
+    }
+    
+    private func createNewTab() {
+        let controller = WebKitWebController()
+        webViewControllers.append(controller)
+        switchToTab(controller: controller)
+    }
+    
+    private func switchToTab(controller: WebViewController) {
+        var controller = controller
+        controller.delegate = self
+        
+        chevronLeftButton.isEnabled = controller.canGoBack
+        chevronRightButton.isEnabled = controller.canGoForward
+        outlineButton.isEnabled = controller.currentURL != nil
     }
     
     private func setView(_ subView: UIView?) {
@@ -127,13 +144,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         }
     }
     
-    private func makeWebViewControllerAndBecomeCurrent() {
-        let controller = WebKitWebController()
-        controller.delegate = self
-        webViewControllers.append(controller)
-    }
-    
-    // MARK: UISearchControllerDelegate
+    // MARK: - UISearchControllerDelegate
     
     func willPresentSearchController(_ searchController: UISearchController) {
         navigationItem.setRightBarButton(searchCancelButton, animated: true)
@@ -152,13 +163,32 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     }
     
     func webViewDidFinishLoading(controller: WebViewController) {
-        guard let rootSplitController = splitViewController as? RootSplitController,
+        // update buttons
+        chevronLeftButton.isEnabled = controller.canGoBack
+        chevronRightButton.isEnabled = controller.canGoForward
+        outlineButton.isEnabled = controller.currentURL != nil
+        
+        // update favorite button
+        if let url = controller.currentURL, let zimFileID = url.host {
+            do {
+                let database = try Realm(configuration: Realm.defaultConfig)
+                let predicate = NSPredicate(format: "zimFile.id == %@ AND path == %@", zimFileID, url.path)
+                let resultCount = database.objects(Bookmark.self).filter(predicate).count
+                favoriteButton.isBookmarked = resultCount > 0
+            } catch {}
+        } else {
+            favoriteButton.isBookmarked = false
+        }
+        
+        // if outline view is visible, update outline items
+        if let rootSplitController = splitViewController as? RootSplitController,
             !rootSplitController.isCollapsed,
-            rootSplitController.displayMode != .primaryHidden else {return}
-        let selectedNavController = rootSplitController.sideBarViewController.selectedViewController
-        let selectedController = (selectedNavController as? UINavigationController)?.topViewController
-        if let outlineController = selectedController as? OutlineController {
-            outlineController.updateContent()
+            rootSplitController.displayMode != .primaryHidden {
+            let selectedNavController = rootSplitController.sideBarViewController.selectedViewController
+            let selectedController = (selectedNavController as? UINavigationController)?.topViewController
+            if let outlineController = selectedController as? OutlineController {
+                outlineController.updateContent()
+            }
         }
     }
     
@@ -168,7 +198,17 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         currentWebViewController?.scrollToTableOfContentItem(index: index)
     }
     
-    // MARK: Actions
+    // MARK: FavoriteControllerDelegate
+    
+    func didTapFavorite(url: URL) {
+        load(url: url)
+    }
+    
+    func didDeleteFavorite(url: URL) {
+        
+    }
+    
+    // MARK: - Actions
     
     @objc func cancelSearch() {
         /*
@@ -203,8 +243,16 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     }
     
     @objc func openFavorite() {
-        let controller = UINavigationController(rootViewController: FavoriteController())
-        splitViewController?.present(controller, animated: true)
+        let favoriteController = FavoriteController()
+        let navigationController = UINavigationController(rootViewController: favoriteController)
+        favoriteController.delegate = self
+        splitViewController?.present(navigationController, animated: true)
+    }
+    
+    @objc func toggleFavorite(recognizer: UILongPressGestureRecognizer) {
+        guard recognizer.state == .began else {return}
+        
+        print("toggle favorite")
     }
     
     @objc func openLibrary() {
@@ -219,4 +267,44 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     @objc func openTabsView() {
         splitViewController?.present(TabsController(), animated: true)
     }
+}
+
+// MARK: - BarButton
+
+private class ButtonGroupView: UIStackView {
+    convenience init(buttons: [UIButton], spacing: CGFloat? = nil) {
+        self.init(arrangedSubviews: buttons)
+        distribution = .equalCentering
+        if let spacing = spacing {
+            self.spacing = spacing
+        }
+    }
+}
+
+@available(iOS 13.0, *)
+private class Button: UIButton {
+    fileprivate let configuration = UIImage.SymbolConfiguration(scale: .large)
+    convenience init(imageSystemName: String) {
+        self.init(type: .system)
+        setImage(UIImage(systemName: imageSystemName, withConfiguration: configuration), for: .normal)
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: 36, height: 44)
+    }
+}
+
+@available(iOS 13.0, *)
+private class FavoriteButton: Button {
+    var isBookmarked: Bool = false { didSet {setNeedsLayout()} }
+    override var state: UIControl.State{ get {isBookmarked ? [.bookmarked, super.state] : super.state} }
+    
+    convenience init() {
+        self.init(imageSystemName: "star")
+        setImage(UIImage(systemName: "star.fill", withConfiguration: configuration), for: .bookmarked)
+    }
+}
+
+private extension UIControl.State {
+    static let bookmarked = UIControl.State(rawValue: 1 << 16)
 }
