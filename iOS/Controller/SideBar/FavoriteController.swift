@@ -32,8 +32,8 @@ class FavoriteController: UIViewController, UITableViewDataSource, UITableViewDe
         title = NSLocalizedString("Favorite", comment: "Favorite view title")
         if #available(iOS 13.0, *) {
             tabBarItem = UITabBarItem(title: "Favorite",
-                                      image: UIImage(systemName: "star"),
-                                      selectedImage: UIImage(systemName: "star.fill"))
+                                      image: UIImage(systemName: "star.circle"),
+                                      selectedImage: UIImage(systemName: "star.circle.fill"))
         }
     }
     
