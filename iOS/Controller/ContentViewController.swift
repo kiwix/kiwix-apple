@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 @available(iOS 13.0, *)
 class ContentViewController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate,
@@ -34,8 +35,8 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         super.init(nibName: nil, bundle: nil)
         
         sideBarButton.addTarget(self, action: #selector(toggleSideBar), for: .touchUpInside)
-        chevronLeftButton.addTarget(self, action: #selector(toggleSideBar), for: .touchUpInside)
-        chevronRightButton.addTarget(self, action: #selector(toggleSideBar), for: .touchUpInside)
+        chevronLeftButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
+        chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
         outlineButton.addTarget(self, action: #selector(openOutline), for: .touchUpInside)
         favoriteButton.addTarget(self, action: #selector(openFavorite), for: .touchUpInside)
         libraryButton.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
@@ -166,6 +167,18 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         chevronLeftButton.isEnabled = controller.canGoBack
         chevronRightButton.isEnabled = controller.canGoForward
         
+        // update favorite button
+        if let url = controller.currentURL, let zimFileID = url.host {
+            do {
+                let database = try Realm(configuration: Realm.defaultConfig)
+                let predicate = NSPredicate(format: "zimFile.id == %@ AND path == %@", zimFileID, url.path)
+                let resultCount = database.objects(Bookmark.self).filter(predicate).count
+                favoriteButton.isBookmarked = resultCount > 0
+            } catch {}
+        } else {
+            favoriteButton.isBookmarked = false
+        }
+        
         // if outline view is visible, update outline items
         if let rootSplitController = splitViewController as? RootSplitController,
             !rootSplitController.isCollapsed,
@@ -265,11 +278,10 @@ private class ButtonGroupView: UIStackView {
 
 @available(iOS 13.0, *)
 private class Button: UIButton {
+    fileprivate let configuration = UIImage.SymbolConfiguration(scale: .large)
     convenience init(imageSystemName: String) {
         self.init(type: .system)
-        let image = UIImage(systemName: imageSystemName,
-                            withConfiguration: UIImage.SymbolConfiguration(scale: .large))
-        setImage(image, for: .normal)
+        setImage(UIImage(systemName: imageSystemName, withConfiguration: configuration), for: .normal)
     }
     
     override var intrinsicContentSize: CGSize {
@@ -279,10 +291,22 @@ private class Button: UIButton {
 
 @available(iOS 13.0, *)
 private class FavoriteButton: Button {
+    var isBookmarked: Bool = false {
+        didSet {setNeedsLayout()}
+    }
+    
+    override var state: UIControl.State{
+        get {
+            isBookmarked ? .bookmarked : super.state
+        }
+    }
+    
     convenience init() {
         self.init(imageSystemName: "star")
-//        button.addTarget(target, action: action, for: .touchUpInside)
-//        button.setImage(UIImage(systemName: "star"), for: .normal)
-//        button.setImage(UIImage(systemName: "star.slash.fill"), for: .highlighted)
+        setImage(UIImage(systemName: "star.fill", withConfiguration: configuration), for: .bookmarked)
     }
+}
+
+private extension UIControl.State {
+    static let bookmarked = UIControl.State(rawValue: 1 << 16)
 }
