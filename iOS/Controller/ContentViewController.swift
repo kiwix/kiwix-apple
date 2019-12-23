@@ -84,7 +84,6 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         } else {
             let left = ButtonGroupView(buttons: [sideBarButton, chevronLeftButton, chevronRightButton], spacing: 10)
             let right = ButtonGroupView(buttons: [favoriteButton, libraryButton, settingButton], spacing: 10)
-
             toolbarItems = [
                 UIBarButtonItem(customView: left),
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
@@ -105,6 +104,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         
         chevronLeftButton.isEnabled = controller.canGoBack
         chevronRightButton.isEnabled = controller.canGoForward
+        outlineButton.isEnabled = controller.currentURL != nil
     }
     
     private func setView(_ subView: UIView?) {
@@ -166,6 +166,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         // update buttons
         chevronLeftButton.isEnabled = controller.canGoBack
         chevronRightButton.isEnabled = controller.canGoForward
+        outlineButton.isEnabled = controller.currentURL != nil
         
         // update favorite button
         if let url = controller.currentURL, let zimFileID = url.host {
@@ -248,7 +249,11 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         splitViewController?.present(navigationController, animated: true)
     }
     
-    @objc func toggleFavorite() {}
+    @objc func toggleFavorite(recognizer: UILongPressGestureRecognizer) {
+        guard recognizer.state == .began else {return}
+        
+        print("toggle favorite")
+    }
     
     @objc func openLibrary() {
         guard let splitController = splitViewController as? RootSplitController else {return}
@@ -292,7 +297,7 @@ private class Button: UIButton {
 @available(iOS 13.0, *)
 private class FavoriteButton: Button {
     var isBookmarked: Bool = false { didSet {setNeedsLayout()} }
-    override var state: UIControl.State{ get {isBookmarked ? .bookmarked : super.state} }
+    override var state: UIControl.State{ get {isBookmarked ? [.bookmarked, super.state] : super.state} }
     
     convenience init() {
         self.init(imageSystemName: "star")
