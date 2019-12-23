@@ -34,10 +34,6 @@ class FavoriteController: UIViewController, UITableViewDataSource, UITableViewDe
             tabBarItem = UITabBarItem(title: "Favorite",
                                       image: UIImage(systemName: "star"),
                                       selectedImage: UIImage(systemName: "star.fill"))
-        } else {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
-                                                               target: self,
-                                                               action: #selector(dismissController))
         }
     }
     
@@ -50,6 +46,12 @@ class FavoriteController: UIViewController, UITableViewDataSource, UITableViewDe
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
+        
+        if let _ = presentingViewController {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
+            target: self,
+            action: #selector(dismissController))
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
