@@ -291,15 +291,8 @@ private class Button: UIButton {
 
 @available(iOS 13.0, *)
 private class FavoriteButton: Button {
-    var isBookmarked: Bool = false {
-        didSet {setNeedsLayout()}
-    }
-    
-    override var state: UIControl.State{
-        get {
-            isBookmarked ? .bookmarked : super.state
-        }
-    }
+    var isBookmarked: Bool = false { didSet {setNeedsLayout()} }
+    override var state: UIControl.State{ get {isBookmarked ? .bookmarked : super.state} }
     
     convenience init() {
         self.init(imageSystemName: "star")
