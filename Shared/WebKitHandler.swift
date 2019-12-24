@@ -35,3 +35,15 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     
     func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {}
 }
+
+extension URL {
+    init?(bookID: String, contentPath: String) {
+        let baseURLString = "kiwix://" + bookID
+        guard let encoded = contentPath.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {return nil}
+        self.init(string: encoded, relativeTo: URL(string: baseURLString))
+    }
+    
+    var isKiwixURL: Bool {
+        return scheme?.caseInsensitiveCompare("kiwix") == .orderedSame
+    }
+}

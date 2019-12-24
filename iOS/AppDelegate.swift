@@ -29,29 +29,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         
         print(URL.documentDirectory)
         
-        URLProtocol.registerClass(KiwixURLProtocol.self)
         DownloadManager.shared.restorePreviousState()
         application.setMinimumBackgroundFetchInterval(3600 * 24)
         
         fileMonitor.delegate = self
         fileMonitor.start()
         
-        if UserDefaults.standard.bool(forKey: "MigratedToRealm") {
-            let operation = LibraryScanOperation(url: URL.documentDirectory)
-            LibraryOperationQueue.shared.addOperation(operation)
-        } else {
-            let scan = LibraryScanOperation(directoryURL: URL.documentDirectory)
-            let migrate = BookmarkMigrationOperation()
-            let refresh = LibraryRefreshOperation(updateExisting: true)
-            migrate.completionBlock = {
-                UserDefaults.standard.set(true, forKey: "MigratedToRealm")
-            }
-            migrate.addDependency(scan)
-            refresh.addDependency(migrate)
-            LibraryOperationQueue.shared.addOperation(scan)
-            LibraryOperationQueue.shared.addOperation(migrate)
-            LibraryOperationQueue.shared.addOperation(refresh)
-        }
+        let operation = LibraryScanOperation(url: URL.documentDirectory)
+        LibraryOperationQueue.shared.addOperation(operation)
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

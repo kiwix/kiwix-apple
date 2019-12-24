@@ -6,6 +6,11 @@
 //  Copyright © 2018 Chris Li. All rights reserved.
 //
 
+#if os(iOS)
+    import UIKit
+#elseif os(macOS)
+    import AppKit
+#endif
 import RealmSwift
 
 class ZimFile: Object {
