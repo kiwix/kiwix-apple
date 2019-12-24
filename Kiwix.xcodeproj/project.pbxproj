@@ -120,8 +120,12 @@
 		97CAFA962051EC5100AC1F68 /* TableOfContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D00A7E1FBB92D400165629 /* TableOfContentItem.swift */; };
 		97CE15AE23B245FB00378D9F /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C99B47205AF58D00439C77 /* MainController.swift */; };
 		97CE15AF23B2668500378D9F /* TableViewSectionFooterLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D0C4DC211BF72B00B00DAA /* TableViewSectionFooterLabel.swift */; };
-		97CE15B223B26BBC00378D9F /* SwiftyUserDefaults in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15B123B26BBC00378D9F /* SwiftyUserDefaults */; };
-		97CE15B423B26CC600378D9F /* SwiftyUserDefaults in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15B323B26CC600378D9F /* SwiftyUserDefaults */; };
+		97CE15B223B26BBC00378D9F /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15B123B26BBC00378D9F /* SwiftPackageProductDependency */; };
+		97CE15B423B26CC600378D9F /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15B323B26CC600378D9F /* SwiftPackageProductDependency */; };
+		97CE15B723B26EB300378D9F /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15B623B26EB300378D9F /* SwiftPackageProductDependency */; };
+		97CE15B923B26EB300378D9F /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15B823B26EB300378D9F /* SwiftPackageProductDependency */; };
+		97CE15BB23B26ED200378D9F /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15BA23B26ED200378D9F /* SwiftPackageProductDependency */; };
+		97CE15BD23B26ED200378D9F /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15BC23B26ED200378D9F /* SwiftPackageProductDependency */; };
 		97D00A791FBB89F000165629 /* Inject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* Inject.js */; };
 		97D00A7F1FBB92D400165629 /* TableOfContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D00A7E1FBB92D400165629 /* TableOfContentItem.swift */; };
 		97D757CB238B7BA8008FB7E2 /* libxapian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97D757BA238B7BA7008FB7E2 /* libxapian.a */; };
@@ -646,13 +650,15 @@
 				974FFE6F2353AA3900F6BF28 /* WebKit.framework in Frameworks */,
 				97D757CC238B7BA8008FB7E2 /* libzim.a in Frameworks */,
 				97D757DB238B7BA8008FB7E2 /* liblzma.a in Frameworks */,
+				97CE15BB23B26ED200378D9F /* BuildFile in Frameworks */,
 				97D757CF238B7BA8008FB7E2 /* libkiwix.a in Frameworks */,
 				97D757D0238B7BA8008FB7E2 /* libicuuc.a in Frameworks */,
+				97CE15BD23B26ED200378D9F /* BuildFile in Frameworks */,
 				97D757D3238B7BA8008FB7E2 /* libz.a in Frameworks */,
 				97D757D9238B7BA8008FB7E2 /* libicutest.a in Frameworks */,
 				97D757D6238B7BA8008FB7E2 /* libicui18n.a in Frameworks */,
 				DFD371610877B5817E9C9FEB /* Pods_macOS.framework in Frameworks */,
-				97CE15B423B26CC600378D9F /* SwiftyUserDefaults in Frameworks */,
+				97CE15B423B26CC600378D9F /* BuildFile in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -660,15 +666,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97CE15B723B26EB300378D9F /* BuildFile in Frameworks */,
 				97A68830207D40F500DBBE0D /* Pods_iOS.framework in Frameworks */,
 				97CA4A6820A0F583008CEA6D /* libicudata.a in Frameworks */,
+				97CE15B923B26EB300378D9F /* BuildFile in Frameworks */,
 				97CA4A6A20A0F583008CEA6D /* libxapian.a in Frameworks */,
 				97CA4A6C20A0F583008CEA6D /* liblzma.a in Frameworks */,
 				97CA4A7020A0F583008CEA6D /* libpugixml.a in Frameworks */,
 				97CA4A6E20A0F583008CEA6D /* libkiwix.a in Frameworks */,
 				97CA4A6F20A0F583008CEA6D /* libicuuc.a in Frameworks */,
 				97C5763D202CD9C000E37502 /* NotificationCenter.framework in Frameworks */,
-				97CE15B223B26BBC00378D9F /* SwiftyUserDefaults in Frameworks */,
+				97CE15B223B26BBC00378D9F /* BuildFile in Frameworks */,
 				97A36C351F8C21210079B452 /* WebKit.framework in Frameworks */,
 				97CA4A6D20A0F583008CEA6D /* libzim.a in Frameworks */,
 				97CA4A6920A0F583008CEA6D /* libz.a in Frameworks */,
@@ -1466,7 +1474,6 @@
 				9793157E1E5127930093D3BA /* Frameworks */,
 				9793157F1E5127930093D3BA /* Resources */,
 				976D297B1F44A776003F5431 /* CopyFiles */,
-				3A3582477F537FC969B0F553 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1474,7 +1481,9 @@
 			);
 			name = macOS;
 			packageProductDependencies = (
-				97CE15B323B26CC600378D9F /* SwiftyUserDefaults */,
+				97CE15B323B26CC600378D9F /* SwiftPackageProductDependency */,
+				97CE15BA23B26ED200378D9F /* SwiftPackageProductDependency */,
+				97CE15BC23B26ED200378D9F /* SwiftPackageProductDependency */,
 			);
 			productName = Kiwix;
 			productReference = 979315811E5127930093D3BA /* Kiwix.app */;
@@ -1488,7 +1497,6 @@
 				97A36C261F8C21210079B452 /* Sources */,
 				97A36C341F8C21210079B452 /* Frameworks */,
 				97A36C431F8C21210079B452 /* Resources */,
-				97A36C491F8C21210079B452 /* [CP] Embed Pods Frameworks */,
 				97C57602202CB0E900E37502 /* Embed App Extensions */,
 				97242E282093AC2500AA4436 /* Embed Frameworks */,
 			);
@@ -1499,7 +1507,9 @@
 			);
 			name = iOS;
 			packageProductDependencies = (
-				97CE15B123B26BBC00378D9F /* SwiftyUserDefaults */,
+				97CE15B123B26BBC00378D9F /* SwiftPackageProductDependency */,
+				97CE15B623B26EB300378D9F /* SwiftPackageProductDependency */,
+				97CE15B823B26EB300378D9F /* SwiftPackageProductDependency */,
 			);
 			productName = WikiMed;
 			productReference = 97A36C4E1F8C21210079B452 /* Kiwix.app */;
@@ -1615,7 +1625,8 @@
 			);
 			mainGroup = 97A2AB7F1C1B80FF00052E74;
 			packageReferences = (
-				97CE15B023B26BBC00378D9F /* XCRemoteSwiftPackageReference "SwiftyUserDefaults" */,
+				97CE15B023B26BBC00378D9F /* RemoteSwiftPackageReference */,
+				97CE15B523B26EB300378D9F /* RemoteSwiftPackageReference */,
 			);
 			productRefGroup = 97A2AB7F1C1B80FF00052E74;
 			projectDirPath = "";
@@ -1678,23 +1689,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3A3582477F537FC969B0F553 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-macOS/Pods-macOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-macOS/Pods-macOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-macOS/Pods-macOS-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		902D753CDF5B49F50A4C2727 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1747,23 +1741,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		97A36C491F8C21210079B452 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2376,7 +2353,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		97CE15B023B26BBC00378D9F /* XCRemoteSwiftPackageReference "SwiftyUserDefaults" */ = {
+		97CE15B023B26BBC00378D9F /* RemoteSwiftPackageReference */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sunshinejr/SwiftyUserDefaults";
 			requirement = {
@@ -2384,18 +2361,47 @@
 				minimumVersion = 4.0.0;
 			};
 		};
+		97CE15B523B26EB300378D9F /* RemoteSwiftPackageReference */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-cocoa";
+			requirement = {
+				kind = versionRange;
+				maximumVersion = 4.0.0;
+				minimumVersion = 3.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		97CE15B123B26BBC00378D9F /* SwiftyUserDefaults */ = {
+		97CE15B123B26BBC00378D9F /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 97CE15B023B26BBC00378D9F /* XCRemoteSwiftPackageReference "SwiftyUserDefaults" */;
+			package = 97CE15B023B26BBC00378D9F /* RemoteSwiftPackageReference */;
 			productName = SwiftyUserDefaults;
 		};
-		97CE15B323B26CC600378D9F /* SwiftyUserDefaults */ = {
+		97CE15B323B26CC600378D9F /* SwiftPackageProductDependency */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 97CE15B023B26BBC00378D9F /* XCRemoteSwiftPackageReference "SwiftyUserDefaults" */;
+			package = 97CE15B023B26BBC00378D9F /* RemoteSwiftPackageReference */;
 			productName = SwiftyUserDefaults;
+		};
+		97CE15B623B26EB300378D9F /* SwiftPackageProductDependency */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97CE15B523B26EB300378D9F /* RemoteSwiftPackageReference */;
+			productName = Realm;
+		};
+		97CE15B823B26EB300378D9F /* SwiftPackageProductDependency */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97CE15B523B26EB300378D9F /* RemoteSwiftPackageReference */;
+			productName = RealmSwift;
+		};
+		97CE15BA23B26ED200378D9F /* SwiftPackageProductDependency */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97CE15B523B26EB300378D9F /* RemoteSwiftPackageReference */;
+			productName = Realm;
+		};
+		97CE15BC23B26ED200378D9F /* SwiftPackageProductDependency */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97CE15B523B26EB300378D9F /* RemoteSwiftPackageReference */;
+			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 

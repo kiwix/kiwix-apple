@@ -20,6 +20,24 @@
         }
       },
       {
+        "package": "Realm",
+        "repositoryURL": "https://github.com/realm/realm-cocoa",
+        "state": {
+          "branch": null,
+          "revision": "40732f2ec0cdc32d9d3df8219b2e655deb3077f1",
+          "version": "3.21.0"
+        }
+      },
+      {
+        "package": "RealmCore",
+        "repositoryURL": "https://github.com/realm/realm-core",
+        "state": {
+          "branch": null,
+          "revision": "512dfaa4f59930e193c92e00ba1924bde69b19de",
+          "version": "5.23.5"
+        }
+      },
+      {
         "package": "SwiftyUserDefaults",
         "repositoryURL": "https://github.com/sunshinejr/SwiftyUserDefaults",
         "state": {
