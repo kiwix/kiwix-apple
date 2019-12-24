@@ -143,7 +143,7 @@ class SearchResultsController: UIViewController, SearchQueueEvents, UISearchResu
         contentController.view.translatesAutoresizingMaskIntoConstraints = false
         visualView.setContent(view: contentController.view)
         
-        visualView.contentView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
+        visualView.contentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         visualView.contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         readableContentWidthConstraint = visualView.contentView.widthAnchor.constraint(equalTo: view.readableContentGuide.widthAnchor, multiplier: 1.0, constant: 90)
         equalWidthConstraint = visualView.contentView.widthAnchor.constraint(equalTo: view.widthAnchor)

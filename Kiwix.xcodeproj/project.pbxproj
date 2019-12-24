@@ -724,7 +724,6 @@
 			children = (
 				97A6882C207D3D5300DBBE0D /* Model */,
 				976771821F437DB9007ED0C2 /* Dependencies */,
-				975FDB0A1F6092DE00A10E8C /* Loading */,
 				97DF259E1D6F9942001648A3 /* Network */,
 				9702BE201F97FA2600E6B4EE /* Procedure */,
 				977D7BAF1F9E6A43009A8703 /* ZimMultiReader */,
@@ -797,13 +796,6 @@
 				97041F7E1F9652D4007D63F5 /* WikiMed.plist */,
 			);
 			path = Support;
-			sourceTree = "<group>";
-		};
-		975FDB0A1F6092DE00A10E8C /* Loading */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Loading;
 			sourceTree = "<group>";
 		};
 		975FDB0E1F60944A00A10E8C /* Controller */ = {

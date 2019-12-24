@@ -134,9 +134,9 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
             child.view.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(child.view)
             NSLayoutConstraint.activate([
-                topLayoutGuide.bottomAnchor.constraint(equalTo: child.view.topAnchor),
+                view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: child.view.topAnchor),
                 view.leftAnchor.constraint(equalTo: child.view.leftAnchor),
-                bottomLayoutGuide.topAnchor.constraint(equalTo: child.view.bottomAnchor),
+                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: child.view.bottomAnchor),
                 view.rightAnchor.constraint(equalTo: child.view.rightAnchor),
             ])
             addChild(child)
