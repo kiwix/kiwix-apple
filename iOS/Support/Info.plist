@@ -83,6 +83,27 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Kiwix need your location to show nearby articles.</string>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<true/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneClassName</key>
+					<string>UIWindowScene</string>
+					<key>UISceneConfigurationName</key>
+					<string>Default Configuration</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -91,8 +112,6 @@
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
-	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
 	<key>UIMainStoryboardFile~ipad</key>
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>

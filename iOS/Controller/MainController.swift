@@ -28,10 +28,10 @@ class MainController: UIViewController {
     private(set) weak var currentWebController: (UIViewController & WebViewController)? = nil
     private(set) var webControllers = [(UIViewController & WebViewController)]()
     
-    let searchController = UISearchController(searchResultsController: SearchResultController())
+    let searchController = UISearchController(searchResultsController: SearchResultsController())
     private(set) lazy var welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
-    private(set) lazy var bookmarkController = BookmarkController()
-    private(set) lazy var tableOfContentController = TableOfContentController()
+    private(set) lazy var bookmarkController = FavoriteController()
+    private(set) lazy var outlineController = OutlineController()
     private(set) lazy var libraryController = LibraryController()
     private(set) lazy var settingController = SettingNavigationController()
     
@@ -76,7 +76,7 @@ class MainController: UIViewController {
         if traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass {
             if let presentedNavigationController = navigationController?.presentedViewController as? UINavigationController,
                 let topController = presentedNavigationController.topViewController {
-                guard topController === tableOfContentController || topController === bookmarkController else {return}
+                guard topController === outlineController || topController === bookmarkController else {return}
                 presentedNavigationController.setViewControllers([], animated: false)
                 presentedNavigationController.dismiss(animated: false, completion: {
                     self.setPanelContainerChild(controller: topController)
@@ -144,16 +144,7 @@ extension MainController: WebViewControllerDelegate {
         }
     }
     
-    func webViewDidTapOnGeoLocation(controller: WebViewController, url: URL) {
-//        guard let components = URLComponents(string: url.absoluteString) else {return}
-//        let parts = components.path.split(separator: ",")
-//        guard parts.count == 2, let latitude = CLLocationDegrees(parts[0]), let longitude = CLLocationDegrees(parts[1]) else {return}
-//        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-//
-//        let mapController = MapController(coordinate: coordinate, title: controller.currentTitle)
-//        let navigationController = UINavigationController(rootViewController: mapController)
-//        self.navigationController?.present(navigationController, animated: true)
-    }
+    func webViewDidTapOnGeoLocation(controller: WebViewController, url: URL) {}
     
     func webViewDidFinishLoading(controller: WebViewController) {
         navigationBackButtonItem.button.isEnabled = controller.canGoBack
@@ -170,7 +161,7 @@ extension MainController: WebViewControllerDelegate {
             bookmarkButtonItem.button.isBookmarked = false
         }
         
-        if currentPanelController === tableOfContentController {
+        if currentPanelController === outlineController {
             updateTableOfContentsIfNeeded()
         }
         
@@ -192,7 +183,7 @@ extension MainController: UISearchControllerDelegate, UISearchBarDelegate {
         searchController.searchBar.searchBarStyle = .minimal
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.obscuresBackgroundDuringPresentation = true
-        searchController.searchResultsUpdater = searchController.searchResultsController as? SearchResultController
+        searchController.searchResultsUpdater = searchController.searchResultsController as? SearchResultsController
     }
     
     @objc func cancelSearchButtonTapped() {
@@ -201,13 +192,13 @@ extension MainController: UISearchControllerDelegate, UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         // when searchController become active, set searchBar.text to previous search text
-        guard let searchResultController = searchController.searchResultsController as? SearchResultController else {return}
+        guard let searchResultController = searchController.searchResultsController as? SearchResultsController else {return}
         searchBar.text = searchResultController.contentController.resultsListController.searchText
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // when return button on the keyboard is tapped, we load the first article in search result
-        guard let controller = searchController.searchResultsController as? SearchResultController else {return}
+        guard let controller = searchController.searchResultsController as? SearchResultsController else {return}
         let resultsListController = controller.contentController.resultsListController
         guard let firstResult = resultsListController.results.first else {return}
         
@@ -245,25 +236,25 @@ extension MainController: UISearchControllerDelegate, UISearchBarDelegate {
 
 // MARK: - Functions
 
-extension MainController: TableOfContentControllerDelegate, BookmarkControllerDelegate {
+extension MainController: OutlineControllerDelegate, FavoriteControllerDelegate {
     private func updateTableOfContentsIfNeeded(completion: (() -> Void)? = nil) {
-        guard let webController = currentWebController, tableOfContentController.url != webController.currentURL else {completion?(); return}
+        guard let webController = currentWebController, outlineController.url != webController.currentURL else {completion?(); return}
         webController.extractTableOfContents(completion: { (currentURL, items) in
-            self.tableOfContentController.url = currentURL
-            self.tableOfContentController.items = items
+            self.outlineController.url = currentURL
+            self.outlineController.items = items
             completion?()
         })
     }
     
-    func didTapTableOfContentItem(index: Int, item: TableOfContentItem) {
+    func didTapOutlineItem(index: Int, item: TableOfContentItem) {
         currentWebController?.scrollToTableOfContentItem(index: index)
     }
     
-    func didTapBookmark(articleURL: URL) {
-        load(url: articleURL)
+    func didTapFavorite(url: URL) {
+        load(url: url)
     }
     
-    func didDeleteBookmark(url: URL) {
+    func didDeleteFavorite(url: URL) {
         guard currentWebController?.currentURL?.absoluteString == url.absoluteString else {return}
         bookmarkButtonItem.button.isBookmarked = false
     }
@@ -323,9 +314,9 @@ extension MainController: BarButtonItemDelegate {
         case navigationForwardButtonItem:
             currentWebController?.goForward()
         case tableOfContentButtonItem:
-            tableOfContentController.delegate = self
+            outlineController.delegate = self
             updateTableOfContentsIfNeeded(completion: {
-                self.presentAdaptively(controller: self.tableOfContentController, animated: true)
+                self.presentAdaptively(controller: self.outlineController, animated: true)
             })
         case bookmarkButtonItem:
             bookmarkController.delegate = self

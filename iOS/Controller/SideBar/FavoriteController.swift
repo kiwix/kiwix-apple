@@ -9,8 +9,8 @@
 import UIKit
 import RealmSwift
 
-class BookmarkController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    weak var delegate: BookmarkControllerDelegate? = nil
+class FavoriteController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    weak var delegate: FavoriteControllerDelegate? = nil
     private let tableView = UITableView()
     private lazy var emptyContentView = EmptyContentView(
         image: #imageLiteral(resourceName: "StarColor"),
@@ -29,6 +29,12 @@ class BookmarkController: UIViewController, UITableViewDataSource, UITableViewDe
             self.bookmarks = database?.objects(Bookmark.self).sorted(byKeyPath: "date", ascending: false)
         }
         super.init(nibName: nil, bundle: nil)
+        title = NSLocalizedString("Favorite", comment: "Favorite view title")
+        if #available(iOS 13.0, *) {
+            tabBarItem = UITabBarItem(title: "Favorite",
+                                      image: UIImage(systemName: "star.circle"),
+                                      selectedImage: UIImage(systemName: "star.circle.fill"))
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -37,11 +43,15 @@ class BookmarkController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("Bookmarks", comment: "Bookmark view title")
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
+        
+        if let _ = presentingViewController {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
+            target: self,
+            action: #selector(dismissController))
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -131,7 +141,7 @@ class BookmarkController: UIViewController, UITableViewDataSource, UITableViewDe
         guard let bookmark = bookmarks?[indexPath.row], let zimFileID = bookmark.zimFile?.id,
             let url = URL(bookID: zimFileID, contentPath: bookmark.path) else {return}
         tableView.deselectRow(at: indexPath, animated: true)
-        delegate?.didTapBookmark(articleURL: url)
+        delegate?.didTapFavorite(url: url)
         dismiss(animated: true) {
             tableView.deselectRow(at: indexPath, animated: false)
         }
@@ -149,7 +159,7 @@ class BookmarkController: UIViewController, UITableViewDataSource, UITableViewDe
                 try database.write {
                     database.delete(bookmark)
                 }
-                if let url = url { delegate?.didDeleteBookmark(url: url) }
+                if let url = url { delegate?.didDeleteFavorite(url: url) }
             } catch {}
         }
     }
@@ -157,7 +167,7 @@ class BookmarkController: UIViewController, UITableViewDataSource, UITableViewDe
 
 // MARK: - Protocols
 
-protocol BookmarkControllerDelegate: class {
-    func didTapBookmark(articleURL: URL)
-    func didDeleteBookmark(url: URL)
+protocol FavoriteControllerDelegate: class {
+    func didTapFavorite(url: URL)
+    func didDeleteFavorite(url: URL)
 }
