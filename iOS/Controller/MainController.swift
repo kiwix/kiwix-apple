@@ -129,13 +129,7 @@ extension MainController: WebViewControllerDelegate {
         if let controller = currentWebController {
             controller.load(url: url)
         } else {
-            var controller: (UIViewController & WebViewController) = {
-                if #available(iOS 11.0, *) {
-                    return WebKitWebController()
-                } else {
-                    return LegacyWebController()
-                }
-            }()
+            let controller = WebKitWebController()
             controller.delegate = self
             setTabContainerChild(controller: controller)
             webControllers.append(controller)

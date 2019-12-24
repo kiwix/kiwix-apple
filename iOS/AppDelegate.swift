@@ -29,7 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         
         print(URL.documentDirectory)
         
-        URLProtocol.registerClass(KiwixURLProtocol.self)
         DownloadManager.shared.restorePreviousState()
         application.setMinimumBackgroundFetchInterval(3600 * 24)
         
