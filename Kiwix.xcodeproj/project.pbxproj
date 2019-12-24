@@ -120,6 +120,8 @@
 		97CAFA962051EC5100AC1F68 /* TableOfContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D00A7E1FBB92D400165629 /* TableOfContentItem.swift */; };
 		97CE15AE23B245FB00378D9F /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C99B47205AF58D00439C77 /* MainController.swift */; };
 		97CE15AF23B2668500378D9F /* TableViewSectionFooterLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D0C4DC211BF72B00B00DAA /* TableViewSectionFooterLabel.swift */; };
+		97CE15B223B26BBC00378D9F /* SwiftyUserDefaults in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15B123B26BBC00378D9F /* SwiftyUserDefaults */; };
+		97CE15B423B26CC600378D9F /* SwiftyUserDefaults in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15B323B26CC600378D9F /* SwiftyUserDefaults */; };
 		97D00A791FBB89F000165629 /* Inject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* Inject.js */; };
 		97D00A7F1FBB92D400165629 /* TableOfContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D00A7E1FBB92D400165629 /* TableOfContentItem.swift */; };
 		97D757CB238B7BA8008FB7E2 /* libxapian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97D757BA238B7BA7008FB7E2 /* libxapian.a */; };
@@ -650,6 +652,7 @@
 				97D757D9238B7BA8008FB7E2 /* libicutest.a in Frameworks */,
 				97D757D6238B7BA8008FB7E2 /* libicui18n.a in Frameworks */,
 				DFD371610877B5817E9C9FEB /* Pods_macOS.framework in Frameworks */,
+				97CE15B423B26CC600378D9F /* SwiftyUserDefaults in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -665,6 +668,7 @@
 				97CA4A6E20A0F583008CEA6D /* libkiwix.a in Frameworks */,
 				97CA4A6F20A0F583008CEA6D /* libicuuc.a in Frameworks */,
 				97C5763D202CD9C000E37502 /* NotificationCenter.framework in Frameworks */,
+				97CE15B223B26BBC00378D9F /* SwiftyUserDefaults in Frameworks */,
 				97A36C351F8C21210079B452 /* WebKit.framework in Frameworks */,
 				97CA4A6D20A0F583008CEA6D /* libzim.a in Frameworks */,
 				97CA4A6920A0F583008CEA6D /* libz.a in Frameworks */,
@@ -1469,6 +1473,9 @@
 			dependencies = (
 			);
 			name = macOS;
+			packageProductDependencies = (
+				97CE15B323B26CC600378D9F /* SwiftyUserDefaults */,
+			);
 			productName = Kiwix;
 			productReference = 979315811E5127930093D3BA /* Kiwix.app */;
 			productType = "com.apple.product-type.application";
@@ -1491,6 +1498,9 @@
 				97C575FD202CB0E900E37502 /* PBXTargetDependency */,
 			);
 			name = iOS;
+			packageProductDependencies = (
+				97CE15B123B26BBC00378D9F /* SwiftyUserDefaults */,
+			);
 			productName = WikiMed;
 			productReference = 97A36C4E1F8C21210079B452 /* Kiwix.app */;
 			productType = "com.apple.product-type.application";
@@ -1604,6 +1614,9 @@
 				Base,
 			);
 			mainGroup = 97A2AB7F1C1B80FF00052E74;
+			packageReferences = (
+				97CE15B023B26BBC00378D9F /* XCRemoteSwiftPackageReference "SwiftyUserDefaults" */,
+			);
 			productRefGroup = 97A2AB7F1C1B80FF00052E74;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1670,17 +1683,12 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-macOS/Pods-macOS-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Realm-macOS/Realm.framework",
-				"${BUILT_PRODUCTS_DIR}/RealmSwift-macOS/RealmSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyUserDefaults-macOS/SwiftyUserDefaults.framework",
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-macOS/Pods-macOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyUserDefaults.framework",
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-macOS/Pods-macOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1746,17 +1754,12 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Realm-iOS/Realm.framework",
-				"${BUILT_PRODUCTS_DIR}/RealmSwift-iOS/RealmSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyUserDefaults-iOS/SwiftyUserDefaults.framework",
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyUserDefaults.framework",
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-iOS/Pods-iOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2371,6 +2374,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		97CE15B023B26BBC00378D9F /* XCRemoteSwiftPackageReference "SwiftyUserDefaults" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sunshinejr/SwiftyUserDefaults";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		97CE15B123B26BBC00378D9F /* SwiftyUserDefaults */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97CE15B023B26BBC00378D9F /* XCRemoteSwiftPackageReference "SwiftyUserDefaults" */;
+			productName = SwiftyUserDefaults;
+		};
+		97CE15B323B26CC600378D9F /* SwiftyUserDefaults */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97CE15B023B26BBC00378D9F /* XCRemoteSwiftPackageReference "SwiftyUserDefaults" */;
+			productName = SwiftyUserDefaults;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		97C57610202CB86800E37502 /* Kiwix.xcdatamodeld */ = {
