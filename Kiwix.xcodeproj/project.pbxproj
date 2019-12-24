@@ -57,7 +57,7 @@
 		977D7BB81F9E6A43009A8703 /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BB31F9E6A43009A8703 /* ZimMultiReader.swift */; };
 		977D7BBE1F9FC618009A8703 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BBD1F9FC618009A8703 /* Queue.swift */; };
 		977F983E1F9E43EC002ABFCE /* LibraryScanOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977F983D1F9E43EC002ABFCE /* LibraryScanOperation.swift */; };
-		979D6E0C20B34FD700B08DE7 /* BookmarkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D6E0B20B34FD700B08DE7 /* BookmarkController.swift */; };
+		979D6E0C20B34FD700B08DE7 /* FavoriteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D6E0B20B34FD700B08DE7 /* FavoriteController.swift */; };
 		979D6E0F20B7585B00B08DE7 /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C5761E202CB86800E37502 /* PersistentContainer.swift */; };
 		979D6E1120B762DD00B08DE7 /* BookmarkMigrationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D6E1020B762DD00B08DE7 /* BookmarkMigrationOperation.swift */; };
 		979FD159201679C5007B5290 /* SearchResultsListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979FD158201679C5007B5290 /* SearchResultsListController.swift */; };
@@ -119,6 +119,7 @@
 		97CAFA952051EC4E00AC1F68 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E4298F1FBDF48800ABE62E /* DirectoryMonitor.swift */; };
 		97CAFA962051EC5100AC1F68 /* TableOfContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D00A7E1FBB92D400165629 /* TableOfContentItem.swift */; };
 		97CE15AE23B245FB00378D9F /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C99B47205AF58D00439C77 /* MainController.swift */; };
+		97CE15AF23B2668500378D9F /* TableViewSectionFooterLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D0C4DC211BF72B00B00DAA /* TableViewSectionFooterLabel.swift */; };
 		97D00A791FBB89F000165629 /* Inject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* Inject.js */; };
 		97D00A7F1FBB92D400165629 /* TableOfContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D00A7E1FBB92D400165629 /* TableOfContentItem.swift */; };
 		97D757CB238B7BA8008FB7E2 /* libxapian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97D757BA238B7BA7008FB7E2 /* libxapian.a */; };
@@ -1848,7 +1849,6 @@
 				97252105200E908000B60A80 /* TableViewCell.swift in Sources */,
 				97F4D10A20ADD0F00038FC87 /* DownloadManager.swift in Sources */,
 				97D757E5238F3161008FB7E2 /* SideBarController.swift in Sources */,
-				97D0C4DD211BF72B00B00DAA /* TableViewSectionFooterLabel.swift in Sources */,
 				97598E09202B60E0005A9055 /* BackupManager.swift in Sources */,
 				97F4D10620AB80740038FC87 /* LibraryZimFileDetailController.swift in Sources */,
 				97F4210E22EE5590001E41F9 /* FileImportController.swift in Sources */,
@@ -1873,6 +1873,7 @@
 				97B4ADFB239C6C3800264AF6 /* TabsController.swift in Sources */,
 				97E429901FBDF48800ABE62E /* DirectoryMonitor.swift in Sources */,
 				97A36C511F8D4FB80079B452 /* VisualEffectShadowView.swift in Sources */,
+				97CE15AF23B2668500378D9F /* TableViewSectionFooterLabel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
