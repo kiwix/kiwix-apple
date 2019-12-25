@@ -144,6 +144,25 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         }
     }
     
+    private func presentBookmarkHUDController(isBookmarked: Bool) {
+        let controller = HUDController()
+        controller.modalPresentationStyle = .custom
+        controller.transitioningDelegate = controller
+        controller.direction = isBookmarked ? .down : .up
+        controller.imageView.image = isBookmarked ? #imageLiteral(resourceName: "StarAdd") : #imageLiteral(resourceName: "StarRemove")
+        controller.label.text = isBookmarked ?
+            NSLocalizedString("Added", comment: "Bookmark HUD") :
+            NSLocalizedString("Removed", comment: "Bookmark HUD")
+        
+        splitViewController?.present(controller, animated: true, completion: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                controller.dismiss(animated: true, completion: nil)
+            })
+            self.favoriteButton.isBookmarked = isBookmarked
+//            self.updateBookmarkWidgetData()
+        })
+    }
+    
     // MARK: - UISearchControllerDelegate
     
     func willPresentSearchController(_ searchController: UISearchController) {
@@ -250,9 +269,51 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     }
     
     @objc func toggleFavorite(recognizer: UILongPressGestureRecognizer) {
-        guard recognizer.state == .began else {return}
+        guard recognizer.state == .began,
+            let webKitWebController = currentWebViewController,
+            let url = webKitWebController.currentURL,
+            let zimFileID = url.host else {return}
         
-        print("toggle favorite")
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            let predicate = NSPredicate(format: "zimFile.id == %@ AND path == %@", zimFileID, url.path)
+            if let bookmark = database.objects(Bookmark.self).filter(predicate).first {
+                presentBookmarkHUDController(isBookmarked: false)
+                try database.write {
+                    database.delete(bookmark)
+                }
+            } else {
+                guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else {return}
+                let bookmark = Bookmark()
+                bookmark.zimFile = zimFile
+                bookmark.path = url.path
+                bookmark.title = webKitWebController.currentTitle ?? ""
+                bookmark.date = Date()
+                
+                let group = DispatchGroup()
+                group.enter()
+                webKitWebController.extractSnippet(completion: { (snippet) in
+                    bookmark.snippet = snippet
+                    group.leave()
+                })
+                if zimFile.hasPicture {
+                    group.enter()
+                    webKitWebController.extractImageURLs(completion: { (urls) in
+                        bookmark.thumbImagePath = urls.first?.path
+                        group.leave()
+                    })
+                }
+                group.notify(queue: .main, execute: {
+                    self.presentBookmarkHUDController(isBookmarked: true)
+                    do {
+                        let database = try Realm(configuration: Realm.defaultConfig)
+                        try database.write {
+                            database.add(bookmark)
+                        }
+                    } catch {}
+                })
+            }
+        } catch {return}
     }
     
     @objc func openLibrary() {
