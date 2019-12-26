@@ -30,7 +30,7 @@ class MainController: UIViewController {
     
     let searchController = UISearchController(searchResultsController: SearchResultsController())
     private(set) lazy var welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
-    private(set) lazy var bookmarkController = FavoriteController()
+    private(set) lazy var bookmarkController = BookmarkController()
     private(set) lazy var outlineController = OutlineController()
     private(set) lazy var libraryController = LibraryController()
     private(set) lazy var settingController = SettingNavigationController()
@@ -230,7 +230,7 @@ extension MainController: UISearchControllerDelegate, UISearchBarDelegate {
 
 // MARK: - Functions
 
-extension MainController: OutlineControllerDelegate, FavoriteControllerDelegate {
+extension MainController: OutlineControllerDelegate, BookmarkControllerDelegate {
     private func updateTableOfContentsIfNeeded(completion: (() -> Void)? = nil) {
         guard let webController = currentWebController, outlineController.url != webController.currentURL else {completion?(); return}
         webController.extractTableOfContents(completion: { (currentURL, items) in
@@ -244,11 +244,11 @@ extension MainController: OutlineControllerDelegate, FavoriteControllerDelegate 
         currentWebController?.scrollToTableOfContentItem(index: index)
     }
     
-    func didTapFavorite(url: URL) {
+    func didTapBookmark(url: URL) {
         load(url: url)
     }
     
-    func didDeleteFavorite(url: URL) {
+    func didDeleteBookmark(url: URL) {
         guard currentWebController?.currentURL?.absoluteString == url.absoluteString else {return}
         bookmarkButtonItem.button.isBookmarked = false
     }

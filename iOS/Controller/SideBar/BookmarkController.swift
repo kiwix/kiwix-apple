@@ -9,8 +9,8 @@
 import UIKit
 import RealmSwift
 
-class FavoriteController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    weak var delegate: FavoriteControllerDelegate? = nil
+class BookmarkController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    weak var delegate: BookmarkControllerDelegate? = nil
     private let tableView = UITableView()
     private lazy var emptyContentView = EmptyContentView(
         image: #imageLiteral(resourceName: "StarColor"),
@@ -29,9 +29,9 @@ class FavoriteController: UIViewController, UITableViewDataSource, UITableViewDe
             self.bookmarks = database?.objects(Bookmark.self).sorted(byKeyPath: "date", ascending: false)
         }
         super.init(nibName: nil, bundle: nil)
-        title = NSLocalizedString("Favorite", comment: "Favorite view title")
+        title = NSLocalizedString("Bookmark", comment: "Bookmark view title")
         if #available(iOS 13.0, *) {
-            tabBarItem = UITabBarItem(title: "Favorite",
+            tabBarItem = UITabBarItem(title: "Bookmark",
                                       image: UIImage(systemName: "star.circle"),
                                       selectedImage: UIImage(systemName: "star.circle.fill"))
         }
@@ -141,7 +141,7 @@ class FavoriteController: UIViewController, UITableViewDataSource, UITableViewDe
         guard let bookmark = bookmarks?[indexPath.row], let zimFileID = bookmark.zimFile?.id,
             let url = URL(bookID: zimFileID, contentPath: bookmark.path) else {return}
         tableView.deselectRow(at: indexPath, animated: true)
-        delegate?.didTapFavorite(url: url)
+        delegate?.didTapBookmark(url: url)
         dismiss(animated: true) {
             tableView.deselectRow(at: indexPath, animated: false)
         }
@@ -159,7 +159,7 @@ class FavoriteController: UIViewController, UITableViewDataSource, UITableViewDe
                 try database.write {
                     database.delete(bookmark)
                 }
-                if let url = url { delegate?.didDeleteFavorite(url: url) }
+                if let url = url { delegate?.didDeleteBookmark(url: url) }
             } catch {}
         }
     }
@@ -167,7 +167,7 @@ class FavoriteController: UIViewController, UITableViewDataSource, UITableViewDe
 
 // MARK: - Protocols
 
-protocol FavoriteControllerDelegate: class {
-    func didTapFavorite(url: URL)
-    func didDeleteFavorite(url: URL)
+protocol BookmarkControllerDelegate: class {
+    func didTapBookmark(url: URL)
+    func didDeleteBookmark(url: URL)
 }
