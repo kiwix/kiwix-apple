@@ -17,6 +17,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     private let chevronRightButton = Button(imageSystemName: "chevron.right")
     private let outlineButton = Button(imageSystemName: "list.bullet")
     private let bookmarkButton = BookmarkButton()
+    private let bookmarkToggleButton = BookmarkToggleButton()
     private let libraryButton = Button(imageSystemName: "folder")
     private let settingButton = Button(imageSystemName: "gear")
     private let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
@@ -39,6 +40,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
         outlineButton.addTarget(self, action: #selector(openOutline), for: .touchUpInside)
         bookmarkButton.addTarget(self, action: #selector(openBookmark), for: .touchUpInside)
+        bookmarkToggleButton.addTarget(self, action: #selector(toggleBookmark), for: .touchUpInside)
         libraryButton.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
         settingButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
         
@@ -83,7 +85,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
             toolbarItems = [UIBarButtonItem(customView: group)]
         } else {
             let left = ButtonGroupView(buttons: [sideBarButton, chevronLeftButton, chevronRightButton], spacing: 10)
-            let right = ButtonGroupView(buttons: [bookmarkButton, libraryButton, settingButton], spacing: 10)
+            let right = ButtonGroupView(buttons: [bookmarkToggleButton, libraryButton, settingButton], spacing: 10)
             toolbarItems = [
                 UIBarButtonItem(customView: left),
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
@@ -159,6 +161,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
                 controller.dismiss(animated: true, completion: nil)
             })
             self.bookmarkButton.isBookmarked = isBookmarked
+            self.bookmarkToggleButton.isBookmarked = isBookmarked
 //            self.updateBookmarkWidgetData()
         })
     }
@@ -194,9 +197,11 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
                 let predicate = NSPredicate(format: "zimFile.id == %@ AND path == %@", zimFileID, url.path)
                 let resultCount = database.objects(Bookmark.self).filter(predicate).count
                 bookmarkButton.isBookmarked = resultCount > 0
+                bookmarkToggleButton.isBookmarked = resultCount > 0
             } catch {}
         } else {
             bookmarkButton.isBookmarked = false
+            bookmarkToggleButton.isBookmarked = false
         }
         
         // if outline view is visible, update outline items
@@ -268,9 +273,12 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         splitViewController?.present(navigationController, animated: true)
     }
     
-    @objc func toggleBookmark(recognizer: UILongPressGestureRecognizer) {
-        guard recognizer.state == .began,
-            let webKitWebController = currentWebViewController,
+    @objc func toggleBookmark(sender: Any) {
+        if let recognizer = sender as? UILongPressGestureRecognizer, recognizer.state != .began {
+            return
+        }
+        
+        guard let webKitWebController = currentWebViewController,
             let url = webKitWebController.currentURL,
             let zimFileID = url.host else {return}
         
@@ -357,12 +365,27 @@ private class Button: UIButton {
 
 @available(iOS 13.0, *)
 private class BookmarkButton: Button {
-    var isBookmarked: Bool = false { didSet {setNeedsLayout()} }
-    override var state: UIControl.State{ get {isBookmarked ? [.bookmarked, super.state] : super.state} }
+    var isBookmarked: Bool = false { didSet { setNeedsLayout() } }
+    override var state: UIControl.State{ get { isBookmarked ? [.bookmarked, super.state] : super.state } }
     
     convenience init() {
         self.init(imageSystemName: "star")
-        setImage(UIImage(systemName: "star.fill", withConfiguration: configuration), for: .bookmarked)
+        let filledImage = UIImage(systemName: "star.fill", withConfiguration: configuration)
+        setImage(filledImage, for: .bookmarked)
+        setImage(filledImage, for: [.bookmarked, .highlighted])
+    }
+}
+
+@available(iOS 13.0, *)
+private class BookmarkToggleButton: Button {
+    var isBookmarked: Bool = false { didSet { setNeedsLayout() } }
+    override var state: UIControl.State{ get { isBookmarked ? [.bookmarked, super.state] : super.state } }
+    
+    convenience init() {
+        self.init(imageSystemName: "star")
+        let filledImage = UIImage(systemName: "star.slash.fill", withConfiguration: configuration)
+        setImage(filledImage, for: .bookmarked)
+        setImage(filledImage, for: [.bookmarked, .highlighted])
     }
 }
 
