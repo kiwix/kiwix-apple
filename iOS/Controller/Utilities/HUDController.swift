@@ -62,6 +62,7 @@ class HUDController: UIViewController, UIViewControllerTransitioningDelegate {
         return HUDPresentationController(presentedViewController: presented, presenting: presenting)
     }
 }
+
 class HUDAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     let direction: HUDAnimationDirection
     let isPresentation: Bool
