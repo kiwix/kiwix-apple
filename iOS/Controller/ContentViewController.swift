@@ -107,6 +107,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         chevronLeftButton.isEnabled = controller.canGoBack
         chevronRightButton.isEnabled = controller.canGoForward
         outlineButton.isEnabled = controller.currentURL != nil
+        bookmarkToggleButton.isEnabled = controller.currentURL != nil
     }
     
     private func setView(_ subView: UIView?) {
@@ -185,10 +186,11 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     }
     
     func webViewDidFinishLoading(controller: WebViewController) {
-        // update buttons
+        // update buttons isEnabled
         chevronLeftButton.isEnabled = controller.canGoBack
         chevronRightButton.isEnabled = controller.canGoForward
         outlineButton.isEnabled = controller.currentURL != nil
+        bookmarkToggleButton.isEnabled = controller.currentURL != nil
         
         // update bookmark button
         if let url = controller.currentURL, let zimFileID = url.host {
