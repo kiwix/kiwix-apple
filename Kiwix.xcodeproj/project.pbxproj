@@ -56,7 +56,7 @@
 		977D7BB81F9E6A43009A8703 /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BB31F9E6A43009A8703 /* ZimMultiReader.swift */; };
 		977D7BBE1F9FC618009A8703 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D7BBD1F9FC618009A8703 /* Queue.swift */; };
 		977F983E1F9E43EC002ABFCE /* LibraryScanOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977F983D1F9E43EC002ABFCE /* LibraryScanOperation.swift */; };
-		979D6E0C20B34FD700B08DE7 /* FavoriteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D6E0B20B34FD700B08DE7 /* FavoriteController.swift */; };
+		979D6E0C20B34FD700B08DE7 /* BookmarkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D6E0B20B34FD700B08DE7 /* BookmarkController.swift */; };
 		979FD159201679C5007B5290 /* SearchResultsListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979FD158201679C5007B5290 /* SearchResultsListController.swift */; };
 		97A2180C2024EC3800D1E67B /* SettingFontSizeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A2180B2024EC3800D1E67B /* SettingFontSizeController.swift */; };
 		97A36C2D1F8C21210079B452 /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDB0B1F60930A00A10E8C /* WebKitHandler.swift */; };
@@ -260,7 +260,7 @@
 		9780DE051E43BFF5009B6945 /* NetworkActivityIndicatorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkActivityIndicatorController.swift; sourceTree = "<group>"; };
 		979315811E5127930093D3BA /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9793158C1E5127930093D3BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		979D6E0B20B34FD700B08DE7 /* FavoriteController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteController.swift; sourceTree = "<group>"; };
+		979D6E0B20B34FD700B08DE7 /* BookmarkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkController.swift; sourceTree = "<group>"; };
 		979FD158201679C5007B5290 /* SearchResultsListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsListController.swift; sourceTree = "<group>"; };
 		97A1FD401D6F728200A80EE2 /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		97A2180B2024EC3800D1E67B /* SettingFontSizeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingFontSizeController.swift; sourceTree = "<group>"; };
@@ -684,14 +684,14 @@
 			path = Procedure;
 			sourceTree = "<group>";
 		};
-		97050CFF1F6730010021DE78 /* Tab */ = {
+		97050CFF1F6730010021DE78 /* Web */ = {
 			isa = PBXGroup;
 			children = (
 				972B665B2006BEBA003F5365 /* WebViewControllerProtocols.swift */,
 				97050D001F6733400021DE78 /* WebKitWebController.swift */,
 				97A9F6F41E2E990500F423AA /* Inject.js */,
 			);
-			path = Tab;
+			path = Web;
 			sourceTree = "<group>";
 		};
 		97252106200F9D3C00B60A80 /* Setting */ = {
@@ -724,7 +724,6 @@
 			children = (
 				97A6882C207D3D5300DBBE0D /* Model */,
 				976771821F437DB9007ED0C2 /* Dependencies */,
-				975FDB0A1F6092DE00A10E8C /* Loading */,
 				97DF259E1D6F9942001648A3 /* Network */,
 				9702BE201F97FA2600E6B4EE /* Procedure */,
 				977D7BAF1F9E6A43009A8703 /* ZimMultiReader */,
@@ -799,13 +798,6 @@
 			path = Support;
 			sourceTree = "<group>";
 		};
-		975FDB0A1F6092DE00A10E8C /* Loading */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Loading;
-			sourceTree = "<group>";
-		};
 		975FDB0E1F60944A00A10E8C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -814,7 +806,7 @@
 				97EF586C239DB83E007549B8 /* ContentViewController.swift */,
 				97B4ADFA239C6C3800264AF6 /* TabsController.swift */,
 				97D757E3238F29DC008FB7E2 /* SideBar */,
-				97050CFF1F6730010021DE78 /* Tab */,
+				97050CFF1F6730010021DE78 /* Web */,
 				972E6F651FA2872A00F5C927 /* Search */,
 				97B1046D1F8FC61400488444 /* Library */,
 				97B4ADF72392B73300264AF6 /* Utilities */,
@@ -1339,7 +1331,7 @@
 			isa = PBXGroup;
 			children = (
 				97D757E4238F3161008FB7E2 /* SideBarController.swift */,
-				979D6E0B20B34FD700B08DE7 /* FavoriteController.swift */,
+				979D6E0B20B34FD700B08DE7 /* BookmarkController.swift */,
 				97028C4E20192F65001259CB /* OutlineController.swift */,
 				97B4ADF82392BA3C00264AF6 /* MapController.swift */,
 			);
@@ -1636,7 +1628,7 @@
 				9742596920FCE7BA000BB88A /* SettingLibraryController.swift in Sources */,
 				97242E2B2093B38A00AA4436 /* Preference.swift in Sources */,
 				97CA4A7220A21D24008CEA6D /* LibraryLanguageController.swift in Sources */,
-				979D6E0C20B34FD700B08DE7 /* FavoriteController.swift in Sources */,
+				979D6E0C20B34FD700B08DE7 /* BookmarkController.swift in Sources */,
 				97B4ADF92392BA3C00264AF6 /* MapController.swift in Sources */,
 				973B8012239066D0008CC8CE /* SceneDelegate.swift in Sources */,
 				97DBCF9D203CA254004EE274 /* SettingExternalLinkController.swift in Sources */,

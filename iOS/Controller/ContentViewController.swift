@@ -11,15 +11,16 @@ import RealmSwift
 
 @available(iOS 13.0, *)
 class ContentViewController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate,
-    OutlineControllerDelegate, FavoriteControllerDelegate {
+    OutlineControllerDelegate, BookmarkControllerDelegate {
     private let sideBarButton = Button(imageSystemName: "sidebar.left")
     private let chevronLeftButton = Button(imageSystemName: "chevron.left")
     private let chevronRightButton = Button(imageSystemName: "chevron.right")
     private let outlineButton = Button(imageSystemName: "list.bullet")
-    private let favoriteButton = FavoriteButton()
+    private let bookmarkButton = BookmarkButton()
+    private let bookmarkToggleButton = BookmarkToggleButton()
     private let libraryButton = Button(imageSystemName: "folder")
     private let settingButton = Button(imageSystemName: "gear")
-    private let favoriteLongPressGestureRecognizer = UILongPressGestureRecognizer()
+    private let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
      
     let searchController: UISearchController
     private let searchResultsController: SearchResultsController
@@ -38,12 +39,13 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         chevronLeftButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
         chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
         outlineButton.addTarget(self, action: #selector(openOutline), for: .touchUpInside)
-        favoriteButton.addTarget(self, action: #selector(openFavorite), for: .touchUpInside)
+        bookmarkButton.addTarget(self, action: #selector(openBookmark), for: .touchUpInside)
+        bookmarkToggleButton.addTarget(self, action: #selector(toggleBookmark), for: .touchUpInside)
         libraryButton.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
         settingButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
         
-        favoriteButton.addGestureRecognizer(favoriteLongPressGestureRecognizer)
-        favoriteLongPressGestureRecognizer.addTarget(self, action: #selector(toggleFavorite))
+        bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
+        bookmarkLongPressGestureRecognizer.addTarget(self, action: #selector(toggleBookmark))
     }
     
     required init?(coder: NSCoder) {
@@ -78,12 +80,12 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     func configureToolbar() {
         if splitViewController?.isCollapsed == true {
             let group = ButtonGroupView(buttons: [
-                chevronLeftButton, chevronRightButton, outlineButton, favoriteButton, libraryButton, settingButton,
+                chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, libraryButton, settingButton,
             ])
             toolbarItems = [UIBarButtonItem(customView: group)]
         } else {
             let left = ButtonGroupView(buttons: [sideBarButton, chevronLeftButton, chevronRightButton], spacing: 10)
-            let right = ButtonGroupView(buttons: [favoriteButton, libraryButton, settingButton], spacing: 10)
+            let right = ButtonGroupView(buttons: [bookmarkToggleButton, libraryButton, settingButton], spacing: 10)
             toolbarItems = [
                 UIBarButtonItem(customView: left),
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
@@ -105,6 +107,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         chevronLeftButton.isEnabled = controller.canGoBack
         chevronRightButton.isEnabled = controller.canGoForward
         outlineButton.isEnabled = controller.currentURL != nil
+        bookmarkToggleButton.isEnabled = controller.currentURL != nil
     }
     
     private func setView(_ subView: UIView?) {
@@ -134,14 +137,34 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
             child.view.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(child.view)
             NSLayoutConstraint.activate([
-                topLayoutGuide.bottomAnchor.constraint(equalTo: child.view.topAnchor),
+                view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: child.view.topAnchor),
                 view.leftAnchor.constraint(equalTo: child.view.leftAnchor),
-                bottomLayoutGuide.topAnchor.constraint(equalTo: child.view.bottomAnchor),
+                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: child.view.bottomAnchor),
                 view.rightAnchor.constraint(equalTo: child.view.rightAnchor),
             ])
             addChild(child)
             child.didMove(toParent: self)
         }
+    }
+    
+    private func presentBookmarkHUDController(isBookmarked: Bool) {
+        let controller = HUDController()
+        controller.modalPresentationStyle = .custom
+        controller.transitioningDelegate = controller
+        controller.direction = isBookmarked ? .down : .up
+        controller.imageView.image = isBookmarked ? #imageLiteral(resourceName: "StarAdd") : #imageLiteral(resourceName: "StarRemove")
+        controller.label.text = isBookmarked ?
+            NSLocalizedString("Added", comment: "Bookmark HUD") :
+            NSLocalizedString("Removed", comment: "Bookmark HUD")
+        
+        splitViewController?.present(controller, animated: true, completion: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                controller.dismiss(animated: true, completion: nil)
+            })
+            self.bookmarkButton.isBookmarked = isBookmarked
+            self.bookmarkToggleButton.isBookmarked = isBookmarked
+//            self.updateBookmarkWidgetData()
+        })
     }
     
     // MARK: - UISearchControllerDelegate
@@ -163,21 +186,24 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     }
     
     func webViewDidFinishLoading(controller: WebViewController) {
-        // update buttons
+        // update buttons isEnabled
         chevronLeftButton.isEnabled = controller.canGoBack
         chevronRightButton.isEnabled = controller.canGoForward
         outlineButton.isEnabled = controller.currentURL != nil
+        bookmarkToggleButton.isEnabled = controller.currentURL != nil
         
-        // update favorite button
+        // update bookmark button
         if let url = controller.currentURL, let zimFileID = url.host {
             do {
                 let database = try Realm(configuration: Realm.defaultConfig)
                 let predicate = NSPredicate(format: "zimFile.id == %@ AND path == %@", zimFileID, url.path)
                 let resultCount = database.objects(Bookmark.self).filter(predicate).count
-                favoriteButton.isBookmarked = resultCount > 0
+                bookmarkButton.isBookmarked = resultCount > 0
+                bookmarkToggleButton.isBookmarked = resultCount > 0
             } catch {}
         } else {
-            favoriteButton.isBookmarked = false
+            bookmarkButton.isBookmarked = false
+            bookmarkToggleButton.isBookmarked = false
         }
         
         // if outline view is visible, update outline items
@@ -198,13 +224,13 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         currentWebViewController?.scrollToTableOfContentItem(index: index)
     }
     
-    // MARK: FavoriteControllerDelegate
+    // MARK: BookmarkControllerDelegate
     
-    func didTapFavorite(url: URL) {
+    func didTapBookmark(url: URL) {
         load(url: url)
     }
     
-    func didDeleteFavorite(url: URL) {
+    func didDeleteBookmark(url: URL) {
         
     }
     
@@ -242,17 +268,62 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         splitViewController?.present(navigationController, animated: true)
     }
     
-    @objc func openFavorite() {
-        let favoriteController = FavoriteController()
-        let navigationController = UINavigationController(rootViewController: favoriteController)
-        favoriteController.delegate = self
+    @objc func openBookmark() {
+        let controller = BookmarkController()
+        let navigationController = UINavigationController(rootViewController: controller)
+        controller.delegate = self
         splitViewController?.present(navigationController, animated: true)
     }
     
-    @objc func toggleFavorite(recognizer: UILongPressGestureRecognizer) {
-        guard recognizer.state == .began else {return}
+    @objc func toggleBookmark(sender: Any) {
+        if let recognizer = sender as? UILongPressGestureRecognizer, recognizer.state != .began {
+            return
+        }
         
-        print("toggle favorite")
+        guard let webKitWebController = currentWebViewController,
+            let url = webKitWebController.currentURL,
+            let zimFileID = url.host else {return}
+        
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            let predicate = NSPredicate(format: "zimFile.id == %@ AND path == %@", zimFileID, url.path)
+            if let bookmark = database.objects(Bookmark.self).filter(predicate).first {
+                presentBookmarkHUDController(isBookmarked: false)
+                try database.write {
+                    database.delete(bookmark)
+                }
+            } else {
+                guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else {return}
+                let bookmark = Bookmark()
+                bookmark.zimFile = zimFile
+                bookmark.path = url.path
+                bookmark.title = webKitWebController.currentTitle ?? ""
+                bookmark.date = Date()
+                
+                let group = DispatchGroup()
+                group.enter()
+                webKitWebController.extractSnippet(completion: { (snippet) in
+                    bookmark.snippet = snippet
+                    group.leave()
+                })
+                if zimFile.hasPicture {
+                    group.enter()
+                    webKitWebController.extractImageURLs(completion: { (urls) in
+                        bookmark.thumbImagePath = urls.first?.path
+                        group.leave()
+                    })
+                }
+                group.notify(queue: .main, execute: {
+                    self.presentBookmarkHUDController(isBookmarked: true)
+                    do {
+                        let database = try Realm(configuration: Realm.defaultConfig)
+                        try database.write {
+                            database.add(bookmark)
+                        }
+                    } catch {}
+                })
+            }
+        } catch {return}
     }
     
     @objc func openLibrary() {
@@ -295,13 +366,28 @@ private class Button: UIButton {
 }
 
 @available(iOS 13.0, *)
-private class FavoriteButton: Button {
-    var isBookmarked: Bool = false { didSet {setNeedsLayout()} }
-    override var state: UIControl.State{ get {isBookmarked ? [.bookmarked, super.state] : super.state} }
+private class BookmarkButton: Button {
+    var isBookmarked: Bool = false { didSet { setNeedsLayout() } }
+    override var state: UIControl.State{ get { isBookmarked ? [.bookmarked, super.state] : super.state } }
     
     convenience init() {
         self.init(imageSystemName: "star")
-        setImage(UIImage(systemName: "star.fill", withConfiguration: configuration), for: .bookmarked)
+        let filledImage = UIImage(systemName: "star.fill", withConfiguration: configuration)
+        setImage(filledImage, for: .bookmarked)
+        setImage(filledImage, for: [.bookmarked, .highlighted])
+    }
+}
+
+@available(iOS 13.0, *)
+private class BookmarkToggleButton: Button {
+    var isBookmarked: Bool = false { didSet { setNeedsLayout() } }
+    override var state: UIControl.State{ get { isBookmarked ? [.bookmarked, super.state] : super.state } }
+    
+    convenience init() {
+        self.init(imageSystemName: "star")
+        let filledImage = UIImage(systemName: "star.slash.fill", withConfiguration: configuration)
+        setImage(filledImage, for: .bookmarked)
+        setImage(filledImage, for: [.bookmarked, .highlighted])
     }
 }
 
