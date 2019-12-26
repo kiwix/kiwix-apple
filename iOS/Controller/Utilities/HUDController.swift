@@ -9,11 +9,16 @@
 import UIKit
 
 class HUDController: UIViewController, UIViewControllerTransitioningDelegate {
-    private let visualView = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
+    private let visualView = UIVisualEffectView(effect: {
+        if #available(iOS 13.0, *) {
+            return UIBlurEffect(style: .systemMaterial)
+        } else {
+            return UIBlurEffect(style: .extraLight)
+        }
+    }())
     private let stackView = UIStackView()
     let imageView = UIImageView()
     let label = UILabel()
-    
     var direction: HUDAnimationDirection = .down
     
     override func loadView() {
@@ -24,8 +29,8 @@ class HUDController: UIViewController, UIViewControllerTransitioningDelegate {
         imageView.contentMode = .scaleAspectFit
         imageView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         label.setContentCompressionResistancePriority(.required, for: .vertical)
-        label.textColor = .gray
         label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        label.textColor = { if #available(iOS 13.0, *) { return .secondaryLabel } else { return .gray } }()
         
         stackView.axis = .vertical
         stackView.spacing = 25
