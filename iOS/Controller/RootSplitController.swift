@@ -11,18 +11,20 @@ import UIKit
 class RootSplitController: UISplitViewController, UISplitViewControllerDelegate {
     let sideBarViewController = SideBarController()
     let contentViewController = ContentViewController()
+    let contentNavigationController: UINavigationController
     
     init() {
-        super.init(nibName: nil, bundle: nil)
-        preferredDisplayMode = .allVisible
+        self.contentNavigationController = UINavigationController(rootViewController: contentViewController)
+        self.contentNavigationController.isToolbarHidden = false
         
-        let contentNavController = UINavigationController(rootViewController: contentViewController)
-        contentNavController.isToolbarHidden = false
-        viewControllers = [sideBarViewController, contentNavController]
+        super.init(nibName: nil, bundle: nil)
+        viewControllers = [sideBarViewController, self.contentNavigationController]
         
         delegate = self
+        preferredDisplayMode = .allVisible
         sideBarViewController.favoriteController.delegate = contentViewController
         sideBarViewController.outlineController.delegate = contentViewController
+        contentViewController.configureToolbar(isGrouped: !isCollapsed)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -30,13 +32,13 @@ class RootSplitController: UISplitViewController, UISplitViewControllerDelegate 
     }
     
     override func overrideTraitCollection(forChild childViewController: UIViewController) -> UITraitCollection? {
-        let traitCollection = super.overrideTraitCollection(forChild: childViewController)
         if viewControllers.count > 1,
             childViewController == viewControllers.last,
             preferredDisplayMode == .allVisible {
             return UITraitCollection(horizontalSizeClass: .compact)
+        } else {
+            return super.overrideTraitCollection(forChild: childViewController)
         }
-        return traitCollection
     }
     
     // MARK: UISplitViewControllerDelegate
@@ -46,17 +48,13 @@ class RootSplitController: UISplitViewController, UISplitViewControllerDelegate 
     }
     
     func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
-        contentViewController.configureToolbar()
-        let navigationController = UINavigationController(rootViewController: contentViewController)
-        navigationController.isToolbarHidden = false
-        return navigationController
+        contentViewController.configureToolbar(isGrouped: false)
+        return contentNavigationController
     }
     
     func splitViewController(_ splitViewController: UISplitViewController,
                              separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
-        contentViewController.configureToolbar()
-        let navigationController = UINavigationController(rootViewController: contentViewController)
-        navigationController.isToolbarHidden = false
-        return navigationController
+        contentViewController.configureToolbar(isGrouped: true)
+        return contentNavigationController
     }
 }

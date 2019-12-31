@@ -79,7 +79,6 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         navigationItem.titleView = searchController.searchBar
         definesPresentationContext = true
         
-        configureToolbar()
         createNewTab()
         setChildControllerIfNeeded(welcomeController)
     }
@@ -91,13 +90,8 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     
     // MARK: - View and Controller Management
     
-    func configureToolbar() {
-        if splitViewController?.isCollapsed == true {
-            let group = ButtonGroupView(buttons: [
-                chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, libraryButton, settingButton,
-            ])
-            toolbarItems = [UIBarButtonItem(customView: group)]
-        } else {
+    func configureToolbar(isGrouped: Bool) {
+        if isGrouped {
             let left = ButtonGroupView(buttons: [sideBarButton, chevronLeftButton, chevronRightButton], spacing: 10)
             let right = ButtonGroupView(buttons: [bookmarkToggleButton, libraryButton, settingButton], spacing: 10)
             toolbarItems = [
@@ -105,6 +99,11 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
                 UIBarButtonItem(customView: right),
             ]
+        } else {
+            let group = ButtonGroupView(buttons: [
+                chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, libraryButton, settingButton,
+            ])
+            toolbarItems = [UIBarButtonItem(customView: group)]
         }
     }
     
