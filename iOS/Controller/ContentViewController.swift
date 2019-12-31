@@ -28,6 +28,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
     private var webViewControllers: [WebKitWebController] = []
     var currentWebViewController: WebKitWebController? { return webViewControllers.first }
+    private(set) lazy var welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     
     init() {
         self.searchResultsController = SearchResultsController()
@@ -68,6 +69,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         
         configureToolbar()
         createNewTab()
+        setChildControllerIfNeeded(welcomeController)
     }
     
     func load(url: URL) {

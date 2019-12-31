@@ -14,8 +14,6 @@ class WelcomeController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        logoImageView.image = #imageLiteral(resourceName: "Kiwix").withRenderingMode(.alwaysTemplate)
-        logoImageView.tintColor = .darkGray
         button.setTitle(NSLocalizedString("Open Library", comment: "Welcome"), for: .normal)
     }
     
