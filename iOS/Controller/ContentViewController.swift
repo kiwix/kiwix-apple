@@ -47,6 +47,25 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         
         bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
         bookmarkLongPressGestureRecognizer.addTarget(self, action: #selector(toggleBookmark))
+        
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = .systemBackground
+        } else {
+            view.backgroundColor = .white
+        }
+        
+        searchController.delegate = self
+        searchController.searchBar.autocorrectionType = .no
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchResultsUpdater = searchResultsController
+        if #available(iOS 13.0, *) {
+            searchController.automaticallyShowsCancelButton = false
+            searchController.showsSearchResultsController = true
+        } else {
+            searchController.searchBar.searchBarStyle = .minimal
+            searchController.obscuresBackgroundDuringPresentation = true
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -59,19 +78,6 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         navigationItem.hidesBackButton = true
         navigationItem.titleView = searchController.searchBar
         definesPresentationContext = true
-        
-        searchController.delegate = self
-        searchController.searchBar.autocapitalizationType = .none
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchResultsUpdater = searchResultsController
-        
-        if #available(iOS 13.0, *) {
-            view.backgroundColor = .systemBackground
-            searchController.automaticallyShowsCancelButton = false
-            searchController.showsSearchResultsController = true
-        } else {
-            view.backgroundColor = .white
-        }
         
         configureToolbar()
         createNewTab()
