@@ -32,6 +32,10 @@ class OutlineController: UITableViewController {
             tabBarItem = UITabBarItem(title: "Outline",
                                       image: UIImage(systemName: "list.bullet"),
                                       selectedImage: UIImage(systemName: "list.bullet"))
+        } else {
+            tabBarItem = UITabBarItem(title: "Outline",
+                                      image: UIImage(named: "list.bullet"),
+                                      selectedImage: UIImage(named: "list.bullet"))
         }
     }
     

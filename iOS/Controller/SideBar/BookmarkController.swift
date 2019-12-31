@@ -32,8 +32,10 @@ class BookmarkController: UIViewController, UITableViewDataSource, UITableViewDe
         title = NSLocalizedString("Bookmark", comment: "Bookmark view title")
         if #available(iOS 13.0, *) {
             tabBarItem = UITabBarItem(title: "Bookmark",
-                                      image: UIImage(systemName: "star.circle"),
-                                      selectedImage: UIImage(systemName: "star.circle.fill"))
+                                      image: UIImage(systemName: "star"),
+                                       selectedImage: UIImage(systemName: "star.fill"))
+        } else {
+            tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 0)
         }
     }
     
