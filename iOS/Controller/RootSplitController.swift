@@ -7,13 +7,10 @@
 //
 
 import UIKit
-import WebKit
 
-@available(iOS 13.0, *)
 class RootSplitController: UISplitViewController, UISplitViewControllerDelegate {
     let sideBarViewController = SideBarController()
     let contentViewController = ContentViewController()
-    private(set) lazy var libraryController = LibraryController()
     
     init() {
         super.init(nibName: nil, bundle: nil)

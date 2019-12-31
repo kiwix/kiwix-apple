@@ -9,17 +9,16 @@
 import UIKit
 import RealmSwift
 
-@available(iOS 13.0, *)
 class ContentViewController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate,
     OutlineControllerDelegate, BookmarkControllerDelegate {
-    private let sideBarButton = Button(imageSystemName: "sidebar.left")
-    private let chevronLeftButton = Button(imageSystemName: "chevron.left")
-    private let chevronRightButton = Button(imageSystemName: "chevron.right")
-    private let outlineButton = Button(imageSystemName: "list.bullet")
+    private let sideBarButton = SideBarButton()
+    private let chevronLeftButton = ChevronLeftButton()
+    private let chevronRightButton = ChevronRightButton()
+    private let outlineButton = OutlineButton()
     private let bookmarkButton = BookmarkButton()
     private let bookmarkToggleButton = BookmarkToggleButton()
-    private let libraryButton = Button(imageSystemName: "folder")
-    private let settingButton = Button(imageSystemName: "gear")
+    private let libraryButton = LibraryButton()
+    private let settingButton = SettingButton()
     private let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
      
     let searchController: UISearchController
@@ -29,6 +28,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     private var webViewControllers: [WebKitWebController] = []
     var currentWebViewController: WebKitWebController? { return webViewControllers.first }
     private(set) lazy var welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
+    private(set) lazy var libraryController = LibraryController()
     
     init() {
         self.searchResultsController = SearchResultsController()
@@ -59,13 +59,19 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         navigationItem.hidesBackButton = true
         navigationItem.titleView = searchController.searchBar
         definesPresentationContext = true
-        view.backgroundColor = .systemBackground
+        
         searchController.delegate = self
         searchController.searchBar.autocapitalizationType = .none
-        searchController.automaticallyShowsCancelButton = false
         searchController.hidesNavigationBarDuringPresentation = false
-        searchController.showsSearchResultsController = true
         searchController.searchResultsUpdater = searchResultsController
+        
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = .systemBackground
+            searchController.automaticallyShowsCancelButton = false
+            searchController.showsSearchResultsController = true
+        } else {
+            // Fallback on earlier versions
+        }
         
         configureToolbar()
         createNewTab()
@@ -330,7 +336,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     
     @objc func openLibrary() {
         guard let splitController = splitViewController as? RootSplitController else {return}
-        splitController.present(splitController.libraryController, animated: true)
+        splitController.present(libraryController, animated: true)
     }
     
     @objc func openSettings() {
@@ -342,7 +348,11 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     }
 }
 
-// MARK: - BarButton
+// MARK: - Buttons
+
+private extension UIControl.State {
+    static let bookmarked = UIControl.State(rawValue: 1 << 16)
+}
 
 private class ButtonGroupView: UIStackView {
     convenience init(buttons: [UIButton], spacing: CGFloat? = nil) {
@@ -354,12 +364,17 @@ private class ButtonGroupView: UIStackView {
     }
 }
 
-@available(iOS 13.0, *)
 private class Button: UIButton {
-    fileprivate let configuration = UIImage.SymbolConfiguration(scale: .large)
+    @available(iOS 13.0, *)
     convenience init(imageSystemName: String) {
         self.init(type: .system)
+        let configuration = UIImage.SymbolConfiguration(scale: .large)
         setImage(UIImage(systemName: imageSystemName, withConfiguration: configuration), for: .normal)
+    }
+    
+    convenience init(title: String) {
+        self.init(type: .system)
+        setTitle(title, for: .normal)
     }
     
     override var intrinsicContentSize: CGSize {
@@ -367,32 +382,97 @@ private class Button: UIButton {
     }
 }
 
-@available(iOS 13.0, *)
+private class SideBarButton: Button {
+    convenience init() {
+        if #available(iOS 13.0, *) {
+            self.init(imageSystemName: "sidebar.left")
+        } else {
+            self.init(title: "SideBar")
+        }
+    }
+}
+
+private class ChevronLeftButton: Button {
+    convenience init() {
+        if #available(iOS 13.0, *) {
+            self.init(imageSystemName: "chevron.left")
+        } else {
+            self.init(title: "Left")
+        }
+    }
+}
+
+private class ChevronRightButton: Button {
+    convenience init() {
+        if #available(iOS 13.0, *) {
+            self.init(imageSystemName: "chevron.right")
+        } else {
+            self.init(title: "Right")
+        }
+    }
+}
+
+private class OutlineButton: Button {
+    convenience init() {
+        if #available(iOS 13.0, *) {
+            self.init(imageSystemName: "list.bullet")
+        } else {
+            self.init(title: "Outline")
+        }
+    }
+}
+
 private class BookmarkButton: Button {
     var isBookmarked: Bool = false { didSet { setNeedsLayout() } }
     override var state: UIControl.State{ get { isBookmarked ? [.bookmarked, super.state] : super.state } }
     
     convenience init() {
-        self.init(imageSystemName: "star")
-        let filledImage = UIImage(systemName: "star.fill", withConfiguration: configuration)
-        setImage(filledImage, for: .bookmarked)
-        setImage(filledImage, for: [.bookmarked, .highlighted])
+        if #available(iOS 13.0, *) {
+            self.init(imageSystemName: "star")
+            let configuration = UIImage.SymbolConfiguration(scale: .large)
+            let filledImage = UIImage(systemName: "star.fill", withConfiguration: configuration)?
+                .withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
+            setImage(filledImage, for: .bookmarked)
+            setImage(filledImage, for: [.bookmarked, .highlighted])
+        } else {
+            self.init(title: "Bookmark")
+        }
     }
 }
 
-@available(iOS 13.0, *)
 private class BookmarkToggleButton: Button {
     var isBookmarked: Bool = false { didSet { setNeedsLayout() } }
     override var state: UIControl.State{ get { isBookmarked ? [.bookmarked, super.state] : super.state } }
     
     convenience init() {
-        self.init(imageSystemName: "star")
-        let filledImage = UIImage(systemName: "star.slash.fill", withConfiguration: configuration)
-        setImage(filledImage, for: .bookmarked)
-        setImage(filledImage, for: [.bookmarked, .highlighted])
+        if #available(iOS 13.0, *) {
+            self.init(imageSystemName: "star")
+            let configuration = UIImage.SymbolConfiguration(scale: .large)
+            let filledImage = UIImage(systemName: "star.slash.fill", withConfiguration: configuration)
+            setImage(filledImage, for: .bookmarked)
+            setImage(filledImage, for: [.bookmarked, .highlighted])
+        } else {
+            self.init(title: "Bookmark toggle")
+        }
     }
 }
 
-private extension UIControl.State {
-    static let bookmarked = UIControl.State(rawValue: 1 << 16)
+private class LibraryButton: Button {
+    convenience init() {
+        if #available(iOS 13.0, *) {
+            self.init(imageSystemName: "folder")
+        } else {
+            self.init(title: "Library")
+        }
+    }
+}
+
+private class SettingButton: Button {
+    convenience init() {
+        if #available(iOS 13.0, *) {
+            self.init(imageSystemName: "gear")
+        } else {
+            self.init(title: "Setting")
+        }
+    }
 }
