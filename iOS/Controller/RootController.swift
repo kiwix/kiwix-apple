@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RootSplitController: UISplitViewController, UISplitViewControllerDelegate {
+class RootController: UISplitViewController, UISplitViewControllerDelegate {
     let sideBarViewController = SideBarController()
     let contentViewController = ContentViewController()
     let contentNavigationController: UINavigationController

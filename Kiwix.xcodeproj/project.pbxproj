@@ -132,7 +132,7 @@
 		97D757D9238B7BA8008FB7E2 /* libicutest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97D757C8238B7BA8008FB7E2 /* libicutest.a */; };
 		97D757DA238B7BA8008FB7E2 /* libcurl.la in Resources */ = {isa = PBXBuildFile; fileRef = 97D757C9238B7BA8008FB7E2 /* libcurl.la */; };
 		97D757DB238B7BA8008FB7E2 /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97D757CA238B7BA8008FB7E2 /* liblzma.a */; };
-		97D757E2238B90EC008FB7E2 /* RootSplitController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D757E1238B90EC008FB7E2 /* RootSplitController.swift */; };
+		97D757E2238B90EC008FB7E2 /* RootController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D757E1238B90EC008FB7E2 /* RootController.swift */; };
 		97D757E5238F3161008FB7E2 /* SideBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D757E4238F3161008FB7E2 /* SideBarController.swift */; };
 		97DBCF9D203CA254004EE274 /* SettingExternalLinkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DBCF9C203CA254004EE274 /* SettingExternalLinkController.swift */; };
 		97E34E0C20124F33005080B2 /* SearchNoTextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E34E0B20124F33005080B2 /* SearchNoTextController.swift */; };
@@ -579,7 +579,7 @@
 		97D757C8238B7BA8008FB7E2 /* libicutest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicutest.a; sourceTree = "<group>"; };
 		97D757C9238B7BA8008FB7E2 /* libcurl.la */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = libcurl.la; sourceTree = "<group>"; };
 		97D757CA238B7BA8008FB7E2 /* liblzma.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = liblzma.a; sourceTree = "<group>"; };
-		97D757E1238B90EC008FB7E2 /* RootSplitController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootSplitController.swift; sourceTree = "<group>"; };
+		97D757E1238B90EC008FB7E2 /* RootController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootController.swift; sourceTree = "<group>"; };
 		97D757E4238F3161008FB7E2 /* SideBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarController.swift; sourceTree = "<group>"; };
 		97DBCF9C203CA254004EE274 /* SettingExternalLinkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingExternalLinkController.swift; sourceTree = "<group>"; };
 		97E34E0B20124F33005080B2 /* SearchNoTextController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNoTextController.swift; sourceTree = "<group>"; };
@@ -802,7 +802,7 @@
 			isa = PBXGroup;
 			children = (
 				97C99B47205AF58D00439C77 /* MainController.swift */,
-				97D757E1238B90EC008FB7E2 /* RootSplitController.swift */,
+				97D757E1238B90EC008FB7E2 /* RootController.swift */,
 				97EF586C239DB83E007549B8 /* ContentViewController.swift */,
 				97B4ADFA239C6C3800264AF6 /* TabsController.swift */,
 				97D757E3238F29DC008FB7E2 /* SideBar */,
@@ -1638,7 +1638,7 @@
 				97E34E0C20124F33005080B2 /* SearchNoTextController.swift in Sources */,
 				97B1046F1F8FC63C00488444 /* LibraryMasterController.swift in Sources */,
 				977D7BBE1F9FC618009A8703 /* Queue.swift in Sources */,
-				97D757E2238B90EC008FB7E2 /* RootSplitController.swift in Sources */,
+				97D757E2238B90EC008FB7E2 /* RootController.swift in Sources */,
 				972B6662200808D6003F5365 /* WelcomeController.swift in Sources */,
 				97252108200F9D6A00B60A80 /* SettingController.swift in Sources */,
 				97A36C2D1F8C21210079B452 /* WebKitHandler.swift in Sources */,

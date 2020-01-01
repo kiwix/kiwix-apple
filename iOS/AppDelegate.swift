@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     
     func applicationDidFinishLaunching(_ application: UIApplication) {
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = RootSplitController()
+        window?.rootViewController = RootController()
         window?.makeKeyAndVisible()
         
         print(URL.documentDirectory)

@@ -220,10 +220,10 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         }
         
         // if outline view is visible, update outline items
-        if let rootSplitController = splitViewController as? RootSplitController,
-            !rootSplitController.isCollapsed,
-            rootSplitController.displayMode != .primaryHidden {
-            let selectedNavController = rootSplitController.sideBarViewController.selectedViewController
+        if let rootController = splitViewController as? RootController,
+            !rootController.isCollapsed,
+            rootController.displayMode != .primaryHidden {
+            let selectedNavController = rootController.sideBarViewController.selectedViewController
             let selectedController = (selectedNavController as? UINavigationController)?.topViewController
             if let outlineController = selectedController as? OutlineController {
                 outlineController.updateContent()
@@ -340,7 +340,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     }
     
     @objc func openLibrary() {
-        guard let splitController = splitViewController as? RootSplitController else {return}
+        guard let splitController = splitViewController as? RootController else {return}
         splitController.present(libraryController, animated: true)
     }
     
