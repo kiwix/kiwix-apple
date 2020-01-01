@@ -305,6 +305,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
                 try database.write {
                     database.delete(bookmark)
                 }
+                BookmarkManager().updateBookmarkWidgetData()
             } else {
                 guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else {return}
                 let bookmark = Bookmark()
@@ -334,6 +335,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
                             database.add(bookmark)
                         }
                     } catch {}
+                    BookmarkManager().updateBookmarkWidgetData()
                 })
             }
         } catch {return}
