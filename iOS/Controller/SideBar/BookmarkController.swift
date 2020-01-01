@@ -33,7 +33,7 @@ class BookmarkController: UIViewController, UITableViewDataSource, UITableViewDe
         if #available(iOS 13.0, *) {
             tabBarItem = UITabBarItem(title: "Bookmark",
                                       image: UIImage(systemName: "star"),
-                                       selectedImage: UIImage(systemName: "star.fill"))
+                                      selectedImage: UIImage(systemName: "star.fill"))
         } else {
             tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 0)
         }

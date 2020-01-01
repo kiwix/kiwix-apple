@@ -18,8 +18,8 @@ class WelcomeController: UIViewController {
     }
     
     @IBAction func leftButtonTapped(_ sender: Any) {
-        guard let mainController = parent as? MainController else {return}
-        mainController.present(mainController.libraryController, animated: true, completion: nil)
+        guard let presenter = parent as? ContentViewController else {return}
+        presenter.openLibrary()
     }
     
     @IBAction func rightButtonTapped(_ sender: Any) {
