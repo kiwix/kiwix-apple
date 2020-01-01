@@ -50,19 +50,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     
     func application(_ app: UIApplication, open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        guard let rootNavigationController = window?.rootViewController as? UINavigationController,
-            let mainController = rootNavigationController.topViewController as? MainController else {return false}
-        window?.rootViewController?.dismiss(animated: false)
+        guard let rootController = window?.rootViewController as? RootController else {return false}
+        rootController.dismiss(animated: false)
         if url.scheme?.caseInsensitiveCompare("kiwix") == .orderedSame {
-            mainController.load(url: url)
+            rootController.contentViewController.load(url: url)
             return true
         } else if url.scheme == "file" {
             if let _ = ZimMultiReader.getMetaData(url: url) {
                 let canOpenInPlace = options[.openInPlace] as? Bool ?? false
                 let fileImportController = FileImportController(fileURL: url, canOpenInPlace: canOpenInPlace)
-                mainController.present(fileImportController, animated: true)
+                rootController.present(fileImportController, animated: true)
             } else {
-                mainController.present(FileImportAlertController(fileName: url.lastPathComponent), animated: true)
+                rootController.present(FileImportAlertController(fileName: url.lastPathComponent), animated: true)
             }
             return true
         } else {
@@ -108,15 +107,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     // MARK: - Home Screen Quick Actions
     
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-        guard let rootNavigationController = window?.rootViewController as? UINavigationController,
-            let mainController = rootNavigationController.topViewController as? MainController,
+        guard let rootController = window?.rootViewController as? RootController,
             let shortcutItemType = ShortcutItemType(rawValue: shortcutItem.type) else { completionHandler(false); return }
         switch shortcutItemType {
         case .search:
-            mainController.shouldShowSearch = true
+            rootController.contentViewController.searchController.isActive = true
         case .bookmark:
-            mainController.presentedViewController?.dismiss(animated: false)
-            mainController.presentAdaptively(controller: mainController.bookmarkController, animated: true)
+            rootController.dismiss(animated: false)
+            rootController.contentViewController.openBookmark()
         case .continueReading:
             break
         }
@@ -128,12 +126,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         let search = UIApplicationShortcutItem(type: ShortcutItemType.search.rawValue, localizedTitle: NSLocalizedString("Search", comment: "3D Touch Menu Title"))
         var shortcutItems = [search, bookmark]
         
-        if let rootNavigationController = window?.rootViewController as? UINavigationController,
-            let mainController = rootNavigationController.topViewController as? MainController,
-            let title = mainController.currentWebController?.currentTitle, let url = mainController.currentWebController?.currentURL {
+        if let rootController = window?.rootViewController as? RootController,
+            let title = rootController.contentViewController.currentWebViewController?.title,
+            let url = rootController.contentViewController.currentWebViewController?.currentURL {
             shortcutItems.append(UIApplicationShortcutItem(type: ShortcutItemType.continueReading.rawValue,
-                                                           localizedTitle: title , localizedSubtitle: NSLocalizedString("Continue Reading", comment: "3D Touch Menu Title"),
-                                                           icon: nil, userInfo: ["URL": url.absoluteString as NSSecureCoding]))
+            localizedTitle: title , localizedSubtitle: NSLocalizedString("Continue Reading", comment: "3D Touch Menu Title"),
+            icon: nil, userInfo: ["URL": url.absoluteString as NSSecureCoding]))
         }
         application.shortcutItems = shortcutItems
     }
