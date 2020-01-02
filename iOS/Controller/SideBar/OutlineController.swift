@@ -32,6 +32,10 @@ class OutlineController: UITableViewController {
             tabBarItem = UITabBarItem(title: "Outline",
                                       image: UIImage(systemName: "list.bullet"),
                                       selectedImage: UIImage(systemName: "list.bullet"))
+        } else {
+            tabBarItem = UITabBarItem(title: "Outline",
+                                      image: UIImage(named: "list.bullet"),
+                                      selectedImage: UIImage(named: "list.bullet"))
         }
     }
     
@@ -61,8 +65,8 @@ class OutlineController: UITableViewController {
         
         // update items
         if #available(iOS 13.0, *) {
-            if let rootSplitController = (splitViewController ?? presentingViewController) as? RootSplitController,
-                let currentWebViewController = rootSplitController.contentViewController.currentWebViewController {
+            if let rootController = (splitViewController ?? presentingViewController) as? RootController,
+                let currentWebViewController = rootController.contentViewController.currentWebViewController {
                 currentWebViewController.extractTableOfContents(completion: { (url, items) in
                     self.items = items
                 })

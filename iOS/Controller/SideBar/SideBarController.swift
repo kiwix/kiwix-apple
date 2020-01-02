@@ -8,7 +8,6 @@
 
 import UIKit
 
-@available(iOS 13.0, *)
 class SideBarController: UITabBarController {
     let favoriteController = BookmarkController()
     let outlineController = OutlineController()
@@ -17,7 +16,6 @@ class SideBarController: UITabBarController {
         super.init(nibName: nil, bundle: nil)
         viewControllers = [
             UINavigationController(rootViewController: favoriteController),
-//            UINavigationController(rootViewController: MapController()),
             UINavigationController(rootViewController: outlineController),
         ]
     }

@@ -9,17 +9,16 @@
 import UIKit
 import RealmSwift
 
-@available(iOS 13.0, *)
 class ContentViewController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate,
     OutlineControllerDelegate, BookmarkControllerDelegate {
-    private let sideBarButton = Button(imageSystemName: "sidebar.left")
-    private let chevronLeftButton = Button(imageSystemName: "chevron.left")
-    private let chevronRightButton = Button(imageSystemName: "chevron.right")
-    private let outlineButton = Button(imageSystemName: "list.bullet")
-    private let bookmarkButton = BookmarkButton()
-    private let bookmarkToggleButton = BookmarkToggleButton()
-    private let libraryButton = Button(imageSystemName: "folder")
-    private let settingButton = Button(imageSystemName: "gear")
+    private let sideBarButton = Button(imageName: "sidebar.left")
+    private let chevronLeftButton = Button(imageName: "chevron.left")
+    private let chevronRightButton = Button(imageName: "chevron.right")
+    private let outlineButton = Button(imageName: "list.bullet")
+    private let bookmarkButton = BookmarkButton(imageName: "star", bookmarkedImageName: "star.fill")
+    private let bookmarkToggleButton = BookmarkButton(imageName: "star.circle.fill", bookmarkedImageName: "star.circle")
+    private let libraryButton = Button(imageName: "folder")
+    private let settingButton = Button(imageName: "gear")
     private let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
      
     let searchController: UISearchController
@@ -28,6 +27,8 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
     private var webViewControllers: [WebKitWebController] = []
     var currentWebViewController: WebKitWebController? { return webViewControllers.first }
+    private(set) lazy var welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
+    private(set) lazy var libraryController = LibraryController()
     
     init() {
         self.searchResultsController = SearchResultsController()
@@ -46,6 +47,25 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         
         bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
         bookmarkLongPressGestureRecognizer.addTarget(self, action: #selector(toggleBookmark))
+        
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = .systemBackground
+        } else {
+            view.backgroundColor = .white
+        }
+        
+        searchController.delegate = self
+        searchController.searchBar.autocorrectionType = .no
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchResultsUpdater = searchResultsController
+        if #available(iOS 13.0, *) {
+            searchController.automaticallyShowsCancelButton = false
+            searchController.showsSearchResultsController = true
+        } else {
+            searchController.searchBar.searchBarStyle = .minimal
+            searchController.obscuresBackgroundDuringPresentation = true
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -58,16 +78,9 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         navigationItem.hidesBackButton = true
         navigationItem.titleView = searchController.searchBar
         definesPresentationContext = true
-        view.backgroundColor = .systemBackground
-        searchController.delegate = self
-        searchController.searchBar.autocapitalizationType = .none
-        searchController.automaticallyShowsCancelButton = false
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.showsSearchResultsController = true
-        searchController.searchResultsUpdater = searchResultsController
         
-        configureToolbar()
         createNewTab()
+        setChildControllerIfNeeded(welcomeController)
     }
     
     func load(url: URL) {
@@ -77,13 +90,8 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     
     // MARK: - View and Controller Management
     
-    func configureToolbar() {
-        if splitViewController?.isCollapsed == true {
-            let group = ButtonGroupView(buttons: [
-                chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, libraryButton, settingButton,
-            ])
-            toolbarItems = [UIBarButtonItem(customView: group)]
-        } else {
+    func configureToolbar(isGrouped: Bool) {
+        if isGrouped {
             let left = ButtonGroupView(buttons: [sideBarButton, chevronLeftButton, chevronRightButton], spacing: 10)
             let right = ButtonGroupView(buttons: [bookmarkToggleButton, libraryButton, settingButton], spacing: 10)
             toolbarItems = [
@@ -91,6 +99,11 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
                 UIBarButtonItem(customView: right),
             ]
+        } else {
+            let group = ButtonGroupView(buttons: [
+                chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, libraryButton, settingButton,
+            ])
+            toolbarItems = [UIBarButtonItem(customView: group)]
         }
     }
     
@@ -207,10 +220,10 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         }
         
         // if outline view is visible, update outline items
-        if let rootSplitController = splitViewController as? RootSplitController,
-            !rootSplitController.isCollapsed,
-            rootSplitController.displayMode != .primaryHidden {
-            let selectedNavController = rootSplitController.sideBarViewController.selectedViewController
+        if let rootController = splitViewController as? RootController,
+            !rootController.isCollapsed,
+            rootController.displayMode != .primaryHidden {
+            let selectedNavController = rootController.sideBarViewController.selectedViewController
             let selectedController = (selectedNavController as? UINavigationController)?.topViewController
             if let outlineController = selectedController as? OutlineController {
                 outlineController.updateContent()
@@ -292,6 +305,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
                 try database.write {
                     database.delete(bookmark)
                 }
+                BookmarkManager().updateBookmarkWidgetData()
             } else {
                 guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else {return}
                 let bookmark = Bookmark()
@@ -321,14 +335,15 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
                             database.add(bookmark)
                         }
                     } catch {}
+                    BookmarkManager().updateBookmarkWidgetData()
                 })
             }
         } catch {return}
     }
     
     @objc func openLibrary() {
-        guard let splitController = splitViewController as? RootSplitController else {return}
-        splitController.present(splitController.libraryController, animated: true)
+        guard let splitController = splitViewController as? RootController else {return}
+        splitController.present(libraryController, animated: true)
     }
     
     @objc func openSettings() {
@@ -340,7 +355,11 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     }
 }
 
-// MARK: - BarButton
+// MARK: - Buttons
+
+private extension UIControl.State {
+    static let bookmarked = UIControl.State(rawValue: 1 << 16)
+}
 
 private class ButtonGroupView: UIStackView {
     convenience init(buttons: [UIButton], spacing: CGFloat? = nil) {
@@ -352,12 +371,15 @@ private class ButtonGroupView: UIStackView {
     }
 }
 
-@available(iOS 13.0, *)
 private class Button: UIButton {
-    fileprivate let configuration = UIImage.SymbolConfiguration(scale: .large)
-    convenience init(imageSystemName: String) {
+    convenience init(imageName: String) {
         self.init(type: .system)
-        setImage(UIImage(systemName: imageSystemName, withConfiguration: configuration), for: .normal)
+        if #available(iOS 13.0, *) {
+            let configuration = UIImage.SymbolConfiguration(scale: .large)
+            setImage(UIImage(systemName: imageName, withConfiguration: configuration), for: .normal)
+        } else {
+            setImage(UIImage(named: imageName), for: .normal)
+        }
     }
     
     override var intrinsicContentSize: CGSize {
@@ -365,32 +387,24 @@ private class Button: UIButton {
     }
 }
 
-@available(iOS 13.0, *)
 private class BookmarkButton: Button {
     var isBookmarked: Bool = false { didSet { setNeedsLayout() } }
     override var state: UIControl.State{ get { isBookmarked ? [.bookmarked, super.state] : super.state } }
     
-    convenience init() {
-        self.init(imageSystemName: "star")
-        let filledImage = UIImage(systemName: "star.fill", withConfiguration: configuration)
-        setImage(filledImage, for: .bookmarked)
-        setImage(filledImage, for: [.bookmarked, .highlighted])
+    convenience init(imageName: String, bookmarkedImageName: String) {
+        if #available(iOS 13.0, *) {
+            self.init(imageName: imageName)
+            let configuration = UIImage.SymbolConfiguration(scale: .large)
+            let bookmarkedImage = UIImage(systemName: bookmarkedImageName, withConfiguration: configuration)?
+                .withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
+            setImage(bookmarkedImage, for: .bookmarked)
+            setImage(bookmarkedImage, for: [.bookmarked, .highlighted])
+        } else {
+            self.init(type: .system)
+            setImage(UIImage(named: imageName), for: .normal)
+            let bookmarkedImage = UIImage(named: bookmarkedImageName)
+            setImage(bookmarkedImage, for: .bookmarked)
+            setImage(bookmarkedImage, for: [.bookmarked, .highlighted])
+        }
     }
-}
-
-@available(iOS 13.0, *)
-private class BookmarkToggleButton: Button {
-    var isBookmarked: Bool = false { didSet { setNeedsLayout() } }
-    override var state: UIControl.State{ get { isBookmarked ? [.bookmarked, super.state] : super.state } }
-    
-    convenience init() {
-        self.init(imageSystemName: "star")
-        let filledImage = UIImage(systemName: "star.slash.fill", withConfiguration: configuration)
-        setImage(filledImage, for: .bookmarked)
-        setImage(filledImage, for: [.bookmarked, .highlighted])
-    }
-}
-
-private extension UIControl.State {
-    static let bookmarked = UIControl.State(rawValue: 1 << 16)
 }
