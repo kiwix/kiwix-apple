@@ -221,7 +221,6 @@
 		970EC39C23BCE2B5008DCA27 /* BookmarkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkManager.swift; sourceTree = "<group>"; };
 		970EC3A023BCEC84008DCA27 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		970EC3AB23BCF31F008DCA27 /* ParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserTests.swift; sourceTree = "<group>"; };
-		970EC3BC23BE8A11008DCA27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		970EC3F123BE8E20008DCA27 /* ModelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ModelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		970EC3F523BE8E20008DCA27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryCategoryController.swift; sourceTree = "<group>"; };
@@ -728,14 +727,6 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		970EC3B923BE8A11008DCA27 /* ModelTest */ = {
-			isa = PBXGroup;
-			children = (
-				970EC3BC23BE8A11008DCA27 /* Info.plist */,
-			);
-			path = ModelTest;
-			sourceTree = "<group>";
-		};
 		970EC3F223BE8E20008DCA27 /* ModelTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -943,7 +934,6 @@
 				979315821E5127930093D3BA /* macOS */,
 				975FDAD81F6082DA00A10E8C /* iOS */,
 				97B44895210FBC2C0004B056 /* WikiMed */,
-				970EC3B923BE8A11008DCA27 /* ModelTest */,
 				970EC3F223BE8E20008DCA27 /* ModelTests */,
 				3B93EAF9B5C5AA23046BDEAC /* Frameworks */,
 				97A36C4E1F8C21210079B452 /* Kiwix.app */,
