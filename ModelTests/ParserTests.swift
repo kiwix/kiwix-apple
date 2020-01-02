@@ -34,7 +34,7 @@ class GeoCoordinateTest: XCTestCase {
     func testFailure() {
         [
             "<html><head><meta name='geo.position' content='-72.07916667'></head></html>",
-            "<html><head><meta name='geo.position' content='42.10833333'></head></html>",
+            "<html><head><meta name='geo.position'></head></html>",
             "<html><head><h1>I am a header</h1></head></html>"
         ].forEach { html in
             let parser = try? Parser(html: html)
