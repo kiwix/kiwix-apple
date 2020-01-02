@@ -14,6 +14,9 @@
 		9707B8F61F4B4F1500075D4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9707B8F51F4B4F1500075D4F /* Assets.xcassets */; };
 		970EC39F23BCEBA4008DCA27 /* BookmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC39C23BCE2B5008DCA27 /* BookmarkManager.swift */; };
 		970EC3A123BCEC84008DCA27 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
+		970EC3A423BCED7F008DCA27 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 970EC3A323BCED7F008DCA27 /* SwiftSoup */; };
+		970EC3C223BE8A22008DCA27 /* ParserTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3AB23BCF31F008DCA27 /* ParserTest.swift */; };
+		970EC3C323BE8A8D008DCA27 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
 		97161A861F8FFD1E00A89DE3 /* LibraryCategoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */; };
 		97161A891F90072A00A89DE3 /* LibraryTableCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97161A881F90072A00A89DE3 /* LibraryTableCells.swift */; };
 		9719F60320DAF7A600B5D0EB /* SearchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AC121420879252004779D1 /* SearchQueue.swift */; };
@@ -149,6 +152,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		970EC3BD23BE8A11008DCA27 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97A2AB801C1B80FF00052E74 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 97A36C241F8C21210079B452;
+			remoteInfo = iOS;
+		};
 		97C575FC202CB0E900E37502 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 97A2AB801C1B80FF00052E74 /* Project object */;
@@ -210,6 +220,9 @@
 		9707B8F51F4B4F1500075D4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		970EC39C23BCE2B5008DCA27 /* BookmarkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkManager.swift; sourceTree = "<group>"; };
 		970EC3A023BCEC84008DCA27 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		970EC3AB23BCF31F008DCA27 /* ParserTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserTest.swift; sourceTree = "<group>"; };
+		970EC3B823BE8A11008DCA27 /* ModelTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ModelTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		970EC3BC23BE8A11008DCA27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryCategoryController.swift; sourceTree = "<group>"; };
 		97161A881F90072A00A89DE3 /* LibraryTableCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryTableCells.swift; sourceTree = "<group>"; };
 		9717A2521FB2592D00837492 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -600,6 +613,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		970EC3B523BE8A11008DCA27 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9793157E1E5127930093D3BA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -642,6 +662,7 @@
 				97CA4A6D20A0F583008CEA6D /* libzim.a in Frameworks */,
 				97CA4A6920A0F583008CEA6D /* libz.a in Frameworks */,
 				97CA4A6620A0F583008CEA6D /* libicui18n.a in Frameworks */,
+				970EC3A423BCED7F008DCA27 /* SwiftSoup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -704,6 +725,15 @@
 				970EC3A023BCEC84008DCA27 /* Parser.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		970EC3B923BE8A11008DCA27 /* ModelTest */ = {
+			isa = PBXGroup;
+			children = (
+				970EC3AB23BCF31F008DCA27 /* ParserTest.swift */,
+				970EC3BC23BE8A11008DCA27 /* Info.plist */,
+			);
+			path = ModelTest;
 			sourceTree = "<group>";
 		};
 		97252106200F9D3C00B60A80 /* Setting */ = {
@@ -904,10 +934,12 @@
 				979315821E5127930093D3BA /* macOS */,
 				975FDAD81F6082DA00A10E8C /* iOS */,
 				97B44895210FBC2C0004B056 /* WikiMed */,
+				970EC3B923BE8A11008DCA27 /* ModelTest */,
 				3B93EAF9B5C5AA23046BDEAC /* Frameworks */,
 				97A36C4E1F8C21210079B452 /* Kiwix.app */,
 				97C575F2202CB0E800E37502 /* Bookmarks.appex */,
 				97B44894210FBC2C0004B056 /* WikiMed.app */,
+				970EC3B823BE8A11008DCA27 /* ModelTest.xctest */,
 			);
 			sourceTree = "<group>";
 			wrapsLines = 0;
@@ -1373,6 +1405,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		970EC3B723BE8A11008DCA27 /* ModelTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 970EC3BF23BE8A11008DCA27 /* Build configuration list for PBXNativeTarget "ModelTest" */;
+			buildPhases = (
+				970EC3B423BE8A11008DCA27 /* Sources */,
+				970EC3B523BE8A11008DCA27 /* Frameworks */,
+				970EC3B623BE8A11008DCA27 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				970EC3BE23BE8A11008DCA27 /* PBXTargetDependency */,
+			);
+			name = ModelTest;
+			productName = ModelTest;
+			productReference = 970EC3B823BE8A11008DCA27 /* ModelTest.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		979315801E5127930093D3BA /* macOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 979315A31E5127940093D3BA /* Build configuration list for PBXNativeTarget "macOS" */;
@@ -1416,6 +1466,7 @@
 				97CE15B123B26BBC00378D9F /* SwiftyUserDefaults */,
 				97CE15B623B26EB300378D9F /* Realm */,
 				97CE15B823B26EB300378D9F /* RealmSwift */,
+				970EC3A323BCED7F008DCA27 /* SwiftSoup */,
 			);
 			productName = WikiMed;
 			productReference = 97A36C4E1F8C21210079B452 /* Kiwix.app */;
@@ -1462,10 +1513,14 @@
 		97A2AB801C1B80FF00052E74 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0940;
+				LastSwiftUpdateCheck = 1130;
 				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = "Chris Li";
 				TargetAttributes = {
+					970EC3B723BE8A11008DCA27 = {
+						CreatedOnToolsVersion = 11.3;
+						TestTargetID = 97A36C241F8C21210079B452;
+					};
 					979315801E5127930093D3BA = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = L7HWM3SP3L;
@@ -1532,6 +1587,7 @@
 			packageReferences = (
 				97CE15B023B26BBC00378D9F /* XCRemoteSwiftPackageReference "SwiftyUserDefaults" */,
 				97CE15B523B26EB300378D9F /* XCRemoteSwiftPackageReference "realm-cocoa" */,
+				970EC3A223BCED7F008DCA27 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 			);
 			productRefGroup = 97A2AB7F1C1B80FF00052E74;
 			projectDirPath = "";
@@ -1541,11 +1597,19 @@
 				979315801E5127930093D3BA /* macOS */,
 				97B44893210FBC2C0004B056 /* WikiMed */,
 				97C575F1202CB0E800E37502 /* Bookmarks */,
+				970EC3B723BE8A11008DCA27 /* ModelTest */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		970EC3B623BE8A11008DCA27 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9793157F1E5127930093D3BA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1594,6 +1658,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		970EC3B423BE8A11008DCA27 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				970EC3C323BE8A8D008DCA27 /* Parser.swift in Sources */,
+				970EC3C223BE8A22008DCA27 /* ParserTest.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9793157D1E5127930093D3BA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1713,6 +1786,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		970EC3BE23BE8A11008DCA27 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 97A36C241F8C21210079B452 /* iOS */;
+			targetProxy = 970EC3BD23BE8A11008DCA27 /* PBXContainerItemProxy */;
+		};
 		97C575FD202CB0E900E37502 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			platformFilter = ios;
@@ -1757,6 +1835,66 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		970EC3C023BE8A11008DCA27 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L7HWM3SP3L;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = ModelTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.ModelTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kiwix.app/Kiwix";
+			};
+			name = Debug;
+		};
+		970EC3C123BE8A11008DCA27 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = L7HWM3SP3L;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = ModelTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.ModelTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kiwix.app/Kiwix";
+			};
+			name = Release;
+		};
 		979315A41E5127940093D3BA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2135,6 +2273,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		970EC3BF23BE8A11008DCA27 /* Build configuration list for PBXNativeTarget "ModelTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				970EC3C023BE8A11008DCA27 /* Debug */,
+				970EC3C123BE8A11008DCA27 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		979315A31E5127940093D3BA /* Build configuration list for PBXNativeTarget "macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2183,6 +2330,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		970EC3A223BCED7F008DCA27 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.0;
+			};
+		};
 		97CE15B023B26BBC00378D9F /* XCRemoteSwiftPackageReference "SwiftyUserDefaults" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sunshinejr/SwiftyUserDefaults";
@@ -2202,6 +2357,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		970EC3A323BCED7F008DCA27 /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 970EC3A223BCED7F008DCA27 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
+		};
 		97CE15B123B26BBC00378D9F /* SwiftyUserDefaults */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 97CE15B023B26BBC00378D9F /* XCRemoteSwiftPackageReference "SwiftyUserDefaults" */;
