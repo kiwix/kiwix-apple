@@ -29,7 +29,7 @@ class Parser {
     
     func getGeoCoordinate() -> CLLocationCoordinate2D? {
         do {
-            let elements = try document.select("head > meta[name='geo.position'")
+            let elements = try document.select("head > meta[name='geo.position']")
             let content = try elements.first()?.attr("content")
             guard let parts = content?.split(separator: ";"), parts.count == 2,
                 let lat = Double(parts[0]), let lon = Double(parts[1]) else { return nil }
