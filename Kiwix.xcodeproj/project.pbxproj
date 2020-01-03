@@ -17,8 +17,8 @@
 		970EC3A423BCED7F008DCA27 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 970EC3A323BCED7F008DCA27 /* SwiftSoup */; };
 		970EC3FB23BE8E25008DCA27 /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3AB23BCF31F008DCA27 /* ParserTests.swift */; };
 		970EC3FC23BE8E31008DCA27 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
+		970EC40323BEAB1C008DCA27 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC40223BEAB1C008DCA27 /* HomeView.swift */; };
 		97161A861F8FFD1E00A89DE3 /* LibraryCategoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */; };
-		97161A891F90072A00A89DE3 /* LibraryTableCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97161A881F90072A00A89DE3 /* LibraryTableCells.swift */; };
 		9719F60320DAF7A600B5D0EB /* SearchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AC121420879252004779D1 /* SearchQueue.swift */; };
 		9719F60420DAF7C000B5D0EB /* SearchProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975415D31F54C1870007EA6C /* SearchProcedure.swift */; };
 		9719F60620DAF82200B5D0EB /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9719F60520DAF82200B5D0EB /* Settings.swift */; };
@@ -30,7 +30,6 @@
 		97252103200D3C4B00B60A80 /* HUDController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252102200D3C4B00B60A80 /* HUDController.swift */; };
 		97252105200E908000B60A80 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252104200E908000B60A80 /* TableViewCell.swift */; };
 		97252108200F9D6A00B60A80 /* SettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252107200F9D6A00B60A80 /* SettingController.swift */; };
-		972B66592006B1F0003F5365 /* BarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B66582006B1F0003F5365 /* BarButtonItem.swift */; };
 		972B66602007F9F7003F5365 /* WebKitWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97050D001F6733400021DE78 /* WebKitWebController.swift */; };
 		972B6662200808D6003F5365 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B6661200808D6003F5365 /* WelcomeController.swift */; };
 		972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972E6F631FA11A6100F5C927 /* RoundedButton.swift */; };
@@ -223,8 +222,9 @@
 		970EC3AB23BCF31F008DCA27 /* ParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserTests.swift; sourceTree = "<group>"; };
 		970EC3F123BE8E20008DCA27 /* ModelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ModelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		970EC3F523BE8E20008DCA27 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		970EC3FD23BE9987008DCA27 /* WikiMed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikiMed.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		970EC40223BEAB1C008DCA27 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryCategoryController.swift; sourceTree = "<group>"; };
-		97161A881F90072A00A89DE3 /* LibraryTableCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryTableCells.swift; sourceTree = "<group>"; };
 		9717A2521FB2592D00837492 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		9719F60520DAF82200B5D0EB /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		971B8E57202246ED00C5C939 /* RecentSearchCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchCells.swift; sourceTree = "<group>"; };
@@ -234,7 +234,6 @@
 		97252104200E908000B60A80 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		97252107200F9D6A00B60A80 /* SettingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingController.swift; sourceTree = "<group>"; };
 		9726591A1D8DB91200D1DFFB /* DownloadProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadProgress.swift; sourceTree = "<group>"; };
-		972B66582006B1F0003F5365 /* BarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtonItem.swift; sourceTree = "<group>"; };
 		972B665B2006BEBA003F5365 /* WebViewControllerProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewControllerProtocols.swift; sourceTree = "<group>"; };
 		972B6661200808D6003F5365 /* WelcomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
 		972E6F631FA11A6100F5C927 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
@@ -257,7 +256,6 @@
 		975FDAE51F6082DA00A10E8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		975FDB061F608F4100A10E8C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		975FDB0B1F60930A00A10E8C /* WebKitHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitHandler.swift; sourceTree = "<group>"; };
-		976306F01FC5D050004B171A /* TabViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViews.swift; sourceTree = "<group>"; };
 		9763EDC8201FCA6900F3A6D5 /* SettingWebController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingWebController.swift; sourceTree = "<group>"; };
 		9763EDCA201FCC3900F3A6D5 /* About.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = About.html; sourceTree = "<group>"; };
 		9765D97F1F50CC4700BFDC1E /* Search.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = "<group>"; };
@@ -289,7 +287,6 @@
 		97A9F6F41E2E990500F423AA /* Inject.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Inject.js; sourceTree = "<group>"; };
 		97AC121420879252004779D1 /* SearchQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchQueue.swift; sourceTree = "<group>"; };
 		97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryMasterController.swift; sourceTree = "<group>"; };
-		97B44894210FBC2C0004B056 /* WikiMed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = WikiMed.app; path = "/Users/chrisli/Developer/Kiwix/build/Debug-iphoneos/WikiMed.app"; sourceTree = "<absolute>"; };
 		97B44896210FBC2C0004B056 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		97B44898210FBC2C0004B056 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		97B4489B210FBC2C0004B056 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -307,7 +304,6 @@
 		97C575FB202CB0E900E37502 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97C57603202CB35500E37502 /* Bookmarks.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Bookmarks.entitlements; sourceTree = "<group>"; };
 		97C57604202CB42100E37502 /* Kiwix.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
-		97C99B47205AF58D00439C77 /* MainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
 		97CA45D1209BB23F008CEA6D /* ZimFileProcessing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileProcessing.swift; sourceTree = "<group>"; };
 		97CA495120A0F583008CEA6D /* libicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicui18n.a; sourceTree = "<group>"; };
 		97CA495320A0F583008CEA6D /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libicudata.a; sourceTree = "<group>"; };
@@ -843,7 +839,6 @@
 		975FDB0E1F60944A00A10E8C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				97C99B47205AF58D00439C77 /* MainController.swift */,
 				97D757E1238B90EC008FB7E2 /* RootController.swift */,
 				97EF586C239DB83E007549B8 /* ContentViewController.swift */,
 				97B4ADFA239C6C3800264AF6 /* TabsController.swift */,
@@ -939,6 +934,7 @@
 				97A36C4E1F8C21210079B452 /* Kiwix.app */,
 				97C575F2202CB0E800E37502 /* Bookmarks.appex */,
 				970EC3F123BE8E20008DCA27 /* ModelTests.xctest */,
+				970EC3FD23BE9987008DCA27 /* WikiMed.app */,
 			);
 			sourceTree = "<group>";
 			wrapsLines = 0;
@@ -956,14 +952,12 @@
 		97A996D81F62F3C5007A6282 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				970EC40223BEAB1C008DCA27 /* HomeView.swift */,
 				97A36C501F8D4FB80079B452 /* VisualEffectShadowView.swift */,
 				972E6F631FA11A6100F5C927 /* RoundedButton.swift */,
-				976306F01FC5D050004B171A /* TabViews.swift */,
-				972B66582006B1F0003F5365 /* BarButtonItem.swift */,
 				972521002009616B00B60A80 /* EmptyContentView.swift */,
 				97252104200E908000B60A80 /* TableViewCell.swift */,
 				971B8E57202246ED00C5C939 /* RecentSearchCells.swift */,
-				97161A881F90072A00A89DE3 /* LibraryTableCells.swift */,
 				97D0C4DC211BF72B00B00DAA /* TableViewSectionFooterLabel.swift */,
 			);
 			path = View;
@@ -1486,7 +1480,7 @@
 			);
 			name = WikiMed;
 			productName = WikiMed;
-			productReference = 97B44894210FBC2C0004B056 /* WikiMed.app */;
+			productReference = 970EC3FD23BE9987008DCA27 /* WikiMed.app */;
 			productType = "com.apple.product-type.application";
 		};
 		97C575F1202CB0E800E37502 /* Bookmarks */ = {
@@ -1702,7 +1696,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				97A68832207D4D6700DBBE0D /* RealmConfig.swift in Sources */,
-				97161A891F90072A00A89DE3 /* LibraryTableCells.swift in Sources */,
 				972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */,
 				977D7BB61F9E6A43009A8703 /* ZimMultiReader.mm in Sources */,
 				97252103200D3C4B00B60A80 /* HUDController.swift in Sources */,
@@ -1736,6 +1729,7 @@
 				975F97A820D00EAE0005D642 /* SettingSearchController.swift in Sources */,
 				97242E162093A9AC00AA4436 /* Bookmark.swift in Sources */,
 				97D00A7F1FBB92D400165629 /* TableOfContentItem.swift in Sources */,
+				970EC40323BEAB1C008DCA27 /* HomeView.swift in Sources */,
 				97018985212357F200F8A6DD /* LibrarySearchController.swift in Sources */,
 				97A5C1412089115D009CA5F9 /* SearchResultContents.swift in Sources */,
 				97252105200E908000B60A80 /* TableViewCell.swift in Sources */,
@@ -1748,7 +1742,6 @@
 				9719F60620DAF82200B5D0EB /* Settings.swift in Sources */,
 				972521012009616B00B60A80 /* EmptyContentView.swift in Sources */,
 				97A36C571F8D5FCD0079B452 /* LibraryController.swift in Sources */,
-				972B66592006B1F0003F5365 /* BarButtonItem.swift in Sources */,
 				97EF586D239DB83E007549B8 /* ContentViewController.swift in Sources */,
 				97A36C321F8C21210079B452 /* AppDelegate.swift in Sources */,
 				979FD159201679C5007B5290 /* SearchResultsListController.swift in Sources */,
