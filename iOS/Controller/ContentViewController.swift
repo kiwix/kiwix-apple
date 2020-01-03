@@ -26,8 +26,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     private let searchResultsController: SearchResultsController
     private lazy var searchCancelButton = UIBarButtonItem(
         barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
-    private var webViewControllers: [WebKitWebController] = []
-    var currentWebViewController: WebKitWebController? { return webViewControllers.first }
+    let  webViewController = WebKitWebController()
     private(set) lazy var welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     private(set) lazy var libraryController = LibraryController()
     
@@ -37,6 +36,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         
         super.init(nibName: nil, bundle: nil)
         
+        // button tap
         sideBarButton.addTarget(self, action: #selector(toggleSideBar), for: .touchUpInside)
         chevronLeftButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
         chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
@@ -46,15 +46,18 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         libraryButton.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
         settingButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
         
+        // button long press
         bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
         bookmarkLongPressGestureRecognizer.addTarget(self, action: #selector(toggleBookmark))
         
+        // view background
         if #available(iOS 13.0, *) {
             view.backgroundColor = .systemBackground
         } else {
             view.backgroundColor = .white
         }
         
+        // search controller
         searchController.delegate = self
         searchController.searchBar.autocorrectionType = .no
         searchController.searchBar.autocapitalizationType = .none
@@ -67,6 +70,12 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
             searchController.searchBar.searchBarStyle = .minimal
             searchController.obscuresBackgroundDuringPresentation = true
         }
+        
+        // misc
+        definesPresentationContext = true
+        webViewController.delegate = self
+        navigationItem.hidesBackButton = true
+        navigationItem.titleView = searchController.searchBar
     }
     
     required init?(coder: NSCoder) {
@@ -75,12 +84,9 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        updateToolBarButtonEnabled()
         
-        navigationItem.hidesBackButton = true
-        navigationItem.titleView = searchController.searchBar
-        definesPresentationContext = true
-        
-        createNewTab()
+        // show welcome controller
         if #available(iOS 13.0, *) {
             setChildControllerIfNeeded(UIHostingController(rootView: HomeView()))
         } else {
@@ -89,8 +95,8 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     }
     
     func load(url: URL) {
-        setChildControllerIfNeeded(currentWebViewController)
-        currentWebViewController?.load(url: url)
+        setChildControllerIfNeeded(webViewController)
+        webViewController.load(url: url)
     }
     
     // MARK: - View and Controller Management
@@ -112,20 +118,11 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         }
     }
     
-    private func createNewTab() {
-        let controller = WebKitWebController()
-        webViewControllers.append(controller)
-        switchToTab(controller: controller)
-    }
-    
-    private func switchToTab(controller: WebViewController) {
-        var controller = controller
-        controller.delegate = self
-        
-        chevronLeftButton.isEnabled = controller.canGoBack
-        chevronRightButton.isEnabled = controller.canGoForward
-        outlineButton.isEnabled = controller.currentURL != nil
-        bookmarkToggleButton.isEnabled = controller.currentURL != nil
+    private func updateToolBarButtonEnabled() {
+        chevronLeftButton.isEnabled = webViewController.canGoBack
+        chevronRightButton.isEnabled = webViewController.canGoForward
+        outlineButton.isEnabled = webViewController.currentURL != nil
+        bookmarkToggleButton.isEnabled = webViewController.currentURL != nil
     }
     
     private func setView(_ subView: UIView?) {
@@ -238,7 +235,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     // MARK: OutlineControllerDelegate
     
     func didTapOutlineItem(index: Int, item: TableOfContentItem) {
-        currentWebViewController?.scrollToTableOfContentItem(index: index)
+        webViewController.scrollToTableOfContentItem(index: index)
     }
     
     // MARK: BookmarkControllerDelegate
@@ -271,11 +268,11 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     }
     
     @objc func goBack() {
-        currentWebViewController?.goBack()
+        webViewController.goBack()
     }
     
     @objc func goForward() {
-        currentWebViewController?.goForward()
+        webViewController.goForward()
     }
     
     @objc func openOutline() {
@@ -297,8 +294,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
             return
         }
         
-        guard let webKitWebController = currentWebViewController,
-            let url = webKitWebController.currentURL,
+        guard let url = webViewController.currentURL,
             let zimFileID = url.host else {return}
         
         do {
@@ -315,18 +311,18 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
                 let bookmark = Bookmark()
                 bookmark.zimFile = zimFile
                 bookmark.path = url.path
-                bookmark.title = webKitWebController.currentTitle ?? ""
+                bookmark.title = webViewController.currentTitle ?? ""
                 bookmark.date = Date()
                 
                 let group = DispatchGroup()
                 group.enter()
-                webKitWebController.extractSnippet(completion: { (snippet) in
+                webViewController.extractSnippet(completion: { (snippet) in
                     bookmark.snippet = snippet
                     group.leave()
                 })
                 if zimFile.hasPicture {
                     group.enter()
-                    webKitWebController.extractImageURLs(completion: { (urls) in
+                    webViewController.extractImageURLs(completion: { (urls) in
                         bookmark.thumbImagePath = urls.first?.path
                         group.leave()
                     })
