@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUI
 import RealmSwift
 
 class ContentViewController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate,
@@ -80,7 +81,11 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         definesPresentationContext = true
         
         createNewTab()
-        setChildControllerIfNeeded(welcomeController)
+        if #available(iOS 13.0, *) {
+            setChildControllerIfNeeded(UIHostingController(rootView: HomeView()))
+        } else {
+            setChildControllerIfNeeded(welcomeController)
+        }
     }
     
     func load(url: URL) {
@@ -176,7 +181,6 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
             })
             self.bookmarkButton.isBookmarked = isBookmarked
             self.bookmarkToggleButton.isBookmarked = isBookmarked
-//            self.updateBookmarkWidgetData()
         })
     }
     
