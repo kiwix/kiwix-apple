@@ -21,7 +21,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate {
         viewControllers = [sideBarViewController, self.contentNavigationController]
         
         delegate = self
-        preferredDisplayMode = .allVisible
+//        preferredDisplayMode = .allVisible
         sideBarViewController.favoriteController.delegate = contentViewController
         sideBarViewController.outlineController.delegate = contentViewController
         contentViewController.configureToolbar(isGrouped: !isCollapsed)

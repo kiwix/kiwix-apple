@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 import SwiftyUserDefaults
 
-class SearchNoTextController: UIViewController, UITableViewDelegate, UITableViewDataSource,
+class SearchFilterController: UIViewController, UITableViewDelegate, UITableViewDataSource,
                               UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,
                               SearchNoTextControllerSectionHeaderDelegate {
     private let tableView: UITableView = {
@@ -74,18 +74,18 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
         changeToken = nil
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
-        switch traitCollection.horizontalSizeClass {
-        case .compact:
-            tableView.backgroundColor = .groupTableViewBackground
-        case .regular:
-            tableView.backgroundColor = .clear
-        default:
-            break
-        }
-    }
+//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+//        super.traitCollectionDidChange(previousTraitCollection)
+//        guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
+//        switch traitCollection.horizontalSizeClass {
+//        case .compact:
+//            tableView.backgroundColor = .groupTableViewBackground
+//        case .regular:
+//            tableView.backgroundColor = .clear
+//        default:
+//            break
+//        }
+//    }
     
     // MARK: - Observer
     
@@ -111,7 +111,7 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
     
     // MARK: - SearchNoTextControllerSectionHeaderDelegate
     
-    func sectionHeaderButtonTapped(button: UIButton, section: SearchNoTextController.Section) {
+    func sectionHeaderButtonTapped(button: UIButton, section: SearchFilterController.Section) {
         switch section {
         case .recentSearch:
             Defaults[.recentSearchTexts] = []
@@ -301,5 +301,5 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
 // MARK: - Protocols
 
 protocol SearchNoTextControllerSectionHeaderDelegate: class {
-    func sectionHeaderButtonTapped(button: UIButton, section: SearchNoTextController.Section)
+    func sectionHeaderButtonTapped(button: UIButton, section: SearchFilterController.Section)
 }

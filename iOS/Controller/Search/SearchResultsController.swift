@@ -1,6 +1,6 @@
 //
 //  SearchResultControllerNew.swift
-//  iOS
+//  Kiwix for iOS
 //
 //  Created by Chris Li on 4/18/18.
 //  Copyright © 2018 Chris Li. All rights reserved.
@@ -9,7 +9,88 @@
 import UIKit
 import RealmSwift
 
-class SearchResultsController: UIViewController, SearchQueueEvents, UISearchResultsUpdating {
+class SearchResultsController: UIViewController, UISearchResultsUpdating {
+    private var viewAlwaysVisibleObserver: NSKeyValueObservation?
+    private let stackView = UIStackView()
+    private let filterController = SearchFilterController()
+    private let resultsListController = SearchResultsListController()
+    private let tabbarController = UITabBarController()
+    private let filterControllerWidthConstraint: NSLayoutConstraint
+    
+    init() {
+        self.filterControllerWidthConstraint = filterController.view.widthAnchor.constraint(equalToConstant: 400)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Overrides
+
+    override func loadView() {
+        view = UIView()
+        
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(stackView)
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+        ])
+
+        if #available(iOS 13, *) {} else {
+            /* Prevent SearchResultsController view from being automatically hidden by UISearchController */
+            viewAlwaysVisibleObserver = view.observe(\.isHidden, options: .new, changeHandler: { (view, change) in
+                if change.newValue == true { view.isHidden = false }
+            })
+        }
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        addChild(filterController)
+        addChild(resultsListController)
+        filterController.didMove(toParent: self)
+        resultsListController.didMove(toParent: self)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureStackView()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        guard traitCollection != previousTraitCollection else {return}
+        configureStackView()
+    }
+    
+    private func configureStackView() {
+        let test = UILabel()
+        test.text = "test"
+        
+        stackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
+        if traitCollection.horizontalSizeClass == .regular {
+            stackView.addArrangedSubview(filterController.view)
+            stackView.addArrangedSubview(test)
+            filterControllerWidthConstraint.isActive = true
+        } else if traitCollection.horizontalSizeClass == .compact {
+            stackView.addArrangedSubview(filterController.view)
+            filterControllerWidthConstraint.isActive = false
+        }
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        
+    }
+}
+
+
+class SearchResultsControllerOld: UIViewController, SearchQueueEvents, UISearchResultsUpdating {
     private let queue = SearchQueue()
     private let visualView = VisualEffectShadowView()
     let contentController = SearchResultContents()

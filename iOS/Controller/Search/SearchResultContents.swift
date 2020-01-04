@@ -32,7 +32,7 @@ class SearchResultContents: UITabBarController {
         super.viewDidLoad()
         tabBar.isHidden = true
         viewControllers = [
-            SearchNoTextController(),
+            SearchFilterController(),
             resultsListController,
             SearchInProgressController(),
             SearchNoResultController(),

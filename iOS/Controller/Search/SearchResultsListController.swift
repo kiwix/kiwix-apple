@@ -16,7 +16,7 @@ class SearchResultsListController: UITableViewController {
     private weak var clearResultTimer: Timer?
     
     init() {
-        super.init(style: .plain)
+        super.init(style: .grouped)
     }
     
     required init?(coder: NSCoder) {
