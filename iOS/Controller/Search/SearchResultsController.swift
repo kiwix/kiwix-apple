@@ -9,19 +9,26 @@
 import UIKit
 import RealmSwift
 
-class SearchResultsController: UIViewController, UISearchResultsUpdating {
+class SearchResultsController: UIViewController, UISearchResultsUpdating, SearchQueueEvents {
+    private var mode: Mode = .filter { didSet { configureStackView() } }
+    private let queue = SearchQueue()
     private var viewAlwaysVisibleObserver: NSKeyValueObservation?
-    private var mode: Mode = .filter
+    
     private let stackView = UIStackView()
-    private let infoStackView = InfoStackView()
+    private let informationView = InfoStackView()
+    private let dividerView = DividerView()
     private let filterController = SearchFilterController()
     private let resultsListController = SearchResultsListController()
-    private let tabbarController = UITabBarController()
+    
     private var filterControllerWidthConstraint: NSLayoutConstraint?
     private var filterControllerProportionalWidthConstraint: NSLayoutConstraint?
     
     init() {
         super.init(nibName: nil, bundle: nil)
+        
+        queue.eventDelegate = self
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
     }
     
     required init?(coder: NSCoder) {
@@ -51,9 +58,7 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
             equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 0.3)
         filterControllerProportionalWidthConstraint?.priority = .init(rawValue: 749)
         
-        // configure stack view
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
+        // stack view layout
         stackView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(stackView)
         NSLayoutConstraint.activate([
@@ -77,13 +82,13 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(notification:)), name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
-        infoStackView.alpha = 0.0
+        informationView.alpha = 0.0
         configureStackView()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        infoStackView.alpha = 0.0
+        informationView.alpha = 0.0
         
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
@@ -93,6 +98,36 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         guard traitCollection != previousTraitCollection else {return}
         configureStackView()
+    }
+    
+    // MARK: View configuration
+    
+    private func configureStackView() {
+        stackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
+        if traitCollection.horizontalSizeClass == .regular {
+            stackView.addArrangedSubview(filterController.view)
+            stackView.addArrangedSubview(DividerView())
+            
+            filterControllerWidthConstraint?.isActive = true
+            filterControllerProportionalWidthConstraint?.isActive = true
+        } else if traitCollection.horizontalSizeClass == .compact {
+            filterControllerWidthConstraint?.isActive = false
+            filterControllerProportionalWidthConstraint?.isActive = false
+        }
+        
+        informationView.configure(mode: mode)
+        switch mode {
+        case .filter:
+            if traitCollection.horizontalSizeClass == .regular {
+                stackView.addArrangedSubview(informationView)
+            } else if traitCollection.horizontalSizeClass == .compact {
+                stackView.addArrangedSubview(filterController.view)
+            }
+        case .results:
+            stackView.addArrangedSubview(resultsListController.view)
+        case .inProgress, .noResults:
+            stackView.addArrangedSubview(informationView)
+        }
     }
     
     // MARK: Keyboard Events
@@ -126,51 +161,56 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     
     @objc func keyboardDidShow(notification: Notification) {
         updateAdditionalSafeAreaInsets(notification: notification, animated: false)
-        if infoStackView.alpha == 0.0 { infoStackView.alpha = 1.0 }
+        if informationView.alpha == 0.0 { informationView.alpha = 1.0 }
     }
     
     @objc func keyboardWillHide(notification: Notification) {
         updateAdditionalSafeAreaInsets(notification: notification, animated: true)
     }
     
-    
-    private func configureStackView() {
-        stackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
-        infoStackView.configure(mode: mode)
-        if traitCollection.horizontalSizeClass == .regular {
-            stackView.addArrangedSubview(filterController.view)
-            stackView.addArrangedSubview(DividerView())
-            stackView.addArrangedSubview(infoStackView)
-            filterControllerWidthConstraint?.isActive = true
-            filterControllerProportionalWidthConstraint?.isActive = true
-        } else if traitCollection.horizontalSizeClass == .compact {
-            stackView.addArrangedSubview(filterController.view)
-            filterControllerWidthConstraint?.isActive = false
-            filterControllerProportionalWidthConstraint?.isActive = false
-        }
-    }
+    // MARK: UISearchResultsUpdating
     
     func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text else {return}
+        print("updateSearchResults, searchText = \(searchText)")
         
+        if searchText == "" {
+            queue.cancelAllOperations()
+            if !searchController.isBeingDismissed {
+                mode = .filter
+            }
+            return
+        }
+        
+        // Perform the search
+        queue.enqueue(searchText: searchText, zimFileIDs: Set())
     }
     
+    // MARK: SearchQueueEvents
+    
+    func searchStarted() {
+        informationView.activityIndicator.startAnimating()
+        mode = .inProgress
+    }
+    
+    func searchFinished(searchText: String, results: [SearchResult]) {
+        resultsListController.update(searchText: searchText, results: results)
+        informationView.activityIndicator.stopAnimating()
+        mode = results.count > 0 ? .results : .noResults
+    }
 }
 
 // MARK: -
 
 fileprivate enum Mode {
-    case filter, InProgress, noResults, results
+    case filter, inProgress, noResults, results
 }
 
 fileprivate class InfoStackView: UIStackView {
-    private let startSearchLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Start a search"
-        return label
-    }()
+    let activityIndicator = UIActivityIndicatorView()
     
-    init() {
-        super.init(frame: .zero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         axis = .vertical
         alignment = .center
     }
@@ -180,12 +220,24 @@ fileprivate class InfoStackView: UIStackView {
     }
     
     func configure(mode: Mode) {
-        arrangedSubviews.forEach({ removeArrangedSubview($0) })
+        arrangedSubviews.forEach({ $0.removeFromSuperview() })
         switch mode {
         case .filter:
-            addArrangedSubview(startSearchLabel)
+            addArrangedSubview(TitleLabel("Start a search"))
+        case .inProgress:
+            activityIndicator.startAnimating()
+            addArrangedSubview(activityIndicator)
+        case .noResults:
+            addArrangedSubview(TitleLabel("No Result"))
         default:
             break
+        }
+    }
+    
+    class TitleLabel: UILabel {
+        convenience init(_ text: String) {
+            self.init()
+            self.text = text
         }
     }
 }
