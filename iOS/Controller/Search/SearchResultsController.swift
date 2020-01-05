@@ -15,7 +15,7 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     private var viewAlwaysVisibleObserver: NSKeyValueObservation?
     
     private let stackView = UIStackView()
-    private let informationView = InfoStackView()
+    private let informationView = InformationView()
     private let dividerView = DividerView()
     private let filterController = SearchFilterController()
     private let resultsListController = SearchResultsListController()
@@ -201,38 +201,82 @@ fileprivate enum Mode {
     case filter, inProgress, noResults, results
 }
 
-fileprivate class InfoStackView: UIStackView {
+fileprivate class InformationView: UIView {
     let activityIndicator = UIActivityIndicatorView()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        axis = .vertical
-        alignment = .center
-    }
-    
-    required init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    convenience init() {
+        self.init(frame: .zero)
+        if #available(iOS 13.0, *) {
+            activityIndicator.style = .large
+        } else {
+            activityIndicator.style = .gray
+        }
     }
     
     func configure(mode: Mode) {
-        arrangedSubviews.forEach({ $0.removeFromSuperview() })
         switch mode {
         case .filter:
-            addArrangedSubview(TitleLabel("Start a search"))
+            let container = makeStackedContainer([
+                TitleLabel("No Search Results."),
+                SubtitleLabel("Please enter some text to start a search."),
+            ])
+            centerView(container)
         case .inProgress:
             activityIndicator.startAnimating()
-            addArrangedSubview(activityIndicator)
+            centerView(activityIndicator)
         case .noResults:
-            addArrangedSubview(TitleLabel("No Result"))
+            let container = makeStackedContainer([
+                TitleLabel("No Search Results."),
+                SubtitleLabel("Please update the search text or search filter."),
+            ])
+            centerView(container)
         default:
             break
         }
     }
+        
+    private func centerView(_ view: UIView?) {
+        subviews.forEach({ $0.removeFromSuperview() })
+        guard let view = view else {return}
+        view.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(view)
+        NSLayoutConstraint.activate([
+            centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        ])
+    }
     
-    class TitleLabel: UILabel {
+    private func makeStackedContainer(_ arrangedSubviews: [UIView]) -> UIStackView {
+        let container = UIStackView(arrangedSubviews: arrangedSubviews)
+        container.axis = .vertical
+        container.alignment = .center
+        container.spacing = 10
+        return container
+    }
+        
+    private class TitleLabel: UILabel {
         convenience init(_ text: String) {
             self.init()
             self.text = text
+            font = UIFont.preferredFont(forTextStyle: .title2)
+            if #available(iOS 13.0, *) {
+                textColor = .secondaryLabel
+            } else {
+                textColor = .darkText
+            }
+        }
+    }
+    
+    private class SubtitleLabel: UILabel {
+        convenience init(_ text: String) {
+            self.init()
+            self.text = text
+            font = UIFont.preferredFont(forTextStyle: .title3)
+            if #available(iOS 13.0, *) {
+                textColor = .tertiaryLabel
+            } else {
+                textColor = .lightText
+            }
         }
     }
 }
