@@ -23,6 +23,15 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     private var filterControllerWidthConstraint: NSLayoutConstraint?
     private var filterControllerProportionalWidthConstraint: NSLayoutConstraint?
     
+    private let zimFiles: Results<ZimFile>? = {
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            let predicate = NSPredicate(format: "stateRaw == %@ AND includeInSearch == true", ZimFile.State.local.rawValue)
+            return database.objects(ZimFile.self).filter(predicate)
+        } catch { return nil }
+    }()
+    private var changeToken: NotificationToken?
+    
     init() {
         super.init(nibName: nil, bundle: nil)
         
@@ -83,11 +92,13 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
         
         informationView.alpha = 0.0
         configureStackView()
+        configureChangeToken()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         informationView.alpha = 0.0
+        changeToken = nil
         
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
@@ -99,7 +110,7 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
         configureStackView()
     }
     
-    // MARK: View configuration
+    // MARK: Configurations
     
     private func configureStackView() {
         stackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
@@ -126,6 +137,19 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
         case .inProgress, .noResults:
             stackView.addArrangedSubview(informationView)
         }
+    }
+    
+    private func configureChangeToken() {
+        changeToken = zimFiles?.observe({ (changes) in
+            switch changes {
+            case .update:
+                guard let contentViewController = self.presentingViewController as? ContentViewController,
+                    let searchText = contentViewController.searchController.searchBar.text else {return}
+                self.updateSearchResults(searchText: searchText)
+            default:
+                break
+            }
+        })
     }
     
     // MARK: Keyboard Events
@@ -170,22 +194,30 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text else {return}
-        
+        updateSearchResults(searchText: searchText)
+    }
+    
+    private func updateSearchResults(searchText: String) {
         queue.cancelAllOperations()
         if searchText.count == 0 {
             mode = .filter
         } else {
-            if mode == .results, searchText == resultsListController.searchText {
+            let zimFileIDs: Set<String> = {
+                guard let result = zimFiles else { return Set() }
+                return Set(result.map({ $0.id }))
+            }()
+            
+            if mode == .results, searchText == resultsListController.searchText, zimFileIDs == resultsListController.zimFileIDs {
                 return
             }
             informationView.activityIndicator.startAnimating()
             mode = .inProgress
             
-            let operation = SearchProcedure(term: searchText, ids: Set())
+            let operation = SearchProcedure(term: searchText, ids: zimFileIDs)
             operation.completionBlock = { [weak self] in
                 guard !operation.isCancelled else {return}
                 DispatchQueue.main.sync {
-                    self?.resultsListController.update(searchText: searchText, results: operation.sortedResults)
+                    self?.resultsListController.update(searchText: searchText, zimFileIDs: zimFileIDs, results: operation.sortedResults)
                     self?.informationView.activityIndicator.stopAnimating()
                     self?.mode = operation.sortedResults.count > 0 ? .results : .noResults
                 }

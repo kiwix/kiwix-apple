@@ -12,7 +12,8 @@ import SwiftyUserDefaults
 
 class SearchResultsListController: UITableViewController {
     private(set) var searchText: String = ""
-    private(set) var results: [SearchResult] = []
+    private(set) var zimFileIDs = Set<String>()
+    private(set) var results = [SearchResult]()
     private weak var clearResultTimer: Timer?
     
     init() {
@@ -32,8 +33,9 @@ class SearchResultsListController: UITableViewController {
         tableView.keyboardDismissMode = .onDrag
     }
     
-    func update(searchText: String, results: [SearchResult]) {
+    func update(searchText: String, zimFileIDs: Set<String>, results: [SearchResult]) {
         self.searchText = searchText
+        self.zimFileIDs = zimFileIDs
         self.results = results
         tableView.reloadData()
     }
@@ -58,7 +60,7 @@ class SearchResultsListController: UITableViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         clearResultTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: false, block: { (_) in
-            self.update(searchText: "", results: [])
+            self.update(searchText: "", zimFileIDs: Set(), results: [])
         })
     }
     
