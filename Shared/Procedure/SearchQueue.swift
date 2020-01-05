@@ -28,9 +28,9 @@ class SearchQueue: OperationQueue {
                 guard newOperations.count == 0, let operation = oldOperations.last as? SearchProcedure else {return}
                 DispatchQueue.main.async {
                     if operation.isCancelled {
-                        self.eventDelegate?.searchFinished(searchText: "", results: [])
+                        self.eventDelegate?.searchFinished(searchText: "", results: [], isCancelled: true)
                     } else {
-                        self.eventDelegate?.searchFinished(searchText: operation.searchText, results: operation.sortedResults)
+                        self.eventDelegate?.searchFinished(searchText: operation.searchText, results: operation.sortedResults, isCancelled: false)
                     }
                 }
             }
@@ -46,5 +46,5 @@ class SearchQueue: OperationQueue {
 
 protocol SearchQueueEvents: class {
     func searchStarted()
-    func searchFinished(searchText: String, results: [SearchResult])
+    func searchFinished(searchText: String, results: [SearchResult], isCancelled: Bool)
 }

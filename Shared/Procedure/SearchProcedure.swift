@@ -6,6 +6,7 @@
 //  Copyright © 2017 Chris Li. All rights reserved.
 //
 
+import SwiftyUserDefaults
 
 class SearchProcedure: Operation {
     let searchText: String
@@ -15,10 +16,10 @@ class SearchProcedure: Operation {
     private var results = Set<SearchResult>()
     private(set) var sortedResults: [SearchResult] = []
     
-    init(term: String, ids: Set<ZimFileID> = Set(), extractSnippet: Bool) {
+    init(term: String, ids: Set<ZimFileID> = Set(), extractSnippet: Bool? = nil) {
         self.searchText = term
         self.ids = ids.count == 0 ? Set(ZimMultiReader.shared.ids) : ids
-        self.extractSnippet = extractSnippet
+        self.extractSnippet = extractSnippet ?? !Defaults[.searchResultExcludeSnippet]
         super.init()
         name = "Search Procedure"
     }
