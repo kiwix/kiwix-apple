@@ -11,14 +11,16 @@ import RealmSwift
 
 class SearchResultsController: UIViewController, UISearchResultsUpdating {
     private var viewAlwaysVisibleObserver: NSKeyValueObservation?
+    private var mode: Mode = .filter
     private let stackView = UIStackView()
+    private let infoStackView = InfoStackView()
     private let filterController = SearchFilterController()
     private let resultsListController = SearchResultsListController()
     private let tabbarController = UITabBarController()
-    private let filterControllerWidthConstraint: NSLayoutConstraint
+    private var filterControllerWidthConstraint: NSLayoutConstraint?
+    private var filterControllerProportionalWidthConstraint: NSLayoutConstraint?
     
     init() {
-        self.filterControllerWidthConstraint = filterController.view.widthAnchor.constraint(equalToConstant: 400)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -26,21 +28,11 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Overrides
+    // MARK: Overrides
 
     override func loadView() {
         view = UIView()
-        
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(stackView)
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-        ])
+        view.backgroundColor = .groupTableViewBackground
 
         if #available(iOS 13, *) {} else {
             /* Prevent SearchResultsController view from being automatically hidden by UISearchController */
@@ -53,6 +45,25 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // filter controller width constraints for horizontal regular
+        filterControllerWidthConstraint = filterController.view.widthAnchor.constraint(greaterThanOrEqualToConstant: 320)
+        filterControllerProportionalWidthConstraint = filterController.view.widthAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 0.3)
+        filterControllerProportionalWidthConstraint?.priority = .init(rawValue: 749)
+        
+        // configure stack view
+        stackView.axis = .horizontal
+        stackView.alignment = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(stackView)
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+        ])
+        
+        // add child controllers
         addChild(filterController)
         addChild(resultsListController)
         filterController.didMove(toParent: self)
@@ -61,7 +72,22 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(notification:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        infoStackView.alpha = 0.0
         configureStackView()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        infoStackView.alpha = 0.0
+        
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -69,23 +95,114 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
         configureStackView()
     }
     
-    private func configureStackView() {
-        let test = UILabel()
-        test.text = "test"
+    // MARK: Keyboard Events
+    
+    private func updateAdditionalSafeAreaInsets(notification: Notification, animated: Bool) {
+        guard let userInfo = notification.userInfo,
+            let keyboardEndFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {return}
+        let keyboardEndFrameInView = view.convert(keyboardEndFrame, from: nil)
+        let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame.insetBy(dx: 0, dy: -additionalSafeAreaInsets.bottom)
+        let intersection = safeAreaFrame.intersection(keyboardEndFrameInView)
         
+        let duration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+        let animationCurveRawValue = (userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber)?.uintValue
+        let options = UIView.AnimationOptions(rawValue: animationCurveRawValue ?? UIView.AnimationOptions.curveEaseInOut.rawValue)
+        let updates = {
+            self.additionalSafeAreaInsets.bottom = intersection.height
+            self.view.layoutIfNeeded()
+        }
+        
+        if animated {
+            UIView.animate(withDuration: duration, delay: 0.0, options: options,
+                           animations: updates, completion: nil)
+        } else {
+            updates()
+        }
+    }
+    
+    @objc func keyboardWillShow(notification: Notification) {
+        updateAdditionalSafeAreaInsets(notification: notification, animated: true)
+    }
+    
+    @objc func keyboardDidShow(notification: Notification) {
+        updateAdditionalSafeAreaInsets(notification: notification, animated: false)
+        if infoStackView.alpha == 0.0 { infoStackView.alpha = 1.0 }
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+        updateAdditionalSafeAreaInsets(notification: notification, animated: true)
+    }
+    
+    
+    private func configureStackView() {
         stackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
+        infoStackView.configure(mode: mode)
         if traitCollection.horizontalSizeClass == .regular {
             stackView.addArrangedSubview(filterController.view)
-            stackView.addArrangedSubview(test)
-            filterControllerWidthConstraint.isActive = true
+            stackView.addArrangedSubview(DividerView())
+            stackView.addArrangedSubview(infoStackView)
+            filterControllerWidthConstraint?.isActive = true
+            filterControllerProportionalWidthConstraint?.isActive = true
         } else if traitCollection.horizontalSizeClass == .compact {
             stackView.addArrangedSubview(filterController.view)
-            filterControllerWidthConstraint.isActive = false
+            filterControllerWidthConstraint?.isActive = false
+            filterControllerProportionalWidthConstraint?.isActive = false
         }
     }
     
     func updateSearchResults(for searchController: UISearchController) {
         
+    }
+    
+}
+
+// MARK: -
+
+fileprivate enum Mode {
+    case filter, InProgress, noResults, results
+}
+
+fileprivate class InfoStackView: UIStackView {
+    private let startSearchLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Start a search"
+        return label
+    }()
+    
+    init() {
+        super.init(frame: .zero)
+        axis = .vertical
+        alignment = .center
+    }
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure(mode: Mode) {
+        arrangedSubviews.forEach({ removeArrangedSubview($0) })
+        switch mode {
+        case .filter:
+            addArrangedSubview(startSearchLabel)
+        default:
+            break
+        }
+    }
+}
+
+fileprivate class DividerView: UIView {
+    init() {
+        super.init(frame: .zero)
+        if #available(iOS 13.0, *) {
+            backgroundColor = .separator
+        } else {
+            backgroundColor = .gray
+        }
+        widthAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale).isActive = true
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 

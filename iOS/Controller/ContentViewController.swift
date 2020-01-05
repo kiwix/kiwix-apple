@@ -68,7 +68,6 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
             searchController.showsSearchResultsController = true
         } else {
             searchController.searchBar.searchBarStyle = .minimal
-            searchController.obscuresBackgroundDuringPresentation = true
         }
         
         // misc

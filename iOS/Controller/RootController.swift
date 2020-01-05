@@ -21,7 +21,6 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate {
         viewControllers = [sideBarViewController, self.contentNavigationController]
         
         delegate = self
-//        preferredDisplayMode = .allVisible
         sideBarViewController.favoriteController.delegate = contentViewController
         sideBarViewController.outlineController.delegate = contentViewController
         contentViewController.configureToolbar(isGrouped: !isCollapsed)
@@ -34,7 +33,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate {
     override func overrideTraitCollection(forChild childViewController: UIViewController) -> UITraitCollection? {
         if viewControllers.count > 1,
             childViewController == viewControllers.last,
-            preferredDisplayMode == .allVisible {
+            displayMode == .allVisible {
             return UITraitCollection(horizontalSizeClass: .compact)
         } else {
             return super.overrideTraitCollection(forChild: childViewController)
