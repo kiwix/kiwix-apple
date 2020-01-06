@@ -68,19 +68,6 @@ class SearchFilterController: UIViewController, UITableViewDelegate, UITableView
         changeToken = nil
     }
     
-//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-//        super.traitCollectionDidChange(previousTraitCollection)
-//        guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
-//        switch traitCollection.horizontalSizeClass {
-//        case .compact:
-//            tableView.backgroundColor = .groupTableViewBackground
-//        case .regular:
-//            tableView.backgroundColor = .clear
-//        default:
-//            break
-//        }
-//    }
-    
     // MARK: - Observer
     
     private func configureChangeToken() {

@@ -77,8 +77,6 @@ class SearchResultsListController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
         let result = results[indexPath.row]
-        
-//        if traitCollection.horizontalSizeClass == .regular {cell.backgroundColor = .clear}
         cell.titleLabel.text = result.title
         
         do {
