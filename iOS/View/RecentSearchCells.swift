@@ -91,11 +91,18 @@ class RecentSearchCollectionViewCell: UICollectionViewCell {
     }
     
     private func configure() {
-        label.textColor = .darkText
+        if #available(iOS 13.0, *) {
+            label.textColor = .label
+            backgroundColor = .systemGroupedBackground
+        } else {
+            label.textColor = .darkText
+            backgroundColor = #colorLiteral(red: 0.9117823243, green: 0.9118037224, blue: 0.9117922187, alpha: 1)
+        }
+        
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 12)
         label.translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = #colorLiteral(red: 0.9117823243, green: 0.9118037224, blue: 0.9117922187, alpha: 1)
+        
         clipsToBounds = true
         contentView.addSubview(label)
         setNeedsUpdateConstraints()

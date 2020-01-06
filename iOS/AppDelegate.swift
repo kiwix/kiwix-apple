@@ -127,8 +127,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         var shortcutItems = [search, bookmark]
         
         if let rootController = window?.rootViewController as? RootController,
-            let title = rootController.contentViewController.currentWebViewController?.title,
-            let url = rootController.contentViewController.currentWebViewController?.currentURL {
+            let title = rootController.contentViewController.webViewController.title,
+            let url = rootController.contentViewController.webViewController.currentURL {
             shortcutItems.append(UIApplicationShortcutItem(type: ShortcutItemType.continueReading.rawValue,
             localizedTitle: title , localizedSubtitle: NSLocalizedString("Continue Reading", comment: "3D Touch Menu Title"),
             icon: nil, userInfo: ["URL": url.absoluteString as NSSecureCoding]))

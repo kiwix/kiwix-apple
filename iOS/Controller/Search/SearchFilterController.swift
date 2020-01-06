@@ -10,16 +10,10 @@ import UIKit
 import RealmSwift
 import SwiftyUserDefaults
 
-class SearchNoTextController: UIViewController, UITableViewDelegate, UITableViewDataSource,
+class SearchFilterController: UIViewController, UITableViewDelegate, UITableViewDataSource,
                               UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,
                               SearchNoTextControllerSectionHeaderDelegate {
-    private let tableView: UITableView = {
-        if #available(iOS 13.0, *) {
-            return UITableView(frame: .zero, style: .insetGrouped)
-        } else {
-            return UITableView(frame: .zero, style: .grouped)
-        }
-    }()
+    private let tableView = UITableView(frame: .zero, style: .grouped)
     private var sections: [Section] = [.searchFilter]
     
     private let zimFiles: Results<ZimFile>? = {
@@ -74,19 +68,6 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
         changeToken = nil
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        guard traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass else {return}
-        switch traitCollection.horizontalSizeClass {
-        case .compact:
-            tableView.backgroundColor = .groupTableViewBackground
-        case .regular:
-            tableView.backgroundColor = .clear
-        default:
-            break
-        }
-    }
-    
     // MARK: - Observer
     
     private func configureChangeToken() {
@@ -111,7 +92,7 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
     
     // MARK: - SearchNoTextControllerSectionHeaderDelegate
     
-    func sectionHeaderButtonTapped(button: UIButton, section: SearchNoTextController.Section) {
+    func sectionHeaderButtonTapped(button: UIButton, section: SearchFilterController.Section) {
         switch section {
         case .recentSearch:
             Defaults[.recentSearchTexts] = []
@@ -238,7 +219,7 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
                                                           options: .usesLineFragmentOrigin,
                                                           attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)],
                                                           context: nil).size.width
-        return CGSize(width: width.rounded(.down) + 20, height: 24)
+        return CGSize(width: max(width.rounded(.down) + 20, 28), height: 24)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -275,13 +256,19 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
         
         private func configure() {
             label.font = UIFont.systemFont(ofSize: 13)
-            label.textColor = .darkGray
             label.setContentHuggingPriority(UILayoutPriority(rawValue: 250), for: .horizontal)
 
-            button.setTitleColor(.gray, for: .normal)
             button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
             button.setContentHuggingPriority(UILayoutPriority(rawValue: 251), for: .horizontal)
             button.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
+            
+            if #available(iOS 13.0, *) {
+                label.textColor = .secondaryLabel
+                button.setTitleColor(.secondaryLabel, for: .normal)
+            } else {
+                label.textColor = .darkGray
+                button.setTitleColor(.gray, for: .normal)
+            }
             
             alignment = .bottom
             preservesSuperviewLayoutMargins = true
@@ -301,5 +288,5 @@ class SearchNoTextController: UIViewController, UITableViewDelegate, UITableView
 // MARK: - Protocols
 
 protocol SearchNoTextControllerSectionHeaderDelegate: class {
-    func sectionHeaderButtonTapped(button: UIButton, section: SearchNoTextController.Section)
+    func sectionHeaderButtonTapped(button: UIButton, section: SearchFilterController.Section)
 }
