@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 
 class SearchResultsController: UIViewController, UISearchResultsUpdating {
-    private var mode: Mode = .filter { didSet { configureStackView() } }
+    private var displayMode: DisplayMode = .filter { didSet(oldValue) { configureStackView(oldDisplayMode: oldValue) } }
     private let queue = SearchQueue()
     private var viewAlwaysVisibleObserver: NSKeyValueObservation?
     
@@ -112,7 +112,9 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     
     // MARK: Configurations
     
-    private func configureStackView() {
+    private func configureStackView(oldDisplayMode: DisplayMode? = nil) {
+        guard displayMode != oldDisplayMode else {return}
+        
         stackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
         if traitCollection.horizontalSizeClass == .regular {
             stackView.addArrangedSubview(filterController.view)
@@ -124,8 +126,8 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
             filterControllerProportionalWidthConstraint?.isActive = false
         }
         
-        informationView.configure(mode: mode)
-        switch mode {
+        informationView.displayMode = displayMode
+        switch displayMode {
         case .filter:
             if traitCollection.horizontalSizeClass == .regular {
                 stackView.addArrangedSubview(informationView)
@@ -200,26 +202,26 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     private func updateSearchResults(searchText: String) {
         queue.cancelAllOperations()
         if searchText.count == 0 {
-            mode = .filter
+            displayMode = .filter
         } else {
             let zimFileIDs: Set<String> = {
                 guard let result = zimFiles else { return Set() }
                 return Set(result.map({ $0.id }))
             }()
             
-            if mode == .results, searchText == resultsListController.searchText, zimFileIDs == resultsListController.zimFileIDs {
+            if displayMode == .results,
+                searchText == resultsListController.searchText,
+                zimFileIDs == resultsListController.zimFileIDs {
                 return
             }
-            informationView.activityIndicator.startAnimating()
-            mode = .inProgress
+            displayMode = .inProgress
             
             let operation = SearchProcedure(term: searchText, ids: zimFileIDs)
             operation.completionBlock = { [weak self] in
                 guard !operation.isCancelled else {return}
                 DispatchQueue.main.sync {
                     self?.resultsListController.update(searchText: searchText, zimFileIDs: zimFileIDs, results: operation.sortedResults)
-                    self?.informationView.activityIndicator.stopAnimating()
-                    self?.mode = operation.sortedResults.count > 0 ? .results : .noResults
+                    self?.displayMode = operation.sortedResults.count > 0 ? .results : .noResults
                 }
             }
             queue.addOperation(operation)
@@ -229,15 +231,17 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
 
 // MARK: - Class Definitions
 
-fileprivate enum Mode {
+fileprivate enum DisplayMode {
     case filter, inProgress, noResults, results
 }
 
 fileprivate class InformationView: UIView {
-    let activityIndicator = UIActivityIndicatorView()
+    private let activityIndicator = UIActivityIndicatorView()
+    var displayMode: DisplayMode = .filter { didSet(oldValue) { configure(oldDisplayMode: oldValue) } }
     
     convenience init() {
         self.init(frame: .zero)
+        configure()
         if #available(iOS 13.0, *) {
             activityIndicator.style = .large
         } else {
@@ -245,29 +249,34 @@ fileprivate class InformationView: UIView {
         }
     }
     
-    func configure(mode: Mode) {
-        switch mode {
+    private func configure(oldDisplayMode: DisplayMode? = nil) {
+        guard displayMode != oldDisplayMode else {return}
+        if oldDisplayMode == .inProgress {
+            activityIndicator.stopAnimating()
+        }
+        
+        switch displayMode {
         case .filter:
             let container = makeStackedContainer([
                 TitleLabel("No Search Results."),
                 SubtitleLabel("Please enter some text to start a search."),
             ])
-            centerView(container)
+            setCenterView(container)
         case .inProgress:
             activityIndicator.startAnimating()
-            centerView(activityIndicator)
+            setCenterView(activityIndicator)
         case .noResults:
             let container = makeStackedContainer([
                 TitleLabel("No Search Results."),
                 SubtitleLabel("Please update the search text or search filter."),
             ])
-            centerView(container)
+            setCenterView(container)
         default:
             break
         }
     }
         
-    private func centerView(_ view: UIView?) {
+    private func setCenterView(_ view: UIView?) {
         subviews.forEach({ $0.removeFromSuperview() })
         guard let view = view else {return}
         view.translatesAutoresizingMaskIntoConstraints = false
