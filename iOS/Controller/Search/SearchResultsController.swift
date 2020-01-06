@@ -195,7 +195,7 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     // MARK: UISearchResultsUpdating
     
     func updateSearchResults(for searchController: UISearchController) {
-        guard let searchText = searchController.searchBar.text else {return}
+        guard let searchText = searchController.searchBar.text, !searchController.isBeingDismissed else {return}
         updateSearchResults(searchText: searchText)
     }
     
