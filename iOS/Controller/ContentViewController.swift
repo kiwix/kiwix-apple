@@ -86,11 +86,12 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         updateToolBarButtonEnabled()
         
         // show welcome controller
-        if #available(iOS 13.0, *) {
-            setChildControllerIfNeeded(UIHostingController(rootView: HomeView()))
-        } else {
-            setChildControllerIfNeeded(welcomeController)
-        }
+        setChildControllerIfNeeded(welcomeController)
+//        if #available(iOS 13.0, *) {
+//            setChildControllerIfNeeded(UIHostingController(rootView: HomeView()))
+//        } else {
+//            setChildControllerIfNeeded(welcomeController)
+//        }
     }
     
     func load(url: URL) {
