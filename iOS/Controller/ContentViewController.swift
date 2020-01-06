@@ -265,8 +265,8 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     
     @objc func toggleSideBar() {
         UIView.animate(withDuration: 0.2) {
-            let current = self.splitViewController?.preferredDisplayMode
-            self.splitViewController?.preferredDisplayMode = current == .primaryHidden ? .allVisible : .primaryHidden
+            let displayMode = self.splitViewController?.displayMode
+            self.splitViewController?.preferredDisplayMode = displayMode == .primaryHidden ? .allVisible : .primaryHidden
         }
     }
     

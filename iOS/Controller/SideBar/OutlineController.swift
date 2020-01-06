@@ -64,19 +64,14 @@ class OutlineController: UITableViewController {
         tableView.backgroundView = nil
         
         // update items
-        if #available(iOS 13.0, *) {
-            if let rootController = (splitViewController ?? presentingViewController) as? RootController {
-                let webViewController = rootController.contentViewController.webViewController
-                webViewController.extractTableOfContents(completion: { (url, items) in
-                    self.items = items
-                })
-            } else {
-                self.items = []
-            }
+        if let rootController = (splitViewController ?? presentingViewController) as? RootController {
+            let webViewController = rootController.contentViewController.webViewController
+            webViewController.extractTableOfContents(completion: { (url, items) in
+                self.items = items
+            })
         } else {
-            // Fallback on earlier versions
+            self.items = []
         }
-        
     }
     
     @objc func dismissController() {

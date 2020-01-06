@@ -12,15 +12,11 @@ class SideBarController: UITabBarController {
     let favoriteController = BookmarkController()
     let outlineController = OutlineController()
     
-    init() {
-        super.init(nibName: nil, bundle: nil)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         viewControllers = [
             UINavigationController(rootViewController: favoriteController),
             UINavigationController(rootViewController: outlineController),
         ]
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
