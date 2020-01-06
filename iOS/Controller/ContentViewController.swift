@@ -1,13 +1,12 @@
 //
 //  ContentViewController.swift
-//  iOS
+//  Kiwix for iOS
 //
 //  Created by Chris Li on 12/8/19.
 //  Copyright © 2019 Chris Li. All rights reserved.
 //
 
 import UIKit
-import SwiftUI
 import RealmSwift
 
 class ContentViewController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate,
@@ -87,11 +86,6 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         
         // show welcome controller
         setChildControllerIfNeeded(welcomeController)
-//        if #available(iOS 13.0, *) {
-//            setChildControllerIfNeeded(UIHostingController(rootView: HomeView()))
-//        } else {
-//            setChildControllerIfNeeded(welcomeController)
-//        }
     }
     
     func load(url: URL) {
@@ -151,12 +145,21 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         if let child = newChild {
             child.view.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(child.view)
-            NSLayoutConstraint.activate([
-                view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: child.view.topAnchor),
-                view.leftAnchor.constraint(equalTo: child.view.leftAnchor),
-                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: child.view.bottomAnchor),
-                view.rightAnchor.constraint(equalTo: child.view.rightAnchor),
-            ])
+            if child == welcomeController {
+                NSLayoutConstraint.activate([
+                    view.topAnchor.constraint(equalTo: child.view.topAnchor),
+                    view.leftAnchor.constraint(equalTo: child.view.leftAnchor),
+                    view.bottomAnchor.constraint(equalTo: child.view.bottomAnchor),
+                    view.rightAnchor.constraint(equalTo: child.view.rightAnchor),
+                ])
+            } else {
+                NSLayoutConstraint.activate([
+                    view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: child.view.topAnchor),
+                    view.leftAnchor.constraint(equalTo: child.view.leftAnchor),
+                    view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: child.view.bottomAnchor),
+                    view.rightAnchor.constraint(equalTo: child.view.rightAnchor),
+                ])
+            }
             addChild(child)
             child.didMove(toParent: self)
         }

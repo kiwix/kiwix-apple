@@ -17,7 +17,6 @@
 		970EC3A423BCED7F008DCA27 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 970EC3A323BCED7F008DCA27 /* SwiftSoup */; };
 		970EC3FB23BE8E25008DCA27 /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3AB23BCF31F008DCA27 /* ParserTests.swift */; };
 		970EC3FC23BE8E31008DCA27 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
-		970EC40323BEAB1C008DCA27 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC40223BEAB1C008DCA27 /* HomeView.swift */; };
 		97161A861F8FFD1E00A89DE3 /* LibraryCategoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */; };
 		9719F60320DAF7A600B5D0EB /* SearchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AC121420879252004779D1 /* SearchQueue.swift */; };
 		9719F60420DAF7C000B5D0EB /* SearchProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975415D31F54C1870007EA6C /* SearchProcedure.swift */; };
@@ -215,6 +214,7 @@
 		9702BE211F97FA4300E6B4EE /* LibraryRefreshOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryRefreshOperation.swift; sourceTree = "<group>"; };
 		97041F7E1F9652D4007D63F5 /* WikiMed.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WikiMed.plist; sourceTree = "<group>"; };
 		97050D001F6733400021DE78 /* WebKitWebController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitWebController.swift; sourceTree = "<group>"; };
+		9707541A23C2D3AB0076B74E /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		9707B8F51F4B4F1500075D4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		970EC39C23BCE2B5008DCA27 /* BookmarkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkManager.swift; sourceTree = "<group>"; };
 		970EC3A023BCEC84008DCA27 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
@@ -682,6 +682,7 @@
 		3B93EAF9B5C5AA23046BDEAC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9707541A23C2D3AB0076B74E /* SwiftUI.framework */,
 				974FFE6E2353AA3900F6BF28 /* WebKit.framework */,
 				974FFE6C2353AA3200F6BF28 /* Foundation.framework */,
 				97F6CC5020BD960F005CDBD2 /* MapKit.framework */,
@@ -1726,7 +1727,6 @@
 				975F97A820D00EAE0005D642 /* SettingSearchController.swift in Sources */,
 				97242E162093A9AC00AA4436 /* Bookmark.swift in Sources */,
 				97D00A7F1FBB92D400165629 /* TableOfContentItem.swift in Sources */,
-				970EC40323BEAB1C008DCA27 /* HomeView.swift in Sources */,
 				97018985212357F200F8A6DD /* LibrarySearchController.swift in Sources */,
 				97252105200E908000B60A80 /* TableViewCell.swift in Sources */,
 				97F4D10A20ADD0F00038FC87 /* DownloadManager.swift in Sources */,
