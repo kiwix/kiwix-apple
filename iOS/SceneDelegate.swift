@@ -20,4 +20,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window?.makeKeyAndVisible()
         }
     }
+    
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        guard let context = URLContexts.first,
+            let rootViewController = window?.rootViewController as? RootController else {return}
+        rootViewController.dismiss(animated: false)
+        if context.url.scheme?.caseInsensitiveCompare("kiwix") == .orderedSame {
+            rootViewController.contentViewController.load(url: context.url)
+        } else if context.url.scheme == "file" {
+            
+        }
+    }
 }

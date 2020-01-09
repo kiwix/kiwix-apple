@@ -16,9 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     let fileMonitor = DirectoryMonitor(url: URL.documentDirectory)
     
     func applicationDidFinishLaunching(_ application: UIApplication) {
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = RootController()
-        window?.makeKeyAndVisible()
+        if #available(iOS 13.0, *) {} else {
+            window = UIWindow(frame: UIScreen.main.bounds)
+            window?.rootViewController = RootController()
+            window?.makeKeyAndVisible()
+        }
         
         print(URL.documentDirectory)
         
