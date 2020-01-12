@@ -63,4 +63,32 @@ class RootSplitViewController: UISplitViewController, UISplitViewControllerDeleg
         contentViewController.configureToolbar(isGrouped: true)
         return contentNavigationController
     }
+    
+    // MARK: Actions
+    
+    func openKiwixURL(_ url: URL) {
+        guard url.isKiwixURL else {return}
+        contentViewController.load(url: url)
+    }
+    
+    func openFileURL(_ url: URL, canOpenInPlace: Bool) {
+        guard url.isFileURL else {return}
+        dismiss(animated: false)
+        if let _ = ZimMultiReader.getMetaData(url: url) {
+            let fileImportController = FileImportController(fileURL: url, canOpenInPlace: canOpenInPlace)
+            present(fileImportController, animated: true)
+        } else {
+            present(FileImportAlertController(fileName: url.lastPathComponent), animated: true)
+        }
+    }
+    
+    func openShortcut(_ shortcut: Shortcut) {
+        dismiss(animated: false)
+        switch shortcut {
+        case .search:
+            contentViewController.searchController.isActive = true
+        case .bookmark:
+            contentViewController.openBookmark()
+        }
+    }
 }
