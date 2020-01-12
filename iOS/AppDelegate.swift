@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     func applicationDidFinishLaunching(_ application: UIApplication) {
         if #available(iOS 13.0, *) {} else {
             window = UIWindow(frame: UIScreen.main.bounds)
-            window?.rootViewController = RootController()
+            window?.rootViewController = RootSplitViewController()
             window?.makeKeyAndVisible()
         }
         
@@ -52,7 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     
     func application(_ app: UIApplication, open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        guard let rootController = window?.rootViewController as? RootController else {return false}
+        guard let rootController = window?.rootViewController as? RootSplitViewController else {return false}
         rootController.dismiss(animated: false)
         if url.scheme?.caseInsensitiveCompare("kiwix") == .orderedSame {
             rootController.contentViewController.load(url: url)
@@ -109,7 +109,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     // MARK: - Home Screen Quick Actions
     
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-        guard let rootController = window?.rootViewController as? RootController,
+        guard let rootController = window?.rootViewController as? RootSplitViewController,
             let shortcutItemType = ShortcutItemType(rawValue: shortcutItem.type) else { completionHandler(false); return }
         switch shortcutItemType {
         case .search:
@@ -128,7 +128,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         let search = UIApplicationShortcutItem(type: ShortcutItemType.search.rawValue, localizedTitle: NSLocalizedString("Search", comment: "3D Touch Menu Title"))
         var shortcutItems = [search, bookmark]
         
-        if let rootController = window?.rootViewController as? RootController,
+        if let rootController = window?.rootViewController as? RootSplitViewController,
             let title = rootController.contentViewController.webViewController.title,
             let url = rootController.contentViewController.webViewController.currentURL {
             shortcutItems.append(UIApplicationShortcutItem(type: ShortcutItemType.continueReading.rawValue,

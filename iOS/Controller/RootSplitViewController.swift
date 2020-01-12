@@ -1,6 +1,6 @@
 //
-//  MainController_iOS13.swift
-//  iOS
+//  RootSplitViewController.swift
+//  Kiwix for iOS
 //
 //  Created by Chris Li on 11/24/19.
 //  Copyright © 2019 Chris Li. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RootController: UISplitViewController, UISplitViewControllerDelegate {
+class RootSplitViewController: UISplitViewController, UISplitViewControllerDelegate {
     let sideBarViewController = SideBarController()
     let contentViewController = ContentViewController()
     let contentNavigationController: UINavigationController

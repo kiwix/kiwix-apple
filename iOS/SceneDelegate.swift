@@ -16,14 +16,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                options connectionOptions: UIScene.ConnectionOptions) {
         if let windowScene = scene as? UIWindowScene {
             window = UIWindow(windowScene: windowScene)
-            window?.rootViewController = RootController()
+            window?.rootViewController = RootSplitViewController()
             window?.makeKeyAndVisible()
         }
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         guard let context = URLContexts.first,
-            let rootViewController = window?.rootViewController as? RootController else {return}
+            let rootViewController = window?.rootViewController as? RootSplitViewController else {return}
         rootViewController.dismiss(animated: false)
         if context.url.scheme?.caseInsensitiveCompare("kiwix") == .orderedSame {
             rootViewController.contentViewController.load(url: context.url)
