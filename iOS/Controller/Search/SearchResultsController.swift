@@ -110,6 +110,14 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
         configureStackView()
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        informationView.alpha = 0.0
+        coordinator.animate(alongsideTransition: nil) { _ in
+            self.informationView.alpha = 1.0
+        }
+    }
+    
     // MARK: Configurations
     
     private func configureStackView(oldDisplayMode: DisplayMode? = nil) {

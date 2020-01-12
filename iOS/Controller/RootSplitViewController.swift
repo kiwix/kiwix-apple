@@ -1,6 +1,6 @@
 //
-//  MainController_iOS13.swift
-//  iOS
+//  RootSplitViewController.swift
+//  Kiwix for iOS
 //
 //  Created by Chris Li on 11/24/19.
 //  Copyright © 2019 Chris Li. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RootController: UISplitViewController, UISplitViewControllerDelegate {
+class RootSplitViewController: UISplitViewController, UISplitViewControllerDelegate {
     let sideBarViewController = SideBarController()
     let contentViewController = ContentViewController()
     let contentNavigationController: UINavigationController
@@ -19,8 +19,15 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate {
         
         super.init(nibName: nil, bundle: nil)
         viewControllers = [sideBarViewController, self.contentNavigationController]
-        
         delegate = self
+        
+        /* For some reason, the sidebar is not rendered correctly if hidden on launch when running on iOS 12.
+           Well, I guess the app is gonna launch with sidebar visible on iOS 12. */
+        if #available(iOS 13.0, *) {
+            preferredDisplayMode = .automatic
+        } else {
+            preferredDisplayMode = .allVisible
+        }
         sideBarViewController.favoriteController.delegate = contentViewController
         sideBarViewController.outlineController.delegate = contentViewController
         contentViewController.configureToolbar(isGrouped: !isCollapsed)
@@ -55,5 +62,33 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate {
                              separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
         contentViewController.configureToolbar(isGrouped: true)
         return contentNavigationController
+    }
+    
+    // MARK: Actions
+    
+    func openKiwixURL(_ url: URL) {
+        guard url.isKiwixURL else {return}
+        contentViewController.load(url: url)
+    }
+    
+    func openFileURL(_ url: URL, canOpenInPlace: Bool) {
+        guard url.isFileURL else {return}
+        dismiss(animated: false)
+        if let _ = ZimMultiReader.getMetaData(url: url) {
+            let fileImportController = FileImportController(fileURL: url, canOpenInPlace: canOpenInPlace)
+            present(fileImportController, animated: true)
+        } else {
+            present(FileImportAlertController(fileName: url.lastPathComponent), animated: true)
+        }
+    }
+    
+    func openShortcut(_ shortcut: Shortcut) {
+        dismiss(animated: false)
+        switch shortcut {
+        case .search:
+            contentViewController.searchController.isActive = true
+        case .bookmark:
+            contentViewController.openBookmark()
+        }
     }
 }

@@ -1,13 +1,12 @@
 //
 //  ContentViewController.swift
-//  iOS
+//  Kiwix for iOS
 //
 //  Created by Chris Li on 12/8/19.
 //  Copyright © 2019 Chris Li. All rights reserved.
 //
 
 import UIKit
-import SwiftUI
 import RealmSwift
 
 class ContentViewController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate,
@@ -87,11 +86,6 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         
         // show welcome controller
         setChildControllerIfNeeded(welcomeController)
-//        if #available(iOS 13.0, *) {
-//            setChildControllerIfNeeded(UIHostingController(rootView: HomeView()))
-//        } else {
-//            setChildControllerIfNeeded(welcomeController)
-//        }
     }
     
     func load(url: URL) {
@@ -151,12 +145,21 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         if let child = newChild {
             child.view.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(child.view)
-            NSLayoutConstraint.activate([
-                view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: child.view.topAnchor),
-                view.leftAnchor.constraint(equalTo: child.view.leftAnchor),
-                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: child.view.bottomAnchor),
-                view.rightAnchor.constraint(equalTo: child.view.rightAnchor),
-            ])
+            if child == welcomeController {
+                NSLayoutConstraint.activate([
+                    view.topAnchor.constraint(equalTo: child.view.topAnchor),
+                    view.leftAnchor.constraint(equalTo: child.view.leftAnchor),
+                    view.bottomAnchor.constraint(equalTo: child.view.bottomAnchor),
+                    view.rightAnchor.constraint(equalTo: child.view.rightAnchor),
+                ])
+            } else {
+                NSLayoutConstraint.activate([
+                    view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: child.view.topAnchor),
+                    view.leftAnchor.constraint(equalTo: child.view.leftAnchor),
+                    view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: child.view.bottomAnchor),
+                    view.rightAnchor.constraint(equalTo: child.view.rightAnchor),
+                ])
+            }
             addChild(child)
             child.didMove(toParent: self)
         }
@@ -221,7 +224,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
         }
         
         // if outline view is visible, update outline items
-        if let rootController = splitViewController as? RootController,
+        if let rootController = splitViewController as? RootSplitViewController,
             !rootController.isCollapsed,
             rootController.displayMode != .primaryHidden {
             let selectedNavController = rootController.sideBarViewController.selectedViewController
@@ -261,9 +264,13 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     }
     
     @objc func toggleSideBar() {
+        guard let splitViewController = self.splitViewController else {return}
         UIView.animate(withDuration: 0.2) {
-            let current = self.splitViewController?.preferredDisplayMode
-            self.splitViewController?.preferredDisplayMode = current == .primaryHidden ? .allVisible : .primaryHidden
+            let splitViewSize = splitViewController.view.frame.size
+            let primaryVisibleDisplayMode: UISplitViewController.DisplayMode =
+                splitViewSize.width > splitViewSize.height ? .allVisible : .primaryOverlay
+            splitViewController.preferredDisplayMode =
+                splitViewController.displayMode == .primaryHidden ? primaryVisibleDisplayMode : .primaryHidden
         }
     }
     
@@ -342,7 +349,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     }
     
     @objc func openLibrary() {
-        guard let splitController = splitViewController as? RootController else {return}
+        guard let splitController = splitViewController as? RootSplitViewController else {return}
         splitController.present(libraryController, animated: true)
     }
     

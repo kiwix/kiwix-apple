@@ -31,8 +31,8 @@ class TableViewCell: UITableViewCell {
         guard !configuredConstraints else { return }
         
         NSLayoutConstraint.activate([
-            thumbImageView.heightAnchor.constraint(equalToConstant: 30),
-            thumbImageView.widthAnchor.constraint(equalToConstant: 30),
+            thumbImageView.heightAnchor.constraint(equalToConstant: 32),
+            thumbImageView.widthAnchor.constraint(equalToConstant: 32),
             thumbImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             thumbImageView.leftAnchor.constraint(equalTo: contentView.readableContentGuide.leftAnchor),
             thumbImageBackgroundView.heightAnchor.constraint(equalToConstant: 36),
