@@ -244,11 +244,14 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     // MARK: BookmarkControllerDelegate
     
     func didTapBookmark(url: URL) {
+        if searchController.isActive { searchController.isActive = false }
         load(url: url)
     }
     
     func didDeleteBookmark(url: URL) {
-        
+        guard webViewController.currentURL?.absoluteURL == url.absoluteURL else {return}
+        bookmarkButton.isBookmarked = false
+        bookmarkToggleButton.isBookmarked = false
     }
     
     // MARK: - Actions
