@@ -1,3 +1,9 @@
+## 1.11 (Jan 12, 2020)
+
+A redesigned iPad interface
+Fixing an issue where app creashed when attempting to save image to photo library
+
+
 ## 1.10 (Aug 10, 2019)
 
 Now you can importing zim files by:
