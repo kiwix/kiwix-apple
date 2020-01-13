@@ -85,6 +85,8 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Kiwix need your location to show nearby articles.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Kiwix needs permission to saves images to your photos app.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
