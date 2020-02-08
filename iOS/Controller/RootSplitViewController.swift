@@ -47,6 +47,11 @@ class RootSplitViewController: UISplitViewController, UISplitViewControllerDeleg
         }
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        preferredDisplayMode = size.width > size.height ? .automatic : .primaryHidden
+    }
+    
     // MARK: UISplitViewControllerDelegate
     
     func primaryViewController(forExpanding splitViewController: UISplitViewController) -> UIViewController? {
