@@ -15,7 +15,8 @@ class SearchWindow: NSWindow {
 }
 
 
-class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineViewDelegate, SearchQueueEvents {
+class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineViewDelegate {
+    
     @IBOutlet weak var tabView: NSTabView!
     @IBOutlet weak var resultsOutlineView: NSOutlineView!
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
@@ -27,7 +28,6 @@ class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        queue.eventDelegate = self
     }
     
     override func viewWillAppear() {
@@ -48,8 +48,32 @@ class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineView
     }
     
     func startSearch(searchText: String) {
-        let zimFileIDs: Set<String> = Set(ZimMultiReader.shared.ids)
-        queue.enqueue(searchText: searchText, zimFileIDs: zimFileIDs)
+        queue.cancelAllOperations()
+        
+        if searchText.count == 0 {
+            tabView.selectTabViewItem(withIdentifier: Mode.noResult.rawValue)
+        } else {
+            tabView.selectTabViewItem(withIdentifier: Mode.inProgress.rawValue)
+            progressIndicator.startAnimation(nil)
+            
+            let zimFileIDs: Set<String> = Set(ZimMultiReader.shared.ids)
+            let operation = SearchProcedure(term: searchText, ids: zimFileIDs)
+            operation.completionBlock = { [weak self] in
+                guard !operation.isCancelled else {return}
+                DispatchQueue.main.sync {
+                    self?.searchText = searchText
+                    self?.results = operation.sortedResults
+                    self?.resultsOutlineView.reloadData()
+                    self?.progressIndicator.stopAnimation(nil)
+                    if operation.sortedResults.count > 0 {
+                        self?.tabView.selectTabViewItem(withIdentifier: Mode.results.rawValue)
+                    } else {
+                        self?.tabView.selectTabViewItem(withIdentifier: Mode.noResult.rawValue)
+                    }
+                }
+            }
+            queue.addOperation(operation)
+        }
     }
     
     func clearSearch() {
@@ -63,25 +87,6 @@ class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineView
         windowController?.contentTabController?.setMode(.reader)
         windowController?.webViewController?.load(url: searchResult.url)
         windowController?.searchField.endSearch()
-    }
-    
-    // MARK: SearchQueueEvents
-    
-    func searchStarted() {
-        tabView.selectTabViewItem(withIdentifier: Mode.inProgress.rawValue)
-        progressIndicator.startAnimation(nil)
-    }
-    
-    func searchFinished(searchText: String, results: [SearchResult]) {
-        self.searchText = searchText
-        self.results = results
-        resultsOutlineView.reloadData()
-        progressIndicator.stopAnimation(nil)
-        if results.count > 0 {
-            tabView.selectTabViewItem(withIdentifier: Mode.results.rawValue)
-        } else {
-            tabView.selectTabViewItem(withIdentifier: Mode.noResult.rawValue)
-        }
     }
     
     // MARK: - NSOutlineViewDataSource
