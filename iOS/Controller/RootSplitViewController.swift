@@ -21,13 +21,6 @@ class RootSplitViewController: UISplitViewController, UISplitViewControllerDeleg
         viewControllers = [sideBarViewController, self.contentNavigationController]
         delegate = self
         
-        /* For some reason, the sidebar is not rendered correctly if hidden on launch when running on iOS 12.
-           Well, I guess the app is gonna launch with sidebar visible on iOS 12. */
-        if #available(iOS 13.0, *) {
-            preferredDisplayMode = .automatic
-        } else {
-            preferredDisplayMode = .allVisible
-        }
         sideBarViewController.favoriteController.delegate = contentViewController
         sideBarViewController.outlineController.delegate = contentViewController
         contentViewController.configureToolbar(isGrouped: !isCollapsed)
