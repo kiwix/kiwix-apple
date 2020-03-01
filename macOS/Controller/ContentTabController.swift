@@ -10,14 +10,16 @@ import Cocoa
 
 class ContentTabController: NSTabViewController {
     enum Mode: String {
-        case library = "Library"
+        case welcome = "Welcome"
         case reader = "Reader"
+    }
+    
+    var mode: Mode? {
+        guard let identifier = tabViewItems[selectedTabViewItemIndex].identifier as? String else {return nil}
+        return Mode(rawValue: identifier)
     }
 
     func setMode(_ mode: Mode) {
         tabView.selectTabViewItem(withIdentifier: mode.rawValue)
-        if let windowController = view.window?.windowController as? WindowController {
-            windowController.libraryButton.state = mode == .library ? .on : .off
-        }
     }
 }

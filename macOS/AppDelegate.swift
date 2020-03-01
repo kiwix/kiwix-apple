@@ -48,13 +48,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, TabManagement {
     
     // MARK: - TabManagment
     
-    func createTab(window: NSWindow) {
+    func createTab(window: NSWindow) -> WindowController {
         let storyboard = NSStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateInitialController() as! WindowController
         windowControllers.insert(controller)
         controller.tabManager = self
         window.addTabbedWindow(controller.window!, ordered: .above)
         controller.window?.makeKeyAndOrderFront(nil)
+        return controller
     }
     
     func willCloseTab(controller: NSWindowController) {
@@ -65,12 +66,37 @@ class AppDelegate: NSObject, NSApplicationDelegate, TabManagement {
     
     func openFile(urls: [URL]) {
         let operation = LibraryScanOperation(urls: urls)
+        operation.completionBlock = {
+            DispatchQueue.main.sync {
+                guard let keyWindow = NSApplication.shared.keyWindow else {return}
+                for url in urls {
+                    guard let meta = ZimMultiReader.getMetaData(url: url),
+                        let id = meta["id"] as? String,
+                        let mainPageURL = ZimMultiReader.shared.getMainPageURL(zimFileID: id) else {continue}
+                
+                    /*
+                     Decide which window should show the main page of the newly opened zim file.
+                     If the current window is showing the welcome window, use current window; otherwise create a new window.
+                     */
+                    let windowController: WindowController = {
+                        if let windowController = NSApplication.shared.mainWindow?.windowController as? WindowController,
+                            let mode = windowController.contentTabController?.mode, mode == .welcome {
+                            return windowController
+                        } else {
+                            return self.createTab(window: keyWindow)
+                        }
+                    }()
+                    windowController.contentTabController?.setMode(.reader)
+                    windowController.webViewController?.load(url: mainPageURL)
+                }
+            }
+        }
         queue.addOperation(operation)
     }
 }
 
 protocol TabManagement: class {
-    func createTab(window: NSWindow)
+    func createTab(window: NSWindow) -> WindowController
     func willCloseTab(controller: NSWindowController)
 }
 

@@ -114,7 +114,7 @@ class WindowController: NSWindowController, NSWindowDelegate, SearchFieldEvent {
     }
     
     @IBAction override func newWindowForTab(_ sender: Any?) {
-        tabManager?.createTab(window: window!)
+        _ = tabManager?.createTab(window: window!)
     }
     
     // MARK: NSWindowDelegate
