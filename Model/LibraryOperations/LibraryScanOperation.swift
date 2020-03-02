@@ -9,7 +9,7 @@
 import RealmSwift
 import SwiftyUserDefaults
 
-class LibraryScanOperation: Operation, ZimFileProcessing {
+class LibraryScanOperation: LibraryOperationBase {
     let urls: [URL]
     private let documentDirectoryURL = try! FileManager.default.url(
         for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
@@ -63,7 +63,7 @@ class LibraryScanOperation: Operation, ZimFileProcessing {
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
             let predicate = NSPredicate(format: "stateRaw == %@ AND openInPlaceURLBookmark != nil",
-                                        ZimFile.State.local.rawValue)
+                                        ZimFile.State.onDevice.rawValue)
             for zimFile in database.objects(ZimFile.self).filter(predicate) {
                 var isStale: ObjCBool = false
                 guard let bookmarkData = zimFile.openInPlaceURLBookmark,
@@ -88,28 +88,31 @@ class LibraryScanOperation: Operation, ZimFileProcessing {
             
             try database.write {
                 for zimFileID in zimFileIDs {
-                    let zimFile: ZimFile = {
+                    guard let zimFile: ZimFile = {
                         if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) {
-                            // if zim file already exist in database, simply set its state to local
+                            // if zim file already exist in database, simply set its state to onDevice
                             return zimFile
                         } else {
                             // if zim file does not exist in database, create the object
-                            let meta = ZimMultiReader.shared.getMetaData(id: zimFileID)
-                            let zimFile = self.create(database: database, id: zimFileID, meta: meta)
+                            guard let meta = ZimMultiReader.shared.getZimFileMetaData(id: zimFileID) else { return nil }
+                            let zimFile = ZimFile()
+                            zimFile.id = meta.identifier
+                            self.updateZimFile(zimFile, meta: meta)
+                            database.add(zimFile)
                             return zimFile
                         }
-                    }()
-                    if zimFile.state != .local { zimFile.state = .local }
+                    }() else { continue }
+                    if zimFile.state != .onDevice { zimFile.state = .onDevice }
                     if zimFile.openInPlaceURLBookmark == nil { saveBookmarkData(zimFile: zimFile) }
                 }
                 
-                // for all zim file objects that are currently local, if the actual file is no longer on disk,
-                // set the object's state to cloud or delete the object depending on if it can be re-downloaded.
-                let localPredicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.local.rawValue)
-                for zimFile in database.objects(ZimFile.self).filter(localPredicate) {
+                // for all zim file objects that are currently onDevice, if the actual file is no longer on disk,
+                // set the object's state to remote or delete the object depending on if it can be re-downloaded.
+                let onDevicePredicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue)
+                for zimFile in database.objects(ZimFile.self).filter(onDevicePredicate) {
                     guard !zimFileIDs.contains(zimFile.id) else {continue}
-                    if let _ = zimFile.remoteURL {
-                        zimFile.state = .cloud
+                    if let _ = zimFile.downloadURL {
+                        zimFile.state = .remote
                         zimFile.openInPlaceURLBookmark = nil
                     } else {
                         database.delete(zimFile)
@@ -121,7 +124,7 @@ class LibraryScanOperation: Operation, ZimFileProcessing {
     
     private func saveBookmarkData(zimFile: ZimFile) {
         guard let fileURL = ZimMultiReader.shared.getFileURL(zimFileID: zimFile.id),
-            !zimFile.isInDocumentDirectory else {return}
+            LibraryService().isFileInDocumentDirectory(zimFileID: zimFile.id) else {return}
         zimFile.openInPlaceURLBookmark = try? fileURL.bookmarkData()
     }
 }

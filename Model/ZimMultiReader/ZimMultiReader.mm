@@ -12,45 +12,57 @@
 #include "reader.h"
 #include "searcher.h"
 #import "ZimMultiReader.h"
+#import "ZimFileMetaData.h"
+#include "book.h"
+
+@interface ZimMultiReader ()
+
+@property (assign) std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>> *readers;
+@property (strong) NSMutableDictionary *fileURLs; // [ID: FileURL]
+
+@end
 
 @implementation ZimMultiReader
 
-std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>> readers;
 kiwix::Searcher *searcher = nullptr;
 NSMutableArray *searcherZimIDs = [[NSMutableArray alloc] init];
-NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: FileURL]
-
 
 #pragma mark - init
 
 - (instancetype)init {
     self = [super init];
     if (self) {
-        readers.reserve(20);
+        self.readers = new std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>>();
+        self.readers->reserve(10);
+        self.fileURLs = [[NSMutableDictionary alloc] initWithCapacity:10];
     }
     return self;
 }
 
+- (void)dealloc {
+    delete self.readers;
+}
+
 - (NSArray *)getReaderIdentifiers {
-    return [fileURLs allKeys];
+    return [self.fileURLs allKeys];
 }
 
 - (NSURL *)getReaderFileURL:(NSString *)identifier {
-    return fileURLs[identifier];
+    return self.fileURLs[identifier];
 }
 
 #pragma mark - reader management
 
 - (void)addReaderByURL:(NSURL *)url {
     try {
-        // if url does not ends with "zim" or "zimaa", skip it
+        // if url does not ends with "zim", skip it
         NSString *pathExtension = [[url pathExtension] lowercaseString];
         if (![pathExtension isEqualToString:@"zim"]) {
             return;
         }
         
         // if we have previously added this url, skip it
-        if ([[fileURLs allKeysForObject:url] count] > 0) {
+        if ([[self.fileURLs allKeysForObject:url] count] > 0) {
             return;
         }
 
@@ -58,26 +70,24 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
         [url startAccessingSecurityScopedResource];
         std::shared_ptr<kiwix::Reader> reader = std::make_shared<kiwix::Reader>([url fileSystemRepresentation]);
         std::string identifier = reader->getId();
-        readers.insert(std::make_pair(identifier, reader));
+        self.readers->insert(std::make_pair(identifier, reader));
         
         // store file URL
         NSString *identifierObjC = [NSString stringWithCString:identifier.c_str() encoding:NSUTF8StringEncoding];
-        fileURLs[identifierObjC] = url;
-    } catch (std::exception e) {
-
-    }
+        self.fileURLs[identifierObjC] = url;
+    } catch (std::exception e) { }
 }
 
 - (void)removeReaderByID:(NSString *)bookID {
     std::string identifier = [bookID cStringUsingEncoding:NSUTF8StringEncoding];
-    readers.erase(identifier);
-    [fileURLs[bookID] stopAccessingSecurityScopedResource];
-    [fileURLs removeObjectForKey:bookID];
+    self.readers->erase(identifier);
+    [self.fileURLs[bookID] stopAccessingSecurityScopedResource];
+    [self.fileURLs removeObjectForKey:bookID];
 }
 
 - (void)removeStaleReaders {
-    for (NSString *identifier in [fileURLs allKeys]) {
-        NSURL *url = fileURLs[identifier];
+    for (NSString *identifier in [self.fileURLs allKeys]) {
+        NSURL *url = self.fileURLs[identifier];
         NSString *path = [url path];
         if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
             [self removeReaderByID:identifier];
@@ -85,27 +95,37 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
     }
 }
 
-# pragma mark - check index
+# pragma mark - meta data
 
-- (BOOL)hasEmbeddedIndex:(NSString *_Nonnull)zimFileID {
-    auto found = readers.find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
-    if (found == readers.end()) {
-        return NO;
+- (ZimFileMetaData *)getZimFileMetaData:(NSString *)identifier {
+    auto found = self.readers->find([identifier cStringUsingEncoding:NSUTF8StringEncoding]);
+    if (found == self.readers->end()) {
+        return nil;
     } else {
-        std::shared_ptr<kiwix::Reader> reader = found->second;
-        return reader->hasFulltextIndex();
+        kiwix::Book book = kiwix::Book();
+        book.update(*found->second);
+        return [[ZimFileMetaData alloc] initWithBook: &book];
     }
 }
 
-- (BOOL)hasExternalIndex:(NSString *_Nonnull)zimFileID {
-    return NO;
++ (ZimFileMetaData *)getMetaDataWithFileURL:(NSURL *)url {
+    ZimFileMetaData *metaData = nil;
+    [url startAccessingSecurityScopedResource];
+    try {
+        kiwix::Reader reader = kiwix::Reader([url fileSystemRepresentation]);
+        kiwix::Book book = kiwix::Book();
+        book.update(reader);
+        metaData = [[ZimFileMetaData alloc] initWithBook: &book];
+    } catch (std::exception e) { }
+    [url stopAccessingSecurityScopedResource];
+    return metaData;
 }
 
 # pragma mark - check redirection
 
 - (NSString *_Nullable)getRedirectedPath:(NSString *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath {
-    auto found = readers.find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
-    if (found == readers.end()) {
+    auto found = self.readers->find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
+    if (found == self.readers->end()) {
         return nil;
     } else {
         std::shared_ptr<kiwix::Reader> reader = found->second;
@@ -134,8 +154,8 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
 # pragma mark - get content
 
 - (NSDictionary *)getContent:(NSString *)zimFileID contentURL:(NSString *)contentURL {
-    auto found = readers.find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
-    if (found == readers.end()) {
+    auto found = self.readers->find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
+    if (found == self.readers->end()) {
         return nil;
     } else {
         std::shared_ptr<kiwix::Reader> reader = found->second;
@@ -154,21 +174,11 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
     }
 }
 
-- (NSDictionary *)getMetaData:(NSString *_Nonnull)zimFileID {
-    auto found = readers.find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
-    if (found == readers.end()) {
-        return nil;
-    } else {
-        std::shared_ptr<kiwix::Reader> reader = found->second;
-        return [ZimMultiReader getMetaDataWithReader:reader];
-    }
-}
-
 # pragma mark - URL handling
 
 - (NSString *)getMainPagePath:(NSString *)bookID {
-    auto found = readers.find([bookID cStringUsingEncoding:NSUTF8StringEncoding]);
-    if (found == readers.end()) {
+    auto found = self.readers->find([bookID cStringUsingEncoding:NSUTF8StringEncoding]);
+    if (found == self.readers->end()) {
         return nil;
     } else {
         std::shared_ptr<kiwix::Reader> reader = found->second;
@@ -184,7 +194,7 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
     searcher = new kiwix::Searcher;
     std::string searchTextC = [searchText cStringUsingEncoding:NSUTF8StringEncoding];
     
-    for(auto iter: readers) {
+    for(auto iter: *self.readers) {
         NSString *identifier = [NSString stringWithCString:iter.first.c_str() encoding:NSUTF8StringEncoding];
         if (![zimFileIDs containsObject:identifier]) {
             continue;
@@ -228,8 +238,8 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
     std::string searchTermC = [searchText cStringUsingEncoding:NSUTF8StringEncoding];
     NSMutableArray *suggestions = [[NSMutableArray alloc] init];
     
-    auto found = readers.find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
-    if (found == readers.end()) {
+    auto found = self.readers->find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
+    if (found == self.readers->end()) {
         return suggestions;
     } else {
         std::shared_ptr<kiwix::Reader> reader = found->second;
@@ -245,48 +255,6 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
         }
         return suggestions;
     }
-}
-
-# pragma mark - class methods
-
-+ (NSDictionary *)getMetaDataWithFileURL:(NSURL *)url {
-    [url startAccessingSecurityScopedResource];
-    try {
-        std::shared_ptr<kiwix::Reader> reader = std::make_shared<kiwix::Reader>([url fileSystemRepresentation]);
-        [url stopAccessingSecurityScopedResource];
-        return [ZimMultiReader getMetaDataWithReader:reader];
-    } catch (std::exception e) {
-        [url stopAccessingSecurityScopedResource];
-        return nil;
-    }
-}
-
-+ (NSDictionary *)getMetaDataWithReader:(std::shared_ptr<kiwix::Reader>)reader {
-    NSMutableDictionary *meta = [[NSMutableDictionary alloc] init];
-    
-    meta[@"id"] = [NSString stringWithCString:reader->getId().c_str() encoding:NSUTF8StringEncoding];
-    meta[@"name"] = [NSString stringWithCString:reader->getName().c_str() encoding:NSUTF8StringEncoding];
-    
-    meta[@"title"] = [NSString stringWithCString:reader->getTitle().c_str() encoding:NSUTF8StringEncoding];
-    meta[@"description"] = [NSString stringWithCString:reader->getDescription().c_str() encoding:NSUTF8StringEncoding];
-    meta[@"language"] = [NSString stringWithCString:reader->getLanguage().c_str() encoding:NSUTF8StringEncoding];
-    
-    meta[@"tags"] = [NSString stringWithCString:reader->getTags().c_str() encoding:NSUTF8StringEncoding];
-    meta[@"date"] = [NSString stringWithCString:reader->getDate().c_str() encoding:NSUTF8StringEncoding];
-    meta[@"creator"] = [NSString stringWithCString:reader->getCreator().c_str() encoding:NSUTF8StringEncoding];
-    meta[@"publisher"] = [NSString stringWithCString:reader->getPublisher().c_str() encoding:NSUTF8StringEncoding];
-    meta[@"fileSize"] = [[NSNumber alloc] initWithLongLong:(long long)reader->getFileSize() * 1024];
-    meta[@"articleCount"] = [[NSNumber alloc] initWithLongLong:reader->getArticleCount()];
-    meta[@"mediaCount"] = [[NSNumber alloc] initWithLongLong:reader->getMediaCount()];
-    meta[@"globalCount"] = [[NSNumber alloc] initWithLongLong:reader->getGlobalCount()];
-    
-    string faviconEncoded;
-    string mimeType;
-    if (reader->getFavicon(faviconEncoded, mimeType)) {
-        meta[@"icon"] = [NSData dataWithBytes:faviconEncoded.c_str() length:faviconEncoded.length()];
-    }
-    
-    return meta;
 }
 
 @end

@@ -65,11 +65,7 @@ class LibrarySearchController: UITableViewController, UISearchResultsUpdating {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
         if let zimFile = zimFiles?.filter("languageCode == %@", languageCodes[indexPath.section])[indexPath.row] {
-            cell.titleLabel.text = zimFile.title
-            cell.detailLabel.text = [zimFile.fileSizeDescription, zimFile.creationDateDescription, zimFile.articleCountDescription].joined(separator: ", ")
-            cell.thumbImageView.image = UIImage(data: zimFile.icon) ?? #imageLiteral(resourceName: "GenericZimFile")
-            cell.thumbImageView.contentMode = .scaleAspectFit
-            cell.accessoryType = .disclosureIndicator
+            TableViewCellConfigurator.configure(cell, zimFile: zimFile, tableView: tableView, indexPath: indexPath)
         }
         return cell
     }

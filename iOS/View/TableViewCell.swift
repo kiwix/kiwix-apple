@@ -26,6 +26,13 @@ class TableViewCell: UITableViewCell {
         configure()
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        titleLabel.text = nil
+        detailLabel.text = nil
+        thumbImageView.image = nil
+    }
+    
     override func updateConstraints() {
         defer { super.updateConstraints() }
         guard !configuredConstraints else { return }

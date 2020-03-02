@@ -19,7 +19,7 @@ class SearchFilterController: UIViewController, UITableViewDelegate, UITableView
     private let zimFiles: Results<ZimFile>? = {
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
-            let predicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.local.rawValue)
+            let predicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue)
             return database.objects(ZimFile.self).filter(predicate)
         } catch { return nil }
     }()
@@ -102,8 +102,8 @@ class SearchFilterController: UIViewController, UITableViewDelegate, UITableView
                 let database = try Realm(configuration: Realm.defaultConfig)
                 try database.write {
                     zimFiles?.forEach({ (zimFile) in
-                        guard !zimFile.includeInSearch else {return}
-                        zimFile.includeInSearch = true
+                        guard !zimFile.includedInSearch else {return}
+                        zimFile.includedInSearch = true
                     })
                 }
             } catch {}
@@ -138,10 +138,12 @@ class SearchFilterController: UIViewController, UITableViewDelegate, UITableView
     func configure(cell: TableViewCell, indexPath: IndexPath) {
         guard let zimFile = zimFiles?[indexPath.row] else {return}
         cell.titleLabel.text = zimFile.title
-        cell.detailLabel.text = [zimFile.fileSizeDescription, zimFile.creationDateDescription, zimFile.articleCountDescription].joined(separator: ", ")
-        cell.thumbImageView.image = UIImage(data: zimFile.icon) ?? #imageLiteral(resourceName: "GenericZimFile")
+        cell.detailLabel.text = [
+            zimFile.sizeDescription, zimFile.creationDateDescription, zimFile.articleCountDescription
+        ].compactMap({ $0 }).joined(separator: ", ")
+        cell.thumbImageView.image = UIImage(data: zimFile.faviconData ?? Data()) ?? #imageLiteral(resourceName: "GenericZimFile")
         cell.thumbImageView.contentMode = .scaleAspectFit
-        cell.accessoryType = zimFile.includeInSearch ? .checkmark : .none
+        cell.accessoryType = zimFile.includedInSearch ? .checkmark : .none
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -185,12 +187,12 @@ class SearchFilterController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if sections[indexPath.section] == .searchFilter {
             guard let zimFile = zimFiles?[indexPath.row], let token = changeToken else {return}
-            let includeInSearch = !zimFile.includeInSearch
-            tableView.cellForRow(at: indexPath)?.accessoryType = includeInSearch ? .checkmark : .none
+            let includedInSearch = !zimFile.includedInSearch
+            tableView.cellForRow(at: indexPath)?.accessoryType = includedInSearch ? .checkmark : .none
             do {
                 let database = try Realm(configuration: Realm.defaultConfig)
                 database.beginWrite()
-                zimFile.includeInSearch = includeInSearch
+                zimFile.includedInSearch = includedInSearch
                 try database.commitWrite(withoutNotifying: [token])
             } catch {}
         }

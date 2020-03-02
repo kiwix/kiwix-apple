@@ -9,6 +9,8 @@
 import UIKit
 
 class EmptyContentView: UIView {
+    let content = UIStackView()
+    
     convenience init(image: UIImage, title: String, subtitle: String? = nil) {
         self.init(frame: .zero)
         
@@ -17,29 +19,11 @@ class EmptyContentView: UIView {
             stackView.axis = .vertical
             stackView.spacing = 5
             
-            let titleLabel: UILabel = {
-                let label = UILabel()
-                label.text = title
-                label.textAlignment = .center
-                label.adjustsFontSizeToFitWidth = true
-                label.textColor = UIColor.gray
-                label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
-                return label
-            }()
+            let titleLabel = TitleLabel(text: title)
             stackView.addArrangedSubview(titleLabel)
             
             if let subtitle = subtitle {
-                let subtitleLabel: UILabel = {
-                    let label = UILabel()
-                    label.text = subtitle
-                    label.textAlignment = .center
-                    label.adjustsFontSizeToFitWidth = true
-                    label.textColor = UIColor.lightGray
-                    label.font = UIFont.systemFont(ofSize: 15)
-                    label.numberOfLines = 0
-                    return label
-                }()
-                stackView.addArrangedSubview(subtitleLabel)
+                stackView.addArrangedSubview(SubtitleLabel(text: subtitle))
             }
             return stackView
         }()
@@ -50,7 +34,6 @@ class EmptyContentView: UIView {
             return imageView
         }()
         
-        let content = UIStackView()
         content.axis = .vertical
         content.spacing = 25
         content.distribution = .equalSpacing
@@ -66,6 +49,81 @@ class EmptyContentView: UIView {
             centerXAnchor.constraint(equalTo: content.centerXAnchor),
             centerYAnchor.constraint(equalTo: content.centerYAnchor),
             leftAnchor.constraint(lessThanOrEqualTo: content.leftAnchor, constant: 20),
-            rightAnchor.constraint(greaterThanOrEqualTo: content.rightAnchor, constant: 20)])
+            rightAnchor.constraint(greaterThanOrEqualTo: content.rightAnchor, constant: 20),
+            content.widthAnchor.constraint(lessThanOrEqualToConstant: 400)
+        ])
+    }
+}
+
+class LibraryCategoryBackgroundView: EmptyContentView {
+    private let statusContainer = UIStackView()
+    let button = RoundedButton()
+    let activityIndicator = UIActivityIndicatorView()
+    let statusLabel = StatusLabel()
+    
+    convenience init() {
+        self.init(image: #imageLiteral(resourceName: "shelf"), title: "No Zim Files are Available")
+        
+        statusContainer.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        statusContainer.addArrangedSubview(activityIndicator)
+        statusContainer.addArrangedSubview(statusLabel)
+        content.addArrangedSubview(statusContainer)
+        
+        button.setTitle("Refresh Library", for: .normal)
+        button.setTitle("Refreshing...", for: .disabled)
+        content.addArrangedSubview(button)
+    }
+}
+
+private class TitleLabel: UILabel {
+    convenience init(text: String) {
+        self.init()
+        self.text = text
+        textAlignment = .center
+        adjustsFontSizeToFitWidth = true
+        font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        textColor = {
+            if #available(iOS 13.0, *) {
+                return .label
+            } else {
+                return .gray
+            }
+        }()
+    }
+}
+
+private class SubtitleLabel: UILabel {
+    convenience init(text: String) {
+        self.init()
+        self.text = text
+        textAlignment = .center
+        adjustsFontSizeToFitWidth = true
+        font = UIFont.systemFont(ofSize: 15)
+        numberOfLines = 0
+        textColor = {
+            if #available(iOS 13.0, *) {
+                return .secondaryLabel
+            } else {
+                return .lightGray
+            }
+        }()
+    }
+}
+
+class StatusLabel: UILabel {
+    convenience init() {
+        self.init(frame: .zero)
+        self.text = text
+        textAlignment = .center
+        adjustsFontSizeToFitWidth = true
+        font = UIFont.systemFont(ofSize: 15)
+        numberOfLines = 0
+        textColor = {
+            if #available(iOS 13.0, *) {
+                return .systemRed
+            } else {
+                return .red
+            }
+        }()
     }
 }
