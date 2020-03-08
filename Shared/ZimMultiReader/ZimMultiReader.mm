@@ -142,8 +142,8 @@ NSMutableDictionary *fileURLs = [[NSMutableDictionary alloc] init]; // [ID: File
 
         try {
             kiwix::Entry entry = reader->getEntryFromPath([contentURL cStringUsingEncoding:NSUTF8StringEncoding]);
-            NSNumber *length = [NSNumber numberWithLongLong:entry.getSize()];
-            NSData *data = [NSData dataWithBytes:entry.getContent().data() length:length.unsignedIntegerValue];
+            NSNumber *length = [NSNumber numberWithUnsignedLongLong:entry.getSize()];
+            NSData *data = [NSData dataWithBytes:entry.getContent().data() length:length.unsignedLongLongValue];
             NSString *mime = [NSString stringWithUTF8String:entry.getMimetype().c_str()];
             return @{@"data": data, @"mime": mime, @"length": length};
         } catch (kiwix::NoEntry) {
