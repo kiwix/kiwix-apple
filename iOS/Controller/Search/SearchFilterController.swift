@@ -214,7 +214,7 @@ class SearchFilterController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let string = recentSearchTexts[indexPath.row]
+        let string = recentSearchTexts.indices.contains(indexPath.row) ? recentSearchTexts[indexPath.row] : ""
         let width = NSString(string: string).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 24),
                                                           options: .usesLineFragmentOrigin,
                                                           attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)],

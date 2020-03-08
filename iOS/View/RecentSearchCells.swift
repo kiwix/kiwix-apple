@@ -26,6 +26,8 @@ class RecentSearchTableViewCell: UITableViewCell {
         super.prepareForReuse()
         collectionView.delegate = nil
         collectionView.dataSource = nil
+        collectionView.reloadData()
+        collectionView.collectionViewLayout.invalidateLayout()
     }
     
     override func updateConstraints() {
