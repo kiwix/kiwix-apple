@@ -267,13 +267,9 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     }
     
     @objc func toggleSideBar() {
-        guard let splitViewController = self.splitViewController else {return}
+        guard let splitViewController = self.splitViewController as? RootSplitViewController else {return}
         UIView.animate(withDuration: 0.2) {
-            let splitViewSize = splitViewController.view.frame.size
-            let primaryVisibleDisplayMode: UISplitViewController.DisplayMode =
-                splitViewSize.width > splitViewSize.height ? .allVisible : .primaryOverlay
-            splitViewController.preferredDisplayMode =
-                splitViewController.displayMode == .primaryHidden ? primaryVisibleDisplayMode : .primaryHidden
+            splitViewController.toggleSideBar()
         }
     }
     

@@ -20,6 +20,7 @@ class RootSplitViewController: UISplitViewController, UISplitViewControllerDeleg
         super.init(nibName: nil, bundle: nil)
         viewControllers = [sideBarViewController, self.contentNavigationController]
         delegate = self
+        preferredDisplayMode = .primaryHidden
         
         sideBarViewController.favoriteController.delegate = contentViewController
         sideBarViewController.outlineController.delegate = contentViewController
@@ -42,7 +43,20 @@ class RootSplitViewController: UISplitViewController, UISplitViewControllerDeleg
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        preferredDisplayMode = size.width > size.height ? .automatic : .primaryHidden
+
+        let masterIsVisible = displayMode == .allVisible || displayMode == .primaryOverlay
+        let shouldMasterBeVisible = masterIsVisible && traitCollection.horizontalSizeClass == .regular
+        preferredDisplayMode = shouldMasterBeVisible ? getPrimaryVisibleDisplayMode(size: size) : .primaryHidden
+    }
+    
+    func toggleSideBar() {
+        let masterIsVisible = displayMode == .allVisible || displayMode == .primaryOverlay
+        preferredDisplayMode = masterIsVisible ? .primaryHidden : getPrimaryVisibleDisplayMode()
+    }
+    
+    private func getPrimaryVisibleDisplayMode(size: CGSize? = nil) -> UISplitViewController.DisplayMode {
+        let size = size ?? view.frame.size
+        return size.width > size.height ? .allVisible : .primaryOverlay
     }
     
     // MARK: UISplitViewControllerDelegate
