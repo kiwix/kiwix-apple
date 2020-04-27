@@ -89,7 +89,16 @@ class SearchResultsListController: UITableViewController {
         if let snippet = result.snippet {
             cell.detailLabel.text = snippet
         } else if let attributedSnippet = result.attributedSnippet {
-            cell.detailLabel.attributedText = attributedSnippet
+            if #available(iOS 13.0, *) {
+                let mutableSnippet = NSMutableAttributedString(attributedString: attributedSnippet)
+                mutableSnippet.addAttributes(
+                    [NSAttributedString.Key.foregroundColor: UIColor.label],
+                    range: NSRange(location: 0, length: mutableSnippet.length)
+                )
+                cell.detailLabel.attributedText = mutableSnippet
+            } else {
+                cell.detailLabel.attributedText = attributedSnippet
+            }
         } else {
             cell.detailLabel.text = nil
         }
