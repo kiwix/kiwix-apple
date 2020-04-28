@@ -38,7 +38,7 @@ class LibrarySettingController: UIViewController, UITableViewDataSource, UITable
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("Info", comment: "Library Info")
+        title = NSLocalizedString("Catalog", comment: "Library Info")
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done, target: self, action: #selector(dismissController)
         )
@@ -154,15 +154,6 @@ class LibrarySettingController: UIViewController, UITableViewDataSource, UITable
             }
         }()
         configureOperationFinishedObserver(operation: operation)
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch sections[section] {
-        case .updateAction:
-            return NSLocalizedString("Updates", comment: "Library Info")
-        default:
-            return nil
-        }
     }
 
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
