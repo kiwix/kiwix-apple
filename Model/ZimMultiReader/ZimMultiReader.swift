@@ -17,11 +17,6 @@ extension ZimMultiReader {
     func add(url: URL) {__add(by: url)}
     func remove(id: ZimFileID) {__remove(byID: id)}
     
-    func hasEmbeddedIndex(id: ZimFileID) -> Bool {return __hasEmbeddedIndex(id)}
-    
-    @available(*, deprecated, message: "External index is no longer supported")
-    func hasExternalIndex(id: ZimFileID) -> Bool {return __hasExternalIndex(id)}
-    
     func getRedirectedPath(zimFileID: ZimFileID, contentPath: String) -> String? {
         return __getRedirectedPath(zimFileID, contentPath: contentPath)
     }
@@ -34,7 +29,15 @@ extension ZimMultiReader {
         return (data, mime, length)
     }
     
-    func getMetaData(id: ZimFileID) -> [String: Any] {return ( __getMetaData(id) as? [String: Any]) ?? [String: Any]() }
+    // MARK: - meta data
+    
+    func getZimFileMetaData(id: String) -> ZimFileMetaData? {
+        return __getZimFileMetaData(id)
+    }
+    
+    static func getMetaData(url: URL) -> ZimFileMetaData? {
+        return __getMetaData(withFileURL: url)
+    }
     
     func getMainPageURL(zimFileID: String) -> URL? {
         guard let path = __getMainPagePath(zimFileID) else {return nil}
@@ -61,9 +64,5 @@ extension ZimMultiReader {
                 let path = suggestion["path"] else {return nil}
             return SearchResult(zimFileID: id, path: path, title: title)
         }
-    }
-    
-    static func getMetaData(url: URL) -> [String: Any]? {
-        return __getMetaData(withFileURL: url) as? [String: Any]
     }
 }

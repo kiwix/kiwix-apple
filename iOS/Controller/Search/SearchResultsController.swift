@@ -26,7 +26,7 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     private let zimFiles: Results<ZimFile>? = {
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
-            let predicate = NSPredicate(format: "stateRaw == %@ AND includeInSearch == true", ZimFile.State.local.rawValue)
+            let predicate = NSPredicate(format: "stateRaw == %@ AND includedInSearch == true", ZimFile.State.onDevice.rawValue)
             return database.objects(ZimFile.self).filter(predicate)
         } catch { return nil }
     }()

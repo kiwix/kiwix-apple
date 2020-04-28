@@ -16,7 +16,13 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
     private let documentDirectoryURL = try! FileManager.default.url(
         for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
 
-    private let tableView = UITableView(frame: .zero, style: .grouped)
+    private let tableView = UITableView(frame: .zero, style: {
+        if #available(iOS 13, *) {
+            return .insetGrouped
+        } else {
+            return .grouped
+        }
+    }())
     var actions = (top: [[Action]](), bottom: [[Action]]()) {
         didSet(oldValue) {
             /*
@@ -43,7 +49,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
     }
     private let metas: [[Meta]] = [
         [.language, .size, .date],
-        [.hasPicture, .hasIndex],
+        [.hasPicture, .hasIndex, .hasVideo, .hasDetail],
         [.articleCount, .mediaCount],
         [.creator, .publisher],
         [.id]
@@ -96,7 +102,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
     // MARK: -
 
     private func configureZimFileObservers() {
-        zimFileObserver = zimFile.observe { (change) in
+        zimFileObserver = zimFile.observe { [unowned self] change in
             switch change {
             case .deleted:
                 guard let splitViewController = self.splitViewController,
@@ -123,7 +129,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                 return
             }
             switch state {
-            case .cloud:
+            case .remote:
                 let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
                 let freespace: Int64 = {
                     if #available(iOS 11.0, *), let free = (((try? url?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])) as URLResourceValues??))??.volumeAvailableCapacityForImportantUsage {
@@ -134,19 +140,19 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                         return 0
                     }
                 }()
-                self.actions = (zimFile.fileSize <= freespace ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]], [])
+                self.actions = ((zimFile.size.value ?? 0) <= freespace ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]], [])
 
-                // when state changed from local to cloud, and when split view controller is collapsed
+                // when state changed from onDevice to remote, and when split view controller is collapsed
                 // pop this view controller
                 if let oldState = ZimFile.State(rawValue: change.oldValue ?? ""),
-                    oldState == .local,
+                    oldState == .onDevice,
                     let splitViewController = self.splitViewController,
                     splitViewController.isCollapsed,
                     let masterNavigationController = splitViewController.viewControllers.first as? UINavigationController {
                     masterNavigationController.popViewController(animated: true)
                 }
-            case .local:
-                if zimFile.isInDocumentDirectory {
+            case .onDevice:
+                if LibraryService().isFileInDocumentDirectory(zimFileID: zimFile.id) {
                     self.actions = ([[.openMainPage]], [[.deleteFile]])
                 } else {
                     self.actions = ([[.openMainPage]], [[.unlink]])
@@ -213,14 +219,14 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
             cell.detailTextLabel?.text = Locale.current.localizedString(forLanguageCode: zimFile.languageCode)
         case .size:
             cell.textLabel?.text = NSLocalizedString("Size", comment: "Book Detail Cell")
-            cell.detailTextLabel?.text = zimFile.fileSizeDescription
+            cell.detailTextLabel?.text = zimFile.sizeDescription
         case .date:
             cell.textLabel?.text = NSLocalizedString("Date", comment: "Book Detail Cell")
             cell.detailTextLabel?.text = zimFile.creationDateDescription
         case .hasIndex:
             cell.textLabel?.text = NSLocalizedString("Index", comment: "Book Detail Cell")
             cell.detailTextLabel?.text = {
-                if zimFile.hasEmbeddedIndex {
+                if zimFile.hasIndex {
                     return NSLocalizedString("Yes", comment: "Book Detail Cell, has index")
                 } else {
                     return NSLocalizedString("No", comment: "Book Detail Cell, has index")
@@ -228,13 +234,19 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
             }()
         case .hasPicture:
             cell.textLabel?.text = NSLocalizedString("Pictures", comment: "Book Detail Cell")
-            cell.detailTextLabel?.text = zimFile.hasPicture ? NSLocalizedString("Yes", comment: "Book Detail Cell, has picture") : NSLocalizedString("No", comment: "Book Detail Cell, does not have picture")
+            cell.detailTextLabel?.text = zimFile.hasPictures ? NSLocalizedString("Yes", comment: "Book Detail Cell, has picture") : NSLocalizedString("No", comment: "Book Detail Cell, does not have picture")
+        case .hasVideo:
+            cell.textLabel?.text = NSLocalizedString("Videos", comment: "Book Detail Cell")
+            cell.detailTextLabel?.text = zimFile.hasVideos ? NSLocalizedString("Yes", comment: "Book Detail Cell, has videos") : NSLocalizedString("No", comment: "Book Detail Cell, does not have videos")
+        case .hasDetail:
+            cell.textLabel?.text = NSLocalizedString("Details", comment: "Book Detail Cell")
+            cell.detailTextLabel?.text = zimFile.hasDetails ? NSLocalizedString("Yes", comment: "Book Detail Cell, has details") : NSLocalizedString("No", comment: "Book Detail Cell, does not have details")
         case .articleCount:
             cell.textLabel?.text = NSLocalizedString("Article Count", comment: "Book Detail Cell")
-            cell.detailTextLabel?.text = countFormatter.string(from: NSNumber(value: zimFile.articleCount))
+            cell.detailTextLabel?.text = countFormatter.string(from: NSNumber(value: zimFile.articleCount.value ?? 0))
         case .mediaCount:
             cell.textLabel?.text = NSLocalizedString("Media Count", comment: "Book Detail Cell")
-            cell.detailTextLabel?.text = countFormatter.string(from: NSNumber(value: zimFile.mediaCount))
+            cell.detailTextLabel?.text = countFormatter.string(from: NSNumber(value: zimFile.mediaCount.value ?? 0))
         case .creator:
             cell.textLabel?.text = NSLocalizedString("Creator", comment: "Book Detail Cell")
             cell.detailTextLabel?.text = zimFile.creator
@@ -285,7 +297,10 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
     // MARK: - Type Definition
 
     enum Meta: String {
-        case language, size, date, hasIndex, hasPicture, articleCount, mediaCount, creator, publisher, id
+        case language, size, date
+        case hasIndex, hasPicture, hasVideo, hasDetail
+        case articleCount, mediaCount
+        case creator, publisher, id
     }
 
     enum Action: CustomStringConvertible {
@@ -363,8 +378,8 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                         ZimMultiReader.shared.remove(id: zimFile.id)
                         let database = try Realm(configuration: Realm.defaultConfig)
                         try database.write {
-                            if zimFile.remoteURL != nil {
-                                zimFile.state = .cloud
+                            if zimFile.downloadURL != nil {
+                                zimFile.state = .remote
                                 zimFile.openInPlaceURLBookmark = nil
                             } else {
                                 database.delete(zimFile)

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ZimFileMetaData.h"
 
 @interface ZimMultiReader : NSObject
 
@@ -19,23 +20,17 @@
 - (void)removeReaderByID:(NSString *_Nonnull)bookID NS_REFINED_FOR_SWIFT;
 - (void)removeStaleReaders;
 
-- (BOOL)hasEmbeddedIndex:(NSString *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
-- (BOOL)hasExternalIndex:(NSString *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
+// meta data
+- (nullable ZimFileMetaData *)getZimFileMetaData:(nonnull NSString *)identifier NS_REFINED_FOR_SWIFT;
++ (nullable ZimFileMetaData *)getMetaDataWithFileURL:(nonnull NSURL *)url NS_REFINED_FOR_SWIFT;
 
 - (NSString *_Nullable)getRedirectedPath:(NSString *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath NS_REFINED_FOR_SWIFT;
-
 - (NSDictionary *_Nullable)getContent:(NSString *_Nonnull)zimFileID contentURL:(NSString *_Nonnull)contentURL NS_REFINED_FOR_SWIFT;
-- (NSDictionary *_Nullable)getMetaData:(NSString *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
-
 - (NSString *_Nullable)getMainPagePath:(NSString *_Nonnull)bookID NS_REFINED_FOR_SWIFT;
 
 - (void)startIndexSearch:(NSString *_Nonnull)searchText zimFileIDs:(NSSet *_Nonnull)zimFileIDs NS_REFINED_FOR_SWIFT;
 - (NSDictionary *_Nullable)getNextIndexSearchResultWithSnippet:(BOOL)extractSnippet NS_REFINED_FOR_SWIFT;
 - (void)stopIndexSearch;
 - (NSArray *_Nonnull)getTitleSearchResults:(NSString *_Nonnull)searchText zimFileID:(NSString *_Nullable)zimFileID count:(unsigned int)count NS_REFINED_FOR_SWIFT;
-
-NS_ASSUME_NONNULL_BEGIN
-+ (NSDictionary *_Nullable)getMetaDataWithFileURL:(NSURL *)url NS_REFINED_FOR_SWIFT;
-NS_ASSUME_NONNULL_END
 
 @end

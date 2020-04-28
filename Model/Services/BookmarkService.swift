@@ -1,5 +1,5 @@
 //
-//  BookmarkManager.swift
+//  BookmarkService.swift
 //  Kiwix
 //
 //  Created by Chris Li on 1/1/20.
@@ -10,7 +10,7 @@ import Foundation
 import NotificationCenter
 import RealmSwift
 
-class BookmarkManager {
+class BookmarkService {
     private let database = try? Realm(configuration: Realm.defaultConfig)
     
     func updateBookmarkWidgetData() {
@@ -30,7 +30,7 @@ class BookmarkManager {
             return [
                 "title": bookmark.title,
                 "url": url.absoluteString,
-                "thumbImageData": bookmark.thumbImageData ?? bookmark.zimFile?.icon ?? Data()
+                "thumbImageData": bookmark.thumbImageData ?? bookmark.zimFile?.faviconData ?? Data()
             ]
         }
         UserDefaults(suiteName: "group.kiwix")?.set(bookmarksData, forKey: "bookmarks")

@@ -311,7 +311,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
                 try database.write {
                     database.delete(bookmark)
                 }
-                BookmarkManager().updateBookmarkWidgetData()
+                BookmarkService().updateBookmarkWidgetData()
             } else {
                 guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else {return}
                 let bookmark = Bookmark()
@@ -326,7 +326,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
                     bookmark.snippet = snippet
                     group.leave()
                 })
-                if zimFile.hasPicture {
+                if zimFile.hasPictures {
                     group.enter()
                     webViewController.extractImageURLs(completion: { (urls) in
                         bookmark.thumbImagePath = urls.first?.path
@@ -341,7 +341,7 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
                             database.add(bookmark)
                         }
                     } catch {}
-                    BookmarkManager().updateBookmarkWidgetData()
+                    BookmarkService().updateBookmarkWidgetData()
                 })
             }
         } catch {return}

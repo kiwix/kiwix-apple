@@ -66,7 +66,7 @@ class DownloadManager: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
             guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID),
-                let remoteURLString = zimFile.remoteURL, var url = URL(string: remoteURLString) else {return}
+                let remoteURLString = zimFile.downloadURL, var url = URL(string: remoteURLString) else {return}
             if url.lastPathComponent.hasSuffix(".meta4") {
                 url = url.deletingPathExtension()
             }
@@ -97,7 +97,7 @@ class DownloadManager: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
             guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else {return}
             
             try database.write {
-                zimFile.state = .cloud
+                zimFile.state = .remote
                 zimFile.downloadResumeData = nil
                 zimFile.downloadTotalBytesWritten = 0
             }
@@ -157,7 +157,7 @@ class DownloadManager: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
                             zimFile.downloadTotalBytesWritten = task.countOfBytesReceived
                         } else {
                             // task is cancelled
-                            zimFile.state = .cloud
+                            zimFile.state = .remote
                             zimFile.downloadResumeData = nil
                             zimFile.downloadTotalBytesWritten = 0
                         }

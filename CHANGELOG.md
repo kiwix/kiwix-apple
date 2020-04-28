@@ -2,6 +2,7 @@
 
 - fix: font size not applied after article is loaded
 - fix: snippet text color is too dark to read in dark mode
+- fix: sometimes the font size setting prview becomes too tall
 
 
 ## 1.11 (Jan 12, 2020)
