@@ -148,6 +148,9 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         } else {
             delegate?.webViewDidFinishLoading(controller: self)
         }
+        if let scale = Defaults[.webViewZoomScale], scale != 1 {
+            adjustFontSize(scale: scale)
+        }
     }
 }
 

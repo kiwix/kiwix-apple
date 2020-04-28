@@ -1,3 +1,9 @@
+## 1.11.1
+
+- fix: font size not applied after article is loaded
+- fix: snippet text color is too dark to read in dark mode
+
+
 ## 1.11 (Jan 12, 2020)
 
 A redesigned iPad interface
