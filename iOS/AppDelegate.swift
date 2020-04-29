@@ -15,11 +15,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     let fileMonitor = DirectoryMonitor(url: URL.documentDirectory)
     
     // MARK: - Lifecycle
-    
-    func applicationDidFinishLaunching(_ application: UIApplication) {
+
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
+    ) -> Bool {
         if #available(iOS 13.0, *) {} else {
             window = UIWindow(frame: UIScreen.main.bounds)
-            window?.rootViewController = RootSplitViewController()
+            window?.rootViewController = RootController()
             window?.makeKeyAndVisible()
         }
         
@@ -38,6 +41,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
             UIApplicationShortcutItem(type: Shortcut.bookmark.rawValue, localizedTitle: NSLocalizedString("Bookmark", comment: "3D Touch Menu Title")),
             UIApplicationShortcutItem(type: Shortcut.search.rawValue, localizedTitle: NSLocalizedString("Search", comment: "3D Touch Menu Title"))
         ]
+
+        return true
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -53,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     
     func application(_ app: UIApplication, open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        guard let rootViewController = window?.rootViewController as? RootSplitViewController else {return false}
+        guard let rootViewController = window?.rootViewController as? RootController else {return false}
         if url.isKiwixURL {
             rootViewController.openKiwixURL(url)
             return true
@@ -94,7 +99,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     // MARK: - Home Screen Quick Actions
     
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-        guard let rootViewController = window?.rootViewController as? RootSplitViewController,
+        guard let rootViewController = window?.rootViewController as? RootController,
             let shortcut = Shortcut(rawValue: shortcutItem.type) else { completionHandler(false); return }
         rootViewController.openShortcut(shortcut)
         completionHandler(true)

@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                options connectionOptions: UIScene.ConnectionOptions) {
         if let windowScene = scene as? UIWindowScene {
             window = UIWindow(windowScene: windowScene)
-            window?.rootViewController = RootSplitViewController()
+            window?.rootViewController = RootController()
             window?.makeKeyAndVisible()
         }
     }
@@ -32,7 +32,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         guard let context = URLContexts.first,
-            let rootViewController = window?.rootViewController as? RootSplitViewController else {return}
+            let rootViewController = window?.rootViewController as? RootController else {return}
         let url = context.url
         if url.isKiwixURL {
             rootViewController.openKiwixURL(url)
@@ -44,7 +44,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func windowScene(_ windowScene: UIWindowScene,
                      performActionFor shortcutItem: UIApplicationShortcutItem,
                      completionHandler: @escaping (Bool) -> Void) {
-        guard let rootViewController = window?.rootViewController as? RootSplitViewController,
+        guard let rootViewController = window?.rootViewController as? RootController,
             let shortcut = Shortcut(rawValue: shortcutItem.type) else { completionHandler(false); return }
         rootViewController.openShortcut(shortcut)
         completionHandler(true)
