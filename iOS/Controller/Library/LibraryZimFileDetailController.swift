@@ -277,7 +277,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
             case .deleteFile, .deleteBookmarks, .deleteFileAndBookmarks, .unlink:
                 present(ActionConfirmationController(zimFile: zimFile, action: action), animated: true)
             case .openMainPage:
-                guard let rootController = presentingViewController as? RootSplitViewController,
+                guard let rootController = presentingViewController as? RootController,
                     let url = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFile.id)  else {break}
                 rootController.contentViewController.load(url: url)
                 dismiss(animated: true, completion: nil)

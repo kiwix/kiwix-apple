@@ -1,5 +1,5 @@
 //
-//  RootSplitViewController.swift
+//  RootController.swift
 //  Kiwix for iOS
 //
 //  Created by Chris Li on 11/24/19.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RootSplitViewController: UISplitViewController, UISplitViewControllerDelegate {
+class RootController: UISplitViewController, UISplitViewControllerDelegate {
     let sideBarViewController = SideBarController()
     let contentViewController = ContentViewController()
     let contentNavigationController: UINavigationController
@@ -21,7 +21,7 @@ class RootSplitViewController: UISplitViewController, UISplitViewControllerDeleg
         viewControllers = [sideBarViewController, self.contentNavigationController]
         delegate = self
         preferredDisplayMode = .primaryHidden
-        
+
         sideBarViewController.favoriteController.delegate = contentViewController
         sideBarViewController.outlineController.delegate = contentViewController
         contentViewController.configureToolbar(isGrouped: !isCollapsed)
@@ -30,7 +30,7 @@ class RootSplitViewController: UISplitViewController, UISplitViewControllerDeleg
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func overrideTraitCollection(forChild childViewController: UIViewController) -> UITraitCollection? {
         if viewControllers.count > 1,
             childViewController == viewControllers.last,
@@ -64,12 +64,12 @@ class RootSplitViewController: UISplitViewController, UISplitViewControllerDeleg
     func primaryViewController(forExpanding splitViewController: UISplitViewController) -> UIViewController? {
         return sideBarViewController
     }
-    
+
     func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
         contentViewController.configureToolbar(isGrouped: false)
         return contentNavigationController
     }
-    
+
     func splitViewController(_ splitViewController: UISplitViewController,
                              separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
         contentViewController.configureToolbar(isGrouped: true)
