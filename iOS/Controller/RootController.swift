@@ -11,14 +11,13 @@ import UIKit
 class RootController: UISplitViewController, UISplitViewControllerDelegate {
     let sideBarViewController = SideBarController()
     let contentViewController = ContentViewController()
-    let contentNavigationController: UINavigationController
     
     init() {
-        self.contentNavigationController = UINavigationController(rootViewController: contentViewController)
-        self.contentNavigationController.isToolbarHidden = false
-        
         super.init(nibName: nil, bundle: nil)
-        viewControllers = [sideBarViewController, self.contentNavigationController]
+
+        let navigationController = UINavigationController(rootViewController: contentViewController)
+        navigationController.isToolbarHidden = false
+        viewControllers = [sideBarViewController, navigationController]
         delegate = self
         preferredDisplayMode = .primaryHidden
 
@@ -67,13 +66,17 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate {
 
     func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
         contentViewController.configureToolbar(isGrouped: false)
-        return contentNavigationController
+        let navigationController = UINavigationController(rootViewController: contentViewController)
+        navigationController.isToolbarHidden = false
+        return navigationController
     }
 
     func splitViewController(_ splitViewController: UISplitViewController,
                              separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
         contentViewController.configureToolbar(isGrouped: true)
-        return contentNavigationController
+        let navigationController = UINavigationController(rootViewController: contentViewController)
+        navigationController.isToolbarHidden = false
+        return navigationController
     }
     
     // MARK: Actions
