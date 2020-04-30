@@ -311,7 +311,7 @@ fileprivate class InformationView: UIView {
             if #available(iOS 13.0, *) {
                 textColor = .secondaryLabel
             } else {
-                textColor = .darkText
+                textColor = .darkGray
             }
         }
     }
@@ -324,7 +324,7 @@ fileprivate class InformationView: UIView {
             if #available(iOS 13.0, *) {
                 textColor = .tertiaryLabel
             } else {
-                textColor = .lightText
+                textColor = .gray
             }
         }
     }
