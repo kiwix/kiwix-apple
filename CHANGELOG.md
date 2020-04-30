@@ -3,6 +3,8 @@
 - fix: font size not applied after article is loaded
 - fix: snippet text color is too dark to read in dark mode
 - fix: sometimes the font size setting prview becomes too tall
+- fix: app launching issue for iOS 11 & 12 users
+- new: integration with OPDS API for library catalog refreshing
 
 
 ## 1.11 (Jan 12, 2020)

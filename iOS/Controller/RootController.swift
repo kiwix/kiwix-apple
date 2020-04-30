@@ -19,7 +19,8 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate {
         navigationController.isToolbarHidden = false
         viewControllers = [sideBarViewController, navigationController]
         delegate = self
-        preferredDisplayMode = .primaryHidden
+        if #available(iOS 13.0, *) { preferredDisplayMode = .primaryHidden }
+
 
         sideBarViewController.favoriteController.delegate = contentViewController
         sideBarViewController.outlineController.delegate = contentViewController
