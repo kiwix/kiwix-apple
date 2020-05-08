@@ -1,6 +1,7 @@
 ## 1.11.2
 
 - fix: swipe back gesture was not working due to conflict with gesture to show sidebar
+- fix: favicon would disappear for existing zim files after library manual refresh
 
 ## 1.11.1 (May 7, 2020)
 
