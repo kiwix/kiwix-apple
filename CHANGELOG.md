@@ -1,4 +1,8 @@
-## 1.11.1
+## 1.11.2
+
+- fix: swipe back gesture was not working due to conflict with gesture to show sidebar
+
+## 1.11.1 (May 7, 2020)
 
 - fix: font size not applied after article is loaded
 - fix: snippet text color is too dark to read in dark mode
