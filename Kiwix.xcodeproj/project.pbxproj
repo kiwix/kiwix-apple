@@ -947,8 +947,8 @@
 		9779A5AB2456793600F6F6FF /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */,
 				9779A5AD2456793600F6F6FF /* ZimFileMetaData.h */,
+				9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
