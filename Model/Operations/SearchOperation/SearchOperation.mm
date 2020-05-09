@@ -9,8 +9,8 @@
 #import "SearchOperation.h"
 #import "SearchResult.h"
 #import "ZimMultiReader.h"
-#include "reader.h"
-#include "searcher.h"
+#import "reader.h"
+#import "searcher.h"
 
 struct SharedReaders {
     NSArray *readerIDs;
@@ -53,11 +53,19 @@ struct SharedReaders {
     // retrieve search results
     kiwix::Result *result = searcher.getNextResult();
     while (result != NULL) {
-        SearchResult *searchResult = [[SearchResult alloc] init];
-        searchResult.zimFileID = sharedReaders.readerIDs[result->get_readerIndex()];
-        searchResult.path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
-        searchResult.title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
-        [results addObject:searchResult];
+        NSString *zimFileID = sharedReaders.readerIDs[result->get_readerIndex()];
+        NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
+        NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
+        SearchResult *searchResult = [[SearchResult alloc] initWithZimFileId:zimFileID path:path title:title];
+        
+        if (self.extractSnippet) {
+            searchResult.snippet = [NSString stringWithCString:result->get_snippet().c_str()
+                                                      encoding:NSUTF8StringEncoding];
+        }
+        
+        if (searchResult != nil) {
+            [results addObject:searchResult];
+        }
         
         delete result;
         result = searcher.getNextResult();

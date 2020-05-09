@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SearchOperation : NSOperation
 
 @property (nonatomic, strong, nonnull) NSArray *results;
+@property (nonatomic, assign) BOOL extractSnippet;
 
 - (id)initWithSearchText:(NSString *)searchText zimFileIDs:(NSSet *)identifiers;
 

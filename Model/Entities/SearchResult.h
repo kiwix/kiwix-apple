@@ -11,8 +11,12 @@
 @interface SearchResult : NSObject
 
 @property (nonatomic, strong, nonnull) NSString *zimFileID;
-@property (nonatomic, strong, nonnull) NSString *path;
+@property (nonatomic, strong, nonnull) NSURL *url;
 @property (nonatomic, strong, nonnull) NSString *title;
 @property (nonatomic, strong, nullable) NSString *snippet;
+
+- (nullable instancetype)initWithZimFileId:(nonnull NSString *)zimFileId
+                                      path:(nonnull NSString *)path
+                                     title:(nonnull NSString *)title;
 
 @end
