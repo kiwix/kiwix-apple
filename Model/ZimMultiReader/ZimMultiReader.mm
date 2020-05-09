@@ -13,11 +13,10 @@
 #include "searcher.h"
 #import "ZimMultiReader.h"
 #import "ZimFileMetaData.h"
-#import "ZimFileReader.h"
 #include "book.h"
 
 struct SharedReaders {
-    NSArray *reader_ids;
+    NSArray *readerIDs;
     std::vector<std::shared_ptr<kiwix::Reader>> readers;
 };
 
@@ -94,7 +93,7 @@ NSMutableArray *searcherZimIDs = [[NSMutableArray alloc] init];
 }
 
 - (struct SharedReaders)getSharedReaders:(nonnull NSSet *)identifiers {
-    NSMutableArray *reader_ids = [[NSMutableArray alloc] initWithCapacity:[identifiers count]];
+    NSMutableArray *readerIDs = [[NSMutableArray alloc] initWithCapacity:[identifiers count]];
     auto readers = std::vector<std::shared_ptr<kiwix::Reader>>();
     
     for(auto iter: *self.readers) {
@@ -102,12 +101,12 @@ NSMutableArray *searcherZimIDs = [[NSMutableArray alloc] init];
         if (![identifiers containsObject:identifier]) {
             continue;
         }
-        [reader_ids addObject:identifier];
+        [readerIDs addObject:identifier];
         readers.push_back(iter.second);
     }
     
     struct SharedReaders sharedReaders;
-    sharedReaders.reader_ids = reader_ids;
+    sharedReaders.readerIDs = readerIDs;
     sharedReaders.readers = readers;
     return sharedReaders;
 }
