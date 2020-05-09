@@ -13,8 +13,8 @@ class SearchProcedure: Operation {
     let ids: Set<ZimFileID>
     let extractSnippet: Bool
     
-    private var results = Set<SearchResult>()
-    private(set) var sortedResults: [SearchResult] = []
+    private var results = Set<SearchResultDeprecated>()
+    private(set) var sortedResults: [SearchResultDeprecated] = []
     
     init(term: String, ids: Set<ZimFileID> = Set(), extractSnippet: Bool? = nil) {
         self.searchText = term
@@ -55,7 +55,7 @@ class SearchProcedure: Operation {
         guard !isCancelled else {return}
         let lowercaseSearchText = searchText.lowercased()
         let levenshtein = Levenshtein()
-        sortedResults = results.map { (result) -> (result: SearchResult, score: Double) in
+        sortedResults = results.map { (result) -> (result: SearchResultDeprecated, score: Double) in
             var distance = Double(levenshtein.calculateDistance(a: result.title.lowercased()[...], b: lowercaseSearchText[...]))
             if let probability = result.probability {
                 distance = distance * Foundation.log(7.5576 - 6.4524 * probability)

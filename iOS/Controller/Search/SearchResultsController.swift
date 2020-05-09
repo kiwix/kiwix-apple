@@ -233,6 +233,9 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
                 }
             }
             queue.addOperation(operation)
+            
+            let operation2 = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
+            queue.addOperation(operation2)
         }
     }
 }

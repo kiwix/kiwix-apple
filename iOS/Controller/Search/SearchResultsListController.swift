@@ -13,7 +13,7 @@ import SwiftyUserDefaults
 class SearchResultsListController: UITableViewController {
     private(set) var searchText: String = ""
     private(set) var zimFileIDs = Set<String>()
-    private(set) var results = [SearchResult]()
+    private(set) var results = [SearchResultDeprecated]()
     private weak var clearResultTimer: Timer?
     
     init() {
@@ -33,7 +33,7 @@ class SearchResultsListController: UITableViewController {
         tableView.keyboardDismissMode = .onDrag
     }
     
-    func update(searchText: String, zimFileIDs: Set<String>, results: [SearchResult]) {
+    func update(searchText: String, zimFileIDs: Set<String>, results: [SearchResultDeprecated]) {
         self.searchText = searchText
         self.zimFileIDs = zimFileIDs
         self.results = results

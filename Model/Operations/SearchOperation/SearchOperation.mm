@@ -7,6 +7,7 @@
 //
 
 #import "SearchOperation.h"
+#import "SearchResult.h"
 #import "ZimMultiReader.h"
 #include "reader.h"
 #include "searcher.h"
@@ -52,13 +53,11 @@ struct SharedReaders {
     // retrieve search results
     kiwix::Result *result = searcher.getNextResult();
     while (result != NULL) {
-        NSString *identifier = sharedReaders.readerIDs[result->get_readerIndex()];
-        NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
-        NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
-        NSNumber *probability = [[NSNumber alloc] initWithDouble:(double)result->get_score() / double(100)];
-        [results addObject:@{
-            @"title": title
-        }];
+        SearchResult *searchResult = [[SearchResult alloc] init];
+        searchResult.zimFileID = sharedReaders.readerIDs[result->get_readerIndex()];
+        searchResult.path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
+        searchResult.title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
+        [results addObject:searchResult];
         
         delete result;
         result = searcher.getNextResult();

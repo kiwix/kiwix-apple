@@ -1,5 +1,5 @@
 //
-//  SearchResult.swift
+//  SearchResultDeprecated.swift
 //  Kiwix
 //
 //  Created by Chris Li on 9/12/17.
@@ -13,7 +13,7 @@
 #endif
 
 
-class SearchResult: Equatable, Hashable, CustomStringConvertible {
+class SearchResultDeprecated: Equatable, Hashable, CustomStringConvertible {
     let zimFileID: ZimFileID
     let url: URL
     let title: String
@@ -33,7 +33,7 @@ class SearchResult: Equatable, Hashable, CustomStringConvertible {
             self.attributedSnippet = nil
             return
         }
-        if snippet.contains("<b>"), let snippet = SearchResult.parseSnippet(html: snippet) {
+        if snippet.contains("<b>"), let snippet = SearchResultDeprecated.parseSnippet(html: snippet) {
             self.snippet = nil
             self.attributedSnippet = snippet
         } else {
@@ -75,7 +75,7 @@ class SearchResult: Equatable, Hashable, CustomStringConvertible {
         return snippet
     }
     
-    static func == (lhs: SearchResult, rhs: SearchResult) -> Bool {
+    static func == (lhs: SearchResultDeprecated, rhs: SearchResultDeprecated) -> Bool {
         return lhs.url.absoluteString == rhs.url.absoluteString
     }
     

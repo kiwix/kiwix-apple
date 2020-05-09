@@ -23,7 +23,7 @@ class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineView
     
     private let queue = SearchQueue()
     private(set) var searchText: String = ""
-    private var results = [SearchResult]()
+    private var results = [SearchResultDeprecated]()
     weak var windowController: WindowController?
     
     override func viewDidLoad() {
@@ -83,7 +83,7 @@ class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineView
     }
     
     @IBAction func resultsOutlineViewClicked(_ sender: NSOutlineView) {
-        guard let searchResult = sender.item(atRow: sender.selectedRow) as? SearchResult else {return}
+        guard let searchResult = sender.item(atRow: sender.selectedRow) as? SearchResultDeprecated else {return}
         windowController?.contentTabController?.setMode(.reader)
         windowController?.webViewController?.load(url: searchResult.url)
         windowController?.searchField.endSearch()
@@ -106,7 +106,7 @@ class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineView
     // MARK: - NSOutlineViewDelegate
     
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-        guard let item = item as? SearchResult else {return nil}
+        guard let item = item as? SearchResultDeprecated else {return nil}
         let identifier = NSUserInterfaceItemIdentifier("DataCell")
         let view = outlineView.makeView(withIdentifier: identifier, owner: self) as! NSTableCellView
         view.textField?.stringValue = item.title

@@ -11,6 +11,7 @@
 @interface SearchResult : NSObject
 
 @property (nonatomic, strong, nonnull) NSString *zimFileID;
+@property (nonatomic, strong, nonnull) NSString *path;
 @property (nonatomic, strong, nonnull) NSString *title;
 @property (nonatomic, strong, nullable) NSString *snippet;
 

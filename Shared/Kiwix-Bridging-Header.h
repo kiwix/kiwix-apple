@@ -6,3 +6,4 @@
 #import "OPDSStreamParser.h"
 #import "ZimFileMetaData.h"
 #import "SearchOperation.h"
+#import "SearchResult.h"
