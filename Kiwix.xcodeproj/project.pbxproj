@@ -793,7 +793,7 @@
 			isa = PBXGroup;
 			children = (
 				9779A5AB2456793600F6F6FF /* Entities */,
-				9779A59E2456793500F6F6FF /* LibraryOperations */,
+				9779A59E2456793500F6F6FF /* Operations */,
 				9779A5AE2456793600F6F6FF /* Realm */,
 				9779A59B2456793500F6F6FF /* Services */,
 				9779A5A62456793500F6F6FF /* ZimMultiReader */,
@@ -912,7 +912,7 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
-		9779A59E2456793500F6F6FF /* LibraryOperations */ = {
+		9779A59E2456793500F6F6FF /* Operations */ = {
 			isa = PBXGroup;
 			children = (
 				9779A59F2456793500F6F6FF /* LibraryScanOperation.swift */,
@@ -920,7 +920,7 @@
 				9779A5A12456793500F6F6FF /* OPDSRefreshOperation.swift */,
 				9779A5A22456793500F6F6FF /* OPDSStreamParser */,
 			);
-			path = LibraryOperations;
+			path = Operations;
 			sourceTree = "<group>";
 		};
 		9779A5A22456793500F6F6FF /* OPDSStreamParser */ = {
