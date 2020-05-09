@@ -13,7 +13,7 @@ import SwiftyUserDefaults
 class SearchResultsListController: UITableViewController {
     private(set) var searchText: String = ""
     private(set) var zimFileIDs = Set<String>()
-    private(set) var results = [SearchResultDeprecated]()
+    private(set) var results = [SearchResult]()
     private weak var clearResultTimer: Timer?
     
     init() {
@@ -33,7 +33,7 @@ class SearchResultsListController: UITableViewController {
         tableView.keyboardDismissMode = .onDrag
     }
     
-    func update(searchText: String, zimFileIDs: Set<String>, results: [SearchResultDeprecated]) {
+    func update(searchText: String, zimFileIDs: Set<String>, results: [SearchResult]) {
         self.searchText = searchText
         self.zimFileIDs = zimFileIDs
         self.results = results
@@ -88,17 +88,17 @@ class SearchResultsListController: UITableViewController {
         
         if let snippet = result.snippet {
             cell.detailLabel.text = snippet
-        } else if let attributedSnippet = result.attributedSnippet {
-            if #available(iOS 13.0, *) {
-                let mutableSnippet = NSMutableAttributedString(attributedString: attributedSnippet)
-                mutableSnippet.addAttributes(
-                    [NSAttributedString.Key.foregroundColor: UIColor.label],
-                    range: NSRange(location: 0, length: mutableSnippet.length)
-                )
-                cell.detailLabel.attributedText = mutableSnippet
-            } else {
-                cell.detailLabel.attributedText = attributedSnippet
-            }
+//        } else if let attributedSnippet = result.attributedSnippet {
+//            if #available(iOS 13.0, *) {
+//                let mutableSnippet = NSMutableAttributedString(attributedString: attributedSnippet)
+//                mutableSnippet.addAttributes(
+//                    [NSAttributedString.Key.foregroundColor: UIColor.label],
+//                    range: NSRange(location: 0, length: mutableSnippet.length)
+//                )
+//                cell.detailLabel.attributedText = mutableSnippet
+//            } else {
+//                cell.detailLabel.attributedText = attributedSnippet
+//            }
         } else {
             cell.detailLabel.text = nil
         }
@@ -115,7 +115,12 @@ class SearchResultsListController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        if results[indexPath.row].snippet != nil || results[indexPath.row].attributedSnippet != nil {
+//        if results[indexPath.row].snippet != nil || results[indexPath.row].attributedSnippet != nil {
+//            return traitCollection.horizontalSizeClass == .regular ? 120 : 190
+//        } else {
+//            return 44
+//        }
+        if results[indexPath.row].snippet != nil {
             return traitCollection.horizontalSizeClass == .regular ? 120 : 190
         } else {
             return 44

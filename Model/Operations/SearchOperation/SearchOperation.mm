@@ -56,6 +56,10 @@ struct SharedReaders {
         NSString *zimFileID = sharedReaders.readerIDs[result->get_readerIndex()];
         NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
         NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
+        
+        // HACK: assuming the path is always absolute
+        if (![path hasPrefix:@"/"]) { path = [@"/" stringByAppendingString:path]; }
+        
         SearchResult *searchResult = [[SearchResult alloc] initWithZimFileId:zimFileID path:path title:title];
         
         if (self.extractSnippet) {

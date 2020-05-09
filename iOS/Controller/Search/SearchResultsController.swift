@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import SwiftyUserDefaults
 
 class SearchResultsController: UIViewController, UISearchResultsUpdating {
     private var displayMode: DisplayMode = .filter { didSet(oldValue) { configureStackView(oldDisplayMode: oldValue) } }
@@ -224,18 +225,16 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
             }
             displayMode = .inProgress
             
-            let operation = SearchProcedure(term: searchText, ids: zimFileIDs)
+            let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
+            operation.extractSnippet = !Defaults[.searchResultExcludeSnippet]
             operation.completionBlock = { [weak self] in
                 guard !operation.isCancelled else {return}
                 DispatchQueue.main.sync {
-                    self?.resultsListController.update(searchText: searchText, zimFileIDs: zimFileIDs, results: operation.sortedResults)
-                    self?.displayMode = operation.sortedResults.count > 0 ? .results : .noResults
+                    self?.resultsListController.update(searchText: searchText, zimFileIDs: zimFileIDs, results: operation.results)
+                    self?.displayMode = operation.results.count > 0 ? .results : .noResults
                 }
             }
             queue.addOperation(operation)
-            
-            let operation2 = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
-            queue.addOperation(operation2)
         }
     }
 }

@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SearchOperation : NSOperation
 
-@property (nonatomic, strong, nonnull) NSArray *results;
+@property (nonatomic, strong, nonnull) NSArray *results NS_REFINED_FOR_SWIFT;
 @property (nonatomic, assign) BOOL extractSnippet;
 
 - (id)initWithSearchText:(NSString *)searchText zimFileIDs:(NSSet *)identifiers;
