@@ -9,14 +9,18 @@
 #import <Foundation/Foundation.h>
 #import "ZimFileMetaData.h"
 
+struct SharedReaders;
+
 @interface ZimMultiReader : NSObject
 
 - (instancetype _Nonnull)init NS_REFINED_FOR_SWIFT;
++ (nonnull ZimMultiReader *)shared NS_REFINED_FOR_SWIFT;
 
 - (NSArray *_Nonnull)getReaderIdentifiers NS_REFINED_FOR_SWIFT;
 - (NSURL *_Nullable)getReaderFileURL:(NSString *_Nonnull)identifier NS_REFINED_FOR_SWIFT;
 
 - (void)addReaderByURL:(NSURL *_Nonnull)url NS_REFINED_FOR_SWIFT;
+- (struct SharedReaders)getSharedReaders:(nonnull NSSet *)identifiers;
 - (void)removeReaderByID:(NSString *_Nonnull)bookID NS_REFINED_FOR_SWIFT;
 - (void)removeStaleReaders;
 

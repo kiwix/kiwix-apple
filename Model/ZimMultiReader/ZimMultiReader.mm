@@ -13,7 +13,13 @@
 #include "searcher.h"
 #import "ZimMultiReader.h"
 #import "ZimFileMetaData.h"
+#import "ZimFileReader.h"
 #include "book.h"
+
+struct SharedReaders {
+    NSArray *reader_ids;
+    std::vector<std::shared_ptr<kiwix::Reader>> readers;
+};
 
 @interface ZimMultiReader ()
 
@@ -37,6 +43,15 @@ NSMutableArray *searcherZimIDs = [[NSMutableArray alloc] init];
         self.fileURLs = [[NSMutableDictionary alloc] initWithCapacity:10];
     }
     return self;
+}
+
++ (ZimMultiReader *)shared {
+    static ZimMultiReader *sharedInstance = nil;
+    static dispatch_once_t onceToken; // onceToken = 0
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[ZimMultiReader alloc] init];
+    });
+    return sharedInstance;
 }
 
 - (void)dealloc {
@@ -76,6 +91,25 @@ NSMutableArray *searcherZimIDs = [[NSMutableArray alloc] init];
         NSString *identifierObjC = [NSString stringWithCString:identifier.c_str() encoding:NSUTF8StringEncoding];
         self.fileURLs[identifierObjC] = url;
     } catch (std::exception e) { }
+}
+
+- (struct SharedReaders)getSharedReaders:(nonnull NSSet *)identifiers {
+    NSMutableArray *reader_ids = [[NSMutableArray alloc] initWithCapacity:[identifiers count]];
+    auto readers = std::vector<std::shared_ptr<kiwix::Reader>>();
+    
+    for(auto iter: *self.readers) {
+        NSString *identifier = [NSString stringWithCString:iter.first.c_str() encoding:NSUTF8StringEncoding];
+        if (![identifiers containsObject:identifier]) {
+            continue;
+        }
+        [reader_ids addObject:identifier];
+        readers.push_back(iter.second);
+    }
+    
+    struct SharedReaders sharedReaders;
+    sharedReaders.reader_ids = reader_ids;
+    sharedReaders.readers = readers;
+    return sharedReaders;
 }
 
 - (void)removeReaderByID:(NSString *)bookID {
