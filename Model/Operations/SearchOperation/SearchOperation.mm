@@ -19,7 +19,6 @@ struct SharedReaders {
 
 @interface SearchOperation ()
 
-@property (strong) NSString *searchText;
 @property (strong) NSSet *identifiers;
 
 @end
