@@ -16,7 +16,7 @@
 @property (nonatomic, strong, nullable) NSString *snippet;
 @property (nonatomic, strong, nullable) NSAttributedString *attributedSnippet;
 
-- (nullable instancetype)initWithZimFileId:(nonnull NSString *)zimFileId
+- (nullable instancetype)initWithZimFileID:(nonnull NSString *)zimFileId
                                       path:(nonnull NSString *)path
                                      title:(nonnull NSString *)title;
 

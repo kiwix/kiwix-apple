@@ -10,15 +10,18 @@
 
 @implementation SearchResult
 
-- (instancetype)initWithZimFileId:(NSString *)zimFileId path:(NSString *)path title:(NSString *)title {
+- (instancetype)initWithZimFileID:(NSString *)zimFileID path:(NSString *)path title:(NSString *)title {
     self = [super init];
     if (self) {
-        self.zimFileID = zimFileId;
+        self.zimFileID = zimFileID;
         self.title = title;
+        
+        // HACK: assuming path is always absolute
+        if (![path hasPrefix:@"/"]) { path = [@"/" stringByAppendingString:path]; }
         
         NSURLComponents *components = [[NSURLComponents alloc] init];
         components.scheme = @"kiwix";
-        components.host = zimFileId;
+        components.host = zimFileID;
         components.path = path;
         self.url = [components URL];
         

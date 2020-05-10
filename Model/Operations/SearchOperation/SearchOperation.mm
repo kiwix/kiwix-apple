@@ -38,53 +38,64 @@ struct SharedReaders {
 
 - (NSArray *)getSearchResults {
     struct SharedReaders sharedReaders = [[ZimMultiReader shared] getSharedReaders:self.identifiers];
-    NSMutableArray *results = [[NSMutableArray alloc] initWithCapacity:20];
     
-    // initialize kiwix::Search
+    // title search
+    NSMutableArray *results = [self getTitleSearchResults:self.searchText readers:sharedReaders.readers];
+    
+    // initialize full text search
+    if (self.isCancelled) { return results; }
     kiwix::Searcher searcher = kiwix::Searcher();
     for (auto iter: sharedReaders.readers) {
         searcher.add_reader(iter.get());
     }
     
-    // start search
+    // start full text search
     if (self.isCancelled) { return results; }
     searcher.search([self.searchText cStringUsingEncoding:NSUTF8StringEncoding], 0, 20);
     
-    // retrieve search results
+    // retrieve full text search results
     kiwix::Result *result = searcher.getNextResult();
     while (result != NULL) {
         NSString *zimFileID = sharedReaders.readerIDs[result->get_readerIndex()];
-        SearchResult *searchResult = [self getSearchResultFrom:result zimFileId:zimFileID];
-        if (searchResult != nil) {
-            [results addObject:searchResult];
+        NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
+        NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
+        SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
+        
+        // optionally, add snippet
+        if (self.extractSnippet) {
+            NSString *snippet = [NSString stringWithCString:result->get_snippet().c_str() encoding:NSUTF8StringEncoding];
+            searchResult.snippet = snippet;
         }
+        
+        if (searchResult != nil) { [results addObject:searchResult]; }
         delete result;
-        if (self.isCancelled) {
-            break;
-        }
+        if (self.isCancelled) { break; }
         result = searcher.getNextResult();
     }
     
     return results;
 }
 
-- (SearchResult *)getSearchResultFrom:(kiwix::Result *)result zimFileId:(NSString *)zimFileID {
-    NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
-    NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
+- (NSMutableArray *)getTitleSearchResults:(NSString *)searchText readers:(std::vector<std::shared_ptr<kiwix::Reader>>)readers {
+    NSMutableArray *results = [[NSMutableArray alloc] init];
+    std::string searchTermC = [searchText cStringUsingEncoding:NSUTF8StringEncoding];
     
-    // HACK: assuming the is always absolute
-    if (![path hasPrefix:@"/"]) { path = [@"/" stringByAppendingString:path]; }
-    
-    // create the search result instance
-    SearchResult *searchResult = [[SearchResult alloc] initWithZimFileId:zimFileID path:path title:title];
-    
-    // optionally, add snippet
-    if (self.extractSnippet) {
-        NSString *snippet = [NSString stringWithCString:result->get_snippet().c_str() encoding:NSUTF8StringEncoding];
-        searchResult.snippet = snippet;
+    for (auto reader: readers) {
+        NSString *zimFileID = [NSString stringWithCString:reader->getId().c_str() encoding:NSUTF8StringEncoding];
+        reader->searchSuggestionsSmart(searchTermC, 10);
+        
+        std::string titleC;
+        std::string pathC;
+        while (reader->getNextSuggestion(titleC, pathC)) {
+            NSString *path = [NSString stringWithCString:pathC.c_str() encoding:NSUTF8StringEncoding];
+            NSString *title = [NSString stringWithCString:titleC.c_str() encoding:NSUTF8StringEncoding];
+            SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
+            if (searchResult != nil) { [results addObject:searchResult]; }
+            if (self.isCancelled) { break; }
+        }
+        if (self.isCancelled) { break; }
     }
-    
-    return searchResult;
+    return results;
 }
 
 @end
