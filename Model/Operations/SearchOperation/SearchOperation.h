@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL extractSnippet;
 
 - (id)initWithSearchText:(NSString *)searchText zimFileIDs:(NSSet *)identifiers;
+- (NSArray *)getSearchResults;
 
 @end
 

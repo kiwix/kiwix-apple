@@ -36,7 +36,7 @@ struct SharedReaders {
     return self;
 }
 
-- (void)main {
+- (NSArray *)getSearchResults {
     struct SharedReaders sharedReaders = [[ZimMultiReader shared] getSharedReaders:self.identifiers];
     NSMutableArray *results = [[NSMutableArray alloc] initWithCapacity:20];
     
@@ -47,36 +47,44 @@ struct SharedReaders {
     }
     
     // start search
-    if (self.isCancelled) { return; }
+    if (self.isCancelled) { return results; }
     searcher.search([self.searchText cStringUsingEncoding:NSUTF8StringEncoding], 0, 20);
     
     // retrieve search results
     kiwix::Result *result = searcher.getNextResult();
     while (result != NULL) {
         NSString *zimFileID = sharedReaders.readerIDs[result->get_readerIndex()];
-        NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
-        NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
-        
-        // HACK: assuming the path is always absolute
-        if (![path hasPrefix:@"/"]) { path = [@"/" stringByAppendingString:path]; }
-        
-        SearchResult *searchResult = [[SearchResult alloc] initWithZimFileId:zimFileID path:path title:title];
-        
-        if (self.extractSnippet) {
-            searchResult.snippet = [NSString stringWithCString:result->get_snippet().c_str()
-                                                      encoding:NSUTF8StringEncoding];
-        }
-        
+        SearchResult *searchResult = [self getSearchResultFrom:result zimFileId:zimFileID];
         if (searchResult != nil) {
             [results addObject:searchResult];
         }
-        
         delete result;
+        if (self.isCancelled) {
+            break;
+        }
         result = searcher.getNextResult();
-        if (self.isCancelled) { break; }
     }
     
-    self.results = results;
+    return results;
+}
+
+- (SearchResult *)getSearchResultFrom:(kiwix::Result *)result zimFileId:(NSString *)zimFileID {
+    NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
+    NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
+    
+    // HACK: assuming the is always absolute
+    if (![path hasPrefix:@"/"]) { path = [@"/" stringByAppendingString:path]; }
+    
+    // create the search result instance
+    SearchResult *searchResult = [[SearchResult alloc] initWithZimFileId:zimFileID path:path title:title];
+    
+    // optionally, add snippet
+    if (self.extractSnippet) {
+        NSString *snippet = [NSString stringWithCString:result->get_snippet().c_str() encoding:NSUTF8StringEncoding];
+        searchResult.snippet = snippet;
+    }
+    
+    return searchResult;
 }
 
 @end
