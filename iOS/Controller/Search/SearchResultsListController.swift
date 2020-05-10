@@ -88,7 +88,8 @@ class SearchResultsListController: UITableViewController {
         
         if let snippet = result.snippet {
             cell.detailLabel.text = snippet
-//        } else if let attributedSnippet = result.attributedSnippet {
+        } else if let attributedSnippet = result.attributedSnippet {
+            cell.detailLabel.attributedText = attributedSnippet
 //            if #available(iOS 13.0, *) {
 //                let mutableSnippet = NSMutableAttributedString(attributedString: attributedSnippet)
 //                mutableSnippet.addAttributes(
@@ -115,15 +116,15 @@ class SearchResultsListController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-//        if results[indexPath.row].snippet != nil || results[indexPath.row].attributedSnippet != nil {
-//            return traitCollection.horizontalSizeClass == .regular ? 120 : 190
-//        } else {
-//            return 44
-//        }
-        if results[indexPath.row].snippet != nil {
+        if results[indexPath.row].snippet != nil || results[indexPath.row].attributedSnippet != nil {
             return traitCollection.horizontalSizeClass == .regular ? 120 : 190
         } else {
             return 44
         }
+//        if results[indexPath.row].snippet != nil {
+//            return traitCollection.horizontalSizeClass == .regular ? 120 : 190
+//        } else {
+//            return 44
+//        }
     }
 }

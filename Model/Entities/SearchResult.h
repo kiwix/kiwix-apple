@@ -14,6 +14,7 @@
 @property (nonatomic, strong, nonnull) NSURL *url;
 @property (nonatomic, strong, nonnull) NSString *title;
 @property (nonatomic, strong, nullable) NSString *snippet;
+@property (nonatomic, strong, nullable) NSAttributedString *attributedSnippet;
 
 - (nullable instancetype)initWithZimFileId:(nonnull NSString *)zimFileId
                                       path:(nonnull NSString *)path
