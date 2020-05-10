@@ -58,8 +58,6 @@
 		9779A5BD2456793600F6F6FF /* OPDSStreamParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A32456793500F6F6FF /* OPDSStreamParser.swift */; };
 		9779A5BE2456793600F6F6FF /* OPDSStreamParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A52456793500F6F6FF /* OPDSStreamParser.mm */; };
 		9779A5BF2456793600F6F6FF /* OPDSStreamParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A52456793500F6F6FF /* OPDSStreamParser.mm */; };
-		9779A5C02456793600F6F6FF /* SearchResultDeprecated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A82456793500F6F6FF /* SearchResultDeprecated.swift */; };
-		9779A5C12456793600F6F6FF /* SearchResultDeprecated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A82456793500F6F6FF /* SearchResultDeprecated.swift */; };
 		9779A5C22456793600F6F6FF /* ZimMultiReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A92456793500F6F6FF /* ZimMultiReader.mm */; };
 		9779A5C32456793600F6F6FF /* ZimMultiReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A92456793500F6F6FF /* ZimMultiReader.mm */; };
 		9779A5C42456793600F6F6FF /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimMultiReader.swift */; };
@@ -80,8 +78,6 @@
 		9779A7462456796B00F6F6FF /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5D52456796A00F6F6FF /* DownloadManager.swift */; };
 		9779A7AB2456796B00F6F6FF /* SearchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7372456796B00F6F6FF /* SearchQueue.swift */; };
 		9779A7AC2456796B00F6F6FF /* SearchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7372456796B00F6F6FF /* SearchQueue.swift */; };
-		9779A7AD2456796B00F6F6FF /* SearchProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7382456796B00F6F6FF /* SearchProcedure.swift */; };
-		9779A7AE2456796B00F6F6FF /* SearchProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7382456796B00F6F6FF /* SearchProcedure.swift */; };
 		9779A7AF2456796B00F6F6FF /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7392456796B00F6F6FF /* Settings.swift */; };
 		9779A7B02456796B00F6F6FF /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7392456796B00F6F6FF /* Settings.swift */; };
 		9779A7B12456796B00F6F6FF /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A73A2456796B00F6F6FF /* WebKitHandler.swift */; };
@@ -1820,7 +1816,6 @@
 			files = (
 				97B399932468508C00BC6F5B /* Platform.swift in Sources */,
 				974FD5CF23405C3700FFDEEC /* WindowControllers.swift in Sources */,
-				9779A5C12456793600F6F6FF /* SearchResultDeprecated.swift in Sources */,
 				9779A7E524567A5A00F6F6FF /* Log.swift in Sources */,
 				9779A5C52456793600F6F6FF /* ZimMultiReader.swift in Sources */,
 				9779A5B32456793600F6F6FF /* LibraryService.swift in Sources */,
@@ -1837,7 +1832,6 @@
 				9768C2351F4B7BAC00FD499B /* AppDelegate.swift in Sources */,
 				9779A5CB2456793600F6F6FF /* Bookmark.swift in Sources */,
 				9779A5C72456793600F6F6FF /* ZimFileMetaData.mm in Sources */,
-				9779A7AE2456796B00F6F6FF /* SearchProcedure.swift in Sources */,
 				9779A5B72456793600F6F6FF /* LibraryScanOperation.swift in Sources */,
 				9779A73E2456796B00F6F6FF /* DirectoryMonitor.swift in Sources */,
 				9779A7B42456796B00F6F6FF /* TableOfContentItem.swift in Sources */,
@@ -1865,7 +1859,6 @@
 				9779A5BC2456793600F6F6FF /* OPDSStreamParser.swift in Sources */,
 				972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */,
 				9779A5C22456793600F6F6FF /* ZimMultiReader.mm in Sources */,
-				9779A7AD2456796B00F6F6FF /* SearchProcedure.swift in Sources */,
 				97252103200D3C4B00B60A80 /* HUDController.swift in Sources */,
 				9779A7AB2456796B00F6F6FF /* SearchQueue.swift in Sources */,
 				9779A5C82456793600F6F6FF /* RealmConfig.swift in Sources */,
@@ -1884,7 +1877,6 @@
 				9779A7EA24567AA600F6F6FF /* LibrarySettingController.swift in Sources */,
 				97E34E0C20124F33005080B2 /* SearchFilterController.swift in Sources */,
 				97B1046F1F8FC63C00488444 /* LibraryMasterController.swift in Sources */,
-				9779A5C02456793600F6F6FF /* SearchResultDeprecated.swift in Sources */,
 				972B6662200808D6003F5365 /* WelcomeController.swift in Sources */,
 				97252108200F9D6A00B60A80 /* SettingController.swift in Sources */,
 				9779A5B82456793600F6F6FF /* LibraryOperationBase.swift in Sources */,

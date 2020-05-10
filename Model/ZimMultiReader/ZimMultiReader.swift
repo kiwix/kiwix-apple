@@ -48,21 +48,21 @@ extension ZimMultiReader {
         __startIndexSearch(searchText, zimFileIDs: zimFileIDs)
     }
     
-    func getNextIndexSearchResult(extractSnippet: Bool) -> SearchResultDeprecated? {
-        guard let result = __getNextIndexSearchResult(withSnippet: extractSnippet) as? Dictionary<String, Any>,
-            let id = result["id"] as? String,
-            let path = result["path"] as? String,
-            let title = result["title"] as? String else {return nil}
-        return SearchResultDeprecated(zimFileID: id, path: path, title: title, probability: result["probability"] as? Double, snippet: result["snippet"] as? String)
-    }
-    
-    func getTitleSearchResults(searchText: String, zimFileID: ZimFileID, count: Int) -> [SearchResultDeprecated] {
-        return __getTitleSearchResults(searchText, zimFileID: zimFileID, count: UInt32(count)).compactMap { suggestion -> SearchResultDeprecated? in
-            guard let suggestion = suggestion as? Dictionary<String, String>,
-                let id = suggestion["id"],
-                let title = suggestion["title"],
-                let path = suggestion["path"] else {return nil}
-            return SearchResultDeprecated(zimFileID: id, path: path, title: title)
-        }
-    }
+//    func getNextIndexSearchResult(extractSnippet: Bool) -> SearchResultDeprecated? {
+//        guard let result = __getNextIndexSearchResult(withSnippet: extractSnippet) as? Dictionary<String, Any>,
+//            let id = result["id"] as? String,
+//            let path = result["path"] as? String,
+//            let title = result["title"] as? String else {return nil}
+//        return SearchResultDeprecated(zimFileID: id, path: path, title: title, probability: result["probability"] as? Double, snippet: result["snippet"] as? String)
+//    }
+//    
+//    func getTitleSearchResults(searchText: String, zimFileID: ZimFileID, count: Int) -> [SearchResultDeprecated] {
+//        return __getTitleSearchResults(searchText, zimFileID: zimFileID, count: UInt32(count)).compactMap { suggestion -> SearchResultDeprecated? in
+//            guard let suggestion = suggestion as? Dictionary<String, String>,
+//                let id = suggestion["id"],
+//                let title = suggestion["title"],
+//                let path = suggestion["path"] else {return nil}
+//            return SearchResultDeprecated(zimFileID: id, path: path, title: title)
+//        }
+//    }
 }
