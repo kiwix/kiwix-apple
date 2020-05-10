@@ -58,7 +58,9 @@ struct SharedReaders {
         NSString *zimFileID = sharedReaders.readerIDs[result->get_readerIndex()];
         NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
         NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
+        
         SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
+        searchResult.probability = [[NSNumber alloc] initWithDouble:(double)result->get_score() / double(100)];
         
         // optionally, add snippet
         if (self.extractSnippet) {
