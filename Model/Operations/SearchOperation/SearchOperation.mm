@@ -31,6 +31,7 @@ struct SharedReaders {
         self.searchText = searchText;
         self.identifiers = identifiers;
         self.results = @[];
+        self.qualityOfService = NSQualityOfServiceUserInitiated;
     }
     return self;
 }

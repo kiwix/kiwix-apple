@@ -20,12 +20,17 @@ extension SearchOperation {
     open override func main() {
         __results = getSearchResults()
         
+        let dispatchGroup = DispatchGroup()
         for result in results {
-            if let snippet = result.snippet {
+            guard let html = result.snippet else { continue }
+            dispatchGroup.enter()
+            DispatchQueue.global(qos: .userInitiated).async {
                 result.snippet = nil
-                result.attributedSnippet = parse(html: snippet)
+                result.attributedSnippet = self.parse(html: html)
+                dispatchGroup.leave()
             }
         }
+        dispatchGroup.wait()
         sort()
     }
     
