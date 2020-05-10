@@ -36,7 +36,7 @@ struct SharedReaders {
     return self;
 }
 
-- (NSArray *)getSearchResults {
+- (NSArray *)getSearchResults:(BOOL)withFullTextSnippet {
     struct SharedReaders sharedReaders = [[ZimMultiReader shared] getSharedReaders:self.identifiers];
     NSMutableArray *results = [[NSMutableArray alloc] initWithCapacity:15];
     
@@ -62,7 +62,7 @@ struct SharedReaders {
         searchResult.probability = [[NSNumber alloc] initWithDouble:(double)result->get_score() / double(100)];
         
         // optionally, add snippet
-        if (self.extractSnippet) {
+        if (withFullTextSnippet) {
             NSString *html = [NSString stringWithCString:result->get_snippet().c_str() encoding:NSUTF8StringEncoding];
             searchResult.htmlSnippet = html;
         }

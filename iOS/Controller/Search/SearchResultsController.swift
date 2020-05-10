@@ -226,7 +226,6 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
             displayMode = .inProgress
             
             let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
-            operation.extractSnippet = !Defaults[.searchResultExcludeSnippet]
             operation.completionBlock = { [weak self] in
                 guard !operation.isCancelled else {return}
                 DispatchQueue.main.sync {

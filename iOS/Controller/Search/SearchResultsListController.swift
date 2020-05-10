@@ -31,6 +31,8 @@ class SearchResultsListController: UITableViewController {
         tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.keyboardDismissMode = .onDrag
+        
+        Defaults[.searchResultSnippetExtractionMode] = SearchOperation.SnippetExtractionMode.firstParagraph.rawValue
     }
     
     func update(searchText: String, zimFileIDs: Set<String>, results: [SearchResult]) {

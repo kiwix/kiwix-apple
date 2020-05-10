@@ -12,30 +12,65 @@
     import UIKit
 #endif
 import SwiftSoup
+import SwiftyUserDefaults
 
 extension SearchOperation {
     var results: [SearchResult] { get { __results as? [SearchResult] ?? [] } }
     static private let boldFont = NSUIFont.boldSystemFont(ofSize: 12.0)
     
     open override func main() {
-        __results = getSearchResults()
+        let shouldExtractSnippet = !Defaults[.searchResultExcludeSnippet]
+        let mode = SnippetExtractionMode(rawValue: Defaults[.searchResultSnippetExtractionMode])
+            ?? SnippetExtractionMode.matches
         
+        __results = getSearchResults(shouldExtractSnippet && mode == .matches)
+        if shouldExtractSnippet { extractSnippet(mode) }
+        sortResults()
+    }
+    
+    private func extractSnippet(_ mode: SnippetExtractionMode) {
         let dispatchGroup = DispatchGroup()
         for result in results {
-            guard let html = result.htmlSnippet else { continue }
             dispatchGroup.enter()
             DispatchQueue.global(qos: .userInitiated).async {
                 defer { dispatchGroup.leave() }
                 guard !self.isCancelled else { return }
-                result.snippet = self.parse(html: html)
+                
+                switch mode {
+                case .firstParagraph:
+                    result.snippet = self.getFirstParagraphSnippet(result)
+                case .matches:
+                    result.snippet = self.getMatchesSnippet(html: result.htmlSnippet)
+                }
             }
         }
         dispatchGroup.wait()
-        sortResults()
     }
     
-    func parse(html: String) -> NSAttributedString? {
-        guard let body = try? SwiftSoup.parseBodyFragment(html).body() else { return nil }
+    private func getFirstParagraphSnippet(_ result: SearchResult) -> NSAttributedString? {
+        guard let content = ZimMultiReader.shared.getContent(bookID: result.zimFileID, contentPath: result.url.path),
+            let html = String(data: content.data, encoding: .utf8),
+            let body = try? SwiftSoup.parseBodyFragment(html).body(),
+            let firstParagraph = try? body.getElementsByTag("p").first() else {return nil}
+        let snippet = NSMutableAttributedString()
+        for node in firstParagraph.getChildNodes() {
+            if let element = node as? Element {
+                if let className = try? element.className(), className == "mw-ref" {
+                    continue
+                } else if element.tagName() == "b", let text = try? element.text() {
+                    snippet.append(NSAttributedString(string: text, attributes: [.font: SearchOperation.boldFont]))
+                } else if let text = try? element.text() {
+                    snippet.append(NSAttributedString(string: text))
+                }
+            } else if let text = try? node.outerHtml() {
+                snippet.append(NSAttributedString(string: text))
+            }
+        }
+        return snippet
+    }
+    
+    private func getMatchesSnippet(html: String?) -> NSAttributedString? {
+        guard let html = html, let body = try? SwiftSoup.parseBodyFragment(html).body() else { return nil }
         let snippet = NSMutableAttributedString()
         for node in body.getChildNodes() {
             if let element = node as? Element, let text = try? element.text(), element.tagName() == "b" {
@@ -59,9 +94,13 @@ extension SearchOperation {
             return (result, distance)
         }.sorted { $0.score < $1.score }.map { $0.result }
     }
+    
+    enum SnippetExtractionMode: String {
+        case firstParagraph, matches
+    }
 }
 
-class Levenshtein {
+private class Levenshtein {
     private(set) var cache = [Set<String.SubSequence>: Int]()
     
     func calculateDistance(a: String.SubSequence, b: String.SubSequence) -> Int {
