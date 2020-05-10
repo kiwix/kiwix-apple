@@ -25,13 +25,13 @@ extension SearchOperation {
             guard let html = result.htmlSnippet else { continue }
             dispatchGroup.enter()
             DispatchQueue.global(qos: .userInitiated).async {
+                defer { dispatchGroup.leave() }
                 guard !self.isCancelled else { return }
                 result.snippet = self.parse(html: html)
-                dispatchGroup.leave()
             }
         }
         dispatchGroup.wait()
-        sort()
+        sortResults()
     }
     
     func parse(html: String) -> NSAttributedString? {
@@ -47,7 +47,7 @@ extension SearchOperation {
         return snippet
     }
     
-    private func sort() {
+    private func sortResults() {
         guard !isCancelled else {return}
         let searchText = self.searchText.lowercased()
         let levenshtein = Levenshtein()
