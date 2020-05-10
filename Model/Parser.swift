@@ -11,13 +11,26 @@ import SwiftSoup
 
 class Parser {
     private let document: Document
+    private lazy var firstParagraph: Element? = try? document.body()?.getElementsByTag("p").first()
     
-    init?(html: String) throws {
-        self.document = try SwiftSoup.parse(html)
+    static private let boldFont = NSUIFont.boldSystemFont(ofSize: 12.0)
+    
+    init(document: Document) {
+        self.document = document
     }
     
-    convenience init?(zimFileId: String, path: String) throws {
-        try self.init(html: "")
+    convenience init?(html: String) throws {
+        self.init(document: try SwiftSoup.parse(html))
+    }
+    
+    convenience init?(bodyFragment: String) throws {
+        self.init(document: try SwiftSoup.parseBodyFragment(bodyFragment))
+    }
+    
+    convenience init?(zimFileID: String, path: String) throws {
+        guard let content = ZimMultiReader.shared.getContent(bookID: zimFileID, contentPath: path),
+            let html = String(data: content.data, encoding: .utf8) else { return nil }
+        try self.init(html: html)
     }
     
     func getTitle() -> String? {
@@ -35,5 +48,23 @@ class Parser {
                 let lat = Double(parts[0]), let lon = Double(parts[1]) else { return nil }
             return CLLocationCoordinate2D(latitude: lat, longitude: lon)
         } catch { return nil }
+    }
+    
+    func getFirstParagraph() -> NSAttributedString? {
+        let snippet = NSMutableAttributedString()
+        for node in firstParagraph?.getChildNodes() ?? [] {
+            if let element = node as? Element {
+                if let className = try? element.className(), className == "mw-ref" {
+                    continue
+                } else if element.tagName() == "b", let text = try? element.text() {
+                    snippet.append(NSAttributedString(string: text, attributes: [.font: Parser.boldFont]))
+                } else if let text = try? element.text() {
+                    snippet.append(NSAttributedString(string: text))
+                }
+            } else if let text = try? node.outerHtml() {
+                snippet.append(NSAttributedString(string: text))
+            }
+        }
+        return snippet
     }
 }

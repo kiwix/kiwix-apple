@@ -38,35 +38,14 @@ extension SearchOperation {
                 
                 switch mode {
                 case .firstParagraph:
-                    result.snippet = self.getFirstParagraphSnippet(result)
+                    guard let parser = try? Parser(zimFileID: result.zimFileID, path: result.url.path) else { return }
+                    result.snippet = parser.getFirstParagraph()
                 case .matches:
                     result.snippet = self.getMatchesSnippet(html: result.htmlSnippet)
                 }
             }
         }
         dispatchGroup.wait()
-    }
-    
-    private func getFirstParagraphSnippet(_ result: SearchResult) -> NSAttributedString? {
-        guard let content = ZimMultiReader.shared.getContent(bookID: result.zimFileID, contentPath: result.url.path),
-            let html = String(data: content.data, encoding: .utf8),
-            let body = try? SwiftSoup.parseBodyFragment(html).body(),
-            let firstParagraph = try? body.getElementsByTag("p").first() else {return nil}
-        let snippet = NSMutableAttributedString()
-        for node in firstParagraph.getChildNodes() {
-            if let element = node as? Element {
-                if let className = try? element.className(), className == "mw-ref" {
-                    continue
-                } else if element.tagName() == "b", let text = try? element.text() {
-                    snippet.append(NSAttributedString(string: text, attributes: [.font: SearchOperation.boldFont]))
-                } else if let text = try? element.text() {
-                    snippet.append(NSAttributedString(string: text))
-                }
-            } else if let text = try? node.outerHtml() {
-                snippet.append(NSAttributedString(string: text))
-            }
-        }
-        return snippet
     }
     
     private func getMatchesSnippet(html: String?) -> NSAttributedString? {
