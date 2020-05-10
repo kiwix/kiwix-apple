@@ -72,9 +72,9 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
         view.addSubview(stackView)
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            stackView.leftAnchor.constraint(equalTo: view.leftAnchor),
-            stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            stackView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
         ])
         
         // add child controllers
