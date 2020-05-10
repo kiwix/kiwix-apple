@@ -63,8 +63,8 @@ struct SharedReaders {
         
         // optionally, add snippet
         if (self.extractSnippet) {
-            NSString *snippet = [NSString stringWithCString:result->get_snippet().c_str() encoding:NSUTF8StringEncoding];
-            searchResult.snippet = snippet;
+            NSString *html = [NSString stringWithCString:result->get_snippet().c_str() encoding:NSUTF8StringEncoding];
+            searchResult.htmlSnippet = html;
         }
         
         if (searchResult != nil) { [results addObject:searchResult]; }

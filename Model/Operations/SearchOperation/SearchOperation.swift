@@ -22,11 +22,11 @@ extension SearchOperation {
         
         let dispatchGroup = DispatchGroup()
         for result in results {
-            guard let html = result.snippet else { continue }
+            guard let html = result.htmlSnippet else { continue }
             dispatchGroup.enter()
             DispatchQueue.global(qos: .userInitiated).async {
-                result.snippet = nil
-                result.attributedSnippet = self.parse(html: html)
+                guard !self.isCancelled else { return }
+                result.snippet = self.parse(html: html)
                 dispatchGroup.leave()
             }
         }

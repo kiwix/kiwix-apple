@@ -13,8 +13,8 @@
 @property (nonatomic, strong, nonnull) NSString *zimFileID;
 @property (nonatomic, strong, nonnull) NSURL *url;
 @property (nonatomic, strong, nonnull) NSString *title;
-@property (nonatomic, strong, nullable) NSString *snippet;
-@property (nonatomic, strong, nullable) NSAttributedString *attributedSnippet;
+@property (nonatomic, strong, nullable) NSString *htmlSnippet;
+@property (nonatomic, strong, nullable) NSAttributedString *snippet;
 @property (nonatomic, strong, nullable) NSNumber *probability;
 
 - (nullable instancetype)initWithZimFileID:(nonnull NSString *)zimFileId
