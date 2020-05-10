@@ -37,9 +37,7 @@ struct SharedReaders {
 
 - (NSArray *)getSearchResults {
     struct SharedReaders sharedReaders = [[ZimMultiReader shared] getSharedReaders:self.identifiers];
-    
-    // title search
-    NSMutableArray *results = [self getTitleSearchResults:self.searchText readers:sharedReaders.readers];
+    NSMutableArray *results = [[NSMutableArray alloc] initWithCapacity:15];
     
     // initialize full text search
     if (self.isCancelled) { return results; }
@@ -50,7 +48,7 @@ struct SharedReaders {
     
     // start full text search
     if (self.isCancelled) { return results; }
-    searcher.search([self.searchText cStringUsingEncoding:NSUTF8StringEncoding], 0, 20);
+    searcher.search([self.searchText cStringUsingEncoding:NSUTF8StringEncoding], 0, 15);
     
     // retrieve full text search results
     kiwix::Result *result = searcher.getNextResult();
@@ -83,7 +81,7 @@ struct SharedReaders {
     
     for (auto reader: readers) {
         NSString *zimFileID = [NSString stringWithCString:reader->getId().c_str() encoding:NSUTF8StringEncoding];
-        reader->searchSuggestionsSmart(searchTermC, 10);
+        reader->searchSuggestionsSmart(searchTermC, 3);
         
         std::string titleC;
         std::string pathC;
