@@ -36,7 +36,6 @@
 		97544925240C66B100E4E949 /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97544916240C66A100E4E949 /* liblzma.a */; };
 		97544926240C66B100E4E949 /* libmicrohttpd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9754490F240C66A100E4E949 /* libmicrohttpd.a */; };
 		97544928240C66B100E4E949 /* libxapian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9754491D240C66A200E4E949 /* libxapian.a */; };
-		975F97A820D00EAE0005D642 /* SettingSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F97A720D00EAE0005D642 /* SettingSearchController.swift */; };
 		9763EDC9201FCA6900F3A6D5 /* SettingWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9763EDC8201FCA6900F3A6D5 /* SettingWebController.swift */; };
 		9763EDCB201FCC3A00F3A6D5 /* About.html in Resources */ = {isa = PBXBuildFile; fileRef = 9763EDCA201FCC3900F3A6D5 /* About.html */; };
 		9765D9801F50CC4700BFDC1E /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9765D97F1F50CC4700BFDC1E /* Search.storyboard */; };
@@ -117,6 +116,7 @@
 		9779A7EA24567AA600F6F6FF /* LibrarySettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E824567AA600F6F6FF /* LibrarySettingController.swift */; };
 		9779A7ED24567ADD00F6F6FF /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7EC24567ADD00F6F6FF /* BackupManager.swift */; };
 		9779E7A22379230F0058DC98 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779E7A12379230F0058DC98 /* SearchController.swift */; };
+		978C58092468FC1100D56AC8 /* SettingSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F97A720D00EAE0005D642 /* SettingSearchController.swift */; };
 		979D6E0C20B34FD700B08DE7 /* BookmarkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D6E0B20B34FD700B08DE7 /* BookmarkController.swift */; };
 		979FD159201679C5007B5290 /* SearchResultsListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979FD158201679C5007B5290 /* SearchResultsListController.swift */; };
 		97A04DFD23CBBA84006DE063 /* RootController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A04DFC23CBBA84006DE063 /* RootController.swift */; };
@@ -1893,10 +1893,10 @@
 				971B8E58202246ED00C5C939 /* RecentSearchCells.swift in Sources */,
 				9779A5B22456793600F6F6FF /* LibraryService.swift in Sources */,
 				9779A5C42456793600F6F6FF /* ZimMultiReader.swift in Sources */,
+				978C58092468FC1100D56AC8 /* SettingSearchController.swift in Sources */,
 				9779A5CC2456793600F6F6FF /* ZimFile.swift in Sources */,
 				9779A5BA2456793600F6F6FF /* OPDSRefreshOperation.swift in Sources */,
 				9779A5BE2456793600F6F6FF /* OPDSStreamParser.mm in Sources */,
-				975F97A820D00EAE0005D642 /* SettingSearchController.swift in Sources */,
 				9779A7B12456796B00F6F6FF /* WebKitHandler.swift in Sources */,
 				97018985212357F200F8A6DD /* LibrarySearchController.swift in Sources */,
 				9779A7B32456796B00F6F6FF /* TableOfContentItem.swift in Sources */,
