@@ -15,8 +15,9 @@ extension DefaultsKeys {
     static let externalLinkLoadingPolicy = DefaultsKey<Int>("externalLinkLoadingPolicy", defaultValue: 0)
     
     static let searchResultExcludeSnippet = DefaultsKey<Bool>("searchResultExcludeSnippet", defaultValue: false)
-    static let searchResultSnippetExtractionMode = DefaultsKey<String>(
-        "searchResultSnippetExtractionMode", defaultValue: SearchOperation.SnippetExtractionMode.matches.rawValue
+    static let searchResultSnippetMode = DefaultsKey<String>(
+        "searchResultSnippetMode", defaultValue: Defaults[.searchResultExcludeSnippet]
+            ? SearchResultSnippetMode.none .rawValue : SearchResultSnippetMode.matches.rawValue
     )
     
     static let libraryLastRefreshTime = DefaultsKey<Date?>("libraryLastRefreshTime")

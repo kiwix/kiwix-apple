@@ -19,16 +19,13 @@ extension SearchOperation {
     static private let boldFont = NSUIFont.boldSystemFont(ofSize: 12.0)
     
     open override func main() {
-        let shouldExtractSnippet = !Defaults[.searchResultExcludeSnippet]
-        let mode = SnippetExtractionMode(rawValue: Defaults[.searchResultSnippetExtractionMode])
-            ?? SnippetExtractionMode.matches
-        
-        __results = getSearchResults(shouldExtractSnippet && mode == .matches)
-        if shouldExtractSnippet { extractSnippet(mode) }
+        let mode = SearchResultSnippetMode(rawValue: Defaults[.searchResultSnippetMode]) ?? SearchResultSnippetMode.none
+        __results = getSearchResults(mode == .matches)
+        if mode != .none { extractSnippet(mode) }
         sortResults()
     }
     
-    private func extractSnippet(_ mode: SnippetExtractionMode) {
+    private func extractSnippet(_ mode: SearchResultSnippetMode) {
         let dispatchGroup = DispatchGroup()
         for result in results {
             dispatchGroup.enter()
@@ -41,24 +38,14 @@ extension SearchOperation {
                     guard let parser = try? Parser(zimFileID: result.zimFileID, path: result.url.path) else { return }
                     result.snippet = parser.getFirstParagraph()
                 case .matches:
-                    result.snippet = self.getMatchesSnippet(html: result.htmlSnippet)
+                    guard let html = result.htmlSnippet, let parser = try? Parser(bodyFragment: html) else { return }
+                    result.snippet = parser.getBody()
+                default:
+                    break
                 }
             }
         }
         dispatchGroup.wait()
-    }
-    
-    private func getMatchesSnippet(html: String?) -> NSAttributedString? {
-        guard let html = html, let body = try? SwiftSoup.parseBodyFragment(html).body() else { return nil }
-        let snippet = NSMutableAttributedString()
-        for node in body.getChildNodes() {
-            if let element = node as? Element, let text = try? element.text(), element.tagName() == "b" {
-                snippet.append(NSAttributedString(string: text, attributes: [.font: SearchOperation.boldFont]))
-            } else if let text = try? node.outerHtml() {
-                snippet.append(NSAttributedString(string: text.trimmingCharacters(in: .newlines)))
-            }
-        }
-        return snippet
     }
     
     private func sortResults() {
@@ -72,10 +59,6 @@ extension SearchOperation {
             }
             return (result, distance)
         }.sorted { $0.score < $1.score }.map { $0.result }
-    }
-    
-    enum SnippetExtractionMode: String {
-        case firstParagraph, matches
     }
 }
 

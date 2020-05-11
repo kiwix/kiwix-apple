@@ -133,6 +133,7 @@
 		97B399902467626A00BC6F5B /* SearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998F2467626A00BC6F5B /* SearchOperation.swift */; };
 		97B399922468502500BC6F5B /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B399912468502500BC6F5B /* Platform.swift */; };
 		97B399932468508C00BC6F5B /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B399912468502500BC6F5B /* Platform.swift */; };
+		97B399962468CF3B00BC6F5B /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B399952468CF3B00BC6F5B /* Enums.swift */; };
 		97B44897210FBC2C0004B056 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B44896210FBC2C0004B056 /* AppDelegate.swift */; };
 		97B44899210FBC2C0004B056 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B44898210FBC2C0004B056 /* ViewController.swift */; };
 		97B4489C210FBC2C0004B056 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97B4489A210FBC2C0004B056 /* Main.storyboard */; };
@@ -648,6 +649,7 @@
 		97B3998C2467561900BC6F5B /* SearchResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchResult.m; sourceTree = "<group>"; };
 		97B3998F2467626A00BC6F5B /* SearchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchOperation.swift; sourceTree = "<group>"; };
 		97B399912468502500BC6F5B /* Platform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Platform.swift; sourceTree = "<group>"; };
+		97B399952468CF3B00BC6F5B /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		97B44896210FBC2C0004B056 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		97B44898210FBC2C0004B056 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		97B4489B210FBC2C0004B056 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -807,6 +809,7 @@
 				970EC3A023BCEC84008DCA27 /* Parser.swift */,
 				9779A7E224567A5A00F6F6FF /* Log.swift */,
 				97B399912468502500BC6F5B /* Platform.swift */,
+				97B399952468CF3B00BC6F5B /* Enums.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1864,6 +1867,7 @@
 				9779A5C82456793600F6F6FF /* RealmConfig.swift in Sources */,
 				97B399922468502500BC6F5B /* Platform.swift in Sources */,
 				97B399902467626A00BC6F5B /* SearchOperation.swift in Sources */,
+				97B399962468CF3B00BC6F5B /* Enums.swift in Sources */,
 				97A2180C2024EC3800D1E67B /* SettingFontSizeController.swift in Sources */,
 				9742596920FCE7BA000BB88A /* SettingLibraryController.swift in Sources */,
 				97CA4A7220A21D24008CEA6D /* LibraryLanguageController.swift in Sources */,

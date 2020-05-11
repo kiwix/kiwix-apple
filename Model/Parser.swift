@@ -50,6 +50,18 @@ class Parser {
         } catch { return nil }
     }
     
+    func getBody() -> NSAttributedString? {
+        let snippet = NSMutableAttributedString()
+        for node in document.body()?.getChildNodes() ?? [] {
+            if let element = node as? Element, let text = try? element.text(), element.tagName() == "b" {
+                snippet.append(NSAttributedString(string: text, attributes: [.font: Parser.boldFont]))
+            } else if let text = try? node.outerHtml() {
+                snippet.append(NSAttributedString(string: text.trimmingCharacters(in: .newlines)))
+            }
+        }
+        return snippet
+    }
+    
     func getFirstParagraph() -> NSAttributedString? {
         let snippet = NSMutableAttributedString()
         for node in firstParagraph?.getChildNodes() ?? [] {
