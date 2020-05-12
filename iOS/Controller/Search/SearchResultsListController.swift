@@ -88,6 +88,7 @@ class SearchResultsListController: UITableViewController {
         
         if let snippet = result.snippet {
             cell.detailLabel.attributedText = snippet
+            cell.detailLabel.numberOfLines = 4
         }
         
         return cell
