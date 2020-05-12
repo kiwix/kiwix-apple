@@ -300,7 +300,6 @@
 		9779A5A42456793500F6F6FF /* OPDSStreamParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPDSStreamParser.h; sourceTree = "<group>"; };
 		9779A5A52456793500F6F6FF /* OPDSStreamParser.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OPDSStreamParser.mm; sourceTree = "<group>"; };
 		9779A5A72456793500F6F6FF /* ZimMultiReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZimMultiReader.h; sourceTree = "<group>"; };
-		9779A5A82456793500F6F6FF /* SearchResultDeprecated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultDeprecated.swift; sourceTree = "<group>"; };
 		9779A5A92456793500F6F6FF /* ZimMultiReader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ZimMultiReader.mm; sourceTree = "<group>"; };
 		9779A5AA2456793500F6F6FF /* ZimMultiReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZimMultiReader.swift; sourceTree = "<group>"; };
 		9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ZimFileMetaData.mm; sourceTree = "<group>"; };
@@ -951,7 +950,6 @@
 				9779A5A72456793500F6F6FF /* ZimMultiReader.h */,
 				9779A5A92456793500F6F6FF /* ZimMultiReader.mm */,
 				9779A5AA2456793500F6F6FF /* ZimMultiReader.swift */,
-				9779A5A82456793500F6F6FF /* SearchResultDeprecated.swift */,
 			);
 			path = ZimMultiReader;
 			sourceTree = "<group>";

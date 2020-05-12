@@ -32,9 +32,4 @@ struct SharedReaders;
 - (NSDictionary *_Nullable)getContent:(NSString *_Nonnull)zimFileID contentURL:(NSString *_Nonnull)contentURL NS_REFINED_FOR_SWIFT;
 - (NSString *_Nullable)getMainPagePath:(NSString *_Nonnull)bookID NS_REFINED_FOR_SWIFT;
 
-- (void)startIndexSearch:(NSString *_Nonnull)searchText zimFileIDs:(NSSet *_Nonnull)zimFileIDs NS_REFINED_FOR_SWIFT;
-- (NSDictionary *_Nullable)getNextIndexSearchResultWithSnippet:(BOOL)extractSnippet NS_REFINED_FOR_SWIFT;
-- (void)stopIndexSearch;
-- (NSArray *_Nonnull)getTitleSearchResults:(NSString *_Nonnull)searchText zimFileID:(NSString *_Nullable)zimFileID count:(unsigned int)count NS_REFINED_FOR_SWIFT;
-
 @end
