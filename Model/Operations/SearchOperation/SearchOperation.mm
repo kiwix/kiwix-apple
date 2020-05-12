@@ -49,7 +49,7 @@ struct SharedReaders {
     
     // start full text search
     if (self.isCancelled) { return results; }
-    searcher.search([self.searchText cStringUsingEncoding:NSUTF8StringEncoding], 0, 15);
+    searcher.search([self.searchText cStringUsingEncoding:NSUTF8StringEncoding], 0, 20);
     
     // retrieve full text search results
     kiwix::Result *result = searcher.getNextResult();
