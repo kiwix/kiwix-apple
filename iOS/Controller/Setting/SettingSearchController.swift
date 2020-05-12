@@ -11,7 +11,13 @@ import SwiftyUserDefaults
 
 class SettingSearchController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let tableView = UITableView(frame: .zero, style: .grouped)
-    let snippetModeOptions: [SearchResultSnippetMode] = [.none, .firstParagraph, .firstSentence, .matches]
+    let snippetModeOptions: [SearchResultSnippetMode] = {
+        if #available(iOS 12.0, *) {
+            return [.none, .firstParagraph, .firstSentence, .matches]
+        } else {
+            return [.none, .firstParagraph, .matches]
+        }
+    }()
     
     init(title: String) {
         super.init(nibName: nil, bundle: nil)
