@@ -35,7 +35,7 @@ extension SearchOperation {
                 case .firstSentence:
                     guard let parser = try? Parser(zimFileID: result.zimFileID, path: result.url.path) else { return }
                     if #available(iOS 12.0, *) {
-                        result.snippet = parser.parseFirstSentence()
+                        result.snippet = parser.getFirstSentence()
                     } else {
                         result.snippet = nil
                     }

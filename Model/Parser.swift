@@ -26,10 +26,6 @@ class Parser {
         self.init(document: try SwiftSoup.parse(html))
     }
     
-    convenience init?(bodyFragment: String) throws {
-        self.init(document: try SwiftSoup.parseBodyFragment(bodyFragment))
-    }
-    
     convenience init?(zimFileID: String, path: String) throws {
         guard let content = ZimMultiReader.shared.getContent(bookID: zimFileID, contentPath: path),
             let html = String(data: content.data, encoding: .utf8) else { return nil }
@@ -72,7 +68,7 @@ class Parser {
     }
     
     @available(iOS 12.0, *)
-    func parseFirstSentence() -> NSAttributedString? {
+    func getFirstSentence() -> NSAttributedString? {
         guard let firstParagraph = self.getFirstParagraph() else { return nil }
         let text = firstParagraph.string
         var firstSentence: NSAttributedString?
