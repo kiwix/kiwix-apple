@@ -7,6 +7,9 @@
 //
 
 import CoreLocation
+#if canImport(NaturalLanguage)
+    import NaturalLanguage
+#endif
 import SwiftSoup
 
 class Parser {
@@ -49,19 +52,7 @@ class Parser {
             return CLLocationCoordinate2D(latitude: lat, longitude: lon)
         } catch { return nil }
     }
-    
-    func getBody() -> NSAttributedString? {
-        let snippet = NSMutableAttributedString()
-        for node in document.body()?.getChildNodes() ?? [] {
-            if let element = node as? Element, let text = try? element.text(), element.tagName() == "b" {
-                snippet.append(NSAttributedString(string: text, attributes: [.font: Parser.boldFont]))
-            } else if let text = try? node.outerHtml() {
-                snippet.append(NSAttributedString(string: text.trimmingCharacters(in: .newlines)))
-            }
-        }
-        return snippet
-    }
-    
+
     func getFirstParagraph() -> NSAttributedString? {
         let snippet = NSMutableAttributedString()
         for node in firstParagraph?.getChildNodes() ?? [] {
@@ -75,6 +66,34 @@ class Parser {
                 }
             } else if let text = try? node.outerHtml() {
                 snippet.append(NSAttributedString(string: text))
+            }
+        }
+        return snippet
+    }
+    
+    @available(iOS 12.0, *)
+    func parseFirstSentence() -> NSAttributedString? {
+        guard let firstParagraph = self.getFirstParagraph() else { return nil }
+        let text = firstParagraph.string
+        var firstSentence: NSAttributedString?
+        
+        let tokenizer = NLTokenizer(unit: .sentence)
+        tokenizer.string = text
+        tokenizer.enumerateTokens(in: text.startIndex..<text.endIndex) { range, _ in
+            firstSentence = firstParagraph.attributedSubstring(from: NSRange(range, in: firstParagraph.string))
+            return false
+        }
+        return firstSentence
+    }
+    
+    class func parseBodyFragment(_ bodyFragment: String) -> NSAttributedString? {
+        let snippet = NSMutableAttributedString()
+        let document = try? SwiftSoup.parseBodyFragment(bodyFragment)
+        for node in document?.body()?.getChildNodes() ?? [] {
+            if let element = node as? Element, let text = try? element.text(), element.tagName() == "b" {
+                snippet.append(NSAttributedString(string: text, attributes: [.font: Parser.boldFont]))
+            } else if let text = try? node.outerHtml() {
+                snippet.append(NSAttributedString(string: text.trimmingCharacters(in: .newlines)))
             }
         }
         return snippet

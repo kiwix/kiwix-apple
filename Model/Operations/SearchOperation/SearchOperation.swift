@@ -6,11 +6,6 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
-#if os(OSX)
-    import Cocoa
-#elseif os(iOS)
-    import UIKit
-#endif
 import SwiftSoup
 import SwiftyUserDefaults
 
@@ -37,9 +32,16 @@ extension SearchOperation {
                 case .firstParagraph:
                     guard let parser = try? Parser(zimFileID: result.zimFileID, path: result.url.path) else { return }
                     result.snippet = parser.getFirstParagraph()
+                case .firstSentence:
+                    guard let parser = try? Parser(zimFileID: result.zimFileID, path: result.url.path) else { return }
+                    if #available(iOS 12.0, *) {
+                        result.snippet = parser.parseFirstSentence()
+                    } else {
+                        result.snippet = nil
+                    }
                 case .matches:
-                    guard let html = result.htmlSnippet, let parser = try? Parser(bodyFragment: html) else { return }
-                    result.snippet = parser.getBody()
+                    guard let html = result.htmlSnippet else { return }
+                    result.snippet = Parser.parseBodyFragment(html)
                 default:
                     break
                 }
