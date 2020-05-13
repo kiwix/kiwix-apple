@@ -1,7 +1,17 @@
-## 1.11.2
+## 1.12
+
+Speed improvements and more options for search snippets:
+
+- Disabled: no search snippet, fastest
+- First Paragraph: first paragraph of the article, max four lines
+- First Sentence: from first paragraph, further extract the first sentence with iOS natural language processing engine
+- Matches: highlight search term matches in the article (slowest, what we offer before)
+
+Bug fixes:
 
 - fix: swipe back gesture was not working due to conflict with gesture to show sidebar
 - fix: favicon would disappear for existing zim files after library manual refresh
+- fix: sometimes the search filters fails to update when a zim file has been added or removed
 
 ## 1.11.1 (May 7, 2020)
 

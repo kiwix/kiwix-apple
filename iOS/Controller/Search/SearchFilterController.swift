@@ -73,6 +73,8 @@ class SearchFilterController: UIViewController, UITableViewDelegate, UITableView
     private func configureChangeToken() {
         changeToken = zimFiles?.observe({ (changes) in
             switch changes {
+            case .initial(_):
+                self.tableView.reloadData()
             case .update(_, let deletions, let insertions, let updates):
                 guard let sectionIndex = self.sections.firstIndex(of: .searchFilter) else {return}
                 self.tableView.beginUpdates()

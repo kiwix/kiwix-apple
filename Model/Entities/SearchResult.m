@@ -1,0 +1,35 @@
+//
+//  SearchResult.m
+//  Kiwix
+//
+//  Created by Chris Li on 5/9/20.
+//  Copyright © 2020 Chris Li. All rights reserved.
+//
+
+#import "SearchResult.h"
+
+@implementation SearchResult
+
+- (instancetype)initWithZimFileID:(NSString *)zimFileID path:(NSString *)path title:(NSString *)title {
+    self = [super init];
+    if (self) {
+        self.zimFileID = zimFileID;
+        self.title = title;
+        
+        // HACK: assuming path is always absolute
+        if (![path hasPrefix:@"/"]) { path = [@"/" stringByAppendingString:path]; }
+        
+        NSURLComponents *components = [[NSURLComponents alloc] init];
+        components.scheme = @"kiwix";
+        components.host = zimFileID;
+        components.path = path;
+        self.url = [components URL];
+        
+        if (self.zimFileID == nil || self.title == nil || self.url == nil) {
+            return nil;
+        }
+    }
+    return self;
+}
+
+@end

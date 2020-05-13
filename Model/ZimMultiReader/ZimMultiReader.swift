@@ -9,7 +9,7 @@
 typealias ZimFileID = String
 
 extension ZimMultiReader {
-    static let shared = ZimMultiReader()
+    static let shared = ZimMultiReader.__shared()
     
     var ids: [ZimFileID] {get{ return __getIdentifiers().compactMap({$0 as? ZimFileID}) }}
     func getFileURL(zimFileID: ZimFileID) -> URL? { return __getFileURL(zimFileID) }
@@ -42,27 +42,5 @@ extension ZimMultiReader {
     func getMainPageURL(zimFileID: String) -> URL? {
         guard let path = __getMainPagePath(zimFileID) else {return nil}
         return URL(bookID: zimFileID, contentPath: path)
-    }
-    
-    func startIndexSearch(searchText: String, zimFileIDs: Set<ZimFileID>) {
-        __startIndexSearch(searchText, zimFileIDs: zimFileIDs)
-    }
-    
-    func getNextIndexSearchResult(extractSnippet: Bool) -> SearchResult? {
-        guard let result = __getNextIndexSearchResult(withSnippet: extractSnippet) as? Dictionary<String, Any>,
-            let id = result["id"] as? String,
-            let path = result["path"] as? String,
-            let title = result["title"] as? String else {return nil}
-        return SearchResult(zimFileID: id, path: path, title: title, probability: result["probability"] as? Double, snippet: result["snippet"] as? String)
-    }
-    
-    func getTitleSearchResults(searchText: String, zimFileID: ZimFileID, count: Int) -> [SearchResult] {
-        return __getTitleSearchResults(searchText, zimFileID: zimFileID, count: UInt32(count)).compactMap { suggestion -> SearchResult? in
-            guard let suggestion = suggestion as? Dictionary<String, String>,
-                let id = suggestion["id"],
-                let title = suggestion["title"],
-                let path = suggestion["path"] else {return nil}
-            return SearchResult(zimFileID: id, path: path, title: title)
-        }
     }
 }
