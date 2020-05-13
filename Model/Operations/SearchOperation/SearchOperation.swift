@@ -6,6 +6,7 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
+import RealmSwift
 import SwiftSoup
 import SwiftyUserDefaults
 
@@ -35,7 +36,9 @@ extension SearchOperation {
                 case .firstSentence:
                     guard let parser = try? Parser(zimFileID: result.zimFileID, path: result.url.path) else { return }
                     if #available(iOS 12.0, *) {
-                        result.snippet = parser.getFirstSentence()
+                        let database = try? Realm(configuration: Realm.defaultConfig)
+                        let zimFile = database?.object(ofType: ZimFile.self, forPrimaryKey: result.zimFileID)
+                        result.snippet = parser.getFirstSentence(languageCode: zimFile?.languageCode)
                     } else {
                         result.snippet = nil
                     }
