@@ -15,9 +15,9 @@ extension SearchOperation {
     static private let boldFont = NSUIFont.boldSystemFont(ofSize: 12.0)
     
     open override func main() {
-        let mode = SearchResultSnippetMode(rawValue: Defaults[.searchResultSnippetMode]) ?? SearchResultSnippetMode.none
+        let mode = SearchResultSnippetMode(rawValue: Defaults[.searchResultSnippetMode]) ?? SearchResultSnippetMode.disabled
         __results = getSearchResults(mode == .matches)
-        if mode != .none { extractSnippet(mode) }
+        if mode != .disabled { extractSnippet(mode) }
         sortResults()
     }
     

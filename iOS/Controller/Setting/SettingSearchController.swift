@@ -13,9 +13,9 @@ class SettingSearchController: UIViewController, UITableViewDataSource, UITableV
     let tableView = UITableView(frame: .zero, style: .grouped)
     let snippetModeOptions: [SearchResultSnippetMode] = {
         if #available(iOS 12.0, *) {
-            return [.none, .firstParagraph, .firstSentence, .matches]
+            return [.disabled, .firstParagraph, .firstSentence, .matches]
         } else {
-            return [.none, .firstParagraph, .matches]
+            return [.disabled, .firstParagraph, .matches]
         }
     }()
     

@@ -7,12 +7,12 @@
 //
 
 enum SearchResultSnippetMode: String, CustomStringConvertible {
-    case none, firstParagraph, firstSentence, matches
+    case disabled, firstParagraph, firstSentence, matches
     
     var description: String {
         switch self {
-        case .none:
-            return NSLocalizedString("None", comment: "Search Result Snippet Mode")
+        case .disabled:
+            return NSLocalizedString("Disabled", comment: "Search Result Snippet Mode")
         case .firstParagraph:
             return NSLocalizedString("First Paragraph", comment: "Search Result Snippet Mode")
         case .firstSentence:

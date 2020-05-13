@@ -17,7 +17,7 @@ extension DefaultsKeys {
     static let searchResultExcludeSnippet = DefaultsKey<Bool>("searchResultExcludeSnippet", defaultValue: false)
     static let searchResultSnippetMode = DefaultsKey<String>(
         "searchResultSnippetMode", defaultValue: Defaults[.searchResultExcludeSnippet]
-            ? SearchResultSnippetMode.none .rawValue : SearchResultSnippetMode.matches.rawValue
+            ? SearchResultSnippetMode.disabled .rawValue : SearchResultSnippetMode.matches.rawValue
     )
     
     static let libraryLastRefreshTime = DefaultsKey<Date?>("libraryLastRefreshTime")
