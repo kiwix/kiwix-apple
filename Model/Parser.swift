@@ -76,7 +76,6 @@ class Parser {
         let tokenizer = NLTokenizer(unit: .sentence)
         if let languageCode = languageCode {tokenizer.setLanguage(NLLanguage(languageCode))}
         tokenizer.string = text
-        
         tokenizer.enumerateTokens(in: text.startIndex..<text.endIndex) { range, _ in
             firstSentence = firstParagraph.attributedSubstring(from: NSRange(range, in: firstParagraph.string))
             return false
