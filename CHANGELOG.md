@@ -7,6 +7,10 @@ Speed improvements and more options for search snippets:
 - First Sentence: from first paragraph, further extract the first sentence with iOS natural language processing engine
 - Matches: highlight search term matches in the article (slowest, what we offer before)
 
+New: 
+
+- updated app icon
+
 Bug fixes:
 
 - fix: swipe back gesture was not working due to conflict with gesture to show sidebar
