@@ -67,7 +67,7 @@ class TableViewCell: UITableViewCell {
         thumbImageView.clipsToBounds = true
         thumbImageView.layer.cornerRadius = 4
         if #available(iOS 13.0, *) {
-            thumbImageBackgroundView.backgroundColor = .quaternarySystemFill
+            thumbImageBackgroundView.backgroundColor = UIColor(named: "faviconBackground")
         } else {
             thumbImageBackgroundView.backgroundColor = .groupTableViewBackground
         }
