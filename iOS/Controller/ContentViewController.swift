@@ -29,6 +29,8 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     private(set) lazy var welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     private(set) lazy var libraryController = LibraryController()
     
+    // MARK:- Initialization
+    
     init() {
         self.searchResultsController = SearchResultsController()
         self.searchController = UISearchController(searchResultsController: self.searchResultsController)
