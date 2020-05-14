@@ -37,6 +37,7 @@ class SearchResultsListController: UITableViewController {
         self.searchText = searchText
         self.zimFileIDs = zimFileIDs
         self.results = results
+        tableView.setContentOffset(.zero, animated: false)
         tableView.reloadData()
     }
     
