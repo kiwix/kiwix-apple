@@ -46,7 +46,7 @@ class TableViewCell: UITableViewCell {
         titleLabel.setContentCompressionResistancePriority(UILayoutPriority(750), for: .vertical)
         detailLabel.setContentCompressionResistancePriority(UILayoutPriority(749), for: .vertical)
         detailLabel.numberOfLines = 4
-        detailLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
+        detailLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         thumbImageView.clipsToBounds = true
         thumbImageView.layer.cornerRadius = 4
         thumbImageBackgroundView.clipsToBounds = true

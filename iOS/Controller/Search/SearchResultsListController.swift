@@ -81,6 +81,7 @@ class SearchResultsListController: UITableViewController {
             cell.thumbImageView.contentMode = .scaleAspectFit
         } catch {}
         
+        cell.titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         if let snippet = result.snippet {
             cell.detailLabel.attributedText = snippet
         }

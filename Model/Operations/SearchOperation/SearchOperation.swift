@@ -12,7 +12,6 @@ import SwiftyUserDefaults
 
 extension SearchOperation {
     var results: [SearchResult] { get { __results as? [SearchResult] ?? [] } }
-    static private let boldFont = NSUIFont.boldSystemFont(ofSize: 12.0)
     
     open override func main() {
         let mode = SearchResultSnippetMode(rawValue: Defaults[.searchResultSnippetMode]) ?? SearchResultSnippetMode.disabled

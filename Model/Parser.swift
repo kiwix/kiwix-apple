@@ -16,7 +16,7 @@ class Parser {
     private let document: Document
     private lazy var firstParagraph: Element? = try? document.body()?.getElementsByTag("p").first()
     
-    static private let boldFont = NSUIFont.boldSystemFont(ofSize: 12.0)
+    static private let boldFont = NSUIFont.systemFont(ofSize: 12.0, weight: .medium)
     
     init(document: Document) {
         self.document = document
