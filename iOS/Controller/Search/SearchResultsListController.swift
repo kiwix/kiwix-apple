@@ -16,18 +16,10 @@ class SearchResultsListController: UITableViewController {
     private(set) var results = [SearchResult]()
     private weak var clearResultTimer: Timer?
     
-    init() {
-        super.init(style: .grouped)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.estimatedRowHeight = 44
-        tableView.rowHeight = UITableView.automaticDimension
+//        tableView.estimatedRowHeight = 44
+//        tableView.rowHeight = UITableView.automaticDimension
         tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.keyboardDismissMode = .onDrag
@@ -37,8 +29,10 @@ class SearchResultsListController: UITableViewController {
         self.searchText = searchText
         self.zimFileIDs = zimFileIDs
         self.results = results
-        tableView.setContentOffset(.zero, animated: false)
         tableView.reloadData()
+        if !results.isEmpty {
+            tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        }
     }
     
     func update(recentSearchText newSearchText: String) {
@@ -101,13 +95,5 @@ class SearchResultsListController: UITableViewController {
         content.load(url: results[indexPath.row].url)
         content.searchController.dismiss(animated: true)
         content.searchController.isActive = false
-    }
-    
-    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        if results[indexPath.row].snippet != nil {
-            return traitCollection.horizontalSizeClass == .regular ? 120 : 190
-        } else {
-            return 44
-        }
     }
 }
