@@ -19,7 +19,7 @@
       ],
       "color" : {
         "platform" : "ios",
-        "reference" : "secondarySystemFillColor"
+        "reference" : "systemFillColor"
       },
       "idiom" : "universal"
     }

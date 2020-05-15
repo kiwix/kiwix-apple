@@ -13,7 +13,7 @@ class TableViewCell: UITableViewCell {
     let detailLabel = UILabel()
     let thumbImageView = UIImageView()
     let thumbImageBackgroundView = UIView()
-    private let textStackView = UIStackView()
+    fileprivate let textStackView = UIStackView()
     private var configuredConstraints = false
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -36,7 +36,41 @@ class TableViewCell: UITableViewCell {
     override func updateConstraints() {
         defer { super.updateConstraints() }
         guard !configuredConstraints else { return }
+        configureConstraints()
+        configuredConstraints = true
+    }
+    
+    fileprivate func configure() {
+        titleLabel.setContentHuggingPriority(UILayoutPriority(250), for: .vertical)
+        detailLabel.setContentHuggingPriority(UILayoutPriority(251), for: .vertical)
+        titleLabel.setContentCompressionResistancePriority(UILayoutPriority(750), for: .vertical)
+        detailLabel.setContentCompressionResistancePriority(UILayoutPriority(749), for: .vertical)
+        detailLabel.numberOfLines = 4
+        detailLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
+        thumbImageView.clipsToBounds = true
+        thumbImageView.layer.cornerRadius = 4
+        thumbImageBackgroundView.clipsToBounds = true
+        thumbImageBackgroundView.layer.cornerRadius = 6
+        if #available(iOS 13.0, *) {
+            thumbImageBackgroundView.backgroundColor = UIColor(named: "faviconBackground")
+        } else {
+            thumbImageBackgroundView.backgroundColor = .groupTableViewBackground
+        }
         
+        textStackView.axis = .vertical
+        textStackView.alignment = .leading
+        textStackView.distribution = .fill
+        textStackView.addArrangedSubview(titleLabel)
+        textStackView.addArrangedSubview(detailLabel)
+        
+        [thumbImageBackgroundView, thumbImageView, textStackView].forEach({
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview($0)
+        })
+        setNeedsUpdateConstraints()
+    }
+    
+    fileprivate func configureConstraints() {
         NSLayoutConstraint.activate([
             thumbImageView.heightAnchor.constraint(equalToConstant: 32),
             thumbImageView.widthAnchor.constraint(equalToConstant: 32),
@@ -49,42 +83,40 @@ class TableViewCell: UITableViewCell {
             textStackView.leftAnchor.constraint(equalTo: thumbImageView.rightAnchor, constant: 8),
             textStackView.rightAnchor.constraint(equalTo: contentView.readableContentGuide.rightAnchor),
             textStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
-            textStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6)])
+            textStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6),
+        ])
         let heightConstraint = contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 44)
         heightConstraint.priority = .defaultHigh
         heightConstraint.isActive = true
-        
-        configuredConstraints = true
+    }
+}
+
+class SearchResultTableViewCell: TableViewCell {
+    private let thumbImageCornerRadius: CGFloat = 4
+    private let thumbImageBackgroundViewCornerRadius: CGFloat = 6
+    
+    override fileprivate func configure() {
+        super.configure()
+        thumbImageView.layer.cornerRadius = 3
+        thumbImageBackgroundView.layer.cornerRadius = 3
     }
     
-    private func configure() {
-        titleLabel.setContentHuggingPriority(UILayoutPriority(250), for: .vertical)
-        detailLabel.setContentHuggingPriority(UILayoutPriority(251), for: .vertical)
-        titleLabel.setContentCompressionResistancePriority(UILayoutPriority(750), for: .vertical)
-        detailLabel.setContentCompressionResistancePriority(UILayoutPriority(749), for: .vertical)
-        detailLabel.numberOfLines = 0
-        detailLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
-        thumbImageView.clipsToBounds = true
-        thumbImageView.layer.cornerRadius = 4
-        if #available(iOS 13.0, *) {
-            thumbImageBackgroundView.backgroundColor = UIColor(named: "faviconBackground")
-        } else {
-            thumbImageBackgroundView.backgroundColor = .groupTableViewBackground
-        }
-        thumbImageBackgroundView.clipsToBounds = true
-        thumbImageBackgroundView.layer.cornerRadius = 6
-
-        textStackView.axis = .vertical
-        textStackView.alignment = .leading
-        textStackView.distribution = .fill
-        textStackView.addArrangedSubview(titleLabel)
-        textStackView.addArrangedSubview(detailLabel)
-        
-        [thumbImageBackgroundView, thumbImageView, textStackView].forEach({
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            contentView.addSubview($0)
-        })
-        setNeedsUpdateConstraints()
+    override fileprivate func configureConstraints() {
+        NSLayoutConstraint.activate([
+            thumbImageView.leftAnchor.constraint(equalTo: contentView.readableContentGuide.leftAnchor, constant: -4),
+            thumbImageView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
+            thumbImageView.widthAnchor.constraint(equalToConstant: 18),
+            thumbImageView.heightAnchor.constraint(equalToConstant: 18),
+            thumbImageBackgroundView.heightAnchor.constraint(equalToConstant: 20),
+            thumbImageBackgroundView.widthAnchor.constraint(equalToConstant: 20),
+            thumbImageBackgroundView.centerXAnchor.constraint(equalTo: thumbImageView.centerXAnchor),
+            thumbImageBackgroundView.centerYAnchor.constraint(equalTo: thumbImageView.centerYAnchor),
+            textStackView.leftAnchor.constraint(equalTo: thumbImageView.rightAnchor, constant: 6),
+            textStackView.rightAnchor.constraint(equalTo: contentView.readableContentGuide.rightAnchor),
+            textStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
+            textStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6),
+            contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
+        ])
     }
 }
 

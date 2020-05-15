@@ -18,11 +18,11 @@ class SearchResultsListController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        tableView.estimatedRowHeight = 44
-//        tableView.rowHeight = UITableView.automaticDimension
         tableView.cellLayoutMarginsFollowReadableWidth = true
-        tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(SearchResultTableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.keyboardDismissMode = .onDrag
+        tableView.separatorInsetReference = .fromAutomaticInsets
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
     }
     
     func update(searchText: String, zimFileIDs: Set<String>, results: [SearchResult]) {
@@ -70,7 +70,7 @@ class SearchResultsListController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! SearchResultTableViewCell
         let result = results[indexPath.row]
         cell.titleLabel.text = result.title
         
@@ -83,7 +83,6 @@ class SearchResultsListController: UITableViewController {
         
         if let snippet = result.snippet {
             cell.detailLabel.attributedText = snippet
-            cell.detailLabel.numberOfLines = 4
         }
         
         return cell
