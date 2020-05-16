@@ -18,6 +18,11 @@ class SettingNavigationController: UINavigationController {
             navigationBar.prefersLargeTitles = true
         }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        popToRootViewController(animated: false)
+    }
 }
 
 class SettingController: UIViewController, UITableViewDataSource, UITableViewDelegate {
