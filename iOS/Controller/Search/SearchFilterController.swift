@@ -231,7 +231,7 @@ class SearchFilterController: UIViewController, UITableViewDelegate, UITableView
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         let searchText = recentSearchTexts[indexPath.row]
-        if let controller = presentingViewController as? ContentViewController {
+        if let controller = presentingViewController as? ContentController {
             controller.searchController.searchBar.text = searchText
         }
     }

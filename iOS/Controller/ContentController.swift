@@ -1,5 +1,5 @@
 //
-//  ContentViewController.swift
+//  ContentController.swift
 //  Kiwix for iOS
 //
 //  Created by Chris Li on 12/8/19.
@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class ContentViewController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate,
+class ContentController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate,
     OutlineControllerDelegate, BookmarkControllerDelegate {
     private let sideBarButton = Button(imageName: "sidebar.left")
     private let chevronLeftButton = Button(imageName: "chevron.left")

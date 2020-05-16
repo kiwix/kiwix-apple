@@ -18,7 +18,7 @@ class WelcomeController: UIViewController {
     }
     
     @IBAction func leftButtonTapped(_ sender: Any) {
-        guard let presenter = parent as? ContentViewController else {return}
+        guard let presenter = parent as? ContentController else {return}
         presenter.openLibrary()
     }
     
