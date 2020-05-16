@@ -26,8 +26,9 @@ class ContentController: UIViewController, UISearchControllerDelegate, WebViewCo
     private lazy var searchCancelButton = UIBarButtonItem(
         barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
     let  webViewController = WebKitWebController()
-    private(set) lazy var welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
-    private(set) lazy var libraryController = LibraryController()
+    private let welcomeController = UIStoryboard(name: "Main", bundle: nil)
+        .instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
+    private var cachedLibraryController: LibraryController?
     
     // MARK:- Initialization
     
@@ -351,6 +352,13 @@ class ContentController: UIViewController, UISearchControllerDelegate, WebViewCo
     
     @objc func openLibrary() {
         guard let splitController = splitViewController as? RootController else {return}
+        let libraryController = cachedLibraryController ?? LibraryController(onDismiss: {
+            let timer = Timer(timeInterval: 60, repeats: false, block: { [weak self] timer in
+                self?.cachedLibraryController = nil
+            })
+            RunLoop.main.add(timer, forMode: .default)
+        })
+        self.cachedLibraryController = libraryController
         splitController.present(libraryController, animated: true)
     }
     
