@@ -48,7 +48,11 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
 
     override func loadView() {
         view = UIView()
-        view.backgroundColor = .groupTableViewBackground
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = .systemBackground
+        } else {
+            view.backgroundColor = .white
+        }
 
         if #available(iOS 13, *) {} else {
             /* Prevent SearchResultsController view from being automatically hidden by UISearchController */

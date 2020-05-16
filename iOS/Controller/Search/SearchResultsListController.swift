@@ -16,21 +16,13 @@ class SearchResultsListController: UITableViewController {
     private(set) var results = [SearchResult]()
     private weak var clearResultTimer: Timer?
     
-    init() {
-        super.init(style: .grouped)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.estimatedRowHeight = 44
-        tableView.rowHeight = UITableView.automaticDimension
         tableView.cellLayoutMarginsFollowReadableWidth = true
-        tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(SearchResultTableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.keyboardDismissMode = .onDrag
+        tableView.separatorInsetReference = .fromAutomaticInsets
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
     }
     
     func update(searchText: String, zimFileIDs: Set<String>, results: [SearchResult]) {
@@ -38,6 +30,9 @@ class SearchResultsListController: UITableViewController {
         self.zimFileIDs = zimFileIDs
         self.results = results
         tableView.reloadData()
+        if !results.isEmpty {
+            tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        }
     }
     
     func update(recentSearchText newSearchText: String) {
@@ -75,7 +70,7 @@ class SearchResultsListController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! SearchResultTableViewCell
         let result = results[indexPath.row]
         cell.titleLabel.text = result.title
         
@@ -86,9 +81,9 @@ class SearchResultsListController: UITableViewController {
             cell.thumbImageView.contentMode = .scaleAspectFit
         } catch {}
         
+        cell.titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         if let snippet = result.snippet {
             cell.detailLabel.attributedText = snippet
-            cell.detailLabel.numberOfLines = 4
         }
         
         return cell
@@ -100,13 +95,5 @@ class SearchResultsListController: UITableViewController {
         content.load(url: results[indexPath.row].url)
         content.searchController.dismiss(animated: true)
         content.searchController.isActive = false
-    }
-    
-    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        if results[indexPath.row].snippet != nil {
-            return traitCollection.horizontalSizeClass == .regular ? 120 : 190
-        } else {
-            return 44
-        }
     }
 }
