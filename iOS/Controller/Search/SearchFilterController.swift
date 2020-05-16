@@ -55,6 +55,8 @@ class SearchFilterController: UIViewController, UITableViewDelegate, UITableView
         tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.register(RecentSearchTableViewCell.self, forCellReuseIdentifier: "RecentSearchCell")
+        tableView.separatorInsetReference = .fromAutomaticInsets
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 0)
     }
     
     override func viewWillAppear(_ animated: Bool) {

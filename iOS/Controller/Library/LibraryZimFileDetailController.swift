@@ -76,6 +76,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
         view = tableView
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.register(UIRightDetailTableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.register(UIActionTableViewCell.self, forCellReuseIdentifier: "ActionCell")
     }
