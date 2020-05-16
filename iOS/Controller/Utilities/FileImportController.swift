@@ -9,7 +9,7 @@ import UIKit
 
 class FileImportController: UINavigationController {
     convenience init(fileURL: URL, canOpenInPlace: Bool = true) {
-        self.init(rootViewController: ContentController(url: fileURL, canOpenInPlace: canOpenInPlace))
+        self.init(rootViewController: FileImportContentController(url: fileURL, canOpenInPlace: canOpenInPlace))
         modalPresentationStyle = .formSheet
         if #available(iOS 11.0, *) {
             navigationBar.prefersLargeTitles = true
@@ -18,7 +18,7 @@ class FileImportController: UINavigationController {
 }
 
 
-fileprivate class ContentController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+fileprivate class FileImportContentController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     private let url: URL
     private let fileSize: Int64
     private let tableView = UITableView(frame: .zero, style: .grouped)
