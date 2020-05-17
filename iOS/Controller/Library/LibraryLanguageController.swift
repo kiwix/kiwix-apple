@@ -1,6 +1,6 @@
 //
 //  LibraryLanguageController.swift
-//  iOS
+//  Kiwix
 //
 //  Created by Chris Li on 5/8/18.
 //  Copyright © 2018 Chris Li. All rights reserved.
@@ -16,32 +16,42 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let sortBy: UISegmentedControl
     private let sortingModes: [SortingMode] = [.alphabetically, .byCount]
-    
-    private let zimFileCount: [LanguageCode: Int]
-    private var visible: [LanguageCode]
-    private var hidden: [LanguageCode]
+
+    private var visible: [Language] = []
+    private var hidden: [Language] = []
     
     var dismissCallback: (() -> Void)?
     
     // MARK: - Overrides
     
     init() {
-        do {
-            let database = try Realm(configuration: Realm.defaultConfig)
-            let codes = database.objects(ZimFile.self).distinct(by: ["languageCode"]).map({ $0.languageCode })
-            zimFileCount = codes.reduce(into: [LanguageCode: Int]()) { (counts, code) in
-                counts[code] = database.objects(ZimFile.self).filter("languageCode = %@", code).count
-            }
-        } catch { zimFileCount = [LanguageCode: Int]() }
-        
-        visible = Defaults[.libraryFilterLanguageCodes]
-        hidden = Array(Set(zimFileCount.keys).subtracting(visible))
-        
         let sortingMode = SortingMode(rawValue: Defaults[.libraryLanguageSortingMode]) ?? .alphabetically
         sortBy = UISegmentedControl(items: Array(sortingModes.map({ $0.localizedDescription }) ))
         sortBy.selectedSegmentIndex = sortingModes.firstIndex(of: sortingMode) ?? 0
         
         super.init(nibName: nil, bundle: nil)
+
+        let zimFileCount: [String: Int] = {
+            do {
+                let database = try Realm(configuration: Realm.defaultConfig)
+                let codes = database.objects(ZimFile.self).distinct(by: ["languageCode"]).map({ $0.languageCode })
+                return codes.reduce(into: [LanguageCode: Int]()) { (counts, code) in
+                    counts[code] = database.objects(ZimFile.self).filter("languageCode = %@", code).count
+                }
+            } catch { return [String: Int]() }
+        }()
+
+        let visibleLanguageCodes = Defaults[.libraryFilterLanguageCodes]
+        for (languageCode, zimFileCount) in zimFileCount {
+            guard let languageName = Locale.current.localizedString(forLanguageCode: languageCode) else { continue }
+            let language = Language(code: languageCode, name: languageName, count: zimFileCount)
+            if visibleLanguageCodes.contains(languageCode) {
+                visible.append(language)
+            } else {
+                hidden.append(language)
+            }
+        }
+        sort()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -57,59 +67,49 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if #available(iOS 11.0, *) {
-            navigationItem.largeTitleDisplayMode = .never
-        }
+
+        navigationItem.largeTitleDisplayMode = .never
         if navigationController?.topViewController === self {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
         }
         
         navigationItem.titleView = sortBy
         sortBy.addTarget(self, action: #selector(sortByValueChanged(segmentedControl:)), for: .valueChanged)
-        
-        sortLanguageCodes(codes: &visible)
-        sortLanguageCodes(codes: &hidden)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        Defaults[.libraryFilterLanguageCodes] = visible
+        Defaults[.libraryFilterLanguageCodes] = visible.map({$0.code})
         dismissCallback?()
     }
     
-    // MARK: -
+    // MARK: - Actions
     
     @objc func dismissController() {
         dismiss(animated: true, completion: nil)
     }
     
-    private func sortLanguageCodes(codes: inout[LanguageCode]) {
-        func compareLocalizedName(code0: LanguageCode, code1: LanguageCode) -> Bool {
-            guard let name0 = Locale.current.localizedString(forLanguageCode: code0),
-                let name1 = Locale.current.localizedString(forLanguageCode: code1) else {return false}
-            return name0 < name1
-        }
-        
-        switch sortingModes[sortBy.selectedSegmentIndex] {
-        case .alphabetically:
-            codes.sort { return compareLocalizedName(code0: $0, code1: $1) }
-        case .byCount:
-            codes.sort {
-                if let count0 = zimFileCount[$0], let count1 = zimFileCount[$1], count0 != count1 {
-                    return count0 > count1
+    @objc func sortByValueChanged(segmentedControl: UISegmentedControl) {
+        Defaults[.libraryLanguageSortingMode] = sortingModes[segmentedControl.selectedSegmentIndex].rawValue
+        sort()
+        tableView.reloadData()
+    }
+
+    private func sort() {
+        let compare = { (language0: Language, language1: Language) -> Bool in
+            switch self.sortingModes[self.sortBy.selectedSegmentIndex] {
+            case .alphabetically:
+                return language0.name < language1.name
+            case .byCount:
+                if language0.count == language1.count {
+                    return language0.name < language1.name
                 } else {
-                    return compareLocalizedName(code0: $0, code1: $1)
+                    return language0.count > language1.count
                 }
             }
         }
-    }
-    
-    @objc func sortByValueChanged(segmentedControl: UISegmentedControl) {
-        Defaults[.libraryLanguageSortingMode] = sortingModes[segmentedControl.selectedSegmentIndex].rawValue
-        sortLanguageCodes(codes: &visible)
-        sortLanguageCodes(codes: &hidden)
-        tableView.reloadData()
+        visible.sort(by: compare)
+        hidden.sort(by: compare)
     }
     
     // MARK: - UITableViewDataSource & Delegates
@@ -128,15 +128,15 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! UIRightDetailTableViewCell
-        let code: String = {
+        let language: Language = {
             if indexPath.section == 0 {
                 return visible[indexPath.row]
             } else {
                 return hidden[indexPath.row]
             }
         }()
-        cell.textLabel?.text = Locale.current.localizedString(forLanguageCode: code) ?? code
-        cell.detailTextLabel?.text = "\(zimFileCount[code] ?? 0)"
+        cell.textLabel?.text = language.name
+        cell.detailTextLabel?.text = "\(language.count)"
         return cell
     }
     
@@ -165,7 +165,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
             let language = visible[indexPath.row]
             hidden.append(language)
             visible.remove(at: indexPath.row)
-            sortLanguageCodes(codes: &hidden)
+            sort()
             
             guard let insertedRowIndex = hidden.firstIndex(of: language) else {tableView.reloadData(); return}
             let insertedIndexPath = IndexPath(row: insertedRowIndex, section: 1)
@@ -174,7 +174,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
             let language = hidden[indexPath.row]
             visible.append(language)
             hidden.remove(at: indexPath.row)
-            sortLanguageCodes(codes: &visible)
+            sort()
             
             guard let insertedRowIndex = visible.firstIndex(of: language) else {tableView.reloadData(); return}
             let insertedIndexPath = IndexPath(row: insertedRowIndex, section: 0)
@@ -195,5 +195,11 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
                 return NSLocalizedString("By Count", comment: "Library: Language Filter Sorting")
             }
         }
+    }
+
+    private struct Language: Equatable {
+        let code: String
+        let name: String
+        let count: Int
     }
 }
