@@ -14,9 +14,7 @@ class SettingNavigationController: UINavigationController {
     convenience init() {
         self.init(rootViewController: SettingController())
         modalPresentationStyle = .formSheet
-        if #available(iOS 11.0, *) {
-            navigationBar.prefersLargeTitles = true
-        }
+        navigationBar.prefersLargeTitles = true
     }
 }
 

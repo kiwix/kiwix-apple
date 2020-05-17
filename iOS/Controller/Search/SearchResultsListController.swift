@@ -90,7 +90,7 @@ class SearchResultsListController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let content = presentingViewController as? ContentViewController else {return}
+        guard let content = presentingViewController as? ContentController else {return}
         update(recentSearchText: searchText)
         content.load(url: results[indexPath.row].url)
         content.searchController.dismiss(animated: true)

@@ -16,7 +16,10 @@ import RealmSwift
  The detail controller could be detail of a zim file or all zim files belong to one category.
  */
 class LibraryController: UISplitViewController, UISplitViewControllerDelegate {
-    init() {
+    let onDismiss: (() -> Void)?
+    
+    init(onDismiss: (() -> Void)? = nil) {
+        self.onDismiss = onDismiss
         super.init(nibName: nil, bundle: nil)
         
         // set at least one view controller in viewControllers to supress a warning produced by split view controller
@@ -35,6 +38,18 @@ class LibraryController: UISplitViewController, UISplitViewControllerDelegate {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if isCollapsed, let navigationController = viewControllers.first as? UINavigationController {
+            navigationController.popToRootViewController(animated: false)
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        onDismiss?()
     }
     
     func splitViewController(_ splitViewController: UISplitViewController,

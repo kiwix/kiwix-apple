@@ -10,7 +10,7 @@ import UIKit
 
 class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGestureRecognizerDelegate {
     let sideBarViewController = SideBarController()
-    let contentViewController = ContentViewController()
+    let contentViewController = ContentController()
 
     init() {
         super.init(nibName: nil, bundle: nil)

@@ -1,6 +1,6 @@
 //
-//  ContentViewController.swift
-//  Kiwix for iOS
+//  ContentController.swift
+//  Kiwix
 //
 //  Created by Chris Li on 12/8/19.
 //  Copyright © 2019 Chris Li. All rights reserved.
@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class ContentViewController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate,
+class ContentController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate,
     OutlineControllerDelegate, BookmarkControllerDelegate {
     private let sideBarButton = Button(imageName: "sidebar.left")
     private let chevronLeftButton = Button(imageName: "chevron.left")
@@ -26,8 +26,9 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     private lazy var searchCancelButton = UIBarButtonItem(
         barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
     let  webViewController = WebKitWebController()
-    private(set) lazy var welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
-    private(set) lazy var libraryController = LibraryController()
+    private let welcomeController = UIStoryboard(name: "Main", bundle: nil)
+        .instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
+    private var cachedLibraryController: LibraryController?
     
     // MARK:- Initialization
     
@@ -351,6 +352,13 @@ class ContentViewController: UIViewController, UISearchControllerDelegate, WebVi
     
     @objc func openLibrary() {
         guard let splitController = splitViewController as? RootController else {return}
+        let libraryController = cachedLibraryController ?? LibraryController(onDismiss: {
+            let timer = Timer(timeInterval: 60, repeats: false, block: { [weak self] timer in
+                self?.cachedLibraryController = nil
+            })
+            RunLoop.main.add(timer, forMode: .default)
+        })
+        self.cachedLibraryController = libraryController
         splitController.present(libraryController, animated: true)
     }
     
