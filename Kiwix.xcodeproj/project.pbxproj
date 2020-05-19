@@ -819,6 +819,7 @@
 		970EC39E23BCE7F5008DCA27 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				9779A5D62456796A00F6F6FF /* libkiwix */,
 				9779A5AB2456793600F6F6FF /* Entities */,
 				9779A59E2456793500F6F6FF /* Operations */,
 				9779A5AE2456793600F6F6FF /* Realm */,
@@ -991,14 +992,6 @@
 			path = Realm;
 			sourceTree = "<group>";
 		};
-		9779A5CE2456796A00F6F6FF /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				9779A5D62456796A00F6F6FF /* Dependencies */,
-			);
-			path = Shared;
-			sourceTree = "<group>";
-		};
 		9779A5D22456796A00F6F6FF /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -1009,14 +1002,14 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
-		9779A5D62456796A00F6F6FF /* Dependencies */ = {
+		9779A5D62456796A00F6F6FF /* libkiwix */ = {
 			isa = PBXGroup;
 			children = (
 				9779A5D72456796A00F6F6FF /* include */,
 				9779A6F52456796B00F6F6FF /* iOS_lib */,
 				9779A7022456796B00F6F6FF /* macOS_lib */,
 			);
-			path = Dependencies;
+			path = libkiwix;
 			sourceTree = "<group>";
 		};
 		9779A5D72456796A00F6F6FF /* include */ = {
@@ -1438,7 +1431,6 @@
 			isa = PBXGroup;
 			children = (
 				970EC39E23BCE7F5008DCA27 /* Model */,
-				9779A5CE2456796A00F6F6FF /* Shared */,
 				979315821E5127930093D3BA /* macOS */,
 				975FDAD81F6082DA00A10E8C /* iOS */,
 				97B44895210FBC2C0004B056 /* WikiMed */,
@@ -2260,8 +2252,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Shared/Dependencies/iOS_lib",
-					"$(PROJECT_DIR)/Shared/Dependencies/macOS_lib",
+					"$(PROJECT_DIR)/Model/libkiwix/iOS_lib",
 				);
 				MARKETING_VERSION = 1.12;
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix;
@@ -2271,7 +2262,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "Model/Utilities/Kiwix-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Shared/Dependencies/include";
+				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Model/libkiwix/include";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -2297,8 +2288,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Shared/Dependencies/iOS_lib",
-					"$(PROJECT_DIR)/Shared/Dependencies/macOS_lib",
+					"$(PROJECT_DIR)/Model/libkiwix/iOS_lib",
 				);
 				MARKETING_VERSION = 1.12;
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix;
@@ -2307,7 +2297,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Model/Utilities/Kiwix-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Shared/Dependencies/include";
+				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Model/libkiwix/include";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
