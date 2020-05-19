@@ -40,13 +40,6 @@ class LibraryController: UISplitViewController, UISplitViewControllerDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if isCollapsed, let navigationController = viewControllers.first as? UINavigationController {
-            navigationController.popToRootViewController(animated: false)
-        }
-    }
-    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         onDismiss?()

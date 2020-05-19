@@ -10,6 +10,7 @@ Speed improvements and more options for search snippets:
 New: 
 
 - updated app icon
+- new design of search result list
 
 Bug fixes:
 
