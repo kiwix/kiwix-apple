@@ -620,7 +620,6 @@
 		9779A7232456796B00F6F6FF /* libpugixml.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpugixml.a; sourceTree = "<group>"; };
 		9779A72D2456796B00F6F6FF /* libxapian.la */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = libxapian.la; sourceTree = "<group>"; };
 		9779A7372456796B00F6F6FF /* SearchQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchQueue.swift; sourceTree = "<group>"; };
-		9779A7382456796B00F6F6FF /* SearchProcedure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchProcedure.swift; sourceTree = "<group>"; };
 		9779A7392456796B00F6F6FF /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		9779A73A2456796B00F6F6FF /* WebKitHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebKitHandler.swift; sourceTree = "<group>"; };
 		9779A73B2456796B00F6F6FF /* TableOfContentItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableOfContentItem.swift; sourceTree = "<group>"; };
@@ -797,18 +796,36 @@
 			path = Web;
 			sourceTree = "<group>";
 		};
+		9706555A2473682C00A51319 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				9779A7372456796B00F6F6FF /* SearchQueue.swift */,
+				9779A5D22456796A00F6F6FF /* Network */,
+				970EC3A023BCEC84008DCA27 /* Parser.swift */,
+				9779A7E224567A5A00F6F6FF /* Log.swift */,
+				97B399912468502500BC6F5B /* Platform.swift */,
+				97B399952468CF3B00BC6F5B /* Enums.swift */,
+				9779A7EC24567ADD00F6F6FF /* BackupManager.swift */,
+				9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */,
+				9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */,
+				9779A7392456796B00F6F6FF /* Settings.swift */,
+				9779A73A2456796B00F6F6FF /* WebKitHandler.swift */,
+				9779A73B2456796B00F6F6FF /* TableOfContentItem.swift */,
+				9779A73C2456796B00F6F6FF /* Preference.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		970EC39E23BCE7F5008DCA27 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				9779A5D62456796A00F6F6FF /* libkiwix */,
 				9779A5AB2456793600F6F6FF /* Entities */,
 				9779A59E2456793500F6F6FF /* Operations */,
 				9779A5AE2456793600F6F6FF /* Realm */,
 				9779A59B2456793500F6F6FF /* Services */,
 				9779A5A62456793500F6F6FF /* ZimMultiReader */,
-				970EC3A023BCEC84008DCA27 /* Parser.swift */,
-				9779A7E224567A5A00F6F6FF /* Log.swift */,
-				97B399912468502500BC6F5B /* Platform.swift */,
-				97B399952468CF3B00BC6F5B /* Enums.swift */,
+				9706555A2473682C00A51319 /* Utilities */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -975,23 +992,6 @@
 			path = Realm;
 			sourceTree = "<group>";
 		};
-		9779A5CE2456796A00F6F6FF /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				9779A7EC24567ADD00F6F6FF /* BackupManager.swift */,
-				9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */,
-				9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */,
-				9779A5D22456796A00F6F6FF /* Network */,
-				9779A5D62456796A00F6F6FF /* Dependencies */,
-				9779A7362456796B00F6F6FF /* Procedure */,
-				9779A7392456796B00F6F6FF /* Settings.swift */,
-				9779A73A2456796B00F6F6FF /* WebKitHandler.swift */,
-				9779A73B2456796B00F6F6FF /* TableOfContentItem.swift */,
-				9779A73C2456796B00F6F6FF /* Preference.swift */,
-			);
-			path = Shared;
-			sourceTree = "<group>";
-		};
 		9779A5D22456796A00F6F6FF /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -1002,14 +1002,14 @@
 			path = Network;
 			sourceTree = "<group>";
 		};
-		9779A5D62456796A00F6F6FF /* Dependencies */ = {
+		9779A5D62456796A00F6F6FF /* libkiwix */ = {
 			isa = PBXGroup;
 			children = (
 				9779A5D72456796A00F6F6FF /* include */,
 				9779A6F52456796B00F6F6FF /* iOS_lib */,
 				9779A7022456796B00F6F6FF /* macOS_lib */,
 			);
-			path = Dependencies;
+			path = libkiwix;
 			sourceTree = "<group>";
 		};
 		9779A5D72456796A00F6F6FF /* include */ = {
@@ -1404,15 +1404,6 @@
 			path = macOS_lib;
 			sourceTree = "<group>";
 		};
-		9779A7362456796B00F6F6FF /* Procedure */ = {
-			isa = PBXGroup;
-			children = (
-				9779A7372456796B00F6F6FF /* SearchQueue.swift */,
-				9779A7382456796B00F6F6FF /* SearchProcedure.swift */,
-			);
-			path = Procedure;
-			sourceTree = "<group>";
-		};
 		979315821E5127930093D3BA /* macOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -1440,7 +1431,6 @@
 			isa = PBXGroup;
 			children = (
 				970EC39E23BCE7F5008DCA27 /* Model */,
-				9779A5CE2456796A00F6F6FF /* Shared */,
 				979315821E5127930093D3BA /* macOS */,
 				975FDAD81F6082DA00A10E8C /* iOS */,
 				97B44895210FBC2C0004B056 /* WikiMed */,
@@ -2262,8 +2252,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Shared/Dependencies/iOS_lib",
-					"$(PROJECT_DIR)/Shared/Dependencies/macOS_lib",
+					"$(PROJECT_DIR)/Model/libkiwix/iOS_lib",
 				);
 				MARKETING_VERSION = 1.12;
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix;
@@ -2271,9 +2260,9 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Kiwix-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Model/Utilities/Kiwix-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Shared/Dependencies/include";
+				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Model/libkiwix/include";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -2299,17 +2288,16 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Shared/Dependencies/iOS_lib",
-					"$(PROJECT_DIR)/Shared/Dependencies/macOS_lib",
+					"$(PROJECT_DIR)/Model/libkiwix/iOS_lib",
 				);
 				MARKETING_VERSION = 1.12;
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix;
 				PRODUCT_NAME = Kiwix;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTS_MACCATALYST = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Kiwix-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Model/Utilities/Kiwix-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Shared/Dependencies/include";
+				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Model/libkiwix/include";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
