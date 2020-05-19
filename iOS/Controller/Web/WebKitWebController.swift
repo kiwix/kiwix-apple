@@ -12,7 +12,6 @@ import SafariServices
 import SwiftyUserDefaults
 
 
-@available(iOS 11.0, *)
 class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate, WebViewController {
     private let webView: WKWebView = {
         let config = WKWebViewConfiguration()

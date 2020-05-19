@@ -124,9 +124,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
             case .remote:
                 let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
                 let freespace: Int64 = {
-                    if #available(iOS 11.0, *), let free = (((try? url?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])) as URLResourceValues??))??.volumeAvailableCapacityForImportantUsage {
-                        return free
-                    } else if let path = url?.path, let free = ((try? FileManager.default.attributesOfFileSystem(forPath: path))?[.systemFreeSize] as? NSNumber)?.int64Value {
+                    if let free = (((try? url?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])) as URLResourceValues??))??.volumeAvailableCapacityForImportantUsage {
                         return free
                     } else {
                         return 0

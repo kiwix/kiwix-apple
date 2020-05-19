@@ -11,9 +11,7 @@ class FileImportController: UINavigationController {
     convenience init(fileURL: URL, canOpenInPlace: Bool = true) {
         self.init(rootViewController: FileImportContentController(url: fileURL, canOpenInPlace: canOpenInPlace))
         modalPresentationStyle = .formSheet
-        if #available(iOS 11.0, *) {
-            navigationBar.prefersLargeTitles = true
-        }
+        navigationBar.prefersLargeTitles = true
     }
 }
 
