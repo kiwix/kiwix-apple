@@ -6,7 +6,22 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
-enum SearchResultSnippetMode: String, CustomStringConvertible {
+import SwiftyUserDefaults
+
+enum LibraryLanguageSortingMode: String, DefaultsSerializable {
+    case alphabetically, byCount
+    
+    var localizedDescription: String {
+        switch self {
+        case .alphabetically:
+            return NSLocalizedString("A-Z", comment: "Library: Language Filter Sorting")
+        case .byCount:
+            return NSLocalizedString("By Count", comment: "Library: Language Filter Sorting")
+        }
+    }
+}
+
+enum SearchResultSnippetMode: String, CustomStringConvertible, DefaultsSerializable {
     case disabled, firstParagraph, firstSentence, matches
     
     var description: String {

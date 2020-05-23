@@ -13,7 +13,7 @@ class SettingExternalLinkController: UIViewController, UITableViewDataSource, UI
     let tableView = UITableView(frame: .zero, style: .grouped)
     
     let loadingPolicies: [ExternalLinkLoadingPolicy] = [.alwaysLoad, .alwaysAsk, .neverLoad]
-    private(set) var currentLoadingPolicy = ExternalLinkLoadingPolicy(rawValue: Defaults[.externalLinkLoadingPolicy]) ?? .alwaysAsk
+    private(set) var currentLoadingPolicy = ExternalLinkLoadingPolicy(rawValue: Defaults.externalLinkLoadingPolicy) ?? .alwaysAsk
     
     convenience init(title: String?) {
         self.init()
@@ -29,7 +29,7 @@ class SettingExternalLinkController: UIViewController, UITableViewDataSource, UI
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        Defaults[.externalLinkLoadingPolicy] = currentLoadingPolicy.rawValue
+        Defaults.externalLinkLoadingPolicy = currentLoadingPolicy.rawValue
     }
     
     // MARK: - UITableViewDataSource & Delegate

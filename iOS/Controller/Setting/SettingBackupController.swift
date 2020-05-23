@@ -25,8 +25,8 @@ class SettingBackupController: UIViewController, UITableViewDataSource, UITableV
     }
     
     @objc func switchValueChanged(switchControl: UISwitch) {
-        Defaults[.backupDocumentDirectory] = switchControl.isOn
-        BackupManager.updateExcludedFromBackupForDocumentDirectoryContents(isExcluded: !Defaults[.backupDocumentDirectory])
+        Defaults.backupDocumentDirectory = switchControl.isOn
+        BackupManager.updateExcludedFromBackupForDocumentDirectoryContents(isExcluded: !Defaults.backupDocumentDirectory)
     }
     
     // MARK: - UITableViewDataSource & Delegate
@@ -44,7 +44,7 @@ class SettingBackupController: UIViewController, UITableViewDataSource, UITableV
         cell.textLabel?.text = NSLocalizedString("Zim files and indexes", comment: "Setting: Backup")
         cell.selectionStyle = .none
         let switchControl = UISwitch()
-        switchControl.setOn(Defaults[.backupDocumentDirectory], animated: false)
+        switchControl.setOn(Defaults.backupDocumentDirectory, animated: false)
         switchControl.addTarget(self, action: #selector(switchValueChanged(switchControl:)), for: .valueChanged)
         cell.accessoryView = switchControl
         return cell

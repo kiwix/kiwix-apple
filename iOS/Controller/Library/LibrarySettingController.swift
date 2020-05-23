@@ -78,7 +78,8 @@ class LibrarySettingController: UIViewController, UITableViewDataSource, UITable
     }
     
     @objc func toggleAutoRefresh() {
-        Defaults[.libraryAutoRefresh] = !Defaults[.libraryAutoRefresh]
+        let service = LibraryService()
+        service.isAutoUpdateEnabled = !service.isAutoUpdateEnabled
     }
     
     // MARK: - UITableViewDataSource & Delegates
@@ -107,7 +108,7 @@ class LibrarySettingController: UIViewController, UITableViewDataSource, UITable
         case .lastUpdateTimestamp:
             let cell = tableView.dequeueReusableCell(withIdentifier: "DetailCell", for: indexPath) as! UIRightDetailTableViewCell
             cell.textLabel?.text = "Last updated"
-            if let refreshTime = Defaults[.libraryLastRefreshTime] {
+            if let refreshTime = Defaults.libraryLastRefreshTime {
                 if Date().timeIntervalSince(refreshTime) < 120 {
                     cell.detailTextLabel?.text = NSLocalizedString("Just now", comment: "Library Info")
                 } else if #available(iOS 13.0, *) {
@@ -129,7 +130,7 @@ class LibrarySettingController: UIViewController, UITableViewDataSource, UITable
             cell.textLabel?.text = "Auto updates"
             cell.accessoryView = {
                 let toggle = UISwitch()
-                toggle.isOn = Defaults[.libraryAutoRefresh]
+                toggle.isOn = LibraryService().isAutoUpdateEnabled
                 toggle.addTarget(self, action: #selector(toggleAutoRefresh), for: .valueChanged)
                 return toggle
             }()

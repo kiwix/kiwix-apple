@@ -21,22 +21,30 @@ class LibraryService {
         }
     }
     
-    // MARK: - Settings
+    // MARK: - Auto Update
     
     static let autoUpdateInterval: TimeInterval = 3600.0 * 6
+    
+    @SwiftyUserDefault(keyPath: \.libraryAutoRefresh)
     var isAutoUpdateEnabled: Bool {
-        get {
-            return Defaults[.libraryAutoRefresh]
-        }
-        set(newValue) {
-            Defaults[.libraryAutoRefresh] = newValue
-            applyAutoUpdateSetting()
-        }
+        didSet { applyAutoUpdateSetting() }
     }
 
     func applyAutoUpdateSetting() {
         UIApplication.shared.setMinimumBackgroundFetchInterval(
             isAutoUpdateEnabled ? LibraryService.autoUpdateInterval : UIApplication.backgroundFetchIntervalNever
         )
+    }
+}
+
+extension DefaultsKeys {
+    fileprivate var libraryAutoRefresh: DefaultsKey<Bool> { .init("libraryAutoRefresh", defaultValue: true) }
+    var libraryLastRefreshTime: DefaultsKey<Date?> { .init("libraryLastRefreshTime") }
+    var libraryHasShownLanguageFilterAlert: DefaultsKey<Bool> { .
+        init("libraryHasShownLanguageFilterAlert", defaultValue: false)
+    }
+    var libraryFilterLanguageCodes: DefaultsKey<[String]> { .init("libraryFilterLanguageCodes", defaultValue: []) }
+    var libraryLanguageSortingMode: DefaultsKey<LibraryLanguageSortingMode> {
+        .init("libraryLanguageSortingMode", defaultValue: LibraryLanguageSortingMode.alphabetically)
     }
 }
