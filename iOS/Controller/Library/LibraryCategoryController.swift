@@ -104,7 +104,9 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
                     image: #imageLiteral(resourceName: "Globe"), style: .plain, target: self, action: #selector(languageFilterBottonTapped(sender:)))
                 tableView.backgroundView = nil
                 tableView.separatorStyle = .singleLine
-                showAdditionalLanguageAlertIfNeeded()
+                DispatchQueue.main.async {
+                    self.showAdditionalLanguageAlertIfNeeded()
+                }
             } else {
                 backgroundView.button.addTarget(
                     self, action: #selector(refreshLibraryButtonTapped(sender:)), for: .touchUpInside

@@ -20,8 +20,6 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     private var visible: [Language] = []
     private var hidden: [Language] = []
     
-    var dismissCallback: (() -> Void)?
-    
     // MARK: - Overrides
     
     init() {
@@ -79,7 +77,6 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         Defaults.libraryFilterLanguageCodes = visible.map({$0.code})
-        dismissCallback?()
     }
     
     // MARK: - Actions
