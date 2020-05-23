@@ -119,7 +119,7 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
                 decisionHandler(.allow)
             }
         } else if url.scheme == "http" || url.scheme == "https" {
-            let policy = ExternalLinkLoadingPolicy(rawValue: Defaults[.externalLinkLoadingPolicy]) ?? .alwaysAsk
+            let policy = ExternalLinkLoadingPolicy(rawValue: Defaults.externalLinkLoadingPolicy) ?? .alwaysAsk
             if policy == .alwaysLoad {
                 let controller = SFSafariViewController(url: url)
                 self.present(controller, animated: true, completion: nil)
@@ -147,7 +147,7 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         } else {
             delegate?.webViewDidFinishLoading(controller: self)
         }
-        if let scale = Defaults[.webViewZoomScale], scale != 1 {
+        if let scale = Defaults.webViewZoomScale, scale != 1 {
             adjustFontSize(scale: scale)
         }
     }

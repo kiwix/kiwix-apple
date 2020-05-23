@@ -25,7 +25,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     // MARK: - Overrides
     
     init() {
-        let sortingMode = SortingMode(rawValue: Defaults[.libraryLanguageSortingMode]) ?? .alphabetically
+        let sortingMode = SortingMode(rawValue: Defaults.libraryLanguageSortingMode) ?? .alphabetically
         sortBy = UISegmentedControl(items: Array(sortingModes.map({ $0.localizedDescription }) ))
         sortBy.selectedSegmentIndex = sortingModes.firstIndex(of: sortingMode) ?? 0
         
@@ -41,7 +41,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
             } catch { return [String: Int]() }
         }()
 
-        let visibleLanguageCodes = Defaults[.libraryFilterLanguageCodes]
+        let visibleLanguageCodes = Defaults.libraryFilterLanguageCodes
         for (languageCode, zimFileCount) in zimFileCount {
             guard let languageName = Locale.current.localizedString(forLanguageCode: languageCode) else { continue }
             let language = Language(code: languageCode, name: languageName, count: zimFileCount)
@@ -79,7 +79,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        Defaults[.libraryFilterLanguageCodes] = visible.map({$0.code})
+        Defaults.libraryFilterLanguageCodes = visible.map({$0.code})
         dismissCallback?()
     }
     
@@ -90,7 +90,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     }
     
     @objc func sortByValueChanged(segmentedControl: UISegmentedControl) {
-        Defaults[.libraryLanguageSortingMode] = sortingModes[segmentedControl.selectedSegmentIndex].rawValue
+        Defaults.libraryLanguageSortingMode = sortingModes[segmentedControl.selectedSegmentIndex].rawValue
         sort()
         tableView.reloadData()
     }

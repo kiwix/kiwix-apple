@@ -97,7 +97,7 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
         configureSections()
         configureChangeToken()
         
-        if let refreshTime = Defaults[.libraryLastRefreshTime],
+        if let refreshTime = Defaults.libraryLastRefreshTime,
             Date().timeIntervalSince(refreshTime) > LibraryService.autoUpdateInterval,
             LibraryOperationQueue.shared.currentOPDSRefreshOperation == nil {
             LibraryOperationQueue.shared.addOperation(OPDSRefreshOperation())

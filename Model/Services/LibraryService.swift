@@ -24,12 +24,13 @@ class LibraryService {
     // MARK: - Settings
     
     static let autoUpdateInterval: TimeInterval = 3600.0 * 6
+    
     var isAutoUpdateEnabled: Bool {
         get {
-            return Defaults[.libraryAutoRefresh]
+            return Defaults.libraryAutoRefresh
         }
         set(newValue) {
-            Defaults[.libraryAutoRefresh] = newValue
+            Defaults.libraryAutoRefresh = newValue
             applyAutoUpdateSetting()
         }
     }

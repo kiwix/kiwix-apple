@@ -34,7 +34,7 @@ class LibraryScanOperation: LibraryOperationBase {
         
         updateDatabase()
         #if os(iOS)
-            BackupManager.updateExcludedFromBackupForDocumentDirectoryContents(isExcluded: !Defaults[.backupDocumentDirectory])
+            BackupManager.updateExcludedFromBackupForDocumentDirectoryContents(isExcluded: !Defaults.backupDocumentDirectory)
         #endif
     }
     

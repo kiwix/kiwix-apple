@@ -9,22 +9,19 @@
 import SwiftyUserDefaults
 
 extension DefaultsKeys {
-    static let recentSearchTexts = DefaultsKey<[String]>("recentSearchTexts", defaultValue: [])
-    static let backupDocumentDirectory = DefaultsKey<Bool>("backupDocumentDirectory", defaultValue: false)
-    static let webViewZoomScale = DefaultsKey<Double?>("webViewZoomScale")
-    static let externalLinkLoadingPolicy = DefaultsKey<Int>("externalLinkLoadingPolicy", defaultValue: 0)
+    var recentSearchTexts: DefaultsKey<[String]> { .init("recentSearchTexts", defaultValue: []) }
+    var backupDocumentDirectory: DefaultsKey<Bool> { .init("backupDocumentDirectory", defaultValue: false) }
+    var webViewZoomScale: DefaultsKey<Double?> { .init("webViewZoomScale") }
+    var externalLinkLoadingPolicy: DefaultsKey<Int> { .init("externalLinkLoadingPolicy", defaultValue: 0) }
+
+    private var searchResultExcludeSnippet: DefaultsKey<Bool> { .init("searchResultExcludeSnippet", defaultValue: false) }
+    var searchResultSnippetMode: DefaultsKey<String> { .init("searchResultSnippetMode", defaultValue: Defaults.searchResultExcludeSnippet ? SearchResultSnippetMode.disabled .rawValue : SearchResultSnippetMode.matches.rawValue) }
     
-    static let searchResultExcludeSnippet = DefaultsKey<Bool>("searchResultExcludeSnippet", defaultValue: false)
-    static let searchResultSnippetMode = DefaultsKey<String>(
-        "searchResultSnippetMode", defaultValue: Defaults[.searchResultExcludeSnippet]
-            ? SearchResultSnippetMode.disabled .rawValue : SearchResultSnippetMode.matches.rawValue
-    )
-    
-    static let libraryLastRefreshTime = DefaultsKey<Date?>("libraryLastRefreshTime")
-    static let libraryHasShownLanguageFilterAlert = DefaultsKey<Bool>("libraryHasShownLanguageFilterAlert", defaultValue: false)
-    static let libraryLanguageSortingMode = DefaultsKey<String>("libraryLanguageSortingMode", defaultValue: LibraryLanguageController.SortingMode.alphabetically.rawValue)
-    static let libraryFilterLanguageCodes = DefaultsKey<[String]>("libraryFilterLanguageCodes", defaultValue: [])
-    static let libraryAutoRefresh = DefaultsKey<Bool>("libraryAutoRefresh", defaultValue: true)
+    var libraryAutoRefresh: DefaultsKey<Bool> { .init("libraryAutoRefresh", defaultValue: true) }
+    var libraryLastRefreshTime: DefaultsKey<Date?> { .init("libraryLastRefreshTime") }
+    var libraryHasShownLanguageFilterAlert: DefaultsKey<Bool> { .init("libraryHasShownLanguageFilterAlert", defaultValue: false) }
+    var libraryFilterLanguageCodes: DefaultsKey<[String]> { .init("libraryFilterLanguageCodes", defaultValue: []) }
+    var libraryLanguageSortingMode: DefaultsKey<String> { .init("libraryLanguageSortingMode", defaultValue: LibraryLanguageController.SortingMode.alphabetically.rawValue) }
 }
 
 class Preference {
@@ -90,7 +87,7 @@ extension Preference {
 //            get{return Defaults[.notificationBookUpdateAvailable] ?? true}
 //            set{Defaults[.notificationBookUpdateAvailable] = newValue}
 //        }
-//        
+//
 //        class var bookDownloadFinish: Bool {
 //            get{return Defaults[.notificationBookDownloadFinish] ?? true}
 //            set{Defaults[.notificationBookDownloadFinish] = newValue}

@@ -61,7 +61,7 @@ class SearchFilterController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        recentSearchTexts = Defaults[.recentSearchTexts]
+        recentSearchTexts = Defaults.recentSearchTexts
         configureChangeToken()
     }
     
@@ -99,7 +99,7 @@ class SearchFilterController: UIViewController, UITableViewDelegate, UITableView
     func sectionHeaderButtonTapped(button: UIButton, section: SearchFilterController.Section) {
         switch section {
         case .recentSearch:
-            Defaults[.recentSearchTexts] = []
+            Defaults.recentSearchTexts = []
             recentSearchTexts.removeAll()
         case .searchFilter:
             do {
