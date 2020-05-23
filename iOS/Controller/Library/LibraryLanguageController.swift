@@ -15,7 +15,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let sortBy: UISegmentedControl
-    private let sortingModes: [SortingMode] = [.alphabetically, .byCount]
+    private let sortingModes: [LibraryLanguageSortingMode] = [.alphabetically, .byCount]
 
     private var visible: [Language] = []
     private var hidden: [Language] = []
@@ -25,9 +25,8 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     // MARK: - Overrides
     
     init() {
-        let sortingMode = SortingMode(rawValue: Defaults.libraryLanguageSortingMode) ?? .alphabetically
         sortBy = UISegmentedControl(items: Array(sortingModes.map({ $0.localizedDescription }) ))
-        sortBy.selectedSegmentIndex = sortingModes.firstIndex(of: sortingMode) ?? 0
+        sortBy.selectedSegmentIndex = sortingModes.firstIndex(of: Defaults.libraryLanguageSortingMode) ?? 0
         
         super.init(nibName: nil, bundle: nil)
 
@@ -90,7 +89,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     }
     
     @objc func sortByValueChanged(segmentedControl: UISegmentedControl) {
-        Defaults.libraryLanguageSortingMode = sortingModes[segmentedControl.selectedSegmentIndex].rawValue
+        Defaults.libraryLanguageSortingMode = sortingModes[segmentedControl.selectedSegmentIndex]
         sort()
         tableView.reloadData()
     }
@@ -183,19 +182,6 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     }
     
     // MARK: - Type Definition
-    
-    enum SortingMode: String {
-        case alphabetically, byCount
-        
-        var localizedDescription: String {
-            switch self {
-            case .alphabetically:
-                return NSLocalizedString("A-Z", comment: "Library: Language Filter Sorting")
-            case .byCount:
-                return NSLocalizedString("By Count", comment: "Library: Language Filter Sorting")
-            }
-        }
-    }
 
     private struct Language: Equatable {
         let code: String

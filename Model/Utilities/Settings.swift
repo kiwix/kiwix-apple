@@ -16,12 +16,6 @@ extension DefaultsKeys {
 
     private var searchResultExcludeSnippet: DefaultsKey<Bool> { .init("searchResultExcludeSnippet", defaultValue: false) }
     var searchResultSnippetMode: DefaultsKey<String> { .init("searchResultSnippetMode", defaultValue: Defaults.searchResultExcludeSnippet ? SearchResultSnippetMode.disabled .rawValue : SearchResultSnippetMode.matches.rawValue) }
-    
-    var libraryAutoRefresh: DefaultsKey<Bool> { .init("libraryAutoRefresh", defaultValue: true) }
-    var libraryLastRefreshTime: DefaultsKey<Date?> { .init("libraryLastRefreshTime") }
-    var libraryHasShownLanguageFilterAlert: DefaultsKey<Bool> { .init("libraryHasShownLanguageFilterAlert", defaultValue: false) }
-    var libraryFilterLanguageCodes: DefaultsKey<[String]> { .init("libraryFilterLanguageCodes", defaultValue: []) }
-    var libraryLanguageSortingMode: DefaultsKey<String> { .init("libraryLanguageSortingMode", defaultValue: LibraryLanguageController.SortingMode.alphabetically.rawValue) }
 }
 
 class Preference {

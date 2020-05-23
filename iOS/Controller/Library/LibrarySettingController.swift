@@ -78,7 +78,8 @@ class LibrarySettingController: UIViewController, UITableViewDataSource, UITable
     }
     
     @objc func toggleAutoRefresh() {
-        Defaults.libraryAutoRefresh = !Defaults.libraryAutoRefresh
+        let service = LibraryService()
+        service.isAutoUpdateEnabled = !service.isAutoUpdateEnabled
     }
     
     // MARK: - UITableViewDataSource & Delegates
@@ -129,7 +130,7 @@ class LibrarySettingController: UIViewController, UITableViewDataSource, UITable
             cell.textLabel?.text = "Auto updates"
             cell.accessoryView = {
                 let toggle = UISwitch()
-                toggle.isOn = Defaults.libraryAutoRefresh
+                toggle.isOn = LibraryService().isAutoUpdateEnabled
                 toggle.addTarget(self, action: #selector(toggleAutoRefresh), for: .valueChanged)
                 return toggle
             }()
