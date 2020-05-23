@@ -47,7 +47,7 @@ class SettingSearchController: UIViewController, UITableViewDataSource, UITableV
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let mode = snippetModeOptions[indexPath.row]
-        let currentMode = SearchResultSnippetMode(rawValue: Defaults.searchResultSnippetMode)
+        let currentMode = Defaults.searchResultSnippetMode
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         cell.textLabel?.text = mode.description
         cell.accessoryType = mode == currentMode ? .checkmark : .none
@@ -57,10 +57,10 @@ class SettingSearchController: UIViewController, UITableViewDataSource, UITableV
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let currentMode = SearchResultSnippetMode(rawValue: Defaults.searchResultSnippetMode),
-            let index = snippetModeOptions.firstIndex(of: currentMode) else { return }
+        let currentMode = Defaults.searchResultSnippetMode
+        guard let index = snippetModeOptions.firstIndex(of: currentMode) else { return }
         tableView.cellForRow(at: IndexPath(row: index, section: 0))?.accessoryType = .none
-        Defaults.searchResultSnippetMode = snippetModeOptions[indexPath.row].rawValue
+        Defaults.searchResultSnippetMode = snippetModeOptions[indexPath.row]
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

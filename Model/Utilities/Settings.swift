@@ -15,7 +15,11 @@ extension DefaultsKeys {
     var externalLinkLoadingPolicy: DefaultsKey<Int> { .init("externalLinkLoadingPolicy", defaultValue: 0) }
 
     private var searchResultExcludeSnippet: DefaultsKey<Bool> { .init("searchResultExcludeSnippet", defaultValue: false) }
-    var searchResultSnippetMode: DefaultsKey<String> { .init("searchResultSnippetMode", defaultValue: Defaults.searchResultExcludeSnippet ? SearchResultSnippetMode.disabled .rawValue : SearchResultSnippetMode.matches.rawValue) }
+    var searchResultSnippetMode: DefaultsKey<SearchResultSnippetMode> {
+        .init("searchResultSnippetMode", defaultValue:
+            Defaults.searchResultExcludeSnippet ? SearchResultSnippetMode.disabled : SearchResultSnippetMode.matches
+        )
+    }
 }
 
 class Preference {
