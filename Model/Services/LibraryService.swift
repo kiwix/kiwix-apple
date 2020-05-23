@@ -24,12 +24,10 @@ class LibraryService {
     // MARK: - Auto Update
     
     static let autoUpdateInterval: TimeInterval = 3600.0 * 6
+    
+    @SwiftyUserDefault(keyPath: \.libraryAutoRefresh)
     var isAutoUpdateEnabled: Bool {
-        get { return UserDefaults.standard.bool(forKey: "libraryAutoRefresh") }
-        set {
-            UserDefaults.standard.set(newValue, forKey: "libraryAutoRefresh")
-            applyAutoUpdateSetting()
-        }
+        didSet { applyAutoUpdateSetting() }
     }
 
     func applyAutoUpdateSetting() {
@@ -40,9 +38,13 @@ class LibraryService {
 }
 
 extension DefaultsKeys {
-//    fileprivate var libraryAutoRefresh: DefaultsKey<Bool> { .init("libraryAutoRefresh", defaultValue: true) }
+    fileprivate var libraryAutoRefresh: DefaultsKey<Bool> { .init("libraryAutoRefresh", defaultValue: true) }
     var libraryLastRefreshTime: DefaultsKey<Date?> { .init("libraryLastRefreshTime") }
-    var libraryHasShownLanguageFilterAlert: DefaultsKey<Bool> { .init("libraryHasShownLanguageFilterAlert", defaultValue: false) }
+    var libraryHasShownLanguageFilterAlert: DefaultsKey<Bool> { .
+        init("libraryHasShownLanguageFilterAlert", defaultValue: false)
+    }
     var libraryFilterLanguageCodes: DefaultsKey<[String]> { .init("libraryFilterLanguageCodes", defaultValue: []) }
-    var libraryLanguageSortingMode: DefaultsKey<LibraryLanguageSortingMode> { .init("libraryLanguageSortingMode", defaultValue: LibraryLanguageSortingMode.alphabetically) }
+    var libraryLanguageSortingMode: DefaultsKey<LibraryLanguageSortingMode> {
+        .init("libraryLanguageSortingMode", defaultValue: LibraryLanguageSortingMode.alphabetically)
+    }
 }
