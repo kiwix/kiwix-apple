@@ -19,8 +19,9 @@ class ContentController: UIViewController, UISearchControllerDelegate, WebViewCo
     private let bookmarkToggleButton = BookmarkButton(imageName: "star.circle.fill", bookmarkedImageName: "star.circle")
     private let libraryButton = Button(imageName: "folder")
     private let settingButton = Button(imageName: "gear")
+    private let sideBarLongPressGestureRecognizer = UILongPressGestureRecognizer()
     private let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
-     
+    
     let searchController: UISearchController
     private let searchResultsController: SearchResultsController
     private lazy var searchCancelButton = UIBarButtonItem(
@@ -49,6 +50,8 @@ class ContentController: UIViewController, UISearchControllerDelegate, WebViewCo
         settingButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
         
         // button long press
+        sideBarButton.addGestureRecognizer(sideBarLongPressGestureRecognizer)
+        sideBarLongPressGestureRecognizer.addTarget(self, action: #selector(openSideBarSetting(sender:)))
         bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
         bookmarkLongPressGestureRecognizer.addTarget(self, action: #selector(toggleBookmark))
         
@@ -364,6 +367,15 @@ class ContentController: UIViewController, UISearchControllerDelegate, WebViewCo
     
     @objc func openSettings() {
         splitViewController?.present(SettingNavigationController(), animated: true)
+    }
+    
+    @objc func openSideBarSetting(sender: UILongPressGestureRecognizer) {
+        guard sender.state == .began else { return }
+        let controller = SettingSideBarDisplayModeController()
+        controller.modalPresentationStyle = .popover
+        controller.popoverPresentationController?.sourceView = sideBarButton
+        controller.popoverPresentationController?.sourceRect = sideBarButton.bounds
+        present(controller, animated: true)
     }
     
     @objc func openTabsView() {

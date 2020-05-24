@@ -143,6 +143,7 @@
 		97B4ADFB239C6C3800264AF6 /* TabsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B4ADFA239C6C3800264AF6 /* TabsController.swift */; };
 		97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */; };
 		97BAA542202B4C5E00500644 /* SettingBackupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BAA541202B4C5E00500644 /* SettingBackupController.swift */; };
+		97BB5D0E2479D24700786D1C /* SettingSideBarDisplayModeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BB5D0D2479D24700786D1C /* SettingSideBarDisplayModeController.swift */; };
 		97C575F4202CB0E800E37502 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C575F3202CB0E800E37502 /* NotificationCenter.framework */; };
 		97C575F7202CB0E800E37502 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C575F6202CB0E800E37502 /* TodayViewController.swift */; };
 		97C575FA202CB0E800E37502 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C575F8202CB0E800E37502 /* MainInterface.storyboard */; };
@@ -658,6 +659,7 @@
 		97B4ADFA239C6C3800264AF6 /* TabsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsController.swift; sourceTree = "<group>"; };
 		97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		97BAA541202B4C5E00500644 /* SettingBackupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingBackupController.swift; sourceTree = "<group>"; };
+		97BB5D0D2479D24700786D1C /* SettingSideBarDisplayModeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSideBarDisplayModeController.swift; sourceTree = "<group>"; };
 		97C575F2202CB0E800E37502 /* Bookmarks.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Bookmarks.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		97C575F3202CB0E800E37502 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		97C575F6202CB0E800E37502 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -849,6 +851,7 @@
 				97DBCF9C203CA254004EE274 /* SettingExternalLinkController.swift */,
 				9742596820FCE7BA000BB88A /* SettingLibraryController.swift */,
 				975F97A720D00EAE0005D642 /* SettingSearchController.swift */,
+				97BB5D0D2479D24700786D1C /* SettingSideBarDisplayModeController.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -1903,6 +1906,7 @@
 				9763EDC9201FCA6900F3A6D5 /* SettingWebController.swift in Sources */,
 				9779A5B42456793600F6F6FF /* BookmarkService.swift in Sources */,
 				97AC121320878F8B004779D1 /* SearchResultsController.swift in Sources */,
+				97BB5D0E2479D24700786D1C /* SettingSideBarDisplayModeController.swift in Sources */,
 				97028C54201A7D43001259CB /* WebViewControllerProtocols.swift in Sources */,
 				9779A7ED24567ADD00F6F6FF /* BackupManager.swift in Sources */,
 				9779A5CA2456793600F6F6FF /* Bookmark.swift in Sources */,
