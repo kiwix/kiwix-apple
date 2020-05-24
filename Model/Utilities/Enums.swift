@@ -22,3 +22,18 @@ enum SearchResultSnippetMode: String, CustomStringConvertible {
         }
     }
 }
+
+enum SideBarDisplayMode: String, CustomStringConvertible {
+    case automatic, sideBySide, overlay
+    
+    var description: String {
+        switch self {
+        case .automatic:
+            return NSLocalizedString("Automatic", comment: "Side Bar Display Mode")
+        case .sideBySide:
+            return NSLocalizedString("Side By Side", comment: "Side Bar Display Mode")
+        case .overlay:
+            return NSLocalizedString("Overlay", comment: "Side Bar Display Mode")
+        }
+    }
+}

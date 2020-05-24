@@ -71,6 +71,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
 
     func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
         contentViewController.configureToolbar(isGrouped: false)
+        contentViewController.dismissPopoverController()
         let navigationController = UINavigationController(rootViewController: contentViewController)
         navigationController.isToolbarHidden = contentViewController.searchController.isActive
         return navigationController
@@ -79,6 +80,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     func splitViewController(_ splitViewController: UISplitViewController,
                              separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
         contentViewController.configureToolbar(isGrouped: true)
+        contentViewController.dismissPopoverController()
         let navigationController = UINavigationController(rootViewController: contentViewController)
         navigationController.isToolbarHidden = contentViewController.searchController.isActive
         return navigationController

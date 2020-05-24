@@ -118,6 +118,11 @@ class ContentController: UIViewController, UISearchControllerDelegate, WebViewCo
         }
     }
     
+    func dismissPopoverController() {
+        guard let style = presentedViewController?.modalPresentationStyle, style == .popover else { return }
+        presentedViewController?.dismiss(animated: false)
+    }
+    
     private func updateToolBarButtonEnabled() {
         chevronLeftButton.isEnabled = webViewController.canGoBack
         chevronRightButton.isEnabled = webViewController.canGoForward
@@ -374,7 +379,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, WebViewCo
         let controller = SettingSideBarDisplayModeController()
         controller.modalPresentationStyle = .popover
         controller.popoverPresentationController?.sourceView = sideBarButton
-        controller.popoverPresentationController?.sourceRect = sideBarButton.bounds
+        controller.popoverPresentationController?.sourceRect = sideBarButton.imageView?.frame ?? sideBarButton.bounds
         present(controller, animated: true)
     }
     
