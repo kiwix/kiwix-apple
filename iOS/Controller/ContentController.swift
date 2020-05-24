@@ -9,8 +9,8 @@
 import UIKit
 import RealmSwift
 
-class ContentController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate,
-    OutlineControllerDelegate, BookmarkControllerDelegate {
+class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptivePresentationControllerDelegate,
+    WebViewControllerDelegate, OutlineControllerDelegate, BookmarkControllerDelegate {
     private let sideBarButton = Button(imageName: "sidebar.left")
     private let chevronLeftButton = Button(imageName: "chevron.left")
     private let chevronRightButton = Button(imageName: "chevron.right")
@@ -92,6 +92,10 @@ class ContentController: UIViewController, UISearchControllerDelegate, WebViewCo
         
         // show welcome controller
         setChildControllerIfNeeded(welcomeController)
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
     }
     
     func load(url: URL) {
