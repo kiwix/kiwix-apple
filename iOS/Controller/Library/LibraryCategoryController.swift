@@ -28,7 +28,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         super.init(nibName: nil, bundle: nil)
         title = category.description
         self.selectedLanguageCodeObserver = Defaults.observe(
-            \.libraryFilterLanguageCodes, options: [.initial, .new]
+            key: .libraryFilterLanguageCodes, options: [.initial, .new]
         ) { [unowned self] update in
             guard let languageCodes = update.newValue else { return }
             self.configure(selectedLanguages: languageCodes)
@@ -104,9 +104,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
                     image: #imageLiteral(resourceName: "Globe"), style: .plain, target: self, action: #selector(languageFilterBottonTapped(sender:)))
                 tableView.backgroundView = nil
                 tableView.separatorStyle = .singleLine
-                DispatchQueue.main.async {
-                    self.showAdditionalLanguageAlertIfNeeded()
-                }
+                showAdditionalLanguageAlertIfNeeded()
             } else {
                 backgroundView.button.addTarget(
                     self, action: #selector(refreshLibraryButtonTapped(sender:)), for: .touchUpInside
@@ -161,7 +159,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     }
 
     private func showAdditionalLanguageAlertIfNeeded() {
-        guard !Defaults.libraryHasShownLanguageFilterAlert else { return }
+        guard !Defaults[.libraryHasShownLanguageFilterAlert] else { return }
         let title = NSLocalizedString("More Languages", comment: "Library: Additional Language Alert")
         let message = NSLocalizedString(
             """
@@ -171,7 +169,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
-        Defaults.libraryHasShownLanguageFilterAlert = true
+        Defaults[.libraryHasShownLanguageFilterAlert] = true
     }
 
     // MARK: - UIControl Actions

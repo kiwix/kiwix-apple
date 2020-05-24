@@ -1,6 +1,6 @@
 //
 //  SettingLibraryController.swift
-//  Kiwix
+//  iOS
 //
 //  Created by Chris Li on 7/16/18.
 //  Copyright © 2018 Chris Li. All rights reserved.
@@ -16,7 +16,7 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
     
     var lastRefreshTimeFormatted: String {
         let unknown = NSLocalizedString("Unknown", comment: "Library refresh time, unknown")
-        guard let lastRefreshTime = Defaults.libraryLastRefreshTime else { return unknown }
+        guard let lastRefreshTime = Defaults[.libraryLastRefreshTime] else { return unknown }
         
         if lastRefreshTime.timeIntervalSinceNow * -1 > 60 {
             let components = Calendar.current.dateComponents([.year, .month, .weekOfMonth, .day, .hour, .minute, .second],

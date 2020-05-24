@@ -40,12 +40,12 @@ class OPDSRefreshOperation: LibraryOperationBase {
 
             DispatchQueue.main.sync {
                 // apply language filter if library has never been refreshed
-                if Defaults.libraryLastRefreshTime == nil, let code = Locale.current.languageCode {
-                    Defaults.libraryFilterLanguageCodes = [code]
+                if Defaults[.libraryLastRefreshTime] == nil, let code = Locale.current.languageCode {
+                    Defaults[.libraryFilterLanguageCodes] = [code]
                 }
 
                 // update last library refresh time
-                Defaults.libraryLastRefreshTime = Date()
+                Defaults[.libraryLastRefreshTime] = Date()
             }
 
             os_log("OPDSRefreshOperation success -- addition: %d, update: %d, deletion: %d, total: %d",

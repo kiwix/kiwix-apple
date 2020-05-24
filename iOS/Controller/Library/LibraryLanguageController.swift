@@ -15,16 +15,19 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let sortBy: UISegmentedControl
-    private let sortingModes: [LibraryLanguageSortingMode] = [.alphabetically, .byCount]
+    private let sortingModes: [SortingMode] = [.alphabetically, .byCount]
 
     private var visible: [Language] = []
     private var hidden: [Language] = []
     
+    var dismissCallback: (() -> Void)?
+    
     // MARK: - Overrides
     
     init() {
+        let sortingMode = SortingMode(rawValue: Defaults[.libraryLanguageSortingMode]) ?? .alphabetically
         sortBy = UISegmentedControl(items: Array(sortingModes.map({ $0.localizedDescription }) ))
-        sortBy.selectedSegmentIndex = sortingModes.firstIndex(of: Defaults.libraryLanguageSortingMode) ?? 0
+        sortBy.selectedSegmentIndex = sortingModes.firstIndex(of: sortingMode) ?? 0
         
         super.init(nibName: nil, bundle: nil)
 
@@ -38,7 +41,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
             } catch { return [String: Int]() }
         }()
 
-        let visibleLanguageCodes = Defaults.libraryFilterLanguageCodes
+        let visibleLanguageCodes = Defaults[.libraryFilterLanguageCodes]
         for (languageCode, zimFileCount) in zimFileCount {
             guard let languageName = Locale.current.localizedString(forLanguageCode: languageCode) else { continue }
             let language = Language(code: languageCode, name: languageName, count: zimFileCount)
@@ -76,7 +79,8 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        Defaults.libraryFilterLanguageCodes = visible.map({$0.code})
+        Defaults[.libraryFilterLanguageCodes] = visible.map({$0.code})
+        dismissCallback?()
     }
     
     // MARK: - Actions
@@ -86,7 +90,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     }
     
     @objc func sortByValueChanged(segmentedControl: UISegmentedControl) {
-        Defaults.libraryLanguageSortingMode = sortingModes[segmentedControl.selectedSegmentIndex]
+        Defaults[.libraryLanguageSortingMode] = sortingModes[segmentedControl.selectedSegmentIndex].rawValue
         sort()
         tableView.reloadData()
     }
@@ -179,6 +183,19 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     }
     
     // MARK: - Type Definition
+    
+    enum SortingMode: String {
+        case alphabetically, byCount
+        
+        var localizedDescription: String {
+            switch self {
+            case .alphabetically:
+                return NSLocalizedString("A-Z", comment: "Library: Language Filter Sorting")
+            case .byCount:
+                return NSLocalizedString("By Count", comment: "Library: Language Filter Sorting")
+            }
+        }
+    }
 
     private struct Language: Equatable {
         let code: String

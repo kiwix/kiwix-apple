@@ -9,42 +9,20 @@
 import SwiftyUserDefaults
 
 extension DefaultsKeys {
-    var recentSearchTexts: DefaultsKey<[String]> { .init("recentSearchTexts", defaultValue: []) }
-    var backupDocumentDirectory: DefaultsKey<Bool> { .init("backupDocumentDirectory", defaultValue: false) }
-    var webViewZoomScale: DefaultsKey<Double?> { .init("webViewZoomScale") }
-    var externalLinkLoadingPolicy: DefaultsKey<Int> { .init("externalLinkLoadingPolicy", defaultValue: 0) }
-
-    private var searchResultExcludeSnippet: DefaultsKey<Bool> { .init("searchResultExcludeSnippet", defaultValue: false) }
-    var searchResultSnippetMode: DefaultsKey<SearchResultSnippetMode> {
-        .init("searchResultSnippetMode", defaultValue:
-            Defaults.searchResultExcludeSnippet ? SearchResultSnippetMode.disabled : SearchResultSnippetMode.matches
-        )
-    }
-}
-
-class Preference {
-}
-
-extension DefaultsKeys {
-//    static let hasSubscribedToCloudKitChanges = DefaultsKey<Bool>("hasSubscribedToCloudKitChanges")
-//    static let activeUseHistory = DefaultsKey<[Date]>("activeUseHistory")
-//    static let haveRateKiwix = DefaultsKey<Bool>("haveRateKiwix")
-}
-
-// MARK: - Rate
-
-extension Preference {
-//    class Rate {
-//        private static var activeHistoryKey = "Rate.activeHistory-\(Bundle.appShortVersion)"
-//        private static var hasRatedKey = "Rate.hasRated-\(Bundle.appShortVersion)"
-//        class var activeHistory: [Date] {
-//            get {return UserDefaults.standard.array(forKey: activeHistoryKey)?.flatMap({$0 as? Date}) ?? [Date]()}
-//            set {UserDefaults.standard.set(newValue, forKey: activeHistoryKey)}
-//        }
-//
-//        class var hasRated: Bool {
-//            get {return UserDefaults.standard.bool(forKey: hasRatedKey)}
-//            set {UserDefaults.standard.set(newValue, forKey: hasRatedKey)}
-//        }
-//    }
+    static let recentSearchTexts = DefaultsKey<[String]>("recentSearchTexts", defaultValue: [])
+    static let backupDocumentDirectory = DefaultsKey<Bool>("backupDocumentDirectory", defaultValue: false)
+    static let webViewZoomScale = DefaultsKey<Double?>("webViewZoomScale")
+    static let externalLinkLoadingPolicy = DefaultsKey<Int>("externalLinkLoadingPolicy", defaultValue: 0)
+    
+    static let searchResultExcludeSnippet = DefaultsKey<Bool>("searchResultExcludeSnippet", defaultValue: false)
+    static let searchResultSnippetMode = DefaultsKey<String>(
+        "searchResultSnippetMode", defaultValue: Defaults[.searchResultExcludeSnippet]
+            ? SearchResultSnippetMode.disabled .rawValue : SearchResultSnippetMode.matches.rawValue
+    )
+    
+    static let libraryLastRefreshTime = DefaultsKey<Date?>("libraryLastRefreshTime")
+    static let libraryHasShownLanguageFilterAlert = DefaultsKey<Bool>("libraryHasShownLanguageFilterAlert", defaultValue: false)
+    static let libraryLanguageSortingMode = DefaultsKey<String>("libraryLanguageSortingMode", defaultValue: LibraryLanguageController.SortingMode.alphabetically.rawValue)
+    static let libraryFilterLanguageCodes = DefaultsKey<[String]>("libraryFilterLanguageCodes", defaultValue: [])
+    static let libraryAutoRefresh = DefaultsKey<Bool>("libraryAutoRefresh", defaultValue: true)
 }

@@ -36,7 +36,7 @@ class SearchResultsListController: UITableViewController {
     }
     
     func update(recentSearchText newSearchText: String) {
-        var searchTexts = Defaults.recentSearchTexts
+        var searchTexts = Defaults[.recentSearchTexts]
         if let index = searchTexts.firstIndex(of: newSearchText) {
             searchTexts.remove(at: index)
         }
@@ -44,7 +44,7 @@ class SearchResultsListController: UITableViewController {
         if searchTexts.count > 20 {
             searchTexts = Array(searchTexts[..<20])
         }
-        Defaults.recentSearchTexts = searchTexts
+        Defaults[.recentSearchTexts] = searchTexts
     }
     
     override func viewWillAppear(_ animated: Bool) {
