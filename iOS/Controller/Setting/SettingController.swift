@@ -22,7 +22,13 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
     let tableView = UITableView(frame: .zero, style: .grouped)
     private let items: [[MenuItem]] = {
         var items: [[MenuItem]] = [
-            [.fontSize, .backup, .externalLink, .search, .sideBar],
+            {
+                if UIDevice.current.userInterfaceIdiom == .pad {
+                    return [.fontSize, .backup, .externalLink, .search, .sideBar]
+                } else {
+                    return [.fontSize, .backup, .externalLink, .search]
+                }
+            }(),
             [.rateApp],
             [.about]
         ]
