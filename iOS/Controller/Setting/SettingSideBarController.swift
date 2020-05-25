@@ -1,5 +1,5 @@
 //
-//  SettingSideBarDisplayModeController.swift
+//  SettingSideBarController.swift
 //  Kiwix
 //
 //  Created by Chris Li on 5/23/20.
@@ -8,9 +8,14 @@
 
 import UIKit
 
-class SettingSideBarDisplayModeController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class SettingSideBarController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private let tableView = UITableView(frame: .zero, style: .grouped)
-    private let modes: [SideBarDisplayMode] = [.automatic, .overlay, .sideBySide]
+    private let displayModes: [SideBarDisplayMode] = [.automatic, .overlay, .sideBySide]
+    
+    convenience init(title: String) {
+        self.init(nibName: nil, bundle: nil)
+        self.title = title
+    }
     
     override func loadView() {
         view = tableView
@@ -27,12 +32,12 @@ class SettingSideBarDisplayModeController: UIViewController, UITableViewDataSour
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return modes.count
+        return displayModes.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = modes[indexPath.row].description
+        cell.textLabel?.text = displayModes[indexPath.row].description
         return cell
     }
     
@@ -41,10 +46,6 @@ class SettingSideBarDisplayModeController: UIViewController, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Side Bar"
-    }
-    
-    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return "When button is pressed, show the side bar in:"
+        return "Display Mode"
     }
 }

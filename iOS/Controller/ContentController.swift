@@ -380,7 +380,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     
     @objc func openSideBarSetting(sender: UILongPressGestureRecognizer) {
         guard sender.state == .began else { return }
-        let controller = SettingSideBarDisplayModeController()
+        let controller = SettingSideBarController()
         controller.modalPresentationStyle = .popover
         controller.popoverPresentationController?.sourceView = sideBarButton
         controller.popoverPresentationController?.sourceRect = sideBarButton.imageView?.frame ?? sideBarButton.bounds
