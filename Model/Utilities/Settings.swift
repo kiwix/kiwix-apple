@@ -6,6 +6,7 @@
 //  Copyright © 2018 Chris Li. All rights reserved.
 //
 
+import Defaults
 import SwiftyUserDefaults
 
 extension DefaultsKeys {
@@ -25,4 +26,8 @@ extension DefaultsKeys {
     static let libraryLanguageSortingMode = DefaultsKey<String>("libraryLanguageSortingMode", defaultValue: LibraryLanguageController.SortingMode.alphabetically.rawValue)
     static let libraryFilterLanguageCodes = DefaultsKey<[String]>("libraryFilterLanguageCodes", defaultValue: [])
     static let libraryAutoRefresh = DefaultsKey<Bool>("libraryAutoRefresh", defaultValue: true)
+}
+
+extension Defaults.Keys {
+    static let sideBarDisplayMode = Key<SideBarDisplayMode>("sideBarDisplayMode", default: .automatic)
 }

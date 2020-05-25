@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "Defaults",
+        "repositoryURL": "https://github.com/sindresorhus/Defaults",
+        "state": {
+          "branch": null,
+          "revision": "11c4b968ef490dd3eb2e214906a8a124b7655a1f",
+          "version": "4.0.0"
+        }
+      },
+      {
         "package": "Nimble",
         "repositoryURL": "https://github.com/Quick/Nimble.git",
         "state": {

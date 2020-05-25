@@ -23,7 +23,7 @@ enum SearchResultSnippetMode: String, CustomStringConvertible {
     }
 }
 
-enum SideBarDisplayMode: String, CustomStringConvertible {
+enum SideBarDisplayMode: String, Codable, CustomStringConvertible {
     case automatic, sideBySide, overlay
     
     var description: String {

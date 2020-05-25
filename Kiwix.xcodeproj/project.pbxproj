@@ -17,6 +17,7 @@
 		970EC3FC23BE8E31008DCA27 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
 		97161A861F8FFD1E00A89DE3 /* LibraryCategoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */; };
 		971B8E58202246ED00C5C939 /* RecentSearchCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971B8E57202246ED00C5C939 /* RecentSearchCells.swift */; };
+		971D589A247C5CC000532461 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 971D5899247C5CC000532461 /* Defaults */; };
 		97246C821FC4D12A0056AE5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9717A2521FB2592D00837492 /* Main.storyboard */; };
 		972521012009616B00B60A80 /* EmptyContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972521002009616B00B60A80 /* EmptyContentView.swift */; };
 		97252103200D3C4B00B60A80 /* HUDController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252102200D3C4B00B60A80 /* HUDController.swift */; };
@@ -724,6 +725,7 @@
 				9779A7B8245679A000F6F6FF /* libmicrohttpd.a in Frameworks */,
 				9779A7BA245679A000F6F6FF /* libz.a in Frameworks */,
 				97C5763D202CD9C000E37502 /* NotificationCenter.framework in Frameworks */,
+				971D589A247C5CC000532461 /* Defaults in Frameworks */,
 				9779A7BB245679A000F6F6FF /* libxapian.a in Frameworks */,
 				9779A7BC245679A000F6F6FF /* liblzma.a in Frameworks */,
 				97CE15B223B26BBC00378D9F /* SwiftyUserDefaults in Frameworks */,
@@ -1606,6 +1608,7 @@
 				97CE15B623B26EB300378D9F /* Realm */,
 				97CE15B823B26EB300378D9F /* RealmSwift */,
 				970EC3A323BCED7F008DCA27 /* SwiftSoup */,
+				971D5899247C5CC000532461 /* Defaults */,
 			);
 			productName = WikiMed;
 			productReference = 97A36C4E1F8C21210079B452 /* Kiwix.app */;
@@ -1725,6 +1728,7 @@
 				97CE15B023B26BBC00378D9F /* XCRemoteSwiftPackageReference "SwiftyUserDefaults" */,
 				97CE15B523B26EB300378D9F /* XCRemoteSwiftPackageReference "realm-cocoa" */,
 				970EC3A223BCED7F008DCA27 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+				971D5898247C5CC000532461 /* XCRemoteSwiftPackageReference "Defaults" */,
 			);
 			productRefGroup = 97A2AB7F1C1B80FF00052E74;
 			projectDirPath = "";
@@ -2492,6 +2496,14 @@
 				minimumVersion = 2.3.0;
 			};
 		};
+		971D5898247C5CC000532461 /* XCRemoteSwiftPackageReference "Defaults" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/Defaults";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 		97CE15B023B26BBC00378D9F /* XCRemoteSwiftPackageReference "SwiftyUserDefaults" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sunshinejr/SwiftyUserDefaults";
@@ -2515,6 +2527,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 970EC3A223BCED7F008DCA27 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
 			productName = SwiftSoup;
+		};
+		971D5899247C5CC000532461 /* Defaults */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 971D5898247C5CC000532461 /* XCRemoteSwiftPackageReference "Defaults" */;
+			productName = Defaults;
 		};
 		97CE15B123B26BBC00378D9F /* SwiftyUserDefaults */ = {
 			isa = XCSwiftPackageProductDependency;
