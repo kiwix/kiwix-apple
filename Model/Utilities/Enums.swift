@@ -31,7 +31,7 @@ enum SideBarDisplayMode: String, CustomStringConvertible {
         case .automatic:
             return NSLocalizedString("Automatic", comment: "Side Bar Display Mode")
         case .sideBySide:
-            return NSLocalizedString("Side By Side", comment: "Side Bar Display Mode")
+            return NSLocalizedString("Side by Side", comment: "Side Bar Display Mode")
         case .overlay:
             return NSLocalizedString("Overlay", comment: "Side Bar Display Mode")
         }
