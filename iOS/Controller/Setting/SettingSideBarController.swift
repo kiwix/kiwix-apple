@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Defaults
 
 class SettingSideBarController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private let tableView = UITableView(frame: .zero, style: .grouped)
@@ -37,12 +38,20 @@ class SettingSideBarController: UIViewController, UITableViewDataSource, UITable
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = displayModes[indexPath.row].description
+        let mode = displayModes[indexPath.row]
+        cell.textLabel?.text = mode.description
+        cell.accessoryType = Defaults[.sideBarDisplayMode] == mode ? .checkmark : .none
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        guard let index = displayModes.firstIndex(of: Defaults[.sideBarDisplayMode]) else { return }
+        let currentIndexPath = IndexPath(row: index, section: 0)
+        guard currentIndexPath != indexPath else { return }
+        Defaults[.sideBarDisplayMode] = displayModes[indexPath.row]
+        tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+        tableView.cellForRow(at: currentIndexPath)?.accessoryType = .none
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
