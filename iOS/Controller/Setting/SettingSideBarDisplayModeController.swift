@@ -1,6 +1,6 @@
 //
 //  SettingSideBarDisplayModeController.swift
-//  iOS
+//  Kiwix
 //
 //  Created by Chris Li on 5/23/20.
 //  Copyright © 2020 Chris Li. All rights reserved.
@@ -9,15 +9,8 @@
 import UIKit
 
 class SettingSideBarDisplayModeController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    private let tableView = UITableView(frame: .zero, style: {
-        if #available(iOS 13.0, *) {
-            return .grouped
-        } else {
-            return .grouped
-        }
-    }())
+    private let tableView = UITableView(frame: .zero, style: .grouped)
     private let modes: [SideBarDisplayMode] = [.automatic, .overlay, .sideBySide]
-    private var contentSizeObserver : NSKeyValueObservation?
     
     override func loadView() {
         view = tableView
@@ -25,19 +18,6 @@ class SettingSideBarDisplayModeController: UIViewController, UITableViewDataSour
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.isScrollEnabled = false
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 1))
-        contentSizeObserver = tableView.observe(\.contentSize) { [unowned self] tableView, _ in
-            self.preferredContentSize = CGSize(width: 320, height: tableView.contentSize.height)
-        }
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        contentSizeObserver = nil
     }
 
     // MARK: - Table view data source
@@ -60,9 +40,11 @@ class SettingSideBarDisplayModeController: UIViewController, UITableViewDataSour
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let label = UILabel()
-        label.text = "When button is pressed, show the side bar in:"
-        return label
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Side Bar"
+    }
+    
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return "When button is pressed, show the side bar in:"
     }
 }
