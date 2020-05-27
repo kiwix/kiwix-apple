@@ -6,7 +6,7 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
-enum SearchResultSnippetMode: String, CustomStringConvertible {
+enum SearchResultSnippetMode: String, Codable, CustomStringConvertible {
     case disabled, firstParagraph, firstSentence, matches
     
     var description: String {

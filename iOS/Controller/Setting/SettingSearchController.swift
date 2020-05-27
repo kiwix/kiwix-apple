@@ -7,11 +7,12 @@
 //
 
 import UIKit
+import Defaults
 import SwiftyUserDefaults
 
 class SettingSearchController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let tableView = UITableView(frame: .zero, style: .grouped)
-    let snippetModeOptions: [SearchResultSnippetMode] = {
+    let snippetModes: [SearchResultSnippetMode] = {
         if #available(iOS 12.0, *) {
             return [.disabled, .firstParagraph, .firstSentence, .matches]
         } else {
@@ -19,13 +20,9 @@ class SettingSearchController: UIViewController, UITableViewDataSource, UITableV
         }
     }()
     
-    init(title: String) {
-        super.init(nibName: nil, bundle: nil)
+    convenience init(title: String) {
+        self.init(nibName: nil, bundle: nil)
         self.title = title
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     override func loadView() {
@@ -42,25 +39,25 @@ class SettingSearchController: UIViewController, UITableViewDataSource, UITableV
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return snippetModeOptions.count
+        return snippetModes.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let mode = snippetModeOptions[indexPath.row]
-        let currentMode = SearchResultSnippetMode(rawValue: Defaults[.searchResultSnippetMode])
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let mode = snippetModes[indexPath.row]
         cell.textLabel?.text = mode.description
-        cell.accessoryType = mode == currentMode ? .checkmark : .none
+        cell.accessoryType = mode == Defaults[.searchResultSnippetMode] ? .checkmark : .none
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let currentMode = SearchResultSnippetMode(rawValue: Defaults[.searchResultSnippetMode]),
-            let index = snippetModeOptions.firstIndex(of: currentMode) else { return }
-        tableView.cellForRow(at: IndexPath(row: index, section: 0))?.accessoryType = .none
-        Defaults[.searchResultSnippetMode] = snippetModeOptions[indexPath.row].rawValue
+        guard let index = snippetModes.firstIndex(of: Defaults[.searchResultSnippetMode]) else { return }
+        let currentIndexPath = IndexPath(row: index, section: 0)
+        guard currentIndexPath != indexPath else { return }
+        Defaults[.searchResultSnippetMode] = snippetModes[indexPath.row]
+        tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+        tableView.cellForRow(at: currentIndexPath)?.accessoryType = .none
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
