@@ -29,13 +29,22 @@ extension DefaultsKeys {
 }
 
 extension Defaults.Keys {
+    // UI
     static let sideBarDisplayMode = Key<SideBarDisplayMode>("sideBarDisplayMode", default: .automatic)
     
+    // search
     static let searchResultSnippetMode = Key<SearchResultSnippetMode>("searchResultSnippetMode", default: .matches)
+    
+    // library
     static let libraryFilterLanguageCodes = Key<[String]>("libraryFilterLanguageCodes", default: [])
 }
 
 extension Defaults {
+    static subscript(key: Key<SideBarDisplayMode>) -> SideBarDisplayMode {
+        get { SideBarDisplayMode(rawValue: key.suite.string(forKey: key.name) ?? "") ?? key.defaultValue }
+        set { key.suite.set(newValue.rawValue, forKey: key.name) }
+    }
+    
     static subscript(key: Key<SearchResultSnippetMode>) -> SearchResultSnippetMode {
         get { SearchResultSnippetMode(rawValue: key.suite.string(forKey: key.name) ?? "") ?? key.defaultValue }
         set { key.suite.set(newValue.rawValue, forKey: key.name) }
