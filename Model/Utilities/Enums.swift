@@ -6,6 +6,21 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
+enum ExternalLinkLoadingPolicy: Int, Codable, CustomStringConvertible {
+    case alwaysAsk = 0, alwaysLoad, neverLoad
+    
+    var description: String {
+        switch self {
+        case .alwaysAsk:
+            return NSLocalizedString("Always ask", comment: "External Link Loading Policy")
+        case .alwaysLoad:
+            return NSLocalizedString("Always load without asking", comment: "External Link Loading Policy")
+        case .neverLoad:
+            return NSLocalizedString("Never load and don't ask", comment: "External Link Loading Policy")
+        }
+    }
+}
+
 enum SearchResultSnippetMode: String, Codable, CustomStringConvertible {
     case disabled, firstParagraph, firstSentence, matches
     

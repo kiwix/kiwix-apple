@@ -119,7 +119,7 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
                 decisionHandler(.allow)
             }
         } else if url.scheme == "http" || url.scheme == "https" {
-            let policy = ExternalLinkLoadingPolicy(rawValue: Defaults[.externalLinkLoadingPolicy]) ?? .alwaysAsk
+            let policy = Defaults[.externalLinkLoadingPolicy]
             if policy == .alwaysLoad {
                 let controller = SFSafariViewController(url: url)
                 self.present(controller, animated: true, completion: nil)

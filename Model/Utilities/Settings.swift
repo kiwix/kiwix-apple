@@ -13,7 +13,6 @@ extension DefaultsKeys {
     static let recentSearchTexts = DefaultsKey<[String]>("recentSearchTexts", defaultValue: [])
     static let backupDocumentDirectory = DefaultsKey<Bool>("backupDocumentDirectory", defaultValue: false)
     static let webViewZoomScale = DefaultsKey<Double?>("webViewZoomScale")
-    static let externalLinkLoadingPolicy = DefaultsKey<Int>("externalLinkLoadingPolicy", defaultValue: 0)
     
     static let libraryLastRefreshTime = DefaultsKey<Date?>("libraryLastRefreshTime")
     static let libraryHasShownLanguageFilterAlert = DefaultsKey<Bool>("libraryHasShownLanguageFilterAlert", defaultValue: false)
@@ -23,6 +22,8 @@ extension DefaultsKeys {
 }
 
 extension Defaults.Keys {
+    static let externalLinkLoadingPolicy = Key<ExternalLinkLoadingPolicy>("externalLinkLoadingPolicy", default: .alwaysAsk)
+    
     // UI
     static let sideBarDisplayMode = Key<SideBarDisplayMode>("sideBarDisplayMode", default: .automatic)
     
@@ -37,6 +38,11 @@ extension Defaults {
     static subscript(key: Key<[String]>) -> [String] {
         get { (key.suite.array(forKey: key.name) as? [String]) ?? key.defaultValue }
         set { key.suite.set(newValue, forKey: key.name) }
+    }
+    
+    static subscript(key: Key<ExternalLinkLoadingPolicy>) -> ExternalLinkLoadingPolicy {
+        get { ExternalLinkLoadingPolicy(rawValue: key.suite.integer(forKey: key.name)) ?? key.defaultValue }
+        set { key.suite.set(newValue.rawValue, forKey: key.name) }
     }
     
     static subscript(key: Key<SideBarDisplayMode>) -> SideBarDisplayMode {

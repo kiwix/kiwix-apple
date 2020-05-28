@@ -27,8 +27,8 @@ class SettingSearchController: UIViewController, UITableViewDataSource, UITableV
     
     override func loadView() {
         view = tableView
-        tableView.dataSource = self
         tableView.delegate = self
+        tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
     }
     
