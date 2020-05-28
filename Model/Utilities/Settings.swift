@@ -15,12 +15,6 @@ extension DefaultsKeys {
     static let webViewZoomScale = DefaultsKey<Double?>("webViewZoomScale")
     static let externalLinkLoadingPolicy = DefaultsKey<Int>("externalLinkLoadingPolicy", defaultValue: 0)
     
-    static let searchResultExcludeSnippet = DefaultsKey<Bool>("searchResultExcludeSnippet", defaultValue: false)
-    static let searchResultSnippetMode = DefaultsKey<String>(
-        "searchResultSnippetMode", defaultValue: Defaults[.searchResultExcludeSnippet]
-            ? SearchResultSnippetMode.disabled .rawValue : SearchResultSnippetMode.matches.rawValue
-    )
-    
     static let libraryLastRefreshTime = DefaultsKey<Date?>("libraryLastRefreshTime")
     static let libraryHasShownLanguageFilterAlert = DefaultsKey<Bool>("libraryHasShownLanguageFilterAlert", defaultValue: false)
     static let libraryLanguageSortingMode = DefaultsKey<String>("libraryLanguageSortingMode", defaultValue: LibraryLanguageController.SortingMode.alphabetically.rawValue)
@@ -33,20 +27,33 @@ extension Defaults.Keys {
     static let sideBarDisplayMode = Key<SideBarDisplayMode>("sideBarDisplayMode", default: .automatic)
     
     // search
-    static let searchResultSnippetMode = Key<SearchResultSnippetMode>("searchResultSnippetMode", default: .matches)
+    static let searchResultSnippetMode = Key<SearchResultSnippetMode>("searchResultSnippetMode", default: .firstParagraph)
     
     // library
     static let libraryFilterLanguageCodes = Key<[String]>("libraryFilterLanguageCodes", default: [])
 }
 
 extension Defaults {
+    static subscript(key: Key<[String]>) -> [String] {
+        get { (key.suite.array(forKey: key.name) as? [String]) ?? key.defaultValue }
+        set { key.suite.set(newValue, forKey: key.name) }
+    }
+    
     static subscript(key: Key<SideBarDisplayMode>) -> SideBarDisplayMode {
         get { SideBarDisplayMode(rawValue: key.suite.string(forKey: key.name) ?? "") ?? key.defaultValue }
         set { key.suite.set(newValue.rawValue, forKey: key.name) }
     }
     
     static subscript(key: Key<SearchResultSnippetMode>) -> SearchResultSnippetMode {
-        get { SearchResultSnippetMode(rawValue: key.suite.string(forKey: key.name) ?? "") ?? key.defaultValue }
+        get {
+            if let mode = SearchResultSnippetMode(rawValue: key.suite.string(forKey: key.name) ?? "") {
+                return mode
+            } else if key.suite.bool(forKey: "searchResultExcludeSnippet") {
+                return .disabled
+            } else {
+                return .firstParagraph
+            }
+        }
         set { key.suite.set(newValue.rawValue, forKey: key.name) }
     }
 }
