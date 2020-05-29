@@ -150,8 +150,6 @@
 		97C5763D202CD9C000E37502 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C575F3202CB0E800E37502 /* NotificationCenter.framework */; };
 		97CA4A7220A21D24008CEA6D /* LibraryLanguageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CA4A7120A21D24008CEA6D /* LibraryLanguageController.swift */; };
 		97CE15AF23B2668500378D9F /* TableViewSectionFooterLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D0C4DC211BF72B00B00DAA /* TableViewSectionFooterLabel.swift */; };
-		97CE15B223B26BBC00378D9F /* SwiftyUserDefaults in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15B123B26BBC00378D9F /* SwiftyUserDefaults */; };
-		97CE15B423B26CC600378D9F /* SwiftyUserDefaults in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15B323B26CC600378D9F /* SwiftyUserDefaults */; };
 		97CE15B723B26EB300378D9F /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15B623B26EB300378D9F /* Realm */; };
 		97CE15B923B26EB300378D9F /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15B823B26EB300378D9F /* RealmSwift */; };
 		97CE15BB23B26ED200378D9F /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15BA23B26ED200378D9F /* Realm */; };
@@ -706,7 +704,6 @@
 				97CE15BD23B26ED200378D9F /* RealmSwift in Frameworks */,
 				97544920240C66B100E4E949 /* libicui18n.a in Frameworks */,
 				9779A7D9245679AA00F6F6FF /* libicutu.a in Frameworks */,
-				97CE15B423B26CC600378D9F /* SwiftyUserDefaults in Frameworks */,
 				97544925240C66B100E4E949 /* liblzma.a in Frameworks */,
 				9779A7D1245679AA00F6F6FF /* libicutest.a in Frameworks */,
 			);
@@ -725,7 +722,6 @@
 				971D589A247C5CC000532461 /* Defaults in Frameworks */,
 				9779A7BB245679A000F6F6FF /* libxapian.a in Frameworks */,
 				9779A7BC245679A000F6F6FF /* liblzma.a in Frameworks */,
-				97CE15B223B26BBC00378D9F /* SwiftyUserDefaults in Frameworks */,
 				9779A7BD245679A000F6F6FF /* libzim.a in Frameworks */,
 				97A36C351F8C21210079B452 /* WebKit.framework in Frameworks */,
 				9779A7C1245679A000F6F6FF /* libcurl.a in Frameworks */,
@@ -1575,7 +1571,6 @@
 			);
 			name = macOS;
 			packageProductDependencies = (
-				97CE15B323B26CC600378D9F /* SwiftyUserDefaults */,
 				97CE15BA23B26ED200378D9F /* Realm */,
 				97CE15BC23B26ED200378D9F /* RealmSwift */,
 			);
@@ -1600,7 +1595,6 @@
 			);
 			name = iOS;
 			packageProductDependencies = (
-				97CE15B123B26BBC00378D9F /* SwiftyUserDefaults */,
 				97CE15B623B26EB300378D9F /* Realm */,
 				97CE15B823B26EB300378D9F /* RealmSwift */,
 				970EC3A323BCED7F008DCA27 /* SwiftSoup */,
@@ -1721,7 +1715,6 @@
 			);
 			mainGroup = 97A2AB7F1C1B80FF00052E74;
 			packageReferences = (
-				97CE15B023B26BBC00378D9F /* XCRemoteSwiftPackageReference "SwiftyUserDefaults" */,
 				97CE15B523B26EB300378D9F /* XCRemoteSwiftPackageReference "realm-cocoa" */,
 				970EC3A223BCED7F008DCA27 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				971D5898247C5CC000532461 /* XCRemoteSwiftPackageReference "Defaults" */,
@@ -2498,14 +2491,6 @@
 				minimumVersion = 4.0.0;
 			};
 		};
-		97CE15B023B26BBC00378D9F /* XCRemoteSwiftPackageReference "SwiftyUserDefaults" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sunshinejr/SwiftyUserDefaults";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
-			};
-		};
 		97CE15B523B26EB300378D9F /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/realm-cocoa";
@@ -2526,16 +2511,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 971D5898247C5CC000532461 /* XCRemoteSwiftPackageReference "Defaults" */;
 			productName = Defaults;
-		};
-		97CE15B123B26BBC00378D9F /* SwiftyUserDefaults */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 97CE15B023B26BBC00378D9F /* XCRemoteSwiftPackageReference "SwiftyUserDefaults" */;
-			productName = SwiftyUserDefaults;
-		};
-		97CE15B323B26CC600378D9F /* SwiftyUserDefaults */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 97CE15B023B26BBC00378D9F /* XCRemoteSwiftPackageReference "SwiftyUserDefaults" */;
-			productName = SwiftyUserDefaults;
 		};
 		97CE15B623B26EB300378D9F /* Realm */ = {
 			isa = XCSwiftPackageProductDependency;
