@@ -111,7 +111,7 @@
 		9779A7DE245679AA00F6F6FF /* libxapian.la in Resources */ = {isa = PBXBuildFile; fileRef = 9779A72D2456796B00F6F6FF /* libxapian.la */; };
 		9779A7E424567A5A00F6F6FF /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
 		9779A7E524567A5A00F6F6FF /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
-		9779A7EA24567AA600F6F6FF /* LibrarySettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E824567AA600F6F6FF /* LibrarySettingController.swift */; };
+		9779A7EA24567AA600F6F6FF /* SettingLibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E824567AA600F6F6FF /* SettingLibraryController.swift */; };
 		9779A7ED24567ADD00F6F6FF /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7EC24567ADD00F6F6FF /* BackupManager.swift */; };
 		9779E7A22379230F0058DC98 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779E7A12379230F0058DC98 /* SearchController.swift */; };
 		978C58092468FC1100D56AC8 /* SettingSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F97A720D00EAE0005D642 /* SettingSearchController.swift */; };
@@ -620,7 +620,7 @@
 		9779A73A2456796B00F6F6FF /* WebKitHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebKitHandler.swift; sourceTree = "<group>"; };
 		9779A73B2456796B00F6F6FF /* TableOfContentItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableOfContentItem.swift; sourceTree = "<group>"; };
 		9779A7E224567A5A00F6F6FF /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
-		9779A7E824567AA600F6F6FF /* LibrarySettingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibrarySettingController.swift; sourceTree = "<group>"; };
+		9779A7E824567AA600F6F6FF /* SettingLibraryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingLibraryController.swift; sourceTree = "<group>"; };
 		9779A7E924567AA600F6F6FF /* LibrarySetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibrarySetting.swift; sourceTree = "<group>"; };
 		9779A7EC24567ADD00F6F6FF /* BackupManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		9779E7A12379230F0058DC98 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
@@ -841,7 +841,7 @@
 				97A2180B2024EC3800D1E67B /* SettingFontSizeController.swift */,
 				97BAA541202B4C5E00500644 /* SettingBackupController.swift */,
 				97DBCF9C203CA254004EE274 /* SettingExternalLinkController.swift */,
-				9779A7E824567AA600F6F6FF /* LibrarySettingController.swift */,
+				9779A7E824567AA600F6F6FF /* SettingLibraryController.swift */,
 				975F97A720D00EAE0005D642 /* SettingSearchController.swift */,
 				97BB5D0D2479D24700786D1C /* SettingSideBarController.swift */,
 			);
@@ -1856,7 +1856,7 @@
 				97DBCF9D203CA254004EE274 /* SettingExternalLinkController.swift in Sources */,
 				97028C4F20192F65001259CB /* OutlineController.swift in Sources */,
 				97161A861F8FFD1E00A89DE3 /* LibraryCategoryController.swift in Sources */,
-				9779A7EA24567AA600F6F6FF /* LibrarySettingController.swift in Sources */,
+				9779A7EA24567AA600F6F6FF /* SettingLibraryController.swift in Sources */,
 				97E34E0C20124F33005080B2 /* SearchFilterController.swift in Sources */,
 				97B1046F1F8FC63C00488444 /* LibraryMasterController.swift in Sources */,
 				972B6662200808D6003F5365 /* WelcomeController.swift in Sources */,
