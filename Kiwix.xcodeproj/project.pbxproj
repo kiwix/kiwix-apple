@@ -140,7 +140,6 @@
 		97B4ADF92392BA3C00264AF6 /* MapController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B4ADF82392BA3C00264AF6 /* MapController.swift */; };
 		97B4ADFB239C6C3800264AF6 /* TabsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B4ADFA239C6C3800264AF6 /* TabsController.swift */; };
 		97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */; };
-		97BAA542202B4C5E00500644 /* SettingBackupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BAA541202B4C5E00500644 /* SettingBackupController.swift */; };
 		97BB5D0E2479D24700786D1C /* SettingSideBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BB5D0D2479D24700786D1C /* SettingSideBarController.swift */; };
 		97C575F4202CB0E800E37502 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C575F3202CB0E800E37502 /* NotificationCenter.framework */; };
 		97C575F7202CB0E800E37502 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C575F6202CB0E800E37502 /* TodayViewController.swift */; };
@@ -652,7 +651,6 @@
 		97B4ADF82392BA3C00264AF6 /* MapController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapController.swift; sourceTree = "<group>"; };
 		97B4ADFA239C6C3800264AF6 /* TabsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsController.swift; sourceTree = "<group>"; };
 		97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
-		97BAA541202B4C5E00500644 /* SettingBackupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingBackupController.swift; sourceTree = "<group>"; };
 		97BB5D0D2479D24700786D1C /* SettingSideBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSideBarController.swift; sourceTree = "<group>"; };
 		97C575F2202CB0E800E37502 /* Bookmarks.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Bookmarks.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		97C575F3202CB0E800E37502 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -839,7 +837,6 @@
 				97252107200F9D6A00B60A80 /* SettingController.swift */,
 				9763EDC8201FCA6900F3A6D5 /* SettingWebController.swift */,
 				97A2180B2024EC3800D1E67B /* SettingFontSizeController.swift */,
-				97BAA541202B4C5E00500644 /* SettingBackupController.swift */,
 				97DBCF9C203CA254004EE274 /* SettingExternalLinkController.swift */,
 				9779A7E824567AA600F6F6FF /* SettingLibraryController.swift */,
 				975F97A720D00EAE0005D642 /* SettingSearchController.swift */,
@@ -1864,7 +1861,6 @@
 				9779A5B82456793600F6F6FF /* LibraryOperationBase.swift in Sources */,
 				9779A5B62456793600F6F6FF /* LibraryScanOperation.swift in Sources */,
 				9779A5C62456793600F6F6FF /* ZimFileMetaData.mm in Sources */,
-				97BAA542202B4C5E00500644 /* SettingBackupController.swift in Sources */,
 				9779A7E424567A5A00F6F6FF /* Log.swift in Sources */,
 				970EC3A123BCEC84008DCA27 /* Parser.swift in Sources */,
 				9779A73D2456796B00F6F6FF /* DirectoryMonitor.swift in Sources */,

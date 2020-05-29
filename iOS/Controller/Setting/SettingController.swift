@@ -24,9 +24,9 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
         var items: [[MenuItem]] = [
             {
                 if UIDevice.current.userInterfaceIdiom == .pad {
-                    return [.fontSize, .backup, .externalLink, .search, .sideBar]
+                    return [.fontSize, .externalLink, .search, .sideBar]
                 } else {
-                    return [.fontSize, .backup, .externalLink, .search]
+                    return [.fontSize, .externalLink, .search]
                 }
             }(),
             MFMailComposeViewController.canSendMail() ? [.rateApp, .feedback] : [.rateApp],
@@ -94,8 +94,6 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
         tableView.deselectRow(at: indexPath, animated: true)
         let item = items[indexPath.section][indexPath.row]
         switch item {
-        case.backup:
-            navigationController?.pushViewController(SettingBackupController(title: item.description), animated: true)
         case .externalLink:
             navigationController?.pushViewController(SettingExternalLinkController(title: item.description), animated: true)
         case .fontSize:
@@ -140,14 +138,12 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
     // MARK: - Type Definition
     
     enum MenuItem: CustomStringConvertible {
-        case backup, externalLink, fontSize, library, search, sideBar
+        case externalLink, fontSize, library, search, sideBar
         case feedback, rateApp
         case about
         
         var description: String {
             switch self {
-            case .backup:
-                return NSLocalizedString("Backup", comment: "Setting Item Title")
             case .externalLink:
                 return NSLocalizedString("External Link", comment: "Setting Item Title")
             case .fontSize:
