@@ -106,7 +106,7 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
             controller.title = item.description
             navigationController?.pushViewController(controller, animated: true)
         case .library:
-            navigationController?.pushViewController(LibrarySettingController(title: item.description), animated: true)
+            navigationController?.pushViewController(SettingLibraryController(title: item.description), animated: true)
         case .search:
             navigationController?.pushViewController(SettingSearchController(title: item.description), animated: true)
         case .sideBar:

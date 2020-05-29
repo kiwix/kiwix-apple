@@ -9,7 +9,7 @@
 import UIKit
 import Defaults
 
-class LibrarySettingController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class SettingLibraryController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private enum Section { case updateAction, updateConfig }
     private enum Row { case manualUpdate, lastUpdateTimestamp, scheduledUpdateEnabled }
     
