@@ -6,8 +6,8 @@
 //  Copyright © 2017 Chris Li. All rights reserved.
 //
 
+import Defaults
 import RealmSwift
-import SwiftyUserDefaults
 
 class LibraryScanOperation: LibraryOperationBase {
     let urls: [URL]

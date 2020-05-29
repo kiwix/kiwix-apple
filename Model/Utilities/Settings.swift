@@ -6,23 +6,66 @@
 //  Copyright © 2018 Chris Li. All rights reserved.
 //
 
-import SwiftyUserDefaults
+import Defaults
 
-extension DefaultsKeys {
-    static let recentSearchTexts = DefaultsKey<[String]>("recentSearchTexts", defaultValue: [])
-    static let backupDocumentDirectory = DefaultsKey<Bool>("backupDocumentDirectory", defaultValue: false)
-    static let webViewZoomScale = DefaultsKey<Double?>("webViewZoomScale")
-    static let externalLinkLoadingPolicy = DefaultsKey<Int>("externalLinkLoadingPolicy", defaultValue: 0)
+extension Defaults.Keys {
+    // reading
+    static let externalLinkLoadingPolicy = Key<ExternalLinkLoadingPolicy>(
+        "externalLinkLoadingPolicy", default: .alwaysAsk
+    )
+    static let webViewZoomScale = Key<Double?>("webViewZoomScale")
     
-    static let searchResultExcludeSnippet = DefaultsKey<Bool>("searchResultExcludeSnippet", defaultValue: false)
-    static let searchResultSnippetMode = DefaultsKey<String>(
-        "searchResultSnippetMode", defaultValue: Defaults[.searchResultExcludeSnippet]
-            ? SearchResultSnippetMode.disabled .rawValue : SearchResultSnippetMode.matches.rawValue
+    // UI
+    static let sideBarDisplayMode = Key<SideBarDisplayMode>("sideBarDisplayMode", default: .automatic)
+    
+    // search
+    static let recentSearchTexts = Key<[String]>("recentSearchTexts", default: [])
+    static let searchResultSnippetMode = Key<SearchResultSnippetMode>(
+        "searchResultSnippetMode", default: .firstParagraph
     )
     
-    static let libraryLastRefreshTime = DefaultsKey<Date?>("libraryLastRefreshTime")
-    static let libraryHasShownLanguageFilterAlert = DefaultsKey<Bool>("libraryHasShownLanguageFilterAlert", defaultValue: false)
-    static let libraryLanguageSortingMode = DefaultsKey<String>("libraryLanguageSortingMode", defaultValue: LibraryLanguageController.SortingMode.alphabetically.rawValue)
-    static let libraryFilterLanguageCodes = DefaultsKey<[String]>("libraryFilterLanguageCodes", defaultValue: [])
-    static let libraryAutoRefresh = DefaultsKey<Bool>("libraryAutoRefresh", defaultValue: true)
+    // library
+    static let libraryFilterLanguageCodes = Key<[String]>("libraryFilterLanguageCodes", default: [])
+    static let libraryShownLanguageFilterAlert = Key<Bool>("libraryHasShownLanguageFilterAlert", default: false)
+    static let libraryLanguageSortingMode = Key<LibraryLanguageFilterSortingMode>(
+        "libraryLanguageSortingMode", default: LibraryLanguageFilterSortingMode.alphabetically
+    )
+    static let libraryAutoRefresh = Key<Bool>("libraryAutoRefresh", default: true)
+    static let libraryLastRefreshTime = Key<Date?>("libraryLastRefreshTime")
+    static let backupDocumentDirectory = Key<Bool>("backupDocumentDirectory", default: false)
+}
+
+extension Defaults {
+    static subscript(key: Key<[String]>) -> [String] {
+        get { (key.suite.array(forKey: key.name) as? [String]) ?? key.defaultValue }
+        set { key.suite.set(newValue, forKey: key.name) }
+    }
+    
+    static subscript(key: Key<ExternalLinkLoadingPolicy>) -> ExternalLinkLoadingPolicy {
+        get { ExternalLinkLoadingPolicy(rawValue: key.suite.integer(forKey: key.name)) ?? key.defaultValue }
+        set { key.suite.set(newValue.rawValue, forKey: key.name) }
+    }
+    
+    static subscript(key: Key<SideBarDisplayMode>) -> SideBarDisplayMode {
+        get { SideBarDisplayMode(rawValue: key.suite.string(forKey: key.name) ?? "") ?? key.defaultValue }
+        set { key.suite.set(newValue.rawValue, forKey: key.name) }
+    }
+    
+    static subscript(key: Key<SearchResultSnippetMode>) -> SearchResultSnippetMode {
+        get {
+            if let mode = SearchResultSnippetMode(rawValue: key.suite.string(forKey: key.name) ?? "") {
+                return mode
+            } else if key.suite.bool(forKey: "searchResultExcludeSnippet") {
+                return .disabled
+            } else {
+                return .firstParagraph
+            }
+        }
+        set { key.suite.set(newValue.rawValue, forKey: key.name) }
+    }
+    
+    static subscript(key: Key<LibraryLanguageFilterSortingMode>) -> LibraryLanguageFilterSortingMode {
+        get { LibraryLanguageFilterSortingMode(rawValue: key.suite.string(forKey: key.name) ?? "") ?? key.defaultValue }
+        set { key.suite.set(newValue.rawValue, forKey: key.name) }
+    }
 }

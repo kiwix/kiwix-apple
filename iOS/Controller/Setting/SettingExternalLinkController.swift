@@ -1,35 +1,28 @@
 //
 //  SettingExternalLinkController.swift
-//  iOS
+//  Kiwix
 //
 //  Created by Chris Li on 2/20/18.
 //  Copyright © 2018 Chris Li. All rights reserved.
 //
 
 import UIKit
-import SwiftyUserDefaults
+import Defaults
 
 class SettingExternalLinkController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    let tableView = UITableView(frame: .zero, style: .grouped)
-    
-    let loadingPolicies: [ExternalLinkLoadingPolicy] = [.alwaysLoad, .alwaysAsk, .neverLoad]
-    private(set) var currentLoadingPolicy = ExternalLinkLoadingPolicy(rawValue: Defaults[.externalLinkLoadingPolicy]) ?? .alwaysAsk
+    private let tableView = UITableView(frame: .zero, style: .grouped)
+    private let loadingPolicies: [ExternalLinkLoadingPolicy] = [.alwaysLoad, .alwaysAsk, .neverLoad]
     
     convenience init(title: String?) {
         self.init()
         self.title = title
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        tableView.dataSource = self
-        tableView.delegate = self
     }
     
     override func loadView() {
         view = tableView
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        Defaults[.externalLinkLoadingPolicy] = currentLoadingPolicy.rawValue
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
     }
     
     // MARK: - UITableViewDataSource & Delegate
@@ -39,19 +32,25 @@ class SettingExternalLinkController: UIViewController, UITableViewDataSource, UI
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return loadingPolicies.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = loadingPolicies[indexPath.row].description
-        cell.accessoryType = loadingPolicies[indexPath.row] == currentLoadingPolicy ? .checkmark : .none
+        let currentPolicy = loadingPolicies[indexPath.row]
+        cell.textLabel?.text = currentPolicy.description
+        cell.accessoryType = Defaults[.externalLinkLoadingPolicy] == currentPolicy ? .checkmark : .none
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        currentLoadingPolicy = loadingPolicies[indexPath.row]
-        tableView.reloadSections(IndexSet(integer: 0), with: .fade)
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let index = loadingPolicies.firstIndex(of: Defaults[.externalLinkLoadingPolicy]) else { return }
+        let currentIndexPath = IndexPath(row: index, section: 0)
+        guard currentIndexPath != indexPath else { return }
+        Defaults[.externalLinkLoadingPolicy] = loadingPolicies[indexPath.row]
+        tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+        tableView.cellForRow(at: currentIndexPath)?.accessoryType = .none
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -60,20 +59,5 @@ class SettingExternalLinkController: UIViewController, UITableViewDataSource, UI
     
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return NSLocalizedString("Decide if app should ask for permission to load an external link when Internet connection is required.", comment: "Setting: External Link")
-    }
-}
-
-enum ExternalLinkLoadingPolicy: Int, CustomStringConvertible {
-    case alwaysAsk = 0, alwaysLoad, neverLoad
-    
-    var description: String {
-        switch self {
-        case .alwaysAsk:
-            return NSLocalizedString("Always ask", comment: "External Link Loading Policy")
-        case .alwaysLoad:
-            return NSLocalizedString("Always load without asking", comment: "External Link Loading Policy")
-        case .neverLoad:
-            return NSLocalizedString("Never load and don't ask", comment: "External Link Loading Policy")
-        }
     }
 }

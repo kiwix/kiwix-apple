@@ -22,7 +22,13 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
     let tableView = UITableView(frame: .zero, style: .grouped)
     private let items: [[MenuItem]] = {
         var items: [[MenuItem]] = [
-            [.fontSize, .backup, .externalLink, .search],
+            {
+                if UIDevice.current.userInterfaceIdiom == .pad {
+                    return [.fontSize, .backup, .externalLink, .search, .sideBar]
+                } else {
+                    return [.fontSize, .backup, .externalLink, .search]
+                }
+            }(),
             [.rateApp],
             [.about]
         ]
@@ -103,6 +109,8 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
             navigationController?.pushViewController(SettingLibraryController(title: item.description), animated: true)
         case .search:
             navigationController?.pushViewController(SettingSearchController(title: item.description), animated: true)
+        case .sideBar:
+            navigationController?.pushViewController(SettingSideBarController(title: item.description), animated: true)
         case .feedback:
             presentFeedbackEmailComposer()
         case .rateApp:
@@ -135,7 +143,7 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
     // MARK: - Type Definition
     
     enum MenuItem: CustomStringConvertible {
-        case backup, externalLink, fontSize, library, search
+        case backup, externalLink, fontSize, library, search, sideBar
         case feedback, rateApp
         case about
         
@@ -151,6 +159,8 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
                 return NSLocalizedString("Library", comment: "Setting Item Title")
             case .search:
                 return NSLocalizedString("Search", comment: "Setting Item Title")
+            case .sideBar:
+                return NSLocalizedString("Side Bar", comment: "Setting Item Title")
             case .feedback:
                 return NSLocalizedString("Email us your suggestions", comment: "Setting Item Title")
             case .rateApp:

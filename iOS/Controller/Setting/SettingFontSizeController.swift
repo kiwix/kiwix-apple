@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import SwiftyUserDefaults
+import Defaults
 
 class SettingFontSizeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var stackView: UIStackView!

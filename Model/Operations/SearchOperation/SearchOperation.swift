@@ -7,14 +7,14 @@
 //
 
 import RealmSwift
+import Defaults
 import SwiftSoup
-import SwiftyUserDefaults
 
 extension SearchOperation {
     var results: [SearchResult] { get { __results as? [SearchResult] ?? [] } }
     
     open override func main() {
-        let mode = SearchResultSnippetMode(rawValue: Defaults[.searchResultSnippetMode]) ?? SearchResultSnippetMode.disabled
+        let mode = Defaults[.searchResultSnippetMode]
         __results = getSearchResults(mode == .matches)
         if mode != .disabled { extractSnippet(mode) }
         sortResults()

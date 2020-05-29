@@ -7,8 +7,8 @@
 //
 
 import UIKit
+import Defaults
 import RealmSwift
-import SwiftyUserDefaults
 
 class LibrarySearchController: UITableViewController, UISearchResultsUpdating {
     private var database: Realm?

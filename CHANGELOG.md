@@ -1,3 +1,7 @@
+## 1.13
+
+- iPad users can customize how side bar is displayed -- automatic, side by side or overlay
+
 ## 1.12
 
 Speed improvements and more options for search snippets:

@@ -7,7 +7,7 @@
 //
 
 import Cocoa
-import SwiftyUserDefaults
+import Defaults
 
 class ZimFileManagerController: NSViewController, NSOutlineViewDelegate, NSOutlineViewDataSource {
     @IBOutlet weak var outlineView: NSOutlineView!

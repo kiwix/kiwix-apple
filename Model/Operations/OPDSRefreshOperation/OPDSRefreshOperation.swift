@@ -7,8 +7,8 @@
 //
 
 import os
+import Defaults
 import RealmSwift
-import SwiftyUserDefaults
 
 class OPDSRefreshOperation: LibraryOperationBase {
     let progress = Progress(totalUnitCount: 10)

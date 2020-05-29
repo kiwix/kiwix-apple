@@ -7,8 +7,8 @@
 //
 
 import Cocoa
+import Defaults
 import RealmSwift
-import SwiftyUserDefaults
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, TabManagement {

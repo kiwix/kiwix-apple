@@ -7,8 +7,8 @@
 //
 
 import UIKit
+import Defaults
 import RealmSwift
-import SwiftyUserDefaults
 
 class LibraryCategoryController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private let tableView = UITableView()
@@ -19,7 +19,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     private var results = [String: Results<ZimFile>]()
     private var notificationTokens = [String: NotificationToken]()
     private var refreshOperationFinishedObserver: NSKeyValueObservation?
-    private var selectedLanguageCodeObserver: DefaultsDisposable?
+    private var selectedLanguageCodeObserver: DefaultsObservation?
 
     // MARK: - Override
 
@@ -27,11 +27,8 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         self.category = category
         super.init(nibName: nil, bundle: nil)
         title = category.description
-        self.selectedLanguageCodeObserver = Defaults.observe(
-            key: .libraryFilterLanguageCodes, options: [.initial, .new]
-        ) { [unowned self] update in
-            guard let languageCodes = update.newValue else { return }
-            self.configure(selectedLanguages: languageCodes)
+        self.selectedLanguageCodeObserver = Defaults.observe(.libraryFilterLanguageCodes) { [unowned self] update in
+            self.configure(selectedLanguages: update.newValue)
         }
     }
 
@@ -159,7 +156,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     }
 
     private func showAdditionalLanguageAlertIfNeeded() {
-        guard !Defaults[.libraryHasShownLanguageFilterAlert] else { return }
+        guard !Defaults[.libraryShownLanguageFilterAlert] else { return }
         let title = NSLocalizedString("More Languages", comment: "Library: Additional Language Alert")
         let message = NSLocalizedString(
             """
@@ -169,7 +166,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
-        Defaults[.libraryHasShownLanguageFilterAlert] = true
+        Defaults[.libraryShownLanguageFilterAlert] = true
     }
 
     // MARK: - UIControl Actions

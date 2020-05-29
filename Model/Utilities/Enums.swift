@@ -6,7 +6,35 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
-enum SearchResultSnippetMode: String, CustomStringConvertible {
+enum ExternalLinkLoadingPolicy: Int, Codable, CustomStringConvertible {
+    case alwaysAsk = 0, alwaysLoad, neverLoad
+    
+    var description: String {
+        switch self {
+        case .alwaysAsk:
+            return NSLocalizedString("Always ask", comment: "External Link Loading Policy")
+        case .alwaysLoad:
+            return NSLocalizedString("Always load without asking", comment: "External Link Loading Policy")
+        case .neverLoad:
+            return NSLocalizedString("Never load and don't ask", comment: "External Link Loading Policy")
+        }
+    }
+}
+
+enum LibraryLanguageFilterSortingMode: String, Codable, CustomStringConvertible {
+    case alphabetically, byCount
+    
+    var description: String {
+        switch self {
+        case .alphabetically:
+            return NSLocalizedString("A-Z", comment: "Library: Language Filter Sorting")
+        case .byCount:
+            return NSLocalizedString("By Count", comment: "Library: Language Filter Sorting")
+        }
+    }
+}
+
+enum SearchResultSnippetMode: String, Codable, CustomStringConvertible {
     case disabled, firstParagraph, firstSentence, matches
     
     var description: String {
@@ -19,6 +47,21 @@ enum SearchResultSnippetMode: String, CustomStringConvertible {
             return NSLocalizedString("First Sentence", comment: "Search Result Snippet Mode")
         case .matches:
             return NSLocalizedString("Matches", comment: "Search Result Snippet Mode")
+        }
+    }
+}
+
+enum SideBarDisplayMode: String, Codable, CustomStringConvertible {
+    case automatic, sideBySide, overlay
+    
+    var description: String {
+        switch self {
+        case .automatic:
+            return NSLocalizedString("Automatic", comment: "Side Bar Display Mode")
+        case .sideBySide:
+            return NSLocalizedString("Side by Side", comment: "Side Bar Display Mode")
+        case .overlay:
+            return NSLocalizedString("Overlay", comment: "Side Bar Display Mode")
         }
     }
 }

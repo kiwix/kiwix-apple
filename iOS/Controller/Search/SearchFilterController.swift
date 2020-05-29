@@ -7,8 +7,8 @@
 //
 
 import UIKit
+import Defaults
 import RealmSwift
-import SwiftyUserDefaults
 
 class SearchFilterController: UIViewController, UITableViewDelegate, UITableViewDataSource,
                               UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,

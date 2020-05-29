@@ -9,8 +9,8 @@
 import UIKit
 import RealmSwift
 
-class ContentController: UIViewController, UISearchControllerDelegate, WebViewControllerDelegate,
-    OutlineControllerDelegate, BookmarkControllerDelegate {
+class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptivePresentationControllerDelegate,
+    WebViewControllerDelegate, OutlineControllerDelegate, BookmarkControllerDelegate {
     private let sideBarButton = Button(imageName: "sidebar.left")
     private let chevronLeftButton = Button(imageName: "chevron.left")
     private let chevronRightButton = Button(imageName: "chevron.right")
@@ -20,7 +20,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, WebViewCo
     private let libraryButton = Button(imageName: "folder")
     private let settingButton = Button(imageName: "gear")
     private let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
-     
+    
     let searchController: UISearchController
     private let searchResultsController: SearchResultsController
     private lazy var searchCancelButton = UIBarButtonItem(
@@ -91,6 +91,10 @@ class ContentController: UIViewController, UISearchControllerDelegate, WebViewCo
         setChildControllerIfNeeded(welcomeController)
     }
     
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+    
     func load(url: URL) {
         setChildControllerIfNeeded(webViewController)
         webViewController.load(url: url)
@@ -113,6 +117,11 @@ class ContentController: UIViewController, UISearchControllerDelegate, WebViewCo
             ])
             toolbarItems = [UIBarButtonItem(customView: group)]
         }
+    }
+    
+    func dismissPopoverController() {
+        guard let style = presentedViewController?.modalPresentationStyle, style == .popover else { return }
+        presentedViewController?.dismiss(animated: false)
     }
     
     private func updateToolBarButtonEnabled() {

@@ -7,10 +7,18 @@
 //
 
 import UIKit
+import Defaults
 
 class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGestureRecognizerDelegate {
     let sideBarViewController = SideBarController()
     let contentViewController = ContentController()
+    private var sideBarDisplayModeObserver: DefaultsObservation?
+    
+    var masterIsVisible: Bool {
+        get {
+            return displayMode == .allVisible || displayMode == .primaryOverlay
+        }
+    }
 
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -33,6 +41,10 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         view.gestureRecognizers?.first?.delegate = self
+        sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode) { change in
+            guard self.masterIsVisible else { return }
+            self.preferredDisplayMode = self.getPrimaryVisibleDisplayMode()
+        }
     }
 
     override func overrideTraitCollection(forChild childViewController: UIViewController) -> UITraitCollection? {
@@ -48,19 +60,24 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        let masterIsVisible = displayMode == .allVisible || displayMode == .primaryOverlay
         let shouldMasterBeVisible = masterIsVisible && traitCollection.horizontalSizeClass == .regular
         preferredDisplayMode = shouldMasterBeVisible ? getPrimaryVisibleDisplayMode(size: size) : .primaryHidden
     }
 
     func toggleSideBar() {
-        let masterIsVisible = displayMode == .allVisible || displayMode == .primaryOverlay
         preferredDisplayMode = masterIsVisible ? .primaryHidden : getPrimaryVisibleDisplayMode()
     }
 
     private func getPrimaryVisibleDisplayMode(size: CGSize? = nil) -> UISplitViewController.DisplayMode {
-        let size = size ?? view.frame.size
-        return size.width > size.height ? .allVisible : .primaryOverlay
+        switch Defaults[.sideBarDisplayMode] {
+        case .automatic:
+            let size = size ?? view.frame.size
+            return size.width > size.height ? .allVisible : .primaryOverlay
+        case .overlay:
+            return .primaryOverlay
+        case .sideBySide:
+            return .allVisible
+        }
     }
 
     // MARK: - UISplitViewControllerDelegate
@@ -71,6 +88,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
 
     func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
         contentViewController.configureToolbar(isGrouped: false)
+        contentViewController.dismissPopoverController()
         let navigationController = UINavigationController(rootViewController: contentViewController)
         navigationController.isToolbarHidden = contentViewController.searchController.isActive
         return navigationController
@@ -79,6 +97,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     func splitViewController(_ splitViewController: UISplitViewController,
                              separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
         contentViewController.configureToolbar(isGrouped: true)
+        contentViewController.dismissPopoverController()
         let navigationController = UINavigationController(rootViewController: contentViewController)
         navigationController.isToolbarHidden = contentViewController.searchController.isActive
         return navigationController

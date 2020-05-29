@@ -1,23 +1,17 @@
 //
-//  SettingSearchController.swift
+//  SettingSideBarController.swift
 //  Kiwix
 //
-//  Created by Chris Li on 6/12/18.
-//  Copyright © 2018 Chris Li. All rights reserved.
+//  Created by Chris Li on 5/23/20.
+//  Copyright © 2020 Chris Li. All rights reserved.
 //
 
 import UIKit
 import Defaults
 
-class SettingSearchController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    let tableView = UITableView(frame: .zero, style: .grouped)
-    let snippetModes: [SearchResultSnippetMode] = {
-        if #available(iOS 12.0, *) {
-            return [.disabled, .firstParagraph, .firstSentence, .matches]
-        } else {
-            return [.disabled, .firstParagraph, .matches]
-        }
-    }()
+class SettingSideBarController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    private let tableView = UITableView(frame: .zero, style: .grouped)
+    private let displayModes: [SideBarDisplayMode] = [.automatic, .overlay, .sideBySide]
     
     convenience init(title: String) {
         self.init(nibName: nil, bundle: nil)
@@ -29,42 +23,38 @@ class SettingSearchController: UIViewController, UITableViewDataSource, UITableV
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.isScrollEnabled = false
     }
-    
-    // MARK: - UITableViewDataSource & Delegate
-    
+
+    // MARK: - Table view data source
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return snippetModes.count
+        return displayModes.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        let mode = snippetModes[indexPath.row]
+        let mode = displayModes[indexPath.row]
         cell.textLabel?.text = mode.description
-        cell.accessoryType = mode == Defaults[.searchResultSnippetMode] ? .checkmark : .none
+        cell.accessoryType = Defaults[.sideBarDisplayMode] == mode ? .checkmark : .none
         return cell
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let index = snippetModes.firstIndex(of: Defaults[.searchResultSnippetMode]) else { return }
+        guard let index = displayModes.firstIndex(of: Defaults[.sideBarDisplayMode]) else { return }
         let currentIndexPath = IndexPath(row: index, section: 0)
         guard currentIndexPath != indexPath else { return }
-        Defaults[.searchResultSnippetMode] = snippetModes[indexPath.row]
+        Defaults[.sideBarDisplayMode] = displayModes[indexPath.row]
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         tableView.cellForRow(at: currentIndexPath)?.accessoryType = .none
     }
-
+    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return NSLocalizedString("Snippets", comment: "Setting: Search")
-    }
-
-    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return NSLocalizedString("If search is becoming too slow, disable the snippets to improve the situation.",
-                                 comment: "Setting: Search")
+        return "Display Mode"
     }
 }
