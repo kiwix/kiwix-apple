@@ -29,12 +29,9 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
                     return [.fontSize, .backup, .externalLink, .search]
                 }
             }(),
-            [.rateApp],
+            MFMailComposeViewController.canSendMail() ? [.rateApp, .feedback] : [.rateApp],
             [.about]
         ]
-        if MFMailComposeViewController.canSendMail() {
-            items[1].append(.feedback)
-        }
         return items
     }()
     
