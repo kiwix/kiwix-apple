@@ -28,6 +28,11 @@ class LibrarySettingController: UIViewController, UITableViewDataSource, UITable
 
     // MARK: - Override
     
+    convenience init(title: String) {
+        self.init(nibName: nil, bundle: nil)
+        self.title = title
+    }
+    
     override func loadView() {
         view = tableView
         tableView.delegate = self
