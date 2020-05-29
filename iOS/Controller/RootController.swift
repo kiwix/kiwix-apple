@@ -10,8 +10,8 @@ import UIKit
 import Defaults
 
 class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGestureRecognizerDelegate {
-    let sideBarViewController = SideBarController()
-    let contentViewController = ContentController()
+    let sideBarController = SideBarController()
+    let contentController = ContentController()
     private var sideBarDisplayModeObserver: DefaultsObservation?
     
     var masterIsVisible: Bool {
@@ -23,15 +23,15 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     init() {
         super.init(nibName: nil, bundle: nil)
 
-        let navigationController = UINavigationController(rootViewController: contentViewController)
+        let navigationController = UINavigationController(rootViewController: contentController)
         navigationController.isToolbarHidden = false
-        viewControllers = [sideBarViewController, navigationController]
+        viewControllers = [sideBarController, navigationController]
         delegate = self
         if #available(iOS 13.0, *) { preferredDisplayMode = .primaryHidden }
 
-        sideBarViewController.favoriteController.delegate = contentViewController
-        sideBarViewController.outlineController.delegate = contentViewController
-        contentViewController.configureToolbar(isGrouped: !isCollapsed)
+        sideBarController.favoriteController.delegate = contentController
+        sideBarController.outlineController.delegate = contentController
+        contentController.configureToolbar(isGrouped: !isCollapsed)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -83,23 +83,23 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     // MARK: - UISplitViewControllerDelegate
 
     func primaryViewController(forExpanding splitViewController: UISplitViewController) -> UIViewController? {
-        return sideBarViewController
+        return sideBarController
     }
 
     func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
-        contentViewController.configureToolbar(isGrouped: false)
-        contentViewController.dismissPopoverController()
-        let navigationController = UINavigationController(rootViewController: contentViewController)
-        navigationController.isToolbarHidden = contentViewController.searchController.isActive
+        contentController.configureToolbar(isGrouped: false)
+        contentController.dismissPopoverController()
+        let navigationController = UINavigationController(rootViewController: contentController)
+        navigationController.isToolbarHidden = contentController.searchController.isActive
         return navigationController
     }
 
     func splitViewController(_ splitViewController: UISplitViewController,
                              separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
-        contentViewController.configureToolbar(isGrouped: true)
-        contentViewController.dismissPopoverController()
-        let navigationController = UINavigationController(rootViewController: contentViewController)
-        navigationController.isToolbarHidden = contentViewController.searchController.isActive
+        contentController.configureToolbar(isGrouped: true)
+        contentController.dismissPopoverController()
+        let navigationController = UINavigationController(rootViewController: contentController)
+        navigationController.isToolbarHidden = contentController.searchController.isActive
         return navigationController
     }
 
@@ -117,7 +117,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
 
     func openKiwixURL(_ url: URL) {
         guard url.isKiwixURL else {return}
-        contentViewController.load(url: url)
+        contentController.load(url: url)
     }
 
     func openFileURL(_ url: URL, canOpenInPlace: Bool) {
@@ -135,9 +135,9 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         dismiss(animated: false)
         switch shortcut {
         case .search:
-            contentViewController.searchController.isActive = true
+            contentController.searchController.isActive = true
         case .bookmark:
-            contentViewController.openBookmark()
+            contentController.openBookmark()
         }
     }
 }

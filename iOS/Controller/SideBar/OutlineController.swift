@@ -65,7 +65,7 @@ class OutlineController: UITableViewController {
         
         // update items
         if let rootController = (splitViewController ?? presentingViewController) as? RootController {
-            let webViewController = rootController.contentViewController.webViewController
+            let webViewController = rootController.contentController.webViewController
             webViewController.extractTableOfContents(completion: { (url, items) in
                 self.items = items
             })
