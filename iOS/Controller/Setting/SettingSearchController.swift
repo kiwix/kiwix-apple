@@ -8,7 +8,6 @@
 
 import UIKit
 import Defaults
-import SwiftyUserDefaults
 
 class SettingSearchController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let tableView = UITableView(frame: .zero, style: .grouped)

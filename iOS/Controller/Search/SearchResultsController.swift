@@ -8,7 +8,6 @@
 
 import UIKit
 import RealmSwift
-import SwiftyUserDefaults
 
 class SearchResultsController: UIViewController, UISearchResultsUpdating {
     private var displayMode: DisplayMode = .filter { didSet(oldValue) { configureStackView(oldDisplayMode: oldValue) } }

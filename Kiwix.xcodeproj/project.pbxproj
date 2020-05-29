@@ -84,8 +84,6 @@
 		9779A7B22456796B00F6F6FF /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A73A2456796B00F6F6FF /* WebKitHandler.swift */; };
 		9779A7B32456796B00F6F6FF /* TableOfContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A73B2456796B00F6F6FF /* TableOfContentItem.swift */; };
 		9779A7B42456796B00F6F6FF /* TableOfContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A73B2456796B00F6F6FF /* TableOfContentItem.swift */; };
-		9779A7B52456796B00F6F6FF /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A73C2456796B00F6F6FF /* Preference.swift */; };
-		9779A7B62456796B00F6F6FF /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A73C2456796B00F6F6FF /* Preference.swift */; };
 		9779A7B7245679A000F6F6FF /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9779A6F62456796B00F6F6FF /* libicui18n.a */; };
 		9779A7B8245679A000F6F6FF /* libmicrohttpd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9779A6F72456796B00F6F6FF /* libmicrohttpd.a */; };
 		9779A7B9245679A000F6F6FF /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9779A6F82456796B00F6F6FF /* libicudata.a */; };
@@ -625,7 +623,6 @@
 		9779A7392456796B00F6F6FF /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		9779A73A2456796B00F6F6FF /* WebKitHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebKitHandler.swift; sourceTree = "<group>"; };
 		9779A73B2456796B00F6F6FF /* TableOfContentItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableOfContentItem.swift; sourceTree = "<group>"; };
-		9779A73C2456796B00F6F6FF /* Preference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		9779A7E224567A5A00F6F6FF /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		9779A7E824567AA600F6F6FF /* LibrarySettingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibrarySettingController.swift; sourceTree = "<group>"; };
 		9779A7E924567AA600F6F6FF /* LibrarySetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibrarySetting.swift; sourceTree = "<group>"; };
@@ -815,7 +812,6 @@
 				9779A7392456796B00F6F6FF /* Settings.swift */,
 				9779A73A2456796B00F6F6FF /* WebKitHandler.swift */,
 				9779A73B2456796B00F6F6FF /* TableOfContentItem.swift */,
-				9779A73C2456796B00F6F6FF /* Preference.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1834,7 +1830,6 @@
 				9779A73E2456796B00F6F6FF /* DirectoryMonitor.swift in Sources */,
 				9779A7B42456796B00F6F6FF /* TableOfContentItem.swift in Sources */,
 				9779A7B22456796B00F6F6FF /* WebKitHandler.swift in Sources */,
-				9779A7B62456796B00F6F6FF /* Preference.swift in Sources */,
 				97EFF05E235CAEFC00FBB7A4 /* ContentTabController.swift in Sources */,
 				9779A5BD2456793600F6F6FF /* OPDSStreamParser.swift in Sources */,
 				9779A7422456796B00F6F6FF /* NetworkActivityIndicatorController.swift in Sources */,
@@ -1853,7 +1848,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				97B3998E246759E400BC6F5B /* SearchResult.m in Sources */,
-				9779A7B52456796B00F6F6FF /* Preference.swift in Sources */,
 				9779A5BC2456793600F6F6FF /* OPDSStreamParser.swift in Sources */,
 				972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */,
 				9779A5C22456793600F6F6FF /* ZimMultiReader.mm in Sources */,

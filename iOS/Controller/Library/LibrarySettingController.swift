@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import SwiftyUserDefaults
+import Defaults
 
 class LibrarySettingController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private enum Section { case updateAction, updateConfig }

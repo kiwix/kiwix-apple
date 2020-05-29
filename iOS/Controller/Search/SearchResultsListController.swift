@@ -7,8 +7,8 @@
 //
 
 import UIKit
+import Defaults
 import RealmSwift
-import SwiftyUserDefaults
 
 class SearchResultsListController: UITableViewController {
     private(set) var searchText: String = ""

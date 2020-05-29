@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 import SafariServices
-import SwiftyUserDefaults
+import Defaults
 
 
 class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate, WebViewController {

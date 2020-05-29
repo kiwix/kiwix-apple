@@ -7,27 +7,22 @@
 //
 
 import Defaults
-import SwiftyUserDefaults
-
-extension DefaultsKeys {
-    static let recentSearchTexts = DefaultsKey<[String]>("recentSearchTexts", defaultValue: [])
-    static let backupDocumentDirectory = DefaultsKey<Bool>("backupDocumentDirectory", defaultValue: false)
-    static let webViewZoomScale = DefaultsKey<Double?>("webViewZoomScale")
-    
-    static let libraryLastRefreshTime = DefaultsKey<Date?>("libraryLastRefreshTime")
-    static let libraryAutoRefresh = DefaultsKey<Bool>("libraryAutoRefresh", defaultValue: true)
-}
 
 extension Defaults.Keys {
     // reading
-    static let externalLinkLoadingPolicy = Key<ExternalLinkLoadingPolicy>("externalLinkLoadingPolicy", default: .alwaysAsk)
+    static let externalLinkLoadingPolicy = Key<ExternalLinkLoadingPolicy>(
+        "externalLinkLoadingPolicy", default: .alwaysAsk
+    )
+    static let webViewZoomScale = Key<Double?>("webViewZoomScale")
     
     // UI
     static let sideBarDisplayMode = Key<SideBarDisplayMode>("sideBarDisplayMode", default: .automatic)
     
     // search
     static let recentSearchTexts = Key<[String]>("recentSearchTexts", default: [])
-    static let searchResultSnippetMode = Key<SearchResultSnippetMode>("searchResultSnippetMode", default: .firstParagraph)
+    static let searchResultSnippetMode = Key<SearchResultSnippetMode>(
+        "searchResultSnippetMode", default: .firstParagraph
+    )
     
     // library
     static let libraryFilterLanguageCodes = Key<[String]>("libraryFilterLanguageCodes", default: [])
@@ -35,6 +30,9 @@ extension Defaults.Keys {
     static let libraryLanguageSortingMode = Key<LibraryLanguageFilterSortingMode>(
         "libraryLanguageSortingMode", default: LibraryLanguageFilterSortingMode.alphabetically
     )
+    static let libraryAutoRefresh = Key<Bool>("libraryAutoRefresh", default: true)
+    static let libraryLastRefreshTime = Key<Date?>("libraryLastRefreshTime")
+    static let backupDocumentDirectory = Key<Bool>("backupDocumentDirectory", default: false)
 }
 
 extension Defaults {

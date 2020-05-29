@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import SwiftyUserDefaults
+import Defaults
 
 class LibraryService {
     func isFileInDocumentDirectory(zimFileID: String) -> Bool {

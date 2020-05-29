@@ -8,7 +8,7 @@
 
 import UIKit
 import MobileCoreServices
-import SwiftyUserDefaults
+import Defaults
 import RealmSwift
 
 class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITableViewDelegate, UITableViewDataSource {
