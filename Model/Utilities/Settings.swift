@@ -15,23 +15,26 @@ extension DefaultsKeys {
     static let webViewZoomScale = DefaultsKey<Double?>("webViewZoomScale")
     
     static let libraryLastRefreshTime = DefaultsKey<Date?>("libraryLastRefreshTime")
-    static let libraryHasShownLanguageFilterAlert = DefaultsKey<Bool>("libraryHasShownLanguageFilterAlert", defaultValue: false)
-    static let libraryLanguageSortingMode = DefaultsKey<String>("libraryLanguageSortingMode", defaultValue: LibraryLanguageController.SortingMode.alphabetically.rawValue)
-    static let libraryFilterLanguageCodes = DefaultsKey<[String]>("libraryFilterLanguageCodes", defaultValue: [])
     static let libraryAutoRefresh = DefaultsKey<Bool>("libraryAutoRefresh", defaultValue: true)
 }
 
 extension Defaults.Keys {
+    // reading
     static let externalLinkLoadingPolicy = Key<ExternalLinkLoadingPolicy>("externalLinkLoadingPolicy", default: .alwaysAsk)
     
     // UI
     static let sideBarDisplayMode = Key<SideBarDisplayMode>("sideBarDisplayMode", default: .automatic)
     
     // search
+    static let recentSearchTexts = Key<[String]>("recentSearchTexts", default: [])
     static let searchResultSnippetMode = Key<SearchResultSnippetMode>("searchResultSnippetMode", default: .firstParagraph)
     
     // library
     static let libraryFilterLanguageCodes = Key<[String]>("libraryFilterLanguageCodes", default: [])
+    static let libraryShownLanguageFilterAlert = Key<Bool>("libraryHasShownLanguageFilterAlert", default: false)
+    static let libraryLanguageSortingMode = Key<LibraryLanguageFilterSortingMode>(
+        "libraryLanguageSortingMode", default: LibraryLanguageFilterSortingMode.alphabetically
+    )
 }
 
 extension Defaults {
@@ -60,6 +63,11 @@ extension Defaults {
                 return .firstParagraph
             }
         }
+        set { key.suite.set(newValue.rawValue, forKey: key.name) }
+    }
+    
+    static subscript(key: Key<LibraryLanguageFilterSortingMode>) -> LibraryLanguageFilterSortingMode {
+        get { LibraryLanguageFilterSortingMode(rawValue: key.suite.string(forKey: key.name) ?? "") ?? key.defaultValue }
         set { key.suite.set(newValue.rawValue, forKey: key.name) }
     }
 }

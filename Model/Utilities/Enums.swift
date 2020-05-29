@@ -21,6 +21,19 @@ enum ExternalLinkLoadingPolicy: Int, Codable, CustomStringConvertible {
     }
 }
 
+enum LibraryLanguageFilterSortingMode: String, Codable, CustomStringConvertible {
+    case alphabetically, byCount
+    
+    var description: String {
+        switch self {
+        case .alphabetically:
+            return NSLocalizedString("A-Z", comment: "Library: Language Filter Sorting")
+        case .byCount:
+            return NSLocalizedString("By Count", comment: "Library: Language Filter Sorting")
+        }
+    }
+}
+
 enum SearchResultSnippetMode: String, Codable, CustomStringConvertible {
     case disabled, firstParagraph, firstSentence, matches
     
