@@ -10,8 +10,8 @@ import UIKit
 import Defaults
 
 class SettingLibraryController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    private enum Section { case updateAction, updateConfig }
-    private enum Row { case manualUpdate, lastUpdateTimestamp, scheduledUpdateEnabled }
+    private enum Section { case updateAction, updateConfig, backup }
+    private enum Row { case manualUpdate, lastUpdateTimestamp, scheduledUpdateEnabled, backupEnabled }
     
     private let tableView = UITableView(frame: .zero, style: {
         if #available(iOS 13, *) {
@@ -20,8 +20,8 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
             return .grouped
         }
     }())
-    private let sections: [Section] = [.updateAction, .updateConfig]
-    private let rows: [[Row]] = [[.manualUpdate], [.lastUpdateTimestamp, .scheduledUpdateEnabled]]
+    private let sections: [Section] = [.updateAction, .updateConfig, .backup]
+    private let rows: [[Row]] = [[.manualUpdate], [.lastUpdateTimestamp, .scheduledUpdateEnabled], [.backupEnabled]]
     private var operationFinished = true
     private var contentSizeObserver : NSKeyValueObservation?
     private var refreshOperationFinishedObserver: NSKeyValueObservation?
@@ -43,7 +43,7 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("Catalog", comment: "Library Info")
+        title = NSLocalizedString("Info", comment: "Library Info")
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done, target: self, action: #selector(dismissController)
         )
@@ -84,6 +84,11 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
     
     @objc func toggleAutoRefresh() {
         Defaults[.libraryAutoRefresh] = !Defaults[.libraryAutoRefresh]
+    }
+    
+    @objc func toggleBackupDocumentDirectory() {
+        Defaults[.backupDocumentDirectory] = !Defaults[.backupDocumentDirectory]
+        BackupManager.updateExcludedFromBackupForDocumentDirectoryContents(isExcluded: !Defaults[.backupDocumentDirectory])
     }
     
     // MARK: - UITableViewDataSource & Delegates
@@ -139,6 +144,16 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
                 return toggle
             }()
             return cell
+        case .backupEnabled:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DetailCell", for: indexPath) as! UIRightDetailTableViewCell
+            cell.textLabel?.text = "Include zim files in backup"
+            cell.accessoryView = {
+                let toggle = UISwitch()
+                toggle.isOn = Defaults[.backupDocumentDirectory]
+                toggle.addTarget(self, action: #selector(toggleBackupDocumentDirectory), for: .valueChanged)
+                return toggle
+            }()
+            return cell
         }
     }
     
@@ -160,6 +175,17 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
         }()
         configureOperationFinishedObserver(operation: operation)
     }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch sections[section] {
+        case .updateAction:
+            return NSLocalizedString("Catalog", comment: "Library Info Section")
+        case .backup:
+            return NSLocalizedString("Backup", comment: "Library Info Section")
+        default:
+            return nil
+        }
+    }
 
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         switch sections[section] {
@@ -168,6 +194,8 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
             When enabled, the library catalog will be updated both when library is opened \
             and utilizing iOS's Background App Refresh feature.
             """, comment: "Library Info")
+        case .backup:
+            return NSLocalizedString("Does not apply to files that were opened in place.", comment: "Library Info") + "\n"
         default:
             return nil
         }
