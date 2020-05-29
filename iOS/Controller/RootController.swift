@@ -106,6 +106,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     // MARK: - UIGestureRecognizerDelegate
 
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard !contentController.searchController.isActive else { return false }
         /*
          HACK: prevent UISplitViewController's build in gesture to work when the pan gesture's starting point
          is within 30 point of the left edge, so that the screen edge gesture in WKWebview can work.
