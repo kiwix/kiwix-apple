@@ -1,6 +1,6 @@
 //
-//  WebKitTabController.swift
-//  WikiMed
+//  WebKitWebController.swift
+//  Kiwix
 //
 //  Created by Chris Li on 9/11/17.
 //  Copyright © 2017 Chris Li. All rights reserved.
@@ -10,7 +10,6 @@ import UIKit
 import WebKit
 import SafariServices
 import Defaults
-
 
 class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate, WebViewController {
     private let webView: WKWebView = {
