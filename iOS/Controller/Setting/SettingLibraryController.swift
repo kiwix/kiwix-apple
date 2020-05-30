@@ -1,135 +1,203 @@
 //
-//  SettingLibraryController.swift
-//  iOS
+//  LibrarySettingController.swift
+//  Kiwix
 //
-//  Created by Chris Li on 7/16/18.
-//  Copyright © 2018 Chris Li. All rights reserved.
+//  Created by Chris Li on 4/7/20.
+//  Copyright © 2020 Chris Li. All rights reserved.
 //
 
 import UIKit
 import Defaults
 
 class SettingLibraryController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    private let tableView = UITableView(frame: .zero, style: .grouped)
-    private let items: [[MenuItem]] = [[.refreshNow], [.languageFilter]]
-    private var timer: Timer?
+    private enum Section { case updateAction, updateConfig, backup }
+    private enum Row { case manualUpdate, lastUpdateTimestamp, scheduledUpdateEnabled, backupEnabled }
     
-    var lastRefreshTimeFormatted: String {
-        let unknown = NSLocalizedString("Unknown", comment: "Library refresh time, unknown")
-        guard let lastRefreshTime = Defaults[.libraryLastRefreshTime] else { return unknown }
-        
-        if lastRefreshTime.timeIntervalSinceNow * -1 > 60 {
-            let components = Calendar.current.dateComponents([.year, .month, .weekOfMonth, .day, .hour, .minute, .second],
-                                                             from: lastRefreshTime, to: Date())
-            let formatter = DateComponentsFormatter()
-            formatter.unitsStyle = .full
-            if let year = components.year, year > 0 {
-                formatter.allowedUnits = .year
-            } else if let month = components.month, month > 0 {
-                formatter.allowedUnits = .month
-            } else if let week = components.weekOfMonth, week > 0 {
-                formatter.allowedUnits = .weekOfMonth
-            } else if let day = components.day, day > 0 {
-                formatter.allowedUnits = .day
-            } else if let hour = components.hour, hour > 0 {
-                formatter.allowedUnits = [.hour]
-            } else if let minute = components.minute, minute > 0 {
-                formatter.allowedUnits = .minute
-            } else {
-                formatter.allowedUnits = .second
-            }
-            
-            guard let formatted = formatter.string(from: components) else { return unknown }
-            return NSLocalizedString(String(format: "%@ ago", formatted), comment: "Library refresh time")
+    private let tableView = UITableView(frame: .zero, style: {
+        if #available(iOS 13, *) {
+            return .insetGrouped
         } else {
-            return NSLocalizedString("Just now", comment: "Library refresh time")
+            return .grouped
         }
-    }
-    
+    }())
+    private let sections: [Section] = [.updateAction, .updateConfig, .backup]
+    private let rows: [[Row]] = [[.manualUpdate], [.lastUpdateTimestamp, .scheduledUpdateEnabled], [.backupEnabled]]
+    private var operationFinished = true
+    private var contentSizeObserver : NSKeyValueObservation?
+    private var refreshOperationFinishedObserver: NSKeyValueObservation?
+
     // MARK: - Override
     
-    convenience init(title: String?) {
-        self.init()
+    convenience init(title: String) {
+        self.init(nibName: nil, bundle: nil)
         self.title = title
     }
     
     override func loadView() {
         view = tableView
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        tableView.register(UIActionTableViewCell.self, forCellReuseIdentifier: "ActionCell")
-        tableView.register(UIRightDetailTableViewCell.self, forCellReuseIdentifier: "RightDetailCell")
-        tableView.dataSource = self
         tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UIActionTableViewCell.self, forCellReuseIdentifier: "ActionCell")
+        tableView.register(UIRightDetailTableViewCell.self, forCellReuseIdentifier: "DetailCell")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = NSLocalizedString("Info", comment: "Library Info")
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .done, target: self, action: #selector(dismissController)
+        )
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            tableView.deselectRow(at: selectedIndexPath, animated: false)
+        contentSizeObserver = tableView.observe(\.contentSize) { [unowned self] tableView, _ in
+            self.preferredContentSize = tableView.contentSize
+        }
+        if let operation = LibraryOperationQueue.shared.currentOPDSRefreshOperation {
+            operationFinished = operation.isFinished
+            configureOperationFinishedObserver(operation: operation)
+        }
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        contentSizeObserver = nil
+    }
+    
+    private func configureOperationFinishedObserver(operation: OPDSRefreshOperation) {
+        refreshOperationFinishedObserver = operation.observe(
+            \.isFinished, options: .new
+        ) { [weak self] (operation, _) in
+            DispatchQueue.main.sync {
+                self?.operationFinished = operation.isFinished
+                self?.tableView.reloadSections([0, 1], with: .automatic)
+            }
         }
     }
     
-    // MARK: - UITableViewDataSource & Delegate
+    // MARK: - UIControl Actions
     
+    @objc func dismissController() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func toggleAutoRefresh() {
+        Defaults[.libraryAutoRefresh] = !Defaults[.libraryAutoRefresh]
+    }
+    
+    @objc func toggleBackupDocumentDirectory() {
+        Defaults[.backupDocumentDirectory] = !Defaults[.backupDocumentDirectory]
+        BackupManager.updateExcludedFromBackupForDocumentDirectoryContents(isExcluded: !Defaults[.backupDocumentDirectory])
+    }
+    
+    // MARK: - UITableViewDataSource & Delegates
+
     func numberOfSections(in tableView: UITableView) -> Int {
-        return items.count
+        return sections.count
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items[section].count
+        return rows[section].count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = items[indexPath.section][indexPath.row]
-        switch item {
-        case .refreshNow:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell") as! UIActionTableViewCell
-//            if Queue.shared.isRefreshingLibrary {
-//                cell.textLabel?.text = NSLocalizedString("Refreshing...", comment: "Setting Item Title")
-//                cell.isDisabled = true
-//                cell.isUserInteractionEnabled = false
-//            } else {
-//                cell.textLabel?.text = NSLocalizedString("Refresh Now", comment: "Setting Item Title")
-//                cell.isDisabled = false
-//                cell.isUserInteractionEnabled = true
-//            }
+        switch rows[indexPath.section][indexPath.row] {
+        case .manualUpdate:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ActionCell", for: indexPath) as! UIActionTableViewCell
+            cell.isDestructive = false
+            if operationFinished {
+                cell.textLabel?.text = "Update Now"
+                cell.isDisabled = false
+            } else {
+                cell.textLabel?.text = "Updating..."
+                cell.isDisabled = true
+            }
             return cell
-        case .languageFilter:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")!
-            cell.textLabel?.text = NSLocalizedString("Language Filter", comment: "Setting Item Title")
-            cell.accessoryType = .disclosureIndicator
+        case .lastUpdateTimestamp:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DetailCell", for: indexPath) as! UIRightDetailTableViewCell
+            cell.textLabel?.text = "Last updated"
+            if let refreshTime = Defaults[.libraryLastRefreshTime] {
+                if Date().timeIntervalSince(refreshTime) < 120 {
+                    cell.detailTextLabel?.text = NSLocalizedString("Just now", comment: "Library Info")
+                } else if #available(iOS 13.0, *) {
+                    let formatter = RelativeDateTimeFormatter()
+                    cell.detailTextLabel?.text = formatter.localizedString(for: refreshTime, relativeTo: Date())
+                } else {
+                    let formatter = DateFormatter()
+                    formatter.dateStyle = .short
+                    formatter.timeStyle = .short
+                    cell.detailTextLabel?.text = formatter.string(from: refreshTime)
+                }
+            } else {
+                cell.detailTextLabel?.text = NSLocalizedString("Never", comment: "Library Info")
+            }
+            
+            return cell
+        case .scheduledUpdateEnabled:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DetailCell", for: indexPath) as! UIRightDetailTableViewCell
+            cell.textLabel?.text = "Auto updates"
+            cell.accessoryView = {
+                let toggle = UISwitch()
+                toggle.isOn = Defaults[.libraryAutoRefresh]
+                toggle.addTarget(self, action: #selector(toggleAutoRefresh), for: .valueChanged)
+                return toggle
+            }()
+            return cell
+        case .backupEnabled:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DetailCell", for: indexPath) as! UIRightDetailTableViewCell
+            cell.textLabel?.text = "Include files in backup"
+            cell.accessoryView = {
+                let toggle = UISwitch()
+                toggle.isOn = Defaults[.backupDocumentDirectory]
+                toggle.addTarget(self, action: #selector(toggleBackupDocumentDirectory), for: .valueChanged)
+                return toggle
+            }()
             return cell
         }
-    }
-    
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if section == 0 {
-            let label = UITableViewSectionFooterLabel()
-            label.text = String(format: NSLocalizedString("Last refresh: %@", comment: ""), lastRefreshTimeFormatted)
-            return label
-        } else {
-            return nil
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return section == 0 ? 30 : UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let item = items[indexPath.section][indexPath.row]
-        switch item {
-        case .refreshNow:
-            break
-        case .languageFilter:
-            let controller = LibraryLanguageController()
-            navigationController?.pushViewController(controller, animated: true)
-        }
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        guard indexPath == IndexPath(row: 0, section: 0) else { return }
+        operationFinished = false
+        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        
+        let operation: OPDSRefreshOperation = {
+            if let operation = LibraryOperationQueue.shared.currentOPDSRefreshOperation {
+                return operation
+            } else {
+                let operation = OPDSRefreshOperation(updateExisting: true)
+                LibraryOperationQueue.shared.addOperation(operation)
+                return operation
+            }
+        }()
+        configureOperationFinishedObserver(operation: operation)
     }
     
-    // MARK: - Type Definition
-    
-    enum MenuItem {
-        case refreshNow, languageFilter
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch sections[section] {
+        case .updateAction:
+            return NSLocalizedString("Catalog", comment: "Library Info Section")
+        case .backup:
+            return NSLocalizedString("Backup", comment: "Library Info Section")
+        default:
+            return nil
+        }
+    }
+
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        switch sections[section] {
+        case .updateConfig:
+            return NSLocalizedString("""
+            When enabled, the library catalog will be updated both when library is opened \
+            and utilizing iOS's Background App Refresh feature.
+            """, comment: "Library Info")
+        case .backup:
+            return NSLocalizedString("Does not apply to files that were opened in place.", comment: "Library Info") + "\n"
+        default:
+            return nil
+        }
     }
 }

@@ -239,7 +239,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         if let rootController = splitViewController as? RootController,
             !rootController.isCollapsed,
             rootController.displayMode != .primaryHidden {
-            let selectedNavController = rootController.sideBarViewController.selectedViewController
+            let selectedNavController = rootController.sideBarController.selectedViewController
             let selectedController = (selectedNavController as? UINavigationController)?.topViewController
             if let outlineController = selectedController as? OutlineController {
                 outlineController.updateContent()

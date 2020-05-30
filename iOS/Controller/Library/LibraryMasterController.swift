@@ -131,7 +131,7 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
     }
     
     @objc func openInfoController(sender: UIButton) {
-        let controller = UINavigationController(rootViewController: LibrarySettingController())
+        let controller = UINavigationController(rootViewController: SettingLibraryController())
         controller.modalPresentationStyle = .popover
         controller.popoverPresentationController?.sourceView = sender
         present(controller, animated: true)
