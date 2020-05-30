@@ -10,20 +10,8 @@ import UIKit
 
 class OutlineController: UITableViewController {
     weak var delegate: OutlineControllerDelegate? = nil
-    var url: URL?
-    var items = [TableOfContentItem]() {
-        didSet {
-            if items.count > 0 {
-                tableView.backgroundView = nil
-                tableView.separatorStyle = .singleLine
-            } else {
-                tableView.separatorStyle = .none
-                let emptyContentView = EmptyContentView(image: #imageLiteral(resourceName: "Compass"), title: NSLocalizedString("Table of content not available", comment: "Help message when table of content is not available"))
-                tableView.backgroundView = emptyContentView
-            }
-            tableView.reloadData()
-        }
-    }
+    private var url: URL?
+    private var items = [TableOfContentItem]()
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -45,6 +33,8 @@ class OutlineController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.backgroundView = nil
+        tableView.separatorStyle = .none
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         
         if let _ = presentingViewController {
@@ -56,26 +46,42 @@ class OutlineController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        updateContent()
-    }
-    
-    func updateContent() {
-        tableView.separatorStyle = .none
-        tableView.backgroundView = nil
-        
-        // update items
-        if let rootController = (splitViewController ?? presentingViewController) as? RootController {
-            let webViewController = rootController.contentController.webViewController
-            webViewController.extractTableOfContents(completion: { (url, items) in
-                self.items = items
-            })
-        } else {
-            self.items = []
-        }
+        update()
     }
     
     @objc func dismissController() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    // MARK: - View Configurations
+    
+    func update() {
+        guard let rootController = (splitViewController ?? presentingViewController) as? RootController else {
+            updateContent(url: nil, items: [])
+            return
+        }
+        
+        let webViewController = rootController.contentController.webViewController
+        guard webViewController.currentURL != url else { return }
+        
+        webViewController.extractTableOfContents(completion: { (url, items) in
+            self.updateContent(url: url, items: items)
+        })
+    }
+    
+    private func updateContent(url: URL?, items: [TableOfContentItem]) {
+        self.url = url
+        self.items = items
+        
+        if items.count > 0 {
+            tableView.backgroundView = nil
+            tableView.separatorStyle = .singleLine
+        } else {
+            tableView.separatorStyle = .none
+            let emptyContentView = EmptyContentView(image: #imageLiteral(resourceName: "Compass"), title: NSLocalizedString("Table of content not available", comment: "Help message when table of content is not available"))
+            tableView.backgroundView = emptyContentView
+        }
+        tableView.reloadData()
     }
     
     // MARK: - UITableViewDataSource & Delegate

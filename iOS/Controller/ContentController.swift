@@ -242,7 +242,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
             let selectedNavController = rootController.sideBarController.selectedViewController
             let selectedController = (selectedNavController as? UINavigationController)?.topViewController
             if let outlineController = selectedController as? OutlineController {
-                outlineController.updateContent()
+                outlineController.update()
             }
         }
     }
