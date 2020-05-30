@@ -57,4 +57,8 @@ class SettingSideBarController: UIViewController, UITableViewDataSource, UITable
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "Display Mode"
     }
+    
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return NSLocalizedString("Controls what happens when sidebar button is tapped.", comment: "Sidebar setting")
+    }
 }

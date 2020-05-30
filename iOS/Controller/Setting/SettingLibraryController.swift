@@ -146,7 +146,7 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
             return cell
         case .backupEnabled:
             let cell = tableView.dequeueReusableCell(withIdentifier: "DetailCell", for: indexPath) as! UIRightDetailTableViewCell
-            cell.textLabel?.text = "Include zim files in backup"
+            cell.textLabel?.text = "Include files in backup"
             cell.accessoryView = {
                 let toggle = UISwitch()
                 toggle.isOn = Defaults[.backupDocumentDirectory]
