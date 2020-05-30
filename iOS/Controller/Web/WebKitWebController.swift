@@ -30,15 +30,15 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
     }
     
     var canGoBack: Bool {
-        get {return webView.canGoBack}
+        get { webView.canGoBack }
     }
     
     var canGoForward: Bool {
-        get {return webView.canGoForward}
+        get { webView.canGoForward }
     }
     
     var currentURL: URL? {
-        get {return webView.url}
+        get { webView.url }
     }
     
     var currentTitle: String? {
