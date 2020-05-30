@@ -6,7 +6,6 @@ function TableOfContents () {
         for (i = 0; i < this.headings.length; i++) { 
             var element = this.headings[i];
             var obj = {};
-            obj.id = element.id;
             obj.index = i;
             obj.textContent = element.textContent;
             obj.tagName = element.tagName;

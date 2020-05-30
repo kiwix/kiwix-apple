@@ -11,7 +11,7 @@ import UIKit
 class OutlineController: UITableViewController {
     weak var delegate: OutlineControllerDelegate? = nil
     private var url: URL?
-    private var items = [TableOfContentItem]()
+    private var items = [OutlineItem]()
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -69,7 +69,7 @@ class OutlineController: UITableViewController {
         })
     }
     
-    private func updateContent(url: URL?, items: [TableOfContentItem]) {
+    private func updateContent(url: URL?, items: [OutlineItem]) {
         self.url = url
         self.items = items
         
@@ -99,7 +99,7 @@ class OutlineController: UITableViewController {
         let heading = items[indexPath.row]
         cell.backgroundColor = .clear
         cell.indentationLevel = (heading.level - 1) * 2
-        cell.textLabel?.text = heading.textContent
+        cell.textLabel?.text = heading.text
         cell.textLabel?.numberOfLines = 0
         if cell.indentationLevel == 0 {
             cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
@@ -117,5 +117,27 @@ class OutlineController: UITableViewController {
 }
 
 protocol OutlineControllerDelegate: class {
-    func didTapOutlineItem(index: Int, item: TableOfContentItem)
+    func didTapOutlineItem(index: Int, item: OutlineItem)
+}
+
+struct OutlineItem {
+    let index: Int
+    let tagName: String
+    let text: String
+    let level: Int!
+    
+    init?(rawValue: [String: Any]) {
+        if let index = rawValue["index"] as? Int,
+            let text = (rawValue["textContent"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
+            let tagName = rawValue["tagName"] as? String,
+            let level = Int(tagName.replacingOccurrences(of: "H", with: ""))
+        {
+            self.index = index
+            self.tagName = tagName
+            self.text = text
+            self.level = level
+        } else {
+            return nil
+        }
+    }
 }

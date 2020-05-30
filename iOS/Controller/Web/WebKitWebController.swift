@@ -86,10 +86,10 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
         })
     }
     
-    func extractTableOfContents(completion: @escaping ((URL?, [TableOfContentItem]) -> Void)) {
+    func extractTableOfContents(completion: @escaping ((URL?, [OutlineItem]) -> Void)) {
         let javascript = "tableOfContents.getHeadingObjects()"
         webView.evaluateJavaScript(javascript, completionHandler: { (results, error) in
-            let items = (results as? [[String: Any]])?.compactMap({ TableOfContentItem(rawValue: $0) }) ?? [TableOfContentItem]()
+            let items = (results as? [[String: Any]])?.compactMap({ OutlineItem(rawValue: $0) }) ?? [OutlineItem]()
             completion(self.currentURL, items)
         })
     }
