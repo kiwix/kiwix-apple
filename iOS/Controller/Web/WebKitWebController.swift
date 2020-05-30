@@ -11,7 +11,7 @@ import WebKit
 import SafariServices
 import Defaults
 
-class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate, WebViewController {
+class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
     private let webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
@@ -152,4 +152,32 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     }
 }
 
+protocol WebViewControllerDelegate: class {
+    func webViewDidTapOnGeoLocation(controller: WebViewController, url: URL)
+    func webViewDidFinishLoading(controller: WebViewController)
+}
 
+class ExternalLinkAlertController: UIAlertController {
+    convenience init(policy: ExternalLinkLoadingPolicy, action: @escaping (()->Void)) {
+        let message: String = {
+            switch policy {
+            case .alwaysAsk:
+                return NSLocalizedString("An external link is tapped, do you wish to load the link via Internet?", comment: "External Link Alert")
+            case .neverLoad:
+                return NSLocalizedString("An external link is tapped. However, your current setting does not allow it to be loaded.", comment: "External Link Alert")
+            default:
+                return ""
+            }
+        }()
+        self.init(title: NSLocalizedString("External Link", comment: "External Link Alert"), message: message, preferredStyle: .alert)
+        if policy == .alwaysAsk {
+            addAction(UIAlertAction(title: NSLocalizedString("Load the link", comment: "External Link Alert"), style: .default, handler: { _ in
+                action()
+            }))
+            addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "External Link Alert"), style: .cancel, handler: nil))
+        } else if policy == .neverLoad {
+            addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "External Link Alert"), style: .cancel, handler: nil))
+        }
+        
+    }
+}

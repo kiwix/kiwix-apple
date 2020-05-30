@@ -99,3 +99,4 @@ function getImageURLs () {
 
 var tableOfContents = new TableOfContents();
 var snippet = new Snippet();
+document.querySelectorAll("details").forEach((detail) => {detail.setAttribute("open", true)});

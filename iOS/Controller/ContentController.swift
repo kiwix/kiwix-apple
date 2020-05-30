@@ -25,7 +25,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     private let searchResultsController: SearchResultsController
     private lazy var searchCancelButton = UIBarButtonItem(
         barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
-    let  webViewController = WebKitWebController()
+    let webViewController = WebViewController()
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil)
         .instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     private var cachedLibraryController: LibraryController?
