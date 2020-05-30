@@ -121,19 +121,14 @@ protocol OutlineControllerDelegate: class {
 }
 
 struct OutlineItem {
-    let index: Int
-    let tagName: String
     let text: String
-    let level: Int!
+    let level: Int
     
     init?(rawValue: [String: Any]) {
-        if let index = rawValue["index"] as? Int,
-            let text = (rawValue["textContent"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
+        if let text = (rawValue["textContent"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
             let tagName = rawValue["tagName"] as? String,
             let level = Int(tagName.replacingOccurrences(of: "H", with: ""))
         {
-            self.index = index
-            self.tagName = tagName
             self.text = text
             self.level = level
         } else {

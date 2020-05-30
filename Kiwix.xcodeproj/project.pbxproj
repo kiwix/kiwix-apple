@@ -80,8 +80,6 @@
 		9779A7B02456796B00F6F6FF /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7392456796B00F6F6FF /* Settings.swift */; };
 		9779A7B12456796B00F6F6FF /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A73A2456796B00F6F6FF /* WebKitHandler.swift */; };
 		9779A7B22456796B00F6F6FF /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A73A2456796B00F6F6FF /* WebKitHandler.swift */; };
-		9779A7B32456796B00F6F6FF /* TableOfContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A73B2456796B00F6F6FF /* TableOfContentItem.swift */; };
-		9779A7B42456796B00F6F6FF /* TableOfContentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A73B2456796B00F6F6FF /* TableOfContentItem.swift */; };
 		9779A7B7245679A000F6F6FF /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9779A6F62456796B00F6F6FF /* libicui18n.a */; };
 		9779A7B8245679A000F6F6FF /* libmicrohttpd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9779A6F72456796B00F6F6FF /* libmicrohttpd.a */; };
 		9779A7B9245679A000F6F6FF /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9779A6F82456796B00F6F6FF /* libicudata.a */; };
@@ -615,7 +613,6 @@
 		9779A7372456796B00F6F6FF /* SearchQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchQueue.swift; sourceTree = "<group>"; };
 		9779A7392456796B00F6F6FF /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		9779A73A2456796B00F6F6FF /* WebKitHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebKitHandler.swift; sourceTree = "<group>"; };
-		9779A73B2456796B00F6F6FF /* TableOfContentItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableOfContentItem.swift; sourceTree = "<group>"; };
 		9779A7E224567A5A00F6F6FF /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		9779A7E824567AA600F6F6FF /* SettingLibraryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingLibraryController.swift; sourceTree = "<group>"; };
 		9779A7E924567AA600F6F6FF /* LibrarySetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibrarySetting.swift; sourceTree = "<group>"; };
@@ -800,7 +797,6 @@
 				9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */,
 				9779A7392456796B00F6F6FF /* Settings.swift */,
 				9779A73A2456796B00F6F6FF /* WebKitHandler.swift */,
-				9779A73B2456796B00F6F6FF /* TableOfContentItem.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1812,7 +1808,6 @@
 				9779A5C72456793600F6F6FF /* ZimFileMetaData.mm in Sources */,
 				9779A5B72456793600F6F6FF /* LibraryScanOperation.swift in Sources */,
 				9779A73E2456796B00F6F6FF /* DirectoryMonitor.swift in Sources */,
-				9779A7B42456796B00F6F6FF /* TableOfContentItem.swift in Sources */,
 				9779A7B22456796B00F6F6FF /* WebKitHandler.swift in Sources */,
 				97EFF05E235CAEFC00FBB7A4 /* ContentTabController.swift in Sources */,
 				9779A5BD2456793600F6F6FF /* OPDSStreamParser.swift in Sources */,
@@ -1870,7 +1865,6 @@
 				9779A5BE2456793600F6F6FF /* OPDSStreamParser.mm in Sources */,
 				9779A7B12456796B00F6F6FF /* WebKitHandler.swift in Sources */,
 				97018985212357F200F8A6DD /* LibrarySearchController.swift in Sources */,
-				9779A7B32456796B00F6F6FF /* TableOfContentItem.swift in Sources */,
 				97252105200E908000B60A80 /* TableViewCell.swift in Sources */,
 				97D757E5238F3161008FB7E2 /* SideBarController.swift in Sources */,
 				97F4D10620AB80740038FC87 /* LibraryZimFileDetailController.swift in Sources */,
