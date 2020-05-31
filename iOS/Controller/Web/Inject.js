@@ -1,4 +1,4 @@
-function TableOfContents () {
+function Outlines () {
     this.headings = document.querySelectorAll("h1, h2, h3, h4, h5, h6");
 
     this.getHeadingObjects = function () {
@@ -6,16 +6,22 @@ function TableOfContents () {
         for (i = 0; i < this.headings.length; i++) { 
             var element = this.headings[i];
             var obj = {};
-            obj.id = element.id;
             obj.index = i;
-            obj.textContent = element.textContent;
             obj.tagName = element.tagName;
+            obj.textContent = element.textContent;
             headings.push(obj);
         }
         return headings;
     }
 
     this.scrollToView = function (index) {
+        var node = this.headings[index].parentNode;
+        while (node) {
+            if (node.tagName == "DETAILS") {
+                node.setAttribute("open", true);
+            }
+            node = node.parentNode;
+        }
         this.headings[index].scrollIntoView();
     }
 
@@ -97,5 +103,6 @@ function getImageURLs () {
     return [...document.getElementsByTagName("img")].map(e => e.src)
 }
 
-var tableOfContents = new TableOfContents();
+var outlines = new Outlines();
 var snippet = new Snippet();
+document.querySelectorAll("details").forEach((detail) => {detail.setAttribute("open", true)});

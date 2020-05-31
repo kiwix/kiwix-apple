@@ -13,12 +13,13 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     let sideBarController = SideBarController()
     let contentController = ContentController()
     private var sideBarDisplayModeObserver: DefaultsObservation?
-    
-    var masterIsVisible: Bool {
+    private var masterIsVisible: Bool {
         get {
             return displayMode == .allVisible || displayMode == .primaryOverlay
         }
     }
+    
+    // MARK: - init & override
 
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -59,14 +60,12 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-
-        let shouldMasterBeVisible = masterIsVisible && traitCollection.horizontalSizeClass == .regular
-        preferredDisplayMode = shouldMasterBeVisible ? getPrimaryVisibleDisplayMode(size: size) : .primaryHidden
+        if masterIsVisible {
+            preferredDisplayMode = getPrimaryVisibleDisplayMode(size: size)
+        }
     }
-
-    func toggleSideBar() {
-        preferredDisplayMode = masterIsVisible ? .primaryHidden : getPrimaryVisibleDisplayMode()
-    }
+    
+    // MARK: - Utilities
 
     private func getPrimaryVisibleDisplayMode(size: CGSize? = nil) -> UISplitViewController.DisplayMode {
         switch Defaults[.sideBarDisplayMode] {
@@ -106,7 +105,9 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     // MARK: - UIGestureRecognizerDelegate
 
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        // prevent the master controller from being displayed vie gesture when search is active
         guard !contentController.searchController.isActive else { return false }
+        
         /*
          HACK: prevent UISplitViewController's build in gesture to work when the pan gesture's starting point
          is within 30 point of the left edge, so that the screen edge gesture in WKWebview can work.
@@ -114,7 +115,11 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         return gestureRecognizer.location(in: view).x > 30
     }
 
-    // MARK: Actions
+    // MARK: - Actions
+    
+    func toggleSideBar() {
+        preferredDisplayMode = masterIsVisible ? .primaryHidden : getPrimaryVisibleDisplayMode()
+    }
 
     func openKiwixURL(_ url: URL) {
         guard url.isKiwixURL else {return}

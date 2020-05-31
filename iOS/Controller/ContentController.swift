@@ -25,7 +25,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     private let searchResultsController: SearchResultsController
     private lazy var searchCancelButton = UIBarButtonItem(
         barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
-    let  webViewController = WebKitWebController()
+    let webViewController = WebViewController()
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil)
         .instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     private var cachedLibraryController: LibraryController?
@@ -242,15 +242,16 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
             let selectedNavController = rootController.sideBarController.selectedViewController
             let selectedController = (selectedNavController as? UINavigationController)?.topViewController
             if let outlineController = selectedController as? OutlineController {
-                outlineController.updateContent()
+                outlineController.update()
             }
         }
     }
     
     // MARK: OutlineControllerDelegate
     
-    func didTapOutlineItem(index: Int, item: TableOfContentItem) {
-        webViewController.scrollToTableOfContentItem(index: index)
+    func didTapOutlineItem(item: OutlineItem) {
+        if searchController.isActive { searchController.isActive = false }
+        webViewController.scrollToOutlineItem(index: item.index)
     }
     
     // MARK: BookmarkControllerDelegate

@@ -1,6 +1,6 @@
 //
-//  WebKitTabController.swift
-//  WikiMed
+//  WebKitWebController.swift
+//  Kiwix
 //
 //  Created by Chris Li on 9/11/17.
 //  Copyright © 2017 Chris Li. All rights reserved.
@@ -11,8 +11,7 @@ import WebKit
 import SafariServices
 import Defaults
 
-
-class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate, WebViewController {
+class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
     private let webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
@@ -31,19 +30,23 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     }
     
     var canGoBack: Bool {
-        get {return webView.canGoBack}
+        get { webView.canGoBack }
     }
     
     var canGoForward: Bool {
-        get {return webView.canGoForward}
+        get { webView.canGoForward }
     }
     
     var currentURL: URL? {
-        get {return webView.url}
+        get { webView.url }
     }
     
     var currentTitle: String? {
-        return webView.title
+        if let title = webView.title, title.count > 0 {
+            return title
+        } else {
+            return nil
+        }
     }
     
     // MARK: - Configure
@@ -87,22 +90,29 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         })
     }
     
-    func extractTableOfContents(completion: @escaping ((URL?, [TableOfContentItem]) -> Void)) {
-        let javascript = "tableOfContents.getHeadingObjects()"
+    func extractOutlineItems(completion: @escaping ((URL?, [OutlineItem]) -> Void)) {
+        let javascript = "outlines.getHeadingObjects()"
         webView.evaluateJavaScript(javascript, completionHandler: { (results, error) in
-            let items = (results as? [[String: Any]])?.compactMap({ TableOfContentItem(rawValue: $0) }) ?? [TableOfContentItem]()
+            let items = (results as? [[String: Any]])?.compactMap({ OutlineItem(rawValue: $0) }) ?? [OutlineItem]()
             completion(self.currentURL, items)
         })
     }
     
-    func scrollToTableOfContentItem(index: Int) {
-        let javascript = "tableOfContents.scrollToView(\(index))"
+    func scrollToOutlineItem(index: Int) {
+        let javascript = "outlines.scrollToView(\(index))"
         webView.evaluateJavaScript(javascript, completionHandler: nil)
     }
     
     func adjustFontSize(scale: Double) {
         let javascript = String(format: "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%.0f%%'", scale * 100)
         webView.evaluateJavaScript(javascript, completionHandler: nil)
+    }
+    
+    func getFirstVisibleOutlineItemIndex(completion: @escaping ((Int?) -> Void)) {
+        let javascript = "outlines.getVisibleHeadingIndex()"
+        webView.evaluateJavaScript(javascript, completionHandler: { (indexes, error) in
+            completion((indexes as? [Int])?.first)
+        })
     }
     
     // MARK: - WKNavigationDelegate
@@ -153,4 +163,32 @@ class WebKitWebController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     }
 }
 
+protocol WebViewControllerDelegate: class {
+    func webViewDidTapOnGeoLocation(controller: WebViewController, url: URL)
+    func webViewDidFinishLoading(controller: WebViewController)
+}
 
+class ExternalLinkAlertController: UIAlertController {
+    convenience init(policy: ExternalLinkLoadingPolicy, action: @escaping (()->Void)) {
+        let message: String = {
+            switch policy {
+            case .alwaysAsk:
+                return NSLocalizedString("An external link is tapped, do you wish to load the link via Internet?", comment: "External Link Alert")
+            case .neverLoad:
+                return NSLocalizedString("An external link is tapped. However, your current setting does not allow it to be loaded.", comment: "External Link Alert")
+            default:
+                return ""
+            }
+        }()
+        self.init(title: NSLocalizedString("External Link", comment: "External Link Alert"), message: message, preferredStyle: .alert)
+        if policy == .alwaysAsk {
+            addAction(UIAlertAction(title: NSLocalizedString("Load the link", comment: "External Link Alert"), style: .default, handler: { _ in
+                action()
+            }))
+            addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "External Link Alert"), style: .cancel, handler: nil))
+        } else if policy == .neverLoad {
+            addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "External Link Alert"), style: .cancel, handler: nil))
+        }
+        
+    }
+}
