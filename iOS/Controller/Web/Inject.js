@@ -1,4 +1,4 @@
-function TableOfContents () {
+function Outlines () {
     this.headings = document.querySelectorAll("h1, h2, h3, h4, h5, h6");
 
     this.getHeadingObjects = function () {
@@ -96,6 +96,6 @@ function getImageURLs () {
     return [...document.getElementsByTagName("img")].map(e => e.src)
 }
 
-var tableOfContents = new TableOfContents();
+var outlines = new Outlines();
 var snippet = new Snippet();
 document.querySelectorAll("details").forEach((detail) => {detail.setAttribute("open", true)});

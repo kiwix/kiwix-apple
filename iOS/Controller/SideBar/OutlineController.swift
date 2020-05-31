@@ -72,7 +72,7 @@ class OutlineController: UITableViewController {
         if url == webViewController.currentURL && url != nil { return }
         
         navigationItem.title = webViewController.currentTitle ?? OutlineController.title
-        webViewController.extractTableOfContents(completion: { (url, items) in
+        webViewController.extractOutlineItems(completion: { (url, items) in
             self.updateContent(url: url, items: items)
         })
     }

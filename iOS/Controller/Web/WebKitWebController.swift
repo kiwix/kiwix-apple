@@ -90,16 +90,16 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
         })
     }
     
-    func extractTableOfContents(completion: @escaping ((URL?, [OutlineItem]) -> Void)) {
-        let javascript = "tableOfContents.getHeadingObjects()"
+    func extractOutlineItems(completion: @escaping ((URL?, [OutlineItem]) -> Void)) {
+        let javascript = "outlines.getHeadingObjects()"
         webView.evaluateJavaScript(javascript, completionHandler: { (results, error) in
             let items = (results as? [[String: Any]])?.compactMap({ OutlineItem(rawValue: $0) }) ?? [OutlineItem]()
             completion(self.currentURL, items)
         })
     }
     
-    func scrollToTableOfContentItem(index: Int) {
-        let javascript = "tableOfContents.scrollToView(\(index))"
+    func scrollToOutlineItem(index: Int) {
+        let javascript = "outlines.scrollToView(\(index))"
         webView.evaluateJavaScript(javascript, completionHandler: nil)
     }
     
@@ -109,7 +109,7 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
     }
     
     func getFirstVisibleOutlineItemIndex(completion: @escaping ((Int?) -> Void)) {
-        let javascript = "tableOfContents.getVisibleHeadingIndex()"
+        let javascript = "outlines.getVisibleHeadingIndex()"
         webView.evaluateJavaScript(javascript, completionHandler: { (indexes, error) in
             completion((indexes as? [Int])?.first)
         })
