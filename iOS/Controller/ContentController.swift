@@ -250,6 +250,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     // MARK: OutlineControllerDelegate
     
     func didTapOutlineItem(item: OutlineItem) {
+        if searchController.isActive { searchController.isActive = false }
         webViewController.scrollToTableOfContentItem(index: item.index)
     }
     
