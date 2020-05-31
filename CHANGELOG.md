@@ -1,7 +1,7 @@
 ## 1.13
 
 - article outline improvements:
-  - show article title in the navigation bar
+  - show article title in the navigation bar if available
   - prevent too much indentation when there is only one `h1` element in the article
   - list row separators now indent together with the text (so that it is easier to figure out the structure)
   - iPad: fixed an issue where search is not hidden if already visible when tapping on a outline row
