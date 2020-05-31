@@ -14,7 +14,7 @@ class OutlineController: UITableViewController {
     weak var delegate: OutlineControllerDelegate? = nil
     private var url: URL?
     private var items = [OutlineItem]()
-    private var levelOneItems = [OutlineItem]()
+    private var highestLevel = 1
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -79,7 +79,18 @@ class OutlineController: UITableViewController {
     private func updateContent(url: URL?, items: [OutlineItem]) {
         self.url = url
         self.items = items
-        self.levelOneItems = items.filter({ $0.level == 1 })
+        
+        /*
+         Hack: Often the whole article has only one h1 and that happens to be the title.
+         In this case, removing this h1 to prevent the whole list being unnecessarily indented.
+         */
+        if self.items.filter({ $0.level == 1 }).count == 1,
+            let firstItem = self.items.first,
+            firstItem.level == 1,
+            firstItem.text == navigationItem.title {
+            self.items.removeFirst()
+        }
+        self.highestLevel = self.items.map({ $0.level }).min() ?? 1
         
         if items.count > 0 {
             tableView.separatorStyle = .singleLine
@@ -109,11 +120,12 @@ class OutlineController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         let heading = items[indexPath.row]
-        cell.backgroundColor = .clear
-        cell.separatorInset = UIEdgeInsets(top: 0, left: 10 * (CGFloat(heading.level) - 1) * 2, bottom: 0, right: 0)
+        let indentationLevel = heading.level - highestLevel
+        
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 20 * CGFloat(indentationLevel), bottom: 0, right: 0)
         cell.textLabel?.text = heading.text
         cell.textLabel?.numberOfLines = 0
-        if cell.indentationLevel == 0 {
+        if indentationLevel == 0 {
             cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         } else {
             cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
