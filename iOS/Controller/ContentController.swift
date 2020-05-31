@@ -249,8 +249,8 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     
     // MARK: OutlineControllerDelegate
     
-    func didTapOutlineItem(index: Int, item: OutlineItem) {
-        webViewController.scrollToTableOfContentItem(index: index)
+    func didTapOutlineItem(item: OutlineItem) {
+        webViewController.scrollToTableOfContentItem(index: item.index)
     }
     
     // MARK: BookmarkControllerDelegate

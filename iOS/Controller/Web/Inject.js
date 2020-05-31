@@ -7,8 +7,8 @@ function TableOfContents () {
             var element = this.headings[i];
             var obj = {};
             obj.index = i;
-            obj.textContent = element.textContent;
             obj.tagName = element.tagName;
+            obj.textContent = element.textContent;
             headings.push(obj);
         }
         return headings;

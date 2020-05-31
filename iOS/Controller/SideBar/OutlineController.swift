@@ -39,6 +39,7 @@ class OutlineController: UITableViewController {
 
         tableView.backgroundView = nil
         tableView.separatorStyle = .none
+        tableView.separatorInsetReference = .fromAutomaticInsets
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         
         if let _ = presentingViewController {
@@ -121,27 +122,30 @@ class OutlineController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        delegate?.didTapOutlineItem(index: indexPath.row, item: items[indexPath.row])
+        delegate?.didTapOutlineItem(item: items[indexPath.row])
         tableView.deselectRow(at: indexPath, animated: true)
         dismiss(animated: true)
     }
 }
 
 protocol OutlineControllerDelegate: class {
-    func didTapOutlineItem(index: Int, item: OutlineItem)
+    func didTapOutlineItem(item: OutlineItem)
 }
 
 struct OutlineItem {
+    let index: Int
     let text: String
     let level: Int
     
     init?(rawValue: [String: Any]) {
-        if let text = (rawValue["textContent"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
+        if let index = rawValue["index"] as? Int,
             let tagName = rawValue["tagName"] as? String,
-            let level = Int(tagName.replacingOccurrences(of: "H", with: ""))
+            let level = Int(tagName.replacingOccurrences(of: "H", with: "")),
+            let text = (rawValue["textContent"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines)
         {
-            self.text = text
+            self.index = index
             self.level = level
+            self.text = text
         } else {
             return nil
         }
