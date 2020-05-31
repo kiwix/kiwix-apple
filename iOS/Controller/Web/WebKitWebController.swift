@@ -108,6 +108,13 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
         webView.evaluateJavaScript(javascript, completionHandler: nil)
     }
     
+    func getFirstVisibleOutlineItemIndex(completion: @escaping ((Int?) -> Void)) {
+        let javascript = "tableOfContents.getVisibleHeadingIndex()"
+        webView.evaluateJavaScript(javascript, completionHandler: { (indexes, error) in
+            completion((indexes as? [Int])?.first)
+        })
+    }
+    
     // MARK: - WKNavigationDelegate
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
