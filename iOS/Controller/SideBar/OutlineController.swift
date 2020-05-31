@@ -67,7 +67,7 @@ class OutlineController: UITableViewController {
             return
         }
         
-        if webViewController.currentURL == url { return }
+        if url == webViewController.currentURL && url != nil { return }
         
         navigationItem.title = webViewController.currentTitle
         webViewController.extractTableOfContents(completion: { (url, items) in
@@ -109,7 +109,7 @@ class OutlineController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         let heading = items[indexPath.row]
         cell.backgroundColor = .clear
-        cell.indentationLevel = (heading.level - 1) * 2
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 10 * (CGFloat(heading.level) - 1) * 2, bottom: 0, right: 0)
         cell.textLabel?.text = heading.text
         cell.textLabel?.numberOfLines = 0
         if cell.indentationLevel == 0 {
