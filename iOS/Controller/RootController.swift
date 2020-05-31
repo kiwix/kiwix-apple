@@ -59,9 +59,9 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-
-        let shouldMasterBeVisible = masterIsVisible && traitCollection.horizontalSizeClass == .regular
-        preferredDisplayMode = shouldMasterBeVisible ? getPrimaryVisibleDisplayMode(size: size) : .primaryHidden
+        if masterIsVisible {
+            preferredDisplayMode = getPrimaryVisibleDisplayMode(size: size)
+        }
     }
 
     func toggleSideBar() {
