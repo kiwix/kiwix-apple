@@ -42,7 +42,11 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
     }
     
     var currentTitle: String? {
-        return webView.title
+        if let title = webView.title, title.count > 0 {
+            return title
+        } else {
+            return nil
+        }
     }
     
     // MARK: - Configure

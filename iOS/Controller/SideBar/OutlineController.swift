@@ -18,7 +18,6 @@ class OutlineController: UITableViewController {
     
     init() {
         super.init(nibName: nil, bundle: nil)
-        title = OutlineController.title
         if #available(iOS 13.0, *) {
             tabBarItem = UITabBarItem(title: "Outline",
                                       image: UIImage(systemName: "list.bullet"),
@@ -70,7 +69,7 @@ class OutlineController: UITableViewController {
         
         if url == webViewController.currentURL && url != nil { return }
         
-        navigationItem.title = webViewController.currentTitle
+        navigationItem.title = webViewController.currentTitle ?? OutlineController.title
         webViewController.extractTableOfContents(completion: { (url, items) in
             self.updateContent(url: url, items: items)
         })
