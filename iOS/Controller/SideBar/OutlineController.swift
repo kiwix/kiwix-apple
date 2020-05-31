@@ -121,9 +121,9 @@ class OutlineController: UITableViewController {
         let heading = items[indexPath.row]
         let indentationLevel = heading.level - highestLevel
         
-        cell.separatorInset = UIEdgeInsets(top: 0, left: 20 * CGFloat(indentationLevel), bottom: 0, right: 0)
         cell.textLabel?.text = heading.text
         cell.textLabel?.numberOfLines = 0
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 20 * CGFloat(indentationLevel), bottom: 0, right: 0)
         if indentationLevel == 0 {
             cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         } else {
