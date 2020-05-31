@@ -1,6 +1,13 @@
 ## 1.13
 
+- article outline improvements:
+  - show article title in the navigation bar
+  - prevent too much indentation when there is only one `h1` element in the article
+  - list row separators now indent together with the text (so that it is easier to figure out the structure)
+  - iPad: fixed an issue where search is not hidden if already visible when tapping on a outline row
+  - for MediaWiki based zim files, sections are expanded when reading on horizontally narrow interface; if a section is already collapsed, tap on a outline item will expand that section
 - iPad users can customize how side bar is displayed -- automatic, side by side or overlay
+- setting for excluding zim files in backup is moved inside the library info interface
 
 ## 1.12
 
