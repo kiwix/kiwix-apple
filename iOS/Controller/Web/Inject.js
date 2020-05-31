@@ -15,6 +15,13 @@ function Outlines () {
     }
 
     this.scrollToView = function (index) {
+        var node = this.headings[index].parentNode;
+        while (node) {
+            if (node.tagName == "DETAILS") {
+                node.setAttribute("open", true);
+            }
+            node = node.parentNode;
+        }
         this.headings[index].scrollIntoView();
     }
 
