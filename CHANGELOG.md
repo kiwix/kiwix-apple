@@ -11,7 +11,8 @@
 
 Technical:
 
-- Migrate usage of SwiftyUserDefaults to Defaults. Tester should see if their old settings like external load policy, selected language filter, etc. are persisted after upgrading from App Store production version to 1.13 beta.
+- Migrated database to Realm 5.0.1. Note once you install the beta app, you will be upgrade to the new database version, which is incompatible with the App Store production version.
+- Migrated usage of SwiftyUserDefaults to Defaults. Tester should see if their old settings like external load policy, selected language filter, etc. are persisted after upgrading from App Store production version to 1.13 beta.
 
 ## 1.12
 
