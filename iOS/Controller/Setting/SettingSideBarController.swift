@@ -59,6 +59,8 @@ class SettingSideBarController: UIViewController, UITableViewDataSource, UITable
     }
     
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return NSLocalizedString("Controls what happens when sidebar button is tapped.", comment: "Sidebar setting")
+        return NSLocalizedString(
+            "Controls how side bar is displayed when the toggle sidebar button is tapped.", comment: "Sidebar setting"
+        )
     }
 }
