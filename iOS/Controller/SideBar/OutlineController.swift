@@ -9,13 +9,16 @@
 import UIKit
 
 class OutlineController: UITableViewController {
+    static let title = NSLocalizedString("Outline", comment: "Outline view title")
+    
     weak var delegate: OutlineControllerDelegate? = nil
     private var url: URL?
     private var items = [OutlineItem]()
+    private var levelOneItems = [OutlineItem]()
     
     init() {
         super.init(nibName: nil, bundle: nil)
-        title = NSLocalizedString("Outline", comment: "Outline view title")
+        title = OutlineController.title
         if #available(iOS 13.0, *) {
             tabBarItem = UITabBarItem(title: "Outline",
                                       image: UIImage(systemName: "list.bullet"),
@@ -33,6 +36,7 @@ class OutlineController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         tableView.backgroundView = nil
         tableView.separatorStyle = .none
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
@@ -56,14 +60,16 @@ class OutlineController: UITableViewController {
     // MARK: - View Configurations
     
     func update() {
-        guard let rootController = (splitViewController ?? presentingViewController) as? RootController else {
+        let rootController = (splitViewController ?? presentingViewController) as? RootController
+        guard let webViewController = rootController?.contentController.webViewController else {
+            navigationItem.title = OutlineController.title
             updateContent(url: nil, items: [])
             return
         }
         
-        let webViewController = rootController.contentController.webViewController
-        guard webViewController.currentURL != url else { return }
+        if webViewController.currentURL == url { return }
         
+        navigationItem.title = webViewController.currentTitle
         webViewController.extractTableOfContents(completion: { (url, items) in
             self.updateContent(url: url, items: items)
         })
@@ -72,14 +78,19 @@ class OutlineController: UITableViewController {
     private func updateContent(url: URL?, items: [OutlineItem]) {
         self.url = url
         self.items = items
+        self.levelOneItems = items.filter({ $0.level == 1 })
         
         if items.count > 0 {
-            tableView.backgroundView = nil
             tableView.separatorStyle = .singleLine
+            tableView.backgroundView = nil
         } else {
             tableView.separatorStyle = .none
-            let emptyContentView = EmptyContentView(image: #imageLiteral(resourceName: "Compass"), title: NSLocalizedString("Table of content not available", comment: "Help message when table of content is not available"))
-            tableView.backgroundView = emptyContentView
+            tableView.backgroundView = EmptyContentView(
+                image: #imageLiteral(resourceName: "Compass"),
+                title: NSLocalizedString(
+                    "Table of content not available", comment: "Help message when table of content is not available"
+                )
+            )
         }
         tableView.reloadData()
     }
