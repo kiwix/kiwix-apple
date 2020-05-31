@@ -9,6 +9,10 @@
 - iPad users can customize how side bar is displayed -- automatic, side by side or overlay
 - setting for excluding zim files in backup is moved inside the library info interface
 
+Technical:
+
+- Migrate usage of SwiftyUserDefaults to Defaults. Tester should see if their old settings like external load policy, selected language filter, etc. are persisted after upgrading from App Store production version to 1.13 beta.
+
 ## 1.12
 
 Speed improvements and more options for search snippets:
