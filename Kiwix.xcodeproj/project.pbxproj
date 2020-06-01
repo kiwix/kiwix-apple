@@ -2221,7 +2221,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 44;
+				CURRENT_PROJECT_VERSION = 45;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_BITCODE = YES;
 				GCC_C_LANGUAGE_STANDARD = c11;
@@ -2231,7 +2231,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Model/libkiwix/iOS_lib",
 				);
-				MARKETING_VERSION = 1.12;
+				MARKETING_VERSION = 1.13;
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix;
 				PRODUCT_NAME = Kiwix;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2257,7 +2257,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 44;
+				CURRENT_PROJECT_VERSION = 45;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_BITCODE = YES;
 				GCC_C_LANGUAGE_STANDARD = c11;
@@ -2267,7 +2267,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Model/libkiwix/iOS_lib",
 				);
-				MARKETING_VERSION = 1.12;
+				MARKETING_VERSION = 1.13;
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix;
 				PRODUCT_NAME = Kiwix;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2345,7 +2345,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/BookmarksWidget/Bookmarks.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 44;
+				CURRENT_PROJECT_VERSION = 45;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iOS/BookmarksWidget/Info.plist;
@@ -2355,7 +2355,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.12;
+				MARKETING_VERSION = 1.13;
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.Bookmarks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2377,7 +2377,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/BookmarksWidget/Bookmarks.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 44;
+				CURRENT_PROJECT_VERSION = 45;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iOS/BookmarksWidget/Info.plist;
@@ -2387,7 +2387,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.12;
+				MARKETING_VERSION = 1.13;
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.Bookmarks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
