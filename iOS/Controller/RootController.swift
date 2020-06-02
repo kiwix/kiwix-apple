@@ -60,6 +60,11 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+        /*
+         Hack: this function is called when user click the home button with wrong splitViewController.displayMode.
+         To mitigate, check if the app is in background before do any UI adjustments.
+         */
+        guard UIApplication.shared.applicationState != .background else { return }
         if masterIsVisible {
             preferredDisplayMode = getPrimaryVisibleDisplayMode(size: size)
         }
