@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *searchText;
 
 - (id)initWithSearchText:(NSString *)searchText zimFileIDs:(NSSet *)identifiers;
-- (void *)performSearch:(BOOL)withFullTextSnippet;
+- (void)performSearch:(BOOL)withFullTextSnippet;
 
 @end
 

@@ -20,5 +20,7 @@
 - (nullable instancetype)initWithZimFileID:(nonnull NSString *)zimFileId
                                       path:(nonnull NSString *)path
                                      title:(nonnull NSString *)title;
+- (BOOL)isEqual:(nullable id)other;
+- (NSUInteger)hash;
 
 @end

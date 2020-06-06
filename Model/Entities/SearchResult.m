@@ -32,4 +32,18 @@
     return self;
 }
 
+- (BOOL)isEqual:(id)other {
+    if (other == self) {
+        return YES;
+    } else if ([other isKindOfClass:self.class]) {
+        return self.url == ((SearchResult *)other).url;
+    } else {
+        return [super isEqual:other];
+    }
+}
+
+- (NSUInteger)hash {
+    return self.url.hash;
+}
+
 @end

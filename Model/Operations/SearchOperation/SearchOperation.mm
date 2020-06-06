@@ -36,16 +36,12 @@ struct SharedReaders {
     return self;
 }
 
-- (void *)performSearch:(BOOL)withFullTextSnippet; {
+- (void)performSearch:(BOOL)withFullTextSnippet; {
     struct SharedReaders sharedReaders = [[ZimMultiReader shared] getSharedReaders:self.identifiers];
-    NSMutableDictionary *results = [[NSMutableDictionary alloc] initWithCapacity:[self.identifiers count] * 20];
-    
-//    [self getTitleSearchResults:sharedReaders.readers] + [self getFullTextSearchResults:sharedReaders withFullTextSnippet:withFullTextSnippet]
-    for (SearchResult *result in [self getTitleSearchResults:sharedReaders.readers]) {
-        results[result.url] = result;
-    }
-    
-    NSArray *fullTextResults = [self getFullTextSearchResults:sharedReaders withFullTextSnippet:withFullTextSnippet];
+    NSMutableSet *results = [[NSMutableSet alloc] initWithCapacity:10];
+    [results addObjectsFromArray:[self getTitleSearchResults:sharedReaders.readers]];
+    [results addObjectsFromArray:[self getFullTextSearchResults:sharedReaders withFullTextSnippet:withFullTextSnippet]];
+    self.results = [results allObjects];
 }
 
 - (NSArray *)getFullTextSearchResults:(struct SharedReaders)sharedReaders withFullTextSnippet:(BOOL)withFullTextSnippet {
