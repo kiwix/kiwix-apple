@@ -94,7 +94,8 @@ struct SharedReaders {
         std::string titleC;
         std::string pathC;
         while (reader->getNextSuggestion(titleC, pathC)) {
-            NSString *path = [NSString stringWithCString:pathC.c_str() encoding:NSUTF8StringEncoding];
+            std::string redirectedPath = reader->getEntryFromPath(pathC).getFinalEntry().getPath();
+            NSString *path = [NSString stringWithCString:redirectedPath.c_str() encoding:NSUTF8StringEncoding];
             NSString *title = [NSString stringWithCString:titleC.c_str() encoding:NSUTF8StringEncoding];
             SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
             if (searchResult != nil) { [results addObject:searchResult]; }
