@@ -15,7 +15,7 @@ extension SearchOperation {
     
     open override func main() {
         let mode = Defaults[.searchResultSnippetMode]
-        __results = getSearchResults(mode == .matches)
+        performSearch(mode == .matches)
         if mode != .disabled { extractSnippet(mode) }
         sortResults()
     }

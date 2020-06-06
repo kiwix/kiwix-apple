@@ -36,8 +36,15 @@ struct SharedReaders {
     return self;
 }
 
-- (NSArray *)getSearchResults:(BOOL)withFullTextSnippet {
+- (void)performSearch:(BOOL)withFullTextSnippet; {
     struct SharedReaders sharedReaders = [[ZimMultiReader shared] getSharedReaders:self.identifiers];
+    NSMutableSet *results = [[NSMutableSet alloc] initWithCapacity:15 + 3 * self.identifiers.count];
+    [results addObjectsFromArray:[self getTitleSearchResults:sharedReaders.readers]];
+    [results addObjectsFromArray:[self getFullTextSearchResults:sharedReaders withFullTextSnippet:withFullTextSnippet]];
+    self.results = [results allObjects];
+}
+
+- (NSArray *)getFullTextSearchResults:(struct SharedReaders)sharedReaders withFullTextSnippet:(BOOL)withFullTextSnippet {
     NSMutableArray *results = [[NSMutableArray alloc] initWithCapacity:15];
     
     // initialize full text search
@@ -49,7 +56,7 @@ struct SharedReaders {
     
     // start full text search
     if (self.isCancelled) { return results; }
-    searcher.search([self.searchText cStringUsingEncoding:NSUTF8StringEncoding], 0, 20);
+    searcher.search([self.searchText cStringUsingEncoding:NSUTF8StringEncoding], 0, 15);
     
     // retrieve full text search results
     kiwix::Result *result = searcher.getNextResult();
@@ -76,9 +83,9 @@ struct SharedReaders {
     return results;
 }
 
-- (NSMutableArray *)getTitleSearchResults:(NSString *)searchText readers:(std::vector<std::shared_ptr<kiwix::Reader>>)readers {
+- (NSArray *)getTitleSearchResults:(std::vector<std::shared_ptr<kiwix::Reader>>)readers {
     NSMutableArray *results = [[NSMutableArray alloc] init];
-    std::string searchTermC = [searchText cStringUsingEncoding:NSUTF8StringEncoding];
+    std::string searchTermC = [self.searchText cStringUsingEncoding:NSUTF8StringEncoding];
     
     for (auto reader: readers) {
         NSString *zimFileID = [NSString stringWithCString:reader->getId().c_str() encoding:NSUTF8StringEncoding];
@@ -87,7 +94,8 @@ struct SharedReaders {
         std::string titleC;
         std::string pathC;
         while (reader->getNextSuggestion(titleC, pathC)) {
-            NSString *path = [NSString stringWithCString:pathC.c_str() encoding:NSUTF8StringEncoding];
+            std::string redirectedPath = reader->getEntryFromPath(pathC).getFinalEntry().getPath();
+            NSString *path = [NSString stringWithCString:redirectedPath.c_str() encoding:NSUTF8StringEncoding];
             NSString *title = [NSString stringWithCString:titleC.c_str() encoding:NSUTF8StringEncoding];
             SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
             if (searchResult != nil) { [results addObject:searchResult]; }
