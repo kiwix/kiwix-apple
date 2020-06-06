@@ -36,8 +36,19 @@ struct SharedReaders {
     return self;
 }
 
-- (NSArray *)getSearchResults:(BOOL)withFullTextSnippet {
+- (void *)performSearch:(BOOL)withFullTextSnippet; {
     struct SharedReaders sharedReaders = [[ZimMultiReader shared] getSharedReaders:self.identifiers];
+    NSMutableDictionary *results = [[NSMutableDictionary alloc] initWithCapacity:[self.identifiers count] * 20];
+    
+//    [self getTitleSearchResults:sharedReaders.readers] + [self getFullTextSearchResults:sharedReaders withFullTextSnippet:withFullTextSnippet]
+    for (SearchResult *result in [self getTitleSearchResults:sharedReaders.readers]) {
+        results[result.url] = result;
+    }
+    
+    NSArray *fullTextResults = [self getFullTextSearchResults:sharedReaders withFullTextSnippet:withFullTextSnippet];
+}
+
+- (NSArray *)getFullTextSearchResults:(struct SharedReaders)sharedReaders withFullTextSnippet:(BOOL)withFullTextSnippet {
     NSMutableArray *results = [[NSMutableArray alloc] initWithCapacity:15];
     
     // initialize full text search
@@ -76,9 +87,9 @@ struct SharedReaders {
     return results;
 }
 
-- (NSMutableArray *)getTitleSearchResults:(NSString *)searchText readers:(std::vector<std::shared_ptr<kiwix::Reader>>)readers {
+- (NSArray *)getTitleSearchResults:(std::vector<std::shared_ptr<kiwix::Reader>>)readers {
     NSMutableArray *results = [[NSMutableArray alloc] init];
-    std::string searchTermC = [searchText cStringUsingEncoding:NSUTF8StringEncoding];
+    std::string searchTermC = [self.searchText cStringUsingEncoding:NSUTF8StringEncoding];
     
     for (auto reader: readers) {
         NSString *zimFileID = [NSString stringWithCString:reader->getId().c_str() encoding:NSUTF8StringEncoding];
