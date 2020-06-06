@@ -48,6 +48,7 @@ fileprivate struct ZimFileView: View {
 @available(iOS 13.0, *)
 struct SearchFilterView: View {
     @ObservedObject private var viewModel = ViewModel()
+    var recentSearchButtonAction: ((String) -> Void)?
     
     var body: some View {
         List {
@@ -57,7 +58,7 @@ struct SearchFilterView: View {
                         HStack {
                             ForEach(viewModel.recentSearchTexts, id: \.hash) { searchText in
                                 Button(searchText) {
-                                    print("buton tapped")
+                                    self.recentSearchButtonAction?(searchText)
                                 }
                                 .font(Font.footnote.weight(.medium))
                                 .foregroundColor(.white)
@@ -119,5 +120,9 @@ fileprivate class ViewModel: ObservableObject {
 class SearchFilterController: UIHostingController<SearchFilterView> {
     convenience init() {
         self.init(rootView: SearchFilterView())
+        rootView.recentSearchButtonAction = { [unowned self] searchText in
+            guard let controller = self.presentingViewController as? ContentController else { return }
+            controller.searchController.searchBar.text = searchText
+        }
     }
 }
