@@ -38,7 +38,7 @@ struct SharedReaders {
 
 - (void)performSearch:(BOOL)withFullTextSnippet; {
     struct SharedReaders sharedReaders = [[ZimMultiReader shared] getSharedReaders:self.identifiers];
-    NSMutableSet *results = [[NSMutableSet alloc] initWithCapacity:10];
+    NSMutableSet *results = [[NSMutableSet alloc] initWithCapacity:15 + 3 * self.identifiers.count];
     [results addObjectsFromArray:[self getTitleSearchResults:sharedReaders.readers]];
     [results addObjectsFromArray:[self getFullTextSearchResults:sharedReaders withFullTextSnippet:withFullTextSnippet]];
     self.results = [results allObjects];
@@ -56,7 +56,7 @@ struct SharedReaders {
     
     // start full text search
     if (self.isCancelled) { return results; }
-    searcher.search([self.searchText cStringUsingEncoding:NSUTF8StringEncoding], 0, 20);
+    searcher.search([self.searchText cStringUsingEncoding:NSUTF8StringEncoding], 0, 15);
     
     // retrieve full text search results
     kiwix::Result *result = searcher.getNextResult();
