@@ -36,7 +36,7 @@
     if (other == self) {
         return YES;
     } else if ([other isKindOfClass:self.class]) {
-        return self.url == ((SearchResult *)other).url;
+        return [self.url isEqual:((SearchResult *)other).url];
     } else {
         return [super isEqual:other];
     }
