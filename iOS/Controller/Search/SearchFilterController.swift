@@ -53,7 +53,13 @@ struct SearchFilterView: View {
     var body: some View {
         List {
             if viewModel.recentSearchTexts.count > 0 {
-                Section(header: Text("Recent")) {
+                Section(header: HStack {
+                    Text("Recent")
+                    Spacer()
+                    Button("Clear") {
+                        self.viewModel.clearRecentSearchText()
+                    }
+                }) {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
                             ForEach(viewModel.recentSearchTexts, id: \.hash) { searchText in
@@ -91,7 +97,8 @@ fileprivate class ViewModel: ObservableObject {
     @Published private(set) var recentSearchTexts = [String]()
     @Published private(set) var zimFiles = [ZimFile]()
     
-    var zimFilesCancellable: AnyCancellable?
+    private var zimFilesCancellable: AnyCancellable?
+    private var recentSearchTextObserver: Defaults.Observation?
     
     init() {
         let predicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue)
@@ -103,7 +110,9 @@ fileprivate class ViewModel: ObservableObject {
             }.catch { error in
                 Just([ZimFile]())
             }.assign(to: \.zimFiles, on: self)
-        recentSearchTexts = Defaults[.recentSearchTexts]
+        recentSearchTextObserver = Defaults.observe(.recentSearchTexts) { change in
+            self.recentSearchTexts = change.newValue
+        }
     }
     
     func toggleZimFileIncludedInSearch(zimFileID: String) {
@@ -111,6 +120,10 @@ fileprivate class ViewModel: ObservableObject {
         try? database?.write {
             zimFile.includedInSearch = !zimFile.includedInSearch
         }
+    }
+    
+    func clearRecentSearchText() {
+        Defaults[.recentSearchTexts] = []
     }
 }
 
