@@ -8,6 +8,7 @@
   - for MediaWiki based zim files, sections are expanded when reading on horizontally narrow interface; if a section is already collapsed, tap on a outline item will expand that section
 - iPad users can customize how side bar is displayed -- automatic, side by side or overlay
 - setting for excluding zim files in backup is moved inside the library info interface
+- bring back title based search results
 
 Technical:
 
