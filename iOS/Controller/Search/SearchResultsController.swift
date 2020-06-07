@@ -128,6 +128,10 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
         }
     }
     
+    override func overrideTraitCollection(forChild childViewController: UIViewController) -> UITraitCollection? {
+        UITraitCollection(horizontalSizeClass: .compact)
+    }
+    
     // MARK: Configurations
     
     private func configureStackView(oldDisplayMode: DisplayMode? = nil) {

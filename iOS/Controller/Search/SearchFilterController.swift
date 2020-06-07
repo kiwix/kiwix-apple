@@ -56,27 +56,31 @@ struct SearchFilterView: View {
                 Section(header: HStack {
                     Text("Recent")
                     Spacer()
-                    Button("Clear") {
-                        self.viewModel.clearRecentSearchText()
-                    }
+                    Button("Clear") { self.viewModel.clearRecentSearchText() }
                 }) {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
                             ForEach(viewModel.recentSearchTexts, id: \.hash) { searchText in
-                                Button(searchText) {
-                                    self.recentSearchButtonAction?(searchText)
-                                }
-                                .font(Font.footnote.weight(.medium))
-                                .foregroundColor(.white)
-                                .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
-                                .background(Color.blue.opacity(0.85))
-                                .cornerRadius(.infinity)
+                                Button(searchText) { self.recentSearchButtonAction?(searchText) }
+                                    .font(Font.footnote.weight(.medium))
+                                    .foregroundColor(.white)
+                                    .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
+                                    .background(Color.blue.opacity(0.85))
+                                    .cornerRadius(.infinity)
                             }
                         }.padding(EdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18))
                     }.listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                 }
             }
-            Section(header: Text("Files")) {
+            Section(header: HStack {
+                Text("Files")
+                Spacer()
+                if viewModel.zimFiles.reduce(true, {$0 && $1.includedInSearch}) {
+                    Button("None") { self.viewModel.excludeAllZimFilesInSearch() }
+                } else {
+                    Button("All") { self.viewModel.includeAllZimFilesInSearch() }
+                }
+            }) {
                 ForEach(viewModel.zimFiles, id: \.id) { zimFile in
                     ZimFileView(zimFile: zimFile)
                         .contentShape(Rectangle())
@@ -97,21 +101,38 @@ fileprivate class ViewModel: ObservableObject {
     @Published private(set) var recentSearchTexts = [String]()
     @Published private(set) var zimFiles = [ZimFile]()
     
-    private var zimFilesCancellable: AnyCancellable?
     private var recentSearchTextObserver: Defaults.Observation?
+    private var zimFilesCancellable: AnyCancellable?
     
     init() {
         let predicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue)
-        zimFilesCancellable = database?.objects(ZimFile.self)
-            .filter(predicate)
+        let result = database?.objects(ZimFile.self).filter(predicate)
+        
+        recentSearchTextObserver = Defaults.observe(.recentSearchTexts) { change in
+            self.recentSearchTexts = change.newValue
+        }
+        zimFilesCancellable = result?
             .publisher
             .map { results -> [ZimFile] in
                 results.map({ $0 })
             }.catch { error in
                 Just([ZimFile]())
             }.assign(to: \.zimFiles, on: self)
-        recentSearchTextObserver = Defaults.observe(.recentSearchTexts) { change in
-            self.recentSearchTexts = change.newValue
+    }
+    
+    func clearRecentSearchText() {
+        Defaults[.recentSearchTexts] = []
+    }
+    
+    func includeAllZimFilesInSearch() {
+        try? database?.write {
+            self.zimFiles.forEach({ $0.includedInSearch = true })
+        }
+    }
+    
+    func excludeAllZimFilesInSearch() {
+        try? database?.write {
+            self.zimFiles.forEach({ $0.includedInSearch = false })
         }
     }
     
@@ -120,10 +141,6 @@ fileprivate class ViewModel: ObservableObject {
         try? database?.write {
             zimFile.includedInSearch = !zimFile.includedInSearch
         }
-    }
-    
-    func clearRecentSearchText() {
-        Defaults[.recentSearchTexts] = []
     }
 }
 
