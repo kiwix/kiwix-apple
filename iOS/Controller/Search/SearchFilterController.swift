@@ -54,7 +54,7 @@ struct SearchFilterView: View {
         List {
             if viewModel.recentSearchTexts.count > 0 {
                 Section(header: HStack {
-                    Text("Recent")
+                    Text("Recent").fontWeight(.medium)
                     Spacer()
                     Button("Clear") { self.viewModel.clearRecentSearchText() }
                 }) {
@@ -73,7 +73,7 @@ struct SearchFilterView: View {
                 }
             }
             Section(header: HStack {
-                Text("Files")
+                Text("Files").fontWeight(.medium)
                 Spacer()
                 if viewModel.zimFiles.reduce(true, {$0 && $1.includedInSearch}) {
                     Button("None") { self.viewModel.excludeAllZimFilesInSearch() }
