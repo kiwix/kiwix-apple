@@ -9,11 +9,14 @@
 - iPad users can customize how side bar is displayed -- automatic, side by side or overlay
 - setting for excluding zim files in backup is moved inside the library info interface
 - bring back title based search results
+- (iOS 13) some UI improvement / updates in search filter interface
+  - the "All" button would now change to "None" if all zim files are included in search
 
 Technical:
 
-- Migrated database to Realm 5.0.1. Note once you install the beta app, you will be upgrade to the new database version, which is incompatible with the App Store production version.
+- Migrated database to Realm 5.0.2. Note once you install the beta app, you will be upgrade to the new database version, which is incompatible with the App Store production version.
 - Migrated usage of SwiftyUserDefaults to Defaults. Tester should see if their old settings like external load policy, selected language filter, etc. are persisted after upgrading from App Store production version to 1.13 beta.
+- The search filter interface is rewritten with SwiftUI. I have recently seen an uptick of crashes in this area. The old solution is rather hacky anyway, so I just rewrote this in SwiftUI so that issue would be fixed for most users. This is also the first SwiftUI interface in the app.
 
 ## 1.12
 
