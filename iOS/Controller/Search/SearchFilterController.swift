@@ -6,8 +6,11 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
+#if canImport(Combine) && canImport(SwiftUI)
 import Combine
 import SwiftUI
+#endif
+
 import UIKit
 import Defaults
 import RealmSwift

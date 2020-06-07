@@ -2236,6 +2236,10 @@
 					"$(PROJECT_DIR)/Model/libkiwix/iOS_lib",
 				);
 				MARKETING_VERSION = 1.13;
+				OTHER_LDFLAGS = (
+					"-weak_framework",
+					SwiftUI,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix;
 				PRODUCT_NAME = Kiwix;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2272,6 +2276,10 @@
 					"$(PROJECT_DIR)/Model/libkiwix/iOS_lib",
 				);
 				MARKETING_VERSION = 1.13;
+				OTHER_LDFLAGS = (
+					"-weak_framework",
+					SwiftUI,
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix;
 				PRODUCT_NAME = Kiwix;
 				PROVISIONING_PROFILE_SPECIFIER = "";
