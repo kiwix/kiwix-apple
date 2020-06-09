@@ -17,8 +17,14 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     private let stackView = UIStackView()
     private let informationView = InformationView()
     private let dividerView = DividerView()
-    private let filterController = SearchFilterController()
     private let resultsListController = SearchResultsListController()
+    private let filterController: UIViewController = {
+        if #available(iOS 13.0, *) {
+            return SearchFilterController()
+        } else {
+            return LegacySearchFilterController()
+        }
+    }()
     
     private var filterControllerWidthConstraint: NSLayoutConstraint?
     private var filterControllerProportionalWidthConstraint: NSLayoutConstraint?
@@ -120,6 +126,10 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
         coordinator.animate(alongsideTransition: nil) { _ in
             self.informationView.alpha = 1.0
         }
+    }
+    
+    override func overrideTraitCollection(forChild childViewController: UIViewController) -> UITraitCollection? {
+        UITraitCollection(horizontalSizeClass: .compact)
     }
     
     // MARK: Configurations

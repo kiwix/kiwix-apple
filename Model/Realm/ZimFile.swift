@@ -50,7 +50,7 @@ class ZimFile: Object {
     @objc dynamic var downloadResumeData: Data?
     @objc dynamic var downloadErrorDescription: String?
     
-    // MARK: -  read only properties
+    // MARK: -  computed properties
     
     var state: State {
         get { return State(rawValue:stateRaw) ?? .remote }
@@ -65,14 +65,20 @@ class ZimFile: Object {
     // MARK: - Overrides
     
     override static func primaryKey() -> String? {
-        return "id"
+        "id"
     }
     
     override static func indexedProperties() -> [String] {
-        return ["name", "title", "languageCode", "categoryRaw", "creationDate", "includedInSearch", "stateRaw"]
+        ["name", "title", "languageCode", "categoryRaw", "creationDate", "includedInSearch", "stateRaw"]
     }
     
     // MARK: - Descriptions
+    
+    override var description: String {
+        [self.sizeDescription, self.creationDateDescription, self.sizeDescription]
+            .compactMap({ $0 })
+            .joined(separator: ", ")
+    }
     
     var articleCountDescription: String? {
         guard let articleCount = self.articleCount.value else { return nil }
