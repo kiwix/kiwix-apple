@@ -2,7 +2,7 @@ language: swift
 os: osx
 osx_image: xcode11.5
 xcode_project: Kiwix.xcodeproj
-xcode_scheme: Kiwix for iOS
+xcode_scheme: Model Tests
 
 jobs:
   include:

@@ -62,7 +62,6 @@
 		9779A5C42456793600F6F6FF /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimMultiReader.swift */; };
 		9779A5C52456793600F6F6FF /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimMultiReader.swift */; };
 		9779A5C62456793600F6F6FF /* ZimFileMetaData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */; };
-		9779A5C72456793600F6F6FF /* ZimFileMetaData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */; };
 		9779A5C82456793600F6F6FF /* RealmConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AF2456793600F6F6FF /* RealmConfig.swift */; };
 		9779A5C92456793600F6F6FF /* RealmConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AF2456793600F6F6FF /* RealmConfig.swift */; };
 		9779A5CA2456793600F6F6FF /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5B02456793600F6F6FF /* Bookmark.swift */; };
@@ -150,6 +149,14 @@
 		97CE15B923B26EB300378D9F /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15B823B26EB300378D9F /* RealmSwift */; };
 		97CE15BB23B26ED200378D9F /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15BA23B26ED200378D9F /* Realm */; };
 		97CE15BD23B26ED200378D9F /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15BC23B26ED200378D9F /* RealmSwift */; };
+		97CE42372490480C00B334E9 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B399912468502500BC6F5B /* Platform.swift */; };
+		97CE42382490485300B334E9 /* ZimMultiReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A92456793500F6F6FF /* ZimMultiReader.mm */; };
+		97CE42392490485300B334E9 /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimMultiReader.swift */; };
+		97CE423A2490498300B334E9 /* ZimFileMetaData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */; };
+		97CE423B2490498300B334E9 /* SearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998C2467561900BC6F5B /* SearchResult.m */; };
+		97CE423D2490498600B334E9 /* ZimFileMetaData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */; };
+		97CE423E2490498600B334E9 /* SearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998C2467561900BC6F5B /* SearchResult.m */; };
+		97CE423F24904A0300B334E9 /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A73A2456796B00F6F6FF /* WebKitHandler.swift */; };
 		97D00A791FBB89F000165629 /* Inject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* Inject.js */; };
 		97D757E5238F3161008FB7E2 /* SideBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D757E4238F3161008FB7E2 /* SideBarController.swift */; };
 		97DBCF9D203CA254004EE274 /* SettingExternalLinkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DBCF9C203CA254004EE274 /* SettingExternalLinkController.swift */; };
@@ -1782,8 +1789,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97CE423B2490498300B334E9 /* SearchResult.m in Sources */,
+				97CE42372490480C00B334E9 /* Platform.swift in Sources */,
+				97CE423F24904A0300B334E9 /* WebKitHandler.swift in Sources */,
 				970EC3FC23BE8E31008DCA27 /* Parser.swift in Sources */,
 				970EC3FB23BE8E25008DCA27 /* ParserTests.swift in Sources */,
+				97CE423A2490498300B334E9 /* ZimFileMetaData.mm in Sources */,
+				97CE42392490485300B334E9 /* ZimMultiReader.swift in Sources */,
+				97CE42382490485300B334E9 /* ZimMultiReader.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1808,7 +1821,6 @@
 				9779A7B02456796B00F6F6FF /* Settings.swift in Sources */,
 				9768C2351F4B7BAC00FD499B /* AppDelegate.swift in Sources */,
 				9779A5CB2456793600F6F6FF /* Bookmark.swift in Sources */,
-				9779A5C72456793600F6F6FF /* ZimFileMetaData.mm in Sources */,
 				9779A5B72456793600F6F6FF /* LibraryScanOperation.swift in Sources */,
 				9779A73E2456796B00F6F6FF /* DirectoryMonitor.swift in Sources */,
 				9779A7B22456796B00F6F6FF /* WebKitHandler.swift in Sources */,
@@ -1821,6 +1833,8 @@
 				9779A5BF2456793600F6F6FF /* OPDSStreamParser.mm in Sources */,
 				9779A5CD2456793600F6F6FF /* ZimFile.swift in Sources */,
 				9779E7A22379230F0058DC98 /* SearchController.swift in Sources */,
+				97CE423D2490498600B334E9 /* ZimFileMetaData.mm in Sources */,
+				97CE423E2490498600B334E9 /* SearchResult.m in Sources */,
 				97E983541F4DDB670021E96A /* SearchView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1984,12 +1998,18 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Model/libkiwix/iOS_lib",
+				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.ModelTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Utilities/Kiwix-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Model/libkiwix/include";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kiwix.app/Kiwix";
 			};
@@ -2015,10 +2035,16 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Model/libkiwix/iOS_lib",
+				);
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.ModelTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Utilities/Kiwix-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Model/libkiwix/include";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kiwix.app/Kiwix";
 			};
@@ -2245,7 +2271,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OBJC_BRIDGING_HEADER = "Model/Utilities/Kiwix-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Utilities/Kiwix-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Model/libkiwix/include";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2284,7 +2310,7 @@
 				PRODUCT_NAME = Kiwix;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTS_MACCATALYST = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "Model/Utilities/Kiwix-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Utilities/Kiwix-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Model/libkiwix/include";
 				TARGETED_DEVICE_FAMILY = "1,2";
