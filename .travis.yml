@@ -1,1 +1,10 @@
 language: swift
+os: osx
+osx_image: xcode11.5
+xcode_project: Kiwix.xcodeproj
+xcode_scheme: Kiwix for iOS
+
+jobs:
+  include:
+  - name: "iPhone 11 -- iOS 13.5"
+    platform: iOS Simulator,OS=13.5,name=iPhone 11 Pro
