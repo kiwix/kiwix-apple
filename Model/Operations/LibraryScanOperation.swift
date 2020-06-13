@@ -123,8 +123,10 @@ class LibraryScanOperation: LibraryOperationBase {
     }
     
     private func saveBookmarkData(zimFile: ZimFile) {
-        guard let fileURL = ZimMultiReader.shared.getFileURL(zimFileID: zimFile.id),
-            LibraryService().isFileInDocumentDirectory(zimFileID: zimFile.id) else {return}
-        zimFile.openInPlaceURLBookmark = try? fileURL.bookmarkData()
+        if #available(iOS 11.0, *) {
+            guard let fileURL = ZimMultiReader.shared.getFileURL(zimFileID: zimFile.id),
+                LibraryService().isFileInDocumentDirectory(zimFileID: zimFile.id) else {return}
+            zimFile.openInPlaceURLBookmark = try? fileURL.bookmarkData()
+        }
     }
 }
