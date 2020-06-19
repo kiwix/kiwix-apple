@@ -23,7 +23,7 @@ class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineView
     
     private let queue = SearchQueue()
     private(set) var searchText: String = ""
-    private var results = [SearchResultDeprecated]()
+    private var results = [SearchResult]()
     weak var windowController: WindowController?
     
     override func viewDidLoad() {
@@ -57,15 +57,15 @@ class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineView
             progressIndicator.startAnimation(nil)
             
             let zimFileIDs: Set<String> = Set(ZimMultiReader.shared.ids)
-            let operation = SearchProcedure(term: searchText, ids: zimFileIDs)
+            let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
             operation.completionBlock = { [weak self] in
                 guard !operation.isCancelled else {return}
                 DispatchQueue.main.sync {
                     self?.searchText = searchText
-                    self?.results = operation.sortedResults
+                    self?.results = operation.results
                     self?.resultsOutlineView.reloadData()
                     self?.progressIndicator.stopAnimation(nil)
-                    if operation.sortedResults.count > 0 {
+                    if operation.results.count > 0 {
                         self?.tabView.selectTabViewItem(withIdentifier: Mode.results.rawValue)
                     } else {
                         self?.tabView.selectTabViewItem(withIdentifier: Mode.noResult.rawValue)
@@ -83,7 +83,7 @@ class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineView
     }
     
     @IBAction func resultsOutlineViewClicked(_ sender: NSOutlineView) {
-        guard let searchResult = sender.item(atRow: sender.selectedRow) as? SearchResultDeprecated else {return}
+        guard let searchResult = sender.item(atRow: sender.selectedRow) as? SearchResult else {return}
         windowController?.contentTabController?.setMode(.reader)
         windowController?.webViewController?.load(url: searchResult.url)
         windowController?.searchField.endSearch()
@@ -106,14 +106,14 @@ class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineView
     // MARK: - NSOutlineViewDelegate
     
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-        guard let item = item as? SearchResultDeprecated else {return nil}
+        guard let item = item as? SearchResult else {return nil}
         let identifier = NSUserInterfaceItemIdentifier("DataCell")
         let view = outlineView.makeView(withIdentifier: identifier, owner: self) as! NSTableCellView
         view.textField?.stringValue = item.title
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
             let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: item.zimFileID)
-            view.imageView?.image = NSImage(data: zimFile?.icon ?? Data()) ?? #imageLiteral(resourceName: "GenericZimFile")
+            view.imageView?.image = NSImage(data: zimFile?.faviconData ?? Data()) ?? #imageLiteral(resourceName: "GenericZimFile")
         } catch {}
         return view
     }

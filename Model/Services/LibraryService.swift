@@ -6,7 +6,9 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
+#if canImport(UIKit)
 import UIKit
+#endif
 import Defaults
 
 class LibraryService {
@@ -22,7 +24,8 @@ class LibraryService {
     }
     
     // MARK: - Settings
-    
+
+    #if canImport(UIKit)
     static let autoUpdateInterval: TimeInterval = 3600.0 * 6
     var isAutoUpdateEnabled: Bool {
         get {
@@ -39,4 +42,5 @@ class LibraryService {
             isAutoUpdateEnabled ? LibraryService.autoUpdateInterval : UIApplication.backgroundFetchIntervalNever
         )
     }
+    #endif
 }

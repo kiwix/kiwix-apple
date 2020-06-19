@@ -44,7 +44,7 @@ NSMutableArray *searcherZimIDs = [[NSMutableArray alloc] init];
     return self;
 }
 
-+ (ZimMultiReader *)shared {
++ (ZimMultiReader *)sharedInstance {
     static ZimMultiReader *sharedInstance = nil;
     static dispatch_once_t onceToken; // onceToken = 0
     dispatch_once(&onceToken, ^{

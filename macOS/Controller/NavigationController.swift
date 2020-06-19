@@ -20,7 +20,7 @@ class ArticleNavigationController: NSViewController, NSMenuDelegate, NSOutlineVi
     private let localZimFiles: Results<ZimFile>? = {
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
-            let predicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.local.rawValue)
+            let predicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue)
             return database.objects(ZimFile.self).filter(predicate)
         } catch { return nil }
     }()
@@ -115,8 +115,8 @@ class ArticleNavigationController: NSViewController, NSMenuDelegate, NSOutlineVi
         let identifier = NSUserInterfaceItemIdentifier("ZimFileCell")
         let view = outlineView.makeView(withIdentifier: identifier, owner: self) as! ZimFileTableCellView
         view.titleTextField.stringValue = item.title
-        view.subtitleTextField.stringValue = "\(item.creationDateDescription), \(item.fileSizeDescription)"
-        view.imageView?.image = NSImage(data: item.icon)
+        view.subtitleTextField.stringValue = item.description
+        view.imageView?.image = NSImage(data: item.faviconData ?? Data())
         return view
     }
     

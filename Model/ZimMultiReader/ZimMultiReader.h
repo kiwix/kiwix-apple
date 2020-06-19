@@ -14,7 +14,7 @@ struct SharedReaders;
 @interface ZimMultiReader : NSObject
 
 - (instancetype _Nonnull)init NS_REFINED_FOR_SWIFT;
-+ (nonnull ZimMultiReader *)shared NS_REFINED_FOR_SWIFT;
++ (nonnull ZimMultiReader *)sharedInstance NS_REFINED_FOR_SWIFT;
 
 - (NSArray *_Nonnull)getReaderIdentifiers NS_REFINED_FOR_SWIFT;
 - (NSURL *_Nullable)getReaderFileURL:(NSString *_Nonnull)identifier NS_REFINED_FOR_SWIFT;

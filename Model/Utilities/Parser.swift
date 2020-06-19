@@ -67,7 +67,7 @@ class Parser {
         return snippet
     }
     
-    @available(iOS 12.0, *)
+    @available(iOS 12.0, macOS 10.14, *)
     func getFirstSentence(languageCode: String?) -> NSAttributedString? {
         guard let firstParagraph = self.getFirstParagraph() else { return nil }
         let text = firstParagraph.string

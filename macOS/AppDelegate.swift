@@ -71,8 +71,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, TabManagement {
                 guard let keyWindow = NSApplication.shared.keyWindow else {return}
                 for url in urls {
                     guard let meta = ZimMultiReader.getMetaData(url: url),
-                        let id = meta["id"] as? String,
-                        let mainPageURL = ZimMultiReader.shared.getMainPageURL(zimFileID: id) else {continue}
+                        let mainPageURL = ZimMultiReader.shared.getMainPageURL(zimFileID: meta.identifier) else {continue}
                 
                     /*
                      Decide which window should show the main page of the newly opened zim file.
@@ -100,11 +99,11 @@ protocol TabManagement: class {
     func willCloseTab(controller: NSWindowController)
 }
 
-extension DefaultsKeys {
-    static let zimFilePaths = DefaultsKey<[String]>("zimFilePaths", defaultValue: [])
-    static let zimFileBookmarks = DefaultsKey<[Data]>("zimFileBookmarks", defaultValue: [])
-    static let terminated = DefaultsKey<Bool>("terminated", defaultValue: false)
-    static let searchResultExcludeSnippet = DefaultsKey<Bool>("searchResultExcludeSnippet", defaultValue: false)
+extension Defaults.Keys {
+    static let zimFilePaths = Key<[String]>("zimFilePaths", default: [])
+    static let zimFileBookmarks = Key<[Data]>("zimFileBookmarks", default: [])
+    static let terminated = Key<Bool>("terminated", default: false)
+    static let searchResultExcludeSnippet = Key<Bool>("searchResultExcludeSnippet", default: false)
 }
 
 /**

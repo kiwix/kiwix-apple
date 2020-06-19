@@ -9,7 +9,7 @@
 typealias ZimFileID = String
 
 extension ZimMultiReader {
-    static let shared = ZimMultiReader.__shared()
+    static let shared = ZimMultiReader.__sharedInstance()
     
     var ids: [ZimFileID] {get{ return __getIdentifiers().compactMap({$0 as? ZimFileID}) }}
     func getFileURL(zimFileID: ZimFileID) -> URL? { return __getFileURL(zimFileID) }

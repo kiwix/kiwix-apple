@@ -8,7 +8,6 @@
 
 import Cocoa
 import WebKit
-import SwiftyUserDefaults
 import SwiftUI
 import RealmSwift
 
