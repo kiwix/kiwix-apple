@@ -41,6 +41,6 @@ extension ZimMultiReader {
     
     func getMainPageURL(zimFileID: String) -> URL? {
         guard let path = __getMainPagePath(zimFileID) else {return nil}
-        return URL(bookID: zimFileID, contentPath: path)
+        return URL(zimFileID: zimFileID, contentPath: path)
     }
 }

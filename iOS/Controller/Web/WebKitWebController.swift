@@ -122,7 +122,7 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
         if url.isKiwixURL {
             guard let zimFileID = url.host else { decisionHandler(.cancel); return }
             if let redirectedPath = ZimMultiReader.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
-                let redirectedURL = URL(bookID: zimFileID, contentPath: redirectedPath) {
+                let redirectedURL = URL(zimFileID: zimFileID, contentPath: redirectedPath) {
                 decisionHandler(.cancel)
                 load(url: redirectedURL)
             } else {

@@ -1,6 +1,6 @@
 //
 //  KiwixURLSchemeHandler.swift
-//  WikiMed
+//  Kiwix
 //
 //  Created by Chris Li on 9/6/17.
 //  Copyright © 2017 Chris Li. All rights reserved.
@@ -36,12 +36,12 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
 }
 
 extension URL {
-    init?(bookID: String, contentPath: String) {
-        let baseURLString = "kiwix://" + bookID
+    init?(zimFileID: String, contentPath: String) {
+        let baseURLString = "kiwix://" + zimFileID
         guard let encoded = contentPath.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {return nil}
         self.init(string: encoded, relativeTo: URL(string: baseURLString))
     }
-    
+
     var isKiwixURL: Bool {
         return scheme?.caseInsensitiveCompare("kiwix") == .orderedSame
     }
