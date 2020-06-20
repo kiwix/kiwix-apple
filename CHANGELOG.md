@@ -1,6 +1,7 @@
 ## 1.13.1
 
 - Resource unavailable alert: shown when a link was taped on, but the zim file is deleted.
+- Fixed an issue where app is launched into the incorrect view for iPhones / iPod touch on iOS 11 and 12
 
 ## 1.13
 

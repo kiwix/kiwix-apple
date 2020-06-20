@@ -42,9 +42,11 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         view.gestureRecognizers?.first?.delegate = self
-        sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode) { change in
-            guard self.masterIsVisible else { return }
-            self.preferredDisplayMode = self.getPrimaryVisibleDisplayMode()
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode) { change in
+                guard self.masterIsVisible else { return }
+                self.preferredDisplayMode = self.getPrimaryVisibleDisplayMode()
+            }
         }
     }
 
@@ -65,7 +67,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
          To mitigate, check if the app is in background before do any UI adjustments.
          */
         guard UIApplication.shared.applicationState != .background else { return }
-        if masterIsVisible {
+        if masterIsVisible && UIDevice.current.userInterfaceIdiom == .pad {
             preferredDisplayMode = getPrimaryVisibleDisplayMode(size: size)
         }
     }
