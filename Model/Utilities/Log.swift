@@ -12,4 +12,5 @@ private let subsystem = "org.kiwix.kiwix"
 
 struct Log {
     static let OPDS = OSLog(subsystem: subsystem, category: "OPDS")
+    static let URLSchemeHandler = OSLog(subsystem: subsystem, category: "URLSchemeHandler")
 }
