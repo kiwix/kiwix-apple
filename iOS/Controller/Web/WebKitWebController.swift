@@ -157,10 +157,10 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
         if let url = Bundle.main.url(forResource: "Inject", withExtension: "js"),
             let javascript = try? String(contentsOf: url) {
             webView.evaluateJavaScript(javascript, completionHandler: { (_, error) in
-                self.delegate?.webViewDidFinishLoading(controller: self)
+                self.delegate?.webViewDidFinishNavigation(controller: self)
             })
         } else {
-            delegate?.webViewDidFinishLoading(controller: self)
+            delegate?.webViewDidFinishNavigation(controller: self)
         }
         if let scale = Defaults[.webViewZoomScale], scale != 1 {
             adjustFontSize(scale: scale)
@@ -172,6 +172,7 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
         if error.code == .resourceUnavailable {
             present(UIAlertController.resourceUnavailable(), animated: true)
         }
+        delegate?.webViewDidFinishNavigation(controller: self)
     }
     
 //    @available(iOS 13.0, *)
@@ -193,7 +194,7 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
 
 protocol WebViewControllerDelegate: class {
     func webViewDidTapOnGeoLocation(controller: WebViewController, url: URL)
-    func webViewDidFinishLoading(controller: WebViewController)
+    func webViewDidFinishNavigation(controller: WebViewController)
 }
 
 extension UIAlertController {
