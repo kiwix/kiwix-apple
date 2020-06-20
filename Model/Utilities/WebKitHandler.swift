@@ -16,8 +16,7 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
             url.isKiwixURL,
             let contentPath = url.path.removingPercentEncoding,
             let zimFileID = url.host else {
-                let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorUnsupportedURL, userInfo: nil)
-                urlSchemeTask.didFailWithError(error)
+                urlSchemeTask.didFailWithError(URLError(.unsupportedURL))
                 return
         }
         
@@ -34,8 +33,7 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
             urlSchemeTask.didFinish()
         } else {
             os_log("Resource not found for url: %s.", log: Log.URLSchemeHandler, type: .info, url.absoluteString)
-            let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorResourceUnavailable, userInfo: nil)
-            urlSchemeTask.didFailWithError(error)
+            urlSchemeTask.didFailWithError(URLError(.resourceUnavailable, userInfo: ["url": url]))
         }
     }
     
