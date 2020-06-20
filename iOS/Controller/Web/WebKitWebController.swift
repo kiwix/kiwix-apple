@@ -20,6 +20,11 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
     }()
     weak var delegate: WebViewControllerDelegate?
     
+    convenience init(url: URL) {
+        self.init()
+        load(url: url)
+    }
+    
     override func loadView() {
         view = webView
     }
@@ -161,11 +166,47 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
             adjustFontSize(scale: scale)
         }
     }
+    
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        guard let error = error as? URLError else { return }
+        if error.code == .resourceUnavailable {
+            present(UIAlertController.resourceUnavailable(), animated: true)
+        }
+    }
+    
+//    @available(iOS 13.0, *)
+//    func webView(_ webView: WKWebView, contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo, completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
+//        guard let url = elementInfo.linkURL else { completionHandler(nil); return }
+//        let configuration = UIContextMenuConfiguration(
+//            identifier: nil,
+//            previewProvider: { WebViewController(url: url) },
+//            actionProvider: { actions in
+//                let viewMenu = UIAction(title: "View", image: UIImage(systemName: "eye.fill"), identifier: UIAction.Identifier(rawValue: "view")) {_ in
+//                    print("button clicked..")
+//                }
+//
+//                return UIMenu(title: url.path, image: nil, identifier: nil, children: [viewMenu])
+//        })
+//        completionHandler(configuration)
+//    }
 }
 
 protocol WebViewControllerDelegate: class {
     func webViewDidTapOnGeoLocation(controller: WebViewController, url: URL)
     func webViewDidFinishLoading(controller: WebViewController)
+}
+
+extension UIAlertController {
+    static func resourceUnavailable() -> UIAlertController {
+        let title = NSLocalizedString("Resource Unavailable", comment: "Resource Unavailable Alert")
+        let message = NSLocalizedString(
+            "The zim file containing the linked resource may have been deleted or is corrupted.",
+            comment: "Resource Unavailable Alert"
+        )
+        let controller = self.init(title: title, message: message, preferredStyle: .alert)
+        controller.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default))
+        return controller
+    }
 }
 
 class ExternalLinkAlertController: UIAlertController {
