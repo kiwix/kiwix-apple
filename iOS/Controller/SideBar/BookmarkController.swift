@@ -141,7 +141,7 @@ class BookmarkController: UIViewController, UITableViewDataSource, UITableViewDe
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let bookmark = bookmarks?[indexPath.row], let zimFileID = bookmark.zimFile?.id,
-            let url = URL(bookID: zimFileID, contentPath: bookmark.path) else {return}
+            let url = URL(zimFileID: zimFileID, contentPath: bookmark.path) else {return}
         tableView.deselectRow(at: indexPath, animated: true)
         delegate?.didTapBookmark(url: url)
         dismiss(animated: true) {
@@ -153,7 +153,7 @@ class BookmarkController: UIViewController, UITableViewDataSource, UITableViewDe
         guard let bookmark = bookmarks?[indexPath.row] else {return}
         let url: URL? = {
             guard let zimFileID = bookmark.zimFile?.id else {return nil}
-            return URL(bookID: zimFileID, contentPath: bookmark.path)
+            return URL(zimFileID: zimFileID, contentPath: bookmark.path)
         }()
         if editingStyle == .delete {
             do {

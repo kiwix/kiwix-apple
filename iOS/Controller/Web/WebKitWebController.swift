@@ -20,6 +20,11 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
     }()
     weak var delegate: WebViewControllerDelegate?
     
+    convenience init(url: URL) {
+        self.init()
+        load(url: url)
+    }
+    
     override func loadView() {
         view = webView
     }
@@ -122,7 +127,7 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
         if url.isKiwixURL {
             guard let zimFileID = url.host else { decisionHandler(.cancel); return }
             if let redirectedPath = ZimMultiReader.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
-                let redirectedURL = URL(bookID: zimFileID, contentPath: redirectedPath) {
+                let redirectedURL = URL(zimFileID: zimFileID, contentPath: redirectedPath) {
                 decisionHandler(.cancel)
                 load(url: redirectedURL)
             } else {
@@ -134,7 +139,7 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
                 let controller = SFSafariViewController(url: url)
                 self.present(controller, animated: true, completion: nil)
             } else {
-                present(ExternalLinkAlertController(policy: policy, action: {
+                present(UIAlertController.externalLink(policy: policy, action: {
                     let controller = SFSafariViewController(url: url)
                     self.present(controller, animated: true, completion: nil)
                 }), animated: true)
@@ -152,43 +157,95 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
         if let url = Bundle.main.url(forResource: "Inject", withExtension: "js"),
             let javascript = try? String(contentsOf: url) {
             webView.evaluateJavaScript(javascript, completionHandler: { (_, error) in
-                self.delegate?.webViewDidFinishLoading(controller: self)
+                self.delegate?.webViewDidFinishNavigation(controller: self)
             })
         } else {
-            delegate?.webViewDidFinishLoading(controller: self)
+            delegate?.webViewDidFinishNavigation(controller: self)
         }
         if let scale = Defaults[.webViewZoomScale], scale != 1 {
             adjustFontSize(scale: scale)
         }
     }
+    
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        guard let error = error as? URLError else { return }
+        if error.code == .resourceUnavailable {
+            present(UIAlertController.resourceUnavailable(), animated: true)
+        }
+        delegate?.webViewDidFinishNavigation(controller: self)
+    }
+    
+//    @available(iOS 13.0, *)
+//    func webView(_ webView: WKWebView, contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo, completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
+//        guard let url = elementInfo.linkURL else { completionHandler(nil); return }
+//        let configuration = UIContextMenuConfiguration(
+//            identifier: nil,
+//            previewProvider: { WebViewController(url: url) },
+//            actionProvider: { actions in
+//                let viewMenu = UIAction(title: "View", image: UIImage(systemName: "eye.fill"), identifier: UIAction.Identifier(rawValue: "view")) {_ in
+//                    print("button clicked..")
+//                }
+//
+//                return UIMenu(title: url.path, image: nil, identifier: nil, children: [viewMenu])
+//        })
+//        completionHandler(configuration)
+//    }
 }
 
 protocol WebViewControllerDelegate: class {
     func webViewDidTapOnGeoLocation(controller: WebViewController, url: URL)
-    func webViewDidFinishLoading(controller: WebViewController)
+    func webViewDidFinishNavigation(controller: WebViewController)
 }
 
-class ExternalLinkAlertController: UIAlertController {
-    convenience init(policy: ExternalLinkLoadingPolicy, action: @escaping (()->Void)) {
-        let message: String = {
+extension UIAlertController {
+    static func resourceUnavailable() -> UIAlertController {
+        let title = NSLocalizedString("Resource Unavailable", comment: "Resource Unavailable Alert")
+        let message = NSLocalizedString(
+            "The zim file containing the linked resource may have been deleted or is corrupted.",
+            comment: "Resource Unavailable Alert"
+        )
+        let controller = self.init(title: title, message: message, preferredStyle: .alert)
+        controller.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default))
+        return controller
+    }
+    
+    static func externalLink(policy: ExternalLinkLoadingPolicy, action: @escaping (()->Void)) -> UIAlertController {
+        let title = NSLocalizedString("External Link", comment: "External Link Alert")
+        let message: String? = {
             switch policy {
             case .alwaysAsk:
-                return NSLocalizedString("An external link is tapped, do you wish to load the link via Internet?", comment: "External Link Alert")
+                return NSLocalizedString(
+                    "An external link is tapped, do you wish to load the link via Internet?",
+                    comment: "External Link Alert"
+                )
             case .neverLoad:
-                return NSLocalizedString("An external link is tapped. However, your current setting does not allow it to be loaded.", comment: "External Link Alert")
+                return NSLocalizedString(
+                    "An external link is tapped. However, your current setting does not allow it to be loaded.",
+                    comment: "External Link Alert"
+                )
             default:
-                return ""
+                return nil
             }
         }()
-        self.init(title: NSLocalizedString("External Link", comment: "External Link Alert"), message: message, preferredStyle: .alert)
+        let controller = self.init(title: title, message: message, preferredStyle: .alert)
         if policy == .alwaysAsk {
-            addAction(UIAlertAction(title: NSLocalizedString("Load the link", comment: "External Link Alert"), style: .default, handler: { _ in
-                action()
-            }))
-            addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "External Link Alert"), style: .cancel, handler: nil))
+            controller.addAction(UIAlertAction(
+                title: NSLocalizedString("Load the link", comment: "External Link Alert"),
+                style: .default,
+                handler: { _ in action() }
+            ))
+            controller.addAction(UIAlertAction(
+                title: NSLocalizedString("Cancel", comment: "External Link Alert"),
+                style: .cancel,
+                handler: nil
+            ))
         } else if policy == .neverLoad {
-            addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "External Link Alert"), style: .cancel, handler: nil))
+            controller.addAction(UIAlertAction(
+                title: NSLocalizedString("OK", comment: "External Link Alert"),
+                style: .cancel,
+                handler: nil
+            ))
         }
-        
+        return controller
     }
 }

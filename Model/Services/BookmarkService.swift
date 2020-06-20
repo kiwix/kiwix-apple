@@ -26,7 +26,7 @@ class BookmarkService {
         }()
         let bookmarksData = bookmarks.compactMap { (bookmark) -> [String: Any]? in
             guard let zimFile = bookmark.zimFile,
-                let url = URL(bookID: zimFile.id, contentPath: bookmark.path) else {return nil}
+                let url = URL(zimFileID: zimFile.id, contentPath: bookmark.path) else {return nil}
             return [
                 "title": bookmark.title,
                 "url": url.absoluteString,

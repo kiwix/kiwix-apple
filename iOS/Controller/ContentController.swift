@@ -214,7 +214,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         
     }
     
-    func webViewDidFinishLoading(controller: WebViewController) {
+    func webViewDidFinishNavigation(controller: WebViewController) {
         // update buttons isEnabled
         chevronLeftButton.isEnabled = controller.canGoBack
         chevronRightButton.isEnabled = controller.canGoForward
