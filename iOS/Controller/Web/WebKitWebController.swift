@@ -139,7 +139,7 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
                 let controller = SFSafariViewController(url: url)
                 self.present(controller, animated: true, completion: nil)
             } else {
-                present(ExternalLinkAlertController(policy: policy, action: {
+                present(UIAlertController.externalLink(policy: policy, action: {
                     let controller = SFSafariViewController(url: url)
                     self.present(controller, animated: true, completion: nil)
                 }), animated: true)
@@ -207,29 +207,44 @@ extension UIAlertController {
         controller.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default))
         return controller
     }
-}
-
-class ExternalLinkAlertController: UIAlertController {
-    convenience init(policy: ExternalLinkLoadingPolicy, action: @escaping (()->Void)) {
-        let message: String = {
+    
+    static func externalLink(policy: ExternalLinkLoadingPolicy, action: @escaping (()->Void)) -> UIAlertController {
+        let title = NSLocalizedString("External Link", comment: "External Link Alert")
+        let message: String? = {
             switch policy {
             case .alwaysAsk:
-                return NSLocalizedString("An external link is tapped, do you wish to load the link via Internet?", comment: "External Link Alert")
+                return NSLocalizedString(
+                    "An external link is tapped, do you wish to load the link via Internet?",
+                    comment: "External Link Alert"
+                )
             case .neverLoad:
-                return NSLocalizedString("An external link is tapped. However, your current setting does not allow it to be loaded.", comment: "External Link Alert")
+                return NSLocalizedString(
+                    "An external link is tapped. However, your current setting does not allow it to be loaded.",
+                    comment: "External Link Alert"
+                )
             default:
-                return ""
+                return nil
             }
         }()
-        self.init(title: NSLocalizedString("External Link", comment: "External Link Alert"), message: message, preferredStyle: .alert)
+        let controller = self.init(title: title, message: message, preferredStyle: .alert)
         if policy == .alwaysAsk {
-            addAction(UIAlertAction(title: NSLocalizedString("Load the link", comment: "External Link Alert"), style: .default, handler: { _ in
-                action()
-            }))
-            addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "External Link Alert"), style: .cancel, handler: nil))
+            controller.addAction(UIAlertAction(
+                title: NSLocalizedString("Load the link", comment: "External Link Alert"),
+                style: .default,
+                handler: { _ in action() }
+            ))
+            controller.addAction(UIAlertAction(
+                title: NSLocalizedString("Cancel", comment: "External Link Alert"),
+                style: .cancel,
+                handler: nil
+            ))
         } else if policy == .neverLoad {
-            addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "External Link Alert"), style: .cancel, handler: nil))
+            controller.addAction(UIAlertAction(
+                title: NSLocalizedString("OK", comment: "External Link Alert"),
+                style: .cancel,
+                handler: nil
+            ))
         }
-        
+        return controller
     }
 }
