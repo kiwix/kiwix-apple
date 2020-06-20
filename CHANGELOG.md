@@ -1,3 +1,7 @@
+## 1.13.1
+
+- Resource unavailable alert: shown when a link was taped on, but the zim file is deleted.
+
 ## 1.13
 
 - article outline improvements:
