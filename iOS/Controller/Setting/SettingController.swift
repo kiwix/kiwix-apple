@@ -126,7 +126,7 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
                                       message: NSLocalizedString("We will redirect you to App Store. Thank you for using Kiwix!", comment: "Rate App"),
                                       preferredStyle: .alert)
         let action = UIAlertAction(title: NSLocalizedString("OK", comment: "Rate App"), style: .default) { action in
-            let url = URL(string: "itms-apps://itunes.apple.com/us/app/itunes-u/id997079563?action=write-review")!
+            let url = URL(string: "itms-apps://itunes.apple.com/us/app/kiwix/id997079563?action=write-review")!
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
         alert.addAction(action)

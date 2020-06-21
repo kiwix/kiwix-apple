@@ -72,7 +72,9 @@ class SearchResultsListController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! SearchResultTableViewCell
         let result = results[indexPath.row]
+        
         cell.titleLabel.text = result.title
+        cell.titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
@@ -81,7 +83,6 @@ class SearchResultsListController: UITableViewController {
             cell.thumbImageView.contentMode = .scaleAspectFit
         } catch {}
         
-        cell.titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         if let snippet = result.snippet {
             cell.detailLabel.attributedText = snippet
         }

@@ -55,16 +55,18 @@ class Parser {
             if let element = node as? Element {
                 if let className = try? element.className(), className == "mw-ref" {
                     continue
-                } else if element.tagName() == "b", let text = try? element.text() {
-                    snippet.append(NSAttributedString(string: text, attributes: [.font: Parser.boldFont]))
                 } else if let text = try? element.text() {
-                    snippet.append(NSAttributedString(string: text))
+                    let attributedSting = NSAttributedString(
+                        string: text.trimmingCharacters(in: .whitespacesAndNewlines),
+                        attributes: element.tagName() == "b" ? [.font: Parser.boldFont] : nil
+                    )
+                    snippet.append(attributedSting)
                 }
             } else if let text = try? node.outerHtml() {
-                snippet.append(NSAttributedString(string: text))
+                snippet.append(NSAttributedString(string: text.trimmingCharacters(in: .whitespacesAndNewlines)))
             }
         }
-        return snippet
+        return snippet.length > 0 ? snippet : nil
     }
     
     @available(iOS 12.0, macOS 10.14, *)
