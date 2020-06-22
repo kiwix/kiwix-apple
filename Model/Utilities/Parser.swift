@@ -57,16 +57,16 @@ class Parser {
                     continue
                 } else if let text = try? element.text() {
                     let attributedSting = NSAttributedString(
-                        string: text.trimmingCharacters(in: .whitespacesAndNewlines),
+                        string: text,
                         attributes: element.tagName() == "b" ? [.font: Parser.boldFont] : nil
                     )
                     snippet.append(attributedSting)
                 }
             } else if let text = try? node.outerHtml() {
-                snippet.append(NSAttributedString(string: text.trimmingCharacters(in: .whitespacesAndNewlines)))
+                snippet.append(NSAttributedString(string: text))
             }
         }
-        return snippet.length > 0 ? snippet : nil
+        return snippet.string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : snippet
     }
     
     @available(iOS 12.0, macOS 10.14, *)
