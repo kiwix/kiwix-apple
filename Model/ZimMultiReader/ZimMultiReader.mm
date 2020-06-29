@@ -8,12 +8,12 @@
 
 #include <set>
 #include <unordered_map>
+#include "book.h"
 #include "entry.h"
 #include "reader.h"
 #include "searcher.h"
 #import "ZimMultiReader.h"
 #import "ZimFileMetaData.h"
-#include "book.h"
 
 struct SharedReaders {
     NSArray *readerIDs;
@@ -23,14 +23,12 @@ struct SharedReaders {
 @interface ZimMultiReader ()
 
 @property (assign) std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>> *readers;
+@property (assign) std::unordered_map<std::string, kiwix::Reader> *readers2;
 @property (strong) NSMutableDictionary *fileURLs; // [ID: FileURL]
 
 @end
 
 @implementation ZimMultiReader
-
-kiwix::Searcher *searcher = nullptr;
-NSMutableArray *searcherZimIDs = [[NSMutableArray alloc] init];
 
 #pragma mark - init
 
@@ -46,7 +44,7 @@ NSMutableArray *searcherZimIDs = [[NSMutableArray alloc] init];
 
 + (ZimMultiReader *)sharedInstance {
     static ZimMultiReader *sharedInstance = nil;
-    static dispatch_once_t onceToken; // onceToken = 0
+    static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = [[ZimMultiReader alloc] init];
     });
@@ -96,13 +94,12 @@ NSMutableArray *searcherZimIDs = [[NSMutableArray alloc] init];
     NSMutableArray *readerIDs = [[NSMutableArray alloc] initWithCapacity:[identifiers count]];
     auto readers = std::vector<std::shared_ptr<kiwix::Reader>>();
     
-    for(auto iter: *self.readers) {
-        NSString *identifier = [NSString stringWithCString:iter.first.c_str() encoding:NSUTF8StringEncoding];
-        if (![identifiers containsObject:identifier]) {
-            continue;
-        }
-        [readerIDs addObject:identifier];
-        readers.push_back(iter.second);
+    for (NSString *identifier in identifiers) {
+        try {
+            auto reader = self.readers->at([identifier cStringUsingEncoding:NSUTF8StringEncoding]);
+            [readerIDs addObject:identifier];
+            readers.push_back(reader);
+        } catch (std::out_of_range) { }
     }
     
     struct SharedReaders sharedReaders;

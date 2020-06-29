@@ -6,11 +6,11 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
+#import "reader.h"
+#import "searcher.h"
 #import "SearchOperation.h"
 #import "SearchResult.h"
 #import "ZimMultiReader.h"
-#import "reader.h"
-#import "searcher.h"
 
 struct SharedReaders {
     NSArray *readerIDs;
@@ -19,7 +19,7 @@ struct SharedReaders {
 
 @interface SearchOperation ()
 
-@property (strong) NSSet *identifiers;
+@property (nonatomic, strong) NSSet *identifiers;
 
 @end
 
