@@ -6,8 +6,12 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
-#import "reader.h"
-#import "searcher.h"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+#import "kiwix/reader.h"
+#import "kiwix/searcher.h"
+#pragma clang diagnostic pop
+
 #import "SearchOperation.h"
 #import "SearchResult.h"
 #import "ZimMultiReader.h"

@@ -6,16 +6,15 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+#include "kiwix/book.h"
+#include "kiwix/library.h"
+#include "kiwix/manager.h"
+#pragma clang diagnostic pop
+
 #import "OPDSStreamParser.h"
 #import "ZimFileMetaData.h"
-#include "book.h"
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Weverything"
-#include "library.h"
-#include "manager.h"
-#include "otherTools.h"
-#pragma clang diagnostic pop
 
 @interface OPDSStreamParser ()
 

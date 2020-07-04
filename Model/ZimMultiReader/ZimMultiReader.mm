@@ -8,10 +8,15 @@
 
 #include <set>
 #include <unordered_map>
-#include "book.h"
-#include "entry.h"
-#include "reader.h"
-#include "searcher.h"
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+#include "kiwix/book.h"
+#include "kiwix/entry.h"
+#include "kiwix/reader.h"
+#include "kiwix/searcher.h"
+#pragma clang diagnostic pop
+
 #import "ZimMultiReader.h"
 #import "ZimFileMetaData.h"
 
