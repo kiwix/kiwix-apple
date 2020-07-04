@@ -129,18 +129,7 @@
 		97D757E5238F3161008FB7E2 /* SideBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D757E4238F3161008FB7E2 /* SideBarController.swift */; };
 		97DBCF9D203CA254004EE274 /* SettingExternalLinkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DBCF9C203CA254004EE274 /* SettingExternalLinkController.swift */; };
 		97E02DE424B00C82008E278D /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DE324B00C82008E278D /* libkiwix.xcframework */; };
-		97E02E0124B1233A008E278D /* libicudata.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DEE24B122BF008E278D /* libicudata.a */; };
-		97E02E0224B1233A008E278D /* libicui18n.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DEB24B122BF008E278D /* libicui18n.a */; };
-		97E02E0324B1233A008E278D /* libicuuc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DED24B122BF008E278D /* libicuuc.a */; };
-		97E02E0424B1233A008E278D /* libkiwix.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DF124B122BF008E278D /* libkiwix.a */; };
-		97E02E0524B1233A008E278D /* liblzma.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DE924B122BF008E278D /* liblzma.a */; };
-		97E02E0624B1233A008E278D /* libmicrohttpd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DEF24B122BF008E278D /* libmicrohttpd.a */; };
-		97E02E0724B1233A008E278D /* libpugixml.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DEA24B122BF008E278D /* libpugixml.a */; };
-		97E02E0824B1233A008E278D /* libxapian.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DF024B122BF008E278D /* libxapian.a */; };
-		97E02E0924B1233A008E278D /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DF224B122BF008E278D /* libz.a */; };
-		97E02E0A24B1233A008E278D /* libzim.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DF324B122BF008E278D /* libzim.a */; };
-		97E02E0B24B1233A008E278D /* libzstd.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DEC24B122BF008E278D /* libzstd.a */; };
-		97E02E0F24B12365008E278D /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DE824B122BF008E278D /* libcurl.a */; };
+		97E02E1024B1273E008E278D /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DE324B00C82008E278D /* libkiwix.xcframework */; };
 		97E34E0C20124F33005080B2 /* LegacySearchFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E34E0B20124F33005080B2 /* LegacySearchFilterController.swift */; };
 		97E983541F4DDB670021E96A /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E983531F4DDB670021E96A /* SearchView.swift */; };
 		97EF586D239DB83E007549B8 /* ContentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EF586C239DB83E007549B8 /* ContentController.swift */; };
@@ -370,23 +359,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97E02E0924B1233A008E278D /* libz.a in Frameworks */,
 				974FFE6F2353AA3900F6BF28 /* WebKit.framework in Frameworks */,
 				97CE15BB23B26ED200378D9F /* Realm in Frameworks */,
+				97E02E1024B1273E008E278D /* libkiwix.xcframework in Frameworks */,
 				97CE4241249086A600B334E9 /* Defaults in Frameworks */,
-				97E02E0624B1233A008E278D /* libmicrohttpd.a in Frameworks */,
-				97E02E0824B1233A008E278D /* libxapian.a in Frameworks */,
-				97E02E0224B1233A008E278D /* libicui18n.a in Frameworks */,
 				97CE15BD23B26ED200378D9F /* RealmSwift in Frameworks */,
-				97E02E0124B1233A008E278D /* libicudata.a in Frameworks */,
-				97E02E0424B1233A008E278D /* libkiwix.a in Frameworks */,
-				97E02E0F24B12365008E278D /* libcurl.a in Frameworks */,
-				97E02E0324B1233A008E278D /* libicuuc.a in Frameworks */,
 				97CE42462493239C00B334E9 /* SwiftSoup in Frameworks */,
-				97E02E0724B1233A008E278D /* libpugixml.a in Frameworks */,
-				97E02E0A24B1233A008E278D /* libzim.a in Frameworks */,
-				97E02E0B24B1233A008E278D /* libzstd.a in Frameworks */,
-				97E02E0524B1233A008E278D /* liblzma.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1326,14 +1304,10 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 2.1.3;
-				DEAD_CODE_STRIPPING = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = macOS/Support/Info.plist;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Model/libkiwix/lib",
-				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 2.1;
 				OTHER_LDFLAGS = "$(inherited)";
@@ -1346,7 +1320,6 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Utilities/Kiwix-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 5.0;
-				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Model/libkiwix/include";
 			};
 			name = Debug;
 		};
@@ -1365,10 +1338,6 @@
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = macOS/Support/Info.plist;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Model/libkiwix/lib",
-				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 2.1;
 				OTHER_LDFLAGS = "$(inherited)";
@@ -1380,7 +1349,6 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Utilities/Kiwix-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 5.0;
-				SYSTEM_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Model/libkiwix/include";
 			};
 			name = Release;
 		};
