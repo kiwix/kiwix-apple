@@ -1,14 +1,17 @@
 //
-//  OPDSStreamZimFile.m
+//  ZimFileMetaData.mm
 //  Kiwix
 //
 //  Created by Chris Li on 3/8/20.
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdocumentation"
+#include "kiwix/book.h"
+#pragma clang diagnostic pop
+
 #import "ZimFileMetaData.h"
-#include "book.h"
-#include "otherTools.h"
 
 #define SAFE_READ(X, Y) try {X = Y;} catch (std::exception) {X = nil;}
 #define SAFE_READ_BOOL(X, Y) try {X = Y;} catch (std::exception) {X = false;}
