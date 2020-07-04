@@ -1,3 +1,9 @@
+## 1.13.2
+
+- updated version of libkiwix and dependencies to resolve an issue where the app couldn't open some of the latest zim files
+- updated version of realm to 5.2
+
+
 ## 1.13.1
 
 - Resource unavailable alert: shown when a link was taped on, but the zim file is deleted.
