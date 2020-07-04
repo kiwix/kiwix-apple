@@ -1,5 +1,5 @@
 AppStore/screenshots
-Model/libkiwix
+libkiwix.xcframework
 *.zim
 
 \.idea
