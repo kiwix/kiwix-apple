@@ -14,6 +14,10 @@ class BookmarkService {
     private let database = try? Realm(configuration: Realm.defaultConfig)
     
     func updateBookmarkWidgetData() {
+        guard #available(iOS 13, *) else {
+            return
+        }
+        
         let bookmarks: [Bookmark] = {
             var bookmarks = [Bookmark]()
             if let result = database?.objects(Bookmark.self).sorted(byKeyPath: "date", ascending: false) {
@@ -34,6 +38,8 @@ class BookmarkService {
             ]
         }
         UserDefaults(suiteName: "group.kiwix")?.set(bookmarksData, forKey: "bookmarks")
+        #if !targetEnvironment(macCatalyst)
         NCWidgetController().setHasContent(bookmarks.count > 0, forWidgetWithBundleIdentifier: "self.Kiwix.Bookmarks")
+        #endif
     }
 }

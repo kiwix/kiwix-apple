@@ -28,7 +28,10 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         navigationController.isToolbarHidden = false
         viewControllers = [sideBarController, navigationController]
         delegate = self
-        if #available(iOS 13.0, *) { preferredDisplayMode = .primaryHidden }
+        if #available(iOS 13.0, *) {
+            primaryBackgroundStyle = .sidebar
+            preferredDisplayMode = .primaryHidden
+        }
 
         sideBarController.favoriteController.delegate = contentController
         sideBarController.outlineController.delegate = contentController
