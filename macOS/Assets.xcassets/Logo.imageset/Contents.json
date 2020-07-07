@@ -5,13 +5,13 @@
       "scale" : "1x"
     },
     {
+      "filename" : "Kiwix_logo_v3.svg.png",
       "idiom" : "mac",
-      "filename" : "Kiwix_icon_transparent.svg.png",
       "scale" : "2x"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   }
 }
