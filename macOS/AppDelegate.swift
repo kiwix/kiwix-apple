@@ -118,8 +118,4 @@ extension NSImage {
                        context: nil,
                        hints: nil)
     }
-
-    convenience init?(named name: String) {
-        self.init(named: Name(name))
-    }
 }
