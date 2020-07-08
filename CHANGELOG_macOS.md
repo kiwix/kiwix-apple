@@ -1,3 +1,8 @@
+## 2.1.1
+
+- updated version of libkiwix and dependencies to resolve an issue where the app couldn't open some of the latest zim files
+- updated version of realm to 5.2
+
 ## 2.1 (Mar 1, 2020)
 
 - compatibility with macOS Catalina
