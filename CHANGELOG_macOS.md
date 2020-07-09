@@ -1,4 +1,4 @@
-## 2.1.1
+## 2.1.1 (Jul 8, 2020)
 
 - updated version of libkiwix and dependencies to resolve an issue where the app couldn't open some of the latest zim files
 - updated version of realm to 5.2
