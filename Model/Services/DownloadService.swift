@@ -11,7 +11,8 @@ import RealmSwift
 class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
     static let shared = DownloadService()
     
-    private var totalBytesWritten = [String: Int64]() // for all download in progress zim files
+    private let queue = DispatchQueue.init(label: "downloadServiceQueue")
+    private var cachedTotalBytesWritten = [String: Int64]() // for all download in progress zim files
     private var heartbeat: Timer?
     
     private lazy var session: URLSession = {
@@ -44,19 +45,19 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     }
     
     private func startHeartbeat() {
-        heartbeat = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { (timer) in
-            do {
-                let database = try Realm(configuration: Realm.defaultConfig)
-                try database.write {
-                    for (zimFileID, bytesCount) in self.totalBytesWritten {
-                        guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else {return}
-                        if bytesCount > 0 && zimFile.state != .downloadInProgress {
-                            zimFile.state = .downloadInProgress
-                        }
-                        zimFile.downloadTotalBytesWritten = bytesCount
+        heartbeat = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
+            let cachedTotalBytesWritten = self?.cachedTotalBytesWritten ?? [:]
+            
+            let database = try? Realm(configuration: Realm.defaultConfig)
+            try? database?.write {
+                for (zimFileID, bytesCount) in cachedTotalBytesWritten {
+                    guard let zimFile = database?.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else {continue}
+                    if bytesCount > 0 && zimFile.state != .downloadInProgress {
+                        zimFile.state = .downloadInProgress
                     }
+                    zimFile.downloadTotalBytesWritten = bytesCount
                 }
-            } catch {}
+            }
         })
     }
     
@@ -87,6 +88,8 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         let task = self.session.downloadTask(with: request)
         task.taskDescription = zimFileID
         task.resume()
+        
+        if self.heartbeat == nil { self.startHeartbeat() }
     }
     
     func pause(zimFileID: String) {
@@ -143,8 +146,8 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         guard let zimFileID = task.taskDescription else {return}
-        totalBytesWritten[zimFileID] = nil
-        if totalBytesWritten.count == 0 { heartbeat?.invalidate(); self.heartbeat = nil }
+        cachedTotalBytesWritten[zimFileID] = nil
+        if cachedTotalBytesWritten.count == 0 { heartbeat?.invalidate(); self.heartbeat = nil }
         
         if let error = error as NSError? {
             do {
@@ -192,7 +195,9 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
                     totalBytesExpectedToWrite: Int64)
     {
         guard let zimFileID = downloadTask.taskDescription else {return}
-        self.totalBytesWritten[zimFileID] = totalBytesWritten
+        queue.async(flags: .barrier) {
+            self.cachedTotalBytesWritten[zimFileID] = totalBytesWritten
+        }
     }
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
