@@ -62,28 +62,31 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     
     // MARK: - actions
     
+    /// Start downloading a zim file.
+    /// - Parameters:
+    ///   - zimFileID: identifier of the zim file to download
+    ///   - allowsCellularAccess: if the file download allows using cellular data
     func start(zimFileID: String, allowsCellularAccess: Bool) {
-        do {
-            let database = try Realm(configuration: Realm.defaultConfig)
-            guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID),
-                let remoteURLString = zimFile.downloadURL, var url = URL(string: remoteURLString) else {return}
-            if url.lastPathComponent.hasSuffix(".meta4") {
-                url = url.deletingPathExtension()
-            }
-            
-            try database.write {
-                zimFile.state = .downloadQueued
-            }
-            
-            var request = URLRequest(url: url)
-            request.allowsCellularAccess = allowsCellularAccess
-            let task = self.session.downloadTask(with: request)
-            task.taskDescription = zimFileID
-            task.resume()
-            
-            if self.heartbeat == nil { self.startHeartbeat() }
-            NetworkActivityController.shared.taskDidStart(identifier: zimFileID)
-        } catch {}
+        let database = try? Realm(configuration: Realm.defaultConfig)
+        guard let zimFile = database?.object(ofType: ZimFile.self, forPrimaryKey: zimFileID),
+            var url = URL(string: zimFile.downloadURL ?? "") else {return}
+        
+        if url.lastPathComponent.hasSuffix(".meta4") {
+            url = url.deletingPathExtension()
+        }
+        
+        try? database?.write {
+            zimFile.state = .downloadQueued
+            zimFile.downloadResumeData = nil
+            zimFile.downloadErrorDescription = nil
+            zimFile.downloadTotalBytesWritten = 0
+        }
+        
+        var request = URLRequest(url: url)
+        request.allowsCellularAccess = allowsCellularAccess
+        let task = self.session.downloadTask(with: request)
+        task.taskDescription = zimFileID
+        task.resume()
     }
     
     func pause(zimFileID: String) {
@@ -182,7 +185,12 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     
     // MARK: - URLSessionDownloadDelegate
     
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
+    func urlSession(_ session: URLSession,
+                    downloadTask: URLSessionDownloadTask,
+                    didWriteData bytesWritten: Int64,
+                    totalBytesWritten: Int64,
+                    totalBytesExpectedToWrite: Int64)
+    {
         guard let zimFileID = downloadTask.taskDescription else {return}
         self.totalBytesWritten[zimFileID] = totalBytesWritten
     }
