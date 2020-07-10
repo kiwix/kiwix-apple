@@ -1,5 +1,5 @@
 //
-//  DownloadManager.swift
+//  DownloadService.swift
 //  Kiwix
 //
 //  Created by Chris Li on 1/24/17.
@@ -8,8 +8,8 @@
 
 import RealmSwift
 
-class DownloadManager: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
-    static let shared = DownloadManager()
+class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
+    static let shared = DownloadService()
     
     private var totalBytesWritten = [String: Int64]() // for all download in progress zim files
     private var heartbeat: Timer?
