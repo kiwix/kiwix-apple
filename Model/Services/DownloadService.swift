@@ -38,27 +38,35 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
             })
             if hasTask && self.heartbeat == nil {
                 OperationQueue.main.addOperation({
-                    self.startHeartbeat()
+                    self.startHeartbeatIfNeeded()
                 })
             }
         })
     }
     
-    private func startHeartbeat() {
-        heartbeat = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] _ in
-            let cachedTotalBytesWritten = self?.cachedTotalBytesWritten ?? [:]
-            
-            let database = try? Realm(configuration: Realm.defaultConfig)
-            try? database?.write {
-                for (zimFileID, bytesCount) in cachedTotalBytesWritten {
-                    guard let zimFile = database?.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else {continue}
-                    if bytesCount > 0 && zimFile.state != .downloadInProgress {
-                        zimFile.state = .downloadInProgress
+    private func startHeartbeatIfNeeded() {
+        DispatchQueue.main.async {
+            guard self.heartbeat == nil else { return }
+            self.heartbeat = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [unowned self] _ in
+                self.saveCachedTotalBytesWritten()
+            })
+        }
+    }
+    
+    private func saveCachedTotalBytesWritten() {
+        queue.async(flags: .barrier) {
+            do {
+                let database = try Realm(configuration: Realm.defaultConfig)
+                try database.write {
+                    self.cachedTotalBytesWritten.forEach { (zimFileID, bytes) in
+                        guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID),
+                            bytes > 0 else { return }
+                        if zimFile.state != .downloadInProgress { zimFile.state = .downloadInProgress }
+                        zimFile.downloadTotalBytesWritten = bytes
                     }
-                    zimFile.downloadTotalBytesWritten = bytesCount
                 }
-            }
-        })
+            } catch {}
+        }
     }
     
     // MARK: - actions
@@ -89,7 +97,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         task.taskDescription = zimFileID
         task.resume()
         
-        if self.heartbeat == nil { self.startHeartbeat() }
+        self.startHeartbeatIfNeeded()
     }
     
     func pause(zimFileID: String) {
@@ -126,7 +134,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
             task.taskDescription = zimFileID
             task.resume()
             
-            if self.heartbeat == nil { self.startHeartbeat() }
+            if self.heartbeat == nil { self.startHeartbeatIfNeeded() }
             NetworkActivityController.shared.taskDidStart(identifier: zimFileID)
         } catch {}
     }
