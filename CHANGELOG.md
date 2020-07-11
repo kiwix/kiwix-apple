@@ -1,3 +1,7 @@
+## 1.13.3
+
+- stability improvements to the under the hood file download sub-system
+
 ## 1.13.2
 
 - updated version of libkiwix and dependencies to resolve an issue where the app couldn't open some of the latest zim files

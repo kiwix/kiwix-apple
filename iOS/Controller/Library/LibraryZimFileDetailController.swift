@@ -253,17 +253,17 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
         func handle(action: Action) {
             switch action {
             case .downloadWifiOnly:
-                DownloadManager.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
+                DownloadService.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
             case .downloadWifiAndCellular:
-                DownloadManager.shared.start(zimFileID: zimFile.id, allowsCellularAccess: true)
+                DownloadService.shared.start(zimFileID: zimFile.id, allowsCellularAccess: true)
             case .downloadSpaceNotEnough:
                 break
             case .cancel:
-                DownloadManager.shared.cancel(zimFileID: zimFile.id)
+                DownloadService.shared.cancel(zimFileID: zimFile.id)
             case .pause:
-                DownloadManager.shared.pause(zimFileID: zimFile.id)
+                DownloadService.shared.pause(zimFileID: zimFile.id)
             case .resume:
-                DownloadManager.shared.resume(zimFileID: zimFile.id)
+                DownloadService.shared.resume(zimFileID: zimFile.id)
             case .deleteFile, .deleteBookmarks, .deleteFileAndBookmarks, .unlink:
                 present(ActionConfirmationController(zimFile: zimFile, action: action), animated: true)
             case .openMainPage:

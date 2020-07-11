@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         
         print("Document Directory URL: \(URL.documentDirectory)")
         
-        DownloadManager.shared.restorePreviousState()
+        DownloadService.shared.restorePreviousState()
         LibraryService().applyAutoUpdateSetting()
         
         fileMonitor.delegate = self
@@ -80,8 +80,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     
     // MARK: - Background
     
-    func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
-        DownloadManager.shared.backgroundEventsCompleteProcessing = completionHandler
+    func application(
+        _ application: UIApplication,
+        handleEventsForBackgroundURLSession identifier: String,
+        completionHandler: @escaping () -> Void
+    ) {
+        DownloadService.shared.backgroundEventsProcessingCompletionHandler = completionHandler
     }
     
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
