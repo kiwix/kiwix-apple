@@ -45,7 +45,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
             self.heartbeat = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [unowned self] _ in
                 self.saveCachedTotalBytesWritten()
             })
-            os_log("Heartbeat started.", log: Log.DownloadService, type: .default)
+            os_log("Heartbeat started.", log: Log.DownloadService, type: .info)
         }
     }
     
@@ -54,7 +54,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
             guard self.heartbeat != nil else { return }
             self.heartbeat?.invalidate()
             self.heartbeat = nil
-            os_log("Heartbeat stopped.", log: Log.DownloadService, type: .default)
+            os_log("Heartbeat stopped.", log: Log.DownloadService, type: .info)
         }
     }
     
@@ -146,8 +146,13 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     
     // MARK: - URLSessionTaskDelegate
     
-    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+    func urlSession(_ session: URLSession, taskIsWaitingForConnectivity task: URLSessionTask) {
         guard let zimFileID = task.taskDescription else {return}
+        os_log("Waiting for connectivity. File ID: %s", log: Log.DownloadService, type: .info, zimFileID)
+    }
+    
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        guard let zimFileID = task.taskDescription else { return }
         cachedTotalBytesWritten[zimFileID] = nil
         if cachedTotalBytesWritten.count == 0 { stopHeartbeat() }
         
@@ -163,11 +168,13 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
                             zimFile.state = .downloadPaused
                             zimFile.downloadResumeData = data
                             zimFile.downloadTotalBytesWritten = task.countOfBytesReceived
+                            os_log("Task paused. File ID: %s", log: Log.DownloadService, type: .info, zimFileID)
                         } else {
                             // task is cancelled
                             zimFile.state = .remote
                             zimFile.downloadResumeData = nil
                             zimFile.downloadTotalBytesWritten = 0
+                            os_log("Task cancelled. File ID: %s", log: Log.DownloadService, type: .info, zimFileID)
                         }
                     } else {
                         // some other error happened
@@ -179,12 +186,25 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
                         } else {
                             zimFile.downloadTotalBytesWritten = 0
                         }
+                        os_log(
+                            "Task errored. File ID: %s. Error",
+                            log: Log.DownloadService,
+                            type: .error,
+                            zimFileID, error.localizedDescription
+                        )
                     }
                 }
             } catch {}
+        } else {
+            os_log("Task finished successfully. File ID: %s.", log: Log.DownloadService, type: .info, zimFileID)
         }
-        
-        backgroundEventsProcessingCompletionHandler?()
+    }
+    
+    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+        DispatchQueue.main.async {
+            self.backgroundEventsProcessingCompletionHandler?()
+        }
+        os_log("All tasks have been finished.", log: Log.DownloadService, type: .info)
     }
     
     // MARK: - URLSessionDownloadDelegate
@@ -199,7 +219,11 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         self.cachedTotalBytesWritten[zimFileID] = totalBytesWritten
     }
     
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+    func urlSession(
+        _ session: URLSession,
+        downloadTask: URLSessionDownloadTask,
+        didFinishDownloadingTo location: URL
+    ) {
         guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
             let zimFileID = downloadTask.taskDescription else {return}
         
