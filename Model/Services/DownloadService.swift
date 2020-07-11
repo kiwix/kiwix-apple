@@ -65,6 +65,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         }
     }
     
+    /// Save the cached total bytes written data to database in one batch
     private func saveCachedTotalBytesWritten() {
         queue.async(flags: .barrier) {
             do {
@@ -83,7 +84,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     
     // MARK: - perform download actions
     
-    /// Start a zim file download task
+    /// Start a zim file download task and start heartbeat
     /// - Parameters:
     ///   - zimFileID: identifier of the zim file
     ///   - allowsCellularAccess: if the file download allows using cellular data
@@ -112,26 +113,24 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         self.startHeartbeat()
     }
     
-    /// Resume a zim file download task
+    /// Resume a zim file download task and start heartbeat
     /// - Parameter zimFileID: identifier of the zim file
     func resume(zimFileID: String) {
-        do {
-            let database = try Realm(configuration: Realm.defaultConfig)
-            guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID),
-                let resumeData = zimFile.downloadResumeData else {return}
-            
-            try database.write {
-                zimFile.state = .downloadQueued
-                zimFile.downloadResumeData = nil
-                zimFile.downloadErrorDescription = nil
-            }
-            
-            let task = self.session.downloadTask(withResumeData: resumeData)
-            task.taskDescription = zimFileID
-            task.resume()
-            
-            self.startHeartbeat()
-        } catch {}
+        let database = try? Realm(configuration: Realm.defaultConfig)
+        guard let zimFile = database?.object(ofType: ZimFile.self, forPrimaryKey: zimFileID),
+            let resumeData = zimFile.downloadResumeData else { return }
+        
+        try? database?.write {
+            zimFile.state = .downloadQueued
+            zimFile.downloadResumeData = nil
+            zimFile.downloadErrorDescription = nil
+        }
+        
+        let task = self.session.downloadTask(withResumeData: resumeData)
+        task.taskDescription = zimFileID
+        task.resume()
+        
+        self.startHeartbeat()
     }
     
     /// Pause a zim file download task
