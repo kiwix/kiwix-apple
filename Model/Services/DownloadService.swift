@@ -6,23 +6,25 @@
 //  Copyright © 2017 Chris Li. All rights reserved.
 //
 
+import os
 import RealmSwift
 
 class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDownloadDelegate {
     static let shared = DownloadService()
     
-    private let queue = DispatchQueue.init(label: "downloadServiceQueue")
-    private var cachedTotalBytesWritten = [String: Int64]() // for all download in progress zim files
+    private let queue = DispatchQueue(label: "downloadServiceQueue")
+    private var cachedTotalBytesWritten = [String: Int64]()
     private var heartbeat: Timer?
+    var backgroundEventsCompleteProcessing: (() -> Void)?
     
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.background")
         configuration.allowsCellularAccess = true
         configuration.isDiscretionary = false
-        return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
+        let operationQueue = OperationQueue()
+        operationQueue.underlyingQueue = queue
+        return URLSession(configuration: configuration, delegate: self, delegateQueue: operationQueue)
     }()
-    
-    var backgroundEventsCompleteProcessing: (() -> Void)?
     
     // MARK: - management
     
@@ -38,18 +40,28 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
             })
             if hasTask && self.heartbeat == nil {
                 OperationQueue.main.addOperation({
-                    self.startHeartbeatIfNeeded()
+                    self.startHeartbeat()
                 })
             }
         })
     }
     
-    private func startHeartbeatIfNeeded() {
-        DispatchQueue.main.async {
+    private func startHeartbeat() {
+        DispatchQueue.main.sync {
             guard self.heartbeat == nil else { return }
             self.heartbeat = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [unowned self] _ in
                 self.saveCachedTotalBytesWritten()
             })
+            os_log("Heartbeat started.", log: Log.DownloadService, type: .default)
+        }
+    }
+    
+    private func stopHeartbeat() {
+        DispatchQueue.main.sync {
+            guard self.heartbeat != nil else { return }
+            heartbeat?.invalidate()
+            heartbeat = nil
+            os_log("Heartbeat stopped.", log: Log.DownloadService, type: .default)
         }
     }
     
@@ -97,25 +109,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         task.taskDescription = zimFileID
         task.resume()
         
-        self.startHeartbeatIfNeeded()
-    }
-    
-    func pause(zimFileID: String) {
-        cancelTask(in: session, taskDescription: zimFileID, producingResumingData: true)
-    }
-    
-    func cancel(zimFileID: String) {
-        cancelTask(in: session, taskDescription: zimFileID, producingResumingData: false)
-        do {
-            let database = try Realm(configuration: Realm.defaultConfig)
-            guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else {return}
-            
-            try database.write {
-                zimFile.state = .remote
-                zimFile.downloadResumeData = nil
-                zimFile.downloadTotalBytesWritten = 0
-            }
-        } catch {}
+        self.startHeartbeat()
     }
     
     func resume(zimFileID: String) {
@@ -134,20 +128,32 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
             task.taskDescription = zimFileID
             task.resume()
             
-            if self.heartbeat == nil { self.startHeartbeatIfNeeded() }
-            NetworkActivityController.shared.taskDidStart(identifier: zimFileID)
+            self.startHeartbeat()
         } catch {}
     }
     
-    private func cancelTask(in session: URLSession, taskDescription: String, producingResumingData: Bool) {
+    func pause(zimFileID: String) {
         session.getTasksWithCompletionHandler { (_, _, downloadTasks) in
-            guard let task = downloadTasks.filter({$0.taskDescription == taskDescription}).first else {return}
-            if producingResumingData {
-                task.cancel(byProducingResumeData: {data in })
-            } else {
-                task.cancel()
-            }
+            guard let task = downloadTasks.filter({$0.taskDescription == zimFileID}).first else {return}
+            task.cancel(byProducingResumeData: {data in })
         }
+    }
+    
+    func cancel(zimFileID: String) {
+        session.getTasksWithCompletionHandler { (_, _, downloadTasks) in
+            guard let task = downloadTasks.filter({$0.taskDescription == zimFileID}).first else {return}
+            task.cancel()
+        }
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else {return}
+            
+            try database.write {
+                zimFile.state = .remote
+                zimFile.downloadResumeData = nil
+                zimFile.downloadTotalBytesWritten = 0
+            }
+        } catch {}
     }
     
     // MARK: - URLSessionTaskDelegate
@@ -155,7 +161,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         guard let zimFileID = task.taskDescription else {return}
         cachedTotalBytesWritten[zimFileID] = nil
-        if cachedTotalBytesWritten.count == 0 { heartbeat?.invalidate(); self.heartbeat = nil }
+        if cachedTotalBytesWritten.count == 0 { stopHeartbeat() }
         
         if let error = error as NSError? {
             do {
@@ -191,7 +197,6 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         }
         
         backgroundEventsCompleteProcessing?()
-        NetworkActivityController.shared.taskDidFinish(identifier: zimFileID)
     }
     
     // MARK: - URLSessionDownloadDelegate
@@ -203,9 +208,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
                     totalBytesExpectedToWrite: Int64)
     {
         guard let zimFileID = downloadTask.taskDescription else {return}
-        queue.async(flags: .barrier) {
-            self.cachedTotalBytesWritten[zimFileID] = totalBytesWritten
-        }
+        self.cachedTotalBytesWritten[zimFileID] = totalBytesWritten
     }
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
