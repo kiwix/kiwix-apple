@@ -47,7 +47,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     }
     
     private func startHeartbeat() {
-        DispatchQueue.main.sync {
+        DispatchQueue.main.async {
             guard self.heartbeat == nil else { return }
             self.heartbeat = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [unowned self] _ in
                 self.saveCachedTotalBytesWritten()
@@ -57,10 +57,10 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     }
     
     private func stopHeartbeat() {
-        DispatchQueue.main.sync {
+        DispatchQueue.main.async {
             guard self.heartbeat != nil else { return }
-            heartbeat?.invalidate()
-            heartbeat = nil
+            self.heartbeat?.invalidate()
+            self.heartbeat = nil
             os_log("Heartbeat stopped.", log: Log.DownloadService, type: .default)
         }
     }
@@ -81,11 +81,11 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         }
     }
     
-    // MARK: - actions
+    // MARK: - perform download actions
     
-    /// Start downloading a zim file.
+    /// Start a zim file download task
     /// - Parameters:
-    ///   - zimFileID: identifier of the zim file to download
+    ///   - zimFileID: identifier of the zim file
     ///   - allowsCellularAccess: if the file download allows using cellular data
     func start(zimFileID: String, allowsCellularAccess: Bool) {
         let database = try? Realm(configuration: Realm.defaultConfig)
@@ -112,6 +112,8 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         self.startHeartbeat()
     }
     
+    /// Resume a zim file download task
+    /// - Parameter zimFileID: identifier of the zim file
     func resume(zimFileID: String) {
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
@@ -132,28 +134,22 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         } catch {}
     }
     
+    /// Pause a zim file download task
+    /// - Parameter zimFileID: identifier of the zim file
     func pause(zimFileID: String) {
         session.getTasksWithCompletionHandler { (_, _, downloadTasks) in
-            guard let task = downloadTasks.filter({$0.taskDescription == zimFileID}).first else {return}
+            guard let task = downloadTasks.filter({ $0.taskDescription == zimFileID }).first else {return}
             task.cancel(byProducingResumeData: {data in })
         }
     }
     
+    /// Cancel a zim file download task
+    /// - Parameter zimFileID: identifier of the zim file
     func cancel(zimFileID: String) {
         session.getTasksWithCompletionHandler { (_, _, downloadTasks) in
-            guard let task = downloadTasks.filter({$0.taskDescription == zimFileID}).first else {return}
+            guard let task = downloadTasks.filter({ $0.taskDescription == zimFileID }).first else {return}
             task.cancel()
         }
-        do {
-            let database = try Realm(configuration: Realm.defaultConfig)
-            guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else {return}
-            
-            try database.write {
-                zimFile.state = .remote
-                zimFile.downloadResumeData = nil
-                zimFile.downloadTotalBytesWritten = 0
-            }
-        } catch {}
     }
     
     // MARK: - URLSessionTaskDelegate
