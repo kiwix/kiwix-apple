@@ -34,7 +34,6 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     func restorePreviousState() {
         session.getTasksWithCompletionHandler({ (_, _, downloadTasks) in
             guard downloadTasks.count > 0 else { return }
-            // TODO: enable network indicator
             self.startHeartbeat()
         })
     }
@@ -60,7 +59,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     
     /// Save the cached total bytes written data to database in one batch
     private func saveCachedTotalBytesWritten() {
-        queue.async(flags: .barrier) {
+        queue.async {
             do {
                 let database = try Realm(configuration: Realm.defaultConfig)
                 try database.write {

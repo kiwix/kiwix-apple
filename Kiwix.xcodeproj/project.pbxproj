@@ -66,7 +66,6 @@
 		9779A5CD2456793600F6F6FF /* ZimFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5B12456793600F6F6FF /* ZimFile.swift */; };
 		9779A73D2456796B00F6F6FF /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */; };
 		9779A73E2456796B00F6F6FF /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */; };
-		9779A7412456796B00F6F6FF /* NetworkActivityIndicatorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5D32456796A00F6F6FF /* NetworkActivityIndicatorController.swift */; };
 		9779A7452456796B00F6F6FF /* DownloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5D52456796A00F6F6FF /* DownloadService.swift */; };
 		9779A7AB2456796B00F6F6FF /* SearchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7372456796B00F6F6FF /* SearchQueue.swift */; };
 		9779A7AC2456796B00F6F6FF /* SearchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7372456796B00F6F6FF /* SearchQueue.swift */; };
@@ -269,7 +268,6 @@
 		9779A5B12456793600F6F6FF /* ZimFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZimFile.swift; sourceTree = "<group>"; };
 		9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectoryMonitor.swift; sourceTree = "<group>"; };
 		9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Kiwix-Bridging-Header.h"; sourceTree = "<group>"; };
-		9779A5D32456796A00F6F6FF /* NetworkActivityIndicatorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkActivityIndicatorController.swift; sourceTree = "<group>"; };
 		9779A5D42456796A00F6F6FF /* DownloadProgress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadProgress.swift; sourceTree = "<group>"; };
 		9779A5D52456796A00F6F6FF /* DownloadService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadService.swift; sourceTree = "<group>"; };
 		9779A7372456796B00F6F6FF /* SearchQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchQueue.swift; sourceTree = "<group>"; };
@@ -655,7 +653,6 @@
 		9779A5D22456796A00F6F6FF /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				9779A5D32456796A00F6F6FF /* NetworkActivityIndicatorController.swift */,
 				9779A5D42456796A00F6F6FF /* DownloadProgress.swift */,
 			);
 			path = Network;
@@ -1158,7 +1155,6 @@
 				9779A5CA2456793600F6F6FF /* Bookmark.swift in Sources */,
 				9779A7452456796B00F6F6FF /* DownloadService.swift in Sources */,
 				97B4ADFB239C6C3800264AF6 /* TabsController.swift in Sources */,
-				9779A7412456796B00F6F6FF /* NetworkActivityIndicatorController.swift in Sources */,
 				97A36C511F8D4FB80079B452 /* VisualEffectShadowView.swift in Sources */,
 				97CE15AF23B2668500378D9F /* TableViewSectionFooterLabel.swift in Sources */,
 			);
