@@ -145,11 +145,6 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     
     // MARK: - URLSessionTaskDelegate
     
-    func urlSession(_ session: URLSession, taskIsWaitingForConnectivity task: URLSessionTask) {
-        guard let zimFileID = task.taskDescription else {return}
-        os_log("Waiting for connectivity. File ID: %s", log: Log.DownloadService, type: .info, zimFileID)
-    }
-    
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         guard let zimFileID = task.taskDescription else { return }
         cachedTotalBytesWritten[zimFileID] = nil
