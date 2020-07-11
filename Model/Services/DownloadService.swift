@@ -204,7 +204,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         DispatchQueue.main.async {
             self.backgroundEventsProcessingCompletionHandler?()
         }
-        os_log("All task events have been delivered.", log: Log.DownloadService, type: .info)
+        os_log("All background task events have been delivered.", log: Log.DownloadService, type: .info)
     }
     
     // MARK: - URLSessionDownloadDelegate
