@@ -15,7 +15,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     private let queue = DispatchQueue(label: "downloadServiceQueue")
     private var cachedTotalBytesWritten = [String: Int64]()
     private var heartbeat: Timer?
-    var backgroundEventsCompleteProcessing: (() -> Void)?
+    var backgroundEventsProcessingCompletionHandler: (() -> Void)?
     
     private lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.background(withIdentifier: "org.kiwix.background")
@@ -30,19 +30,12 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     
     private override init() {}
     
+    /// When app is launched, restore state of network activity indicator and heartbeat if there are download task
     func restorePreviousState() {
         session.getTasksWithCompletionHandler({ (_, _, downloadTasks) in
-            var hasTask = false
-            downloadTasks.forEach({ (task) in
-                guard let bookID = task.taskDescription else {return}
-                hasTask = true
-                NetworkActivityController.shared.taskDidStart(identifier: bookID)
-            })
-            if hasTask && self.heartbeat == nil {
-                OperationQueue.main.addOperation({
-                    self.startHeartbeat()
-                })
-            }
+            guard downloadTasks.count > 0 else { return }
+            // TODO: enable network indicator
+            self.startHeartbeat()
         })
     }
     
@@ -177,7 +170,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
                             zimFile.downloadTotalBytesWritten = 0
                         }
                     } else {
-                        // other error happened
+                        // some other error happened
                         zimFile.state = .downloadError
                         zimFile.downloadErrorDescription = error.localizedDescription
                         if let data = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data {
@@ -191,7 +184,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
             } catch {}
         }
         
-        backgroundEventsCompleteProcessing?()
+        backgroundEventsProcessingCompletionHandler?()
     }
     
     // MARK: - URLSessionDownloadDelegate
