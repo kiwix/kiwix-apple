@@ -18,13 +18,7 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     private let informationView = InformationView()
     private let dividerView = DividerView()
     private let resultsListController = SearchResultsListController()
-    private let filterController: UIViewController = {
-        if #available(iOS 13.0, *) {
-            return SearchFilterController()
-        } else {
-            return LegacySearchFilterController()
-        }
-    }()
+    private let filterController: UIViewController = SearchFilterViewController()
     
     private var filterControllerWidthConstraint: NSLayoutConstraint?
     private var filterControllerProportionalWidthConstraint: NSLayoutConstraint?
