@@ -159,14 +159,9 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     
     private func configureChangeToken() {
         changeToken = zimFiles?.observe({ (changes) in
-            switch changes {
-            case .update:
-                guard let contentViewController = self.presentingViewController as? ContentController,
-                    let searchText = contentViewController.searchController.searchBar.text else {return}
-                self.updateSearchResults(searchText: searchText)
-            default:
-                break
-            }
+            guard case .update = changes,
+                  let contentController = self.presentingViewController as? ContentController else { return }
+            self.updateSearchResults(for: contentController.searchController)
         })
     }
     
@@ -212,44 +207,40 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text, !searchController.isBeingDismissed else {return}
-        updateSearchResults(searchText: searchText)
-    }
-    
-    private func updateSearchResults(searchText: String) {
+        
         queue.cancelAllOperations()
-        if searchText.count == 0 {
+        guard searchText.count > 0 else {
             displayMode = .filter
-        } else {
-            let zimFileIDs: Set<String> = {
-                guard let result = zimFiles else { return Set() }
-                return Set(result.map({ $0.id }))
-            }()
-            
-            if displayMode == .results,
-                searchText == resultsListController.searchText,
-                zimFileIDs == resultsListController.zimFileIDs {
-                return
-            }
-            displayMode = .inProgress
-            
-            let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
-            operation.completionBlock = { [weak self] in
-                guard !operation.isCancelled else {return}
-                DispatchQueue.main.sync {
-                    self?.resultsListController.update(searchText: searchText, zimFileIDs: zimFileIDs, results: operation.results)
-                    self?.displayMode = operation.results.count > 0 ? .results : .noResults
-                }
-            }
-            queue.addOperation(operation)
+            return
         }
+        
+        let zimFileIDs: Set<String> = {
+            guard let result = zimFiles else { return Set() }
+            return Set(result.map({ $0.id }))
+        }()
+        
+        if displayMode == .results,
+            searchText == resultsListController.searchText,
+            zimFileIDs == resultsListController.zimFileIDs {
+            return
+        }
+        displayMode = .inProgress
+        
+        let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
+        operation.completionBlock = { [weak self] in
+            guard !operation.isCancelled else {return}
+            DispatchQueue.main.sync {
+                self?.resultsListController.update(searchText: searchText, zimFileIDs: zimFileIDs, results: operation.results)
+                self?.displayMode = operation.results.count > 0 ? .results : .noResults
+            }
+        }
+        queue.addOperation(operation)
     }
 }
 
-// MARK: - Class Definitions
+// MARK: - Views
 
-fileprivate enum DisplayMode {
-    case filter, inProgress, noResults, results
-}
+fileprivate enum DisplayMode { case filter, inProgress, noResults, results }
 
 fileprivate class InformationView: UIView {
     private let activityIndicator = UIActivityIndicatorView()
