@@ -1,5 +1,5 @@
 //
-//  SearchResultsController.swift
+//  SearchResultsListController.swift
 //  Kiwix
 //
 //  Created by Chris Li on 1/22/18.
@@ -10,7 +10,7 @@ import UIKit
 import Defaults
 import RealmSwift
 
-class SearchResultsController: UITableViewController {
+class SearchResultsListController: UITableViewController {
     private(set) var searchText: String = ""
     private(set) var zimFileIDs = Set<String>()
     private(set) var results = [SearchResult]()
