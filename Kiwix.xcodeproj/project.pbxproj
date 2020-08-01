@@ -109,7 +109,7 @@
 		97C575FE202CB0E900E37502 /* Bookmarks.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 97C575F2202CB0E800E37502 /* Bookmarks.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		97C5763D202CD9C000E37502 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C575F3202CB0E800E37502 /* NotificationCenter.framework */; platformFilter = ios; };
 		97CA4A7220A21D24008CEA6D /* LibraryLanguageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CA4A7120A21D24008CEA6D /* LibraryLanguageController.swift */; };
-		97CD2F0424D4FB6F0084C6B5 /* SearchFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CD2F0324D4FB6F0084C6B5 /* SearchFilterViewController.swift */; };
+		97CD2F0424D4FB6F0084C6B5 /* SearchFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CD2F0324D4FB6F0084C6B5 /* SearchFilterController.swift */; };
 		97CE15B723B26EB300378D9F /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15B623B26EB300378D9F /* Realm */; };
 		97CE15B923B26EB300378D9F /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15B823B26EB300378D9F /* RealmSwift */; };
 		97CE15BB23B26ED200378D9F /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE15BA23B26ED200378D9F /* Realm */; };
@@ -310,7 +310,7 @@
 		97C57603202CB35500E37502 /* Bookmarks.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Bookmarks.entitlements; sourceTree = "<group>"; };
 		97C57604202CB42100E37502 /* Kiwix.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
 		97CA4A7120A21D24008CEA6D /* LibraryLanguageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryLanguageController.swift; sourceTree = "<group>"; };
-		97CD2F0324D4FB6F0084C6B5 /* SearchFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilterViewController.swift; sourceTree = "<group>"; };
+		97CD2F0324D4FB6F0084C6B5 /* SearchFilterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilterController.swift; sourceTree = "<group>"; };
 		97D757E4238F3161008FB7E2 /* SideBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarController.swift; sourceTree = "<group>"; };
 		97DBCF9C203CA254004EE274 /* SettingExternalLinkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingExternalLinkController.swift; sourceTree = "<group>"; };
 		97E02DDE24B00736008E278D /* libkiwix.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libkiwix.xcframework; sourceTree = "<group>"; };
@@ -507,7 +507,7 @@
 			isa = PBXGroup;
 			children = (
 				9743C30120878C70006981FB /* SearchResultsController.swift */,
-				97CD2F0324D4FB6F0084C6B5 /* SearchFilterViewController.swift */,
+				97CD2F0324D4FB6F0084C6B5 /* SearchFilterController.swift */,
 				979FD158201679C5007B5290 /* SearchResultsListController.swift */,
 			);
 			path = Search;
@@ -1087,7 +1087,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				97B3998E246759E400BC6F5B /* SearchResult.m in Sources */,
-				97CD2F0424D4FB6F0084C6B5 /* SearchFilterViewController.swift in Sources */,
+				97CD2F0424D4FB6F0084C6B5 /* SearchFilterController.swift in Sources */,
 				9779A5BC2456793600F6F6FF /* OPDSStreamParser.swift in Sources */,
 				972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */,
 				9779A5C22456793600F6F6FF /* ZimMultiReader.mm in Sources */,

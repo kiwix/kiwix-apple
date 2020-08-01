@@ -1,5 +1,5 @@
 //
-//  SearchFilterViewController.swift
+//  SearchFilterController.swift
 //  Kiwix
 //
 //  Created by Chris Li on 7/31/20.
@@ -10,7 +10,7 @@ import UIKit
 import Defaults
 import RealmSwift
 
-class SearchFilterViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class SearchFilterController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     enum Section { case recentSearch, searchFilter }
     
     private let tableView = UITableView(frame: .zero, style: .grouped)

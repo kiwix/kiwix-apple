@@ -18,7 +18,7 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     private let informationView = InformationView()
     private let dividerView = DividerView()
     private let resultsListController = SearchResultsListController()
-    private let filterController: UIViewController = SearchFilterViewController()
+    private let filterController: UIViewController = SearchFilterController()
     
     private var filterControllerWidthConstraint: NSLayoutConstraint?
     private var filterControllerProportionalWidthConstraint: NSLayoutConstraint?
