@@ -68,7 +68,7 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
         filterControllerWidthConstraint = filterController.view.widthAnchor.constraint(greaterThanOrEqualToConstant: 320)
         filterControllerProportionalWidthConstraint = filterController.view.widthAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 0.3)
-        filterControllerProportionalWidthConstraint?.priority = .init(rawValue: 749)
+        filterControllerProportionalWidthConstraint?.priority = UILayoutPriority(749)
         
         // stack view layout
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -120,10 +120,6 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
         coordinator.animate(alongsideTransition: nil) { _ in
             self.informationView.alpha = 1.0
         }
-    }
-    
-    override func overrideTraitCollection(forChild childViewController: UIViewController) -> UITraitCollection? {
-        UITraitCollection(horizontalSizeClass: .compact)
     }
     
     // MARK: Configurations
@@ -206,10 +202,8 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     // MARK: UISearchResultsUpdating
     
     func updateSearchResults(for searchController: UISearchController) {
-        guard let searchText = searchController.searchBar.text, !searchController.isBeingDismissed else {return}
-        
         queue.cancelAllOperations()
-        guard searchText.count > 0 else {
+        guard let searchText = searchController.searchBar.text, searchText.count > 0 else {
             displayMode = .filter
             return
         }
@@ -228,7 +222,7 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
         
         let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
         operation.completionBlock = { [weak self] in
-            guard !operation.isCancelled else {return}
+            guard !operation.isCancelled else { return }
             DispatchQueue.main.sync {
                 self?.resultsListController.update(searchText: searchText, zimFileIDs: zimFileIDs, results: operation.results)
                 self?.displayMode = operation.results.count > 0 ? .results : .noResults

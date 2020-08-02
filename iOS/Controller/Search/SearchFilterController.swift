@@ -14,7 +14,7 @@ class SearchFilterController: UIViewController, UITableViewDelegate, UITableView
     enum Section { case recentSearch, searchFilter }
     
     private let tableView = UITableView(frame: .zero, style: .grouped)
-    private var sections: [Section] = [.recentSearch, .searchFilter]
+    private var sections: [Section] = [.searchFilter]
     private let zimFiles: Results<ZimFile>? = {
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
@@ -40,19 +40,10 @@ class SearchFilterController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        configureChangeToken()
-        tableView.reloadData()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        changeToken = nil
-    }
-    
-    // MARK: - Observer
-    
-    private func configureChangeToken() {
-        changeToken = zimFiles?.observe({ (changes) in
+        if Defaults[.recentSearchTexts].count > 0, !sections.contains(.recentSearch) {
+            sections.insert(.recentSearch, at: 0)
+        }
+        changeToken = zimFiles?.observe({ [unowned self] changes in
             guard case let .update(_, deletions, insertions, updates) = changes,
                   let sectionIndex = self.sections.firstIndex(of: .searchFilter) else { return }
             self.tableView.performBatchUpdates({
@@ -65,6 +56,12 @@ class SearchFilterController: UIViewController, UITableViewDelegate, UITableView
                 })
             })
         })
+        tableView.reloadData()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        changeToken = nil
     }
     
     // MARK: - Actions
@@ -76,19 +73,29 @@ class SearchFilterController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @objc func clearRecentSearchItems() {
-//        print(button.title(for: .normal))
+        let title = NSLocalizedString("Clear Search History", comment: "Clear search history")
+        let message = NSLocalizedString("All search history will be wiped clean.", comment: "Clear search history")
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Clear", style: .destructive, handler: { _ in
+            self.tableView.performBatchUpdates({
+                guard let index = self.sections.firstIndex(of: .recentSearch) else { return }
+                Defaults[.recentSearchTexts].removeAll()
+                self.sections.remove(at: index)
+                self.tableView.deleteSections([index], with: .automatic)
+            })
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(alert, animated: true)
     }
     
     @objc func inlcudeAllZimFilesInSearch() {
-        do {
-            let database = try Realm(configuration: Realm.defaultConfig)
-            try database.write {
-                zimFiles?.forEach({ (zimFile) in
-                    guard !zimFile.includedInSearch else {return}
-                    zimFile.includedInSearch = true
-                })
-            }
-        } catch {}
+        let database = try? Realm(configuration: Realm.defaultConfig)
+        try? database?.write {
+            zimFiles?.forEach({ (zimFile) in
+                guard !zimFile.includedInSearch else {return}
+                zimFile.includedInSearch = true
+            })
+        }
     }
 
     // MARK: - UITableViewDataSource & Delegate
@@ -252,7 +259,6 @@ fileprivate class StackViewTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         scrollView.contentInset = UIEdgeInsets(top: 0, left: layoutMargins.left, bottom: 0, right: layoutMargins.right)
-        scrollView.contentOffset = CGPoint(x: -layoutMargins.left, y: 0)
     }
 }
 
