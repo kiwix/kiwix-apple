@@ -202,6 +202,7 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     // MARK: UISearchResultsUpdating
     
     func updateSearchResults(for searchController: UISearchController) {
+        guard !searchController.isBeingDismissed else { return }
         queue.cancelAllOperations()
         guard let searchText = searchController.searchBar.text, searchText.count > 0 else {
             displayMode = .filter
