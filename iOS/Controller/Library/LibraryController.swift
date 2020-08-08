@@ -22,18 +22,11 @@ class LibraryController: UISplitViewController, UISplitViewControllerDelegate {
         self.onDismiss = onDismiss
         super.init(nibName: nil, bundle: nil)
         
-        // set at least one view controller in viewControllers to supress a warning produced by split view controller
-        viewControllers = [UIViewController()]
+        let master = LibraryMasterController()
+        viewControllers = [UINavigationController(rootViewController: master)]
         
         preferredDisplayMode = .allVisible
         delegate = self
-        
-        let master = LibraryMasterController()
-        let detail = UIViewController()
-        detail.view.backgroundColor = .groupTableViewBackground
-        viewControllers = [
-            UINavigationController(rootViewController: master),
-            UINavigationController(rootViewController: detail)]
     }
     
     required init?(coder aDecoder: NSCoder) {

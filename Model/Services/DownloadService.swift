@@ -34,6 +34,10 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     func restorePreviousState() {
         session.getTasksWithCompletionHandler({ (_, _, downloadTasks) in
             guard downloadTasks.count > 0 else { return }
+            for task in downloadTasks {
+                guard let zimFileID = task.taskDescription else {return}
+                self.cachedTotalBytesWritten[zimFileID] = task.countOfBytesReceived
+            }
             self.startHeartbeat()
         })
     }
@@ -138,8 +142,18 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     /// - Parameter zimFileID: identifier of the zim file
     func cancel(zimFileID: String) {
         session.getTasksWithCompletionHandler { (_, _, downloadTasks) in
-            guard let task = downloadTasks.filter({ $0.taskDescription == zimFileID }).first else {return}
-            task.cancel()
+            if let task = downloadTasks.filter({ $0.taskDescription == zimFileID }).first {
+                task.cancel()
+            } else {
+                guard let database = try? Realm(configuration: Realm.defaultConfig),
+                    let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
+                try? database.write {
+                    zimFile.state = .remote
+                    zimFile.downloadResumeData = nil
+                    zimFile.downloadTotalBytesWritten = 0
+                    os_log("Task cancelled. File ID: %s", log: Log.DownloadService, type: .info, zimFileID)
+                }
+            }
         }
     }
     

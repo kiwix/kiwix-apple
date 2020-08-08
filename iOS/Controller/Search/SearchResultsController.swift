@@ -1,6 +1,6 @@
 //
-//  SearchResultControllerNew.swift
-//  Kiwix for iOS
+//  SearchResultController.swift
+//  Kiwix
 //
 //  Created by Chris Li on 4/18/18.
 //  Copyright © 2018 Chris Li. All rights reserved.
@@ -18,13 +18,7 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     private let informationView = InformationView()
     private let dividerView = DividerView()
     private let resultsListController = SearchResultsListController()
-    private let filterController: UIViewController = {
-        if #available(iOS 13.0, *) {
-            return SearchFilterController()
-        } else {
-            return LegacySearchFilterController()
-        }
-    }()
+    private let filterController: UIViewController = SearchFilterController()
     
     private var filterControllerWidthConstraint: NSLayoutConstraint?
     private var filterControllerProportionalWidthConstraint: NSLayoutConstraint?
@@ -74,7 +68,7 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
         filterControllerWidthConstraint = filterController.view.widthAnchor.constraint(greaterThanOrEqualToConstant: 320)
         filterControllerProportionalWidthConstraint = filterController.view.widthAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 0.3)
-        filterControllerProportionalWidthConstraint?.priority = .init(rawValue: 749)
+        filterControllerProportionalWidthConstraint?.priority = UILayoutPriority(749)
         
         // stack view layout
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -128,10 +122,6 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
         }
     }
     
-    override func overrideTraitCollection(forChild childViewController: UIViewController) -> UITraitCollection? {
-        UITraitCollection(horizontalSizeClass: .compact)
-    }
-    
     // MARK: Configurations
     
     private func configureStackView(oldDisplayMode: DisplayMode? = nil) {
@@ -165,14 +155,9 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     
     private func configureChangeToken() {
         changeToken = zimFiles?.observe({ (changes) in
-            switch changes {
-            case .update:
-                guard let contentViewController = self.presentingViewController as? ContentController,
-                    let searchText = contentViewController.searchController.searchBar.text else {return}
-                self.updateSearchResults(searchText: searchText)
-            default:
-                break
-            }
+            guard case .update = changes,
+                  let contentController = self.presentingViewController as? ContentController else { return }
+            self.updateSearchResults(for: contentController.searchController)
         })
     }
     
@@ -217,45 +202,40 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     // MARK: UISearchResultsUpdating
     
     func updateSearchResults(for searchController: UISearchController) {
-        guard let searchText = searchController.searchBar.text, !searchController.isBeingDismissed else {return}
-        updateSearchResults(searchText: searchText)
-    }
-    
-    private func updateSearchResults(searchText: String) {
+        guard !searchController.isBeingDismissed else { return }
         queue.cancelAllOperations()
-        if searchText.count == 0 {
+        guard let searchText = searchController.searchBar.text, searchText.count > 0 else {
             displayMode = .filter
-        } else {
-            let zimFileIDs: Set<String> = {
-                guard let result = zimFiles else { return Set() }
-                return Set(result.map({ $0.id }))
-            }()
-            
-            if displayMode == .results,
-                searchText == resultsListController.searchText,
-                zimFileIDs == resultsListController.zimFileIDs {
-                return
-            }
-            displayMode = .inProgress
-            
-            let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
-            operation.completionBlock = { [weak self] in
-                guard !operation.isCancelled else {return}
-                DispatchQueue.main.sync {
-                    self?.resultsListController.update(searchText: searchText, zimFileIDs: zimFileIDs, results: operation.results)
-                    self?.displayMode = operation.results.count > 0 ? .results : .noResults
-                }
-            }
-            queue.addOperation(operation)
+            return
         }
+        
+        let zimFileIDs: Set<String> = {
+            guard let result = zimFiles else { return Set() }
+            return Set(result.map({ $0.id }))
+        }()
+        
+        if displayMode == .results,
+            searchText == resultsListController.searchText,
+            zimFileIDs == resultsListController.zimFileIDs {
+            return
+        }
+        displayMode = .inProgress
+        
+        let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
+        operation.completionBlock = { [weak self] in
+            guard !operation.isCancelled else { return }
+            DispatchQueue.main.sync {
+                self?.resultsListController.update(searchText: searchText, zimFileIDs: zimFileIDs, results: operation.results)
+                self?.displayMode = operation.results.count > 0 ? .results : .noResults
+            }
+        }
+        queue.addOperation(operation)
     }
 }
 
-// MARK: - Class Definitions
+// MARK: - Views
 
-fileprivate enum DisplayMode {
-    case filter, inProgress, noResults, results
-}
+fileprivate enum DisplayMode { case filter, inProgress, noResults, results }
 
 fileprivate class InformationView: UIView {
     private let activityIndicator = UIActivityIndicatorView()
