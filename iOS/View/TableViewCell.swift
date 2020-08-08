@@ -91,7 +91,7 @@ class TableViewCell: UITableViewCell {
     }
 }
 
-class SearchResultTableViewCell: TableViewCell {
+class ArticleTableViewCell: TableViewCell {
     private let thumbImageCornerRadius: CGFloat = 4
     private let thumbImageBackgroundViewCornerRadius: CGFloat = 6
     
