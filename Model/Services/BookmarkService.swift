@@ -56,7 +56,7 @@ class BookmarkService {
         }
     }
     
-    func delete(_ bookmark: Bookmark, completion: (() -> Void)? = nil) {
+    func delete(_ bookmark: Bookmark) {
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
             try database.write {
@@ -64,7 +64,6 @@ class BookmarkService {
             }
         } catch {}
         updateBookmarkWidgetData()
-        completion?()
     }
     
     private func updateBookmarkWidgetData() {

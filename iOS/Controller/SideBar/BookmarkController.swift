@@ -158,13 +158,8 @@ class BookmarkController: UIViewController, UITableViewDataSource, UITableViewDe
             return URL(zimFileID: zimFileID, contentPath: bookmark.path)
         }()
         if editingStyle == .delete {
-            do {
-                let database = try Realm(configuration: Realm.defaultConfig)
-                try database.write {
-                    database.delete(bookmark)
-                }
-                if let url = url { delegate?.didDeleteBookmark(url: url) }
-            } catch {}
+            BookmarkService().delete(bookmark)
+            if let url = url { delegate?.didDeleteBookmark(url: url) }
         }
     }
 }
