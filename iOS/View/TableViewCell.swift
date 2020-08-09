@@ -49,6 +49,7 @@ class TableViewCell: UITableViewCell {
         detailLabel.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         thumbImageView.clipsToBounds = true
         thumbImageView.layer.cornerRadius = 4
+        thumbImageView.contentMode = .scaleAspectFill
         thumbImageBackgroundView.clipsToBounds = true
         thumbImageBackgroundView.layer.cornerRadius = 6
         if #available(iOS 13.0, *) {

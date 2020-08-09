@@ -80,7 +80,6 @@ class SearchResultsListController: UITableViewController {
             let database = try Realm(configuration: Realm.defaultConfig)
             let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: result.zimFileID)
             cell.thumbImageView.image = UIImage(data: zimFile?.faviconData ?? Data()) ?? #imageLiteral(resourceName: "GenericZimFile")
-            cell.thumbImageView.contentMode = .scaleAspectFit
         } catch {}
         
         if let snippet = result.snippet {
