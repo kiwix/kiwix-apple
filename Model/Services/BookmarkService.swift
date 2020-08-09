@@ -70,9 +70,8 @@ class BookmarkService {
     private func updateBookmarkWidgetData() {
         DispatchQueue.global(qos: .background).async {
             guard let database = try? Realm(configuration: Realm.defaultConfig) else { return }
-            let data = database.objects(Bookmark.self).sorted(byKeyPath: "date", ascending: false)
-                .prefix(8)
-                .compactMap { bookmark -> [String: Any]? in
+            let bookmarks = Array(database.objects(Bookmark.self).sorted(byKeyPath: "date", ascending: false).prefix(8))
+            let data = bookmarks.compactMap { bookmark -> [String: Any]? in
                     guard let zimFile = bookmark.zimFile,
                         let url = URL(zimFileID: zimFile.id, contentPath: bookmark.path) else {return nil}
                     return [
