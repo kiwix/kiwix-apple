@@ -37,13 +37,13 @@ class BookmarkService {
             let bookmark = Bookmark()
             bookmark.zimFile = zimFile
             bookmark.path = url.path
-            bookmark.title = parser?.getTitle() ?? ""
+            bookmark.title = parser.getTitle() ?? ""
             bookmark.date = Date()
             
             if #available(iOS 12.0, *) {
-                bookmark.snippet = parser?.getFirstSentence(languageCode: zimFile.languageCode)?.string
+                bookmark.snippet = parser.getFirstSentence(languageCode: zimFile.languageCode)?.string
             } else {
-                bookmark.snippet = parser?.getFirstParagraph()?.string
+                bookmark.snippet = parser.getFirstParagraph()?.string
             }
             
             
