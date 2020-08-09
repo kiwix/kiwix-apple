@@ -1,6 +1,6 @@
 //
 //  BookmarkController.swift
-//  iOS
+//  Kiwix
 //
 //  Created by Chris Li on 5/21/18.
 //  Copyright © 2018 Chris Li. All rights reserved.
@@ -47,7 +47,9 @@ class BookmarkController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(ArticleTableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.separatorInsetReference = .fromAutomaticInsets
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         
         if let _ = presentingViewController {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
