@@ -1,6 +1,7 @@
 ## 1.13.4
 
 - bookmark snippets are now using the first sentence (iOS 12 and above) or the first paragraph (iOS 11)
+- fix: now use zim file title as bookmark title when the article doesn't have a title
 
 ## 1.13.3
 
