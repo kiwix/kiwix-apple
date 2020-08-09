@@ -13,6 +13,59 @@ import RealmSwift
 class BookmarkService {
     private let database = try? Realm(configuration: Realm.defaultConfig)
     
+    func get(url: URL) -> Bookmark? {
+        guard let zimFileID = url.host else { return nil }
+        return get(zimFileID: zimFileID, path: url.path)
+    }
+    
+    func get(zimFileID: String, path: String) -> Bookmark? {
+        let predicate = NSPredicate(format: "zimFile.id == %@ AND path == %@", zimFileID, path)
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            return database.objects(Bookmark.self).filter(predicate).first
+        } catch { return nil }
+    }
+    
+    func create(url: URL) {
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            guard let zimFileID = url.host,
+                  let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID)
+            else { return }
+            
+            let parser = try Parser(zimFileID: zimFileID, path: url.path)
+            let bookmark = Bookmark()
+            bookmark.zimFile = zimFile
+            bookmark.path = url.path
+            bookmark.title = parser?.getTitle() ?? ""
+            bookmark.date = Date()
+            
+            if #available(iOS 12.0, *) {
+                bookmark.snippet = parser?.getFirstSentence(languageCode: zimFile.languageCode)?.string
+            } else {
+                bookmark.snippet = parser?.getFirstParagraph()?.string
+            }
+            
+            
+            // get thumb image
+            try database.write {
+                database.add(bookmark)
+            }
+            self.updateBookmarkWidgetData()
+        } catch {}
+    }
+    
+    func delete(_ bookmark: Bookmark, completion: (() -> Void)? = nil) {
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            try database.write {
+                database.delete(bookmark)
+            }
+        } catch {}
+        updateBookmarkWidgetData()
+        completion?()
+    }
+    
     func updateBookmarkWidgetData() {
         guard #available(iOS 13, *) else {
             return
