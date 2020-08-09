@@ -1,6 +1,11 @@
+## 1.13.4
+
+- bookmark snippets are now using the first sentence (iOS 12 and above) or the first paragraph (iOS 11)
+
 ## 1.13.3
 
 - stability improvements to the under the hood file download sub-system
+- stability improvements to search filters
 
 ## 1.13.2
 

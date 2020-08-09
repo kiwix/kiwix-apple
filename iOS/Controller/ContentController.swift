@@ -313,51 +313,15 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
             return
         }
         
-        guard let url = webViewController.currentURL,
-            let zimFileID = url.host else {return}
-        
-        do {
-            let database = try Realm(configuration: Realm.defaultConfig)
-            let predicate = NSPredicate(format: "zimFile.id == %@ AND path == %@", zimFileID, url.path)
-            if let bookmark = database.objects(Bookmark.self).filter(predicate).first {
-                presentBookmarkHUDController(isBookmarked: false)
-                try database.write {
-                    database.delete(bookmark)
-                }
-                BookmarkService().updateBookmarkWidgetData()
-            } else {
-                guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else {return}
-                let bookmark = Bookmark()
-                bookmark.zimFile = zimFile
-                bookmark.path = url.path
-                bookmark.title = webViewController.currentTitle ?? ""
-                bookmark.date = Date()
-                
-                let group = DispatchGroup()
-                group.enter()
-                webViewController.extractSnippet(completion: { (snippet) in
-                    bookmark.snippet = snippet
-                    group.leave()
-                })
-                if zimFile.hasPictures {
-                    group.enter()
-                    webViewController.extractImageURLs(completion: { (urls) in
-                        bookmark.thumbImagePath = urls.first?.path
-                        group.leave()
-                    })
-                }
-                group.notify(queue: .main, execute: {
-                    self.presentBookmarkHUDController(isBookmarked: true)
-                    do {
-                        let database = try Realm(configuration: Realm.defaultConfig)
-                        try database.write {
-                            database.add(bookmark)
-                        }
-                    } catch {}
-                    BookmarkService().updateBookmarkWidgetData()
-                })
-            }
-        } catch {return}
+        guard let url = webViewController.currentURL else { return }
+        let bookmarkService = BookmarkService()
+        if let bookmark = bookmarkService.get(url: url) {
+            bookmarkService.delete(bookmark)
+            presentBookmarkHUDController(isBookmarked: false)
+        } else {
+            bookmarkService.create(url: url)
+            presentBookmarkHUDController(isBookmarked: true)
+        }
     }
     
     @objc func openLibrary() {

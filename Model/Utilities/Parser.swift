@@ -22,13 +22,13 @@ class Parser {
         self.document = document
     }
     
-    convenience init?(html: String) throws {
+    convenience init(html: String) throws {
         self.init(document: try SwiftSoup.parse(html))
     }
     
-    convenience init?(zimFileID: String, path: String) throws {
+    convenience init(zimFileID: String, path: String) throws {
         guard let content = ZimMultiReader.shared.getContent(bookID: zimFileID, contentPath: path),
-            let html = String(data: content.data, encoding: .utf8) else { return nil }
+            let html = String(data: content.data, encoding: .utf8) else { throw NSError() }
         try self.init(html: html)
     }
     
@@ -83,6 +83,13 @@ class Parser {
             return false
         }
         return firstSentence
+    }
+    
+    func getFirstImagePath() -> String? {
+        do {
+            let element = try document.getElementsByTag("img").first()
+            return element?.getAttributes()?.get(key: "src")
+        } catch { return nil }
     }
     
     class func parseBodyFragment(_ bodyFragment: String) -> NSAttributedString? {

@@ -19,7 +19,7 @@ class SearchResultsListController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.cellLayoutMarginsFollowReadableWidth = true
-        tableView.register(SearchResultTableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(ArticleTableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.keyboardDismissMode = .onDrag
         tableView.separatorInsetReference = .fromAutomaticInsets
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
@@ -70,7 +70,7 @@ class SearchResultsListController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! SearchResultTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ArticleTableViewCell
         let result = results[indexPath.row]
         
         cell.titleLabel.text = result.title
@@ -80,7 +80,6 @@ class SearchResultsListController: UITableViewController {
             let database = try Realm(configuration: Realm.defaultConfig)
             let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: result.zimFileID)
             cell.thumbImageView.image = UIImage(data: zimFile?.faviconData ?? Data()) ?? #imageLiteral(resourceName: "GenericZimFile")
-            cell.thumbImageView.contentMode = .scaleAspectFit
         } catch {}
         
         if let snippet = result.snippet {
