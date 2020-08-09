@@ -316,11 +316,11 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         guard let url = webViewController.currentURL else { return }
         let bookmarkService = BookmarkService()
         if let bookmark = bookmarkService.get(url: url) {
-            presentBookmarkHUDController(isBookmarked: false)
             bookmarkService.delete(bookmark)
+            presentBookmarkHUDController(isBookmarked: false)
         } else {
             bookmarkService.create(url: url)
-            self.presentBookmarkHUDController(isBookmarked: true)
+            presentBookmarkHUDController(isBookmarked: true)
         }
     }
     
