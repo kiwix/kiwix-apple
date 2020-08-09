@@ -45,8 +45,10 @@ class BookmarkService {
             } else {
                 bookmark.snippet = parser.getFirstParagraph()?.string
             }
+            if let imagePath = parser.getFirstImagePath(), let imageURL = URL(string: imagePath, relativeTo: url) {
+                bookmark.thumbImagePath = imageURL.path
+            }
             
-            // get thumb image
             try database.write {
                 database.add(bookmark)
             }

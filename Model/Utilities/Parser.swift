@@ -85,6 +85,13 @@ class Parser {
         return firstSentence
     }
     
+    func getFirstImagePath() -> String? {
+        do {
+            let element = try document.getElementsByTag("img").first()
+            return element?.getAttributes()?.get(key: "src")
+        } catch { return nil }
+    }
+    
     class func parseBodyFragment(_ bodyFragment: String) -> NSAttributedString? {
         let snippet = NSMutableAttributedString()
         let document = try? SwiftSoup.parseBodyFragment(bodyFragment)
