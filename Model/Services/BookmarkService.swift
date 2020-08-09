@@ -33,19 +33,18 @@ class BookmarkService {
                   let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID)
             else { return }
             
-            let parser = try Parser(zimFileID: zimFileID, path: url.path)
             let bookmark = Bookmark()
             bookmark.zimFile = zimFile
             bookmark.path = url.path
-            bookmark.title = parser.getTitle() ?? ""
             bookmark.date = Date()
             
+            let parser = try Parser(zimFileID: zimFileID, path: url.path)
+            bookmark.title = parser.getTitle() ?? ""
             if #available(iOS 12.0, *) {
                 bookmark.snippet = parser.getFirstSentence(languageCode: zimFile.languageCode)?.string
             } else {
                 bookmark.snippet = parser.getFirstParagraph()?.string
             }
-            
             
             // get thumb image
             try database.write {
