@@ -29,7 +29,6 @@
 		974FFE5B2352704600F6BF28 /* ZimFileManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */; };
 		974FFE612352744800F6BF28 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE602352744800F6BF28 /* WebViewController.swift */; };
 		974FFE6A23533E8D00F6BF28 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE6823533E8D00F6BF28 /* NavigationController.swift */; };
-		974FFE6F2353AA3900F6BF28 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 974FFE6E2353AA3900F6BF28 /* WebKit.framework */; };
 		9763EDC9201FCA6900F3A6D5 /* SettingWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9763EDC8201FCA6900F3A6D5 /* SettingWebController.swift */; };
 		9763EDCB201FCC3A00F3A6D5 /* About.html in Resources */ = {isa = PBXBuildFile; fileRef = 9763EDCA201FCC3900F3A6D5 /* About.html */; };
 		9765D9801F50CC4700BFDC1E /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9765D97F1F50CC4700BFDC1E /* Search.storyboard */; };
@@ -213,25 +212,6 @@
 		974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileManagerController.swift; sourceTree = "<group>"; };
 		974FFE602352744800F6BF28 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		974FFE6823533E8D00F6BF28 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
-		974FFE6C2353AA3200F6BF28 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		974FFE6E2353AA3900F6BF28 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/WebKit.framework; sourceTree = DEVELOPER_DIR; };
-		9754490D240C66A100E4E949 /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicudata.a; path = Shared/Dependencies/macOS_lib/libicudata.a; sourceTree = "<group>"; };
-		9754490E240C66A100E4E949 /* libicutest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicutest.a; path = Shared/Dependencies/macOS_lib/libicutest.a; sourceTree = "<group>"; };
-		9754490F240C66A100E4E949 /* libmicrohttpd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmicrohttpd.a; path = Shared/Dependencies/macOS_lib/libmicrohttpd.a; sourceTree = "<group>"; };
-		97544910240C66A100E4E949 /* liblzma.la */ = {isa = PBXFileReference; lastKnownFileType = text; name = liblzma.la; path = Shared/Dependencies/macOS_lib/liblzma.la; sourceTree = "<group>"; };
-		97544911240C66A100E4E949 /* libcurl.la */ = {isa = PBXFileReference; lastKnownFileType = text; name = libcurl.la; path = Shared/Dependencies/macOS_lib/libcurl.la; sourceTree = "<group>"; };
-		97544912240C66A100E4E949 /* libmicrohttpd.la */ = {isa = PBXFileReference; lastKnownFileType = text; name = libmicrohttpd.la; path = Shared/Dependencies/macOS_lib/libmicrohttpd.la; sourceTree = "<group>"; };
-		97544913240C66A100E4E949 /* libicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicui18n.a; path = Shared/Dependencies/macOS_lib/libicui18n.a; sourceTree = "<group>"; };
-		97544914240C66A100E4E949 /* libkiwix.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkiwix.a; path = Shared/Dependencies/macOS_lib/libkiwix.a; sourceTree = "<group>"; };
-		97544915240C66A100E4E949 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = Shared/Dependencies/macOS_lib/libcurl.a; sourceTree = "<group>"; };
-		97544916240C66A100E4E949 /* liblzma.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblzma.a; path = Shared/Dependencies/macOS_lib/liblzma.a; sourceTree = "<group>"; };
-		97544917240C66A200E4E949 /* libicutu.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicutu.a; path = Shared/Dependencies/macOS_lib/libicutu.a; sourceTree = "<group>"; };
-		97544918240C66A200E4E949 /* libxapian.la */ = {isa = PBXFileReference; lastKnownFileType = text; name = libxapian.la; path = Shared/Dependencies/macOS_lib/libxapian.la; sourceTree = "<group>"; };
-		97544919240C66A200E4E949 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libz.a; path = Shared/Dependencies/macOS_lib/libz.a; sourceTree = "<group>"; };
-		9754491A240C66A200E4E949 /* libpugixml.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpugixml.a; path = Shared/Dependencies/macOS_lib/libpugixml.a; sourceTree = "<group>"; };
-		9754491B240C66A200E4E949 /* libzim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzim.a; path = Shared/Dependencies/macOS_lib/libzim.a; sourceTree = "<group>"; };
-		9754491C240C66A200E4E949 /* libicuuc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuuc.a; path = Shared/Dependencies/macOS_lib/libicuuc.a; sourceTree = "<group>"; };
-		9754491D240C66A200E4E949 /* libxapian.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxapian.a; path = Shared/Dependencies/macOS_lib/libxapian.a; sourceTree = "<group>"; };
 		9759D4211F4F278800705779 /* Kiwix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
 		975F97A720D00EAE0005D642 /* SettingSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSearchController.swift; sourceTree = "<group>"; };
 		975FDAD91F6082DA00A10E8C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -313,23 +293,7 @@
 		97CD2F0324D4FB6F0084C6B5 /* SearchFilterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilterController.swift; sourceTree = "<group>"; };
 		97D757E4238F3161008FB7E2 /* SideBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarController.swift; sourceTree = "<group>"; };
 		97DBCF9C203CA254004EE274 /* SettingExternalLinkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingExternalLinkController.swift; sourceTree = "<group>"; };
-		97E02DDE24B00736008E278D /* libkiwix.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libkiwix.xcframework; sourceTree = "<group>"; };
 		97E02DE324B00C82008E278D /* libkiwix.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libkiwix.xcframework; sourceTree = "<group>"; };
-		97E02DE824B122BF008E278D /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = Model/libkiwix/lib/libcurl.a; sourceTree = "<group>"; };
-		97E02DE924B122BF008E278D /* liblzma.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblzma.a; path = Model/libkiwix/lib/liblzma.a; sourceTree = "<group>"; };
-		97E02DEA24B122BF008E278D /* libpugixml.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpugixml.a; path = Model/libkiwix/lib/libpugixml.a; sourceTree = "<group>"; };
-		97E02DEB24B122BF008E278D /* libicui18n.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicui18n.a; path = Model/libkiwix/lib/libicui18n.a; sourceTree = "<group>"; };
-		97E02DEC24B122BF008E278D /* libzstd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzstd.a; path = Model/libkiwix/lib/libzstd.a; sourceTree = "<group>"; };
-		97E02DED24B122BF008E278D /* libicuuc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicuuc.a; path = Model/libkiwix/lib/libicuuc.a; sourceTree = "<group>"; };
-		97E02DEE24B122BF008E278D /* libicudata.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicudata.a; path = Model/libkiwix/lib/libicudata.a; sourceTree = "<group>"; };
-		97E02DEF24B122BF008E278D /* libmicrohttpd.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmicrohttpd.a; path = Model/libkiwix/lib/libmicrohttpd.a; sourceTree = "<group>"; };
-		97E02DF024B122BF008E278D /* libxapian.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libxapian.a; path = Model/libkiwix/lib/libxapian.a; sourceTree = "<group>"; };
-		97E02DF124B122BF008E278D /* libkiwix.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkiwix.a; path = Model/libkiwix/lib/libkiwix.a; sourceTree = "<group>"; };
-		97E02DF224B122BF008E278D /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libz.a; path = Model/libkiwix/lib/libz.a; sourceTree = "<group>"; };
-		97E02DF324B122BF008E278D /* libzim.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzim.a; path = Model/libkiwix/lib/libzim.a; sourceTree = "<group>"; };
-		97E02E0C24B1233A008E278D /* liblzma.la */ = {isa = PBXFileReference; lastKnownFileType = text; name = liblzma.la; path = Model/libkiwix/lib/liblzma.la; sourceTree = "<group>"; };
-		97E02E0D24B1233A008E278D /* libicutu.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicutu.a; path = Model/libkiwix/lib/libicutu.a; sourceTree = "<group>"; };
-		97E02E0E24B1233B008E278D /* libicutest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libicutest.a; path = Model/libkiwix/lib/libicutest.a; sourceTree = "<group>"; };
 		97E983531F4DDB670021E96A /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		97EF586C239DB83E007549B8 /* ContentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentController.swift; sourceTree = "<group>"; };
 		97EFF05D235CAEFC00FBB7A4 /* ContentTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTabController.swift; sourceTree = "<group>"; };
@@ -351,7 +315,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				974FFE6F2353AA3900F6BF28 /* WebKit.framework in Frameworks */,
 				97CE15BB23B26ED200378D9F /* Realm in Frameworks */,
 				97E02E1024B1273E008E278D /* libkiwix.xcframework in Frameworks */,
 				97CE4241249086A600B334E9 /* Defaults in Frameworks */,
@@ -396,42 +359,7 @@
 		3B93EAF9B5C5AA23046BDEAC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				97E02E0E24B1233B008E278D /* libicutest.a */,
-				97E02E0D24B1233A008E278D /* libicutu.a */,
-				97E02E0C24B1233A008E278D /* liblzma.la */,
-				97E02DE824B122BF008E278D /* libcurl.a */,
-				97E02DEE24B122BF008E278D /* libicudata.a */,
-				97E02DEB24B122BF008E278D /* libicui18n.a */,
-				97E02DED24B122BF008E278D /* libicuuc.a */,
-				97E02DF124B122BF008E278D /* libkiwix.a */,
-				97E02DE924B122BF008E278D /* liblzma.a */,
-				97E02DEF24B122BF008E278D /* libmicrohttpd.a */,
-				97E02DEA24B122BF008E278D /* libpugixml.a */,
-				97E02DF024B122BF008E278D /* libxapian.a */,
-				97E02DF224B122BF008E278D /* libz.a */,
-				97E02DF324B122BF008E278D /* libzim.a */,
-				97E02DEC24B122BF008E278D /* libzstd.a */,
-				97E02DDE24B00736008E278D /* libkiwix.xcframework */,
-				97544915240C66A100E4E949 /* libcurl.a */,
-				97544911240C66A100E4E949 /* libcurl.la */,
-				9754490D240C66A100E4E949 /* libicudata.a */,
-				97544913240C66A100E4E949 /* libicui18n.a */,
-				9754490E240C66A100E4E949 /* libicutest.a */,
-				97544917240C66A200E4E949 /* libicutu.a */,
-				9754491C240C66A200E4E949 /* libicuuc.a */,
-				97544914240C66A100E4E949 /* libkiwix.a */,
-				97544916240C66A100E4E949 /* liblzma.a */,
-				97544910240C66A100E4E949 /* liblzma.la */,
-				9754490F240C66A100E4E949 /* libmicrohttpd.a */,
-				97544912240C66A100E4E949 /* libmicrohttpd.la */,
-				9754491A240C66A200E4E949 /* libpugixml.a */,
-				9754491D240C66A200E4E949 /* libxapian.a */,
-				97544918240C66A200E4E949 /* libxapian.la */,
-				97544919240C66A200E4E949 /* libz.a */,
-				9754491B240C66A200E4E949 /* libzim.a */,
 				9707541A23C2D3AB0076B74E /* SwiftUI.framework */,
-				974FFE6E2353AA3900F6BF28 /* WebKit.framework */,
-				974FFE6C2353AA3200F6BF28 /* Foundation.framework */,
 				97F6CC5020BD960F005CDBD2 /* MapKit.framework */,
 				975FDB061F608F4100A10E8C /* WebKit.framework */,
 				97C575F3202CB0E800E37502 /* NotificationCenter.framework */,
