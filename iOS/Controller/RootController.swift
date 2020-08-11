@@ -24,9 +24,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     init() {
         super.init(nibName: nil, bundle: nil)
 
-        let navigationController = UINavigationController(rootViewController: contentController)
-        navigationController.isToolbarHidden = false
-        viewControllers = [sideBarController, navigationController]
+        viewControllers = [sideBarController, UINavigationController(rootViewController: contentController)]
         delegate = self
         if #available(iOS 13.0, *) {
             primaryBackgroundStyle = .sidebar

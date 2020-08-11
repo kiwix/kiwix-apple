@@ -91,6 +91,11 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         setChildControllerIfNeeded(welcomeController)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isToolbarHidden = false
+    }
+    
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
