@@ -1,4 +1,4 @@
-# Kiwix for iOS & macOS
+# Kiwix for iOS and macOS
 
 This is the home for Kiwix apps on iOS and macOS.
 
@@ -30,7 +30,7 @@ Instructions are available [on the kiwix-build repo](https://github.com/kiwix/ki
 ```bash
 git clone https://github.com/kiwix/kiwix-build.git
 cd kiwix-build
-# if on macOS mojave (10.14), install headers to standard location
+# if on macOS mojave (10.14) or older, install headers to standard location
 # https://developer.apple.com/documentation/xcode_release_notes/xcode_10_release_notes?language=objc
 open /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg
 kiwix-build --target-platform iOS_multi kiwix-lib
