@@ -10,7 +10,9 @@ import UIKit
 import Defaults
 
 class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGestureRecognizerDelegate {
-    let sideBarController = SideBarController()
+    let sideBarController = UITabBarController()
+    let favoriteController = BookmarkController()
+    let outlineController = OutlineController()
     let contentController = ContentController()
     private var sideBarDisplayModeObserver: DefaultsObservation?
     private var masterIsVisible: Bool {
@@ -24,6 +26,10 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     init() {
         super.init(nibName: nil, bundle: nil)
 
+        sideBarController.viewControllers = [
+            UINavigationController(rootViewController: favoriteController),
+            UINavigationController(rootViewController: outlineController),
+        ]
         viewControllers = [sideBarController, UINavigationController(rootViewController: contentController)]
         delegate = self
         if #available(iOS 13.0, *) {
@@ -31,8 +37,8 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
             preferredDisplayMode = .primaryHidden
         }
 
-        sideBarController.favoriteController.delegate = contentController
-        sideBarController.outlineController.delegate = contentController
+        favoriteController.delegate = contentController
+        outlineController.delegate = contentController
         contentController.configureToolbar(isGrouped: !isCollapsed)
     }
 
