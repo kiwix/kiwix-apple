@@ -49,7 +49,7 @@ class BookmarkController: UITableViewController {
         tableView.separatorInsetReference = .fromAutomaticInsets
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         
-        if isBeingPresented {
+        if presentingViewController != nil {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
             target: self,
             action: #selector(dismissController))
