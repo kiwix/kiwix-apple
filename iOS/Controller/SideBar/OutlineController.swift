@@ -10,8 +10,13 @@ import UIKit
 
 class OutlineController: UITableViewController {
     static let title = NSLocalizedString("Outline", comment: "Outline view title")
-    
     weak var delegate: OutlineControllerDelegate? = nil
+    private let emptyContentView = EmptyContentView(
+        image: #imageLiteral(resourceName: "Compass"),
+        title: NSLocalizedString(
+            "Table of content not available", comment: "Help message when table of content is not available"
+        )
+    )
     private var url: URL?
     private var items = [OutlineItem]()
     private var highestLevel = 1
@@ -38,6 +43,7 @@ class OutlineController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationItem.title = title
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.separatorInsetReference = .fromAutomaticInsets
         
@@ -50,6 +56,7 @@ class OutlineController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        configureBackground()
         update()
     }
     
@@ -59,51 +66,44 @@ class OutlineController: UITableViewController {
     
     // MARK: - View Configurations
     
-    func update() {
-        let rootController = (splitViewController ?? presentingViewController) as? RootController
-        guard let webViewController = rootController?.contentController.webViewController else {
-            navigationItem.title = OutlineController.title
-            updateContent(url: nil, items: [])
-            return
+    private func configureBackground() {
+        if items.count > 0 {
+            tableView.backgroundView = nil
+            tableView.separatorStyle = .singleLine
+        } else {
+            tableView.backgroundView = emptyContentView
+            tableView.separatorStyle = .none
         }
-        
-        if url == webViewController.currentURL && url != nil { return }
-        
-        navigationItem.title = webViewController.currentTitle ?? OutlineController.title
-        webViewController.extractOutlineItems(completion: { (url, items) in
-            self.updateContent(url: url, items: items)
-        })
     }
     
-    private func updateContent(url: URL?, items: [OutlineItem]) {
-        self.url = url
-        self.items = items
+    func update() {
+        let rootController = (splitViewController ?? presentingViewController) as? RootController
+        let webViewController = rootController?.contentController.webViewController
         
-        /*
-         Hack: Often the whole article has only one h1 and that happens to be the title.
-         In this case, removing this h1 to prevent the whole list being unnecessarily indented.
-         */
-        if self.items.filter({ $0.level == 1 }).count == 1,
-            let firstItem = self.items.first,
-            firstItem.level == 1,
-            firstItem.text == navigationItem.title {
-            self.items.removeFirst()
-        }
-        self.highestLevel = self.items.map({ $0.level }).min() ?? 1
-        
-        if items.count > 0 {
-            tableView.separatorStyle = .singleLine
-            tableView.backgroundView = nil
-        } else {
-            tableView.separatorStyle = .none
-            tableView.backgroundView = EmptyContentView(
-                image: #imageLiteral(resourceName: "Compass"),
-                title: NSLocalizedString(
-                    "Table of content not available", comment: "Help message when table of content is not available"
-                )
-            )
-        }
+        guard webViewController?.currentURL != url else { return }
+        items = []
         tableView.reloadData()
+        
+        navigationItem.title = webViewController?.currentTitle ?? OutlineController.title
+        webViewController?.extractOutlineItems(completion: { (url, items) in
+            self.url = url
+            self.items = items
+            
+            /*
+             Hack: Often the whole article has only one h1 and that happens to be the title.
+             In this case, removing this h1 to prevent the whole list being unnecessarily indented.
+             */
+            if self.items.filter({ $0.level == 1 }).count == 1,
+               let firstItem = self.items.first,
+               firstItem.level == 1,
+               firstItem.text == self.navigationItem.title {
+                self.items.removeFirst()
+            }
+            self.highestLevel = self.items.map({ $0.level }).min() ?? 1
+            
+            self.configureBackground()
+            self.tableView.reloadData()
+        })
     }
     
     // MARK: - UITableViewDataSource & Delegate

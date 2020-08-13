@@ -11,7 +11,7 @@ import RealmSwift
 
 class BookmarkController: UITableViewController {
     weak var delegate: BookmarkControllerDelegate? = nil
-    private lazy var emptyContentView = EmptyContentView(
+    private let emptyContentView = EmptyContentView(
         image: #imageLiteral(resourceName: "StarColor"),
         title: NSLocalizedString("Bookmark your favorite articles", comment: "Help message when there's no bookmark to show"),
         subtitle: NSLocalizedString("To add, long press the bookmark button on the tool bar when reading an article.", comment: "Help message when there's no bookmark to show"))
