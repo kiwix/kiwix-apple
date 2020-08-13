@@ -38,12 +38,10 @@ class OutlineController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.backgroundView = nil
-        tableView.separatorStyle = .none
-        tableView.separatorInsetReference = .fromAutomaticInsets
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.separatorInsetReference = .fromAutomaticInsets
         
-        if let _ = presentingViewController {
+        if isBeingPresented {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
             target: self,
             action: #selector(dismissController))
