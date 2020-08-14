@@ -34,6 +34,11 @@ class SearchTitleResultTableCellView: NSTableCellView {
     }
 }
 
+class SearchResultCell: NSTableCellView {
+    @IBOutlet weak var titleField: NSTextField!
+    @IBOutlet weak var snippetField: NSTextField!
+}
+
 class SearchField: NSSearchField, NSSearchFieldDelegate {
     weak var eventDelegate: SearchFieldEvent?
     private(set) var searchStarted = false
