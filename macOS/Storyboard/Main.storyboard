@@ -848,7 +848,7 @@
                                                                         </textFieldCell>
                                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                         <prototypeCellViews>
-                                                                            <tableCellView identifier="DataCell" id="vdC-P1-Bcy" customClass="SearchResultCell" customModule="Kiwix" customModuleProvider="target">
+                                                                            <tableCellView identifier="SearchResultCell" id="vdC-P1-Bcy" customClass="SearchResultCell" customModule="Kiwix" customModuleProvider="target">
                                                                                 <rect key="frame" x="11" y="0.0" width="485" height="32"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
@@ -898,7 +898,7 @@
                                                                                     <outlet property="titleField" destination="lYB-fO-uFI" id="QNa-0j-5ad"/>
                                                                                 </connections>
                                                                             </tableCellView>
-                                                                            <tableCellView identifier="DataCellWithSnippet" id="jFq-lg-L67" customClass="SearchResultCell" customModule="Kiwix" customModuleProvider="target">
+                                                                            <tableCellView identifier="SearchResultCellWithSnippet" id="jFq-lg-L67" customClass="SearchResultCell" customModule="Kiwix" customModuleProvider="target">
                                                                                 <rect key="frame" x="11" y="32" width="485" height="38"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>

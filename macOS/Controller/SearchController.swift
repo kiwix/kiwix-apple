@@ -108,14 +108,14 @@ class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineView
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
         guard let item = item as? SearchResult else { return nil }
         if let snippet = item.snippet {
-            let identifier = NSUserInterfaceItemIdentifier("DataCellWithSnippet")
+            let identifier = NSUserInterfaceItemIdentifier("SearchResultCellWithSnippet")
             let view = outlineView.makeView(withIdentifier: identifier, owner: self) as! SearchResultCell
             view.titleField.stringValue = item.title
             view.snippetField.attributedStringValue = snippet
             configureImage(cell: view, zimFileID: item.zimFileID)
             return view
         } else {
-            let identifier = NSUserInterfaceItemIdentifier("DataCell")
+            let identifier = NSUserInterfaceItemIdentifier("SearchResultCell")
             let view = outlineView.makeView(withIdentifier: identifier, owner: self) as! SearchResultCell
             view.titleField.stringValue = item.title
             configureImage(cell: view, zimFileID: item.zimFileID)
