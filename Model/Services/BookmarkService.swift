@@ -43,7 +43,7 @@ class BookmarkService {
                 } else {
                     bookmark.title = zimFile.title
                 }
-                if #available(iOS 12.0, *) {
+                if #available(iOS 12.0, *, macOS 10.14) {
                     bookmark.snippet = parser.getFirstSentence(languageCode: zimFile.languageCode)?.string
                 } else {
                     bookmark.snippet = parser.getFirstParagraph()?.string
