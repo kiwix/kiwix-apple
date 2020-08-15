@@ -14,7 +14,6 @@ class SearchWindow: NSWindow {
     override var canBecomeMain: Bool {return false}
 }
 
-
 class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineViewDelegate {
     
     @IBOutlet weak var tabView: NSTabView!
@@ -106,16 +105,30 @@ class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineView
     // MARK: - NSOutlineViewDelegate
     
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-        guard let item = item as? SearchResult else {return nil}
-        let identifier = NSUserInterfaceItemIdentifier("DataCell")
-        let view = outlineView.makeView(withIdentifier: identifier, owner: self) as! NSTableCellView
-        view.textField?.stringValue = item.title
+        guard let item = item as? SearchResult else { return nil }
+        if let snippet = item.snippet {
+            let identifier = NSUserInterfaceItemIdentifier("SearchResultCellWithSnippet")
+            let view = outlineView.makeView(withIdentifier: identifier, owner: self) as! SearchResultCell
+            view.titleField.stringValue = item.title
+            view.snippetField.attributedStringValue = snippet
+            view.snippetField.maximumNumberOfLines = 4
+            configureImage(cell: view, zimFileID: item.zimFileID)
+            return view
+        } else {
+            let identifier = NSUserInterfaceItemIdentifier("SearchResultCell")
+            let view = outlineView.makeView(withIdentifier: identifier, owner: self) as! SearchResultCell
+            view.titleField.stringValue = item.title
+            configureImage(cell: view, zimFileID: item.zimFileID)
+            return view
+        }
+    }
+    
+    func configureImage(cell: NSTableCellView, zimFileID: String) {
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
-            let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: item.zimFileID)
-            view.imageView?.image = NSImage(data: zimFile?.faviconData ?? Data()) ?? #imageLiteral(resourceName: "GenericZimFile")
+            let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID)
+            cell.imageView?.image = NSImage(data: zimFile?.faviconData ?? Data()) ?? #imageLiteral(resourceName: "GenericZimFile")
         } catch {}
-        return view
     }
 }
 

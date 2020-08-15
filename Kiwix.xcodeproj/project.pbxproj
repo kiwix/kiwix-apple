@@ -31,10 +31,8 @@
 		974FFE6A23533E8D00F6BF28 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE6823533E8D00F6BF28 /* NavigationController.swift */; };
 		9763EDC9201FCA6900F3A6D5 /* SettingWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9763EDC8201FCA6900F3A6D5 /* SettingWebController.swift */; };
 		9763EDCB201FCC3A00F3A6D5 /* About.html in Resources */ = {isa = PBXBuildFile; fileRef = 9763EDCA201FCC3900F3A6D5 /* About.html */; };
-		9765D9801F50CC4700BFDC1E /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9765D97F1F50CC4700BFDC1E /* Search.storyboard */; };
 		976771791F4378FC007ED0C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 976771741F4378FC007ED0C2 /* Main.storyboard */; };
 		9768C2351F4B7BAC00FD499B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768C2341F4B7BAC00FD499B /* AppDelegate.swift */; };
-		9768C2371F4B7E9900FD499B /* Preference.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9768C2361F4B7E9900FD499B /* Preference.storyboard */; };
 		9768C23B1F4B7F6300FD499B /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768C23A1F4B7F6300FD499B /* Preference.swift */; };
 		9779A5B22456793600F6F6FF /* LibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59C2456793500F6F6FF /* LibraryService.swift */; };
 		9779A5B42456793600F6F6FF /* BookmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59D2456793500F6F6FF /* BookmarkService.swift */; };
@@ -219,10 +217,8 @@
 		975FDB061F608F4100A10E8C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		9763EDC8201FCA6900F3A6D5 /* SettingWebController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingWebController.swift; sourceTree = "<group>"; };
 		9763EDCA201FCC3900F3A6D5 /* About.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = About.html; sourceTree = "<group>"; };
-		9765D97F1F50CC4700BFDC1E /* Search.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = "<group>"; };
 		976771741F4378FC007ED0C2 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		9768C2341F4B7BAC00FD499B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9768C2361F4B7E9900FD499B /* Preference.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Preference.storyboard; sourceTree = "<group>"; };
 		9768C23A1F4B7F6300FD499B /* Preference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
 		9779A59C2456793500F6F6FF /* LibraryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryService.swift; sourceTree = "<group>"; };
 		9779A59D2456793500F6F6FF /* BookmarkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkService.swift; sourceTree = "<group>"; };
@@ -496,16 +492,6 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		976771731F4378FC007ED0C2 /* Storyboard */ = {
-			isa = PBXGroup;
-			children = (
-				976771741F4378FC007ED0C2 /* Main.storyboard */,
-				9765D97F1F50CC4700BFDC1E /* Search.storyboard */,
-				9768C2361F4B7E9900FD499B /* Preference.storyboard */,
-			);
-			path = Storyboard;
-			sourceTree = "<group>";
-		};
 		9779A59B2456793500F6F6FF /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -581,9 +567,9 @@
 			isa = PBXGroup;
 			children = (
 				9768C2341F4B7BAC00FD499B /* AppDelegate.swift */,
+				976771741F4378FC007ED0C2 /* Main.storyboard */,
 				9767716E1F4378FC007ED0C2 /* Controller */,
 				97E983521F4DDB2C0021E96A /* View */,
-				976771731F4378FC007ED0C2 /* Storyboard */,
 				979315AC1E5147A70093D3BA /* Support */,
 				9707B8F51F4B4F1500075D4F /* Assets.xcassets */,
 			);
@@ -919,8 +905,6 @@
 			files = (
 				9707B8F61F4B4F1500075D4F /* Assets.xcassets in Resources */,
 				976771791F4378FC007ED0C2 /* Main.storyboard in Resources */,
-				9768C2371F4B7E9900FD499B /* Preference.storyboard in Resources */,
-				9765D9801F50CC4700BFDC1E /* Search.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
