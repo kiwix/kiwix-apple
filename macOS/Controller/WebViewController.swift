@@ -46,6 +46,24 @@ class WebViewController: NSViewController, WKNavigationDelegate {
     
     // MARK: - WKNavigationDelegate
     
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
+        if url.isKiwixURL {
+            guard let zimFileID = url.host else { decisionHandler(.cancel); return }
+            if let redirectedPath = ZimMultiReader.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
+                let redirectedURL = URL(zimFileID: zimFileID, contentPath: redirectedPath) {
+                decisionHandler(.cancel)
+                load(url: redirectedURL)
+            } else {
+                decisionHandler(.allow)
+            }
+        } else if url.scheme == "http" || url.scheme == "https" {
+            decisionHandler(.allow)
+        } else {
+            decisionHandler(.cancel)
+        }
+    }
+    
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         view.window?.title = webView.title ?? ""
     }
