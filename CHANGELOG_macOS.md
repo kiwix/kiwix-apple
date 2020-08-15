@@ -1,9 +1,10 @@
 ## 2.1.2
 
-- add search result snippets
-- fix: previously opened zim files are not showing up on the sidebar after app relaunch
-- fix: zim files show up twice on the sidebar under certain scenarios
-- fix: missing libswiftAppKit.dylib on macOS 13
+- add search result snippets ([issue #264](https://github.com/kiwix/apple/issues/264)) 
+- fix: previously opened zim files are not showing up on the sidebar after app relaunch ([issue #294](https://github.com/kiwix/apple/issues/294)) 
+- fix: zim files show up twice on the sidebar under certain scenarios ([issue #294](https://github.com/kiwix/apple/issues/294)) 
+- fix: missing libswiftAppKit.dylib on macOS 13 ([issue #291](https://github.com/kiwix/apple/issues/291)) 
+- fix: loading articles with redirections ([issue #227](https://github.com/kiwix/apple/issues/227)) 
 
 ## 2.1.1 (Jul 8, 2020)
 
