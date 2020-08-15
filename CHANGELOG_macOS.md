@@ -3,6 +3,7 @@
 - add search result snippets
 - fix: previously opened zim files are not showing up on the sidebar after app relaunch
 - fix: zim files show up twice on the sidebar under certain scenarios
+- fix: missing libswiftAppKit.dylib on macOS 13
 
 ## 2.1.1 (Jul 8, 2020)
 
