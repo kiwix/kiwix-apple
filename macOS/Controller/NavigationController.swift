@@ -34,15 +34,10 @@ class ArticleNavigationController: NSViewController, NSMenuDelegate, NSOutlineVi
             switch change {
             case .initial(let zimFiles):
                 self.tabView.selectTabViewItem(withIdentifier: zimFiles.count > 0 ? "ZimFileLocal" : "ZimFileLocalEmpty")
-            case .update(let zimFiles, _, let insertions, _):
-                if zimFiles.count > 0 {
-                    self.tabView.selectTabViewItem(withIdentifier: "ZimFileLocal")
-                    self.localOutlineView.beginUpdates()
-                    self.localOutlineView.insertItems(at: IndexSet(insertions), inParent: nil, withAnimation: NSTableView.AnimationOptions.slideLeft)
-                    self.localOutlineView.endUpdates()
-                } else {
-                    self.tabView.selectTabViewItem(withIdentifier: "ZimFileLocalEmpty")
-                }
+                self.localOutlineView.reloadData()
+            case .update(let zimFiles, _, _, _):
+                self.tabView.selectTabViewItem(withIdentifier: zimFiles.count > 0 ? "ZimFileLocal" : "ZimFileLocalEmpty")
+                self.localOutlineView.reloadData()
             default:
                 break
             }

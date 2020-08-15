@@ -1,3 +1,9 @@
+## 2.1.2
+
+- add search result snippets
+- fix: previously opened zim files are not showing up on the sidebar after app relaunch
+- fix: zim files show up twice on the sidebar under certain scenarios
+
 ## 2.1.1 (Jul 8, 2020)
 
 - updated version of libkiwix and dependencies to resolve an issue where the app couldn't open some of the latest zim files
