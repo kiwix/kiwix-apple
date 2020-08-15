@@ -24,11 +24,7 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
-                                        <menuItem title="Preferences…" hidden="YES" keyEquivalent="," id="BOF-NM-1cW">
-                                            <connections>
-                                                <segue destination="W9u-Fw-XBg" kind="show" id="qSI-zf-8lo"/>
-                                            </connections>
-                                        </menuItem>
+                                        <menuItem title="Preferences…" hidden="YES" keyEquivalent="," id="BOF-NM-1cW"/>
                                         <menuItem isSeparatorItem="YES" id="wFC-TO-SCJ"/>
                                         <menuItem title="Services" id="NMo-om-nkz">
                                             <modifierMask key="keyEquivalentModifierMask"/>
@@ -638,14 +634,6 @@
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-85" y="-468"/>
-        </scene>
-        <!--Preference-->
-        <scene sceneID="OBR-1i-rmw">
-            <objects>
-                <controllerPlaceholder storyboardName="Preference" id="W9u-Fw-XBg" sceneMemberID="viewController"/>
-                <customObject id="iFG-Mf-RqZ" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="311" y="-471"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="RfV-d4-Op0">
