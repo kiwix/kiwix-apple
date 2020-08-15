@@ -111,6 +111,7 @@ class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineView
             let view = outlineView.makeView(withIdentifier: identifier, owner: self) as! SearchResultCell
             view.titleField.stringValue = item.title
             view.snippetField.attributedStringValue = snippet
+            view.snippetField.maximumNumberOfLines = 4
             configureImage(cell: view, zimFileID: item.zimFileID)
             return view
         } else {
