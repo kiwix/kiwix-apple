@@ -118,14 +118,15 @@ class BookmarkController: UITableViewController {
     }
 
     func configure(cell: TableViewCell, indexPath: IndexPath, animated: Bool = false) {
-        guard let bookmark = bookmarks?[indexPath.row], let zimFile = bookmark.zimFile else {return}
+        guard let bookmark = bookmarks?[indexPath.row] else { return }
         cell.titleLabel.text = bookmark.title
         cell.titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         cell.detailLabel.text = bookmark.snippet
-        if let thumbImagePath = bookmark.thumbImagePath,
+        
+        if let zimFile = bookmark.zimFile, let thumbImagePath = bookmark.thumbImagePath,
            let data = ZimMultiReader.shared.getContent(bookID: zimFile.id, contentPath: thumbImagePath)?.data {
             cell.thumbImageView.image = UIImage(data: data)
-        } else if let data = zimFile.faviconData {
+        } else if let zimFile = bookmark.zimFile, let data = zimFile.faviconData {
             cell.thumbImageView.image = UIImage(data: data)
         } else {
             cell.thumbImageView.image = #imageLiteral(resourceName: "GenericZimFile")
