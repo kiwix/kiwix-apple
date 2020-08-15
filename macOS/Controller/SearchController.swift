@@ -14,7 +14,6 @@ class SearchWindow: NSWindow {
     override var canBecomeMain: Bool {return false}
 }
 
-
 class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineViewDelegate {
     
     @IBOutlet weak var tabView: NSTabView!
