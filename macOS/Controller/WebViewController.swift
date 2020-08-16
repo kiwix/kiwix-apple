@@ -67,4 +67,16 @@ class WebViewController: NSViewController, WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         view.window?.title = webView.title ?? ""
     }
+    
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        guard let error = error as? URLError,
+              error.code == .resourceUnavailable,
+              let window = view.window else { return }
+        let alert = NSAlert()
+        alert.messageText = "Unable to open link."
+        alert.informativeText = "The link you clicked on cannot be opened."
+        alert.alertStyle = .critical
+        alert.addButton(withTitle: "OK")
+        alert.beginSheetModal(for: window, completionHandler: nil)
+    }
 }
