@@ -56,7 +56,6 @@ class OutlineController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        configureBackground()
         update()
     }
     
@@ -65,22 +64,18 @@ class OutlineController: UITableViewController {
     }
     
     // MARK: - View Configurations
-    
-    private func configureBackground() {
-        if items.count > 0 {
-            tableView.backgroundView = nil
-            tableView.separatorStyle = .singleLine
-        } else {
-            tableView.backgroundView = emptyContentView
-            tableView.separatorStyle = .none
-        }
-    }
-    
+
     func update() {
         let rootController = (splitViewController ?? presentingViewController) as? RootController
         let webViewController = rootController?.contentController.webViewController
         
+        // No need to update if already showing outline of current article
         guard webViewController?.currentURL != url else { return }
+        
+        /*
+         Before the update, clear previous article outline. This way we can prevent
+         the previous article outline from briefly appear which is not desirable.
+         */
         items = []
         tableView.reloadData()
         
@@ -101,7 +96,13 @@ class OutlineController: UITableViewController {
             }
             self.highestLevel = self.items.map({ $0.level }).min() ?? 1
             
-            self.configureBackground()
+            if items.count > 0 {
+                self.tableView.backgroundView = nil
+                self.tableView.separatorStyle = .singleLine
+            } else {
+                self.tableView.backgroundView = self.emptyContentView
+                self.tableView.separatorStyle = .none
+            }
             self.tableView.reloadData()
         })
     }
