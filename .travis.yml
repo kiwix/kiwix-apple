@@ -1,4 +1,4 @@
 os: osx
 osx_image: xcode11.6
 language: swift
-script: xcodebuild -project Kiwix.xcodeproj -scheme "Kiwix for iOS" CODE_SIGNING_REQUIRED=NO
+script: xcodebuild -project Kiwix.xcodeproj -scheme "Kiwix for iOS" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
