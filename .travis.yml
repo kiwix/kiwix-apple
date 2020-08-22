@@ -1,4 +1,4 @@
 os: osx
-osx_image: xcode10.1
+osx_image: xcode11.6
 language: swift
 script: xcodebuild -project Kiwix.xcodeproj -scheme "Kiwix for iOS"
