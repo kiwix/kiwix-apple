@@ -20,29 +20,58 @@ This is the home for Kiwix apps on iOS and macOS.
 * An [Apple Developer account](https://developer.apple.com) (doesn't require membership)
 * Latest Apple Developers Tools ([Xcode](https://developer.apple.com/xcode/))
 * Its command-line utilities (`xcode-select --install`)
-* [CocoaPods](https://cocoapods.org/) `sudo gem install cocoapods && pod repo update`
-* [kiwix-lib](https://github.com/kiwix/kiwix-lib)
+* `libkiwix.xcframework` ([kiwix-lib](https://github.com/kiwix/kiwix-lib))
 
-### Building kiwix-lib
+### Creating `libkiwix.xcframework`
 
-Instructions are available [on the kiwix-build repo](https://github.com/kiwix/kiwix-build).
+Instructions to build kiwix-lib at [on the kiwix-build repo](https://github.com/kiwix/kiwix-build).
 
+The xcframework is a bundle of a library for multiple architectures and/or platforms. The `libkiwix.xcframework` will contain libkiwix library for macOS arch and for iOS. You don't have to follow steps for other platform/arch if you don't need them.
+
+Following steps are done from kiwix-build root and assume your apple repository is at `../apple`.
+
+#### Build kiwix-lib
 ```bash
 git clone https://github.com/kiwix/kiwix-build.git
 cd kiwix-build
 # if on macOS mojave (10.14), install headers to standard location
 # https://developer.apple.com/documentation/xcode_release_notes/xcode_10_release_notes?language=objc
 open /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg
+# make sure xcrun can find SDKs
+sudo xcode-select --switch /Applications/Xcode.app
+# [iOS] build kiwix-lib
 kiwix-build --target-platform iOS_multi kiwix-lib
-# assuming ../apple points to this repository
-cp -vr BUILD_iOS_multi/INSTALL/include ../apple/Shared/Dependencies/
-cp -vr BUILD_iOS_multi/INSTALL/lib ../apple/Shared/Dependencies/iOS_lib
+# [macOS] build kiwix-lib
+kiwix-build --target-platform native_static kiwix-lib
 ```
+
+#### Create fat archive with all dependencies
+
+This creates a single `.a` archive named libkiwix which contains all libkiwix's dependencies.
+If you are to create an xcframework with multiple architectures/platforms, repeat this step for each:
+
+* `native_static` (for macOS – x86_64)
+* `iOS_x86_64`
+* `iOS_arm64`
+
+You'll have to do it for both iOS archs although you built it using `multi`.
+
+```bash
+libtool -static -o BUILD_<target>/INSTALL/lib/libkiwix.a BUILD_<target>/INSTALL/lib/*.a
+```
+
+#### Add fat archive to xcframework
+
+```bash
+xcodebuild -create-xcframework -library BUILD_<target>/INSTALL/lib/libkiwix.a -headers BUILD_<target>/INSTALL/include -output ../apple/Model/libkiwix.xcframework
+```
+
+You can now launch the build from Xcode and use the iOS simulator or your macOS target.
+
 
 ### Building Kiwix iOS or Kiwix macOS
 
-* Install Pods dependencies `pod install`
-* Open project with Xcode `open Kiwix.xcworkspace`
+* Open project with Xcode `open Kiwix.xcodeproj`
 * Change the App groups (in *Capabilities*) and Bundle Identifier for both iOS and Bookmarks targets
   * App Group must be different and unique (ex: `tld.mydomain.apple`)
   * iOS Bundle Identifier must be different and unique (ex: `tld.mydomain.apple.Kiwix`)
