@@ -10,11 +10,16 @@ import UIKit
 import Defaults
 
 class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGestureRecognizerDelegate, WebViewControllerDelegate {
+    
+    // MARK: Controllers
+    
     let sideBarController = UITabBarController()
     let favoriteController = BookmarkController()
     let outlineController = OutlineController()
     let contentController = ContentController()
     let webViewController = WebViewController()
+    
+    // MARK: Other Properties
     
     private var sideBarDisplayModeObserver: DefaultsObservation?
     private var masterIsVisible: Bool {
@@ -23,7 +28,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         }
     }
     
-    // MARK: - init & override
+    // MARK: - Init & Override
 
     init() {
         super.init(nibName: nil, bundle: nil)
