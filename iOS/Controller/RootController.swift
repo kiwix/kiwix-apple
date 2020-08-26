@@ -9,11 +9,13 @@
 import UIKit
 import Defaults
 
-class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGestureRecognizerDelegate {
+class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGestureRecognizerDelegate, WebViewControllerDelegate {
     let sideBarController = UITabBarController()
     let favoriteController = BookmarkController()
     let outlineController = OutlineController()
     let contentController = ContentController()
+    let webViewController = WebViewController()
+    
     private var sideBarDisplayModeObserver: DefaultsObservation?
     private var masterIsVisible: Bool {
         get {
@@ -37,6 +39,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
             preferredDisplayMode = .primaryHidden
         }
 
+        webViewController.delegate = self
         favoriteController.delegate = contentController
         outlineController.delegate = contentController
         contentController.configureToolbar(isGrouped: !isCollapsed)
@@ -128,6 +131,16 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         */
         return gestureRecognizer.location(in: view).x > 30
     }
+    
+    // MARK: - WebViewControllerDelegate
+    
+    func webViewDidTapOnGeoLocation(controller: WebViewController, url: URL) {
+        
+    }
+    
+    func webViewDidFinishNavigation(controller: WebViewController) {
+        
+    }
 
     // MARK: - Actions
     
@@ -137,7 +150,8 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
 
     func openKiwixURL(_ url: URL) {
         guard url.isKiwixURL else {return}
-        contentController.load(url: url)
+//        setChildControllerIfNeeded(webViewController)
+        webViewController.load(url: url)
     }
 
     func openFileURL(_ url: URL, canOpenInPlace: Bool) {

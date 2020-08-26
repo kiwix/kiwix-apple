@@ -74,7 +74,7 @@ class SettingFontSizeViewController: UIViewController, UITableViewDelegate, UITa
         label.font = UIFont.systemFont(ofSize: CGFloat(14.0 * percentages[indexPath.row]))
         
         if let rootController = presentingViewController as? RootController {
-            rootController.contentController.webViewController.adjustFontSize(scale: selected)
+            rootController.webViewController.adjustFontSize(scale: selected)
         }
     }
 }

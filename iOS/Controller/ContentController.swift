@@ -25,7 +25,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     private let searchResultsController: SearchResultsController
     private lazy var searchCancelButton = UIBarButtonItem(
         barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
-    let webViewController = WebViewController()
+//    let webViewController = WebViewController()
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil)
         .instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     private var cachedLibraryController: LibraryController?
@@ -74,7 +74,6 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         
         // misc
         definesPresentationContext = true
-        webViewController.delegate = self
         navigationItem.hidesBackButton = true
         navigationItem.titleView = searchController.searchBar
     }
@@ -98,11 +97,6 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
-    }
-    
-    func load(url: URL) {
-        setChildControllerIfNeeded(webViewController)
-        webViewController.load(url: url)
     }
     
     // MARK: - View and Controller Management
@@ -130,10 +124,11 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     }
     
     private func updateToolBarButtonEnabled() {
-        chevronLeftButton.isEnabled = webViewController.canGoBack
-        chevronRightButton.isEnabled = webViewController.canGoForward
-        outlineButton.isEnabled = webViewController.currentURL != nil
-        bookmarkToggleButton.isEnabled = webViewController.currentURL != nil
+        guard let rootController = splitViewController as? RootController else { return }
+        chevronLeftButton.isEnabled = rootController.webViewController.canGoBack
+        chevronRightButton.isEnabled = rootController.webViewController.canGoForward
+        outlineButton.isEnabled = rootController.webViewController.currentURL != nil
+        bookmarkToggleButton.isEnabled = rootController.webViewController.currentURL != nil
     }
     
     private func setView(_ subView: UIView?) {
@@ -256,18 +251,20 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     
     func didTapOutlineItem(item: OutlineItem) {
         if searchController.isActive { searchController.isActive = false }
-        webViewController.scrollToOutlineItem(index: item.index)
+        guard let rootController = splitViewController as? RootController else { return }
+        rootController.webViewController.scrollToOutlineItem(index: item.index)
     }
     
     // MARK: BookmarkControllerDelegate
     
     func didTapBookmark(url: URL) {
         if searchController.isActive { searchController.isActive = false }
-        load(url: url)
+        (splitViewController as? RootController)?.openKiwixURL(url)
     }
     
     func didDeleteBookmark(url: URL) {
-        guard webViewController.currentURL?.absoluteURL == url.absoluteURL else {return}
+        guard let rootController = splitViewController as? RootController,
+              rootController.webViewController.currentURL?.absoluteURL == url.absoluteURL else {return}
         bookmarkButton.isBookmarked = false
         bookmarkToggleButton.isBookmarked = false
     }
@@ -292,11 +289,13 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     }
     
     @objc func goBack() {
-        webViewController.goBack()
+        guard let rootController = splitViewController as? RootController else { return }
+        rootController.webViewController.goBack()
     }
     
     @objc func goForward() {
-        webViewController.goForward()
+        guard let rootController = splitViewController as? RootController else { return }
+        rootController.webViewController.goForward()
     }
     
     @objc func openOutline() {
@@ -318,7 +317,8 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
             return
         }
         
-        guard let url = webViewController.currentURL else { return }
+        guard let rootController = splitViewController as? RootController,
+              let url = rootController.webViewController.currentURL else { return }
         let bookmarkService = BookmarkService()
         if let bookmark = bookmarkService.get(url: url) {
             bookmarkService.delete(bookmark)

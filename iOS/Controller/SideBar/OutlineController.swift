@@ -67,7 +67,7 @@ class OutlineController: UITableViewController {
 
     func update() {
         let rootController = (splitViewController ?? presentingViewController) as? RootController
-        let webViewController = rootController?.contentController.webViewController
+        let webViewController = rootController?.webViewController
         
         // No need to update if already showing outline of current article
         guard webViewController?.currentURL != url else { return }
