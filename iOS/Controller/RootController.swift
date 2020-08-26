@@ -155,7 +155,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
 
     func openKiwixURL(_ url: URL) {
         guard url.isKiwixURL else {return}
-//        setChildControllerIfNeeded(webViewController)
+        contentController.setChildControllerIfNeeded(webViewController)
         webViewController.load(url: url)
     }
 

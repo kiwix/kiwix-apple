@@ -145,7 +145,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         }
     }
     
-    private func setChildControllerIfNeeded(_ newChild: UIViewController?) {
+    func setChildControllerIfNeeded(_ newChild: UIViewController?) {
         if let newChild = newChild, children.contains(newChild) {return}
         
         for child in children {
