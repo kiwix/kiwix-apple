@@ -15,7 +15,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     // MARK: Controllers
     
     let sideBarController = UITabBarController()
-    let favoriteController = BookmarkController()
+    let bookmarkController = BookmarkController()
     let outlineController = OutlineController()
     let contentController = ContentController()
     let webViewController = WebViewController()
@@ -48,7 +48,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         super.init(nibName: nil, bundle: nil)
 
         sideBarController.viewControllers = [
-            UINavigationController(rootViewController: favoriteController),
+            UINavigationController(rootViewController: bookmarkController),
             UINavigationController(rootViewController: outlineController),
         ]
         viewControllers = [sideBarController, UINavigationController(rootViewController: contentController)]
@@ -59,19 +59,19 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         }
 
         webViewController.delegate = self
-        favoriteController.delegate = self
+        bookmarkController.delegate = self
         outlineController.delegate = self
-        contentController.configureToolbar(isGrouped: !isCollapsed)
         
+        // buttons
+        configureBarButtons(isGrouped: !isCollapsed)
         sideBarButton.addTarget(self, action: #selector(toggleSideBar), for: .touchUpInside)
         chevronLeftButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
         chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
         outlineButton.addTarget(self, action: #selector(openOutline), for: .touchUpInside)
-        bookmarkButton.addTarget(self, action: #selector(openBookmark), for: .touchUpInside)
-        bookmarkToggleButton.addTarget(self, action: #selector(toggleBookmark), for: .touchUpInside)
         libraryButton.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
         settingButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
-        
+        bookmarkButton.addTarget(self, action: #selector(openBookmark), for: .touchUpInside)
+        bookmarkToggleButton.addTarget(self, action: #selector(toggleBookmark), for: .touchUpInside)
         bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
         bookmarkLongPressGestureRecognizer.addTarget(self, action: #selector(toggleBookmark))
     }
@@ -114,6 +114,23 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     }
     
     // MARK: - Utilities
+    
+    private func configureBarButtons(isGrouped: Bool) {
+        if isGrouped {
+            let left = BarButtonGroup(buttons: [sideBarButton, chevronLeftButton, chevronRightButton], spacing: 10)
+            let right = BarButtonGroup(buttons: [bookmarkToggleButton, libraryButton, settingButton], spacing: 10)
+            contentController.toolbarItems = [
+                UIBarButtonItem(customView: left),
+                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+                UIBarButtonItem(customView: right),
+            ]
+        } else {
+            let group = BarButtonGroup(buttons: [
+                chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, libraryButton, settingButton,
+            ])
+            contentController.toolbarItems = [UIBarButtonItem(customView: group)]
+        }
+    }
 
     private func getPrimaryVisibleDisplayMode(size: CGSize? = nil) -> UISplitViewController.DisplayMode {
         switch Defaults[.sideBarDisplayMode] {
@@ -134,7 +151,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     }
 
     func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
-        contentController.configureToolbar(isGrouped: false)
+        configureBarButtons(isGrouped: false)
         contentController.dismissPopoverController()
         let navigationController = UINavigationController(rootViewController: contentController)
         navigationController.isToolbarHidden = contentController.searchController.isActive
@@ -143,7 +160,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
 
     func splitViewController(_ splitViewController: UISplitViewController,
                              separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
-        contentController.configureToolbar(isGrouped: true)
+        configureBarButtons(isGrouped: true)
         contentController.dismissPopoverController()
         let navigationController = UINavigationController(rootViewController: contentController)
         navigationController.isToolbarHidden = contentController.searchController.isActive

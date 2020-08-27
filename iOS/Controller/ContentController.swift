@@ -27,10 +27,6 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         
         super.init(nibName: nil, bundle: nil)
         
-        // button tap
-        
-        // button long press
-        
         // view background
         if #available(iOS 13.0, *) {
             view.backgroundColor = .systemBackground
@@ -79,24 +75,6 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     }
     
     // MARK: - View and Controller Management
-    
-    func configureToolbar(isGrouped: Bool) {
-        guard let rootController = splitViewController as? RootController else { return }
-        if isGrouped {
-            let left = BarButtonGroup(buttons: [rootController.sideBarButton, rootController.chevronLeftButton, rootController.chevronRightButton], spacing: 10)
-            let right = BarButtonGroup(buttons: [rootController.bookmarkToggleButton, rootController.libraryButton, rootController.settingButton], spacing: 10)
-            toolbarItems = [
-                UIBarButtonItem(customView: left),
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(customView: right),
-            ]
-        } else {
-            let group = BarButtonGroup(buttons: [
-                rootController.chevronLeftButton, rootController.chevronRightButton, rootController.outlineButton, rootController.bookmarkButton, rootController.libraryButton, rootController.settingButton,
-            ])
-            toolbarItems = [UIBarButtonItem(customView: group)]
-        }
-    }
     
     func dismissPopoverController() {
         guard let style = presentedViewController?.modalPresentationStyle, style == .popover else { return }
