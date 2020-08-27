@@ -71,6 +71,7 @@ class OutlineController: UITableViewController {
         
         // Show empty content view if no article is displayed
         guard webViewController.currentURL != nil else {
+            navigationItem.title = OutlineController.title
             tableView.backgroundView = emptyContentView
             tableView.separatorStyle = .none
             return
