@@ -157,23 +157,6 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         navigationController?.isToolbarHidden = false
     }
     
-    // MARK: WebViewControllerDelegate
-    
-    func webViewDidFinishNavigation(controller: WebViewController) {
-        guard let rootController = splitViewController as? RootController else { return }
-        
-        // if outline view is visible, update outline items
-        if let rootController = splitViewController as? RootController,
-            !rootController.isCollapsed,
-            rootController.displayMode != .primaryHidden {
-            let selectedNavController = rootController.sideBarController.selectedViewController
-            let selectedController = (selectedNavController as? UINavigationController)?.topViewController
-            if let outlineController = selectedController as? OutlineController {
-                outlineController.update()
-            }
-        }
-    }
-    
     // MARK: - Actions
     
     @objc func cancelSearch() {

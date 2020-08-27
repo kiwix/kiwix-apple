@@ -138,6 +138,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     private func updateBarButtons() {
         chevronLeftButton.isEnabled = webViewController.canGoBack
         chevronRightButton.isEnabled = webViewController.canGoForward
+        outlineButton.isEnabled = webViewController.currentURL != nil
         if let url = webViewController.currentURL, let _ = BookmarkService().get(url: url) {
             bookmarkButton.isBookmarked = true
             bookmarkToggleButton.isBookmarked = true
@@ -224,6 +225,11 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     
     func webViewDidFinishNavigation(controller: WebViewController) {
         updateBarButtons()
+        
+        // update outline items if outline view is visible
+        if !isCollapsed, displayMode != .primaryHidden {
+            outlineController.update()
+        }
     }
 
     // MARK: - Actions
