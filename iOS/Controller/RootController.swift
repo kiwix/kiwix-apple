@@ -29,8 +29,8 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     private let outlineButton = BarButton(imageName: "list.bullet")
     private let bookmarkButton = BookmarkButton(imageName: "star", bookmarkedImageName: "star.fill")
     private let bookmarkToggleButton = BookmarkButton(imageName: "star.circle.fill", bookmarkedImageName: "star.circle")
-    let libraryButton = BarButton(imageName: "folder")
-    let settingButton = BarButton(imageName: "gear")
+    private let libraryButton = BarButton(imageName: "folder")
+    private let settingButton = BarButton(imageName: "gear")
     private let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
     
     // MARK: Other Properties
