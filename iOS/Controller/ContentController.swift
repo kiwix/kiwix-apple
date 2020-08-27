@@ -13,7 +13,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     let searchController: UISearchController
     private let searchResultsController: SearchResultsController
     private lazy var searchCancelButton = UIBarButtonItem(
-        barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
+        barButtonSystemItem: .cancel, target: self, action: #selector(dismissSearch))
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil)
         .instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     
@@ -123,7 +123,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     
     // MARK: - Actions
     
-    @objc func cancelSearch() {
+    @objc func dismissSearch() {
         /*
          We have to dismiss the `searchController` first, so that the `isBeingDismissed` property is correct on the
          `searchResultsController`. We rely on `isBeingDismissed` to understand if the search text is cleared because

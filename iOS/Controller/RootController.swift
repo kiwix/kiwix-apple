@@ -17,7 +17,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     let sideBarController = UITabBarController()
     let bookmarksController = BookmarksController()
     let outlineController = OutlineController()
-    let contentController = ContentController()
+    private let contentController = ContentController()
     let webViewController = WebViewController()
     private var libraryController: LibraryController?
     
@@ -330,8 +330,9 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
 
     func openKiwixURL(_ url: URL) {
         guard url.isKiwixURL else {return}
-        contentController.setChildControllerIfNeeded(webViewController)
         webViewController.load(url: url)
+        contentController.setChildControllerIfNeeded(webViewController)
+        contentController.dismissSearch()
     }
 
     func openFileURL(_ url: URL, canOpenInPlace: Bool) {
