@@ -9,8 +9,7 @@
 import UIKit
 import RealmSwift
 
-class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptivePresentationControllerDelegate,
-    WebViewControllerDelegate {
+class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptivePresentationControllerDelegate {
     let searchController: UISearchController
     private let searchResultsController: SearchResultsController
     private lazy var searchCancelButton = UIBarButtonItem(
@@ -59,7 +58,6 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateToolBarButtonEnabled()
         
         // show welcome controller
         setChildControllerIfNeeded(welcomeController)
@@ -79,14 +77,6 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     func dismissPopoverController() {
         guard let style = presentedViewController?.modalPresentationStyle, style == .popover else { return }
         presentedViewController?.dismiss(animated: false)
-    }
-    
-    private func updateToolBarButtonEnabled() {
-        guard let rootController = splitViewController as? RootController else { return }
-        rootController.chevronLeftButton.isEnabled = rootController.webViewController.canGoBack
-        rootController.chevronRightButton.isEnabled = rootController.webViewController.canGoForward
-        rootController.outlineButton.isEnabled = rootController.webViewController.currentURL != nil
-        rootController.bookmarkToggleButton.isEnabled = rootController.webViewController.currentURL != nil
     }
     
     private func setView(_ subView: UIView?) {
@@ -169,31 +159,8 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     
     // MARK: WebViewControllerDelegate
     
-    func webViewDidTapOnGeoLocation(controller: WebViewController, url: URL) {
-        
-    }
-    
     func webViewDidFinishNavigation(controller: WebViewController) {
-        // update buttons isEnabled
         guard let rootController = splitViewController as? RootController else { return }
-        rootController.chevronLeftButton.isEnabled = controller.canGoBack
-        rootController.chevronRightButton.isEnabled = controller.canGoForward
-        rootController.outlineButton.isEnabled = controller.currentURL != nil
-        rootController.bookmarkToggleButton.isEnabled = controller.currentURL != nil
-        
-        // update bookmark button
-        if let url = controller.currentURL, let zimFileID = url.host {
-            do {
-                let database = try Realm(configuration: Realm.defaultConfig)
-                let predicate = NSPredicate(format: "zimFile.id == %@ AND path == %@", zimFileID, url.path)
-                let resultCount = database.objects(Bookmark.self).filter(predicate).count
-                rootController.bookmarkButton.isBookmarked = resultCount > 0
-                rootController.bookmarkToggleButton.isBookmarked = resultCount > 0
-            } catch {}
-        } else {
-            rootController.bookmarkButton.isBookmarked = false
-            rootController.bookmarkToggleButton.isBookmarked = false
-        }
         
         // if outline view is visible, update outline items
         if let rootController = splitViewController as? RootController,

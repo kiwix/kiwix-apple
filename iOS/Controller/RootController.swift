@@ -23,10 +23,10 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     
     // MARK: Buttons
     
-    let sideBarButton = BarButton(imageName: "sidebar.left")
-    let chevronLeftButton = BarButton(imageName: "chevron.left")
-    let chevronRightButton = BarButton(imageName: "chevron.right")
-    let outlineButton = BarButton(imageName: "list.bullet")
+    private let sideBarButton = BarButton(imageName: "sidebar.left")
+    private let chevronLeftButton = BarButton(imageName: "chevron.left")
+    private let chevronRightButton = BarButton(imageName: "chevron.right")
+    private let outlineButton = BarButton(imageName: "list.bullet")
     let bookmarkButton = BookmarkButton(imageName: "star", bookmarkedImageName: "star.fill")
     let bookmarkToggleButton = BookmarkButton(imageName: "star.circle.fill", bookmarkedImageName: "star.circle")
     let libraryButton = BarButton(imageName: "folder")
@@ -62,8 +62,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         bookmarkController.delegate = self
         outlineController.delegate = self
         
-        // buttons
-        configureBarButtons(isGrouped: !isCollapsed)
+        // wire up button actions
         sideBarButton.addTarget(self, action: #selector(toggleSideBar), for: .touchUpInside)
         chevronLeftButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
         chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
@@ -74,6 +73,10 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         bookmarkToggleButton.addTarget(self, action: #selector(toggleBookmark), for: .touchUpInside)
         bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
         bookmarkLongPressGestureRecognizer.addTarget(self, action: #selector(toggleBookmark))
+        
+        // putting buttons into their spots
+        configureBarButtons(isGrouped: !isCollapsed)
+        updateBarButtons()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -129,6 +132,20 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
                 chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, libraryButton, settingButton,
             ])
             contentController.toolbarItems = [UIBarButtonItem(customView: group)]
+        }
+    }
+    
+    private func updateBarButtons() {
+        chevronLeftButton.isEnabled = webViewController.canGoBack
+        chevronRightButton.isEnabled = webViewController.canGoForward
+        if let url = webViewController.currentURL, let _ = BookmarkService().get(url: url) {
+            outlineButton.isEnabled = true
+            bookmarkButton.isBookmarked = true
+            bookmarkToggleButton.isBookmarked = true
+        } else {
+            outlineButton.isEnabled = false
+            bookmarkButton.isBookmarked = false
+            bookmarkToggleButton.isBookmarked = false
         }
     }
 
@@ -208,7 +225,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     }
     
     func webViewDidFinishNavigation(controller: WebViewController) {
-        
+        updateBarButtons()
     }
 
     // MARK: - Actions
