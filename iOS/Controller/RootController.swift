@@ -15,7 +15,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     // MARK: Controllers
     
     let sideBarController = UITabBarController()
-    let bookmarkController = BookmarkController()
+    let bookmarksController = BookmarksController()
     let outlineController = OutlineController()
     let contentController = ContentController()
     let webViewController = WebViewController()
@@ -49,7 +49,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
 
         // setup initial controllers
         sideBarController.viewControllers = [
-            UINavigationController(rootViewController: bookmarkController),
+            UINavigationController(rootViewController: bookmarksController),
             UINavigationController(rootViewController: outlineController),
         ]
         let secondaryController = UINavigationController(rootViewController: contentController)
@@ -63,7 +63,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         }
 
         webViewController.delegate = self
-        bookmarkController.delegate = self
+        bookmarksController.delegate = self
         outlineController.delegate = self
         
         // wire up button actions
@@ -285,7 +285,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     }
     
     @objc func openBookmark() {
-        let controller = BookmarkController()
+        let controller = BookmarksController()
         let navigationController = UINavigationController(rootViewController: controller)
         controller.delegate = self
         present(navigationController, animated: true)
