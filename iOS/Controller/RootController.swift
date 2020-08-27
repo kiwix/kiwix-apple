@@ -27,8 +27,8 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     private let chevronLeftButton = BarButton(imageName: "chevron.left")
     private let chevronRightButton = BarButton(imageName: "chevron.right")
     private let outlineButton = BarButton(imageName: "list.bullet")
-    let bookmarkButton = BookmarkButton(imageName: "star", bookmarkedImageName: "star.fill")
-    let bookmarkToggleButton = BookmarkButton(imageName: "star.circle.fill", bookmarkedImageName: "star.circle")
+    private let bookmarkButton = BookmarkButton(imageName: "star", bookmarkedImageName: "star.fill")
+    private let bookmarkToggleButton = BookmarkButton(imageName: "star.circle.fill", bookmarkedImageName: "star.circle")
     let libraryButton = BarButton(imageName: "folder")
     let settingButton = BarButton(imageName: "gear")
     private let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
@@ -135,11 +135,14 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         }
     }
     
-    private func updateBarButtons() {
+    private func updateBarButtons(isBookmarked: Bool? = nil) {
         chevronLeftButton.isEnabled = webViewController.canGoBack
         chevronRightButton.isEnabled = webViewController.canGoForward
         outlineButton.isEnabled = webViewController.currentURL != nil
-        if let url = webViewController.currentURL, let _ = BookmarkService().get(url: url) {
+        if let isBookmarked = isBookmarked {
+            bookmarkButton.isBookmarked = isBookmarked
+            bookmarkToggleButton.isBookmarked = isBookmarked
+        } else if let url = webViewController.currentURL, let _ = BookmarkService().get(url: url) {
             bookmarkButton.isBookmarked = true
             bookmarkToggleButton.isBookmarked = true
         } else {
@@ -158,6 +161,23 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         case .sideBySide:
             return .allVisible
         }
+    }
+    
+    private func presentBookmarkHUDController(isBookmarked: Bool) {
+        let controller = HUDController()
+        controller.modalPresentationStyle = .custom
+        controller.transitioningDelegate = controller
+        controller.direction = isBookmarked ? .down : .up
+        controller.imageView.image = isBookmarked ? #imageLiteral(resourceName: "StarAdd") : #imageLiteral(resourceName: "StarRemove")
+        controller.label.text = isBookmarked ?
+            NSLocalizedString("Added", comment: "Bookmark HUD") :
+            NSLocalizedString("Removed", comment: "Bookmark HUD")
+        
+        present(controller, animated: true, completion: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                controller.dismiss(animated: true, completion: nil)
+            })
+        })
     }
 
     // MARK: - UISplitViewControllerDelegate
@@ -207,7 +227,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     
     func didTapBookmark(url: URL) {
         if contentController.searchController.isActive { contentController.searchController.isActive = false }
-        (splitViewController as? RootController)?.openKiwixURL(url)
+        openKiwixURL(url)
     }
     
     func didDeleteBookmark(url: URL) {
@@ -267,15 +287,16 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
             return
         }
         
-        guard let rootController = splitViewController as? RootController,
-              let url = rootController.webViewController.currentURL else { return }
+        guard let url = webViewController.currentURL else { return }
         let bookmarkService = BookmarkService()
         if let bookmark = bookmarkService.get(url: url) {
             bookmarkService.delete(bookmark)
-            contentController.presentBookmarkHUDController(isBookmarked: false)
+            updateBarButtons(isBookmarked: false)
+            presentBookmarkHUDController(isBookmarked: false)
         } else {
             bookmarkService.create(url: url)
-            contentController.presentBookmarkHUDController(isBookmarked: true)
+            updateBarButtons(isBookmarked: true)
+            presentBookmarkHUDController(isBookmarked: true)
         }
     }
     

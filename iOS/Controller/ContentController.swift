@@ -125,26 +125,6 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         }
     }
     
-    func presentBookmarkHUDController(isBookmarked: Bool) {
-        let controller = HUDController()
-        controller.modalPresentationStyle = .custom
-        controller.transitioningDelegate = controller
-        controller.direction = isBookmarked ? .down : .up
-        controller.imageView.image = isBookmarked ? #imageLiteral(resourceName: "StarAdd") : #imageLiteral(resourceName: "StarRemove")
-        controller.label.text = isBookmarked ?
-            NSLocalizedString("Added", comment: "Bookmark HUD") :
-            NSLocalizedString("Removed", comment: "Bookmark HUD")
-        
-        splitViewController?.present(controller, animated: true, completion: {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                controller.dismiss(animated: true, completion: nil)
-            })
-            guard let rootController = self.splitViewController as? RootController else { return }
-            rootController.bookmarkButton.isBookmarked = isBookmarked
-            rootController.bookmarkToggleButton.isBookmarked = isBookmarked
-        })
-    }
-    
     // MARK: - UISearchControllerDelegate
     
     func willPresentSearchController(_ searchController: UISearchController) {
