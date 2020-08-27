@@ -139,11 +139,9 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         chevronLeftButton.isEnabled = webViewController.canGoBack
         chevronRightButton.isEnabled = webViewController.canGoForward
         if let url = webViewController.currentURL, let _ = BookmarkService().get(url: url) {
-            outlineButton.isEnabled = true
             bookmarkButton.isBookmarked = true
             bookmarkToggleButton.isBookmarked = true
         } else {
-            outlineButton.isEnabled = false
             bookmarkButton.isBookmarked = false
             bookmarkToggleButton.isBookmarked = false
         }
@@ -248,14 +246,14 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         let outlineController = OutlineController()
         let navigationController = UINavigationController(rootViewController: outlineController)
         outlineController.delegate = self
-        splitViewController?.present(navigationController, animated: true)
+        present(navigationController, animated: true)
     }
     
     @objc func openBookmark() {
         let controller = BookmarkController()
         let navigationController = UINavigationController(rootViewController: controller)
         controller.delegate = self
-        splitViewController?.present(navigationController, animated: true)
+        present(navigationController, animated: true)
     }
     
     @objc func toggleBookmark(sender: Any) {
