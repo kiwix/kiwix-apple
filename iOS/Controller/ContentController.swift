@@ -83,15 +83,15 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     func configureToolbar(isGrouped: Bool) {
         guard let rootController = splitViewController as? RootController else { return }
         if isGrouped {
-            let left = ButtonGroupView(buttons: [rootController.sideBarButton, rootController.chevronLeftButton, rootController.chevronRightButton], spacing: 10)
-            let right = ButtonGroupView(buttons: [rootController.bookmarkToggleButton, rootController.libraryButton, rootController.settingButton], spacing: 10)
+            let left = BarButtonGroup(buttons: [rootController.sideBarButton, rootController.chevronLeftButton, rootController.chevronRightButton], spacing: 10)
+            let right = BarButtonGroup(buttons: [rootController.bookmarkToggleButton, rootController.libraryButton, rootController.settingButton], spacing: 10)
             toolbarItems = [
                 UIBarButtonItem(customView: left),
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
                 UIBarButtonItem(customView: right),
             ]
         } else {
-            let group = ButtonGroupView(buttons: [
+            let group = BarButtonGroup(buttons: [
                 rootController.chevronLeftButton, rootController.chevronRightButton, rootController.outlineButton, rootController.bookmarkButton, rootController.libraryButton, rootController.settingButton,
             ])
             toolbarItems = [UIBarButtonItem(customView: group)]
@@ -241,57 +241,3 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         searchController.isActive = false
     }
 }
-
-// MARK: - Buttons
-
-//private extension UIControl.State {
-//    static let bookmarked = UIControl.State(rawValue: 1 << 16)
-//}
-
-private class ButtonGroupView: UIStackView {
-    convenience init(buttons: [UIButton], spacing: CGFloat? = nil) {
-        self.init(arrangedSubviews: buttons)
-        distribution = .equalCentering
-        if let spacing = spacing {
-            self.spacing = spacing
-        }
-    }
-}
-
-//private class Button: UIButton {
-//    convenience init(imageName: String) {
-//        self.init(type: .system)
-//        if #available(iOS 13.0, *) {
-//            let configuration = UIImage.SymbolConfiguration(scale: .large)
-//            setImage(UIImage(systemName: imageName, withConfiguration: configuration), for: .normal)
-//        } else {
-//            setImage(UIImage(named: imageName), for: .normal)
-//        }
-//    }
-//
-//    override var intrinsicContentSize: CGSize {
-//        return CGSize(width: 36, height: 44)
-//    }
-//}
-
-//private class BookmarkButton: Button {
-//    var isBookmarked: Bool = false { didSet { setNeedsLayout() } }
-//    override var state: UIControl.State{ get { isBookmarked ? [.bookmarked, super.state] : super.state } }
-//
-//    convenience init(imageName: String, bookmarkedImageName: String) {
-//        if #available(iOS 13.0, *) {
-//            self.init(imageName: imageName)
-//            let configuration = UIImage.SymbolConfiguration(scale: .large)
-//            let bookmarkedImage = UIImage(systemName: bookmarkedImageName, withConfiguration: configuration)?
-//                .withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
-//            setImage(bookmarkedImage, for: .bookmarked)
-//            setImage(bookmarkedImage, for: [.bookmarked, .highlighted])
-//        } else {
-//            self.init(type: .system)
-//            setImage(UIImage(named: imageName), for: .normal)
-//            let bookmarkedImage = UIImage(named: bookmarkedImageName)
-//            setImage(bookmarkedImage, for: .bookmarked)
-//            setImage(bookmarkedImage, for: [.bookmarked, .highlighted])
-//        }
-//    }
-//}
