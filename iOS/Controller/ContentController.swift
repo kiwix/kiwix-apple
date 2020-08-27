@@ -10,22 +10,18 @@ import UIKit
 import RealmSwift
 
 class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptivePresentationControllerDelegate,
-    WebViewControllerDelegate, OutlineControllerDelegate, BookmarkControllerDelegate {
-    private let sideBarButton = Button(imageName: "sidebar.left")
-    private let chevronLeftButton = Button(imageName: "chevron.left")
-    private let chevronRightButton = Button(imageName: "chevron.right")
-    private let outlineButton = Button(imageName: "list.bullet")
+    WebViewControllerDelegate, BookmarkControllerDelegate {
+    
     private let bookmarkButton = BookmarkButton(imageName: "star", bookmarkedImageName: "star.fill")
     private let bookmarkToggleButton = BookmarkButton(imageName: "star.circle.fill", bookmarkedImageName: "star.circle")
     private let libraryButton = Button(imageName: "folder")
-    private let settingButton = Button(imageName: "gear")
+    
     private let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
     
     let searchController: UISearchController
     private let searchResultsController: SearchResultsController
     private lazy var searchCancelButton = UIBarButtonItem(
         barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
-//    let webViewController = WebViewController()
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil)
         .instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     private var cachedLibraryController: LibraryController?
@@ -39,14 +35,9 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         super.init(nibName: nil, bundle: nil)
         
         // button tap
-        sideBarButton.addTarget(self, action: #selector(toggleSideBar), for: .touchUpInside)
-        chevronLeftButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
-        chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
-        outlineButton.addTarget(self, action: #selector(openOutline), for: .touchUpInside)
         bookmarkButton.addTarget(self, action: #selector(openBookmark), for: .touchUpInside)
         bookmarkToggleButton.addTarget(self, action: #selector(toggleBookmark), for: .touchUpInside)
         libraryButton.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
-        settingButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
         
         // button long press
         bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
@@ -102,9 +93,10 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     // MARK: - View and Controller Management
     
     func configureToolbar(isGrouped: Bool) {
+        guard let rootController = splitViewController as? RootController else { return }
         if isGrouped {
-            let left = ButtonGroupView(buttons: [sideBarButton, chevronLeftButton, chevronRightButton], spacing: 10)
-            let right = ButtonGroupView(buttons: [bookmarkToggleButton, libraryButton, settingButton], spacing: 10)
+            let left = ButtonGroupView(buttons: [rootController.sideBarButton, rootController.chevronLeftButton, rootController.chevronRightButton], spacing: 10)
+            let right = ButtonGroupView(buttons: [bookmarkToggleButton, libraryButton, rootController.settingButton], spacing: 10)
             toolbarItems = [
                 UIBarButtonItem(customView: left),
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
@@ -112,7 +104,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
             ]
         } else {
             let group = ButtonGroupView(buttons: [
-                chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, libraryButton, settingButton,
+                rootController.chevronLeftButton, rootController.chevronRightButton, rootController.outlineButton, bookmarkButton, libraryButton, rootController.settingButton,
             ])
             toolbarItems = [UIBarButtonItem(customView: group)]
         }
@@ -125,9 +117,9 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     
     private func updateToolBarButtonEnabled() {
         guard let rootController = splitViewController as? RootController else { return }
-        chevronLeftButton.isEnabled = rootController.webViewController.canGoBack
-        chevronRightButton.isEnabled = rootController.webViewController.canGoForward
-        outlineButton.isEnabled = rootController.webViewController.currentURL != nil
+        rootController.chevronLeftButton.isEnabled = rootController.webViewController.canGoBack
+        rootController.chevronRightButton.isEnabled = rootController.webViewController.canGoForward
+        rootController.outlineButton.isEnabled = rootController.webViewController.currentURL != nil
         bookmarkToggleButton.isEnabled = rootController.webViewController.currentURL != nil
     }
     
@@ -216,9 +208,10 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     
     func webViewDidFinishNavigation(controller: WebViewController) {
         // update buttons isEnabled
-        chevronLeftButton.isEnabled = controller.canGoBack
-        chevronRightButton.isEnabled = controller.canGoForward
-        outlineButton.isEnabled = controller.currentURL != nil
+        guard let rootController = splitViewController as? RootController else { return }
+        rootController.chevronLeftButton.isEnabled = controller.canGoBack
+        rootController.chevronRightButton.isEnabled = controller.canGoForward
+        rootController.outlineButton.isEnabled = controller.currentURL != nil
         bookmarkToggleButton.isEnabled = controller.currentURL != nil
         
         // update bookmark button
@@ -247,14 +240,6 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         }
     }
     
-    // MARK: OutlineControllerDelegate
-    
-    func didTapOutlineItem(item: OutlineItem) {
-        if searchController.isActive { searchController.isActive = false }
-        guard let rootController = splitViewController as? RootController else { return }
-        rootController.webViewController.scrollToOutlineItem(index: item.index)
-    }
-    
     // MARK: BookmarkControllerDelegate
     
     func didTapBookmark(url: URL) {
@@ -281,29 +266,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         searchController.isActive = false
     }
     
-    @objc func toggleSideBar() {
-        guard let splitViewController = self.splitViewController as? RootController else {return}
-        UIView.animate(withDuration: 0.2) {
-            splitViewController.toggleSideBar()
-        }
-    }
     
-    @objc func goBack() {
-        guard let rootController = splitViewController as? RootController else { return }
-        rootController.webViewController.goBack()
-    }
-    
-    @objc func goForward() {
-        guard let rootController = splitViewController as? RootController else { return }
-        rootController.webViewController.goForward()
-    }
-    
-    @objc func openOutline() {
-        let outlineController = OutlineController()
-        let navigationController = UINavigationController(rootViewController: outlineController)
-        outlineController.delegate = self
-        splitViewController?.present(navigationController, animated: true)
-    }
     
     @objc func openBookmark() {
         let controller = BookmarkController()
@@ -339,10 +302,6 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         })
         self.cachedLibraryController = libraryController
         splitController.present(libraryController, animated: true)
-    }
-    
-    @objc func openSettings() {
-        splitViewController?.present(SettingNavigationController(), animated: true)
     }
     
     @objc func openTabsView() {

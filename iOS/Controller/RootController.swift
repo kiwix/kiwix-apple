@@ -9,7 +9,8 @@
 import UIKit
 import Defaults
 
-class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGestureRecognizerDelegate, WebViewControllerDelegate {
+class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGestureRecognizerDelegate,
+                      OutlineControllerDelegate, WebViewControllerDelegate {
     
     // MARK: Controllers
     
@@ -18,6 +19,14 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     let outlineController = OutlineController()
     let contentController = ContentController()
     let webViewController = WebViewController()
+    
+    // MARK: Buttons
+    
+    let sideBarButton = BarButton(imageName: "sidebar.left")
+    let chevronLeftButton = BarButton(imageName: "chevron.left")
+    let chevronRightButton = BarButton(imageName: "chevron.right")
+    let outlineButton = BarButton(imageName: "list.bullet")
+    let settingButton = BarButton(imageName: "gear")
     
     // MARK: Other Properties
     
@@ -46,8 +55,14 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
 
         webViewController.delegate = self
         favoriteController.delegate = contentController
-        outlineController.delegate = contentController
+        outlineController.delegate = self
         contentController.configureToolbar(isGrouped: !isCollapsed)
+        
+        sideBarButton.addTarget(self, action: #selector(toggleSideBar), for: .touchUpInside)
+        chevronLeftButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
+        chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
+        outlineButton.addTarget(self, action: #selector(openOutline), for: .touchUpInside)
+        settingButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -137,6 +152,13 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         return gestureRecognizer.location(in: view).x > 30
     }
     
+    // MARK: - OutlineControllerDelegate
+    
+    func didTapOutlineItem(item: OutlineItem) {
+        if contentController.searchController.isActive { contentController.searchController.isActive = false }
+        webViewController.scrollToOutlineItem(index: item.index)
+    }
+    
     // MARK: - WebViewControllerDelegate
     
     func webViewDidTapOnGeoLocation(controller: WebViewController, url: URL) {
@@ -149,8 +171,29 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
 
     // MARK: - Actions
     
-    func toggleSideBar() {
-        preferredDisplayMode = masterIsVisible ? .primaryHidden : getPrimaryVisibleDisplayMode()
+    @objc func toggleSideBar() {
+        UIView.animate(withDuration: 0.2) {
+            self.preferredDisplayMode = self.masterIsVisible ? .primaryHidden : self.getPrimaryVisibleDisplayMode()
+        }
+    }
+    
+    @objc func goBack() {
+        webViewController.goBack()
+    }
+    
+    @objc func goForward() {
+        webViewController.goForward()
+    }
+    
+    @objc func openOutline() {
+        let outlineController = OutlineController()
+        let navigationController = UINavigationController(rootViewController: outlineController)
+        outlineController.delegate = self
+        splitViewController?.present(navigationController, animated: true)
+    }
+    
+    @objc func openSettings() {
+        present(SettingNavigationController(), animated: true)
     }
 
     func openKiwixURL(_ url: URL) {
@@ -177,6 +220,60 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
             contentController.searchController.isActive = true
         case .bookmark:
             contentController.openBookmark()
+        }
+    }
+}
+
+// MARK: - Buttons
+
+private extension UIControl.State {
+    static let bookmarked = UIControl.State(rawValue: 1 << 16)
+}
+
+private class ButtonGroupView: UIStackView {
+    convenience init(buttons: [UIButton], spacing: CGFloat? = nil) {
+        self.init(arrangedSubviews: buttons)
+        distribution = .equalCentering
+        if let spacing = spacing {
+            self.spacing = spacing
+        }
+    }
+}
+
+class BarButton: UIButton {
+    convenience init(imageName: String) {
+        self.init(type: .system)
+        if #available(iOS 13.0, *) {
+            let configuration = UIImage.SymbolConfiguration(scale: .large)
+            setImage(UIImage(systemName: imageName, withConfiguration: configuration), for: .normal)
+        } else {
+            setImage(UIImage(named: imageName), for: .normal)
+        }
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: 36, height: 44)
+    }
+}
+
+private class BookmarkButton: BarButton {
+    var isBookmarked: Bool = false { didSet { setNeedsLayout() } }
+    override var state: UIControl.State{ get { isBookmarked ? [.bookmarked, super.state] : super.state } }
+    
+    convenience init(imageName: String, bookmarkedImageName: String) {
+        if #available(iOS 13.0, *) {
+            self.init(imageName: imageName)
+            let configuration = UIImage.SymbolConfiguration(scale: .large)
+            let bookmarkedImage = UIImage(systemName: bookmarkedImageName, withConfiguration: configuration)?
+                .withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
+            setImage(bookmarkedImage, for: .bookmarked)
+            setImage(bookmarkedImage, for: [.bookmarked, .highlighted])
+        } else {
+            self.init(type: .system)
+            setImage(UIImage(named: imageName), for: .normal)
+            let bookmarkedImage = UIImage(named: bookmarkedImageName)
+            setImage(bookmarkedImage, for: .bookmarked)
+            setImage(bookmarkedImage, for: [.bookmarked, .highlighted])
         }
     }
 }
