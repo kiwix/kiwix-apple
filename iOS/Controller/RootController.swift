@@ -19,6 +19,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     let outlineController = OutlineController()
     let contentController = ContentController()
     let webViewController = WebViewController()
+    private var libraryController: LibraryController?
     
     // MARK: Buttons
     
@@ -26,6 +27,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     let chevronLeftButton = BarButton(imageName: "chevron.left")
     let chevronRightButton = BarButton(imageName: "chevron.right")
     let outlineButton = BarButton(imageName: "list.bullet")
+    let libraryButton = BarButton(imageName: "folder")
     let settingButton = BarButton(imageName: "gear")
     
     // MARK: Other Properties
@@ -62,6 +64,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         chevronLeftButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
         chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
         outlineButton.addTarget(self, action: #selector(openOutline), for: .touchUpInside)
+        libraryButton.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
         settingButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
     }
 
@@ -190,6 +193,17 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         let navigationController = UINavigationController(rootViewController: outlineController)
         outlineController.delegate = self
         splitViewController?.present(navigationController, animated: true)
+    }
+    
+    @objc func openLibrary() {
+        let libraryController = self.libraryController ?? LibraryController(onDismiss: {
+            let timer = Timer(timeInterval: 60, repeats: false, block: { [weak self] timer in
+                self?.libraryController = nil
+            })
+            RunLoop.main.add(timer, forMode: .default)
+        })
+        self.libraryController = libraryController
+        present(libraryController, animated: true)
     }
     
     @objc func openSettings() {

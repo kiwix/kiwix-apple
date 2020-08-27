@@ -14,7 +14,6 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     
     private let bookmarkButton = BookmarkButton(imageName: "star", bookmarkedImageName: "star.fill")
     private let bookmarkToggleButton = BookmarkButton(imageName: "star.circle.fill", bookmarkedImageName: "star.circle")
-    private let libraryButton = Button(imageName: "folder")
     
     private let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
     
@@ -24,7 +23,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         barButtonSystemItem: .cancel, target: self, action: #selector(cancelSearch))
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil)
         .instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
-    private var cachedLibraryController: LibraryController?
+    
     
     // MARK:- Initialization
     
@@ -37,7 +36,6 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         // button tap
         bookmarkButton.addTarget(self, action: #selector(openBookmark), for: .touchUpInside)
         bookmarkToggleButton.addTarget(self, action: #selector(toggleBookmark), for: .touchUpInside)
-        libraryButton.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
         
         // button long press
         bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
@@ -96,7 +94,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         guard let rootController = splitViewController as? RootController else { return }
         if isGrouped {
             let left = ButtonGroupView(buttons: [rootController.sideBarButton, rootController.chevronLeftButton, rootController.chevronRightButton], spacing: 10)
-            let right = ButtonGroupView(buttons: [bookmarkToggleButton, libraryButton, rootController.settingButton], spacing: 10)
+            let right = ButtonGroupView(buttons: [bookmarkToggleButton, rootController.libraryButton, rootController.settingButton], spacing: 10)
             toolbarItems = [
                 UIBarButtonItem(customView: left),
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
@@ -104,7 +102,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
             ]
         } else {
             let group = ButtonGroupView(buttons: [
-                rootController.chevronLeftButton, rootController.chevronRightButton, rootController.outlineButton, bookmarkButton, libraryButton, rootController.settingButton,
+                rootController.chevronLeftButton, rootController.chevronRightButton, rootController.outlineButton, bookmarkButton, rootController.libraryButton, rootController.settingButton,
             ])
             toolbarItems = [UIBarButtonItem(customView: group)]
         }
@@ -290,18 +288,6 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
             bookmarkService.create(url: url)
             presentBookmarkHUDController(isBookmarked: true)
         }
-    }
-    
-    @objc func openLibrary() {
-        guard let splitController = splitViewController as? RootController else {return}
-        let libraryController = cachedLibraryController ?? LibraryController(onDismiss: {
-            let timer = Timer(timeInterval: 60, repeats: false, block: { [weak self] timer in
-                self?.cachedLibraryController = nil
-            })
-            RunLoop.main.add(timer, forMode: .default)
-        })
-        self.cachedLibraryController = libraryController
-        splitController.present(libraryController, animated: true)
     }
     
     @objc func openTabsView() {
