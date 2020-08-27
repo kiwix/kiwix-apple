@@ -269,7 +269,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
             case .openMainPage:
                 guard let rootController = presentingViewController as? RootController,
                     let url = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFile.id)  else {break}
-                rootController.openKiwixURL(url)
+                rootController.contentController.load(url: url)
                 dismiss(animated: true, completion: nil)
             }
         }
