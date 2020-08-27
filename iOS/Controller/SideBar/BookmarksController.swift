@@ -1,5 +1,5 @@
 //
-//  BookmarkController.swift
+//  BookmarksController.swift
 //  Kiwix
 //
 //  Created by Chris Li on 5/21/18.
@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class BookmarkController: UITableViewController {
+class BookmarksController: UITableViewController {
     weak var delegate: BookmarkControllerDelegate? = nil
     private let emptyContentView = EmptyContentView(
         image: #imageLiteral(resourceName: "StarColor"),
@@ -28,9 +28,9 @@ class BookmarkController: UITableViewController {
             self.bookmarks = database?.objects(Bookmark.self).sorted(byKeyPath: "date", ascending: false)
         }
         super.init(nibName: nil, bundle: nil)
-        title = NSLocalizedString("Bookmark", comment: "Bookmark view title")
+        title = NSLocalizedString("Bookmarks", comment: "Bookmark view title")
         if #available(iOS 13.0, *) {
-            tabBarItem = UITabBarItem(title: "Bookmark",
+            tabBarItem = UITabBarItem(title: "Bookmarks",
                                       image: UIImage(systemName: "star"),
                                       selectedImage: UIImage(systemName: "star.fill"))
         } else {

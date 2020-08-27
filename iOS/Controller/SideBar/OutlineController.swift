@@ -66,11 +66,19 @@ class OutlineController: UITableViewController {
     // MARK: - View Configurations
 
     func update() {
-        let rootController = (splitViewController ?? presentingViewController) as? RootController
-        let webViewController = rootController?.contentController.webViewController
+        guard let rootController = (splitViewController ?? presentingViewController) as? RootController else { return }
+        let webViewController = rootController.webViewController
+        
+        // Show empty content view if no article is displayed
+        guard webViewController.currentURL != nil else {
+            navigationItem.title = OutlineController.title
+            tableView.backgroundView = emptyContentView
+            tableView.separatorStyle = .none
+            return
+        }
         
         // No need to update if already showing outline of current article
-        guard webViewController?.currentURL != url else { return }
+        guard webViewController.currentURL != url else { return }
         
         /*
          Before the update, clear previous article outline. This way we can prevent
@@ -79,8 +87,8 @@ class OutlineController: UITableViewController {
         items = []
         tableView.reloadData()
         
-        navigationItem.title = webViewController?.currentTitle ?? OutlineController.title
-        webViewController?.extractOutlineItems(completion: { (url, items) in
+        navigationItem.title = webViewController.currentTitle ?? OutlineController.title
+        webViewController.extractOutlineItems(completion: { (url, items) in
             self.url = url
             self.items = items
             
