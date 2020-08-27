@@ -10,7 +10,7 @@ import UIKit
 import Defaults
 
 class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGestureRecognizerDelegate,
-                      OutlineControllerDelegate, WebViewControllerDelegate {
+                      OutlineControllerDelegate, BookmarkControllerDelegate, WebViewControllerDelegate {
     
     // MARK: Controllers
     
@@ -27,8 +27,11 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     let chevronLeftButton = BarButton(imageName: "chevron.left")
     let chevronRightButton = BarButton(imageName: "chevron.right")
     let outlineButton = BarButton(imageName: "list.bullet")
+    let bookmarkButton = BookmarkButton(imageName: "star", bookmarkedImageName: "star.fill")
+    let bookmarkToggleButton = BookmarkButton(imageName: "star.circle.fill", bookmarkedImageName: "star.circle")
     let libraryButton = BarButton(imageName: "folder")
     let settingButton = BarButton(imageName: "gear")
+    private let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
     
     // MARK: Other Properties
     
@@ -56,7 +59,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         }
 
         webViewController.delegate = self
-        favoriteController.delegate = contentController
+        favoriteController.delegate = self
         outlineController.delegate = self
         contentController.configureToolbar(isGrouped: !isCollapsed)
         
@@ -64,8 +67,13 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         chevronLeftButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
         chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
         outlineButton.addTarget(self, action: #selector(openOutline), for: .touchUpInside)
+        bookmarkButton.addTarget(self, action: #selector(openBookmark), for: .touchUpInside)
+        bookmarkToggleButton.addTarget(self, action: #selector(toggleBookmark), for: .touchUpInside)
         libraryButton.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
         settingButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
+        
+        bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
+        bookmarkLongPressGestureRecognizer.addTarget(self, action: #selector(toggleBookmark))
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -162,6 +170,20 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         webViewController.scrollToOutlineItem(index: item.index)
     }
     
+    // MARK: - BookmarkControllerDelegate
+    
+    func didTapBookmark(url: URL) {
+        if contentController.searchController.isActive { contentController.searchController.isActive = false }
+        (splitViewController as? RootController)?.openKiwixURL(url)
+    }
+    
+    func didDeleteBookmark(url: URL) {
+        guard let rootController = splitViewController as? RootController,
+              rootController.webViewController.currentURL?.absoluteURL == url.absoluteURL else {return}
+        rootController.bookmarkButton.isBookmarked = false
+        rootController.bookmarkToggleButton.isBookmarked = false
+    }
+    
     // MARK: - WebViewControllerDelegate
     
     func webViewDidTapOnGeoLocation(controller: WebViewController, url: URL) {
@@ -195,6 +217,30 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         splitViewController?.present(navigationController, animated: true)
     }
     
+    @objc func openBookmark() {
+        let controller = BookmarkController()
+        let navigationController = UINavigationController(rootViewController: controller)
+        controller.delegate = self
+        splitViewController?.present(navigationController, animated: true)
+    }
+    
+    @objc func toggleBookmark(sender: Any) {
+        if let recognizer = sender as? UILongPressGestureRecognizer, recognizer.state != .began {
+            return
+        }
+        
+        guard let rootController = splitViewController as? RootController,
+              let url = rootController.webViewController.currentURL else { return }
+        let bookmarkService = BookmarkService()
+        if let bookmark = bookmarkService.get(url: url) {
+            bookmarkService.delete(bookmark)
+            contentController.presentBookmarkHUDController(isBookmarked: false)
+        } else {
+            bookmarkService.create(url: url)
+            contentController.presentBookmarkHUDController(isBookmarked: true)
+        }
+    }
+    
     @objc func openLibrary() {
         let libraryController = self.libraryController ?? LibraryController(onDismiss: {
             let timer = Timer(timeInterval: 60, repeats: false, block: { [weak self] timer in
@@ -208,6 +254,10 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     
     @objc func openSettings() {
         present(SettingNavigationController(), animated: true)
+    }
+    
+    @objc func openTabsView() {
+        present(TabsController(), animated: true)
     }
 
     func openKiwixURL(_ url: URL) {
@@ -233,7 +283,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         case .search:
             contentController.searchController.isActive = true
         case .bookmark:
-            contentController.openBookmark()
+            openBookmark()
         }
     }
 }
@@ -270,7 +320,7 @@ class BarButton: UIButton {
     }
 }
 
-private class BookmarkButton: BarButton {
+class BookmarkButton: BarButton {
     var isBookmarked: Bool = false { didSet { setNeedsLayout() } }
     override var state: UIControl.State{ get { isBookmarked ? [.bookmarked, super.state] : super.state } }
     

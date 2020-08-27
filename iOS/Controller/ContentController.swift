@@ -10,13 +10,7 @@ import UIKit
 import RealmSwift
 
 class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptivePresentationControllerDelegate,
-    WebViewControllerDelegate, BookmarkControllerDelegate {
-    
-    private let bookmarkButton = BookmarkButton(imageName: "star", bookmarkedImageName: "star.fill")
-    private let bookmarkToggleButton = BookmarkButton(imageName: "star.circle.fill", bookmarkedImageName: "star.circle")
-    
-    private let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
-    
+    WebViewControllerDelegate {
     let searchController: UISearchController
     private let searchResultsController: SearchResultsController
     private lazy var searchCancelButton = UIBarButtonItem(
@@ -34,12 +28,8 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         super.init(nibName: nil, bundle: nil)
         
         // button tap
-        bookmarkButton.addTarget(self, action: #selector(openBookmark), for: .touchUpInside)
-        bookmarkToggleButton.addTarget(self, action: #selector(toggleBookmark), for: .touchUpInside)
         
         // button long press
-        bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
-        bookmarkLongPressGestureRecognizer.addTarget(self, action: #selector(toggleBookmark))
         
         // view background
         if #available(iOS 13.0, *) {
@@ -94,7 +84,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         guard let rootController = splitViewController as? RootController else { return }
         if isGrouped {
             let left = ButtonGroupView(buttons: [rootController.sideBarButton, rootController.chevronLeftButton, rootController.chevronRightButton], spacing: 10)
-            let right = ButtonGroupView(buttons: [bookmarkToggleButton, rootController.libraryButton, rootController.settingButton], spacing: 10)
+            let right = ButtonGroupView(buttons: [rootController.bookmarkToggleButton, rootController.libraryButton, rootController.settingButton], spacing: 10)
             toolbarItems = [
                 UIBarButtonItem(customView: left),
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
@@ -102,7 +92,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
             ]
         } else {
             let group = ButtonGroupView(buttons: [
-                rootController.chevronLeftButton, rootController.chevronRightButton, rootController.outlineButton, bookmarkButton, rootController.libraryButton, rootController.settingButton,
+                rootController.chevronLeftButton, rootController.chevronRightButton, rootController.outlineButton, rootController.bookmarkButton, rootController.libraryButton, rootController.settingButton,
             ])
             toolbarItems = [UIBarButtonItem(customView: group)]
         }
@@ -118,7 +108,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         rootController.chevronLeftButton.isEnabled = rootController.webViewController.canGoBack
         rootController.chevronRightButton.isEnabled = rootController.webViewController.canGoForward
         rootController.outlineButton.isEnabled = rootController.webViewController.currentURL != nil
-        bookmarkToggleButton.isEnabled = rootController.webViewController.currentURL != nil
+        rootController.bookmarkToggleButton.isEnabled = rootController.webViewController.currentURL != nil
     }
     
     private func setView(_ subView: UIView?) {
@@ -167,7 +157,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         }
     }
     
-    private func presentBookmarkHUDController(isBookmarked: Bool) {
+    func presentBookmarkHUDController(isBookmarked: Bool) {
         let controller = HUDController()
         controller.modalPresentationStyle = .custom
         controller.transitioningDelegate = controller
@@ -181,8 +171,9 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
                 controller.dismiss(animated: true, completion: nil)
             })
-            self.bookmarkButton.isBookmarked = isBookmarked
-            self.bookmarkToggleButton.isBookmarked = isBookmarked
+            guard let rootController = self.splitViewController as? RootController else { return }
+            rootController.bookmarkButton.isBookmarked = isBookmarked
+            rootController.bookmarkToggleButton.isBookmarked = isBookmarked
         })
     }
     
@@ -210,7 +201,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         rootController.chevronLeftButton.isEnabled = controller.canGoBack
         rootController.chevronRightButton.isEnabled = controller.canGoForward
         rootController.outlineButton.isEnabled = controller.currentURL != nil
-        bookmarkToggleButton.isEnabled = controller.currentURL != nil
+        rootController.bookmarkToggleButton.isEnabled = controller.currentURL != nil
         
         // update bookmark button
         if let url = controller.currentURL, let zimFileID = url.host {
@@ -218,12 +209,12 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
                 let database = try Realm(configuration: Realm.defaultConfig)
                 let predicate = NSPredicate(format: "zimFile.id == %@ AND path == %@", zimFileID, url.path)
                 let resultCount = database.objects(Bookmark.self).filter(predicate).count
-                bookmarkButton.isBookmarked = resultCount > 0
-                bookmarkToggleButton.isBookmarked = resultCount > 0
+                rootController.bookmarkButton.isBookmarked = resultCount > 0
+                rootController.bookmarkToggleButton.isBookmarked = resultCount > 0
             } catch {}
         } else {
-            bookmarkButton.isBookmarked = false
-            bookmarkToggleButton.isBookmarked = false
+            rootController.bookmarkButton.isBookmarked = false
+            rootController.bookmarkToggleButton.isBookmarked = false
         }
         
         // if outline view is visible, update outline items
@@ -238,20 +229,6 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         }
     }
     
-    // MARK: BookmarkControllerDelegate
-    
-    func didTapBookmark(url: URL) {
-        if searchController.isActive { searchController.isActive = false }
-        (splitViewController as? RootController)?.openKiwixURL(url)
-    }
-    
-    func didDeleteBookmark(url: URL) {
-        guard let rootController = splitViewController as? RootController,
-              rootController.webViewController.currentURL?.absoluteURL == url.absoluteURL else {return}
-        bookmarkButton.isBookmarked = false
-        bookmarkToggleButton.isBookmarked = false
-    }
-    
     // MARK: - Actions
     
     @objc func cancelSearch() {
@@ -263,43 +240,13 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         searchController.dismiss(animated: true)
         searchController.isActive = false
     }
-    
-    
-    
-    @objc func openBookmark() {
-        let controller = BookmarkController()
-        let navigationController = UINavigationController(rootViewController: controller)
-        controller.delegate = self
-        splitViewController?.present(navigationController, animated: true)
-    }
-    
-    @objc func toggleBookmark(sender: Any) {
-        if let recognizer = sender as? UILongPressGestureRecognizer, recognizer.state != .began {
-            return
-        }
-        
-        guard let rootController = splitViewController as? RootController,
-              let url = rootController.webViewController.currentURL else { return }
-        let bookmarkService = BookmarkService()
-        if let bookmark = bookmarkService.get(url: url) {
-            bookmarkService.delete(bookmark)
-            presentBookmarkHUDController(isBookmarked: false)
-        } else {
-            bookmarkService.create(url: url)
-            presentBookmarkHUDController(isBookmarked: true)
-        }
-    }
-    
-    @objc func openTabsView() {
-        splitViewController?.present(TabsController(), animated: true)
-    }
 }
 
 // MARK: - Buttons
 
-private extension UIControl.State {
-    static let bookmarked = UIControl.State(rawValue: 1 << 16)
-}
+//private extension UIControl.State {
+//    static let bookmarked = UIControl.State(rawValue: 1 << 16)
+//}
 
 private class ButtonGroupView: UIStackView {
     convenience init(buttons: [UIButton], spacing: CGFloat? = nil) {
@@ -311,40 +258,40 @@ private class ButtonGroupView: UIStackView {
     }
 }
 
-private class Button: UIButton {
-    convenience init(imageName: String) {
-        self.init(type: .system)
-        if #available(iOS 13.0, *) {
-            let configuration = UIImage.SymbolConfiguration(scale: .large)
-            setImage(UIImage(systemName: imageName, withConfiguration: configuration), for: .normal)
-        } else {
-            setImage(UIImage(named: imageName), for: .normal)
-        }
-    }
-    
-    override var intrinsicContentSize: CGSize {
-        return CGSize(width: 36, height: 44)
-    }
-}
+//private class Button: UIButton {
+//    convenience init(imageName: String) {
+//        self.init(type: .system)
+//        if #available(iOS 13.0, *) {
+//            let configuration = UIImage.SymbolConfiguration(scale: .large)
+//            setImage(UIImage(systemName: imageName, withConfiguration: configuration), for: .normal)
+//        } else {
+//            setImage(UIImage(named: imageName), for: .normal)
+//        }
+//    }
+//
+//    override var intrinsicContentSize: CGSize {
+//        return CGSize(width: 36, height: 44)
+//    }
+//}
 
-private class BookmarkButton: Button {
-    var isBookmarked: Bool = false { didSet { setNeedsLayout() } }
-    override var state: UIControl.State{ get { isBookmarked ? [.bookmarked, super.state] : super.state } }
-    
-    convenience init(imageName: String, bookmarkedImageName: String) {
-        if #available(iOS 13.0, *) {
-            self.init(imageName: imageName)
-            let configuration = UIImage.SymbolConfiguration(scale: .large)
-            let bookmarkedImage = UIImage(systemName: bookmarkedImageName, withConfiguration: configuration)?
-                .withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
-            setImage(bookmarkedImage, for: .bookmarked)
-            setImage(bookmarkedImage, for: [.bookmarked, .highlighted])
-        } else {
-            self.init(type: .system)
-            setImage(UIImage(named: imageName), for: .normal)
-            let bookmarkedImage = UIImage(named: bookmarkedImageName)
-            setImage(bookmarkedImage, for: .bookmarked)
-            setImage(bookmarkedImage, for: [.bookmarked, .highlighted])
-        }
-    }
-}
+//private class BookmarkButton: Button {
+//    var isBookmarked: Bool = false { didSet { setNeedsLayout() } }
+//    override var state: UIControl.State{ get { isBookmarked ? [.bookmarked, super.state] : super.state } }
+//
+//    convenience init(imageName: String, bookmarkedImageName: String) {
+//        if #available(iOS 13.0, *) {
+//            self.init(imageName: imageName)
+//            let configuration = UIImage.SymbolConfiguration(scale: .large)
+//            let bookmarkedImage = UIImage(systemName: bookmarkedImageName, withConfiguration: configuration)?
+//                .withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
+//            setImage(bookmarkedImage, for: .bookmarked)
+//            setImage(bookmarkedImage, for: [.bookmarked, .highlighted])
+//        } else {
+//            self.init(type: .system)
+//            setImage(UIImage(named: imageName), for: .normal)
+//            let bookmarkedImage = UIImage(named: bookmarkedImageName)
+//            setImage(bookmarkedImage, for: .bookmarked)
+//            setImage(bookmarkedImage, for: [.bookmarked, .highlighted])
+//        }
+//    }
+//}
