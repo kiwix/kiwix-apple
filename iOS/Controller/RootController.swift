@@ -47,11 +47,15 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     init() {
         super.init(nibName: nil, bundle: nil)
 
+        // setup initial controllers
         sideBarController.viewControllers = [
             UINavigationController(rootViewController: bookmarkController),
             UINavigationController(rootViewController: outlineController),
         ]
-        viewControllers = [sideBarController, UINavigationController(rootViewController: contentController)]
+        let secondaryController = UINavigationController(rootViewController: contentController)
+        secondaryController.isToolbarHidden = false
+        viewControllers = [sideBarController, secondaryController]
+        
         delegate = self
         if #available(iOS 13.0, *) {
             primaryBackgroundStyle = .sidebar
@@ -143,11 +147,18 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
             bookmarkButton.isBookmarked = isBookmarked
             bookmarkToggleButton.isBookmarked = isBookmarked
         } else if let url = webViewController.currentURL, let _ = BookmarkService().get(url: url) {
+            bookmarkButton.isEnabled = true
+            bookmarkToggleButton.isEnabled = true
             bookmarkButton.isBookmarked = true
             bookmarkToggleButton.isBookmarked = true
-        } else {
+        } else if let _ = webViewController.currentURL {
+            bookmarkButton.isEnabled = true
+            bookmarkToggleButton.isEnabled = true
             bookmarkButton.isBookmarked = false
             bookmarkToggleButton.isBookmarked = false
+        } else {
+            bookmarkButton.isEnabled = false
+            bookmarkToggleButton.isEnabled = false
         }
     }
 
@@ -188,7 +199,6 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
 
     func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
         configureBarButtons(isGrouped: false)
-        contentController.dismissPopoverController()
         let navigationController = UINavigationController(rootViewController: contentController)
         navigationController.isToolbarHidden = contentController.searchController.isActive
         return navigationController
@@ -197,7 +207,6 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     func splitViewController(_ splitViewController: UISplitViewController,
                              separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
         configureBarButtons(isGrouped: true)
-        contentController.dismissPopoverController()
         let navigationController = UINavigationController(rootViewController: contentController)
         navigationController.isToolbarHidden = contentController.searchController.isActive
         return navigationController

@@ -58,26 +58,10 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // show welcome controller
         setChildControllerIfNeeded(welcomeController)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.isToolbarHidden = false
-    }
-    
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .none
-    }
-    
     // MARK: - View and Controller Management
-    
-    func dismissPopoverController() {
-        guard let style = presentedViewController?.modalPresentationStyle, style == .popover else { return }
-        presentedViewController?.dismiss(animated: false)
-    }
     
     private func setView(_ subView: UIView?) {
         view.subviews.forEach({ $0.removeFromSuperview() })
