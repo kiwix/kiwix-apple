@@ -135,17 +135,14 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
             bookmarkButton.isBookmarked = isBookmarked
             bookmarkToggleButton.isBookmarked = isBookmarked
         } else if let url = webViewController.currentURL, let _ = BookmarkService().get(url: url) {
-            bookmarkButton.isEnabled = true
             bookmarkToggleButton.isEnabled = true
             bookmarkButton.isBookmarked = true
             bookmarkToggleButton.isBookmarked = true
         } else if let _ = webViewController.currentURL {
-            bookmarkButton.isEnabled = true
             bookmarkToggleButton.isEnabled = true
             bookmarkButton.isBookmarked = false
             bookmarkToggleButton.isBookmarked = false
         } else {
-            bookmarkButton.isEnabled = false
             bookmarkToggleButton.isEnabled = false
         }
     }
