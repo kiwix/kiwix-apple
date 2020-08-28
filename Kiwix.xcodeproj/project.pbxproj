@@ -366,16 +366,16 @@
 		9706555A2473682C00A51319 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				9779A7372456796B00F6F6FF /* SearchQueue.swift */,
-				9779A5D42456796A00F6F6FF /* DownloadProgress.swift */,
-				970EC3A023BCEC84008DCA27 /* Parser.swift */,
-				9779A7E224567A5A00F6F6FF /* Log.swift */,
-				97B399912468502500BC6F5B /* Platform.swift */,
-				97B399952468CF3B00BC6F5B /* Enums.swift */,
 				9779A7EC24567ADD00F6F6FF /* BackupManager.swift */,
 				9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */,
+				9779A5D42456796A00F6F6FF /* DownloadProgress.swift */,
+				97B399952468CF3B00BC6F5B /* Enums.swift */,
 				9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */,
+				9779A7E224567A5A00F6F6FF /* Log.swift */,
+				970EC3A023BCEC84008DCA27 /* Parser.swift */,
+				9779A7372456796B00F6F6FF /* SearchQueue.swift */,
 				9779A7392456796B00F6F6FF /* Settings.swift */,
+				97B399912468502500BC6F5B /* Platform.swift */,
 				9779A73A2456796B00F6F6FF /* WebKitHandler.swift */,
 			);
 			path = Utilities;
