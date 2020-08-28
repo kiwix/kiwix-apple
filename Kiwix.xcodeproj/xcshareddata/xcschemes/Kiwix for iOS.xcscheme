@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "97A36C241F8C21210079B452"
                BuildableName = "Kiwix.app"
-               BlueprintName = "iOS"
+               BlueprintName = "Kiwix for iOS"
                ReferencedContainer = "container:Kiwix.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,16 +28,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "970EC3B723BE8A11008DCA27"
-               BuildableName = "ModelTest.xctest"
-               BlueprintName = "ModelTest"
-               ReferencedContainer = "container:Kiwix.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
          <TestableReference
             skipped = "NO">
             <BuildableReference
@@ -66,7 +56,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "97A36C241F8C21210079B452"
             BuildableName = "Kiwix.app"
-            BlueprintName = "iOS"
+            BlueprintName = "Kiwix for iOS"
             ReferencedContainer = "container:Kiwix.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -83,7 +73,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "97A36C241F8C21210079B452"
             BuildableName = "Kiwix.app"
-            BlueprintName = "iOS"
+            BlueprintName = "Kiwix for iOS"
             ReferencedContainer = "container:Kiwix.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

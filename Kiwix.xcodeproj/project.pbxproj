@@ -723,9 +723,9 @@
 			productReference = 979315811E5127930093D3BA /* Kiwix.app */;
 			productType = "com.apple.product-type.application";
 		};
-		97A36C241F8C21210079B452 /* iOS */ = {
+		97A36C241F8C21210079B452 /* Kiwix for iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 97A36C4B1F8C21210079B452 /* Build configuration list for PBXNativeTarget "iOS" */;
+			buildConfigurationList = 97A36C4B1F8C21210079B452 /* Build configuration list for PBXNativeTarget "Kiwix for iOS" */;
 			buildPhases = (
 				97A36C261F8C21210079B452 /* Sources */,
 				97A36C341F8C21210079B452 /* Frameworks */,
@@ -737,7 +737,7 @@
 			dependencies = (
 				97C575FD202CB0E900E37502 /* PBXTargetDependency */,
 			);
-			name = iOS;
+			name = "Kiwix for iOS";
 			packageProductDependencies = (
 				97CE15B623B26EB300378D9F /* Realm */,
 				97CE15B823B26EB300378D9F /* RealmSwift */,
@@ -867,7 +867,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				97A36C241F8C21210079B452 /* iOS */,
+				97A36C241F8C21210079B452 /* Kiwix for iOS */,
 				979315801E5127930093D3BA /* macOS */,
 				97B44893210FBC2C0004B056 /* WikiMed */,
 				97C575F1202CB0E800E37502 /* Bookmarks */,
@@ -1064,7 +1064,7 @@
 /* Begin PBXTargetDependency section */
 		970EC3F723BE8E20008DCA27 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 97A36C241F8C21210079B452 /* iOS */;
+			target = 97A36C241F8C21210079B452 /* Kiwix for iOS */;
 			targetProxy = 970EC3F623BE8E20008DCA27 /* PBXContainerItemProxy */;
 		};
 		97C575FD202CB0E900E37502 /* PBXTargetDependency */ = {
@@ -1576,7 +1576,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		97A36C4B1F8C21210079B452 /* Build configuration list for PBXNativeTarget "iOS" */ = {
+		97A36C4B1F8C21210079B452 /* Build configuration list for PBXNativeTarget "Kiwix for iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				97A36C4C1F8C21210079B452 /* Debug */,
