@@ -134,13 +134,15 @@ class BookmarksController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let bookmark = bookmarks?[indexPath.row], let zimFileID = bookmark.zimFile?.id,
-            let url = URL(zimFileID: zimFileID, contentPath: bookmark.path) else {return}
-        tableView.deselectRow(at: indexPath, animated: true)
-        delegate?.didTapBookmark(url: url)
-        dismiss(animated: true) {
-            tableView.deselectRow(at: indexPath, animated: false)
+        defer { tableView.deselectRow(at: indexPath, animated: true) }
+        guard let bookmark = bookmarks?[indexPath.row],
+              let zimFileID = bookmark.zimFile?.id,
+              let url = URL(zimFileID: zimFileID, contentPath: bookmark.path) else {
+            splitViewController?.present(UIAlertController.resourceUnavailable(), animated: true)
+            return
         }
+        delegate?.didTapBookmark(url: url)
+        dismiss(animated: true)
     }
 
     override func tableView(_ tableView: UITableView,

@@ -1,3 +1,7 @@
+## 1.13.5
+
+- added alert for when zim file of a bookmarked article is missing 
+
 ## 1.13.4
 
 - bookmark snippets are now using the first sentence (iOS 12 and above) or the first paragraph (iOS 11)
