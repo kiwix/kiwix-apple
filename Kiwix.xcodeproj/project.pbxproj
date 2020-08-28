@@ -73,6 +73,12 @@
 		9779A7EA24567AA600F6F6FF /* SettingLibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E824567AA600F6F6FF /* SettingLibraryController.swift */; };
 		9779A7ED24567ADD00F6F6FF /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7EC24567ADD00F6F6FF /* BackupManager.swift */; };
 		9779E7A22379230F0058DC98 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779E7A12379230F0058DC98 /* SearchController.swift */; };
+		9789C26424F9600D00072090 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B399912468502500BC6F5B /* Platform.swift */; };
+		9789C26524F9601400072090 /* ZimMultiReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A92456793500F6F6FF /* ZimMultiReader.mm */; };
+		9789C26624F9601700072090 /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimMultiReader.swift */; };
+		9789C26724F9608500072090 /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DE324B00C82008E278D /* libkiwix.xcframework */; };
+		9789C26824F960F500072090 /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A73A2456796B00F6F6FF /* WebKitHandler.swift */; };
+		9789C26924F9611300072090 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
 		978B688924F8080E003CCA8C /* BarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978B688824F8080E003CCA8C /* BarButtons.swift */; };
 		978C58092468FC1100D56AC8 /* SettingSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F97A720D00EAE0005D642 /* SettingSearchController.swift */; };
 		979D6E0C20B34FD700B08DE7 /* BookmarksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D6E0B20B34FD700B08DE7 /* BookmarksController.swift */; };
@@ -295,6 +301,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9789C26724F9608500072090 /* libkiwix.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -723,9 +730,9 @@
 			productReference = 979315811E5127930093D3BA /* Kiwix.app */;
 			productType = "com.apple.product-type.application";
 		};
-		97A36C241F8C21210079B452 /* Kiwix for iOS */ = {
+		97A36C241F8C21210079B452 /* iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 97A36C4B1F8C21210079B452 /* Build configuration list for PBXNativeTarget "Kiwix for iOS" */;
+			buildConfigurationList = 97A36C4B1F8C21210079B452 /* Build configuration list for PBXNativeTarget "iOS" */;
 			buildPhases = (
 				97A36C261F8C21210079B452 /* Sources */,
 				97A36C341F8C21210079B452 /* Frameworks */,
@@ -737,7 +744,7 @@
 			dependencies = (
 				97C575FD202CB0E900E37502 /* PBXTargetDependency */,
 			);
-			name = "Kiwix for iOS";
+			name = iOS;
 			packageProductDependencies = (
 				97CE15B623B26EB300378D9F /* Realm */,
 				97CE15B823B26EB300378D9F /* RealmSwift */,
@@ -867,7 +874,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				97A36C241F8C21210079B452 /* Kiwix for iOS */,
+				97A36C241F8C21210079B452 /* iOS */,
 				979315801E5127930093D3BA /* macOS */,
 				97B44893210FBC2C0004B056 /* WikiMed */,
 				97C575F1202CB0E800E37502 /* Bookmarks */,
@@ -930,8 +937,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9789C26424F9600D00072090 /* Platform.swift in Sources */,
+				9789C26924F9611300072090 /* Log.swift in Sources */,
 				970EC3FC23BE8E31008DCA27 /* Parser.swift in Sources */,
+				9789C26824F960F500072090 /* WebKitHandler.swift in Sources */,
 				970EC3FB23BE8E25008DCA27 /* ParserTests.swift in Sources */,
+				9789C26624F9601700072090 /* ZimMultiReader.swift in Sources */,
+				9789C26524F9601400072090 /* ZimMultiReader.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1064,7 +1076,7 @@
 /* Begin PBXTargetDependency section */
 		970EC3F723BE8E20008DCA27 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 97A36C241F8C21210079B452 /* Kiwix for iOS */;
+			target = 97A36C241F8C21210079B452 /* iOS */;
 			targetProxy = 970EC3F623BE8E20008DCA27 /* PBXContainerItemProxy */;
 		};
 		97C575FD202CB0E900E37502 /* PBXTargetDependency */ = {
@@ -1136,6 +1148,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.ModelTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Utilities/Kiwix-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kiwix.app/Kiwix";
@@ -1165,6 +1178,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.ModelTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Utilities/Kiwix-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kiwix.app/Kiwix";
@@ -1576,7 +1590,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		97A36C4B1F8C21210079B452 /* Build configuration list for PBXNativeTarget "Kiwix for iOS" */ = {
+		97A36C4B1F8C21210079B452 /* Build configuration list for PBXNativeTarget "iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				97A36C4C1F8C21210079B452 /* Debug */,
