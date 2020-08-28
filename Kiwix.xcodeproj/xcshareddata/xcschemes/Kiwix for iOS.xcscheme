@@ -32,16 +32,6 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "970EC3B723BE8A11008DCA27"
-               BuildableName = "ModelTest.xctest"
-               BlueprintName = "ModelTest"
-               ReferencedContainer = "container:Kiwix.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "970EC3F023BE8E20008DCA27"
                BuildableName = "ModelTests.xctest"
                BlueprintName = "ModelTests"

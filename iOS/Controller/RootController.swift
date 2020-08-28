@@ -107,18 +107,6 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
             return super.overrideTraitCollection(forChild: childViewController)
         }
     }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        /*
-         Hack: this function is called when user click the home button with wrong splitViewController.displayMode.
-         To mitigate, check if the app is in background before do any UI adjustments.
-         */
-        guard UIApplication.shared.applicationState != .background else { return }
-        if masterIsVisible && UIDevice.current.userInterfaceIdiom == .pad {
-            preferredDisplayMode = getPrimaryVisibleDisplayMode(size: size)
-        }
-    }
     
     // MARK: - Utilities
     
@@ -147,17 +135,14 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
             bookmarkButton.isBookmarked = isBookmarked
             bookmarkToggleButton.isBookmarked = isBookmarked
         } else if let url = webViewController.currentURL, let _ = BookmarkService().get(url: url) {
-            bookmarkButton.isEnabled = true
             bookmarkToggleButton.isEnabled = true
             bookmarkButton.isBookmarked = true
             bookmarkToggleButton.isBookmarked = true
         } else if let _ = webViewController.currentURL {
-            bookmarkButton.isEnabled = true
             bookmarkToggleButton.isEnabled = true
             bookmarkButton.isBookmarked = false
             bookmarkToggleButton.isBookmarked = false
         } else {
-            bookmarkButton.isEnabled = false
             bookmarkToggleButton.isEnabled = false
         }
     }
