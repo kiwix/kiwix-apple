@@ -10,7 +10,7 @@ import os
 import WebKit
 
 class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
-    private var activeTasks = Set<Int>()
+    private var activeRequests = Set<URLRequest>()
     let semaphore = DispatchSemaphore(value: 1)
     
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
@@ -27,7 +27,7 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         
         // remember this active url scheme task
         semaphore.wait()
-        activeTasks.insert(urlSchemeTask.hash)
+        activeRequests.insert(urlSchemeTask.request)
         semaphore.signal()
         
         // fetch data and send response on another thread
@@ -37,9 +37,8 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
             
             // check the url scheme task is not stopped
             self.semaphore.wait()
-            guard let _ = self.activeTasks.remove(urlSchemeTask.hash) else { self.semaphore.signal(); return }
+            guard let _ = self.activeRequests.remove(urlSchemeTask.request) else { self.semaphore.signal(); return }
             self.semaphore.signal()
-            
             
             // assemble and send response
             if let content = content,
@@ -61,7 +60,7 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     
     func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
         semaphore.wait()
-        activeTasks.remove(urlSchemeTask.hash)
+        activeRequests.remove(urlSchemeTask.request)
         semaphore.signal()
     }
 }
