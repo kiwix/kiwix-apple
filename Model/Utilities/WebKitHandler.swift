@@ -10,6 +10,9 @@ import os
 import WebKit
 
 class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
+    private var activeTasks = Set<Int>()
+    let semaphore = DispatchSemaphore(value: 1)
+    
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
         // unpack zimFileID and content path from the url
         guard let url = urlSchemeTask.request.url,
@@ -20,24 +23,47 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
                 return
         }
         
-        // assemble response
-        if let content = ZimMultiReader.shared.getContent(bookID: zimFileID, contentPath: contentPath),
-            let response = HTTPURLResponse(
+        assert(Thread.isMainThread)
+        
+        // remember this active url scheme task
+        semaphore.wait()
+        activeTasks.insert(urlSchemeTask.hash)
+        semaphore.signal()
+        
+        // fetch data and send response on another thread
+        DispatchQueue.global(qos: .userInitiated).async {
+            // fetch data
+            let content = ZimMultiReader.shared.getContent(bookID: zimFileID, contentPath: contentPath)
+            
+            // check the url scheme task is not stopped
+            self.semaphore.wait()
+            guard let _ = self.activeTasks.remove(urlSchemeTask.hash) else { self.semaphore.signal(); return }
+            self.semaphore.signal()
+            
+            
+            // assemble and send response
+            if let content = content,
+               let response = HTTPURLResponse(
                 url: url,
                 statusCode: 200,
                 httpVersion: "HTTP/1.1",
-                headerFields: ["Content-Type": content.mime, "Content-Length": "\(content.length)"]
-        ) {
-            urlSchemeTask.didReceive(response)
-            urlSchemeTask.didReceive(content.data)
-            urlSchemeTask.didFinish()
-        } else {
-            os_log("Resource not found for url: %s.", log: Log.URLSchemeHandler, type: .info, url.absoluteString)
-            urlSchemeTask.didFailWithError(URLError(.resourceUnavailable, userInfo: ["url": url]))
+                headerFields: ["Content-Type": content.mime, "Content-Length": "\(content.length)"])
+            {
+                urlSchemeTask.didReceive(response)
+                urlSchemeTask.didReceive(content.data)
+                urlSchemeTask.didFinish()
+            } else {
+                os_log("Resource not found for url: %s.", log: Log.URLSchemeHandler, type: .info, url.absoluteString)
+                urlSchemeTask.didFailWithError(URLError(.resourceUnavailable, userInfo: ["url": url]))
+            }
         }
     }
     
-    func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {}
+    func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
+        semaphore.wait()
+        activeTasks.remove(urlSchemeTask.hash)
+        semaphore.signal()
+    }
 }
 
 extension URL {
