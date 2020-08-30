@@ -58,7 +58,11 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setChildControllerIfNeeded(welcomeController)
+        if #available(iOS 14.0, *) {
+            setChildControllerIfNeeded(HomeController(collectionViewLayout: UICollectionViewLayout()))
+        } else {
+            setChildControllerIfNeeded(welcomeController)
+        }
     }
     
     // MARK: - View and Controller Management
