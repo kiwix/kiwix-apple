@@ -11,8 +11,8 @@ import WebKit
 
 class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     private var activeRequests = Set<URLRequest>()
-    let activeRequestsSemaphore = DispatchSemaphore(value: 1)
-    let dataFetchingSemaphore = DispatchSemaphore(value: ProcessInfo.processInfo.activeProcessorCount)
+    private let activeRequestsSemaphore = DispatchSemaphore(value: 1)
+    private let dataFetchingSemaphore = DispatchSemaphore(value: ProcessInfo.processInfo.activeProcessorCount)
     
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
         // unpack zimFileID and content path from the url
@@ -29,7 +29,7 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         activeRequests.insert(urlSchemeTask.request)
         activeRequestsSemaphore.signal()
         
-        // fetch data and send response on another thread
+        // fetch data and send response
         DispatchQueue.global(qos: .userInitiated).async {
             // fetch data
             self.dataFetchingSemaphore.wait()
@@ -38,7 +38,10 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
             
             // check the url scheme task is not stopped
             self.activeRequestsSemaphore.wait()
-            guard let _ = self.activeRequests.remove(urlSchemeTask.request) else { self.activeRequestsSemaphore.signal(); return }
+            guard let _ = self.activeRequests.remove(urlSchemeTask.request) else {
+                self.activeRequestsSemaphore.signal()
+                return
+            }
             self.activeRequestsSemaphore.signal()
             
             // assemble and send response
