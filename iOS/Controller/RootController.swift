@@ -17,6 +17,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     let sideBarController = UITabBarController()
     let bookmarksController = BookmarksController()
     let outlineController = OutlineController()
+    private let secondaryController: UINavigationController
     private let contentController = ContentController()
     let webViewController = WebViewController()
     private var libraryController: LibraryController?
@@ -45,6 +46,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     // MARK: - Init & Override
 
     init() {
+        secondaryController = UINavigationController(rootViewController: contentController)
         super.init(nibName: nil, bundle: nil)
 
         // setup initial controllers
@@ -52,7 +54,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
             UINavigationController(rootViewController: bookmarksController),
             UINavigationController(rootViewController: outlineController),
         ]
-        let secondaryController = UINavigationController(rootViewController: contentController)
+        
         secondaryController.isToolbarHidden = false
         viewControllers = [sideBarController, secondaryController]
         
@@ -184,17 +186,15 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
 
     func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
         configureBarButtons(isGrouped: false)
-        let navigationController = UINavigationController(rootViewController: contentController)
-        navigationController.isToolbarHidden = contentController.searchController.isActive
-        return navigationController
+        secondaryController.isToolbarHidden = contentController.searchController.isActive
+        return secondaryController
     }
 
     func splitViewController(_ splitViewController: UISplitViewController,
                              separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
         configureBarButtons(isGrouped: true)
-        let navigationController = UINavigationController(rootViewController: contentController)
-        navigationController.isToolbarHidden = contentController.searchController.isActive
-        return navigationController
+        secondaryController.isToolbarHidden = contentController.searchController.isActive
+        return secondaryController
     }
 
     // MARK: - UIGestureRecognizerDelegate
