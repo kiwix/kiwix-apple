@@ -1,6 +1,6 @@
 //
-//  ArticleTableViewCell.swift
-//  iOS
+//  TableViewCell.swift
+//  Kiwix
 //
 //  Created by Chris Li on 1/16/18.
 //  Copyright © 2018 Chris Li. All rights reserved.
