@@ -11,7 +11,8 @@ import WebKit
 
 class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     private var activeRequests = Set<URLRequest>()
-    let semaphore = DispatchSemaphore(value: 1)
+    let activeRequestsSemaphore = DispatchSemaphore(value: 1)
+    let dataFetchingSemaphore = DispatchSemaphore(value: ProcessInfo.processInfo.activeProcessorCount)
     
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
         // unpack zimFileID and content path from the url
@@ -23,22 +24,22 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
                 return
         }
         
-        assert(Thread.isMainThread)
-        
         // remember this active url scheme task
-        semaphore.wait()
+        activeRequestsSemaphore.wait()
         activeRequests.insert(urlSchemeTask.request)
-        semaphore.signal()
+        activeRequestsSemaphore.signal()
         
         // fetch data and send response on another thread
         DispatchQueue.global(qos: .userInitiated).async {
             // fetch data
+            self.dataFetchingSemaphore.wait()
             let content = ZimMultiReader.shared.getContent(bookID: zimFileID, contentPath: contentPath)
+            self.dataFetchingSemaphore.signal()
             
             // check the url scheme task is not stopped
-            self.semaphore.wait()
-            guard let _ = self.activeRequests.remove(urlSchemeTask.request) else { self.semaphore.signal(); return }
-            self.semaphore.signal()
+            self.activeRequestsSemaphore.wait()
+            guard let _ = self.activeRequests.remove(urlSchemeTask.request) else { self.activeRequestsSemaphore.signal(); return }
+            self.activeRequestsSemaphore.signal()
             
             // assemble and send response
             if let content = content,
@@ -59,9 +60,9 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     }
     
     func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
-        semaphore.wait()
+        activeRequestsSemaphore.wait()
         activeRequests.remove(urlSchemeTask.request)
-        semaphore.signal()
+        activeRequestsSemaphore.signal()
     }
 }
 
