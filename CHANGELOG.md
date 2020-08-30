@@ -1,6 +1,8 @@
 ## 1.13.5
 
-- added alert for when zim file of a bookmarked article is missing 
+- added alert for when zim file of a bookmarked article is missing
+- article loading speed improvements (especially on articles with a lot of images and on more recent devices)
+- updated libkiwix version
 
 ## 1.13.4
 
