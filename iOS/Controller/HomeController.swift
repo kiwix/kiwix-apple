@@ -157,10 +157,6 @@ class CustomCell: UICollectionViewCell {
         topLevelView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 8, trailing: 10)
         topLevelView.addArrangedSubview(thumbImageBackgroundView)
         topLevelView.addArrangedSubview(topTextStack)
-        NSLayoutConstraint.activate([
-            thumbImageBackgroundView.heightAnchor.constraint(equalTo: topTextStack.heightAnchor, multiplier: 0.9),
-            thumbImageBackgroundView.heightAnchor.constraint(equalTo: thumbImageBackgroundView.widthAnchor)
-        ])
         
         let dividerView = UIView()
         dividerView.backgroundColor = .separator
@@ -173,15 +169,24 @@ class CustomCell: UICollectionViewCell {
             fileNameLabel.numberOfLines = 1
         }
         
+        let bottomIndicatorStack = UIStackView()
+        
+        let bottomTextStack = UIStackView()
+        bottomTextStack.axis = .horizontal
+        bottomTextStack.alignment = .center
+        bottomTextStack.distribution = .equalSpacing
+        bottomTextStack.addArrangedSubview(fileSizeLabel)
+        bottomTextStack.addArrangedSubview(creationDateLabel)
+        bottomTextStack.addArrangedSubview(articleCountLabel)
+        
         let bottomLevelView = UIStackView()
         bottomLevelView.axis = .horizontal
         bottomLevelView.alignment = .center
-        bottomLevelView.distribution = .equalSpacing
+        bottomLevelView.spacing = UIStackView.spacingUseSystem
         bottomLevelView.isLayoutMarginsRelativeArrangement = true
         bottomLevelView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 8, leading: 10, bottom: 10, trailing: 10)
-        bottomLevelView.addArrangedSubview(fileSizeLabel)
-        bottomLevelView.addArrangedSubview(creationDateLabel)
-        bottomLevelView.addArrangedSubview(articleCountLabel)
+        bottomLevelView.addArrangedSubview(bottomIndicatorStack)
+        bottomLevelView.addArrangedSubview(bottomTextStack)
         
         let containerView = UIStackView()
         containerView.axis = .vertical
@@ -197,6 +202,9 @@ class CustomCell: UICollectionViewCell {
             containerView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
             containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             containerView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            thumbImageBackgroundView.heightAnchor.constraint(equalTo: topTextStack.heightAnchor, multiplier: 0.9),
+            thumbImageBackgroundView.heightAnchor.constraint(equalTo: thumbImageBackgroundView.widthAnchor),
+            bottomIndicatorStack.widthAnchor.constraint(equalTo: thumbImageBackgroundView.widthAnchor),
         ])
     }
     
