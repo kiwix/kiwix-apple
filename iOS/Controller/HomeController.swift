@@ -30,6 +30,7 @@ class HomeController: UICollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView.backgroundColor = .systemGroupedBackground
 
         let size = NSCollectionLayoutSize(
             widthDimension: NSCollectionLayoutDimension.fractionalWidth(1),
@@ -69,7 +70,11 @@ class HomeController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CustomCell", for: indexPath) as! CustomCell
-        cell.label.text = items[indexPath.section][indexPath.row]
+        cell.titleLabel.text = items[indexPath.section][indexPath.row]
+        cell.fileNameLabel.text = "placeholder_file_name.zim"
+        cell.fileSizeLabel.text = "95.3GB"
+        cell.creationDateLabel.text = "Aug 15, 2020"
+        cell.articleCountLabel.text = "35.5K articles"
         return cell
     }
 
@@ -94,7 +99,6 @@ class HeaderView: UICollectionReusableView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .magenta
 
         addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -108,27 +112,105 @@ class HeaderView: UICollectionReusableView {
 
 }
 
+@available(iOS 14.0, *)
 class CustomCell: UICollectionViewCell {
-    let container = UIStackView()
-
-    let label = UILabel()
+    let titleLabel = UILabel()
+    let fileNameLabel = UILabel()
+    let fileSizeLabel = UILabel()
+    let creationDateLabel = UILabel()
+    let articleCountLabel = UILabel()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-
-        label.numberOfLines = 0
-        backgroundColor = .orange
-        contentView.addSubview(label)
-
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
-        label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
-        label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        configure()
+        contentView.backgroundColor = .tertiarySystemBackground
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func configure() {
+        let thumbImageBackgroundView = UIView()
+        thumbImageBackgroundView.backgroundColor = .tertiarySystemBackground
+        thumbImageBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        
+        titleLabel.font = UIFont.preferredFont(forTextStyle: .headline)
+        titleLabel.textColor = .label
+        titleLabel.numberOfLines = 1
+        fileNameLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        fileNameLabel.textColor = .secondaryLabel
+        fileNameLabel.numberOfLines = 1
+        
+        let topTextStack = UIStackView()
+        topTextStack.axis = .vertical
+        topTextStack.alignment = .leading
+        topTextStack.spacing = 4
+        topTextStack.addArrangedSubview(titleLabel)
+        topTextStack.addArrangedSubview(fileNameLabel)
+        
+        let topLevelView = UIStackView()
+        topLevelView.axis = .horizontal
+        topLevelView.alignment = .center
+        topLevelView.spacing = UIStackView.spacingUseSystem
+        topLevelView.isLayoutMarginsRelativeArrangement = true
+        topLevelView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 8, trailing: 10)
+        topLevelView.addArrangedSubview(thumbImageBackgroundView)
+        topLevelView.addArrangedSubview(topTextStack)
+        NSLayoutConstraint.activate([
+            thumbImageBackgroundView.heightAnchor.constraint(equalTo: topTextStack.heightAnchor, multiplier: 0.9),
+            thumbImageBackgroundView.heightAnchor.constraint(equalTo: thumbImageBackgroundView.widthAnchor)
+        ])
+        
+        let dividerView = UIView()
+        dividerView.backgroundColor = .separator
+        dividerView.translatesAutoresizingMaskIntoConstraints = false
+        dividerView.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale).isActive = true
+        
+        [fileSizeLabel, creationDateLabel, articleCountLabel].forEach { label in
+            label.font = UIFont.preferredFont(forTextStyle: .footnote)
+            label.textColor = .secondaryLabel
+            fileNameLabel.numberOfLines = 1
+        }
+        
+        let bottomLevelView = UIStackView()
+        bottomLevelView.axis = .horizontal
+        bottomLevelView.alignment = .center
+        bottomLevelView.distribution = .equalSpacing
+        bottomLevelView.isLayoutMarginsRelativeArrangement = true
+        bottomLevelView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 8, leading: 10, bottom: 10, trailing: 10)
+        bottomLevelView.addArrangedSubview(fileSizeLabel)
+        bottomLevelView.addArrangedSubview(creationDateLabel)
+        bottomLevelView.addArrangedSubview(articleCountLabel)
+        
+        let containerView = UIStackView()
+        containerView.axis = .vertical
+        containerView.alignment = .fill
+        containerView.distribution = .fill
+        containerView.addArrangedSubview(topLevelView)
+        containerView.addArrangedSubview(dividerView)
+        containerView.addArrangedSubview(bottomLevelView)
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(containerView)
+        NSLayoutConstraint.activate([
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            containerView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            containerView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+        ])
+    }
+    
+    override func draw(_ rect: CGRect) {
+        layer.cornerRadius = 16
+        layer.masksToBounds = true
+    }
+}
 
+private extension UIFont {
+    static func preferredFont(forTextStyle style: TextStyle, weight: Weight) -> UIFont {
+        let metrics = UIFontMetrics(forTextStyle: style)
+        let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
+        let font = UIFont.systemFont(ofSize: desc.pointSize, weight: weight)
+        return metrics.scaledFont(for: font)
+    }
 }
