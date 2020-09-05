@@ -1,6 +1,6 @@
 //
 //  HomeController.swift
-//  iOS
+//  Kiwix
 //
 //  Created by Chris Li on 8/30/20.
 //  Copyright © 2020 Chris Li. All rights reserved.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-@available(iOS 14.0, *)
+@available(iOS 13.0, *)
 class HomeController: UICollectionViewController {
     
     let items = [
@@ -114,6 +114,7 @@ class HomeController: UICollectionViewController {
     }
 }
 
+@available(iOS 13.0, *)
 class HeaderView: UICollectionReusableView {
 
     let label = UILabel()
@@ -133,7 +134,7 @@ class HeaderView: UICollectionReusableView {
 
 }
 
-@available(iOS 14.0, *)
+@available(iOS 13.0, *)
 class CustomCell: UICollectionViewCell {
     let titleLabel = UILabel()
     let fileNameLabel = UILabel()
