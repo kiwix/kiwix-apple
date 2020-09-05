@@ -9,7 +9,9 @@
 import UIKit
 
 @available(iOS 13.0, *)
-class HomeController: UICollectionViewController {
+class HomeController: UIViewController {
+    private let collectionView: UICollectionView
+    private let dataSource: UICollectionViewDiffableDataSource<Int, String>
     
     let items = [
         [
@@ -29,85 +31,99 @@ class HomeController: UICollectionViewController {
             "Lorem ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
         ]
     ]
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    
+    init() {
+        self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+        self.dataSource = UICollectionViewDiffableDataSource<Int, String>(collectionView: self.collectionView, cellProvider: HomeController.cellProvider)
+        super.init(nibName: nil, bundle: nil)
+        dataSource.supplementaryViewProvider = HomeController.supplementaryViewProvider
+        collectionView.collectionViewLayout = UICollectionViewCompositionalLayout(sectionProvider: self.layoutSectionProvider)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func loadView() {
+        view = collectionView
         collectionView.backgroundColor = .systemGroupedBackground
-        collectionView.collectionViewLayout = UICollectionViewCompositionalLayout { (index, environment) -> NSCollectionLayoutSection? in
-            if environment.traitCollection.horizontalSizeClass == .compact {
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(50))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(100))
-                let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item, item, item])
-                group.interItemSpacing = NSCollectionLayoutSpacing.fixed(10)
-                group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18)
-                
-                let section = NSCollectionLayoutSection(group: group)
-                section.interGroupSpacing = -26
-                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 36)
-                section.orthogonalScrollingBehavior = .groupPaging
-                section.boundarySupplementaryItems = [
-                    NSCollectionLayoutBoundarySupplementaryItem(
-                        layoutSize: NSCollectionLayoutSize(
-                            widthDimension: .fractionalWidth(1), heightDimension: .absolute(40)
-                        ),
-                        elementKind: "SectionHeaderElementKind",
-                        alignment: .top
-                    )
-                ]
-                return section
-            } else {
-                let itemCountPerRow: Int = environment.container.contentSize.width > 1000 ? 3 : 2
-                let itemSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1/CGFloat(itemCountPerRow)), heightDimension: .estimated(50)
-                )
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                
-                let groupSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1), heightDimension: .estimated(50)
-                )
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: itemCountPerRow)
-                group.interItemSpacing = .fixed(10)
-                group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
-                
-                let section = NSCollectionLayoutSection(group: group)
-                section.interGroupSpacing = 10
-                section.boundarySupplementaryItems = [
-                    NSCollectionLayoutBoundarySupplementaryItem(
-                        layoutSize: NSCollectionLayoutSize(
-                            widthDimension: .fractionalWidth(1), heightDimension: .absolute(40)
-                        ),
-                        elementKind: "SectionHeaderElementKind",
-                        alignment: .top
-                    )
-                ]
-                return section
-            }
-        }
         collectionView.register(CustomCell.self, forCellWithReuseIdentifier: "CustomCell")
         collectionView.register(HeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderView")
     }
 
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return items.count
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        var snapshot = dataSource.snapshot()
+        snapshot.appendSections([0])
+        snapshot.appendItems(items[0], toSection: 0)
+        dataSource.apply(snapshot, animatingDifferences: false)
     }
-
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return items[section].count
+    
+    private func layoutSectionProvider(index: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? {
+        if environment.traitCollection.horizontalSizeClass == .compact {
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(50))
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(100))
+            let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item, item, item])
+            group.interItemSpacing = NSCollectionLayoutSpacing.fixed(10)
+            group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18)
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.interGroupSpacing = -26
+            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 36)
+            section.orthogonalScrollingBehavior = .groupPaging
+            section.boundarySupplementaryItems = [
+                NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: NSCollectionLayoutSize(
+                        widthDimension: .fractionalWidth(1), heightDimension: .absolute(40)
+                    ),
+                    elementKind: "SectionHeaderElementKind",
+                    alignment: .top
+                )
+            ]
+            return section
+        } else {
+            let itemCountPerRow: Int = environment.container.contentSize.width > 1000 ? 3 : 2
+            let itemSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1/CGFloat(itemCountPerRow)), heightDimension: .estimated(50)
+            )
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            
+            let groupSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1), heightDimension: .estimated(50)
+            )
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: itemCountPerRow)
+            group.interItemSpacing = .fixed(10)
+            group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.interGroupSpacing = 10
+            section.boundarySupplementaryItems = [
+                NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: NSCollectionLayoutSize(
+                        widthDimension: .fractionalWidth(1), heightDimension: .absolute(40)
+                    ),
+                    elementKind: "SectionHeaderElementKind",
+                    alignment: .top
+                )
+            ]
+            return section
+        }
     }
-
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    
+    private static func cellProvider(collectionView: UICollectionView, indexPath: IndexPath, item: String) -> UICollectionViewCell? {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CustomCell", for: indexPath) as! CustomCell
-        cell.titleLabel.text = items[indexPath.section][indexPath.row]
+        cell.titleLabel.text = item
         cell.fileNameLabel.text = "placeholder_file_name.zim"
         cell.fileSizeLabel.text = "95.3GB"
         cell.creationDateLabel.text = "Aug 15, 2020"
         cell.articleCountLabel.text = "35.5K articles"
         return cell
     }
-
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    
+    private static func supplementaryViewProvider(collectionView: UICollectionView, item: String, indexPath: IndexPath) -> UICollectionReusableView? {
         let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderView", for: indexPath) as! HeaderView
         headerView.label.text = "Header"
         return headerView
