@@ -33,24 +33,23 @@ class HomeController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.backgroundColor = .systemGroupedBackground
-
         collectionView.collectionViewLayout = UICollectionViewCompositionalLayout { (index, environment) -> NSCollectionLayoutSection? in
             let item: NSCollectionLayoutItem = {
                 let size = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(50))
                 let item = NSCollectionLayoutItem(layoutSize: size)
-                item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 0)
                 return item
             }()
             let group: NSCollectionLayoutGroup = {
                 let size = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(100))
                 let group = NSCollectionLayoutGroup.vertical(layoutSize: size, subitems: [item, item, item])
                 group.interItemSpacing = NSCollectionLayoutSpacing.fixed(10)
+                group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 18)
                 return group
             }()
             let section: NSCollectionLayoutSection = {
                 let section = NSCollectionLayoutSection(group: group)
                 section.interGroupSpacing = -26
-                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 18)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 36)
                 section.orthogonalScrollingBehavior = .groupPaging
                 section.boundarySupplementaryItems = [
                     NSCollectionLayoutBoundarySupplementaryItem(
@@ -92,13 +91,13 @@ class HomeController: UICollectionViewController {
         headerView.label.text = "Header"
         return headerView
     }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        coordinator.animate(alongsideTransition: { context in
-            self.collectionView.collectionViewLayout.invalidateLayout()
-        }, completion: nil)
-    }
+//
+//    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+//        super.viewWillTransition(to: size, with: coordinator)
+//        coordinator.animate(alongsideTransition: { context in
+//            self.collectionView.collectionViewLayout.invalidateLayout()
+//        }, completion: nil)
+//    }
 
 }
 
