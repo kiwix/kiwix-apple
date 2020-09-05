@@ -34,32 +34,37 @@ class HomeController: UICollectionViewController {
         super.viewDidLoad()
         collectionView.backgroundColor = .systemGroupedBackground
 
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(50))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 0)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(100))
-        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item, item, item])
-        group.interItemSpacing = NSCollectionLayoutSpacing.fixed(10)
-
-        let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = -26
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 18)
-        section.orthogonalScrollingBehavior = .groupPaging
-
-        let headerFooterSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(0),
-            heightDimension: .absolute(40)
-        )
-        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: headerFooterSize,
-            elementKind: "SectionHeaderElementKind",
-            alignment: .top
-        )
-        section.boundarySupplementaryItems = [sectionHeader]
-
-        let layout = UICollectionViewCompositionalLayout(section: section)
-        collectionView.collectionViewLayout = layout
+        collectionView.collectionViewLayout = UICollectionViewCompositionalLayout { (index, environment) -> NSCollectionLayoutSection? in
+            let item: NSCollectionLayoutItem = {
+                let size = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(50))
+                let item = NSCollectionLayoutItem(layoutSize: size)
+                item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 18, bottom: 0, trailing: 0)
+                return item
+            }()
+            let group: NSCollectionLayoutGroup = {
+                let size = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(100))
+                let group = NSCollectionLayoutGroup.vertical(layoutSize: size, subitems: [item, item, item])
+                group.interItemSpacing = NSCollectionLayoutSpacing.fixed(10)
+                return group
+            }()
+            let section: NSCollectionLayoutSection = {
+                let section = NSCollectionLayoutSection(group: group)
+                section.interGroupSpacing = -26
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 18)
+                section.orthogonalScrollingBehavior = .groupPaging
+                section.boundarySupplementaryItems = [
+                    NSCollectionLayoutBoundarySupplementaryItem(
+                        layoutSize: NSCollectionLayoutSize(
+                            widthDimension: .fractionalWidth(0), heightDimension: .absolute(40)
+                        ),
+                        elementKind: "SectionHeaderElementKind",
+                        alignment: .top
+                    )
+                ]
+                return section
+            }()
+            return section
+        }
         collectionView.register(CustomCell.self, forCellWithReuseIdentifier: "CustomCell")
         collectionView.register(HeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderView")
     }
