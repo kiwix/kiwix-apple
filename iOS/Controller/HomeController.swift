@@ -7,34 +7,25 @@
 //
 
 import UIKit
+import RealmSwift
 
 @available(iOS 13.0, *)
 class HomeController: UIViewController {
     private let collectionView: UICollectionView
-    private let dataSource: UICollectionViewDiffableDataSource<Int, String>
+    private let dataSource: UICollectionViewDiffableDataSource<Section, ZimFile>
     
-    let items = [
-        [
-            "1 Lorem ipsum dolor sit amet.",
-            "2 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-            "3 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            "4 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            "5 Lorem ipsum dolor sit amet.",
-        ],
-        [
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        ],
-        [
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            "Lorem ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-        ]
-    ]
+    private let onDeviceZimFiles: Results<ZimFile>? = {
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            let predicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue)
+            return database.objects(ZimFile.self).filter(predicate).sorted(byKeyPath: "size", ascending: false)
+        } catch { return nil }
+    }()
+    private var onDeviceZimFilesChangeToken: NotificationToken?
     
     init() {
         self.collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
-        self.dataSource = UICollectionViewDiffableDataSource<Int, String>(collectionView: self.collectionView, cellProvider: HomeController.cellProvider)
+        self.dataSource = UICollectionViewDiffableDataSource<Section, ZimFile>(collectionView: self.collectionView, cellProvider: HomeController.cellProvider)
         super.init(nibName: nil, bundle: nil)
         dataSource.supplementaryViewProvider = HomeController.supplementaryViewProvider
         collectionView.collectionViewLayout = UICollectionViewCompositionalLayout(sectionProvider: self.layoutSectionProvider)
@@ -50,17 +41,36 @@ class HomeController: UIViewController {
         collectionView.register(CustomCell.self, forCellWithReuseIdentifier: "CustomCell")
         collectionView.register(HeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "HeaderView")
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        var snapshot = dataSource.snapshot()
-        snapshot.appendSections([0])
-        snapshot.appendItems(items[0], toSection: 0)
-        dataSource.apply(snapshot, animatingDifferences: false)
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        onDeviceZimFilesChangeToken = onDeviceZimFiles?.observe({ [unowned self] changes in
+            switch changes {
+            case .initial(let zimFiles):
+                var snapshot = dataSource.snapshot()
+                if zimFiles.count > 0, snapshot.indexOfSection(.onDeviceZimFiles) == nil {
+                    snapshot.appendSections([.onDeviceZimFiles])
+                    snapshot.appendItems(Array(zimFiles), toSection: .onDeviceZimFiles)
+                } else if zimFiles.count == 0 {
+                    snapshot.deleteSections([.onDeviceZimFiles])
+                }
+                dataSource.apply(snapshot, animatingDifferences: false)
+            case .update(let zimFiles, let deletions, let insertions, let modifications):
+                var snapshot = dataSource.snapshot()
+                snapshot.reloadSections([.onDeviceZimFiles])
+                dataSource.apply(snapshot, animatingDifferences: true)
+            default:
+                break
+            }
+        })
     }
     
-    private func layoutSectionProvider(index: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? {
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        onDeviceZimFilesChangeToken = nil
+    }
+    
+    private func layoutSectionProvider(sectionIndex: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? {
         if environment.traitCollection.horizontalSizeClass == .compact {
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(50))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -113,13 +123,13 @@ class HomeController: UIViewController {
         }
     }
     
-    private static func cellProvider(collectionView: UICollectionView, indexPath: IndexPath, item: String) -> UICollectionViewCell? {
+    private static func cellProvider(collectionView: UICollectionView, indexPath: IndexPath, zimFile: ZimFile) -> UICollectionViewCell? {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CustomCell", for: indexPath) as! CustomCell
-        cell.titleLabel.text = item
+        cell.titleLabel.text = zimFile.title
         cell.fileNameLabel.text = "placeholder_file_name.zim"
-        cell.fileSizeLabel.text = "95.3GB"
-        cell.creationDateLabel.text = "Aug 15, 2020"
-        cell.articleCountLabel.text = "35.5K articles"
+        cell.fileSizeLabel.text = zimFile.sizeDescription
+        cell.creationDateLabel.text = zimFile.creationDateDescription
+        cell.articleCountLabel.text = zimFile.articleCountDescription
         return cell
     }
     
@@ -128,6 +138,10 @@ class HomeController: UIViewController {
         headerView.label.text = "Header"
         return headerView
     }
+}
+
+private enum Section {
+    case onDeviceZimFiles
 }
 
 @available(iOS 13.0, *)
