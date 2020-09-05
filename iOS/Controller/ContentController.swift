@@ -93,18 +93,18 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         if let child = newChild {
             child.view.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(child.view)
-            if child == welcomeController {
-                NSLayoutConstraint.activate([
-                    view.topAnchor.constraint(equalTo: child.view.topAnchor),
-                    view.leftAnchor.constraint(equalTo: child.view.leftAnchor),
-                    view.bottomAnchor.constraint(equalTo: child.view.bottomAnchor),
-                    view.rightAnchor.constraint(equalTo: child.view.rightAnchor),
-                ])
-            } else {
+            if child is WebViewController {
                 NSLayoutConstraint.activate([
                     view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: child.view.topAnchor),
                     view.leftAnchor.constraint(equalTo: child.view.leftAnchor),
                     view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: child.view.bottomAnchor),
+                    view.rightAnchor.constraint(equalTo: child.view.rightAnchor),
+                ])
+            } else {
+                NSLayoutConstraint.activate([
+                    view.topAnchor.constraint(equalTo: child.view.topAnchor),
+                    view.leftAnchor.constraint(equalTo: child.view.leftAnchor),
+                    view.bottomAnchor.constraint(equalTo: child.view.bottomAnchor),
                     view.rightAnchor.constraint(equalTo: child.view.rightAnchor),
                 ])
             }
