@@ -46,24 +46,22 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     // MARK: - Init & Override
 
     init() {
-        secondaryController = UINavigationController(rootViewController: contentController)
-        super.init(nibName: nil, bundle: nil)
-
-        // setup initial controllers
         sideBarController.viewControllers = [
             UINavigationController(rootViewController: bookmarksController),
             UINavigationController(rootViewController: outlineController),
         ]
-        
+        secondaryController = UINavigationController(rootViewController: contentController)
         secondaryController.isToolbarHidden = false
-        viewControllers = [sideBarController, secondaryController]
-        
+        super.init(nibName: nil, bundle: nil)
+
+        // configuring splitView controlller
         delegate = self
+        viewControllers = [sideBarController, secondaryController]
         if #available(iOS 13.0, *) {
-            primaryBackgroundStyle = .sidebar
             preferredDisplayMode = .primaryHidden
         }
 
+        // set delegates
         webViewController.delegate = self
         bookmarksController.delegate = self
         outlineController.delegate = self
