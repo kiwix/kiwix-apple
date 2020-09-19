@@ -3,6 +3,7 @@
 - added alert for when zim file of a bookmarked article is missing
 - article loading speed improvements (especially on articles with a lot of images and on more recent devices)
 - updated libkiwix version
+- iOS 14 compatibility
 
 ## 1.13.4
 
