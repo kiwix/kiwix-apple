@@ -13,9 +13,13 @@ struct ZimFileCell: View {
     let id: Int
     
     var body: some View {
-        HStack(alignment: .center, spacing: 6) {
-            RoundedRectangle(cornerRadius: 4, style: .continuous)
-                .frame(width: 36, height: 36)
+        HStack(alignment: .center, spacing: 10) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 4, style: .continuous)
+                    .fill(Color(UIColor.secondarySystemBackground))
+                    .frame(width: 36, height: 36)
+                Image(systemName: "text.book.closed")
+            }
             VStack(alignment: .leading, spacing: 6) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Row \(id)").font(.headline)
@@ -31,7 +35,10 @@ struct ZimFileCell: View {
                     Label("2020-09-18", systemImage: "calendar").font(.caption)
                 }
             }
-        }.padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
+        }
+        .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
+        .background(Color(UIColor.white))
+        .cornerRadius(10)
     }
 }
 
@@ -39,12 +46,19 @@ struct ZimFileCell: View {
 struct ZimFileCell_Previews: PreviewProvider {
     static var previews: some View {
         ScrollView {
+//            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
+//                ForEach(1...100, id: \.self) {
+//                    ZimFileCell(id: $0)
+//                }
+//            }
             LazyVStack(alignment: .leading) {
                 ForEach(1...100, id: \.self) {
                     ZimFileCell(id: $0)
                 }
             }
+            .padding(.all, 10)
         }
+        .background(Color(.systemGroupedBackground))
         .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
     }
 }
