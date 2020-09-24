@@ -13,6 +13,7 @@ import RealmSwift
 struct ZimFileCell: View {
     let zimFile: ZimFile
     @State private var tapped: Bool = false
+    @Environment (\.colorScheme) var colorScheme
     
     var body: some View {
         Button(action: {}, label: {
@@ -45,13 +46,13 @@ struct ZimFileCell: View {
                 }
             }
         })
-        .buttonStyle(RoundedRectButtonStyle())
+        .buttonStyle(RoundedRectButtonStyle(colorScheme: colorScheme))
     }
 }
 
 @available(iOS 14.0, *)
 struct RoundedRectButtonStyle: ButtonStyle {
-    @Environment (\.colorScheme) var colorScheme
+    var colorScheme: ColorScheme
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -59,20 +60,19 @@ struct RoundedRectButtonStyle: ButtonStyle {
             .background(Color({ () -> UIColor in
                 switch (colorScheme, configuration.isPressed) {
                 case (.light, true):
-                    return .systemGray4
+                    return .systemGray5
                 case (.light, false):
                     return .systemBackground
                 case (.dark, true):
-                    return .purple
+                    return .systemGray3
                 case (.dark, false):
-                    return .green
+                    return .secondarySystemBackground
                 default:
                     return .systemBackground
                 }
             }()))
             .cornerRadius(10)
-            .animation(.easeOut)
-        
+            .animation(.easeOut(duration: 0.15))
     }
 }
 
