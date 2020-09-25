@@ -1,72 +1,50 @@
 //
 //  HomeView.swift
-//  iOS
+//  Kiwix
 //
-//  Created by Chris Li on 1/2/20.
+//  Created by Chris Li on 9/24/20.
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
+
+import Combine
 import SwiftUI
+import RealmSwift
 
-@available(iOS 13.0, *)
-fileprivate struct SectionHeaderView: View {
-    let text: String
+@available(iOS 14.0, *)
+struct HomeView: View {
+    private let localZimFiles: Results<ZimFile>? = {
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            let predicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue)
+            return database.objects(ZimFile.self).filter(predicate)
+        } catch { return nil }
+    }()
+    
     var body: some View {
-        Text(text)
-            .font(.largeTitle)
-            .fontWeight(.bold)
-    }
-}
-
-@available(iOS 13.0.0, *)
-fileprivate struct ArticleView: View {
-    let content = """
-Land reclamation, usually known as reclamation, and also known as land fill (not to be confused with a landfill), is the process of creating new land from oceans, seas, riverbeds or lake beds. The land reclaimed is known as reclamation ground or land fill.
-"""
-    var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Text("Wikipedia")
-                    .font(.caption)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.secondary)
-                    .lineLimit(1)
-                Text("Land reclamation")
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .foregroundColor(.primary)
-                    .lineLimit(1)
-                Spacer()
-                    .frame(height: 5)
-                Text(content)
-                    .font(.caption)
-                    .lineLimit(10)
-            }
-            .layoutPriority(100)
-            Spacer()
+        GeometryReader { geometry in
+            ScrollView {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
+                    Section(header: HStack { Text("On Device").font(.title2).fontWeight(.bold); Spacer() }) {
+                        ForEach(localZimFiles!.freeze(), id: \.id) { zimFile in
+                            ZimFileCell(zimFile: zimFile)
+                        }
+                    }
+                }
+                .padding(.vertical, 20)
+                .padding(.horizontal, calculateHorizontalPadding(size: geometry.size))
+            }.background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
         }
     }
-}
-
-@available(iOS 13.0, *)
-struct HomeView: View {
-    var body: some View {
-        List(/*@START_MENU_TOKEN@*/0 ..< 5/*@END_MENU_TOKEN@*/) { item in
-            ArticleView()
-            }.listStyle(GroupedListStyle())
-    }
-}
-
-@available(iOS 13.0, *)
-struct ArticleView_Previews: PreviewProvider {
-    static var previews: some View {
-        ArticleView().previewLayout(.fixed(width: 400, height: 200))
-    }
-}
-
-@available(iOS 13.0, *)
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView()
+    
+    private func calculateHorizontalPadding(size: CGSize) -> CGFloat {
+        switch size.width {
+        case 1000..<CGFloat.infinity:
+            return (size.width - size.height) / 2 - 20
+        case 400..<1000:
+            return 20
+        default:
+            return 10
+        }
     }
 }

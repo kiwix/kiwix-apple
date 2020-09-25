@@ -80,6 +80,11 @@ class ZimFile: Object {
             .joined(separator: ", ")
     }
     
+    var articleCountShortDescription: String? {
+        guard let articleCount = self.articleCount.value else { return nil }
+        return NumberAbbrevationFormatter.string(from: Int(articleCount))
+    }
+    
     var articleCountDescription: String? {
         guard let articleCount = self.articleCount.value else { return nil }
         return NumberAbbrevationFormatter.string(from: Int(articleCount)) + (articleCount > 1 ? " articles" : " article")
