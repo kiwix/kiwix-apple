@@ -31,7 +31,7 @@ struct ZimFileCell: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(zimFile.title).font(.headline)
                         if zimFile.fileDescription.count > 0 {
-                            Text(zimFile.fileDescription).font(.caption)
+                            Text(zimFile.fileDescription).font(.caption).lineLimit(2)
                         }
                     }
                 }
@@ -39,10 +39,10 @@ struct ZimFileCell: View {
                 HStack {
                     Label(zimFile.sizeDescription ?? "Unknown", systemImage: "internaldrive")
                     Spacer()
-                    Label(zimFile.articleCountDescription ?? "Unknown", systemImage: "doc.text")
+                    Label(zimFile.articleCountShortDescription ?? "Unknown", systemImage: "doc.text")
                     Spacer()
                     Label(zimFile.creationDateDescription ?? "Unknown", systemImage: "calendar")
-                }.font(.caption)
+                }.font(.caption).foregroundColor(.secondary)
             }
         })
         .buttonStyle(RoundedRectButtonStyle(colorScheme: colorScheme))
