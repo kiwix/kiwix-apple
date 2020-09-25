@@ -17,32 +17,32 @@ struct ZimFileCell: View {
     
     var body: some View {
         Button(action: {}, label: {
-            HStack(alignment: .center, spacing: 10) {
-                if colorScheme == .light {
-                    favIcon
-                        .cornerRadius(4)
-                } else {
-                    favIcon
-                        .background(Color(.white))
-                        .cornerRadius(4)
-                        .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color(.white).opacity(0.9), lineWidth: 1))
-                }
-                VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: .leading, spacing: 6) {
+                HStack(alignment: .center, spacing: 10) {
+                    if colorScheme == .light {
+                        favIcon
+                            .cornerRadius(4)
+                    } else {
+                        favIcon
+                            .background(Color(.white))
+                            .cornerRadius(4)
+                            .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color(.white).opacity(0.9), lineWidth: 1))
+                    }
                     VStack(alignment: .leading, spacing: 2) {
                         Text(zimFile.title).font(.headline)
                         if zimFile.fileDescription.count > 0 {
                             Text(zimFile.fileDescription).font(.caption)
                         }
                     }
-                    Divider()
-                    HStack {
-                        Label(zimFile.sizeDescription ?? "Unknown", systemImage: "internaldrive")
-                        Spacer()
-                        Label(zimFile.articleCountDescription ?? "Unknown", systemImage: "doc.text")
-                        Spacer()
-                        Label(zimFile.creationDateDescription ?? "Unknown", systemImage: "calendar")
-                    }.font(.caption)
                 }
+                Divider()
+                HStack {
+                    Label(zimFile.sizeDescription ?? "Unknown", systemImage: "internaldrive")
+                    Spacer()
+                    Label(zimFile.articleCountDescription ?? "Unknown", systemImage: "doc.text")
+                    Spacer()
+                    Label(zimFile.creationDateDescription ?? "Unknown", systemImage: "calendar")
+                }.font(.caption)
             }
         })
         .buttonStyle(RoundedRectButtonStyle(colorScheme: colorScheme))
