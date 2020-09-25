@@ -5,6 +5,7 @@
 //  Created by Chris Li on 8/30/20.
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
+//  This is an implementation of HomeController in UICollectionView, it is not used
 
 import UIKit
 import RealmSwift

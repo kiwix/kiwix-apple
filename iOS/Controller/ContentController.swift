@@ -59,7 +59,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if #available(iOS 14.0, *) {
+        if #available(iOS 14.0, *), FeatureFlags.homeViewEnabled {
             setChildControllerIfNeeded(UIHostingController(rootView: HomeView()))
         } else {
             setChildControllerIfNeeded(welcomeController)
