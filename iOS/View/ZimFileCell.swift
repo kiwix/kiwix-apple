@@ -18,35 +18,45 @@ struct ZimFileCell: View {
     var body: some View {
         Button(action: {}, label: {
             HStack(alignment: .center, spacing: 10) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 4, style: .continuous)
-                        .fill(Color(UIColor.secondarySystemBackground))
-                        .frame(width: 36, height: 36)
-                    Image(systemName: "text.book.closed")
+                if colorScheme == .light {
+                    favIcon
+                        .cornerRadius(4)
+                } else {
+                    favIcon
+                        .background(Color(.white))
+                        .cornerRadius(4)
+                        .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color(.white).opacity(0.9), lineWidth: 1))
                 }
                 VStack(alignment: .leading, spacing: 6) {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(zimFile.title).font(.headline)
                         if zimFile.fileDescription.count > 0 {
-                            Text(zimFile.fileDescription)
-                                .font(.caption)
+                            Text(zimFile.fileDescription).font(.caption)
                         }
                     }
                     Divider()
                     HStack {
                         Label(zimFile.sizeDescription ?? "Unknown", systemImage: "internaldrive")
-                            .font(.caption)
                         Spacer()
                         Label(zimFile.articleCountDescription ?? "Unknown", systemImage: "doc.text")
-                            .font(.caption)
                         Spacer()
                         Label(zimFile.creationDateDescription ?? "Unknown", systemImage: "calendar")
-                            .font(.caption)
-                    }
+                    }.font(.caption)
                 }
             }
         })
         .buttonStyle(RoundedRectButtonStyle(colorScheme: colorScheme))
+    }
+    
+    var favIcon: some View {
+        let image: Image = {
+            if let data = zimFile.faviconData, let image = UIImage(data: data) {
+                return Image(uiImage: image)
+            } else {
+                return Image("GenericZimFile")
+            }
+        }()
+        return image.resizable().frame(width: 24, height: 24)
     }
 }
 
@@ -60,7 +70,7 @@ struct RoundedRectButtonStyle: ButtonStyle {
             .background(Color({ () -> UIColor in
                 switch (colorScheme, configuration.isPressed) {
                 case (.light, true):
-                    return .systemGray5
+                    return .systemGray4
                 case (.light, false):
                     return .systemBackground
                 case (.dark, true):
@@ -72,7 +82,7 @@ struct RoundedRectButtonStyle: ButtonStyle {
                 }
             }()))
             .cornerRadius(10)
-            .animation(.easeOut(duration: 0.15))
+            .animation(.easeOut(duration: 0.1))
     }
 }
 
@@ -81,7 +91,7 @@ struct ZimFileCell_Previews: PreviewProvider {
     static var previews: some View {
         ScrollView {
             LazyVStack(alignment: .leading) {
-                ForEach(1..<100) { _ in
+                ForEach(1..<10) { _ in
                     ZimFileCell(zimFile: ZimFile(value: [
                         "title": "ZimFile Title",
                         "fileDescription": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",

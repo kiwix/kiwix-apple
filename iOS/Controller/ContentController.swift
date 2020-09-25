@@ -10,39 +10,6 @@ import SwiftUI
 import UIKit
 import RealmSwift
 
-@available(iOS 14.0, *)
-struct HomeView: View {
-    var body: some View {
-        GeometryReader { geometry in
-            ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
-                    Section(header: HStack { Text("On Device").font(.title2).fontWeight(.bold); Spacer() }) {
-                        ForEach(1..<100) { _ in
-                            ZimFileCell(zimFile: ZimFile())
-                        }
-//                        ForEach(1...100, id: \.self) {
-//                            ZimFileCell(zimFile: ZimFile())
-//                        }
-                    }
-                }
-                .padding(.vertical, 20)
-                .padding(.horizontal, calculateHorizontalPadding(size: geometry.size))
-            }.background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
-        }
-    }
-    
-    private func calculateHorizontalPadding(size: CGSize) -> CGFloat {
-        switch size.width {
-        case 1000..<CGFloat.infinity:
-            return (size.width - size.height) / 2 - 20
-        case 400..<1000:
-            return 20
-        default:
-            return 10
-        }
-    }
-}
-
 class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptivePresentationControllerDelegate {
     let searchController: UISearchController
     private let searchResultsController: SearchResultsController
