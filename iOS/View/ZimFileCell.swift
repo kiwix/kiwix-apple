@@ -82,7 +82,7 @@ struct RoundedRectButtonStyle: ButtonStyle {
                 }
             }()))
             .cornerRadius(10)
-            .animation(.easeOut(duration: 0.1))
+            .animation(.easeInOut(duration: 0.1))
     }
 }
 

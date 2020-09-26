@@ -17,7 +17,7 @@ struct HomeView: View {
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
             let predicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue)
-            return database.objects(ZimFile.self).filter(predicate)
+            return database.objects(ZimFile.self).filter(predicate).sorted(byKeyPath: "size", ascending: false)
         } catch { return nil }
     }()
     
