@@ -12,8 +12,7 @@ import RealmSwift
 @available(iOS 14.0, *)
 struct ZimFileCell: View {
     let zimFile: ZimFile
-    @State private var tapped: Bool = false
-    @Environment (\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         Button(action: {}, label: {
