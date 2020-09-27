@@ -26,7 +26,7 @@ struct HomeView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .padding(2)
-                            .frame(idealHeight: 42)
+                            .frame(idealHeight: 10)
                             .foregroundColor(.black)
                             .background(Color.white)
                             .cornerRadius(12)
@@ -38,7 +38,8 @@ struct HomeView: View {
                                 title: { Text("Library").fontWeight(.semibold) },
                                 icon: { Image(systemName: "folder") }
                             ).font(.subheadline)
-                            .padding(12)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 12)
                             .foregroundColor(.white)
                             .background(Color.blue)
                             .cornerRadius(12)
@@ -50,7 +51,8 @@ struct HomeView: View {
                                 title: { Text("Settings").fontWeight(.semibold) },
                                 icon: { Image(systemName: "gear") }
                             ).font(.subheadline)
-                            .padding(12)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 14)
                             .foregroundColor(.white)
                             .background(Color.gray)
                             .cornerRadius(12)
