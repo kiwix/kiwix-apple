@@ -14,6 +14,7 @@ import RealmSwift
 @available(iOS 14.0, *)
 struct HomeView: View {
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @ObservedObject private var viewModel = ViewModel()
     
     var body: some View {
@@ -22,9 +23,13 @@ struct HomeView: View {
                 LazyVStack {
                     HStack {
                         Image("Kiwix")
-                            .interpolation(.high)
                             .resizable()
-                            .frame(width: 42, height: 42)
+                            .aspectRatio(contentMode: .fit)
+                            .padding(2)
+                            .frame(idealHeight: 42)
+                            .foregroundColor(.black)
+                            .background(Color.white)
+                            .cornerRadius(12)
                         Spacer()
                         Button(action: {
                             print("Library tapped!")
@@ -64,7 +69,7 @@ struct HomeView: View {
                         }
                     }
                 }
-                .padding(.vertical, 16)
+                .padding(.vertical, horizontalSizeClass == .compact ? 10 : 16)
                 .padding(.horizontal, calculateHorizontalPadding(size: geometry.size))
             }
             .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
