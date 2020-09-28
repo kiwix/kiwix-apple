@@ -12,10 +12,14 @@ import RealmSwift
 @available(iOS 14.0, *)
 struct ZimFileCell: View {
     let zimFile: ZimFile
+    var tapped: ((ZimFile) -> Void)?
     @Environment(\.colorScheme) private var colorScheme
     
+    
     var body: some View {
-        Button(action: {}, label: {
+        Button(action: {
+            tapped?(zimFile)
+        }, label: {
             VStack(alignment: .leading, spacing: 6) {
                 HStack(alignment: .center, spacing: 10) {
                     if colorScheme == .light {

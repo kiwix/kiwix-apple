@@ -17,6 +17,10 @@ struct HomeView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @ObservedObject private var viewModel = ViewModel()
     
+    var libraryButtonTapped: (() -> Void)?
+    var settingsButtonTapped: (() -> Void)?
+    var zimFileTapped: ((ZimFile) -> Void)?
+    
     var body: some View {
         GeometryReader { geometry in
             ScrollView {
@@ -32,7 +36,7 @@ struct HomeView: View {
                             .cornerRadius(10)
                         Spacer()
                         Button(action: {
-                            print("Library tapped!")
+                            libraryButtonTapped?()
                         }) {
                             Label(
                                 title: { Text("Library").fontWeight(.semibold) },
@@ -45,14 +49,14 @@ struct HomeView: View {
                             .cornerRadius(10)
                         }
                         Button(action: {
-                            print("Settings tapped!")
+                            settingsButtonTapped?()
                         }) {
                             Label(
                                 title: { Text("Settings").fontWeight(.semibold) },
                                 icon: { Image(systemName: "gear") }
                             ).font(.subheadline)
                             .padding(.vertical, 10)
-                            .padding(.horizontal, 14)
+                            .padding(.horizontal, 12)
                             .foregroundColor(.white)
                             .background(Color(.systemGray).opacity(0.8))
                             .cornerRadius(10)
@@ -66,7 +70,7 @@ struct HomeView: View {
                             }.padding(.leading, 10)
                         ) {
                             ForEach(viewModel.onDeviceZimFiles, id: \.id) { zimFile in
-                                ZimFileCell(zimFile: zimFile)
+                                ZimFileCell(zimFile: zimFile, tapped: zimFileTapped)
                             }
                         }
                     }
