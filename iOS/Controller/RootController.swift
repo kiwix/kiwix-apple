@@ -310,6 +310,11 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     @objc func openTabsView() {
         present(TabsController(), animated: true)
     }
+    
+    func openMainPage(zimFileID: String) {
+        guard let url = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFileID) else { return }
+        openKiwixURL(url)
+    }
 
     func openKiwixURL(_ url: URL) {
         guard url.isKiwixURL else {return}

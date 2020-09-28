@@ -60,7 +60,20 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     override func viewDidLoad() {
         super.viewDidLoad()
         if #available(iOS 14.0, *), FeatureFlags.homeViewEnabled {
-            setChildControllerIfNeeded(UIHostingController(rootView: HomeView()))
+            var homeView = HomeView()
+            homeView.libraryButtonTapped = { [unowned self] in
+                guard let rootController = self.splitViewController as? RootController else { return }
+                rootController.openLibrary()
+            }
+            homeView.settingsButtonTapped = { [unowned self] in
+                guard let rootController = self.splitViewController as? RootController else { return }
+                rootController.openSettings()
+            }
+            homeView.zimFileTapped = { [unowned self] zimFile in
+                guard let rootController = self.splitViewController as? RootController else { return }
+                rootController.openMainPage(zimFileID: zimFile.id)
+            }
+            setChildControllerIfNeeded(UIHostingController(rootView: homeView))
         } else {
             setChildControllerIfNeeded(welcomeController)
         }
@@ -70,16 +83,15 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
     
     private func setView(_ subView: UIView?) {
         view.subviews.forEach({ $0.removeFromSuperview() })
-        if let subView = subView {
-            subView.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(subView)
-            NSLayoutConstraint.activate([
-                view.topAnchor.constraint(equalTo: subView.topAnchor),
-                view.leftAnchor.constraint(equalTo: subView.leftAnchor),
-                view.bottomAnchor.constraint(equalTo: subView.bottomAnchor),
-                view.rightAnchor.constraint(equalTo: subView.rightAnchor),
-            ])
-        }
+        guard let subView = subView else { return }
+        subView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(subView)
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: subView.topAnchor),
+            view.leftAnchor.constraint(equalTo: subView.leftAnchor),
+            view.bottomAnchor.constraint(equalTo: subView.bottomAnchor),
+            view.rightAnchor.constraint(equalTo: subView.rightAnchor),
+        ])
     }
     
     func setChildControllerIfNeeded(_ newChild: UIViewController?) {
@@ -91,25 +103,30 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
             child.removeFromParent()
         }
         
-        if let child = newChild {
+        guard let child = newChild else { return }
+        if child is WebViewController {
+            addChild(child)
+            view.subviews.forEach({ $0.removeFromSuperview() })
             child.view.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(child.view)
-            if child is WebViewController {
-                NSLayoutConstraint.activate([
-                    view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: child.view.topAnchor),
-                    view.leftAnchor.constraint(equalTo: child.view.leftAnchor),
-                    view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: child.view.bottomAnchor),
-                    view.rightAnchor.constraint(equalTo: child.view.rightAnchor),
-                ])
+            NSLayoutConstraint.activate([
+                view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: child.view.topAnchor),
+                view.leftAnchor.constraint(equalTo: child.view.leftAnchor),
+                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: child.view.bottomAnchor),
+                view.rightAnchor.constraint(equalTo: child.view.rightAnchor),
+            ])
+            child.didMove(toParent: self)
+        } else if #available(iOS 14.0, *) {
+            if child is UIHostingController<HomeView> {
+                setView(child.view)
             } else {
-                NSLayoutConstraint.activate([
-                    view.topAnchor.constraint(equalTo: child.view.topAnchor),
-                    view.leftAnchor.constraint(equalTo: child.view.leftAnchor),
-                    view.bottomAnchor.constraint(equalTo: child.view.bottomAnchor),
-                    view.rightAnchor.constraint(equalTo: child.view.rightAnchor),
-                ])
+                addChild(child)
+                setView(child.view)
+                child.didMove(toParent: self)
             }
+        } else {
             addChild(child)
+            setView(child.view)
             child.didMove(toParent: self)
         }
     }
