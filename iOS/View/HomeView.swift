@@ -35,32 +35,18 @@ struct HomeView: View {
                             .background(Color.white)
                             .cornerRadius(10)
                         Spacer()
-                        Button(action: {
-                            libraryButtonTapped?()
-                        }) {
-                            Label(
-                                title: { Text("Library").fontWeight(.semibold) },
-                                icon: { Image(systemName: "folder") }
-                            ).font(.subheadline)
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 12)
-                            .foregroundColor(.white)
-                            .background(Color(.systemBlue).opacity(0.8))
-                            .cornerRadius(10)
-                        }
-                        Button(action: {
-                            settingsButtonTapped?()
-                        }) {
-                            Label(
-                                title: { Text("Settings").fontWeight(.semibold) },
-                                icon: { Image(systemName: "gear") }
-                            ).font(.subheadline)
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 12)
-                            .foregroundColor(.white)
-                            .background(Color(.systemGray).opacity(0.8))
-                            .cornerRadius(10)
-                        }
+                        RoundedRectButton(
+                            title: "Library",
+                            iconSystemName: "folder",
+                            backgroundColor: Color(.systemBlue),
+                            action: libraryButtonTapped
+                        )
+                        RoundedRectButton(
+                            title: "Settings",
+                            iconSystemName: "gear",
+                            backgroundColor: Color(.systemGray),
+                            action: settingsButtonTapped
+                        )
                     }
                     Divider().padding(.vertical, 2)
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
@@ -90,6 +76,31 @@ struct HomeView: View {
             return 20
         default:
             return 10
+        }
+    }
+}
+
+@available(iOS 14.0, *)
+struct RoundedRectButton: View {
+    let title: String
+    let iconSystemName: String
+    let backgroundColor: Color
+    var action: (() -> Void)?
+    
+    var body: some View {
+        Button(action: {
+            action?()
+        }) {
+            Label(
+                title: { Text(title).fontWeight(.semibold) },
+                icon: { Image(systemName: iconSystemName) }
+            )
+            .font(.subheadline)
+            .padding(.vertical, 10)
+            .padding(.horizontal, 12)
+            .foregroundColor(.white)
+            .background(backgroundColor.opacity(0.8))
+            .cornerRadius(10)
         }
     }
 }
