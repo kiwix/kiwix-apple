@@ -19,10 +19,9 @@ struct ZimFileCell: View {
             VStack(alignment: .leading, spacing: 6) {
                 HStack(alignment: .center, spacing: 10) {
                     if colorScheme == .light {
-                        favIcon
-                            .cornerRadius(4)
+                        FavIcon(zimFile: zimFile).cornerRadius(4)
                     } else {
-                        favIcon
+                        FavIcon(zimFile: zimFile)
                             .background(Color(.white))
                             .cornerRadius(4)
                             .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color(.white).opacity(0.9), lineWidth: 1))
@@ -44,10 +43,15 @@ struct ZimFileCell: View {
                 }.font(.caption).foregroundColor(.secondary)
             }
         })
-        .buttonStyle(RoundedRectButtonStyle(colorScheme: colorScheme))
+        .buttonStyle(RoundedRectButtonStyle())
     }
+}
+
+@available(iOS 14.0, *)
+private struct FavIcon: View {
+    let zimFile: ZimFile
     
-    var favIcon: some View {
+    var body: some View {
         let image: Image = {
             if let data = zimFile.faviconData, let image = UIImage(data: data) {
                 return Image(uiImage: image)
@@ -60,28 +64,18 @@ struct ZimFileCell: View {
 }
 
 @available(iOS 14.0, *)
-struct RoundedRectButtonStyle: ButtonStyle {
-    var colorScheme: ColorScheme
-    
+private struct RoundedRectButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
             .background(Color({ () -> UIColor in
-                switch (colorScheme, configuration.isPressed) {
-                case (.light, true):
-                    return .systemGray4
-                case (.light, false):
-                    return .systemBackground
-                case (.dark, true):
-                    return .systemGray3
-                case (.dark, false):
-                    return .secondarySystemBackground
-                default:
-                    return .systemBackground
+                if configuration.isPressed {
+                    return .systemGray5
+                } else {
+                    return .secondarySystemGroupedBackground
                 }
             }()))
             .cornerRadius(10)
-            .animation(.easeInOut(duration: 0.1))
     }
 }
 

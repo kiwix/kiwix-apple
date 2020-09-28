@@ -29,7 +29,7 @@ struct HomeView: View {
                             .frame(idealHeight: 10)
                             .foregroundColor(.black)
                             .background(Color.white)
-                            .cornerRadius(12)
+                            .cornerRadius(10)
                         Spacer()
                         Button(action: {
                             print("Library tapped!")
@@ -41,8 +41,8 @@ struct HomeView: View {
                             .padding(.vertical, 10)
                             .padding(.horizontal, 12)
                             .foregroundColor(.white)
-                            .background(Color.blue)
-                            .cornerRadius(12)
+                            .background(Color(.systemBlue).opacity(0.8))
+                            .cornerRadius(10)
                         }
                         Button(action: {
                             print("Settings tapped!")
@@ -54,8 +54,8 @@ struct HomeView: View {
                             .padding(.vertical, 10)
                             .padding(.horizontal, 14)
                             .foregroundColor(.white)
-                            .background(Color.gray)
-                            .cornerRadius(12)
+                            .background(Color(.systemGray).opacity(0.8))
+                            .cornerRadius(10)
                         }
                     }
                     Divider().padding(.vertical, 2)
