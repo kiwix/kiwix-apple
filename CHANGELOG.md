@@ -1,3 +1,7 @@
+## 1.13.6
+
+- fixed an issue where it could lead to app launch crashes on iOS 12 (iPhone or iPad horizontally compact interface)
+
 ## 1.13.5
 
 - added alert for when zim file of a bookmarked article is missing
