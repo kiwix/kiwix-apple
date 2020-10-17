@@ -1,5 +1,6 @@
 ## 1.13.6
 
+- add TED category
 - fixed an issue where it could lead to app launch crashes on iOS 12 (iPhone or iPad horizontally compact interface)
 
 ## 1.13.5
