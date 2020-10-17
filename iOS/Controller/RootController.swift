@@ -57,7 +57,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         // configuring splitView controlller
         delegate = self
         viewControllers = [sideBarController, secondaryController]
-        preferredDisplayMode = .primaryHidden
+        if #available(iOS 13.0, *) { preferredDisplayMode = .primaryHidden }
 
         // set delegates
         webViewController.delegate = self
@@ -88,8 +88,8 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         view.gestureRecognizers?.first?.delegate = self
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode) { change in
+        if #available(iOS 13.0, *), UIDevice.current.userInterfaceIdiom == .pad {
+            sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode, options: [.prior]) { change in
                 guard self.masterIsVisible else { return }
                 self.preferredDisplayMode = self.getPrimaryVisibleDisplayMode()
             }
