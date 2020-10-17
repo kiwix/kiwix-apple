@@ -9,5 +9,5 @@
 import Foundation
 
 struct FeatureFlags {
-    static let homeViewEnabled = true
+    static let homeViewEnabled = false
 }
