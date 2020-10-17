@@ -17,7 +17,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     let sideBarController = UITabBarController()
     let bookmarksController = BookmarksController()
     let outlineController = OutlineController()
-    private let secondaryController: UINavigationController
+    private var secondaryController: UINavigationController
     private let contentController = ContentController()
     let webViewController = WebViewController()
     private var libraryController: LibraryController?
@@ -57,9 +57,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
         // configuring splitView controlller
         delegate = self
         viewControllers = [sideBarController, secondaryController]
-        if #available(iOS 13.0, *) {
-            preferredDisplayMode = .primaryHidden
-        }
+        if #available(iOS 13.0, *) { preferredDisplayMode = .primaryHidden }
 
         // set delegates
         webViewController.delegate = self
@@ -90,8 +88,8 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         view.gestureRecognizers?.first?.delegate = self
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode) { change in
+        if #available(iOS 13.0, *), UIDevice.current.userInterfaceIdiom == .pad {
+            sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode, options: [.prior]) { change in
                 guard self.masterIsVisible else { return }
                 self.preferredDisplayMode = self.getPrimaryVisibleDisplayMode()
             }
@@ -184,6 +182,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
 
     func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
         configureBarButtons(isGrouped: false)
+        secondaryController = UINavigationController(rootViewController: contentController)
         secondaryController.isToolbarHidden = contentController.searchController.isActive
         return secondaryController
     }
@@ -191,6 +190,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     func splitViewController(_ splitViewController: UISplitViewController,
                              separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
         configureBarButtons(isGrouped: true)
+        secondaryController = UINavigationController(rootViewController: contentController)
         secondaryController.isToolbarHidden = contentController.searchController.isActive
         return secondaryController
     }
