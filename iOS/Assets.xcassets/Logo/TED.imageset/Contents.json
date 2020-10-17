@@ -9,13 +9,13 @@
       "scale" : "2x"
     },
     {
+      "filename" : "TED_three_letter_logo.svg",
       "idiom" : "universal",
-      "filename" : "TED.png",
       "scale" : "3x"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   }
 }
