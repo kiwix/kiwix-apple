@@ -18,7 +18,7 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
     private var sections: [Section] = [.category]
     private let categories: [ZimFile.Category] = [
         .wikipedia, .wikibooks, .wikinews, .wikiquote, .wikisource, .wikiversity,
-        .wikivoyage, .wiktionary, .vikidia, .stackExchange, .other
+        .wikivoyage, .wiktionary, .vikidia, .ted, .stackExchange, .other
     ]
 
     // MARK: - Database
