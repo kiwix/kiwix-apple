@@ -34,10 +34,13 @@ struct RootView: View {
                 Image(systemName: "bookmark").font(Font.body.weight(.regular)).imageScale(.large)
             }
             Button(action: {}) {
-                Image(systemName: "list.triangle").font(Font.body.weight(.regular)).imageScale(.large)
+                Image(systemName: "clock.arrow.circlepath").font(Font.body.weight(.regular)).imageScale(.large)
             }
-        }.padding(.trailing, 10)
+        }.padding(.trailing, 20)
         let trailingNavBarItems = HStack(spacing: 20) {
+            Button(action: {}) {
+                Image(systemName: "list.bullet").font(Font.body.weight(.regular)).imageScale(.large)
+            }
             Button(action: {}) {
                 Image(systemName: "die.face.5").font(Font.body.weight(.regular)).imageScale(.large)
             }
@@ -45,12 +48,9 @@ struct RootView: View {
                 Image(systemName: "map").font(Font.body.weight(.regular)).imageScale(.large)
             }
             Button(action: {}) {
-                Image(systemName: "books.vertical").font(Font.body.weight(.regular)).imageScale(.large)
-            }
-            Button(action: {}) {
                 Image(systemName: "house").font(Font.body.weight(.regular)).imageScale(.large)
             }
-        }.padding(.leading, 10)
+        }.padding(.leading, 20)
         if horizontalSizeClass == .regular {
             ZStack {
                 homeView
