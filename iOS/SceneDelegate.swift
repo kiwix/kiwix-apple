@@ -18,7 +18,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                options connectionOptions: UIScene.ConnectionOptions) {
         if let windowScene = scene as? UIWindowScene {
             window = UIWindow(windowScene: windowScene)
-            window?.rootViewController = RootController()
+            window?.rootViewController = {
+                if #available(iOS 14.0, *) {
+                    return UINavigationController(rootViewController: RootController_iOS14())
+                } else {
+                    return RootController()
+                }
+            }()
             window?.makeKeyAndVisible()
         }
     }

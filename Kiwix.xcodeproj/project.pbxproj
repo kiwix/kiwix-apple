@@ -128,6 +128,8 @@
 		97CE42482493244D00B334E9 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
 		97CE424A24957C3500B334E9 /* LibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59C2456793500F6F6FF /* LibraryService.swift */; };
 		97D00A791FBB89F000165629 /* Inject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* Inject.js */; };
+		97D7FB5C253CF97400E8ADDF /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D7FB5B253CF97400E8ADDF /* RootView.swift */; };
+		97D7FB62253CF9B000E8ADDF /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D7FB61253CF9B000E8ADDF /* SidebarView.swift */; };
 		97DBCF9D203CA254004EE274 /* SettingExternalLinkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DBCF9C203CA254004EE274 /* SettingExternalLinkController.swift */; };
 		97E02DE424B00C82008E278D /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DE324B00C82008E278D /* libkiwix.xcframework */; };
 		97E02E1024B1273E008E278D /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DE324B00C82008E278D /* libkiwix.xcframework */; };
@@ -288,6 +290,8 @@
 		97C57604202CB42100E37502 /* Kiwix.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
 		97CA4A7120A21D24008CEA6D /* LibraryLanguageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryLanguageController.swift; sourceTree = "<group>"; };
 		97CD2F0324D4FB6F0084C6B5 /* SearchFilterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilterController.swift; sourceTree = "<group>"; };
+		97D7FB5B253CF97400E8ADDF /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		97D7FB61253CF9B000E8ADDF /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		97DBCF9C203CA254004EE274 /* SettingExternalLinkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingExternalLinkController.swift; sourceTree = "<group>"; };
 		97E02DE324B00C82008E278D /* libkiwix.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libkiwix.xcframework; sourceTree = "<group>"; };
 		97E983531F4DDB670021E96A /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -443,6 +447,7 @@
 		975FDAD81F6082DA00A10E8C /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				97D7FB5A253CF94F00E8ADDF /* iOS14 */,
 				975FDAD91F6082DA00A10E8C /* AppDelegate.swift */,
 				973B8011239066D0008CC8CE /* SceneDelegate.swift */,
 				9717A2521FB2592D00837492 /* Main.storyboard */,
@@ -682,6 +687,15 @@
 				97B4ADF82392BA3C00264AF6 /* MapController.swift */,
 			);
 			path = SideBar;
+			sourceTree = "<group>";
+		};
+		97D7FB5A253CF94F00E8ADDF /* iOS14 */ = {
+			isa = PBXGroup;
+			children = (
+				97D7FB5B253CF97400E8ADDF /* RootView.swift */,
+				97D7FB61253CF9B000E8ADDF /* SidebarView.swift */,
+			);
+			path = iOS14;
 			sourceTree = "<group>";
 		};
 		97E983521F4DDB2C0021E96A /* View */ = {
@@ -1000,6 +1014,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				97B3998E246759E400BC6F5B /* SearchResult.m in Sources */,
+				97D7FB62253CF9B000E8ADDF /* SidebarView.swift in Sources */,
 				97CD2F0424D4FB6F0084C6B5 /* SearchFilterController.swift in Sources */,
 				9779A5BC2456793600F6F6FF /* OPDSStreamParser.swift in Sources */,
 				972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */,
@@ -1031,6 +1046,7 @@
 				97810E17250436E2000D86CB /* ZimFileCell.swift in Sources */,
 				970EC3A123BCEC84008DCA27 /* Parser.swift in Sources */,
 				9779A73D2456796B00F6F6FF /* DirectoryMonitor.swift in Sources */,
+				97D7FB5C253CF97400E8ADDF /* RootView.swift in Sources */,
 				9779A5B22456793600F6F6FF /* LibraryService.swift in Sources */,
 				9779A5C42456793600F6F6FF /* ZimMultiReader.swift in Sources */,
 				978C58092468FC1100D56AC8 /* SettingSearchController.swift in Sources */,
