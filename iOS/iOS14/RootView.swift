@@ -21,40 +21,11 @@ struct RootView: View {
     @State var showSidebar = false
     
     var body: some View {
-        let leadingNavBarItems = HStack(spacing: 20) {
-            Button(action: {}) {
-                Image(systemName: "chevron.left").font(Font.body.weight(.regular)).imageScale(.large)
-            }
-            Button(action: {}) {
-                Image(systemName: "chevron.right").font(Font.body.weight(.regular)).imageScale(.large)
-            }
-            Button(action: {
-                self.showSidebar.toggle()
-            }) {
-                Image(systemName: "bookmark").font(Font.body.weight(.regular)).imageScale(.large)
-            }
-            Button(action: {}) {
-                Image(systemName: "clock.arrow.circlepath").font(Font.body.weight(.regular)).imageScale(.large)
-            }
-        }.padding(.trailing, 20)
-        let trailingNavBarItems = HStack(spacing: 20) {
-            Button(action: {}) {
-                Image(systemName: "list.bullet").font(Font.body.weight(.regular)).imageScale(.large)
-            }
-            Button(action: {}) {
-                Image(systemName: "die.face.5").font(Font.body.weight(.regular)).imageScale(.large)
-            }
-            Button(action: {}) {
-                Image(systemName: "map").font(Font.body.weight(.regular)).imageScale(.large)
-            }
-            Button(action: {}) {
-                Image(systemName: "house").font(Font.body.weight(.regular)).imageScale(.large)
-            }
-        }.padding(.leading, 20)
         if horizontalSizeClass == .regular {
             ZStack {
                 homeView
                 Color(UIColor.black)
+                    .edgesIgnoringSafeArea(.all)
                     .opacity(colorScheme == .dark ? 0.3 : 0.1)
                     .opacity(showSidebar ? 1.0 : 0.0)
                     .animation(sidebarAnimation)
@@ -64,20 +35,66 @@ struct RootView: View {
                         SidebarView()
                         Divider()
                     }
-                        .frame(width: sidebarWidth)
-                        .offset(x: showSidebar ? 0 : -sidebarWidth)
-                        .animation(sidebarAnimation)
+                    .frame(width: sidebarWidth)
+                    .offset(x: showSidebar ? 0 : -sidebarWidth)
+                    .animation(sidebarAnimation)
                     Spacer()
                 }
-            }.navigationBarItems(leading: leadingNavBarItems, trailing: trailingNavBarItems)
-        } else {
-            homeView.toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    Button(action: {}) {
-                        Image(systemName: "chevron.left").font(Font.body.weight(.regular)).imageScale(.large)
-                    }
+            }.toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    HStack(spacing: 12) {
+                        SwiftUIBarButton(iconName: "chevron.left")
+                        SwiftUIBarButton(iconName: "chevron.right")
+                        SwiftUIBarButton(iconName: "bookmark") { self.showSidebar.toggle() }
+                        SwiftUIBarButton(iconName: "clock.arrow.circlepath")
+                    }.padding(.trailing, 20)
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    HStack(spacing: 12) {
+                        SwiftUIBarButton(iconName: "list.bullet")
+                        SwiftUIBarButton(iconName: "die.face.5")
+                        SwiftUIBarButton(iconName: "map")
+                        SwiftUIBarButton(iconName: "house")
+                    }.padding(.leading, 20)
                 }
             }
+        } else {
+            homeView.toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    SwiftUIBarButton(iconName: "chevron.left")
+                    Spacer()
+                    SwiftUIBarButton(iconName: "chevron.right")
+                }
+                ToolbarItem(placement: .bottomBar) { Spacer() }
+                ToolbarItemGroup(placement: .bottomBar) {
+                    SwiftUIBarButton(iconName: "bookmark") { self.showSidebar.toggle() }
+                    Spacer()
+                    SwiftUIBarButton(iconName: "list.bullet")
+                    Spacer()
+                    SwiftUIBarButton(iconName: "die.face.5")
+                    Spacer()
+                    SwiftUIBarButton(iconName: "house")
+                }
+            }
+        }
+    }
+}
+
+@available(iOS 14.0, *)
+struct SwiftUIBarButton: View {
+    let iconName: String
+    var action: (() -> Void)?
+    
+    var body: some View {
+        Button(action: {
+            action?()
+        }) {
+            ZStack(alignment: .center) {
+//                Color(.systemGreen).cornerRadius(6)
+                Image(systemName: iconName)
+                    .font(Font.body.weight(.regular))
+                    .imageScale(.large)
+            }.frame(width: 32, height: 32)
         }
     }
 }
