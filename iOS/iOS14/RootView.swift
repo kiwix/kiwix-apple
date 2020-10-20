@@ -23,7 +23,7 @@ enum SidebarDisplayMode {
 struct RootView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @State private var contentDisplayMode = ContentDisplayMode.home
+    @State private var sidebarDisplayMode = SidebarDisplayMode.hidden
     @State private var showSidebar = false
     @State private var showHomeView = true
     
@@ -33,15 +33,14 @@ struct RootView: View {
     private let homeView = HomeView()
     private let webView = WebView()
     
-    var body: some View {
-        if horizontalSizeClass == .regular {
-            ZStack {
-                switch (contentDisplayMode) {
-                case .home:
-                    homeView
-                case .web:
-                    webView
-                }
+    var content: some View {
+        ZStack {
+            if showHomeView {
+                homeView
+            } else {
+                webView
+            }
+            if horizontalSizeClass == .regular {
                 Color(UIColor.black)
                     .edgesIgnoringSafeArea(.all)
                     .opacity(colorScheme == .dark ? 0.3 : 0.1)
@@ -56,7 +55,13 @@ struct RootView: View {
                     .offset(x: showSidebar ? 0 : -sidebarWidth)
                     Spacer()
                 }
-            }.toolbar {
+            }
+        }
+    }
+    
+    var body: some View {
+        if horizontalSizeClass == .regular {
+            content.toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     HStack(spacing: 12) {
                         SwiftUIBarButton(iconName: "chevron.left")
@@ -75,15 +80,7 @@ struct RootView: View {
                 }
             }
         } else if horizontalSizeClass == .compact {
-            ZStack{
-                switch (contentDisplayMode) {
-                case .home:
-                    homeView
-                case .web:
-                    webView
-                }
-            }
-            .toolbar {
+            content.toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     SwiftUIBarButton(iconName: "chevron.left")
                     Spacer()
@@ -129,6 +126,7 @@ struct RootView: View {
 @available(iOS 14.0, *)
 struct SwiftUIBarButton: View {
     let iconName: String
+    @State var isPushed = false
     var action: (() -> Void)?
     
     var body: some View {
@@ -136,7 +134,7 @@ struct SwiftUIBarButton: View {
             action?()
         }) {
             ZStack(alignment: .center) {
-//                Color(.systemGreen).cornerRadius(6)
+                if isPushed { Color(.systemGreen).cornerRadius(6) }
                 Image(systemName: iconName)
                     .font(Font.body.weight(.regular))
                     .imageScale(.large)
