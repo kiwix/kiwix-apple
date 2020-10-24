@@ -20,9 +20,3 @@ struct WebView: UIViewControllerRepresentable {
         
     }
 }
-
-@available(iOS 14.0, *)
-class WebViewStates: ObservableObject {
-    @Published private(set) var canGoBack = false
-    @Published private(set) var canGoForward = false
-}
