@@ -82,6 +82,7 @@
 		9789C26924F9611300072090 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
 		978B688924F8080E003CCA8C /* BarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978B688824F8080E003CCA8C /* BarButtons.swift */; };
 		978C58092468FC1100D56AC8 /* SettingSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F97A720D00EAE0005D642 /* SettingSearchController.swift */; };
+		979011302544D55800FF7855 /* SceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9790112F2544D55800FF7855 /* SceneViewModel.swift */; };
 		9798DF20253E67D700F55D19 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9798DF1F253E67D700F55D19 /* WebView.swift */; };
 		979D6E0C20B34FD700B08DE7 /* BookmarksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D6E0B20B34FD700B08DE7 /* BookmarksController.swift */; };
 		979F49F7254478D400DE0B56 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979F49F6254478D400DE0B56 /* Buttons.swift */; };
@@ -255,6 +256,7 @@
 		97810E16250436E2000D86CB /* ZimFileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileCell.swift; sourceTree = "<group>"; };
 		9789C27724FBDEDA00072090 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		978B688824F8080E003CCA8C /* BarButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtons.swift; sourceTree = "<group>"; };
+		9790112F2544D55800FF7855 /* SceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewModel.swift; sourceTree = "<group>"; };
 		979315811E5127930093D3BA /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9793158C1E5127930093D3BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9798DF1F253E67D700F55D19 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
@@ -697,6 +699,7 @@
 			children = (
 				979F49F6254478D400DE0B56 /* Buttons.swift */,
 				97D7FB5B253CF97400E8ADDF /* RootView.swift */,
+				9790112F2544D55800FF7855 /* SceneViewModel.swift */,
 				97D7FB61253CF9B000E8ADDF /* SidebarView.swift */,
 				9798DF1F253E67D700F55D19 /* WebView.swift */,
 				97FD2F54251D93B90034927C /* HomeView.swift */,
@@ -1066,6 +1069,7 @@
 				97018985212357F200F8A6DD /* LibrarySearchController.swift in Sources */,
 				97252105200E908000B60A80 /* TableViewCell.swift in Sources */,
 				97F4D10620AB80740038FC87 /* LibraryZimFileDetailController.swift in Sources */,
+				979011302544D55800FF7855 /* SceneViewModel.swift in Sources */,
 				97B3998A24673FE000BC6F5B /* SearchOperation.mm in Sources */,
 				97F4210E22EE5590001E41F9 /* FileImportController.swift in Sources */,
 				9779A7AF2456796B00F6F6FF /* Settings.swift in Sources */,

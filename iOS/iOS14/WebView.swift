@@ -11,22 +11,13 @@ import WebKit
 
 @available(iOS 14.0, *)
 struct WebView: UIViewRepresentable {
-    private let webView: WKWebView = {
-        let config = WKWebViewConfiguration()
-        config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
-        config.mediaTypesRequiringUserActionForPlayback = []
-        return WKWebView(frame: .zero, configuration: config)
-    }()
-
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
     func makeUIView(context: Context) -> WKWebView {
-        return webView
+        return sceneViewModel.webView
     }
 
     func updateUIView(_ uiView: WKWebView, context: Context) {
         
-    }
-    
-    func load(url: URL) {
-        webView.load(URLRequest(url: url))
     }
 }

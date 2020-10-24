@@ -8,6 +8,7 @@
 
 import SwiftUI
 import UIKit
+import WebKit
 
 @available(iOS 14.0, *)
 enum SidebarDisplayMode {
@@ -25,25 +26,15 @@ struct RootView: View {
     private let sidebarAnimation = Animation.easeOut(duration: 0.2)
     private let sidebarWidth: CGFloat = 320.0
     
-    var homeView = HomeView()
-    let webView = WebView()
-    
-    init() {
-        homeView.zimFileTapped = zimFileTapped
-    }
-    
-    func zimFileTapped(zimFile: ZimFile) {
-        guard let mainPageURL = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFile.id) else { return }
-        webView.load(url: mainPageURL)
-    }
-    
     var content: some View {
         ZStack {
             switch sceneViewModel.contentDisplayMode {
             case .homeView:
-                homeView
+                HomeView()
             case .webView:
-                webView
+                WebView()
+            case .transitionView:
+                Color(.systemBackground)
             }
             if horizontalSizeClass == .regular {
                 Color(UIColor.black)
@@ -69,8 +60,8 @@ struct RootView: View {
             content.toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     HStack(spacing: 12) {
-                        SwiftUIBarButton(iconName: "chevron.left", action: chevronLeftButtonTapped)
-                        SwiftUIBarButton(iconName: "chevron.right", action: chevronRightButtonTapped)
+                        GoBackButton()
+                        GoForwardButton()
                         SwiftUIBarButton(iconName: "bookmark") { showSidebar ? hideSideBar() : showBookmark() }
                         SwiftUIBarButton(iconName: "clock.arrow.circlepath") { showSidebar ? hideSideBar() : showRecent() }
                     }.padding(.trailing, 20)
@@ -87,9 +78,9 @@ struct RootView: View {
         } else if horizontalSizeClass == .compact {
             content.toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    SwiftUIBarButton(iconName: "chevron.left", action: chevronLeftButtonTapped)
+                    GoBackButton()
                     Spacer()
-                    SwiftUIBarButton(iconName: "chevron.right", action: chevronRightButtonTapped)
+                    GoForwardButton()
                 }
                 ToolbarItem(placement: .bottomBar) { Spacer() }
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -112,14 +103,6 @@ struct RootView: View {
     
     // MARK: - Button Actions
     
-    private func chevronLeftButtonTapped() {
-        
-    }
-    
-    private func chevronRightButtonTapped() {
-        
-    }
-    
     private func showBookmark() {
         if horizontalSizeClass == .regular {
             withAnimation(sidebarAnimation) { showSidebar = true }
@@ -134,32 +117,6 @@ struct RootView: View {
     
     private func hideSideBar() {
         withAnimation(sidebarAnimation) { showSidebar = false }
-    }
-}
-
-@available(iOS 14.0, *)
-enum ContentDisplayMode {
-    case homeView, webView
-}
-
-@available(iOS 14.0, *)
-class SceneViewModel: ObservableObject {
-    let webViewController = WebViewController()
-    
-    @Published private(set) var contentDisplayMode = ContentDisplayMode.homeView
-    
-    func loadMainPage(zimFile: ZimFile) {
-        guard let mainPageURL = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFile.id) else { return }
-        if contentDisplayMode == .homeView { houseButtonTapped() }
-        webViewController.load(url: mainPageURL)
-    }
-    
-    // MARK: - Button Actions
-    
-    func houseButtonTapped() {
-        withAnimation(Animation.easeInOut(duration: 0.2)) {
-            contentDisplayMode = contentDisplayMode == .homeView ? .webView : .homeView
-        }
     }
 }
 
