@@ -70,7 +70,7 @@ struct RootView: View {
                         SwiftUIBarButton(iconName: "die.face.5")
                         SwiftUIBarButton(iconName: "list.bullet")
                         SwiftUIBarButton(iconName: "map")
-                        SwiftUIBarButton(iconName: "house", isPushed: sceneViewModel.showHomeView, action: houseButtonTapped)
+                        SwiftUIBarButton(iconName: "house", isPushed: sceneViewModel.showHomeView, action: sceneViewModel.houseButtonTapped)
                     }.padding(.leading, 20)
                 }
             }
@@ -93,7 +93,7 @@ struct RootView: View {
                 ToolbarItem(placement: .bottomBar) {
                     ZStack {
                         Spacer()
-                        SwiftUIBarButton(iconName: "house", isPushed: sceneViewModel.showHomeView, action: houseButtonTapped)
+                        SwiftUIBarButton(iconName: "house", isPushed: sceneViewModel.showHomeView, action: sceneViewModel.houseButtonTapped)
                     }
                 }
             }
@@ -108,12 +108,6 @@ struct RootView: View {
     
     private func chevronRightButtonTapped() {
         
-    }
-    
-    private func houseButtonTapped() {
-        withAnimation {
-            sceneViewModel.showHomeView.toggle()
-        }
     }
     
     private func showBookmark() {
@@ -141,10 +135,16 @@ class SceneViewModel: ObservableObject {
     
     func loadMainPage(zimFile: ZimFile) {
         guard let mainPageURL = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFile.id) else { return }
-        withAnimation {
-            showHomeView = false
-        }
+        if showHomeView { houseButtonTapped() }
         webViewController.load(url: mainPageURL)
+    }
+    
+    // MARK: - Button Actions
+    
+    func houseButtonTapped() {
+        withAnimation(Animation.easeInOut(duration: 0.2)) {
+            showHomeView.toggle()
+        }
     }
 }
 
