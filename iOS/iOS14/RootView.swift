@@ -25,15 +25,13 @@ struct RootView: View {
     private let sidebarAnimation = Animation.easeOut(duration: 0.2)
     private let sidebarWidth: CGFloat = 320.0
     
-    private var homeView = HomeView()
-    private let webView = WebView()
-    
     var content: some View {
         ZStack {
-            if sceneViewModel.showHomeView {
-                homeView
-            } else {
-                webView
+            switch sceneViewModel.contentDisplayMode {
+            case .homeView:
+                HomeView()
+            case .webView:
+                WebView()
             }
             if horizontalSizeClass == .regular {
                 Color(UIColor.black)
@@ -70,7 +68,7 @@ struct RootView: View {
                         SwiftUIBarButton(iconName: "die.face.5")
                         SwiftUIBarButton(iconName: "list.bullet")
                         SwiftUIBarButton(iconName: "map")
-                        SwiftUIBarButton(iconName: "house", isPushed: sceneViewModel.showHomeView, action: sceneViewModel.houseButtonTapped)
+                        SwiftUIBarButton(iconName: "house", isPushed: sceneViewModel.contentDisplayMode == .homeView, action: sceneViewModel.houseButtonTapped)
                     }.padding(.leading, 20)
                 }
             }
@@ -93,7 +91,7 @@ struct RootView: View {
                 ToolbarItem(placement: .bottomBar) {
                     ZStack {
                         Spacer()
-                        SwiftUIBarButton(iconName: "house", isPushed: sceneViewModel.showHomeView, action: sceneViewModel.houseButtonTapped)
+                        SwiftUIBarButton(iconName: "house", isPushed: sceneViewModel.contentDisplayMode == .homeView, action: sceneViewModel.houseButtonTapped)
                     }
                 }
             }
@@ -128,14 +126,19 @@ struct RootView: View {
 }
 
 @available(iOS 14.0, *)
+enum ContentDisplayMode {
+    case homeView, webView
+}
+
+@available(iOS 14.0, *)
 class SceneViewModel: ObservableObject {
     let webViewController = WebViewController()
     
-    @Published var showHomeView = true
+    @Published private(set) var contentDisplayMode = ContentDisplayMode.homeView
     
     func loadMainPage(zimFile: ZimFile) {
         guard let mainPageURL = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFile.id) else { return }
-        if showHomeView { houseButtonTapped() }
+        if contentDisplayMode == .homeView { houseButtonTapped() }
         webViewController.load(url: mainPageURL)
     }
     
@@ -143,7 +146,7 @@ class SceneViewModel: ObservableObject {
     
     func houseButtonTapped() {
         withAnimation(Animation.easeInOut(duration: 0.2)) {
-            showHomeView.toggle()
+            contentDisplayMode = contentDisplayMode == .homeView ? .webView : .homeView
         }
     }
 }
