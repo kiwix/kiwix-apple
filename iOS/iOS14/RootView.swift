@@ -28,9 +28,6 @@ struct RootView: View {
     private var homeView = HomeView()
     private let webView = WebView()
     
-    init() {
-    }
-    
     var content: some View {
         ZStack {
             if sceneViewModel.showHomeView {
@@ -138,12 +135,16 @@ struct RootView: View {
 
 @available(iOS 14.0, *)
 class SceneViewModel: ObservableObject {
+    let webViewController = WebViewController()
+    
     @Published var showHomeView = true
     
     func loadMainPage(zimFile: ZimFile) {
+        guard let mainPageURL = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFile.id) else { return }
         withAnimation {
             showHomeView = false
         }
+        webViewController.load(url: mainPageURL)
     }
 }
 

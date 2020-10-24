@@ -10,10 +10,10 @@ import SwiftUI
 
 @available(iOS 14.0, *)
 struct WebView: UIViewControllerRepresentable {
-    private let webViewController = WebViewController()
+    @EnvironmentObject var sceneViewModel: SceneViewModel
     
     func makeUIViewController(context: Context) -> WebViewController {
-        return webViewController
+        return sceneViewModel.webViewController
     }
     
     func updateUIViewController(_ uiViewController: WebViewController, context: Context) {
