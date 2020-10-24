@@ -37,6 +37,30 @@ struct SwiftUIBarButton: View {
 }
 
 @available(iOS 14.0, *)
+struct BarButtonModifier: ViewModifier {
+    @Binding var isPushed: Bool
+    
+    init(isPushed: Binding<Bool>? = nil) {
+        self._isPushed = isPushed ?? .constant(true)
+    }
+    
+    private func image(_ content: Content) -> some View {
+        content.font(Font.body.weight(.regular)).imageScale(.large).padding(10)
+    }
+    
+    func body(content: Content) -> some View {
+        return ZStack {
+            if isPushed {
+                Color(.systemBlue).aspectRatio(1, contentMode: .fit).cornerRadius(6)
+                image(content).foregroundColor(Color(.systemBackground))
+            } else {
+                image(content)
+            }
+        }
+    }
+}
+
+@available(iOS 14.0, *)
 struct GoBackButton: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
@@ -45,7 +69,9 @@ struct GoBackButton: View {
             sceneViewModel.goBack()
         } label: {
             Image(systemName: "chevron.left")
-        }.disabled(!sceneViewModel.canGoBack || sceneViewModel.contentDisplayMode != .webView)
+        }
+        .modifier(BarButtonModifier())
+        .disabled(!sceneViewModel.canGoBack || sceneViewModel.contentDisplayMode != .webView)
     }
 }
 
@@ -58,7 +84,9 @@ struct GoForwardButton: View {
             sceneViewModel.goForward()
         } label: {
             Image(systemName: "chevron.right")
-        }.disabled(!sceneViewModel.canGoForward || sceneViewModel.contentDisplayMode != .webView)
+        }
+        .modifier(BarButtonModifier())
+        .disabled(!sceneViewModel.canGoForward || sceneViewModel.contentDisplayMode != .webView)
     }
 }
 

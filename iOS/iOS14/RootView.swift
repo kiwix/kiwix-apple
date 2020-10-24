@@ -57,17 +57,18 @@ struct RootView: View {
     
     var body: some View {
         if horizontalSizeClass == .regular {
-            content.toolbar {
-                ToolbarItemGroup(placement: .navigationBarLeading) {
-                    GoBackButton()
-                    GoForwardButton()
-                }
-                ToolbarItem(placement: .navigationBarLeading) {
-                    HStack(spacing: 12) {
-                        SwiftUIBarButton(iconName: "bookmark") { showSidebar ? hideSideBar() : showBookmark() }
-                        SwiftUIBarButton(iconName: "clock.arrow.circlepath") { showSidebar ? hideSideBar() : showRecent() }
-                    }.padding(.trailing, 20)
-                }
+            content.navigationBarItems(leading: navigationBarLeadingView)
+            .toolbar {
+//                ToolbarItemGroup(placement: .navigationBarLeading) {
+//                    GoBackButton()
+//                    GoForwardButton()
+//                }
+//                ToolbarItem(placement: .navigationBarLeading) {
+//                    HStack(spacing: 12) {
+//                        SwiftUIBarButton(iconName: "bookmark") { showSidebar ? hideSideBar() : showBookmark() }
+//                        SwiftUIBarButton(iconName: "clock.arrow.circlepath") { showSidebar ? hideSideBar() : showRecent() }
+//                    }.padding(.trailing, 20)
+//                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     HStack(spacing: 12) {
                         SwiftUIBarButton(iconName: "die.face.5")
@@ -107,6 +108,16 @@ struct RootView: View {
                 }
             }
         }
+    }
+    
+    var navigationBarLeadingView: some View {
+        HStack {
+            GoBackButton()
+            GoForwardButton()
+            SwiftUIBarButton(iconName: "bookmark")
+            SwiftUIBarButton(iconName: "clock.arrow.circlepath")
+        }
+//        .padding(.trailing, 20)
     }
     
     // MARK: - Button Actions
