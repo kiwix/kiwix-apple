@@ -40,16 +40,11 @@ struct SwiftUIBarButton: View {
 struct GoBackButton: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
-    var image: some View {
-        Image(systemName: "chevron.left")
-            .font(Font.body.weight(.regular))
-            .imageScale(.large)
-    }
     var body: some View {
         Button {
             sceneViewModel.goBack()
         } label: {
-            image
+            Image(systemName: "chevron.left")
         }.disabled(!sceneViewModel.canGoBack || sceneViewModel.contentDisplayMode != .webView)
     }
 }
@@ -57,17 +52,33 @@ struct GoBackButton: View {
 @available(iOS 14.0, *)
 struct GoForwardButton: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
-    
-    var image: some View {
-        Image(systemName: "chevron.right")
-            .font(Font.body.weight(.regular))
-            .imageScale(.large)
-    }
+
     var body: some View {
         Button {
             sceneViewModel.goForward()
         } label: {
-            image
+            Image(systemName: "chevron.right")
         }.disabled(!sceneViewModel.canGoForward || sceneViewModel.contentDisplayMode != .webView)
+    }
+}
+
+@available(iOS 14.0, *)
+struct HouseButton: View {
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+
+    var body: some View {
+        let image = Image(systemName: "house").imageScale(.large)
+        Button {
+            sceneViewModel.houseButtonTapped()
+        } label: {
+            ZStack {
+                if sceneViewModel.contentDisplayMode == .homeView {
+                    Color(.systemBlue).aspectRatio(1, contentMode: .fit).cornerRadius(6)
+                    image.foregroundColor(Color(.systemBackground)).padding(4)
+                } else {
+                    image.padding(4)
+                }
+            }
+        }.disabled(sceneViewModel.currentArticleURL == nil)
     }
 }

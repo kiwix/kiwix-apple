@@ -58,10 +58,12 @@ struct RootView: View {
     var body: some View {
         if horizontalSizeClass == .regular {
             content.toolbar {
+                ToolbarItemGroup(placement: .navigationBarLeading) {
+                    GoBackButton()
+                    GoForwardButton()
+                }
                 ToolbarItem(placement: .navigationBarLeading) {
                     HStack(spacing: 12) {
-                        GoBackButton()
-                        GoForwardButton()
                         SwiftUIBarButton(iconName: "bookmark") { showSidebar ? hideSideBar() : showBookmark() }
                         SwiftUIBarButton(iconName: "clock.arrow.circlepath") { showSidebar ? hideSideBar() : showRecent() }
                     }.padding(.trailing, 20)
@@ -71,8 +73,14 @@ struct RootView: View {
                         SwiftUIBarButton(iconName: "die.face.5")
                         SwiftUIBarButton(iconName: "list.bullet")
                         SwiftUIBarButton(iconName: "map")
-                        SwiftUIBarButton(iconName: "house", isPushed: sceneViewModel.contentDisplayMode == .homeView, action: sceneViewModel.houseButtonTapped)
+                        
                     }.padding(.leading, 20)
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    ZStack {
+                        Spacer()
+                        HouseButton()
+                    }
                 }
             }
         } else if horizontalSizeClass == .compact {
@@ -94,7 +102,7 @@ struct RootView: View {
                 ToolbarItem(placement: .bottomBar) {
                     ZStack {
                         Spacer()
-                        SwiftUIBarButton(iconName: "house", isPushed: sceneViewModel.contentDisplayMode == .homeView, action: sceneViewModel.houseButtonTapped)
+                        HouseButton()
                     }
                 }
             }

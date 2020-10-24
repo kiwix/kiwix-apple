@@ -1,6 +1,6 @@
 //
 //  SceneViewModel.swift
-//  iOS
+//  Kiwix
 //
 //  Created by Chris Li on 10/24/20.
 //  Copyright © 2020 Chris Li. All rights reserved.
@@ -25,6 +25,7 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     @Published private(set) var contentDisplayMode = ContentDisplayMode.homeView
     @Published private(set) var canGoBack = false
     @Published private(set) var canGoForward = false
+    @Published private(set) var currentArticleURL: URL?
     
     override init() {
         super.init()
@@ -50,6 +51,12 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         webView.load(URLRequest(url: mainPageURL))
     }
     
+    func houseButtonTapped() {
+        withAnimation(Animation.easeInOut(duration: 0.2)) {
+            contentDisplayMode = contentDisplayMode == .homeView ? .webView : .homeView
+        }
+    }
+    
     // MARK: - WKNavigationDelegate
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -58,13 +65,6 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         }
         canGoBack = webView.canGoBack
         canGoForward = webView.canGoForward
-    }
-    
-    // MARK: - Button Actions
-    
-    func houseButtonTapped() {
-        withAnimation(Animation.easeInOut(duration: 0.2)) {
-            contentDisplayMode = contentDisplayMode == .homeView ? .webView : .homeView
-        }
+        currentArticleURL = webView.url
     }
 }
