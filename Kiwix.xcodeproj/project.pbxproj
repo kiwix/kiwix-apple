@@ -612,7 +612,6 @@
 			isa = PBXGroup;
 			children = (
 				978B688824F8080E003CCA8C /* BarButtons.swift */,
-				97FD2F54251D93B90034927C /* HomeView.swift */,
 				97A36C501F8D4FB80079B452 /* VisualEffectShadowView.swift */,
 				972E6F631FA11A6100F5C927 /* RoundedButton.swift */,
 				972521002009616B00B60A80 /* EmptyContentView.swift */,
@@ -697,6 +696,7 @@
 				97D7FB5B253CF97400E8ADDF /* RootView.swift */,
 				97D7FB61253CF9B000E8ADDF /* SidebarView.swift */,
 				9798DF1F253E67D700F55D19 /* WebView.swift */,
+				97FD2F54251D93B90034927C /* HomeView.swift */,
 			);
 			path = iOS14;
 			sourceTree = "<group>";
