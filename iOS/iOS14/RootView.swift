@@ -10,11 +10,6 @@ import SwiftUI
 import UIKit
 
 @available(iOS 14.0, *)
-enum ContentDisplayMode {
-    case home, web
-}
-
-@available(iOS 14.0, *)
 enum SidebarDisplayMode {
     case hidden, bookmark, recent
 }
@@ -23,20 +18,22 @@ enum SidebarDisplayMode {
 struct RootView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @EnvironmentObject var webViewStates: WebViewStates
+    @EnvironmentObject var sceneViewModel: SceneViewModel
     @State private var sidebarDisplayMode = SidebarDisplayMode.hidden
     @State private var showSidebar = false
-    @State private var showHomeView = true
     
     private let sidebarAnimation = Animation.easeOut(duration: 0.2)
     private let sidebarWidth: CGFloat = 320.0
     
-    private let homeView = HomeView()
+    private var homeView = HomeView()
     private let webView = WebView()
+    
+    init() {
+    }
     
     var content: some View {
         ZStack {
-            if showHomeView {
+            if sceneViewModel.showHomeView {
                 homeView
             } else {
                 webView
@@ -76,7 +73,7 @@ struct RootView: View {
                         SwiftUIBarButton(iconName: "die.face.5")
                         SwiftUIBarButton(iconName: "list.bullet")
                         SwiftUIBarButton(iconName: "map")
-                        SwiftUIBarButton(iconName: "house", isPushed: self.showHomeView, action: houseButtonTapped)
+                        SwiftUIBarButton(iconName: "house", isPushed: sceneViewModel.showHomeView, action: houseButtonTapped)
                     }.padding(.leading, 20)
                 }
             }
@@ -99,12 +96,14 @@ struct RootView: View {
                 ToolbarItem(placement: .bottomBar) {
                     ZStack {
                         Spacer()
-                        SwiftUIBarButton(iconName: "house", isPushed: self.showHomeView, action: houseButtonTapped)
+                        SwiftUIBarButton(iconName: "house", isPushed: sceneViewModel.showHomeView, action: houseButtonTapped)
                     }
                 }
             }
         }
     }
+    
+    // MARK: - Button Actions
     
     private func chevronLeftButtonTapped() {
         
@@ -116,7 +115,7 @@ struct RootView: View {
     
     private func houseButtonTapped() {
         withAnimation {
-            self.showHomeView.toggle()
+            sceneViewModel.showHomeView.toggle()
         }
     }
     
@@ -138,29 +137,12 @@ struct RootView: View {
 }
 
 @available(iOS 14.0, *)
-struct SwiftUIBarButton: View {
-    let iconName: String
-    @State var isPushed: Bool = false
-    var action: (() -> Void)?
+class SceneViewModel: ObservableObject {
+    @Published var showHomeView = true
     
-    var image: some View {
-        Image(systemName: iconName)
-            .font(Font.body.weight(.regular))
-            .imageScale(.large)
-    }
-    
-    var body: some View {
-        Button(action: {
-            action?()
-        }) {
-            ZStack(alignment: .center) {
-                if isPushed {
-                    Color(.systemBlue).cornerRadius(6)
-                    image.foregroundColor(Color(.systemBackground))
-                } else {
-                    image
-                }
-            }.frame(width: 32, height: 32)
+    func loadMainPage(zimFile: ZimFile) {
+        withAnimation {
+            showHomeView = false
         }
     }
 }
@@ -169,13 +151,13 @@ struct SwiftUIBarButton: View {
 class RootController_iOS14: UIHostingController<AnyView>, UISearchControllerDelegate {
     private let searchController: UISearchController
     private let searchResultsController: SearchResultsController
-    private let webViewStates = WebViewStates()
+    private let sceneViewModel = SceneViewModel()
 
     init() {
         self.searchResultsController = SearchResultsController()
         self.searchController = UISearchController(searchResultsController: self.searchResultsController)
 
-        super.init(rootView: AnyView(RootView().environmentObject(webViewStates)))
+        super.init(rootView: AnyView(RootView().environmentObject(sceneViewModel)))
 
         // search controller
         searchController.delegate = self

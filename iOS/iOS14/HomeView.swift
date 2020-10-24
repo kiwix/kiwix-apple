@@ -16,6 +16,7 @@ struct HomeView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @ObservedObject private var viewModel = ViewModel()
+    @EnvironmentObject var sceneViewModel: SceneViewModel
     
     var libraryButtonTapped: (() -> Void)?
     var settingsButtonTapped: (() -> Void)?

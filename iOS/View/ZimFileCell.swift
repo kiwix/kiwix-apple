@@ -14,11 +14,11 @@ struct ZimFileCell: View {
     let zimFile: ZimFile
     var tapped: ((ZimFile) -> Void)?
     @Environment(\.colorScheme) private var colorScheme
-    
+    @EnvironmentObject var sceneViewModel: SceneViewModel
     
     var body: some View {
         Button(action: {
-            tapped?(zimFile)
+            sceneViewModel.loadMainPage(zimFile: zimFile)
         }, label: {
             VStack(alignment: .leading, spacing: 6) {
                 HStack(alignment: .center, spacing: 10) {
