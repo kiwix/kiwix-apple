@@ -39,13 +39,15 @@ struct SwiftUIBarButton: View {
 @available(iOS 14.0, *)
 struct BarButtonModifier: ViewModifier {
     @Binding var isPushed: Bool
+    let imagePadding: CGFloat
     
-    init(isPushed: Binding<Bool>? = nil) {
-        self._isPushed = isPushed ?? .constant(true)
+    init(isPushed: Binding<Bool>? = nil, imagePadding: CGFloat = 10) {
+        self._isPushed = isPushed ?? .constant(false)
+        self.imagePadding = imagePadding
     }
     
     private func image(_ content: Content) -> some View {
-        content.font(Font.body.weight(.regular)).imageScale(.large).padding(10)
+        content.font(Font.body.weight(.regular)).imageScale(.large).padding(imagePadding)
     }
     
     func body(content: Content) -> some View {
@@ -95,18 +97,16 @@ struct HouseButton: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
 
     var body: some View {
-        let image = Image(systemName: "house").imageScale(.large)
+        let isPushed = Binding<Bool>(
+            get: { sceneViewModel.contentDisplayMode == .homeView },
+            set: { _ in }
+        )
         Button {
             sceneViewModel.houseButtonTapped()
         } label: {
-            ZStack {
-                if sceneViewModel.contentDisplayMode == .homeView {
-                    Color(.systemBlue).aspectRatio(1, contentMode: .fit).cornerRadius(6)
-                    image.foregroundColor(Color(.systemBackground)).padding(4)
-                } else {
-                    image.padding(4)
-                }
-            }
-        }.disabled(sceneViewModel.currentArticleURL == nil)
+            Image(systemName: "house")
+        }
+        .modifier(BarButtonModifier(isPushed: isPushed, imagePadding: 5))
+        .disabled(sceneViewModel.currentArticleURL == nil)
     }
 }
