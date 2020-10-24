@@ -23,6 +23,7 @@ enum SidebarDisplayMode {
 struct RootView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @EnvironmentObject var webViewStates: WebViewStates
     @State private var sidebarDisplayMode = SidebarDisplayMode.hidden
     @State private var showSidebar = false
     @State private var showHomeView = true
@@ -64,27 +65,27 @@ struct RootView: View {
             content.toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     HStack(spacing: 12) {
-                        SwiftUIBarButton(iconName: "chevron.left")
-                        SwiftUIBarButton(iconName: "chevron.right")
+                        SwiftUIBarButton(iconName: "chevron.left", action: chevronLeftButtonTapped)
+                        SwiftUIBarButton(iconName: "chevron.right", action: chevronRightButtonTapped)
                         SwiftUIBarButton(iconName: "bookmark") { showSidebar ? hideSideBar() : showBookmark() }
                         SwiftUIBarButton(iconName: "clock.arrow.circlepath") { showSidebar ? hideSideBar() : showRecent() }
                     }.padding(.trailing, 20)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     HStack(spacing: 12) {
-                        SwiftUIBarButton(iconName: "list.bullet")
                         SwiftUIBarButton(iconName: "die.face.5")
+                        SwiftUIBarButton(iconName: "list.bullet")
                         SwiftUIBarButton(iconName: "map")
-                        SwiftUIBarButton(iconName: "house") { self.toggleHomeView() }
+                        SwiftUIBarButton(iconName: "house", isPushed: self.showHomeView, action: houseButtonTapped)
                     }.padding(.leading, 20)
                 }
             }
         } else if horizontalSizeClass == .compact {
             content.toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    SwiftUIBarButton(iconName: "chevron.left")
+                    SwiftUIBarButton(iconName: "chevron.left", action: chevronLeftButtonTapped)
                     Spacer()
-                    SwiftUIBarButton(iconName: "chevron.right")
+                    SwiftUIBarButton(iconName: "chevron.right", action: chevronRightButtonTapped)
                 }
                 ToolbarItem(placement: .bottomBar) { Spacer() }
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -93,10 +94,29 @@ struct RootView: View {
                     SwiftUIBarButton(iconName: "list.bullet")
                     Spacer()
                     SwiftUIBarButton(iconName: "die.face.5")
-                    Spacer()
-                    SwiftUIBarButton(iconName: "house") { self.toggleHomeView() }
+                }
+                ToolbarItem(placement: .bottomBar) { Spacer() }
+                ToolbarItem(placement: .bottomBar) {
+                    ZStack {
+                        Spacer()
+                        SwiftUIBarButton(iconName: "house", isPushed: self.showHomeView, action: houseButtonTapped)
+                    }
                 }
             }
+        }
+    }
+    
+    private func chevronLeftButtonTapped() {
+        
+    }
+    
+    private func chevronRightButtonTapped() {
+        
+    }
+    
+    private func houseButtonTapped() {
+        withAnimation {
+            self.showHomeView.toggle()
         }
     }
     
@@ -115,57 +135,47 @@ struct RootView: View {
     private func hideSideBar() {
         withAnimation(sidebarAnimation) { showSidebar = false }
     }
-    
-    private func toggleHomeView() {
-        withAnimation {
-            self.showHomeView.toggle()
-        }
-    }
 }
 
 @available(iOS 14.0, *)
 struct SwiftUIBarButton: View {
     let iconName: String
-    @State var isPushed = false
+    @State var isPushed: Bool = false
     var action: (() -> Void)?
+    
+    var image: some View {
+        Image(systemName: iconName)
+            .font(Font.body.weight(.regular))
+            .imageScale(.large)
+    }
     
     var body: some View {
         Button(action: {
             action?()
         }) {
             ZStack(alignment: .center) {
-                if isPushed { Color(.systemGreen).cornerRadius(6) }
-                Image(systemName: iconName)
-                    .font(Font.body.weight(.regular))
-                    .imageScale(.large)
+                if isPushed {
+                    Color(.systemBlue).cornerRadius(6)
+                    image.foregroundColor(Color(.systemBackground))
+                } else {
+                    image
+                }
             }.frame(width: 32, height: 32)
         }
     }
 }
 
 @available(iOS 14.0, *)
-struct WebView: UIViewControllerRepresentable {
-    private let webViewController = WebViewController()
-    
-    func makeUIViewController(context: Context) -> WebViewController {
-        return webViewController
-    }
-    
-    func updateUIViewController(_ uiViewController: WebViewController, context: Context) {
-        
-    }
-}
-
-@available(iOS 14.0, *)
-class RootController_iOS14: UIHostingController<RootView>, UISearchControllerDelegate {
-    let searchController: UISearchController
+class RootController_iOS14: UIHostingController<AnyView>, UISearchControllerDelegate {
+    private let searchController: UISearchController
     private let searchResultsController: SearchResultsController
+    private let webViewStates = WebViewStates()
 
     init() {
         self.searchResultsController = SearchResultsController()
         self.searchController = UISearchController(searchResultsController: self.searchResultsController)
 
-        super.init(rootView: RootView())
+        super.init(rootView: AnyView(RootView().environmentObject(webViewStates)))
 
         // search controller
         searchController.delegate = self
