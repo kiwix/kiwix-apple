@@ -25,13 +25,25 @@ struct RootView: View {
     private let sidebarAnimation = Animation.easeOut(duration: 0.2)
     private let sidebarWidth: CGFloat = 320.0
     
+    var homeView = HomeView()
+    let webView = WebView()
+    
+    init() {
+        homeView.zimFileTapped = zimFileTapped
+    }
+    
+    func zimFileTapped(zimFile: ZimFile) {
+        guard let mainPageURL = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFile.id) else { return }
+        webView.load(url: mainPageURL)
+    }
+    
     var content: some View {
         ZStack {
             switch sceneViewModel.contentDisplayMode {
             case .homeView:
-                HomeView()
+                homeView
             case .webView:
-                WebView()
+                webView
             }
             if horizontalSizeClass == .regular {
                 Color(UIColor.black)

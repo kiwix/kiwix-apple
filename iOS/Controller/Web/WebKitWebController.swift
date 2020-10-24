@@ -20,18 +20,25 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
     }()
     weak var delegate: WebViewControllerDelegate?
     
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        webView.uiDelegate = self
+        webView.navigationDelegate = self
+        webView.allowsLinkPreview = true
+        webView.allowsBackForwardNavigationGestures = true
+    }
+    
     convenience init(url: URL) {
         self.init()
         load(url: url)
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func loadView() {
         view = webView
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureWebView()
     }
     
     var canGoBack: Bool {
@@ -52,15 +59,6 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
         } else {
             return nil
         }
-    }
-    
-    // MARK: - Configure
-    
-    private func configureWebView() {
-        webView.uiDelegate = self
-        webView.navigationDelegate = self
-        webView.allowsLinkPreview = true
-        webView.allowsBackForwardNavigationGestures = true
     }
     
     // MARK: - loading

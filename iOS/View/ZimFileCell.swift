@@ -18,6 +18,7 @@ struct ZimFileCell: View {
     
     var body: some View {
         Button(action: {
+            tapped?(zimFile)
             sceneViewModel.loadMainPage(zimFile: zimFile)
         }, label: {
             VStack(alignment: .leading, spacing: 6) {

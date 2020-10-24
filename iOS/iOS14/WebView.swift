@@ -7,16 +7,26 @@
 //
 
 import SwiftUI
+import WebKit
 
 @available(iOS 14.0, *)
-struct WebView: UIViewControllerRepresentable {
-    @EnvironmentObject var sceneViewModel: SceneViewModel
-    
-    func makeUIViewController(context: Context) -> WebViewController {
-        return sceneViewModel.webViewController
+struct WebView: UIViewRepresentable {
+    private let webView: WKWebView = {
+        let config = WKWebViewConfiguration()
+        config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
+        config.mediaTypesRequiringUserActionForPlayback = []
+        return WKWebView(frame: .zero, configuration: config)
+    }()
+
+    func makeUIView(context: Context) -> WKWebView {
+        return webView
+    }
+
+    func updateUIView(_ uiView: WKWebView, context: Context) {
+        
     }
     
-    func updateUIViewController(_ uiViewController: WebViewController, context: Context) {
-        
+    func load(url: URL) {
+        webView.load(URLRequest(url: url))
     }
 }
