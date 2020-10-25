@@ -8,11 +8,7 @@
 
 import SwiftUI
 import UIKit
-
-@available(iOS 14.0, *)
-enum ContentDisplayMode {
-    case home, web
-}
+import WebKit
 
 @available(iOS 14.0, *)
 enum SidebarDisplayMode {
@@ -23,23 +19,22 @@ enum SidebarDisplayMode {
 struct RootView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @EnvironmentObject var webViewStates: WebViewStates
+    @EnvironmentObject var sceneViewModel: SceneViewModel
     @State private var sidebarDisplayMode = SidebarDisplayMode.hidden
     @State private var showSidebar = false
-    @State private var showHomeView = true
     
     private let sidebarAnimation = Animation.easeOut(duration: 0.2)
     private let sidebarWidth: CGFloat = 320.0
     
-    private let homeView = HomeView()
-    private let webView = WebView()
-    
     var content: some View {
         ZStack {
-            if showHomeView {
-                homeView
-            } else {
-                webView
+            switch sceneViewModel.contentDisplayMode {
+            case .homeView:
+                HomeView()
+            case .webView:
+                WebView()
+            case .transitionView:
+                Color(.systemBackground)
             }
             if horizontalSizeClass == .regular {
                 Color(UIColor.black)
@@ -62,63 +57,55 @@ struct RootView: View {
     
     var body: some View {
         if horizontalSizeClass == .regular {
-            content.toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    HStack(spacing: 12) {
-                        SwiftUIBarButton(iconName: "chevron.left", action: chevronLeftButtonTapped)
-                        SwiftUIBarButton(iconName: "chevron.right", action: chevronRightButtonTapped)
-                        SwiftUIBarButton(iconName: "bookmark") { showSidebar ? hideSideBar() : showBookmark() }
-                        SwiftUIBarButton(iconName: "clock.arrow.circlepath") { showSidebar ? hideSideBar() : showRecent() }
-                    }.padding(.trailing, 20)
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    HStack(spacing: 12) {
-                        SwiftUIBarButton(iconName: "die.face.5")
-                        SwiftUIBarButton(iconName: "list.bullet")
-                        SwiftUIBarButton(iconName: "map")
-                        SwiftUIBarButton(iconName: "house", isPushed: self.showHomeView, action: houseButtonTapped)
-                    }.padding(.leading, 20)
-                }
-            }
+            content.navigationBarItems(leading: navigationBarLeadingView, trailing: navigationBarTrailingView)
         } else if horizontalSizeClass == .compact {
             content.toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    SwiftUIBarButton(iconName: "chevron.left", action: chevronLeftButtonTapped)
+                    GoBackButton()
                     Spacer()
-                    SwiftUIBarButton(iconName: "chevron.right", action: chevronRightButtonTapped)
+                    GoForwardButton()
                 }
                 ToolbarItem(placement: .bottomBar) { Spacer() }
                 ToolbarItemGroup(placement: .bottomBar) {
-                    SwiftUIBarButton(iconName: "bookmark") { showBookmark() }
+                    BookmarkArtilesButton()
                     Spacer()
-                    SwiftUIBarButton(iconName: "list.bullet")
+                    TableOfContentsButton()
                     Spacer()
-                    SwiftUIBarButton(iconName: "die.face.5")
+                    RandomArticlesButton()
                 }
                 ToolbarItem(placement: .bottomBar) { Spacer() }
                 ToolbarItem(placement: .bottomBar) {
                     ZStack {
                         Spacer()
-                        SwiftUIBarButton(iconName: "house", isPushed: self.showHomeView, action: houseButtonTapped)
+                        HomeButton()
                     }
                 }
             }
         }
     }
     
-    private func chevronLeftButtonTapped() {
-        
-    }
-    
-    private func chevronRightButtonTapped() {
-        
-    }
-    
-    private func houseButtonTapped() {
-        withAnimation {
-            self.showHomeView.toggle()
+    var navigationBarLeadingView: some View {
+        HStack {
+            GoBackButton()
+            GoForwardButton()
+            BookmarkArtilesButton()
+            RecentArticlesButton()
         }
+        .padding(.trailing, 16)
     }
+    
+    var navigationBarTrailingView: some View {
+        HStack(spacing: 12) {
+            RandomArticlesButton()
+            TableOfContentsButton()
+            MapButton()
+            HomeButton()
+        }
+        .padding(.leading, 16)
+    }
+    
+    
+    // MARK: - Button Actions
     
     private func showBookmark() {
         if horizontalSizeClass == .regular {
@@ -138,30 +125,15 @@ struct RootView: View {
 }
 
 @available(iOS 14.0, *)
-struct SwiftUIBarButton: View {
-    let iconName: String
-    @State var isPushed: Bool = false
-    var action: (() -> Void)?
+struct WebView: UIViewRepresentable {
+    @EnvironmentObject var sceneViewModel: SceneViewModel
     
-    var image: some View {
-        Image(systemName: iconName)
-            .font(Font.body.weight(.regular))
-            .imageScale(.large)
+    func makeUIView(context: Context) -> WKWebView {
+        return sceneViewModel.webView
     }
-    
-    var body: some View {
-        Button(action: {
-            action?()
-        }) {
-            ZStack(alignment: .center) {
-                if isPushed {
-                    Color(.systemBlue).cornerRadius(6)
-                    image.foregroundColor(Color(.systemBackground))
-                } else {
-                    image
-                }
-            }.frame(width: 32, height: 32)
-        }
+
+    func updateUIView(_ uiView: WKWebView, context: Context) {
+        
     }
 }
 
@@ -169,13 +141,13 @@ struct SwiftUIBarButton: View {
 class RootController_iOS14: UIHostingController<AnyView>, UISearchControllerDelegate {
     private let searchController: UISearchController
     private let searchResultsController: SearchResultsController
-    private let webViewStates = WebViewStates()
+    private let sceneViewModel = SceneViewModel()
 
     init() {
         self.searchResultsController = SearchResultsController()
         self.searchController = UISearchController(searchResultsController: self.searchResultsController)
 
-        super.init(rootView: AnyView(RootView().environmentObject(webViewStates)))
+        super.init(rootView: AnyView(RootView().environmentObject(sceneViewModel)))
 
         // search controller
         searchController.delegate = self

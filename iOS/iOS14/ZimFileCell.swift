@@ -12,24 +12,20 @@ import RealmSwift
 @available(iOS 14.0, *)
 struct ZimFileCell: View {
     let zimFile: ZimFile
-    var tapped: ((ZimFile) -> Void)?
-    @Environment(\.colorScheme) private var colorScheme
+    var tapped: (() -> Void)?
     
+    init (_ zimFile: ZimFile, tapped: (() -> Void)? = nil) {
+        self.zimFile = zimFile
+        self.tapped = tapped
+    }
     
     var body: some View {
         Button(action: {
-            tapped?(zimFile)
+            tapped?()
         }, label: {
             VStack(alignment: .leading, spacing: 6) {
                 HStack(alignment: .center, spacing: 10) {
-                    if colorScheme == .light {
-                        FavIcon(zimFile: zimFile).cornerRadius(4)
-                    } else {
-                        FavIcon(zimFile: zimFile)
-                            .background(Color(.white))
-                            .cornerRadius(4)
-                            .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color(.white).opacity(0.9), lineWidth: 1))
-                    }
+                    Favicon(zimFile: zimFile)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(zimFile.title).font(.headline)
                         if zimFile.fileDescription.count > 0 {
@@ -47,12 +43,12 @@ struct ZimFileCell: View {
                 }.font(.caption).foregroundColor(.secondary)
             }
         })
-        .buttonStyle(RoundedRectButtonStyle())
+        .buttonStyle(ZimFileCellButtonStyle())
     }
 }
 
 @available(iOS 14.0, *)
-private struct FavIcon: View {
+private struct Favicon: View {
     let zimFile: ZimFile
     
     var body: some View {
@@ -63,23 +59,22 @@ private struct FavIcon: View {
                 return Image("GenericZimFile")
             }
         }()
-        return image.resizable().frame(width: 24, height: 24)
+        let shape = RoundedRectangle(cornerRadius: 4, style: .continuous)
+        return image.resizable()
+            .frame(width: 24, height: 24)
+            .background(Color(.white))
+            .clipShape(shape)
+            .overlay(shape.stroke(Color(.white).opacity(0.9), lineWidth: 1))
     }
 }
 
 @available(iOS 14.0, *)
-private struct RoundedRectButtonStyle: ButtonStyle {
+private struct ZimFileCellButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
-            .background(Color({ () -> UIColor in
-                if configuration.isPressed {
-                    return .systemGray5
-                } else {
-                    return .secondarySystemGroupedBackground
-                }
-            }()))
-            .cornerRadius(10)
+            .background(Color(configuration.isPressed ? .systemGray5 : .secondarySystemGroupedBackground))
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     }
 }
 
@@ -89,7 +84,7 @@ struct ZimFileCell_Previews: PreviewProvider {
         ScrollView {
             LazyVStack(alignment: .leading) {
                 ForEach(1..<10) { _ in
-                    ZimFileCell(zimFile: ZimFile(value: [
+                    ZimFileCell(ZimFile(value: [
                         "title": "ZimFile Title",
                         "fileDescription": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
                         "size": 10000000000,

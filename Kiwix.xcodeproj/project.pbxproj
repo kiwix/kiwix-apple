@@ -82,8 +82,9 @@
 		9789C26924F9611300072090 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
 		978B688924F8080E003CCA8C /* BarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978B688824F8080E003CCA8C /* BarButtons.swift */; };
 		978C58092468FC1100D56AC8 /* SettingSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F97A720D00EAE0005D642 /* SettingSearchController.swift */; };
-		9798DF20253E67D700F55D19 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9798DF1F253E67D700F55D19 /* WebView.swift */; };
+		979011302544D55800FF7855 /* SceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9790112F2544D55800FF7855 /* SceneViewModel.swift */; };
 		979D6E0C20B34FD700B08DE7 /* BookmarksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D6E0B20B34FD700B08DE7 /* BookmarksController.swift */; };
+		979F49F7254478D400DE0B56 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979F49F6254478D400DE0B56 /* Buttons.swift */; };
 		979FD159201679C5007B5290 /* SearchResultsListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979FD158201679C5007B5290 /* SearchResultsListController.swift */; };
 		97A04DFD23CBBA84006DE063 /* RootController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A04DFC23CBBA84006DE063 /* RootController.swift */; };
 		97A2180C2024EC3800D1E67B /* SettingFontSizeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A2180B2024EC3800D1E67B /* SettingFontSizeController.swift */; };
@@ -254,10 +255,11 @@
 		97810E16250436E2000D86CB /* ZimFileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileCell.swift; sourceTree = "<group>"; };
 		9789C27724FBDEDA00072090 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		978B688824F8080E003CCA8C /* BarButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtons.swift; sourceTree = "<group>"; };
+		9790112F2544D55800FF7855 /* SceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewModel.swift; sourceTree = "<group>"; };
 		979315811E5127930093D3BA /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9793158C1E5127930093D3BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9798DF1F253E67D700F55D19 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		979D6E0B20B34FD700B08DE7 /* BookmarksController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksController.swift; sourceTree = "<group>"; };
+		979F49F6254478D400DE0B56 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		979FD158201679C5007B5290 /* SearchResultsListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsListController.swift; sourceTree = "<group>"; };
 		97A04DFC23CBBA84006DE063 /* RootController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootController.swift; sourceTree = "<group>"; };
 		97A2180B2024EC3800D1E67B /* SettingFontSizeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingFontSizeController.swift; sourceTree = "<group>"; };
@@ -612,12 +614,10 @@
 			isa = PBXGroup;
 			children = (
 				978B688824F8080E003CCA8C /* BarButtons.swift */,
-				97FD2F54251D93B90034927C /* HomeView.swift */,
 				97A36C501F8D4FB80079B452 /* VisualEffectShadowView.swift */,
 				972E6F631FA11A6100F5C927 /* RoundedButton.swift */,
 				972521002009616B00B60A80 /* EmptyContentView.swift */,
 				97252104200E908000B60A80 /* TableViewCell.swift */,
-				97810E16250436E2000D86CB /* ZimFileCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -694,9 +694,12 @@
 		97D7FB5A253CF94F00E8ADDF /* iOS14 */ = {
 			isa = PBXGroup;
 			children = (
+				979F49F6254478D400DE0B56 /* Buttons.swift */,
 				97D7FB5B253CF97400E8ADDF /* RootView.swift */,
+				97FD2F54251D93B90034927C /* HomeView.swift */,
+				9790112F2544D55800FF7855 /* SceneViewModel.swift */,
 				97D7FB61253CF9B000E8ADDF /* SidebarView.swift */,
-				9798DF1F253E67D700F55D19 /* WebView.swift */,
+				97810E16250436E2000D86CB /* ZimFileCell.swift */,
 			);
 			path = iOS14;
 			sourceTree = "<group>";
@@ -1019,6 +1022,7 @@
 				97B3998E246759E400BC6F5B /* SearchResult.m in Sources */,
 				97D7FB62253CF9B000E8ADDF /* SidebarView.swift in Sources */,
 				97CD2F0424D4FB6F0084C6B5 /* SearchFilterController.swift in Sources */,
+				979F49F7254478D400DE0B56 /* Buttons.swift in Sources */,
 				9779A5BC2456793600F6F6FF /* OPDSStreamParser.swift in Sources */,
 				972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */,
 				9779A5C22456793600F6F6FF /* ZimMultiReader.mm in Sources */,
@@ -1057,11 +1061,11 @@
 				9779A5BA2456793600F6F6FF /* OPDSRefreshOperation.swift in Sources */,
 				9779A5BE2456793600F6F6FF /* OPDSStreamParser.mm in Sources */,
 				9779A7B12456796B00F6F6FF /* WebKitHandler.swift in Sources */,
-				9798DF20253E67D700F55D19 /* WebView.swift in Sources */,
 				97FD2F5F251EA07B0034927C /* FeatureFlags.swift in Sources */,
 				97018985212357F200F8A6DD /* LibrarySearchController.swift in Sources */,
 				97252105200E908000B60A80 /* TableViewCell.swift in Sources */,
 				97F4D10620AB80740038FC87 /* LibraryZimFileDetailController.swift in Sources */,
+				979011302544D55800FF7855 /* SceneViewModel.swift in Sources */,
 				97B3998A24673FE000BC6F5B /* SearchOperation.mm in Sources */,
 				97F4210E22EE5590001E41F9 /* FileImportController.swift in Sources */,
 				9779A7AF2456796B00F6F6FF /* Settings.swift in Sources */,
