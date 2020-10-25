@@ -12,12 +12,16 @@ import RealmSwift
 @available(iOS 14.0, *)
 struct ZimFileCell: View {
     let zimFile: ZimFile
-    var tapped: ((ZimFile) -> Void)?
-    @EnvironmentObject var sceneViewModel: SceneViewModel
+    var tapped: (() -> Void)?
+    
+    init (_ zimFile: ZimFile, tapped: (() -> Void)? = nil) {
+        self.zimFile = zimFile
+        self.tapped = tapped
+    }
     
     var body: some View {
         Button(action: {
-            sceneViewModel.loadMainPage(zimFile: zimFile)
+            tapped?()
         }, label: {
             VStack(alignment: .leading, spacing: 6) {
                 HStack(alignment: .center, spacing: 10) {
@@ -80,7 +84,7 @@ struct ZimFileCell_Previews: PreviewProvider {
         ScrollView {
             LazyVStack(alignment: .leading) {
                 ForEach(1..<10) { _ in
-                    ZimFileCell(zimFile: ZimFile(value: [
+                    ZimFileCell(ZimFile(value: [
                         "title": "ZimFile Title",
                         "fileDescription": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
                         "size": 10000000000,

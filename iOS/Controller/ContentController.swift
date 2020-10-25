@@ -69,10 +69,6 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
                 guard let rootController = self.splitViewController as? RootController else { return }
                 rootController.openSettings()
             }
-            homeView.zimFileTapped = { [unowned self] zimFile in
-                guard let rootController = self.splitViewController as? RootController else { return }
-                rootController.openMainPage(zimFileID: zimFile.id)
-            }
             setChildControllerIfNeeded(UIHostingController(rootView: homeView))
         } else {
             setChildControllerIfNeeded(welcomeController)

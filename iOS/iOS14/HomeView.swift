@@ -43,7 +43,6 @@ struct HomeView: View {
     
     var libraryButtonTapped: (() -> Void)?
     var settingsButtonTapped: (() -> Void)?
-    var zimFileTapped: ((ZimFile) -> Void)?
     
     var body: some View {
         LazyVStack {
@@ -73,12 +72,13 @@ struct HomeView: View {
             Divider().padding(.vertical, 2)
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
                 Section(header: HStack {
-                            Text("On Device").font(.title2).fontWeight(.bold)
-                            Spacer()
-                    }.padding(.leading, 10)
-                ) {
+                    Text("On Device").font(.title2).fontWeight(.bold)
+                    Spacer()
+                }.padding(.leading, 10)) {
                     ForEach(viewModel.onDeviceZimFiles, id: \.id) { zimFile in
-                        ZimFileCell(zimFile: zimFile, tapped: zimFileTapped)
+                        ZimFileCell(zimFile) {
+                            sceneViewModel.loadMainPage(zimFile: zimFile)
+                        }
                     }
                 }
             }
