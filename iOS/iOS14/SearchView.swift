@@ -18,20 +18,21 @@ struct SearchView: View {
     
     var body: some View {
         if viewModel.onDeviceZimFiles.isEmpty {
-            Text("No zim files")
-        } else {
-            if horizontalSizeClass == .regular {
-                HStack(spacing: 0) {
-                    ZStack(alignment: .trailing) {
-                        searchFilter
-                        Divider()
-                    }
-                    .frame(minWidth: 300, idealWidth: 340, maxWidth: 360)
-                    List{}
+            VStack(spacing: 20) {
+                Text("No zim files").font(.title)
+                Text("Add some zim files to start a search.").font(.title2).foregroundColor(.secondary)
+            }.padding()
+        } else if horizontalSizeClass == .regular {
+            HStack(spacing: 0) {
+                ZStack(alignment: .trailing) {
+                    searchFilter
+                    Divider()
                 }
-            } else {
-                searchFilter
+                .frame(minWidth: 300, idealWidth: 340, maxWidth: 360)
+                List{}
             }
+        } else {
+            searchFilter
         }
     }
     
