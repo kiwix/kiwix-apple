@@ -50,7 +50,9 @@ struct BarButtonModifier: ViewModifier {
     func body(content: Content) -> some View {
         return ZStack {
             if isPushed {
-                Color(.systemBlue).aspectRatio(1, contentMode: .fit).cornerRadius(6)
+                Color(.systemBlue)
+                    .aspectRatio(1, contentMode: .fit)
+                    .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
                 image(content).foregroundColor(Color(.systemBackground))
             } else {
                 image(content)
