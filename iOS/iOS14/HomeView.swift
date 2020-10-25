@@ -12,6 +12,29 @@ import SwiftUI
 import RealmSwift
 
 @available(iOS 14.0, *)
+struct ReadableWidthModifier: ViewModifier {
+    private func calculateHorizontalPadding(size: CGSize) -> CGFloat {
+        switch size.width {
+        case 1000..<CGFloat.infinity:
+            return (size.width - size.height) / 2 - 20
+        case 400..<1000:
+            return 20
+        default:
+            return 10
+        }
+    }
+    
+    func body(content: Content) -> some View {
+        GeometryReader { geometry in
+            ScrollView {
+                content.padding(.horizontal, calculateHorizontalPadding(size: geometry.size))
+            }
+//            .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
+        }
+    }
+}
+
+@available(iOS 14.0, *)
 struct HomeView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -23,50 +46,45 @@ struct HomeView: View {
     var zimFileTapped: ((ZimFile) -> Void)?
     
     var body: some View {
-        GeometryReader { geometry in
-            ScrollView {
-                LazyVStack {
-                    HStack {
-                        Image("Kiwix")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .padding(2)
-                            .frame(idealHeight: 10)
-                            .foregroundColor(.black)
-                            .background(Color.white)
-                            .cornerRadius(10)
-                        Spacer()
-                        RoundedRectButton(
-                            title: "Library",
-                            iconSystemName: "folder",
-                            backgroundColor: Color(.systemBlue),
-                            action: libraryButtonTapped
-                        )
-                        RoundedRectButton(
-                            title: "Settings",
-                            iconSystemName: "gear",
-                            backgroundColor: Color(.systemGray),
-                            action: settingsButtonTapped
-                        )
-                    }
-                    Divider().padding(.vertical, 2)
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
-                        Section(header: HStack {
-                                    Text("On Device").font(.title2).fontWeight(.bold)
-                                    Spacer()
-                            }.padding(.leading, 10)
-                        ) {
-                            ForEach(viewModel.onDeviceZimFiles, id: \.id) { zimFile in
-                                ZimFileCell(zimFile: zimFile, tapped: zimFileTapped)
-                            }
-                        }
+        LazyVStack {
+            HStack {
+                Image("Kiwix")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .padding(2)
+                    .frame(idealHeight: 10)
+                    .foregroundColor(.black)
+                    .background(Color.white)
+                    .cornerRadius(10)
+                Spacer()
+                RoundedRectButton(
+                    title: "Library",
+                    iconSystemName: "folder",
+                    backgroundColor: Color(.systemBlue),
+                    action: libraryButtonTapped
+                )
+                RoundedRectButton(
+                    title: "Settings",
+                    iconSystemName: "gear",
+                    backgroundColor: Color(.systemGray),
+                    action: settingsButtonTapped
+                )
+            }
+            Divider().padding(.vertical, 2)
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
+                Section(header: HStack {
+                            Text("On Device").font(.title2).fontWeight(.bold)
+                            Spacer()
+                    }.padding(.leading, 10)
+                ) {
+                    ForEach(viewModel.onDeviceZimFiles, id: \.id) { zimFile in
+                        ZimFileCell(zimFile: zimFile, tapped: zimFileTapped)
                     }
                 }
-                .padding(.vertical, horizontalSizeClass == .compact ? 10 : 16)
-                .padding(.horizontal, calculateHorizontalPadding(size: geometry.size))
             }
-            .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
         }
+        .padding(.vertical, horizontalSizeClass == .compact ? 10 : 16)
+        .modifier(ReadableWidthModifier())
     }
     
     private func calculateHorizontalPadding(size: CGSize) -> CGFloat {
@@ -77,31 +95,6 @@ struct HomeView: View {
             return 20
         default:
             return 10
-        }
-    }
-}
-
-@available(iOS 14.0, *)
-struct RoundedRectButton: View {
-    let title: String
-    let iconSystemName: String
-    let backgroundColor: Color
-    var action: (() -> Void)?
-    
-    var body: some View {
-        Button(action: {
-            action?()
-        }) {
-            Label(
-                title: { Text(title).fontWeight(.semibold) },
-                icon: { Image(systemName: iconSystemName) }
-            )
-            .font(.subheadline)
-            .padding(.vertical, 10)
-            .padding(.horizontal, 12)
-            .foregroundColor(.white)
-            .background(backgroundColor.opacity(0.8))
-            .cornerRadius(10)
         }
     }
 }

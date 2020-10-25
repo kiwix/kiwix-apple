@@ -9,6 +9,31 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
+struct RoundedRectButton: View {
+    let title: String
+    let iconSystemName: String
+    let backgroundColor: Color
+    var action: (() -> Void)?
+    
+    var body: some View {
+        Button(action: {
+            action?()
+        }) {
+            Label(
+                title: { Text(title).fontWeight(.semibold) },
+                icon: { Image(systemName: iconSystemName) }
+            )
+            .font(.subheadline)
+            .padding(.vertical, 10)
+            .padding(.horizontal, 12)
+            .foregroundColor(.white)
+            .background(backgroundColor.opacity(0.8))
+            .cornerRadius(10)
+        }
+    }
+}
+
+@available(iOS 14.0, *)
 struct BarButtonModifier: ViewModifier {
     @Binding var isPushed: Bool
     let imagePadding: CGFloat
