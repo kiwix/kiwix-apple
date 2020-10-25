@@ -62,6 +62,17 @@ struct BarButtonModifier: ViewModifier {
 }
 
 @available(iOS 14.0, *)
+struct CancelButton: View {
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
+    var body: some View {
+        Button("Cancel") {
+            sceneViewModel.searchBar.endEditing(true)
+        }
+    }
+}
+
+@available(iOS 14.0, *)
 struct GoBackButton: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     

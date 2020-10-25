@@ -15,25 +15,29 @@ enum ContentDisplayMode {
 }
 
 @available(iOS 14.0, *)
-class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
+class SceneViewModel: NSObject, ObservableObject, UISearchBarDelegate, WKNavigationDelegate {
+    let searchBar = UISearchBar()
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
         config.mediaTypesRequiringUserActionForPlayback = []
         return WKWebView(frame: .zero, configuration: config)
     }()
+    
     @Published private(set) var contentDisplayMode = ContentDisplayMode.homeView
+    @Published private(set) var isSearchActive = false
     @Published private(set) var canGoBack = false
     @Published private(set) var canGoForward = false
     @Published private(set) var currentArticleURL: URL?
     
     override init() {
         super.init()
+        searchBar.delegate = self
         webView.navigationDelegate = self
         webView.allowsBackForwardNavigationGestures = true
     }
     
-    // MARK: - actions
+    // MARK: - Actions
     
     func goBack() {
         webView.goBack()
@@ -54,6 +58,20 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     func houseButtonTapped() {
         withAnimation(Animation.easeInOut(duration: 0.2)) {
             contentDisplayMode = contentDisplayMode == .homeView ? .webView : .homeView
+        }
+    }
+    
+    // MARK: - UISearchBarDelegate
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        withAnimation {
+            isSearchActive = true
+        }
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        withAnimation {
+            isSearchActive = false
         }
     }
     

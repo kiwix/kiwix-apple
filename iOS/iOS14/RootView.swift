@@ -56,31 +56,17 @@ struct RootView: View {
     }
     
     var body: some View {
-        if horizontalSizeClass == .regular {
+        switch (horizontalSizeClass, sceneViewModel.isSearchActive) {
+        case (.regular, true):
+            content.navigationBarItems(trailing: CancelButton())
+        case (.regular, false):
             content.navigationBarItems(leading: navigationBarLeadingView, trailing: navigationBarTrailingView)
-        } else if horizontalSizeClass == .compact {
-            content.toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    GoBackButton()
-                    Spacer()
-                    GoForwardButton()
-                }
-                ToolbarItem(placement: .bottomBar) { Spacer() }
-                ToolbarItemGroup(placement: .bottomBar) {
-                    BookmarkArtilesButton()
-                    Spacer()
-                    TableOfContentsButton()
-                    Spacer()
-                    RandomArticlesButton()
-                }
-                ToolbarItem(placement: .bottomBar) { Spacer() }
-                ToolbarItem(placement: .bottomBar) {
-                    ZStack {
-                        Spacer()
-                        HomeButton()
-                    }
-                }
-            }
+        case (.compact, true):
+            content.navigationBarItems(trailing: CancelButton()).toolbar { BottomBarContent() }
+        case (.compact, false):
+            content.toolbar { BottomBarContent() }
+        default:
+            EmptyView()
         }
     }
     
@@ -100,8 +86,7 @@ struct RootView: View {
             TableOfContentsButton()
             MapButton()
             HomeButton()
-        }
-        .padding(.leading, 16)
+        }.padding(.leading, 16)
     }
     
     
@@ -125,6 +110,32 @@ struct RootView: View {
 }
 
 @available(iOS 14.0, *)
+struct BottomBarContent: ToolbarContent {
+    var body: some ToolbarContent {
+        ToolbarItemGroup(placement: .bottomBar) {
+            GoBackButton()
+            Spacer()
+            GoForwardButton()
+        }
+        ToolbarItem(placement: .bottomBar) { Spacer() }
+        ToolbarItemGroup(placement: .bottomBar) {
+            BookmarkArtilesButton()
+            Spacer()
+            TableOfContentsButton()
+            Spacer()
+            RandomArticlesButton()
+        }
+        ToolbarItem(placement: .bottomBar) { Spacer() }
+        ToolbarItem(placement: .bottomBar) {
+            ZStack {
+                Spacer()
+                HomeButton()
+            }
+        }
+    }
+}
+
+@available(iOS 14.0, *)
 struct WebView: UIViewRepresentable {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
@@ -138,30 +149,30 @@ struct WebView: UIViewRepresentable {
 }
 
 @available(iOS 14.0, *)
-class RootController_iOS14: UIHostingController<AnyView>, UISearchControllerDelegate {
-    private let searchController: UISearchController
-    private let searchResultsController: SearchResultsController
+class RootController_iOS14: UIHostingController<AnyView> {
+//    private let searchController: UISearchController
+//    private let searchResultsController: SearchResultsController
     private let sceneViewModel = SceneViewModel()
 
     init() {
-        self.searchResultsController = SearchResultsController()
-        self.searchController = UISearchController(searchResultsController: self.searchResultsController)
+//        self.searchResultsController = SearchResultsController()
+//        self.searchController = UISearchController(searchResultsController: self.searchResultsController)
 
         super.init(rootView: AnyView(RootView().environmentObject(sceneViewModel)))
-
-        // search controller
-        searchController.delegate = self
-        searchController.searchBar.autocorrectionType = .no
-        searchController.searchBar.autocapitalizationType = .none
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchResultsUpdater = searchResultsController
-        searchController.automaticallyShowsCancelButton = false
-        searchController.showsSearchResultsController = true
-
-        // misc
-        definesPresentationContext = true
-        navigationItem.hidesBackButton = true
-        navigationItem.titleView = searchController.searchBar
+//        sceneViewModel.searchController = searchController
+//        // search controller
+//        searchController.delegate = sceneViewModel
+//        searchController.searchBar.autocorrectionType = .no
+//        searchController.searchBar.autocapitalizationType = .none
+//        searchController.hidesNavigationBarDuringPresentation = false
+//        searchController.searchResultsUpdater = searchResultsController
+//        searchController.automaticallyShowsCancelButton = false
+//        searchController.showsSearchResultsController = true
+//
+//        // misc
+//        definesPresentationContext = true
+//        navigationItem.hidesBackButton = true
+        navigationItem.titleView = sceneViewModel.searchBar
     }
 
     required init?(coder: NSCoder) {
