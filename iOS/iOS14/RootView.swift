@@ -28,30 +28,34 @@ struct RootView: View {
     
     var content: some View {
         ZStack {
-            switch sceneViewModel.contentDisplayMode {
-            case .homeView:
-                HomeView()
-            case .webView:
-                WebView()
-            case .transitionView:
-                Color(.systemBackground)
-            }
-            if horizontalSizeClass == .regular {
-                Color(UIColor.black)
-                    .edgesIgnoringSafeArea(.all)
-                    .opacity(colorScheme == .dark ? 0.3 : 0.1)
-                    .opacity(showSidebar ? 1.0 : 0.0)
-                    .onTapGesture { hideSideBar() }
-                HStack {
-                    ZStack(alignment: .trailing) {
-                        SidebarView()
-                        Divider()
-                    }
-                    .frame(width: sidebarWidth)
-                    .offset(x: showSidebar ? 0 : -sidebarWidth)
-                    Spacer()
+            if sceneViewModel.isSearchActive {
+                SearchView()
+            } else {
+                switch sceneViewModel.contentDisplayMode {
+                case .homeView:
+                    HomeView()
+                case .webView:
+                    WebView()
+                case .transitionView:
+                    Color(.systemBackground)
                 }
             }
+//            if horizontalSizeClass == .regular {
+//                Color(UIColor.black)
+//                    .edgesIgnoringSafeArea(.all)
+//                    .opacity(colorScheme == .dark ? 0.3 : 0.1)
+//                    .opacity(showSidebar ? 1.0 : 0.0)
+//                    .onTapGesture { hideSideBar() }
+//                HStack {
+//                    ZStack(alignment: .trailing) {
+//                        SidebarView()
+//                        Divider()
+//                    }
+//                    .frame(width: sidebarWidth)
+//                    .offset(x: showSidebar ? 0 : -sidebarWidth)
+//                    Spacer()
+//                }
+//            }
         }
     }
     

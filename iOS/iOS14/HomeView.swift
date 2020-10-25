@@ -85,7 +85,7 @@ struct HomeView: View {
             }
             .padding(.vertical, horizontalSizeClass == .compact ? 10 : 16)
             .padding(.horizontal, horizontalSizeClass == .compact ? 10 : 20)
-        }.background(Color(.systemGroupedBackground))
+        }.background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
     }
 }
 
