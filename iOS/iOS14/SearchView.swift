@@ -17,17 +17,21 @@ struct SearchView: View {
     @ObservedObject private var viewModel = ViewModel()
     
     var body: some View {
-        if horizontalSizeClass == .regular {
-            HStack(spacing: 0) {
-                ZStack(alignment: .trailing) {
-                    searchFilter
-                    Divider()
-                }
-                .frame(minWidth: 300, idealWidth: 400, maxWidth: 400)
-                List{}
-            }
+        if viewModel.onDeviceZimFiles.isEmpty {
+            Text("No zim files")
         } else {
-            searchFilter
+            if horizontalSizeClass == .regular {
+                HStack(spacing: 0) {
+                    ZStack(alignment: .trailing) {
+                        searchFilter
+                        Divider()
+                    }
+                    .frame(minWidth: 300, idealWidth: 340, maxWidth: 360)
+                    List{}
+                }
+            } else {
+                searchFilter
+            }
         }
     }
     

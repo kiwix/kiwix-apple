@@ -62,7 +62,7 @@ struct RootView: View {
     var body: some View {
         switch (horizontalSizeClass, sceneViewModel.isSearchActive) {
         case (.regular, true):
-            content.navigationBarItems(trailing: CancelButton())
+            content.toolbar { ToolbarItem(placement: .navigationBarTrailing) { CancelButton() } }
         case (.regular, false):
             content.navigationBarItems(leading: navigationBarLeadingView, trailing: navigationBarTrailingView)
         case (.compact, true):
