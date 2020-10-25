@@ -12,28 +12,6 @@ import SwiftUI
 import RealmSwift
 
 @available(iOS 14.0, *)
-struct ReadableWidthModifier: ViewModifier {
-    private func calculateHorizontalPadding(size: CGSize) -> CGFloat {
-        switch size.width {
-        case 1000..<CGFloat.infinity:
-            return max((size.width - 1000) / 2, 20)
-        case 400..<1000:
-            return 20
-        default:
-            return 10
-        }
-    }
-    
-    func body(content: Content) -> some View {
-        GeometryReader { geometry in
-            ScrollView {
-                content.padding(.horizontal, calculateHorizontalPadding(size: geometry.size))
-            }
-        }
-    }
-}
-
-@available(iOS 14.0, *)
 struct HomeView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -44,48 +22,46 @@ struct HomeView: View {
     var settingsButtonTapped: (() -> Void)?
     
     var body: some View {
-        ScrollView{
-            LazyVStack {
-                HStack {
-                    Image("Kiwix")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .padding(2)
-                        .frame(idealHeight: 10)
-                        .foregroundColor(.black)
-                        .background(Color.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+        LazyVStack {
+            HStack {
+                Image("Kiwix")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .padding(2)
+                    .frame(idealHeight: 10)
+                    .foregroundColor(.black)
+                    .background(Color(.secondarySystemGroupedBackground))
+                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                Spacer()
+                RoundedRectButton(
+                    title: "Library",
+                    iconSystemName: "folder",
+                    backgroundColor: Color(.systemBlue),
+                    action: libraryButtonTapped
+                )
+                RoundedRectButton(
+                    title: "Settings",
+                    iconSystemName: "gear",
+                    backgroundColor: Color(.systemGray),
+                    action: settingsButtonTapped
+                )
+            }
+            Divider().padding(.vertical, 2)
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
+                Section(header: HStack {
+                    Text("On Device").font(.title2).fontWeight(.bold)
                     Spacer()
-                    RoundedRectButton(
-                        title: "Library",
-                        iconSystemName: "folder",
-                        backgroundColor: Color(.systemBlue),
-                        action: libraryButtonTapped
-                    )
-                    RoundedRectButton(
-                        title: "Settings",
-                        iconSystemName: "gear",
-                        backgroundColor: Color(.systemGray),
-                        action: settingsButtonTapped
-                    )
-                }
-                Divider().padding(.vertical, 2)
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
-                    Section(header: HStack {
-                        Text("On Device").font(.title2).fontWeight(.bold)
-                        Spacer()
-                    }.padding(.leading, 10)) {
-                        ForEach(viewModel.onDeviceZimFiles, id: \.id) { zimFile in
-                            ZimFileCell(zimFile) {
-                                sceneViewModel.loadMainPage(zimFile: zimFile)
-                            }
+                }.padding(.leading, 10)) {
+                    ForEach(viewModel.onDeviceZimFiles, id: \.id) { zimFile in
+                        ZimFileCell(zimFile) {
+                            sceneViewModel.loadMainPage(zimFile: zimFile)
                         }
                     }
                 }
             }
-            .padding(.vertical, horizontalSizeClass == .compact ? 10 : 16)
-            .padding(.horizontal, horizontalSizeClass == .compact ? 10 : 20)
-        }.background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
+        }
+        .modifier(ScrollableModifier())
+        .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
     }
 }
 
