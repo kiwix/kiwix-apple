@@ -618,7 +618,6 @@
 				972E6F631FA11A6100F5C927 /* RoundedButton.swift */,
 				972521002009616B00B60A80 /* EmptyContentView.swift */,
 				97252104200E908000B60A80 /* TableViewCell.swift */,
-				97810E16250436E2000D86CB /* ZimFileCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -700,6 +699,7 @@
 				97FD2F54251D93B90034927C /* HomeView.swift */,
 				9790112F2544D55800FF7855 /* SceneViewModel.swift */,
 				97D7FB61253CF9B000E8ADDF /* SidebarView.swift */,
+				97810E16250436E2000D86CB /* ZimFileCell.swift */,
 			);
 			path = iOS14;
 			sourceTree = "<group>";
