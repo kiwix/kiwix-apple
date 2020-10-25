@@ -29,7 +29,7 @@ struct ReadableWidthModifier: ViewModifier {
             ScrollView {
                 content.padding(.horizontal, calculateHorizontalPadding(size: geometry.size))
             }
-//            .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
+            .background(Color(.systemGroupedBackground))
         }
     }
 }
