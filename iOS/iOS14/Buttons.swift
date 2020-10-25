@@ -66,8 +66,10 @@ struct CancelButton: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
     var body: some View {
-        Button("Cancel") {
+        Button {
             sceneViewModel.searchBar.endEditing(true)
+        } label: {
+            Text("Cancel").fontWeight(.regular)
         }
     }
 }
