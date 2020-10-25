@@ -32,22 +32,20 @@ struct SearchView: View {
     }
     
     var searchFilter: some View {
-        ScrollView {
-            LazyVStack {
-                Section(header: HStack {
-                    Text("Search Filter").font(.title3).fontWeight(.semibold)
-                    Spacer()
-                }.padding(.leading, 10)) {
-                    ForEach(viewModel.onDeviceZimFiles, id: \.id) { zimFile in
-                        ZimFileCell(zimFile) {
-    //                        sceneViewModel.loadMainPage(zimFile: zimFile)
-                        }
+        LazyVStack {
+            Section(header: HStack {
+                Text("Search Filter").font(.title3).fontWeight(.semibold)
+                Spacer()
+            }.padding(.leading, 10)) {
+                ForEach(viewModel.onDeviceZimFiles, id: \.id) { zimFile in
+                    ZimFileCell(zimFile) {
+//                        sceneViewModel.loadMainPage(zimFile: zimFile)
                     }
                 }
             }
-            .padding(.vertical, 16)
-            .padding(.horizontal, 18)
-        }.background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
+        }
+        .modifier(ScrollableModifier())
+        .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
     }
 }
 
