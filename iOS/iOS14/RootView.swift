@@ -125,6 +125,20 @@ struct RootView: View {
 }
 
 @available(iOS 14.0, *)
+struct WebView: UIViewRepresentable {
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
+    func makeUIView(context: Context) -> WKWebView {
+        return sceneViewModel.webView
+    }
+
+    func updateUIView(_ uiView: WKWebView, context: Context) {
+        
+    }
+}
+
+
+@available(iOS 14.0, *)
 class RootController_iOS14: UIHostingController<AnyView>, UISearchControllerDelegate {
     private let searchController: UISearchController
     private let searchResultsController: SearchResultsController

@@ -83,7 +83,6 @@
 		978B688924F8080E003CCA8C /* BarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978B688824F8080E003CCA8C /* BarButtons.swift */; };
 		978C58092468FC1100D56AC8 /* SettingSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F97A720D00EAE0005D642 /* SettingSearchController.swift */; };
 		979011302544D55800FF7855 /* SceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9790112F2544D55800FF7855 /* SceneViewModel.swift */; };
-		9798DF20253E67D700F55D19 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9798DF1F253E67D700F55D19 /* WebView.swift */; };
 		979D6E0C20B34FD700B08DE7 /* BookmarksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D6E0B20B34FD700B08DE7 /* BookmarksController.swift */; };
 		979F49F7254478D400DE0B56 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979F49F6254478D400DE0B56 /* Buttons.swift */; };
 		979FD159201679C5007B5290 /* SearchResultsListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979FD158201679C5007B5290 /* SearchResultsListController.swift */; };
@@ -259,7 +258,6 @@
 		9790112F2544D55800FF7855 /* SceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewModel.swift; sourceTree = "<group>"; };
 		979315811E5127930093D3BA /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9793158C1E5127930093D3BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9798DF1F253E67D700F55D19 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		979D6E0B20B34FD700B08DE7 /* BookmarksController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksController.swift; sourceTree = "<group>"; };
 		979F49F6254478D400DE0B56 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		979FD158201679C5007B5290 /* SearchResultsListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsListController.swift; sourceTree = "<group>"; };
@@ -699,10 +697,9 @@
 			children = (
 				979F49F6254478D400DE0B56 /* Buttons.swift */,
 				97D7FB5B253CF97400E8ADDF /* RootView.swift */,
+				97FD2F54251D93B90034927C /* HomeView.swift */,
 				9790112F2544D55800FF7855 /* SceneViewModel.swift */,
 				97D7FB61253CF9B000E8ADDF /* SidebarView.swift */,
-				9798DF1F253E67D700F55D19 /* WebView.swift */,
-				97FD2F54251D93B90034927C /* HomeView.swift */,
 			);
 			path = iOS14;
 			sourceTree = "<group>";
@@ -1064,7 +1061,6 @@
 				9779A5BA2456793600F6F6FF /* OPDSRefreshOperation.swift in Sources */,
 				9779A5BE2456793600F6F6FF /* OPDSStreamParser.mm in Sources */,
 				9779A7B12456796B00F6F6FF /* WebKitHandler.swift in Sources */,
-				9798DF20253E67D700F55D19 /* WebView.swift in Sources */,
 				97FD2F5F251EA07B0034927C /* FeatureFlags.swift in Sources */,
 				97018985212357F200F8A6DD /* LibrarySearchController.swift in Sources */,
 				97252105200E908000B60A80 /* TableViewCell.swift in Sources */,
