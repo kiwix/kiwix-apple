@@ -137,7 +137,6 @@ struct WebView: UIViewRepresentable {
     }
 }
 
-
 @available(iOS 14.0, *)
 class RootController_iOS14: UIHostingController<AnyView>, UISearchControllerDelegate {
     private let searchController: UISearchController
