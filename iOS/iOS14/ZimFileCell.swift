@@ -71,10 +71,11 @@ private struct Favicon: View {
 @available(iOS 14.0, *)
 private struct ZimFileCellButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
-        configuration.label
+        let fillColor = Color(configuration.isPressed ? .systemGray5 : .secondarySystemGroupedBackground)
+        let background = RoundedRectangle(cornerRadius: 10, style: .continuous).fill(fillColor)
+        return configuration.label
             .padding(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
-            .background(Color(configuration.isPressed ? .systemGray5 : .secondarySystemGroupedBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+            .background(background)
     }
 }
 
