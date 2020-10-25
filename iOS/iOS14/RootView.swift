@@ -77,7 +77,7 @@ struct RootView: View {
                 ToolbarItem(placement: .bottomBar) {
                     ZStack {
                         Spacer()
-                        HouseButton()
+                        HomeButton()
                     }
                 }
             }
@@ -99,7 +99,7 @@ struct RootView: View {
             RandomArticlesButton()
             TableOfContentsButton()
             MapButton()
-            HouseButton()
+            HomeButton()
         }
         .padding(.leading, 16)
     }

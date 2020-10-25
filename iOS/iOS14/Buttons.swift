@@ -125,7 +125,7 @@ struct MapButton: View {
 }
 
 @available(iOS 14.0, *)
-struct HouseButton: View {
+struct HomeButton: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
 
     var body: some View {
