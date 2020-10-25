@@ -57,33 +57,7 @@ struct RootView: View {
     
     var body: some View {
         if horizontalSizeClass == .regular {
-            content.navigationBarItems(leading: navigationBarLeadingView)
-            .toolbar {
-//                ToolbarItemGroup(placement: .navigationBarLeading) {
-//                    GoBackButton()
-//                    GoForwardButton()
-//                }
-//                ToolbarItem(placement: .navigationBarLeading) {
-//                    HStack(spacing: 12) {
-//                        SwiftUIBarButton(iconName: "bookmark") { showSidebar ? hideSideBar() : showBookmark() }
-//                        SwiftUIBarButton(iconName: "clock.arrow.circlepath") { showSidebar ? hideSideBar() : showRecent() }
-//                    }.padding(.trailing, 20)
-//                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    HStack(spacing: 12) {
-                        SwiftUIBarButton(iconName: "die.face.5")
-                        SwiftUIBarButton(iconName: "list.bullet")
-                        SwiftUIBarButton(iconName: "map")
-                        
-                    }.padding(.leading, 20)
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    ZStack {
-                        Spacer()
-                        HouseButton()
-                    }
-                }
-            }
+            content.navigationBarItems(leading: navigationBarLeadingView, trailing: navigationBarTrailingView)
         } else if horizontalSizeClass == .compact {
             content.toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -93,11 +67,11 @@ struct RootView: View {
                 }
                 ToolbarItem(placement: .bottomBar) { Spacer() }
                 ToolbarItemGroup(placement: .bottomBar) {
-                    SwiftUIBarButton(iconName: "bookmark") { showBookmark() }
+                    BookmarkArtilesButton()
                     Spacer()
-                    SwiftUIBarButton(iconName: "list.bullet")
+                    TableOfContentsButton()
                     Spacer()
-                    SwiftUIBarButton(iconName: "die.face.5")
+                    RandomArticlesButton()
                 }
                 ToolbarItem(placement: .bottomBar) { Spacer() }
                 ToolbarItem(placement: .bottomBar) {
@@ -114,11 +88,22 @@ struct RootView: View {
         HStack {
             GoBackButton()
             GoForwardButton()
-            SwiftUIBarButton(iconName: "bookmark")
-            SwiftUIBarButton(iconName: "clock.arrow.circlepath")
+            BookmarkArtilesButton()
+            RecentArticlesButton()
         }
-//        .padding(.trailing, 20)
+        .padding(.trailing, 16)
     }
+    
+    var navigationBarTrailingView: some View {
+        HStack(spacing: 12) {
+            RandomArticlesButton()
+            TableOfContentsButton()
+            MapButton()
+            HouseButton()
+        }
+        .padding(.leading, 16)
+    }
+    
     
     // MARK: - Button Actions
     

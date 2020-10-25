@@ -9,34 +9,6 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct SwiftUIBarButton: View {
-    let iconName: String
-    @State var isPushed: Bool = false
-    var action: (() -> Void)?
-    
-    var image: some View {
-        Image(systemName: iconName)
-            .font(Font.body.weight(.regular))
-            .imageScale(.large)
-    }
-    
-    var body: some View {
-        Button(action: {
-            action?()
-        }) {
-            ZStack(alignment: .center) {
-                if isPushed {
-                    Color(.systemBlue).cornerRadius(6)
-                    image.foregroundColor(Color(.systemBackground))
-                } else {
-                    image
-                }
-            }.frame(width: 32, height: 32)
-        }
-    }
-}
-
-@available(iOS 14.0, *)
 struct BarButtonModifier: ViewModifier {
     @Binding var isPushed: Bool
     let imagePadding: CGFloat
@@ -89,6 +61,66 @@ struct GoForwardButton: View {
         }
         .modifier(BarButtonModifier())
         .disabled(!sceneViewModel.canGoForward || sceneViewModel.contentDisplayMode != .webView)
+    }
+}
+
+@available(iOS 14.0, *)
+struct BookmarkArtilesButton: View {
+    var body: some View {
+        Button {
+            
+        } label: {
+            Image(systemName: "bookmark")
+        }
+        .modifier(BarButtonModifier(imagePadding: 5))
+    }
+}
+
+@available(iOS 14.0, *)
+struct RecentArticlesButton: View {
+    var body: some View {
+        Button {
+            
+        } label: {
+            Image(systemName: "clock.arrow.circlepath")
+        }
+        .modifier(BarButtonModifier(imagePadding: 5))
+    }
+}
+
+@available(iOS 14.0, *)
+struct RandomArticlesButton: View {
+    var body: some View {
+        Button {
+            
+        } label: {
+            Image(systemName: "die.face.5")
+        }
+        .modifier(BarButtonModifier(imagePadding: 5))
+    }
+}
+
+@available(iOS 14.0, *)
+struct TableOfContentsButton: View {
+    var body: some View {
+        Button {
+            
+        } label: {
+            Image(systemName: "list.bullet")
+        }
+        .modifier(BarButtonModifier(imagePadding: 5))
+    }
+}
+
+@available(iOS 14.0, *)
+struct MapButton: View {
+    var body: some View {
+        Button {
+            
+        } label: {
+            Image(systemName: "map")
+        }
+        .modifier(BarButtonModifier(imagePadding: 5))
     }
 }
 
