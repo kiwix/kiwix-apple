@@ -55,11 +55,12 @@ private struct Favicon: View {
                 return Image("GenericZimFile")
             }
         }()
+        let shape = RoundedRectangle(cornerRadius: 4, style: .continuous)
         return image.resizable()
             .frame(width: 24, height: 24)
             .background(Color(.white))
-            .cornerRadius(4)
-            .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color(.white).opacity(0.9), lineWidth: 1))
+            .clipShape(shape)
+            .overlay(shape.stroke(Color(.white).opacity(0.9), lineWidth: 1))
     }
 }
 
@@ -69,7 +70,7 @@ private struct ZimFileCellButtonStyle: ButtonStyle {
         configuration.label
             .padding(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
             .background(Color(configuration.isPressed ? .systemGray5 : .secondarySystemGroupedBackground))
-            .cornerRadius(10)
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     }
 }
 

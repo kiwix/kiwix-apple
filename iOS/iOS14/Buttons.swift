@@ -27,8 +27,8 @@ struct RoundedRectButton: View {
             .padding(.vertical, 10)
             .padding(.horizontal, 12)
             .foregroundColor(.white)
-            .background(backgroundColor.opacity(0.8))
-            .cornerRadius(10)
+            .background(backgroundColor)
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         }
     }
 }

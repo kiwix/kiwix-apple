@@ -55,7 +55,7 @@ struct HomeView: View {
                     .frame(idealHeight: 10)
                     .foregroundColor(.black)
                     .background(Color.white)
-                    .cornerRadius(10)
+                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                 Spacer()
                 RoundedRectButton(
                     title: "Library",
@@ -85,17 +85,6 @@ struct HomeView: View {
         }
         .padding(.vertical, horizontalSizeClass == .compact ? 10 : 16)
         .modifier(ReadableWidthModifier())
-    }
-    
-    private func calculateHorizontalPadding(size: CGSize) -> CGFloat {
-        switch size.width {
-        case 1000..<CGFloat.infinity:
-            return (size.width - size.height) / 2 - 20
-        case 400..<1000:
-            return 20
-        default:
-            return 10
-        }
     }
 }
 
