@@ -37,8 +37,8 @@ struct ReadableWidthModifier: ViewModifier {
 struct HomeView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @ObservedObject private var viewModel = ViewModel()
     @EnvironmentObject var sceneViewModel: SceneViewModel
+    @ObservedObject private var viewModel = ViewModel()
     
     var libraryButtonTapped: (() -> Void)?
     var settingsButtonTapped: (() -> Void)?
