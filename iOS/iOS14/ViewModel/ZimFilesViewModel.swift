@@ -34,4 +34,14 @@ class ZimFilesViewModel: ObservableObject {
     deinit {
         onDeviceZimFilesPipeline?.cancel()
     }
+    
+    func toggleIncludedInSearch(zimFileID: String) {
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
+            try database.write {
+                zimFile.includedInSearch = !zimFile.includedInSearch
+            }
+        } catch { }
+    }
 }

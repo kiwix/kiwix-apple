@@ -133,6 +133,7 @@
 		97CE42482493244D00B334E9 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
 		97CE424A24957C3500B334E9 /* LibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59C2456793500F6F6FF /* LibraryService.swift */; };
 		97D00A791FBB89F000165629 /* Inject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* Inject.js */; };
+		97D19F072546FF3700910CAE /* BuildingBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D19F062546FF3700910CAE /* BuildingBlocks.swift */; };
 		97D7FB5C253CF97400E8ADDF /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D7FB5B253CF97400E8ADDF /* RootView.swift */; };
 		97D7FB62253CF9B000E8ADDF /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D7FB61253CF9B000E8ADDF /* SidebarView.swift */; };
 		97DBCF9D203CA254004EE274 /* SettingExternalLinkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DBCF9C203CA254004EE274 /* SettingExternalLinkController.swift */; };
@@ -300,6 +301,7 @@
 		97C57604202CB42100E37502 /* Kiwix.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
 		97CA4A7120A21D24008CEA6D /* LibraryLanguageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryLanguageController.swift; sourceTree = "<group>"; };
 		97CD2F0324D4FB6F0084C6B5 /* SearchFilterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilterController.swift; sourceTree = "<group>"; };
+		97D19F062546FF3700910CAE /* BuildingBlocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildingBlocks.swift; sourceTree = "<group>"; };
 		97D7FB5B253CF97400E8ADDF /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		97D7FB61253CF9B000E8ADDF /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		97DBCF9C203CA254004EE274 /* SettingExternalLinkController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingExternalLinkController.swift; sourceTree = "<group>"; };
@@ -696,6 +698,17 @@
 			path = BookmarksWidget;
 			sourceTree = "<group>";
 		};
+		97D19F052546FF2800910CAE /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				97D19F062546FF3700910CAE /* BuildingBlocks.swift */,
+				973B2A5C254609FD00093661 /* Modifiers.swift */,
+				979F49F6254478D400DE0B56 /* Buttons.swift */,
+				97810E16250436E2000D86CB /* ZimFileCell.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		97D757E3238F29DC008FB7E2 /* SideBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -709,14 +722,12 @@
 		97D7FB5A253CF94F00E8ADDF /* iOS14 */ = {
 			isa = PBXGroup;
 			children = (
+				97D19F052546FF2800910CAE /* Components */,
 				973B2A6225464FE400093661 /* ViewModel */,
-				979F49F6254478D400DE0B56 /* Buttons.swift */,
 				97D7FB5B253CF97400E8ADDF /* RootView.swift */,
 				97FD2F54251D93B90034927C /* HomeView.swift */,
 				9742D7172545E1360046D88C /* SearchView.swift */,
-				973B2A5C254609FD00093661 /* Modifiers.swift */,
 				97D7FB61253CF9B000E8ADDF /* SidebarView.swift */,
-				97810E16250436E2000D86CB /* ZimFileCell.swift */,
 			);
 			path = iOS14;
 			sourceTree = "<group>";
@@ -1077,6 +1088,7 @@
 				9779A5B22456793600F6F6FF /* LibraryService.swift in Sources */,
 				9779A5C42456793600F6F6FF /* ZimMultiReader.swift in Sources */,
 				978C58092468FC1100D56AC8 /* SettingSearchController.swift in Sources */,
+				97D19F072546FF3700910CAE /* BuildingBlocks.swift in Sources */,
 				9779A5CC2456793600F6F6FF /* ZimFile.swift in Sources */,
 				9779A5BA2456793600F6F6FF /* OPDSRefreshOperation.swift in Sources */,
 				9779A5BE2456793600F6F6FF /* OPDSStreamParser.mm in Sources */,

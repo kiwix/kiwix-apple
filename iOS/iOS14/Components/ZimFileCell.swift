@@ -12,10 +12,12 @@ import RealmSwift
 @available(iOS 14.0, *)
 struct ZimFileCell: View {
     let zimFile: ZimFile
+    let withIncludedInSearchIcon: Bool
     var tapped: (() -> Void)?
     
-    init (_ zimFile: ZimFile, tapped: (() -> Void)? = nil) {
+    init (_ zimFile: ZimFile, withIncludedInSearchIcon: Bool = false, tapped: (() -> Void)? = nil) {
         self.zimFile = zimFile
+        self.withIncludedInSearchIcon = withIncludedInSearchIcon
         self.tapped = tapped
     }
     
@@ -31,6 +33,13 @@ struct ZimFileCell: View {
                         if zimFile.fileDescription.count > 0 {
                             Text(zimFile.fileDescription).font(.caption).lineLimit(2)
                         }
+                    }
+                    if withIncludedInSearchIcon {
+                        Spacer()
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundColor(.green)
+                            .hidden(!zimFile.includedInSearch)
+                            .padding(.trailing, 10)
                     }
                 }
                 Divider()

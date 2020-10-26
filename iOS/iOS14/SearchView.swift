@@ -48,8 +48,8 @@ struct SearchView: View {
                 Spacer()
             }.padding(.leading, 10)) {
                 ForEach(zimFilesViewModel.onDeviceZimFiles, id: \.id) { zimFile in
-                    ZimFileCell(zimFile) {
-//                        sceneViewModel.loadMainPage(zimFile: zimFile)
+                    ZimFileCell(zimFile, withIncludedInSearchIcon: true) {
+                        zimFilesViewModel.toggleIncludedInSearch(zimFileID: zimFile.id)
                     }
                 }
             }
