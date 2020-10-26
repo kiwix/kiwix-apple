@@ -23,16 +23,19 @@ struct SearchView: View {
                 Text("Add some zim files to start a search.").font(.title2).foregroundColor(.secondary)
             }.padding()
         } else if horizontalSizeClass == .regular {
-            HStack(spacing: 0) {
-                ZStack(alignment: .trailing) {
-                    searchFilter
-                    Divider()
-                }
-                .frame(minWidth: 300, idealWidth: 340, maxWidth: 360)
-                List{
-                    Text(sceneViewModel.searchText)
+            GeometryReader { geometry in
+                HStack(spacing: 0) {
+                    ZStack(alignment: .trailing) {
+                        searchFilter
+                        Divider()
+                    }
+                    .frame(width: max(340, geometry.size.width * 0.35))
+                    List{
+                        Text(sceneViewModel.searchText)
+                    }
                 }
             }
+            
         } else {
             searchFilter
         }
