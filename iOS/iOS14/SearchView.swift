@@ -14,10 +14,10 @@ import RealmSwift
 struct SearchView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject var sceneViewModel: SceneViewModel
-    @ObservedObject private var viewModel = ViewModel()
+    @EnvironmentObject var zimFilesViewModel: ZimFilesViewModel
     
     var body: some View {
-        if viewModel.onDeviceZimFiles.isEmpty {
+        if zimFilesViewModel.onDeviceZimFiles.isEmpty {
             VStack(spacing: 20) {
                 Text("No zim files").font(.title)
                 Text("Add some zim files to start a search.").font(.title2).foregroundColor(.secondary)
@@ -29,7 +29,9 @@ struct SearchView: View {
                     Divider()
                 }
                 .frame(minWidth: 300, idealWidth: 340, maxWidth: 360)
-                List{}
+                List{
+                    Text(sceneViewModel.searchText)
+                }
             }
         } else {
             searchFilter
@@ -42,7 +44,7 @@ struct SearchView: View {
                 Text("Search Filter").font(.title3).fontWeight(.semibold)
                 Spacer()
             }.padding(.leading, 10)) {
-                ForEach(viewModel.onDeviceZimFiles, id: \.id) { zimFile in
+                ForEach(zimFilesViewModel.onDeviceZimFiles, id: \.id) { zimFile in
                     ZimFileCell(zimFile) {
 //                        sceneViewModel.loadMainPage(zimFile: zimFile)
                     }
@@ -51,32 +53,5 @@ struct SearchView: View {
         }
         .modifier(ScrollableModifier())
         .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
-    }
-}
-
-@available(iOS 14.0, *)
-private class ViewModel: ObservableObject {
-    @Published var onDeviceZimFiles = [ZimFile]()
-    private var onDeviceZimFilesPipeline: AnyCancellable? = nil
-    
-    init() {
-        do {
-            let database = try Realm(configuration: Realm.defaultConfig)
-            let predicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue)
-            onDeviceZimFilesPipeline = database.objects(ZimFile.self)
-                .filter(predicate)
-                .sorted(byKeyPath: "size", ascending: false)
-                .collectionPublisher
-                .subscribe(on: DispatchQueue.main)
-                .freeze()
-                .map { Array($0) }
-                .receive(on: DispatchQueue.main)
-                .catch { _ in Just([]) }
-                .assign(to: \.onDeviceZimFiles, on: self)
-        } catch { }
-    }
-    
-    deinit {
-        onDeviceZimFilesPipeline?.cancel()
     }
 }

@@ -23,9 +23,11 @@ class SceneViewModel: NSObject, ObservableObject, UISearchBarDelegate, WKNavigat
         config.mediaTypesRequiringUserActionForPlayback = []
         return WKWebView(frame: .zero, configuration: config)
     }()
+    private let searchQueue = SearchQueue()
     
     @Published private(set) var contentDisplayMode = ContentDisplayMode.homeView
     @Published private(set) var isSearchActive = false
+    @Published private(set) var searchText = ""
     @Published private(set) var canGoBack = false
     @Published private(set) var canGoForward = false
     @Published private(set) var currentArticleURL: URL?
@@ -69,9 +71,23 @@ class SceneViewModel: NSObject, ObservableObject, UISearchBarDelegate, WKNavigat
         }
     }
     
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.searchText = searchText
+//        searchQueue.cancelAllOperations()
+//        let operation = SearchOperation(searchText: searchText, zimFileIDs: Set())
+//        operation.completionBlock = { [weak self] in
+//            guard !operation.isCancelled else { return }
+//            DispatchQueue.main.sync {
+//                print("search finished")
+//            }
+//        }
+//        searchQueue.addOperation(operation)
+    }
+    
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         withAnimation {
             isSearchActive = false
+            searchBar.text = nil
         }
     }
     
