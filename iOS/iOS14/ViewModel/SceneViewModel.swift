@@ -34,7 +34,11 @@ class SceneViewModel: NSObject, ObservableObject, UISearchBarDelegate, WKNavigat
     
     override init() {
         super.init()
+        searchBar.autocorrectionType = .no
+        searchBar.autocapitalizationType = .none
         searchBar.delegate = self
+        searchBar.placeholder = "Search"
+        searchBar.searchBarStyle = .minimal
         webView.navigationDelegate = self
         webView.allowsBackForwardNavigationGestures = true
     }

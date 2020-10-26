@@ -152,30 +152,12 @@ struct WebView: UIViewRepresentable {
 
 @available(iOS 14.0, *)
 class RootController_iOS14: UIHostingController<AnyView> {
-//    private let searchController: UISearchController
-//    private let searchResultsController: SearchResultsController
     private let sceneViewModel = SceneViewModel()
     private let zimFilesViewModel = ZimFilesViewModel()
 
     init() {
-//        self.searchResultsController = SearchResultsController()
-//        self.searchController = UISearchController(searchResultsController: self.searchResultsController)
-
         let view = RootView().environmentObject(sceneViewModel).environmentObject(zimFilesViewModel)
         super.init(rootView: AnyView(view))
-//        sceneViewModel.searchController = searchController
-//        // search controller
-//        searchController.delegate = sceneViewModel
-//        searchController.searchBar.autocorrectionType = .no
-//        searchController.searchBar.autocapitalizationType = .none
-//        searchController.hidesNavigationBarDuringPresentation = false
-//        searchController.searchResultsUpdater = searchResultsController
-//        searchController.automaticallyShowsCancelButton = false
-//        searchController.showsSearchResultsController = true
-//
-//        // misc
-//        definesPresentationContext = true
-//        navigationItem.hidesBackButton = true
         navigationItem.titleView = sceneViewModel.searchBar
     }
 
