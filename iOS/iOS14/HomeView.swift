@@ -30,7 +30,7 @@ struct HomeView: View {
                     .padding(2)
                     .frame(idealHeight: 10)
                     .foregroundColor(.black)
-                    .background(Color.white)
+                    .background(Color(.white).opacity(0.9))
                     .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                 Spacer()
                 RoundedRectButton(
