@@ -88,9 +88,10 @@ class SceneViewModel: NSObject, ObservableObject, UISearchBarDelegate, WKNavigat
 //        searchQueue.addOperation(operation)
     }
     
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         withAnimation {
             isSearchActive = false
+            searchBar.endEditing(true)
             searchBar.text = nil
         }
     }

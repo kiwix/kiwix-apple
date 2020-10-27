@@ -62,12 +62,12 @@ struct BarButtonModifier: ViewModifier {
 }
 
 @available(iOS 14.0, *)
-struct CancelButton: View {
+struct SearchCancelButton: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
     var body: some View {
         Button {
-            sceneViewModel.searchBar.endEditing(true)
+            sceneViewModel.searchBar.delegate?.searchBarCancelButtonClicked?(sceneViewModel.searchBar)
         } label: {
             Text("Cancel").fontWeight(.regular)
         }

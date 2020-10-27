@@ -30,7 +30,7 @@ struct ZimFileCell: View {
                 HStack(alignment: .center, spacing: 8) {
                     Favicon(zimFile: zimFile)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(zimFile.title).font(.headline)
+                        Text(zimFile.title).font(.headline).lineLimit(1)
                         if zimFile.fileDescription.count > 0 {
                             Text(zimFile.fileDescription).font(.caption).lineLimit(2)
                         }
@@ -40,7 +40,6 @@ struct ZimFileCell: View {
                         Image(systemName: "checkmark.circle.fill")
                             .foregroundColor(.green)
                             .hidden(!zimFile.includedInSearch)
-                            .padding(.trailing, 0)
                     }
                 }
                 Divider()
