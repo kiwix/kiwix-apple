@@ -11,11 +11,14 @@ import RealmSwift
 
 @available(iOS 14.0, *)
 struct ZimFileCell: View {
+    @Environment(\.colorScheme) private var colorScheme
     let zimFile: ZimFile
+    let withIncludedInSearchIcon: Bool
     var tapped: (() -> Void)?
     
-    init (_ zimFile: ZimFile, tapped: (() -> Void)? = nil) {
+    init (_ zimFile: ZimFile, withIncludedInSearchIcon: Bool = false, tapped: (() -> Void)? = nil) {
         self.zimFile = zimFile
+        self.withIncludedInSearchIcon = withIncludedInSearchIcon
         self.tapped = tapped
     }
     
@@ -24,13 +27,19 @@ struct ZimFileCell: View {
             tapped?()
         }, label: {
             VStack(alignment: .leading, spacing: 6) {
-                HStack(alignment: .center, spacing: 10) {
+                HStack(alignment: .center, spacing: 8) {
                     Favicon(zimFile: zimFile)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(zimFile.title).font(.headline)
+                        Text(zimFile.title).font(.headline).lineLimit(1)
                         if zimFile.fileDescription.count > 0 {
                             Text(zimFile.fileDescription).font(.caption).lineLimit(2)
                         }
+                    }
+                    if withIncludedInSearchIcon {
+                        Spacer()
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundColor(.green)
+                            .hidden(!zimFile.includedInSearch)
                     }
                 }
                 Divider()
@@ -41,40 +50,29 @@ struct ZimFileCell: View {
                     Spacer()
                     Label(zimFile.creationDateDescription ?? "Unknown", systemImage: "calendar")
                 }.font(.caption).foregroundColor(.secondary)
-            }
+            }.padding(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
         })
-        .buttonStyle(ZimFileCellButtonStyle())
+        .buttonStyle(Style(colorScheme: colorScheme))
     }
-}
-
-@available(iOS 14.0, *)
-private struct Favicon: View {
-    let zimFile: ZimFile
     
-    var body: some View {
-        let image: Image = {
-            if let data = zimFile.faviconData, let image = UIImage(data: data) {
-                return Image(uiImage: image)
-            } else {
-                return Image("GenericZimFile")
+    private struct Style: ButtonStyle {
+        let colorScheme: ColorScheme
+        
+        private func makeFillColor(_ configuration: Configuration) -> Color {
+            switch (configuration.isPressed, colorScheme) {
+            case (true, .light):
+                return Color(.systemGray5)
+            case (true, .dark):
+                return Color(.tertiarySystemGroupedBackground)
+            default:
+                return Color(.secondarySystemGroupedBackground)
             }
-        }()
-        let shape = RoundedRectangle(cornerRadius: 4, style: .continuous)
-        return image.resizable()
-            .frame(width: 24, height: 24)
-            .background(Color(.white))
-            .clipShape(shape)
-            .overlay(shape.stroke(Color(.white).opacity(0.9), lineWidth: 1))
-    }
-}
-
-@available(iOS 14.0, *)
-private struct ZimFileCellButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .padding(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
-            .background(Color(configuration.isPressed ? .systemGray5 : .secondarySystemGroupedBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+        }
+        
+        func makeBody(configuration: Configuration) -> some View {
+            let background = RoundedRectangle(cornerRadius: 10, style: .continuous).fill(makeFillColor(configuration))
+            return configuration.label.background(background)
+        }
     }
 }
 

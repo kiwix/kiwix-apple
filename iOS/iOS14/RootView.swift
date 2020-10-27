@@ -28,59 +28,47 @@ struct RootView: View {
     
     var content: some View {
         ZStack {
-            switch sceneViewModel.contentDisplayMode {
-            case .homeView:
-                HomeView()
-            case .webView:
-                WebView()
-            case .transitionView:
-                Color(.systemBackground)
-            }
-            if horizontalSizeClass == .regular {
-                Color(UIColor.black)
-                    .edgesIgnoringSafeArea(.all)
-                    .opacity(colorScheme == .dark ? 0.3 : 0.1)
-                    .opacity(showSidebar ? 1.0 : 0.0)
-                    .onTapGesture { hideSideBar() }
-                HStack {
-                    ZStack(alignment: .trailing) {
-                        SidebarView()
-                        Divider()
-                    }
-                    .frame(width: sidebarWidth)
-                    .offset(x: showSidebar ? 0 : -sidebarWidth)
-                    Spacer()
+            if sceneViewModel.isSearchActive {
+                SearchView()
+            } else {
+                switch sceneViewModel.contentDisplayMode {
+                case .homeView:
+                    HomeView()
+                case .webView:
+                    WebView()
+                case .transitionView:
+                    Color(.systemBackground)
                 }
             }
+//            if horizontalSizeClass == .regular {
+//                Color(UIColor.black)
+//                    .edgesIgnoringSafeArea(.all)
+//                    .opacity(colorScheme == .dark ? 0.3 : 0.1)
+//                    .opacity(showSidebar ? 1.0 : 0.0)
+//                    .onTapGesture { hideSideBar() }
+//                HStack {
+//                    ZStack(alignment: .trailing) {
+//                        SidebarView()
+//                        Divider()
+//                    }
+//                    .frame(width: sidebarWidth)
+//                    .offset(x: showSidebar ? 0 : -sidebarWidth)
+//                    Spacer()
+//                }
+//            }
         }
     }
     
     var body: some View {
-        if horizontalSizeClass == .regular {
+        switch (horizontalSizeClass, sceneViewModel.isSearchActive) {
+        case (_, true):
+            content.toolbar { ToolbarItem(placement: .navigationBarTrailing) { SearchCancelButton() } }
+        case (.regular, false):
             content.navigationBarItems(leading: navigationBarLeadingView, trailing: navigationBarTrailingView)
-        } else if horizontalSizeClass == .compact {
-            content.toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    GoBackButton()
-                    Spacer()
-                    GoForwardButton()
-                }
-                ToolbarItem(placement: .bottomBar) { Spacer() }
-                ToolbarItemGroup(placement: .bottomBar) {
-                    BookmarkArtilesButton()
-                    Spacer()
-                    TableOfContentsButton()
-                    Spacer()
-                    RandomArticlesButton()
-                }
-                ToolbarItem(placement: .bottomBar) { Spacer() }
-                ToolbarItem(placement: .bottomBar) {
-                    ZStack {
-                        Spacer()
-                        HomeButton()
-                    }
-                }
-            }
+        case (.compact, false):
+            content.toolbar { BottomBarContent() }
+        default:
+            EmptyView()
         }
     }
     
@@ -100,8 +88,7 @@ struct RootView: View {
             TableOfContentsButton()
             MapButton()
             HomeButton()
-        }
-        .padding(.leading, 16)
+        }.padding(.leading, 16)
     }
     
     
@@ -125,6 +112,32 @@ struct RootView: View {
 }
 
 @available(iOS 14.0, *)
+struct BottomBarContent: ToolbarContent {
+    var body: some ToolbarContent {
+        ToolbarItemGroup(placement: .bottomBar) {
+            GoBackButton()
+            Spacer()
+            GoForwardButton()
+        }
+        ToolbarItem(placement: .bottomBar) { Spacer() }
+        ToolbarItemGroup(placement: .bottomBar) {
+            BookmarkArtilesButton()
+            Spacer()
+            TableOfContentsButton()
+            Spacer()
+            RandomArticlesButton()
+        }
+        ToolbarItem(placement: .bottomBar) { Spacer() }
+        ToolbarItem(placement: .bottomBar) {
+            ZStack {
+                Spacer()
+                HomeButton()
+            }
+        }
+    }
+}
+
+@available(iOS 14.0, *)
 struct WebView: UIViewRepresentable {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
@@ -138,30 +151,14 @@ struct WebView: UIViewRepresentable {
 }
 
 @available(iOS 14.0, *)
-class RootController_iOS14: UIHostingController<AnyView>, UISearchControllerDelegate {
-    private let searchController: UISearchController
-    private let searchResultsController: SearchResultsController
+class RootController_iOS14: UIHostingController<AnyView> {
     private let sceneViewModel = SceneViewModel()
+    private let zimFilesViewModel = ZimFilesViewModel()
 
     init() {
-        self.searchResultsController = SearchResultsController()
-        self.searchController = UISearchController(searchResultsController: self.searchResultsController)
-
-        super.init(rootView: AnyView(RootView().environmentObject(sceneViewModel)))
-
-        // search controller
-        searchController.delegate = self
-        searchController.searchBar.autocorrectionType = .no
-        searchController.searchBar.autocapitalizationType = .none
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchResultsUpdater = searchResultsController
-        searchController.automaticallyShowsCancelButton = false
-        searchController.showsSearchResultsController = true
-
-        // misc
-        definesPresentationContext = true
-        navigationItem.hidesBackButton = true
-        navigationItem.titleView = searchController.searchBar
+        let view = RootView().environmentObject(sceneViewModel).environmentObject(zimFilesViewModel)
+        super.init(rootView: AnyView(view))
+        navigationItem.titleView = sceneViewModel.searchBar
     }
 
     required init?(coder: NSCoder) {

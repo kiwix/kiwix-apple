@@ -12,34 +12,11 @@ import SwiftUI
 import RealmSwift
 
 @available(iOS 14.0, *)
-struct ReadableWidthModifier: ViewModifier {
-    private func calculateHorizontalPadding(size: CGSize) -> CGFloat {
-        switch size.width {
-        case 1000..<CGFloat.infinity:
-            return (size.width - size.height) / 2 - 20
-        case 400..<1000:
-            return 20
-        default:
-            return 10
-        }
-    }
-    
-    func body(content: Content) -> some View {
-        GeometryReader { geometry in
-            ScrollView {
-                content.padding(.horizontal, calculateHorizontalPadding(size: geometry.size))
-            }
-            .background(Color(.systemGroupedBackground))
-        }
-    }
-}
-
-@available(iOS 14.0, *)
 struct HomeView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @ObservedObject private var viewModel = ViewModel()
     @EnvironmentObject var sceneViewModel: SceneViewModel
+    @EnvironmentObject var zimFilesViewModel: ZimFilesViewModel
     
     var libraryButtonTapped: (() -> Void)?
     var settingsButtonTapped: (() -> Void)?
@@ -53,7 +30,7 @@ struct HomeView: View {
                     .padding(2)
                     .frame(idealHeight: 10)
                     .foregroundColor(.black)
-                    .background(Color.white)
+                    .background(Color(.white).opacity(0.9))
                     .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                 Spacer()
                 RoundedRectButton(
@@ -75,7 +52,7 @@ struct HomeView: View {
                     Text("On Device").font(.title2).fontWeight(.bold)
                     Spacer()
                 }.padding(.leading, 10)) {
-                    ForEach(viewModel.onDeviceZimFiles, id: \.id) { zimFile in
+                    ForEach(zimFilesViewModel.onDeviceZimFiles, id: \.id) { zimFile in
                         ZimFileCell(zimFile) {
                             sceneViewModel.loadMainPage(zimFile: zimFile)
                         }
@@ -83,35 +60,8 @@ struct HomeView: View {
                 }
             }
         }
-        .padding(.vertical, horizontalSizeClass == .compact ? 10 : 16)
-        .modifier(ReadableWidthModifier())
-    }
-}
-
-@available(iOS 14.0, *)
-private class ViewModel: ObservableObject {
-    @Published var onDeviceZimFiles = [ZimFile]()
-    private var onDeviceZimFilesPipeline: AnyCancellable? = nil
-    
-    init() {
-        do {
-            let database = try Realm(configuration: Realm.defaultConfig)
-            let predicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue)
-            onDeviceZimFilesPipeline = database.objects(ZimFile.self)
-                .filter(predicate)
-                .sorted(byKeyPath: "size", ascending: false)
-                .collectionPublisher
-                .subscribe(on: DispatchQueue.main)
-                .freeze()
-                .map { Array($0) }
-                .receive(on: DispatchQueue.main)
-                .catch { _ in Just([]) }
-                .assign(to: \.onDeviceZimFiles, on: self)
-        } catch { }
-    }
-    
-    deinit {
-        onDeviceZimFilesPipeline?.cancel()
+        .modifier(ScrollableModifier())
+        .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
     }
 }
 
