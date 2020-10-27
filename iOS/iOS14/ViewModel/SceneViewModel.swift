@@ -32,6 +32,8 @@ class SceneViewModel: NSObject, ObservableObject, UISearchBarDelegate, WKNavigat
     @Published private(set) var canGoForward = false
     @Published private(set) var currentArticleURL: URL?
     
+    @Published var currentExternalURL: URL?
+    
     override init() {
         super.init()
         searchBar.autocorrectionType = .no
@@ -98,6 +100,37 @@ class SceneViewModel: NSObject, ObservableObject, UISearchBarDelegate, WKNavigat
     
     // MARK: - WKNavigationDelegate
     
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
+        if url.isKiwixURL {
+            guard let zimFileID = url.host else { decisionHandler(.cancel); return }
+            if let redirectedPath = ZimMultiReader.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
+                let redirectedURL = URL(zimFileID: zimFileID, contentPath: redirectedPath) {
+                decisionHandler(.cancel)
+                webView.load(URLRequest(url: redirectedURL))
+            } else {
+                decisionHandler(.allow)
+            }
+        } else if url.scheme == "http" || url.scheme == "https" {
+            currentExternalURL = url
+//            let policy = Defaults[.externalLinkLoadingPolicy]
+//            if policy == .alwaysLoad {
+//                let controller = SFSafariViewController(url: url)
+//                self.present(controller, animated: true, completion: nil)
+//            } else {
+//                present(UIAlertController.externalLink(policy: policy, action: {
+//                    let controller = SFSafariViewController(url: url)
+//                    self.present(controller, animated: true, completion: nil)
+//                }), animated: true)
+//            }
+            decisionHandler(.cancel)
+        } else if url.scheme == "geo" {
+            decisionHandler(.cancel)
+        } else {
+            decisionHandler(.cancel)
+        }
+    }
+    
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if contentDisplayMode == .transitionView {
             withAnimation(.easeOut(duration: 0.1)) { contentDisplayMode = .webView }
@@ -105,5 +138,16 @@ class SceneViewModel: NSObject, ObservableObject, UISearchBarDelegate, WKNavigat
         canGoBack = webView.canGoBack
         canGoForward = webView.canGoForward
         currentArticleURL = webView.url
+        
+        if let url = Bundle.main.url(forResource: "Inject", withExtension: "js"),
+            let javascript = try? String(contentsOf: url) {
+            webView.evaluateJavaScript(javascript)
+        }
+    }
+}
+
+extension URL: Identifiable {
+    public var id: String {
+        self.absoluteString
     }
 }
