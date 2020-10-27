@@ -702,8 +702,8 @@
 			isa = PBXGroup;
 			children = (
 				97D19F062546FF3700910CAE /* BuildingBlocks.swift */,
-				973B2A5C254609FD00093661 /* Modifiers.swift */,
 				979F49F6254478D400DE0B56 /* Buttons.swift */,
+				973B2A5C254609FD00093661 /* Modifiers.swift */,
 				97810E16250436E2000D86CB /* ZimFileCell.swift */,
 			);
 			path = Components;
