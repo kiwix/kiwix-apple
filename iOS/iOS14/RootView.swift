@@ -57,6 +57,9 @@ struct RootView: View {
 //                }
 //            }
         }
+        .sheet(item: $sceneViewModel.currentExternalURL, content: { url in
+            SafariView(url: url)
+        })
     }
     
     var body: some View {
