@@ -58,7 +58,7 @@ struct RootView: View {
 //            }
         }
         .sheet(item: $sceneViewModel.currentExternalURL, content: { url in
-            SafariView(url: url)
+            SafariView(url: url).ignoresSafeArea(edges: .bottom)
         })
     }
     
