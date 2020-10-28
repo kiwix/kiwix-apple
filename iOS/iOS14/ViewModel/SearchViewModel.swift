@@ -22,9 +22,10 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
     }()
     
     let searchBar = UISearchBar()
-    @Published private(set) var isSearchActive = false
+    @Published private(set) var isActive = false
+    @Published private(set) var isInProgress = false
     @Published private(set) var searchText = ""
-    @Published private(set) var searchResults = [SearchResult]()
+    @Published private(set) var results = [SearchResult]()
     
     override init() {
         super.init()
@@ -39,13 +40,13 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         withAnimation {
-            isSearchActive = true
+            isActive = true
         }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard isSearchActive else { return }
-        
+        guard isActive else { return }
+        isInProgress = true
         let zimFileIDs: Set<String> = {
             guard let result = zimFiles else { return Set() }
             return Set(result.map({ $0.id }))
@@ -55,7 +56,8 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
         operation.completionBlock = { [weak self] in
             guard !operation.isCancelled else { return }
             DispatchQueue.main.sync {
-                self?.searchResults = operation.results
+                self?.results = operation.results
+                self?.isInProgress = false
             }
         }
         searchQueue.addOperation(operation)
@@ -63,7 +65,7 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         withAnimation {
-            isSearchActive = false
+            isActive = false
             searchBar.endEditing(true)
             searchBar.text = nil
         }

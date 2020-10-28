@@ -29,7 +29,7 @@ struct RootView: View {
     
     var content: some View {
         ZStack {
-            if searchViewModel.isSearchActive {
+            if searchViewModel.isActive {
                 SearchView()
             } else {
                 switch sceneViewModel.contentDisplayMode {
@@ -64,7 +64,7 @@ struct RootView: View {
     }
     
     var body: some View {
-        switch (horizontalSizeClass, searchViewModel.isSearchActive) {
+        switch (horizontalSizeClass, searchViewModel.isActive) {
         case (_, true):
             content.toolbar { ToolbarItem(placement: .navigationBarTrailing) { SearchCancelButton() } }
         case (.regular, false):

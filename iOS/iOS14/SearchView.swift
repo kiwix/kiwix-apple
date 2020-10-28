@@ -31,7 +31,7 @@ struct SearchView: View {
                     }
                     .frame(width: max(340, geometry.size.width * 0.35))
                     List{
-                        ForEach(searchViewModel.searchResults, id: \.hashValue) { result in
+                        ForEach(searchViewModel.results, id: \.hashValue) { result in
                             Text(result.title)
                         }
                     }
