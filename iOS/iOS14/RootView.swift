@@ -20,6 +20,7 @@ struct RootView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject var sceneViewModel: SceneViewModel
+    @EnvironmentObject var searchViewModel: SearchViewModel
     @State private var sidebarDisplayMode = SidebarDisplayMode.hidden
     @State private var showSidebar = false
     
@@ -28,7 +29,7 @@ struct RootView: View {
     
     var content: some View {
         ZStack {
-            if sceneViewModel.isSearchActive {
+            if searchViewModel.isSearchActive {
                 SearchView()
             } else {
                 switch sceneViewModel.contentDisplayMode {
@@ -63,7 +64,7 @@ struct RootView: View {
     }
     
     var body: some View {
-        switch (horizontalSizeClass, sceneViewModel.isSearchActive) {
+        switch (horizontalSizeClass, searchViewModel.isSearchActive) {
         case (_, true):
             content.toolbar { ToolbarItem(placement: .navigationBarTrailing) { SearchCancelButton() } }
         case (.regular, false):
@@ -156,12 +157,16 @@ struct WebView: UIViewRepresentable {
 @available(iOS 14.0, *)
 class RootController_iOS14: UIHostingController<AnyView> {
     private let sceneViewModel = SceneViewModel()
+    private let searchViewModel = SearchViewModel()
     private let zimFilesViewModel = ZimFilesViewModel()
 
     init() {
-        let view = RootView().environmentObject(sceneViewModel).environmentObject(zimFilesViewModel)
+        let view = RootView()
+            .environmentObject(sceneViewModel)
+            .environmentObject(searchViewModel)
+            .environmentObject(zimFilesViewModel)
         super.init(rootView: AnyView(view))
-        navigationItem.titleView = sceneViewModel.searchBar
+        navigationItem.titleView = searchViewModel.searchBar
     }
 
     required init?(coder: NSCoder) {

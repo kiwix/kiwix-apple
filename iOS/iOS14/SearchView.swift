@@ -13,7 +13,7 @@ import RealmSwift
 @available(iOS 14.0, *)
 struct SearchView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @EnvironmentObject var sceneViewModel: SceneViewModel
+    @EnvironmentObject var searchViewModel: SearchViewModel
     @EnvironmentObject var zimFilesViewModel: ZimFilesViewModel
     
     var body: some View {
@@ -31,7 +31,7 @@ struct SearchView: View {
                     }
                     .frame(width: max(340, geometry.size.width * 0.35))
                     List{
-                        Text(sceneViewModel.searchText)
+                        Text(searchViewModel.searchText)
                     }
                 }
             }
