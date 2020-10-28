@@ -47,6 +47,7 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard isActive else { return }
         isInProgress = true
+        self.searchText = searchText
         let zimFileIDs: Set<String> = {
             guard let result = zimFiles else { return Set() }
             return Set(result.map({ $0.id }))
@@ -66,6 +67,9 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         withAnimation {
             isActive = false
+            isInProgress = false
+            searchText = ""
+            results = []
             searchBar.endEditing(true)
             searchBar.text = nil
         }

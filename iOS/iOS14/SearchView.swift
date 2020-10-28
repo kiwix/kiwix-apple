@@ -26,24 +26,35 @@ struct SearchView: View {
             GeometryReader { geometry in
                 HStack(spacing: 0) {
                     ZStack(alignment: .trailing) {
-                        searchFilter
+                        filter
                         Divider()
                     }
                     .frame(width: max(340, geometry.size.width * 0.35))
-                    List{
-                        ForEach(searchViewModel.results, id: \.hashValue) { result in
-                            Text(result.title)
-                        }
+                    if searchViewModel.isInProgress {
+                        Text("In Progress")
+                    } else if searchViewModel.searchText.isEmpty {
+                        noSearchText
+                    } else if searchViewModel.results.isEmpty {
+                        noResult
+                    } else {
+                        results
                     }
                 }
             }
-            
         } else {
-            searchFilter
+            if searchViewModel.isInProgress {
+                Text("In Progress")
+            } else if searchViewModel.searchText.isEmpty {
+                filter
+            } else if searchViewModel.results.isEmpty {
+                noResult
+            } else {
+                results
+            }
         }
     }
     
-    var searchFilter: some View {
+    private var filter: some View {
         LazyVStack {
             Section(header: HStack {
                 Text("Search Filter").font(.title3).fontWeight(.semibold)
@@ -58,5 +69,27 @@ struct SearchView: View {
         }
         .modifier(ScrollableModifier())
         .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
+    }
+    
+    private var noSearchText: some View {
+        VStack(spacing: 12) {
+            Text("No Search Results").font(.title).fontWeight(.semibold).foregroundColor(.primary)
+            Text("Please enter some text to start a search.").font(.title3).foregroundColor(.secondary)
+        }.frame(maxWidth: .infinity)
+    }
+    
+    private var noResult: some View {
+        VStack(spacing: 12) {
+            Text("No Search Results").font(.title).fontWeight(.semibold).foregroundColor(.primary)
+            Text("Please update the search text or search filter.").font(.title3).foregroundColor(.secondary)
+        }.frame(maxWidth: .infinity)
+    }
+    
+    private var results: some View {
+        List{
+            ForEach(searchViewModel.results, id: \.hashValue) { result in
+                Text(result.title)
+            }
+        }
     }
 }
