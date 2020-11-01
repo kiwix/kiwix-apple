@@ -74,16 +74,28 @@ struct SearchView: View {
     
     private var noSearchText: some View {
         VStack(spacing: 12) {
-            Text("No Search Results").font(.title).fontWeight(.semibold).foregroundColor(.primary)
-            Text("Please enter some text to start a search.").font(.title3).foregroundColor(.secondary)
+            Text("No Search Results")
+                .font(.title)
+                .fontWeight(.semibold)
+                .foregroundColor(.primary)
+            Text("Please enter some text to start a search.")
+                .font(.title3)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
         }.frame(maxWidth: .infinity)
     }
     
     private var noResult: some View {
         VStack(spacing: 12) {
-            Text("No Search Results").font(.title).fontWeight(.semibold).foregroundColor(.primary)
-            Text("Please update the search text or search filter.").font(.title3).foregroundColor(.secondary)
-        }.frame(maxWidth: .infinity)
+            Text("No Search Results")
+                .font(.title)
+                .fontWeight(.semibold)
+                .foregroundColor(.primary)
+            Text("Please update the search text or search filter.")
+                .font(.title3)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+        }.padding().frame(maxWidth: .infinity)
     }
     
     private var results: some View {
