@@ -28,8 +28,7 @@ struct SearchView: View {
                     ZStack(alignment: .trailing) {
                         filter
                         Divider()
-                    }
-                    .frame(width: max(340, geometry.size.width * 0.35))
+                    }.frame(width: max(340, geometry.size.width * 0.35))
                     if searchViewModel.isInProgress {
                         Text("In Progress")
                     } else if searchViewModel.searchText.isEmpty {

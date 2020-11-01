@@ -142,13 +142,15 @@ struct RandomArticlesButton: View {
 
 @available(iOS 14.0, *)
 struct TableOfContentsButton: View {
+    @State private var showPopover: Bool = false
     var body: some View {
         Button {
-            
+            showPopover = true
         } label: {
             Image(systemName: "list.bullet")
         }
         .modifier(BarButtonModifier(imagePadding: 5))
+        .popover(isPresented: self.$showPopover, arrowEdge: .bottom) { Text("Popover") }
     }
 }
 
