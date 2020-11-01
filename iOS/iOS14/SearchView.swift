@@ -89,7 +89,15 @@ struct SearchView: View {
     private var results: some View {
         List{
             ForEach(searchViewModel.results, id: \.hashValue) { result in
-                Text(result.title)
+                HStack(alignment: result.snippet == nil ? .center : .top) {
+                    Favicon(zimFile: zimFilesViewModel.onDeviceZimFiles.first(where: {$0.id == result.zimFileID}))
+                    VStack(alignment: .leading) {
+                        Text(result.title).font(.headline).lineLimit(1)
+                        if let snippet = result.snippet {
+                            Text(snippet.string).font(.footnote).lineLimit(4)
+                        }
+                    }
+                }
             }
         }
     }

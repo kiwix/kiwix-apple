@@ -22,11 +22,11 @@ extension View {
 
 @available(iOS 14.0, *)
 struct Favicon: View {
-    let zimFile: ZimFile
+    let zimFile: ZimFile?
     
     var body: some View {
         let image: Image = {
-            if let data = zimFile.faviconData, let image = UIImage(data: data) {
+            if let data = zimFile?.faviconData, let image = UIImage(data: data) {
                 return Image(uiImage: image)
             } else {
                 return Image("GenericZimFile")
