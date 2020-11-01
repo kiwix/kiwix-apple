@@ -17,7 +17,7 @@ struct SearchView: View {
     @EnvironmentObject var zimFilesViewModel: ZimFilesViewModel
     
     var body: some View {
-        if zimFilesViewModel.onDeviceZimFiles.isEmpty {
+        if zimFilesViewModel.onDevice.isEmpty {
             VStack(spacing: 20) {
                 Text("No zim files").font(.title)
                 Text("Add some zim files to start a search.").font(.title2).foregroundColor(.secondary)
@@ -61,7 +61,7 @@ struct SearchView: View {
                 Text("Search Filter").font(.title3).fontWeight(.semibold)
                 Spacer()
             }.padding(.leading, 10)) {
-                ForEach(zimFilesViewModel.onDeviceZimFiles, id: \.id) { zimFile in
+                ForEach(zimFilesViewModel.onDevice, id: \.id) { zimFile in
                     ZimFileCell(zimFile, withIncludedInSearchIcon: true) {
                         zimFilesViewModel.toggleIncludedInSearch(zimFileID: zimFile.id)
                     }
@@ -90,7 +90,7 @@ struct SearchView: View {
         List{
             ForEach(searchViewModel.results, id: \.hashValue) { result in
                 HStack(alignment: result.snippet == nil ? .center : .top) {
-                    Favicon(zimFile: zimFilesViewModel.onDeviceZimFiles.first(where: {$0.id == result.zimFileID}))
+                    Favicon(zimFile: zimFilesViewModel.onDevice.first(where: {$0.id == result.zimFileID}))
                     VStack(alignment: .leading) {
                         Text(result.title).font(.headline).lineLimit(1)
                         if let snippet = result.snippet {

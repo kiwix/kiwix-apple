@@ -11,7 +11,7 @@ import RealmSwift
 
 @available(iOS 14.0, *)
 class ZimFilesViewModel: ObservableObject {
-    @Published var onDeviceZimFiles = [ZimFile]()
+    @Published var onDevice = [ZimFile]()
     private var onDeviceZimFilesPipeline: AnyCancellable? = nil
     
     init() {
@@ -27,7 +27,7 @@ class ZimFilesViewModel: ObservableObject {
                 .map { Array($0) }
                 .receive(on: DispatchQueue.main)
                 .catch { _ in Just([]) }
-                .assign(to: \.onDeviceZimFiles, on: self)
+                .assign(to: \.onDevice, on: self)
         } catch { }
     }
     

@@ -52,7 +52,7 @@ struct HomeView: View {
                     Text("On Device").font(.title2).fontWeight(.bold)
                     Spacer()
                 }.padding(.leading, 10)) {
-                    ForEach(zimFilesViewModel.onDeviceZimFiles, id: \.id) { zimFile in
+                    ForEach(zimFilesViewModel.onDevice, id: \.id) { zimFile in
                         ZimFileCell(zimFile) {
                             sceneViewModel.loadMainPage(zimFile: zimFile)
                         }
