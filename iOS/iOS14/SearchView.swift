@@ -29,26 +29,28 @@ struct SearchView: View {
                         filter
                         Divider()
                     }.frame(width: max(340, geometry.size.width * 0.35))
-                    if searchViewModel.isInProgress {
-                        Text("In Progress")
-                    } else if searchViewModel.searchText.isEmpty {
+                    switch searchViewModel.content {
+                    case .initial:
                         noSearchText
-                    } else if searchViewModel.results.isEmpty {
-                        noResult
-                    } else {
+                    case .inProgress:
+                        Text("In Progress")
+                    case .results:
                         results
+                    case .noResult:
+                        noResult
                     }
                 }
             }
         } else {
-            if searchViewModel.isInProgress {
-                Text("In Progress")
-            } else if searchViewModel.searchText.isEmpty {
+            switch searchViewModel.content {
+            case .initial:
                 filter
-            } else if searchViewModel.results.isEmpty {
-                noResult
-            } else {
+            case .inProgress:
+                Text("In Progress")
+            case .results:
                 results
+            case .noResult:
+                noResult
             }
         }
     }

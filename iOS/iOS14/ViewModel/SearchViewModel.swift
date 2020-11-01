@@ -6,8 +6,14 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
+import Combine
 import SwiftUI
 import RealmSwift
+
+@available(iOS 14.0, *)
+enum SearchViewContent {
+    case initial, inProgress, results, noResult
+}
 
 @available(iOS 14.0, *)
 class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
@@ -20,13 +26,15 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
             return database.objects(ZimFile.self).filter(predicate)
         } catch { return nil }
     }()
+    private let animation = Animation.easeInOut(duration: 0.05)
+    @Published private var rawSearchText = ""
+    private var debouncer: AnyCancellable?
     
     let searchBar = UISearchBar()
     @Published private(set) var isActive = false
-    @Published private(set) var isInProgress = false
-    @Published private(set) var searchText = ""
+    @Published private(set) var content: SearchViewContent = .initial
     @Published private(set) var results = [SearchResult]()
-    
+
     override init() {
         super.init()
         searchBar.autocorrectionType = .no
@@ -34,41 +42,54 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
         searchBar.delegate = self
         searchBar.placeholder = "Search"
         searchBar.searchBarStyle = .minimal
+        
+        self.debouncer = self.$rawSearchText
+            .debounce(for: .milliseconds(100), scheduler: RunLoop.main)
+            .removeDuplicates { $0 == $1 }
+            .sink { self.search($0) }
+    }
+    
+    private func search(_ text: String) {
+        searchQueue.cancelAllOperations()
+        if text.isEmpty {
+            withAnimation(animation) { content = .initial }
+        } else {
+            withAnimation(animation) { content = .inProgress }
+            let zimFileIDs: Set<String> = {
+                guard let result = zimFiles else { return Set() }
+                return Set(result.map({ $0.id }))
+            }()
+            let operation = SearchOperation(searchText: text, zimFileIDs: zimFileIDs)
+            operation.completionBlock = { [weak self] in
+                guard !operation.isCancelled else { return }
+                DispatchQueue.main.sync {
+                    withAnimation(self?.animation ?? Animation.default)  {
+                        self?.results = operation.results
+                        self?.content = operation.results.isEmpty ? .noResult : .results
+                    }
+                }
+            }
+            searchQueue.addOperation(operation)
+        }
     }
     
     // MARK: - UISearchBarDelegate
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        withAnimation {
+        withAnimation(animation)  {
             isActive = true
         }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard isActive else { return }
-        isInProgress = true
-        self.searchText = searchText
-        let zimFileIDs: Set<String> = {
-            guard let result = zimFiles else { return Set() }
-            return Set(result.map({ $0.id }))
-        }()
-        searchQueue.cancelAllOperations()
-        let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
-        operation.completionBlock = { [weak self] in
-            guard !operation.isCancelled else { return }
-            DispatchQueue.main.sync {
-                self?.results = operation.results
-                self?.isInProgress = false
-            }
-        }
-        searchQueue.addOperation(operation)
+        self.rawSearchText = searchText
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        withAnimation {
+        searchQueue.cancelAllOperations()
+        withAnimation(animation)  {
             isActive = false
-            isInProgress = false
-            searchText = ""
+            content = .initial
             results = []
             searchBar.endEditing(true)
             searchBar.text = nil
