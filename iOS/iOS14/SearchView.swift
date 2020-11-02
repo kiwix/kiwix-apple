@@ -13,6 +13,7 @@ import RealmSwift
 @available(iOS 14.0, *)
 struct SearchView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @EnvironmentObject var sceneViewModel: SceneViewModel
     @EnvironmentObject var searchViewModel: SearchViewModel
     @EnvironmentObject var zimFilesViewModel: ZimFilesViewModel
     
@@ -101,12 +102,17 @@ struct SearchView: View {
     private var results: some View {
         List{
             ForEach(searchViewModel.results, id: \.hashValue) { result in
-                HStack(alignment: result.snippet == nil ? .center : .top) {
-                    Favicon(zimFile: zimFilesViewModel.onDevice.first(where: {$0.id == result.zimFileID}))
-                    VStack(alignment: .leading) {
-                        Text(result.title).font(.headline).lineLimit(1)
-                        if let snippet = result.snippet {
-                            Text(snippet.string).font(.footnote).lineLimit(4)
+                Button {
+                    sceneViewModel.load(url: result.url)
+                    searchViewModel.cancelSearch()
+                } label: {
+                    HStack(alignment: result.snippet == nil ? .center : .top) {
+                        Favicon(zimFile: zimFilesViewModel.onDevice.first(where: {$0.id == result.zimFileID}))
+                        VStack(alignment: .leading) {
+                            Text(result.title).font(.headline).lineLimit(1)
+                            if let snippet = result.snippet {
+                                Text(snippet.string).font(.footnote).lineLimit(4)
+                            }
                         }
                     }
                 }

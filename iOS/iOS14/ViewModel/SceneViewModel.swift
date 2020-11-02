@@ -46,12 +46,13 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         webView.goForward()
     }
     
+    func load(url: URL) {
+        webView.load(URLRequest(url: url))
+    }
+    
     func loadMainPage(zimFile: ZimFile) {
         guard let mainPageURL = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFile.id) else { return }
-        if contentDisplayMode == .homeView {
-            withAnimation(.easeIn(duration: 0.1)) { contentDisplayMode = .transitionView }
-        }
-        webView.load(URLRequest(url: mainPageURL))
+        load(url: mainPageURL)
     }
     
     func houseButtonTapped() {
@@ -71,6 +72,9 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
                 decisionHandler(.cancel)
                 webView.load(URLRequest(url: redirectedURL))
             } else {
+                if contentDisplayMode == .homeView {
+                    withAnimation(.easeIn(duration: 0.1)) { contentDisplayMode = .transitionView }
+                }
                 decisionHandler(.allow)
             }
         } else if url.scheme == "http" || url.scheme == "https" {

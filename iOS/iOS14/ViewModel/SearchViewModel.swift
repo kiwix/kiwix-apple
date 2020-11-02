@@ -26,7 +26,7 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
             return database.objects(ZimFile.self).filter(predicate)
         } catch { return nil }
     }()
-    var zimFilesChangePipeline: AnyCancellable?
+    private var zimFilesChangePipeline: AnyCancellable?
     
     @Published private var rawSearchText = ""
     private var debouncer: AnyCancellable?
@@ -53,6 +53,17 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
             receiveCompletion: { _ in },
             receiveValue: { results in self.search(self.rawSearchText) }
         )
+    }
+    
+    func cancelSearch() {
+        searchQueue.cancelAllOperations()
+        withAnimation(animation)  {
+            isActive = false
+            content = .initial
+            results = []
+            searchBar.endEditing(true)
+            searchBar.text = nil
+        }
     }
     
     private func search(_ text: String) {
@@ -89,16 +100,5 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.rawSearchText = searchText
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchQueue.cancelAllOperations()
-        withAnimation(animation)  {
-            isActive = false
-            content = .initial
-            results = []
-            searchBar.endEditing(true)
-            searchBar.text = nil
-        }
     }
 }

@@ -67,7 +67,7 @@ struct SearchCancelButton: View {
     
     var body: some View {
         Button {
-            searchViewModel.searchBar.delegate?.searchBarCancelButtonClicked?(searchViewModel.searchBar)
+            searchViewModel.cancelSearch()
         } label: {
             Text("Cancel").fontWeight(.regular)
         }
