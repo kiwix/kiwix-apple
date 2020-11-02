@@ -47,6 +47,9 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     }
     
     func load(url: URL) {
+        if contentDisplayMode == .homeView {
+            withAnimation(.easeIn(duration: 0.1)) { contentDisplayMode = .transitionView }
+        }
         webView.load(URLRequest(url: url))
     }
     
@@ -72,9 +75,6 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
                 decisionHandler(.cancel)
                 webView.load(URLRequest(url: redirectedURL))
             } else {
-                if contentDisplayMode == .homeView {
-                    withAnimation(.easeIn(duration: 0.1)) { contentDisplayMode = .transitionView }
-                }
                 decisionHandler(.allow)
             }
         } else if url.scheme == "http" || url.scheme == "https" {
