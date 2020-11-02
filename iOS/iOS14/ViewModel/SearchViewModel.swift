@@ -26,11 +26,13 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
             return database.objects(ZimFile.self).filter(predicate)
         } catch { return nil }
     }()
-    private let animation = Animation.easeInOut(duration: 0.05)
+    var zimFilesChangePipeline: AnyCancellable?
+    
     @Published private var rawSearchText = ""
     private var debouncer: AnyCancellable?
     
     let searchBar = UISearchBar()
+    private let animation = Animation.easeInOut(duration: 0.05)
     @Published private(set) var isActive = false
     @Published private(set) var content: SearchViewContent = .initial
     @Published private(set) var results = [SearchResult]()
@@ -43,10 +45,14 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
         searchBar.placeholder = "Search"
         searchBar.searchBarStyle = .minimal
         
-        self.debouncer = self.$rawSearchText
+        self.debouncer = $rawSearchText
             .debounce(for: .milliseconds(100), scheduler: RunLoop.main)
             .removeDuplicates { $0 == $1 }
             .sink { self.search($0) }
+        self.zimFilesChangePipeline = zimFiles?.collectionPublisher.sink(
+            receiveCompletion: { _ in },
+            receiveValue: { results in self.search(self.rawSearchText) }
+        )
     }
     
     private func search(_ text: String) {
