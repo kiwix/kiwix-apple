@@ -34,34 +34,6 @@ struct RoundedRectButton: View {
 }
 
 @available(iOS 14.0, *)
-struct BarButtonModifier: ViewModifier {
-    @Binding var isPushed: Bool
-    let imagePadding: CGFloat
-    
-    init(isPushed: Binding<Bool>? = nil, imagePadding: CGFloat = 10) {
-        self._isPushed = isPushed ?? .constant(false)
-        self.imagePadding = imagePadding
-    }
-    
-    private func image(_ content: Content) -> some View {
-        content.font(Font.body.weight(.regular)).imageScale(.large).padding(imagePadding)
-    }
-    
-    func body(content: Content) -> some View {
-        return ZStack {
-            if isPushed {
-                Color(.systemBlue)
-                    .aspectRatio(1, contentMode: .fit)
-                    .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
-                image(content).foregroundColor(Color(.systemBackground))
-            } else {
-                image(content)
-            }
-        }
-    }
-}
-
-@available(iOS 14.0, *)
 struct SearchCancelButton: View {
     @EnvironmentObject var searchViewModel: SearchViewModel
     
@@ -110,7 +82,6 @@ struct BookmarkArtilesButton: View {
         } label: {
             Image(systemName: "bookmark")
         }
-        .modifier(BarButtonModifier(imagePadding: 5))
     }
 }
 
@@ -165,16 +136,18 @@ struct HomeButton: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
 
     var body: some View {
-        let isPushed = Binding<Bool>(
-            get: { sceneViewModel.contentDisplayMode == .homeView },
-            set: { _ in }
-        )
         Button {
             sceneViewModel.houseButtonTapped()
         } label: {
-            Image(systemName: "house")
-        }
-        .modifier(BarButtonModifier(isPushed: isPushed, imagePadding: 5))
-        .disabled(sceneViewModel.currentArticleURL == nil)
+            ZStack {
+                if sceneViewModel.contentDisplayMode == .homeView {
+                    Color(sceneViewModel.currentArticleURL == nil ? .systemGray3 : .systemBlue)
+                        .aspectRatio(1, contentMode: .fit)
+                        .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
+                }
+                Image(systemName: "house").imageScale(.large).padding(5)
+                    .foregroundColor(sceneViewModel.contentDisplayMode == .homeView ? Color(.systemBackground) : nil)
+            }
+        }.disabled(sceneViewModel.currentArticleURL == nil)
     }
 }
