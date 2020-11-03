@@ -129,7 +129,7 @@ struct SearchView: View {
                         .foregroundColor(Color(.secondarySystemFill))
                     VStack(alignment: .leading) {
                         Text(String(repeating: "Title", count: 4)).font(.headline).lineLimit(1)
-                        Text(String(repeating: "Snippet", count: 35)).font(.footnote).lineLimit(4)
+                        Text(String(repeating: "Snippet", count: 40)).font(.footnote).lineLimit(4)
                     }
                 }
             }
