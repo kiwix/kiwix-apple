@@ -133,6 +133,8 @@ struct SearchView: View {
                     }
                 }
             }
-        }.redacted(reason: .placeholder)
+        }
+        .redacted(reason: .placeholder)
+        .disabled(true)
     }
 }
