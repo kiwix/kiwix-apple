@@ -84,7 +84,6 @@ struct GoBackButton: View {
         } label: {
             Image(systemName: "chevron.left")
         }
-        .modifier(BarButtonModifier())
         .disabled(!sceneViewModel.canGoBack || sceneViewModel.contentDisplayMode != .webView)
     }
 }
@@ -99,7 +98,6 @@ struct GoForwardButton: View {
         } label: {
             Image(systemName: "chevron.right")
         }
-        .modifier(BarButtonModifier())
         .disabled(!sceneViewModel.canGoForward || sceneViewModel.contentDisplayMode != .webView)
     }
 }
@@ -124,7 +122,6 @@ struct RecentArticlesButton: View {
         } label: {
             Image(systemName: "clock.arrow.circlepath")
         }
-        .modifier(BarButtonModifier(imagePadding: 5))
     }
 }
 
@@ -136,7 +133,6 @@ struct RandomArticlesButton: View {
         } label: {
             Image(systemName: "die.face.5")
         }
-        .modifier(BarButtonModifier(imagePadding: 5))
     }
 }
 
@@ -149,7 +145,6 @@ struct TableOfContentsButton: View {
         } label: {
             Image(systemName: "list.bullet")
         }
-        .modifier(BarButtonModifier(imagePadding: 5))
         .popover(isPresented: self.$showPopover, arrowEdge: .bottom) { Text("Popover") }
     }
 }
@@ -162,7 +157,6 @@ struct MapButton: View {
         } label: {
             Image(systemName: "map")
         }
-        .modifier(BarButtonModifier(imagePadding: 5))
     }
 }
 

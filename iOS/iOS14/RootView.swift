@@ -68,7 +68,7 @@ struct RootView: View {
         case (_, true):
             content.toolbar { ToolbarItem(placement: .navigationBarTrailing) { SearchCancelButton() } }
         case (.regular, false):
-            content.navigationBarItems(leading: navigationBarLeadingView, trailing: navigationBarTrailingView)
+            content.toolbar { NavigationBarContent() }
         case (.compact, false):
             content.toolbar { BottomBarContent() }
         default:
@@ -112,6 +112,20 @@ struct RootView: View {
     
     private func hideSideBar() {
         withAnimation(sidebarAnimation) { showSidebar = false }
+    }
+}
+
+@available(iOS 14.0, *)
+struct NavigationBarContent: ToolbarContent {
+    var body: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) { GoBackButton() }
+        ToolbarItem(placement: .navigationBarLeading) { GoForwardButton() }
+        ToolbarItem(placement: .navigationBarLeading) { BookmarkArtilesButton() }
+        ToolbarItem(placement: .navigationBarLeading) { RecentArticlesButton() }
+        ToolbarItem(placement: .navigationBarTrailing) { RandomArticlesButton() }
+        ToolbarItem(placement: .navigationBarTrailing) { TableOfContentsButton() }
+        ToolbarItem(placement: .navigationBarTrailing) { MapButton() }
+        ToolbarItem(placement: .navigationBarTrailing) { ZStack { Spacer(); HomeButton() } }
     }
 }
 
