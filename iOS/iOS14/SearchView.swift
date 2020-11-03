@@ -34,7 +34,7 @@ struct SearchView: View {
                     case .initial:
                         noSearchText
                     case .inProgress:
-                        Text("In Progress")
+                        inProgress
                     case .results:
                         results
                     case .noResult:
@@ -47,7 +47,7 @@ struct SearchView: View {
             case .initial:
                 filter
             case .inProgress:
-                Text("In Progress")
+                inProgress
             case .results:
                 results
             case .noResult:
@@ -118,5 +118,21 @@ struct SearchView: View {
                 }
             }
         }
+    }
+    
+    private var inProgress: some View {
+        List {
+            ForEach(0..<5) { _ in
+                HStack(alignment: .top) {
+                    RoundedRectangle(cornerRadius: 4, style: .continuous)
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(Color(.secondarySystemFill))
+                    VStack(alignment: .leading) {
+                        Text(String(repeating: "Title", count: 4)).font(.headline).lineLimit(1)
+                        Text(String(repeating: "Snippet", count: 35)).font(.footnote).lineLimit(4)
+                    }
+                }
+            }
+        }.redacted(reason: .placeholder)
     }
 }
