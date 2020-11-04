@@ -111,19 +111,17 @@ struct SearchView: View {
     }
     
     private var results: some View {
-        List{
-            ForEach(searchViewModel.results, id: \.hashValue) { result in
-                Button {
-                    sceneViewModel.load(url: result.url)
-                    searchViewModel.cancelSearch()
-                } label: {
-                    HStack(alignment: result.snippet == nil ? .center : .top) {
-                        Favicon(zimFile: zimFilesViewModel.onDevice.first(where: {$0.id == result.zimFileID}))
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(result.title).font(.headline).lineLimit(1)
-                            if let snippet = result.snippet {
-                                Text(snippet.string).font(.footnote).lineLimit(4)
-                            }
+        List(searchViewModel.results, id: \.hashValue) { result in
+            Button {
+                sceneViewModel.load(url: result.url)
+                searchViewModel.cancelSearch()
+            } label: {
+                HStack(alignment: result.snippet == nil ? .center : .top) {
+                    Favicon(zimFile: zimFilesViewModel.onDevice.first(where: {$0.id == result.zimFileID}))
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(result.title).font(.headline).lineLimit(1)
+                        if let snippet = result.snippet {
+                            Text(snippet.string).font(.footnote).lineLimit(4)
                         }
                     }
                 }
@@ -132,16 +130,14 @@ struct SearchView: View {
     }
     
     private var inProgress: some View {
-        List {
-            ForEach(0..<5) { _ in
-                HStack(alignment: .top) {
-                    RoundedRectangle(cornerRadius: 4, style: .continuous)
-                        .frame(width: 24, height: 24)
-                        .foregroundColor(Color(.secondarySystemFill))
-                    VStack(alignment: .leading) {
-                        Text(String(repeating: "Title", count: 4)).font(.headline).lineLimit(1)
-                        Text(String(repeating: "Snippet", count: 40)).font(.footnote).lineLimit(4)
-                    }
+        List(0..<5) { _ in
+            HStack(alignment: .top) {
+                RoundedRectangle(cornerRadius: 4, style: .continuous)
+                    .frame(width: 24, height: 24)
+                    .foregroundColor(Color(.secondarySystemFill))
+                VStack(alignment: .leading) {
+                    Text(String(repeating: "Title", count: 4)).font(.headline).lineLimit(1)
+                    Text(String(repeating: "Snippet", count: 40)).font(.footnote).lineLimit(4)
                 }
             }
         }
