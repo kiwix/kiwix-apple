@@ -61,21 +61,20 @@ struct SearchView: View {
             let horizontalPadding: CGFloat = geometry.size.width > 400 ? 20 : 16
             ScrollView {
                 LazyVStack {
-                    Section(header: SectionHeader(text: "Recent Search").padding(.horizontal, horizontalPadding)) {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            LazyHStack {
-                                ForEach(0..<20) { index in
-                                    RecentSearchButton(text: "test \(Int.random(in: 0...100))")
-                                }
-                            }.padding(.horizontal, horizontalPadding)
-                        }.padding(.top, -4)
-                    }
-                    Section(header: SectionHeader(text: "Search Filter")
-                    ) {
-                        ForEach(zimFilesViewModel.onDevice, id: \.id) { zimFile in
-                            ZimFileCell(zimFile, withIncludedInSearchIcon: true) {
-                                zimFilesViewModel.toggleIncludedInSearch(zimFileID: zimFile.id)
+                    SectionHeader(text: "Recent Search").padding(.horizontal, horizontalPadding)
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        LazyHStack {
+                            ForEach(0..<20) { index in
+                                RecentSearchButton(text: "test \(Int.random(in: 0...100))")
                             }
+                        }.padding(.horizontal, horizontalPadding)
+                    }
+                    .padding(.top, -4)
+                    .padding(.bottom, 8)
+                    SectionHeader(text: "Search Filter").padding(.horizontal, horizontalPadding)
+                    ForEach(zimFilesViewModel.onDevice, id: \.id) { zimFile in
+                        ZimFileCell(zimFile, withIncludedInSearchIcon: true) {
+                            zimFilesViewModel.toggleIncludedInSearch(zimFileID: zimFile.id)
                         }
                     }.padding(.horizontal, horizontalPadding)
                 }.padding(.vertical, 16)
@@ -130,7 +129,7 @@ struct SearchView: View {
     }
     
     private var inProgress: some View {
-        List(0..<5) { _ in
+        List(0..<10) { _ in
             HStack(alignment: .top) {
                 RoundedRectangle(cornerRadius: 4, style: .continuous)
                     .frame(width: 24, height: 24)
@@ -152,9 +151,9 @@ fileprivate struct SectionHeader : View {
     
     var body: some View {
         HStack {
-            Text(text).font(.title3).fontWeight(.semibold)
+            Text(text).font(.body).fontWeight(.semibold)
             Spacer()
-        }.padding(.leading, 10)
+        }
     }
 }
 
