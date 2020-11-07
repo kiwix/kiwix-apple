@@ -115,4 +115,8 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.rawSearchText = searchText
     }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        search(rawSearchText)
+    }
 }
