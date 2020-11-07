@@ -115,6 +115,7 @@ struct SearchView: View {
             Button {
                 sceneViewModel.load(url: result.url)
                 searchViewModel.cancelSearch()
+                searchViewModel.updateRecentSearchText()
             } label: {
                 HStack(alignment: result.snippet == nil ? .center : .top) {
                     Favicon(zimFile: zimFilesViewModel.onDevice.first(where: {$0.id == result.zimFileID}))
@@ -167,7 +168,6 @@ fileprivate struct RecentSearchButton : View {
         Button  {
             searchViewModel.searchBar.text = text
             searchViewModel.rawSearchText = text
-//            searchViewModel.searchBar.delegate?.searchBar?(searchViewModel.searchBar, textDidChange: text)
         } label: {
             Text(text)
                 .font(.footnote)

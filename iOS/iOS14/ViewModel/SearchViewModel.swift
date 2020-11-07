@@ -28,10 +28,11 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
     }()
     private var zimFilesChangePipeline: AnyCancellable?
     
-//    @Published var searchText = ""
     @Published var rawSearchText = ""
     private var debouncer: AnyCancellable?
+    
     @Published private(set) var recentSearchTexts: [String]
+    private var monitor: AnyCancellable?
     
     let searchBar = UISearchBar()
     private let animation = Animation.easeInOut(duration: 0.05)
@@ -56,6 +57,9 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
             .debounce(for: .milliseconds(100), scheduler: RunLoop.main)
             .removeDuplicates { $0 == $1 }
             .sink { self.search($0) }
+        self.monitor = UserDefaults.standard
+            .publisher(for: \.recentSearchTexts)
+            .assign(to: \.recentSearchTexts, on: self)
     }
     
     func cancelSearch() {
@@ -69,7 +73,14 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
         }
     }
     
-    func search(_ text: String) {
+    func updateRecentSearchText() {
+        var searchTexts = recentSearchTexts
+        searchTexts.removeAll { $0 == rawSearchText }
+        searchTexts.insert(rawSearchText, at: 0)
+        UserDefaults.standard.setValue(Array(searchTexts.prefix(20)), forKey: "recentSearchTexts")
+    }
+    
+    private func search(_ text: String) {
         searchQueue.cancelAllOperations()
         if text.isEmpty {
             withAnimation(animation) { content = .initial }
