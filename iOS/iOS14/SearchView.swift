@@ -70,7 +70,7 @@ struct SearchView: View {
                             }
                         }.padding(.horizontal, horizontalPadding)
                     }
-                    .padding(.top, -4)
+                    .padding(.top, -2)
                     .padding(.bottom, 8)
                     SectionHeader(text: "Search Filter").padding(.horizontal, horizontalPadding)
                     ForEach(zimFilesViewModel.onDevice, id: \.id) { zimFile in
