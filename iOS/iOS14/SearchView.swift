@@ -8,6 +8,7 @@
 
 import Combine
 import SwiftUI
+import Defaults
 import RealmSwift
 
 @available(iOS 14.0, *)
@@ -64,8 +65,8 @@ struct SearchView: View {
                     SectionHeader(text: "Recent Search").padding(.horizontal, horizontalPadding)
                     ScrollView(.horizontal, showsIndicators: false) {
                         LazyHStack {
-                            ForEach(0..<20) { index in
-                                RecentSearchButton(text: "test \(Int.random(in: 0...100))")
+                            ForEach(searchViewModel.recentSearchTexts, id: \.hash) { searchText in
+                                RecentSearchButton(text: searchText)
                             }
                         }.padding(.horizontal, horizontalPadding)
                     }
@@ -159,11 +160,14 @@ fileprivate struct SectionHeader : View {
 
 @available(iOS 14.0, *)
 fileprivate struct RecentSearchButton : View {
+    @EnvironmentObject var searchViewModel: SearchViewModel
     let text: String
     
     var body: some View {
         Button  {
-            
+            searchViewModel.searchBar.text = text
+            searchViewModel.rawSearchText = text
+//            searchViewModel.searchBar.delegate?.searchBar?(searchViewModel.searchBar, textDidChange: text)
         } label: {
             Text(text)
                 .font(.footnote)

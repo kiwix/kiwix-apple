@@ -28,8 +28,10 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
     }()
     private var zimFilesChangePipeline: AnyCancellable?
     
-    @Published private var rawSearchText = ""
+//    @Published var searchText = ""
+    @Published var rawSearchText = ""
     private var debouncer: AnyCancellable?
+    @Published private(set) var recentSearchTexts: [String]
     
     let searchBar = UISearchBar()
     private let animation = Animation.easeInOut(duration: 0.05)
@@ -38,6 +40,7 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
     @Published private(set) var results = [SearchResult]()
 
     override init() {
+        self.recentSearchTexts = UserDefaults.standard.stringArray(forKey: "recentSearchTexts") ?? [String]()
         super.init()
         searchBar.autocorrectionType = .no
         searchBar.autocapitalizationType = .none
@@ -45,14 +48,14 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
         searchBar.placeholder = "Search"
         searchBar.searchBarStyle = .minimal
         
-        self.debouncer = $rawSearchText
-            .debounce(for: .milliseconds(100), scheduler: RunLoop.main)
-            .removeDuplicates { $0 == $1 }
-            .sink { self.search($0) }
         self.zimFilesChangePipeline = zimFiles?.collectionPublisher.sink(
             receiveCompletion: { _ in },
             receiveValue: { results in self.search(self.rawSearchText) }
         )
+        self.debouncer = $rawSearchText
+            .debounce(for: .milliseconds(100), scheduler: RunLoop.main)
+            .removeDuplicates { $0 == $1 }
+            .sink { self.search($0) }
     }
     
     func cancelSearch() {
@@ -66,7 +69,7 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
         }
     }
     
-    private func search(_ text: String) {
+    func search(_ text: String) {
         searchQueue.cancelAllOperations()
         if text.isEmpty {
             withAnimation(animation) { content = .initial }
