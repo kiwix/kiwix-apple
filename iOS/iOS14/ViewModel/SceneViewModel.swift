@@ -15,30 +15,23 @@ enum ContentDisplayMode {
 }
 
 @available(iOS 14.0, *)
-class SceneViewModel: NSObject, ObservableObject, UISearchBarDelegate, WKNavigationDelegate {
-    let searchBar = UISearchBar()
+class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
         config.mediaTypesRequiringUserActionForPlayback = []
         return WKWebView(frame: .zero, configuration: config)
     }()
-    private let searchQueue = SearchQueue()
     
     @Published private(set) var contentDisplayMode = ContentDisplayMode.homeView
-    @Published private(set) var isSearchActive = false
-    @Published private(set) var searchText = ""
     @Published private(set) var canGoBack = false
     @Published private(set) var canGoForward = false
     @Published private(set) var currentArticleURL: URL?
     
+    @Published var currentExternalURL: URL?
+    
     override init() {
         super.init()
-        searchBar.autocorrectionType = .no
-        searchBar.autocapitalizationType = .none
-        searchBar.delegate = self
-        searchBar.placeholder = "Search"
-        searchBar.searchBarStyle = .minimal
         webView.navigationDelegate = self
         webView.allowsBackForwardNavigationGestures = true
     }
@@ -53,12 +46,16 @@ class SceneViewModel: NSObject, ObservableObject, UISearchBarDelegate, WKNavigat
         webView.goForward()
     }
     
-    func loadMainPage(zimFile: ZimFile) {
-        guard let mainPageURL = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFile.id) else { return }
+    func load(url: URL) {
         if contentDisplayMode == .homeView {
             withAnimation(.easeIn(duration: 0.1)) { contentDisplayMode = .transitionView }
         }
-        webView.load(URLRequest(url: mainPageURL))
+        webView.load(URLRequest(url: url))
+    }
+    
+    func loadMainPage(zimFile: ZimFile) {
+        guard let mainPageURL = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFile.id) else { return }
+        load(url: mainPageURL)
     }
     
     func houseButtonTapped() {
@@ -67,36 +64,38 @@ class SceneViewModel: NSObject, ObservableObject, UISearchBarDelegate, WKNavigat
         }
     }
     
-    // MARK: - UISearchBarDelegate
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        withAnimation {
-            isSearchActive = true
-        }
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self.searchText = searchText
-//        searchQueue.cancelAllOperations()
-//        let operation = SearchOperation(searchText: searchText, zimFileIDs: Set())
-//        operation.completionBlock = { [weak self] in
-//            guard !operation.isCancelled else { return }
-//            DispatchQueue.main.sync {
-//                print("search finished")
-//            }
-//        }
-//        searchQueue.addOperation(operation)
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        withAnimation {
-            isSearchActive = false
-            searchBar.endEditing(true)
-            searchBar.text = nil
-        }
-    }
-    
     // MARK: - WKNavigationDelegate
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
+        if url.isKiwixURL {
+            guard let zimFileID = url.host else { decisionHandler(.cancel); return }
+            if let redirectedPath = ZimMultiReader.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
+                let redirectedURL = URL(zimFileID: zimFileID, contentPath: redirectedPath) {
+                decisionHandler(.cancel)
+                webView.load(URLRequest(url: redirectedURL))
+            } else {
+                decisionHandler(.allow)
+            }
+        } else if url.scheme == "http" || url.scheme == "https" {
+            currentExternalURL = url
+//            let policy = Defaults[.externalLinkLoadingPolicy]
+//            if policy == .alwaysLoad {
+//                let controller = SFSafariViewController(url: url)
+//                self.present(controller, animated: true, completion: nil)
+//            } else {
+//                present(UIAlertController.externalLink(policy: policy, action: {
+//                    let controller = SFSafariViewController(url: url)
+//                    self.present(controller, animated: true, completion: nil)
+//                }), animated: true)
+//            }
+            decisionHandler(.cancel)
+        } else if url.scheme == "geo" {
+            decisionHandler(.cancel)
+        } else {
+            decisionHandler(.cancel)
+        }
+    }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if contentDisplayMode == .transitionView {
@@ -105,5 +104,16 @@ class SceneViewModel: NSObject, ObservableObject, UISearchBarDelegate, WKNavigat
         canGoBack = webView.canGoBack
         canGoForward = webView.canGoForward
         currentArticleURL = webView.url
+        
+        if let url = Bundle.main.url(forResource: "Inject", withExtension: "js"),
+            let javascript = try? String(contentsOf: url) {
+            webView.evaluateJavaScript(javascript)
+        }
+    }
+}
+
+extension URL: Identifiable {
+    public var id: String {
+        self.absoluteString
     }
 }

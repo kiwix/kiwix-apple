@@ -69,3 +69,9 @@ extension Defaults {
         set { key.suite.set(newValue.rawValue, forKey: key.name) }
     }
 }
+
+extension UserDefaults {
+    @objc var recentSearchTexts: [String] {
+        get { return stringArray(forKey: "recentSearchTexts") ?? [] }
+    }
+}

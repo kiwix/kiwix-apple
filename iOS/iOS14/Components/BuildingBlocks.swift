@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import SafariServices
 
 @available(iOS 14.0, *)
 extension View {
@@ -21,11 +22,11 @@ extension View {
 
 @available(iOS 14.0, *)
 struct Favicon: View {
-    let zimFile: ZimFile
+    let zimFile: ZimFile?
     
     var body: some View {
         let image: Image = {
-            if let data = zimFile.faviconData, let image = UIImage(data: data) {
+            if let data = zimFile?.faviconData, let image = UIImage(data: data) {
                 return Image(uiImage: image)
             } else {
                 return Image("GenericZimFile")
@@ -38,4 +39,15 @@ struct Favicon: View {
             .clipShape(shape)
             .overlay(shape.stroke(Color(.white).opacity(0.9), lineWidth: 1))
     }
+}
+
+@available(iOS 14.0, *)
+struct SafariView: UIViewControllerRepresentable {
+    let url: URL
+
+    func makeUIViewController(context: UIViewControllerRepresentableContext<SafariView>) -> SFSafariViewController {
+        return SFSafariViewController(url: url)
+    }
+    
+    func updateUIViewController(_ uiViewController: SFSafariViewController, context: Context) { }
 }

@@ -34,40 +34,12 @@ struct RoundedRectButton: View {
 }
 
 @available(iOS 14.0, *)
-struct BarButtonModifier: ViewModifier {
-    @Binding var isPushed: Bool
-    let imagePadding: CGFloat
-    
-    init(isPushed: Binding<Bool>? = nil, imagePadding: CGFloat = 10) {
-        self._isPushed = isPushed ?? .constant(false)
-        self.imagePadding = imagePadding
-    }
-    
-    private func image(_ content: Content) -> some View {
-        content.font(Font.body.weight(.regular)).imageScale(.large).padding(imagePadding)
-    }
-    
-    func body(content: Content) -> some View {
-        return ZStack {
-            if isPushed {
-                Color(.systemBlue)
-                    .aspectRatio(1, contentMode: .fit)
-                    .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
-                image(content).foregroundColor(Color(.systemBackground))
-            } else {
-                image(content)
-            }
-        }
-    }
-}
-
-@available(iOS 14.0, *)
 struct SearchCancelButton: View {
-    @EnvironmentObject var sceneViewModel: SceneViewModel
+    @EnvironmentObject var searchViewModel: SearchViewModel
     
     var body: some View {
         Button {
-            sceneViewModel.searchBar.delegate?.searchBarCancelButtonClicked?(sceneViewModel.searchBar)
+            searchViewModel.cancelSearch()
         } label: {
             Text("Cancel").fontWeight(.regular)
         }
@@ -84,7 +56,6 @@ struct GoBackButton: View {
         } label: {
             Image(systemName: "chevron.left")
         }
-        .modifier(BarButtonModifier())
         .disabled(!sceneViewModel.canGoBack || sceneViewModel.contentDisplayMode != .webView)
     }
 }
@@ -99,7 +70,6 @@ struct GoForwardButton: View {
         } label: {
             Image(systemName: "chevron.right")
         }
-        .modifier(BarButtonModifier())
         .disabled(!sceneViewModel.canGoForward || sceneViewModel.contentDisplayMode != .webView)
     }
 }
@@ -112,7 +82,6 @@ struct BookmarkArtilesButton: View {
         } label: {
             Image(systemName: "bookmark")
         }
-        .modifier(BarButtonModifier(imagePadding: 5))
     }
 }
 
@@ -124,7 +93,6 @@ struct RecentArticlesButton: View {
         } label: {
             Image(systemName: "clock.arrow.circlepath")
         }
-        .modifier(BarButtonModifier(imagePadding: 5))
     }
 }
 
@@ -136,19 +104,19 @@ struct RandomArticlesButton: View {
         } label: {
             Image(systemName: "die.face.5")
         }
-        .modifier(BarButtonModifier(imagePadding: 5))
     }
 }
 
 @available(iOS 14.0, *)
 struct TableOfContentsButton: View {
+    @State private var showPopover: Bool = false
     var body: some View {
         Button {
-            
+            showPopover = true
         } label: {
             Image(systemName: "list.bullet")
         }
-        .modifier(BarButtonModifier(imagePadding: 5))
+        .popover(isPresented: self.$showPopover, arrowEdge: .bottom) { Text("Popover") }
     }
 }
 
@@ -160,7 +128,6 @@ struct MapButton: View {
         } label: {
             Image(systemName: "map")
         }
-        .modifier(BarButtonModifier(imagePadding: 5))
     }
 }
 
@@ -169,16 +136,18 @@ struct HomeButton: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
 
     var body: some View {
-        let isPushed = Binding<Bool>(
-            get: { sceneViewModel.contentDisplayMode == .homeView },
-            set: { _ in }
-        )
         Button {
             sceneViewModel.houseButtonTapped()
         } label: {
-            Image(systemName: "house")
-        }
-        .modifier(BarButtonModifier(isPushed: isPushed, imagePadding: 5))
-        .disabled(sceneViewModel.currentArticleURL == nil)
+            ZStack {
+                if sceneViewModel.contentDisplayMode == .homeView {
+                    Color(sceneViewModel.currentArticleURL == nil ? .systemGray3 : .systemBlue)
+                        .aspectRatio(1, contentMode: .fit)
+                        .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
+                }
+                Image(systemName: "house").imageScale(.large).padding(5)
+                    .foregroundColor(sceneViewModel.contentDisplayMode == .homeView ? Color(.systemBackground) : nil)
+            }
+        }.disabled(sceneViewModel.currentArticleURL == nil)
     }
 }
