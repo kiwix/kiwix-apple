@@ -62,22 +62,23 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
             .assign(to: \.recentSearchTexts, on: self)
     }
     
+    func updateRecentSearchText() {
+        var searchTexts = recentSearchTexts
+        searchTexts.removeAll { $0 == rawSearchText }
+        searchTexts.insert(rawSearchText, at: 0)
+        UserDefaults.standard.setValue(Array(searchTexts.prefix(20)), forKey: "recentSearchTexts")
+    }
+    
     func cancelSearch() {
         searchQueue.cancelAllOperations()
         withAnimation(animation)  {
+            rawSearchText = ""
             isActive = false
             content = .initial
             results = []
             searchBar.endEditing(true)
             searchBar.text = nil
         }
-    }
-    
-    func updateRecentSearchText() {
-        var searchTexts = recentSearchTexts
-        searchTexts.removeAll { $0 == rawSearchText }
-        searchTexts.insert(rawSearchText, at: 0)
-        UserDefaults.standard.setValue(Array(searchTexts.prefix(20)), forKey: "recentSearchTexts")
     }
     
     private func search(_ text: String) {
