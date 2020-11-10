@@ -27,7 +27,7 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     @Published private(set) var canGoBack = false
     @Published private(set) var canGoForward = false
     @Published private(set) var currentArticleURL: URL?
-    @Published private(set) var currentArticleOutlines: [OutlineItem]?
+    @Published private(set) var currentArticleOutlineItems: [OutlineItem]?
     
     @Published var currentExternalURL: URL?
     
@@ -115,7 +115,7 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         webView.evaluateJavaScript(javascript)
         webView.evaluateJavaScript("outlines.getHeadingObjects()", completionHandler: { [weak self] (results, error) in
             guard let results = results as? [[String: Any]] else { return }
-            self?.currentArticleOutlines = results.compactMap({ OutlineItem(rawValue: $0) })
+            self?.currentArticleOutlineItems = results.compactMap({ OutlineItem(rawValue: $0) })
         })
     }
 }
