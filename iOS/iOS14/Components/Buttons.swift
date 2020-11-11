@@ -114,21 +114,17 @@ struct TableOfContentsButton: View {
     @State private var isPresented: Bool = false
     
     var body: some View {
+        button.sheet(isPresented: self.$isPresented) {
+            OutlineView(outlineItems: sceneViewModel.currentArticleOutlineItems, isPresented: $isPresented)
+        }
+    }
+    
+    var button: some View {
         Button {
             isPresented = true
         } label: {
             Image(systemName: "list.bullet")
         }
-        .sheet(isPresented: self.$isPresented) {
-            OutlineView(outlineItems: sceneViewModel.currentArticleOutlineItems, isPresented: $isPresented)
-        }
-//        .popover(isPresented: self.$showPopover, arrowEdge: .bottom) {
-//            NavigationView {
-//                List(0..<100) { index in
-//                    Text("Row \(index)")
-//                }
-//            }
-//        }
     }
 }
 
