@@ -109,14 +109,22 @@ struct RandomArticlesButton: View {
 
 @available(iOS 14.0, *)
 struct TableOfContentsButton: View {
-    @State private var showPopover: Bool = false
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    @State private var isPresented: Bool = false
+    
     var body: some View {
+        button.sheet(isPresented: self.$isPresented) {
+            OutlineView(outlineItems: sceneViewModel.currentArticleOutlineItems, isPresented: $isPresented)
+        }
+    }
+    
+    var button: some View {
         Button {
-            showPopover = true
+            isPresented = true
         } label: {
             Image(systemName: "list.bullet")
         }
-        .popover(isPresented: self.$showPopover, arrowEdge: .bottom) { Text("Popover") }
     }
 }
 

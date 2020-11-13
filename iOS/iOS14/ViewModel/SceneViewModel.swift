@@ -27,6 +27,7 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     @Published private(set) var canGoBack = false
     @Published private(set) var canGoForward = false
     @Published private(set) var currentArticleURL: URL?
+    @Published private(set) var currentArticleOutlineItems: [OutlineItem]?
     
     @Published var currentExternalURL: URL?
     
@@ -62,6 +63,10 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         withAnimation(Animation.easeInOut(duration: 0.2)) {
             contentDisplayMode = contentDisplayMode == .homeView ? .webView : .homeView
         }
+    }
+    
+    func scrollToOutlineItem(index: Int) {
+        webView.evaluateJavaScript("outlines.scrollToView(\(index))")
     }
     
     // MARK: - WKNavigationDelegate
@@ -105,10 +110,13 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         canGoForward = webView.canGoForward
         currentArticleURL = webView.url
         
-        if let url = Bundle.main.url(forResource: "Inject", withExtension: "js"),
-            let javascript = try? String(contentsOf: url) {
-            webView.evaluateJavaScript(javascript)
-        }
+        guard let url = Bundle.main.url(forResource: "Inject", withExtension: "js"),
+              let javascript = try? String(contentsOf: url) else { return }
+        webView.evaluateJavaScript(javascript)
+        webView.evaluateJavaScript("outlines.getHeadingObjects()", completionHandler: { [weak self] (results, error) in
+            guard let results = results as? [[String: Any]] else { return }
+            self?.currentArticleOutlineItems = results.compactMap({ OutlineItem(rawValue: $0) })
+        })
     }
 }
 
