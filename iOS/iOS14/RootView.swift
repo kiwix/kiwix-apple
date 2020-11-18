@@ -24,88 +24,30 @@ struct RootView: View {
     @State private var sidebarDisplayMode = SidebarDisplayMode.hidden
     @State private var showSidebar = false
     
-    private let sidebarAnimation = Animation.easeOut(duration: 0.2)
-    private let sidebarWidth: CGFloat = 320.0
-    
-    var content: some View {
-        ZStack {
-            if searchViewModel.isActive {
-                SearchView()
-            } else {
-                switch sceneViewModel.contentDisplayMode {
-                case .homeView:
-                    HomeView()
-                case .webView:
-                    WebView()
-                case .transitionView:
-                    Color(.systemBackground)
-                }
-            }
-        }
-        .sheet(item: $sceneViewModel.currentExternalURL, content: { url in
-            SafariView(url: url).ignoresSafeArea(edges: .bottom)
-        })
-    }
-    
     var body: some View {
-        switch (horizontalSizeClass, searchViewModel.isActive) {
-        case (_, true):
-            content.toolbar { ToolbarItem(placement: .navigationBarTrailing) { SearchCancelButton() } }
-        case (.regular, false):
-            content.toolbar { NavigationBarContent() }
-        case (.compact, false):
-            content.toolbar { BottomBarContent() }
+        switch (searchViewModel.isActive, horizontalSizeClass) {
+        case (true, _):
+            SearchView().toolbar { ToolbarItem(placement: .navigationBarTrailing) { SearchCancelButton() } }
+        case (false, .regular):
+            SplitView(
+                sidebarView: SidebarView().navigationBarHidden(true),
+                contentView: ContentView().navigationBarHidden(true)
+            ).toolbar { NavigationBarContent() }
+        case (false, .compact):
+            ContentView().toolbar { BottomBarContent() }
         default:
             EmptyView()
         }
     }
-    
-    var navigationBarLeadingView: some View {
-        HStack {
-            GoBackButton()
-            GoForwardButton()
-            BookmarkArtilesButton()
-            RecentArticlesButton()
-        }
-        .padding(.trailing, 16)
-    }
-    
-    var navigationBarTrailingView: some View {
-        HStack(spacing: 12) {
-            RandomArticlesButton()
-            TableOfContentsButton()
-            MapButton()
-            HomeButton()
-        }.padding(.leading, 16)
-    }
-    
-    
-    // MARK: - Button Actions
-    
-    private func showBookmark() {
-        if horizontalSizeClass == .regular {
-            withAnimation(sidebarAnimation) { showSidebar = true }
-        }
-    }
-    
-    private func showRecent() {
-        if horizontalSizeClass == .regular {
-            withAnimation(sidebarAnimation) { showSidebar = true }
-        }
-    }
-    
-    private func hideSideBar() {
-        withAnimation(sidebarAnimation) { showSidebar = false }
-    }
 }
 
 @available(iOS 14.0, *)
-struct SplitView: UIViewControllerRepresentable {
-    let sidebarView: SidebarView
-    let contentView: ContentView
+struct SplitView<S: View, C: View>: UIViewControllerRepresentable {
+    let sidebarView: S
+    let contentView: C
     
     func makeUIViewController(context: Context) -> UIViewController {
-        let controller = UISplitViewController()
+        let controller = UISplitViewController(style: .doubleColumn)
         controller.setViewController(UIHostingController(rootView: sidebarView), for: .primary)
         controller.setViewController(UIHostingController(rootView: contentView), for: .secondary)
         return controller
@@ -196,7 +138,16 @@ struct SidebarView: View {
 
 @available(iOS 14.0, *)
 struct ContentView: View {
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
     var body: some View {
-        Text("Content!")
+        switch sceneViewModel.contentDisplayMode {
+        case .homeView:
+            HomeView()
+        case .webView:
+            WebView()
+        case .transitionView:
+            Color(.systemBackground)
+        }
     }
 }
