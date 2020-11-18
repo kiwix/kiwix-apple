@@ -41,22 +41,6 @@ struct RootView: View {
                     Color(.systemBackground)
                 }
             }
-//            if horizontalSizeClass == .regular {
-//                Color(UIColor.black)
-//                    .edgesIgnoringSafeArea(.all)
-//                    .opacity(colorScheme == .dark ? 0.3 : 0.1)
-//                    .opacity(showSidebar ? 1.0 : 0.0)
-//                    .onTapGesture { hideSideBar() }
-//                HStack {
-//                    ZStack(alignment: .trailing) {
-//                        SidebarView()
-//                        Divider()
-//                    }
-//                    .frame(width: sidebarWidth)
-//                    .offset(x: showSidebar ? 0 : -sidebarWidth)
-//                    Spacer()
-//                }
-//            }
         }
         .sheet(item: $sceneViewModel.currentExternalURL, content: { url in
             SafariView(url: url).ignoresSafeArea(edges: .bottom)
@@ -113,6 +97,21 @@ struct RootView: View {
     private func hideSideBar() {
         withAnimation(sidebarAnimation) { showSidebar = false }
     }
+}
+
+@available(iOS 14.0, *)
+struct SplitView: UIViewControllerRepresentable {
+    let sidebarView: SidebarView
+    let contentView: ContentView
+    
+    func makeUIViewController(context: Context) -> UIViewController {
+        let controller = UISplitViewController()
+        controller.setViewController(UIHostingController(rootView: sidebarView), for: .primary)
+        controller.setViewController(UIHostingController(rootView: contentView), for: .secondary)
+        return controller
+    }
+    
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) { }
 }
 
 @available(iOS 14.0, *)
@@ -188,3 +187,16 @@ class RootController_iOS14: UIHostingController<AnyView> {
     }
 }
 
+@available(iOS 14.0, *)
+struct SidebarView: View {
+    var body: some View {
+        Text("Sidebar!")
+    }
+}
+
+@available(iOS 14.0, *)
+struct ContentView: View {
+    var body: some View {
+        Text("Content!")
+    }
+}
