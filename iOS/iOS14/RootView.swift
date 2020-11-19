@@ -8,7 +8,6 @@
 
 import SwiftUI
 import UIKit
-import WebKit
 
 @available(iOS 14.0, *)
 enum SidebarDisplayMode {
@@ -39,21 +38,6 @@ struct RootView: View {
             EmptyView()
         }
     }
-}
-
-@available(iOS 14.0, *)
-struct SplitView<S: View, C: View>: UIViewControllerRepresentable {
-    let sidebarView: S
-    let contentView: C
-    
-    func makeUIViewController(context: Context) -> UIViewController {
-        let controller = UISplitViewController(style: .doubleColumn)
-        controller.setViewController(UIHostingController(rootView: sidebarView), for: .primary)
-        controller.setViewController(UIHostingController(rootView: contentView), for: .secondary)
-        return controller
-    }
-    
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) { }
 }
 
 @available(iOS 14.0, *)
@@ -93,19 +77,6 @@ struct BottomBarContent: ToolbarContent {
                 HomeButton()
             }
         }
-    }
-}
-
-@available(iOS 14.0, *)
-struct WebView: UIViewRepresentable {
-    @EnvironmentObject var sceneViewModel: SceneViewModel
-    
-    func makeUIView(context: Context) -> WKWebView {
-        return sceneViewModel.webView
-    }
-
-    func updateUIView(_ uiView: WKWebView, context: Context) {
-        
     }
 }
 
