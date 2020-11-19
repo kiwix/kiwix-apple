@@ -15,8 +15,8 @@ enum ContentDisplayMode {
 }
 
 @available(iOS 14.0, *)
-enum SidebarDisplayMode {
-    case none, bookmark, outline
+enum SidebarContentMode {
+    case bookmark, outline
 }
 
 @available(iOS 14.0, *)
@@ -29,7 +29,10 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     }()
     
     @Published private(set) var contentDisplayMode = ContentDisplayMode.homeView
-    @Published var sidebarDisplayMode = SidebarDisplayMode.none
+    
+    @Published private(set) var isSidebarVisible = false
+    @Published private(set) var sidebarContentMode = SidebarContentMode.outline
+    
     @Published private(set) var canGoBack = false
     @Published private(set) var canGoForward = false
     @Published private(set) var currentArticleURL: URL?
@@ -73,6 +76,15 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     
     func scrollToOutlineItem(index: Int) {
         webView.evaluateJavaScript("outlines.scrollToView(\(index))")
+    }
+    
+    func showSidebar(content: SidebarContentMode?) {
+        isSidebarVisible = true
+        if let content = content { sidebarContentMode = content }
+    }
+    
+    func hideSidebar() {
+        isSidebarVisible = false
     }
     
     // MARK: - WKNavigationDelegate

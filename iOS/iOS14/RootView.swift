@@ -51,10 +51,10 @@ private struct SplitView: UIViewControllerRepresentable {
     }
     
     func updateUIViewController(_ uiViewController: UISplitViewController, context: Context) {
-        if sceneViewModel.sidebarDisplayMode == .none {
-            uiViewController.hide(.primary)
-        } else {
+        if sceneViewModel.isSidebarVisible {
             uiViewController.show(.primary)
+        } else {
+            uiViewController.hide(.primary)
         }
     }
     
@@ -65,9 +65,14 @@ private struct SplitView: UIViewControllerRepresentable {
             self.sceneViewModel = sceneViewModel
         }
         
+        func splitViewController(_ svc: UISplitViewController, willShow column: UISplitViewController.Column) {
+            guard column == .primary else { return }
+            sceneViewModel.showSidebar(content: nil)
+        }
+        
         func splitViewController(_ svc: UISplitViewController, willHide column: UISplitViewController.Column) {
             guard column == .primary else { return }
-            sceneViewModel.sidebarDisplayMode = .none
+            sceneViewModel.hideSidebar()
         }
     }
 }
@@ -137,13 +142,11 @@ struct SidebarView: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
     var body: some View {
-        switch sceneViewModel.sidebarDisplayMode {
+        switch sceneViewModel.sidebarContentMode {
         case .bookmark:
             Text("bookmark!")
         case .outline:
             Text("outline!")
-        default:
-            EmptyView()
         }
     }
 }

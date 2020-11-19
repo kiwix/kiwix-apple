@@ -80,10 +80,10 @@ struct BookmarksButton: View {
     
     var body: some View {
         Button {
-            if sceneViewModel.sidebarDisplayMode == .bookmark {
-                sceneViewModel.sidebarDisplayMode = .none
+            if sceneViewModel.isSidebarVisible, sceneViewModel.sidebarContentMode == .bookmark {
+                sceneViewModel.hideSidebar()
             } else {
-                sceneViewModel.sidebarDisplayMode = .bookmark
+                sceneViewModel.showSidebar(content: .bookmark)
             }
         } label: {
             Image(systemName: "bookmark")
@@ -97,10 +97,10 @@ struct OutlineButton: View {
     
     var body: some View {
         Button {
-            if sceneViewModel.sidebarDisplayMode == .outline {
-                sceneViewModel.sidebarDisplayMode = .none
+            if sceneViewModel.isSidebarVisible, sceneViewModel.sidebarContentMode == .outline {
+                sceneViewModel.hideSidebar()
             } else {
-                sceneViewModel.sidebarDisplayMode = .outline
+                sceneViewModel.showSidebar(content: .outline)
             }
         } label: {
             Image(systemName: "list.bullet")
