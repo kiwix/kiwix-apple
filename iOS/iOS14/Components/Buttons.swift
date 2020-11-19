@@ -75,7 +75,7 @@ struct GoForwardButton: View {
 }
 
 @available(iOS 14.0, *)
-struct BookmarkArtilesButton: View {
+struct BookmarksButton: View {
     var body: some View {
         Button {
             
@@ -86,12 +86,18 @@ struct BookmarkArtilesButton: View {
 }
 
 @available(iOS 14.0, *)
-struct RecentArticlesButton: View {
+struct OutlineButton: View {
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
     var body: some View {
         Button {
-            
+            if sceneViewModel.sidebarDisplayMode == .outline {
+                sceneViewModel.sidebarDisplayMode = .none
+            } else {
+                sceneViewModel.sidebarDisplayMode = .outline
+            }
         } label: {
-            Image(systemName: "clock.arrow.circlepath")
+            Image(systemName: "list.bullet")
         }
     }
 }
@@ -108,26 +114,12 @@ struct RandomArticlesButton: View {
 }
 
 @available(iOS 14.0, *)
-struct TableOfContentsButton: View {
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @EnvironmentObject var sceneViewModel: SceneViewModel
-    @State private var isPresented: Bool = false
-    
+struct RecentArticlesButton: View {
     var body: some View {
-        button.sheet(isPresented: self.$isPresented) {
-            OutlineView(outlineItems: sceneViewModel.currentArticleOutlineItems, isPresented: $isPresented)
-        }
-    }
-    
-    var button: some View {
         Button {
-            if sceneViewModel.sidebarDisplayMode == .outline {
-                sceneViewModel.sidebarDisplayMode = .none
-            } else {
-                sceneViewModel.sidebarDisplayMode = .outline
-            }
+            
         } label: {
-            Image(systemName: "list.bullet")
+            Image(systemName: "clock.arrow.circlepath")
         }
     }
 }

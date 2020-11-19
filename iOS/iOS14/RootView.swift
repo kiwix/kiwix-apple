@@ -55,8 +55,8 @@ struct NavigationBarContent: ToolbarContent {
     var body: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) { GoBackButton() }
         ToolbarItem(placement: .navigationBarLeading) { GoForwardButton() }
-        ToolbarItem(placement: .navigationBarLeading) { BookmarkArtilesButton() }
-        ToolbarItem(placement: .navigationBarLeading) { TableOfContentsButton() }
+        ToolbarItem(placement: .navigationBarLeading) { BookmarksButton() }
+        ToolbarItem(placement: .navigationBarLeading) { OutlineButton() }
         ToolbarItem(placement: .navigationBarTrailing) { RandomArticlesButton() }
         ToolbarItem(placement: .navigationBarTrailing) { RecentArticlesButton() }
         ToolbarItem(placement: .navigationBarTrailing) { MapButton() }
@@ -74,9 +74,9 @@ struct BottomBarContent: ToolbarContent {
         }
         ToolbarItem(placement: .bottomBar) { Spacer() }
         ToolbarItemGroup(placement: .bottomBar) {
-            BookmarkArtilesButton()
+            BookmarksButton()
             Spacer()
-            TableOfContentsButton()
+            OutlineButton()
             Spacer()
             RandomArticlesButton()
         }
