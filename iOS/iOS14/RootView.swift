@@ -10,17 +10,28 @@ import SwiftUI
 import UIKit
 
 @available(iOS 14.0, *)
+enum SidebarDisplayMode {
+    case hidden, bookmark, recent
+}
+
+@available(iOS 14.0, *)
 struct RootView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject var sceneViewModel: SceneViewModel
     @EnvironmentObject var searchViewModel: SearchViewModel
+    @State private var sidebarDisplayMode = SidebarDisplayMode.hidden
+    @State private var showSidebar = false
     
     var body: some View {
         switch (searchViewModel.isActive, horizontalSizeClass) {
         case (true, _):
             SearchView().toolbar { ToolbarItem(placement: .navigationBarTrailing) { SearchCancelButton() } }
         case (false, .regular):
-            SplitView().toolbar { NavigationBarContent() }
+            SplitView(
+                sidebarView: SidebarView().navigationBarHidden(true),
+                contentView: ContentView().navigationBarHidden(true)
+            ).toolbar { NavigationBarContent() }
         case (false, .compact):
             ContentView().toolbar { BottomBarContent() }
         default:
@@ -90,17 +101,10 @@ class RootController_iOS14: UIHostingController<AnyView> {
 }
 
 @available(iOS 14.0, *)
-private struct SplitView: UIViewControllerRepresentable {
-    @Environment(\.sidebarDisplayMode) var sidebarDisplayMode
-    
-    func makeUIViewController(context: Context) -> UIViewController {
-        let controller = UISplitViewController(style: .doubleColumn)
-        controller.setViewController(UIHostingController(rootView: SidebarView().navigationBarHidden(true)), for: .primary)
-        controller.setViewController(UIHostingController(rootView: ContentView().navigationBarHidden(true)), for: .secondary)
-        return controller
+struct SidebarView: View {
+    var body: some View {
+        Text("Sidebar!")
     }
-    
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) { }
 }
 
 @available(iOS 14.0, *)

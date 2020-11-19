@@ -35,6 +35,21 @@ struct WebView: UIViewRepresentable {
 }
 
 @available(iOS 14.0, *)
+struct SplitView<S: View, C: View>: UIViewControllerRepresentable {
+    let sidebarView: S
+    let contentView: C
+    
+    func makeUIViewController(context: Context) -> UIViewController {
+        let controller = UISplitViewController(style: .doubleColumn)
+        controller.setViewController(UIHostingController(rootView: sidebarView), for: .primary)
+        controller.setViewController(UIHostingController(rootView: contentView), for: .secondary)
+        return controller
+    }
+    
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) { }
+}
+
+@available(iOS 14.0, *)
 struct Favicon: View {
     let zimFile: ZimFile?
     
