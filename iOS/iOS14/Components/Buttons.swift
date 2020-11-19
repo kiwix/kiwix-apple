@@ -76,9 +76,15 @@ struct GoForwardButton: View {
 
 @available(iOS 14.0, *)
 struct BookmarksButton: View {
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
     var body: some View {
         Button {
-            
+            if sceneViewModel.sidebarDisplayMode == .bookmark {
+                sceneViewModel.sidebarDisplayMode = .none
+            } else {
+                sceneViewModel.sidebarDisplayMode = .bookmark
+            }
         } label: {
             Image(systemName: "bookmark")
         }

@@ -35,10 +35,19 @@ private struct SplitView: UIViewControllerRepresentable {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
     func makeUIViewController(context: Context) -> UISplitViewController {
+        let sidebarController = UIHostingController(rootView: SidebarView().navigationBarHidden(true))
+        let contentController = UIHostingController(rootView: ContentView().navigationBarHidden(true))
+        
         let controller = UISplitViewController(style: .doubleColumn)
-        controller.setViewController(UIHostingController(rootView: SidebarView().navigationBarHidden(true)), for: .primary)
-        controller.setViewController(UIHostingController(rootView: ContentView().navigationBarHidden(true)), for: .secondary)
+        controller.delegate = context.coordinator
+        controller.presentsWithGesture = false
+        controller.setViewController(sidebarController, for: .primary)
+        controller.setViewController(contentController, for: .secondary)
         return controller
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(sceneViewModel)
     }
     
     func updateUIViewController(_ uiViewController: UISplitViewController, context: Context) {
@@ -46,6 +55,19 @@ private struct SplitView: UIViewControllerRepresentable {
             uiViewController.hide(.primary)
         } else {
             uiViewController.show(.primary)
+        }
+    }
+    
+    class Coordinator: NSObject, UISplitViewControllerDelegate {
+        let sceneViewModel: SceneViewModel
+        
+        init(_ sceneViewModel: SceneViewModel) {
+            self.sceneViewModel = sceneViewModel
+        }
+        
+        func splitViewController(_ svc: UISplitViewController, willHide column: UISplitViewController.Column) {
+            guard column == .primary else { return }
+            sceneViewModel.sidebarDisplayMode = .none
         }
     }
 }
@@ -112,8 +134,17 @@ class RootController_iOS14: UIHostingController<AnyView> {
 
 @available(iOS 14.0, *)
 struct SidebarView: View {
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
     var body: some View {
-        Text("Sidebar!")
+        switch sceneViewModel.sidebarDisplayMode {
+        case .bookmark:
+            Text("bookmark!")
+        case .outline:
+            Text("outline!")
+        default:
+            EmptyView()
+        }
     }
 }
 
