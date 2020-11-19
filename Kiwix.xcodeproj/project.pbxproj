@@ -34,6 +34,7 @@
 		974FFE5B2352704600F6BF28 /* ZimFileManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */; };
 		974FFE612352744800F6BF28 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE602352744800F6BF28 /* WebViewController.swift */; };
 		974FFE6A23533E8D00F6BF28 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE6823533E8D00F6BF28 /* NavigationController.swift */; };
+		9761430B256625E1002BA735 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9761430A256625E1002BA735 /* Sidebar.swift */; };
 		9763EDC9201FCA6900F3A6D5 /* SettingWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9763EDC8201FCA6900F3A6D5 /* SettingWebController.swift */; };
 		9763EDCB201FCC3A00F3A6D5 /* About.html in Resources */ = {isa = PBXBuildFile; fileRef = 9763EDCA201FCC3900F3A6D5 /* About.html */; };
 		976771791F4378FC007ED0C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 976771741F4378FC007ED0C2 /* Main.storyboard */; };
@@ -228,6 +229,7 @@
 		975FDAE31F6082DA00A10E8C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		975FDAE51F6082DA00A10E8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		975FDB061F608F4100A10E8C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		9761430A256625E1002BA735 /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
 		9763EDC8201FCA6900F3A6D5 /* SettingWebController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingWebController.swift; sourceTree = "<group>"; };
 		9763EDCA201FCC3900F3A6D5 /* About.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = About.html; sourceTree = "<group>"; };
 		976771741F4378FC007ED0C2 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -731,6 +733,7 @@
 				97FD2F54251D93B90034927C /* HomeView.swift */,
 				9742D7172545E1360046D88C /* SearchView.swift */,
 				9735AB34255AEE7B007887B0 /* OutlineView.swift */,
+				9761430A256625E1002BA735 /* Sidebar.swift */,
 			);
 			path = iOS14;
 			sourceTree = "<group>";
@@ -1084,6 +1087,7 @@
 				9779A5C62456793600F6F6FF /* ZimFileMetaData.mm in Sources */,
 				9779A7E424567A5A00F6F6FF /* Log.swift in Sources */,
 				97810E17250436E2000D86CB /* ZimFileCell.swift in Sources */,
+				9761430B256625E1002BA735 /* Sidebar.swift in Sources */,
 				970EC3A123BCEC84008DCA27 /* Parser.swift in Sources */,
 				9779A73D2456796B00F6F6FF /* DirectoryMonitor.swift in Sources */,
 				97D7FB5C253CF97400E8ADDF /* RootView.swift in Sources */,
