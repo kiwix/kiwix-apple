@@ -121,7 +121,11 @@ struct TableOfContentsButton: View {
     
     var button: some View {
         Button {
-            isPresented = true
+            if sceneViewModel.sidebarDisplayMode == .outline {
+                sceneViewModel.sidebarDisplayMode = .none
+            } else {
+                sceneViewModel.sidebarDisplayMode = .outline
+            }
         } label: {
             Image(systemName: "list.bullet")
         }

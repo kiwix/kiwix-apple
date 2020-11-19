@@ -10,32 +10,42 @@ import SwiftUI
 import UIKit
 
 @available(iOS 14.0, *)
-enum SidebarDisplayMode {
-    case hidden, bookmark, recent
-}
-
-@available(iOS 14.0, *)
 struct RootView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject var sceneViewModel: SceneViewModel
     @EnvironmentObject var searchViewModel: SearchViewModel
-    @State private var sidebarDisplayMode = SidebarDisplayMode.hidden
-    @State private var showSidebar = false
     
     var body: some View {
         switch (searchViewModel.isActive, horizontalSizeClass) {
         case (true, _):
             SearchView().toolbar { ToolbarItem(placement: .navigationBarTrailing) { SearchCancelButton() } }
         case (false, .regular):
-            SplitView(
-                sidebarView: SidebarView().navigationBarHidden(true),
-                contentView: ContentView().navigationBarHidden(true)
-            ).toolbar { NavigationBarContent() }
+            SplitView().toolbar { NavigationBarContent() }
         case (false, .compact):
             ContentView().toolbar { BottomBarContent() }
         default:
             EmptyView()
+        }
+    }
+}
+
+@available(iOS 14.0, *)
+private struct SplitView: UIViewControllerRepresentable {
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
+    func makeUIViewController(context: Context) -> UISplitViewController {
+        let controller = UISplitViewController(style: .doubleColumn)
+        controller.setViewController(UIHostingController(rootView: SidebarView().navigationBarHidden(true)), for: .primary)
+        controller.setViewController(UIHostingController(rootView: ContentView().navigationBarHidden(true)), for: .secondary)
+        return controller
+    }
+    
+    func updateUIViewController(_ uiViewController: UISplitViewController, context: Context) {
+        if sceneViewModel.sidebarDisplayMode == .none {
+            uiViewController.hide(.primary)
+        } else {
+            uiViewController.show(.primary)
         }
     }
 }
@@ -46,9 +56,9 @@ struct NavigationBarContent: ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) { GoBackButton() }
         ToolbarItem(placement: .navigationBarLeading) { GoForwardButton() }
         ToolbarItem(placement: .navigationBarLeading) { BookmarkArtilesButton() }
-        ToolbarItem(placement: .navigationBarLeading) { RecentArticlesButton() }
+        ToolbarItem(placement: .navigationBarLeading) { TableOfContentsButton() }
         ToolbarItem(placement: .navigationBarTrailing) { RandomArticlesButton() }
-        ToolbarItem(placement: .navigationBarTrailing) { TableOfContentsButton() }
+        ToolbarItem(placement: .navigationBarTrailing) { RecentArticlesButton() }
         ToolbarItem(placement: .navigationBarTrailing) { MapButton() }
         ToolbarItem(placement: .navigationBarTrailing) { ZStack { Spacer(); HomeButton() } }
     }

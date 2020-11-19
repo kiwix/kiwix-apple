@@ -15,6 +15,11 @@ enum ContentDisplayMode {
 }
 
 @available(iOS 14.0, *)
+enum SidebarDisplayMode {
+    case none, bookmark, outline
+}
+
+@available(iOS 14.0, *)
 class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
@@ -24,6 +29,7 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     }()
     
     @Published private(set) var contentDisplayMode = ContentDisplayMode.homeView
+    @Published var sidebarDisplayMode = SidebarDisplayMode.none
     @Published private(set) var canGoBack = false
     @Published private(set) var canGoForward = false
     @Published private(set) var currentArticleURL: URL?
