@@ -88,8 +88,10 @@ private struct SplitView: UIViewControllerRepresentable {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
     func makeUIViewController(context: Context) -> UISplitViewController {
-        let sidebarController = UIHostingController(rootView: SidebarView().navigationBarHidden(true))
-        let contentController = UIHostingController(rootView: ContentView().navigationBarHidden(true))
+        let sidebarView = SidebarView().navigationBarHidden(true).environmentObject(sceneViewModel)
+        let contentView = ContentView().navigationBarHidden(true).environmentObject(sceneViewModel)
+        let sidebarController = UIHostingController(rootView: sidebarView)
+        let contentController = UIHostingController(rootView: contentView)
         
         let controller = UISplitViewController(style: .doubleColumn)
         controller.delegate = context.coordinator
@@ -119,12 +121,12 @@ private struct SplitView: UIViewControllerRepresentable {
         }
         
         func splitViewController(_ svc: UISplitViewController, willShow column: UISplitViewController.Column) {
-            guard column == .primary else { return }
+            guard column == .primary, UIApplication.shared.applicationState == .active else { return }
             sceneViewModel.showSidebar(content: nil)
         }
         
         func splitViewController(_ svc: UISplitViewController, willHide column: UISplitViewController.Column) {
-            guard column == .primary else { return }
+            guard column == .primary, UIApplication.shared.applicationState == .active else { return }
             sceneViewModel.hideSidebar()
         }
     }
