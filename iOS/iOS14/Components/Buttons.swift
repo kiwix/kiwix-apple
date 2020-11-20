@@ -93,11 +93,15 @@ struct BookmarksButton: View {
 
 @available(iOS 14.0, *)
 struct OutlineButton: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @EnvironmentObject var sceneViewModel: SceneViewModel
+    @Binding var isSheetPresented: Bool
     
     var body: some View {
         Button {
-            if sceneViewModel.isSidebarVisible, sceneViewModel.sidebarContentMode == .outline {
+            if horizontalSizeClass == .compact {
+                isSheetPresented = true
+            } else if sceneViewModel.isSidebarVisible, sceneViewModel.sidebarContentMode == .outline {
                 sceneViewModel.hideSidebar()
             } else {
                 sceneViewModel.showSidebar(content: .outline)

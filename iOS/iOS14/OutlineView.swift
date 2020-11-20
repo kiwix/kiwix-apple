@@ -10,13 +10,16 @@ import SwiftUI
 
 @available(iOS 14.0, *)
 struct OutlineView: View {
-    @EnvironmentObject var sceneViewModel: SceneViewModel
+    @EnvironmentObject private var sceneViewModel: SceneViewModel
+    @Binding var isSheetPresented: Bool
     
     var body: some View {
         if let outlineItems = sceneViewModel.currentArticleOutlineItems {
             List(outlineItems, id: \.index) { outlineItem in
                 Button {
                     sceneViewModel.navigateToOutlineItem(index: outlineItem.index)
+                    sceneViewModel.hideSidebar()
+                    isSheetPresented = false
                 } label: {
                     if outlineItem.level == 1 {
                         HStack {

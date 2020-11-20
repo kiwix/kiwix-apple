@@ -35,14 +35,26 @@ struct RootView: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     @EnvironmentObject var searchViewModel: SearchViewModel
     
+    @State var isSheetPresented = false
+    
     var body: some View {
         switch (searchViewModel.isActive, horizontalSizeClass) {
         case (true, _):
             SearchView().toolbar { ToolbarItem(placement: .navigationBarTrailing) { SearchCancelButton() } }
         case (false, .regular):
-            SplitView().ignoresSafeArea().toolbar { NavigationBarContent() }
+            SplitView().ignoresSafeArea().toolbar { NavigationBarContent(isSheetPresented: $isSheetPresented) }
         case (false, .compact):
-            ContentView().toolbar { BottomBarContent() }
+            ContentView()
+                .sheet(isPresented: $isSheetPresented) {
+                    NavigationView {
+                        OutlineView(isSheetPresented: $isSheetPresented).toolbar {
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Done") { isSheetPresented = false }
+                            }
+                        }.navigationBarTitle("Outline", displayMode: .inline)
+                    }
+                }
+                .toolbar { BottomBarContent(isSheetPresented: $isSheetPresented) }
         default:
             EmptyView()
         }
@@ -98,11 +110,13 @@ private struct SplitView: UIViewControllerRepresentable {
 
 @available(iOS 14.0, *)
 struct NavigationBarContent: ToolbarContent {
+    @Binding var isSheetPresented: Bool
+    
     var body: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) { GoBackButton() }
         ToolbarItem(placement: .navigationBarLeading) { GoForwardButton() }
         ToolbarItem(placement: .navigationBarLeading) { BookmarksButton() }
-        ToolbarItem(placement: .navigationBarLeading) { OutlineButton() }
+        ToolbarItem(placement: .navigationBarLeading) { OutlineButton(isSheetPresented: $isSheetPresented) }
         ToolbarItem(placement: .navigationBarTrailing) { RandomArticlesButton() }
         ToolbarItem(placement: .navigationBarTrailing) { RecentArticlesButton() }
         ToolbarItem(placement: .navigationBarTrailing) { MapButton() }
@@ -112,6 +126,8 @@ struct NavigationBarContent: ToolbarContent {
 
 @available(iOS 14.0, *)
 struct BottomBarContent: ToolbarContent {
+    @Binding var isSheetPresented: Bool
+    
     var body: some ToolbarContent {
         ToolbarItemGroup(placement: .bottomBar) {
             GoBackButton()
@@ -122,7 +138,7 @@ struct BottomBarContent: ToolbarContent {
         ToolbarItemGroup(placement: .bottomBar) {
             BookmarksButton()
             Spacer()
-            OutlineButton()
+            OutlineButton(isSheetPresented: $isSheetPresented)
             Spacer()
             RandomArticlesButton()
         }
@@ -145,7 +161,7 @@ struct SidebarView: View {
         case .bookmark:
             Text("bookmark!")
         case .outline:
-            OutlineView()
+            OutlineView(isSheetPresented: .constant(false))
         }
     }
 }
