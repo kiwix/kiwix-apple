@@ -20,6 +20,11 @@ enum SidebarContentMode {
 }
 
 @available(iOS 14.0, *)
+enum SheetContentMode {
+    case bookmark, outline
+}
+
+@available(iOS 14.0, *)
 class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
@@ -32,6 +37,7 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     
     @Published private(set) var isSidebarVisible = false
     @Published private(set) var sidebarContentMode = SidebarContentMode.outline
+    @Published private(set) var sheetContentMode = SheetContentMode.outline
     
     @Published private(set) var canGoBack = false
     @Published private(set) var canGoForward = false

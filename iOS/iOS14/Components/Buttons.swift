@@ -146,6 +146,19 @@ struct MapButton: View {
 }
 
 @available(iOS 14.0, *)
+struct HouseButton: View {
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
+    var body: some View {
+        Button {
+            sceneViewModel.houseButtonTapped()
+        } label: {
+            Image(systemName: "house")
+        }
+    }
+}
+
+@available(iOS 14.0, *)
 struct HomeButton: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
 

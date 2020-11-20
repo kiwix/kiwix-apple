@@ -42,19 +42,41 @@ struct RootView: View {
         case (true, _):
             SearchView().toolbar { ToolbarItem(placement: .navigationBarTrailing) { SearchCancelButton() } }
         case (false, .regular):
-            SplitView().ignoresSafeArea().toolbar { NavigationBarContent(isSheetPresented: $isSheetPresented) }
-        case (false, .compact):
-            ContentView()
-                .sheet(isPresented: $isSheetPresented) {
-                    NavigationView {
-                        OutlineView(isSheetPresented: $isSheetPresented).toolbar {
-                            ToolbarItem(placement: .confirmationAction) {
-                                Button("Done") { isSheetPresented = false }
-                            }
-                        }.navigationBarTitle("Outline", displayMode: .inline)
+            SplitView()
+                .ignoresSafeArea()
+                .toolbar {
+                    ToolbarItemGroup(placement: .navigationBarLeading) {
+                        GoBackButton()
+                        GoForwardButton()
+                        BookmarksButton()
+                        OutlineButton(isSheetPresented: $isSheetPresented)
+                    }
+                    ToolbarItemGroup(placement: .navigationBarTrailing) {
+                        RandomArticlesButton()
+                        RecentArticlesButton()
+                        MapButton()
+                        HouseButton()
                     }
                 }
-                .toolbar { BottomBarContent(isSheetPresented: $isSheetPresented) }
+        case (false, .compact):
+            ContentView()
+                .sheet(isPresented: $isSheetPresented) { SheetView(isSheetPresented: $isSheetPresented) }
+                .toolbar {
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        GoBackButton()
+                        Spacer()
+                        GoForwardButton()
+                        Spacer()
+                        BookmarksButton()
+                        Spacer()
+                        OutlineButton(isSheetPresented: $isSheetPresented)
+                        Spacer()
+                        RandomArticlesButton()
+                        Spacer()
+                        
+                    }
+                    ToolbarItem(placement: .bottomBar) { HouseButton() }
+                }
         default:
             EmptyView()
         }
@@ -109,45 +131,16 @@ private struct SplitView: UIViewControllerRepresentable {
 }
 
 @available(iOS 14.0, *)
-struct NavigationBarContent: ToolbarContent {
+private struct SheetView: View {
     @Binding var isSheetPresented: Bool
     
-    var body: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) { GoBackButton() }
-        ToolbarItem(placement: .navigationBarLeading) { GoForwardButton() }
-        ToolbarItem(placement: .navigationBarLeading) { BookmarksButton() }
-        ToolbarItem(placement: .navigationBarLeading) { OutlineButton(isSheetPresented: $isSheetPresented) }
-        ToolbarItem(placement: .navigationBarTrailing) { RandomArticlesButton() }
-        ToolbarItem(placement: .navigationBarTrailing) { RecentArticlesButton() }
-        ToolbarItem(placement: .navigationBarTrailing) { MapButton() }
-        ToolbarItem(placement: .navigationBarTrailing) { ZStack { Spacer(); HomeButton() } }
-    }
-}
-
-@available(iOS 14.0, *)
-struct BottomBarContent: ToolbarContent {
-    @Binding var isSheetPresented: Bool
-    
-    var body: some ToolbarContent {
-        ToolbarItemGroup(placement: .bottomBar) {
-            GoBackButton()
-            Spacer()
-            GoForwardButton()
-        }
-        ToolbarItem(placement: .bottomBar) { Spacer() }
-        ToolbarItemGroup(placement: .bottomBar) {
-            BookmarksButton()
-            Spacer()
-            OutlineButton(isSheetPresented: $isSheetPresented)
-            Spacer()
-            RandomArticlesButton()
-        }
-        ToolbarItem(placement: .bottomBar) { Spacer() }
-        ToolbarItem(placement: .bottomBar) {
-            ZStack {
-                Spacer()
-                HomeButton()
-            }
+    var body: some View {
+        NavigationView {
+            OutlineView(isSheetPresented: $isSheetPresented).toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") { isSheetPresented = false }
+                }
+            }.navigationBarTitle("Outline", displayMode: .inline)
         }
     }
 }
