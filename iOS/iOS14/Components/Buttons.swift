@@ -52,11 +52,11 @@ struct GoBackButton: View {
     
     var body: some View {
         Button {
-            sceneViewModel.goBack()
+            sceneViewModel.webView.goBack()
         } label: {
             Image(systemName: "chevron.left")
         }
-        .disabled(!sceneViewModel.canGoBack || sceneViewModel.contentDisplayMode != .webView)
+        .disabled(!sceneViewModel.canGoBack || sceneViewModel.contentDisplayMode != .web)
     }
 }
 
@@ -66,19 +66,25 @@ struct GoForwardButton: View {
 
     var body: some View {
         Button {
-            sceneViewModel.goForward()
+            sceneViewModel.webView.goForward()
         } label: {
             Image(systemName: "chevron.right")
         }
-        .disabled(!sceneViewModel.canGoForward || sceneViewModel.contentDisplayMode != .webView)
+        .disabled(!sceneViewModel.canGoForward || sceneViewModel.contentDisplayMode != .web)
     }
 }
 
 @available(iOS 14.0, *)
-struct BookmarkArtilesButton: View {
+struct BookmarksButton: View {
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
     var body: some View {
         Button {
-            
+            if sceneViewModel.isSidebarVisible, sceneViewModel.sidebarContentMode == .bookmark {
+                sceneViewModel.hideSidebar()
+            } else {
+                sceneViewModel.showSidebar(content: .bookmark)
+            }
         } label: {
             Image(systemName: "bookmark")
         }
@@ -86,12 +92,22 @@ struct BookmarkArtilesButton: View {
 }
 
 @available(iOS 14.0, *)
-struct RecentArticlesButton: View {
+struct OutlineButton: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    @Binding var isSheetPresented: Bool
+    
     var body: some View {
         Button {
-            
+            if horizontalSizeClass == .compact {
+                isSheetPresented = true
+            } else if sceneViewModel.isSidebarVisible, sceneViewModel.sidebarContentMode == .outline {
+                sceneViewModel.hideSidebar()
+            } else {
+                sceneViewModel.showSidebar(content: .outline)
+            }
         } label: {
-            Image(systemName: "clock.arrow.circlepath")
+            Image(systemName: "list.bullet")
         }
     }
 }
@@ -108,22 +124,12 @@ struct RandomArticlesButton: View {
 }
 
 @available(iOS 14.0, *)
-struct TableOfContentsButton: View {
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @EnvironmentObject var sceneViewModel: SceneViewModel
-    @State private var isPresented: Bool = false
-    
+struct RecentArticlesButton: View {
     var body: some View {
-        button.sheet(isPresented: self.$isPresented) {
-            OutlineView(outlineItems: sceneViewModel.currentArticleOutlineItems, isPresented: $isPresented)
-        }
-    }
-    
-    var button: some View {
         Button {
-            isPresented = true
+            
         } label: {
-            Image(systemName: "list.bullet")
+            Image(systemName: "clock.arrow.circlepath")
         }
     }
 }
@@ -140,6 +146,19 @@ struct MapButton: View {
 }
 
 @available(iOS 14.0, *)
+struct HouseButton: View {
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
+    var body: some View {
+        Button {
+            sceneViewModel.houseButtonTapped()
+        } label: {
+            Image(systemName: "house")
+        }
+    }
+}
+
+@available(iOS 14.0, *)
 struct HomeButton: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
 
@@ -148,13 +167,13 @@ struct HomeButton: View {
             sceneViewModel.houseButtonTapped()
         } label: {
             ZStack {
-                if sceneViewModel.contentDisplayMode == .homeView {
+                if sceneViewModel.contentDisplayMode == .home {
                     Color(sceneViewModel.currentArticleURL == nil ? .systemGray3 : .systemBlue)
                         .aspectRatio(1, contentMode: .fit)
                         .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
                 }
                 Image(systemName: "house").imageScale(.large).padding(5)
-                    .foregroundColor(sceneViewModel.contentDisplayMode == .homeView ? Color(.systemBackground) : nil)
+                    .foregroundColor(sceneViewModel.contentDisplayMode == .home ? Color(.systemBackground) : nil)
             }
         }.disabled(sceneViewModel.currentArticleURL == nil)
     }

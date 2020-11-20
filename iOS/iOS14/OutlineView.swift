@@ -10,31 +10,30 @@ import SwiftUI
 
 @available(iOS 14.0, *)
 struct OutlineView: View {
-    private let outlineItems: [OutlineItem]?
-    @Binding private var isPresented: Bool
-    
-    init(outlineItems: [OutlineItem]?, isPresented: Binding<Bool>) {
-        self.outlineItems = outlineItems
-        self._isPresented = isPresented
-    }
+    @EnvironmentObject private var sceneViewModel: SceneViewModel
+    @Binding var isSheetPresented: Bool
     
     var body: some View {
-        NavigationView {
-            if let outlineItems = outlineItems {
-                List(outlineItems, id: \.index) { outlineItem in
-                    Text(outlineItem.text)
-                }
-                .navigationBarTitle("Outline", displayMode: .inline)
-                .toolbar {
-                    ToolbarItem(placement: .primaryAction) {
-                        Button("Done") {
-                            isPresented = false
+        if let outlineItems = sceneViewModel.currentArticleOutlineItems {
+            List(outlineItems, id: \.index) { outlineItem in
+                Button {
+                    sceneViewModel.navigateToOutlineItem(index: outlineItem.index)
+                    sceneViewModel.hideSidebar()
+                    isSheetPresented = false
+                } label: {
+                    if outlineItem.level == 1 {
+                        HStack {
+                            Spacer()
+                            Text(outlineItem.text).bold()
+                            Spacer()
                         }
+                    } else {
+                        Text(outlineItem.text).padding(.leading, 20 * CGFloat(outlineItem.level - 2))
                     }
                 }
-            } else {
-                Text("No Outline")
             }
+        } else {
+            Text("No Outline")
         }
     }
 }

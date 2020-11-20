@@ -10,8 +10,18 @@ import SwiftUI
 import WebKit
 
 @available(iOS 14.0, *)
-enum ContentDisplayMode {
-    case homeView, webView, transitionView
+enum ContentMode {
+    case home, web, transition
+}
+
+@available(iOS 14.0, *)
+enum SidebarContentMode {
+    case bookmark, outline
+}
+
+@available(iOS 14.0, *)
+enum SheetContentMode {
+    case bookmark, outline
 }
 
 @available(iOS 14.0, *)
@@ -23,13 +33,16 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         return WKWebView(frame: .zero, configuration: config)
     }()
     
-    @Published private(set) var contentDisplayMode = ContentDisplayMode.homeView
+    @Published private(set) var contentDisplayMode = ContentMode.home
+    
+    @Published private(set) var isSidebarVisible = false
+    @Published private(set) var sidebarContentMode = SidebarContentMode.outline
+    @Published private(set) var sheetContentMode = SheetContentMode.outline
+    
     @Published private(set) var canGoBack = false
     @Published private(set) var canGoForward = false
     @Published private(set) var currentArticleURL: URL?
     @Published private(set) var currentArticleOutlineItems: [OutlineItem]?
-    
-    @Published var currentExternalURL: URL?
     
     override init() {
         super.init()
@@ -39,17 +52,9 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     
     // MARK: - Actions
     
-    func goBack() {
-        webView.goBack()
-    }
-    
-    func goForward() {
-        webView.goForward()
-    }
-    
     func load(url: URL) {
-        if contentDisplayMode == .homeView {
-            withAnimation(.easeIn(duration: 0.1)) { contentDisplayMode = .transitionView }
+        if contentDisplayMode == .home {
+            withAnimation(.easeIn(duration: 0.1)) { contentDisplayMode = .transition }
         }
         webView.load(URLRequest(url: url))
     }
@@ -61,12 +66,21 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     
     func houseButtonTapped() {
         withAnimation(Animation.easeInOut(duration: 0.2)) {
-            contentDisplayMode = contentDisplayMode == .homeView ? .webView : .homeView
+            contentDisplayMode = contentDisplayMode == .home ? .web : .home
         }
     }
     
-    func scrollToOutlineItem(index: Int) {
+    func navigateToOutlineItem(index: Int) {
         webView.evaluateJavaScript("outlines.scrollToView(\(index))")
+    }
+    
+    func showSidebar(content: SidebarContentMode?) {
+        isSidebarVisible = true
+        if let content = content { sidebarContentMode = content }
+    }
+    
+    func hideSidebar() {
+        isSidebarVisible = false
     }
     
     // MARK: - WKNavigationDelegate
@@ -83,7 +97,6 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
                 decisionHandler(.allow)
             }
         } else if url.scheme == "http" || url.scheme == "https" {
-            currentExternalURL = url
 //            let policy = Defaults[.externalLinkLoadingPolicy]
 //            if policy == .alwaysLoad {
 //                let controller = SFSafariViewController(url: url)
@@ -103,8 +116,8 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        if contentDisplayMode == .transitionView {
-            withAnimation(.easeOut(duration: 0.1)) { contentDisplayMode = .webView }
+        if contentDisplayMode == .transition {
+            withAnimation(.easeOut(duration: 0.1)) { contentDisplayMode = .web }
         }
         canGoBack = webView.canGoBack
         canGoForward = webView.canGoForward

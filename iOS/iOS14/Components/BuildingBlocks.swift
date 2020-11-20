@@ -8,6 +8,7 @@
 
 import SwiftUI
 import SafariServices
+import WebKit
 
 @available(iOS 14.0, *)
 extension View {
@@ -18,6 +19,14 @@ extension View {
             self
         }
     }
+}
+
+@available(iOS 14.0, *)
+struct WebView: UIViewRepresentable {
+    @EnvironmentObject var sceneViewModel: SceneViewModel
+    
+    func makeUIView(context: Context) -> WKWebView { sceneViewModel.webView }
+    func updateUIView(_ uiView: WKWebView, context: Context) { }
 }
 
 @available(iOS 14.0, *)
