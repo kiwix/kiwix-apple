@@ -32,6 +32,7 @@ class RootController_iOS14: UIHostingController<AnyView> {
 @available(iOS 14.0, *)
 struct RootView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @EnvironmentObject var sceneViewModel: SceneViewModel
     @EnvironmentObject var searchViewModel: SearchViewModel
     
     var body: some View {
@@ -155,11 +156,11 @@ struct ContentView: View {
     
     var body: some View {
         switch sceneViewModel.contentDisplayMode {
-        case .homeView:
+        case .home:
             HomeView()
-        case .webView:
+        case .web:
             WebView()
-        case .transitionView:
+        case .transition:
             Color(.systemBackground)
         }
     }

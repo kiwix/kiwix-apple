@@ -52,11 +52,11 @@ struct GoBackButton: View {
     
     var body: some View {
         Button {
-            sceneViewModel.goBack()
+            sceneViewModel.webView.goBack()
         } label: {
             Image(systemName: "chevron.left")
         }
-        .disabled(!sceneViewModel.canGoBack || sceneViewModel.contentDisplayMode != .webView)
+        .disabled(!sceneViewModel.canGoBack || sceneViewModel.contentDisplayMode != .web)
     }
 }
 
@@ -66,11 +66,11 @@ struct GoForwardButton: View {
 
     var body: some View {
         Button {
-            sceneViewModel.goForward()
+            sceneViewModel.webView.goForward()
         } label: {
             Image(systemName: "chevron.right")
         }
-        .disabled(!sceneViewModel.canGoForward || sceneViewModel.contentDisplayMode != .webView)
+        .disabled(!sceneViewModel.canGoForward || sceneViewModel.contentDisplayMode != .web)
     }
 }
 
@@ -150,13 +150,13 @@ struct HomeButton: View {
             sceneViewModel.houseButtonTapped()
         } label: {
             ZStack {
-                if sceneViewModel.contentDisplayMode == .homeView {
+                if sceneViewModel.contentDisplayMode == .home {
                     Color(sceneViewModel.currentArticleURL == nil ? .systemGray3 : .systemBlue)
                         .aspectRatio(1, contentMode: .fit)
                         .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
                 }
                 Image(systemName: "house").imageScale(.large).padding(5)
-                    .foregroundColor(sceneViewModel.contentDisplayMode == .homeView ? Color(.systemBackground) : nil)
+                    .foregroundColor(sceneViewModel.contentDisplayMode == .home ? Color(.systemBackground) : nil)
             }
         }.disabled(sceneViewModel.currentArticleURL == nil)
     }
