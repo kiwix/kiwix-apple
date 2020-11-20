@@ -145,7 +145,7 @@ struct SidebarView: View {
         case .bookmark:
             Text("bookmark!")
         case .outline:
-            Text("outline!")
+            OutlineView()
         }
     }
 }

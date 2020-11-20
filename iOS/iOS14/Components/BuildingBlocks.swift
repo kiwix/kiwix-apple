@@ -25,21 +25,8 @@ extension View {
 struct WebView: UIViewRepresentable {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
-    func makeUIView(context: Context) -> WKWebView {
-        let webView: WKWebView = {
-            let config = WKWebViewConfiguration()
-            config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
-            config.mediaTypesRequiringUserActionForPlayback = []
-            let webView = WKWebView(frame: .zero, configuration: config)
-            webView.allowsBackForwardNavigationGestures = true
-            return webView
-        }()
-        return webView
-    }
-
-    func updateUIView(_ uiView: WKWebView, context: Context) {
-        
-    }
+    func makeUIView(context: Context) -> WKWebView { sceneViewModel.webView }
+    func updateUIView(_ uiView: WKWebView, context: Context) { }
 }
 
 @available(iOS 14.0, *)
