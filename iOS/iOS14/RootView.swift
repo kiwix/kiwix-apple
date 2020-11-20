@@ -10,10 +10,28 @@ import SwiftUI
 import UIKit
 
 @available(iOS 14.0, *)
+class RootController_iOS14: UIHostingController<AnyView> {
+    private let sceneViewModel = SceneViewModel()
+    private let searchViewModel = SearchViewModel()
+    private let zimFilesViewModel = ZimFilesViewModel()
+
+    init() {
+        let view = RootView()
+            .environmentObject(sceneViewModel)
+            .environmentObject(searchViewModel)
+            .environmentObject(zimFilesViewModel)
+        super.init(rootView: AnyView(view))
+        navigationItem.titleView = searchViewModel.searchBar
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+@available(iOS 14.0, *)
 struct RootView: View {
-    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @EnvironmentObject var sceneViewModel: SceneViewModel
     @EnvironmentObject var searchViewModel: SearchViewModel
     
     var body: some View {
@@ -21,7 +39,7 @@ struct RootView: View {
         case (true, _):
             SearchView().toolbar { ToolbarItem(placement: .navigationBarTrailing) { SearchCancelButton() } }
         case (false, .regular):
-            SplitView().toolbar { NavigationBarContent() }
+            SplitView().ignoresSafeArea().toolbar { NavigationBarContent() }
         case (false, .compact):
             ContentView().toolbar { BottomBarContent() }
         default:
@@ -114,26 +132,6 @@ struct BottomBarContent: ToolbarContent {
                 HomeButton()
             }
         }
-    }
-}
-
-@available(iOS 14.0, *)
-class RootController_iOS14: UIHostingController<AnyView> {
-    private let sceneViewModel = SceneViewModel()
-    private let searchViewModel = SearchViewModel()
-    private let zimFilesViewModel = ZimFilesViewModel()
-
-    init() {
-        let view = RootView()
-            .environmentObject(sceneViewModel)
-            .environmentObject(searchViewModel)
-            .environmentObject(zimFilesViewModel)
-        super.init(rootView: AnyView(view))
-        navigationItem.titleView = searchViewModel.searchBar
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 
