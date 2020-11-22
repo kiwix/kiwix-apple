@@ -25,22 +25,20 @@ struct SearchView: View {
                 Text("Add some zim files to start a search.").font(.title2).foregroundColor(.secondary)
             }.padding()
         } else if horizontalSizeClass == .regular {
-            GeometryReader { geometry in
-                HStack(spacing: 0) {
-                    ZStack(alignment: .trailing) {
-                        filter
-                        Divider()
-                    }.frame(width: max(340, geometry.size.width * 0.35))
-                    switch searchViewModel.content {
-                    case .initial:
-                        noSearchText
-                    case .inProgress:
-                        inProgress
-                    case .results:
-                        results
-                    case .noResult:
-                        noResult
-                    }
+            HStack(spacing: 0) {
+                ZStack(alignment: .trailing) {
+                    filter
+                    Divider()
+                }.frame(width: 320)
+                switch searchViewModel.content {
+                case .initial:
+                    noSearchText
+                case .inProgress:
+                    inProgress
+                case .results:
+                    results
+                case .noResult:
+                    noResult
                 }
             }
         } else {
