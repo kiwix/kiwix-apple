@@ -17,7 +17,6 @@ enum SearchViewContent {
 
 @available(iOS 14.0, *)
 class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
-    private let searchQueue = SearchQueue()
     private let zimFiles: Results<ZimFile>? = {
         do {
             let format = "stateRaw == %@ AND includedInSearch == true"
@@ -35,13 +34,13 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
     private var recentSearchTextsObserver: AnyCancellable?
     
     let searchBar = UISearchBar()
+    private let searchQueue = SearchQueue()
     private let animation = Animation.easeInOut(duration: 0.05)
     @Published private(set) var isActive = false
     @Published private(set) var content: SearchViewContent = .initial
     @Published private(set) var results = [SearchResult]()
 
     override init() {
-        self.recentSearchTexts = []
         super.init()
         searchBar.autocorrectionType = .no
         searchBar.autocapitalizationType = .none
@@ -108,9 +107,7 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
     // MARK: - UISearchBarDelegate
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        withAnimation(animation)  {
-            isActive = true
-        }
+        withAnimation(animation)  { isActive = true }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
