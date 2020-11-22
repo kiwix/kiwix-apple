@@ -18,7 +18,7 @@ struct OutlineView: View {
             List(outlineItems, id: \.index) { outlineItem in
                 Button {
                     sceneViewModel.navigateToOutlineItem(index: outlineItem.index)
-                    sceneViewModel.hideSidebar()
+                    if sceneViewModel.shouldAutoHideSidebar { sceneViewModel.hideSidebar() }
                     isSheetPresented = false
                 } label: {
                     if outlineItem.level == 1 {
