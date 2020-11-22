@@ -25,7 +25,7 @@ enum SheetContentMode {
 }
 
 @available(iOS 14.0, *)
-class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
+class SceneViewModel: NSObject, ObservableObject, UISplitViewControllerDelegate, WKNavigationDelegate {
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
@@ -35,7 +35,9 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     
     @Published private(set) var contentDisplayMode = ContentMode.home
     
-    @Published private(set) var isSidebarVisible = false
+    @Published var isSidebarVisible = false
+    private(set) var shouldAutoHideSidebar = false
+    
     @Published private(set) var sidebarContentMode = SidebarContentMode.outline
     @Published private(set) var sheetContentMode = SheetContentMode.outline
     
@@ -81,6 +83,26 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     
     func hideSidebar() {
         isSidebarVisible = false
+    }
+    
+    // MARK: - UISplitViewControllerDelegate
+    
+    func splitViewController(_ svc: UISplitViewController, willShow column: UISplitViewController.Column) {
+        guard column == .primary, UIApplication.shared.applicationState == .active else { return }
+        showSidebar(content: nil)
+    }
+
+    func splitViewController(_ svc: UISplitViewController, willHide column: UISplitViewController.Column) {
+        guard column == .primary, UIApplication.shared.applicationState == .active else { return }
+        hideSidebar()
+    }
+    
+    func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewController.DisplayMode) {
+        if displayMode == .oneOverSecondary {
+            shouldAutoHideSidebar = true
+        } else {
+            shouldAutoHideSidebar = false
+        }
     }
     
     // MARK: - WKNavigationDelegate

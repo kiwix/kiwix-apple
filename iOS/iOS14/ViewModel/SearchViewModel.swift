@@ -17,7 +17,6 @@ enum SearchViewContent {
 
 @available(iOS 14.0, *)
 class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
-    private let searchQueue = SearchQueue()
     private let zimFiles: Results<ZimFile>? = {
         do {
             let format = "stateRaw == %@ AND includedInSearch == true"
@@ -26,22 +25,22 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
             return database.objects(ZimFile.self).filter(predicate)
         } catch { return nil }
     }()
-    private var zimFilesChangePipeline: AnyCancellable?
+    private var zimFilesObserver: AnyCancellable?
     
     @Published var rawSearchText = ""
-    private var debouncer: AnyCancellable?
+    private var rawSearchTextDebouncer: AnyCancellable?
     
-    @Published private(set) var recentSearchTexts: [String]
-    private var monitor: AnyCancellable?
+    @Published private(set) var recentSearchTexts: [String] = []
+    private var recentSearchTextsObserver: AnyCancellable?
     
     let searchBar = UISearchBar()
+    private let searchQueue = SearchQueue()
     private let animation = Animation.easeInOut(duration: 0.05)
     @Published private(set) var isActive = false
     @Published private(set) var content: SearchViewContent = .initial
     @Published private(set) var results = [SearchResult]()
 
     override init() {
-        self.recentSearchTexts = UserDefaults.standard.stringArray(forKey: "recentSearchTexts") ?? [String]()
         super.init()
         searchBar.autocorrectionType = .no
         searchBar.autocapitalizationType = .none
@@ -49,21 +48,21 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
         searchBar.placeholder = "Search"
         searchBar.searchBarStyle = .minimal
         
-        self.zimFilesChangePipeline = zimFiles?.collectionPublisher.sink(
+        self.zimFilesObserver = zimFiles?.collectionPublisher.sink(
             receiveCompletion: { _ in },
-            receiveValue: { results in self.search(self.rawSearchText) }
+            receiveValue: { _ in self.search(self.rawSearchText) }
         )
-        self.debouncer = $rawSearchText
+        self.rawSearchTextDebouncer = $rawSearchText
             .debounce(for: .milliseconds(100), scheduler: RunLoop.main)
             .removeDuplicates { $0 == $1 }
             .sink { self.search($0) }
-        self.monitor = UserDefaults.standard
+        self.recentSearchTextsObserver = UserDefaults.standard
             .publisher(for: \.recentSearchTexts)
             .assign(to: \.recentSearchTexts, on: self)
     }
     
     func updateRecentSearchText() {
-        var searchTexts = recentSearchTexts
+        var searchTexts = UserDefaults.standard.stringArray(forKey: "recentSearchTexts") ?? [String]()
         searchTexts.removeAll { $0 == rawSearchText }
         searchTexts.insert(rawSearchText, at: 0)
         UserDefaults.standard.setValue(Array(searchTexts.prefix(20)), forKey: "recentSearchTexts")
@@ -108,9 +107,7 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
     // MARK: - UISearchBarDelegate
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        withAnimation(animation)  {
-            isActive = true
-        }
+        withAnimation(animation)  { isActive = true }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

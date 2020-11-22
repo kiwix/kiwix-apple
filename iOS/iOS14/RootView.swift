@@ -88,21 +88,17 @@ private struct SplitView: UIViewControllerRepresentable {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
     func makeUIViewController(context: Context) -> UISplitViewController {
-        let sidebarView = SidebarView().navigationBarHidden(true).environmentObject(sceneViewModel)
-        let contentView = ContentView().navigationBarHidden(true).environmentObject(sceneViewModel)
+        let sidebarView = SidebarView().navigationBarHidden(true)
+        let contentView = ContentView().navigationBarHidden(true)
         let sidebarController = UIHostingController(rootView: sidebarView)
         let contentController = UIHostingController(rootView: contentView)
         
         let controller = UISplitViewController(style: .doubleColumn)
-        controller.delegate = context.coordinator
+        controller.delegate = sceneViewModel
         controller.presentsWithGesture = false
         controller.setViewController(sidebarController, for: .primary)
         controller.setViewController(contentController, for: .secondary)
         return controller
-    }
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(sceneViewModel)
     }
     
     func updateUIViewController(_ uiViewController: UISplitViewController, context: Context) {
@@ -110,24 +106,6 @@ private struct SplitView: UIViewControllerRepresentable {
             uiViewController.show(.primary)
         } else {
             uiViewController.hide(.primary)
-        }
-    }
-    
-    class Coordinator: NSObject, UISplitViewControllerDelegate {
-        let sceneViewModel: SceneViewModel
-        
-        init(_ sceneViewModel: SceneViewModel) {
-            self.sceneViewModel = sceneViewModel
-        }
-        
-        func splitViewController(_ svc: UISplitViewController, willShow column: UISplitViewController.Column) {
-            guard column == .primary, UIApplication.shared.applicationState == .active else { return }
-            sceneViewModel.showSidebar(content: nil)
-        }
-        
-        func splitViewController(_ svc: UISplitViewController, willHide column: UISplitViewController.Column) {
-            guard column == .primary, UIApplication.shared.applicationState == .active else { return }
-            sceneViewModel.hideSidebar()
         }
     }
 }
