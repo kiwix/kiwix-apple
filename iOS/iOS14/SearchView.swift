@@ -56,30 +56,36 @@ struct SearchView: View {
     }
     
     private var filter: some View {
-        GeometryReader { geometry in
-            let horizontalPadding: CGFloat = geometry.size.width > 400 ? 20 : 16
-            ScrollView {
-                LazyVStack {
-                    SectionHeader(text: "Recent Search").padding(.horizontal, horizontalPadding)
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        LazyHStack {
-                            ForEach(searchViewModel.recentSearchTexts, id: \.hash) { searchText in
-                                RecentSearchButton(text: searchText)
-                            }
-                        }.padding(.horizontal, horizontalPadding)
-                    }
-                    .padding(.top, -2)
-                    .padding(.bottom, 8)
-                    SectionHeader(text: "Search Filter").padding(.horizontal, horizontalPadding)
-                    ForEach(zimFilesViewModel.onDevice, id: \.id) { zimFile in
-                        ZimFileCell(zimFile, withIncludedInSearchIcon: true) {
-                            zimFilesViewModel.toggleIncludedInSearch(zimFileID: zimFile.id)
+        List {
+            Section(header: Text("Recent Search")) {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    LazyHStack {
+                        ForEach(searchViewModel.recentSearchTexts, id: \.hash) { searchText in
+                            RecentSearchButton(text: searchText)
                         }
-                    }.padding(.horizontal, horizontalPadding)
-                }.padding(.vertical, 16)
+                    }.padding(.horizontal, 20)
+                }.listRowInsets(EdgeInsets())
             }
-        }
-        .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
+            Section(header: Text("Search Filter")) {
+                ForEach(zimFilesViewModel.onDevice, id: \.id) { zimFile in
+                    Button {
+                        zimFilesViewModel.toggleIncludedInSearch(zimFileID: zimFile.id)
+                    } label: {
+                        HStack(alignment: .center, spacing: 8) {
+                            Favicon(zimFile: zimFile)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(zimFile.title).font(.headline).lineLimit(1)
+                                Text(zimFile.description).font(.caption).lineLimit(1)
+                            }.foregroundColor(.primary)
+                            Spacer()
+                            if zimFile.includedInSearch {
+                                Image(systemName: "checkmark.circle.fill").foregroundColor(.green)
+                            }
+                        }.animation(.default)
+                    }
+                }
+            }
+        }.listStyle(GroupedListStyle())
     }
     
     private var noSearchText: some View {
