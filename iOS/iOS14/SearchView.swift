@@ -74,14 +74,14 @@ struct SearchView: View {
                         HStack(alignment: .center, spacing: 8) {
                             Favicon(zimFile: zimFile)
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(zimFile.title).font(.headline).lineLimit(1)
+                                Text(zimFile.title).font(.subheadline).fontWeight(.semibold).lineLimit(1)
                                 Text(zimFile.description).font(.caption).lineLimit(1)
                             }.foregroundColor(.primary)
                             Spacer()
                             if zimFile.includedInSearch {
                                 Image(systemName: "checkmark.circle.fill").foregroundColor(.green)
                             }
-                        }.animation(.default)
+                        }.animation(Animation.easeInOut(duration: 0.1))
                     }
                 }
             }
