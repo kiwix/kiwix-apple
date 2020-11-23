@@ -13,7 +13,7 @@
 #endif
 import RealmSwift
 
-class ZimFile: Object {
+class ZimFile: Object, Identifiable {
     
     // MARK: -  non-optional properties
     
@@ -75,7 +75,7 @@ class ZimFile: Object {
     // MARK: - Descriptions
     
     override var description: String {
-        [self.sizeDescription, self.creationDateDescription, self.sizeDescription]
+        [self.sizeDescription, self.creationDateDescription, self.articleCountDescription]
             .compactMap({ $0 })
             .joined(separator: ", ")
     }

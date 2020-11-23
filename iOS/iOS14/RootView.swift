@@ -88,7 +88,7 @@ private struct SplitView: UIViewControllerRepresentable {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
     func makeUIViewController(context: Context) -> UISplitViewController {
-        let sidebarView = SidebarView().navigationBarHidden(true)
+        let sidebarView = SidebarView().navigationBarHidden(true).environmentObject(sceneViewModel)
         let contentView = ContentView().navigationBarHidden(true)
         let sidebarController = UIHostingController(rootView: sidebarView)
         let contentController = UIHostingController(rootView: contentView)
