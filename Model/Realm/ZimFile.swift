@@ -13,7 +13,7 @@
 #endif
 import RealmSwift
 
-class ZimFile: Object {
+class ZimFile: Object, Identifiable {
     
     // MARK: -  non-optional properties
     

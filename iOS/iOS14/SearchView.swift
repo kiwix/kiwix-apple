@@ -67,7 +67,7 @@ struct SearchView: View {
                 }.listRowInsets(EdgeInsets())
             }
             Section(header: Text("Search Filter")) {
-                ForEach(zimFilesViewModel.onDevice, id: \.id) { zimFile in
+                ForEach(zimFilesViewModel.onDevice) { zimFile in
                     Button {
                         zimFilesViewModel.toggleIncludedInSearch(zimFileID: zimFile.id)
                     } label: {
