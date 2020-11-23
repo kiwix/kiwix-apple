@@ -20,10 +20,10 @@ struct SearchView: View {
     
     var body: some View {
         if zimFilesViewModel.onDevice.isEmpty {
-            VStack(spacing: 20) {
-                Text("No zim files").font(.title)
-                Text("Add some zim files to start a search.").font(.title2).foregroundColor(.secondary)
-            }.padding()
+            Message(
+                title: "No zim Files",
+                detail: "Add some zim files to start a search."
+            )
         } else if horizontalSizeClass == .regular {
             HStack(spacing: 0) {
                 ZStack(alignment: .trailing) {
@@ -89,29 +89,17 @@ struct SearchView: View {
     }
     
     private var noSearchText: some View {
-        VStack(spacing: 12) {
-            Text("No Search Results")
-                .font(.title)
-                .fontWeight(.semibold)
-                .foregroundColor(.primary)
-            Text("Please enter some text to start a search.")
-                .font(.title3)
-                .foregroundColor(.secondary)
-                .multilineTextAlignment(.center)
-        }.frame(maxWidth: .infinity)
+        Message(
+            title: "No Search Results",
+            detail: "Please enter some text to start a search."
+        )
     }
     
     private var noResult: some View {
-        VStack(spacing: 12) {
-            Text("No Search Results")
-                .font(.title)
-                .fontWeight(.semibold)
-                .foregroundColor(.primary)
-            Text("Please update the search text or search filter.")
-                .font(.title3)
-                .foregroundColor(.secondary)
-                .multilineTextAlignment(.center)
-        }.padding().frame(maxWidth: .infinity)
+        Message(
+            title: "No Search Results",
+            detail: "Please update the search text or search filter."
+        )
     }
     
     private var results: some View {
@@ -152,19 +140,7 @@ struct SearchView: View {
 }
 
 @available(iOS 14.0, *)
-fileprivate struct SectionHeader : View {
-    let text: String
-    
-    var body: some View {
-        HStack {
-            Text(text).font(.body).fontWeight(.semibold)
-            Spacer()
-        }
-    }
-}
-
-@available(iOS 14.0, *)
-fileprivate struct RecentSearchButton : View {
+private struct RecentSearchButton : View {
     @EnvironmentObject var searchViewModel: SearchViewModel
     let text: String
     
@@ -181,5 +157,26 @@ fileprivate struct RecentSearchButton : View {
                 .padding(.horizontal, 10)
                 .background(RoundedRectangle(cornerRadius: 10, style: .continuous))
         }
+    }
+}
+
+@available(iOS 14.0, *)
+private struct Message : View {
+    let title: String
+    let detail: String
+    
+    var body: some View {
+        VStack(spacing: 12) {
+            Text(title)
+                .font(.title)
+                .fontWeight(.semibold)
+                .foregroundColor(.primary)
+            Text(detail)
+                .font(.title3)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .padding()
+        .frame(maxWidth: .infinity)
     }
 }
