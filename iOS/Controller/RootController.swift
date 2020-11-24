@@ -57,6 +57,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
 
         // configuring splitView controlller
         delegate = self
+        presentsWithGesture = false
         viewControllers = [sideBarController, secondaryController]
         if #available(iOS 13.0, *) { preferredDisplayMode = .primaryHidden }
 
