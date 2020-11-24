@@ -592,6 +592,14 @@
 			path = Realm;
 			sourceTree = "<group>";
 		};
+		977FECC7256D43C800ACA787 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				977DCE43256CB974000E3E69 /* LibraryViewController_iOS14.swift */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
 		979315821E5127930093D3BA /* macOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -647,7 +655,6 @@
 		97B1046D1F8FC61400488444 /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				977DCE43256CB974000E3E69 /* LibraryViewController_iOS14.swift */,
 				97A36C561F8D5FCD0079B452 /* LibraryController.swift */,
 				97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */,
 				97018984212357F200F8A6DD /* LibrarySearchController.swift */,
@@ -728,6 +735,7 @@
 		97D7FB5A253CF94F00E8ADDF /* iOS14 */ = {
 			isa = PBXGroup;
 			children = (
+				977FECC7256D43C800ACA787 /* Library */,
 				97D19F052546FF2800910CAE /* Components */,
 				973B2A6225464FE400093661 /* ViewModel */,
 				97D7FB5B253CF97400E8ADDF /* RootView.swift */,
