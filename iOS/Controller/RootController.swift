@@ -295,14 +295,18 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     }
     
     @objc func openLibrary() {
-        let libraryController = self.libraryController ?? LibraryController(onDismiss: {
-            let timer = Timer(timeInterval: 60, repeats: false, block: { [weak self] timer in
-                self?.libraryController = nil
+        if #available(iOS 14.0, *) {
+            present(UINavigationController(rootViewController: LibraryViewController_iOS14()), animated: true)
+        } else {
+            let libraryController = self.libraryController ?? LibraryController(onDismiss: {
+                let timer = Timer(timeInterval: 60, repeats: false, block: { [weak self] timer in
+                    self?.libraryController = nil
+                })
+                RunLoop.main.add(timer, forMode: .default)
             })
-            RunLoop.main.add(timer, forMode: .default)
-        })
-        self.libraryController = libraryController
-        present(libraryController, animated: true)
+            self.libraryController = libraryController
+            present(libraryController, animated: true)
+        }
     }
     
     @objc func openSettings() {
