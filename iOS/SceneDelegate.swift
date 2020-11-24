@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let windowScene = scene as? UIWindowScene {
             window = UIWindow(windowScene: windowScene)
             window?.rootViewController = {
-                if #available(iOS 14.0, *) {
+                if #available(iOS 14.0, *), FeatureFlags.swiftUIBasedAppEnabled{
                     return UINavigationController(rootViewController: RootController_iOS14())
                 } else {
                     return RootController()

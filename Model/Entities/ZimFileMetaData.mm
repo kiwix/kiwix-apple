@@ -26,7 +26,7 @@
         try {
             self.identifier = [NSString stringWithUTF8String:_book->getId().c_str()];
             self.title = [NSString stringWithUTF8String:_book->getTitle().c_str()];
-            self.name = [NSString stringWithUTF8String:_book->getName().c_str()];
+            self.groupIdentifier = [NSString stringWithUTF8String:_book->getName().c_str()];
             self.fileDescription = [NSString stringWithUTF8String:_book->getDescription().c_str()];
             self.languageCode = [self getLanguageCodeFromBook:_book];
             self.category = [self getCategoryFromBook:_book];

@@ -26,6 +26,7 @@ class LibraryOperationQueue: OperationQueue {
 class LibraryOperationBase: Operation {
     internal func updateZimFile(_ zimFile: ZimFile, meta: ZimFileMetaData) {
         zimFile.title = meta.title
+        zimFile.groupID = meta.groupIdentifier
         zimFile.fileDescription = meta.fileDescription
         zimFile.languageCode = meta.languageCode
         zimFile.categoryRaw = meta.category

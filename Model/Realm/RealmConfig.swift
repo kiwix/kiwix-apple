@@ -27,7 +27,7 @@ extension Realm {
         
         // migrations
         var config = Realm.Configuration(
-            schemaVersion: 2,
+            schemaVersion: 3,
             migrationBlock: { migration, oldSchemaVersion in
                 if (oldSchemaVersion < 2) {
                     migration.enumerateObjects(ofType: ZimFile.className()) { oldObject, newObject in

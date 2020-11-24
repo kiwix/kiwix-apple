@@ -121,6 +121,9 @@ class OPDSRefreshOperation: LibraryOperationBase {
                         if updateExisting {
                             updateZimFile(zimFile, meta: meta)
                             self.updateCount += 1
+                        } else {
+                            // HACK: always update groupID, because I forgot to set it on creation before
+                            zimFile.groupID = meta.groupIdentifier
                         }
                     } else {
                         let zimFile = ZimFile()

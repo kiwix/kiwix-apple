@@ -18,7 +18,7 @@ class ZimFile: Object, Identifiable {
     // MARK: -  non-optional properties
     
     @objc dynamic var id: String = ""
-    @objc dynamic var name: String = ""
+    @objc dynamic var groupID: String = ""
     @objc dynamic var title: String = ""
     @objc dynamic var fileDescription: String = ""
     @objc dynamic var languageCode: String = ""

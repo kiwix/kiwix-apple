@@ -12,7 +12,7 @@
 
 // nonnull attributes
 @property (nonatomic, strong, nonnull) NSString *identifier;
-@property (nonatomic, strong, nonnull) NSString *name;
+@property (nonatomic, strong, nonnull) NSString *groupIdentifier;
 @property (nonatomic, strong, nonnull) NSString *title;
 @property (nonatomic, strong, nonnull) NSString *fileDescription;
 @property (nonatomic, strong, nonnull) NSString *languageCode;
