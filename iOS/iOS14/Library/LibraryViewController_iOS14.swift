@@ -30,26 +30,24 @@ struct LibraryView: View {
     var body: some View {
         let itemsPerCategory = horizontalSizeClass == .regular ? 6 : 4
         NavigationView {
-            GeometryReader { geometry in
-                ScrollView {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
-                        ForEach(viewModel.result.categories, id: \.rawValue.hash) { category in
-                            let header = HStack {
-                                Text(category.description).font(.title2).fontWeight(.bold)
-                                Spacer()
-                                if viewModel.result.counts[category, default: 0] > itemsPerCategory {
-                                    Text("Show More")
-                                }
-                            }
-                            let zimFiles = viewModel.result.metaData[category, default: []].prefix(itemsPerCategory)
-                            Section(header: header) {
-                                ForEach(zimFiles) { zimFile in
-                                    ZimFileCell(zimFile) {}
-                                }
+            ScrollView {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
+                    ForEach(viewModel.result.categories, id: \.rawValue.hash) { category in
+                        let header = HStack {
+                            Text(category.description).font(.title2).fontWeight(.bold)
+                            Spacer()
+                            if viewModel.result.counts[category, default: 0] > itemsPerCategory {
+                                Text("Show More")
                             }
                         }
-                    }.padding()
-                }
+                        let zimFiles = viewModel.result.metaData[category, default: []].prefix(itemsPerCategory)
+                        Section(header: header) {
+                            ForEach(zimFiles) { zimFile in
+                                ZimFileCell(zimFile) {}
+                            }
+                        }
+                    }
+                }.padding()
             }
             .navigationTitle("Library")
             .toolbar { ToolbarItem(placement: .navigationBarLeading) {
