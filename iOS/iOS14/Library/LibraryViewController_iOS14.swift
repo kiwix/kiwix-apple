@@ -24,9 +24,11 @@ class LibraryViewController_iOS14: UIHostingController<LibraryView> {
 @available(iOS 14.0, *)
 struct LibraryView: View {
     @ObservedObject private var viewModel = ViewModel()
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     var dismiss: (() -> Void) = {}
     
     var body: some View {
+        let itemsPerCategory = horizontalSizeClass == .regular ? 9 : 4
         NavigationView {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
@@ -34,11 +36,11 @@ struct LibraryView: View {
                         Section(header: HStack {
                             Text(category.description).font(.title2).fontWeight(.bold)
                             Spacer()
-                            if viewModel.result.counts[category, default: 0] > 9 {
-                                Text("has more")
+                            if viewModel.result.counts[category, default: 0] > itemsPerCategory {
+                                Text("Show More")
                             }
                         }) {
-                            ForEach(viewModel.result.metaData[category, default: []]) { zimFile in
+                            ForEach(viewModel.result.metaData[category, default: []].prefix(itemsPerCategory)) { zimFile in
                                 ZimFileCell(zimFile) {}
                             }
                         }
@@ -61,7 +63,7 @@ struct LibraryView: View {
         init(results: Results<ZimFile>? = nil) {
             guard let results = results else { return }
             for zimFile in results {
-                counts[zimFile.category, default:0] += 1
+                counts[zimFile.category, default: 0] += 1
                 guard metaData[zimFile.category, default: []].count < 9 else { continue }
                 metaData[zimFile.category, default: []].append(zimFile)
             }
