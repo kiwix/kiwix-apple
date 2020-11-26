@@ -23,8 +23,8 @@ class LibraryViewController_iOS14: UIHostingController<LibraryView> {
 
 @available(iOS 14.0, *)
 struct LibraryView: View {
-    @ObservedObject private var viewModel = ViewModel()
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @ObservedObject private var viewModel = ViewModel()
     var dismiss: (() -> Void) = {}
     
     var body: some View {
@@ -37,7 +37,7 @@ struct LibraryView: View {
                             Text(category.description).font(.title2).fontWeight(.bold)
                             Spacer()
                             if viewModel.result.counts[category, default: 0] > itemsPerCategory {
-                                NavigationLink(destination: Text("Second View")) {
+                                NavigationLink(destination: LibraryCategoryView(category: category)) {
                                     HStack(spacing: 4) {
                                         Text("See All")
                                         Image(systemName: "chevron.right")
@@ -80,13 +80,11 @@ struct LibraryView: View {
 
     class ViewModel: ObservableObject {
         private let queue = DispatchQueue(label: "org.kiwix.libraryUI", qos: .userInitiated)
-        private let database: Realm?
+        private let database = try? Realm(configuration: Realm.defaultConfig)
         private var zimFilesPipeline: AnyCancellable? = nil
-        @Published var result = QueryResult()
+        @Published private(set) var result = QueryResult()
         
         init() {
-            self.database = try? Realm(configuration: Realm.defaultConfig)
-            
             let predicate = NSPredicate(format: "languageCode == %@", "en")
             zimFilesPipeline = database?.objects(ZimFile.self)
                 .filter(predicate)
