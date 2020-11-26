@@ -204,9 +204,9 @@ class ZimFile: Object, Identifiable {
                 return 6
             case .wiktionary:
                 return 7
-            case .ted:
-                return 8
             case .vikidia:
+                return 8
+            case .ted:
                 return 9
             case .stackExchange:
                 return 10
