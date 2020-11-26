@@ -33,11 +33,16 @@ struct LibraryView: View {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
                     ForEach(viewModel.result.categories, id: \.rawValue.hash) { category in
-                        let header = HStack {
+                        let header = HStack(alignment: .firstTextBaseline) {
                             Text(category.description).font(.title2).fontWeight(.bold)
                             Spacer()
                             if viewModel.result.counts[category, default: 0] > itemsPerCategory {
-                                Text("Show More")
+                                NavigationLink(destination: Text("Second View")) {
+                                    HStack(spacing: 4) {
+                                        Text("See All")
+                                        Image(systemName: "chevron.right")
+                                    }.font(Font.footnote.weight(.medium))
+                                }
                             }
                         }
                         let zimFiles = viewModel.result.metaData[category, default: []].prefix(itemsPerCategory)
