@@ -16,7 +16,7 @@ class LibraryViewController_iOS14: UIHostingController<AnyView> {
         self.init(rootView: AnyView(EmptyView()))
         let libraryView = LibraryView(dismiss: { [unowned self] in
             self.dismiss(animated: true)
-        }).environmentObject(LibraryViewModel())
+        })
         rootView = AnyView(libraryView)
         modalPresentationStyle = .overFullScreen
     }
@@ -24,19 +24,22 @@ class LibraryViewController_iOS14: UIHostingController<AnyView> {
 
 @available(iOS 14.0, *)
 struct LibraryView: View {
-    @EnvironmentObject var libraryViewModel: LibraryViewModel
+    @ObservedObject private var viewModel = ViewModel()
     var dismiss: (() -> Void)
     
     var body: some View {
         NavigationView {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
-                    ForEach(libraryViewModel.result.categories, id: \.rawValue.hash) { category in
+                    ForEach(viewModel.result.categories, id: \.rawValue.hash) { category in
                         Section(header: HStack {
                             Text(category.description).font(.title2).fontWeight(.bold)
                             Spacer()
+                            if viewModel.result.counts[category, default: 0] > 9 {
+                                Text("has more")
+                            }
                         }) {
-                            ForEach(libraryViewModel.result.metaData[category, default: []]) { zimFile in
+                            ForEach(viewModel.result.metaData[category, default: []]) { zimFile in
                                 ZimFileCell(zimFile) {}
                             }
                         }
@@ -50,46 +53,47 @@ struct LibraryView: View {
             .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
         }.navigationViewStyle(StackNavigationViewStyle())
     }
-}
-
-struct ZimFilesQueryResult {
-    private(set) var categories = [ZimFile.Category]()
-    private(set) var metaData = [ZimFile.Category: [ZimFile]]()
     
-    init(results: Results<ZimFile>? = nil) {
-        guard let results = results else { return }
-        for zimFile in results {
-            guard metaData[zimFile.category, default: []].count < 9 else { continue }
-            metaData[zimFile.category, default: []].append(zimFile)
-        }
-        categories = Array(metaData.keys).sorted()
-    }
-}
-
-@available(iOS 14.0, *)
-class LibraryViewModel: ObservableObject {
-    private let queue = DispatchQueue(label: "org.kiwix.libraryUI", qos: .userInitiated)
-    private let database: Realm?
-    private var zimFilesPipeline: AnyCancellable? = nil
-    @Published var result = ZimFilesQueryResult()
-    
-    init() {
-        self.database = try? Realm(configuration: Realm.defaultConfig)
+    struct QueryResult {
+        private(set) var categories = [ZimFile.Category]()
+        private(set) var metaData = [ZimFile.Category: [ZimFile]]()
+        private(set) var counts = [ZimFile.Category: Int]()
         
-        let predicate = NSPredicate(format: "languageCode == %@", "en")
-        zimFilesPipeline = database?.objects(ZimFile.self)
-            .filter(predicate)
-            .sorted(byKeyPath: "size", ascending: false)
-            .collectionPublisher
-            .subscribe(on: queue)
-            .freeze()
-            .map { ZimFilesQueryResult(results: $0) }
-            .receive(on: DispatchQueue.main)
-            .catch { _ in Just(ZimFilesQueryResult()) }
-            .assign(to: \.result, on: self)
+        init(results: Results<ZimFile>? = nil) {
+            guard let results = results else { return }
+            for zimFile in results {
+                counts[zimFile.category, default:0] += 1
+                guard metaData[zimFile.category, default: []].count < 9 else { continue }
+                metaData[zimFile.category, default: []].append(zimFile)
+            }
+            categories = Array(metaData.keys).sorted()
+        }
     }
-    
-    deinit {
-        zimFilesPipeline?.cancel()
+
+    class ViewModel: ObservableObject {
+        private let queue = DispatchQueue(label: "org.kiwix.libraryUI", qos: .userInitiated)
+        private let database: Realm?
+        private var zimFilesPipeline: AnyCancellable? = nil
+        @Published var result = QueryResult()
+        
+        init() {
+            self.database = try? Realm(configuration: Realm.defaultConfig)
+            
+            let predicate = NSPredicate(format: "languageCode == %@", "en")
+            zimFilesPipeline = database?.objects(ZimFile.self)
+                .filter(predicate)
+                .sorted(byKeyPath: "size", ascending: false)
+                .collectionPublisher
+                .subscribe(on: queue)
+                .freeze()
+                .map { QueryResult(results: $0) }
+                .receive(on: DispatchQueue.main)
+                .catch { _ in Just(QueryResult()) }
+                .assign(to: \.result, on: self)
+        }
+        
+        deinit {
+            zimFilesPipeline?.cancel()
+        }
     }
 }
