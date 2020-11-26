@@ -296,9 +296,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     
     @objc func openLibrary() {
         if #available(iOS 14.0, *) {
-            let controller = UINavigationController(rootViewController: LibraryViewController_iOS14())
-            controller.modalPresentationStyle = .fullScreen
-            present(controller, animated: true)
+            present(LibraryViewController_iOS14(), animated: true)
         } else {
             let libraryController = self.libraryController ?? LibraryController(onDismiss: {
                 let timer = Timer(timeInterval: 60, repeats: false, block: { [weak self] timer in
