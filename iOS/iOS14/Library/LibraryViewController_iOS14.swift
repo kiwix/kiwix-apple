@@ -28,24 +28,28 @@ struct LibraryView: View {
     var dismiss: (() -> Void) = {}
     
     var body: some View {
-        let itemsPerCategory = horizontalSizeClass == .regular ? 9 : 4
+        let itemsPerCategory = horizontalSizeClass == .regular ? 6 : 4
         NavigationView {
-            ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
-                    ForEach(viewModel.result.categories, id: \.rawValue.hash) { category in
-                        Section(header: HStack {
-                            Text(category.description).font(.title2).fontWeight(.bold)
-                            Spacer()
-                            if viewModel.result.counts[category, default: 0] > itemsPerCategory {
-                                Text("Show More")
+            GeometryReader { geometry in
+                ScrollView {
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
+                        ForEach(viewModel.result.categories, id: \.rawValue.hash) { category in
+                            let header = HStack {
+                                Text(category.description).font(.title2).fontWeight(.bold)
+                                Spacer()
+                                if viewModel.result.counts[category, default: 0] > itemsPerCategory {
+                                    Text("Show More")
+                                }
                             }
-                        }) {
-                            ForEach(viewModel.result.metaData[category, default: []].prefix(itemsPerCategory)) { zimFile in
-                                ZimFileCell(zimFile) {}
+                            let zimFiles = viewModel.result.metaData[category, default: []].prefix(itemsPerCategory)
+                            Section(header: header) {
+                                ForEach(zimFiles) { zimFile in
+                                    ZimFileCell(zimFile) {}
+                                }
                             }
                         }
-                    }
-                }.padding()
+                    }.padding()
+                }
             }
             .navigationTitle("Library")
             .toolbar { ToolbarItem(placement: .navigationBarLeading) {
@@ -64,7 +68,7 @@ struct LibraryView: View {
             guard let results = results else { return }
             for zimFile in results {
                 counts[zimFile.category, default: 0] += 1
-                guard metaData[zimFile.category, default: []].count < 9 else { continue }
+                guard metaData[zimFile.category, default: []].count < 6 else { continue }
                 metaData[zimFile.category, default: []].append(zimFile)
             }
             categories = Array(metaData.keys).sorted()
