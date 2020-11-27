@@ -34,18 +34,24 @@ struct LibraryCategoryView: View {
         }
         .navigationTitle(category.description)
         .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
+        .onAppear { viewModel.load() }
     }
     
     class ViewModel: ObservableObject {
         @Published private(set) var zimFiles = [ZimFile]()
         
+        private let category: ZimFile.Category
         private let queue = DispatchQueue(label: "org.kiwix.libraryUI.categoryGeneric")
         private let database = try? Realm(configuration: Realm.defaultConfig)
-        private var zimFilesPipeline: AnyCancellable? = nil
+        private var pipeline: AnyCancellable? = nil
         
         init(category: ZimFile.Category) {
+            self.category = category
+        }
+        
+        func load() {
             let predicate = NSPredicate(format: "languageCode == %@ AND categoryRaw == %@", "en", category.rawValue)
-            zimFilesPipeline = database?.objects(ZimFile.self)
+            pipeline = database?.objects(ZimFile.self)
                 .filter(predicate)
                 .sorted(byKeyPath: "title", ascending: true)
                 .collectionPublisher
@@ -55,10 +61,6 @@ struct LibraryCategoryView: View {
                 .receive(on: DispatchQueue.main)
                 .catch { _ in Just([]) }
                 .assign(to: \.zimFiles, on: self)
-        }
-        
-        deinit {
-            zimFilesPipeline?.cancel()
         }
     }
 }
@@ -79,7 +81,7 @@ struct LibraryGroupedCategoryView: View {
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
                 ForEach(viewModel.result.groups) { group in
                     let header = HStack(alignment: .firstTextBaseline) {
-                        Text(group.name).font(.title2).fontWeight(.bold)
+                        Text(group.name).font(.title2).fontWeight(.semibold)
                         Spacer()
                     }
                     Section(header: header) {
@@ -95,6 +97,7 @@ struct LibraryGroupedCategoryView: View {
         }
         .navigationTitle(category.description)
         .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
+        .onAppear { viewModel.load() }
     }
     
     struct QueryResult {
@@ -144,27 +147,29 @@ struct LibraryGroupedCategoryView: View {
     
     class ViewModel: ObservableObject {
         @Published private(set) var result: QueryResult
+        
+        private let category: ZimFile.Category
         private let queue = DispatchQueue(label: "org.kiwix.libraryUI.categoryGrouped")
         private let database = try? Realm(configuration: Realm.defaultConfig)
-        private var zimFilesPipeline: AnyCancellable? = nil
+        private var pipeline: AnyCancellable? = nil
         
         init(category: ZimFile.Category) {
             self.result = QueryResult(category: category)
+            self.category = category
+        }
+        
+        func load() {
             let predicate = NSPredicate(format: "languageCode == %@ AND categoryRaw == %@", "en", category.rawValue)
-            zimFilesPipeline = database?.objects(ZimFile.self)
+            pipeline = database?.objects(ZimFile.self)
                 .filter(predicate)
                 .sorted(byKeyPath: "size", ascending: false)
                 .collectionPublisher
                 .subscribe(on: queue)
                 .freeze()
-                .map { QueryResult(category: category, results: $0) }
+                .map { QueryResult(category: self.category, results: $0) }
                 .receive(on: DispatchQueue.main)
-                .catch { _ in Just(QueryResult(category: category)) }
+                .catch { _ in Just(QueryResult(category: self.category)) }
                 .assign(to: \.result, on: self)
-        }
-        
-        deinit {
-            zimFilesPipeline?.cancel()
         }
     }
 }
