@@ -37,11 +37,14 @@ struct LibraryView: View {
                             Text(category.description).font(.title2).fontWeight(.bold)
                             Spacer()
                             if viewModel.result.counts[category, default: 0] > itemsPerCategory {
-                                NavigationLink(destination: LibraryCategoryView(category: category)) {
-                                    HStack(spacing: 4) {
-                                        Text("See All")
-                                        Image(systemName: "chevron.right")
-                                    }.font(Font.footnote.weight(.medium))
+                                let label = HStack(spacing: 4) {
+                                    Text("See All")
+                                    Image(systemName: "chevron.right")
+                                }.font(Font.footnote.weight(.medium))
+                                if category == .wikipedia {
+                                    NavigationLink(destination: LibraryWikipediaCategoryView()) { label }
+                                } else {
+                                    NavigationLink(destination: LibraryCategoryView(category: category)) { label }
                                 }
                             }
                         }
