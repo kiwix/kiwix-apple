@@ -36,7 +36,7 @@ struct LibraryCategoryView: View {
         let category: ZimFile.Category
         @Published private(set) var zimFiles = [ZimFile]()
         
-        private let queue = DispatchQueue(label: "org.kiwix.libraryUI.categoryGeneric", qos: .userInitiated)
+        private let queue = DispatchQueue(label: "org.kiwix.libraryUI.categoryGeneric")
         private let database = try? Realm(configuration: Realm.defaultConfig)
         private var zimFilesPipeline: AnyCancellable? = nil
         
@@ -96,9 +96,17 @@ struct LibraryWikipediaCategoryView: View {
                 Group(id: groupID, zimFiles: zimFiles)
             }.sorted(by: { $0.name < $1.name })
             
-            if let otherIndex = self.groups.firstIndex(where: { $0.id == "" }) {
-                let otherGroup = self.groups.remove(at: otherIndex)
-                self.groups.append(otherGroup)
+            // groups with these suffixes are treated in a special way and will show up first
+            let suffixes = ["_all", "_top", "_simple_all", "_100", "_wp1-0.8", "_ray_charles"]
+            for suffix in suffixes.reversed() {
+                if let index = groups.lastIndex(where: { $0.id.hasSuffix(suffix) }) {
+                    groups.insert(groups.remove(at: index), at: 0)
+                }
+            }
+            
+            // group with empty string as ID will always be last and named as Other
+            if let index = groups.firstIndex(where: { $0.id == "" }) {
+                groups.append(groups.remove(at: index))
             }
         }
     }
@@ -120,7 +128,7 @@ struct LibraryWikipediaCategoryView: View {
     }
     
     class ViewModel: ObservableObject {
-        private let queue = DispatchQueue(label: "org.kiwix.libraryUI.categoryGrouped", qos: .userInitiated)
+        private let queue = DispatchQueue(label: "org.kiwix.libraryUI.categoryGrouped")
         private let database = try? Realm(configuration: Realm.defaultConfig)
         private var zimFilesPipeline: AnyCancellable? = nil
         @Published private(set) var result = QueryResult()
