@@ -89,6 +89,7 @@
 		978B688924F8080E003CCA8C /* BarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978B688824F8080E003CCA8C /* BarButtons.swift */; };
 		978C58092468FC1100D56AC8 /* SettingSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F97A720D00EAE0005D642 /* SettingSearchController.swift */; };
 		979011302544D55800FF7855 /* SceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9790112F2544D55800FF7855 /* SceneViewModel.swift */; };
+		979AAF40257167C60078492F /* ZimFileDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979AAF3F257167C60078492F /* ZimFileDetailView.swift */; };
 		979D6E0C20B34FD700B08DE7 /* BookmarksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979D6E0B20B34FD700B08DE7 /* BookmarksController.swift */; };
 		979F49F7254478D400DE0B56 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979F49F6254478D400DE0B56 /* Buttons.swift */; };
 		979FD159201679C5007B5290 /* SearchResultsListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979FD158201679C5007B5290 /* SearchResultsListController.swift */; };
@@ -271,6 +272,7 @@
 		9790112F2544D55800FF7855 /* SceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewModel.swift; sourceTree = "<group>"; };
 		979315811E5127930093D3BA /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9793158C1E5127930093D3BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		979AAF3F257167C60078492F /* ZimFileDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileDetailView.swift; sourceTree = "<group>"; };
 		979D6E0B20B34FD700B08DE7 /* BookmarksController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksController.swift; sourceTree = "<group>"; };
 		979F49F6254478D400DE0B56 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		979FD158201679C5007B5290 /* SearchResultsListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsListController.swift; sourceTree = "<group>"; };
@@ -599,6 +601,7 @@
 			children = (
 				977DCE43256CB974000E3E69 /* LibraryView.swift */,
 				97D3886725703A7A005CBE41 /* LibraryCategoryView.swift */,
+				979AAF3F257167C60078492F /* ZimFileDetailView.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -1096,6 +1099,7 @@
 				973B2A5D254609FD00093661 /* Modifiers.swift in Sources */,
 				9779A5B82456793600F6F6FF /* LibraryOperationBase.swift in Sources */,
 				9779A5B62456793600F6F6FF /* LibraryScanOperation.swift in Sources */,
+				979AAF40257167C60078492F /* ZimFileDetailView.swift in Sources */,
 				9779A5C62456793600F6F6FF /* ZimFileMetaData.mm in Sources */,
 				9779A7E424567A5A00F6F6FF /* Log.swift in Sources */,
 				97810E17250436E2000D86CB /* ZimFileCell.swift in Sources */,

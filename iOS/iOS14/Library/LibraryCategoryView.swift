@@ -12,8 +12,9 @@ import RealmSwift
 
 @available(iOS 14.0, *)
 struct LibraryCategoryView: View {
-    let category: ZimFile.Category
     @ObservedObject private var viewModel: ViewModel
+    @State private var isShowingZimFileView = false
+    private let category: ZimFile.Category
     
     init(category: ZimFile.Category) {
         self.category = category
@@ -61,8 +62,9 @@ struct LibraryCategoryView: View {
 
 @available(iOS 14.0, *)
 struct LibraryGroupedCategoryView: View {
-    let category: ZimFile.Category
+    @State private var isShowingZimFileView = false
     @ObservedObject private var viewModel: ViewModel
+    private let category: ZimFile.Category
     
     init(category: ZimFile.Category) {
         self.category = category

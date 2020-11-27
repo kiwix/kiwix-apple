@@ -25,6 +25,7 @@ class LibraryViewController_iOS14: UIHostingController<LibraryView> {
 struct LibraryView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @ObservedObject private var viewModel = ViewModel()
+    @State private var isShowingZimFileView = false
     var dismiss: (() -> Void) = {}
     
     var body: some View {
@@ -51,7 +52,10 @@ struct LibraryView: View {
                         let zimFiles = viewModel.result.metaData[category, default: []].prefix(itemsPerCategory)
                         Section(header: header) {
                             ForEach(zimFiles) { zimFile in
-                                ZimFileCell(zimFile) {}
+                                ZStack{
+                                    NavigationLink(destination: ZimFileDetailView(id: zimFile.id), isActive: $isShowingZimFileView) { EmptyView() }
+                                    ZimFileCell(zimFile) { isShowingZimFileView = true }
+                                }
                             }
                         }
                     }
