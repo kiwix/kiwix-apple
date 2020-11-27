@@ -13,7 +13,7 @@ import RealmSwift
 @available(iOS 14.0, *)
 struct LibraryCategoryView: View {
     @ObservedObject private var viewModel: ViewModel
-    @State private var isShowingZimFileView = false
+    @State private var isShowingZimFileDetailView = false
     private let category: ZimFile.Category
     
     init(category: ZimFile.Category) {
@@ -25,7 +25,10 @@ struct LibraryCategoryView: View {
         ScrollView{
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
                 ForEach(viewModel.zimFiles) { zimFile in
-                    ZimFileCell(zimFile) {}
+                    ZStack{
+                        NavigationLink("", destination: ZimFileDetailView(id: zimFile.id), isActive: $isShowingZimFileDetailView)
+                        ZimFileCell(zimFile) { isShowingZimFileDetailView = true }
+                    }
                 }
             }.padding()
         }
@@ -62,8 +65,8 @@ struct LibraryCategoryView: View {
 
 @available(iOS 14.0, *)
 struct LibraryGroupedCategoryView: View {
-    @State private var isShowingZimFileView = false
     @ObservedObject private var viewModel: ViewModel
+    @State private var isShowingZimFileDetailView = false
     private let category: ZimFile.Category
     
     init(category: ZimFile.Category) {
@@ -81,7 +84,10 @@ struct LibraryGroupedCategoryView: View {
                     }
                     Section(header: header) {
                         ForEach(group.zimFiles) { zimFile in
-                            ZimFileCell(zimFile) {}
+                            ZStack{
+                                NavigationLink("", destination: ZimFileDetailView(id: zimFile.id), isActive: $isShowingZimFileDetailView)
+                                ZimFileCell(zimFile) { isShowingZimFileDetailView = true }
+                            }
                         }
                     }
                 }

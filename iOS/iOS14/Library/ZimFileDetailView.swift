@@ -1,6 +1,6 @@
 //
 //  ZimFileDetailView.swift
-//  iOS
+//  Kiwix
 //
 //  Created by Chris Li on 11/27/20.
 //  Copyright © 2020 Chris Li. All rights reserved.
@@ -13,10 +13,11 @@ struct ZimFileDetailView: View {
     let id: String
     init(id: String) {
         self.id = id
-        print("test")
     }
     var body: some View {
-        Text("Hello, World!")
+        Text("Hello, World!").onAppear {
+            print("appear")
+        }
     }
 }
 
