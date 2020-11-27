@@ -115,8 +115,6 @@ struct LibraryGroupedCategoryView: View {
             if let index = groups.firstIndex(where: { $0.id == "" }) {
                 groups.append(groups.remove(at: index))
             }
-            
-            print(Array(groups.map({ $0.id })))
         }
     }
     

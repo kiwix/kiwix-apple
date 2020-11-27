@@ -34,7 +34,7 @@ struct LibraryView: View {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
                     ForEach(viewModel.result.categories, id: \.rawValue.hash) { category in
                         let header = HStack(alignment: .firstTextBaseline) {
-                            Text(category.description).font(.title2).fontWeight(.bold)
+                            Text(category.description).font(.title2).fontWeight(.semibold)
                             Spacer()
                             if viewModel.result.counts[category, default: 0] > itemsPerCategory {
                                 let label = HStack(spacing: 4) {
