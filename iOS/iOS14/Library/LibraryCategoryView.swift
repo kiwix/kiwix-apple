@@ -33,7 +33,6 @@ struct LibraryCategoryView: View {
     }
     
     class ViewModel: ObservableObject {
-        let category: ZimFile.Category
         @Published private(set) var zimFiles = [ZimFile]()
         
         private let queue = DispatchQueue(label: "org.kiwix.libraryUI.categoryGeneric")
@@ -41,7 +40,6 @@ struct LibraryCategoryView: View {
         private var zimFilesPipeline: AnyCancellable? = nil
         
         init(category: ZimFile.Category) {
-            self.category = category
             let predicate = NSPredicate(format: "languageCode == %@ AND categoryRaw == %@", "en", category.rawValue)
             zimFilesPipeline = database?.objects(ZimFile.self)
                 .filter(predicate)
@@ -62,8 +60,14 @@ struct LibraryCategoryView: View {
 }
 
 @available(iOS 14.0, *)
-struct LibraryWikipediaCategoryView: View {
-    @ObservedObject private var viewModel = ViewModel()
+struct LibraryGroupedCategoryView: View {
+    let category: ZimFile.Category
+    @ObservedObject private var viewModel: ViewModel
+    
+    init(category: ZimFile.Category) {
+        self.category = category
+        self.viewModel = ViewModel(category: category)
+    }
     
     var body: some View {
         ScrollView{
@@ -81,20 +85,23 @@ struct LibraryWikipediaCategoryView: View {
                 }
             }.padding()
         }
-        .navigationTitle(ZimFile.Category.wikipedia.description)
+        .navigationTitle(category.description)
         .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
     }
     
     struct QueryResult {
         private(set) var groups = [Group]()
 
-        init(results: Results<ZimFile>? = nil) {
+        init(category: ZimFile.Category, results: Results<ZimFile>? = nil) {
             guard let results = results else { return }
             groups = results.reduce(into: [String: [ZimFile]]()) { result, zimFile in
                 result[zimFile.groupID, default: []].append(zimFile)
             }.map { groupID, zimFiles in
                 Group(id: groupID, zimFiles: zimFiles)
-            }.sorted(by: { $0.name < $1.name })
+            }.sorted(by: { $0.name.caseInsensitiveCompare($1.name) == .orderedAscending })
+            
+            // special sorting logic for wikipedia
+            guard category == .wikipedia else { return }
             
             // groups with these suffixes are treated in a special way and will show up first
             let suffixes = ["_all", "_top", "_simple_all", "_100", "_wp1-0.8", "_ray_charles"]
@@ -108,6 +115,8 @@ struct LibraryWikipediaCategoryView: View {
             if let index = groups.firstIndex(where: { $0.id == "" }) {
                 groups.append(groups.remove(at: index))
             }
+            
+            print(Array(groups.map({ $0.id })))
         }
     }
     
@@ -128,22 +137,23 @@ struct LibraryWikipediaCategoryView: View {
     }
     
     class ViewModel: ObservableObject {
+        @Published private(set) var result: QueryResult
         private let queue = DispatchQueue(label: "org.kiwix.libraryUI.categoryGrouped")
         private let database = try? Realm(configuration: Realm.defaultConfig)
         private var zimFilesPipeline: AnyCancellable? = nil
-        @Published private(set) var result = QueryResult()
         
-        init() {
-            let predicate = NSPredicate(format: "languageCode == %@ AND categoryRaw == %@", "en", ZimFile.Category.wikipedia.rawValue)
+        init(category: ZimFile.Category) {
+            self.result = QueryResult(category: category)
+            let predicate = NSPredicate(format: "languageCode == %@ AND categoryRaw == %@", "en", category.rawValue)
             zimFilesPipeline = database?.objects(ZimFile.self)
                 .filter(predicate)
                 .sorted(byKeyPath: "size", ascending: false)
                 .collectionPublisher
                 .subscribe(on: queue)
                 .freeze()
-                .map { QueryResult(results: $0) }
+                .map { QueryResult(category: category, results: $0) }
                 .receive(on: DispatchQueue.main)
-                .catch { _ in Just(QueryResult()) }
+                .catch { _ in Just(QueryResult(category: category)) }
                 .assign(to: \.result, on: self)
         }
         
