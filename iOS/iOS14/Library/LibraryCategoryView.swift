@@ -41,7 +41,7 @@ struct LibraryCategoryView: View {
         @Published private(set) var zimFiles = [ZimFile]()
         
         private let category: ZimFile.Category
-        private let queue = DispatchQueue(label: "org.kiwix.libraryUI.categoryGeneric")
+        private let queue = DispatchQueue(label: "org.kiwix.libraryUI.categoryGeneric", qos: .userInitiated)
         private let database = try? Realm(configuration: Realm.defaultConfig)
         private var pipeline: AnyCancellable? = nil
         
@@ -149,7 +149,7 @@ struct LibraryGroupedCategoryView: View {
         @Published private(set) var result: QueryResult
         
         private let category: ZimFile.Category
-        private let queue = DispatchQueue(label: "org.kiwix.libraryUI.categoryGrouped")
+        private let queue = DispatchQueue(label: "org.kiwix.libraryUI.categoryGrouped", qos: .userInitiated)
         private let database = try? Realm(configuration: Realm.defaultConfig)
         private var pipeline: AnyCancellable? = nil
         
