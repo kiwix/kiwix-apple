@@ -296,7 +296,10 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     
     @objc func openLibrary() {
         if #available(iOS 14.0, *) {
-            present(LibraryViewController_iOS14(), animated: true)
+            let controller = UIHostingController(rootView: LibraryView())
+            controller.rootView.dismiss = { controller.dismiss(animated: true) }
+            controller.modalPresentationStyle = .pageSheet
+            present(controller, animated: true)
         } else {
             let libraryController = self.libraryController ?? LibraryController(onDismiss: {
                 let timer = Timer(timeInterval: 60, repeats: false, block: { [weak self] timer in

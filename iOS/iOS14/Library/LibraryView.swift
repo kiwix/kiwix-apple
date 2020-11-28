@@ -11,17 +11,6 @@ import SwiftUI
 import RealmSwift
 
 @available(iOS 14.0, *)
-class LibraryViewController_iOS14: UIHostingController<LibraryView> {
-    convenience init() {
-        self.init(rootView: LibraryView())
-        rootView.dismiss =  { [unowned self] in
-            self.dismiss(animated: true)
-        }
-        modalPresentationStyle = .overFullScreen
-    }
-}
-
-@available(iOS 14.0, *)
 struct LibraryView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @ObservedObject private var viewModel = ViewModel()
