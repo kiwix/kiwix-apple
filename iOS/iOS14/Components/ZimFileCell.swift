@@ -32,7 +32,7 @@ struct ZimFileCell: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(zimFile.title).font(.headline).lineLimit(1)
                         if zimFile.fileDescription.count > 0 {
-                            Text(zimFile.fileDescription).font(.caption).lineLimit(2)
+                            Text(zimFile.fileDescription).font(.caption).lineLimit(1)
                         }
                     }
                     if withIncludedInSearchIcon {

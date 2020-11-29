@@ -53,12 +53,12 @@ class ZimFile: Object, Identifiable {
     // MARK: -  computed properties
     
     var state: State {
-        get { return State(rawValue:stateRaw) ?? .remote }
+        get { return State(rawValue: stateRaw) ?? .remote }
         set { stateRaw = newValue.rawValue }
     }
     
     var category: Category {
-        get { return Category(rawValue:stateRaw) ?? .other }
+        get { return Category(rawValue: categoryRaw) ?? .other }
         set { categoryRaw = newValue.rawValue }
     }
     
@@ -109,7 +109,7 @@ class ZimFile: Object, Identifiable {
         case remote, onDevice, retained, downloadQueued, downloadInProgress, downloadPaused, downloadError
     }
     
-    enum Category: String, CustomStringConvertible {
+    enum Category: String, Comparable, CustomStringConvertible {
         case wikibooks
         case wikinews
         case wikipedia
@@ -122,8 +122,11 @@ class ZimFile: Object, Identifiable {
         case ted
         case vikidia
         case stackExchange = "stack_exchange"
-        
         case other
+        
+        static func < (lhs: ZimFile.Category, rhs: ZimFile.Category) -> Bool {
+            lhs.sortOrder < rhs.sortOrder
+        }
         
         var description: String {
             switch self {
@@ -180,6 +183,35 @@ class ZimFile: Object, Identifiable {
                 return #imageLiteral(resourceName: "StackExchange")
             case .other:
                 return #imageLiteral(resourceName: "Book")
+            }
+        }
+        
+        private var sortOrder: Int {
+            switch self {
+            case .wikipedia:
+                return 0
+            case .wikibooks:
+                return 1
+            case .wikinews:
+                return 2
+            case .wikiquote:
+                return 3
+            case .wikisource:
+                return 4
+            case .wikiversity:
+                return 5
+            case .wikivoyage:
+                return 6
+            case .wiktionary:
+                return 7
+            case .vikidia:
+                return 8
+            case .ted:
+                return 9
+            case .stackExchange:
+                return 10
+            case .other:
+                return 11
             }
         }
     }
