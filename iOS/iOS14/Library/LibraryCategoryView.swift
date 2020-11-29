@@ -34,7 +34,6 @@ struct LibraryCategoryView: View {
         }
         .navigationTitle(category.description)
         .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
-        .onAppear { viewModel.load() }
     }
     
     class ViewModel: ObservableObject {
@@ -47,6 +46,7 @@ struct LibraryCategoryView: View {
         
         init(category: ZimFile.Category) {
             self.category = category
+            self.load()
         }
         
         func load() {
@@ -97,7 +97,6 @@ struct LibraryGroupedCategoryView: View {
         }
         .navigationTitle(category.description)
         .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
-        .onAppear { viewModel.load() }
     }
     
     struct QueryResult {
@@ -156,6 +155,7 @@ struct LibraryGroupedCategoryView: View {
         init(category: ZimFile.Category) {
             self.result = QueryResult(category: category)
             self.category = category
+            self.load()
         }
         
         func load() {
