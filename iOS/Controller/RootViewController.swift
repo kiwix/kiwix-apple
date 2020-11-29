@@ -44,7 +44,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate {
         chevronLeftButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
         chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
         outlineButton.addTarget(self, action: #selector(toggleOutline), for: .touchUpInside)
-        bookmarkButton.addTarget(self, action: #selector(openBookmark), for: .touchUpInside)
+        bookmarkButton.addTarget(self, action: #selector(toggleBookmarks), for: .touchUpInside)
         cancelButton.target = self
         cancelButton.action = #selector(dismissSearch)
     }
@@ -181,6 +181,12 @@ class RootViewController: UIViewController, UISearchControllerDelegate {
                 showSidebar(outlineController)
             } else if contentViewController.displayMode == .primaryHidden {
                 showSidebar(outlineController)
+            } else if #available(iOS 14.0, *),
+                      let navigationController = contentViewController.viewController(for: .primary) as? UINavigationController,
+                      !(navigationController.topViewController is OutlineController) {
+                navigationController.setViewControllers([outlineController], animated: false)
+            } else if !(contentViewController.viewControllers.first is OutlineController) {
+                contentViewController.viewControllers[0] = outlineController
             } else {
                 hideSidebar()
             }
@@ -190,13 +196,19 @@ class RootViewController: UIViewController, UISearchControllerDelegate {
         }
     }
     
-    @objc func openBookmark() {
+    @objc func toggleBookmarks() {
         let bookmarksController = BookmarksController()
         if traitCollection.horizontalSizeClass == .regular {
             if #available(iOS 14.0, *), contentViewController.displayMode == .secondaryOnly {
                 showSidebar(bookmarksController)
             } else if contentViewController.displayMode == .primaryHidden {
                 showSidebar(bookmarksController)
+            } else if #available(iOS 14.0, *),
+                      let navigationController = contentViewController.viewController(for: .primary) as? UINavigationController,
+                      !(navigationController.topViewController is BookmarksController) {
+                navigationController.setViewControllers([bookmarksController], animated: false)
+            } else if !(contentViewController.viewControllers.first is BookmarksController) {
+                contentViewController.viewControllers[0] = bookmarksController
             } else {
                 hideSidebar()
             }
