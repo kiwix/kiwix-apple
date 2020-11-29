@@ -7,10 +7,14 @@
 //
 
 import UIKit
+import Defaults
 
 class RootViewController: UIViewController, UISearchControllerDelegate {
     private let searchController: UISearchController
     private let searchResultsController: SearchResultsController
+    private let contentViewController: UISplitViewController
+    private let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
+    private let webViewController = WebViewController()
     
     // MARK: Buttons
     
@@ -28,10 +32,19 @@ class RootViewController: UIViewController, UISearchControllerDelegate {
     init() {
         self.searchResultsController = SearchResultsController()
         self.searchController = UISearchController(searchResultsController: self.searchResultsController)
+        if #available(iOS 14.0, *) {
+            self.contentViewController = UISplitViewController(style: .doubleColumn)
+        } else {
+            self.contentViewController = UISplitViewController()
+        }
         
         super.init(nibName: nil, bundle: nil)
         
         // wire up button actions
+        chevronLeftButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
+        chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
+        outlineButton.addTarget(self, action: #selector(toggleOutline), for: .touchUpInside)
+        bookmarkButton.addTarget(self, action: #selector(openBookmark), for: .touchUpInside)
         cancelButton.target = self
         cancelButton.action = #selector(dismissSearch)
     }
@@ -44,12 +57,27 @@ class RootViewController: UIViewController, UISearchControllerDelegate {
         super.viewDidLoad()
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
         
-        // background color
-        if #available(iOS 13.0, *) {
-            view.backgroundColor = .systemBackground
+        // configure content view controller
+        if #available(iOS 14.0, *) {
+            let navigationController = UINavigationController(rootViewController: welcomeController)
+            navigationController.isNavigationBarHidden = true
+            contentViewController.setViewController(navigationController, for: .secondary)
         } else {
-            view.backgroundColor = .white
+            contentViewController.preferredDisplayMode = .primaryHidden
+            contentViewController.viewControllers = [UIViewController(), welcomeController]
         }
+        
+        // add content view controller as a child
+        addChild(contentViewController)
+        contentViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(contentViewController.view)
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: contentViewController.view.topAnchor),
+            view.leftAnchor.constraint(equalTo: contentViewController.view.leftAnchor),
+            view.bottomAnchor.constraint(equalTo: contentViewController.view.bottomAnchor),
+            view.rightAnchor.constraint(equalTo: contentViewController.view.rightAnchor),
+        ])
+        contentViewController.didMove(toParent: self)
         
         // search controller
         searchController.delegate = self
@@ -69,6 +97,30 @@ class RootViewController: UIViewController, UISearchControllerDelegate {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
+    }
+    
+    private func getSidebarVisibleDisplayMode(size: CGSize? = nil) -> UISplitViewController.DisplayMode {
+        if #available(iOS 14.0, *) {
+            switch Defaults[.sideBarDisplayMode] {
+            case .automatic:
+                let size = size ?? view.frame.size
+                return size.width > size.height ? .oneBesideSecondary : .oneOverSecondary
+            case .overlay:
+                return .oneOverSecondary
+            case .sideBySide:
+                return .oneBesideSecondary
+            }
+        } else {
+            switch Defaults[.sideBarDisplayMode] {
+            case .automatic:
+                let size = size ?? view.frame.size
+                return size.width > size.height ? .allVisible : .primaryOverlay
+            case .overlay:
+                return .primaryOverlay
+            case .sideBySide:
+                return .allVisible
+            }
+        }
     }
     
     // MARK: - Configurations
@@ -114,6 +166,46 @@ class RootViewController: UIViewController, UISearchControllerDelegate {
     
     // MARK: - Actions
     
+    @objc func goBack() {
+        webViewController.goBack()
+    }
+    
+    @objc func goForward() {
+        webViewController.goForward()
+    }
+    
+    @objc func toggleOutline() {
+        let outlineController = OutlineController()
+        if traitCollection.horizontalSizeClass == .regular {
+            if #available(iOS 14.0, *), contentViewController.displayMode == .secondaryOnly {
+                showSidebar(outlineController)
+            } else if contentViewController.displayMode == .primaryHidden {
+                showSidebar(outlineController)
+            } else {
+                hideSidebar()
+            }
+        } else {
+            let navigationController = UINavigationController(rootViewController: outlineController)
+            present(navigationController, animated: true)
+        }
+    }
+    
+    @objc func openBookmark() {
+        let bookmarksController = BookmarksController()
+        if traitCollection.horizontalSizeClass == .regular {
+            if #available(iOS 14.0, *), contentViewController.displayMode == .secondaryOnly {
+                showSidebar(bookmarksController)
+            } else if contentViewController.displayMode == .primaryHidden {
+                showSidebar(bookmarksController)
+            } else {
+                hideSidebar()
+            }
+        } else {
+            let navigationController = UINavigationController(rootViewController: bookmarksController)
+            present(navigationController, animated: true)
+        }
+    }
+    
     @objc func dismissSearch() {
         /*
          We have to dismiss the `searchController` first, so that the `isBeingDismissed` property is correct on the
@@ -122,5 +214,37 @@ class RootViewController: UIViewController, UISearchControllerDelegate {
          */
         searchController.dismiss(animated: true)
         searchController.isActive = false
+    }
+    
+    private func showSidebar(_ controller: UIViewController) {
+        if #available(iOS 14.0, *) {
+            let navigationController = UINavigationController(rootViewController: controller)
+            navigationController.isNavigationBarHidden = true
+            contentViewController.setViewController(navigationController, for: .primary)
+            contentViewController.preferredDisplayMode = getSidebarVisibleDisplayMode()
+            contentViewController.show(.primary)
+        } else {
+            contentViewController.viewControllers[0] = controller
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut) {
+                self.contentViewController.preferredDisplayMode = self.getSidebarVisibleDisplayMode()
+            }
+        }
+    }
+    
+    private func hideSidebar() {
+        if #available(iOS 14.0, *) {
+            contentViewController.hide(.primary)
+            transitionCoordinator?.animate(alongsideTransition: { _ in }, completion: { context in
+                guard !context.isCancelled else { return }
+                self.contentViewController.setViewController(nil, for: .primary)
+            })
+        } else {
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn) {
+                self.contentViewController.preferredDisplayMode = .primaryHidden
+            } completion: { completed in
+                guard completed else { return }
+                self.contentViewController.viewControllers[0] = UIViewController()
+            }
+        }
     }
 }
