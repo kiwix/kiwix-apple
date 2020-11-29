@@ -295,7 +295,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     }
     
     @objc func openLibrary() {
-        if #available(iOS 14.0, *) {
+        if #available(iOS 14.0, *), FeatureFlags.swiftUIBasedLibraryEnabled {
             let controller = UIHostingController(rootView: LibraryView())
             controller.rootView.dismiss = { controller.dismiss(animated: true) }
             controller.modalPresentationStyle = .pageSheet
