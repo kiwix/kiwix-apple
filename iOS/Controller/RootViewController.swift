@@ -29,6 +29,8 @@ class RootViewController: UIViewController, UISearchControllerDelegate {
     private let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
     private let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
     
+    // MARK: - Init & Overrides
+    
     init() {
         self.searchResultsController = SearchResultsController()
         self.searchController = UISearchController(searchResultsController: self.searchResultsController)
@@ -97,6 +99,26 @@ class RootViewController: UIViewController, UISearchControllerDelegate {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
+    }
+    
+    // MARK: - Public
+    
+    func openURL(_ url: URL) {
+        if url.isKiwixURL {
+            webViewController.load(url: url)
+            if #available(iOS 14.0, *),
+               let navigationController = contentViewController.viewController(for: .secondary) as? UINavigationController,
+               !(navigationController.topViewController is OutlineController)  {
+                navigationController.setViewControllers([webViewController], animated: false)
+            } else if !(contentViewController.viewControllers.last is WebViewController) {
+                contentViewController.viewControllers[1] = webViewController
+            }
+            if searchController.isActive {
+                dismissSearch()
+            }
+        } else if url.isFileURL {
+            
+        }
     }
     
     private func getSidebarVisibleDisplayMode(size: CGSize? = nil) -> UISplitViewController.DisplayMode {

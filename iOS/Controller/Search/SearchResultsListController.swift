@@ -90,8 +90,11 @@ class SearchResultsListController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let controller = presentingViewController?.splitViewController as? RootController else { return }
         update(recentSearchText: searchText)
-        controller.openKiwixURL(results[indexPath.row].url)
+        if let controller = presentingViewController?.splitViewController as? RootController {
+            controller.openKiwixURL(results[indexPath.row].url)
+        } else if let controller = presentingViewController as? RootViewController {
+            controller.openURL(results[indexPath.row].url)
+        }
     }
 }

@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     ) -> Bool {
         if #available(iOS 13.0, *) {} else {
             window = UIWindow(frame: UIScreen.main.bounds)
-            window?.rootViewController = RootController()
+            window?.rootViewController = UINavigationController(rootViewController: RootViewController())
             window?.makeKeyAndVisible()
         }
         
