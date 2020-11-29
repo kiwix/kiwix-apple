@@ -19,6 +19,7 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
         return WKWebView(frame: .zero, configuration: config)
     }()
     weak var delegate: WebViewControllerDelegate?
+    private(set) var outlineItems = [OutlineItem]()
     
     convenience init(url: URL) {
         self.init()
@@ -157,7 +158,11 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
         if let url = Bundle.main.url(forResource: "Inject", withExtension: "js"),
             let javascript = try? String(contentsOf: url) {
             webView.evaluateJavaScript(javascript, completionHandler: { (_, error) in
-                self.delegate?.webViewDidFinishNavigation(controller: self)
+                let javascript = "outlines.getHeadingObjects()"
+                webView.evaluateJavaScript(javascript, completionHandler: { (results, error) in
+                    self.outlineItems = (results as? [[String: Any]])?.compactMap({ OutlineItem(rawValue: $0) }) ?? [OutlineItem]()
+                    self.delegate?.webViewDidFinishNavigation(controller: self)
+                })
             })
         } else {
             delegate?.webViewDidFinishNavigation(controller: self)
