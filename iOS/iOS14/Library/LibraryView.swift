@@ -15,13 +15,22 @@ struct LibraryView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @ObservedObject private var viewModel = ViewModel()
     @State private var isShowingZimFileDetailView = false
+    @State private var isShowingInfoView = false
     var dismiss: (() -> Void) = {}
     
     var body: some View {
+        NavigationLink("", destination: Text("popover"), isActive: $isShowingInfoView)
         let itemsPerCategory = horizontalSizeClass == .regular ? 6 : 4
         NavigationView {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
+                    let header = HStack(alignment: .firstTextBaseline) {
+                        Text("On Device").font(.title2).fontWeight(.semibold)
+                        Spacer()
+                    }
+                    Section(header: header, footer: Divider()) {
+                        
+                    }
                     ForEach(viewModel.result.categories, id: \.rawValue.hash) { category in
                         let header = HStack(alignment: .firstTextBaseline) {
                             Text(category.description).font(.title2).fontWeight(.semibold)
@@ -51,9 +60,14 @@ struct LibraryView: View {
                 }.padding()
             }
             .navigationTitle("Library")
-            .toolbar { ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: dismiss, label: { Text("Done").bold()})
-            }}
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Done", action: dismiss)
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: { isShowingInfoView = true }) { Image(systemName: "info.circle") }
+                }
+            }
             .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
         }.navigationViewStyle(StackNavigationViewStyle())
     }
