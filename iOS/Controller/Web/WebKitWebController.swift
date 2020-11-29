@@ -11,6 +11,25 @@ import WebKit
 import SafariServices
 import Defaults
 
+class WebViewController: UIViewController {
+    let webView: WKWebView = {
+        let config = WKWebViewConfiguration()
+        config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
+        config.mediaTypesRequiringUserActionForPlayback = []
+        return WKWebView(frame: .zero, configuration: config)
+    }()
+    
+    override func loadView() {
+        view = webView
+        webView.allowsBackForwardNavigationGestures = true
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        webView.setValue(view.safeAreaInsets, forKey: "_obscuredInsets")
+    }
+}
+
 class WebKitWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
     private let webView: WKWebView = {
         let config = WKWebViewConfiguration()

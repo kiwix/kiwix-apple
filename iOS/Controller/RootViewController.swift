@@ -7,14 +7,16 @@
 //
 
 import UIKit
+import WebKit
+import SafariServices
 import Defaults
 
-class RootViewController: UIViewController, UISearchControllerDelegate {
+class RootViewController: UIViewController, UISearchControllerDelegate, WKNavigationDelegate {
     private let searchController: UISearchController
     private let searchResultsController: SearchResultsController
     private let contentViewController: UISplitViewController
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
-    private let webViewController = WebKitWebViewController()
+    private let webViewController = WebViewController()
     
     // MARK: Buttons
     
@@ -41,6 +43,9 @@ class RootViewController: UIViewController, UISearchControllerDelegate {
         }
         
         super.init(nibName: nil, bundle: nil)
+        
+        contentViewController.presentsWithGesture = false
+        webViewController.webView.navigationDelegate = self
         
         // wire up button actions
         chevronLeftButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
@@ -105,7 +110,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate {
     
     func openURL(_ url: URL) {
         if url.isKiwixURL {
-            webViewController.load(url: url)
+            webViewController.webView.load(URLRequest(url: url))
             if #available(iOS 14.0, *),
                let navigationController = contentViewController.viewController(for: .secondary) as? UINavigationController,
                !(navigationController.topViewController is OutlineController)  {
@@ -186,14 +191,38 @@ class RootViewController: UIViewController, UISearchControllerDelegate {
         configureBarButtons(searchIsActive: false, animated: true)
     }
     
+    // MARK: - WKNavigationDelegate
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
+        if url.isKiwixURL {
+            guard let zimFileID = url.host else { decisionHandler(.cancel); return }
+            if let redirectedPath = ZimMultiReader.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
+                let redirectedURL = URL(zimFileID: zimFileID, contentPath: redirectedPath) {
+                decisionHandler(.cancel)
+                openURL(redirectedURL)
+            } else {
+                decisionHandler(.allow)
+            }
+        }
+    }
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        guard let url = Bundle.main.url(forResource: "Inject", withExtension: "js"),
+              let javascript = try? String(contentsOf: url) else { return }
+        webView.evaluateJavaScript(javascript) { _, _ in
+
+        }
+    }
+    
     // MARK: - Actions
     
     @objc func goBack() {
-        webViewController.goBack()
+        webViewController.webView.goBack()
     }
     
     @objc func goForward() {
-        webViewController.goForward()
+        webViewController.webView.goForward()
     }
     
     @objc func toggleOutline() {
