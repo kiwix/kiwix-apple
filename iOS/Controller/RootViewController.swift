@@ -14,7 +14,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate {
     private let searchResultsController: SearchResultsController
     private let contentViewController: UISplitViewController
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
-    private let webViewController = WebViewController()
+    private let webViewController = WebKitWebViewController()
     
     // MARK: Buttons
     
@@ -110,7 +110,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate {
                let navigationController = contentViewController.viewController(for: .secondary) as? UINavigationController,
                !(navigationController.topViewController is OutlineController)  {
                 navigationController.setViewControllers([webViewController], animated: false)
-            } else if !(contentViewController.viewControllers.last is WebViewController) {
+            } else if !(contentViewController.viewControllers.last is WebKitWebViewController) {
                 contentViewController.viewControllers[1] = webViewController
             }
             if searchController.isActive {

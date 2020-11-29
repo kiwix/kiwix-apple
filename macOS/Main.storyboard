@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="95r-g6-5ej">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="95r-g6-5ej">
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.2"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17506"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -798,33 +797,33 @@
         <scene sceneID="00u-Oj-xoP">
             <objects>
                 <viewController id="IJv-yE-Q4V" customClass="SearchController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
-                    <visualEffectView key="view" blendingMode="behindWindow" material="appearanceBased" state="active" id="3Pk-1T-xXf">
-                        <rect key="frame" x="0.0" y="0.0" width="512" height="300"/>
+                    <visualEffectView key="view" misplaced="YES" blendingMode="behindWindow" material="appearanceBased" state="active" id="3Pk-1T-xXf">
+                        <rect key="frame" x="0.0" y="0.0" width="503" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <tabView type="noTabsNoBorder" initialItem="hpA-Et-nyw" translatesAutoresizingMaskIntoConstraints="NO" id="H1l-K1-NgS">
-                                <rect key="frame" x="0.0" y="0.0" width="512" height="300"/>
+                                <rect key="frame" x="0.0" y="0.0" width="503" height="300"/>
                                 <font key="font" metaFont="system"/>
                                 <tabViewItems>
                                     <tabViewItem label="Results" identifier="Results" id="MRq-Y4-uP5">
                                         <view key="view" id="JpS-nA-hEh">
-                                            <rect key="frame" x="0.0" y="0.0" width="512" height="300"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="503" height="300"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="38" horizontalPageScroll="10" verticalLineScroll="38" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7dY-kj-vNP">
-                                                    <rect key="frame" x="0.0" y="0.0" width="512" height="300"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="503" height="300"/>
                                                     <clipView key="contentView" drawsBackground="NO" id="VPT-SC-X2X">
-                                                        <rect key="frame" x="0.0" y="0.0" width="512" height="300"/>
-                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="503" height="300"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
                                                             <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="38" rowSizeStyle="automatic" usesAutomaticRowHeights="YES" viewBased="YES" indentationPerLevel="13" outlineTableColumn="gSM-vu-o9B" id="UtR-18-Cii">
-                                                                <rect key="frame" x="0.0" y="0.0" width="512" height="300"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="503" height="300"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <size key="intercellSpacing" width="3" height="0.0"/>
                                                                 <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                                 <tableColumns>
-                                                                    <tableColumn editable="NO" width="476" minWidth="16" maxWidth="476" id="gSM-vu-o9B">
+                                                                    <tableColumn editable="NO" width="471" minWidth="16" maxWidth="476" id="gSM-vu-o9B">
                                                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
                                                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -837,7 +836,7 @@
                                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
                                                                         <prototypeCellViews>
                                                                             <tableCellView identifier="SearchResultCell" id="vdC-P1-Bcy" customClass="SearchResultCell" customModule="Kiwix" customModuleProvider="target">
-                                                                                <rect key="frame" x="1" y="0.0" width="476" height="32"/>
+                                                                                <rect key="frame" x="11" y="0.0" width="480" height="32"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
                                                                                     <box boxType="custom" cornerRadius="4" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="jh0-b4-FCH">
@@ -847,7 +846,7 @@
                                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                             <subviews>
                                                                                                 <imageView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5dP-oa-IV6">
-                                                                                                    <rect key="frame" x="1" y="1" width="22" height="22"/>
+                                                                                                    <rect key="frame" x="1" y="-2" width="22" height="28"/>
                                                                                                     <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyUpOrDown" image="NSActionTemplate" id="pGY-mQ-3Yr"/>
                                                                                                 </imageView>
                                                                                             </subviews>
@@ -866,7 +865,7 @@
                                                                                         <color key="fillColor" name="FaviconBackgroundColor"/>
                                                                                     </box>
                                                                                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lYB-fO-uFI">
-                                                                                        <rect key="frame" x="36" y="8" width="438" height="16"/>
+                                                                                        <rect key="frame" x="36" y="8" width="442" height="16"/>
                                                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Title" id="d3q-SS-wI1">
                                                                                             <font key="font" metaFont="systemMedium" size="13"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -887,7 +886,7 @@
                                                                                 </connections>
                                                                             </tableCellView>
                                                                             <tableCellView identifier="SearchResultCellWithSnippet" id="jFq-lg-L67" customClass="SearchResultCell" customModule="Kiwix" customModuleProvider="target">
-                                                                                <rect key="frame" x="1" y="32" width="476" height="38"/>
+                                                                                <rect key="frame" x="11" y="32" width="480" height="38"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
                                                                                     <box boxType="custom" cornerRadius="4" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="F53-iJ-dpy">
@@ -897,7 +896,7 @@
                                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                             <subviews>
                                                                                                 <imageView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DRJ-3q-Pri">
-                                                                                                    <rect key="frame" x="1" y="1" width="22" height="22"/>
+                                                                                                    <rect key="frame" x="1" y="-2" width="22" height="28"/>
                                                                                                     <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyUpOrDown" image="NSActionTemplate" id="t2p-0K-kop"/>
                                                                                                 </imageView>
                                                                                             </subviews>
@@ -916,7 +915,7 @@
                                                                                         <color key="fillColor" name="FaviconBackgroundColor"/>
                                                                                     </box>
                                                                                     <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="2" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TYD-bW-vh2">
-                                                                                        <rect key="frame" x="38" y="3" width="434" height="32"/>
+                                                                                        <rect key="frame" x="38" y="3" width="438" height="32"/>
                                                                                         <subviews>
                                                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4XH-kv-jEm">
                                                                                                 <rect key="frame" x="-2" y="16" width="32" height="16"/>
@@ -1098,27 +1097,27 @@
         <scene sceneID="2gK-c7-Lqj">
             <objects>
                 <viewController id="yPa-Gm-cWg" customClass="ArticleNavigationController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="qMM-Z0-eVD">
-                        <rect key="frame" x="0.0" y="0.0" width="479" height="258"/>
+                    <view key="view" misplaced="YES" id="qMM-Z0-eVD">
+                        <rect key="frame" x="0.0" y="0.0" width="470" height="258"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <tabView type="noTabsNoBorder" initialItem="eyc-10-Fip" translatesAutoresizingMaskIntoConstraints="NO" id="2IG-iy-o4e">
-                                <rect key="frame" x="0.0" y="0.0" width="479" height="258"/>
+                                <rect key="frame" x="0.0" y="0.0" width="470" height="258"/>
                                 <font key="font" metaFont="system"/>
                                 <tabViewItems>
                                     <tabViewItem label="ZimFileLocal" identifier="ZimFileLocal" id="eyc-10-Fip">
                                         <view key="view" id="uUh-Q7-Cu9">
-                                            <rect key="frame" x="0.0" y="0.0" width="479" height="258"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="470" height="258"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="46" horizontalPageScroll="10" verticalLineScroll="46" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DwF-UR-SH6">
-                                                    <rect key="frame" x="0.0" y="0.0" width="479" height="258"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="470" height="258"/>
                                                     <clipView key="contentView" drawsBackground="NO" id="iDg-5Y-i2Y">
-                                                        <rect key="frame" x="0.0" y="0.0" width="479" height="258"/>
-                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="470" height="258"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
                                                             <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="44" rowSizeStyle="automatic" viewBased="YES" outlineTableColumn="1Og-YN-wc2" id="uI9-iN-vFI">
-                                                                <rect key="frame" x="0.0" y="0.0" width="479" height="258"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="470" height="258"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <size key="intercellSpacing" width="3" height="2"/>
                                                                 <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1137,7 +1136,7 @@
                                                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                         <prototypeCellViews>
                                                                             <tableCellView identifier="ZimFileCell" id="1mY-op-Rmp" customClass="ZimFileTableCellView" customModule="Kiwix" customModuleProvider="target">
-                                                                                <rect key="frame" x="1" y="1" width="438" height="44"/>
+                                                                                <rect key="frame" x="11" y="1" width="447" height="44"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                 <subviews>
                                                                                     <box boxType="custom" cornerRadius="4" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="7XC-uj-0RI">
@@ -1147,7 +1146,7 @@
                                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                                             <subviews>
                                                                                                 <imageView wantsLayer="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wbj-fR-ERV">
-                                                                                                    <rect key="frame" x="1" y="1" width="26" height="26"/>
+                                                                                                    <rect key="frame" x="1" y="-2" width="26" height="32"/>
                                                                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="NSActionTemplate" id="sj0-b8-1lp"/>
                                                                                                 </imageView>
                                                                                             </subviews>
@@ -1166,7 +1165,7 @@
                                                                                         <color key="fillColor" name="FaviconBackgroundColor"/>
                                                                                     </box>
                                                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WKC-T9-rtP">
-                                                                                        <rect key="frame" x="44" y="20" width="392" height="19"/>
+                                                                                        <rect key="frame" x="44" y="20" width="401" height="19"/>
                                                                                         <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="IRH-by-OX1">
                                                                                             <font key="font" metaFont="systemMedium" size="15"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1174,7 +1173,7 @@
                                                                                         </textFieldCell>
                                                                                     </textField>
                                                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BUe-Cq-wg2">
-                                                                                        <rect key="frame" x="44" y="5" width="392" height="14"/>
+                                                                                        <rect key="frame" x="44" y="5" width="401" height="14"/>
                                                                                         <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="KtM-Bu-EQD">
                                                                                             <font key="font" metaFont="message" size="11"/>
                                                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1296,7 +1295,7 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="74j-qP-uTc">
-                                                    <rect key="frame" x="152" y="140" width="147" height="21"/>
+                                                    <rect key="frame" x="152" y="140" width="146" height="21"/>
                                                     <textFieldCell key="cell" title="Table of Contents" id="pGy-Ok-sgH">
                                                         <font key="font" metaFont="system" size="18"/>
                                                         <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
@@ -1325,10 +1324,10 @@
             </objects>
             <point key="canvasLocation" x="1877" y="-305"/>
         </scene>
-        <!--Web View Controller-->
+        <!--Web Kit Web View Controller-->
         <scene sceneID="ixk-MJ-J1R">
             <objects>
-                <viewController id="euw-8A-K2g" customClass="WebViewController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="euw-8A-K2g" customClass="WebKitWebViewController" customModule="Kiwix" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="vzN-uc-75D">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1372,16 +1371,16 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="25" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fvI-rV-kxz">
-                                <rect key="frame" x="75" y="41" width="301" height="218"/>
+                                <rect key="frame" x="75" y="42" width="301" height="217"/>
                                 <subviews>
                                     <box boxType="custom" borderWidth="2" cornerRadius="50" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="p5S-XN-9rf">
-                                        <rect key="frame" x="100" y="118" width="100" height="100"/>
+                                        <rect key="frame" x="100" y="117" width="100" height="100"/>
                                         <view key="contentView" id="mCs-iJ-R7p">
                                             <rect key="frame" x="2" y="2" width="96" height="96"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dND-oq-XGO">
-                                                    <rect key="frame" x="19" y="19" width="58" height="58"/>
+                                                    <rect key="frame" x="19" y="19" width="58" height="57"/>
                                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="Logo" id="3hW-7M-V60"/>
                                                 </imageView>
                                             </subviews>
@@ -1400,7 +1399,7 @@
                                         <color key="fillColor" name="FaviconBackgroundColor"/>
                                     </box>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EjA-3V-96R">
-                                        <rect key="frame" x="-2" y="46" width="305" height="47"/>
+                                        <rect key="frame" x="-2" y="45" width="305" height="47"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" title="Welcome to Kiwix" id="EvF-q6-PPS">
                                             <font key="font" metaFont="system" size="40"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -1408,7 +1407,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oBH-VH-kWo">
-                                        <rect key="frame" x="101" y="-7" width="98" height="32"/>
+                                        <rect key="frame" x="104" y="-7" width="92" height="32"/>
                                         <buttonCell key="cell" type="push" title="Open File" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="P7T-3Z-ez7">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -1443,11 +1442,11 @@
     </scenes>
     <resources>
         <image name="Logo" width="128" height="128"/>
-        <image name="NSActionTemplate" width="14" height="14"/>
-        <image name="NSAddTemplate" width="11" height="11"/>
+        <image name="NSActionTemplate" width="15" height="15"/>
+        <image name="NSAddTemplate" width="14" height="13"/>
         <image name="NSFolder" width="32" height="32"/>
-        <image name="NSGoBackTemplate" width="9" height="12"/>
-        <image name="NSGoForwardTemplate" width="9" height="12"/>
+        <image name="NSGoBackTemplate" width="10" height="14"/>
+        <image name="NSGoForwardTemplate" width="10" height="14"/>
         <image name="Sidebar" width="100" height="100"/>
         <image name="folder" width="128" height="128"/>
         <namedColor name="FaviconBackgroundColor">

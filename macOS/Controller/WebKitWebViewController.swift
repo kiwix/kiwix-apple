@@ -9,7 +9,7 @@
 import Cocoa
 import WebKit
 
-class WebViewController: NSViewController, WKNavigationDelegate {
+class WebKitWebViewController: NSViewController, WKNavigationDelegate {
     private let webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")

@@ -100,7 +100,7 @@ class ContentController: UIViewController, UISearchControllerDelegate, UIAdaptiv
         }
         
         guard let child = newChild else { return }
-        if child is WebViewController {
+        if child is WebKitWebViewController {
             addChild(child)
             view.subviews.forEach({ $0.removeFromSuperview() })
             child.view.translatesAutoresizingMaskIntoConstraints = false

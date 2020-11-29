@@ -32,7 +32,7 @@
 		9742D7182545E1360046D88C /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9742D7172545E1360046D88C /* SearchView.swift */; };
 		974FD5CF23405C3700FFDEEC /* WindowControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FD5CE23405C3700FFDEEC /* WindowControllers.swift */; };
 		974FFE5B2352704600F6BF28 /* ZimFileManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */; };
-		974FFE612352744800F6BF28 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE602352744800F6BF28 /* WebViewController.swift */; };
+		974FFE612352744800F6BF28 /* WebKitWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE602352744800F6BF28 /* WebKitWebViewController.swift */; };
 		974FFE6A23533E8D00F6BF28 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE6823533E8D00F6BF28 /* NavigationController.swift */; };
 		9763EDC9201FCA6900F3A6D5 /* SettingWebController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9763EDC8201FCA6900F3A6D5 /* SettingWebController.swift */; };
 		9763EDCB201FCC3A00F3A6D5 /* About.html in Resources */ = {isa = PBXBuildFile; fileRef = 9763EDCA201FCC3900F3A6D5 /* About.html */; };
@@ -224,7 +224,7 @@
 		9743C30120878C70006981FB /* SearchResultsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsController.swift; sourceTree = "<group>"; };
 		974FD5CE23405C3700FFDEEC /* WindowControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowControllers.swift; sourceTree = "<group>"; };
 		974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileManagerController.swift; sourceTree = "<group>"; };
-		974FFE602352744800F6BF28 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		974FFE602352744800F6BF28 /* WebKitWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitWebViewController.swift; sourceTree = "<group>"; };
 		974FFE6823533E8D00F6BF28 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		9759D4211F4F278800705779 /* Kiwix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
 		975F97A720D00EAE0005D642 /* SettingSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSearchController.swift; sourceTree = "<group>"; };
@@ -529,7 +529,7 @@
 				9779E7A12379230F0058DC98 /* SearchController.swift */,
 				974FFE6823533E8D00F6BF28 /* NavigationController.swift */,
 				97EFF05D235CAEFC00FBB7A4 /* ContentTabController.swift */,
-				974FFE602352744800F6BF28 /* WebViewController.swift */,
+				974FFE602352744800F6BF28 /* WebKitWebViewController.swift */,
 				974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */,
 				9768C23A1F4B7F6300FD499B /* Preference.swift */,
 			);
@@ -1042,7 +1042,7 @@
 				9779A5B52456793600F6F6FF /* BookmarkService.swift in Sources */,
 				97CE4247249323C000B334E9 /* Enums.swift in Sources */,
 				9768C23B1F4B7F6300FD499B /* Preference.swift in Sources */,
-				974FFE612352744800F6BF28 /* WebViewController.swift in Sources */,
+				974FFE612352744800F6BF28 /* WebKitWebViewController.swift in Sources */,
 				9779A5C92456793600F6F6FF /* RealmConfig.swift in Sources */,
 				974FFE5B2352704600F6BF28 /* ZimFileManagerController.swift in Sources */,
 				97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */,

@@ -11,7 +11,7 @@ import WebKit
 import SafariServices
 import Defaults
 
-class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
+class WebKitWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
     private let webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
@@ -198,8 +198,8 @@ class WebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
 }
 
 protocol WebViewControllerDelegate: class {
-    func webViewDidTapOnGeoLocation(controller: WebViewController, url: URL)
-    func webViewDidFinishNavigation(controller: WebViewController)
+    func webViewDidTapOnGeoLocation(controller: WebKitWebViewController, url: URL)
+    func webViewDidFinishNavigation(controller: WebKitWebViewController)
 }
 
 extension UIAlertController {

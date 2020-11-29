@@ -20,7 +20,7 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     let outlineController = OutlineController()
     private var secondaryController: UINavigationController
     private let contentController = ContentController()
-    let webViewController = WebViewController()
+    let webViewController = WebKitWebViewController()
     private var libraryController: LibraryController?
     
     // MARK: Buttons
@@ -233,11 +233,11 @@ class RootController: UISplitViewController, UISplitViewControllerDelegate, UIGe
     
     // MARK: - WebViewControllerDelegate
     
-    func webViewDidTapOnGeoLocation(controller: WebViewController, url: URL) {
+    func webViewDidTapOnGeoLocation(controller: WebKitWebViewController, url: URL) {
         
     }
     
-    func webViewDidFinishNavigation(controller: WebViewController) {
+    func webViewDidFinishNavigation(controller: WebKitWebViewController) {
         updateBarButtons()
         
         // update outline items if outline view is visible
