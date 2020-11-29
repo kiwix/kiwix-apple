@@ -62,6 +62,10 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // configure bar buttons
+        chevronLeftButton.isEnabled = false
+        chevronRightButton.isEnabled = false
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
         
         // configure content view controller
@@ -208,6 +212,8 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        chevronLeftButton.isEnabled = webView.canGoBack
+        chevronRightButton.isEnabled = webView.canGoForward
         guard let url = Bundle.main.url(forResource: "Inject", withExtension: "js"),
               let javascript = try? String(contentsOf: url) else { return }
         webView.evaluateJavaScript(javascript) { _, _ in
@@ -226,16 +232,18 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
     }
     
     @objc func toggleOutline() {
-        let outlineController = OutlineController()
-        if traitCollection.horizontalSizeClass == .regular {
-            if #available(iOS 14.0, *), contentViewController.displayMode == .secondaryOnly {
+        let outlineController = OutlineViewController()
+        if #available(iOS 14.0, *), traitCollection.horizontalSizeClass == .regular {
+            if contentViewController.displayMode == .secondaryOnly {
                 showSidebar(outlineController)
-            } else if contentViewController.displayMode == .primaryHidden {
+            } else if !(contentViewController.viewController(for: .primary) is OutlineViewController) {
+                contentViewController.setViewController(outlineController, for: .primary)
+            } else {
+                hideSidebar()
+            }
+        } else if traitCollection.horizontalSizeClass == .regular {
+            if contentViewController.displayMode == .primaryHidden {
                 showSidebar(outlineController)
-            } else if #available(iOS 14.0, *),
-                      let navigationController = contentViewController.viewController(for: .primary) as? UINavigationController,
-                      !(navigationController.topViewController is OutlineController) {
-                navigationController.setViewControllers([outlineController], animated: false)
             } else if !(contentViewController.viewControllers.first is OutlineController) {
                 contentViewController.viewControllers[0] = outlineController
             } else {
@@ -281,9 +289,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
     
     private func showSidebar(_ controller: UIViewController) {
         if #available(iOS 14.0, *) {
-            let navigationController = UINavigationController(rootViewController: controller)
-            navigationController.isNavigationBarHidden = true
-            contentViewController.setViewController(navigationController, for: .primary)
+            contentViewController.setViewController(controller, for: .primary)
             contentViewController.preferredDisplayMode = getSidebarVisibleDisplayMode()
             contentViewController.show(.primary)
         } else {

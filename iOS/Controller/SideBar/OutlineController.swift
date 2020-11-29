@@ -8,6 +8,15 @@
 
 import UIKit
 
+class OutlineViewController: UITableViewController {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if splitViewController != nil {
+            navigationController?.isNavigationBarHidden = true
+        }
+    }
+}
+
 class OutlineController: UITableViewController {
     static let title = NSLocalizedString("Outline", comment: "Outline view title")
     weak var delegate: OutlineControllerDelegate? = nil
