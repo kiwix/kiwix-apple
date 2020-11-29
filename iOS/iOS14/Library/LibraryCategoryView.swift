@@ -39,17 +39,11 @@ struct LibraryCategoryView: View {
     class ViewModel: ObservableObject {
         @Published private(set) var zimFiles = [ZimFile]()
         
-        private let category: ZimFile.Category
         private let queue = DispatchQueue(label: "org.kiwix.libraryUI.categoryGeneric", qos: .userInitiated)
         private let database = try? Realm(configuration: Realm.defaultConfig)
         private var pipeline: AnyCancellable? = nil
         
         init(category: ZimFile.Category) {
-            self.category = category
-            self.load()
-        }
-        
-        func load() {
             let predicate = NSPredicate(format: "languageCode == %@ AND categoryRaw == %@", "en", category.rawValue)
             pipeline = database?.objects(ZimFile.self)
                 .filter(predicate)
@@ -79,7 +73,7 @@ struct LibraryGroupedCategoryView: View {
     var body: some View {
         ScrollView{
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
-                ForEach(viewModel.result.groups) { group in
+                ForEach(viewModel.groups) { group in
                     let header = HStack(alignment: .firstTextBaseline) {
                         Text(group.name).font(.title2).fontWeight(.semibold)
                         Spacer()
@@ -99,35 +93,6 @@ struct LibraryGroupedCategoryView: View {
         .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
     }
     
-    struct QueryResult {
-        private(set) var groups = [Group]()
-
-        init(category: ZimFile.Category, results: Results<ZimFile>? = nil) {
-            guard let results = results else { return }
-            groups = results.reduce(into: [String: [ZimFile]]()) { result, zimFile in
-                result[zimFile.groupID, default: []].append(zimFile)
-            }.map { groupID, zimFiles in
-                Group(id: groupID, zimFiles: zimFiles)
-            }.sorted(by: { $0.name.caseInsensitiveCompare($1.name) == .orderedAscending })
-            
-            // special sorting logic for wikipedia
-            guard category == .wikipedia else { return }
-            
-            // groups with these suffixes are treated in a special way and will show up first
-            let suffixes = ["_all", "_top", "_simple_all", "_100", "_wp1-0.8", "_ray_charles"]
-            for suffix in suffixes.reversed() {
-                if let index = groups.lastIndex(where: { $0.id.hasSuffix(suffix) }) {
-                    groups.insert(groups.remove(at: index), at: 0)
-                }
-            }
-            
-            // group with empty string as ID will always be last and named as Other
-            if let index = groups.firstIndex(where: { $0.id == "" }) {
-                groups.append(groups.remove(at: index))
-            }
-        }
-    }
-    
     struct Group: Identifiable {
         let id: String
         let name: String
@@ -145,20 +110,13 @@ struct LibraryGroupedCategoryView: View {
     }
     
     class ViewModel: ObservableObject {
-        @Published private(set) var result: QueryResult
+        @Published private(set) var groups = [Group]()
         
-        private let category: ZimFile.Category
         private let queue = DispatchQueue(label: "org.kiwix.libraryUI.categoryGrouped", qos: .userInitiated)
         private let database = try? Realm(configuration: Realm.defaultConfig)
         private var pipeline: AnyCancellable? = nil
         
         init(category: ZimFile.Category) {
-            self.result = QueryResult(category: category)
-            self.category = category
-            self.load()
-        }
-        
-        func load() {
             let predicate = NSPredicate(format: "languageCode == %@ AND categoryRaw == %@", "en", category.rawValue)
             pipeline = database?.objects(ZimFile.self)
                 .filter(predicate)
@@ -166,10 +124,36 @@ struct LibraryGroupedCategoryView: View {
                 .collectionPublisher
                 .subscribe(on: queue)
                 .freeze()
-                .map { QueryResult(category: self.category, results: $0) }
+                .map { ViewModel.process(category: category, results: $0) }
                 .receive(on: DispatchQueue.main)
-                .catch { _ in Just(QueryResult(category: self.category)) }
-                .assign(to: \.result, on: self)
+                .catch { _ in Just([]) }
+                .assign(to: \.groups, on: self)
+        }
+        
+        private static func process(category: ZimFile.Category, results: Results<ZimFile>) -> [Group] {
+            var groups = results.reduce(into: [String: [ZimFile]]()) { result, zimFile in
+                result[zimFile.groupID, default: []].append(zimFile)
+            }.map { groupID, zimFiles in
+                Group(id: groupID, zimFiles: zimFiles)
+            }.sorted(by: { $0.name.caseInsensitiveCompare($1.name) == .orderedAscending })
+            
+            // group with empty string as ID will always be last and named as Other
+            if let index = groups.firstIndex(where: { $0.id == "" }) {
+                groups.append(groups.remove(at: index))
+            }
+            
+            // special sorting logic for wikipedia
+            if category == .wikipedia {
+                // groups with these suffixes are treated in a special way and will show up first
+                let suffixes = ["_all", "_top", "_simple_all", "_100", "_wp1-0.8", "_ray_charles"]
+                for suffix in suffixes.reversed() {
+                    if let index = groups.lastIndex(where: { $0.id.hasSuffix(suffix) }) {
+                        groups.insert(groups.remove(at: index), at: 0)
+                    }
+                }
+            }
+            
+            return groups
         }
     }
 }

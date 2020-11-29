@@ -15,11 +15,9 @@ struct LibraryView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @ObservedObject private var viewModel = ViewModel()
     @State private var isShowingZimFileDetailView = false
-    @State private var isShowingInfoView = false
     var dismiss: (() -> Void) = {}
     
     var body: some View {
-        NavigationLink("", destination: Text("popover"), isActive: $isShowingInfoView)
         let itemsPerCategory = horizontalSizeClass == .regular ? 6 : 4
         NavigationView {
             ScrollView {
@@ -65,7 +63,7 @@ struct LibraryView: View {
                     Button("Done", action: dismiss)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { isShowingInfoView = true }) { Image(systemName: "info.circle") }
+                    NavigationLink(destination: Text("gear")) { Image(systemName: "gear") }
                 }
             }
             .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
