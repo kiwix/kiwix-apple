@@ -107,6 +107,13 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
         navigationItem.titleView = searchController.searchBar
     }
     
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        if newCollection.horizontalSizeClass == .regular {
+            presentedViewController?.dismiss(animated: false)
+        }
+    }
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
@@ -251,7 +258,8 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
                 hideSidebar()
             }
         } else {
-            let navigationController = UINavigationController(rootViewController: outlineViewController)
+            let controller = OutlineViewController(webView: webViewController.webView)
+            let navigationController = UINavigationController(rootViewController: controller)
             present(navigationController, animated: true)
         }
     }

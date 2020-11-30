@@ -16,6 +16,8 @@ class OutlineViewController: UITableViewController {
     convenience init(webView: WKWebView) {
         self.init(style: UITableView.Style.plain)
         self.webView = webView
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
+        navigationItem.title = "Outline"
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.separatorInsetReference = .fromAutomaticInsets
     }
@@ -25,6 +27,7 @@ class OutlineViewController: UITableViewController {
         if splitViewController != nil {
             navigationController?.isNavigationBarHidden = true
         }
+        reload()
     }
     
     func reload() {
@@ -32,6 +35,10 @@ class OutlineViewController: UITableViewController {
             self.items = (results as? [[String: Any]])?.compactMap({ OutlineItem(rawValue: $0) }) ?? [OutlineItem]()
             self.tableView.reloadData()
         }
+    }
+    
+    @objc func dismissController() {
+        dismiss(animated: true, completion: nil)
     }
     
     // MARK: - UITableviewDelegate & UITableViewDataSource
@@ -54,8 +61,10 @@ class OutlineViewController: UITableViewController {
         cell.separatorInset = UIEdgeInsets(top: 0, left: 20 * CGFloat(indentationLevel), bottom: 0, right: 0)
         if heading.level == 1 {
             cell.textLabel?.textAlignment = .center
-            cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
-        } else if indentationLevel == 0 {
+        } else {
+            cell.textLabel?.textAlignment = .left
+        }
+        if indentationLevel == 0 {
             cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         } else {
             cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
