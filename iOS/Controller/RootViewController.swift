@@ -17,7 +17,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
     private let contentViewController: UISplitViewController
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     private let webViewController = WebViewController()
-    private let outlineViewController: OutlineViewController
     
     // MARK: Buttons
     
@@ -42,7 +41,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
         } else {
             self.contentViewController = UISplitViewController()
         }
-        self.outlineViewController = OutlineViewController(webView: webViewController.webView)
         
         super.init(nibName: nil, bundle: nil)
         
@@ -226,7 +224,11 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
         guard let url = Bundle.main.url(forResource: "Inject", withExtension: "js"),
               let javascript = try? String(contentsOf: url) else { return }
         webView.evaluateJavaScript(javascript) { _, _ in
-            self.outlineViewController.reload()
+            if #available(iOS 14.0, *), let outlineViewController = self.contentViewController.viewController(for: .primary) as? OutlineViewController {
+                outlineViewController.reload()
+            } else if let outlineViewController = self.contentViewController.viewControllers.first as? OutlineViewController {
+                outlineViewController.reload()
+            }
         }
     }
     
@@ -241,6 +243,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
     }
     
     @objc func toggleOutline() {
+        let outlineViewController = OutlineViewController(webView: webViewController.webView)
         if #available(iOS 14.0, *), traitCollection.horizontalSizeClass == .regular {
             if contentViewController.displayMode == .secondaryOnly {
                 showSidebar(outlineViewController)
@@ -258,8 +261,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
                 hideSidebar()
             }
         } else {
-            let controller = OutlineViewController(webView: webViewController.webView)
-            let navigationController = UINavigationController(rootViewController: controller)
+            let navigationController = UINavigationController(rootViewController: outlineViewController)
             present(navigationController, animated: true)
         }
     }

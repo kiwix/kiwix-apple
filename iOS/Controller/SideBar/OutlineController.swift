@@ -75,7 +75,13 @@ class OutlineViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let javascript = "outlines.scrollToView(\(items[indexPath.row].index))"
         webView?.evaluateJavaScript(javascript, completionHandler: nil)
-        dismiss(animated: true)
+        if #available(iOS 14.0, *), let splitViewController = splitViewController, splitViewController.displayMode == .oneOverSecondary {
+            splitViewController.hide(.primary)
+        } else if let splitViewController = splitViewController, splitViewController.displayMode == .primaryOverlay {
+            splitViewController.preferredDisplayMode = .primaryHidden
+        } else {
+            dismiss(animated: true)
+        }
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
