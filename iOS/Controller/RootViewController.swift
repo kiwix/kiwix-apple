@@ -17,6 +17,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
     private let contentViewController: UISplitViewController
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     private let webViewController = WebViewController()
+    private let outlineViewController: OutlineViewController
     
     // MARK: Buttons
     
@@ -41,6 +42,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
         } else {
             self.contentViewController = UISplitViewController()
         }
+        self.outlineViewController = OutlineViewController(webView: webViewController.webView)
         
         super.init(nibName: nil, bundle: nil)
         
@@ -217,7 +219,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
         guard let url = Bundle.main.url(forResource: "Inject", withExtension: "js"),
               let javascript = try? String(contentsOf: url) else { return }
         webView.evaluateJavaScript(javascript) { _, _ in
-
+            self.outlineViewController.reload()
         }
     }
     
@@ -232,25 +234,24 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
     }
     
     @objc func toggleOutline() {
-        let outlineController = OutlineViewController()
         if #available(iOS 14.0, *), traitCollection.horizontalSizeClass == .regular {
             if contentViewController.displayMode == .secondaryOnly {
-                showSidebar(outlineController)
+                showSidebar(outlineViewController)
             } else if !(contentViewController.viewController(for: .primary) is OutlineViewController) {
-                contentViewController.setViewController(outlineController, for: .primary)
+                contentViewController.setViewController(outlineViewController, for: .primary)
             } else {
                 hideSidebar()
             }
         } else if traitCollection.horizontalSizeClass == .regular {
             if contentViewController.displayMode == .primaryHidden {
-                showSidebar(outlineController)
+                showSidebar(outlineViewController)
             } else if !(contentViewController.viewControllers.first is OutlineController) {
-                contentViewController.viewControllers[0] = outlineController
+                contentViewController.viewControllers[0] = outlineViewController
             } else {
                 hideSidebar()
             }
         } else {
-            let navigationController = UINavigationController(rootViewController: outlineController)
+            let navigationController = UINavigationController(rootViewController: outlineViewController)
             present(navigationController, animated: true)
         }
     }

@@ -7,13 +7,67 @@
 //
 
 import UIKit
+import WebKit
 
 class OutlineViewController: UITableViewController {
+    private weak var webView: WKWebView?
+    private var items = [OutlineItem]()
+    
+    convenience init(webView: WKWebView) {
+        self.init(style: UITableView.Style.plain)
+        self.webView = webView
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.separatorInsetReference = .fromAutomaticInsets
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if splitViewController != nil {
             navigationController?.isNavigationBarHidden = true
         }
+    }
+    
+    func reload() {
+        webView?.evaluateJavaScript("outlines.getHeadingObjects()") { results, _ in
+            self.items = (results as? [[String: Any]])?.compactMap({ OutlineItem(rawValue: $0) }) ?? [OutlineItem]()
+            self.tableView.reloadData()
+        }
+    }
+    
+    // MARK: - UITableviewDelegate & UITableViewDataSource
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        items.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let heading = items[indexPath.row]
+        let indentationLevel = max(heading.level - 2, 0)
+        
+        cell.textLabel?.text = heading.text
+        cell.textLabel?.numberOfLines = 0
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 20 * CGFloat(indentationLevel), bottom: 0, right: 0)
+        if heading.level == 1 {
+            cell.textLabel?.textAlignment = .center
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+        } else if indentationLevel == 0 {
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        } else {
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        }
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let javascript = "outlines.scrollToView(\(items[indexPath.row].index))"
+        webView?.evaluateJavaScript(javascript, completionHandler: nil)
+        dismiss(animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
