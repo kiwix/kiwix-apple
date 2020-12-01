@@ -9,17 +9,25 @@
 import UIKit
 import WebKit
 
-class OutlineViewController: UITableViewController {
+class OutlineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    private let tableView = UITableView()
     private weak var webView: WKWebView?
     private var items = [OutlineItem]()
     
     convenience init(webView: WKWebView) {
-        self.init(style: UITableView.Style.plain)
+        self.init(nibName: nil, bundle: nil)
         self.webView = webView
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
         navigationItem.title = "Outline"
+        tableView.dataSource = self
+        tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.separatorInsetReference = .fromAutomaticInsets
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = .secondarySystemBackground
+        } else {
+            view.backgroundColor = .white
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -34,24 +42,50 @@ class OutlineViewController: UITableViewController {
         webView?.evaluateJavaScript("outlines.getHeadingObjects()") { results, _ in
             self.items = (results as? [[String: Any]])?.compactMap({ OutlineItem(rawValue: $0) }) ?? [OutlineItem]()
             self.tableView.reloadData()
+            if self.items.isEmpty {
+                guard self.view.subviews.filter({ $0 is EmptyContentView }).first == nil else { return }
+                let emptyContentView = EmptyContentView(
+                    image: #imageLiteral(resourceName: "Compass"),
+                    title: NSLocalizedString(
+                        "Table of content not available", comment: "Help message when table of content is not available"
+                    )
+                )
+                self.setContent(emptyContentView)
+            } else {
+                guard !self.view.subviews.contains(self.tableView) else { return }
+                self.setContent(self.tableView)
+            }
         }
+    }
+    
+    private func setContent(_ content: UIView) {
+        guard !view.subviews.contains(content) else { return }
+        view.subviews.forEach { $0.removeFromSuperview() }
+        content.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(content)
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: content.topAnchor),
+            view.bottomAnchor.constraint(equalTo: content.bottomAnchor),
+            view.safeAreaLayoutGuide.leftAnchor.constraint(equalTo: content.leftAnchor),
+            view.safeAreaLayoutGuide.rightAnchor.constraint(equalTo: content.rightAnchor),
+        ])
     }
     
     @objc func dismissController() {
         dismiss(animated: true, completion: nil)
     }
     
-    // MARK: - UITableviewDelegate & UITableViewDataSource
+    // MARK: - UITableViewDataSource & UITableviewDelegate
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         1
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         items.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         let heading = items[indexPath.row]
         let indentationLevel = max(heading.level - 2, 0)
@@ -72,7 +106,7 @@ class OutlineViewController: UITableViewController {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let javascript = "outlines.scrollToView(\(items[indexPath.row].index))"
         webView?.evaluateJavaScript(javascript, completionHandler: nil)
         tableView.deselectRow(at: indexPath, animated: true)
