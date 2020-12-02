@@ -117,6 +117,7 @@ class OPDSRefreshOperation: LibraryOperationBase {
                 // upsert new and existing zimFiles
                 for zimFileID in zimFileIDs {
                     guard let meta = parser.getZimFileMetaData(id: zimFileID) else { continue }
+                    if ZimFile.Category(rawValue: meta.category) == nil { meta.category = ZimFile.Category.other.rawValue }
                     if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) {
                         if updateExisting {
                             updateZimFile(zimFile, meta: meta)
@@ -124,6 +125,8 @@ class OPDSRefreshOperation: LibraryOperationBase {
                         } else {
                             // HACK: always update groupID, because I forgot to set it on creation before
                             zimFile.groupID = meta.groupIdentifier
+                            // HACK: always update category, because I forgot to set unrecognized category to other
+                            zimFile.categoryRaw = meta.category
                         }
                     } else {
                         let zimFile = ZimFile()

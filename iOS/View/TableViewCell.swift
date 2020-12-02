@@ -51,12 +51,8 @@ class TableViewCell: UITableViewCell {
         thumbImageView.layer.cornerRadius = 4
         thumbImageView.contentMode = .scaleAspectFill
         thumbImageBackgroundView.clipsToBounds = true
-        thumbImageBackgroundView.layer.cornerRadius = 6
-        if #available(iOS 13.0, *) {
-            thumbImageBackgroundView.backgroundColor = UIColor(named: "faviconBackground")
-        } else {
-            thumbImageBackgroundView.backgroundColor = .groupTableViewBackground
-        }
+        thumbImageBackgroundView.layer.cornerRadius = 5
+        thumbImageBackgroundView.backgroundColor = .white
         
         textStackView.axis = .vertical
         textStackView.alignment = .leading
@@ -73,12 +69,12 @@ class TableViewCell: UITableViewCell {
     
     fileprivate func configureConstraints() {
         NSLayoutConstraint.activate([
-            thumbImageView.heightAnchor.constraint(equalToConstant: 32),
-            thumbImageView.widthAnchor.constraint(equalToConstant: 32),
+            thumbImageView.heightAnchor.constraint(equalToConstant: 24),
+            thumbImageView.widthAnchor.constraint(equalToConstant: 24),
             thumbImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             thumbImageView.leftAnchor.constraint(equalTo: contentView.readableContentGuide.leftAnchor),
-            thumbImageBackgroundView.heightAnchor.constraint(equalToConstant: 36),
-            thumbImageBackgroundView.widthAnchor.constraint(equalToConstant: 36),
+            thumbImageBackgroundView.heightAnchor.constraint(equalToConstant: 26),
+            thumbImageBackgroundView.widthAnchor.constraint(equalToConstant: 26),
             thumbImageBackgroundView.centerXAnchor.constraint(equalTo: thumbImageView.centerXAnchor),
             thumbImageBackgroundView.centerYAnchor.constraint(equalTo: thumbImageView.centerYAnchor),
             textStackView.leftAnchor.constraint(equalTo: thumbImageView.rightAnchor, constant: 8),
