@@ -63,12 +63,21 @@ class OutlineViewController: UIViewController, UITableViewDataSource, UITableVie
         view.subviews.forEach { $0.removeFromSuperview() }
         content.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(content)
-        NSLayoutConstraint.activate([
-            view.topAnchor.constraint(equalTo: content.topAnchor),
-            view.bottomAnchor.constraint(equalTo: content.bottomAnchor),
-            view.safeAreaLayoutGuide.leftAnchor.constraint(equalTo: content.leftAnchor),
-            view.safeAreaLayoutGuide.rightAnchor.constraint(equalTo: content.rightAnchor),
-        ])
+        if content === tableView {
+            NSLayoutConstraint.activate([
+                view.topAnchor.constraint(equalTo: content.topAnchor),
+                view.bottomAnchor.constraint(equalTo: content.bottomAnchor),
+                view.leftAnchor.constraint(equalTo: content.leftAnchor),
+                view.rightAnchor.constraint(equalTo: content.rightAnchor),
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                view.topAnchor.constraint(equalTo: content.topAnchor),
+                view.bottomAnchor.constraint(equalTo: content.bottomAnchor),
+                view.safeAreaLayoutGuide.leftAnchor.constraint(equalTo: content.leftAnchor),
+                view.safeAreaLayoutGuide.rightAnchor.constraint(equalTo: content.rightAnchor),
+            ])
+        }
     }
     
     @objc func dismissController() {
