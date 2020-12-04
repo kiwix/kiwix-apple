@@ -8,6 +8,7 @@
 
 import UIKit
 import WebKit
+import RealmSwift
 
 class SidebarViewController: UIViewController {
     fileprivate let tableView = UITableView()
@@ -55,6 +56,12 @@ class SidebarViewController: UIViewController {
 class OutlineViewController: SidebarViewController, UITableViewDataSource, UITableViewDelegate {
     private weak var webView: WKWebView?
     private var items = [OutlineItem]()
+    private let emptyContentView = EmptyContentView(
+        image: #imageLiteral(resourceName: "Compass"),
+        title: NSLocalizedString(
+            "Table of content not available", comment: "Help message when table of content is not available"
+        )
+    )
     
     convenience init(webView: WKWebView) {
         self.init(nibName: nil, bundle: nil)
@@ -82,16 +89,8 @@ class OutlineViewController: SidebarViewController, UITableViewDataSource, UITab
             self.items = (results as? [[String: Any]])?.compactMap({ OutlineItem(rawValue: $0) }) ?? [OutlineItem]()
             self.tableView.reloadData()
             if self.items.isEmpty {
-                guard self.view.subviews.filter({ $0 is EmptyContentView }).first == nil else { return }
-                let emptyContentView = EmptyContentView(
-                    image: #imageLiteral(resourceName: "Compass"),
-                    title: NSLocalizedString(
-                        "Table of content not available", comment: "Help message when table of content is not available"
-                    )
-                )
-                self.setContent(emptyContentView)
+                self.setContent(self.emptyContentView)
             } else {
-                guard !self.view.subviews.contains(self.tableView) else { return }
                 self.setContent(self.tableView)
             }
         }
@@ -142,9 +141,95 @@ class OutlineViewController: SidebarViewController, UITableViewDataSource, UITab
     }
 }
 
-class BookmarksViewController: SidebarViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
+class BookmarksViewController: SidebarViewController, UITableViewDataSource, UITableViewDelegate {
+    private var bookmarks: Results<Bookmark>?
+    private var observer: NotificationToken?
+    private let emptyContentView = EmptyContentView(
+        image: #imageLiteral(resourceName: "StarColor"),
+        title: NSLocalizedString("Bookmark your favorite articles", comment: "Help message when there's no bookmark to show"),
+        subtitle: NSLocalizedString("To add, long press the bookmark button on the tool bar when reading an article.", comment: "Help message when there's no bookmark to show")
+    )
+    
+    convenience init() {
+        self.init(nibName: nil, bundle: nil)
+        let database = try? Realm(configuration: Realm.defaultConfig)
+        self.bookmarks = database?.objects(Bookmark.self).sorted(byKeyPath: "date", ascending: false)
         navigationItem.title = "Bookmarks"
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(ArticleTableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.separatorInsetReference = .fromAutomaticInsets
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.observer = bookmarks?.observe { change in
+            switch change {
+            case .initial(let results):
+                self.tableView.reloadData()
+                if results.isEmpty {
+                    self.setContent(self.emptyContentView)
+                } else {
+                    self.setContent(self.tableView)
+                }
+            case .update(let results, let deletions, let insertions, let updates):
+                if results.isEmpty {
+                    self.tableView.reloadData()
+                    self.setContent(self.emptyContentView)
+                } else {
+                    self.setContent(self.tableView)
+                    self.tableView.performBatchUpdates({
+                        self.tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }), with: .fade)
+                        self.tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }), with: .fade)
+                        updates.forEach({ row in
+                            let indexPath = IndexPath(row: row, section: 0)
+                            guard let cell = self.tableView.cellForRow(at: indexPath) as? ArticleTableViewCell else {return}
+                            self.configure(cell: cell, indexPath: indexPath)
+                        })
+                    })
+                }
+            default:
+                break
+            }
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        observer = nil
+    }
+    
+    
+    // MARK: - UITableViewDataSource & UITableviewDelegate
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        bookmarks?.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ArticleTableViewCell
+        configure(cell: cell, indexPath: indexPath)
+        return cell
+    }
+
+    func configure(cell: ArticleTableViewCell, indexPath: IndexPath, animated: Bool = false) {
+        guard let bookmark = bookmarks?[indexPath.row] else { return }
+        cell.titleLabel.text = bookmark.title
+        cell.titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        cell.detailLabel.text = bookmark.snippet
+        
+        if let zimFile = bookmark.zimFile, let thumbImagePath = bookmark.thumbImagePath,
+           let data = ZimMultiReader.shared.getContent(bookID: zimFile.id, contentPath: thumbImagePath)?.data {
+            cell.thumbImageView.image = UIImage(data: data)
+        } else if let zimFile = bookmark.zimFile, let data = zimFile.faviconData {
+            cell.thumbImageView.image = UIImage(data: data)
+        } else {
+            cell.thumbImageView.image = #imageLiteral(resourceName: "GenericZimFile")
+        }
     }
 }
