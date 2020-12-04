@@ -268,16 +268,18 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
     
     @objc func toggleBookmarks() {
         let bookmarksController = BookmarksViewController()
-        if traitCollection.horizontalSizeClass == .regular {
-            if #available(iOS 14.0, *), contentViewController.displayMode == .secondaryOnly {
+        if #available(iOS 14.0, *), traitCollection.horizontalSizeClass == .regular {
+            if contentViewController.displayMode == .secondaryOnly {
                 showSidebar(bookmarksController)
-            } else if contentViewController.displayMode == .primaryHidden {
+            } else if !(contentViewController.viewController(for: .primary) is BookmarksViewController) {
+                contentViewController.setViewController(bookmarksController, for: .primary)
+            } else {
+                hideSidebar()
+            }
+        } else if traitCollection.horizontalSizeClass == .regular {
+            if contentViewController.displayMode == .primaryHidden {
                 showSidebar(bookmarksController)
-            } else if #available(iOS 14.0, *),
-                      let navigationController = contentViewController.viewController(for: .primary) as? UINavigationController,
-                      !(navigationController.topViewController is BookmarksController) {
-                navigationController.setViewControllers([bookmarksController], animated: false)
-            } else if !(contentViewController.viewControllers.first is BookmarksController) {
+            } else if !(contentViewController.viewControllers.first is BookmarksViewController) {
                 contentViewController.viewControllers[0] = bookmarksController
             } else {
                 hideSidebar()
