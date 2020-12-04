@@ -52,6 +52,8 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
         chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
         outlineButton.addTarget(self, action: #selector(toggleOutline), for: .touchUpInside)
         bookmarkButton.addTarget(self, action: #selector(toggleBookmarks), for: .touchUpInside)
+        bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
+        bookmarkLongPressGestureRecognizer.addTarget(self, action: #selector(bookmarkButtonLongPressed))
         cancelButton.target = self
         cancelButton.action = #selector(dismissSearch)
     }
@@ -290,6 +292,39 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
         }
     }
     
+    @objc func bookmarkButtonLongPressed(sender: Any) {
+        func presentBookmarkHUDController(isBookmarked: Bool) {
+            let controller = HUDController()
+            controller.modalPresentationStyle = .custom
+            controller.transitioningDelegate = controller
+            controller.direction = isBookmarked ? .down : .up
+            controller.imageView.image = isBookmarked ? #imageLiteral(resourceName: "StarAdd") : #imageLiteral(resourceName: "StarRemove")
+            controller.label.text = isBookmarked ?
+                NSLocalizedString("Added", comment: "Bookmark HUD") :
+                NSLocalizedString("Removed", comment: "Bookmark HUD")
+            
+            present(controller, animated: true, completion: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                    controller.dismiss(animated: true, completion: nil)
+                })
+            })
+        }
+        
+        guard let recognizer = sender as? UILongPressGestureRecognizer,
+              recognizer.state == .began,
+              let url = webViewController.webView.url else { return }
+        let bookmarkService = BookmarkService()
+        if let bookmark = bookmarkService.get(url: url) {
+            bookmarkService.delete(bookmark)
+            bookmarkButton.isBookmarked = false
+            presentBookmarkHUDController(isBookmarked: false)
+        } else {
+            bookmarkService.create(url: url)
+            bookmarkButton.isBookmarked = true
+            presentBookmarkHUDController(isBookmarked: true)
+        }
+    }
+    
     @objc func dismissSearch() {
         /*
          We have to dismiss the `searchController` first, so that the `isBeingDismissed` property is correct on the
@@ -299,6 +334,8 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
         searchController.dismiss(animated: true)
         searchController.isActive = false
     }
+    
+    // MARK: - Sidebar
     
     private func showSidebar(_ controller: UIViewController) {
         if #available(iOS 14.0, *) {
