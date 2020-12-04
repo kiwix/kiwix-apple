@@ -68,7 +68,7 @@ class SearchFilterController: UIViewController, UITableViewDelegate, UITableView
     
     @objc func didSelectRecentSearchItem(button: UIButton) {
         guard let searchText = button.title(for: .normal),
-              let controller = presentingViewController as? ContentController else { return }
+              let controller = presentingViewController as? RootViewController else { return }
         controller.searchController.searchBar.text = searchText
     }
     

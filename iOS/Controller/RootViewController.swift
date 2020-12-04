@@ -12,7 +12,7 @@ import SafariServices
 import Defaults
 
 class RootViewController: UIViewController, UISearchControllerDelegate, WKNavigationDelegate {
-    private let searchController: UISearchController
+    let searchController: UISearchController
     private let searchResultsController: SearchResultsController
     private let contentViewController: UISplitViewController
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
