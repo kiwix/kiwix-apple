@@ -172,8 +172,8 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
             setToolbarItems(nil, animated: animated)
             navigationController?.setToolbarHidden(true, animated: animated)
         } else if traitCollection.horizontalSizeClass == .regular {
-            let left = BarButtonGroup(buttons: [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton], spacing: 10)
-            let right = BarButtonGroup(buttons: [diceButton, houseButton, libraryButton, settingButton], spacing: 10)
+            let left = BarButtonGroup(buttons: [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton], spacing: 12)
+            let right = BarButtonGroup(buttons: [diceButton, houseButton, libraryButton, settingButton], spacing: 12)
             navigationItem.setLeftBarButton(UIBarButtonItem(customView: left), animated: animated)
             navigationItem.setRightBarButton(UIBarButtonItem(customView: right), animated: animated)
             setToolbarItems(nil, animated: animated)
