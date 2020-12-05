@@ -269,7 +269,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
     }
     
     @objc func toggleBookmarks() {
-        let bookmarksController = BookmarksViewController()
+        let bookmarksController = BookmarksViewController(webView: webViewController.webView)
         if #available(iOS 14.0, *), traitCollection.horizontalSizeClass == .regular {
             if contentViewController.displayMode == .secondaryOnly {
                 showSidebar(bookmarksController)

@@ -11,7 +11,17 @@ import WebKit
 import RealmSwift
 
 class SidebarViewController: UIViewController {
+    fileprivate weak var webView: WKWebView?
     fileprivate let tableView = UITableView()
+    
+    init(webView: WKWebView) {
+        super.init(nibName: nil, bundle: nil)
+        self.webView = webView
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +64,6 @@ class SidebarViewController: UIViewController {
 }
 
 class OutlineViewController: SidebarViewController, UITableViewDataSource, UITableViewDelegate {
-    private weak var webView: WKWebView?
     private var items = [OutlineItem]()
     private let emptyContentView = EmptyContentView(
         image: #imageLiteral(resourceName: "Compass"),
@@ -63,9 +72,8 @@ class OutlineViewController: SidebarViewController, UITableViewDataSource, UITab
         )
     )
     
-    convenience init(webView: WKWebView) {
-        self.init(nibName: nil, bundle: nil)
-        self.webView = webView
+    override func viewDidLoad() {
+        super.viewDidLoad()
         navigationItem.title = "Outline"
         tableView.dataSource = self
         tableView.delegate = self
@@ -150,8 +158,8 @@ class BookmarksViewController: SidebarViewController, UITableViewDataSource, UIT
         subtitle: NSLocalizedString("To add, long press the bookmark button on the tool bar when reading an article.", comment: "Help message when there's no bookmark to show")
     )
     
-    convenience init() {
-        self.init(nibName: nil, bundle: nil)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         let database = try? Realm(configuration: Realm.defaultConfig)
         self.bookmarks = database?.objects(Bookmark.self).sorted(byKeyPath: "date", ascending: false)
         navigationItem.title = "Bookmarks"
@@ -231,5 +239,22 @@ class BookmarksViewController: SidebarViewController, UITableViewDataSource, UIT
         } else {
             cell.thumbImageView.image = #imageLiteral(resourceName: "GenericZimFile")
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        defer { tableView.deselectRow(at: indexPath, animated: true) }
+        guard let bookmark = bookmarks?[indexPath.row],
+              let zimFileID = bookmark.zimFile?.id,
+              let url = URL(zimFileID: zimFileID, contentPath: bookmark.path) else {
+            splitViewController?.present(UIAlertController.resourceUnavailable(), animated: true)
+            return
+        }
+        webView?.load(URLRequest(url: url))
+        dismiss(animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard let bookmark = bookmarks?[indexPath.row], editingStyle == .delete else {return}
+        BookmarkService().delete(bookmark)
     }
 }
