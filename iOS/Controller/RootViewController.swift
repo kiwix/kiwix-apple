@@ -83,10 +83,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if #available(iOS 13, *) {} else {
-            view.backgroundColor = .white
-        }
-        
         // configure bar buttons
         chevronLeftButton.isEnabled = false
         chevronRightButton.isEnabled = false
@@ -116,6 +112,10 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
                 view.rightAnchor.constraint(equalTo: contentViewController.view.rightAnchor),
             ])
         } else {
+            // on iOS 12, the contentViewController's master & detail controllers do not seem to be aware of the safe area,
+            // so the contentViewController is going to be pinned against the safe area layout guide veritcally
+            // and there won't be the content underneath the bar behavior
+            view.backgroundColor = .white
             NSLayoutConstraint.activate([
                 view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: contentViewController.view.topAnchor),
                 view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: contentViewController.view.bottomAnchor),
@@ -170,7 +170,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
             if #available(iOS 14.0, *) {
                 contentViewController.setViewController(webViewController, for: .secondary)
             } else if !(contentViewController.viewControllers.last is WebViewController) {
-                contentViewController.viewControllers[1] = webViewController
+                contentViewController.viewControllers[contentViewController.viewControllers.count - 1] = webViewController
             }
             if searchController.isActive {
                 dismissSearch()
@@ -234,6 +234,10 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     // MARK: - UISplitViewControllerDelegate
     
     func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
+        splitViewController.viewControllers.last
+    }
+    
+    func splitViewController(_ splitViewController: UISplitViewController, separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
         splitViewController.viewControllers.last
     }
 
@@ -401,6 +405,16 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         if #available(iOS 14.0, *) {
             contentViewController.setViewController(controller, for: .primary)
             contentViewController.show(.primary)
+            contentViewController.preferredDisplayMode = {
+                switch Defaults[.sideBarDisplayMode] {
+                case .automatic:
+                    return .automatic
+                case .overlay:
+                    return .oneOverSecondary
+                case .sideBySide:
+                    return .oneBesideSecondary
+                }
+            }()
         } else {
             if contentViewController.viewControllers.count == 1 {
                 contentViewController.viewControllers.insert(controller, at: 0)
