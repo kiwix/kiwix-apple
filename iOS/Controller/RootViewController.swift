@@ -158,9 +158,9 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
             webViewController.webView.load(URLRequest(url: url))
             if #available(iOS 14.0, *),
                let navigationController = contentViewController.viewController(for: .secondary) as? UINavigationController,
-               !(navigationController.topViewController is OutlineController)  {
+               !(navigationController.topViewController is WebViewController)  {
                 navigationController.setViewControllers([webViewController], animated: false)
-            } else if !(contentViewController.viewControllers.last is WebKitWebViewController) {
+            } else if !(contentViewController.viewControllers.last is WebViewController) {
                 contentViewController.viewControllers[1] = webViewController
             }
             if searchController.isActive {
@@ -169,6 +169,16 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
         } else if url.isFileURL {
             
         }
+    }
+    
+    func openMainPage(zimFileID: String) {
+        guard let url = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFileID) else { return }
+        openURL(url)
+    }
+    
+    func setWebViewDisplayScale(_ scale: Double) {
+        let javascript = String(format: "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%.0f%%'", scale * 100)
+        webViewController.webView.evaluateJavaScript(javascript, completionHandler: nil)
     }
     
     // MARK: - Configurations

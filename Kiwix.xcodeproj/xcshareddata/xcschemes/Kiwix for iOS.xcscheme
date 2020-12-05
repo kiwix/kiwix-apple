@@ -38,6 +38,16 @@
                ReferencedContainer = "container:Kiwix.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9797431E257BEBAB00D30F03"
+               BuildableName = "iOSUITests.xctest"
+               BlueprintName = "iOSUITests"
+               ReferencedContainer = "container:Kiwix.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

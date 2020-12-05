@@ -58,13 +58,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     
     func application(_ app: UIApplication, open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        guard let rootViewController = window?.rootViewController as? RootController else {return false}
+        guard let navigationController = window?.rootViewController as? UINavigationController,
+              let rootViewController = navigationController.topViewController as? RootViewController else {return false}
         if url.isKiwixURL {
-            rootViewController.openKiwixURL(url)
+            rootViewController.openURL(url)
             return true
         } else if url.isFileURL {
-            let canOpenInPlace = options[.openInPlace] as? Bool ?? false
-            rootViewController.openFileURL(url, canOpenInPlace: canOpenInPlace)
+//            let canOpenInPlace = options[.openInPlace] as? Bool ?? false
+//            rootViewController.openFileURL(url, canOpenInPlace: canOpenInPlace)
             return true
         } else {
             return false
@@ -103,9 +104,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     // MARK: - Home Screen Quick Actions
     
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-        guard let rootViewController = window?.rootViewController as? RootController,
-            let shortcut = Shortcut(rawValue: shortcutItem.type) else { completionHandler(false); return }
-        rootViewController.openShortcut(shortcut)
+        guard let shortcut = Shortcut(rawValue: shortcutItem.type),
+              let navigationController = window?.rootViewController as? UINavigationController,
+              let rootViewController = navigationController.topViewController as? RootViewController else { completionHandler(false); return }
+        switch shortcut {
+        case .bookmark:
+            rootViewController.toggleBookmarks()
+        case .search:
+            rootViewController.searchController.isActive = true
+        }
         completionHandler(true)
     }
 }
