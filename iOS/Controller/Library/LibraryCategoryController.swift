@@ -123,13 +123,8 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
                 switch changes {
                 case .initial:
                     self.tableView.reloadSections([sectionIndex], with: .none)
-                case .update(_, let deletions, let insertions, _):
-                    self.tableView.performBatchUpdates({
-                        let deletionIndexes = deletions.map({ IndexPath(row: $0, section: sectionIndex) })
-                        let insertIndexes = insertions.map({ IndexPath(row: $0, section: sectionIndex) })
-                        self.tableView.deleteRows(at: deletionIndexes, with: .fade)
-                        self.tableView.insertRows(at: insertIndexes, with: .fade)
-                    })
+                case .update(_, _, _, _):
+                    self.tableView.reloadSections([sectionIndex], with: .automatic)
                 default:
                     break
                 }
