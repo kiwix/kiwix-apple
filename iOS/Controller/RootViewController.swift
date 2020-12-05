@@ -19,8 +19,9 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     private let webViewController = WebViewController()
     private var libraryController: LibraryController?
+    private var sideBarDisplayModeObserver: Defaults.Observation?
     
-    // MARK: Buttons
+    // MARK: - Buttons
     
     private let chevronLeftButton = BarButton(imageName: "chevron.left")
     private let chevronRightButton = BarButton(imageName: "chevron.right")
@@ -60,6 +61,19 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
         settingButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
         cancelButton.target = self
         cancelButton.action = #selector(dismissSearch)
+        
+        if #available(iOS 14.0, *) {
+            sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode) { change in
+                switch(Defaults[.sideBarDisplayMode]) {
+                case .automatic:
+                    self.contentViewController.preferredSplitBehavior = .automatic
+                case .overlay:
+                    self.contentViewController.preferredSplitBehavior = .overlay
+                case .sideBySide:
+                    self.contentViewController.preferredSplitBehavior = .tile
+                }
+            }
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -140,30 +154,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
             }
         } else if url.isFileURL {
             
-        }
-    }
-    
-    private func getSidebarVisibleDisplayMode(size: CGSize? = nil) -> UISplitViewController.DisplayMode {
-        if #available(iOS 14.0, *) {
-            switch Defaults[.sideBarDisplayMode] {
-            case .automatic:
-                let size = size ?? view.frame.size
-                return size.width > size.height ? .oneBesideSecondary : .oneOverSecondary
-            case .overlay:
-                return .oneOverSecondary
-            case .sideBySide:
-                return .oneBesideSecondary
-            }
-        } else {
-            switch Defaults[.sideBarDisplayMode] {
-            case .automatic:
-                let size = size ?? view.frame.size
-                return size.width > size.height ? .allVisible : .primaryOverlay
-            case .overlay:
-                return .primaryOverlay
-            case .sideBySide:
-                return .allVisible
-            }
         }
     }
     
@@ -371,7 +361,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
     private func showSidebar(_ controller: UIViewController) {
         if #available(iOS 14.0, *) {
             contentViewController.setViewController(controller, for: .primary)
-            contentViewController.preferredDisplayMode = getSidebarVisibleDisplayMode()
+//            contentViewController.preferredDisplayMode = getSidebarVisibleDisplayMode()
             contentViewController.show(.primary)
         } else {
             contentViewController.viewControllers[0] = controller
@@ -394,6 +384,30 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
             } completion: { completed in
                 guard completed else { return }
                 self.contentViewController.viewControllers[0] = UIViewController()
+            }
+        }
+    }
+    
+    private func getSidebarVisibleDisplayMode(size: CGSize? = nil) -> UISplitViewController.DisplayMode {
+        if #available(iOS 14.0, *) {
+            switch Defaults[.sideBarDisplayMode] {
+            case .automatic:
+                let size = size ?? view.frame.size
+                return size.width > size.height ? .oneBesideSecondary : .oneOverSecondary
+            case .overlay:
+                return .oneOverSecondary
+            case .sideBySide:
+                return .oneBesideSecondary
+            }
+        } else {
+            switch Defaults[.sideBarDisplayMode] {
+            case .automatic:
+                let size = size ?? view.frame.size
+                return size.width > size.height ? .allVisible : .primaryOverlay
+            case .overlay:
+                return .primaryOverlay
+            case .sideBySide:
+                return .allVisible
             }
         }
     }
