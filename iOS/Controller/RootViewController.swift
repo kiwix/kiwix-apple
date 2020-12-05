@@ -62,6 +62,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
         cancelButton.target = self
         cancelButton.action = #selector(dismissSearch)
         
+        // observe sidebar display mode
         if #available(iOS 14.0, *) {
             sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode) { change in
                 switch(Defaults[.sideBarDisplayMode]) {
@@ -254,7 +255,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
         } else if traitCollection.horizontalSizeClass == .regular {
             if contentViewController.displayMode == .primaryHidden {
                 showSidebar(outlineViewController)
-            } else if !(contentViewController.viewControllers.first is OutlineController) {
+            } else if !(contentViewController.viewControllers.first is OutlineViewController) {
                 contentViewController.viewControllers[0] = outlineViewController
             } else {
                 hideSidebar()
@@ -361,12 +362,21 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
     private func showSidebar(_ controller: UIViewController) {
         if #available(iOS 14.0, *) {
             contentViewController.setViewController(controller, for: .primary)
-//            contentViewController.preferredDisplayMode = getSidebarVisibleDisplayMode()
             contentViewController.show(.primary)
         } else {
             contentViewController.viewControllers[0] = controller
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut) {
-                self.contentViewController.preferredDisplayMode = self.getSidebarVisibleDisplayMode()
+                self.contentViewController.preferredDisplayMode = {
+                    switch Defaults[.sideBarDisplayMode] {
+                    case .automatic:
+                        let size = self.view.frame.size
+                        return size.width > size.height ? .allVisible : .primaryOverlay
+                    case .overlay:
+                        return .primaryOverlay
+                    case .sideBySide:
+                        return .allVisible
+                    }
+                }()
             }
         }
     }
@@ -384,30 +394,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
             } completion: { completed in
                 guard completed else { return }
                 self.contentViewController.viewControllers[0] = UIViewController()
-            }
-        }
-    }
-    
-    private func getSidebarVisibleDisplayMode(size: CGSize? = nil) -> UISplitViewController.DisplayMode {
-        if #available(iOS 14.0, *) {
-            switch Defaults[.sideBarDisplayMode] {
-            case .automatic:
-                let size = size ?? view.frame.size
-                return size.width > size.height ? .oneBesideSecondary : .oneOverSecondary
-            case .overlay:
-                return .oneOverSecondary
-            case .sideBySide:
-                return .oneBesideSecondary
-            }
-        } else {
-            switch Defaults[.sideBarDisplayMode] {
-            case .automatic:
-                let size = size ?? view.frame.size
-                return size.width > size.height ? .allVisible : .primaryOverlay
-            case .overlay:
-                return .primaryOverlay
-            case .sideBySide:
-                return .allVisible
             }
         }
     }

@@ -16,7 +16,7 @@ class SidebarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissController))
-        if splitViewController != nil {
+        if #available(iOS 14.0, *), splitViewController != nil {
             navigationController?.isNavigationBarHidden = true
         }
         if #available(iOS 13.0, *) {
