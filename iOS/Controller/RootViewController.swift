@@ -223,14 +223,17 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         chevronLeftButton.isEnabled = webView.canGoBack
         chevronRightButton.isEnabled = webView.canGoForward
-        guard let url = Bundle.main.url(forResource: "Inject", withExtension: "js"),
-              let javascript = try? String(contentsOf: url) else { return }
-        webView.evaluateJavaScript(javascript) { _, _ in
-            if #available(iOS 14.0, *), let outlineViewController = self.contentViewController.viewController(for: .primary) as? OutlineViewController {
-                outlineViewController.reload()
-            } else if let outlineViewController = self.contentViewController.viewControllers.first as? OutlineViewController {
-                outlineViewController.reload()
+        if let url = Bundle.main.url(forResource: "Inject", withExtension: "js"), let javascript = try? String(contentsOf: url) {
+            webView.evaluateJavaScript(javascript) { _, _ in
+                if #available(iOS 14.0, *), let outlineViewController = self.contentViewController.viewController(for: .primary) as? OutlineViewController {
+                    outlineViewController.reload()
+                } else if let outlineViewController = self.contentViewController.viewControllers.first as? OutlineViewController {
+                    outlineViewController.reload()
+                }
             }
+        }
+        if let url = webView.url {
+            bookmarkButton.isBookmarked = BookmarkService().get(url: url) == nil ? false : true
         }
     }
     
@@ -269,7 +272,9 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
     }
     
     @objc func toggleBookmarks() {
-        let bookmarksController = BookmarksViewController(webView: webViewController.webView)
+        let bookmarksController = BookmarksViewController()
+        bookmarksController.bookmarkTapped = { [weak self] url in self?.openURL(url) }
+        bookmarksController.bookmarkDeleted = { [weak self] in self?.bookmarkButton.isBookmarked = false }
         if #available(iOS 14.0, *), traitCollection.horizontalSizeClass == .regular {
             if contentViewController.displayMode == .secondaryOnly {
                 showSidebar(bookmarksController)

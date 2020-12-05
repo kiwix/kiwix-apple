@@ -11,17 +11,7 @@ import WebKit
 import RealmSwift
 
 class SidebarViewController: UIViewController {
-    fileprivate weak var webView: WKWebView?
     fileprivate let tableView = UITableView()
-    
-    init(webView: WKWebView) {
-        super.init(nibName: nil, bundle: nil)
-        self.webView = webView
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,6 +54,7 @@ class SidebarViewController: UIViewController {
 }
 
 class OutlineViewController: SidebarViewController, UITableViewDataSource, UITableViewDelegate {
+    private weak var webView: WKWebView?
     private var items = [OutlineItem]()
     private let emptyContentView = EmptyContentView(
         image: #imageLiteral(resourceName: "Compass"),
@@ -71,6 +62,15 @@ class OutlineViewController: SidebarViewController, UITableViewDataSource, UITab
             "Table of content not available", comment: "Help message when table of content is not available"
         )
     )
+    
+    init(webView: WKWebView) {
+        super.init(nibName: nil, bundle: nil)
+        self.webView = webView
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -157,6 +157,8 @@ class BookmarksViewController: SidebarViewController, UITableViewDataSource, UIT
         title: NSLocalizedString("Bookmark your favorite articles", comment: "Help message when there's no bookmark to show"),
         subtitle: NSLocalizedString("To add, long press the bookmark button on the tool bar when reading an article.", comment: "Help message when there's no bookmark to show")
     )
+    var bookmarkTapped: ((URL) -> Void)?
+    var bookmarkDeleted: (() -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -249,12 +251,13 @@ class BookmarksViewController: SidebarViewController, UITableViewDataSource, UIT
             splitViewController?.present(UIAlertController.resourceUnavailable(), animated: true)
             return
         }
-        webView?.load(URLRequest(url: url))
+        bookmarkTapped?(url)
         dismiss(animated: true)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard let bookmark = bookmarks?[indexPath.row], editingStyle == .delete else {return}
         BookmarkService().delete(bookmark)
+        bookmarkDeleted?()
     }
 }
