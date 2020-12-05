@@ -47,7 +47,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
         
         super.init(nibName: nil, bundle: nil)
         
-        contentViewController.presentsWithGesture = false
         webViewController.webView.navigationDelegate = self
         
         // wire up button actions
@@ -84,31 +83,45 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if #available(iOS 13, *) {} else {
+            view.backgroundColor = .white
+        }
+        
         // configure bar buttons
         chevronLeftButton.isEnabled = false
         chevronRightButton.isEnabled = false
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
         
         // configure content view controller
+        contentViewController.presentsWithGesture = false
         if #available(iOS 14.0, *) {
             let navigationController = UINavigationController(rootViewController: welcomeController)
             navigationController.isNavigationBarHidden = true
             contentViewController.setViewController(navigationController, for: .secondary)
         } else {
-            contentViewController.preferredDisplayMode = .primaryHidden
             contentViewController.viewControllers = [UIViewController(), welcomeController]
+            contentViewController.preferredDisplayMode = .primaryHidden
         }
         
         // add content view controller as a child
         addChild(contentViewController)
         contentViewController.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(contentViewController.view)
-        NSLayoutConstraint.activate([
-            view.topAnchor.constraint(equalTo: contentViewController.view.topAnchor),
-            view.leftAnchor.constraint(equalTo: contentViewController.view.leftAnchor),
-            view.bottomAnchor.constraint(equalTo: contentViewController.view.bottomAnchor),
-            view.rightAnchor.constraint(equalTo: contentViewController.view.rightAnchor),
-        ])
+        if #available(iOS 13.0, *) {
+            NSLayoutConstraint.activate([
+                view.topAnchor.constraint(equalTo: contentViewController.view.topAnchor),
+                view.leftAnchor.constraint(equalTo: contentViewController.view.leftAnchor),
+                view.bottomAnchor.constraint(equalTo: contentViewController.view.bottomAnchor),
+                view.rightAnchor.constraint(equalTo: contentViewController.view.rightAnchor),
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: contentViewController.view.topAnchor),
+                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: contentViewController.view.bottomAnchor),
+                view.leftAnchor.constraint(equalTo: contentViewController.view.leftAnchor),
+                view.rightAnchor.constraint(equalTo: contentViewController.view.rightAnchor),
+            ])
+        }
         contentViewController.didMove(toParent: self)
         
         // search controller
@@ -367,13 +380,17 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
             contentViewController.viewControllers[0] = controller
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut) {
                 self.contentViewController.preferredDisplayMode = {
-                    switch Defaults[.sideBarDisplayMode] {
-                    case .automatic:
-                        let size = self.view.frame.size
-                        return size.width > size.height ? .allVisible : .primaryOverlay
-                    case .overlay:
-                        return .primaryOverlay
-                    case .sideBySide:
+                    if #available(iOS 13.0, *) {
+                        switch Defaults[.sideBarDisplayMode] {
+                        case .automatic:
+                            let size = self.view.frame.size
+                            return size.width > size.height ? .allVisible : .primaryOverlay
+                        case .overlay:
+                            return .primaryOverlay
+                        case .sideBySide:
+                            return .allVisible
+                        }
+                    } else {
                         return .allVisible
                     }
                 }()

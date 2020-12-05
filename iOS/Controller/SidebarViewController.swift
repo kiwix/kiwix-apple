@@ -79,17 +79,7 @@ class OutlineViewController: SidebarViewController, UITableViewDataSource, UITab
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.separatorInsetReference = .fromAutomaticInsets
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         reload()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        items = []
-        tableView.reloadData()
     }
     
     func reload() {
@@ -170,11 +160,8 @@ class BookmarksViewController: SidebarViewController, UITableViewDataSource, UIT
         tableView.register(ArticleTableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.separatorInsetReference = .fromAutomaticInsets
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.observer = bookmarks?.observe { change in
+        
+        observer = bookmarks?.observe { change in
             switch change {
             case .initial(let results):
                 self.tableView.reloadData()
@@ -204,12 +191,6 @@ class BookmarksViewController: SidebarViewController, UITableViewDataSource, UIT
             }
         }
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        observer = nil
-    }
-    
     
     // MARK: - UITableViewDataSource & UITableviewDelegate
     
