@@ -88,7 +88,6 @@
 		978B688924F8080E003CCA8C /* BarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978B688824F8080E003CCA8C /* BarButtons.swift */; };
 		978C58092468FC1100D56AC8 /* SettingSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F97A720D00EAE0005D642 /* SettingSearchController.swift */; };
 		979011302544D55800FF7855 /* SceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9790112F2544D55800FF7855 /* SceneViewModel.swift */; };
-		97974322257BEBAB00D30F03 /* iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97974321257BEBAB00D30F03 /* iOSUITests.swift */; };
 		9797434A257BF2B000D30F03 /* OutlineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97974349257BF2B000D30F03 /* OutlineItem.swift */; };
 		9797435C257BF33600D30F03 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9797435B257BF33600D30F03 /* WebViewController.swift */; };
 		97974368257BF37E00D30F03 /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97974367257BF37E00D30F03 /* Alerts.swift */; };
@@ -154,13 +153,6 @@
 
 /* Begin PBXContainerItemProxy section */
 		970EC3F623BE8E20008DCA27 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 97A2AB801C1B80FF00052E74 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 97A36C241F8C21210079B452;
-			remoteInfo = iOS;
-		};
-		97974324257BEBAB00D30F03 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 97A2AB801C1B80FF00052E74 /* Project object */;
 			proxyType = 1;
@@ -279,9 +271,6 @@
 		9790112F2544D55800FF7855 /* SceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewModel.swift; sourceTree = "<group>"; };
 		979315811E5127930093D3BA /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9793158C1E5127930093D3BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9797431F257BEBAB00D30F03 /* iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		97974321257BEBAB00D30F03 /* iOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSUITests.swift; sourceTree = "<group>"; };
-		97974323257BEBAB00D30F03 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97974349257BF2B000D30F03 /* OutlineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineItem.swift; sourceTree = "<group>"; };
 		9797435B257BF33600D30F03 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		97974367257BF37E00D30F03 /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
@@ -357,13 +346,6 @@
 				97CE4241249086A600B334E9 /* Defaults in Frameworks */,
 				97CE15BD23B26ED200378D9F /* RealmSwift in Frameworks */,
 				97CE42462493239C00B334E9 /* SwiftSoup in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9797431C257BEBAB00D30F03 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -641,15 +623,6 @@
 			path = Support;
 			sourceTree = "<group>";
 		};
-		97974320257BEBAB00D30F03 /* iOSUITests */ = {
-			isa = PBXGroup;
-			children = (
-				97974321257BEBAB00D30F03 /* iOSUITests.swift */,
-				97974323257BEBAB00D30F03 /* Info.plist */,
-			);
-			path = iOSUITests;
-			sourceTree = "<group>";
-		};
 		97974355257BF30200D30F03 /* Legacy */ = {
 			isa = PBXGroup;
 			children = (
@@ -674,13 +647,11 @@
 				975FDAD81F6082DA00A10E8C /* iOS */,
 				97B44895210FBC2C0004B056 /* WikiMed */,
 				970EC3F223BE8E20008DCA27 /* ModelTests */,
-				97974320257BEBAB00D30F03 /* iOSUITests */,
 				3B93EAF9B5C5AA23046BDEAC /* Frameworks */,
 				97A36C4E1F8C21210079B452 /* Kiwix.app */,
 				97C575F2202CB0E800E37502 /* Bookmarks.appex */,
 				970EC3F123BE8E20008DCA27 /* ModelTests.xctest */,
 				970EC3FD23BE9987008DCA27 /* WikiMed.app */,
-				9797431F257BEBAB00D30F03 /* iOSUITests.xctest */,
 			);
 			sourceTree = "<group>";
 			wrapsLines = 0;
@@ -834,24 +805,6 @@
 			productReference = 979315811E5127930093D3BA /* Kiwix.app */;
 			productType = "com.apple.product-type.application";
 		};
-		9797431E257BEBAB00D30F03 /* iOSUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 97974328257BEBAB00D30F03 /* Build configuration list for PBXNativeTarget "iOSUITests" */;
-			buildPhases = (
-				9797431B257BEBAB00D30F03 /* Sources */,
-				9797431C257BEBAB00D30F03 /* Frameworks */,
-				9797431D257BEBAB00D30F03 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				97974325257BEBAB00D30F03 /* PBXTargetDependency */,
-			);
-			name = iOSUITests;
-			productName = iOSUITests;
-			productReference = 9797431F257BEBAB00D30F03 /* iOSUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		97A36C241F8C21210079B452 /* iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97A36C4B1F8C21210079B452 /* Build configuration list for PBXNativeTarget "iOS" */;
@@ -949,10 +902,6 @@
 							};
 						};
 					};
-					9797431E257BEBAB00D30F03 = {
-						CreatedOnToolsVersion = 12.2;
-						TestTargetID = 97A36C241F8C21210079B452;
-					};
 					97A36C241F8C21210079B452 = {
 						LastSwiftMigration = 1020;
 						SystemCapabilities = {
@@ -1005,7 +954,6 @@
 				97B44893210FBC2C0004B056 /* WikiMed */,
 				97C575F1202CB0E800E37502 /* Bookmarks */,
 				970EC3F023BE8E20008DCA27 /* ModelTests */,
-				9797431E257BEBAB00D30F03 /* iOSUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -1024,13 +972,6 @@
 			files = (
 				9707B8F61F4B4F1500075D4F /* Assets.xcassets in Resources */,
 				976771791F4378FC007ED0C2 /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9797431D257BEBAB00D30F03 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1119,14 +1060,6 @@
 				9779E7A22379230F0058DC98 /* SearchController.swift in Sources */,
 				97CE42482493244D00B334E9 /* Parser.swift in Sources */,
 				97E983541F4DDB670021E96A /* SearchView.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9797431B257BEBAB00D30F03 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				97974322257BEBAB00D30F03 /* iOSUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1233,11 +1166,6 @@
 			isa = PBXTargetDependency;
 			target = 97A36C241F8C21210079B452 /* iOS */;
 			targetProxy = 970EC3F623BE8E20008DCA27 /* PBXContainerItemProxy */;
-		};
-		97974325257BEBAB00D30F03 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 97A36C241F8C21210079B452 /* iOS */;
-			targetProxy = 97974324257BEBAB00D30F03 /* PBXContainerItemProxy */;
 		};
 		97C575FD202CB0E900E37502 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1409,66 +1337,6 @@
 				SDKROOT = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Utilities/Kiwix-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
-		97974326257BEBAB00D30F03 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = iOSUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.iOSUITests.iOSUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = iOS;
-			};
-			name = Debug;
-		};
-		97974327257BEBAB00D30F03 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = iOSUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.kiwix.iOSUITests.iOSUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = iOS;
 			};
 			name = Release;
 		};
@@ -1797,15 +1665,6 @@
 			buildConfigurations = (
 				979315A41E5127940093D3BA /* Debug */,
 				979315A51E5127940093D3BA /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		97974328257BEBAB00D30F03 /* Build configuration list for PBXNativeTarget "iOSUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				97974326257BEBAB00D30F03 /* Debug */,
-				97974327257BEBAB00D30F03 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

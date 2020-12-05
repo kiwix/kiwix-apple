@@ -21,7 +21,14 @@ class WebViewController: UIViewController {
     
     override func loadView() {
         view = webView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         webView.allowsBackForwardNavigationGestures = true
+        if #available(iOS 14.0, *) {
+            navigationController?.isNavigationBarHidden = true
+        }
     }
     
     override func viewDidLayoutSubviews() {

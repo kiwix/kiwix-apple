@@ -156,10 +156,8 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
     func openURL(_ url: URL) {
         if url.isKiwixURL {
             webViewController.webView.load(URLRequest(url: url))
-            if #available(iOS 14.0, *),
-               let navigationController = contentViewController.viewController(for: .secondary) as? UINavigationController,
-               !(navigationController.topViewController is WebViewController)  {
-                navigationController.setViewControllers([webViewController], animated: false)
+            if #available(iOS 14.0, *) {
+                contentViewController.setViewController(webViewController, for: .secondary)
             } else if !(contentViewController.viewControllers.last is WebViewController) {
                 contentViewController.viewControllers[1] = webViewController
             }

@@ -174,6 +174,9 @@ class BookmarksViewController: SidebarViewController, UITableViewDataSource, UIT
                 if results.isEmpty {
                     self.tableView.reloadData()
                     self.setContent(self.emptyContentView)
+                } else if results.count == 1 {
+                    self.setContent(self.tableView)
+                    self.tableView.reloadData()
                 } else {
                     self.setContent(self.tableView)
                     self.tableView.performBatchUpdates({
