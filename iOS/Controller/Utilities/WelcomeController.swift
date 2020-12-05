@@ -18,7 +18,7 @@ class WelcomeController: UIViewController {
     }
     
     @IBAction func leftButtonTapped(_ sender: Any) {
-        guard let rootController = splitViewController as? RootController else {return}
+        guard let rootController = splitViewController?.parent as? RootViewController else {return}
         rootController.openLibrary()
     }
     

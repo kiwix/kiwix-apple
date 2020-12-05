@@ -6,6 +6,7 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
+import SwiftUI
 import UIKit
 import WebKit
 import SafariServices
@@ -17,6 +18,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
     private let contentViewController: UISplitViewController
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     private let webViewController = WebViewController()
+    private var libraryController: LibraryController?
     
     // MARK: Buttons
     
@@ -54,6 +56,8 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
         bookmarkButton.addTarget(self, action: #selector(toggleBookmarks), for: .touchUpInside)
         bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
         bookmarkLongPressGestureRecognizer.addTarget(self, action: #selector(bookmarkButtonLongPressed))
+        libraryButton.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
+        settingButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
         cancelButton.target = self
         cancelButton.action = #selector(dismissSearch)
     }
@@ -328,6 +332,28 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
             bookmarkButton.isBookmarked = true
             presentBookmarkHUDController(isBookmarked: true)
         }
+    }
+    
+    @objc func openLibrary() {
+        if #available(iOS 14.0, *), FeatureFlags.swiftUIBasedLibraryEnabled {
+            let controller = UIHostingController(rootView: LibraryView())
+            controller.rootView.dismiss = { controller.dismiss(animated: true) }
+            controller.modalPresentationStyle = .pageSheet
+            present(controller, animated: true)
+        } else {
+            let libraryController = self.libraryController ?? LibraryController(onDismiss: {
+                let timer = Timer(timeInterval: 60, repeats: false, block: { [weak self] timer in
+                    self?.libraryController = nil
+                })
+                RunLoop.main.add(timer, forMode: .default)
+            })
+            self.libraryController = libraryController
+            present(libraryController, animated: true)
+        }
+    }
+    
+    @objc func openSettings() {
+        present(SettingNavigationController(), animated: true)
     }
     
     @objc func dismissSearch() {
