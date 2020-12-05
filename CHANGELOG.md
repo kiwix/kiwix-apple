@@ -1,3 +1,11 @@
+## 1.13.7
+
+- Disabled gesture that reveals the sidebar (iPad)
+- populate group ID (aka name) when refresh the library
+- tweak to the favicon, which IMO looks much nicer, especially on dark mode
+- fixed an issue where unlink file could result in app crashes
+- this will be the last version that supports iOS 11
+
 ## 1.13.6
 
 - add TED category
