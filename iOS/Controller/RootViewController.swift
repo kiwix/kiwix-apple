@@ -12,7 +12,7 @@ import WebKit
 import SafariServices
 import Defaults
 
-class RootViewController: UIViewController, UISearchControllerDelegate, WKNavigationDelegate {
+class RootViewController: UIViewController, UISearchControllerDelegate, UISplitViewControllerDelegate, WKNavigationDelegate {
     let searchController: UISearchController
     private let searchResultsController: SearchResultsController
     private let contentViewController: UISplitViewController
@@ -53,7 +53,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
         chevronLeftButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
         chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
         outlineButton.addTarget(self, action: #selector(toggleOutline), for: .touchUpInside)
-        bookmarkButton.addTarget(self, action: #selector(toggleBookmarks), for: .touchUpInside)
+        bookmarkButton.addTarget(self, action: #selector(bookmarkButtonPressed), for: .touchUpInside)
         bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
         bookmarkLongPressGestureRecognizer.addTarget(self, action: #selector(bookmarkButtonLongPressed))
         libraryButton.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
@@ -101,6 +101,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
         } else {
             contentViewController.viewControllers = [UIViewController(), welcomeController]
             contentViewController.preferredDisplayMode = .primaryHidden
+            contentViewController.delegate = self
         }
         
         // add content view controller as a child
@@ -142,7 +143,17 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         if newCollection.horizontalSizeClass == .regular {
-            presentedViewController?.dismiss(animated: false)
+            // dismiss presented outline and bookmark controller from when view was horizontally compact
+            if let navigationController = presentedViewController as? UINavigationController,
+               let topViewController = navigationController.topViewController,
+               (topViewController is OutlineViewController || topViewController is BookmarksViewController) {
+                presentedViewController?.dismiss(animated: false)
+            }
+            
+            // hide sidebar when view transition to horizontally regular from non-regular
+            if #available(iOS 14.0, *) { } else {
+                contentViewController.preferredDisplayMode = .primaryHidden
+            }
         }
     }
     
@@ -220,6 +231,12 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
         configureBarButtons(searchIsActive: false, animated: true)
     }
     
+    // MARK: - UISplitViewControllerDelegate
+    
+    func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
+        splitViewController.viewControllers.last
+    }
+
     // MARK: - WKNavigationDelegate
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -287,7 +304,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
         }
     }
     
-    @objc func toggleBookmarks() {
+    @objc func bookmarkButtonPressed() {
         let bookmarksController = BookmarksViewController()
         bookmarksController.bookmarkTapped = { [weak self] url in self?.openURL(url) }
         bookmarksController.bookmarkDeleted = { [weak self] in self?.bookmarkButton.isBookmarked = false }
@@ -385,7 +402,11 @@ class RootViewController: UIViewController, UISearchControllerDelegate, WKNaviga
             contentViewController.setViewController(controller, for: .primary)
             contentViewController.show(.primary)
         } else {
-            contentViewController.viewControllers[0] = controller
+            if contentViewController.viewControllers.count == 1 {
+                contentViewController.viewControllers.insert(controller, at: 0)
+            } else {
+                contentViewController.viewControllers[0] = controller
+            }
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut) {
                 self.contentViewController.preferredDisplayMode = {
                     if #available(iOS 13.0, *) {
