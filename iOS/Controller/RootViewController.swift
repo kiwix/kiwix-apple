@@ -11,6 +11,7 @@ import UIKit
 import WebKit
 import SafariServices
 import Defaults
+import RealmSwift
 
 class RootViewController: UIViewController, UISearchControllerDelegate, UISplitViewControllerDelegate, WKNavigationDelegate {
     let searchController: UISearchController
@@ -471,6 +472,8 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
 
 @available(iOS 14.0, *)
 class RootViewController_iOS14: RootViewController {
+    private let onDeviceZimFiles = Queries.onDeviceZimFiles()
+    private var onDeviceZimFilesObserver: NotificationToken?
     private var sideBarDisplayModeObserver: Defaults.Observation?
     
     override var toolbarButtons: [BarButton] {
@@ -481,6 +484,9 @@ class RootViewController_iOS14: RootViewController {
     
     override init() {
         super.init()
+        onDeviceZimFilesObserver = onDeviceZimFiles?.observe { change in
+            self.setupHouseButtonMenu()
+        }
         sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode) { change in
             switch(Defaults[.sideBarDisplayMode]) {
             case .automatic:
@@ -506,12 +512,27 @@ class RootViewController_iOS14: RootViewController {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        
+        setupHouseButtonMenu()
     }
     
     // MARK: - Configurations
     
     private func setupHouseButtonMenu() {
+        var elements = [UIMenuElement]()
+        if let zimFiles = onDeviceZimFiles {
+            elements.append(UIMenu(options: .displayInline, children: zimFiles.map { zimFile in
+                UIAction(title: zimFile.title) { _ in self.openMainPage(zimFileID: zimFile.id) }
+            }))
+        } else {
+            elements.append(UIAction(title: "No Zim File Available", attributes: .disabled, handler: { _ in }))
+        }
+        if traitCollection.horizontalSizeClass == .compact {
+            elements.append(UIMenu(options: .displayInline, children: [
+                UIAction(title: "Open Library", image: UIImage(systemName: "books.vertical"), handler: { _ in self.openLibrary() }),
+                UIAction(title: "Open Settings", image: UIImage(systemName: "gear"), handler: { _ in self.openSettings() }),
+            ]))
+        }
+        houseButton.menu = UIMenu(children: elements)
     }
     
     // MARK: - Sidebar
