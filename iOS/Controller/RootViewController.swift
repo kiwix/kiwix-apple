@@ -15,24 +15,33 @@ import Defaults
 class RootViewController: UIViewController, UISearchControllerDelegate, UISplitViewControllerDelegate, WKNavigationDelegate {
     let searchController: UISearchController
     private let searchResultsController: SearchResultsController
-    private let contentViewController: UISplitViewController
+    fileprivate let contentViewController: UISplitViewController
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     private let webViewController = WebViewController()
     private var libraryController: LibraryController?
-    private var sideBarDisplayModeObserver: Defaults.Observation?
     
     // MARK: - Buttons
     
-    private let chevronLeftButton = BarButton(imageName: "chevron.left")
-    private let chevronRightButton = BarButton(imageName: "chevron.right")
-    private let outlineButton = BarButton(imageName: "list.bullet")
-    private let bookmarkButton = BookmarkButton(imageName: "star", bookmarkedImageName: "star.fill")
-    private let diceButton = BarButton(imageName: "die.face.5")
-    private let houseButton = BarButton(imageName: "house")
+    fileprivate let chevronLeftButton = BarButton(imageName: "chevron.left")
+    fileprivate let chevronRightButton = BarButton(imageName: "chevron.right")
+    fileprivate let outlineButton = BarButton(imageName: "list.bullet")
+    fileprivate let bookmarkButton = BookmarkButton(imageName: "star", bookmarkedImageName: "star.fill")
+    fileprivate let diceButton = BarButton(imageName: "die.face.5")
+    fileprivate let houseButton = BarButton(imageName: "house")
     private let libraryButton = BarButton(imageName: "folder")
     private let settingButton = BarButton(imageName: "gear")
     private let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
     private let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
+    
+    private var navigationLeftButtons: [BarButton] {
+        [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton]
+    }
+    private var navigationRightButtons: [BarButton] {
+        [diceButton, houseButton, libraryButton, settingButton]
+    }
+    fileprivate var toolbarButtons: [BarButton] {
+        [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, libraryButton, settingButton]
+    }
     
     // MARK: - Init & Overrides
     
@@ -60,27 +69,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         settingButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
         cancelButton.target = self
         cancelButton.action = #selector(dismissSearch)
-        
-        // observe sidebar display mode
-        if #available(iOS 14.0, *) {
-            sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode) { change in
-                switch(Defaults[.sideBarDisplayMode]) {
-                case .automatic:
-                    self.contentViewController.preferredSplitBehavior = .automatic
-                    self.contentViewController.preferredDisplayMode = .automatic
-                case .overlay:
-                    self.contentViewController.preferredSplitBehavior = .overlay
-                    if self.contentViewController.displayMode == .oneBesideSecondary {
-                        self.contentViewController.preferredDisplayMode = .oneOverSecondary
-                    }
-                case .sideBySide:
-                    self.contentViewController.preferredSplitBehavior = .tile
-                    if self.contentViewController.displayMode == .oneOverSecondary {
-                        self.contentViewController.preferredDisplayMode = .oneBesideSecondary
-                    }
-                }
-            }
-        }
     }
     
     required init?(coder: NSCoder) {
@@ -201,19 +189,16 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
             setToolbarItems(nil, animated: animated)
             navigationController?.setToolbarHidden(true, animated: animated)
         } else if traitCollection.horizontalSizeClass == .regular {
-            let left = BarButtonGroup(buttons: [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton], spacing: 12)
-            let right = BarButtonGroup(buttons: [diceButton, houseButton, libraryButton, settingButton], spacing: 12)
+            let left = BarButtonGroup(buttons: navigationLeftButtons, spacing: 12)
+            let right = BarButtonGroup(buttons: navigationRightButtons, spacing: 12)
             navigationItem.setLeftBarButton(UIBarButtonItem(customView: left), animated: animated)
             navigationItem.setRightBarButton(UIBarButtonItem(customView: right), animated: animated)
             setToolbarItems(nil, animated: animated)
             navigationController?.setToolbarHidden(true, animated: animated)
         } else if traitCollection.horizontalSizeClass == .compact {
-            let group = BarButtonGroup(buttons: [
-                chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, libraryButton, settingButton,
-            ])
             navigationItem.setLeftBarButton(nil, animated: animated)
             navigationItem.setRightBarButton(nil, animated: animated)
-            setToolbarItems([UIBarButtonItem(customView: group)], animated: animated)
+            setToolbarItems([UIBarButtonItem(customView: BarButtonGroup(buttons: toolbarButtons))], animated: animated)
             navigationController?.setToolbarHidden(false, animated: animated)
         } else {
             navigationItem.setLeftBarButton(nil, animated: animated)
@@ -449,60 +434,108 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     
     // MARK: - Sidebar
     
-    private func showSidebar(_ controller: UIViewController) {
-        if #available(iOS 14.0, *) {
-            contentViewController.setViewController(controller, for: .primary)
-            contentViewController.show(.primary)
-            contentViewController.preferredDisplayMode = {
-                switch Defaults[.sideBarDisplayMode] {
-                case .automatic:
-                    return .automatic
-                case .overlay:
-                    return .oneOverSecondary
-                case .sideBySide:
-                    return .oneBesideSecondary
-                }
-            }()
+    fileprivate func showSidebar(_ controller: UIViewController) {
+        if contentViewController.viewControllers.count == 1 {
+            contentViewController.viewControllers.insert(controller, at: 0)
         } else {
-            if contentViewController.viewControllers.count == 1 {
-                contentViewController.viewControllers.insert(controller, at: 0)
-            } else {
-                contentViewController.viewControllers[0] = controller
-            }
-            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut) {
-                self.contentViewController.preferredDisplayMode = {
-                    if #available(iOS 13.0, *) {
-                        switch Defaults[.sideBarDisplayMode] {
-                        case .automatic:
-                            let size = self.view.frame.size
-                            return size.width > size.height ? .allVisible : .primaryOverlay
-                        case .overlay:
-                            return .primaryOverlay
-                        case .sideBySide:
-                            return .allVisible
-                        }
-                    } else {
+            contentViewController.viewControllers[0] = controller
+        }
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut) {
+            self.contentViewController.preferredDisplayMode = {
+                if #available(iOS 13.0, *) {
+                    switch Defaults[.sideBarDisplayMode] {
+                    case .automatic:
+                        let size = self.view.frame.size
+                        return size.width > size.height ? .allVisible : .primaryOverlay
+                    case .overlay:
+                        return .primaryOverlay
+                    case .sideBySide:
                         return .allVisible
                     }
-                }()
+                } else {
+                    return .allVisible
+                }
+            }()
+        }
+    }
+    
+    fileprivate func hideSidebar() {
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn) {
+            self.contentViewController.preferredDisplayMode = .primaryHidden
+        } completion: { completed in
+            guard completed else { return }
+            self.contentViewController.viewControllers[0] = UIViewController()
+        }
+    }
+}
+
+@available(iOS 14.0, *)
+class RootViewController_iOS14: RootViewController {
+    private var sideBarDisplayModeObserver: Defaults.Observation?
+    
+    override var toolbarButtons: [BarButton] {
+        [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, diceButton, houseButton]
+    }
+    
+    // MARK: - Init & Overrides
+    
+    override init() {
+        super.init()
+        sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode) { change in
+            switch(Defaults[.sideBarDisplayMode]) {
+            case .automatic:
+                self.contentViewController.preferredSplitBehavior = .automatic
+                self.contentViewController.preferredDisplayMode = .automatic
+            case .overlay:
+                self.contentViewController.preferredSplitBehavior = .overlay
+                if self.contentViewController.displayMode == .oneBesideSecondary {
+                    self.contentViewController.preferredDisplayMode = .oneOverSecondary
+                }
+            case .sideBySide:
+                self.contentViewController.preferredSplitBehavior = .tile
+                if self.contentViewController.displayMode == .oneOverSecondary {
+                    self.contentViewController.preferredDisplayMode = .oneBesideSecondary
+                }
             }
         }
     }
     
-    private func hideSidebar() {
-        if #available(iOS 14.0, *) {
-            contentViewController.hide(.primary)
-            transitionCoordinator?.animate(alongsideTransition: { _ in }, completion: { context in
-                guard !context.isCancelled else { return }
-                self.contentViewController.setViewController(nil, for: .primary)
-            })
-        } else {
-            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn) {
-                self.contentViewController.preferredDisplayMode = .primaryHidden
-            } completion: { completed in
-                guard completed else { return }
-                self.contentViewController.viewControllers[0] = UIViewController()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+    }
+    
+    // MARK: - Configurations
+    
+    private func setupHouseButtonMenu() {
+    }
+    
+    // MARK: - Sidebar
+    
+    fileprivate override func showSidebar(_ controller: UIViewController) {
+        contentViewController.setViewController(controller, for: .primary)
+        contentViewController.show(.primary)
+        contentViewController.preferredDisplayMode = {
+            switch Defaults[.sideBarDisplayMode] {
+            case .automatic:
+                return .automatic
+            case .overlay:
+                return .oneOverSecondary
+            case .sideBySide:
+                return .oneBesideSecondary
             }
-        }
+        }()
+    }
+    
+    fileprivate override func hideSidebar() {
+        contentViewController.hide(.primary)
+        transitionCoordinator?.animate(alongsideTransition: { _ in }, completion: { context in
+            guard !context.isCancelled else { return }
+            self.contentViewController.setViewController(nil, for: .primary)
+        })
     }
 }
