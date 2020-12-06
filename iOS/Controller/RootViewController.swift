@@ -254,6 +254,20 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
             } else {
                 decisionHandler(.allow)
             }
+        } else if url.scheme == "http" || url.scheme == "https" {
+            let policy = Defaults[.externalLinkLoadingPolicy]
+            if policy == .alwaysLoad {
+                self.present(SFSafariViewController(url: url), animated: true, completion: nil)
+            } else {
+                present(UIAlertController.externalLink(policy: policy, action: {
+                    self.present(SFSafariViewController(url: url), animated: true, completion: nil)
+                }), animated: true)
+            }
+            decisionHandler(.cancel)
+        } else if url.scheme == "geo" {
+            decisionHandler(.cancel)
+        } else {
+            decisionHandler(.cancel)
         }
     }
     
