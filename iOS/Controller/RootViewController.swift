@@ -20,6 +20,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     private let webViewController = WebViewController()
     private var libraryController: LibraryController?
+    fileprivate let onDeviceZimFiles = Queries.onDeviceZimFiles()
     
     // MARK: - Buttons
     
@@ -66,6 +67,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         bookmarkButton.addTarget(self, action: #selector(bookmarkButtonPressed), for: .touchUpInside)
         bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
         bookmarkLongPressGestureRecognizer.addTarget(self, action: #selector(bookmarkButtonLongPressed))
+        diceButton.addTarget(self, action: #selector(diceButtonTapped), for: .touchUpInside)
         libraryButton.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
         settingButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
         cancelButton.target = self
@@ -182,7 +184,9 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     }
     
     func openRandomPage(zimFileID: String? = nil) {
-//        if let zimFileID
+        guard let zimFileID = zimFileID ?? onDeviceZimFiles?.map({ $0.id }).randomElement(),
+              let url = ZimMultiReader.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
+        openURL(url)
     }
     
     // MARK: - Configurations
@@ -405,6 +409,10 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         }
     }
     
+    @objc func diceButtonTapped() {
+        openRandomPage()
+    }
+    
     @objc func openLibrary() {
         if #available(iOS 14.0, *), FeatureFlags.swiftUIBasedLibraryEnabled {
             let controller = UIHostingController(rootView: LibraryView())
@@ -476,7 +484,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
 
 @available(iOS 14.0, *)
 class RootViewController_iOS14: RootViewController {
-    private let onDeviceZimFiles = Queries.onDeviceZimFiles()
     private var onDeviceZimFilesObserver: NotificationToken?
     private var sideBarDisplayModeObserver: Defaults.Observation?
     
