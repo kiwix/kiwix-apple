@@ -223,4 +223,16 @@ struct SharedReaders {
     }
 }
 
+- (NSString *)getRandomPagePath:(NSString *)zimFileID {
+    auto found = self.readers->find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
+    if (found == self.readers->end()) {
+        return nil;
+    } else {
+        std::shared_ptr<kiwix::Reader> reader = found->second;
+        kiwix::Entry entry = reader->getRandomPage();
+        std::string path = entry.getPath();
+        return [NSString stringWithCString:path.c_str() encoding:NSUTF8StringEncoding];
+    }
+}
+
 @end
