@@ -267,7 +267,8 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
             case .deleteFile, .deleteBookmarks, .deleteFileAndBookmarks, .unlink:
                 present(ActionConfirmationController(zimFile: zimFile, action: action), animated: true)
             case .openMainPage:
-                guard let rootViewController = presentingViewController as? RootViewController else { break }
+                guard let navigationController = presentingViewController as? UINavigationController,
+                      let rootViewController = navigationController.topViewController as? RootViewController else { break }
                 rootViewController.openMainPage(zimFileID: zimFile.id)
                 dismiss(animated: true, completion: nil)
             }
