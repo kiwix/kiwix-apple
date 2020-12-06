@@ -1,13 +1,12 @@
 //
 //  SettingFontSizeController.swift
-//  iOS
+//  Kiwix
 //
 //  Created by Chris Li on 2/2/18.
 //  Copyright © 2018 Chris Li. All rights reserved.
 //
 
 import UIKit
-import Defaults
 
 class SettingFontSizeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var stackView: UIStackView!
@@ -15,7 +14,7 @@ class SettingFontSizeViewController: UIViewController, UITableViewDelegate, UITa
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var dividerViewHeightConstraint: NSLayoutConstraint!
     
-    private(set) var selected = Defaults[.webViewZoomScale] ?? 1
+    private(set) var selected = UserDefaults.standard.webViewTextSizeAdjustFactor
     let percentages = [0.75, 0.8, 0.85, 0.9, 0.95, 1.0, 1.05, 1.10, 1.15, 1.20, 1.30, 1.40, 1.50, 1.75, 2.0]
     let percentageFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -29,11 +28,6 @@ class SettingFontSizeViewController: UIViewController, UITableViewDelegate, UITa
         super.viewDidLoad()
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 14.0 * CGFloat(selected))
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        Defaults[.webViewZoomScale] = selected
     }
     
     override func viewWillLayoutSubviews() {
@@ -73,8 +67,6 @@ class SettingFontSizeViewController: UIViewController, UITableViewDelegate, UITa
         tableView.reloadRows(at: indexPaths, with: .automatic)
         label.font = UIFont.systemFont(ofSize: CGFloat(14.0 * percentages[indexPath.row]))
         
-        if let rootViewController = presentingViewController as? RootViewController {
-            rootViewController.setWebViewDisplayScale(selected)
-        }
+        UserDefaults.standard.webViewTextSizeAdjustFactor = selected
     }
 }

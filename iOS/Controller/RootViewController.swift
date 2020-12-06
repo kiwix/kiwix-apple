@@ -192,11 +192,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         openURL(url)
     }
     
-    func setWebViewDisplayScale(_ scale: Double) {
-        let javascript = String(format: "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%.0f%%'", scale * 100)
-        webViewController.webView.evaluateJavaScript(javascript, completionHandler: nil)
-    }
-    
     // MARK: - Configurations
     
     private func configureBarButtons(searchIsActive: Bool, animated: Bool) {
@@ -293,6 +288,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         if let url = webView.url {
             bookmarkButton.isBookmarked = BookmarkService().get(url: url) == nil ? false : true
         }
+        webViewController.adjustTextSize()
     }
     
     // MARK: - Actions
