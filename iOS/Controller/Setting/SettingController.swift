@@ -23,7 +23,7 @@ class SettingController: UIViewController, UITableViewDataSource, UITableViewDel
     private let items: [[MenuItem]] = {
         var items: [[MenuItem]] = [
             {
-                if UIDevice.current.userInterfaceIdiom == .pad {
+                if #available(iOS 13.0, *), UIDevice.current.userInterfaceIdiom == .pad {
                     return [.fontSize, .externalLink, .search, .sideBar]
                 } else {
                     return [.fontSize, .externalLink, .search]
