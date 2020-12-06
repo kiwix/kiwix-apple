@@ -181,6 +181,10 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         openURL(url)
     }
     
+    func openRandomPage(zimFileID: String? = nil) {
+//        if let zimFileID
+    }
+    
     // MARK: - Configurations
     
     private func configureBarButtons(searchIsActive: Bool, animated: Bool) {
@@ -519,33 +523,28 @@ class RootViewController_iOS14: RootViewController {
     // MARK: - Configurations
     
     private func setupDiceButtonMenu() {
-        diceButton.menu = UIMenu(children: {
-            if let zimFiles = onDeviceZimFiles {
-                return zimFiles.map { zimFile in
-                    UIAction(title: zimFile.title) { _ in }
-                }
-            } else {
-                return [UIAction(title: "No Zim File Available", attributes: .disabled, handler: { _ in })]
-            }
-        }())
+        let items = onDeviceZimFiles?.map { zimFile in
+            UIAction(title: zimFile.title) { _ in self.openRandomPage(zimFileID: zimFile.id) }
+        } ?? [UIAction(title: "No Zim File Available", attributes: .disabled, handler: { _ in })]
+        diceButton.menu = UIMenu(children: items)
     }
     
     private func setupHouseButtonMenu() {
-        var elements = [UIMenuElement]()
+        var items = [UIMenuElement]()
         if let zimFiles = onDeviceZimFiles {
-            elements.append(UIMenu(options: .displayInline, children: zimFiles.map { zimFile in
+            items.append(UIMenu(options: .displayInline, children: zimFiles.map { zimFile in
                 UIAction(title: zimFile.title) { _ in self.openMainPage(zimFileID: zimFile.id) }
             }))
         } else {
-            elements.append(UIAction(title: "No Zim File Available", attributes: .disabled, handler: { _ in }))
+            items.append(UIAction(title: "No Zim File Available", attributes: .disabled, handler: { _ in }))
         }
         if traitCollection.horizontalSizeClass == .compact {
-            elements.append(UIMenu(options: .displayInline, children: [
+            items.append(UIMenu(options: .displayInline, children: [
                 UIAction(title: "Open Library", image: UIImage(systemName: "books.vertical"), handler: { _ in self.openLibrary() }),
                 UIAction(title: "Open Settings", image: UIImage(systemName: "gear"), handler: { _ in self.openSettings() }),
             ]))
         }
-        houseButton.menu = UIMenu(children: elements)
+        houseButton.menu = UIMenu(children: items)
     }
     
     // MARK: - Sidebar
