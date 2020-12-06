@@ -245,6 +245,37 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
 
     // MARK: - WKNavigationDelegate
     
+    @available(iOS 13.0, *)
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
+        guard let url = navigationAction.request.url else { decisionHandler(.cancel, preferences); return }
+        if url.isKiwixURL {
+            guard let zimFileID = url.host else { decisionHandler(.cancel, preferences); return }
+            if let redirectedPath = ZimMultiReader.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
+                let redirectedURL = URL(zimFileID: zimFileID, contentPath: redirectedPath) {
+                decisionHandler(.cancel, preferences)
+                openURL(redirectedURL)
+            } else {
+                preferences.preferredContentMode = .mobile
+                decisionHandler(.allow, preferences)
+            }
+        } else if url.scheme == "http" || url.scheme == "https" {
+            let policy = Defaults[.externalLinkLoadingPolicy]
+            if policy == .alwaysLoad {
+                self.present(SFSafariViewController(url: url), animated: true, completion: nil)
+            } else {
+                present(UIAlertController.externalLink(policy: policy, action: {
+                    self.present(SFSafariViewController(url: url), animated: true, completion: nil)
+                }), animated: true)
+            }
+            decisionHandler(.cancel, preferences)
+        } else if url.scheme == "geo" {
+            decisionHandler(.cancel, preferences)
+        } else {
+            decisionHandler(.cancel, preferences)
+        }
+    }
+    
+    // for iOS 12
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
         if url.isKiwixURL {
