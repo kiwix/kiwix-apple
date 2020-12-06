@@ -485,6 +485,7 @@ class RootViewController_iOS14: RootViewController {
     override init() {
         super.init()
         onDeviceZimFilesObserver = onDeviceZimFiles?.observe { change in
+            self.setupDiceButtonMenu()
             self.setupHouseButtonMenu()
         }
         sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode) { change in
@@ -516,6 +517,18 @@ class RootViewController_iOS14: RootViewController {
     }
     
     // MARK: - Configurations
+    
+    private func setupDiceButtonMenu() {
+        diceButton.menu = UIMenu(children: {
+            if let zimFiles = onDeviceZimFiles {
+                return zimFiles.map { zimFile in
+                    UIAction(title: zimFile.title) { _ in }
+                }
+            } else {
+                return [UIAction(title: "No Zim File Available", attributes: .disabled, handler: { _ in })]
+            }
+        }())
+    }
     
     private func setupHouseButtonMenu() {
         var elements = [UIMenuElement]()
