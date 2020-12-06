@@ -67,10 +67,17 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
                 switch(Defaults[.sideBarDisplayMode]) {
                 case .automatic:
                     self.contentViewController.preferredSplitBehavior = .automatic
+                    self.contentViewController.preferredDisplayMode = .automatic
                 case .overlay:
                     self.contentViewController.preferredSplitBehavior = .overlay
+                    if self.contentViewController.displayMode == .oneBesideSecondary {
+                        self.contentViewController.preferredDisplayMode = .oneOverSecondary
+                    }
                 case .sideBySide:
                     self.contentViewController.preferredSplitBehavior = .tile
+                    if self.contentViewController.displayMode == .oneOverSecondary {
+                        self.contentViewController.preferredDisplayMode = .oneBesideSecondary
+                    }
                 }
             }
         }
