@@ -117,7 +117,7 @@ class OutlineViewController: SidebarViewController, UITableViewDataSource, UITab
         } else {
             cell.textLabel?.textAlignment = .left
         }
-        if indentationLevel == 0 {
+        if indentationLevel == 0 || heading.level == 1{
             cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         } else {
             cell.textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
