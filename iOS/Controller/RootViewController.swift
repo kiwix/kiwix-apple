@@ -134,7 +134,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
                 presentedViewController?.dismiss(animated: false)
             }
             
-            // hide sidebar when view transition to horizontally regular from non-regular
+            // hide sidebar when view transition to horizontally regular from non-regular on iOS 12 & 13
             if #available(iOS 14.0, *) { } else {
                 contentViewController.preferredDisplayMode = .primaryHidden
             }
@@ -532,9 +532,7 @@ class RootViewController_iOS14: RootViewController {
         homeViewController.rootView.zimFileTapped = openMainPage
         homeViewController.rootView.libraryButtonTapped = openLibrary
         homeViewController.rootView.settingsButtonTapped = openSettings
-        let navigationController = UINavigationController(rootViewController: homeViewController)
-        navigationController.isNavigationBarHidden = true
-        contentViewController.setViewController(navigationController, for: .secondary)
+        contentViewController.setViewController(homeViewController, for: .secondary)
     }
     
     private func setupDiceButtonMenu() {
