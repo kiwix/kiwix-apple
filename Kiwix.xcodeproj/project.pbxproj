@@ -87,6 +87,7 @@
 		9789C26924F9611300072090 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
 		978B688924F8080E003CCA8C /* BarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978B688824F8080E003CCA8C /* BarButtons.swift */; };
 		978C58092468FC1100D56AC8 /* SettingSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F97A720D00EAE0005D642 /* SettingSearchController.swift */; };
+		978FA76825851B4D00666E1B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978FA76725851B4D00666E1B /* HomeView.swift */; };
 		979011302544D55800FF7855 /* SceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9790112F2544D55800FF7855 /* SceneViewModel.swift */; };
 		9793548B257D86370076E94A /* Queries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9793548A257D86370076E94A /* Queries.swift */; };
 		9797434A257BF2B000D30F03 /* OutlineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97974349257BF2B000D30F03 /* OutlineItem.swift */; };
@@ -148,7 +149,6 @@
 		97F4210E22EE5590001E41F9 /* FileImportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4210D22EE5590001E41F9 /* FileImportController.swift */; };
 		97F4D10620AB80740038FC87 /* LibraryZimFileDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4D10520AB80740038FC87 /* LibraryZimFileDetailController.swift */; };
 		97F4D10C20ADFE370038FC87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97F4D10B20ADFE370038FC87 /* Assets.xcassets */; };
-		97FD2F55251D93B90034927C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FD2F54251D93B90034927C /* HomeView.swift */; };
 		97FD2F5F251EA07B0034927C /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FD2F5E251EA07B0034927C /* FeatureFlags.swift */; };
 /* End PBXBuildFile section */
 
@@ -269,6 +269,7 @@
 		97810E16250436E2000D86CB /* ZimFileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileCell.swift; sourceTree = "<group>"; };
 		9789C27724FBDEDA00072090 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		978B688824F8080E003CCA8C /* BarButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtons.swift; sourceTree = "<group>"; };
+		978FA76725851B4D00666E1B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		9790112F2544D55800FF7855 /* SceneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneViewModel.swift; sourceTree = "<group>"; };
 		979315811E5127930093D3BA /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9793158C1E5127930093D3BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -506,6 +507,7 @@
 				97E173D325733D10002CAD17 /* RootViewController.swift */,
 				97802D6F25789B1800A21352 /* SidebarViewController.swift */,
 				9797435B257BF33600D30F03 /* WebViewController.swift */,
+				978FA76725851B4D00666E1B /* HomeView.swift */,
 				972E6F651FA2872A00F5C927 /* Search */,
 				97B1046D1F8FC61400488444 /* Library */,
 				97B4ADF72392B73300264AF6 /* Utilities */,
@@ -1093,6 +1095,7 @@
 				97161A861F8FFD1E00A89DE3 /* LibraryCategoryController.swift in Sources */,
 				9779A7EA24567AA600F6F6FF /* SettingLibraryController.swift in Sources */,
 				97B1046F1F8FC63C00488444 /* LibraryMasterController.swift in Sources */,
+				978FA76825851B4D00666E1B /* HomeView.swift in Sources */,
 				972B6662200808D6003F5365 /* WelcomeController.swift in Sources */,
 				9742D7182545E1360046D88C /* SearchView.swift in Sources */,
 				97252108200F9D6A00B60A80 /* SettingController.swift in Sources */,
@@ -1127,7 +1130,6 @@
 				9779A7AF2456796B00F6F6FF /* Settings.swift in Sources */,
 				972521012009616B00B60A80 /* EmptyContentView.swift in Sources */,
 				9797435C257BF33600D30F03 /* WebViewController.swift in Sources */,
-				97FD2F55251D93B90034927C /* HomeView.swift in Sources */,
 				97A36C571F8D5FCD0079B452 /* LibraryController.swift in Sources */,
 				97A36C321F8C21210079B452 /* AppDelegate.swift in Sources */,
 				979FD159201679C5007B5290 /* SearchResultsListController.swift in Sources */,

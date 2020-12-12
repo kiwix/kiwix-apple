@@ -20,15 +20,14 @@ struct RoundedRectButton: View {
             action?()
         }) {
             Label(
-                title: { Text(title).fontWeight(.semibold) },
+                title: { Text(title) },
                 icon: { Image(systemName: iconSystemName) }
             )
             .font(.subheadline)
             .padding(.vertical, 10)
             .padding(.horizontal, 12)
             .foregroundColor(.white)
-            .background(backgroundColor)
-            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+            .background(RoundedRectangle(cornerRadius: 10, style: .continuous).fill(backgroundColor))
         }
     }
 }

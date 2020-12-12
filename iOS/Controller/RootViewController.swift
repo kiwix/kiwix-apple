@@ -86,17 +86,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         chevronRightButton.isEnabled = false
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
         
-        // configure content view controller
-        contentViewController.presentsWithGesture = false
-        if #available(iOS 14.0, *) {
-            let navigationController = UINavigationController(rootViewController: welcomeController)
-            navigationController.isNavigationBarHidden = true
-            contentViewController.setViewController(navigationController, for: .secondary)
-        } else {
-            contentViewController.viewControllers = [UIViewController(), welcomeController]
-            contentViewController.preferredDisplayMode = .primaryHidden
-            contentViewController.delegate = self
-        }
+        setupContentViewController()
         
         // add content view controller as a child
         addChild(contentViewController)
@@ -189,7 +179,14 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         openURL(url)
     }
     
-    // MARK: - Configurations
+    // MARK: - Setup & Configurations
+    
+    fileprivate func setupContentViewController() {
+        contentViewController.presentsWithGesture = false
+        contentViewController.viewControllers = [UIViewController(), welcomeController]
+        contentViewController.preferredDisplayMode = .primaryHidden
+        contentViewController.delegate = self
+    }
     
     private func configureBarButtons(searchIsActive: Bool, animated: Bool) {
         if searchIsActive {
@@ -527,7 +524,15 @@ class RootViewController_iOS14: RootViewController {
         setupHouseButtonMenu()
     }
     
-    // MARK: - Configurations
+    // MARK: - Setup & Configurations
+    
+    fileprivate override func setupContentViewController() {
+        contentViewController.presentsWithGesture = false
+        let homeViewController = UIHostingController(rootView: HomeView())
+        let navigationController = UINavigationController(rootViewController: homeViewController)
+        navigationController.isNavigationBarHidden = true
+        contentViewController.setViewController(navigationController, for: .secondary)
+    }
     
     private func setupDiceButtonMenu() {
         let items = onDeviceZimFiles?.map { zimFile in
