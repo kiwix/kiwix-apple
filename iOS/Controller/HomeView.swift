@@ -15,6 +15,10 @@ struct HomeView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @ObservedObject private var viewModel = ViewModel()
     
+    var zimFileTapped: ((String) -> Void)?
+    var libraryButtonTapped: (() -> Void)?
+    var settingsButtonTapped: (() -> Void)?
+    
     var body: some View {
         ScrollView {
             LazyVStack {
@@ -25,9 +29,7 @@ struct HomeView: View {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
                     Section(header: SectionHeader(title: "On Device")) {
                         ForEach(viewModel.onDeviceZimFiles, id: \.id) { zimFile in
-                            ZimFileCell(zimFile) {
-//                                sceneViewModel.loadMainPage(zimFile: zimFile)
-                            }
+                            ZimFileCell(zimFile) { zimFileTapped?(zimFile.id) }
                         }
                     }
                 }
@@ -51,13 +53,13 @@ struct HomeView: View {
                 title: "Library",
                 iconSystemName: "folder",
                 backgroundColor: Color(.systemBlue),
-                action: nil
+                action: libraryButtonTapped
             )
             RoundedRectButton(
                 title: "Settings",
                 iconSystemName: "gear",
                 backgroundColor: Color(.systemGray),
-                action: nil
+                action: settingsButtonTapped
             )
         }
     }

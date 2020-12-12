@@ -529,6 +529,9 @@ class RootViewController_iOS14: RootViewController {
     fileprivate override func setupContentViewController() {
         contentViewController.presentsWithGesture = false
         let homeViewController = UIHostingController(rootView: HomeView())
+        homeViewController.rootView.zimFileTapped = openMainPage
+        homeViewController.rootView.libraryButtonTapped = openLibrary
+        homeViewController.rootView.settingsButtonTapped = openSettings
         let navigationController = UINavigationController(rootViewController: homeViewController)
         navigationController.isNavigationBarHidden = true
         contentViewController.setViewController(navigationController, for: .secondary)
