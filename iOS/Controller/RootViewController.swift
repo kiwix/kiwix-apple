@@ -55,23 +55,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         } else {
             self.contentViewController = UISplitViewController()
         }
-        
         super.init(nibName: nil, bundle: nil)
-        
-        webViewController.webView.navigationDelegate = self
-        
-        // wire up button actions
-        chevronLeftButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
-        chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
-        outlineButton.addTarget(self, action: #selector(toggleOutline), for: .touchUpInside)
-        bookmarkButton.addTarget(self, action: #selector(bookmarkButtonPressed), for: .touchUpInside)
-        bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
-        bookmarkLongPressGestureRecognizer.addTarget(self, action: #selector(bookmarkButtonLongPressed))
-        diceButton.addTarget(self, action: #selector(diceButtonTapped), for: .touchUpInside)
-        libraryButton.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
-        settingButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
-        cancelButton.target = self
-        cancelButton.action = #selector(dismissSearch)
     }
     
     required init?(coder: NSCoder) {
@@ -81,14 +65,29 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // configure bar buttons
+        // setup button initial state
         chevronLeftButton.isEnabled = false
         chevronRightButton.isEnabled = false
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
         
-        setupContentViewController()
+        // wire up button actions
+        chevronLeftButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
+        chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
+        outlineButton.addTarget(self, action: #selector(toggleOutline), for: .touchUpInside)
+        bookmarkButton.addTarget(self, action: #selector(bookmarkButtonPressed), for: .touchUpInside)
+        bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
+        bookmarkLongPressGestureRecognizer.addTarget(self, action: #selector(bookmarkButtonLongPressed))
+        diceButton.addTarget(self, action: #selector(diceButtonTapped), for: .touchUpInside)
+        houseButton.addTarget(self, action: #selector(houseButtonTapped), for: .touchUpInside)
+        libraryButton.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
+        settingButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
+        cancelButton.target = self
+        cancelButton.action = #selector(dismissSearch)
         
-        // add content view controller as a child
+        webViewController.webView.navigationDelegate = self
+        
+        // configure content view controller as a child
+        setupContentViewController()
         addChild(contentViewController)
         contentViewController.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(contentViewController.view)
@@ -181,13 +180,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     
     // MARK: - Setup & Configurations
     
-    fileprivate func setupContentViewController() {
-        contentViewController.presentsWithGesture = false
-        contentViewController.viewControllers = [UIViewController(), welcomeController]
-        contentViewController.preferredDisplayMode = .primaryHidden
-        contentViewController.delegate = self
-    }
-    
     private func configureBarButtons(searchIsActive: Bool, animated: Bool) {
         if searchIsActive {
             navigationItem.setLeftBarButton(nil, animated: animated)
@@ -212,6 +204,13 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
             setToolbarItems(nil, animated: animated)
             navigationController?.setToolbarHidden(true, animated: animated)
         }
+    }
+    
+    fileprivate func setupContentViewController() {
+        contentViewController.presentsWithGesture = false
+        contentViewController.viewControllers = [UIViewController(), welcomeController]
+        contentViewController.preferredDisplayMode = .primaryHidden
+        contentViewController.delegate = self
     }
     
     // MARK: - UISearchControllerDelegate
@@ -408,6 +407,10 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     
     @objc func diceButtonTapped() {
         openRandomPage()
+    }
+    
+    @objc func houseButtonTapped() {
+        
     }
     
     @objc func openLibrary() {
