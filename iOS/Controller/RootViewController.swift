@@ -84,8 +84,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         cancelButton.target = self
         cancelButton.action = #selector(dismissSearch)
         
-        webViewController.webView.navigationDelegate = self
-        
         // configure content view controller as a child
         setupContentViewController()
         addChild(contentViewController)
@@ -112,7 +110,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         }
         contentViewController.didMove(toParent: self)
         
-        // search controller
+        // configure search controller
         searchController.delegate = self
         searchController.searchBar.autocorrectionType = .no
         searchController.searchBar.autocapitalizationType = .none
@@ -124,7 +122,10 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
             searchController.showsSearchResultsController = true
         }
         definesPresentationContext = true
+        
+        // misc
         navigationItem.titleView = searchController.searchBar
+        webViewController.webView.navigationDelegate = self
     }
     
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
