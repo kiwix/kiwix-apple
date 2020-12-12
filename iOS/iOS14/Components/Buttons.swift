@@ -20,7 +20,7 @@ struct RoundedRectButton: View {
             action?()
         }) {
             Label(
-                title: { Text(title) },
+                title: { Text(title).fontWeight(.semibold) },
                 icon: { Image(systemName: iconSystemName) }
             )
             .font(.subheadline)

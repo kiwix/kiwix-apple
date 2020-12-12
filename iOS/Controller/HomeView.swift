@@ -12,17 +12,22 @@ import RealmSwift
 
 @available(iOS 14.0, *)
 struct HomeView: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @ObservedObject private var viewModel = ViewModel()
     
     var body: some View {
         ScrollView {
             LazyVStack {
-                header
-                Divider().padding(.vertical, 2)
+                if horizontalSizeClass == .compact {
+                    header
+                    Divider().padding(.vertical, 2)
+                }
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
                     Section(header: SectionHeader(title: "On Device")) {
-                        ForEach(viewModel.zimFileMeta, id: \.hash) { zimFile in
-                            Text(zimFile)
+                        ForEach(viewModel.onDeviceZimFiles, id: \.id) { zimFile in
+                            ZimFileCell(zimFile) {
+//                                sceneViewModel.loadMainPage(zimFile: zimFile)
+                            }
                         }
                     }
                 }
@@ -38,7 +43,7 @@ struct HomeView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .padding(2)
-                .frame(idealHeight: 40)
+                .frame(idealHeight: 30)
                 .foregroundColor(.black)
                 .background(RoundedRectangle(cornerRadius: 10, style: .continuous).fill(Color.white.opacity(0.9)))
             Spacer()
@@ -70,22 +75,19 @@ struct HomeView: View {
     
     class ViewModel: ObservableObject {
         private let queue = DispatchQueue(label: "org.kiwix.homeViewUI", qos: .userInitiated)
-        private let database = try? Realm(configuration: Realm.defaultConfig)
         private var pipeline: AnyCancellable? = nil
-        @Published private(set) var zimFileMeta = [String]()
+        @Published private(set) var onDeviceZimFiles = [ZimFile]()
         
         init() {
-            let predicate = NSPredicate(format: "languageCode == %@", "en")
-            pipeline = database?.objects(ZimFile.self)
-                .filter(predicate)
+            pipeline = Queries.onDeviceZimFiles()?
                 .sorted(byKeyPath: "size", ascending: false)
                 .collectionPublisher
                 .subscribe(on: queue)
                 .freeze()
-                .map { ViewModel.process(results: $0) }
+                .map { Array($0) }
                 .receive(on: DispatchQueue.main)
                 .catch { _ in Just([]) }
-                .assign(to: \.zimFileMeta, on: self)
+                .assign(to: \.onDeviceZimFiles, on: self)
         }
         
         private static func process(results: Results<ZimFile>) -> [String] {
