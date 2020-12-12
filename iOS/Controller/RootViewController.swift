@@ -15,11 +15,11 @@ import RealmSwift
 
 class RootViewController: UIViewController, UISearchControllerDelegate, UISplitViewControllerDelegate, WKNavigationDelegate {
     let searchController: UISearchController
-    private let searchResultsController: SearchResultsController
+    fileprivate let searchResultsController: SearchResultsController
     fileprivate let contentViewController: UISplitViewController
-    private let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
-    private let webViewController = WebViewController()
-    private var libraryController: LibraryController?
+    fileprivate let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
+    fileprivate let webViewController = WebViewController()
+    fileprivate var libraryController: LibraryController?
     fileprivate let onDeviceZimFiles = Queries.onDeviceZimFiles()?.sorted(byKeyPath: "size", ascending: false)
     
     // MARK: - Buttons
@@ -30,15 +30,15 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     fileprivate let bookmarkButton = BookmarkButton(imageName: "star", bookmarkedImageName: "star.fill")
     fileprivate let diceButton = BarButton(imageName: "die.face.5")
     fileprivate let houseButton = BarButton(imageName: "house")
-    private let libraryButton = BarButton(imageName: "folder")
-    private let settingButton = BarButton(imageName: "gear")
-    private let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
-    private let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
+    fileprivate let libraryButton = BarButton(imageName: "folder")
+    fileprivate let settingButton = BarButton(imageName: "gear")
+    fileprivate let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
+    fileprivate let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
     
-    private var navigationLeftButtons: [BarButton] {
+    fileprivate var navigationLeftButtons: [BarButton] {
         [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton]
     }
-    private var navigationRightButtons: [BarButton] {
+    fileprivate var navigationRightButtons: [BarButton] {
         [diceButton, houseButton, libraryButton, settingButton]
     }
     fileprivate var toolbarButtons: [BarButton] {
@@ -47,14 +47,10 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     
     // MARK: - Init & Overrides
     
-    init() {
+    init(contentViewController: UISplitViewController = UISplitViewController()) {
         self.searchResultsController = SearchResultsController()
         self.searchController = UISearchController(searchResultsController: self.searchResultsController)
-        if #available(iOS 14.0, *) {
-            self.contentViewController = UISplitViewController(style: .doubleColumn)
-        } else {
-            self.contentViewController = UISplitViewController()
-        }
+        self.contentViewController = contentViewController
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -494,8 +490,8 @@ class RootViewController_iOS14: RootViewController {
     
     // MARK: - Init & Overrides
     
-    override init() {
-        super.init()
+    init() {
+        super.init(contentViewController: UISplitViewController(style: .doubleColumn))
         onDeviceZimFilesObserver = onDeviceZimFiles?.observe { change in
             self.setupDiceButtonMenu()
             self.setupHouseButtonMenu()
