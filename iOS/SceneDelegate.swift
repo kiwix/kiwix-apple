@@ -45,7 +45,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if context.url.isKiwixURL {
             rootViewController.openURL(context.url)
         } else if context.url.isFileURL {
-//            rootViewController.openFileURL(context.url, canOpenInPlace: context.options.openInPlace)
+            rootViewController.openFileURL(context.url, canOpenInPlace: context.options.openInPlace)
         }
     }
     

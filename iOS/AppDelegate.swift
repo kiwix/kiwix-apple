@@ -64,8 +64,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
             rootViewController.openURL(url)
             return true
         } else if url.isFileURL {
-//            let canOpenInPlace = options[.openInPlace] as? Bool ?? false
-//            rootViewController.openFileURL(url, canOpenInPlace: canOpenInPlace)
+            let canOpenInPlace = options[.openInPlace] as? Bool ?? false
+            rootViewController.openFileURL(url, canOpenInPlace: canOpenInPlace)
             return true
         } else {
             return false

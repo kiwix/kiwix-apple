@@ -159,8 +159,17 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
             if searchController.isActive {
                 dismissSearch()
             }
-        } else if url.isFileURL {
-            
+        }
+    }
+    
+    func openFileURL(_ url: URL, canOpenInPlace: Bool) {
+        guard url.isFileURL else {return}
+        dismiss(animated: false)
+        if ZimMultiReader.getMetaData(url: url) != nil {
+            let fileImportController = FileImportController(fileURL: url, canOpenInPlace: canOpenInPlace)
+            present(fileImportController, animated: true)
+        } else {
+            present(FileImportAlertController(fileName: url.lastPathComponent), animated: true)
         }
     }
     
