@@ -26,18 +26,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     
     // MARK: - Buttons
     
-    fileprivate let diceButton = BarButton(imageName: "die.face.5")
-    fileprivate let houseButton = BarButton(imageName: "house")
-    fileprivate let libraryButton = BarButton(imageName: "folder")
-    fileprivate let settingButton = BarButton(imageName: "gear")
     fileprivate let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
-    
-    fileprivate var navigationRightButtons: [BarButton] {
-        [diceButton, houseButton, libraryButton, settingButton]
-    }
-    fileprivate var toolbarButtons: [BarButton] {
-        [buttonProvider.chevronLeftButton, buttonProvider.chevronRightButton, buttonProvider.outlineButton, buttonProvider.bookmarkButton, libraryButton, settingButton]
-    }
     
     // MARK: - Init & Overrides
     
@@ -61,10 +50,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
         
         // wire up button actions
-        diceButton.addTarget(self, action: #selector(diceButtonTapped), for: .touchUpInside)
-        houseButton.addTarget(self, action: #selector(houseButtonTapped), for: .touchUpInside)
-        libraryButton.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
-        settingButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
         cancelButton.target = self
         cancelButton.action = #selector(dismissSearch)
         
@@ -182,7 +167,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
             navigationController?.setToolbarHidden(true, animated: animated)
         } else if traitCollection.horizontalSizeClass == .regular {
             let left = BarButtonGroup(buttons: buttonProvider.navigationLeftButtons, spacing: 12)
-            let right = BarButtonGroup(buttons: navigationRightButtons, spacing: 12)
+            let right = BarButtonGroup(buttons: buttonProvider.navigationRightButtons, spacing: 12)
             navigationItem.setLeftBarButton(UIBarButtonItem(customView: left), animated: animated)
             navigationItem.setRightBarButton(UIBarButtonItem(customView: right), animated: animated)
             setToolbarItems(nil, animated: animated)
@@ -190,7 +175,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         } else if traitCollection.horizontalSizeClass == .compact {
             navigationItem.setLeftBarButton(nil, animated: animated)
             navigationItem.setRightBarButton(nil, animated: animated)
-            setToolbarItems([UIBarButtonItem(customView: BarButtonGroup(buttons: toolbarButtons))], animated: animated)
+            setToolbarItems([UIBarButtonItem(customView: BarButtonGroup(buttons: buttonProvider.toolbarButtons))], animated: animated)
             navigationController?.setToolbarHidden(false, animated: animated)
         } else {
             navigationItem.setLeftBarButton(nil, animated: animated)
@@ -481,18 +466,10 @@ class RootViewController_iOS14: RootViewController {
     private var onDeviceZimFilesObserver: NotificationToken?
     private var sideBarDisplayModeObserver: Defaults.Observation?
     
-    override var toolbarButtons: [BarButton] {
-        [buttonProvider.chevronLeftButton, buttonProvider.chevronRightButton, buttonProvider.outlineButton, buttonProvider.bookmarkButton, diceButton, houseButton]
-    }
-    
     // MARK: - Init & Overrides
     
     init() {
         super.init(contentViewController: UISplitViewController(style: .doubleColumn))
-        onDeviceZimFilesObserver = onDeviceZimFiles?.observe { change in
-            self.setupDiceButtonMenu()
-            self.setupHouseButtonMenu()
-        }
         sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode) { change in
             switch(Defaults[.sideBarDisplayMode]) {
             case .automatic:
@@ -518,7 +495,7 @@ class RootViewController_iOS14: RootViewController {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        setupHouseButtonMenu()
+        buttonProvider.configureHouseButtonMenu()
     }
     
     // MARK: - Setup & Configurations
@@ -530,31 +507,6 @@ class RootViewController_iOS14: RootViewController {
         homeViewController.rootView.libraryButtonTapped = openLibrary
         homeViewController.rootView.settingsButtonTapped = openSettings
         contentViewController.setViewController(homeViewController, for: .secondary)
-    }
-    
-    private func setupDiceButtonMenu() {
-        let items = onDeviceZimFiles?.map { zimFile in
-            UIAction(title: zimFile.title) { _ in self.openRandomPage(zimFileID: zimFile.id) }
-        } ?? [UIAction(title: "No Zim File Available", attributes: .disabled, handler: { _ in })]
-        diceButton.menu = UIMenu(children: items)
-    }
-    
-    private func setupHouseButtonMenu() {
-        var items = [UIMenuElement]()
-        if let zimFiles = onDeviceZimFiles {
-            items.append(UIMenu(options: .displayInline, children: zimFiles.map { zimFile in
-                UIAction(title: zimFile.title) { _ in self.openMainPage(zimFileID: zimFile.id) }
-            }))
-        } else {
-            items.append(UIAction(title: "No Zim File Available", attributes: .disabled, handler: { _ in }))
-        }
-        if traitCollection.horizontalSizeClass == .compact {
-            items.append(UIMenu(options: .displayInline, children: [
-                UIAction(title: "Open Library", image: UIImage(systemName: "books.vertical"), handler: { _ in self.openLibrary() }),
-                UIAction(title: "Open Settings", image: UIImage(systemName: "gear"), handler: { _ in self.openSettings() }),
-            ]))
-        }
-        houseButton.menu = UIMenu(children: items)
     }
     
     // MARK: - Sidebar
