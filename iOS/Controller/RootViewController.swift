@@ -24,10 +24,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     fileprivate let onDeviceZimFiles = Queries.onDeviceZimFiles()?.sorted(byKeyPath: "size", ascending: false)
     fileprivate let buttonProvider: ButtonProvider
     
-    // MARK: - Buttons
-    
-    fileprivate let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
-    
     // MARK: - Init & Overrides
     
     init(contentViewController: UISplitViewController = UISplitViewController()) {
@@ -48,10 +44,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         
         // setup button initial state
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
-        
-        // wire up button actions
-        cancelButton.target = self
-        cancelButton.action = #selector(dismissSearch)
         
         // configure content view controller as a child
         setupContentViewController()
@@ -162,7 +154,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     private func configureBarButtons(searchIsActive: Bool, animated: Bool) {
         if searchIsActive {
             navigationItem.setLeftBarButton(nil, animated: animated)
-            navigationItem.setRightBarButton(cancelButton, animated: animated)
+            navigationItem.setRightBarButton(buttonProvider.cancelButton, animated: animated)
             setToolbarItems(nil, animated: animated)
             navigationController?.setToolbarHidden(true, animated: animated)
         } else if traitCollection.horizontalSizeClass == .regular {
@@ -463,7 +455,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
 
 @available(iOS 14.0, *)
 class RootViewController_iOS14: RootViewController {
-    private var onDeviceZimFilesObserver: NotificationToken?
     private var sideBarDisplayModeObserver: Defaults.Observation?
     
     // MARK: - Init & Overrides

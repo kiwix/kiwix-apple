@@ -24,6 +24,7 @@ class ButtonProvider {
     private let settingButton = BarButton(imageName: "gear")
     private let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
     
+    let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
     var navigationLeftButtons: [BarButton] { [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton] }
     var navigationRightButtons: [BarButton] { [diceButton, houseButton, libraryButton, settingButton] }
     var toolbarButtons: [BarButton] {
@@ -50,10 +51,10 @@ class ButtonProvider {
             guard let url = webView.url else { return }
             self.bookmarkButton.isBookmarked = BookmarkService().get(url: url) != nil
         })
-        webViewCanGoBackObserver = webView.observe(\.canGoBack, options: [.initial, .new], changeHandler: { (webView, _) in
+        webViewCanGoBackObserver = webView.observe(\.canGoBack, options: [.initial, .new], changeHandler: { webView, _ in
             self.chevronLeftButton.isEnabled = webView.canGoBack
         })
-        webViewCanGoForwardObserver = webView.observe(\.canGoForward, options: [.initial, .new], changeHandler: { (webView, _) in
+        webViewCanGoForwardObserver = webView.observe(\.canGoForward, options: [.initial, .new], changeHandler: { webView, _ in
             self.chevronRightButton.isEnabled = webView.canGoForward
         })
         bookmarksObserver = BookmarkService.list()?.observe { change in
@@ -87,6 +88,8 @@ class ButtonProvider {
         settingButton.addTarget(controller, action: #selector(controller.openSettings), for: .touchUpInside)
         
         bookmarkLongPressGestureRecognizer.addTarget(controller, action: #selector(controller.bookmarkButtonLongPressed))
+        cancelButton.target = controller
+        cancelButton.action = #selector(controller.dismissSearch)
     }
     
     @available(iOS 14.0, *)
