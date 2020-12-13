@@ -43,4 +43,9 @@ extension ZimMultiReader {
         guard let path = __getMainPagePath(zimFileID) else {return nil}
         return URL(zimFileID: zimFileID, contentPath: path)
     }
+    
+    func getRandomPageURL(zimFileID: String) -> URL? {
+        guard let path = __getRandomPagePath(zimFileID) else {return nil}
+        return URL(zimFileID: zimFileID, contentPath: path)
+    }
 }

@@ -43,9 +43,9 @@ class WindowController: NSWindowController, NSWindowDelegate, SearchFieldEvent {
         }
     }
     
-    var webViewController: WebViewController? {
+    var webViewController: WebKitWebViewController? {
         get {
-            return contentTabController?.tabViewItems.last?.viewController as? WebViewController
+            return contentTabController?.tabViewItems.last?.viewController as? WebKitWebViewController
         }
     }
     

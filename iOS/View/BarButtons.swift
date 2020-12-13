@@ -27,7 +27,7 @@ class BarButton: UIButton {
         self.init(type: .system)
         if #available(iOS 13.0, *) {
             let configuration = UIImage.SymbolConfiguration(scale: .large)
-            setImage(UIImage(systemName: imageName, withConfiguration: configuration), for: .normal)
+            setImage(UIImage(systemName: imageName, withConfiguration: configuration) ?? UIImage(named: imageName), for: .normal)
         } else {
             setImage(UIImage(named: imageName), for: .normal)
         }

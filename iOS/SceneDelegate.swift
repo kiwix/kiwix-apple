@@ -21,8 +21,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window?.rootViewController = {
                 if #available(iOS 14.0, *), FeatureFlags.swiftUIBasedAppEnabled{
                     return UINavigationController(rootViewController: RootController_iOS14())
+                } else if #available(iOS 14.0, *) {
+                    return UINavigationController(rootViewController: RootViewController_iOS14())
                 } else {
-                    return RootController()
+                    return UINavigationController(rootViewController: RootViewController())
                 }
             }()
             window?.makeKeyAndVisible()
@@ -38,21 +40,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         guard let context = URLContexts.first,
-            let rootViewController = window?.rootViewController as? RootController else {return}
-        let url = context.url
-        if url.isKiwixURL {
-            rootViewController.openKiwixURL(url)
-        } else if url.isFileURL {
-            rootViewController.openFileURL(url, canOpenInPlace: context.options.openInPlace)
+              let navigationController = window?.rootViewController as? UINavigationController,
+              let rootViewController = navigationController.topViewController as? RootViewController else {return}
+        if context.url.isKiwixURL {
+            rootViewController.openURL(context.url)
+        } else if context.url.isFileURL {
+            rootViewController.openFileURL(context.url, canOpenInPlace: context.options.openInPlace)
         }
     }
     
     func windowScene(_ windowScene: UIWindowScene,
                      performActionFor shortcutItem: UIApplicationShortcutItem,
                      completionHandler: @escaping (Bool) -> Void) {
-        guard let rootViewController = window?.rootViewController as? RootController,
-            let shortcut = Shortcut(rawValue: shortcutItem.type) else { completionHandler(false); return }
-        rootViewController.openShortcut(shortcut)
+        guard let shortcut = Shortcut(rawValue: shortcutItem.type),
+              let navigationController = window?.rootViewController as? UINavigationController,
+              let rootViewController = navigationController.topViewController as? RootViewController else { completionHandler(false); return }
+        switch shortcut {
+        case .bookmark:
+            rootViewController.bookmarkButtonPressed()
+        case .search:
+            rootViewController.searchController.isActive = true
+        }
         completionHandler(true)
     }
 }

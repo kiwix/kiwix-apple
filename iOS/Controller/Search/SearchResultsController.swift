@@ -156,8 +156,8 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
     private func configureChangeToken() {
         changeToken = zimFiles?.observe({ (changes) in
             guard case .update = changes,
-                  let contentController = self.presentingViewController as? ContentController else { return }
-            self.updateSearchResults(for: contentController.searchController)
+                  let rootViewController = self.presentingViewController as? RootViewController else { return }
+            self.updateSearchResults(for: rootViewController.searchController)
         })
     }
     

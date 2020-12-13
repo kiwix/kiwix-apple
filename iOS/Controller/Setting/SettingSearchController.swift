@@ -11,13 +11,7 @@ import Defaults
 
 class SettingSearchController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let tableView = UITableView(frame: .zero, style: .grouped)
-    let snippetModes: [SearchResultSnippetMode] = {
-        if #available(iOS 12.0, *) {
-            return [.disabled, .firstParagraph, .firstSentence, .matches]
-        } else {
-            return [.disabled, .firstParagraph, .matches]
-        }
-    }()
+    let snippetModes: [SearchResultSnippetMode] = [.disabled, .firstParagraph, .firstSentence, .matches]
     
     convenience init(title: String) {
         self.init(nibName: nil, bundle: nil)
