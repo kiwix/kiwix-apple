@@ -407,7 +407,11 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     }
     
     @objc func houseButtonTapped() {
-        
+        if let url = webViewController.webView.url, let zimFileID = url.host {
+            openMainPage(zimFileID: zimFileID)
+        } else if let zimFileID = onDeviceZimFiles?.first?.id {
+            openMainPage(zimFileID: zimFileID)
+        }
     }
     
     @objc func openLibrary() {
