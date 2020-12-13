@@ -412,7 +412,11 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     }
     
     @objc func diceButtonTapped() {
-        openRandomPage()
+        if let url = webViewController.webView.url, let zimFileID = url.host {
+            openRandomPage(zimFileID: zimFileID)
+        } else {
+            openRandomPage()
+        }
     }
     
     @objc func houseButtonTapped() {
