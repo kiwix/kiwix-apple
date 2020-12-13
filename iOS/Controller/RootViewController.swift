@@ -20,14 +20,13 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     fileprivate let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     fileprivate let webViewController = WebViewController()
     fileprivate var libraryController: LibraryController?
+    
     fileprivate let onDeviceZimFiles = Queries.onDeviceZimFiles()?.sorted(byKeyPath: "size", ascending: false)
+    fileprivate let buttonProvider: ButtonProvider
     
     // MARK: - Buttons
     
-    fileprivate let chevronLeftButton = BarButton(imageName: "chevron.left")
-    fileprivate let chevronRightButton = BarButton(imageName: "chevron.right")
-    fileprivate let outlineButton = BarButton(imageName: "list.bullet")
-    fileprivate let bookmarkButton = BookmarkButton(imageName: "star", bookmarkedImageName: "star.fill")
+    
     fileprivate let diceButton = BarButton(imageName: "die.face.5")
     fileprivate let houseButton = BarButton(imageName: "house")
     fileprivate let libraryButton = BarButton(imageName: "folder")
@@ -35,18 +34,12 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     fileprivate let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
     fileprivate let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
     
-    fileprivate var navigationLeftButtons: [BarButton] {
-        [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton]
-    }
     fileprivate var navigationRightButtons: [BarButton] {
         [diceButton, houseButton, libraryButton, settingButton]
     }
     fileprivate var toolbarButtons: [BarButton] {
-        [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, libraryButton, settingButton]
+        [buttonProvider.chevronLeftButton, buttonProvider.chevronRightButton, buttonProvider.outlineButton, buttonProvider.bookmarkButton, libraryButton, settingButton]
     }
-    
-    fileprivate var chevronLeftButtonObserver: NSKeyValueObservation?
-    fileprivate var chevronRightButtonObserver: NSKeyValueObservation?
     
     // MARK: - Init & Overrides
     
@@ -54,13 +47,8 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         self.searchResultsController = SearchResultsController()
         self.searchController = UISearchController(searchResultsController: self.searchResultsController)
         self.contentViewController = contentViewController
+        self.buttonProvider = ButtonProvider(webView: webViewController.webView)
         super.init(nibName: nil, bundle: nil)
-        chevronLeftButtonObserver = webViewController.webView.observe(\.canGoBack, options: [.initial, .new], changeHandler: { (webView, _) in
-            self.chevronLeftButton.isEnabled = webView.canGoBack
-        })
-        chevronRightButtonObserver = webViewController.webView.observe(\.canGoForward, options: [.initial, .new], changeHandler: { (webView, _) in
-            self.chevronRightButton.isEnabled = webView.canGoForward
-        })
     }
     
     required init?(coder: NSCoder) {
@@ -74,11 +62,11 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
         
         // wire up button actions
-        chevronLeftButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
-        chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
-        outlineButton.addTarget(self, action: #selector(toggleOutline), for: .touchUpInside)
-        bookmarkButton.addTarget(self, action: #selector(bookmarkButtonPressed), for: .touchUpInside)
-        bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
+        buttonProvider.chevronLeftButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
+        buttonProvider.chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
+        buttonProvider.outlineButton.addTarget(self, action: #selector(toggleOutline), for: .touchUpInside)
+        buttonProvider.bookmarkButton.addTarget(self, action: #selector(bookmarkButtonPressed), for: .touchUpInside)
+        buttonProvider.bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
         bookmarkLongPressGestureRecognizer.addTarget(self, action: #selector(bookmarkButtonLongPressed))
         diceButton.addTarget(self, action: #selector(diceButtonTapped), for: .touchUpInside)
         houseButton.addTarget(self, action: #selector(houseButtonTapped), for: .touchUpInside)
@@ -200,7 +188,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
             setToolbarItems(nil, animated: animated)
             navigationController?.setToolbarHidden(true, animated: animated)
         } else if traitCollection.horizontalSizeClass == .regular {
-            let left = BarButtonGroup(buttons: navigationLeftButtons, spacing: 12)
+            let left = BarButtonGroup(buttons: buttonProvider.navigationLeftButtons, spacing: 12)
             let right = BarButtonGroup(buttons: navigationRightButtons, spacing: 12)
             navigationItem.setLeftBarButton(UIBarButtonItem(customView: left), animated: animated)
             navigationItem.setRightBarButton(UIBarButtonItem(customView: right), animated: animated)
@@ -318,7 +306,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
             }
         }
         if let url = webView.url {
-            bookmarkButton.isBookmarked = BookmarkService().get(url: url) == nil ? false : true
+            buttonProvider.bookmarkButton.isBookmarked = BookmarkService().get(url: url) == nil ? false : true
         }
         webViewController.adjustTextSize()
     }
@@ -360,7 +348,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     @objc func bookmarkButtonPressed() {
         let bookmarksController = BookmarksViewController()
         bookmarksController.bookmarkTapped = { [weak self] url in self?.openURL(url) }
-        bookmarksController.bookmarkDeleted = { [weak self] in self?.bookmarkButton.isBookmarked = false }
+        bookmarksController.bookmarkDeleted = { [weak self] in self?.buttonProvider.bookmarkButton.isBookmarked = false }
         if #available(iOS 14.0, *), traitCollection.horizontalSizeClass == .regular {
             if contentViewController.displayMode == .secondaryOnly {
                 showSidebar(bookmarksController)
@@ -407,11 +395,11 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         let bookmarkService = BookmarkService()
         if let bookmark = bookmarkService.get(url: url) {
             bookmarkService.delete(bookmark)
-            bookmarkButton.isBookmarked = false
+            buttonProvider.bookmarkButton.isBookmarked = false
             presentBookmarkHUDController(isBookmarked: false)
         } else {
             bookmarkService.create(url: url)
-            bookmarkButton.isBookmarked = true
+            buttonProvider.bookmarkButton.isBookmarked = true
             presentBookmarkHUDController(isBookmarked: true)
         }
     }
@@ -507,7 +495,7 @@ class RootViewController_iOS14: RootViewController {
     private var sideBarDisplayModeObserver: Defaults.Observation?
     
     override var toolbarButtons: [BarButton] {
-        [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, diceButton, houseButton]
+        [buttonProvider.chevronLeftButton, buttonProvider.chevronRightButton, buttonProvider.outlineButton, buttonProvider.bookmarkButton, diceButton, houseButton]
     }
     
     // MARK: - Init & Overrides
