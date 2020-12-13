@@ -45,6 +45,9 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, libraryButton, settingButton]
     }
     
+    fileprivate var chevronLeftButtonObserver: NSKeyValueObservation?
+    fileprivate var chevronRightButtonObserver: NSKeyValueObservation?
+    
     // MARK: - Init & Overrides
     
     init(contentViewController: UISplitViewController = UISplitViewController()) {
@@ -52,6 +55,12 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         self.searchController = UISearchController(searchResultsController: self.searchResultsController)
         self.contentViewController = contentViewController
         super.init(nibName: nil, bundle: nil)
+        chevronLeftButtonObserver = webViewController.webView.observe(\.canGoBack, options: [.initial, .new], changeHandler: { (webView, _) in
+            self.chevronLeftButton.isEnabled = webView.canGoBack
+        })
+        chevronRightButtonObserver = webViewController.webView.observe(\.canGoForward, options: [.initial, .new], changeHandler: { (webView, _) in
+            self.chevronRightButton.isEnabled = webView.canGoForward
+        })
     }
     
     required init?(coder: NSCoder) {
@@ -62,8 +71,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         super.viewDidLoad()
         
         // setup button initial state
-        chevronLeftButton.isEnabled = false
-        chevronRightButton.isEnabled = false
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
         
         // wire up button actions
@@ -301,8 +308,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        chevronLeftButton.isEnabled = webView.canGoBack
-        chevronRightButton.isEnabled = webView.canGoForward
         if let url = Bundle.main.url(forResource: "Inject", withExtension: "js"), let javascript = try? String(contentsOf: url) {
             webView.evaluateJavaScript(javascript) { _, _ in
                 if #available(iOS 14.0, *), let outlineViewController = self.contentViewController.viewController(for: .primary) as? OutlineViewController {
