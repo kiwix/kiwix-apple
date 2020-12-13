@@ -26,13 +26,11 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     
     // MARK: - Buttons
     
-    
     fileprivate let diceButton = BarButton(imageName: "die.face.5")
     fileprivate let houseButton = BarButton(imageName: "house")
     fileprivate let libraryButton = BarButton(imageName: "folder")
     fileprivate let settingButton = BarButton(imageName: "gear")
     fileprivate let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
-    fileprivate let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
     
     fileprivate var navigationRightButtons: [BarButton] {
         [diceButton, houseButton, libraryButton, settingButton]
@@ -49,6 +47,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         self.contentViewController = contentViewController
         self.buttonProvider = ButtonProvider(webView: webViewController.webView)
         super.init(nibName: nil, bundle: nil)
+        buttonProvider.rootViewController = self
     }
     
     required init?(coder: NSCoder) {
@@ -62,12 +61,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
         
         // wire up button actions
-        buttonProvider.chevronLeftButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
-        buttonProvider.chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
-        buttonProvider.outlineButton.addTarget(self, action: #selector(toggleOutline), for: .touchUpInside)
-        buttonProvider.bookmarkButton.addTarget(self, action: #selector(bookmarkButtonPressed), for: .touchUpInside)
-        buttonProvider.bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
-        bookmarkLongPressGestureRecognizer.addTarget(self, action: #selector(bookmarkButtonLongPressed))
         diceButton.addTarget(self, action: #selector(diceButtonTapped), for: .touchUpInside)
         houseButton.addTarget(self, action: #selector(houseButtonTapped), for: .touchUpInside)
         libraryButton.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
@@ -305,9 +298,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
                 }
             }
         }
-        if let url = webView.url {
-            buttonProvider.bookmarkButton.isBookmarked = BookmarkService().get(url: url) == nil ? false : true
-        }
         webViewController.adjustTextSize()
     }
     
@@ -348,7 +338,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     @objc func bookmarkButtonPressed() {
         let bookmarksController = BookmarksViewController()
         bookmarksController.bookmarkTapped = { [weak self] url in self?.openURL(url) }
-        bookmarksController.bookmarkDeleted = { [weak self] in self?.buttonProvider.bookmarkButton.isBookmarked = false }
         if #available(iOS 14.0, *), traitCollection.horizontalSizeClass == .regular {
             if contentViewController.displayMode == .secondaryOnly {
                 showSidebar(bookmarksController)
@@ -395,11 +384,9 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         let bookmarkService = BookmarkService()
         if let bookmark = bookmarkService.get(url: url) {
             bookmarkService.delete(bookmark)
-            buttonProvider.bookmarkButton.isBookmarked = false
             presentBookmarkHUDController(isBookmarked: false)
         } else {
             bookmarkService.create(url: url)
-            buttonProvider.bookmarkButton.isBookmarked = true
             presentBookmarkHUDController(isBookmarked: true)
         }
     }

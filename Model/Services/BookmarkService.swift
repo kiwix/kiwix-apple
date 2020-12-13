@@ -11,6 +11,13 @@ import NotificationCenter
 import RealmSwift
 
 class BookmarkService {
+    class func list() -> Results<Bookmark>? {
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            return database.objects(Bookmark.self)
+        } catch { return nil }
+    }
+    
     func get(url: URL) -> Bookmark? {
         guard let zimFileID = url.host else { return nil }
         return get(zimFileID: zimFileID, path: url.path)
