@@ -11,7 +11,7 @@ import WebKit
 import SafariServices
 import Defaults
 
-class WebViewController: UIViewController {
+class WebViewController: UIViewController, WKUIDelegate {
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
@@ -20,12 +20,19 @@ class WebViewController: UIViewController {
     }()
     private var textSizeAdjustFactorObserver: NSKeyValueObservation?
     
+    convenience init(url: URL) {
+        self.init()
+        webView.load(URLRequest(url: url))
+    }
+    
     override func loadView() {
         view = webView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        webView.uiDelegate = self
         webView.allowsBackForwardNavigationGestures = true
         if #available(iOS 14.0, *) {
             navigationController?.isNavigationBarHidden = true
@@ -46,5 +53,26 @@ class WebViewController: UIViewController {
         let scale = UserDefaults.standard.webViewTextSizeAdjustFactor
         let javascript = String(format: "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%.0f%%'", scale * 100)
         webView.evaluateJavaScript(javascript, completionHandler: nil)
+    }
+    
+    // MARK: - WKUIDelegate
+    
+    @available(iOS 13.0, *)
+    func webView(_ webView: WKWebView,
+                 contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
+                 completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
+        guard let url = elementInfo.linkURL else { completionHandler(nil); return }
+        if url.isKiwixURL {
+            let config = UIContextMenuConfiguration(
+                identifier: nil,
+                previewProvider: { WebViewController(url: url) },
+                actionProvider: { elements -> UIMenu? in
+                    UIMenu(children: elements)
+                }
+            )
+            completionHandler(config)
+        } else {
+            completionHandler(nil)
+        }
     }
 }
