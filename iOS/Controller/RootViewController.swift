@@ -14,6 +14,8 @@ import Defaults
 import RealmSwift
 
 class RootViewController: UIViewController, UISearchControllerDelegate, UISplitViewControllerDelegate, WKNavigationDelegate {
+    enum ContentMode: Int { case homeView, webView, transitionView }
+    
     let searchController: UISearchController
     fileprivate let searchResultsController: SearchResultsController
     fileprivate let contentViewController: UISplitViewController
@@ -152,7 +154,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         if url.isKiwixURL {
             webViewController.webView.load(URLRequest(url: url))
             if #available(iOS 14.0, *) {
-                contentViewController.setViewController(webViewController, for: .secondary)
+                setContentMode(.webView)
             } else if !(contentViewController.viewControllers.last is WebViewController) {
                 contentViewController.viewControllers[contentViewController.viewControllers.count - 1] = webViewController
             }
@@ -208,6 +210,10 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         contentViewController.viewControllers = [UIViewController(), welcomeController]
         contentViewController.preferredDisplayMode = .primaryHidden
         contentViewController.delegate = self
+    }
+    
+    fileprivate func setContentMode(_ contentMode: ContentMode) {
+        
     }
     
     // MARK: - UISearchControllerDelegate
@@ -487,6 +493,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
 class RootViewController_iOS14: RootViewController {
     private var onDeviceZimFilesObserver: NotificationToken?
     private var sideBarDisplayModeObserver: Defaults.Observation?
+    let secondaryHostingController = UITabBarController()
     
     override var toolbarButtons: [BarButton] {
         [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, diceButton, houseButton]
@@ -536,7 +543,14 @@ class RootViewController_iOS14: RootViewController {
         homeViewController.rootView.zimFileTapped = openMainPage
         homeViewController.rootView.libraryButtonTapped = openLibrary
         homeViewController.rootView.settingsButtonTapped = openSettings
-        contentViewController.setViewController(homeViewController, for: .secondary)
+//        let tabBarController = UITabBarController()
+        secondaryHostingController.viewControllers = [homeViewController, webViewController]
+        secondaryHostingController.tabBar.isHidden = true
+        contentViewController.setViewController(secondaryHostingController, for: .secondary)
+    }
+    
+    override func setContentMode(_ contentMode: RootViewController.ContentMode) {
+        secondaryHostingController.selectedIndex = contentMode.rawValue
     }
     
     private func setupDiceButtonMenu() {
@@ -562,6 +576,14 @@ class RootViewController_iOS14: RootViewController {
             ]))
         }
         houseButton.menu = UIMenu(children: items)
+    }
+    
+    override func houseButtonTapped() {
+        if secondaryHostingController.selectedIndex == 0 {
+            secondaryHostingController.selectedIndex = 1
+        } else {
+            secondaryHostingController.selectedIndex = 0
+        }
     }
     
     // MARK: - Sidebar

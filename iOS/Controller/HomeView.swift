@@ -35,7 +35,6 @@ struct HomeView: View {
                 }
             }.padding()
         }
-        .navigationBarHidden(true)
         .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
     }
     

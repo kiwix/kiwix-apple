@@ -27,9 +27,6 @@ class WebViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.allowsBackForwardNavigationGestures = true
-        if #available(iOS 14.0, *) {
-            navigationController?.isNavigationBarHidden = true
-        }
         
         // observe webView font size adjust factor
         textSizeAdjustFactorObserver = UserDefaults.standard.observe(\.webViewTextSizeAdjustFactor) { _, _ in
