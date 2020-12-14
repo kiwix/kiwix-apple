@@ -13,7 +13,7 @@ import SafariServices
 import Defaults
 import RealmSwift
 
-class RootViewController: UIViewController, UISearchControllerDelegate, UISplitViewControllerDelegate, WKNavigationDelegate {
+class RootViewController: UIViewController, UISearchControllerDelegate, UISplitViewControllerDelegate {
     let searchController: UISearchController
     fileprivate let searchResultsController: SearchResultsController
     fileprivate let contentViewController: UISplitViewController
@@ -83,10 +83,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
             searchController.showsSearchResultsController = true
         }
         definesPresentationContext = true
-        
-        // misc
         navigationItem.titleView = searchController.searchBar
-        webViewController.webView.navigationDelegate = self
     }
     
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -202,80 +199,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     
     func splitViewController(_ splitViewController: UISplitViewController, separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
         splitViewController.viewControllers.last
-    }
-
-    // MARK: - WKNavigationDelegate
-    
-    @available(iOS 13.0, *)
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
-        guard let url = navigationAction.request.url else { decisionHandler(.cancel, preferences); return }
-        if url.isKiwixURL {
-            guard let zimFileID = url.host else { decisionHandler(.cancel, preferences); return }
-            if let redirectedPath = ZimMultiReader.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
-                let redirectedURL = URL(zimFileID: zimFileID, contentPath: redirectedPath) {
-                decisionHandler(.cancel, preferences)
-                openURL(redirectedURL)
-            } else {
-                preferences.preferredContentMode = .mobile
-                decisionHandler(.allow, preferences)
-            }
-        } else if url.scheme == "http" || url.scheme == "https" {
-            let policy = Defaults[.externalLinkLoadingPolicy]
-            if policy == .alwaysLoad {
-                self.present(SFSafariViewController(url: url), animated: true, completion: nil)
-            } else {
-                present(UIAlertController.externalLink(policy: policy, action: {
-                    self.present(SFSafariViewController(url: url), animated: true, completion: nil)
-                }), animated: true)
-            }
-            decisionHandler(.cancel, preferences)
-        } else if url.scheme == "geo" {
-            decisionHandler(.cancel, preferences)
-        } else {
-            decisionHandler(.cancel, preferences)
-        }
-    }
-    
-    // for iOS 12
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
-        if url.isKiwixURL {
-            guard let zimFileID = url.host else { decisionHandler(.cancel); return }
-            if let redirectedPath = ZimMultiReader.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
-                let redirectedURL = URL(zimFileID: zimFileID, contentPath: redirectedPath) {
-                decisionHandler(.cancel)
-                openURL(redirectedURL)
-            } else {
-                decisionHandler(.allow)
-            }
-        } else if url.scheme == "http" || url.scheme == "https" {
-            let policy = Defaults[.externalLinkLoadingPolicy]
-            if policy == .alwaysLoad {
-                self.present(SFSafariViewController(url: url), animated: true, completion: nil)
-            } else {
-                present(UIAlertController.externalLink(policy: policy, action: {
-                    self.present(SFSafariViewController(url: url), animated: true, completion: nil)
-                }), animated: true)
-            }
-            decisionHandler(.cancel)
-        } else if url.scheme == "geo" {
-            decisionHandler(.cancel)
-        } else {
-            decisionHandler(.cancel)
-        }
-    }
-    
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        if let url = Bundle.main.url(forResource: "Inject", withExtension: "js"), let javascript = try? String(contentsOf: url) {
-            webView.evaluateJavaScript(javascript) { _, _ in
-                if #available(iOS 14.0, *), let outlineViewController = self.contentViewController.viewController(for: .primary) as? OutlineViewController {
-                    outlineViewController.reload()
-                } else if let outlineViewController = self.contentViewController.viewControllers.first as? OutlineViewController {
-                    outlineViewController.reload()
-                }
-            }
-        }
-        webViewController.adjustTextSize()
     }
     
     // MARK: - Actions
