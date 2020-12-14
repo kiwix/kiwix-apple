@@ -11,7 +11,6 @@ import WebKit
 import RealmSwift
 
 class ButtonProvider {
-    unowned var webView: WKWebView
     weak var rootViewController: RootViewController? { didSet { setupTargetActions() } }
     
     private let chevronLeftButton = BarButton(imageName: "chevron.left")
@@ -43,10 +42,7 @@ class ButtonProvider {
     private var onDeviceZimFilesObserver: NotificationToken?
     
     init(webView: WKWebView) {
-        self.webView = webView
-        
         bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
-        
         webViewURLObserver = webView.observe(\.url, changeHandler: { webView, _ in
             guard let url = webView.url else { return }
             self.bookmarkButton.isBookmarked = BookmarkService().get(url: url) != nil

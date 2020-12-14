@@ -133,11 +133,11 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if let url = Bundle.main.url(forResource: "Inject", withExtension: "js"), let javascript = try? String(contentsOf: url) {
             webView.evaluateJavaScript(javascript) { _, _ in
-//                if #available(iOS 14.0, *), let outlineViewController = self.contentViewController.viewController(for: .primary) as? OutlineViewController {
-//                    outlineViewController.reload()
-//                } else if let outlineViewController = self.contentViewController.viewControllers.first as? OutlineViewController {
-//                    outlineViewController.reload()
-//                }
+                if #available(iOS 14.0, *), let outlineViewController = self.splitViewController?.viewController(for: .primary) as? OutlineViewController {
+                    outlineViewController.reload()
+                } else if let outlineViewController = self.splitViewController?.viewControllers.first as? OutlineViewController {
+                    outlineViewController.reload()
+                }
             }
         }
         adjustTextSize()
