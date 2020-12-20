@@ -11,6 +11,13 @@ import UIKit
 @available(iOS 13, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
+    private let rootViewController: RootViewController = {
+        if #available(iOS 14.0, *) {
+            return RootViewController_iOS14()
+        } else {
+            return RootViewController()
+        }
+    }()
     
     // MARK: - Lifecycle
     
@@ -18,16 +25,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                options connectionOptions: UIScene.ConnectionOptions) {
         if let windowScene = scene as? UIWindowScene {
             window = UIWindow(windowScene: windowScene)
-            window?.rootViewController = {
-                if #available(iOS 14.0, *), FeatureFlags.swiftUIBasedAppEnabled{
-                    return UINavigationController(rootViewController: RootController_iOS14())
-                } else if #available(iOS 14.0, *) {
-                    return UINavigationController(rootViewController: RootViewController_iOS14())
-                } else {
-                    return UINavigationController(rootViewController: RootViewController())
-                }
-            }()
+            window?.rootViewController = UINavigationController(rootViewController: rootViewController)
             window?.makeKeyAndVisible()
+            self.scene(scene, openURLContexts: connectionOptions.urlContexts)
         }
     }
     
@@ -39,9 +39,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // MARK: - URL Handling & Actions
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-        guard let context = URLContexts.first,
-              let navigationController = window?.rootViewController as? UINavigationController,
-              let rootViewController = navigationController.topViewController as? RootViewController else {return}
+        guard let context = URLContexts.first else {return}
         if context.url.isKiwixURL {
             rootViewController.openURL(context.url)
         } else if context.url.isFileURL {

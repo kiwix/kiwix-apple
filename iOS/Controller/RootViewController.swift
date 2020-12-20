@@ -33,6 +33,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         self.buttonProvider = ButtonProvider(webView: webViewController.webView)
         super.init(nibName: nil, bundle: nil)
         buttonProvider.rootViewController = self
+        configureContentViewController()
     }
     
     required init?(coder: NSCoder) {
@@ -42,48 +43,9 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // setup button initial state
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
-        
-        // configure content view controller as a child
-        setupContentViewController()
-        addChild(contentViewController)
-        contentViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(contentViewController.view)
-        if #available(iOS 13.0, *) {
-            NSLayoutConstraint.activate([
-                view.topAnchor.constraint(equalTo: contentViewController.view.topAnchor),
-                view.leftAnchor.constraint(equalTo: contentViewController.view.leftAnchor),
-                view.bottomAnchor.constraint(equalTo: contentViewController.view.bottomAnchor),
-                view.rightAnchor.constraint(equalTo: contentViewController.view.rightAnchor),
-            ])
-        } else {
-            // on iOS 12, the contentViewController's master & detail controllers do not seem to be aware of the safe area,
-            // so the contentViewController is going to be pinned against the safe area layout guide veritcally
-            // and there won't be the content underneath the bar behavior
-            view.backgroundColor = .white
-            NSLayoutConstraint.activate([
-                view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: contentViewController.view.topAnchor),
-                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: contentViewController.view.bottomAnchor),
-                view.leftAnchor.constraint(equalTo: contentViewController.view.leftAnchor),
-                view.rightAnchor.constraint(equalTo: contentViewController.view.rightAnchor),
-            ])
-        }
-        contentViewController.didMove(toParent: self)
-        
-        // configure search controller
-        searchController.delegate = self
-        searchController.searchBar.autocorrectionType = .no
-        searchController.searchBar.autocapitalizationType = .none
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchResultsUpdater = searchResultsController
-        if #available(iOS 13.0, *) {
-            searchController.automaticallyShowsCancelButton = false
-            searchController.showsSearchResultsController = true
-        }
-        definesPresentationContext = true
-        navigationItem.titleView = searchController.searchBar
+        configureChildViewController()
+        configureSearchController()
     }
     
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -174,11 +136,52 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         }
     }
     
-    fileprivate func setupContentViewController() {
+    fileprivate func configureContentViewController() {
         contentViewController.presentsWithGesture = false
         contentViewController.viewControllers = [UIViewController(), welcomeController]
         contentViewController.preferredDisplayMode = .primaryHidden
         contentViewController.delegate = self
+    }
+    
+    fileprivate func configureChildViewController() {
+        addChild(contentViewController)
+        contentViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(contentViewController.view)
+        if #available(iOS 13.0, *) {
+            NSLayoutConstraint.activate([
+                view.topAnchor.constraint(equalTo: contentViewController.view.topAnchor),
+                view.leftAnchor.constraint(equalTo: contentViewController.view.leftAnchor),
+                view.bottomAnchor.constraint(equalTo: contentViewController.view.bottomAnchor),
+                view.rightAnchor.constraint(equalTo: contentViewController.view.rightAnchor),
+            ])
+        } else {
+            // on iOS 12, the contentViewController's master & detail controllers do not seem to be aware of the safe area,
+            // so the contentViewController is going to be pinned against the safe area layout guide veritcally
+            // and there won't be the content underneath the bar behavior
+            view.backgroundColor = .white
+            NSLayoutConstraint.activate([
+                view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: contentViewController.view.topAnchor),
+                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: contentViewController.view.bottomAnchor),
+                view.leftAnchor.constraint(equalTo: contentViewController.view.leftAnchor),
+                view.rightAnchor.constraint(equalTo: contentViewController.view.rightAnchor),
+            ])
+        }
+        contentViewController.didMove(toParent: self)
+    }
+    
+    private func configureSearchController() {
+        searchController.delegate = self
+        searchController.searchBar.autocorrectionType = .no
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchResultsUpdater = searchResultsController
+        if #available(iOS 13.0, *) {
+            searchController.automaticallyShowsCancelButton = false
+            searchController.showsSearchResultsController = true
+        }
+        definesPresentationContext = true
+        navigationItem.titleView = searchController.searchBar
     }
     
     // MARK: - UISearchControllerDelegate
@@ -193,10 +196,12 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     
     // MARK: - UISplitViewControllerDelegate
     
+    // only needed for iOS 12 & 13
     func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
         splitViewController.viewControllers.last
     }
     
+    // only needed for iOS 12 & 13
     func splitViewController(_ splitViewController: UISplitViewController, separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
         splitViewController.viewControllers.last
     }
@@ -414,7 +419,7 @@ class RootViewController_iOS14: RootViewController {
     
     // MARK: - Setup & Configurations
     
-    fileprivate override func setupContentViewController() {
+    fileprivate override func configureContentViewController() {
         contentViewController.presentsWithGesture = false
         let homeViewController = UIHostingController(rootView: HomeView())
         homeViewController.rootView.zimFileTapped = openMainPage
