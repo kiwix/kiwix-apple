@@ -421,11 +421,15 @@ class RootViewController_iOS14: RootViewController {
     
     fileprivate override func configureContentViewController() {
         contentViewController.presentsWithGesture = false
-        let homeViewController = UIHostingController(rootView: HomeView())
-        homeViewController.rootView.zimFileTapped = openMainPage
-        homeViewController.rootView.libraryButtonTapped = openLibrary
-        homeViewController.rootView.settingsButtonTapped = openSettings
-        contentViewController.setViewController(homeViewController, for: .secondary)
+        if FeatureFlags.homeViewEnabled {
+            let homeViewController = UIHostingController(rootView: HomeView())
+            homeViewController.rootView.zimFileTapped = openMainPage
+            homeViewController.rootView.libraryButtonTapped = openLibrary
+            homeViewController.rootView.settingsButtonTapped = openSettings
+            contentViewController.setViewController(homeViewController, for: .secondary)
+        } else {
+            contentViewController.setViewController(welcomeController, for: .secondary)
+        }
     }
     
     // MARK: - Sidebar
