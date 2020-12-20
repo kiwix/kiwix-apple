@@ -1,3 +1,7 @@
+## 1.14
+
+- Link Preview: tap and hold on a link to see preview of the article (not available on iOS 12)
+
 ## 1.13.7
 
 - Disabled gesture that reveals the sidebar (iPad)

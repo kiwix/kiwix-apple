@@ -14,6 +14,9 @@ class WelcomeController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if #available(iOS 14.0, *) {
+            navigationController?.isNavigationBarHidden = true
+        }
         button.setTitle(NSLocalizedString("Open Library", comment: "Welcome"), for: .normal)
     }
     

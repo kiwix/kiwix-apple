@@ -148,7 +148,6 @@ class BookmarksViewController: SidebarViewController, UITableViewDataSource, UIT
         subtitle: NSLocalizedString("To add, long press the bookmark button on the tool bar when reading an article.", comment: "Help message when there's no bookmark to show")
     )
     var bookmarkTapped: ((URL) -> Void)?
-    var bookmarkDeleted: (() -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -242,6 +241,5 @@ class BookmarksViewController: SidebarViewController, UITableViewDataSource, UIT
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard let bookmark = bookmarks?[indexPath.row], editingStyle == .delete else {return}
         BookmarkService().delete(bookmark)
-        bookmarkDeleted?()
     }
 }

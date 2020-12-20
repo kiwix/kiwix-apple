@@ -13,37 +13,16 @@ import SafariServices
 import Defaults
 import RealmSwift
 
-class RootViewController: UIViewController, UISearchControllerDelegate, UISplitViewControllerDelegate, WKNavigationDelegate {
+class RootViewController: UIViewController, UISearchControllerDelegate, UISplitViewControllerDelegate {
     let searchController: UISearchController
     fileprivate let searchResultsController: SearchResultsController
     fileprivate let contentViewController: UISplitViewController
     fileprivate let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     fileprivate let webViewController = WebViewController()
     fileprivate var libraryController: LibraryController?
+    
     fileprivate let onDeviceZimFiles = Queries.onDeviceZimFiles()?.sorted(byKeyPath: "size", ascending: false)
-    
-    // MARK: - Buttons
-    
-    fileprivate let chevronLeftButton = BarButton(imageName: "chevron.left")
-    fileprivate let chevronRightButton = BarButton(imageName: "chevron.right")
-    fileprivate let outlineButton = BarButton(imageName: "list.bullet")
-    fileprivate let bookmarkButton = BookmarkButton(imageName: "star", bookmarkedImageName: "star.fill")
-    fileprivate let diceButton = BarButton(imageName: "die.face.5")
-    fileprivate let houseButton = BarButton(imageName: "house")
-    fileprivate let libraryButton = BarButton(imageName: "folder")
-    fileprivate let settingButton = BarButton(imageName: "gear")
-    fileprivate let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
-    fileprivate let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
-    
-    fileprivate var navigationLeftButtons: [BarButton] {
-        [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton]
-    }
-    fileprivate var navigationRightButtons: [BarButton] {
-        [diceButton, houseButton, libraryButton, settingButton]
-    }
-    fileprivate var toolbarButtons: [BarButton] {
-        [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, libraryButton, settingButton]
-    }
+    fileprivate let buttonProvider: ButtonProvider
     
     // MARK: - Init & Overrides
     
@@ -51,7 +30,10 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         self.searchResultsController = SearchResultsController()
         self.searchController = UISearchController(searchResultsController: self.searchResultsController)
         self.contentViewController = contentViewController
+        self.buttonProvider = ButtonProvider(webView: webViewController.webView)
         super.init(nibName: nil, bundle: nil)
+        buttonProvider.rootViewController = self
+        configureContentViewController()
     }
     
     required init?(coder: NSCoder) {
@@ -61,67 +43,9 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // setup button initial state
-        chevronLeftButton.isEnabled = false
-        chevronRightButton.isEnabled = false
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
-        
-        // wire up button actions
-        chevronLeftButton.addTarget(self, action: #selector(goBack), for: .touchUpInside)
-        chevronRightButton.addTarget(self, action: #selector(goForward), for: .touchUpInside)
-        outlineButton.addTarget(self, action: #selector(toggleOutline), for: .touchUpInside)
-        bookmarkButton.addTarget(self, action: #selector(bookmarkButtonPressed), for: .touchUpInside)
-        bookmarkButton.addGestureRecognizer(bookmarkLongPressGestureRecognizer)
-        bookmarkLongPressGestureRecognizer.addTarget(self, action: #selector(bookmarkButtonLongPressed))
-        diceButton.addTarget(self, action: #selector(diceButtonTapped), for: .touchUpInside)
-        houseButton.addTarget(self, action: #selector(houseButtonTapped), for: .touchUpInside)
-        libraryButton.addTarget(self, action: #selector(openLibrary), for: .touchUpInside)
-        settingButton.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
-        cancelButton.target = self
-        cancelButton.action = #selector(dismissSearch)
-        
-        // configure content view controller as a child
-        setupContentViewController()
-        addChild(contentViewController)
-        contentViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(contentViewController.view)
-        if #available(iOS 13.0, *) {
-            NSLayoutConstraint.activate([
-                view.topAnchor.constraint(equalTo: contentViewController.view.topAnchor),
-                view.leftAnchor.constraint(equalTo: contentViewController.view.leftAnchor),
-                view.bottomAnchor.constraint(equalTo: contentViewController.view.bottomAnchor),
-                view.rightAnchor.constraint(equalTo: contentViewController.view.rightAnchor),
-            ])
-        } else {
-            // on iOS 12, the contentViewController's master & detail controllers do not seem to be aware of the safe area,
-            // so the contentViewController is going to be pinned against the safe area layout guide veritcally
-            // and there won't be the content underneath the bar behavior
-            view.backgroundColor = .white
-            NSLayoutConstraint.activate([
-                view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: contentViewController.view.topAnchor),
-                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: contentViewController.view.bottomAnchor),
-                view.leftAnchor.constraint(equalTo: contentViewController.view.leftAnchor),
-                view.rightAnchor.constraint(equalTo: contentViewController.view.rightAnchor),
-            ])
-        }
-        contentViewController.didMove(toParent: self)
-        
-        // configure search controller
-        searchController.delegate = self
-        searchController.searchBar.autocorrectionType = .no
-        searchController.searchBar.autocapitalizationType = .none
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchResultsUpdater = searchResultsController
-        if #available(iOS 13.0, *) {
-            searchController.automaticallyShowsCancelButton = false
-            searchController.showsSearchResultsController = true
-        }
-        definesPresentationContext = true
-        
-        // misc
-        navigationItem.titleView = searchController.searchBar
-        webViewController.webView.navigationDelegate = self
+        configureChildViewController()
+        configureSearchController()
     }
     
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -189,12 +113,12 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     private func configureBarButtons(searchIsActive: Bool, animated: Bool) {
         if searchIsActive {
             navigationItem.setLeftBarButton(nil, animated: animated)
-            navigationItem.setRightBarButton(cancelButton, animated: animated)
+            navigationItem.setRightBarButton(buttonProvider.cancelButton, animated: animated)
             setToolbarItems(nil, animated: animated)
             navigationController?.setToolbarHidden(true, animated: animated)
         } else if traitCollection.horizontalSizeClass == .regular {
-            let left = BarButtonGroup(buttons: navigationLeftButtons, spacing: 12)
-            let right = BarButtonGroup(buttons: navigationRightButtons, spacing: 12)
+            let left = BarButtonGroup(buttons: buttonProvider.navigationLeftButtons, spacing: 12)
+            let right = BarButtonGroup(buttons: buttonProvider.navigationRightButtons, spacing: 12)
             navigationItem.setLeftBarButton(UIBarButtonItem(customView: left), animated: animated)
             navigationItem.setRightBarButton(UIBarButtonItem(customView: right), animated: animated)
             setToolbarItems(nil, animated: animated)
@@ -202,7 +126,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         } else if traitCollection.horizontalSizeClass == .compact {
             navigationItem.setLeftBarButton(nil, animated: animated)
             navigationItem.setRightBarButton(nil, animated: animated)
-            setToolbarItems([UIBarButtonItem(customView: BarButtonGroup(buttons: toolbarButtons))], animated: animated)
+            setToolbarItems([UIBarButtonItem(customView: BarButtonGroup(buttons: buttonProvider.toolbarButtons))], animated: animated)
             navigationController?.setToolbarHidden(false, animated: animated)
         } else {
             navigationItem.setLeftBarButton(nil, animated: animated)
@@ -212,11 +136,52 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         }
     }
     
-    fileprivate func setupContentViewController() {
+    fileprivate func configureContentViewController() {
         contentViewController.presentsWithGesture = false
         contentViewController.viewControllers = [UIViewController(), welcomeController]
         contentViewController.preferredDisplayMode = .primaryHidden
         contentViewController.delegate = self
+    }
+    
+    fileprivate func configureChildViewController() {
+        addChild(contentViewController)
+        contentViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(contentViewController.view)
+        if #available(iOS 13.0, *) {
+            NSLayoutConstraint.activate([
+                view.topAnchor.constraint(equalTo: contentViewController.view.topAnchor),
+                view.leftAnchor.constraint(equalTo: contentViewController.view.leftAnchor),
+                view.bottomAnchor.constraint(equalTo: contentViewController.view.bottomAnchor),
+                view.rightAnchor.constraint(equalTo: contentViewController.view.rightAnchor),
+            ])
+        } else {
+            // on iOS 12, the contentViewController's master & detail controllers do not seem to be aware of the safe area,
+            // so the contentViewController is going to be pinned against the safe area layout guide veritcally
+            // and there won't be the content underneath the bar behavior
+            view.backgroundColor = .white
+            NSLayoutConstraint.activate([
+                view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: contentViewController.view.topAnchor),
+                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: contentViewController.view.bottomAnchor),
+                view.leftAnchor.constraint(equalTo: contentViewController.view.leftAnchor),
+                view.rightAnchor.constraint(equalTo: contentViewController.view.rightAnchor),
+            ])
+        }
+        contentViewController.didMove(toParent: self)
+    }
+    
+    private func configureSearchController() {
+        searchController.delegate = self
+        searchController.searchBar.autocorrectionType = .no
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchResultsUpdater = searchResultsController
+        if #available(iOS 13.0, *) {
+            searchController.automaticallyShowsCancelButton = false
+            searchController.showsSearchResultsController = true
+        }
+        definesPresentationContext = true
+        navigationItem.titleView = searchController.searchBar
     }
     
     // MARK: - UISearchControllerDelegate
@@ -231,91 +196,14 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     
     // MARK: - UISplitViewControllerDelegate
     
+    // only needed for iOS 12 & 13
     func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
         splitViewController.viewControllers.last
     }
     
+    // only needed for iOS 12 & 13
     func splitViewController(_ splitViewController: UISplitViewController, separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
         splitViewController.viewControllers.last
-    }
-
-    // MARK: - WKNavigationDelegate
-    
-    @available(iOS 13.0, *)
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
-        guard let url = navigationAction.request.url else { decisionHandler(.cancel, preferences); return }
-        if url.isKiwixURL {
-            guard let zimFileID = url.host else { decisionHandler(.cancel, preferences); return }
-            if let redirectedPath = ZimMultiReader.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
-                let redirectedURL = URL(zimFileID: zimFileID, contentPath: redirectedPath) {
-                decisionHandler(.cancel, preferences)
-                openURL(redirectedURL)
-            } else {
-                preferences.preferredContentMode = .mobile
-                decisionHandler(.allow, preferences)
-            }
-        } else if url.scheme == "http" || url.scheme == "https" {
-            let policy = Defaults[.externalLinkLoadingPolicy]
-            if policy == .alwaysLoad {
-                self.present(SFSafariViewController(url: url), animated: true, completion: nil)
-            } else {
-                present(UIAlertController.externalLink(policy: policy, action: {
-                    self.present(SFSafariViewController(url: url), animated: true, completion: nil)
-                }), animated: true)
-            }
-            decisionHandler(.cancel, preferences)
-        } else if url.scheme == "geo" {
-            decisionHandler(.cancel, preferences)
-        } else {
-            decisionHandler(.cancel, preferences)
-        }
-    }
-    
-    // for iOS 12
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
-        if url.isKiwixURL {
-            guard let zimFileID = url.host else { decisionHandler(.cancel); return }
-            if let redirectedPath = ZimMultiReader.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
-                let redirectedURL = URL(zimFileID: zimFileID, contentPath: redirectedPath) {
-                decisionHandler(.cancel)
-                openURL(redirectedURL)
-            } else {
-                decisionHandler(.allow)
-            }
-        } else if url.scheme == "http" || url.scheme == "https" {
-            let policy = Defaults[.externalLinkLoadingPolicy]
-            if policy == .alwaysLoad {
-                self.present(SFSafariViewController(url: url), animated: true, completion: nil)
-            } else {
-                present(UIAlertController.externalLink(policy: policy, action: {
-                    self.present(SFSafariViewController(url: url), animated: true, completion: nil)
-                }), animated: true)
-            }
-            decisionHandler(.cancel)
-        } else if url.scheme == "geo" {
-            decisionHandler(.cancel)
-        } else {
-            decisionHandler(.cancel)
-        }
-    }
-    
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        chevronLeftButton.isEnabled = webView.canGoBack
-        chevronRightButton.isEnabled = webView.canGoForward
-        if let url = Bundle.main.url(forResource: "Inject", withExtension: "js"), let javascript = try? String(contentsOf: url) {
-            webView.evaluateJavaScript(javascript) { _, _ in
-                if #available(iOS 14.0, *), let outlineViewController = self.contentViewController.viewController(for: .primary) as? OutlineViewController {
-                    outlineViewController.reload()
-                } else if let outlineViewController = self.contentViewController.viewControllers.first as? OutlineViewController {
-                    outlineViewController.reload()
-                }
-            }
-        }
-        if let url = webView.url {
-            bookmarkButton.isBookmarked = BookmarkService().get(url: url) == nil ? false : true
-        }
-        webViewController.adjustTextSize()
     }
     
     // MARK: - Actions
@@ -355,7 +243,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     @objc func bookmarkButtonPressed() {
         let bookmarksController = BookmarksViewController()
         bookmarksController.bookmarkTapped = { [weak self] url in self?.openURL(url) }
-        bookmarksController.bookmarkDeleted = { [weak self] in self?.bookmarkButton.isBookmarked = false }
         if #available(iOS 14.0, *), traitCollection.horizontalSizeClass == .regular {
             if contentViewController.displayMode == .secondaryOnly {
                 showSidebar(bookmarksController)
@@ -402,17 +289,19 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         let bookmarkService = BookmarkService()
         if let bookmark = bookmarkService.get(url: url) {
             bookmarkService.delete(bookmark)
-            bookmarkButton.isBookmarked = false
             presentBookmarkHUDController(isBookmarked: false)
         } else {
             bookmarkService.create(url: url)
-            bookmarkButton.isBookmarked = true
             presentBookmarkHUDController(isBookmarked: true)
         }
     }
     
     @objc func diceButtonTapped() {
-        openRandomPage()
+        if let url = webViewController.webView.url, let zimFileID = url.host {
+            openRandomPage(zimFileID: zimFileID)
+        } else {
+            openRandomPage()
+        }
     }
     
     @objc func houseButtonTapped() {
@@ -494,21 +383,12 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
 
 @available(iOS 14.0, *)
 class RootViewController_iOS14: RootViewController {
-    private var onDeviceZimFilesObserver: NotificationToken?
     private var sideBarDisplayModeObserver: Defaults.Observation?
-    
-    override var toolbarButtons: [BarButton] {
-        [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, diceButton, houseButton]
-    }
     
     // MARK: - Init & Overrides
     
     init() {
         super.init(contentViewController: UISplitViewController(style: .doubleColumn))
-        onDeviceZimFilesObserver = onDeviceZimFiles?.observe { change in
-            self.setupDiceButtonMenu()
-            self.setupHouseButtonMenu()
-        }
         sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode) { change in
             switch(Defaults[.sideBarDisplayMode]) {
             case .automatic:
@@ -534,43 +414,22 @@ class RootViewController_iOS14: RootViewController {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        setupHouseButtonMenu()
+        buttonProvider.configureHouseButtonMenu()
     }
     
     // MARK: - Setup & Configurations
     
-    fileprivate override func setupContentViewController() {
+    fileprivate override func configureContentViewController() {
         contentViewController.presentsWithGesture = false
-        let homeViewController = UIHostingController(rootView: HomeView())
-        homeViewController.rootView.zimFileTapped = openMainPage
-        homeViewController.rootView.libraryButtonTapped = openLibrary
-        homeViewController.rootView.settingsButtonTapped = openSettings
-        contentViewController.setViewController(homeViewController, for: .secondary)
-    }
-    
-    private func setupDiceButtonMenu() {
-        let items = onDeviceZimFiles?.map { zimFile in
-            UIAction(title: zimFile.title) { _ in self.openRandomPage(zimFileID: zimFile.id) }
-        } ?? [UIAction(title: "No Zim File Available", attributes: .disabled, handler: { _ in })]
-        diceButton.menu = UIMenu(children: items)
-    }
-    
-    private func setupHouseButtonMenu() {
-        var items = [UIMenuElement]()
-        if let zimFiles = onDeviceZimFiles {
-            items.append(UIMenu(options: .displayInline, children: zimFiles.map { zimFile in
-                UIAction(title: zimFile.title) { _ in self.openMainPage(zimFileID: zimFile.id) }
-            }))
+        if FeatureFlags.homeViewEnabled {
+            let homeViewController = UIHostingController(rootView: HomeView())
+            homeViewController.rootView.zimFileTapped = openMainPage
+            homeViewController.rootView.libraryButtonTapped = openLibrary
+            homeViewController.rootView.settingsButtonTapped = openSettings
+            contentViewController.setViewController(homeViewController, for: .secondary)
         } else {
-            items.append(UIAction(title: "No Zim File Available", attributes: .disabled, handler: { _ in }))
+            contentViewController.setViewController(welcomeController, for: .secondary)
         }
-        if traitCollection.horizontalSizeClass == .compact {
-            items.append(UIMenu(options: .displayInline, children: [
-                UIAction(title: "Open Library", image: UIImage(systemName: "books.vertical"), handler: { _ in self.openLibrary() }),
-                UIAction(title: "Open Settings", image: UIImage(systemName: "gear"), handler: { _ in self.openSettings() }),
-            ]))
-        }
-        houseButton.menu = UIMenu(children: items)
     }
     
     // MARK: - Sidebar
