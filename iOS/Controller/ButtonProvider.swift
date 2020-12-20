@@ -21,6 +21,7 @@ class ButtonProvider {
     private let houseButton = BarButton(imageName: "house")
     private let libraryButton = BarButton(imageName: "folder")
     private let settingButton = BarButton(imageName: "gear")
+    private let moreButton = BarButton(imageName: "ellipsis.circle")
     private let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
     
     let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
@@ -30,7 +31,7 @@ class ButtonProvider {
         if #available(iOS 14.0, *) {
             return [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, diceButton, houseButton]
         } else {
-            return [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, libraryButton, settingButton]
+            return [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, diceButton, moreButton]
         }
     }
     
@@ -82,6 +83,7 @@ class ButtonProvider {
         houseButton.addTarget(controller, action: #selector(controller.houseButtonTapped), for: .touchUpInside)
         libraryButton.addTarget(controller, action: #selector(controller.openLibrary), for: .touchUpInside)
         settingButton.addTarget(controller, action: #selector(controller.openSettings), for: .touchUpInside)
+        moreButton.addTarget(controller, action: #selector(controller.moreButtonTapped), for: .touchUpInside)
         
         bookmarkLongPressGestureRecognizer.addTarget(controller, action: #selector(controller.bookmarkButtonLongPressed))
         cancelButton.target = controller

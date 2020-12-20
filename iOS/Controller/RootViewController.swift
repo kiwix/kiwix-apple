@@ -334,6 +334,10 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         present(SettingNavigationController(), animated: true)
     }
     
+    @objc func moreButtonTapped() {
+        
+    }
+    
     @objc func dismissSearch() {
         /*
          We have to dismiss the `searchController` first, so that the `isBeingDismissed` property is correct on the
