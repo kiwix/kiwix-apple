@@ -77,7 +77,7 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
             if let redirectedPath = ZimMultiReader.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
                 let redirectedURL = URL(zimFileID: zimFileID, contentPath: redirectedPath) {
                 decisionHandler(.cancel, preferences)
-                rootViewController?.openURL(redirectedURL)
+                webView.load(URLRequest(url: redirectedURL))
             } else {
                 preferences.preferredContentMode = .mobile
                 decisionHandler(.allow, preferences)
