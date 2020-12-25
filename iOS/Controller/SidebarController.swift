@@ -9,13 +9,15 @@
 import UIKit
 import Defaults
 
-class SidebarController: UISplitViewController {
+class SidebarController: UISplitViewController, UISplitViewControllerDelegate {
+    private let contentHostingController = UIViewController()
+    
     init() {
         if #available(iOS 14.0, *) {
             super.init(style: .doubleColumn)
         } else {
             super.init(nibName: nil, bundle: nil)
-            viewControllers = [UIViewController(), UIViewController()]
+            viewControllers = [UIViewController(), contentHostingController]
             preferredDisplayMode = .primaryHidden
         }
         presentsWithGesture = false
@@ -82,11 +84,39 @@ class SidebarController: UISplitViewController {
         }
     }
     
-    func setContentViewController(_ viewController: UIViewController) {
+    func setContentViewController(_ controller: UIViewController) {
         if #available(iOS 14.0, *) {
-            setViewController(viewController, for: .secondary)
+            guard viewController(for: .secondary) !== controller else { return }
+            setViewController(controller, for: .secondary)
         } else {
-            // Fallback on earlier versions
+            guard !contentHostingController.children.contains(controller) else { return }
+            contentHostingController.children.forEach { child in
+                child.willMove(toParent: nil)
+                child.view.removeFromSuperview()
+                child.removeFromParent()
+            }
+            contentHostingController.addChild(controller)
+            controller.view.translatesAutoresizingMaskIntoConstraints = false
+            contentHostingController.view.addSubview(controller.view)
+            NSLayoutConstraint.activate([
+                controller.view.topAnchor.constraint(equalTo: contentHostingController.view.topAnchor),
+                controller.view.leftAnchor.constraint(equalTo: contentHostingController.view.leftAnchor),
+                controller.view.bottomAnchor.constraint(equalTo: contentHostingController.view.bottomAnchor),
+                controller.view.rightAnchor.constraint(equalTo: contentHostingController.view.rightAnchor),
+            ])
+            controller.didMove(toParent: self)
         }
+    }
+    
+    // MARK: - UISplitViewControllerDelegate
+    
+    // only needed for iOS 12 & 13
+    func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
+        splitViewController.viewControllers.last
+    }
+    
+    // only needed for iOS 12 & 13
+    func splitViewController(_ splitViewController: UISplitViewController, separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
+        splitViewController.viewControllers.last
     }
 }

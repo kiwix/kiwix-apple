@@ -16,14 +16,13 @@ import RealmSwift
 class RootViewController: UIViewController, UISearchControllerDelegate, UISplitViewControllerDelegate {
     let searchController: UISearchController
     private let sidebarController = SidebarController()
-    fileprivate let searchResultsController: SearchResultsController
-    fileprivate let contentViewController: UISplitViewController
-    fileprivate let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
-    fileprivate let webViewController = WebViewController()
-    fileprivate var libraryController: LibraryController?
+    private let searchResultsController: SearchResultsController
+    private let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
+    private let webViewController = WebViewController()
+    private var libraryController: LibraryController?
     
-    fileprivate let onDeviceZimFiles = Queries.onDeviceZimFiles()?.sorted(byKeyPath: "size", ascending: false)
-    fileprivate let buttonProvider: ButtonProvider
+    private let onDeviceZimFiles = Queries.onDeviceZimFiles()?.sorted(byKeyPath: "size", ascending: false)
+    private let buttonProvider: ButtonProvider
     private var sideBarDisplayModeObserver: Defaults.Observation?
     
     // MARK: - Init & Overrides
@@ -31,12 +30,9 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     init(contentViewController: UISplitViewController = UISplitViewController()) {
         self.searchResultsController = SearchResultsController()
         self.searchController = UISearchController(searchResultsController: self.searchResultsController)
-        self.contentViewController = contentViewController
         self.buttonProvider = ButtonProvider(webView: webViewController.webView)
         super.init(nibName: nil, bundle: nil)
         buttonProvider.rootViewController = self
-        configureContentViewController()
-        
         sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode) { change in
             guard #available(iOS 14.0, *) else { return }
             switch(Defaults[.sideBarDisplayMode]) {
@@ -65,7 +61,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         super.viewDidLoad()
         
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
-        configureChildViewController()
+        configureSidebarViewController()
         configureSearchController()
         
         if #available(iOS 14.0, *), FeatureFlags.homeViewEnabled {
@@ -90,9 +86,9 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
             }
             
             // hide sidebar when view transition to horizontally regular from non-regular on iOS 12 & 13
-            if #available(iOS 14.0, *) { } else {
-                contentViewController.preferredDisplayMode = .primaryHidden
-            }
+//            if #available(iOS 14.0, *) { } else {
+//                contentViewController.preferredDisplayMode = .primaryHidden
+//            }
         }
     }
     
@@ -109,11 +105,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     func openURL(_ url: URL) {
         if url.isKiwixURL {
             webViewController.webView.load(URLRequest(url: url))
-            if #available(iOS 14.0, *) {
-                contentViewController.setViewController(webViewController, for: .secondary)
-            } else if !(contentViewController.viewControllers.last is WebViewController) {
-                contentViewController.viewControllers[contentViewController.viewControllers.count - 1] = webViewController
-            }
+            sidebarController.setContentViewController(webViewController)
             if searchController.isActive {
                 dismissSearch()
             }
@@ -170,14 +162,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         }
     }
     
-    fileprivate func configureContentViewController() {
-        contentViewController.presentsWithGesture = false
-        contentViewController.viewControllers = [UIViewController(), welcomeController]
-        contentViewController.preferredDisplayMode = .primaryHidden
-        contentViewController.delegate = self
-    }
-    
-    fileprivate func configureChildViewController() {
+    fileprivate func configureSidebarViewController() {
         addChild(sidebarController)
         sidebarController.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sidebarController.view)
@@ -226,18 +211,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     
     func willDismissSearchController(_ searchController: UISearchController) {
         configureBarButtons(searchIsActive: false, animated: true)
-    }
-    
-    // MARK: - UISplitViewControllerDelegate
-    
-    // only needed for iOS 12 & 13
-    func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
-        splitViewController.viewControllers.last
-    }
-    
-    // only needed for iOS 12 & 13
-    func splitViewController(_ splitViewController: UISplitViewController, separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
-        splitViewController.viewControllers.last
     }
     
     // MARK: - Actions
