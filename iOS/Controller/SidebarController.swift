@@ -17,14 +17,27 @@ class SidebarController: UISplitViewController, UISplitViewControllerDelegate {
             super.init(style: .doubleColumn)
         } else {
             super.init(nibName: nil, bundle: nil)
-            viewControllers = [UIViewController(), contentHostingController]
+            delegate = self
             preferredDisplayMode = .primaryHidden
+            viewControllers = [UIViewController(), contentHostingController]
         }
         presentsWithGesture = false
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        // on iOS 12 & 13, hide sidebar when view transition to horizontally regular from non-regular and when
+        // automatic sidebar display mode is used. This is because we have our own heuristic for automatic mode.
+        if #available(iOS 14.0, *) { } else {
+            if Defaults[.sideBarDisplayMode] == .automatic {
+                preferredDisplayMode = .primaryHidden
+            }
+        }
     }
     
     func showSidebar(_ controller: UIViewController) {

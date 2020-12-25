@@ -27,7 +27,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     
     // MARK: - Init & Overrides
     
-    init(contentViewController: UISplitViewController = UISplitViewController()) {
+    init() {
         self.searchResultsController = SearchResultsController()
         self.searchController = UISearchController(searchResultsController: self.searchResultsController)
         self.buttonProvider = ButtonProvider(webView: webViewController.webView)
@@ -84,11 +84,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
                (topViewController is OutlineViewController || topViewController is BookmarksViewController) {
                 presentedViewController?.dismiss(animated: false)
             }
-            
-            // hide sidebar when view transition to horizontally regular from non-regular on iOS 12 & 13
-//            if #available(iOS 14.0, *) { } else {
-//                contentViewController.preferredDisplayMode = .primaryHidden
-//            }
         }
     }
     
