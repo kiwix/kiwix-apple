@@ -318,7 +318,12 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     }
     
     @objc func moreButtonTapped() {
-        
+        let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        controller.addAction(UIAlertAction(title: "Open Main Page", style: .default, handler: { _  in self.houseButtonTapped()}))
+        controller.addAction(UIAlertAction(title: "Open Library", style: .default, handler: { _  in self.openLibrary()}))
+        controller.addAction(UIAlertAction(title: "Open Settings", style: .default, handler: { _  in self.openSettings()}))
+        controller.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(controller, animated: true)
     }
     
     @objc func dismissSearch() {
