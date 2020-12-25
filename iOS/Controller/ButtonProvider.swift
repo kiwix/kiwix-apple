@@ -20,13 +20,13 @@ class ButtonProvider {
     private let diceButton = BarButton(imageName: "die.face.5")
     private let houseButton = BarButton(imageName: "house")
     private let libraryButton = BarButton(imageName: "folder")
-    private let settingButton = BarButton(imageName: "gear")
+    private let settingsButton = BarButton(imageName: "gear")
     private let moreButton = BarButton(imageName: "ellipsis.circle")
     private let bookmarkLongPressGestureRecognizer = UILongPressGestureRecognizer()
     
     let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
     var navigationLeftButtons: [BarButton] { [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton] }
-    var navigationRightButtons: [BarButton] { [diceButton, houseButton, libraryButton, settingButton] }
+    var navigationRightButtons: [BarButton] { [diceButton, houseButton, libraryButton, settingsButton] }
     var toolbarButtons: [BarButton] {
         if #available(iOS 14.0, *) {
             return [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, diceButton, houseButton]
@@ -75,14 +75,14 @@ class ButtonProvider {
     
     private func setupTargetActions() {
         guard let controller = rootViewController else { return }
-        chevronLeftButton.addTarget(controller, action: #selector(controller.goBack), for: .touchUpInside)
-        chevronRightButton.addTarget(controller, action: #selector(controller.goForward), for: .touchUpInside)
-        outlineButton.addTarget(controller, action: #selector(controller.toggleOutline), for: .touchUpInside)
-        bookmarkButton.addTarget(controller, action: #selector(controller.bookmarkButtonPressed), for: .touchUpInside)
+        chevronLeftButton.addTarget(controller, action: #selector(controller.chevronLeftButtonTapped), for: .touchUpInside)
+        chevronRightButton.addTarget(controller, action: #selector(controller.chevronRightButtonTapped), for: .touchUpInside)
+        outlineButton.addTarget(controller, action: #selector(controller.outlineButtonTapped), for: .touchUpInside)
+        bookmarkButton.addTarget(controller, action: #selector(controller.bookmarkButtonTapped), for: .touchUpInside)
         diceButton.addTarget(controller, action: #selector(controller.diceButtonTapped), for: .touchUpInside)
         houseButton.addTarget(controller, action: #selector(controller.houseButtonTapped), for: .touchUpInside)
-        libraryButton.addTarget(controller, action: #selector(controller.openLibrary), for: .touchUpInside)
-        settingButton.addTarget(controller, action: #selector(controller.openSettings), for: .touchUpInside)
+        libraryButton.addTarget(controller, action: #selector(controller.libraryButtonTapped), for: .touchUpInside)
+        settingsButton.addTarget(controller, action: #selector(controller.settingsButtonTapped), for: .touchUpInside)
         moreButton.addTarget(controller, action: #selector(controller.moreButtonTapped), for: .touchUpInside)
         
         bookmarkLongPressGestureRecognizer.addTarget(controller, action: #selector(controller.bookmarkButtonLongPressed))
@@ -115,8 +115,8 @@ class ButtonProvider {
         }
         if self.rootViewController?.traitCollection.horizontalSizeClass == .compact {
             items.append(UIMenu(options: .displayInline, children: [
-                UIAction(title: "Open Library", image: UIImage(systemName: "books.vertical"), handler: { _ in self.rootViewController?.openLibrary() }),
-                UIAction(title: "Open Settings", image: UIImage(systemName: "gear"), handler: { _ in self.rootViewController?.openSettings() }),
+                UIAction(title: "Open Library", image: UIImage(systemName: "books.vertical"), handler: { _ in self.rootViewController?.libraryButtonTapped() }),
+                UIAction(title: "Open Settings", image: UIImage(systemName: "gear"), handler: { _ in self.rootViewController?.settingsButtonTapped() }),
             ]))
         }
         houseButton.menu = UIMenu(children: items)

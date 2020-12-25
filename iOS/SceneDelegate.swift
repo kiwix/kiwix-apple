@@ -49,7 +49,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
               let rootViewController = navigationController.topViewController as? RootViewController else { completionHandler(false); return }
         switch shortcut {
         case .bookmark:
-            rootViewController.bookmarkButtonPressed()
+            rootViewController.bookmarkButtonTapped()
         case .search:
             rootViewController.searchController.isActive = true
         }

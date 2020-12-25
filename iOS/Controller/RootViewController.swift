@@ -48,8 +48,8 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         if #available(iOS 14.0, *), FeatureFlags.homeViewEnabled {
             let homeViewController = UIHostingController(rootView: HomeView())
             homeViewController.rootView.zimFileTapped = openMainPage
-            homeViewController.rootView.libraryButtonTapped = openLibrary
-            homeViewController.rootView.settingsButtonTapped = openSettings
+            homeViewController.rootView.libraryButtonTapped = libraryButtonTapped
+            homeViewController.rootView.settingsButtonTapped = settingsButtonTapped
             sidebarController.setContentViewController(homeViewController)
         } else {
             sidebarController.setContentViewController(welcomeController)
@@ -191,15 +191,15 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     
     // MARK: - Actions
     
-    @objc func goBack() {
+    @objc func chevronLeftButtonTapped() {
         webViewController.webView.goBack()
     }
     
-    @objc func goForward() {
+    @objc func chevronRightButtonTapped() {
         webViewController.webView.goForward()
     }
     
-    @objc func toggleOutline() {
+    @objc func outlineButtonTapped() {
         let outlineViewController = OutlineViewController(webView: webViewController.webView)
         if #available(iOS 14.0, *), traitCollection.horizontalSizeClass == .regular {
             if sidebarController.displayMode == .secondaryOnly {
@@ -223,7 +223,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         }
     }
     
-    @objc func bookmarkButtonPressed() {
+    @objc func bookmarkButtonTapped() {
         let bookmarksController = BookmarksViewController()
         bookmarksController.bookmarkTapped = { [weak self] url in self?.openURL(url) }
         if #available(iOS 14.0, *), traitCollection.horizontalSizeClass == .regular {
@@ -295,7 +295,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         }
     }
     
-    @objc func openLibrary() {
+    @objc func libraryButtonTapped() {
         if #available(iOS 14.0, *), FeatureFlags.swiftUIBasedLibraryEnabled {
             let controller = UIHostingController(rootView: LibraryView())
             controller.rootView.dismiss = { controller.dismiss(animated: true) }
@@ -313,15 +313,15 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         }
     }
     
-    @objc func openSettings() {
+    @objc func settingsButtonTapped() {
         present(SettingNavigationController(), animated: true)
     }
     
     @objc func moreButtonTapped() {
         let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         controller.addAction(UIAlertAction(title: "Open Main Page", style: .default, handler: { _  in self.houseButtonTapped()}))
-        controller.addAction(UIAlertAction(title: "Open Library", style: .default, handler: { _  in self.openLibrary()}))
-        controller.addAction(UIAlertAction(title: "Open Settings", style: .default, handler: { _  in self.openSettings()}))
+        controller.addAction(UIAlertAction(title: "Open Library", style: .default, handler: { _  in self.libraryButtonTapped()}))
+        controller.addAction(UIAlertAction(title: "Open Settings", style: .default, handler: { _  in self.settingsButtonTapped()}))
         controller.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(controller, animated: true)
     }
