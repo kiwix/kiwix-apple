@@ -15,6 +15,7 @@ import RealmSwift
 
 class RootViewController: UIViewController, UISearchControllerDelegate, UISplitViewControllerDelegate {
     let searchController: UISearchController
+    private let sidebarController = SidebarController()
     fileprivate let searchResultsController: SearchResultsController
     fileprivate let contentViewController: UISplitViewController
     fileprivate let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
@@ -144,15 +145,15 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     }
     
     fileprivate func configureChildViewController() {
-        addChild(contentViewController)
-        contentViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(contentViewController.view)
+        addChild(sidebarController)
+        sidebarController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(sidebarController.view)
         if #available(iOS 13.0, *) {
             NSLayoutConstraint.activate([
-                view.topAnchor.constraint(equalTo: contentViewController.view.topAnchor),
-                view.leftAnchor.constraint(equalTo: contentViewController.view.leftAnchor),
-                view.bottomAnchor.constraint(equalTo: contentViewController.view.bottomAnchor),
-                view.rightAnchor.constraint(equalTo: contentViewController.view.rightAnchor),
+                view.topAnchor.constraint(equalTo: sidebarController.view.topAnchor),
+                view.leftAnchor.constraint(equalTo: sidebarController.view.leftAnchor),
+                view.bottomAnchor.constraint(equalTo: sidebarController.view.bottomAnchor),
+                view.rightAnchor.constraint(equalTo: sidebarController.view.rightAnchor),
             ])
         } else {
             // on iOS 12, the contentViewController's master & detail controllers do not seem to be aware of the safe area,
@@ -160,13 +161,13 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
             // and there won't be the content underneath the bar behavior
             view.backgroundColor = .white
             NSLayoutConstraint.activate([
-                view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: contentViewController.view.topAnchor),
-                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: contentViewController.view.bottomAnchor),
-                view.leftAnchor.constraint(equalTo: contentViewController.view.leftAnchor),
-                view.rightAnchor.constraint(equalTo: contentViewController.view.rightAnchor),
+                view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: sidebarController.view.topAnchor),
+                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: sidebarController.view.bottomAnchor),
+                view.leftAnchor.constraint(equalTo: sidebarController.view.leftAnchor),
+                view.rightAnchor.constraint(equalTo: sidebarController.view.rightAnchor),
             ])
         }
-        contentViewController.didMove(toParent: self)
+        sidebarController.didMove(toParent: self)
     }
     
     private func configureSearchController() {
@@ -219,20 +220,20 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     @objc func toggleOutline() {
         let outlineViewController = OutlineViewController(webView: webViewController.webView)
         if #available(iOS 14.0, *), traitCollection.horizontalSizeClass == .regular {
-            if contentViewController.displayMode == .secondaryOnly {
-                showSidebar(outlineViewController)
-            } else if !(contentViewController.viewController(for: .primary) is OutlineViewController) {
-                contentViewController.setViewController(outlineViewController, for: .primary)
+            if sidebarController.displayMode == .secondaryOnly {
+                sidebarController.showSidebar(outlineViewController)
+            } else if !(sidebarController.viewController(for: .primary) is OutlineViewController) {
+                sidebarController.setViewController(outlineViewController, for: .primary)
             } else {
-                hideSidebar()
+                sidebarController.hideSidebar()
             }
         } else if traitCollection.horizontalSizeClass == .regular {
-            if contentViewController.displayMode == .primaryHidden {
-                showSidebar(outlineViewController)
-            } else if !(contentViewController.viewControllers.first is OutlineViewController) {
-                contentViewController.viewControllers[0] = outlineViewController
+            if sidebarController.displayMode == .primaryHidden {
+                sidebarController.showSidebar(outlineViewController)
+            } else if !(sidebarController.viewControllers.first is OutlineViewController) {
+                sidebarController.viewControllers[0] = outlineViewController
             } else {
-                hideSidebar()
+                sidebarController.hideSidebar()
             }
         } else {
             let navigationController = UINavigationController(rootViewController: outlineViewController)
@@ -244,20 +245,20 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         let bookmarksController = BookmarksViewController()
         bookmarksController.bookmarkTapped = { [weak self] url in self?.openURL(url) }
         if #available(iOS 14.0, *), traitCollection.horizontalSizeClass == .regular {
-            if contentViewController.displayMode == .secondaryOnly {
-                showSidebar(bookmarksController)
-            } else if !(contentViewController.viewController(for: .primary) is BookmarksViewController) {
-                contentViewController.setViewController(bookmarksController, for: .primary)
+            if sidebarController.displayMode == .secondaryOnly {
+                sidebarController.showSidebar(bookmarksController)
+            } else if !(sidebarController.viewController(for: .primary) is BookmarksViewController) {
+                sidebarController.setViewController(bookmarksController, for: .primary)
             } else {
-                hideSidebar()
+                sidebarController.hideSidebar()
             }
         } else if traitCollection.horizontalSizeClass == .regular {
-            if contentViewController.displayMode == .primaryHidden {
-                showSidebar(bookmarksController)
-            } else if !(contentViewController.viewControllers.first is BookmarksViewController) {
-                contentViewController.viewControllers[0] = bookmarksController
+            if sidebarController.displayMode == .primaryHidden {
+                sidebarController.showSidebar(bookmarksController)
+            } else if !(sidebarController.viewControllers.first is BookmarksViewController) {
+                sidebarController.viewControllers[0] = bookmarksController
             } else {
-                hideSidebar()
+                sidebarController.hideSidebar()
             }
         } else {
             let navigationController = UINavigationController(rootViewController: bookmarksController)
@@ -347,42 +348,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         searchController.dismiss(animated: true)
         searchController.isActive = false
     }
-    
-    // MARK: - Sidebar
-    
-    fileprivate func showSidebar(_ controller: UIViewController) {
-        if contentViewController.viewControllers.count == 1 {
-            contentViewController.viewControllers.insert(controller, at: 0)
-        } else {
-            contentViewController.viewControllers[0] = controller
-        }
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut) {
-            self.contentViewController.preferredDisplayMode = {
-                if #available(iOS 13.0, *) {
-                    switch Defaults[.sideBarDisplayMode] {
-                    case .automatic:
-                        let size = self.view.frame.size
-                        return size.width > size.height ? .allVisible : .primaryOverlay
-                    case .overlay:
-                        return .primaryOverlay
-                    case .sideBySide:
-                        return .allVisible
-                    }
-                } else {
-                    return .allVisible
-                }
-            }()
-        }
-    }
-    
-    fileprivate func hideSidebar() {
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn) {
-            self.contentViewController.preferredDisplayMode = .primaryHidden
-        } completion: { completed in
-            guard completed else { return }
-            self.contentViewController.viewControllers[0] = UIViewController()
-        }
-    }
 }
 
 @available(iOS 14.0, *)
@@ -434,30 +399,5 @@ class RootViewController_iOS14: RootViewController {
         } else {
             contentViewController.setViewController(welcomeController, for: .secondary)
         }
-    }
-    
-    // MARK: - Sidebar
-    
-    fileprivate override func showSidebar(_ controller: UIViewController) {
-        contentViewController.setViewController(controller, for: .primary)
-        contentViewController.show(.primary)
-        contentViewController.preferredDisplayMode = {
-            switch Defaults[.sideBarDisplayMode] {
-            case .automatic:
-                return .automatic
-            case .overlay:
-                return .oneOverSecondary
-            case .sideBySide:
-                return .oneBesideSecondary
-            }
-        }()
-    }
-    
-    fileprivate override func hideSidebar() {
-        contentViewController.hide(.primary)
-        transitionCoordinator?.animate(alongsideTransition: { _ in }, completion: { context in
-            guard !context.isCancelled else { return }
-            self.contentViewController.setViewController(nil, for: .primary)
-        })
     }
 }
