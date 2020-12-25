@@ -15,25 +15,23 @@ import RealmSwift
 
 class RootViewController: UIViewController, UISearchControllerDelegate, UISplitViewControllerDelegate {
     let searchController: UISearchController
-    fileprivate let searchResultsController: SearchResultsController
-    fileprivate let contentViewController: UISplitViewController
-    fileprivate let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
-    fileprivate let webViewController = WebViewController()
-    fileprivate var libraryController: LibraryController?
+    private let sidebarController = SidebarController()
+    private let searchResultsController: SearchResultsController
+    private let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
+    private let webViewController = WebViewController()
+    private var libraryController: LibraryController?
     
-    fileprivate let onDeviceZimFiles = Queries.onDeviceZimFiles()?.sorted(byKeyPath: "size", ascending: false)
-    fileprivate let buttonProvider: ButtonProvider
+    private let onDeviceZimFiles = Queries.onDeviceZimFiles()?.sorted(byKeyPath: "size", ascending: false)
+    private let buttonProvider: ButtonProvider
     
     // MARK: - Init & Overrides
     
-    init(contentViewController: UISplitViewController = UISplitViewController()) {
+    init() {
         self.searchResultsController = SearchResultsController()
         self.searchController = UISearchController(searchResultsController: self.searchResultsController)
-        self.contentViewController = contentViewController
         self.buttonProvider = ButtonProvider(webView: webViewController.webView)
         super.init(nibName: nil, bundle: nil)
         buttonProvider.rootViewController = self
-        configureContentViewController()
     }
     
     required init?(coder: NSCoder) {
@@ -44,8 +42,18 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         super.viewDidLoad()
         
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
-        configureChildViewController()
+        configureSidebarViewController()
         configureSearchController()
+        
+        if #available(iOS 14.0, *), FeatureFlags.homeViewEnabled {
+            let homeViewController = UIHostingController(rootView: HomeView())
+            homeViewController.rootView.zimFileTapped = openMainPage
+            homeViewController.rootView.libraryButtonTapped = libraryButtonTapped
+            homeViewController.rootView.settingsButtonTapped = settingsButtonTapped
+            sidebarController.setContentViewController(homeViewController)
+        } else {
+            sidebarController.setContentViewController(welcomeController)
+        }
     }
     
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -57,17 +65,15 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
                (topViewController is OutlineViewController || topViewController is BookmarksViewController) {
                 presentedViewController?.dismiss(animated: false)
             }
-            
-            // hide sidebar when view transition to horizontally regular from non-regular on iOS 12 & 13
-            if #available(iOS 14.0, *) { } else {
-                contentViewController.preferredDisplayMode = .primaryHidden
-            }
         }
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
+        if #available(iOS 14.0, *) {
+            buttonProvider.configureHouseButtonMenu()
+        }
     }
     
     // MARK: - Public
@@ -75,11 +81,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     func openURL(_ url: URL) {
         if url.isKiwixURL {
             webViewController.webView.load(URLRequest(url: url))
-            if #available(iOS 14.0, *) {
-                contentViewController.setViewController(webViewController, for: .secondary)
-            } else if !(contentViewController.viewControllers.last is WebViewController) {
-                contentViewController.viewControllers[contentViewController.viewControllers.count - 1] = webViewController
-            }
+            sidebarController.setContentViewController(webViewController)
             if searchController.isActive {
                 dismissSearch()
             }
@@ -136,23 +138,16 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         }
     }
     
-    fileprivate func configureContentViewController() {
-        contentViewController.presentsWithGesture = false
-        contentViewController.viewControllers = [UIViewController(), welcomeController]
-        contentViewController.preferredDisplayMode = .primaryHidden
-        contentViewController.delegate = self
-    }
-    
-    fileprivate func configureChildViewController() {
-        addChild(contentViewController)
-        contentViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(contentViewController.view)
+    fileprivate func configureSidebarViewController() {
+        addChild(sidebarController)
+        sidebarController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(sidebarController.view)
         if #available(iOS 13.0, *) {
             NSLayoutConstraint.activate([
-                view.topAnchor.constraint(equalTo: contentViewController.view.topAnchor),
-                view.leftAnchor.constraint(equalTo: contentViewController.view.leftAnchor),
-                view.bottomAnchor.constraint(equalTo: contentViewController.view.bottomAnchor),
-                view.rightAnchor.constraint(equalTo: contentViewController.view.rightAnchor),
+                view.topAnchor.constraint(equalTo: sidebarController.view.topAnchor),
+                view.leftAnchor.constraint(equalTo: sidebarController.view.leftAnchor),
+                view.bottomAnchor.constraint(equalTo: sidebarController.view.bottomAnchor),
+                view.rightAnchor.constraint(equalTo: sidebarController.view.rightAnchor),
             ])
         } else {
             // on iOS 12, the contentViewController's master & detail controllers do not seem to be aware of the safe area,
@@ -160,13 +155,13 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
             // and there won't be the content underneath the bar behavior
             view.backgroundColor = .white
             NSLayoutConstraint.activate([
-                view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: contentViewController.view.topAnchor),
-                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: contentViewController.view.bottomAnchor),
-                view.leftAnchor.constraint(equalTo: contentViewController.view.leftAnchor),
-                view.rightAnchor.constraint(equalTo: contentViewController.view.rightAnchor),
+                view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: sidebarController.view.topAnchor),
+                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: sidebarController.view.bottomAnchor),
+                view.leftAnchor.constraint(equalTo: sidebarController.view.leftAnchor),
+                view.rightAnchor.constraint(equalTo: sidebarController.view.rightAnchor),
             ])
         }
-        contentViewController.didMove(toParent: self)
+        sidebarController.didMove(toParent: self)
     }
     
     private func configureSearchController() {
@@ -194,45 +189,33 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         configureBarButtons(searchIsActive: false, animated: true)
     }
     
-    // MARK: - UISplitViewControllerDelegate
-    
-    // only needed for iOS 12 & 13
-    func primaryViewController(forCollapsing splitViewController: UISplitViewController) -> UIViewController? {
-        splitViewController.viewControllers.last
-    }
-    
-    // only needed for iOS 12 & 13
-    func splitViewController(_ splitViewController: UISplitViewController, separateSecondaryFrom primaryViewController: UIViewController) -> UIViewController? {
-        splitViewController.viewControllers.last
-    }
-    
     // MARK: - Actions
     
-    @objc func goBack() {
+    @objc func chevronLeftButtonTapped() {
         webViewController.webView.goBack()
     }
     
-    @objc func goForward() {
+    @objc func chevronRightButtonTapped() {
         webViewController.webView.goForward()
     }
     
-    @objc func toggleOutline() {
+    @objc func outlineButtonTapped() {
         let outlineViewController = OutlineViewController(webView: webViewController.webView)
         if #available(iOS 14.0, *), traitCollection.horizontalSizeClass == .regular {
-            if contentViewController.displayMode == .secondaryOnly {
-                showSidebar(outlineViewController)
-            } else if !(contentViewController.viewController(for: .primary) is OutlineViewController) {
-                contentViewController.setViewController(outlineViewController, for: .primary)
+            if sidebarController.displayMode == .secondaryOnly {
+                sidebarController.showSidebar(outlineViewController)
+            } else if !(sidebarController.viewController(for: .primary) is OutlineViewController) {
+                sidebarController.setViewController(outlineViewController, for: .primary)
             } else {
-                hideSidebar()
+                sidebarController.hideSidebar()
             }
         } else if traitCollection.horizontalSizeClass == .regular {
-            if contentViewController.displayMode == .primaryHidden {
-                showSidebar(outlineViewController)
-            } else if !(contentViewController.viewControllers.first is OutlineViewController) {
-                contentViewController.viewControllers[0] = outlineViewController
+            if sidebarController.displayMode == .primaryHidden {
+                sidebarController.showSidebar(outlineViewController)
+            } else if !(sidebarController.viewControllers.first is OutlineViewController) {
+                sidebarController.viewControllers[0] = outlineViewController
             } else {
-                hideSidebar()
+                sidebarController.hideSidebar()
             }
         } else {
             let navigationController = UINavigationController(rootViewController: outlineViewController)
@@ -240,24 +223,24 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         }
     }
     
-    @objc func bookmarkButtonPressed() {
+    @objc func bookmarkButtonTapped() {
         let bookmarksController = BookmarksViewController()
         bookmarksController.bookmarkTapped = { [weak self] url in self?.openURL(url) }
         if #available(iOS 14.0, *), traitCollection.horizontalSizeClass == .regular {
-            if contentViewController.displayMode == .secondaryOnly {
-                showSidebar(bookmarksController)
-            } else if !(contentViewController.viewController(for: .primary) is BookmarksViewController) {
-                contentViewController.setViewController(bookmarksController, for: .primary)
+            if sidebarController.displayMode == .secondaryOnly {
+                sidebarController.showSidebar(bookmarksController)
+            } else if !(sidebarController.viewController(for: .primary) is BookmarksViewController) {
+                sidebarController.setViewController(bookmarksController, for: .primary)
             } else {
-                hideSidebar()
+                sidebarController.hideSidebar()
             }
         } else if traitCollection.horizontalSizeClass == .regular {
-            if contentViewController.displayMode == .primaryHidden {
-                showSidebar(bookmarksController)
-            } else if !(contentViewController.viewControllers.first is BookmarksViewController) {
-                contentViewController.viewControllers[0] = bookmarksController
+            if sidebarController.displayMode == .primaryHidden {
+                sidebarController.showSidebar(bookmarksController)
+            } else if !(sidebarController.viewControllers.first is BookmarksViewController) {
+                sidebarController.viewControllers[0] = bookmarksController
             } else {
-                hideSidebar()
+                sidebarController.hideSidebar()
             }
         } else {
             let navigationController = UINavigationController(rootViewController: bookmarksController)
@@ -312,7 +295,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         }
     }
     
-    @objc func openLibrary() {
+    @objc func libraryButtonTapped() {
         if #available(iOS 14.0, *), FeatureFlags.swiftUIBasedLibraryEnabled {
             let controller = UIHostingController(rootView: LibraryView())
             controller.rootView.dismiss = { controller.dismiss(animated: true) }
@@ -330,8 +313,17 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         }
     }
     
-    @objc func openSettings() {
+    @objc func settingsButtonTapped() {
         present(SettingNavigationController(), animated: true)
+    }
+    
+    @objc func moreButtonTapped() {
+        let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        controller.addAction(UIAlertAction(title: "Open Main Page", style: .default, handler: { _  in self.houseButtonTapped()}))
+        controller.addAction(UIAlertAction(title: "Open Library", style: .default, handler: { _  in self.libraryButtonTapped()}))
+        controller.addAction(UIAlertAction(title: "Open Settings", style: .default, handler: { _  in self.settingsButtonTapped()}))
+        controller.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(controller, animated: true)
     }
     
     @objc func dismissSearch() {
@@ -342,118 +334,5 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
          */
         searchController.dismiss(animated: true)
         searchController.isActive = false
-    }
-    
-    // MARK: - Sidebar
-    
-    fileprivate func showSidebar(_ controller: UIViewController) {
-        if contentViewController.viewControllers.count == 1 {
-            contentViewController.viewControllers.insert(controller, at: 0)
-        } else {
-            contentViewController.viewControllers[0] = controller
-        }
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut) {
-            self.contentViewController.preferredDisplayMode = {
-                if #available(iOS 13.0, *) {
-                    switch Defaults[.sideBarDisplayMode] {
-                    case .automatic:
-                        let size = self.view.frame.size
-                        return size.width > size.height ? .allVisible : .primaryOverlay
-                    case .overlay:
-                        return .primaryOverlay
-                    case .sideBySide:
-                        return .allVisible
-                    }
-                } else {
-                    return .allVisible
-                }
-            }()
-        }
-    }
-    
-    fileprivate func hideSidebar() {
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn) {
-            self.contentViewController.preferredDisplayMode = .primaryHidden
-        } completion: { completed in
-            guard completed else { return }
-            self.contentViewController.viewControllers[0] = UIViewController()
-        }
-    }
-}
-
-@available(iOS 14.0, *)
-class RootViewController_iOS14: RootViewController {
-    private var sideBarDisplayModeObserver: Defaults.Observation?
-    
-    // MARK: - Init & Overrides
-    
-    init() {
-        super.init(contentViewController: UISplitViewController(style: .doubleColumn))
-        sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode) { change in
-            switch(Defaults[.sideBarDisplayMode]) {
-            case .automatic:
-                self.contentViewController.preferredSplitBehavior = .automatic
-                self.contentViewController.preferredDisplayMode = .automatic
-            case .overlay:
-                self.contentViewController.preferredSplitBehavior = .overlay
-                if self.contentViewController.displayMode == .oneBesideSecondary {
-                    self.contentViewController.preferredDisplayMode = .oneOverSecondary
-                }
-            case .sideBySide:
-                self.contentViewController.preferredSplitBehavior = .tile
-                if self.contentViewController.displayMode == .oneOverSecondary {
-                    self.contentViewController.preferredDisplayMode = .oneBesideSecondary
-                }
-            }
-        }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        buttonProvider.configureHouseButtonMenu()
-    }
-    
-    // MARK: - Setup & Configurations
-    
-    fileprivate override func configureContentViewController() {
-        contentViewController.presentsWithGesture = false
-        if FeatureFlags.homeViewEnabled {
-            let homeViewController = UIHostingController(rootView: HomeView())
-            homeViewController.rootView.zimFileTapped = openMainPage
-            homeViewController.rootView.libraryButtonTapped = openLibrary
-            homeViewController.rootView.settingsButtonTapped = openSettings
-            contentViewController.setViewController(homeViewController, for: .secondary)
-        } else {
-            contentViewController.setViewController(welcomeController, for: .secondary)
-        }
-    }
-    
-    // MARK: - Sidebar
-    
-    fileprivate override func showSidebar(_ controller: UIViewController) {
-        contentViewController.setViewController(controller, for: .primary)
-        contentViewController.show(.primary)
-        contentViewController.preferredDisplayMode = {
-            switch Defaults[.sideBarDisplayMode] {
-            case .automatic:
-                return .automatic
-            case .overlay:
-                return .oneOverSecondary
-            case .sideBySide:
-                return .oneBesideSecondary
-            }
-        }()
-    }
-    
-    fileprivate override func hideSidebar() {
-        contentViewController.hide(.primary)
-        transitionCoordinator?.animate(alongsideTransition: { _ in }, completion: { context in
-            guard !context.isCancelled else { return }
-            self.contentViewController.setViewController(nil, for: .primary)
-        })
     }
 }

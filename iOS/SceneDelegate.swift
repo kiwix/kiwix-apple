@@ -11,13 +11,7 @@ import UIKit
 @available(iOS 13, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
-    private let rootViewController: RootViewController = {
-        if #available(iOS 14.0, *) {
-            return RootViewController_iOS14()
-        } else {
-            return RootViewController()
-        }
-    }()
+    private let rootViewController = RootViewController()
     
     // MARK: - Lifecycle
     
@@ -55,7 +49,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
               let rootViewController = navigationController.topViewController as? RootViewController else { completionHandler(false); return }
         switch shortcut {
         case .bookmark:
-            rootViewController.bookmarkButtonPressed()
+            rootViewController.bookmarkButtonTapped()
         case .search:
             rootViewController.searchController.isActive = true
         }
