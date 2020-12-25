@@ -24,6 +24,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     
     fileprivate let onDeviceZimFiles = Queries.onDeviceZimFiles()?.sorted(byKeyPath: "size", ascending: false)
     fileprivate let buttonProvider: ButtonProvider
+    private var sideBarDisplayModeObserver: Defaults.Observation?
     
     // MARK: - Init & Overrides
     
@@ -35,6 +36,25 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         super.init(nibName: nil, bundle: nil)
         buttonProvider.rootViewController = self
         configureContentViewController()
+        
+        sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode) { change in
+            guard #available(iOS 14.0, *) else { return }
+            switch(Defaults[.sideBarDisplayMode]) {
+            case .automatic:
+                self.sidebarController.preferredSplitBehavior = .automatic
+                self.sidebarController.preferredDisplayMode = .automatic
+            case .overlay:
+                self.sidebarController.preferredSplitBehavior = .overlay
+                if self.sidebarController.displayMode == .oneBesideSecondary {
+                    self.sidebarController.preferredDisplayMode = .oneOverSecondary
+                }
+            case .sideBySide:
+                self.sidebarController.preferredSplitBehavior = .tile
+                if self.sidebarController.displayMode == .oneOverSecondary {
+                    self.sidebarController.preferredDisplayMode = .oneBesideSecondary
+                }
+            }
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -47,6 +67,16 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
         configureChildViewController()
         configureSearchController()
+        
+        if #available(iOS 14.0, *), FeatureFlags.homeViewEnabled {
+            let homeViewController = UIHostingController(rootView: HomeView())
+            homeViewController.rootView.zimFileTapped = openMainPage
+            homeViewController.rootView.libraryButtonTapped = openLibrary
+            homeViewController.rootView.settingsButtonTapped = openSettings
+            sidebarController.setContentViewController(homeViewController)
+        } else {
+            sidebarController.setContentViewController(welcomeController)
+        }
     }
     
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -69,6 +99,9 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
+        if #available(iOS 14.0, *) {
+            buttonProvider.configureHouseButtonMenu()
+        }
     }
     
     // MARK: - Public
@@ -347,57 +380,5 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
          */
         searchController.dismiss(animated: true)
         searchController.isActive = false
-    }
-}
-
-@available(iOS 14.0, *)
-class RootViewController_iOS14: RootViewController {
-    private var sideBarDisplayModeObserver: Defaults.Observation?
-    
-    // MARK: - Init & Overrides
-    
-    init() {
-        super.init(contentViewController: UISplitViewController(style: .doubleColumn))
-        sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode) { change in
-            switch(Defaults[.sideBarDisplayMode]) {
-            case .automatic:
-                self.contentViewController.preferredSplitBehavior = .automatic
-                self.contentViewController.preferredDisplayMode = .automatic
-            case .overlay:
-                self.contentViewController.preferredSplitBehavior = .overlay
-                if self.contentViewController.displayMode == .oneBesideSecondary {
-                    self.contentViewController.preferredDisplayMode = .oneOverSecondary
-                }
-            case .sideBySide:
-                self.contentViewController.preferredSplitBehavior = .tile
-                if self.contentViewController.displayMode == .oneOverSecondary {
-                    self.contentViewController.preferredDisplayMode = .oneBesideSecondary
-                }
-            }
-        }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        buttonProvider.configureHouseButtonMenu()
-    }
-    
-    // MARK: - Setup & Configurations
-    
-    fileprivate override func configureContentViewController() {
-        contentViewController.presentsWithGesture = false
-        if FeatureFlags.homeViewEnabled {
-            let homeViewController = UIHostingController(rootView: HomeView())
-            homeViewController.rootView.zimFileTapped = openMainPage
-            homeViewController.rootView.libraryButtonTapped = openLibrary
-            homeViewController.rootView.settingsButtonTapped = openSettings
-            contentViewController.setViewController(homeViewController, for: .secondary)
-        } else {
-            contentViewController.setViewController(welcomeController, for: .secondary)
-        }
     }
 }

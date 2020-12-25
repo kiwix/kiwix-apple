@@ -81,4 +81,12 @@ class SidebarController: UISplitViewController {
             }
         }
     }
+    
+    func setContentViewController(_ viewController: UIViewController) {
+        if #available(iOS 14.0, *) {
+            setViewController(viewController, for: .secondary)
+        } else {
+            // Fallback on earlier versions
+        }
+    }
 }
