@@ -23,7 +23,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     
     private let onDeviceZimFiles = Queries.onDeviceZimFiles()?.sorted(byKeyPath: "size", ascending: false)
     private let buttonProvider: ButtonProvider
-    private var sideBarDisplayModeObserver: Defaults.Observation?
     
     // MARK: - Init & Overrides
     
@@ -33,24 +32,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         self.buttonProvider = ButtonProvider(webView: webViewController.webView)
         super.init(nibName: nil, bundle: nil)
         buttonProvider.rootViewController = self
-        sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode) { change in
-            guard #available(iOS 14.0, *) else { return }
-            switch(Defaults[.sideBarDisplayMode]) {
-            case .automatic:
-                self.sidebarController.preferredSplitBehavior = .automatic
-                self.sidebarController.preferredDisplayMode = .automatic
-            case .overlay:
-                self.sidebarController.preferredSplitBehavior = .overlay
-                if self.sidebarController.displayMode == .oneBesideSecondary {
-                    self.sidebarController.preferredDisplayMode = .oneOverSecondary
-                }
-            case .sideBySide:
-                self.sidebarController.preferredSplitBehavior = .tile
-                if self.sidebarController.displayMode == .oneOverSecondary {
-                    self.sidebarController.preferredDisplayMode = .oneBesideSecondary
-                }
-            }
-        }
     }
     
     required init?(coder: NSCoder) {

@@ -11,10 +11,28 @@ import Defaults
 
 class SidebarController: UISplitViewController, UISplitViewControllerDelegate {
     private let contentHostingController = UIViewController()
+    private var sideBarDisplayModeObserver: Defaults.Observation?
     
     init() {
         if #available(iOS 14.0, *) {
             super.init(style: .doubleColumn)
+            sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode) { change in
+                switch(Defaults[.sideBarDisplayMode]) {
+                case .automatic:
+                    self.preferredSplitBehavior = .automatic
+                    self.preferredDisplayMode = .automatic
+                case .overlay:
+                    self.preferredSplitBehavior = .overlay
+                    if self.displayMode == .oneBesideSecondary {
+                        self.preferredDisplayMode = .oneOverSecondary
+                    }
+                case .sideBySide:
+                    self.preferredSplitBehavior = .tile
+                    if self.displayMode == .oneOverSecondary {
+                        self.preferredDisplayMode = .oneBesideSecondary
+                    }
+                }
+            }
         } else {
             super.init(nibName: nil, bundle: nil)
             delegate = self
@@ -44,16 +62,6 @@ class SidebarController: UISplitViewController, UISplitViewControllerDelegate {
         if #available(iOS 14.0, *) {
             setViewController(controller, for: .primary)
             show(.primary)
-            preferredDisplayMode = {
-                switch Defaults[.sideBarDisplayMode] {
-                case .automatic:
-                    return .automatic
-                case .overlay:
-                    return .oneOverSecondary
-                case .sideBySide:
-                    return .oneBesideSecondary
-                }
-            }()
         } else {
             if viewControllers.count == 1 {
                 viewControllers.insert(controller, at: 0)
