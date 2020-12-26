@@ -10,7 +10,9 @@
 	<array>
 		<dict>
 			<key>CFBundleTypeIconFiles</key>
-			<array/>
+			<array>
+				<string>Kiwix_logo_v3_320px.png</string>
+			</array>
 			<key>CFBundleTypeName</key>
 			<string>OpenZIM Content File</string>
 			<key>CFBundleTypeRole</key>
