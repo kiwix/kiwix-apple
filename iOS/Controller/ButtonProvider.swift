@@ -27,13 +27,7 @@ class ButtonProvider {
     let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
     var navigationLeftButtons: [BarButton] { [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton] }
     var navigationRightButtons: [BarButton] { [diceButton, houseButton, libraryButton, settingsButton] }
-    var toolbarButtons: [BarButton] {
-        if #available(iOS 14.0, *) {
-            return [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, diceButton, houseButton]
-        } else {
-            return [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, diceButton, moreButton]
-        }
-    }
+    var toolbarButtons: [BarButton] { [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, diceButton, moreButton] }
     
     private let onDeviceZimFiles = Queries.onDeviceZimFiles()?.sorted(byKeyPath: "size", ascending: false)
     private var webViewURLObserver: NSKeyValueObservation?
@@ -66,6 +60,7 @@ class ButtonProvider {
                     if #available(iOS 14.0, *) {
                         self.configureDiceButtonMenu()
                         self.configureHouseButtonMenu()
+                        self.configureMoreButtonMenu()
                     }
                 default:
                     break
@@ -113,12 +108,21 @@ class ButtonProvider {
         } else {
             items.append(UIAction(title: "No Zim File Available", attributes: .disabled, handler: { _ in }))
         }
-        if self.rootViewController?.traitCollection.horizontalSizeClass == .compact {
-            items.append(UIMenu(options: .displayInline, children: [
-                UIAction(title: "Open Library", image: UIImage(systemName: "books.vertical"), handler: { _ in self.rootViewController?.libraryButtonTapped() }),
-                UIAction(title: "Open Settings", image: UIImage(systemName: "gear"), handler: { _ in self.rootViewController?.settingsButtonTapped() }),
-            ]))
-        }
         houseButton.menu = UIMenu(children: items)
+    }
+    
+    @available(iOS 14.0, *)
+    private func configureMoreButtonMenu() {
+        var items: [UIMenuElement] = [
+            UIAction(title: "Open Library", image: UIImage(systemName: "folder"), handler: { _ in self.rootViewController?.libraryButtonTapped() }),
+            UIAction(title: "Open Settings", image: UIImage(systemName: "gear"), handler: { _ in self.rootViewController?.settingsButtonTapped() }),
+        ]
+        if let zimFiles = onDeviceZimFiles, !zimFiles.isEmpty {
+            items.insert(UIMenu(options: .displayInline, children: zimFiles.map { zimFile in
+                UIAction(title: zimFile.title, image: UIImage(systemName: "house")) { _ in self.rootViewController?.openMainPage(zimFileID: zimFile.id) }
+            }), at: 0)
+        }
+        moreButton.menu = UIMenu(children: items)
+        moreButton.showsMenuAsPrimaryAction = true
     }
 }

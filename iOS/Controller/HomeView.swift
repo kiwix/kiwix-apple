@@ -20,6 +20,42 @@ struct HomeView: View {
     var settingsButtonTapped: (() -> Void)?
     
     var body: some View {
+        content
+        .navigationBarHidden(true)
+        .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
+    }
+    
+    var content: some View {
+        if viewModel.onDeviceZimFiles.isEmpty {
+            return AnyView(welcomeView)
+        } else {
+            return AnyView(gridView)
+        }
+    }
+    
+    var welcomeView: some View {
+        VStack(spacing: 15) {
+            Spacer()
+            VStack(spacing: 0) {
+                Image("Kiwix")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 60)
+                Text("KIWIX").font(.largeTitle).fontWeight(.bold)
+            }
+            Divider()
+            RoundedRectButton(
+                title: "Library",
+                iconSystemName: "folder",
+                backgroundColor: Color(.systemBlue),
+                isCompact: false,
+                action: libraryButtonTapped
+            ).frame(maxWidth: 450)
+            Spacer()
+        }.padding()
+    }
+    
+    var gridView: some View {
         ScrollView {
             LazyVStack {
                 if horizontalSizeClass == .compact {
@@ -35,8 +71,6 @@ struct HomeView: View {
                 }
             }.padding()
         }
-        .navigationBarHidden(true)
-        .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
     }
     
     var header: some View {

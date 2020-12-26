@@ -13,22 +13,39 @@ struct RoundedRectButton: View {
     let title: String
     let iconSystemName: String
     let backgroundColor: Color
+    var isCompact = true
     var action: (() -> Void)?
     
     var body: some View {
         Button(action: {
             action?()
         }) {
-            Label(
-                title: { Text(title).fontWeight(.semibold) },
-                icon: { Image(systemName: iconSystemName) }
-            )
+            content
             .font(.subheadline)
             .padding(.vertical, 10)
             .padding(.horizontal, 12)
             .foregroundColor(.white)
             .background(RoundedRectangle(cornerRadius: 10, style: .continuous).fill(backgroundColor))
         }
+    }
+    
+    var content: some View {
+        if isCompact {
+            return AnyView(label)
+        } else {
+            return AnyView(HStack {
+                Spacer()
+                label
+                Spacer()
+            })
+        }
+    }
+    
+    var label: some View {
+        Label(
+            title: { Text(title).fontWeight(.semibold) },
+            icon: { Image(systemName: iconSystemName) }
+        )
     }
 }
 
