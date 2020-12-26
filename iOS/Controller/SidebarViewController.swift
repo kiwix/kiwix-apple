@@ -160,7 +160,7 @@ class BookmarksViewController: SidebarViewController, UITableViewDataSource, UIT
         tableView.separatorInsetReference = .fromAutomaticInsets
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
         
-        observer = bookmarks?.observe { change in
+        observer = bookmarks?.observe { [unowned self] change in
             switch change {
             case .initial(let results):
                 self.tableView.reloadData()
@@ -231,7 +231,7 @@ class BookmarksViewController: SidebarViewController, UITableViewDataSource, UIT
         guard let bookmark = bookmarks?[indexPath.row],
               let zimFileID = bookmark.zimFile?.id,
               let url = URL(zimFileID: zimFileID, contentPath: bookmark.path) else {
-            splitViewController?.present(UIAlertController.resourceUnavailable(), animated: true)
+            present(UIAlertController.resourceUnavailable(), animated: true)
             return
         }
         bookmarkTapped?(url)
