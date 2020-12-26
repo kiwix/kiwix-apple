@@ -80,6 +80,8 @@ class OutlineViewController: SidebarViewController, UITableViewDataSource, UITab
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.separatorInsetReference = .fromAutomaticInsets
+        setContent(tableView)
+        
         webViewURLObserver = webView?.observe(\.url, options: [.initial, .new]) { [unowned self] webView, _ in
             self.reload(url: webView.url)
         }
@@ -170,6 +172,7 @@ class BookmarksViewController: SidebarViewController, UITableViewDataSource, UIT
         tableView.register(ArticleTableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.separatorInsetReference = .fromAutomaticInsets
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
+        setContent(tableView)
         
         observer = bookmarks?.observe { [unowned self] change in
             switch change {
