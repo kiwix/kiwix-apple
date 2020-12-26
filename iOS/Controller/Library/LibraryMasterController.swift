@@ -57,7 +57,7 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "CategoryCell")
         tableView.separatorInsetReference = .fromAutomaticInsets
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 0)
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
     }
 
     override func viewDidLoad() {
@@ -176,19 +176,19 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
                 }
 
                 if let sectionIndex = self.sections.firstIndex(of: .local) {
-                    let deletionIndexes = deletions.map({ IndexPath(row: $0, section: sectionIndex) })
-                    let insertIndexes = insertions.map({ IndexPath(row: $0, section: sectionIndex) })
-                    self.tableView.deleteRows(at: deletionIndexes, with: .fade)
-                    self.tableView.insertRows(at: insertIndexes, with: .fade)
-                    updates.forEach({ row in
-                        let indexPath = IndexPath(row: row, section: sectionIndex)
-                        guard let cell = self.tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
-                        self.configure(localCell: cell, row: row)
-                    })
+                    if deletions.isEmpty, insertions.isEmpty {
+                        updates.forEach({ row in
+                            let indexPath = IndexPath(row: row, section: sectionIndex)
+                            guard let cell = self.tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
+                            self.configure(localCell: cell, row: row)
+                        })
+                    } else {
+                        self.tableView.reloadSections([sectionIndex], with: .automatic)
+                    }
                 }
             })
         })
-        downloadZimFilesChangeToken = downloadZimFiles?.observe({ (changes) in
+        downloadZimFilesChangeToken = downloadZimFiles?.observe({ [unowned self] changes in
             guard case let .update(results, deletions, insertions, updates) = changes else {return}
             self.downloadZimFilesCount = results.count
             self.tableView.performBatchUpdates({
@@ -204,15 +204,15 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
                 }
                 
                 if let sectionIndex = self.sections.firstIndex(of: .download) {
-                    let deletionIndexes = deletions.map({ IndexPath(row: $0, section: sectionIndex) })
-                    let insertIndexes = insertions.map({ IndexPath(row: $0, section: sectionIndex) })
-                    self.tableView.deleteRows(at: deletionIndexes, with: .fade)
-                    self.tableView.insertRows(at: insertIndexes, with: .fade)
-                    updates.forEach({ row in
-                        let indexPath = IndexPath(row: row, section: sectionIndex)
-                        guard let cell = self.tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
-                        self.configure(downloadCell: cell, row: row)
-                    })
+                    if deletions.isEmpty, insertions.isEmpty {
+                        updates.forEach({ row in
+                            let indexPath = IndexPath(row: row, section: sectionIndex)
+                            guard let cell = self.tableView.cellForRow(at: indexPath) as? TableViewCell else {return}
+                            self.configure(downloadCell: cell, row: row)
+                        })
+                    } else {
+                        self.tableView.reloadSections([sectionIndex], with: .automatic)
+                    }
                 }
             })
         })
