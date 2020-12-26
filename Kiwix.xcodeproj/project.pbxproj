@@ -137,7 +137,6 @@
 		97CE4247249323C000B334E9 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B399952468CF3B00BC6F5B /* Enums.swift */; };
 		97CE42482493244D00B334E9 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
 		97CE424A24957C3500B334E9 /* LibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59C2456793500F6F6FF /* LibraryService.swift */; };
-		97D00A791FBB89F000165629 /* Inject.js in Resources */ = {isa = PBXBuildFile; fileRef = 97A9F6F41E2E990500F423AA /* Inject.js */; };
 		97D19F072546FF3700910CAE /* BuildingBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D19F062546FF3700910CAE /* BuildingBlocks.swift */; };
 		97D3886825703A7A005CBE41 /* LibraryCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D3886725703A7A005CBE41 /* LibraryCategoryView.swift */; };
 		97D7FB5C253CF97400E8ADDF /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D7FB5B253CF97400E8ADDF /* RootView.swift */; };
@@ -281,7 +280,6 @@
 		97A2AE2125866D9200DEF81D /* ButtonProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonProvider.swift; sourceTree = "<group>"; };
 		97A36C4E1F8C21210079B452 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A36C561F8D5FCD0079B452 /* LibraryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryController.swift; sourceTree = "<group>"; };
-		97A9F6F41E2E990500F423AA /* Inject.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Inject.js; sourceTree = "<group>"; };
 		97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryMasterController.swift; sourceTree = "<group>"; };
 		97B3998824673FE000BC6F5B /* SearchOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchOperation.h; sourceTree = "<group>"; };
 		97B3998924673FE000BC6F5B /* SearchOperation.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SearchOperation.mm; sourceTree = "<group>"; };
@@ -483,7 +481,6 @@
 		975FDAEA1F60839900A10E8C /* Support */ = {
 			isa = PBXGroup;
 			children = (
-				97A9F6F41E2E990500F423AA /* Inject.js */,
 				97C57604202CB42100E37502 /* Kiwix.entitlements */,
 				9763EDCA201FCC3900F3A6D5 /* About.html */,
 				975FDAE21F6082DA00A10E8C /* LaunchScreen.storyboard */,
@@ -963,7 +960,6 @@
 			files = (
 				97246C821FC4D12A0056AE5D /* Main.storyboard in Resources */,
 				9763EDCB201FCC3A00F3A6D5 /* About.html in Resources */,
-				97D00A791FBB89F000165629 /* Inject.js in Resources */,
 				97A36C441F8C21210079B452 /* LaunchScreen.storyboard in Resources */,
 				97F4D10C20ADFE370038FC87 /* Assets.xcassets in Resources */,
 			);
