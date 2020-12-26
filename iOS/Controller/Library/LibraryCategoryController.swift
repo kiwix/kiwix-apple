@@ -43,7 +43,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.separatorInsetReference = .fromAutomaticInsets
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 0)
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 0)
     }
 
     override func viewDidLoad() {

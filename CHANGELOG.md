@@ -1,6 +1,16 @@
 ## 1.14
 
+- iPad: a new design with all UI controls at the top bar
+- Random Article Button: tap to load a random article in the current zim file
+- Main Page Button: tap to go to main page of the current article
+- Long press on random article or main page button to choose from all on device zim files (not available on iOS 12 & 13)   
 - Link Preview: tap and hold on a link to see preview of the article (not available on iOS 12)
+- Remove support for iOS 11 (We are committed to support last three major OS)
+- Fix: library related crashings 
+
+Technical:
+
+- use html parsing to extract table of content hierarchy
 
 ## 1.13.7
 

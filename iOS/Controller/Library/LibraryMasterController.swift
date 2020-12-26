@@ -57,7 +57,7 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "CategoryCell")
         tableView.separatorInsetReference = .fromAutomaticInsets
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 32, bottom: 0, right: 0)
     }
 
     override func viewDidLoad() {

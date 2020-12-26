@@ -55,6 +55,7 @@ class SidebarViewController: UIViewController {
 
 class OutlineViewController: SidebarViewController, UITableViewDataSource, UITableViewDelegate {
     private weak var webView: WKWebView?
+    private var webViewURLObserver: NSKeyValueObservation?
     private var items = [OutlineItem]()
     private let emptyContentView = EmptyContentView(
         image: #imageLiteral(resourceName: "Compass"),
@@ -79,17 +80,28 @@ class OutlineViewController: SidebarViewController, UITableViewDataSource, UITab
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.separatorInsetReference = .fromAutomaticInsets
-        reload()
+        setContent(tableView)
+        
+        webViewURLObserver = webView?.observe(\.url, options: [.initial, .new]) { [unowned self] webView, _ in
+            self.reload(url: webView.url)
+        }
     }
     
-    func reload() {
-        webView?.evaluateJavaScript("outlines.getHeadingObjects()") { results, _ in
-            self.items = (results as? [[String: Any]])?.compactMap({ OutlineItem(rawValue: $0) }) ?? [OutlineItem]()
-            self.tableView.reloadData()
-            if self.items.isEmpty {
-                self.setContent(self.emptyContentView)
+    func reload(url: URL?) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            if let zimFileID = url?.host, let path = url?.path,
+               let parser = try? Parser(zimFileID: zimFileID, path: path) {
+                self.items = parser.getOutlineItems()
             } else {
-                self.setContent(self.tableView)
+                self.items = []
+            }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                if self.items.isEmpty {
+                    self.setContent(self.emptyContentView)
+                } else {
+                    self.setContent(self.tableView)
+                }
             }
         }
     }
@@ -126,7 +138,8 @@ class OutlineViewController: SidebarViewController, UITableViewDataSource, UITab
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let javascript = "outlines.scrollToView(\(items[indexPath.row].index))"
+        let index = items[indexPath.row].index
+        let javascript = "document.querySelectorAll(\"h1, h2, h3, h4, h5, h6\")[\(index)].scrollIntoView()"
         webView?.evaluateJavaScript(javascript, completionHandler: nil)
         tableView.deselectRow(at: indexPath, animated: true)
         if #available(iOS 14.0, *), let splitViewController = splitViewController, splitViewController.displayMode == .oneOverSecondary {
@@ -159,6 +172,7 @@ class BookmarksViewController: SidebarViewController, UITableViewDataSource, UIT
         tableView.register(ArticleTableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.separatorInsetReference = .fromAutomaticInsets
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 0)
+        setContent(tableView)
         
         observer = bookmarks?.observe { [unowned self] change in
             switch change {
