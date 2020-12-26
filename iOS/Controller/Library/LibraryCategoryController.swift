@@ -123,8 +123,11 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
                 switch changes {
                 case .initial:
                     self.tableView.reloadSections([sectionIndex], with: .none)
-                case .update(_, let deletions, let insertions, _):
-                    if !deletions.isEmpty || !insertions.isEmpty {
+                case .update(_, let deletions, let insertions, let updates):
+                    if deletions.isEmpty, insertions.isEmpty {
+                        let indexPaths = updates.map { IndexPath(row: $0, section: sectionIndex) }
+                        self.tableView.reloadRows(at: indexPaths, with: .automatic)
+                    } else {
                         self.tableView.reloadSections([sectionIndex], with: .automatic)
                     }
                 default:
