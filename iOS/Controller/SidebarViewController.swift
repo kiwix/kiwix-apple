@@ -80,7 +80,7 @@ class OutlineViewController: SidebarViewController, UITableViewDataSource, UITab
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.separatorInsetReference = .fromAutomaticInsets
-        webViewURLObserver = webView?.observe(\.url, options: [.initial, .new]) { webView, _ in
+        webViewURLObserver = webView?.observe(\.url, options: [.initial, .new]) { [unowned self] webView, _ in
             self.reload(url: webView.url)
         }
     }
@@ -136,7 +136,8 @@ class OutlineViewController: SidebarViewController, UITableViewDataSource, UITab
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let javascript = "outlines.scrollToView(\(items[indexPath.row].index))"
+        let index = items[indexPath.row].index
+        let javascript = "document.querySelectorAll(\"h1, h2, h3, h4, h5, h6\")[\(index)].scrollIntoView()"
         webView?.evaluateJavaScript(javascript, completionHandler: nil)
         tableView.deselectRow(at: indexPath, animated: true)
         if #available(iOS 14.0, *), let splitViewController = splitViewController, splitViewController.displayMode == .oneOverSecondary {
