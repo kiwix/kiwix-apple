@@ -145,13 +145,13 @@ class SceneViewModel: NSObject, ObservableObject, UISplitViewControllerDelegate,
         canGoForward = webView.canGoForward
         currentArticleURL = webView.url
         
-        guard let url = Bundle.main.url(forResource: "Inject", withExtension: "js"),
-              let javascript = try? String(contentsOf: url) else { return }
-        webView.evaluateJavaScript(javascript)
-        webView.evaluateJavaScript("outlines.getHeadingObjects()", completionHandler: { [weak self] (results, error) in
-            guard let results = results as? [[String: Any]] else { return }
-            self?.currentArticleOutlineItems = results.compactMap({ OutlineItem(rawValue: $0) })
-        })
+//        guard let url = Bundle.main.url(forResource: "Inject", withExtension: "js"),
+//              let javascript = try? String(contentsOf: url) else { return }
+//        webView.evaluateJavaScript(javascript)
+//        webView.evaluateJavaScript("outlines.getHeadingObjects()", completionHandler: { [weak self] (results, error) in
+//            guard let results = results as? [[String: Any]] else { return }
+//            self?.currentArticleOutlineItems = results.compactMap({ OutlineItem(rawValue: $0) })
+//        })
     }
 }
 

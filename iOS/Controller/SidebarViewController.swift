@@ -55,6 +55,7 @@ class SidebarViewController: UIViewController {
 
 class OutlineViewController: SidebarViewController, UITableViewDataSource, UITableViewDelegate {
     private weak var webView: WKWebView?
+    private var webViewURLObserver: NSKeyValueObservation?
     private var items = [OutlineItem]()
     private let emptyContentView = EmptyContentView(
         image: #imageLiteral(resourceName: "Compass"),
@@ -79,17 +80,26 @@ class OutlineViewController: SidebarViewController, UITableViewDataSource, UITab
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.separatorInsetReference = .fromAutomaticInsets
-        reload()
+        webViewURLObserver = webView?.observe(\.url, options: [.initial, .new]) { webView, _ in
+            self.reload(url: webView.url)
+        }
     }
     
-    func reload() {
-        webView?.evaluateJavaScript("outlines.getHeadingObjects()") { results, _ in
-            self.items = (results as? [[String: Any]])?.compactMap({ OutlineItem(rawValue: $0) }) ?? [OutlineItem]()
-            self.tableView.reloadData()
-            if self.items.isEmpty {
-                self.setContent(self.emptyContentView)
+    func reload(url: URL?) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            if let zimFileID = url?.host, let path = url?.path,
+               let parser = try? Parser(zimFileID: zimFileID, path: path) {
+                self.items = parser.getOutlineItems()
             } else {
-                self.setContent(self.tableView)
+                self.items = []
+            }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                if self.items.isEmpty {
+                    self.setContent(self.emptyContentView)
+                } else {
+                    self.setContent(self.tableView)
+                }
             }
         }
     }

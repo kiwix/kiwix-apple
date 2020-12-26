@@ -92,6 +92,19 @@ class Parser {
         } catch { return nil }
     }
     
+    func getOutlineItems() -> [OutlineItem] {
+        var items = [OutlineItem]()
+        do {
+            let elements = try document.select("h1, h2, h3, h4, h5, h6")
+            for (index, element) in elements.enumerated() {
+                guard let level = Int(element.tagName().suffix(1)), let text = try? element.text() else { continue }
+                let item = OutlineItem(index: index, text: text, level: level)
+                items.append(item)
+            }
+        } catch { }
+        return items
+    }
+    
     class func parseBodyFragment(_ bodyFragment: String) -> NSAttributedString? {
         let snippet = NSMutableAttributedString()
         let document = try? SwiftSoup.parseBodyFragment(bodyFragment)
