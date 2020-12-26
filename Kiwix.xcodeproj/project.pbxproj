@@ -161,13 +161,6 @@
 			remoteGlobalIDString = 97A36C241F8C21210079B452;
 			remoteInfo = iOS;
 		};
-		97C575FC202CB0E900E37502 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 97A2AB801C1B80FF00052E74 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 97C575F1202CB0E800E37502;
-			remoteInfo = Bookmarks;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -799,7 +792,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				97C575FD202CB0E900E37502 /* PBXTargetDependency */,
 			);
 			name = iOS;
 			packageProductDependencies = (
@@ -1150,12 +1142,6 @@
 			isa = PBXTargetDependency;
 			target = 97A36C241F8C21210079B452 /* iOS */;
 			targetProxy = 970EC3F623BE8E20008DCA27 /* PBXContainerItemProxy */;
-		};
-		97C575FD202CB0E900E37502 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			platformFilter = ios;
-			target = 97C575F1202CB0E800E37502 /* Bookmarks */;
-			targetProxy = 97C575FC202CB0E900E37502 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
