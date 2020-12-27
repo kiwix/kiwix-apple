@@ -132,6 +132,10 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         adjustTextSize()
+        webView.evaluateJavaScript(
+            "document.querySelectorAll(\"details\").forEach((detail) => {detail.setAttribute(\"open\", true)});",
+            completionHandler: nil
+        )
     }
     
     // MARK: - WKUIDelegate
