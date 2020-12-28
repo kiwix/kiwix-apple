@@ -71,9 +71,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         configureBarButtons(searchIsActive: searchController.isActive, animated: false)
-        if #available(iOS 14.0, *) {
-            buttonProvider.configureHouseButtonMenu()
-        }
     }
     
     // MARK: - Public

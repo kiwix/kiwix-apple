@@ -99,7 +99,7 @@ class ButtonProvider {
     }
     
     @available(iOS 14.0, *)
-    func configureHouseButtonMenu() {
+    private func configureHouseButtonMenu() {
         var items = [UIMenuElement]()
         if let zimFiles = onDeviceZimFiles, !zimFiles.isEmpty {
             items.append(UIMenu(options: .displayInline, children: zimFiles.map { zimFile in
