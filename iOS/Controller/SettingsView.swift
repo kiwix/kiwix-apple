@@ -29,7 +29,8 @@ struct SettingsView: View {
                         
                     }
                     Button("Rate the App") {
-                        
+                        let url = URL(string: "itms-apps://itunes.apple.com/us/app/kiwix/id997079563?action=write-review")!
+                        UIApplication.shared.open(url, options: [:])
                     }
                 }
                 Section(footer: version) {
