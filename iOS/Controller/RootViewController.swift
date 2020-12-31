@@ -313,7 +313,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     @objc func settingsButtonTapped() {
         if #available(iOS 13.0, *) {
             let controller = UIHostingController(rootView: SettingsView())
-//            controller.modalPresentationStyle = .formSheet
+            controller.modalPresentationStyle = .formSheet
             present(controller, animated: true)
         } else {
             present(SettingNavigationController(), animated: true)

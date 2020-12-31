@@ -20,9 +20,16 @@ struct SettingsView: View {
             Form {
                 Section {
                     if UIDevice.current.userInterfaceIdiom == .pad {
-                        Picker("Side Bar", selection: $sideBarDisplayMode) {
-                            ForEach(SideBarDisplayMode.allCases) { Text($0.description).tag($0) }
-                        }
+                        NavigationLink(
+                            destination: SidebarView(),
+                            label: {
+                                HStack {
+                                    Text("Sidebar")
+                                    Spacer()
+                                    Text(sideBarDisplayMode.description).foregroundColor(.secondary)
+                                }
+                            }
+                        )
                     }
                 }
                 Section {
@@ -43,11 +50,41 @@ struct SettingsView: View {
 }
 
 @available(iOS 13.0, *)
+fileprivate struct SidebarView: View {
+    @Default(.sideBarDisplayMode) var sideBarDisplayMode
+    private let help = """
+                       Controls how the sidebar containing article outline and bookmarks \
+                       should be displayed when it's available.
+                       """
+    
+    var body: some View {
+        Form {
+            Section(footer: Text(help)) {
+                ForEach(SideBarDisplayMode.allCases) { displayMode in
+                    Button(action: {
+                        sideBarDisplayMode = displayMode
+                    }, label: {
+                        HStack {
+                            Text(displayMode.description).foregroundColor(.primary)
+                            Spacer()
+                            if sideBarDisplayMode == displayMode {
+                                Image(systemName: "checkmark").foregroundColor(.blue)
+                            }
+                        }
+                    })
+                }
+            }
+        }
+        .navigationBarTitle("Sidebar")
+    }
+}
+
+@available(iOS 13.0, *)
 fileprivate struct AboutView: View {
     @State var externalLinkURL: URL?
     
     var body: some View {
-        List {
+        Form {
             Section {
                 Text("""
                      Kiwix is an offline reader for online content like Wikipedia, Project Gutenberg, or TED Talks. \
@@ -78,7 +115,6 @@ fileprivate struct AboutView: View {
                 Dependency(name: "Defaults", license: "MIT")
             }
         }
-        .listStyle(GroupedListStyle())
         .navigationBarTitle("About")
         .sheet(item: $externalLinkURL) { SafariView(url: $0) }
     }
@@ -110,6 +146,6 @@ fileprivate struct AboutView: View {
 @available(iOS 13.0, *)
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        AboutView().previewDevice("iPhone 12 Pro")
+        SidebarView().previewDevice("iPhone 12 Pro")
     }
 }
