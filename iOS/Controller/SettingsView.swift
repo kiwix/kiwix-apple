@@ -31,12 +31,22 @@ struct SettingsView: View {
                         
                     }
                 }
-                Section {
+                Section(footer: version) {
                     NavigationLink("About", destination: AboutView())
                 }
             }
             .navigationBarTitle("Settings")
         }.navigationViewStyle(StackNavigationViewStyle())
+    }
+    
+    var version: some View {
+        HStack {
+            Spacer()
+            if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+                Text("Kiwix for iOS v\(version)")
+            }
+            Spacer()
+        }
     }
 }
 
@@ -194,6 +204,6 @@ fileprivate struct AboutView: View {
 @available(iOS 13.0, *)
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        ExternalLinkSettingsView().previewDevice("iPhone 12 Pro")
+        SettingsView().previewDevice("iPhone 12 Pro")
     }
 }
