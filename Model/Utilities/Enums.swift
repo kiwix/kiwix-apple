@@ -6,9 +6,10 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
-enum ExternalLinkLoadingPolicy: Int, Codable, CustomStringConvertible {
+enum ExternalLinkLoadingPolicy: Int, CaseIterable, Codable, CustomStringConvertible, Identifiable {
     case alwaysAsk = 0, alwaysLoad, neverLoad
     
+    var id: Int { self.rawValue }
     var description: String {
         switch self {
         case .alwaysAsk:

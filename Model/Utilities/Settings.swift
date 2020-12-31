@@ -40,10 +40,10 @@ extension Defaults {
         set { key.suite.set(newValue, forKey: key.name) }
     }
     
-    static subscript(key: Key<ExternalLinkLoadingPolicy>) -> ExternalLinkLoadingPolicy {
-        get { ExternalLinkLoadingPolicy(rawValue: key.suite.integer(forKey: key.name)) ?? key.defaultValue }
-        set { key.suite.set(newValue.rawValue, forKey: key.name) }
-    }
+//    static subscript(key: Key<ExternalLinkLoadingPolicy>) -> ExternalLinkLoadingPolicy {
+//        get { ExternalLinkLoadingPolicy(rawValue: key.suite.integer(forKey: key.name)) ?? key.defaultValue }
+//        set { key.suite.set(newValue.rawValue, forKey: key.name) }
+//    }
     
 //    static subscript(key: Key<SearchResultSnippetMode>) -> SearchResultSnippetMode {
 //        get {

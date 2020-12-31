@@ -17,6 +17,7 @@ struct SettingsView: View {
         NavigationView {
             Form {
                 Section {
+                    NavigationLink("External Link", destination: ExternalLinkSettingsView())
                     NavigationLink("Search", destination: SearchSettingsView())
                     if UIDevice.current.userInterfaceIdiom == .pad {
                         NavigationLink("Sidebar", destination: SidebarSettingsView())
@@ -36,6 +37,36 @@ struct SettingsView: View {
             }
             .navigationBarTitle("Settings")
         }.navigationViewStyle(StackNavigationViewStyle())
+    }
+}
+
+@available(iOS 13.0, *)
+fileprivate struct ExternalLinkSettingsView: View {
+    @Default(.externalLinkLoadingPolicy) var externalLinkLoadingPolicy
+    private let help = """
+                       Decide if app should ask for permission to load an external link \
+                       when Internet connection is required.
+                       """
+    
+    var body: some View {
+        Form {
+            Section(header: Text("Loading Policy"), footer: Text(help)) {
+                ForEach(ExternalLinkLoadingPolicy.allCases) { policy in
+                    Button(action: {
+                        externalLinkLoadingPolicy = policy
+                    }, label: {
+                        HStack {
+                            Text(policy.description).foregroundColor(.primary)
+                            Spacer()
+                            if externalLinkLoadingPolicy == policy {
+                                Image(systemName: "checkmark").foregroundColor(.blue)
+                            }
+                        }
+                    })
+                }
+            }
+        }
+        .navigationBarTitle("External Link")
     }
 }
 
@@ -163,6 +194,6 @@ fileprivate struct AboutView: View {
 @available(iOS 13.0, *)
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView().previewDevice("iPhone 12 Pro")
+        ExternalLinkSettingsView().previewDevice("iPhone 12 Pro")
     }
 }
