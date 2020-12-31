@@ -9,13 +9,21 @@
 import SafariServices
 import SwiftUI
 
-@available(iOS 13.0.0, *)
+import Defaults
+
+@available(iOS 13.0, *)
 struct SettingsView: View {
+    @Default(.sideBarDisplayMode) var sideBarDisplayMode
+    
     var body: some View {
         NavigationView {
-            List {
+            Form {
                 Section {
-                    NavigationLink("About", destination: Text("About"))
+                    if UIDevice.current.userInterfaceIdiom == .pad {
+                        Picker("Side Bar", selection: $sideBarDisplayMode) {
+                            ForEach(SideBarDisplayMode.allCases) { Text($0.description).tag($0) }
+                        }
+                    }
                 }
                 Section {
                     Button("Send Feedback") {
@@ -28,13 +36,14 @@ struct SettingsView: View {
                 Section {
                     NavigationLink("About", destination: AboutView())
                 }
-            }.listStyle(GroupedListStyle())
+            }
+            .navigationBarTitle("Settings")
         }.navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
-@available(iOS 13.0.0, *)
-struct AboutView: View {
+@available(iOS 13.0, *)
+fileprivate struct AboutView: View {
     @State var externalLinkURL: URL?
     
     var body: some View {

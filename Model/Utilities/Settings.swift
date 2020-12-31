@@ -45,11 +45,6 @@ extension Defaults {
         set { key.suite.set(newValue.rawValue, forKey: key.name) }
     }
     
-    static subscript(key: Key<SideBarDisplayMode>) -> SideBarDisplayMode {
-        get { SideBarDisplayMode(rawValue: key.suite.string(forKey: key.name) ?? "") ?? key.defaultValue }
-        set { key.suite.set(newValue.rawValue, forKey: key.name) }
-    }
-    
     static subscript(key: Key<SearchResultSnippetMode>) -> SearchResultSnippetMode {
         get {
             if let mode = SearchResultSnippetMode(rawValue: key.suite.string(forKey: key.name) ?? "") {

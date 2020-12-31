@@ -126,7 +126,7 @@ private struct SheetView: View {
 }
 
 @available(iOS 14.0, *)
-struct SidebarView: View {
+fileprivate struct SidebarView: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     
     var body: some View {

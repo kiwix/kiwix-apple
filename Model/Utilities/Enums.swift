@@ -51,9 +51,10 @@ enum SearchResultSnippetMode: String, Codable, CustomStringConvertible {
     }
 }
 
-enum SideBarDisplayMode: String, Codable, CustomStringConvertible {
+enum SideBarDisplayMode: String, CaseIterable, Codable, CustomStringConvertible, Identifiable {
     case automatic, sideBySide, overlay
     
+    var id: String { self.rawValue }
     var description: String {
         switch self {
         case .automatic:
