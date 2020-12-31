@@ -17,6 +17,7 @@ struct SettingsView: View {
         NavigationView {
             Form {
                 Section {
+                    NavigationLink("Font Size", destination: FontSizeSettingsView())
                     NavigationLink("External Link", destination: ExternalLinkSettingsView())
                     NavigationLink("Search", destination: SearchSettingsView())
                     if UIDevice.current.userInterfaceIdiom == .pad {
@@ -47,6 +48,33 @@ struct SettingsView: View {
             }
             Spacer()
         }
+    }
+}
+
+@available(iOS 13.0, *)
+fileprivate struct FontSizeSettingsView: View {
+    @Default(.webViewTextSizeAdjustFactor) var webViewTextSizeAdjustFactor
+    private let percentageFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .percent
+        formatter.maximumFractionDigits = 0
+        formatter.maximumIntegerDigits = 3
+        return formatter
+    }()
+    
+    var body: some View {
+        Form {
+            Section(header: Text("Example")) {
+                Text("Kiwix is an offline reader for online content like Wikipedia, Project Gutenberg, or TED Talks.")
+                    .font(Font.system(size: 17.0 * CGFloat(webViewTextSizeAdjustFactor)))
+            }
+            if let number = NSNumber(value: webViewTextSizeAdjustFactor),
+               let formatted = percentageFormatter.string(from: number) {
+                Section(header: Text("Font Size")) {
+                    Stepper(formatted, value: $webViewTextSizeAdjustFactor, in: 0.75...2, step: 0.05)
+                }
+            }
+        }.navigationBarTitle("Font Size")
     }
 }
 
@@ -204,6 +232,6 @@ fileprivate struct AboutView: View {
 @available(iOS 13.0, *)
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView().previewDevice("iPhone 12 Pro")
+        FontSizeSettingsView().previewDevice("iPhone 12 Pro")
     }
 }

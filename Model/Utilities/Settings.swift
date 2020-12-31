@@ -13,6 +13,7 @@ extension Defaults.Keys {
     static let externalLinkLoadingPolicy = Key<ExternalLinkLoadingPolicy>(
         "externalLinkLoadingPolicy", default: .alwaysAsk
     )
+    static let webViewTextSizeAdjustFactor = Key<Double>("webViewZoomScale", default: 1)
     
     // UI
     static let sideBarDisplayMode = Key<SideBarDisplayMode>("sideBarDisplayMode", default: .automatic)
