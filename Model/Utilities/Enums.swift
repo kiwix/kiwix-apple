@@ -34,9 +34,10 @@ enum LibraryLanguageFilterSortingMode: String, Codable, CustomStringConvertible 
     }
 }
 
-enum SearchResultSnippetMode: String, Codable, CustomStringConvertible {
+enum SearchResultSnippetMode: String, CaseIterable, Codable, CustomStringConvertible, Identifiable {
     case disabled, firstParagraph, firstSentence, matches
     
+    var id: String { self.rawValue }
     var description: String {
         switch self {
         case .disabled:

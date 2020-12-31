@@ -13,23 +13,13 @@ import Defaults
 
 @available(iOS 13.0, *)
 struct SettingsView: View {
-    @Default(.sideBarDisplayMode) var sideBarDisplayMode
-    
     var body: some View {
         NavigationView {
             Form {
                 Section {
+                    NavigationLink("Search", destination: SearchSettingsView())
                     if UIDevice.current.userInterfaceIdiom == .pad {
-                        NavigationLink(
-                            destination: SidebarView(),
-                            label: {
-                                HStack {
-                                    Text("Sidebar")
-                                    Spacer()
-                                    Text(sideBarDisplayMode.description).foregroundColor(.secondary)
-                                }
-                            }
-                        )
+                        NavigationLink("Sidebar", destination: SidebarSettingsView())
                     }
                 }
                 Section {
@@ -50,7 +40,34 @@ struct SettingsView: View {
 }
 
 @available(iOS 13.0, *)
-fileprivate struct SidebarView: View {
+fileprivate struct SearchSettingsView: View {
+    @Default(.searchResultSnippetMode) var searchResultSnippetMode
+    private let help = "If search is becoming too slow, disable the snippets to improve the situation."
+    
+    var body: some View {
+        Form {
+            Section(header: Text("Snippets"), footer: Text(help)) {
+                ForEach(SearchResultSnippetMode.allCases) { snippetMode in
+                    Button(action: {
+                        searchResultSnippetMode = snippetMode
+                    }, label: {
+                        HStack {
+                            Text(snippetMode.description).foregroundColor(.primary)
+                            Spacer()
+                            if searchResultSnippetMode == snippetMode {
+                                Image(systemName: "checkmark").foregroundColor(.blue)
+                            }
+                        }
+                    })
+                }
+            }
+        }
+        .navigationBarTitle("Search")
+    }
+}
+
+@available(iOS 13.0, *)
+fileprivate struct SidebarSettingsView: View {
     @Default(.sideBarDisplayMode) var sideBarDisplayMode
     private let help = """
                        Controls how the sidebar containing article outline and bookmarks \
@@ -146,6 +163,6 @@ fileprivate struct AboutView: View {
 @available(iOS 13.0, *)
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SidebarView().previewDevice("iPhone 12 Pro")
+        SettingsView().previewDevice("iPhone 12 Pro")
     }
 }
