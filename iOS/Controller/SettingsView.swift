@@ -6,6 +6,7 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
+import SafariServices
 import SwiftUI
 
 @available(iOS 13.0.0, *)
@@ -34,20 +35,28 @@ struct SettingsView: View {
 
 @available(iOS 13.0.0, *)
 struct AboutView: View {
+    @State var externalLinkURL: URL?
+    
     var body: some View {
         List {
             Section {
                 Text("""
-                     Kiwix enables you to have the whole Wikipedia at hand wherever you go! On a boat, in the middle \
-                     of nowhere or in jail, Kiwix gives you access to the whole human knowledge. You don't need \
-                     Internet, everything is stored on your iOS device!
+                     Kiwix is an offline reader for online content like Wikipedia, Project Gutenberg, or TED Talks. \
+                     It makes knowledge available to people with no or limited internet access. \
+                     The software as well as the content is free to use for anyone.
                      """
                 ).multilineTextAlignment(.leading)
+                Button("Our Website") {
+                    externalLinkURL = URL(string: "https://www.kiwix.org")
+                }
             }
             Section(header: Text("Release")) {
-                Text("This software is released under the terms of the GNU General Public License version 3.")
+                Text("This app is released under the terms of the GNU General Public License version 3.")
                 Button("Source") {
-                    
+                    externalLinkURL = URL(string: "https://github.com/kiwix/apple")
+                }
+                Button("GNU General Public License v3") {
+                    externalLinkURL = URL(string: "https://www.gnu.org/licenses/gpl-3.0.en.html")
                 }
             }
             Section(header: Text("Dependencies")) {
@@ -62,6 +71,7 @@ struct AboutView: View {
         }
         .listStyle(GroupedListStyle())
         .navigationBarTitle("About")
+        .sheet(item: $externalLinkURL) { SafariView(url: $0) }
     }
     
     struct Dependency: View {
@@ -69,23 +79,26 @@ struct AboutView: View {
         let license: String
         
         var body: some View {
-            NavigationLink(
-                destination: Text("Destination"),
-                label: {
-                    HStack {
-                        Text(name)
-                        Spacer()
-                        Text(license).foregroundColor(.secondary)
-                    }
-                }
-            )
+            HStack {
+                Text(name)
+                Spacer()
+                Text(license).foregroundColor(.secondary)
+            }
         }
     }
+    
+    struct SafariView: UIViewControllerRepresentable {
+        let url: URL
+
+        func makeUIViewController(context: UIViewControllerRepresentableContext<SafariView>) -> SFSafariViewController {
+            SFSafariViewController(url: url)
+        }
         
+        func updateUIViewController(_ uiViewController: SFSafariViewController, context: Context) { }
+    }
 }
 
-
-@available(iOS 13.0.0, *)
+@available(iOS 13.0, *)
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         AboutView().previewDevice("iPhone 12 Pro")
