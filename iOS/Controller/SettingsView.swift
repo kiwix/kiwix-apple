@@ -12,7 +12,17 @@ import SwiftUI
 import Defaults
 
 @available(iOS 13.0, *)
+class SettingsViewController: UIHostingController<SettingsView> {
+    convenience init() {
+        self.init(rootView: SettingsView())
+        modalPresentationStyle = .formSheet
+        rootView.dismiss = { [unowned self] in self.dismiss(animated: true) }
+    }
+}
+
+@available(iOS 13.0, *)
 struct SettingsView: View {
+    var dismiss: (() -> Void) = {}
     var body: some View {
         NavigationView {
             Form {
@@ -38,6 +48,7 @@ struct SettingsView: View {
                 }
             }
             .navigationBarTitle("Settings")
+            .navigationBarItems(leading: Button("Done", action: dismiss))
         }.navigationViewStyle(StackNavigationViewStyle())
     }
     
