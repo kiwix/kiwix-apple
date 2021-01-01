@@ -51,8 +51,4 @@ extension UserDefaults {
     @objc var recentSearchTexts: [String] {
         get { return stringArray(forKey: "recentSearchTexts") ?? [] }
     }
-    @objc dynamic var webViewTextSizeAdjustFactor: Double {
-        get { value(forKey: "webViewZoomScale") == nil ? 1 : double(forKey: "webViewZoomScale") }
-        set { set(newValue, forKey: "webViewZoomScale") }
-    }
 }

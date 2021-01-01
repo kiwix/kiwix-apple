@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Defaults
 
 class SettingFontSizeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var stackView: UIStackView!
@@ -14,7 +15,7 @@ class SettingFontSizeViewController: UIViewController, UITableViewDelegate, UITa
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var dividerViewHeightConstraint: NSLayoutConstraint!
     
-    private(set) var selected = UserDefaults.standard.webViewTextSizeAdjustFactor
+    private(set) var selected = Defaults[.webViewTextSizeAdjustFactor]
     let percentages = [0.75, 0.8, 0.85, 0.9, 0.95, 1.0, 1.05, 1.10, 1.15, 1.20, 1.30, 1.40, 1.50, 1.75, 2.0]
     let percentageFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -67,6 +68,6 @@ class SettingFontSizeViewController: UIViewController, UITableViewDelegate, UITa
         tableView.reloadRows(at: indexPaths, with: .automatic)
         label.font = UIFont.systemFont(ofSize: CGFloat(14.0 * percentages[indexPath.row]))
         
-        UserDefaults.standard.webViewTextSizeAdjustFactor = selected
+        Defaults[.webViewTextSizeAdjustFactor] = selected
     }
 }
