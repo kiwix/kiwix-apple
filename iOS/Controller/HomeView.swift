@@ -26,7 +26,8 @@ struct HomeView: View {
     }
     
     var content: some View {
-        if viewModel.onDeviceZimFiles.isEmpty {
+        guard let onDeviceZimFiles = viewModel.onDeviceZimFiles else { return AnyView(EmptyView()) }
+        if onDeviceZimFiles.isEmpty {
             return AnyView(welcomeView)
         } else {
             return AnyView(gridView)
@@ -64,7 +65,7 @@ struct HomeView: View {
                 }
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
                     Section(header: SectionHeader(title: "On Device")) {
-                        ForEach(viewModel.onDeviceZimFiles, id: \.id) { zimFile in
+                        ForEach(viewModel.onDeviceZimFiles ?? [], id: \.id) { zimFile in
                             ZimFileCell(zimFile) { zimFileTapped?(zimFile.id) }
                         }
                     }
@@ -112,7 +113,7 @@ struct HomeView: View {
     class ViewModel: ObservableObject {
         private let queue = DispatchQueue(label: "org.kiwix.homeViewUI", qos: .userInitiated)
         private var pipeline: AnyCancellable? = nil
-        @Published private(set) var onDeviceZimFiles = [ZimFile]()
+        @Published private(set) var onDeviceZimFiles: [ZimFile]?
         
         init() {
             pipeline = Queries.onDeviceZimFiles()?

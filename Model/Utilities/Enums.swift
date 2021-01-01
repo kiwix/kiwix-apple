@@ -6,9 +6,10 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
-enum ExternalLinkLoadingPolicy: Int, Codable, CustomStringConvertible {
+enum ExternalLinkLoadingPolicy: Int, CaseIterable, Codable, CustomStringConvertible, Identifiable {
     case alwaysAsk = 0, alwaysLoad, neverLoad
     
+    var id: Int { self.rawValue }
     var description: String {
         switch self {
         case .alwaysAsk:
@@ -34,9 +35,10 @@ enum LibraryLanguageFilterSortingMode: String, Codable, CustomStringConvertible 
     }
 }
 
-enum SearchResultSnippetMode: String, Codable, CustomStringConvertible {
+enum SearchResultSnippetMode: String, CaseIterable, Codable, CustomStringConvertible, Identifiable {
     case disabled, firstParagraph, firstSentence, matches
     
+    var id: String { self.rawValue }
     var description: String {
         switch self {
         case .disabled:
@@ -51,9 +53,10 @@ enum SearchResultSnippetMode: String, Codable, CustomStringConvertible {
     }
 }
 
-enum SideBarDisplayMode: String, Codable, CustomStringConvertible {
+enum SideBarDisplayMode: String, CaseIterable, Codable, CustomStringConvertible, Identifiable {
     case automatic, sideBySide, overlay
     
+    var id: String { self.rawValue }
     var description: String {
         switch self {
         case .automatic:

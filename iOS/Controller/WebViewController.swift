@@ -18,7 +18,7 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
         config.mediaTypesRequiringUserActionForPlayback = []
         return WKWebView(frame: .zero, configuration: config)
     }()
-    private var textSizeAdjustFactorObserver: NSKeyValueObservation?
+    private var textSizeAdjustFactorObserver: DefaultsObservation?
     private var rootViewController: RootViewController? {
         splitViewController?.parent as? RootViewController
     }
@@ -51,9 +51,7 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
         }
         
         // observe webView font size adjust factor
-        textSizeAdjustFactorObserver = UserDefaults.standard.observe(\.webViewTextSizeAdjustFactor) { _, _ in
-            self.adjustTextSize()
-        }
+        textSizeAdjustFactorObserver = Defaults.observe(keys: .webViewTextSizeAdjustFactor) { self.adjustTextSize() }
     }
     
     override func viewDidLayoutSubviews() {
@@ -62,7 +60,7 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
     }
     
     func adjustTextSize() {
-        let scale = UserDefaults.standard.webViewTextSizeAdjustFactor
+        let scale = Defaults[.webViewTextSizeAdjustFactor]
         let javascript = String(format: "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%.0f%%'", scale * 100)
         webView.evaluateJavaScript(javascript, completionHandler: nil)
     }
@@ -132,6 +130,10 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         adjustTextSize()
+        webView.evaluateJavaScript(
+            "document.querySelectorAll(\"details\").forEach((detail) => {detail.setAttribute(\"open\", true)});",
+            completionHandler: nil
+        )
     }
     
     // MARK: - WKUIDelegate

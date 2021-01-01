@@ -13,6 +13,7 @@ extension Defaults.Keys {
     static let externalLinkLoadingPolicy = Key<ExternalLinkLoadingPolicy>(
         "externalLinkLoadingPolicy", default: .alwaysAsk
     )
+    static let webViewTextSizeAdjustFactor = Key<Double>("webViewZoomScale", default: 1)
     
     // UI
     static let sideBarDisplayMode = Key<SideBarDisplayMode>("sideBarDisplayMode", default: .automatic)
@@ -20,7 +21,7 @@ extension Defaults.Keys {
     // search
     static let recentSearchTexts = Key<[String]>("recentSearchTexts", default: [])
     static let searchResultSnippetMode = Key<SearchResultSnippetMode>(
-        "searchResultSnippetMode", default: .firstParagraph
+        "searchResultSnippetMode", default: .firstSentence
     )
     
     // library
@@ -40,29 +41,6 @@ extension Defaults {
         set { key.suite.set(newValue, forKey: key.name) }
     }
     
-    static subscript(key: Key<ExternalLinkLoadingPolicy>) -> ExternalLinkLoadingPolicy {
-        get { ExternalLinkLoadingPolicy(rawValue: key.suite.integer(forKey: key.name)) ?? key.defaultValue }
-        set { key.suite.set(newValue.rawValue, forKey: key.name) }
-    }
-    
-    static subscript(key: Key<SideBarDisplayMode>) -> SideBarDisplayMode {
-        get { SideBarDisplayMode(rawValue: key.suite.string(forKey: key.name) ?? "") ?? key.defaultValue }
-        set { key.suite.set(newValue.rawValue, forKey: key.name) }
-    }
-    
-    static subscript(key: Key<SearchResultSnippetMode>) -> SearchResultSnippetMode {
-        get {
-            if let mode = SearchResultSnippetMode(rawValue: key.suite.string(forKey: key.name) ?? "") {
-                return mode
-            } else if key.suite.bool(forKey: "searchResultExcludeSnippet") {
-                return .disabled
-            } else {
-                return .firstParagraph
-            }
-        }
-        set { key.suite.set(newValue.rawValue, forKey: key.name) }
-    }
-    
     static subscript(key: Key<LibraryLanguageFilterSortingMode>) -> LibraryLanguageFilterSortingMode {
         get { LibraryLanguageFilterSortingMode(rawValue: key.suite.string(forKey: key.name) ?? "") ?? key.defaultValue }
         set { key.suite.set(newValue.rawValue, forKey: key.name) }
@@ -72,9 +50,5 @@ extension Defaults {
 extension UserDefaults {
     @objc var recentSearchTexts: [String] {
         get { return stringArray(forKey: "recentSearchTexts") ?? [] }
-    }
-    @objc dynamic var webViewTextSizeAdjustFactor: Double {
-        get { value(forKey: "webViewZoomScale") == nil ? 1 : double(forKey: "webViewZoomScale") }
-        set { set(newValue, forKey: "webViewZoomScale") }
     }
 }

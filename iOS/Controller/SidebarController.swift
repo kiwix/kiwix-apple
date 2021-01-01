@@ -17,7 +17,7 @@ class SidebarController: UISplitViewController, UISplitViewControllerDelegate {
         if #available(iOS 14.0, *) {
             super.init(style: .doubleColumn)
             sideBarDisplayModeObserver = Defaults.observe(.sideBarDisplayMode) { change in
-                switch(Defaults[.sideBarDisplayMode]) {
+                switch(change.newValue) {
                 case .automatic:
                     self.preferredSplitBehavior = .automatic
                     self.preferredDisplayMode = .automatic
