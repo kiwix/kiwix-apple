@@ -11,11 +11,11 @@ import Defaults
 
 class ZimFileManagerController: NSViewController, NSOutlineViewDelegate, NSOutlineViewDataSource {
     @IBOutlet weak var outlineView: NSOutlineView!
-    private var items = [OutlineItem]()
+    private var items = [Item]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        items = [OutlineItem(name: "Files", children: [])]
+        items = [Item(name: "Files", children: [])]
         reloadData()
     }
     
@@ -26,13 +26,13 @@ class ZimFileManagerController: NSViewController, NSOutlineViewDelegate, NSOutli
             let url = (((try? URL(resolvingBookmarkData: data, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)) as URL??)) ?? nil
             return isStale ? nil : url
         }
-        items[0].children = urls.map({ OutlineItem(name: $0.lastPathComponent) })
+        items[0].children = urls.map({ Item(name: $0.lastPathComponent) })
         outlineView.reloadData()
         outlineView.expandItem(nil, expandChildren: true)
     }
     
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
-        if let item = item as? OutlineItem {
+        if let item = item as? Item {
             return item.children.count
         } else {
             return items.count
@@ -40,7 +40,7 @@ class ZimFileManagerController: NSViewController, NSOutlineViewDelegate, NSOutli
     }
     
     func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-        if let item = item as? OutlineItem {
+        if let item = item as? Item {
             return item.children[index]
         } else {
             return items[index]
@@ -48,12 +48,12 @@ class ZimFileManagerController: NSViewController, NSOutlineViewDelegate, NSOutli
     }
     
     func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
-        guard let item = item as? OutlineItem else {return false}
+        guard let item = item as? Item else {return false}
         return item.children.count > 0
     }
     
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-        guard let item = item as? OutlineItem else {return nil}
+        guard let item = item as? Item else {return nil}
         let identifier = NSUserInterfaceItemIdentifier(item.children.count > 0 ? "HeaderCell" : "DataCell")
         let view = outlineView.makeView(withIdentifier: identifier, owner: self) as! NSTableCellView
         view.textField?.stringValue = item.name
@@ -65,7 +65,7 @@ class ZimFileManagerController: NSViewController, NSOutlineViewDelegate, NSOutli
     }
     
     func outlineView(_ outlineView: NSOutlineView, shouldSelectItem item: Any) -> Bool {
-        guard let item = item as? OutlineItem else {return false}
+        guard let item = item as? Item else {return false}
         return item.children.count == 0
     }
     
@@ -78,11 +78,11 @@ class ZimFileManagerController: NSViewController, NSOutlineViewDelegate, NSOutli
     }
 }
 
-private class OutlineItem {
+private class Item {
     let name: String
-    var children: [OutlineItem]
+    var children: [Item]
     
-    init(name: String, children: [OutlineItem] = []) {
+    init(name: String, children: [Item] = []) {
         self.name = name
         self.children = children
     }
