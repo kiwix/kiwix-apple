@@ -63,7 +63,7 @@ struct SettingsView: View {
     var sendFeedback: (() -> Void) = {}
     var body: some View {
         NavigationView {
-            Form {
+            List {
                 Section {
                     NavigationLink("Font Size", destination: FontSizeSettingsView())
                     NavigationLink("External Link", destination: ExternalLinkSettingsView())
@@ -85,6 +85,7 @@ struct SettingsView: View {
                     NavigationLink("About", destination: AboutView())
                 }
             }
+            .listStyle(GroupedListStyle())
             .navigationBarTitle("Settings")
             .navigationBarItems(leading: Button("Done", action: dismiss))
         }.navigationViewStyle(StackNavigationViewStyle())
