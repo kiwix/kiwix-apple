@@ -82,7 +82,7 @@ class LibraryScanOperation: LibraryOperationBase {
     }
     
     private func closeReadersForDeletedZimFiles() {
-        for zimFileID in ZimFileService.shared.ids {
+        for zimFileID in ZimFileService.shared.zimFileIDs {
             guard let fileURL = ZimFileService.shared.getFileURL(zimFileID: zimFileID),
                   !FileManager.default.fileExists(atPath: fileURL.path) else { continue }
             ZimFileService.shared.close(id: zimFileID)
@@ -91,7 +91,7 @@ class LibraryScanOperation: LibraryOperationBase {
     
     private func updateDatabase() {
         do {
-            let zimFileIDs = ZimFileService.shared.ids
+            let zimFileIDs = ZimFileService.shared.zimFileIDs
             let database = try Realm(configuration: Realm.defaultConfig)
             
             try database.write {

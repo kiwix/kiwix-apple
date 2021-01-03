@@ -8,7 +8,7 @@
 
 extension ZimFileService {
     static let shared = ZimFileService.__sharedInstance()
-    var ids: [String] { get { return __getReaderIdentifiers().compactMap({ $0 as? String }) } }
+    var zimFileIDs: [String] { get { return __getReaderIdentifiers().compactMap({ $0 as? String }) } }
     
     func open(url: URL) { __open(url) }
     func close(id: String) { __close(id) }
