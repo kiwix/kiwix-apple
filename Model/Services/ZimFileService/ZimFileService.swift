@@ -31,8 +31,10 @@ extension ZimFileService {
         __getFileURL(zimFileID)
     }
     
-    func getRedirectedPath(zimFileID: String, contentPath: String) -> String? {
-        return __getRedirectedPath(zimFileID, contentPath: contentPath)
+    func getRedirectedURL(url: URL) -> URL? {
+        guard let zimFileID = url.host,
+              let redirectedPath = __getRedirectedPath(zimFileID, contentPath: url.path) else { return nil }
+        return URL(zimFileID: zimFileID, contentPath: redirectedPath)
     }
     
     func getContent(bookID: String, contentPath: String) -> (data: Data, mime: String, length: Int)? {
@@ -42,7 +44,6 @@ extension ZimFileService {
             let length = content["length"] as? Int else {return nil}
         return (data, mime, length)
     }
-    
     
     func getMainPageURL(zimFileID: String) -> URL? {
         guard let path = __getMainPagePath(zimFileID) else {return nil}

@@ -110,9 +110,7 @@ class SceneViewModel: NSObject, ObservableObject, UISplitViewControllerDelegate,
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
         if url.isKiwixURL {
-            guard let zimFileID = url.host else { decisionHandler(.cancel); return }
-            if let redirectedPath = ZimFileService.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
-                let redirectedURL = URL(zimFileID: zimFileID, contentPath: redirectedPath) {
+            if let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
                 decisionHandler(.cancel)
                 webView.load(URLRequest(url: redirectedURL))
             } else {
