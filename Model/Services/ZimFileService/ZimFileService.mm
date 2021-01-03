@@ -64,10 +64,6 @@ struct SharedReaders {
     return [self.fileURLs allKeys];
 }
 
-- (NSURL *)getReaderFileURL:(NSString *)identifier {
-    return self.fileURLs[identifier];
-}
-
 #pragma mark - reader management
 
 - (void)addReaderByURL:(NSURL *)url {
@@ -210,6 +206,10 @@ struct SharedReaders {
 }
 
 # pragma mark - URL handling
+
+- (NSURL *)getReaderFileURL:(NSString *)identifier {
+    return self.fileURLs[identifier];
+}
 
 - (NSString *)getMainPagePath:(NSString *)bookID {
     auto found = self.readers->find([bookID cStringUsingEncoding:NSUTF8StringEncoding]);

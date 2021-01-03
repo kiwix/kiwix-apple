@@ -1,5 +1,5 @@
 //
-//  ZimManager.swift
+//  ZimFileService.swift
 //  Kiwix
 //
 //  Created by Chris Li on 8/21/17.
@@ -8,9 +8,7 @@
 
 extension ZimFileService {
     static let shared = ZimFileService.__sharedInstance()
-    
-    var ids: [String] {get{ return __getReaderIdentifiers().compactMap({$0 as? String}) }}
-    func getFileURL(zimFileID: String) -> URL? { return __getReaderFileURL(zimFileID) }
+    var ids: [String] { get { return __getReaderIdentifiers().compactMap({ $0 as? String }) } }
     
     func add(url: URL) {__addReader(by: url)}
     func remove(id: String) {__removeReader(byID: id)}
@@ -37,6 +35,9 @@ extension ZimFileService {
         return __getMetaData(withFileURL: url)
     }
     
+    // MARK: - URL
+    
+    func getFileURL(zimFileID: String) -> URL? { return __getReaderFileURL(zimFileID) }
     func getMainPageURL(zimFileID: String) -> URL? {
         guard let path = __getMainPagePath(zimFileID) else {return nil}
         return URL(zimFileID: zimFileID, contentPath: path)
