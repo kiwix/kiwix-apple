@@ -30,7 +30,7 @@ class LibraryScanOperation: LibraryOperationBase {
     override func main() {
         addReadersFromURLs()
         addReadersFromBookmarkData()
-        ZimFileService.shared.removeStaleReaders()
+        closeReadersForDeletedZimFiles()
         
         updateDatabase()
         #if os(iOS)
@@ -79,6 +79,14 @@ class LibraryScanOperation: LibraryOperationBase {
                 }
             }
         } catch {}
+    }
+    
+    private func closeReadersForDeletedZimFiles() {
+        for zimFileID in ZimFileService.shared.ids {
+            guard let fileURL = ZimFileService.shared.getFileURL(zimFileID: zimFileID),
+                  !FileManager.default.fileExists(atPath: fileURL.path) else { continue }
+            ZimFileService.shared.close(id: zimFileID)
+        }
     }
     
     private func updateDatabase() {

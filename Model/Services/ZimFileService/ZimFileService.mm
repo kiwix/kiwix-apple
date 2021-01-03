@@ -59,10 +59,6 @@ struct SharedReaders {
     delete self.readers;
 }
 
-- (NSArray *)getReaderIdentifiers {
-    return [self.fileURLs allKeys];
-}
-
 #pragma mark - reader management
 
 - (void)open:(NSURL *)url {
@@ -97,6 +93,10 @@ struct SharedReaders {
     [self.fileURLs removeObjectForKey:zimFileID];
 }
 
+- (NSArray *)getReaderIdentifiers {
+    return [self.fileURLs allKeys];
+}
+
 - (struct SharedReaders)getSharedReaders:(nonnull NSSet *)identifiers {
     NSMutableArray *readerIDs = [[NSMutableArray alloc] initWithCapacity:[identifiers count]];
     auto readers = std::vector<std::shared_ptr<kiwix::Reader>>();
@@ -113,16 +113,6 @@ struct SharedReaders {
     sharedReaders.readerIDs = readerIDs;
     sharedReaders.readers = readers;
     return sharedReaders;
-}
-
-- (void)removeStaleReaders {
-    for (NSString *identifier in [self.fileURLs allKeys]) {
-        NSURL *url = self.fileURLs[identifier];
-        NSString *path = [url path];
-        if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
-            [self close:identifier];
-        }
-    }
 }
 
 # pragma mark - meta data

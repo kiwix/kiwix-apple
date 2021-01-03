@@ -16,13 +16,10 @@ struct SharedReaders;
 - (instancetype _Nonnull)init NS_REFINED_FOR_SWIFT;
 + (nonnull ZimFileService *)sharedInstance NS_REFINED_FOR_SWIFT;
 
-- (NSArray *_Nonnull)getReaderIdentifiers NS_REFINED_FOR_SWIFT;
-
-
 - (void)open:(NSURL *_Nonnull)url NS_REFINED_FOR_SWIFT;
 - (void)close:(NSString *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
-- (struct SharedReaders)getSharedReaders:(nonnull NSSet *)identifiers;
-- (void)removeStaleReaders;
+- (NSArray *_Nonnull)getReaderIdentifiers NS_REFINED_FOR_SWIFT;
+- (struct SharedReaders)getSharedReaders:(nonnull NSSet *)identifiers NS_REFINED_FOR_SWIFT;
 
 // meta data
 - (nullable ZimFileMetaData *)getZimFileMetaData:(nonnull NSString *)identifier NS_REFINED_FOR_SWIFT;
