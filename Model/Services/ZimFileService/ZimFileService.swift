@@ -18,14 +18,18 @@ extension ZimFileService {
     // MARK: - Metadata
     
     func getMetaData(id: String) -> ZimFileMetaData? {
-        return __getMetaData(id)
+        __getMetaData(id)
     }
     
     static func getMetaData(url: URL) -> ZimFileMetaData? {
-        return __getMetaData(withFileURL: url)
+        __getMetaData(withFileURL: url)
     }
     
     // MARK: - URL
+    
+    func getFileURL(zimFileID: String) -> URL? {
+        __getFileURL(zimFileID)
+    }
     
     func getRedirectedPath(zimFileID: String, contentPath: String) -> String? {
         return __getRedirectedPath(zimFileID, contentPath: contentPath)
@@ -39,7 +43,7 @@ extension ZimFileService {
         return (data, mime, length)
     }
     
-    func getFileURL(zimFileID: String) -> URL? { return __getReaderFileURL(zimFileID) }
+    
     func getMainPageURL(zimFileID: String) -> URL? {
         guard let path = __getMainPagePath(zimFileID) else {return nil}
         return URL(zimFileID: zimFileID, contentPath: path)

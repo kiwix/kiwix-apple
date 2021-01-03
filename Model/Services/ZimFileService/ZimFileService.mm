@@ -141,7 +141,11 @@ struct SharedReaders {
     return metaData;
 }
 
-# pragma mark - check redirection
+# pragma mark - URL Handling
+
+- (NSURL *)getFileURL:(NSString *)identifier {
+    return self.fileURLs[identifier];
+}
 
 - (NSString *_Nullable)getRedirectedPath:(NSString *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath {
     auto found = self.readers->find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
@@ -171,35 +175,6 @@ struct SharedReaders {
     }
 }
 
-# pragma mark - get content
-
-- (NSDictionary *)getContent:(NSString *)zimFileID contentURL:(NSString *)contentURL {
-    auto found = self.readers->find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
-    if (found == self.readers->end()) {
-        return nil;
-    } else {
-        std::shared_ptr<kiwix::Reader> reader = found->second;
-
-        try {
-            kiwix::Entry entry = reader->getEntryFromPath([contentURL cStringUsingEncoding:NSUTF8StringEncoding]);
-            NSNumber *length = [NSNumber numberWithUnsignedLongLong:entry.getSize()];
-            NSData *data = [NSData dataWithBytes:entry.getContent().data() length:length.unsignedLongLongValue];
-            NSString *mime = [NSString stringWithUTF8String:entry.getMimetype().c_str()];
-            return @{@"data": data, @"mime": mime, @"length": length};
-        } catch (kiwix::NoEntry) {
-            return nil;
-        } catch (std::exception) {
-            return nil;
-        }
-    }
-}
-
-# pragma mark - URL handling
-
-- (NSURL *)getReaderFileURL:(NSString *)identifier {
-    return self.fileURLs[identifier];
-}
-
 - (NSString *)getMainPagePath:(NSString *)bookID {
     auto found = self.readers->find([bookID cStringUsingEncoding:NSUTF8StringEncoding]);
     if (found == self.readers->end()) {
@@ -221,6 +196,29 @@ struct SharedReaders {
         kiwix::Entry entry = reader->getRandomPage();
         std::string path = entry.getPath();
         return [NSString stringWithCString:path.c_str() encoding:NSUTF8StringEncoding];
+    }
+}
+
+# pragma mark - get content
+
+- (NSDictionary *)getContent:(NSString *)zimFileID contentURL:(NSString *)contentURL {
+    auto found = self.readers->find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
+    if (found == self.readers->end()) {
+        return nil;
+    } else {
+        std::shared_ptr<kiwix::Reader> reader = found->second;
+
+        try {
+            kiwix::Entry entry = reader->getEntryFromPath([contentURL cStringUsingEncoding:NSUTF8StringEncoding]);
+            NSNumber *length = [NSNumber numberWithUnsignedLongLong:entry.getSize()];
+            NSData *data = [NSData dataWithBytes:entry.getContent().data() length:length.unsignedLongLongValue];
+            NSString *mime = [NSString stringWithUTF8String:entry.getMimetype().c_str()];
+            return @{@"data": data, @"mime": mime, @"length": length};
+        } catch (kiwix::NoEntry) {
+            return nil;
+        } catch (std::exception) {
+            return nil;
+        }
     }
 }
 
