@@ -6,18 +6,16 @@
 //  Copyright © 2017 Chris Li. All rights reserved.
 //
 
-typealias ZimFileID = String
-
 extension ZimMultiReader {
     static let shared = ZimMultiReader.__sharedInstance()
     
-    var ids: [ZimFileID] {get{ return __getIdentifiers().compactMap({$0 as? ZimFileID}) }}
-    func getFileURL(zimFileID: ZimFileID) -> URL? { return __getFileURL(zimFileID) }
+    var ids: [String] {get{ return __getIdentifiers().compactMap({$0 as? String}) }}
+    func getFileURL(zimFileID: String) -> URL? { return __getFileURL(zimFileID) }
     
     func add(url: URL) {__add(by: url)}
-    func remove(id: ZimFileID) {__remove(byID: id)}
+    func remove(id: String) {__remove(byID: id)}
     
-    func getRedirectedPath(zimFileID: ZimFileID, contentPath: String) -> String? {
+    func getRedirectedPath(zimFileID: String, contentPath: String) -> String? {
         return __getRedirectedPath(zimFileID, contentPath: contentPath)
     }
     

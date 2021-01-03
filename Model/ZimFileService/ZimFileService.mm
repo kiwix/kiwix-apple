@@ -17,7 +17,7 @@
 #include "kiwix/searcher.h"
 #pragma clang diagnostic pop
 
-#import "ZimMultiReader.h"
+#import "ZimFileService.h"
 #import "ZimFileMetaData.h"
 
 struct SharedReaders {

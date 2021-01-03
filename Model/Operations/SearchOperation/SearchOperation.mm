@@ -14,7 +14,7 @@
 
 #import "SearchOperation.h"
 #import "SearchResult.h"
-#import "ZimMultiReader.h"
+#import "ZimFileService.h"
 
 struct SharedReaders {
     NSArray *readerIDs;
