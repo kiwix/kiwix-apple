@@ -418,7 +418,6 @@
 				9779A59E2456793500F6F6FF /* Operations */,
 				9779A5AE2456793600F6F6FF /* Realm */,
 				9779A59B2456793500F6F6FF /* Services */,
-				9779A5A62456793500F6F6FF /* ZimFileService */,
 				9706555A2473682C00A51319 /* Utilities */,
 			);
 			path = Model;
@@ -531,6 +530,7 @@
 		9779A59B2456793500F6F6FF /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				9779A5A62456793500F6F6FF /* ZimFileService */,
 				9779A5D52456796A00F6F6FF /* DownloadService.swift */,
 				9779A59C2456793500F6F6FF /* LibraryService.swift */,
 				9779A59D2456793500F6F6FF /* BookmarkService.swift */,
