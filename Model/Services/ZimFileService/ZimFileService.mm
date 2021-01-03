@@ -175,8 +175,8 @@ struct SharedReaders {
     }
 }
 
-- (NSString *)getMainPagePath:(NSString *)bookID {
-    auto found = self.readers->find([bookID cStringUsingEncoding:NSUTF8StringEncoding]);
+- (NSString *)getMainPagePath:(NSString *)zimFileID {
+    auto found = self.readers->find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
     if (found == self.readers->end()) {
         return nil;
     } else {

@@ -32,7 +32,7 @@ struct SharedReaders;
 
 - (NSURL *_Nullable)getFileURL:(NSString *_Nonnull)identifier NS_REFINED_FOR_SWIFT;
 - (NSString *_Nullable)getRedirectedPath:(NSString *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath NS_REFINED_FOR_SWIFT;
-- (NSString *_Nullable)getMainPagePath:(NSString *_Nonnull)bookID NS_REFINED_FOR_SWIFT;
+- (NSString *_Nullable)getMainPagePath:(NSString *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
 - (NSString *_Nullable)getRandomPagePath:(NSString *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
 
 - (NSDictionary *_Nullable)getContent:(NSString *_Nonnull)zimFileID contentURL:(NSString *_Nonnull)contentURL NS_REFINED_FOR_SWIFT;

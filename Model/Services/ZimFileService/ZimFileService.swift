@@ -37,21 +37,21 @@ extension ZimFileService {
         return URL(zimFileID: zimFileID, contentPath: redirectedPath)
     }
     
+    func getMainPageURL(zimFileID: String) -> URL? {
+        guard let path = __getMainPagePath(zimFileID) else { return nil }
+        return URL(zimFileID: zimFileID, contentPath: path)
+    }
+    
+    func getRandomPageURL(zimFileID: String) -> URL? {
+        guard let path = __getRandomPagePath(zimFileID) else { return nil }
+        return URL(zimFileID: zimFileID, contentPath: path)
+    }
+    
     func getContent(bookID: String, contentPath: String) -> (data: Data, mime: String, length: Int)? {
         guard let content = __getContent(bookID, contentURL: contentPath),
             let data = content["data"] as? Data,
             let mime = content["mime"] as? String,
             let length = content["length"] as? Int else {return nil}
         return (data, mime, length)
-    }
-    
-    func getMainPageURL(zimFileID: String) -> URL? {
-        guard let path = __getMainPagePath(zimFileID) else {return nil}
-        return URL(zimFileID: zimFileID, contentPath: path)
-    }
-    
-    func getRandomPageURL(zimFileID: String) -> URL? {
-        guard let path = __getRandomPagePath(zimFileID) else {return nil}
-        return URL(zimFileID: zimFileID, contentPath: path)
     }
 }
