@@ -10,8 +10,8 @@ extension ZimFileService {
     static let shared = ZimFileService.__sharedInstance()
     var ids: [String] { get { return __getReaderIdentifiers().compactMap({ $0 as? String }) } }
     
-    func add(url: URL) {__addReader(by: url)}
-    func remove(id: String) {__removeReader(byID: id)}
+    func open(url: URL) {__open(url)}
+    func close(id: String) {__close(id)}
     
     func getRedirectedPath(zimFileID: String, contentPath: String) -> String? {
         return __getRedirectedPath(zimFileID, contentPath: contentPath)

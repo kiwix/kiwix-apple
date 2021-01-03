@@ -28,7 +28,6 @@ struct SharedReaders {
 @interface ZimFileService ()
 
 @property (assign) std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>> *readers;
-@property (assign) std::unordered_map<std::string, kiwix::Reader> *readers2;
 @property (strong) NSMutableDictionary *fileURLs; // [ID: FileURL]
 
 @end
@@ -66,7 +65,7 @@ struct SharedReaders {
 
 #pragma mark - reader management
 
-- (void)addReaderByURL:(NSURL *)url {
+- (void)open:(NSURL *)url {
     try {
         // if url does not ends with "zim", skip it
         NSString *pathExtension = [[url pathExtension] lowercaseString];
@@ -91,6 +90,13 @@ struct SharedReaders {
     } catch (std::exception e) { }
 }
 
+- (void)close:(NSString *)zimFileID {
+    std::string identifier = [zimFileID cStringUsingEncoding:NSUTF8StringEncoding];
+    self.readers->erase(identifier);
+    [self.fileURLs[zimFileID] stopAccessingSecurityScopedResource];
+    [self.fileURLs removeObjectForKey:zimFileID];
+}
+
 - (struct SharedReaders)getSharedReaders:(nonnull NSSet *)identifiers {
     NSMutableArray *readerIDs = [[NSMutableArray alloc] initWithCapacity:[identifiers count]];
     auto readers = std::vector<std::shared_ptr<kiwix::Reader>>();
@@ -109,19 +115,12 @@ struct SharedReaders {
     return sharedReaders;
 }
 
-- (void)removeReaderByID:(NSString *)bookID {
-    std::string identifier = [bookID cStringUsingEncoding:NSUTF8StringEncoding];
-    self.readers->erase(identifier);
-    [self.fileURLs[bookID] stopAccessingSecurityScopedResource];
-    [self.fileURLs removeObjectForKey:bookID];
-}
-
 - (void)removeStaleReaders {
     for (NSString *identifier in [self.fileURLs allKeys]) {
         NSURL *url = self.fileURLs[identifier];
         NSString *path = [url path];
         if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
-            [self removeReaderByID:identifier];
+            [self close:identifier];
         }
     }
 }

@@ -19,9 +19,9 @@ struct SharedReaders;
 - (NSArray *_Nonnull)getReaderIdentifiers NS_REFINED_FOR_SWIFT;
 
 
-- (void)addReaderByURL:(NSURL *_Nonnull)url NS_REFINED_FOR_SWIFT;
+- (void)open:(NSURL *_Nonnull)url NS_REFINED_FOR_SWIFT;
+- (void)close:(NSString *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
 - (struct SharedReaders)getSharedReaders:(nonnull NSSet *)identifiers;
-- (void)removeReaderByID:(NSString *_Nonnull)bookID NS_REFINED_FOR_SWIFT;
 - (void)removeStaleReaders;
 
 // meta data

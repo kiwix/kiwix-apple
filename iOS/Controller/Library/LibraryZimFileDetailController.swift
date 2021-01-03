@@ -365,7 +365,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                 }
                 if action == .unlink {
                     do {
-                        ZimFileService.shared.remove(id: zimFile.id)
+                        ZimFileService.shared.close(id: zimFile.id)
                         let database = try Realm(configuration: Realm.defaultConfig)
                         try database.write {
                             if zimFile.downloadURL != nil {

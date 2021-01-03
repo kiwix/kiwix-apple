@@ -53,7 +53,7 @@ class LibraryScanOperation: LibraryOperationBase {
                 return [url]
             }
         }).flatMap({ $0 }).filter({ $0.pathExtension == "zim" })
-        zimFileURLs.forEach({ ZimFileService.shared.add(url: $0) })
+        zimFileURLs.forEach({ ZimFileService.shared.open(url: $0) })
     }
     
     /**
@@ -71,7 +71,7 @@ class LibraryScanOperation: LibraryOperationBase {
                                              options: [],
                                              relativeTo: nil,
                                              bookmarkDataIsStale: &isStale) as URL else {return}
-                ZimFileService.shared.add(url: fileURL)
+                ZimFileService.shared.open(url: fileURL)
                 if isStale.boolValue {
                     try database.write {
                         saveBookmarkData(zimFile: zimFile)
