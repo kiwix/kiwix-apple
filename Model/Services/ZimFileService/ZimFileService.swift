@@ -10,8 +10,22 @@ extension ZimFileService {
     static let shared = ZimFileService.__sharedInstance()
     var zimFileIDs: [String] { get { return __getReaderIdentifiers().compactMap({ $0 as? String }) } }
     
+    // MARK: - Reader Management
+    
     func open(url: URL) { __open(url) }
     func close(id: String) { __close(id) }
+    
+    // MARK: - Metadata
+    
+    func getZimFileMetaData(id: String) -> ZimFileMetaData? {
+        return __getZimFileMetaData(id)
+    }
+    
+    static func getMetaData(url: URL) -> ZimFileMetaData? {
+        return __getMetaData(withFileURL: url)
+    }
+    
+    // MARK: - URL
     
     func getRedirectedPath(zimFileID: String, contentPath: String) -> String? {
         return __getRedirectedPath(zimFileID, contentPath: contentPath)
@@ -24,18 +38,6 @@ extension ZimFileService {
             let length = content["length"] as? Int else {return nil}
         return (data, mime, length)
     }
-    
-    // MARK: - meta data
-    
-    func getZimFileMetaData(id: String) -> ZimFileMetaData? {
-        return __getZimFileMetaData(id)
-    }
-    
-    static func getMetaData(url: URL) -> ZimFileMetaData? {
-        return __getMetaData(withFileURL: url)
-    }
-    
-    // MARK: - URL
     
     func getFileURL(zimFileID: String) -> URL? { return __getReaderFileURL(zimFileID) }
     func getMainPageURL(zimFileID: String) -> URL? {

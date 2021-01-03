@@ -59,7 +59,7 @@ struct SharedReaders {
     delete self.readers;
 }
 
-#pragma mark - reader management
+#pragma mark - Reader Management
 
 - (void)open:(NSURL *)url {
     try {
@@ -115,7 +115,7 @@ struct SharedReaders {
     return sharedReaders;
 }
 
-# pragma mark - meta data
+# pragma mark - Metadata
 
 - (ZimFileMetaData *)getZimFileMetaData:(NSString *)identifier {
     auto found = self.readers->find([identifier cStringUsingEncoding:NSUTF8StringEncoding]);
