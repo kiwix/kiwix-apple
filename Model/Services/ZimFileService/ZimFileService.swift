@@ -47,8 +47,10 @@ extension ZimFileService {
         return URL(zimFileID: zimFileID, contentPath: path)
     }
     
+    // MARK: - URL Response
+    
     func getContent(bookID: String, contentPath: String) -> (data: Data, mime: String, length: Int)? {
-        guard let content = __getContent(bookID, contentURL: contentPath),
+        guard let content = __getURLContent(bookID, contentPath: contentPath),
             let data = content["data"] as? Data,
             let mime = content["mime"] as? String,
             let length = content["length"] as? Int else {return nil}

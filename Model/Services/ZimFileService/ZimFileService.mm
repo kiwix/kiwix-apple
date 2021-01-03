@@ -199,9 +199,9 @@ struct SharedReaders {
     }
 }
 
-# pragma mark - get content
+# pragma mark - URL Response
 
-- (NSDictionary *)getContent:(NSString *)zimFileID contentURL:(NSString *)contentURL {
+- (NSDictionary *)getURLContent:(NSString *)zimFileID contentPath:(NSString *)contentPath {
     auto found = self.readers->find([zimFileID cStringUsingEncoding:NSUTF8StringEncoding]);
     if (found == self.readers->end()) {
         return nil;
@@ -209,7 +209,7 @@ struct SharedReaders {
         std::shared_ptr<kiwix::Reader> reader = found->second;
 
         try {
-            kiwix::Entry entry = reader->getEntryFromPath([contentURL cStringUsingEncoding:NSUTF8StringEncoding]);
+            kiwix::Entry entry = reader->getEntryFromPath([contentPath cStringUsingEncoding:NSUTF8StringEncoding]);
             NSNumber *length = [NSNumber numberWithUnsignedLongLong:entry.getSize()];
             NSData *data = [NSData dataWithBytes:entry.getContent().data() length:length.unsignedLongLongValue];
             NSString *mime = [NSString stringWithUTF8String:entry.getMimetype().c_str()];

@@ -35,6 +35,8 @@ struct SharedReaders;
 - (NSString *_Nullable)getMainPagePath:(NSString *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
 - (NSString *_Nullable)getRandomPagePath:(NSString *_Nonnull)zimFileID NS_REFINED_FOR_SWIFT;
 
-- (NSDictionary *_Nullable)getContent:(NSString *_Nonnull)zimFileID contentURL:(NSString *_Nonnull)contentURL NS_REFINED_FOR_SWIFT;
+# pragma mark - URL Response
+
+- (NSDictionary *_Nullable)getURLContent:(NSString *_Nonnull)zimFileID contentPath:(NSString *_Nonnull)contentPath NS_REFINED_FOR_SWIFT;
 
 @end
