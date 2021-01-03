@@ -117,7 +117,7 @@ struct SharedReaders {
 
 # pragma mark - Metadata
 
-- (ZimFileMetaData *)getZimFileMetaData:(NSString *)identifier {
+- (ZimFileMetaData *)getMetaData:(NSString *)identifier {
     auto found = self.readers->find([identifier cStringUsingEncoding:NSUTF8StringEncoding]);
     if (found == self.readers->end()) {
         return nil;

@@ -25,7 +25,7 @@ struct SharedReaders;
 
 # pragma mark - Metadata
 
-- (nullable ZimFileMetaData *)getZimFileMetaData:(nonnull NSString *)identifier NS_REFINED_FOR_SWIFT;
+- (nullable ZimFileMetaData *)getMetaData:(nonnull NSString *)identifier NS_REFINED_FOR_SWIFT;
 + (nullable ZimFileMetaData *)getMetaDataWithFileURL:(nonnull NSURL *)url NS_REFINED_FOR_SWIFT;
 
 - (NSURL *_Nullable)getReaderFileURL:(NSString *_Nonnull)identifier NS_REFINED_FOR_SWIFT;

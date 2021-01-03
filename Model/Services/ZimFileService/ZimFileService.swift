@@ -17,8 +17,8 @@ extension ZimFileService {
     
     // MARK: - Metadata
     
-    func getZimFileMetaData(id: String) -> ZimFileMetaData? {
-        return __getZimFileMetaData(id)
+    func getMetaData(id: String) -> ZimFileMetaData? {
+        return __getMetaData(id)
     }
     
     static func getMetaData(url: URL) -> ZimFileMetaData? {
