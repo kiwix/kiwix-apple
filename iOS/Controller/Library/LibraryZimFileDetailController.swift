@@ -355,7 +355,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
             self.init(title: action.description, message: message, preferredStyle: .alert)
             addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Book deletion confirmation"), style: .destructive, handler: { _ in
                 if action == .deleteFile || action == .deleteFileAndBookmarks {
-                    guard let url = ZimMultiReader.shared.getFileURL(zimFileID: zimFile.id) else {return}
+                    guard let url = ZimFileService.shared.getFileURL(zimFileID: zimFile.id) else {return}
                     let directoryURL = url.deletingLastPathComponent()
                     let fileName = url.deletingPathExtension().lastPathComponent
 
@@ -365,7 +365,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                 }
                 if action == .unlink {
                     do {
-                        ZimMultiReader.shared.remove(id: zimFile.id)
+                        ZimFileService.shared.remove(id: zimFile.id)
                         let database = try Realm(configuration: Realm.defaultConfig)
                         try database.write {
                             if zimFile.downloadURL != nil {

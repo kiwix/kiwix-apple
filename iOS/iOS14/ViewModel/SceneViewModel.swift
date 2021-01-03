@@ -62,7 +62,7 @@ class SceneViewModel: NSObject, ObservableObject, UISplitViewControllerDelegate,
     }
     
     func loadMainPage(zimFile: ZimFile) {
-        guard let mainPageURL = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFile.id) else { return }
+        guard let mainPageURL = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.id) else { return }
         load(url: mainPageURL)
     }
     
@@ -111,7 +111,7 @@ class SceneViewModel: NSObject, ObservableObject, UISplitViewControllerDelegate,
         guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
         if url.isKiwixURL {
             guard let zimFileID = url.host else { decisionHandler(.cancel); return }
-            if let redirectedPath = ZimMultiReader.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
+            if let redirectedPath = ZimFileService.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
                 let redirectedURL = URL(zimFileID: zimFileID, contentPath: redirectedPath) {
                 decisionHandler(.cancel)
                 webView.load(URLRequest(url: redirectedURL))

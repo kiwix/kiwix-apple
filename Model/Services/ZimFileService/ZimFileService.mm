@@ -1,5 +1,5 @@
 //
-//  ZimMultiReader.mm
+//  ZimFileService.mm
 //  Kiwix
 //
 //  Created by Chris Li on 8/17/17.
@@ -25,7 +25,7 @@ struct SharedReaders {
     std::vector<std::shared_ptr<kiwix::Reader>> readers;
 };
 
-@interface ZimMultiReader ()
+@interface ZimFileService ()
 
 @property (assign) std::unordered_map<std::string, std::shared_ptr<kiwix::Reader>> *readers;
 @property (assign) std::unordered_map<std::string, kiwix::Reader> *readers2;
@@ -33,7 +33,7 @@ struct SharedReaders {
 
 @end
 
-@implementation ZimMultiReader
+@implementation ZimFileService
 
 #pragma mark - init
 
@@ -47,11 +47,11 @@ struct SharedReaders {
     return self;
 }
 
-+ (ZimMultiReader *)sharedInstance {
-    static ZimMultiReader *sharedInstance = nil;
++ (ZimFileService *)sharedInstance {
+    static ZimFileService *sharedInstance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedInstance = [[ZimMultiReader alloc] init];
+        sharedInstance = [[ZimFileService alloc] init];
     });
     return sharedInstance;
 }

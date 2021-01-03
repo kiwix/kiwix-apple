@@ -55,7 +55,7 @@ class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineView
             tabView.selectTabViewItem(withIdentifier: Mode.inProgress.rawValue)
             progressIndicator.startAnimation(nil)
             
-            let zimFileIDs: Set<String> = Set(ZimMultiReader.shared.ids)
+            let zimFileIDs: Set<String> = Set(ZimFileService.shared.ids)
             let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
             operation.completionBlock = { [weak self] in
                 guard !operation.isCancelled else {return}

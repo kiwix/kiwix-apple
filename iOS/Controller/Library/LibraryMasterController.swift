@@ -221,7 +221,7 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
     // MARK: - UIDocumentPickerDelegate
 
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
-        if let _ = ZimMultiReader.getMetaData(url: url) {
+        if let _ = ZimFileService.getMetaData(url: url) {
             present(FileImportController(fileURL: url), animated: true)
         } else {
             present(FileImportAlertController(fileName: url.lastPathComponent), animated: true)

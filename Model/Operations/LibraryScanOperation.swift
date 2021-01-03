@@ -30,7 +30,7 @@ class LibraryScanOperation: LibraryOperationBase {
     override func main() {
         addReadersFromURLs()
         addReadersFromBookmarkData()
-        ZimMultiReader.shared.removeStaleReaders()
+        ZimFileService.shared.removeStaleReaders()
         
         updateDatabase()
         #if os(iOS)
@@ -53,7 +53,7 @@ class LibraryScanOperation: LibraryOperationBase {
                 return [url]
             }
         }).flatMap({ $0 }).filter({ $0.pathExtension == "zim" })
-        zimFileURLs.forEach({ ZimMultiReader.shared.add(url: $0) })
+        zimFileURLs.forEach({ ZimFileService.shared.add(url: $0) })
     }
     
     /**
@@ -71,7 +71,7 @@ class LibraryScanOperation: LibraryOperationBase {
                                              options: [],
                                              relativeTo: nil,
                                              bookmarkDataIsStale: &isStale) as URL else {return}
-                ZimMultiReader.shared.add(url: fileURL)
+                ZimFileService.shared.add(url: fileURL)
                 if isStale.boolValue {
                     try database.write {
                         saveBookmarkData(zimFile: zimFile)
@@ -83,7 +83,7 @@ class LibraryScanOperation: LibraryOperationBase {
     
     private func updateDatabase() {
         do {
-            let zimFileIDs = ZimMultiReader.shared.ids
+            let zimFileIDs = ZimFileService.shared.ids
             let database = try Realm(configuration: Realm.defaultConfig)
             
             try database.write {
@@ -94,7 +94,7 @@ class LibraryScanOperation: LibraryOperationBase {
                             return zimFile
                         } else {
                             // if zim file does not exist in database, create the object
-                            guard let meta = ZimMultiReader.shared.getZimFileMetaData(id: zimFileID) else { return nil }
+                            guard let meta = ZimFileService.shared.getZimFileMetaData(id: zimFileID) else { return nil }
                             let zimFile = ZimFile()
                             zimFile.id = meta.identifier
                             self.updateZimFile(zimFile, meta: meta)
@@ -123,7 +123,7 @@ class LibraryScanOperation: LibraryOperationBase {
     }
     
     private func saveBookmarkData(zimFile: ZimFile) {
-        guard let fileURL = ZimMultiReader.shared.getFileURL(zimFileID: zimFile.id),
+        guard let fileURL = ZimFileService.shared.getFileURL(zimFileID: zimFile.id),
             !LibraryService().isFileInDocumentDirectory(zimFileID: zimFile.id) else {return}
         zimFile.openInPlaceURLBookmark = try? fileURL.bookmarkData()
     }

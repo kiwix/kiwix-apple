@@ -1,5 +1,5 @@
 //
-//  ZimMultiReader.h
+//  ZimFileService.h
 //  Kiwix
 //
 //  Created by Chris Li on 8/17/17.
@@ -11,10 +11,10 @@
 
 struct SharedReaders;
 
-@interface ZimMultiReader : NSObject
+@interface ZimFileService : NSObject
 
 - (instancetype _Nonnull)init NS_REFINED_FOR_SWIFT;
-+ (nonnull ZimMultiReader *)sharedInstance NS_REFINED_FOR_SWIFT;
++ (nonnull ZimFileService *)sharedInstance NS_REFINED_FOR_SWIFT;
 
 - (NSArray *_Nonnull)getReaderIdentifiers NS_REFINED_FOR_SWIFT;
 - (NSURL *_Nullable)getReaderFileURL:(NSString *_Nonnull)identifier NS_REFINED_FOR_SWIFT;

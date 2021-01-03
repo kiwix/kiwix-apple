@@ -6,14 +6,14 @@
 //  Copyright © 2017 Chris Li. All rights reserved.
 //
 
-extension ZimMultiReader {
-    static let shared = ZimMultiReader.__sharedInstance()
+extension ZimFileService {
+    static let shared = ZimFileService.__sharedInstance()
     
-    var ids: [String] {get{ return __getIdentifiers().compactMap({$0 as? String}) }}
-    func getFileURL(zimFileID: String) -> URL? { return __getFileURL(zimFileID) }
+    var ids: [String] {get{ return __getReaderIdentifiers().compactMap({$0 as? String}) }}
+    func getFileURL(zimFileID: String) -> URL? { return __getReaderFileURL(zimFileID) }
     
-    func add(url: URL) {__add(by: url)}
-    func remove(id: String) {__remove(byID: id)}
+    func add(url: URL) {__addReader(by: url)}
+    func remove(id: String) {__removeReader(byID: id)}
     
     func getRedirectedPath(zimFileID: String, contentPath: String) -> String? {
         return __getRedirectedPath(zimFileID, contentPath: contentPath)

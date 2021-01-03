@@ -50,7 +50,7 @@ class WebKitWebViewController: NSViewController, WKNavigationDelegate {
         guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
         if url.isKiwixURL {
             guard let zimFileID = url.host else { decisionHandler(.cancel); return }
-            if let redirectedPath = ZimMultiReader.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
+            if let redirectedPath = ZimFileService.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
                 let redirectedURL = URL(zimFileID: zimFileID, contentPath: redirectedPath) {
                 decisionHandler(.cancel)
                 load(url: redirectedURL)

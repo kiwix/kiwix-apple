@@ -33,7 +33,7 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         DispatchQueue.global(qos: .userInitiated).async {
             // fetch data
             self.dataFetchingSemaphore.wait()
-            let content = ZimMultiReader.shared.getContent(bookID: zimFileID, contentPath: contentPath)
+            let content = ZimFileService.shared.getContent(bookID: zimFileID, contentPath: contentPath)
             self.dataFetchingSemaphore.signal()
             
             // check the url scheme task is not stopped
