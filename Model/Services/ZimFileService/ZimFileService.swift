@@ -49,11 +49,16 @@ extension ZimFileService {
     
     // MARK: - URL Response
     
-    func getURLContent(zimFileID: String, contentPath: String) -> (data: Data, mime: String, length: Int)? {
-        guard let content = __getURLContent(zimFileID, contentPath: contentPath),
-            let data = content["data"] as? Data,
-            let mime = content["mime"] as? String,
-            let length = content["length"] as? Int else { return nil }
+    func getURLContent(url: URL) -> (data: Data, mime: String, length: Int)? {
+        guard let zimFileID = url.host,
+              let content = __getURLContent(zimFileID, contentPath: url.path),
+              let data = content["data"] as? Data,
+              let mime = content["mime"] as? String,
+              let length = content["length"] as? Int else { return nil }
         return (data, mime, length)
+    }
+    
+    func getData(zimFileID: String, contentPath: String) -> Data? {
+        __getURLContent(zimFileID, contentPath: contentPath)?["data"] as? Data
     }
 }

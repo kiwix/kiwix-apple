@@ -17,9 +17,7 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
         // unpack zimFileID and content path from the url
         guard let url = urlSchemeTask.request.url,
-            url.isKiwixURL,
-            let contentPath = url.path.removingPercentEncoding,
-            let zimFileID = url.host else {
+            url.isKiwixURL else {
                 urlSchemeTask.didFailWithError(URLError(.unsupportedURL))
                 return
         }
@@ -33,7 +31,7 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         DispatchQueue.global(qos: .userInitiated).async {
             // fetch data
             self.dataFetchingSemaphore.wait()
-            let content = ZimFileService.shared.getURLContent(zimFileID: zimFileID, contentPath: contentPath)
+            let content = ZimFileService.shared.getURLContent(url: url)
             self.dataFetchingSemaphore.signal()
             
             // check the url scheme task is not stopped

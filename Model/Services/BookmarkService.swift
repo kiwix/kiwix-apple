@@ -84,10 +84,10 @@ class BookmarkService {
             let data = bookmarks.compactMap { bookmark -> [String: Any]? in
                     guard let zimFile = bookmark.zimFile,
                         let url = URL(zimFileID: zimFile.id, contentPath: bookmark.path) else {return nil}
-                let thumbImageData: Data? = {
-                    guard let thumbImagePath = bookmark.thumbImagePath else { return nil }
-                    return ZimFileService.shared.getURLContent(zimFileID: zimFile.id, contentPath: thumbImagePath)?.data
-                }()
+                    let thumbImageData: Data? = {
+                        guard let thumbImagePath = bookmark.thumbImagePath else { return nil }
+                        return ZimFileService.shared.getData(zimFileID: zimFile.id, contentPath: thumbImagePath)
+                    }()
                     return [
                         "title": bookmark.title,
                         "url": url.absoluteString,
