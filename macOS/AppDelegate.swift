@@ -70,8 +70,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, TabManagement {
             DispatchQueue.main.sync {
                 guard let keyWindow = NSApplication.shared.keyWindow else {return}
                 for url in urls {
-                    guard let meta = ZimMultiReader.getMetaData(url: url),
-                        let mainPageURL = ZimMultiReader.shared.getMainPageURL(zimFileID: meta.identifier) else {continue}
+                    guard let meta = ZimFileService.getMetaData(url: url),
+                        let mainPageURL = ZimFileService.shared.getMainPageURL(zimFileID: meta.identifier) else {continue}
                 
                     /*
                      Decide which window should show the main page of the newly opened zim file.

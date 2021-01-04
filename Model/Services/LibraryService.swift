@@ -13,7 +13,7 @@ import Defaults
 
 class LibraryService {
     func isFileInDocumentDirectory(zimFileID: String) -> Bool {
-        if let fileName = ZimMultiReader.shared.getFileURL(zimFileID: zimFileID)?.lastPathComponent,
+        if let fileName = ZimFileService.shared.getFileURL(zimFileID: zimFileID)?.lastPathComponent,
             let documentDirectoryURL = try? FileManager.default.url(
                 for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) {
             let fileURL = documentDirectoryURL.appendingPathComponent(fileName)

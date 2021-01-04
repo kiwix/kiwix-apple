@@ -27,8 +27,8 @@ class Parser {
     }
     
     convenience init(zimFileID: String, path: String) throws {
-        guard let content = ZimMultiReader.shared.getContent(bookID: zimFileID, contentPath: path),
-            let html = String(data: content.data, encoding: .utf8) else { throw NSError() }
+        guard let data = ZimFileService.shared.getData(zimFileID: zimFileID, contentPath: path),
+            let html = String(data: data, encoding: .utf8) else { throw NSError() }
         try self.init(html: html)
     }
     

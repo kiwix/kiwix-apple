@@ -88,7 +88,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     func openFileURL(_ url: URL, canOpenInPlace: Bool) {
         guard url.isFileURL else {return}
         dismiss(animated: false)
-        if ZimMultiReader.getMetaData(url: url) != nil {
+        if ZimFileService.getMetaData(url: url) != nil {
             let fileImportController = FileImportController(fileURL: url, canOpenInPlace: canOpenInPlace)
             present(fileImportController, animated: true)
         } else {
@@ -97,13 +97,13 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     }
     
     func openMainPage(zimFileID: String) {
-        guard let url = ZimMultiReader.shared.getMainPageURL(zimFileID: zimFileID) else { return }
+        guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
         openURL(url)
     }
     
     func openRandomPage(zimFileID: String? = nil) {
         guard let zimFileID = zimFileID ?? onDeviceZimFiles?.map({ $0.id }).randomElement(),
-              let url = ZimMultiReader.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
+              let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
         openURL(url)
     }
     

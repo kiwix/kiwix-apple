@@ -51,10 +51,10 @@
 		9779A5BD2456793600F6F6FF /* OPDSStreamParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A32456793500F6F6FF /* OPDSStreamParser.swift */; };
 		9779A5BE2456793600F6F6FF /* OPDSStreamParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A52456793500F6F6FF /* OPDSStreamParser.mm */; };
 		9779A5BF2456793600F6F6FF /* OPDSStreamParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A52456793500F6F6FF /* OPDSStreamParser.mm */; };
-		9779A5C22456793600F6F6FF /* ZimMultiReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A92456793500F6F6FF /* ZimMultiReader.mm */; };
-		9779A5C32456793600F6F6FF /* ZimMultiReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A92456793500F6F6FF /* ZimMultiReader.mm */; };
-		9779A5C42456793600F6F6FF /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimMultiReader.swift */; };
-		9779A5C52456793600F6F6FF /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimMultiReader.swift */; };
+		9779A5C22456793600F6F6FF /* ZimFileService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A92456793500F6F6FF /* ZimFileService.mm */; };
+		9779A5C32456793600F6F6FF /* ZimFileService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A92456793500F6F6FF /* ZimFileService.mm */; };
+		9779A5C42456793600F6F6FF /* ZimFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimFileService.swift */; };
+		9779A5C52456793600F6F6FF /* ZimFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimFileService.swift */; };
 		9779A5C62456793600F6F6FF /* ZimFileMetaData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */; };
 		9779A5C72456793600F6F6FF /* ZimFileMetaData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */; };
 		9779A5C82456793600F6F6FF /* RealmConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AF2456793600F6F6FF /* RealmConfig.swift */; };
@@ -81,13 +81,14 @@
 		97802D7025789B1800A21352 /* SidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802D6F25789B1800A21352 /* SidebarViewController.swift */; };
 		97810E17250436E2000D86CB /* ZimFileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97810E16250436E2000D86CB /* ZimFileCell.swift */; };
 		9789C26424F9600D00072090 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B399912468502500BC6F5B /* Platform.swift */; };
-		9789C26524F9601400072090 /* ZimMultiReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A92456793500F6F6FF /* ZimMultiReader.mm */; };
-		9789C26624F9601700072090 /* ZimMultiReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimMultiReader.swift */; };
+		9789C26524F9601400072090 /* ZimFileService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A92456793500F6F6FF /* ZimFileService.mm */; };
+		9789C26624F9601700072090 /* ZimFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimFileService.swift */; };
 		9789C26724F9608500072090 /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DE324B00C82008E278D /* libkiwix.xcframework */; };
 		9789C26824F960F500072090 /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A73A2456796B00F6F6FF /* WebKitHandler.swift */; };
 		9789C26924F9611300072090 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
 		978B688924F8080E003CCA8C /* BarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978B688824F8080E003CCA8C /* BarButtons.swift */; };
 		978C58092468FC1100D56AC8 /* SettingSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F97A720D00EAE0005D642 /* SettingSearchController.swift */; };
+		978D0AE525A26164003DEE33 /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DE324B00C82008E278D /* libkiwix.xcframework */; };
 		978FA76825851B4D00666E1B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978FA76725851B4D00666E1B /* HomeView.swift */; };
 		979011302544D55800FF7855 /* SceneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9790112F2544D55800FF7855 /* SceneViewModel.swift */; };
 		9793548B257D86370076E94A /* Queries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9793548A257D86370076E94A /* Queries.swift */; };
@@ -96,7 +97,6 @@
 		97974368257BF37E00D30F03 /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97974367257BF37E00D30F03 /* Alerts.swift */; };
 		979AAF40257167C60078492F /* ZimFileDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979AAF3F257167C60078492F /* ZimFileDetailView.swift */; };
 		979B64C5259EBDB1001C74AE /* OutlineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97974349257BF2B000D30F03 /* OutlineItem.swift */; };
-		979B64CE259EBE82001C74AE /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DE324B00C82008E278D /* libkiwix.xcframework */; };
 		979F49F7254478D400DE0B56 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979F49F6254478D400DE0B56 /* Buttons.swift */; };
 		979FD159201679C5007B5290 /* SearchResultsListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979FD158201679C5007B5290 /* SearchResultsListController.swift */; };
 		97A2180C2024EC3800D1E67B /* SettingFontSizeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A2180B2024EC3800D1E67B /* SettingFontSizeController.swift */; };
@@ -245,9 +245,9 @@
 		9779A5A32456793500F6F6FF /* OPDSStreamParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OPDSStreamParser.swift; sourceTree = "<group>"; };
 		9779A5A42456793500F6F6FF /* OPDSStreamParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OPDSStreamParser.h; sourceTree = "<group>"; };
 		9779A5A52456793500F6F6FF /* OPDSStreamParser.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OPDSStreamParser.mm; sourceTree = "<group>"; };
-		9779A5A72456793500F6F6FF /* ZimMultiReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZimMultiReader.h; sourceTree = "<group>"; };
-		9779A5A92456793500F6F6FF /* ZimMultiReader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ZimMultiReader.mm; sourceTree = "<group>"; };
-		9779A5AA2456793500F6F6FF /* ZimMultiReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZimMultiReader.swift; sourceTree = "<group>"; };
+		9779A5A72456793500F6F6FF /* ZimFileService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZimFileService.h; sourceTree = "<group>"; };
+		9779A5A92456793500F6F6FF /* ZimFileService.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ZimFileService.mm; sourceTree = "<group>"; };
+		9779A5AA2456793500F6F6FF /* ZimFileService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZimFileService.swift; sourceTree = "<group>"; };
 		9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ZimFileMetaData.mm; sourceTree = "<group>"; };
 		9779A5AD2456793600F6F6FF /* ZimFileMetaData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZimFileMetaData.h; sourceTree = "<group>"; };
 		9779A5AF2456793600F6F6FF /* RealmConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmConfig.swift; sourceTree = "<group>"; };
@@ -342,7 +342,7 @@
 			files = (
 				97CE15BB23B26ED200378D9F /* Realm in Frameworks */,
 				97CE4241249086A600B334E9 /* Defaults in Frameworks */,
-				979B64CE259EBE82001C74AE /* libkiwix.xcframework in Frameworks */,
+				978D0AE525A26164003DEE33 /* libkiwix.xcframework in Frameworks */,
 				97CE15BD23B26ED200378D9F /* RealmSwift in Frameworks */,
 				97CE42462493239C00B334E9 /* SwiftSoup in Frameworks */,
 			);
@@ -418,7 +418,6 @@
 				9779A59E2456793500F6F6FF /* Operations */,
 				9779A5AE2456793600F6F6FF /* Realm */,
 				9779A59B2456793500F6F6FF /* Services */,
-				9779A5A62456793500F6F6FF /* ZimMultiReader */,
 				9706555A2473682C00A51319 /* Utilities */,
 			);
 			path = Model;
@@ -531,6 +530,7 @@
 		9779A59B2456793500F6F6FF /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				9779A5A62456793500F6F6FF /* ZimFileService */,
 				9779A5D52456796A00F6F6FF /* DownloadService.swift */,
 				9779A59C2456793500F6F6FF /* LibraryService.swift */,
 				9779A59D2456793500F6F6FF /* BookmarkService.swift */,
@@ -561,14 +561,14 @@
 			path = OPDSRefreshOperation;
 			sourceTree = "<group>";
 		};
-		9779A5A62456793500F6F6FF /* ZimMultiReader */ = {
+		9779A5A62456793500F6F6FF /* ZimFileService */ = {
 			isa = PBXGroup;
 			children = (
-				9779A5A72456793500F6F6FF /* ZimMultiReader.h */,
-				9779A5A92456793500F6F6FF /* ZimMultiReader.mm */,
-				9779A5AA2456793500F6F6FF /* ZimMultiReader.swift */,
+				9779A5A72456793500F6F6FF /* ZimFileService.h */,
+				9779A5A92456793500F6F6FF /* ZimFileService.mm */,
+				9779A5AA2456793500F6F6FF /* ZimFileService.swift */,
 			);
-			path = ZimMultiReader;
+			path = ZimFileService;
 			sourceTree = "<group>";
 		};
 		9779A5AB2456793600F6F6FF /* Entities */ = {
@@ -1003,8 +1003,8 @@
 				970EC3FC23BE8E31008DCA27 /* Parser.swift in Sources */,
 				9789C26824F960F500072090 /* WebKitHandler.swift in Sources */,
 				970EC3FB23BE8E25008DCA27 /* ParserTests.swift in Sources */,
-				9789C26624F9601700072090 /* ZimMultiReader.swift in Sources */,
-				9789C26524F9601400072090 /* ZimMultiReader.mm in Sources */,
+				9789C26624F9601700072090 /* ZimFileService.swift in Sources */,
+				9789C26524F9601400072090 /* ZimFileService.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1019,7 +1019,7 @@
 				97B399932468508C00BC6F5B /* Platform.swift in Sources */,
 				974FD5CF23405C3700FFDEEC /* WindowControllers.swift in Sources */,
 				9779A7E524567A5A00F6F6FF /* Log.swift in Sources */,
-				9779A5C52456793600F6F6FF /* ZimMultiReader.swift in Sources */,
+				9779A5C52456793600F6F6FF /* ZimFileService.swift in Sources */,
 				974FFE6A23533E8D00F6BF28 /* NavigationController.swift in Sources */,
 				9779A7AC2456796B00F6F6FF /* SearchQueue.swift in Sources */,
 				9779A5B52456793600F6F6FF /* BookmarkService.swift in Sources */,
@@ -1040,7 +1040,7 @@
 				9779A5BD2456793600F6F6FF /* OPDSStreamParser.swift in Sources */,
 				9779A5BB2456793600F6F6FF /* OPDSRefreshOperation.swift in Sources */,
 				9779A5B92456793600F6F6FF /* LibraryOperationBase.swift in Sources */,
-				9779A5C32456793600F6F6FF /* ZimMultiReader.mm in Sources */,
+				9779A5C32456793600F6F6FF /* ZimFileService.mm in Sources */,
 				979B64C5259EBDB1001C74AE /* OutlineItem.swift in Sources */,
 				9779A5BF2456793600F6F6FF /* OPDSStreamParser.mm in Sources */,
 				9779A5CD2456793600F6F6FF /* ZimFile.swift in Sources */,
@@ -1061,7 +1061,7 @@
 				9779A5BC2456793600F6F6FF /* OPDSStreamParser.swift in Sources */,
 				977DCE44256CB974000E3E69 /* LibraryView.swift in Sources */,
 				972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */,
-				9779A5C22456793600F6F6FF /* ZimMultiReader.mm in Sources */,
+				9779A5C22456793600F6F6FF /* ZimFileService.mm in Sources */,
 				97252103200D3C4B00B60A80 /* HUDController.swift in Sources */,
 				9779A7AB2456796B00F6F6FF /* SearchQueue.swift in Sources */,
 				9779A5C82456793600F6F6FF /* RealmConfig.swift in Sources */,
@@ -1096,7 +1096,7 @@
 				973B2A642546501200093661 /* ZimFilesViewModel.swift in Sources */,
 				97A2AE2225866D9200DEF81D /* ButtonProvider.swift in Sources */,
 				9779A5B22456793600F6F6FF /* LibraryService.swift in Sources */,
-				9779A5C42456793600F6F6FF /* ZimMultiReader.swift in Sources */,
+				9779A5C42456793600F6F6FF /* ZimFileService.swift in Sources */,
 				978C58092468FC1100D56AC8 /* SettingSearchController.swift in Sources */,
 				97D19F072546FF3700910CAE /* BuildingBlocks.swift in Sources */,
 				9779A5CC2456793600F6F6FF /* ZimFile.swift in Sources */,

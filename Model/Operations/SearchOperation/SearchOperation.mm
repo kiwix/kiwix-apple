@@ -14,7 +14,7 @@
 
 #import "SearchOperation.h"
 #import "SearchResult.h"
-#import "ZimMultiReader.h"
+#import "ZimFileService.h"
 
 struct SharedReaders {
     NSArray *readerIDs;
@@ -41,7 +41,7 @@ struct SharedReaders {
 }
 
 - (void)performSearch:(BOOL)withFullTextSnippet; {
-    struct SharedReaders sharedReaders = [[ZimMultiReader sharedInstance] getSharedReaders:self.identifiers];
+    struct SharedReaders sharedReaders = [[ZimFileService sharedInstance] getSharedReaders:self.identifiers];
     NSMutableSet *results = [[NSMutableSet alloc] initWithCapacity:15 + 3 * self.identifiers.count];
     [results addObjectsFromArray:[self getTitleSearchResults:sharedReaders.readers]];
     [results addObjectsFromArray:[self getFullTextSearchResults:sharedReaders withFullTextSnippet:withFullTextSnippet]];

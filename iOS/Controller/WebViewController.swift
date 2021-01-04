@@ -71,9 +71,7 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
         guard let url = navigationAction.request.url else { decisionHandler(.cancel, preferences); return }
         if url.isKiwixURL {
-            guard let zimFileID = url.host else { decisionHandler(.cancel, preferences); return }
-            if let redirectedPath = ZimMultiReader.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
-                let redirectedURL = URL(zimFileID: zimFileID, contentPath: redirectedPath) {
+            if let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
                 decisionHandler(.cancel, preferences)
                 webView.load(URLRequest(url: redirectedURL))
             } else {
@@ -103,9 +101,7 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
         if url.isKiwixURL {
-            guard let zimFileID = url.host else { decisionHandler(.cancel); return }
-            if let redirectedPath = ZimMultiReader.shared.getRedirectedPath(zimFileID: zimFileID, contentPath: url.path),
-                let redirectedURL = URL(zimFileID: zimFileID, contentPath: redirectedPath) {
+            if let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
                 decisionHandler(.cancel)
                 rootViewController?.openURL(redirectedURL)
             } else {
