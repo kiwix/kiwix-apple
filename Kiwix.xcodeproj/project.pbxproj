@@ -262,7 +262,6 @@
 		9779A73A2456796B00F6F6FF /* WebKitHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebKitHandler.swift; sourceTree = "<group>"; };
 		9779A7E224567A5A00F6F6FF /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		9779A7E824567AA600F6F6FF /* SettingLibraryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingLibraryController.swift; sourceTree = "<group>"; };
-		9779A7E924567AA600F6F6FF /* LibrarySetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibrarySetting.swift; sourceTree = "<group>"; };
 		9779A7EC24567ADD00F6F6FF /* BackupManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		9779E7A12379230F0058DC98 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		977DCE43256CB974000E3E69 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
@@ -505,7 +504,6 @@
 				97802D6F25789B1800A21352 /* SidebarViewController.swift */,
 				9797435B257BF33600D30F03 /* WebViewController.swift */,
 				978FA76725851B4D00666E1B /* HomeView.swift */,
-				97A963C3259D38D900496214 /* SettingsView.swift */,
 				972E6F651FA2872A00F5C927 /* Search */,
 				97B1046D1F8FC61400488444 /* Library */,
 				97B4ADF72392B73300264AF6 /* Utilities */,
@@ -532,7 +530,7 @@
 			isa = PBXGroup;
 			children = (
 				97D19F062546FF3700910CAE /* BuildingBlocks.swift */,
-				9779A7E924567AA600F6F6FF /* LibrarySetting.swift */,
+				97A963C3259D38D900496214 /* SettingsView.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
