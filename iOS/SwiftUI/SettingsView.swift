@@ -85,7 +85,7 @@ struct SettingsView: View {
                     NavigationLink("About", destination: AboutView())
                 }
             }
-            .listStyle(GroupedListStyle())
+            .insetGroupedListStyle()
             .navigationBarTitle("Settings")
             .navigationBarItems(leading: Button("Done", action: dismiss))
         }.navigationViewStyle(StackNavigationViewStyle())
@@ -114,7 +114,7 @@ fileprivate struct FontSizeSettingsView: View {
     }()
     
     var body: some View {
-        Form {
+        List {
             Section(header: Text("Example")) {
                 Text("Kiwix is an offline reader for online content like Wikipedia, Project Gutenberg, or TED Talks.")
                     .font(Font.system(size: 17.0 * CGFloat(webViewTextSizeAdjustFactor)))
@@ -125,7 +125,9 @@ fileprivate struct FontSizeSettingsView: View {
                     Stepper(formatted, value: $webViewTextSizeAdjustFactor, in: 0.75...2, step: 0.05)
                 }
             }
-        }.navigationBarTitle("Font Size")
+        }
+        .insetGroupedListStyle()
+        .navigationBarTitle("Font Size")
     }
 }
 
@@ -138,7 +140,7 @@ fileprivate struct ExternalLinkSettingsView: View {
                        """
     
     var body: some View {
-        Form {
+        List {
             Section(header: Text("Loading Policy"), footer: Text(help)) {
                 ForEach(ExternalLinkLoadingPolicy.allCases) { policy in
                     Button(action: {
@@ -155,6 +157,7 @@ fileprivate struct ExternalLinkSettingsView: View {
                 }
             }
         }
+        .insetGroupedListStyle()
         .navigationBarTitle("External Link")
     }
 }
@@ -165,7 +168,7 @@ fileprivate struct SearchSettingsView: View {
     private let help = "If search is becoming too slow, disable the snippets to improve the situation."
     
     var body: some View {
-        Form {
+        List {
             Section(header: Text("Snippets"), footer: Text(help)) {
                 ForEach(SearchResultSnippetMode.allCases) { snippetMode in
                     Button(action: {
@@ -182,6 +185,7 @@ fileprivate struct SearchSettingsView: View {
                 }
             }
         }
+        .insetGroupedListStyle()
         .navigationBarTitle("Search")
     }
 }
@@ -195,7 +199,7 @@ fileprivate struct SidebarSettingsView: View {
                        """
     
     var body: some View {
-        Form {
+        List {
             Section(footer: Text(help)) {
                 ForEach(SideBarDisplayMode.allCases) { displayMode in
                     Button(action: {
@@ -212,6 +216,7 @@ fileprivate struct SidebarSettingsView: View {
                 }
             }
         }
+        .insetGroupedListStyle()
         .navigationBarTitle("Sidebar")
     }
 }
@@ -221,7 +226,7 @@ fileprivate struct AboutView: View {
     @State var externalLinkURL: URL?
     
     var body: some View {
-        Form {
+        List {
             Section {
                 Text("""
                      Kiwix is an offline reader for online content like Wikipedia, Project Gutenberg, or TED Talks. \
@@ -252,6 +257,7 @@ fileprivate struct AboutView: View {
                 Dependency(name: "Defaults", license: "MIT")
             }
         }
+        .insetGroupedListStyle()
         .navigationBarTitle("About")
         .sheet(item: $externalLinkURL) { SafariView(url: $0) }
     }
