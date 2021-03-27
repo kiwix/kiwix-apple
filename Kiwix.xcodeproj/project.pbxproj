@@ -469,6 +469,7 @@
 		975FDAD81F6082DA00A10E8C /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				976C4AA0260F876C00472A98 /* SwiftUI */,
 				97D7FB5A253CF94F00E8ADDF /* iOS14 */,
 				975FDAD91F6082DA00A10E8C /* AppDelegate.swift */,
 				973B8011239066D0008CC8CE /* SceneDelegate.swift */,
@@ -525,6 +526,15 @@
 				9768C23A1F4B7F6300FD499B /* Preference.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		976C4AA0260F876C00472A98 /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				97D19F062546FF3700910CAE /* BuildingBlocks.swift */,
+				9779A7E924567AA600F6F6FF /* LibrarySetting.swift */,
+			);
+			path = SwiftUI;
 			sourceTree = "<group>";
 		};
 		9779A59B2456793500F6F6FF /* Services */ = {
@@ -663,7 +673,6 @@
 				97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */,
 				97F4D10520AB80740038FC87 /* LibraryZimFileDetailController.swift */,
 				97CA4A7120A21D24008CEA6D /* LibraryLanguageController.swift */,
-				9779A7E924567AA600F6F6FF /* LibrarySetting.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -716,7 +725,6 @@
 		97D19F052546FF2800910CAE /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				97D19F062546FF3700910CAE /* BuildingBlocks.swift */,
 				979F49F6254478D400DE0B56 /* Buttons.swift */,
 				973B2A5C254609FD00093661 /* Modifiers.swift */,
 				97810E16250436E2000D86CB /* ZimFileCell.swift */,
