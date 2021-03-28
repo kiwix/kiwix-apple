@@ -30,7 +30,7 @@ class OPDSRefreshOperation: LibraryOperationBase {
 
     override func main() {
         do {
-            os_log("OPDSRefreshOperation started.", log: Log.OPDS, type: .debug)
+            os_log("Refresh started.", log: Log.OPDS, type: .debug)
 
             // refresh the library
             let data = try fetchData()
@@ -48,7 +48,7 @@ class OPDSRefreshOperation: LibraryOperationBase {
                 Defaults[.libraryLastRefreshTime] = Date()
             }
 
-            os_log("OPDSRefreshOperation success -- addition: %d, update: %d, deletion: %d, total: %d",
+            os_log("Refresh succeed -- addition: %d, update: %d, deletion: %d, total: %d",
                    log: Log.OPDS,
                    type: .default,
                    additionCount,
@@ -56,12 +56,11 @@ class OPDSRefreshOperation: LibraryOperationBase {
                    deletionCount,
                    parser.zimFileIDs.count
             )
-
         } catch let error as OPDSRefreshError {
             self.error = error
-            os_log("OPDSRefreshOperation error: %s", log: Log.OPDS, type: .error, error.localizedDescription)
+            os_log("Refresh error: %s", log: Log.OPDS, type: .error, error.localizedDescription)
         } catch {
-            os_log("OPDSRefreshOperation unknown error: %s", log: Log.OPDS, type: .error, error.localizedDescription)
+            os_log("Refresh unknown error: %s", log: Log.OPDS, type: .error, error.localizedDescription)
         }
     }
 
@@ -102,21 +101,27 @@ class OPDSRefreshOperation: LibraryOperationBase {
     /// - Throws: OPDSRefreshError, the error happened during OPDS stream processing
     private func processData(parser: OPDSStreamParser) throws {
         do {
-            let zimFileIDs = Set(parser.zimFileIDs)
+            // get zim file metadata
+            // remove zim files that require service worker to function
+            var metadata = [String: ZimFileMetaData]()
+            for zimFileID in parser.zimFileIDs {
+                guard let meta = parser.getZimFileMetaData(id: zimFileID), !meta.requiresServiceWorker else { continue }
+                metadata[zimFileID] = meta
+            }
+            
+            // update database
             let database = try Realm(configuration: Realm.defaultConfig)
             try database.write {
                 // remove old zimFiles
-                let predicate = NSPredicate(
-                    format: "NOT id IN %@ AND stateRaw == %@", zimFileIDs, ZimFile.State.remote.rawValue
-                )
+                let predicateFormat = "NOT id IN %@ AND stateRaw == %@"
+                let predicate = NSPredicate(format: predicateFormat, Set(metadata.keys), ZimFile.State.remote.rawValue)
                 database.objects(ZimFile.self).filter(predicate).forEach({
                     database.delete($0)
                     self.deletionCount += 1
                 })
 
                 // upsert new and existing zimFiles
-                for zimFileID in zimFileIDs {
-                    guard let meta = parser.getZimFileMetaData(id: zimFileID) else { continue }
+                for (zimFileID, meta) in metadata {
                     if ZimFile.Category(rawValue: meta.category) == nil { meta.category = ZimFile.Category.other.rawValue }
                     if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) {
                         if updateExisting {
