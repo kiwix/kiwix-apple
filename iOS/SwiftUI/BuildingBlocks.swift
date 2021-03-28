@@ -50,6 +50,20 @@ struct Favicon: View {
 }
 
 @available(iOS 13.0, *)
+struct TitleDetailCell: View {
+    let title: String
+    let detail: String
+    
+    var body: some View {
+        HStack {
+            Text(title)
+            Spacer()
+            Text(detail).foregroundColor(.secondary)
+        }
+    }
+}
+
+@available(iOS 13.0, *)
 extension List {
     func insetGroupedListStyle() -> some View {
         if #available(iOS 14.0, *) {
