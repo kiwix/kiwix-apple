@@ -11,7 +11,6 @@ import Defaults
 import RealmSwift
 
 class OPDSRefreshOperation: LibraryOperationBase {
-    let progress = Progress(totalUnitCount: 10)
     private let updateExisting: Bool
 
     private(set) var additionCount = 0
@@ -20,7 +19,7 @@ class OPDSRefreshOperation: LibraryOperationBase {
     private(set) var error: OPDSRefreshError?
 
     var hasUpdates: Bool {
-        return additionCount > 0 || updateCount > 0 || deletionCount > 0
+        additionCount > 0 || updateCount > 0 || deletionCount > 0
     }
 
     init(updateExisting: Bool = false) {
@@ -80,7 +79,6 @@ class OPDSRefreshOperation: LibraryOperationBase {
             error = $2
             semaphore.signal()
         }
-        progress.addChild(dataTask.progress, withPendingUnitCount: 8)
 
         dataTask.resume()
         semaphore.wait()
