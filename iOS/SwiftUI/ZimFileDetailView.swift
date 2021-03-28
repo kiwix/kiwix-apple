@@ -28,6 +28,7 @@ struct ZimFileDetailView: View {
                 Text(zimFile.title)
                 Text(zimFile.fileDescription)
             }
+            actions
             Section {
                 Cell(title: "Language", detail: zimFile.localizedLanguageName)
                 Cell(title: "Size", detail: zimFile.sizeDescription)
@@ -53,6 +54,68 @@ struct ZimFileDetailView: View {
         .navigationTitle(zimFile.title)
         .listStyle(InsetGroupedListStyle())
     }
+    
+    var actions: some View {
+        Section {
+            switch zimFile.state {
+            case .remote:
+                if true {
+//                    Toggle("Cellular Data", isOn: downloadUsingCellular)
+                    ActionButton(title: "Download") {
+                        DownloadService.shared.start(
+                            zimFileID: zimFile.fileID, allowsCellularAccess: true
+                        )
+                    }
+                } else {
+                    ActionButton(title: "Download - Not Enough Space").disabled(true)
+                }
+            case .onDevice:
+                ActionButton(title: "Open Main Page", isDestructive: false) {
+//                    openMainPage(zimFile.id)
+                }
+            case .downloadQueued:
+                Text("Queued")
+                cancelButton
+            case .downloadInProgress:
+//                if #available(iOS 14.0, *), let progress = viewModel.downloadProgress {
+//                    ProgressView(progress)
+//                } else {
+//                    Text("Downloading...")
+//                }
+                ProgressView("Downloading...", value: Double(zimFile.downloadTotalBytesWritten), total: Double(zimFile.size.value ?? 0))
+                .progressViewStyle(CircularProgressViewStyle())
+                ActionButton(title: "Pause") {
+                    DownloadService.shared.pause(zimFileID: zimFile.fileID)
+                }
+                cancelButton
+            case .downloadPaused:
+                HStack {
+                    Text("Paused")
+//                    if let progress = viewModel.downloadProgress {
+//                        Spacer()
+//                        Text(progress.localizedAdditionalDescription)
+//                    }
+                }
+                ActionButton(title: "Resume") {
+                    DownloadService.shared.resume(zimFileID: zimFile.fileID)
+                }
+                cancelButton
+            case .downloadError:
+                Text("Error")
+                if let errorDescription = zimFile.downloadErrorDescription {
+                    Text(errorDescription)
+                }
+            default:
+                cancelButton
+            }
+        }
+    }
+    
+    var cancelButton: some View {
+            ActionButton(title: "Cancel", isDestructive: true) {
+                DownloadService.shared.cancel(zimFileID: zimFile.fileID)
+            }
+        }
     
     struct Cell: View {
         let title: String
