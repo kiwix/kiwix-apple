@@ -128,6 +128,12 @@ class ZimFile: Object, ObjectKeyIdentifiable {
         formatter.numberStyle = .percent
         return formatter
     }()
+    
+    static let countFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
 
     // MARK: - Type Definition
     

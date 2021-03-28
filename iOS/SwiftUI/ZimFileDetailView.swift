@@ -13,7 +13,6 @@ import RealmSwift
 @available(iOS 14.0, *)
 struct ZimFileDetailView: View {
     @StateRealmObject var zimFile: ZimFile
-    let downloadPercentFormatter = NumberFormatter()
     
     init(fileID: String) {
         if let database = try? Realm(), let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: fileID) {
@@ -21,7 +20,6 @@ struct ZimFileDetailView: View {
         } else {
             self._zimFile = StateRealmObject(wrappedValue: ZimFile())
         }
-        downloadPercentFormatter.numberStyle = .percent
     }
     
     var body: some View {
@@ -74,6 +72,7 @@ struct ZimFileDetailView: View {
             case .onDevice:
                 ActionCell(title: "Open Main Page", isDestructive: false) {
 //                    openMainPage(zimFile.id)
+                    
                 }
             case .downloadQueued:
                 Text("Queued")
@@ -132,19 +131,17 @@ struct ZimFileDetailView: View {
     struct CountCell: View {
         let title: String
         let count: Int64?
-        private let formatter = NumberFormatter()
         
         init(title: String, count: Int64?) {
             self.title = title
             self.count = count
-            formatter.numberStyle = .decimal
         }
         
         var body: some View {
             HStack {
                 Text(title)
                 Spacer()
-                if let count = count, let formatted = NumberFormatter().string(from: NSNumber(value: count)) {
+                if let count = count, let formatted = ZimFile.countFormatter.string(from: NSNumber(value: count)) {
                     Text(formatted).foregroundColor(.secondary)
                 } else {
                     Text("Unknown").foregroundColor(.secondary)
