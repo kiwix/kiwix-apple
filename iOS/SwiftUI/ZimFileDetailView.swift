@@ -13,12 +13,22 @@ import RealmSwift
 @available(iOS 14.0, *)
 struct ZimFileDetailView: View {
     @StateRealmObject var zimFile: ZimFile
+    let hasEnoughDiskSpace: Bool
     
     init(fileID: String) {
         if let database = try? Realm(), let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: fileID) {
             self._zimFile = StateRealmObject(wrappedValue: zimFile)
+            self.hasEnoughDiskSpace = {
+                guard let freeSpace = try? FileManager.default
+                        .urls(for: .documentDirectory, in: .userDomainMask)
+                        .first?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
+                        .volumeAvailableCapacityForImportantUsage,
+                      let fileSize = zimFile.size.value else { return false }
+                return fileSize <= freeSpace
+            }()
         } else {
             self._zimFile = StateRealmObject(wrappedValue: ZimFile())
+            self.hasEnoughDiskSpace = false
         }
     }
     
@@ -59,7 +69,7 @@ struct ZimFileDetailView: View {
         Section {
             switch zimFile.state {
             case .remote:
-                if true {
+                if hasEnoughDiskSpace {
 //                    Toggle("Cellular Data", isOn: downloadUsingCellular)
                     ActionCell(title: "Download") {
                         DownloadService.shared.start(
