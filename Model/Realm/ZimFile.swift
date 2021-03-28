@@ -52,6 +52,10 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     
     // MARK: -  computed properties
     
+    var localizedLanguageName: String {
+        Locale.current.localizedString(forLanguageCode: languageCode) ?? "Unknown"
+    }
+    
     var state: State {
         get { return State(rawValue: stateRaw) ?? .remote }
         set { stateRaw = newValue.rawValue }

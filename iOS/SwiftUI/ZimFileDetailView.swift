@@ -12,31 +12,52 @@ import RealmSwift
 
 @available(iOS 14.0, *)
 struct ZimFileDetailView: View {
-    @StateRealmObject var zimFile = ZimFile()
+    @StateRealmObject var zimFile: ZimFile
     
-    init(id: String) {
-        if let database = try? Realm(configuration: Realm.defaultConfig),
-           let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: id) {
-            self.zimFile = zimFile
+    private let countFormatter = NumberFormatter()
+    
+    init(fileID: String) {
+        if let database = try? Realm(), let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: fileID) {
+            self._zimFile = StateRealmObject(wrappedValue: zimFile)
+        } else {
+            self._zimFile = StateRealmObject(wrappedValue: ZimFile())
         }
-    }
-    
-    init(zimFile: ZimFile) {
-        self.zimFile = zimFile
+        countFormatter.numberStyle = .decimal
     }
     
     var body: some View {
         List {
             Section {
-//                TitleDetailCell(title: "ID", detail: zimFile.id.prefix(8))
+                TitleDetailCell(title: "Language", detail: zimFile.localizedLanguageName)
+                TitleDetailCell(title: "Size", detail: zimFile.sizeDescription ?? "Unknown")
+                TitleDetailCell(title: "Date", detail: zimFile.creationDateDescription ?? "Unknown")
             }
-        }.listStyle(InsetGroupedListStyle())
+            Section {
+                TitleDetailCell(title: "Picture", detail: zimFile.hasPictures ? "Yes" : "No")
+                TitleDetailCell(title: "Videos", detail: zimFile.hasVideos ? "Yes" : "No")
+                TitleDetailCell(title: "Details", detail: zimFile.hasDetails ? "Yes" : "No")
+            }
+            Section {
+                TitleDetailCell(title: "Article Count", detail: formatCount(zimFile.articleCount.value))
+                TitleDetailCell(title: "Media Count", detail: formatCount(zimFile.mediaCount.value))
+            }
+            Section {
+                TitleDetailCell(title: "Creator", detail: zimFile.creator ?? "Unknown")
+                TitleDetailCell(title: "Publisher", detail: zimFile.publisher ?? "Unknown")
+            }
+            Section {
+                TitleDetailCell(title: "ID", detail: String(zimFile.fileID.prefix(8)))
+            }
+        }
+        .navigationTitle(zimFile.title)
+        .listStyle(InsetGroupedListStyle())
     }
-}
-
-@available(iOS 14.0, *)
-struct ZimFileDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        ZimFileDetailView(id: "")
+    
+    private func formatCount(_ value: Int64?) -> String {
+        if let value = value, let formatted = countFormatter.string(from: NSNumber(value: value)) {
+            return formatted
+        } else {
+            return "Unknown"
+        }
     }
 }

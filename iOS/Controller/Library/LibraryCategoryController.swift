@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUI
 import Defaults
 import RealmSwift
 
@@ -219,7 +220,13 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         defer { tableView.deselectRow(at: indexPath, animated: true) }
         guard let result = results[languageCodes[indexPath.section]] else { return }
-        let controller = LibraryZimFileDetailController(zimFile: result[indexPath.row])
-        navigationController?.pushViewController(controller, animated: true)
+        if #available(iOS 14.0, *) {
+            let controller = UIHostingController(rootView: ZimFileDetailView(fileID: result[indexPath.row].fileID))
+            controller.title = result[indexPath.row].title
+            navigationController?.pushViewController(controller, animated: true)
+        } else {
+            let controller = LibraryZimFileDetailController(zimFile: result[indexPath.row])
+            navigationController?.pushViewController(controller, animated: true)
+        }
     }
 }
