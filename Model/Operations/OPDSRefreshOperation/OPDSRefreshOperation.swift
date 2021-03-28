@@ -11,7 +11,6 @@ import Defaults
 import RealmSwift
 
 class OPDSRefreshOperation: LibraryOperationBase {
-    let progress = Progress(totalUnitCount: 10)
     private let updateExisting: Bool
 
     private(set) var additionCount = 0
@@ -20,7 +19,7 @@ class OPDSRefreshOperation: LibraryOperationBase {
     private(set) var error: OPDSRefreshError?
 
     var hasUpdates: Bool {
-        return additionCount > 0 || updateCount > 0 || deletionCount > 0
+        additionCount > 0 || updateCount > 0 || deletionCount > 0
     }
 
     init(updateExisting: Bool = false) {
@@ -30,7 +29,7 @@ class OPDSRefreshOperation: LibraryOperationBase {
 
     override func main() {
         do {
-            os_log("OPDSRefreshOperation started.", log: Log.OPDS, type: .debug)
+            os_log("Refresh started.", log: Log.OPDS, type: .debug)
 
             // refresh the library
             let data = try fetchData()
@@ -48,7 +47,7 @@ class OPDSRefreshOperation: LibraryOperationBase {
                 Defaults[.libraryLastRefreshTime] = Date()
             }
 
-            os_log("OPDSRefreshOperation success -- addition: %d, update: %d, deletion: %d, total: %d",
+            os_log("Refresh succeed -- addition: %d, update: %d, deletion: %d, total: %d",
                    log: Log.OPDS,
                    type: .default,
                    additionCount,
@@ -56,12 +55,11 @@ class OPDSRefreshOperation: LibraryOperationBase {
                    deletionCount,
                    parser.zimFileIDs.count
             )
-
         } catch let error as OPDSRefreshError {
             self.error = error
-            os_log("OPDSRefreshOperation error: %s", log: Log.OPDS, type: .error, error.localizedDescription)
+            os_log("Refresh error: %s", log: Log.OPDS, type: .error, error.localizedDescription)
         } catch {
-            os_log("OPDSRefreshOperation unknown error: %s", log: Log.OPDS, type: .error, error.localizedDescription)
+            os_log("Refresh unknown error: %s", log: Log.OPDS, type: .error, error.localizedDescription)
         }
     }
 
@@ -81,7 +79,6 @@ class OPDSRefreshOperation: LibraryOperationBase {
             error = $2
             semaphore.signal()
         }
-        progress.addChild(dataTask.progress, withPendingUnitCount: 8)
 
         dataTask.resume()
         semaphore.wait()
@@ -102,32 +99,30 @@ class OPDSRefreshOperation: LibraryOperationBase {
     /// - Throws: OPDSRefreshError, the error happened during OPDS stream processing
     private func processData(parser: OPDSStreamParser) throws {
         do {
-            let zimFileIDs = Set(parser.zimFileIDs)
+            // get zim file metadata
+            // skip ones that require service worker to function
+            var metadata = [String: ZimFileMetaData]()
+            for zimFileID in parser.zimFileIDs {
+                guard let meta = parser.getZimFileMetaData(id: zimFileID), !meta.requiresServiceWorker else { continue }
+                metadata[zimFileID] = meta
+            }
+            
+            // update database
             let database = try Realm(configuration: Realm.defaultConfig)
             try database.write {
                 // remove old zimFiles
-                let predicate = NSPredicate(
-                    format: "NOT id IN %@ AND stateRaw == %@", zimFileIDs, ZimFile.State.remote.rawValue
-                )
+                let predicateFormat = "NOT id IN %@ AND stateRaw == %@"
+                let predicate = NSPredicate(format: predicateFormat, Set(metadata.keys), ZimFile.State.remote.rawValue)
                 database.objects(ZimFile.self).filter(predicate).forEach({
                     database.delete($0)
                     self.deletionCount += 1
                 })
 
                 // upsert new and existing zimFiles
-                for zimFileID in zimFileIDs {
-                    guard let meta = parser.getZimFileMetaData(id: zimFileID) else { continue }
-                    if ZimFile.Category(rawValue: meta.category) == nil { meta.category = ZimFile.Category.other.rawValue }
-                    if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) {
-                        if updateExisting {
-                            updateZimFile(zimFile, meta: meta)
-                            self.updateCount += 1
-                        } else {
-                            // HACK: always update groupID, because I forgot to set it on creation before
-                            zimFile.groupID = meta.groupIdentifier
-                            // HACK: always update category, because I forgot to set unrecognized category to other
-                            zimFile.categoryRaw = meta.category
-                        }
+                for (zimFileID, meta) in metadata {
+                    if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID), updateExisting {
+                        updateZimFile(zimFile, meta: meta)
+                        self.updateCount += 1
                     } else {
                         let zimFile = ZimFile()
                         zimFile.id = meta.identifier

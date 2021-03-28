@@ -34,6 +34,7 @@
 @property (nonatomic, assign) BOOL hasIndex;
 @property (nonatomic, assign) BOOL hasPictures;
 @property (nonatomic, assign) BOOL hasVideos;
+@property (nonatomic, assign) BOOL requiresServiceWorker;
 
 - (nullable instancetype)initWithBook:(nonnull void *)book;
 
