@@ -10,11 +10,12 @@ import SwiftUI
 
 import RealmSwift
 
-/// Display metadata about a zim file in a list view.
+/// Information and action about a single zim file in a list view.
 @available(iOS 14.0, *)
 struct ZimFileDetailView: View {
-    @StateRealmObject var zimFile: ZimFile
-    @AppStorage("downloadUsingCellular") var downloadUsingCellular: Bool = false
+    @StateRealmObject private var zimFile: ZimFile
+    @State private var showingDeleteAlert = false
+    @AppStorage("downloadUsingCellular") private var downloadUsingCellular: Bool = false
     
     let hasEnoughDiskSpace: Bool
     
@@ -68,6 +69,17 @@ struct ZimFileDetailView: View {
         }
         .navigationTitle(zimFile.title)
         .listStyle(InsetGroupedListStyle())
+        .alert(isPresented: $showingDeleteAlert) {
+            let message = LibraryService().isFileInDocumentDirectory(zimFileID: zimFile.fileID)
+                ? "The zim file will be deleted from the app's document directory."
+                : "The zim file will be unlinked from the app, but not deleted, since it was opened in-place."
+            let deleteButton = Alert.Button.destructive(
+                Text("Delete"), action: { ZimFileService.shared.deleteZimFile(zimFileID: zimFile.fileID) })
+            return Alert(title: Text("Delete Zim File"),
+                         message: Text(message),
+                         primaryButton: deleteButton,
+                         secondaryButton: .cancel())
+        }
     }
     
     @ViewBuilder
