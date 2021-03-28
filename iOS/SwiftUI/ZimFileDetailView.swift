@@ -41,7 +41,9 @@ struct ZimFileDetailView: View {
                 Text(zimFile.title)
                 Text(zimFile.fileDescription)
             }
-            actions
+            Section {
+                actions
+            }
             Section {
                 Cell(title: "Language", detail: zimFile.localizedLanguageName)
                 Cell(title: "Size", detail: zimFile.sizeDescription)
@@ -68,57 +70,56 @@ struct ZimFileDetailView: View {
         .listStyle(InsetGroupedListStyle())
     }
     
+    @ViewBuilder
     var actions: some View {
-        Section {
-            switch zimFile.state {
-            case .remote:
-                if hasEnoughDiskSpace {
-                    Toggle("Cellular Data", isOn: $downloadUsingCellular)
-                    ActionCell(title: "Download") {
-                        DownloadService.shared.start(
-                            zimFileID: zimFile.fileID, allowsCellularAccess: downloadUsingCellular
-                        )
-                    }
-                } else {
-                    ActionCell(title: "Download - Not Enough Space").disabled(true)
+        switch zimFile.state {
+        case .remote:
+            if hasEnoughDiskSpace {
+                Toggle("Cellular Data", isOn: $downloadUsingCellular)
+                ActionCell(title: "Download") {
+                    DownloadService.shared.start(
+                        zimFileID: zimFile.fileID, allowsCellularAccess: downloadUsingCellular
+                    )
                 }
-            case .onDevice:
-                ActionCell(title: "Open Main Page", isDestructive: false) {
-                    guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-                    UIApplication.shared.open(url)
-                }
-            case .downloadQueued:
-                Text("Queued")
-                cancelButton
-            case .downloadInProgress:
-                Cell(title: "Downloading...",
-                     detail: [
-                        zimFile.downloadedSizeDescription, zimFile.downloadedPercentDescription
-                     ].compactMap({ $0 }).joined(separator: " - ")
-                )
-                ActionCell(title: "Pause") {
-                    DownloadService.shared.pause(zimFileID: zimFile.fileID)
-                }
-                cancelButton
-            case .downloadPaused:
-                Cell(title: "Paused",
-                     detail: [
-                        zimFile.downloadedSizeDescription, zimFile.downloadedPercentDescription
-                     ].compactMap({ $0 }).joined(separator: " - ")
-                )
-                ActionCell(title: "Resume") {
-                    DownloadService.shared.resume(zimFileID: zimFile.fileID)
-                }
-                cancelButton
-            case .downloadError:
-                Text("Error")
-                if let errorDescription = zimFile.downloadErrorDescription {
-                    Text(errorDescription)
-                }
-                cancelButton
-            default:
-                cancelButton
+            } else {
+                ActionCell(title: "Download - Not Enough Space").disabled(true)
             }
+        case .onDevice:
+            ActionCell(title: "Open Main Page", isDestructive: false) {
+                guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
+                UIApplication.shared.open(url)
+            }
+        case .downloadQueued:
+            Text("Queued")
+            cancelButton
+        case .downloadInProgress:
+            Cell(title: "Downloading...",
+                 detail: [
+                    zimFile.downloadedSizeDescription, zimFile.downloadedPercentDescription
+                 ].compactMap({ $0 }).joined(separator: " - ")
+            )
+            ActionCell(title: "Pause") {
+                DownloadService.shared.pause(zimFileID: zimFile.fileID)
+            }
+            cancelButton
+        case .downloadPaused:
+            Cell(title: "Paused",
+                 detail: [
+                    zimFile.downloadedSizeDescription, zimFile.downloadedPercentDescription
+                 ].compactMap({ $0 }).joined(separator: " - ")
+            )
+            ActionCell(title: "Resume") {
+                DownloadService.shared.resume(zimFileID: zimFile.fileID)
+            }
+            cancelButton
+        case .downloadError:
+            Text("Error")
+            if let errorDescription = zimFile.downloadErrorDescription {
+                Text(errorDescription)
+            }
+            cancelButton
+        default:
+            cancelButton
         }
     }
     
