@@ -14,7 +14,7 @@ import RealmSwift
 @available(iOS 14.0, *)
 struct ZimFileDetailView: View {
     @StateRealmObject private var zimFile: ZimFile
-    @State private var showingDeleteAlert = false
+    @State private var showingAlert = false
     @AppStorage("downloadUsingCellular") private var downloadUsingCellular: Bool = false
     
     let hasEnoughDiskSpace: Bool
@@ -68,13 +68,16 @@ struct ZimFileDetailView: View {
             }
             if zimFile.state == .onDevice {
                 Section {
-                    ActionCell(title: "Delete", isDestructive: true) { showingDeleteAlert = true }
+                    ActionCell(
+                        title: zimFile.openInPlaceURLBookmark == nil ? "Delete" : "Unlink",
+                        isDestructive: true
+                    ) { showingAlert = true }
                 }
             }
         }
         .navigationTitle(zimFile.title)
         .listStyle(InsetGroupedListStyle())
-        .alert(isPresented: $showingDeleteAlert) {
+        .alert(isPresented: $showingAlert) {
             if zimFile.openInPlaceURLBookmark == nil {
                 return Alert(
                     title: Text("Delete Zim File"),
@@ -89,14 +92,14 @@ struct ZimFileDetailView: View {
                 return Alert(
                     title: Text("Unlink Zim File"),
                     message: Text("The zim file will be unlinked from the app, but not deleted."),
-                    primaryButton: .destructive(Text("Delete"), action: {
+                    primaryButton: .destructive(Text("Unlink"), action: {
                         ZimFileService.shared.close(id: zimFile.fileID)
                         let database = try? Realm()
                         try? database?.write {
                             if zimFile.downloadURL != nil {
                                 zimFile.state = .remote
                                 zimFile.openInPlaceURLBookmark = nil
-                            } else {
+                            } else if let zimFile = database?.object(ofType: ZimFile.self, forPrimaryKey: zimFile.fileID) {
                                 database?.delete(zimFile)
                             }
                         }
@@ -161,10 +164,8 @@ struct ZimFileDetailView: View {
     }
     
     var cancelButton: some View {
-            ActionCell(title: "Cancel", isDestructive: true) {
-                DownloadService.shared.cancel(zimFileID: zimFile.fileID)
-            }
-        }
+        ActionCell(title: "Cancel", isDestructive: true) { DownloadService.shared.cancel(zimFileID: zimFile.fileID) }
+    }
     
     struct Cell: View {
         let title: String

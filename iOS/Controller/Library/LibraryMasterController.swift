@@ -8,6 +8,7 @@
 
 import UIKit
 import MobileCoreServices
+import SwiftUI
 import Defaults
 import RealmSwift
 
@@ -322,8 +323,14 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
         switch sections[indexPath.section] {
         case .local:
             guard let zimFile = localZimFiles?[indexPath.row] else {return}
-            let controller = LibraryZimFileDetailController(zimFile: zimFile)
-            showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
+            if #available(iOS 14.0, *) {
+                let controller = UIHostingController(rootView: ZimFileDetailView(fileID: zimFile.fileID))
+                controller.title = zimFile.title
+                showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
+            } else {
+                let controller = LibraryZimFileDetailController(zimFile: zimFile)
+                showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
+            }
         case .download:
             guard let zimFile = downloadZimFiles?[indexPath.row] else {return}
             let controller = LibraryZimFileDetailController(zimFile: zimFile)
