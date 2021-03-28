@@ -531,6 +531,7 @@
 			children = (
 				97D19F062546FF3700910CAE /* BuildingBlocks.swift */,
 				97A963C3259D38D900496214 /* SettingsView.swift */,
+				979AAF3F257167C60078492F /* ZimFileDetailView.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -606,7 +607,6 @@
 			children = (
 				977DCE43256CB974000E3E69 /* LibraryView.swift */,
 				97D3886725703A7A005CBE41 /* LibraryCategoryView.swift */,
-				979AAF3F257167C60078492F /* ZimFileDetailView.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
