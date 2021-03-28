@@ -71,8 +71,8 @@ struct ZimFileDetailView: View {
                 }
             case .onDevice:
                 ActionCell(title: "Open Main Page", isDestructive: false) {
-//                    openMainPage(zimFile.id)
-                    
+                    guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
+                    UIApplication.shared.open(url)
                 }
             case .downloadQueued:
                 Text("Queued")

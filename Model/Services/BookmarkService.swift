@@ -24,7 +24,7 @@ class BookmarkService {
     }
     
     func get(zimFileID: String, path: String) -> Bookmark? {
-        let predicate = NSPredicate(format: "zimFile.id == %@ AND path == %@", zimFileID, path)
+        let predicate = NSPredicate(format: "zimFile.fileID == %@ AND path == %@", zimFileID, path)
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
             return database.objects(Bookmark.self).filter(predicate).first

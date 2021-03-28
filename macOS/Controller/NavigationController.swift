@@ -66,7 +66,7 @@ class ArticleNavigationController: NSViewController, NSMenuDelegate, NSOutlineVi
             case NSApplication.ModalResponse.alertFirstButtonReturn:
                 let index = IndexSet(integer: localOutlineView.childIndex(forItem: zimFile))
                 localOutlineView.removeItems(at: index, inParent: nil, withAnimation: NSTableView.AnimationOptions.slideLeft)
-                ZimFileService.shared.remove(id: zimFile.id)
+                ZimFileService.shared.remove(id: zimFile.fileID)
                 do {
                     let database = try Realm(configuration: Realm.defaultConfig)
                     try database.write {
@@ -119,7 +119,7 @@ class ArticleNavigationController: NSViewController, NSMenuDelegate, NSOutlineVi
         guard let outlineView = notification.object as? NSOutlineView,
             let windowController = view.window?.windowController as? WindowController else {return}
         guard let zimFile = outlineView.item(atRow: outlineView.selectedRow) as? ZimFile,
-            let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.id) else {return}
+            let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else {return}
         windowController.contentTabController?.setMode(.reader)
         windowController.webViewController?.load(url: url)
     }

@@ -69,7 +69,7 @@ struct SearchView: View {
             Section(header: Text("Search Filter")) {
                 ForEach(zimFilesViewModel.onDevice) { zimFile in
                     Button {
-                        zimFilesViewModel.toggleIncludedInSearch(zimFileID: zimFile.id)
+                        zimFilesViewModel.toggleIncludedInSearch(zimFileID: zimFile.fileID)
                     } label: {
                         HStack(alignment: .center, spacing: 8) {
                             Favicon(zimFile: zimFile)
