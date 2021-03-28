@@ -13,11 +13,11 @@
 #endif
 import RealmSwift
 
-class ZimFile: Object, Identifiable {
+class ZimFile: Object, ObjectKeyIdentifiable {
     
     // MARK: -  non-optional properties
     
-    @objc dynamic var id: String = ""
+    @objc dynamic var fileID: String = ""
     @objc dynamic var groupID: String = ""
     @objc dynamic var title: String = ""
     @objc dynamic var fileDescription: String = ""
@@ -65,7 +65,7 @@ class ZimFile: Object, Identifiable {
     // MARK: - Overrides
     
     override static func primaryKey() -> String? {
-        "id"
+        "fileID"
     }
     
     override static func indexedProperties() -> [String] {

@@ -27,8 +27,9 @@ extension Realm {
         
         // migrations
         var config = Realm.Configuration(
-            schemaVersion: 3,
+            schemaVersion: 4,
             migrationBlock: { migration, oldSchemaVersion in
+                print("migration, oldSchemaVersion \(oldSchemaVersion)")
                 if (oldSchemaVersion < 2) {
                     migration.enumerateObjects(ofType: ZimFile.className()) { oldObject, newObject in
                         newObject?["name"] = oldObject?["pid"] ?? ""
@@ -47,6 +48,9 @@ extension Realm {
                             if categoryRaw == "ted" { newObject?["categoryRaw"] = "other" }
                         }
                     }
+                }
+                if (oldSchemaVersion < 4) {
+                    migration.renameProperty(onType: ZimFile.className(), from: "id", to: "fileID")
                 }
             }
         )

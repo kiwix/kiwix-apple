@@ -125,7 +125,7 @@ class OPDSRefreshOperation: LibraryOperationBase {
                         self.updateCount += 1
                     } else {
                         let zimFile = ZimFile()
-                        zimFile.id = meta.identifier
+                        zimFile.fileID = meta.identifier
                         updateZimFile(zimFile, meta: meta)
                         zimFile.state = .remote
                         database.add(zimFile)

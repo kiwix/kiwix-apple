@@ -88,7 +88,7 @@ class SearchViewModel: NSObject, ObservableObject, UISearchBarDelegate {
             withAnimation(animation) { content = .inProgress }
             let zimFileIDs: Set<String> = {
                 guard let result = zimFiles else { return Set() }
-                return Set(result.map({ $0.id }))
+                return Set(result.map({ $0.fileID }))
             }()
             let operation = SearchOperation(searchText: text, zimFileIDs: zimFileIDs)
             operation.completionBlock = { [weak self] in

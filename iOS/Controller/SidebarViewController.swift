@@ -231,7 +231,7 @@ class BookmarksViewController: SidebarViewController, UITableViewDataSource, UIT
         cell.detailLabel.text = bookmark.snippet
         
         if let zimFile = bookmark.zimFile, let thumbImagePath = bookmark.thumbImagePath,
-           let data = ZimFileService.shared.getData(zimFileID: zimFile.id, contentPath: thumbImagePath) {
+           let data = ZimFileService.shared.getData(zimFileID: zimFile.fileID, contentPath: thumbImagePath) {
             cell.thumbImageView.image = UIImage(data: data)
         } else if let zimFile = bookmark.zimFile, let data = zimFile.faviconData {
             cell.thumbImageView.image = UIImage(data: data)
@@ -243,7 +243,7 @@ class BookmarksViewController: SidebarViewController, UITableViewDataSource, UIT
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         defer { tableView.deselectRow(at: indexPath, animated: true) }
         guard let bookmark = bookmarks?[indexPath.row],
-              let zimFileID = bookmark.zimFile?.id,
+              let zimFileID = bookmark.zimFile?.fileID,
               let url = URL(zimFileID: zimFileID, contentPath: bookmark.path) else {
             present(UIAlertController.resourceUnavailable(), animated: true)
             return

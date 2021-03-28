@@ -107,7 +107,7 @@ struct SearchView: View {
             Button {
                 sceneViewModel.load(url: result.url)
                 searchViewModel.updateRecentSearchText()
-                searchViewModel.cancelSearch()
+                searchViewModel.cancelfileIDSearch()
             } label: {
                 HStack(alignment: result.snippet == nil ? .center : .top) {
                     Favicon(zimFile: zimFilesViewModel.onDevice.first(where: {$0.id == result.zimFileID}))

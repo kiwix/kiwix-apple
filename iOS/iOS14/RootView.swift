@@ -40,7 +40,8 @@ struct RootView: View {
     var body: some View {
         switch (searchViewModel.isActive, horizontalSizeClass) {
         case (true, _):
-            SearchView().toolbar { ToolbarItem(placement: .navigationBarTrailing) { SearchCancelButton() } }
+//            SearchView().toolbar { ToolbarItem(placement: .navigationBarTrailing) { SearchCancelButton() } }
+            Text("search")
         case (false, .regular):
             SplitView()
                 .ignoresSafeArea()

@@ -102,7 +102,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     }
     
     func openRandomPage(zimFileID: String? = nil) {
-        guard let zimFileID = zimFileID ?? onDeviceZimFiles?.map({ $0.id }).randomElement(),
+        guard let zimFileID = zimFileID ?? onDeviceZimFiles?.map({ $0.fileID }).randomElement(),
               let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
         openURL(url)
     }
@@ -287,7 +287,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     @objc func houseButtonTapped() {
         if let url = webViewController.webView.url, let zimFileID = url.host {
             openMainPage(zimFileID: zimFileID)
-        } else if let zimFileID = onDeviceZimFiles?.first?.id {
+        } else if let zimFileID = onDeviceZimFiles?.first?.fileID {
             openMainPage(zimFileID: zimFileID)
         }
     }
