@@ -66,19 +66,44 @@ struct ZimFileDetailView: View {
             Section {
                 Cell(title: "ID", detail: String(zimFile.fileID.prefix(8)))
             }
+            if zimFile.state == .onDevice {
+                Section {
+                    ActionCell(title: "Delete", isDestructive: true) { showingDeleteAlert = true }
+                }
+            }
         }
         .navigationTitle(zimFile.title)
         .listStyle(InsetGroupedListStyle())
         .alert(isPresented: $showingDeleteAlert) {
-            let message = LibraryService().isFileInDocumentDirectory(zimFileID: zimFile.fileID)
-                ? "The zim file will be deleted from the app's document directory."
-                : "The zim file will be unlinked from the app, but not deleted, since it was opened in-place."
-            let deleteButton = Alert.Button.destructive(
-                Text("Delete"), action: { ZimFileService.shared.deleteZimFile(zimFileID: zimFile.fileID) })
-            return Alert(title: Text("Delete Zim File"),
-                         message: Text(message),
-                         primaryButton: deleteButton,
-                         secondaryButton: .cancel())
+            if zimFile.openInPlaceURLBookmark == nil {
+                return Alert(
+                    title: Text("Delete Zim File"),
+                    message: Text("The zim file will be deleted from the app's document directory."),
+                    primaryButton: .destructive(Text("Delete"), action: {
+                        guard let url = ZimFileService.shared.getFileURL(zimFileID: zimFile.fileID) else { return }
+                        try? FileManager.default.removeItem(at: url)
+                    }),
+                    secondaryButton: .cancel()
+                )
+            } else {
+                return Alert(
+                    title: Text("Unlink Zim File"),
+                    message: Text("The zim file will be unlinked from the app, but not deleted."),
+                    primaryButton: .destructive(Text("Delete"), action: {
+                        ZimFileService.shared.close(id: zimFile.fileID)
+                        let database = try? Realm()
+                        try? database?.write {
+                            if zimFile.downloadURL != nil {
+                                zimFile.state = .remote
+                                zimFile.openInPlaceURLBookmark = nil
+                            } else {
+                                database?.delete(zimFile)
+                            }
+                        }
+                    }),
+                    secondaryButton: .cancel()
+                )
+            }
         }
     }
     
