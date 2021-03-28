@@ -10,9 +10,12 @@ import SwiftUI
 
 import RealmSwift
 
+/// Display metadata about a zim file in a list view.
 @available(iOS 14.0, *)
 struct ZimFileDetailView: View {
     @StateRealmObject var zimFile: ZimFile
+    @AppStorage("downloadUsingCellular") var downloadUsingCellular: Bool = false
+    
     let hasEnoughDiskSpace: Bool
     
     init(fileID: String) {
@@ -70,10 +73,10 @@ struct ZimFileDetailView: View {
             switch zimFile.state {
             case .remote:
                 if hasEnoughDiskSpace {
-//                    Toggle("Cellular Data", isOn: downloadUsingCellular)
+                    Toggle("Cellular Data", isOn: $downloadUsingCellular)
                     ActionCell(title: "Download") {
                         DownloadService.shared.start(
-                            zimFileID: zimFile.fileID, allowsCellularAccess: true
+                            zimFileID: zimFile.fileID, allowsCellularAccess: downloadUsingCellular
                         )
                     }
                 } else {
@@ -138,45 +141,6 @@ struct ZimFileDetailView: View {
         }
     }
     
-    struct CountCell: View {
-        let title: String
-        let count: Int64?
-        
-        init(title: String, count: Int64?) {
-            self.title = title
-            self.count = count
-        }
-        
-        var body: some View {
-            HStack {
-                Text(title)
-                Spacer()
-                if let count = count, let formatted = ZimFile.countFormatter.string(from: NSNumber(value: count)) {
-                    Text(formatted).foregroundColor(.secondary)
-                } else {
-                    Text("Unknown").foregroundColor(.secondary)
-                }
-            }
-        }
-    }
-    
-    struct CheckmarkCell: View {
-        let title: String
-        let isChecked: Bool
-        
-        var body: some View {
-            HStack {
-                Text(title)
-                Spacer()
-                if isChecked{
-                    Image(systemName: "checkmark.circle.fill").foregroundColor(.green)
-                } else {
-                    Image(systemName: "multiply.circle.fill").foregroundColor(.secondary)
-                }
-            }
-        }
-    }
-    
     struct ActionCell: View {
         let title: String
         let isDestructive: Bool
@@ -198,6 +162,45 @@ struct ZimFileDetailView: View {
                     Spacer()
                 }
             })
+        }
+    }
+    
+    struct CheckmarkCell: View {
+        let title: String
+        let isChecked: Bool
+        
+        var body: some View {
+            HStack {
+                Text(title)
+                Spacer()
+                if isChecked{
+                    Image(systemName: "checkmark.circle.fill").foregroundColor(.green)
+                } else {
+                    Image(systemName: "multiply.circle.fill").foregroundColor(.secondary)
+                }
+            }
+        }
+    }
+    
+    struct CountCell: View {
+        let title: String
+        let count: Int64?
+        
+        init(title: String, count: Int64?) {
+            self.title = title
+            self.count = count
+        }
+        
+        var body: some View {
+            HStack {
+                Text(title)
+                Spacer()
+                if let count = count, let formatted = ZimFile.countFormatter.string(from: NSNumber(value: count)) {
+                    Text(formatted).foregroundColor(.secondary)
+                } else {
+                    Text("Unknown").foregroundColor(.secondary)
+                }
+            }
         }
     }
 }
