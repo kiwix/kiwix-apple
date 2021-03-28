@@ -262,7 +262,6 @@
 		9779A73A2456796B00F6F6FF /* WebKitHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebKitHandler.swift; sourceTree = "<group>"; };
 		9779A7E224567A5A00F6F6FF /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		9779A7E824567AA600F6F6FF /* SettingLibraryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingLibraryController.swift; sourceTree = "<group>"; };
-		9779A7E924567AA600F6F6FF /* LibrarySetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibrarySetting.swift; sourceTree = "<group>"; };
 		9779A7EC24567ADD00F6F6FF /* BackupManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		9779E7A12379230F0058DC98 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		977DCE43256CB974000E3E69 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
@@ -469,6 +468,7 @@
 		975FDAD81F6082DA00A10E8C /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				976C4AA0260F876C00472A98 /* SwiftUI */,
 				97D7FB5A253CF94F00E8ADDF /* iOS14 */,
 				975FDAD91F6082DA00A10E8C /* AppDelegate.swift */,
 				973B8011239066D0008CC8CE /* SceneDelegate.swift */,
@@ -504,7 +504,6 @@
 				97802D6F25789B1800A21352 /* SidebarViewController.swift */,
 				9797435B257BF33600D30F03 /* WebViewController.swift */,
 				978FA76725851B4D00666E1B /* HomeView.swift */,
-				97A963C3259D38D900496214 /* SettingsView.swift */,
 				972E6F651FA2872A00F5C927 /* Search */,
 				97B1046D1F8FC61400488444 /* Library */,
 				97B4ADF72392B73300264AF6 /* Utilities */,
@@ -525,6 +524,15 @@
 				9768C23A1F4B7F6300FD499B /* Preference.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		976C4AA0260F876C00472A98 /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				97D19F062546FF3700910CAE /* BuildingBlocks.swift */,
+				97A963C3259D38D900496214 /* SettingsView.swift */,
+			);
+			path = SwiftUI;
 			sourceTree = "<group>";
 		};
 		9779A59B2456793500F6F6FF /* Services */ = {
@@ -663,7 +671,6 @@
 				97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */,
 				97F4D10520AB80740038FC87 /* LibraryZimFileDetailController.swift */,
 				97CA4A7120A21D24008CEA6D /* LibraryLanguageController.swift */,
-				9779A7E924567AA600F6F6FF /* LibrarySetting.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -716,7 +723,6 @@
 		97D19F052546FF2800910CAE /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				97D19F062546FF3700910CAE /* BuildingBlocks.swift */,
 				979F49F6254478D400DE0B56 /* Buttons.swift */,
 				973B2A5C254609FD00093661 /* Modifiers.swift */,
 				97810E16250436E2000D86CB /* ZimFileCell.swift */,
@@ -1702,7 +1708,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/scinfu/SwiftSoup";
 			requirement = {
-				kind = upToNextMajorVersion;
+				kind = upToNextMinorVersion;
 				minimumVersion = 2.3.0;
 			};
 		};
@@ -1710,8 +1716,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/Defaults";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
+				kind = upToNextMinorVersion;
+				minimumVersion = 4.2.0;
 			};
 		};
 		97CE15B523B26EB300378D9F /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
@@ -1719,7 +1725,7 @@
 			repositoryURL = "https://github.com/realm/realm-cocoa";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 10.5.0;
+				minimumVersion = 10.7.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

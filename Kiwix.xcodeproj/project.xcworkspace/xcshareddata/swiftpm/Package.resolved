@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/sindresorhus/Defaults",
         "state": {
           "branch": null,
-          "revision": "d98119fee49c893fae553103a8659ffe003b6cfe",
-          "version": "4.1.0"
+          "revision": "63dcea312f9cbd17064294a3ae99c9147704b65f",
+          "version": "4.2.1"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/realm/realm-cocoa",
         "state": {
           "branch": null,
-          "revision": "c236b2c1270fe41ba7c101a1d17ef56494987cb9",
-          "version": "10.5.0"
+          "revision": "ae8e646590396dfc13c1abbf8aa2e48c43766dce",
+          "version": "10.7.2"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/realm/realm-core",
         "state": {
           "branch": null,
-          "revision": "7390723ae39b432bd00f093ea84e3b79534a202c",
-          "version": "10.3.2"
+          "revision": "bab46acdca91c417a0d4849b8f4992a3c17e29a5",
+          "version": "10.5.5"
         }
       },
       {
