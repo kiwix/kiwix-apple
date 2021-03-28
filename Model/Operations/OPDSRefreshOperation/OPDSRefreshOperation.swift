@@ -122,7 +122,6 @@ class OPDSRefreshOperation: LibraryOperationBase {
 
                 // upsert new and existing zimFiles
                 for (zimFileID, meta) in metadata {
-                    if ZimFile.Category(rawValue: meta.category) == nil { meta.category = ZimFile.Category.other.rawValue }
                     if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID), updateExisting {
                         updateZimFile(zimFile, meta: meta)
                         self.updateCount += 1

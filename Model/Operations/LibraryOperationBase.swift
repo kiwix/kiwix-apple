@@ -29,7 +29,11 @@ class LibraryOperationBase: Operation {
         zimFile.groupID = meta.groupIdentifier
         zimFile.fileDescription = meta.fileDescription
         zimFile.languageCode = meta.languageCode
-        zimFile.categoryRaw = meta.category
+        if let category = ZimFile.Category(rawValue: meta.category) {
+            zimFile.categoryRaw = category.rawValue
+        } else {
+            zimFile.categoryRaw = ZimFile.Category.other.rawValue
+        }
         
         if let creator = meta.creator { zimFile.creator = creator}
         if let publisher = meta.publisher { zimFile.publisher = publisher }
