@@ -57,12 +57,12 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     }
     
     var state: State {
-        get { return State(rawValue: stateRaw) ?? .remote }
+        get { State(rawValue: stateRaw) ?? .remote }
         set { stateRaw = newValue.rawValue }
     }
     
     var category: Category {
-        get { return Category(rawValue: categoryRaw) ?? .other }
+        get { Category(rawValue: categoryRaw) ?? .other }
         set { categoryRaw = newValue.rawValue }
     }
     
@@ -106,6 +106,28 @@ class ZimFile: Object, ObjectKeyIdentifiable {
         guard let size = size.value else { return nil }
         return ByteCountFormatter.string(fromByteCount: size, countStyle: .file)
     }
+    
+    var downloadedSizeDescription: String? {
+        return ByteCountFormatter.string(fromByteCount: downloadTotalBytesWritten, countStyle: .file)
+    }
+    
+    var downloadedPercentDescription: String? {
+        if let totalSize = size.value {
+            return ZimFile.percentFormatter.string(
+                from: NSNumber(value: Double(downloadTotalBytesWritten) / Double(totalSize))
+            )
+        } else {
+            return nil
+        }
+    }
+    
+    // MARK: - Formatters
+    
+    static let percentFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .percent
+        return formatter
+    }()
 
     // MARK: - Type Definition
     

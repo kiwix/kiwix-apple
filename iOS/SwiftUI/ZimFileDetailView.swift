@@ -13,6 +13,7 @@ import RealmSwift
 @available(iOS 14.0, *)
 struct ZimFileDetailView: View {
     @StateRealmObject var zimFile: ZimFile
+    let downloadPercentFormatter = NumberFormatter()
     
     init(fileID: String) {
         if let database = try? Realm(), let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: fileID) {
@@ -20,6 +21,7 @@ struct ZimFileDetailView: View {
         } else {
             self._zimFile = StateRealmObject(wrappedValue: ZimFile())
         }
+        downloadPercentFormatter.numberStyle = .percent
     }
     
     var body: some View {
@@ -61,42 +63,38 @@ struct ZimFileDetailView: View {
             case .remote:
                 if true {
 //                    Toggle("Cellular Data", isOn: downloadUsingCellular)
-                    ActionButton(title: "Download") {
+                    ActionCell(title: "Download") {
                         DownloadService.shared.start(
                             zimFileID: zimFile.fileID, allowsCellularAccess: true
                         )
                     }
                 } else {
-                    ActionButton(title: "Download - Not Enough Space").disabled(true)
+                    ActionCell(title: "Download - Not Enough Space").disabled(true)
                 }
             case .onDevice:
-                ActionButton(title: "Open Main Page", isDestructive: false) {
+                ActionCell(title: "Open Main Page", isDestructive: false) {
 //                    openMainPage(zimFile.id)
                 }
             case .downloadQueued:
                 Text("Queued")
                 cancelButton
             case .downloadInProgress:
-//                if #available(iOS 14.0, *), let progress = viewModel.downloadProgress {
-//                    ProgressView(progress)
-//                } else {
-//                    Text("Downloading...")
-//                }
-                ProgressView("Downloading...", value: Double(zimFile.downloadTotalBytesWritten), total: Double(zimFile.size.value ?? 0))
-                .progressViewStyle(CircularProgressViewStyle())
-                ActionButton(title: "Pause") {
+                Cell(title: "Downloading...",
+                     detail: [
+                        zimFile.downloadedSizeDescription, zimFile.downloadedPercentDescription
+                     ].compactMap({ $0 }).joined(separator: " - ")
+                )
+                ActionCell(title: "Pause") {
                     DownloadService.shared.pause(zimFileID: zimFile.fileID)
                 }
                 cancelButton
             case .downloadPaused:
-                HStack {
-                    Text("Paused")
-//                    if let progress = viewModel.downloadProgress {
-//                        Spacer()
-//                        Text(progress.localizedAdditionalDescription)
-//                    }
-                }
-                ActionButton(title: "Resume") {
+                Cell(title: "Paused",
+                     detail: [
+                        zimFile.downloadedSizeDescription, zimFile.downloadedPercentDescription
+                     ].compactMap({ $0 }).joined(separator: " - ")
+                )
+                ActionCell(title: "Resume") {
                     DownloadService.shared.resume(zimFileID: zimFile.fileID)
                 }
                 cancelButton
@@ -105,6 +103,7 @@ struct ZimFileDetailView: View {
                 if let errorDescription = zimFile.downloadErrorDescription {
                     Text(errorDescription)
                 }
+                cancelButton
             default:
                 cancelButton
             }
@@ -112,7 +111,7 @@ struct ZimFileDetailView: View {
     }
     
     var cancelButton: some View {
-            ActionButton(title: "Cancel", isDestructive: true) {
+            ActionCell(title: "Cancel", isDestructive: true) {
                 DownloadService.shared.cancel(zimFileID: zimFile.fileID)
             }
         }
@@ -171,7 +170,7 @@ struct ZimFileDetailView: View {
         }
     }
     
-    struct ActionButton: View {
+    struct ActionCell: View {
         let title: String
         let isDestructive: Bool
         let action: (() -> Void)
