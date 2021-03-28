@@ -102,7 +102,7 @@ class OPDSRefreshOperation: LibraryOperationBase {
     private func processData(parser: OPDSStreamParser) throws {
         do {
             // get zim file metadata
-            // remove zim files that require service worker to function
+            // skip ones that require service worker to function
             var metadata = [String: ZimFileMetaData]()
             for zimFileID in parser.zimFileIDs {
                 guard let meta = parser.getZimFileMetaData(id: zimFileID), !meta.requiresServiceWorker else { continue }
@@ -123,16 +123,9 @@ class OPDSRefreshOperation: LibraryOperationBase {
                 // upsert new and existing zimFiles
                 for (zimFileID, meta) in metadata {
                     if ZimFile.Category(rawValue: meta.category) == nil { meta.category = ZimFile.Category.other.rawValue }
-                    if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) {
-                        if updateExisting {
-                            updateZimFile(zimFile, meta: meta)
-                            self.updateCount += 1
-                        } else {
-                            // HACK: always update groupID, because I forgot to set it on creation before
-                            zimFile.groupID = meta.groupIdentifier
-                            // HACK: always update category, because I forgot to set unrecognized category to other
-                            zimFile.categoryRaw = meta.category
-                        }
+                    if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID), updateExisting {
+                        updateZimFile(zimFile, meta: meta)
+                        self.updateCount += 1
                     } else {
                         let zimFile = ZimFile()
                         zimFile.id = meta.identifier
