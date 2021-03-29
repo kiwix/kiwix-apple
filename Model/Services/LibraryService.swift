@@ -24,7 +24,7 @@ class LibraryService {
         }
     }
     
-    func deleteOrUnlink(fileID: String, onDeleteDatabaseObject: (() -> Void)? = nil) {
+    func deleteOrUnlink(fileID: String) {
         // Update the database
         do {
             let database = try Realm()
@@ -32,7 +32,6 @@ class LibraryService {
             try database.write {
                 if zimFile.downloadURL == nil {
                     database.delete(zimFile)
-                    DispatchQueue.main.async { onDeleteDatabaseObject?() }
                 } else {
                     zimFile.state = .remote
                     zimFile.openInPlaceURLBookmark = nil

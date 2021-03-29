@@ -18,7 +18,7 @@ struct ZimFileDetailView: View {
     @AppStorage("downloadUsingCellular") private var downloadUsingCellular: Bool = false
     
     let hasEnoughDiskSpace: Bool
-    var onDelete: (() -> Void) = {}
+    let viewModel: ViewModel
     
     init(fileID: String) {
         if let database = try? Realm(), let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: fileID) {
@@ -31,9 +31,11 @@ struct ZimFileDetailView: View {
                       let fileSize = zimFile.size.value else { return false }
                 return fileSize <= freeSpace
             }()
+            self.viewModel = ViewModel(zimFile: zimFile)
         } else {
             self._zimFile = StateRealmObject(wrappedValue: ZimFile())
             self.hasEnoughDiskSpace = false
+            self.viewModel = ViewModel(zimFile: ZimFile())
         }
     }
     
@@ -84,7 +86,7 @@ struct ZimFileDetailView: View {
                     title: Text("Delete Zim File"),
                     message: Text("The zim file will be deleted from the app's document directory."),
                     primaryButton: .destructive(Text("Delete"), action: {
-                        LibraryService().deleteOrUnlink(fileID: zimFile.fileID, onDeleteDatabaseObject: onDelete)
+                        LibraryService().deleteOrUnlink(fileID: zimFile.fileID)
                     }),
                     secondaryButton: .cancel()
                 )
@@ -93,7 +95,7 @@ struct ZimFileDetailView: View {
                     title: Text("Unlink Zim File"),
                     message: Text("The zim file will be unlinked from the app, but not deleted."),
                     primaryButton: .destructive(Text("Unlink"), action: {
-                        LibraryService().deleteOrUnlink(fileID: zimFile.fileID, onDeleteDatabaseObject: onDelete)
+                        LibraryService().deleteOrUnlink(fileID: zimFile.fileID)
                     }),
                     secondaryButton: .cancel()
                 )
@@ -230,6 +232,18 @@ struct ZimFileDetailView: View {
                 } else {
                     Text("Unknown").foregroundColor(.secondary)
                 }
+            }
+        }
+    }
+    
+    class ViewModel: ObservableObject {
+        private var zimFileObserver: NotificationToken?
+        var onDelete: (() -> Void) = {}
+        
+        init(zimFile: ZimFile) {
+            zimFileObserver = zimFile.observe { [unowned self] change in
+                guard case .deleted = change else { return }
+                self.onDelete()
             }
         }
     }

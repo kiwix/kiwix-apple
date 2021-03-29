@@ -223,7 +223,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         if #available(iOS 14.0, *) {
             let controller = UIHostingController(rootView: ZimFileDetailView(fileID: result[indexPath.row].fileID))
             controller.title = result[indexPath.row].title
-            controller.rootView.onDelete = { [weak self] in
+            controller.rootView.viewModel.onDelete = { [weak self] in
                 self?.navigationController?.popViewController(animated: true)
             }
             navigationController?.pushViewController(controller, animated: true)
