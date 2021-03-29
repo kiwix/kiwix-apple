@@ -111,7 +111,7 @@ class OPDSRefreshOperation: LibraryOperationBase {
             let database = try Realm(configuration: Realm.defaultConfig)
             try database.write {
                 // remove old zimFiles
-                let predicateFormat = "NOT id IN %@ AND stateRaw == %@"
+                let predicateFormat = "NOT fileID IN %@ AND stateRaw == %@"
                 let predicate = NSPredicate(format: predicateFormat, Set(metadata.keys), ZimFile.State.remote.rawValue)
                 database.objects(ZimFile.self).filter(predicate).forEach({
                     database.delete($0)
@@ -120,9 +120,11 @@ class OPDSRefreshOperation: LibraryOperationBase {
 
                 // upsert new and existing zimFiles
                 for (zimFileID, meta) in metadata {
-                    if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID), updateExisting {
-                        updateZimFile(zimFile, meta: meta)
-                        self.updateCount += 1
+                    if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) {
+                        if updateExisting {
+                            updateZimFile(zimFile, meta: meta)
+                            self.updateCount += 1
+                        }
                     } else {
                         let zimFile = ZimFile()
                         zimFile.fileID = meta.identifier

@@ -18,8 +18,9 @@ struct ZimFileDetailView: View {
     @AppStorage("downloadUsingCellular") private var downloadUsingCellular: Bool = false
     
     let hasEnoughDiskSpace: Bool
+    let onDelete: (() -> Void)
     
-    init(fileID: String) {
+    init(fileID: String, onDelete: (() -> Void)? = nil) {
         if let database = try? Realm(), let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: fileID) {
             self._zimFile = StateRealmObject(wrappedValue: zimFile)
             self.hasEnoughDiskSpace = {
@@ -34,6 +35,7 @@ struct ZimFileDetailView: View {
             self._zimFile = StateRealmObject(wrappedValue: ZimFile())
             self.hasEnoughDiskSpace = false
         }
+        self.onDelete = onDelete ?? {}
     }
     
     var body: some View {
@@ -83,8 +85,7 @@ struct ZimFileDetailView: View {
                     title: Text("Delete Zim File"),
                     message: Text("The zim file will be deleted from the app's document directory."),
                     primaryButton: .destructive(Text("Delete"), action: {
-                        guard let url = ZimFileService.shared.getFileURL(zimFileID: zimFile.fileID) else { return }
-                        try? FileManager.default.removeItem(at: url)
+                        LibraryService().deleteOrUnlink(fileID: zimFile.fileID, onDeleteDatabaseObject: onDelete)
                     }),
                     secondaryButton: .cancel()
                 )
@@ -93,16 +94,7 @@ struct ZimFileDetailView: View {
                     title: Text("Unlink Zim File"),
                     message: Text("The zim file will be unlinked from the app, but not deleted."),
                     primaryButton: .destructive(Text("Unlink"), action: {
-                        ZimFileService.shared.close(id: zimFile.fileID)
-                        let database = try? Realm()
-                        try? database?.write {
-                            if zimFile.downloadURL != nil {
-                                zimFile.state = .remote
-                                zimFile.openInPlaceURLBookmark = nil
-                            } else if let zimFile = database?.object(ofType: ZimFile.self, forPrimaryKey: zimFile.fileID) {
-                                database?.delete(zimFile)
-                            }
-                        }
+                        LibraryService().deleteOrUnlink(fileID: zimFile.fileID, onDeleteDatabaseObject: onDelete)
                     }),
                     secondaryButton: .cancel()
                 )
