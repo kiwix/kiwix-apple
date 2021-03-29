@@ -82,6 +82,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
             if searchController.isActive {
                 dismissSearch()
             }
+            presentedViewController?.dismiss(animated: true)
         }
     }
     
