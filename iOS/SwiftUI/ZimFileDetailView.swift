@@ -18,9 +18,9 @@ struct ZimFileDetailView: View {
     @AppStorage("downloadUsingCellular") private var downloadUsingCellular: Bool = false
     
     let hasEnoughDiskSpace: Bool
-    let onDelete: (() -> Void)
+    var onDelete: (() -> Void) = {}
     
-    init(fileID: String, onDelete: (() -> Void)? = nil) {
+    init(fileID: String) {
         if let database = try? Realm(), let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: fileID) {
             self._zimFile = StateRealmObject(wrappedValue: zimFile)
             self.hasEnoughDiskSpace = {
@@ -35,7 +35,6 @@ struct ZimFileDetailView: View {
             self._zimFile = StateRealmObject(wrappedValue: ZimFile())
             self.hasEnoughDiskSpace = false
         }
-        self.onDelete = onDelete ?? {}
     }
     
     var body: some View {

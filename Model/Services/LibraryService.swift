@@ -32,7 +32,7 @@ class LibraryService {
             try database.write {
                 if zimFile.downloadURL == nil {
                     database.delete(zimFile)
-                    onDeleteDatabaseObject?()
+                    DispatchQueue.main.async { onDeleteDatabaseObject?() }
                 } else {
                     zimFile.state = .remote
                     zimFile.openInPlaceURLBookmark = nil

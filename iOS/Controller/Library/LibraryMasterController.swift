@@ -326,6 +326,10 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
             if #available(iOS 14.0, *) {
                 let controller = UIHostingController(rootView: ZimFileDetailView(fileID: zimFile.fileID))
                 controller.title = zimFile.title
+                controller.rootView.onDelete = { [unowned self] in
+                    let controller = LibraryCategoryController(category: self.categories[indexPath.row])
+                    self.showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
+                }
                 showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
             } else {
                 let controller = LibraryZimFileDetailController(zimFile: zimFile)
