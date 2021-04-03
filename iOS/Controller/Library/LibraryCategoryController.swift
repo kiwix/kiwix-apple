@@ -173,7 +173,14 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
     // MARK: - UIControl Actions
 
     @objc func languageFilterBottonTapped(sender: UIBarButtonItem) {
-        let navigation = UINavigationController(rootViewController: LibraryLanguageController())
+        let rootViewController: UIViewController = {
+            if #available(iOS 14.0, *) {
+                return UIHostingController(rootView: LibraryLanguageFilterView())
+            } else {
+                return LibraryLanguageController()
+            }
+        }()
+        let navigation = UINavigationController(rootViewController: rootViewController)
         navigation.modalPresentationStyle = .popover
         navigation.popoverPresentationController?.barButtonItem = sender
         present(navigation, animated: true, completion: nil)
