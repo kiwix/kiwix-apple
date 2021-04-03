@@ -88,32 +88,36 @@ struct LibraryLanguageFilterView: View {
         
         init() {
             DispatchQueue.global(qos: .userInitiated).async {
-                do {
-                    var showing: [Language] = []
-                    var hiding: [Language] = []
-                    let showinglanguageCodes = UserDefaults.standard.libraryFilterLanguageCodes
-                    
-                    let database = try Realm()
-                    let codes = database.objects(ZimFile.self).distinct(by: ["languageCode"]).map({ $0.languageCode })
-                    for code in codes {
-                        let count = database.objects(ZimFile.self).filter("languageCode = %@", code).count
-                        guard let language = Language(code: code, count: count) else { continue }
-                        if showinglanguageCodes.contains(code) {
-                            showing.append(language)
-                        } else {
-                            hiding.append(language)
-                        }
-                    }
-                    
-                    self.sort(&showing)
-                    self.sort(&hiding)
-                    
-                    DispatchQueue.main.async {
-                        self.showing = showing
-                        self.hiding = hiding
-                    }
-                } catch {}
+                self.loadData()
             }
+        }
+        
+        private func loadData() {
+            do {
+                var showing: [Language] = []
+                var hiding: [Language] = []
+                let showinglanguageCodes = UserDefaults.standard.libraryFilterLanguageCodes
+                
+                let database = try Realm()
+                let codes = database.objects(ZimFile.self).distinct(by: ["languageCode"]).map({ $0.languageCode })
+                for code in codes {
+                    let count = database.objects(ZimFile.self).filter("languageCode = %@", code).count
+                    guard let language = Language(code: code, count: count) else { continue }
+                    if showinglanguageCodes.contains(code) {
+                        showing.append(language)
+                    } else {
+                        hiding.append(language)
+                    }
+                }
+                
+                self.sort(&showing)
+                self.sort(&hiding)
+                
+                DispatchQueue.main.async {
+                    self.showing = showing
+                    self.hiding = hiding
+                }
+            } catch {}
         }
         
         private func sort(_ languages: inout [Language]) {
