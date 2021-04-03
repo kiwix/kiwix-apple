@@ -62,7 +62,7 @@ class SceneViewModel: NSObject, ObservableObject, UISplitViewControllerDelegate,
     }
     
     func loadMainPage(zimFile: ZimFile) {
-        guard let mainPageURL = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.id) else { return }
+        guard let mainPageURL = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
         load(url: mainPageURL)
     }
     

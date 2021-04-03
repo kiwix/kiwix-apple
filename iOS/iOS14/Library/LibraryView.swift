@@ -49,7 +49,7 @@ struct LibraryView: View {
                         Section(header: header) {
                             ForEach(zimFiles) { zimFile in
                                 ZStack{
-                                    NavigationLink("", destination: ZimFileDetailView(id: zimFile.id), isActive: $isShowingZimFileDetailView)
+                                    NavigationLink("", destination: ZimFileDetailView(fileID: zimFile.fileID), isActive: $isShowingZimFileDetailView)
                                     ZimFileCell(zimFile) { isShowingZimFileDetailView = true }
                                 }
                             }

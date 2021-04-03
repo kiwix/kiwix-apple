@@ -211,7 +211,7 @@ class SearchResultsController: UIViewController, UISearchResultsUpdating {
         
         let zimFileIDs: Set<String> = {
             guard let result = zimFiles else { return Set() }
-            return Set(result.map({ $0.id }))
+            return Set(result.map({ $0.fileID }))
         }()
         
         if displayMode == .results,

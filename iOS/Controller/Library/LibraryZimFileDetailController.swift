@@ -142,7 +142,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                     masterNavigationController.popViewController(animated: true)
                 }
             case .onDevice:
-                if LibraryService().isFileInDocumentDirectory(zimFileID: zimFile.id) {
+                if LibraryService().isFileInDocumentDirectory(zimFileID: zimFile.fileID) {
                     self.actions = ([[.openMainPage]], [[.deleteFile]])
                 } else {
                     self.actions = ([[.openMainPage]], [[.unlink]])
@@ -245,7 +245,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
             cell.detailTextLabel?.text = zimFile.publisher
         case .id:
             cell.textLabel?.text = NSLocalizedString("ID", comment: "Book Detail Cell")
-            cell.detailTextLabel?.text = String(zimFile.id.prefix(8))
+            cell.detailTextLabel?.text = String(zimFile.fileID.prefix(8))
         }
     }
 
@@ -253,23 +253,23 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
         func handle(action: Action) {
             switch action {
             case .downloadWifiOnly:
-                DownloadService.shared.start(zimFileID: zimFile.id, allowsCellularAccess: false)
+                DownloadService.shared.start(zimFileID: zimFile.fileID, allowsCellularAccess: false)
             case .downloadWifiAndCellular:
-                DownloadService.shared.start(zimFileID: zimFile.id, allowsCellularAccess: true)
+                DownloadService.shared.start(zimFileID: zimFile.fileID, allowsCellularAccess: true)
             case .downloadSpaceNotEnough:
                 break
             case .cancel:
-                DownloadService.shared.cancel(zimFileID: zimFile.id)
+                DownloadService.shared.cancel(zimFileID: zimFile.fileID)
             case .pause:
-                DownloadService.shared.pause(zimFileID: zimFile.id)
+                DownloadService.shared.pause(zimFileID: zimFile.fileID)
             case .resume:
-                DownloadService.shared.resume(zimFileID: zimFile.id)
+                DownloadService.shared.resume(zimFileID: zimFile.fileID)
             case .deleteFile, .deleteBookmarks, .deleteFileAndBookmarks, .unlink:
                 present(ActionConfirmationController(zimFile: zimFile, action: action), animated: true)
             case .openMainPage:
                 guard let navigationController = presentingViewController as? UINavigationController,
                       let rootViewController = navigationController.topViewController as? RootViewController else { break }
-                rootViewController.openMainPage(zimFileID: zimFile.id)
+                rootViewController.openMainPage(zimFileID: zimFile.fileID)
                 dismiss(animated: true, completion: nil)
             }
         }
@@ -355,7 +355,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
             self.init(title: action.description, message: message, preferredStyle: .alert)
             addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Book deletion confirmation"), style: .destructive, handler: { _ in
                 if action == .deleteFile || action == .deleteFileAndBookmarks {
-                    guard let url = ZimFileService.shared.getFileURL(zimFileID: zimFile.id) else {return}
+                    guard let url = ZimFileService.shared.getFileURL(zimFileID: zimFile.fileID) else {return}
                     let directoryURL = url.deletingLastPathComponent()
                     let fileName = url.deletingPathExtension().lastPathComponent
 
@@ -365,7 +365,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                 }
                 if action == .unlink {
                     do {
-                        ZimFileService.shared.close(id: zimFile.id)
+                        ZimFileService.shared.close(id: zimFile.fileID)
                         let database = try Realm(configuration: Realm.defaultConfig)
                         try database.write {
                             if zimFile.downloadURL != nil {

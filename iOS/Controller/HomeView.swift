@@ -65,8 +65,8 @@ struct HomeView: View {
                 }
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
                     Section(header: SectionHeader(title: "On Device")) {
-                        ForEach(viewModel.onDeviceZimFiles ?? [], id: \.id) { zimFile in
-                            ZimFileCell(zimFile) { zimFileTapped?(zimFile.id) }
+                        ForEach(viewModel.onDeviceZimFiles ?? [], id: \.fileID) { zimFile in
+                            ZimFileCell(zimFile) { zimFileTapped?(zimFile.fileID) }
                         }
                     }
                 }
@@ -128,7 +128,7 @@ struct HomeView: View {
         }
         
         private static func process(results: Results<ZimFile>) -> [String] {
-            results.map({$0.id})
+            results.map({$0.fileID})
         }
     }
 }

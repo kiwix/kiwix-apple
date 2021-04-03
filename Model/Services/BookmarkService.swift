@@ -24,7 +24,7 @@ class BookmarkService {
     }
     
     func get(zimFileID: String, path: String) -> Bookmark? {
-        let predicate = NSPredicate(format: "zimFile.id == %@ AND path == %@", zimFileID, path)
+        let predicate = NSPredicate(format: "zimFile.fileID == %@ AND path == %@", zimFileID, path)
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
             return database.objects(Bookmark.self).filter(predicate).first
@@ -83,10 +83,10 @@ class BookmarkService {
             let bookmarks = Array(database.objects(Bookmark.self).sorted(byKeyPath: "date", ascending: false).prefix(8))
             let data = bookmarks.compactMap { bookmark -> [String: Any]? in
                     guard let zimFile = bookmark.zimFile,
-                        let url = URL(zimFileID: zimFile.id, contentPath: bookmark.path) else {return nil}
+                        let url = URL(zimFileID: zimFile.fileID, contentPath: bookmark.path) else {return nil}
                     let thumbImageData: Data? = {
                         guard let thumbImagePath = bookmark.thumbImagePath else { return nil }
-                        return ZimFileService.shared.getData(zimFileID: zimFile.id, contentPath: thumbImagePath)
+                        return ZimFileService.shared.getData(zimFileID: zimFile.fileID, contentPath: thumbImagePath)
                     }()
                     return [
                         "title": bookmark.title,

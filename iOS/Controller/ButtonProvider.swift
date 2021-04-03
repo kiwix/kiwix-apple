@@ -89,7 +89,7 @@ class ButtonProvider {
     private func configureDiceButtonMenu() {
         if let zimFiles = onDeviceZimFiles, !zimFiles.isEmpty {
             let items = zimFiles.map { zimFile in
-                UIAction(title: zimFile.title) { _ in self.rootViewController?.openRandomPage(zimFileID: zimFile.id) }
+                UIAction(title: zimFile.title) { _ in self.rootViewController?.openRandomPage(zimFileID: zimFile.fileID) }
             }
             diceButton.menu = UIMenu(children: Array(items))
         } else {
@@ -103,7 +103,7 @@ class ButtonProvider {
         var items = [UIMenuElement]()
         if let zimFiles = onDeviceZimFiles, !zimFiles.isEmpty {
             items.append(UIMenu(options: .displayInline, children: zimFiles.map { zimFile in
-                UIAction(title: zimFile.title) { _ in self.rootViewController?.openMainPage(zimFileID: zimFile.id) }
+                UIAction(title: zimFile.title) { _ in self.rootViewController?.openMainPage(zimFileID: zimFile.fileID) }
             }))
         } else {
             items.append(UIAction(title: "No Zim File Available", attributes: .disabled, handler: { _ in }))
@@ -119,7 +119,7 @@ class ButtonProvider {
         ]
         if let zimFiles = onDeviceZimFiles, !zimFiles.isEmpty {
             items.insert(UIMenu(options: .displayInline, children: zimFiles.map { zimFile in
-                UIAction(title: zimFile.title, image: UIImage(systemName: "house")) { _ in self.rootViewController?.openMainPage(zimFileID: zimFile.id) }
+                UIAction(title: zimFile.title, image: UIImage(systemName: "house")) { _ in self.rootViewController?.openMainPage(zimFileID: zimFile.fileID) }
             }), at: 0)
         }
         moreButton.menu = UIMenu(children: items)

@@ -10,6 +10,7 @@
 import UIKit
 #endif
 import Defaults
+import RealmSwift
 
 class LibraryService {
     func isFileInDocumentDirectory(zimFileID: String) -> Bool {
@@ -21,6 +22,32 @@ class LibraryService {
         } else {
             return false
         }
+    }
+    
+    func deleteOrUnlink(fileID: String) {
+        // Update the database
+        do {
+            let database = try Realm()
+            guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: fileID) else { return }
+            try database.write {
+                if zimFile.downloadURL == nil {
+                    database.delete(zimFile)
+                } else {
+                    zimFile.state = .remote
+                    zimFile.openInPlaceURLBookmark = nil
+                }
+            }
+        } catch {}
+        
+        // Remove file if file is in app's document directory
+        if let fileURL = ZimFileService.shared.getFileURL(zimFileID: fileID),
+           let documentDirectoryURL = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false),
+           FileManager.default.fileExists(atPath: documentDirectoryURL.appendingPathComponent(fileURL.lastPathComponent).path) {
+            try? FileManager.default.removeItem(at: fileURL)
+        }
+        
+        // Close the file reader
+        ZimFileService.shared.close(id: fileID)
     }
     
     // MARK: - Settings

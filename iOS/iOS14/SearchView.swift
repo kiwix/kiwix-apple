@@ -69,7 +69,7 @@ struct SearchView: View {
             Section(header: Text("Search Filter")) {
                 ForEach(zimFilesViewModel.onDevice) { zimFile in
                     Button {
-                        zimFilesViewModel.toggleIncludedInSearch(zimFileID: zimFile.id)
+                        zimFilesViewModel.toggleIncludedInSearch(zimFileID: zimFile.fileID)
                     } label: {
                         HStack(alignment: .center, spacing: 8) {
                             Favicon(zimFile: zimFile)
@@ -107,7 +107,7 @@ struct SearchView: View {
             Button {
                 sceneViewModel.load(url: result.url)
                 searchViewModel.updateRecentSearchText()
-                searchViewModel.cancelSearch()
+                searchViewModel.cancelfileIDSearch()
             } label: {
                 HStack(alignment: result.snippet == nil ? .center : .top) {
                     Favicon(zimFile: zimFilesViewModel.onDevice.first(where: {$0.id == result.zimFileID}))

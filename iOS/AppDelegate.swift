@@ -20,6 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
     ) -> Bool {
+        Realm.Configuration.defaultConfiguration = Realm.defaultConfig
+        
         if #available(iOS 13.0, *) {} else {
             window = UIWindow(frame: UIScreen.main.bounds)
             window?.rootViewController = UINavigationController(rootViewController: RootViewController())

@@ -1,3 +1,12 @@
+## 1.14.1
+
+- Hides zim files that requires service worker to function
+- The zim file detail view now show progress on iOS 14 when downloading
+
+Technical:
+
+- The zim file detail view is rewrote with SwiftUI on iOS 14
+
 ## 1.14
 
 - iPad: a new design with all UI controls at the top bar

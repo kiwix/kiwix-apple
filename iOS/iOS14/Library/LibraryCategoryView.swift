@@ -26,7 +26,7 @@ struct LibraryCategoryView: View {
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
                 ForEach(viewModel.zimFiles) { zimFile in
                     ZStack{
-                        NavigationLink("", destination: ZimFileDetailView(id: zimFile.id), isActive: $isShowingZimFileDetailView)
+                        NavigationLink("", destination: ZimFileDetailView(fileID: zimFile.fileID), isActive: $isShowingZimFileDetailView)
                         ZimFileCell(zimFile) { isShowingZimFileDetailView = true }
                     }
                 }
@@ -81,7 +81,7 @@ struct LibraryGroupedCategoryView: View {
                     Section(header: header) {
                         ForEach(group.zimFiles) { zimFile in
                             ZStack{
-                                NavigationLink("", destination: ZimFileDetailView(id: zimFile.id), isActive: $isShowingZimFileDetailView)
+                                NavigationLink("", destination: ZimFileDetailView(fileID: zimFile.fileID), isActive: $isShowingZimFileDetailView)
                                 ZimFileCell(zimFile) { isShowingZimFileDetailView = true }
                             }
                         }

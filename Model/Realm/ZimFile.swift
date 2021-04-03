@@ -13,11 +13,11 @@
 #endif
 import RealmSwift
 
-class ZimFile: Object, Identifiable {
+class ZimFile: Object, ObjectKeyIdentifiable {
     
     // MARK: -  non-optional properties
     
-    @objc dynamic var id: String = ""
+    @objc dynamic var fileID: String = ""
     @objc dynamic var groupID: String = ""
     @objc dynamic var title: String = ""
     @objc dynamic var fileDescription: String = ""
@@ -52,20 +52,24 @@ class ZimFile: Object, Identifiable {
     
     // MARK: -  computed properties
     
+    var localizedLanguageName: String {
+        Locale.current.localizedString(forLanguageCode: languageCode) ?? "Unknown"
+    }
+    
     var state: State {
-        get { return State(rawValue: stateRaw) ?? .remote }
+        get { State(rawValue: stateRaw) ?? .remote }
         set { stateRaw = newValue.rawValue }
     }
     
     var category: Category {
-        get { return Category(rawValue: categoryRaw) ?? .other }
+        get { Category(rawValue: categoryRaw) ?? .other }
         set { categoryRaw = newValue.rawValue }
     }
     
     // MARK: - Overrides
     
     override static func primaryKey() -> String? {
-        "id"
+        "fileID"
     }
     
     override static func indexedProperties() -> [String] {
@@ -102,6 +106,34 @@ class ZimFile: Object, Identifiable {
         guard let size = size.value else { return nil }
         return ByteCountFormatter.string(fromByteCount: size, countStyle: .file)
     }
+    
+    var downloadedSizeDescription: String? {
+        return ByteCountFormatter.string(fromByteCount: downloadTotalBytesWritten, countStyle: .file)
+    }
+    
+    var downloadedPercentDescription: String? {
+        if let totalSize = size.value {
+            return ZimFile.percentFormatter.string(
+                from: NSNumber(value: Double(downloadTotalBytesWritten) / Double(totalSize))
+            )
+        } else {
+            return nil
+        }
+    }
+    
+    // MARK: - Formatters
+    
+    static let percentFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .percent
+        return formatter
+    }()
+    
+    static let countFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
 
     // MARK: - Type Definition
     
