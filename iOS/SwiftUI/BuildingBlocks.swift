@@ -100,9 +100,9 @@ struct ZimFileView: View {
         HStack {
             Favicon(data: viewModel.faviconData)
             VStack(alignment: .leading) {
-                Text(viewModel.title)
+                Text(viewModel.title).lineLimit(1)
                 Spacer(minLength: 2)
-                Text(viewModel.detail).font(.footnote)
+                Text(viewModel.detail).lineLimit(1).font(.footnote)
             }.foregroundColor(.primary)
             Spacer()
             switch accessory {

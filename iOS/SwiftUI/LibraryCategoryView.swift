@@ -13,7 +13,6 @@ import RealmSwift
 @available(iOS 14.0, *)
 struct LibraryCategoryView: View {
     @StateObject private var viewModel: ViewModel
-    @State private var showingPopover = false
     
     let category: ZimFile.Category
     
