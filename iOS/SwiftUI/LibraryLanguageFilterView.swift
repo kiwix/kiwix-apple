@@ -6,13 +6,12 @@
 //  Copyright © 2021 Chris Li. All rights reserved.
 //
 
+import Combine
 import SwiftUI
 import RealmSwift
 
 @available(iOS 14.0, *)
 struct LibraryLanguageFilterView: View {
-    @AppStorage("libraryLanguageSortingMode") var sortingMode: LibraryLanguageFilterSortingMode = .alphabetically
-    
     @ObservedObject private var viewModel = ViewModel()
     var doneButtonTapped: () -> Void = {}
     
@@ -35,7 +34,7 @@ struct LibraryLanguageFilterView: View {
                 Button("Done", action: doneButtonTapped)
             }
             ToolbarItem(placement: ToolbarItemPlacement.principal) {
-                Picker("Language Sorting Mode", selection: $sortingMode, content: {
+                Picker("Language Sorting Mode", selection: $viewModel.sortingMode, content: {
                     Text("A-Z").tag(LibraryLanguageFilterSortingMode.alphabetically)
                     Text("By Count").tag(LibraryLanguageFilterSortingMode.byCount)
                 })
@@ -82,21 +81,27 @@ struct LibraryLanguageFilterView: View {
     }
     
     class ViewModel: ObservableObject {
-        @AppStorage("libraryLanguageSortingMode") var sortingMode: LibraryLanguageFilterSortingMode = .alphabetically
         @Published private(set) var showing: [Language] = []
         @Published private(set) var hiding: [Language] = []
+        @Published var sortingMode: LibraryLanguageFilterSortingMode {
+            didSet {
+                UserDefaults.standard.set(sortingMode.rawValue, forKey: "libraryLanguageSortingMode")
+                self.sort()
+            }
+        }
         
         init() {
-            DispatchQueue.global(qos: .userInitiated).async {
-                self.loadData()
-            }
+            sortingMode = LibraryLanguageFilterSortingMode(
+                rawValue: UserDefaults.standard.string(forKey: "libraryLanguageSortingMode") ?? ""
+            ) ?? .alphabetically
+            DispatchQueue.global(qos: .userInitiated).async { self.loadData() }
         }
         
         private func loadData() {
             do {
                 var showing: [Language] = []
                 var hiding: [Language] = []
-                let showinglanguageCodes = UserDefaults.standard.libraryFilterLanguageCodes
+                let showinglanguageCodes = UserDefaults.standard.stringArray(forKey: "libraryFilterLanguageCodes") ?? []
                 
                 let database = try Realm()
                 let codes = database.objects(ZimFile.self).distinct(by: ["languageCode"]).map({ $0.languageCode })
@@ -110,8 +115,8 @@ struct LibraryLanguageFilterView: View {
                     }
                 }
                 
-                self.sort(&showing)
-                self.sort(&hiding)
+                showing = self.sorted(showing)
+                hiding = self.sorted(hiding)
                 
                 DispatchQueue.main.async {
                     self.showing = showing
@@ -120,20 +125,24 @@ struct LibraryLanguageFilterView: View {
             } catch {}
         }
         
-        private func sort(_ languages: inout [Language]) {
+        private func sorted(_ languages: [Language]) -> [Language] {
             switch sortingMode {
             case .alphabetically:
-                languages.sort { $0 < $1 }
+                return languages.sorted { $0 < $1 }
             case .byCount:
-                languages.sort {
-                    if $0.count == $1.count {
-                        return $0 < $1
-                    } else {
-                        return $0.count > $1.count
-                    }
+                return languages.sorted { $0.count == $1.count ? $0 < $1 : $0.count > $1.count }
+            }
+        }
+        
+        private func sort() {
+            DispatchQueue.global(qos: .userInitiated).async {
+                let showing = self.sorted(self.showing)
+                let hiding = self.sorted(self.hiding)
+                DispatchQueue.main.async {
+                    self.showing = showing
+                    self.hiding = hiding
                 }
             }
         }
     }
 }
-
