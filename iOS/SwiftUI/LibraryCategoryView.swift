@@ -73,9 +73,6 @@ struct LibraryCategoryView: View {
             defaultsSubscriber = Publishers.CombineLatest(
                 UserDefaults.standard.publisher(for: \.libraryLanguageCodes), sortingModePublisher
             ).sink(receiveValue: { (languageCodes, sortingMode) in
-                self.languages = languageCodes
-                    .compactMap({ Language(code: $0) })
-                    .sorted(by: { $0.name.caseInsensitiveCompare($1.name) == .orderedAscending })
                 self.loadData(languageCodes: languageCodes, sortingMode: sortingMode)
             })
         }
@@ -103,10 +100,12 @@ struct LibraryCategoryView: View {
                     .receive(on: DispatchQueue.main)
                     .catch { _ in Just([String: [ZimFileView.ViewModel]]()) }
                     .sink(receiveValue: { zimFiles in
-                        self.languages = zimFiles.keys
-                            .compactMap { Language(code: $0) }
-                            .sorted(by: { $0.name.caseInsensitiveCompare($1.name) == .orderedAscending })
-                        withAnimation(self.zimFiles.count > 0 ? .default : nil) { self.zimFiles = zimFiles }
+                        withAnimation(self.zimFiles.count > 0 ? .default : nil) {
+                            self.languages = zimFiles.keys
+                                .compactMap { Language(code: $0) }
+                                .sorted(by: { $0.name.caseInsensitiveCompare($1.name) == .orderedAscending })
+                            self.zimFiles = zimFiles
+                        }
                     })
             } catch {}
         }
