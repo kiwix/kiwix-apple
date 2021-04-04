@@ -19,12 +19,20 @@ struct LibraryLanguageFilterView: View {
         List {
             if viewModel.showing.count > 0 {
                 Section(header: Text("Showing")) {
-                    ForEach(viewModel.showing) { LanguageCell(language: $0) }
+                    ForEach(viewModel.showing) { language in
+                        Button(action: { viewModel.hide(language) }, label: {
+                            LanguageCell(language: language)
+                        })
+                    }
                 }
             }
             if viewModel.hiding.count > 0 {
                 Section(header: Text("Hiding")) {
-                    ForEach(viewModel.hiding) { LanguageCell(language: $0) }
+                    ForEach(viewModel.hiding) { language in
+                        Button(action: { viewModel.show(language) }, label: {
+                            LanguageCell(language: language)
+                        })
+                    }
                 }
             }
         }
@@ -73,7 +81,7 @@ struct LibraryLanguageFilterView: View {
         let language: Language
         var body: some View {
             HStack {
-                Text(language.name)
+                Text(language.name).foregroundColor(.primary)
                 Spacer()
                 Text("\(language.count)").foregroundColor(.secondary)
             }
@@ -86,7 +94,7 @@ struct LibraryLanguageFilterView: View {
         @Published var sortingMode: LibraryLanguageFilterSortingMode {
             didSet {
                 UserDefaults.standard.set(sortingMode.rawValue, forKey: "libraryLanguageSortingMode")
-                self.sort()
+                DispatchQueue.global(qos: .userInitiated).async { self.loadData() }
             }
         }
         
@@ -95,6 +103,26 @@ struct LibraryLanguageFilterView: View {
                 rawValue: UserDefaults.standard.string(forKey: "libraryLanguageSortingMode") ?? ""
             ) ?? .alphabetically
             DispatchQueue.global(qos: .userInitiated).async { self.loadData() }
+        }
+        
+        func show(_ language: Language) {
+            withAnimation {
+                self.showing.append(language)
+                self.hiding.removeAll(where: { $0.code == language.code })
+                
+                showing = self.sorted(showing)
+                hiding = self.sorted(hiding)
+            }
+        }
+        
+        func hide(_ language: Language) {
+            withAnimation {
+                self.showing.removeAll(where: { $0.code == language.code })
+                self.hiding.append(language)
+                
+                showing = self.sorted(showing)
+                hiding = self.sorted(hiding)
+            }
         }
         
         private func loadData() {
@@ -131,17 +159,6 @@ struct LibraryLanguageFilterView: View {
                 return languages.sorted { $0 < $1 }
             case .byCount:
                 return languages.sorted { $0.count == $1.count ? $0 < $1 : $0.count > $1.count }
-            }
-        }
-        
-        private func sort() {
-            DispatchQueue.global(qos: .userInitiated).async {
-                let showing = self.sorted(self.showing)
-                let hiding = self.sorted(self.hiding)
-                DispatchQueue.main.async {
-                    self.showing = showing
-                    self.hiding = hiding
-                }
             }
         }
     }
