@@ -25,7 +25,7 @@ struct LibraryCategoryView: View {
     var body: some View {
         List {
             ForEach(viewModel.languages) { language in
-                Section(header: Text(language.name)) {
+                Section(header: viewModel.languages.count > 1 ? Text(language.name) : nil) {
                     ForEach(viewModel.zimFiles[language.code, default: []]) { zimFileViewModel in
                         ZimFileView(zimFileViewModel)
                     }
