@@ -111,9 +111,7 @@ struct LibraryLanguageFilterView: View {
                 self.sort(&showing)
                 self.sort(&hiding)
             }
-            var languageCodes = UserDefaults.standard.stringArray(forKey: "libraryFilterLanguageCodes") ?? []
-            languageCodes.append(language.code)
-            UserDefaults.standard.setValue(languageCodes, forKey: "libraryFilterLanguageCodes")
+            UserDefaults.standard.libraryLanguageCodes.append(language.code)
         }
         
         func hide(_ language: Language) {
@@ -123,23 +121,20 @@ struct LibraryLanguageFilterView: View {
                 self.sort(&showing)
                 self.sort(&hiding)
             }
-            var languageCodes = UserDefaults.standard.stringArray(forKey: "libraryFilterLanguageCodes") ?? []
-            languageCodes.removeAll(where: { language.code == $0 })
-            UserDefaults.standard.setValue(languageCodes, forKey: "libraryFilterLanguageCodes")
+            UserDefaults.standard.libraryLanguageCodes.removeAll(where: { language.code == $0 })
         }
         
         private func loadData() {
             do {
                 var showing: [Language] = []
                 var hiding: [Language] = []
-                let showinglanguageCodes = UserDefaults.standard.stringArray(forKey: "libraryFilterLanguageCodes") ?? []
                 
                 let database = try Realm()
                 let codes = database.objects(ZimFile.self).distinct(by: ["languageCode"]).map({ $0.languageCode })
                 for code in codes {
                     let count = database.objects(ZimFile.self).filter("languageCode = %@", code).count
                     guard let language = Language(code: code, count: count) else { continue }
-                    if showinglanguageCodes.contains(code) {
+                    if UserDefaults.standard.libraryLanguageCodes.contains(code) {
                         showing.append(language)
                     } else {
                         hiding.append(language)
