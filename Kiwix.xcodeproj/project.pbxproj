@@ -16,6 +16,8 @@
 		97138C112548EDB6007BA24E /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97138C102548EDB6007BA24E /* SearchViewModel.swift */; };
 		97161A861F8FFD1E00A89DE3 /* LibraryCategoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */; };
 		971D589A247C5CC000532461 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 971D5899247C5CC000532461 /* Defaults */; };
+		97225A982618B2A200D8CB32 /* LibraryLanguageFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97225A972618B2A200D8CB32 /* LibraryLanguageFilterView.swift */; };
+		97225AA2261A006A00D8CB32 /* LibraryCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97225AA1261A006A00D8CB32 /* LibraryCategoryView.swift */; };
 		97246C821FC4D12A0056AE5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9717A2521FB2592D00837492 /* Main.storyboard */; };
 		972521012009616B00B60A80 /* EmptyContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972521002009616B00B60A80 /* EmptyContentView.swift */; };
 		97252103200D3C4B00B60A80 /* HUDController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252102200D3C4B00B60A80 /* HUDController.swift */; };
@@ -141,7 +143,6 @@
 		97CE42482493244D00B334E9 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
 		97CE424A24957C3500B334E9 /* LibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59C2456793500F6F6FF /* LibraryService.swift */; };
 		97D19F072546FF3700910CAE /* BuildingBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D19F062546FF3700910CAE /* BuildingBlocks.swift */; };
-		97D3886825703A7A005CBE41 /* LibraryCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D3886725703A7A005CBE41 /* LibraryCategoryView.swift */; };
 		97D7FB5C253CF97400E8ADDF /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D7FB5B253CF97400E8ADDF /* RootView.swift */; };
 		97DBCF9D203CA254004EE274 /* SettingExternalLinkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DBCF9C203CA254004EE274 /* SettingExternalLinkController.swift */; };
 		97E02DE424B00C82008E278D /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DE324B00C82008E278D /* libkiwix.xcframework */; };
@@ -208,6 +209,8 @@
 		97138C102548EDB6007BA24E /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		97161A851F8FFD1E00A89DE3 /* LibraryCategoryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryCategoryController.swift; sourceTree = "<group>"; };
 		9717A2521FB2592D00837492 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		97225A972618B2A200D8CB32 /* LibraryLanguageFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryLanguageFilterView.swift; sourceTree = "<group>"; };
+		97225AA1261A006A00D8CB32 /* LibraryCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryCategoryView.swift; sourceTree = "<group>"; };
 		972521002009616B00B60A80 /* EmptyContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyContentView.swift; sourceTree = "<group>"; };
 		97252102200D3C4B00B60A80 /* HUDController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDController.swift; sourceTree = "<group>"; };
 		97252104200E908000B60A80 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
@@ -529,6 +532,8 @@
 			isa = PBXGroup;
 			children = (
 				97D19F062546FF3700910CAE /* BuildingBlocks.swift */,
+				97225A972618B2A200D8CB32 /* LibraryLanguageFilterView.swift */,
+				97225AA1261A006A00D8CB32 /* LibraryCategoryView.swift */,
 				97A963C3259D38D900496214 /* SettingsView.swift */,
 				979AAF3F257167C60078492F /* ZimFileDetailView.swift */,
 			);
@@ -1061,6 +1066,7 @@
 			files = (
 				97138C112548EDB6007BA24E /* SearchViewModel.swift in Sources */,
 				97B3998E246759E400BC6F5B /* SearchResult.m in Sources */,
+				97225AA2261A006A00D8CB32 /* LibraryCategoryView.swift in Sources */,
 				97CD2F0424D4FB6F0084C6B5 /* SearchFilterController.swift in Sources */,
 				979F49F7254478D400DE0B56 /* Buttons.swift in Sources */,
 				9779A5BC2456793600F6F6FF /* OPDSStreamParser.swift in Sources */,
@@ -1116,6 +1122,7 @@
 				97B3998A24673FE000BC6F5B /* SearchOperation.mm in Sources */,
 				97F4210E22EE5590001E41F9 /* FileImportController.swift in Sources */,
 				9779A7AF2456796B00F6F6FF /* Settings.swift in Sources */,
+				97225A982618B2A200D8CB32 /* LibraryLanguageFilterView.swift in Sources */,
 				972521012009616B00B60A80 /* EmptyContentView.swift in Sources */,
 				9797435C257BF33600D30F03 /* WebViewController.swift in Sources */,
 				97A36C571F8D5FCD0079B452 /* LibraryController.swift in Sources */,
@@ -1132,7 +1139,6 @@
 				97B5D3E92596398400D12FEE /* SidebarController.swift in Sources */,
 				9779A5CA2456793600F6F6FF /* Bookmark.swift in Sources */,
 				9779A7452456796B00F6F6FF /* DownloadService.swift in Sources */,
-				97D3886825703A7A005CBE41 /* LibraryCategoryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

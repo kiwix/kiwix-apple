@@ -39,9 +39,9 @@ struct LibraryView: View {
                                     Image(systemName: "chevron.right")
                                 }.font(Font.footnote.weight(.medium))
                                 if category == .wikipedia || category == .other {
-                                    NavigationLink(destination: LibraryGroupedCategoryView(category: category)) { label }
+//                                    NavigationLink(destination: LibraryGroupedCategoryView(category: category)) { label }
                                 } else {
-                                    NavigationLink(destination: LibraryCategoryView(category: category)) { label }
+//                                    NavigationLink(destination: LibraryCategoryView(category: category)) { label }
                                 }
                             }
                         }
