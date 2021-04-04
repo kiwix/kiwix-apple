@@ -22,6 +22,10 @@ enum ExternalLinkLoadingPolicy: Int, CaseIterable, Codable, CustomStringConverti
     }
 }
 
+enum LibraryCategorySortingMode: String {
+    case alphabetical, size, date
+}
+
 enum LibraryLanguageFilterSortingMode: String, Codable, CustomStringConvertible {
     case alphabetically, byCount
     
