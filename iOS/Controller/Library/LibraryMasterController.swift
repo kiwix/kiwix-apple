@@ -357,6 +357,7 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
                 )
                 let controller = UIHostingController(rootView: LibraryCategoryView(category: categories[indexPath.row]))
                 controller.title = categories[indexPath.row].description
+                controller.navigationItem.largeTitleDisplayMode = .never
                 controller.navigationItem.rightBarButtonItem = languageFilterButtonItem
                 showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
             } else {
