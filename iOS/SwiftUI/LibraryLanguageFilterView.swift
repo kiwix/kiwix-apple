@@ -99,9 +99,8 @@ struct LibraryLanguageFilterView: View {
         }
         
         init() {
-            sortingMode = LibraryLanguageFilterSortingMode(
-                rawValue: UserDefaults.standard.string(forKey: "libraryLanguageSortingMode") ?? ""
-            ) ?? .alphabetically
+            let sortingModeRawValue = UserDefaults.standard.string(forKey: "libraryLanguageSortingMode") ?? ""
+            sortingMode = LibraryLanguageFilterSortingMode(rawValue: sortingModeRawValue) ?? .alphabetically
             DispatchQueue.global(qos: .userInitiated).async { self.loadData() }
         }
         
@@ -109,20 +108,24 @@ struct LibraryLanguageFilterView: View {
             withAnimation {
                 self.showing.append(language)
                 self.hiding.removeAll(where: { $0.code == language.code })
-                
                 self.sort(&showing)
                 self.sort(&hiding)
             }
+            var languageCodes = UserDefaults.standard.stringArray(forKey: "libraryFilterLanguageCodes") ?? []
+            languageCodes.append(language.code)
+            UserDefaults.standard.setValue(languageCodes, forKey: "libraryFilterLanguageCodes")
         }
         
         func hide(_ language: Language) {
             withAnimation {
                 self.showing.removeAll(where: { $0.code == language.code })
                 self.hiding.append(language)
-                
                 self.sort(&showing)
                 self.sort(&hiding)
             }
+            var languageCodes = UserDefaults.standard.stringArray(forKey: "libraryFilterLanguageCodes") ?? []
+            languageCodes.removeAll(where: { language.code == $0 })
+            UserDefaults.standard.setValue(languageCodes, forKey: "libraryFilterLanguageCodes")
         }
         
         private func loadData() {
