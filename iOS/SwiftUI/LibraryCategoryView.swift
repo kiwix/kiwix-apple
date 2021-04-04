@@ -15,6 +15,7 @@ struct LibraryCategoryView: View {
     @StateObject private var viewModel: ViewModel
     
     let category: ZimFile.Category
+    var zimFileTapped: (String, String) -> Void = { _, _ in }
     
     init(category: ZimFile.Category) {
         self.category = category
@@ -26,7 +27,7 @@ struct LibraryCategoryView: View {
             ForEach(viewModel.languages) { language in
                 Section(header: viewModel.languages.count > 1 ? Text(language.name) : nil) {
                     ForEach(viewModel.zimFiles[language.code, default: []]) { zimFileViewModel in
-                        Button(action: {}, label: {
+                        Button(action: { zimFileTapped(zimFileViewModel.id, zimFileViewModel.title) }, label: {
                             ZimFileView(zimFileViewModel)
                         })
                     }

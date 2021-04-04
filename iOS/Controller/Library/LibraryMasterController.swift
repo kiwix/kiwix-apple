@@ -359,6 +359,11 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
                 controller.title = categories[indexPath.row].description
                 controller.navigationItem.largeTitleDisplayMode = .never
                 controller.navigationItem.rightBarButtonItem = languageFilterButtonItem
+                controller.rootView.zimFileTapped = { [weak controller] fileID, title in
+                    let detailController = UIHostingController(rootView: ZimFileDetailView(fileID: fileID))
+                    detailController.title = title
+                    controller?.navigationController?.pushViewController(detailController, animated: true)
+                }
                 showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
             } else {
                 let controller = LibraryCategoryController(category: categories[indexPath.row])
