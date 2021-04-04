@@ -75,7 +75,6 @@ struct LibraryLanguageFilterView: View {
         }
     }
     
-    @available(iOS 14.0, *)
     struct LanguageCell: View {
         let language: Language
         var body: some View {
