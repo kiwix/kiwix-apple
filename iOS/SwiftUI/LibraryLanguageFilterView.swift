@@ -110,8 +110,8 @@ struct LibraryLanguageFilterView: View {
                 self.showing.append(language)
                 self.hiding.removeAll(where: { $0.code == language.code })
                 
-                showing = self.sorted(showing)
-                hiding = self.sorted(hiding)
+                self.sort(&showing)
+                self.sort(&hiding)
             }
         }
         
@@ -120,8 +120,8 @@ struct LibraryLanguageFilterView: View {
                 self.showing.removeAll(where: { $0.code == language.code })
                 self.hiding.append(language)
                 
-                showing = self.sorted(showing)
-                hiding = self.sorted(hiding)
+                self.sort(&showing)
+                self.sort(&hiding)
             }
         }
         
@@ -143,8 +143,8 @@ struct LibraryLanguageFilterView: View {
                     }
                 }
                 
-                showing = self.sorted(showing)
-                hiding = self.sorted(hiding)
+                self.sort(&showing)
+                self.sort(&hiding)
                 
                 DispatchQueue.main.async {
                     self.showing = showing
@@ -153,12 +153,12 @@ struct LibraryLanguageFilterView: View {
             } catch {}
         }
         
-        private func sorted(_ languages: [Language]) -> [Language] {
+        private func sort(_ languages: inout [Language]) {
             switch sortingMode {
             case .alphabetically:
-                return languages.sorted { $0 < $1 }
+                languages.sort { $0 < $1 }
             case .byCount:
-                return languages.sorted { $0.count == $1.count ? $0 < $1 : $0.count > $1.count }
+                languages.sort { $0.count == $1.count ? $0 < $1 : $0.count > $1.count }
             }
         }
     }
