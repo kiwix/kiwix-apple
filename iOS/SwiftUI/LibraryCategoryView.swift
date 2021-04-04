@@ -49,37 +49,23 @@ struct LibraryCategoryView: View {
     }
     
     class ViewModel: ObservableObject {
-        @Published var sortingMode: LibraryCategorySortingMode {
-            didSet {
-                UserDefaults.standard.set(sortingMode.rawValue, forKey: "libraryCategorySortingMode")
-                sortingModePublisher.send(sortingMode)
-            }
-        }
         @Published private(set) var languages: [Language] = []
         @Published private(set) var zimFiles = [String: [ZimFileView.ViewModel]]()
         
         let category: ZimFile.Category
         private let queue = DispatchQueue(label: "org.kiwix.libraryUI.category", qos: .userInitiated)
-        private let sortingModePublisher: CurrentValueSubject<LibraryCategorySortingMode, Never>
         private var defaultsSubscriber: AnyCancellable?
         private var collectionSubscriber: AnyCancellable?
         
         init(category: ZimFile.Category) {
             self.category = category
-            
-            let sortingModeRawValue = UserDefaults.standard.string(forKey: "libraryCategorySortingMode") ?? ""
-            let sortingMode = LibraryCategorySortingMode(rawValue: sortingModeRawValue) ?? .alphabetical
-            self.sortingMode = sortingMode
-            self.sortingModePublisher = CurrentValueSubject(sortingMode)
-            
-            defaultsSubscriber = Publishers.CombineLatest(
-                UserDefaults.standard.publisher(for: \.libraryLanguageCodes), sortingModePublisher
-            ).sink(receiveValue: { (languageCodes, sortingMode) in
-                self.loadData(languageCodes: languageCodes, sortingMode: sortingMode)
-            })
+            defaultsSubscriber = UserDefaults.standard.publisher(for: \.libraryLanguageCodes)
+                .sink(receiveValue: { languageCodes in
+                    self.loadData(languageCodes: languageCodes)
+                })
         }
         
-        private func loadData(languageCodes: [String], sortingMode: LibraryCategorySortingMode) {
+        private func loadData(languageCodes: [String]) {
             do {
                 let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
                     NSPredicate(format: "categoryRaw = %@", category.rawValue),
