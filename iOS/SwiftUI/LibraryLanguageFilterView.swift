@@ -6,13 +6,12 @@
 //  Copyright © 2021 Chris Li. All rights reserved.
 //
 
-import Combine
 import SwiftUI
 import RealmSwift
 
 @available(iOS 14.0, *)
 struct LibraryLanguageFilterView: View {
-    @ObservedObject private var viewModel = ViewModel()
+    @StateObject private var viewModel = ViewModel()
     var doneButtonTapped: () -> Void = {}
     
     var body: some View {
