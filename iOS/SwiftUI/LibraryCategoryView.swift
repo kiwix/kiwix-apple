@@ -66,36 +66,36 @@ struct LibraryCategoryView: View {
         }
         
         private func loadData(languageCodes: [String]) {
-            do {
-                let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            let database = try? Realm()
+            collectionSubscriber = database?.objects(ZimFile.self)
+                .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
                     NSPredicate(format: "categoryRaw = %@", category.rawValue),
                     NSPredicate(format: "languageCode IN %@", languageCodes),
+                ]))
+                .sorted(by: [
+                    SortDescriptor(keyPath: "title", ascending: true),
+                    SortDescriptor(keyPath: "size", ascending: false)
                 ])
-                let database = try Realm()
-                collectionSubscriber = database.objects(ZimFile.self)
-                    .filter(predicate)
-                    .sorted(byKeyPath: "title")
-                    .collectionPublisher
-                    .subscribe(on: queue)
-                    .freeze()
-                    .map { zimFiles in
-                        var results = [String: [ZimFileView.ViewModel]]()
-                        for zimFile in zimFiles {
-                            results[zimFile.languageCode, default: []].append(ZimFileView.ViewModel(zimFile))
-                        }
-                        return results
+                .collectionPublisher
+                .subscribe(on: queue)
+                .freeze()
+                .map { zimFiles in
+                    var results = [String: [ZimFileView.ViewModel]]()
+                    for zimFile in zimFiles {
+                        results[zimFile.languageCode, default: []].append(ZimFileView.ViewModel(zimFile))
                     }
-                    .receive(on: DispatchQueue.main)
-                    .catch { _ in Just([String: [ZimFileView.ViewModel]]()) }
-                    .sink(receiveValue: { zimFiles in
-                        withAnimation(self.zimFiles.count > 0 ? .default : nil) {
-                            self.languages = zimFiles.keys
-                                .compactMap { Language(code: $0) }
-                                .sorted(by: { $0.name.caseInsensitiveCompare($1.name) == .orderedAscending })
-                            self.zimFiles = zimFiles
-                        }
-                    })
-            } catch {}
+                    return results
+                }
+                .receive(on: DispatchQueue.main)
+                .catch { _ in Just([String: [ZimFileView.ViewModel]]()) }
+                .sink(receiveValue: { zimFiles in
+                    withAnimation(self.zimFiles.count > 0 ? .default : nil) {
+                        self.languages = zimFiles.keys
+                            .compactMap { Language(code: $0) }
+                            .sorted(by: { $0.name.caseInsensitiveCompare($1.name) == .orderedAscending })
+                        self.zimFiles = zimFiles
+                    }
+                })
         }
     }
 }
