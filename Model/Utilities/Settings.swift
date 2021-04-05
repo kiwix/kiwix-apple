@@ -51,4 +51,9 @@ extension UserDefaults {
     @objc var recentSearchTexts: [String] {
         get { return stringArray(forKey: "recentSearchTexts") ?? [] }
     }
+    
+    @objc var libraryLanguageCodes: [String] {
+        get { stringArray(forKey: "libraryFilterLanguageCodes") ?? [] }
+        set { setValue(newValue, forKey: "libraryFilterLanguageCodes") }
+    }
 }
