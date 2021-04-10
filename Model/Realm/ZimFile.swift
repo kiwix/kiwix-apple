@@ -141,10 +141,10 @@ class ZimFile: Object, ObjectKeyIdentifiable {
         case remote, onDevice, retained, downloadQueued, downloadInProgress, downloadPaused, downloadError
     }
     
-    enum Category: String, Comparable, CustomStringConvertible {
+    enum Category: String, CaseIterable, Comparable, CustomStringConvertible, Identifiable {
+        case wikipedia
         case wikibooks
         case wikinews
-        case wikipedia
         case wikiquote
         case wikisource
         case wikiversity
@@ -160,14 +160,16 @@ class ZimFile: Object, ObjectKeyIdentifiable {
             lhs.sortOrder < rhs.sortOrder
         }
         
+        var id: String { rawValue }
+        
         var description: String {
             switch self {
+            case .wikipedia:
+                return NSLocalizedString("Wikipedia", comment: "Zim File Category")
             case .wikibooks:
                 return NSLocalizedString("Wikibooks", comment: "Zim File Category")
             case .wikinews:
                 return NSLocalizedString("Wikinews", comment: "Zim File Category")
-            case .wikipedia:
-                return NSLocalizedString("Wikipedia", comment: "Zim File Category")
             case .wikiquote:
                 return NSLocalizedString("Wikiquote", comment: "Zim File Category")
             case .wikisource:

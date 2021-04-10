@@ -11,7 +11,7 @@ import UIKit
 
 @available(iOS 14.0, *)
 class LibraryViewController: UISplitViewController {
-    let sidebarController = UIViewController()
+    let sidebarController = UIHostingController(rootView: LibrarySidebarView())
     
     let doneButton = UIBarButtonItem(systemItem: .done)
     

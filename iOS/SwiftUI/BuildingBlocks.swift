@@ -42,7 +42,7 @@ struct Favicon: View {
     private let image: Image
     private let outline = RoundedRectangle(cornerRadius: 4, style: .continuous)
     
-    init (data: Data?) {
+    init(data: Data?) {
         if let data = data, let image = UIImage(data: data) {
             self.image = Image(uiImage: image)
         } else {
@@ -50,10 +50,15 @@ struct Favicon: View {
         }
     }
     
+    init(uiImage: UIImage) {
+        self.image = Image(uiImage: uiImage)
+    }
+    
     var body: some View {
         image
             .renderingMode(.original)
             .resizable()
+            .aspectRatio(contentMode: .fit)
             .frame(width: 24, height: 24)
             .background(Color(.white))
             .clipShape(outline)
