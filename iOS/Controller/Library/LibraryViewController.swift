@@ -30,6 +30,8 @@ class LibraryViewController: UISplitViewController {
         let sidebarNavigationController = UINavigationController(rootViewController: sidebarController)
         sidebarNavigationController.navigationBar.prefersLargeTitles = true
         setViewController(sidebarNavigationController, for: .primary)
+        
+        showCategory(.wikipedia)
     }
     
     required init?(coder: NSCoder) {
@@ -37,8 +39,29 @@ class LibraryViewController: UISplitViewController {
     }
     
     func showCategory(_ category: ZimFile.Category) {
+        let languageFilterButtonItem = UIBarButtonItem(
+            title: "Show Language Filter",
+            image: UIImage(systemName: "globe"),
+            primaryAction: UIAction(handler: { action in
+                let controller = UIHostingController(rootView: LibraryLanguageFilterView())
+                controller.rootView.doneButtonTapped = { [weak controller] in
+                    controller?.dismiss(animated: true)
+                }
+                let navigation = UINavigationController(rootViewController: controller)
+                navigation.modalPresentationStyle = .popover
+                navigation.popoverPresentationController?.barButtonItem = action.sender as? UIBarButtonItem
+                self.present(navigation, animated: true, completion: nil)
+            })
+        )
         let controller = UIHostingController(rootView: LibraryCategoryView(category: category))
         controller.title = category.description
+        controller.navigationItem.largeTitleDisplayMode = .never
+        controller.navigationItem.rightBarButtonItem = languageFilterButtonItem
+        controller.rootView.zimFileTapped = { [weak controller] fileID, title in
+            let detailController = UIHostingController(rootView: ZimFileDetailView(fileID: fileID))
+            detailController.title = title
+            controller?.navigationController?.pushViewController(detailController, animated: true)
+        }
         setViewController(UINavigationController(rootViewController: controller), for: .secondary)
     }
 }
