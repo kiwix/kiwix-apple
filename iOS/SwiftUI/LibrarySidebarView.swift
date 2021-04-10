@@ -10,16 +10,20 @@ import SwiftUI
 
 @available(iOS 14.0, *)
 struct LibrarySidebarView: View {
+    var categorySelected: (ZimFile.Category) -> Void = { _ in }
+    
     var body: some View {
         List {
             Section(header: Text("Categories")) {
                 ForEach(ZimFile.Category.allCases) { category in
-                    HStack {
-                        Favicon(uiImage: category.icon)
-                        Text(category.description)
-                        Spacer()
-                        DisclosureIndicator()
-                    }
+                    Button(action: { categorySelected(category) }, label: {
+                        HStack {
+                            Favicon(uiImage: category.icon)
+                            Text(category.description).foregroundColor(.primary)
+                            Spacer()
+                            DisclosureIndicator()
+                        }
+                    })
                 }
             }
         }.listStyle(GroupedListStyle())

@@ -26,15 +26,19 @@ class LibraryViewController: UISplitViewController {
         sidebarController.navigationItem.title = "Library"
         sidebarController.navigationItem.largeTitleDisplayMode = .always
         sidebarController.navigationItem.leftBarButtonItem = doneButton
+        sidebarController.rootView.categorySelected = { [unowned self] category in self.showCategory(category) }
         let sidebarNavigationController = UINavigationController(rootViewController: sidebarController)
         sidebarNavigationController.navigationBar.prefersLargeTitles = true
         setViewController(sidebarNavigationController, for: .primary)
-        
-        let controller = UIHostingController(rootView: LibraryCategoryView(category: .wikipedia))
-        setViewController(controller, for: .secondary)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func showCategory(_ category: ZimFile.Category) {
+        let controller = UIHostingController(rootView: LibraryCategoryView(category: category))
+        controller.title = category.description
+        setViewController(UINavigationController(rootViewController: controller), for: .secondary)
     }
 }
