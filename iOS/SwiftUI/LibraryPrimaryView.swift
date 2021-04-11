@@ -1,5 +1,5 @@
 //
-//  LibrarySidebarView.swift
+//  LibraryPrimaryView.swift
 //  Kiwix
 //
 //  Created by Chris Li on 4/10/21.
@@ -9,7 +9,7 @@
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct LibrarySidebarView: View {
+struct LibraryPrimaryView: View {
     var categorySelected: (ZimFile.Category) -> Void = { _ in }
     
     var body: some View {

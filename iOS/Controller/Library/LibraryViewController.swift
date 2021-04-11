@@ -11,7 +11,7 @@ import UIKit
 
 @available(iOS 14.0, *)
 class LibraryViewController: UISplitViewController, UISplitViewControllerDelegate {
-    let sidebarController = UIHostingController(rootView: LibrarySidebarView())
+    let primaryController = UIHostingController(rootView: LibraryPrimaryView())
     
     let doneButton = UIBarButtonItem(systemItem: .done)
     
@@ -23,13 +23,13 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
         
         doneButton.primaryAction = UIAction(handler: { [unowned self] _ in self.dismiss(animated: true) })
         
-        sidebarController.navigationItem.title = "Library"
-        sidebarController.navigationItem.largeTitleDisplayMode = .always
-        sidebarController.navigationItem.leftBarButtonItem = doneButton
-        sidebarController.rootView.categorySelected = { [unowned self] category in self.showCategory(category) }
-        let sidebarNavigationController = UINavigationController(rootViewController: sidebarController)
-        sidebarNavigationController.navigationBar.prefersLargeTitles = true
-        viewControllers = [sidebarNavigationController]
+        primaryController.navigationItem.title = "Library"
+        primaryController.navigationItem.largeTitleDisplayMode = .always
+        primaryController.navigationItem.leftBarButtonItem = doneButton
+        primaryController.rootView.categorySelected = { [unowned self] category in self.showCategory(category) }
+        let primaryNavigationController = UINavigationController(rootViewController: primaryController)
+        primaryNavigationController.navigationBar.prefersLargeTitles = true
+        viewControllers = [primaryNavigationController]
 
         showCategory(.wikipedia)
     }
