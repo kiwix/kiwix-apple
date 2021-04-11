@@ -16,10 +16,9 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
     let doneButton = UIBarButtonItem(systemItem: .done)
     
     init() {
-        super.init(style: .doubleColumn)
+        super.init(nibName: nil, bundle: nil)
         delegate = self
-        preferredDisplayMode = .oneBesideSecondary
-        preferredSplitBehavior = .tile
+        preferredDisplayMode = .allVisible
         presentsWithGesture = false
         
         doneButton.primaryAction = UIAction(handler: { [unowned self] _ in self.dismiss(animated: true) })
@@ -30,8 +29,8 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
         sidebarController.rootView.categorySelected = { [unowned self] category in self.showCategory(category) }
         let sidebarNavigationController = UINavigationController(rootViewController: sidebarController)
         sidebarNavigationController.navigationBar.prefersLargeTitles = true
-        setViewController(sidebarNavigationController, for: .primary)
-        
+        viewControllers = [sidebarNavigationController]
+
         showCategory(.wikipedia)
     }
     
@@ -63,24 +62,12 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
             detailController.title = title
             controller?.navigationController?.pushViewController(detailController, animated: true)
         }
-        setViewController(UINavigationController(rootViewController: controller), for: .secondary)
-//        if isCollapsed, let navigationController = viewController(for: .primary) as? UINavigationController {
-//            navigationController.pushViewController(controller, animated: true)
-//        } else {
-//            setViewController(UINavigationController(rootViewController: controller), for: .secondary)
-//        }
-        
+        showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
     }
-//    func splitViewController(_ svc: UISplitViewController, topColumnForCollapsingToProposedTopColumn proposedTopColumn: UISplitViewController.Column) -> UISplitViewController.Column {
-//        .primary
-//    }
-//
-//    func splitViewControllerDidExpand(_ svc: UISplitViewController) {
-//        guard let navigationController = svc.viewController(for: .primary) as? UINavigationController,
-//              navigationController.viewControllers.count > 1 else { return }
-//        let s = UINavigationController()
-//        s.viewControllers = Array(navigationController.viewControllers[1...])
-//        svc.setViewController(s, for: .secondary)
-//        navigationController.viewControllers.removeSubrange(1...)
-//    }
+    
+    func splitViewController(_ splitViewController: UISplitViewController,
+                             collapseSecondary secondaryViewController: UIViewController,
+                             onto primaryViewController: UIViewController) -> Bool {
+        true
+    }
 }
