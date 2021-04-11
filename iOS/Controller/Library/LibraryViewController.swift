@@ -58,6 +58,10 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
     private func showInfo(_ action: UIAction) {
         let controller = UIHostingController(rootView: LibraryInfoView())
         controller.title = "Info"
+        controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            systemItem: .done,
+            primaryAction: UIAction(handler: { [weak controller] _ in controller?.dismiss(animated: true) })
+        )
         let navigation = UINavigationController(rootViewController: controller)
         navigation.modalPresentationStyle = .popover
         navigation.popoverPresentationController?.barButtonItem = action.sender as? UIBarButtonItem
@@ -66,7 +70,6 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
     
     func showCategory(_ category: ZimFile.Category) {
         let languageFilterButtonItem = UIBarButtonItem(
-            title: "Show Language Filter",
             image: UIImage(systemName: "globe"),
             primaryAction: UIAction(handler: { action in
                 let controller = UIHostingController(rootView: LibraryLanguageFilterView())
