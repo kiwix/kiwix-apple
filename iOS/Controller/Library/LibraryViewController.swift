@@ -51,7 +51,6 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
     
     private func importFile() {
         let controller = UIDocumentPickerViewController(documentTypes: ["org.openzim.zim"], in: .open)
-//        controller.delegate = self
         present(controller, animated: true)
     }
     
@@ -73,9 +72,10 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
             image: UIImage(systemName: "globe"),
             primaryAction: UIAction(handler: { action in
                 let controller = UIHostingController(rootView: LibraryLanguageFilterView())
-                controller.rootView.doneButtonTapped = { [weak controller] in
-                    controller?.dismiss(animated: true)
-                }
+                controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
+                    systemItem: .done,
+                    primaryAction: UIAction(handler: { [weak controller] _ in controller?.dismiss(animated: true) })
+                )
                 let navigation = UINavigationController(rootViewController: controller)
                 navigation.modalPresentationStyle = .popover
                 navigation.popoverPresentationController?.barButtonItem = action.sender as? UIBarButtonItem
