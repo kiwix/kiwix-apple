@@ -64,7 +64,7 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
             controller?.navigationController?.pushViewController(detailController, animated: true)
         }
         setViewController(UINavigationController(rootViewController: controller), for: .secondary)
-//        if isCollapsed, let navigationController = viewController(for: .primary) as? UINavigationController {   
+//        if isCollapsed, let navigationController = viewController(for: .primary) as? UINavigationController {
 //            navigationController.pushViewController(controller, animated: true)
 //        } else {
 //            setViewController(UINavigationController(rootViewController: controller), for: .secondary)
