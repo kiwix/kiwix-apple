@@ -10,13 +10,14 @@ import SwiftUI
 import UIKit
 
 @available(iOS 14.0, *)
-class LibraryViewController: UISplitViewController {
+class LibraryViewController: UISplitViewController, UISplitViewControllerDelegate {
     let sidebarController = UIHostingController(rootView: LibrarySidebarView())
     
     let doneButton = UIBarButtonItem(systemItem: .done)
     
     init() {
         super.init(style: .doubleColumn)
+        delegate = self
         preferredDisplayMode = .oneBesideSecondary
         preferredSplitBehavior = .tile
         presentsWithGesture = false
@@ -63,5 +64,23 @@ class LibraryViewController: UISplitViewController {
             controller?.navigationController?.pushViewController(detailController, animated: true)
         }
         setViewController(UINavigationController(rootViewController: controller), for: .secondary)
+//        if isCollapsed, let navigationController = viewController(for: .primary) as? UINavigationController {   
+//            navigationController.pushViewController(controller, animated: true)
+//        } else {
+//            setViewController(UINavigationController(rootViewController: controller), for: .secondary)
+//        }
+        
     }
+//    func splitViewController(_ svc: UISplitViewController, topColumnForCollapsingToProposedTopColumn proposedTopColumn: UISplitViewController.Column) -> UISplitViewController.Column {
+//        .primary
+//    }
+//
+//    func splitViewControllerDidExpand(_ svc: UISplitViewController) {
+//        guard let navigationController = svc.viewController(for: .primary) as? UINavigationController,
+//              navigationController.viewControllers.count > 1 else { return }
+//        let s = UINavigationController()
+//        s.viewControllers = Array(navigationController.viewControllers[1...])
+//        svc.setViewController(s, for: .secondary)
+//        navigationController.viewControllers.removeSubrange(1...)
+//    }
 }
