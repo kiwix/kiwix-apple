@@ -12,9 +12,7 @@ import UIKit
 @available(iOS 14.0, *)
 class LibraryViewController: UISplitViewController, UISplitViewControllerDelegate {
     let primaryController = UIHostingController(rootView: LibraryPrimaryView())
-    
     let doneButton = UIBarButtonItem(systemItem: .done)
-    let addButton = UIBarButtonItem(systemItem: .add)
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -23,12 +21,16 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
         presentsWithGesture = false
         
         doneButton.primaryAction = UIAction(handler: { [unowned self] _ in self.dismiss(animated: true) })
-        addButton.primaryAction = UIAction(handler: { [unowned self] _ in self.add() })
         
         primaryController.navigationItem.title = "Library"
         primaryController.navigationItem.largeTitleDisplayMode = .always
         primaryController.navigationItem.leftBarButtonItem = doneButton
-        primaryController.navigationItem.rightBarButtonItems = [addButton]
+        primaryController.navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(systemItem: .add,
+                            primaryAction: UIAction(handler: { [unowned self] _ in self.importFile() })),
+            UIBarButtonItem(image: UIImage(systemName: "info.circle"),
+                            primaryAction: UIAction(handler: { [unowned self] action in self.showInfo(action) })),
+        ]
         primaryController.rootView.categorySelected = { [unowned self] category in self.showCategory(category) }
         let primaryNavigationController = UINavigationController(rootViewController: primaryController)
         primaryNavigationController.navigationBar.prefersLargeTitles = true
@@ -47,10 +49,19 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
         true
     }
     
-    private func add() {
+    private func importFile() {
         let controller = UIDocumentPickerViewController(documentTypes: ["org.openzim.zim"], in: .open)
 //        controller.delegate = self
         present(controller, animated: true)
+    }
+    
+    private func showInfo(_ action: UIAction) {
+        let controller = UIHostingController(rootView: LibraryInfoView())
+        controller.title = "Info"
+        let navigation = UINavigationController(rootViewController: controller)
+        navigation.modalPresentationStyle = .popover
+        navigation.popoverPresentationController?.barButtonItem = action.sender as? UIBarButtonItem
+        self.present(navigation, animated: true, completion: nil)
     }
     
     func showCategory(_ category: ZimFile.Category) {
