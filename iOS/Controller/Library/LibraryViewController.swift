@@ -14,6 +14,7 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
     let primaryController = UIHostingController(rootView: LibraryPrimaryView())
     
     let doneButton = UIBarButtonItem(systemItem: .done)
+    let addButton = UIBarButtonItem(systemItem: .add)
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -22,10 +23,12 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
         presentsWithGesture = false
         
         doneButton.primaryAction = UIAction(handler: { [unowned self] _ in self.dismiss(animated: true) })
+        addButton.primaryAction = UIAction(handler: { [unowned self] _ in self.add() })
         
         primaryController.navigationItem.title = "Library"
         primaryController.navigationItem.largeTitleDisplayMode = .always
         primaryController.navigationItem.leftBarButtonItem = doneButton
+        primaryController.navigationItem.rightBarButtonItems = [addButton]
         primaryController.rootView.categorySelected = { [unowned self] category in self.showCategory(category) }
         let primaryNavigationController = UINavigationController(rootViewController: primaryController)
         primaryNavigationController.navigationBar.prefersLargeTitles = true
@@ -36,6 +39,18 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func splitViewController(_ splitViewController: UISplitViewController,
+                             collapseSecondary secondaryViewController: UIViewController,
+                             onto primaryViewController: UIViewController) -> Bool {
+        true
+    }
+    
+    private func add() {
+        let controller = UIDocumentPickerViewController(documentTypes: ["org.openzim.zim"], in: .open)
+//        controller.delegate = self
+        present(controller, animated: true)
     }
     
     func showCategory(_ category: ZimFile.Category) {
@@ -63,11 +78,5 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
             controller?.navigationController?.pushViewController(detailController, animated: true)
         }
         showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
-    }
-    
-    func splitViewController(_ splitViewController: UISplitViewController,
-                             collapseSecondary secondaryViewController: UIViewController,
-                             onto primaryViewController: UIViewController) -> Bool {
-        true
     }
 }
