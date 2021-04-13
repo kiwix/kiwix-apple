@@ -94,9 +94,11 @@ extension List {
 @available(iOS 13.0, *)
 struct ZimFileCell: View {
     let zimFile: ZimFile
+    let accessory: Accessory
     
-    init(_ zimFile: ZimFile) {
+    init(_ zimFile: ZimFile, accessory: Accessory = .none) {
         self.zimFile = zimFile
+        self.accessory = accessory
     }
     
     var body: some View {
@@ -109,8 +111,26 @@ struct ZimFileCell: View {
                         .joined(separator: ", ")).lineLimit(1).font(.footnote)
             }.foregroundColor(.primary)
             Spacer()
+            switch accessory {
+            case .none:
+                EmptyView()
+            case .onDevice:
+                if zimFile.state == .onDevice {
+                    if UIDevice.current.userInterfaceIdiom == .phone {
+                        Image(systemName:"iphone").foregroundColor(.secondary)
+                    } else if UIDevice.current.userInterfaceIdiom == .pad {
+                        Image(systemName:"ipad").foregroundColor(.secondary)
+                    }
+                } else {
+                    EmptyView()
+                }
+            }
             DisclosureIndicator()
         }
+    }
+    
+    enum Accessory {
+        case none, onDevice
     }
 }
 
