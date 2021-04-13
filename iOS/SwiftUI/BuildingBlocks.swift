@@ -104,7 +104,9 @@ struct ZimFileCell: View {
             Favicon(data: zimFile.faviconData)
             VStack(alignment: .leading) {
                 Text(zimFile.title).lineLimit(1)
-                Text(zimFile.fileDescription).lineLimit(1).font(.footnote)
+                Text([zimFile.sizeDescription, zimFile.creationDateDescription, zimFile.articleCountShortDescription]
+                        .compactMap({$0})
+                        .joined(separator: ", ")).lineLimit(1).font(.footnote)
             }.foregroundColor(.primary)
             Spacer()
             DisclosureIndicator()

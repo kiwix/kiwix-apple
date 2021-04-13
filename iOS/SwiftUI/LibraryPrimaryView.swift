@@ -41,7 +41,17 @@ struct LibraryPrimaryView: View {
             if download.count > 0 {
                 Section(header: Text("Downloads")) {
                     ForEach(download) { zimFile in
-                        Button(action: {}, label: { ZimFileCell(zimFile) })
+                        Button(action: {}, label: {
+                            HStack {
+                                Favicon(data: zimFile.faviconData)
+                                VStack(alignment: .leading) {
+                                    Text(zimFile.title).lineLimit(1)
+                                    Text(zimFile.downloadedSizeDescription ?? "").lineLimit(1).font(.footnote)
+                                }.foregroundColor(.primary)
+                                Spacer()
+                                DisclosureIndicator()
+                            }
+                        })
                     }
                 }
             }
