@@ -92,6 +92,27 @@ extension List {
 }
 
 @available(iOS 13.0, *)
+struct ZimFileCell: View {
+    let zimFile: ZimFile
+    
+    init(_ zimFile: ZimFile) {
+        self.zimFile = zimFile
+    }
+    
+    var body: some View {
+        HStack {
+            Favicon(data: zimFile.faviconData)
+            VStack(alignment: .leading) {
+                Text(zimFile.title).lineLimit(1)
+                Text(zimFile.fileDescription).lineLimit(1).font(.footnote)
+            }.foregroundColor(.primary)
+            Spacer()
+            DisclosureIndicator()
+        }
+    }
+}
+
+@available(iOS 13.0, *)
 struct ZimFileView: View {
     let viewModel: ZimFileView.ViewModel
     let accessory: Accessory

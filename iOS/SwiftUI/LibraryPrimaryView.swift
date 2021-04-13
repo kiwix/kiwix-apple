@@ -34,14 +34,14 @@ struct LibraryPrimaryView: View {
             if onDevice.count > 0 {
                 Section(header: Text("On Device")) {
                     ForEach(onDevice) { zimFile in
-                        Text(zimFile.title)
+                        Button(action: {}, label: { ZimFileCell(zimFile) })
                     }
                 }
             }
             if download.count > 0 {
                 Section(header: Text("Downloads")) {
                     ForEach(download) { zimFile in
-                        Text(zimFile.title)
+                        Button(action: {}, label: { ZimFileCell(zimFile) })
                     }
                 }
             }

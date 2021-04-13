@@ -66,7 +66,7 @@ struct HomeView: View {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 10) {
                     Section(header: SectionHeader(title: "On Device")) {
                         ForEach(viewModel.onDeviceZimFiles ?? [], id: \.fileID) { zimFile in
-                            ZimFileCell(zimFile) { zimFileTapped?(zimFile.fileID) }
+//                            ZimFileCell(zimFile) { zimFileTapped?(zimFile.fileID) }
                         }
                     }
                 }
