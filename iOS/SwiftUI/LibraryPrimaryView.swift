@@ -8,12 +8,43 @@
 
 import SwiftUI
 
+import RealmSwift
+
 @available(iOS 14.0, *)
 struct LibraryPrimaryView: View {
+    @ObservedResults(
+        ZimFile.self,
+        configuration: Realm.defaultConfig,
+        filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
+        sortDescriptor: SortDescriptor(keyPath: "creationDate", ascending: true)
+    ) var onDevice
+    @ObservedResults(
+        ZimFile.self,
+        configuration: Realm.defaultConfig,
+        filter: NSPredicate(
+            format: "stateRaw IN %@",
+            [ZimFile.State.downloadQueued, .downloadInProgress, .downloadPaused, .downloadError].map({ $0.rawValue })
+        ),
+        sortDescriptor: SortDescriptor(keyPath: "creationDate", ascending: true)
+    ) var download
     var categorySelected: (ZimFile.Category) -> Void = { _ in }
     
     var body: some View {
         List {
+            if onDevice.count > 0 {
+                Section(header: Text("On Device")) {
+                    ForEach(onDevice) { zimFile in
+                        Text(zimFile.title)
+                    }
+                }
+            }
+            if download.count > 0 {
+                Section(header: Text("Downloads")) {
+                    ForEach(download) { zimFile in
+                        Text(zimFile.title)
+                    }
+                }
+            }
             Section(header: Text("Categories")) {
                 ForEach(ZimFile.Category.allCases) { category in
                     Button(action: { categorySelected(category) }, label: {
