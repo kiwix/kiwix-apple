@@ -11,19 +11,22 @@ import UIKit
 
 @available(iOS 14.0, *)
 class LibraryViewController: UISplitViewController, UISplitViewControllerDelegate {
-    let primaryController = UIHostingController(rootView: LibraryPrimaryView())
-    let doneButton = UIBarButtonItem(systemItem: .done)
+    private let doneButton = UIBarButtonItem(systemItem: .done)
+    private let primaryController = UIHostingController(rootView: LibraryPrimaryView())
+    private let searchController = UISearchController(
+        searchResultsController: UIHostingController(rootView: LibrarySearchResultView())
+    )
     
     init() {
         super.init(nibName: nil, bundle: nil)
-        delegate = self
-        preferredDisplayMode = .allVisible
-        presentsWithGesture = false
         
         doneButton.primaryAction = UIAction(handler: { [unowned self] _ in self.dismiss(animated: true) })
         
+        // primaryController
         primaryController.navigationItem.title = "Library"
         primaryController.navigationItem.largeTitleDisplayMode = .always
+        primaryController.navigationItem.searchController = searchController
+        primaryController.navigationItem.hidesSearchBarWhenScrolling = false
         primaryController.navigationItem.leftBarButtonItem = doneButton
         primaryController.navigationItem.rightBarButtonItems = [
             UIBarButtonItem(systemItem: .add,
@@ -36,9 +39,22 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
         }
         primaryController.rootView.categorySelected = { [unowned self] category in self.showCategory(category) }
         
-        let primaryNavigationController = UINavigationController(rootViewController: primaryController)
-        primaryNavigationController.navigationBar.prefersLargeTitles = true
-        viewControllers = [primaryNavigationController]
+        // searchController
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.placeholder = "Search by Name"
+        searchController.showsSearchResultsController = true
+//        searchController.searchResultsUpdater = searchController.searchResultsController as? LibrarySearchController
+        
+        // splitViewController
+        delegate = self
+        preferredDisplayMode = .allVisible
+        presentsWithGesture = false
+        definesPresentationContext = true
+        viewControllers = [{
+            let controller = UINavigationController(rootViewController: primaryController)
+            controller.navigationBar.prefersLargeTitles = true
+            return controller
+        }()]
 
         showCategory(.wikipedia)
     }
