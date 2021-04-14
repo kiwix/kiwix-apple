@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-
 import RealmSwift
 
 /// Information and action about a single zim file in a list view.

@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-
 import RealmSwift
 
 @available(iOS 14.0, *)
