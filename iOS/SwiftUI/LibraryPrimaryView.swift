@@ -27,6 +27,7 @@ struct LibraryPrimaryView: View {
         ),
         sortDescriptor: SortDescriptor(keyPath: "creationDate", ascending: true)
     ) var download
+    var zimFileSelected: (String, String) -> Void = { _, _ in }
     var categorySelected: (ZimFile.Category) -> Void = { _ in }
     
     var body: some View {
@@ -34,14 +35,16 @@ struct LibraryPrimaryView: View {
             if onDevice.count > 0 {
                 Section(header: Text("On Device")) {
                     ForEach(onDevice) { zimFile in
-                        Button(action: {}, label: { ZimFileCell(zimFile) })
+                        Button(action: { zimFileSelected(zimFile.fileID, zimFile.title) }, label: {
+                            ZimFileCell(zimFile)
+                        })
                     }
                 }
             }
             if download.count > 0 {
                 Section(header: Text("Downloads")) {
                     ForEach(download) { zimFile in
-                        Button(action: {}, label: {
+                        Button(action: { zimFileSelected(zimFile.fileID, zimFile.title) }, label: {
                             HStack {
                                 Favicon(data: zimFile.faviconData)
                                 VStack(alignment: .leading) {

@@ -31,6 +31,9 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
             UIBarButtonItem(image: UIImage(systemName: "info.circle"),
                             primaryAction: UIAction(handler: { [unowned self] action in self.showInfo(action) })),
         ]
+        primaryController.rootView.zimFileSelected = {
+            [unowned self] zimFileID, title in self.showZimFile(zimFileID, title)
+        }
         primaryController.rootView.categorySelected = { [unowned self] category in self.showCategory(category) }
         let primaryNavigationController = UINavigationController(rootViewController: primaryController)
         primaryNavigationController.navigationBar.prefersLargeTitles = true
@@ -67,7 +70,14 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
         self.present(navigation, animated: true, completion: nil)
     }
     
-    func showCategory(_ category: ZimFile.Category) {
+    private func showZimFile(_ zimFileID: String, _ title: String) {
+        let controller = UIHostingController(rootView: ZimFileDetailView(fileID: zimFileID))
+        controller.title = title
+        controller.navigationItem.largeTitleDisplayMode = .never
+        showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
+    }
+    
+    private func showCategory(_ category: ZimFile.Category) {
         let languageFilterButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "globe"),
             primaryAction: UIAction(handler: { action in
