@@ -96,10 +96,7 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     
     var creationDateDescription: String? {
         guard let creationDate = creationDate else { return nil }
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MM-dd-yyyy"
-        formatter.dateStyle = .medium
-        return formatter.string(from: creationDate)
+        return ZimFile.dateFormatter.string(from: creationDate)
     }
     
     var sizeDescription: String? {
@@ -112,13 +109,8 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     }
     
     var downloadedPercentDescription: String? {
-        if let totalSize = size.value {
-            return ZimFile.percentFormatter.string(
-                from: NSNumber(value: Double(downloadTotalBytesWritten) / Double(totalSize))
-            )
-        } else {
-            return nil
-        }
+        guard let size = size.value else { return nil }
+        return ZimFile.percentFormatter.string(from: NSNumber(value: Double(downloadTotalBytesWritten) / Double(size)))
     }
     
     // MARK: - Formatters
@@ -129,9 +121,10 @@ class ZimFile: Object, ObjectKeyIdentifiable {
         return formatter
     }()
     
-    static let countFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
+    static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM-dd-yyyy"
+        formatter.dateStyle = .medium
         return formatter
     }()
 
@@ -141,7 +134,7 @@ class ZimFile: Object, ObjectKeyIdentifiable {
         case remote, onDevice, retained, downloadQueued, downloadInProgress, downloadPaused, downloadError
     }
     
-    enum Category: String, CaseIterable, Comparable, CustomStringConvertible, Identifiable {
+    enum Category: String, CaseIterable, CustomStringConvertible, Identifiable {
         case wikipedia
         case wikibooks
         case wikinews
@@ -155,10 +148,6 @@ class ZimFile: Object, ObjectKeyIdentifiable {
         case vikidia
         case stackExchange = "stack_exchange"
         case other
-        
-        static func < (lhs: ZimFile.Category, rhs: ZimFile.Category) -> Bool {
-            lhs.sortOrder < rhs.sortOrder
-        }
         
         var id: String { rawValue }
         
@@ -217,35 +206,6 @@ class ZimFile: Object, ObjectKeyIdentifiable {
                 return #imageLiteral(resourceName: "StackExchange")
             case .other:
                 return #imageLiteral(resourceName: "Book")
-            }
-        }
-        
-        private var sortOrder: Int {
-            switch self {
-            case .wikipedia:
-                return 0
-            case .wikibooks:
-                return 1
-            case .wikinews:
-                return 2
-            case .wikiquote:
-                return 3
-            case .wikisource:
-                return 4
-            case .wikiversity:
-                return 5
-            case .wikivoyage:
-                return 6
-            case .wiktionary:
-                return 7
-            case .vikidia:
-                return 8
-            case .ted:
-                return 9
-            case .stackExchange:
-                return 10
-            case .other:
-                return 11
             }
         }
     }
