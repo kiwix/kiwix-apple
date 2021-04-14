@@ -9,6 +9,7 @@
 import SwiftUI
 import RealmSwift
 
+/// A list of all on device & downloading zim files and all zim file categories.
 @available(iOS 14.0, *)
 struct LibraryPrimaryView: View {
     @ObservedResults(

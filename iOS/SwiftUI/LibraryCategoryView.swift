@@ -10,6 +10,7 @@ import Combine
 import SwiftUI
 import RealmSwift
 
+/// List of zim files under a single category,
 @available(iOS 14.0, *)
 struct LibraryCategoryView: View {
     @StateObject private var viewModel: ViewModel
