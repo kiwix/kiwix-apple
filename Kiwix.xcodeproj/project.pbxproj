@@ -530,11 +530,8 @@
 		976C4AA0260F876C00472A98 /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				977D508C262680F9005345D1 /* Library */,
 				97D19F062546FF3700910CAE /* BuildingBlocks.swift */,
-				97225AA1261A006A00D8CB32 /* LibraryCategoryView.swift */,
-				977D50762623580D005345D1 /* LibraryInfoView.swift */,
-				97225A972618B2A200D8CB32 /* LibraryLanguageFilterView.swift */,
-				977D506C2621EAD1005345D1 /* LibraryPrimaryView.swift */,
 				97A963C3259D38D900496214 /* SettingsView.swift */,
 				979AAF3F257167C60078492F /* ZimFileDetailView.swift */,
 			);
@@ -605,6 +602,17 @@
 				9779A5B12456793600F6F6FF /* ZimFile.swift */,
 			);
 			path = Realm;
+			sourceTree = "<group>";
+		};
+		977D508C262680F9005345D1 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				97225AA1261A006A00D8CB32 /* LibraryCategoryView.swift */,
+				977D50762623580D005345D1 /* LibraryInfoView.swift */,
+				97225A972618B2A200D8CB32 /* LibraryLanguageFilterView.swift */,
+				977D506C2621EAD1005345D1 /* LibraryPrimaryView.swift */,
+			);
+			path = Library;
 			sourceTree = "<group>";
 		};
 		979315821E5127930093D3BA /* macOS */ = {

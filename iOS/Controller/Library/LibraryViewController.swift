@@ -35,6 +35,7 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
             [unowned self] zimFileID, title in self.showZimFile(zimFileID, title)
         }
         primaryController.rootView.categorySelected = { [unowned self] category in self.showCategory(category) }
+        
         let primaryNavigationController = UINavigationController(rootViewController: primaryController)
         primaryNavigationController.navigationBar.prefersLargeTitles = true
         viewControllers = [primaryNavigationController]
