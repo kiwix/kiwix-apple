@@ -10,6 +10,7 @@ import Combine
 import SwiftUI
 import RealmSwift
 
+/// List of zim files under a single category,
 @available(iOS 14.0, *)
 struct LibraryCategoryView: View {
     @StateObject private var viewModel: ViewModel
@@ -26,9 +27,9 @@ struct LibraryCategoryView: View {
         List {
             ForEach(viewModel.languages) { language in
                 Section(header: viewModel.languages.count > 1 ? Text(language.name) : nil) {
-                    ForEach(viewModel.zimFiles[language.code, default: []]) { zimFileViewModel in
-                        Button(action: { zimFileTapped(zimFileViewModel.id, zimFileViewModel.title) }, label: {
-                            ZimFileView(zimFileViewModel)
+                    ForEach(viewModel.zimFiles[language.code, default: []]) { zimFile in
+                        Button(action: { zimFileTapped(zimFile.fileID, zimFile.title) }, label: {
+                            ZimFileCell(zimFile, accessory: .onDevice)
                         })
                     }
                 }
@@ -50,10 +51,10 @@ struct LibraryCategoryView: View {
     
     class ViewModel: ObservableObject {
         @Published private(set) var languages: [Language] = []
-        @Published private(set) var zimFiles = [String: [ZimFileView.ViewModel]]()
+        @Published private(set) var zimFiles = [String: [ZimFile]]()
         
         let category: ZimFile.Category
-        private let queue = DispatchQueue(label: "org.kiwix.libraryUI.category", qos: .userInitiated)
+        private let queue = DispatchQueue(label: "org.kiwix.library.category", qos: .userInitiated)
         private var defaultsSubscriber: AnyCancellable?
         private var collectionSubscriber: AnyCancellable?
         
@@ -80,14 +81,14 @@ struct LibraryCategoryView: View {
                 .subscribe(on: queue)
                 .freeze()
                 .map { zimFiles in
-                    var results = [String: [ZimFileView.ViewModel]]()
+                    var results = [String: [ZimFile]]()
                     for zimFile in zimFiles {
-                        results[zimFile.languageCode, default: []].append(ZimFileView.ViewModel(zimFile))
+                        results[zimFile.languageCode, default: []].append(zimFile)
                     }
                     return results
                 }
                 .receive(on: DispatchQueue.main)
-                .catch { _ in Just([String: [ZimFileView.ViewModel]]()) }
+                .catch { _ in Just([String: [ZimFile]]()) }
                 .sink(receiveValue: { zimFiles in
                     withAnimation(self.zimFiles.count > 0 ? .default : nil) {
                         self.languages = zimFiles.keys

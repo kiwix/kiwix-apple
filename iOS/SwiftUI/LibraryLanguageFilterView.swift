@@ -9,10 +9,10 @@
 import SwiftUI
 import RealmSwift
 
+/// Filter languages displaed in LibraryCategoryView.
 @available(iOS 14.0, *)
 struct LibraryLanguageFilterView: View {
     @StateObject private var viewModel = ViewModel()
-    var doneButtonTapped: () -> Void = {}
     
     var body: some View {
         List {
@@ -37,9 +37,6 @@ struct LibraryLanguageFilterView: View {
         }
         .listStyle(GroupedListStyle())
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button("Done", action: doneButtonTapped)
-            }
             ToolbarItem(placement: ToolbarItemPlacement.principal) {
                 Picker("Language Sorting Mode", selection: $viewModel.sortingMode, content: {
                     Text("A-Z").tag(LibraryLanguageFilterSortingMode.alphabetically)

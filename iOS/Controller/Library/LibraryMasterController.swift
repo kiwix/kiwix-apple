@@ -340,35 +340,8 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
             let controller = LibraryZimFileDetailController(zimFile: zimFile)
             showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
         case .category:
-            if #available(iOS 14.0, *) {
-                let languageFilterButtonItem = UIBarButtonItem(
-                    title: "Show Language Filter",
-                    image: UIImage(systemName: "globe"),
-                    primaryAction: UIAction(handler: { action in
-                        let controller = UIHostingController(rootView: LibraryLanguageFilterView())
-                        controller.rootView.doneButtonTapped = { [weak controller] in
-                            controller?.dismiss(animated: true)
-                        }
-                        let navigation = UINavigationController(rootViewController: controller)
-                        navigation.modalPresentationStyle = .popover
-                        navigation.popoverPresentationController?.barButtonItem = action.sender as? UIBarButtonItem
-                        self.present(navigation, animated: true, completion: nil)
-                    })
-                )
-                let controller = UIHostingController(rootView: LibraryCategoryView(category: categories[indexPath.row]))
-                controller.title = categories[indexPath.row].description
-                controller.navigationItem.largeTitleDisplayMode = .never
-                controller.navigationItem.rightBarButtonItem = languageFilterButtonItem
-                controller.rootView.zimFileTapped = { [weak controller] fileID, title in
-                    let detailController = UIHostingController(rootView: ZimFileDetailView(fileID: fileID))
-                    detailController.title = title
-                    controller?.navigationController?.pushViewController(detailController, animated: true)
-                }
-                showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
-            } else {
-                let controller = LibraryCategoryController(category: categories[indexPath.row])
-                showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
-            }
+            let controller = LibraryCategoryController(category: categories[indexPath.row])
+            showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
         }
     }
 

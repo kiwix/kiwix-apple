@@ -13,13 +13,11 @@ import UIKit
 class RootController_iOS14: UIHostingController<AnyView> {
     private let sceneViewModel = SceneViewModel()
     private let searchViewModel = SearchViewModel()
-    private let zimFilesViewModel = ZimFilesViewModel()
 
     init() {
         let view = RootView()
             .environmentObject(sceneViewModel)
             .environmentObject(searchViewModel)
-            .environmentObject(zimFilesViewModel)
         super.init(rootView: AnyView(view))
         navigationItem.titleView = searchViewModel.searchBar
     }

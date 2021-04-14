@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-
 import RealmSwift
 
 /// Information and action about a single zim file in a list view.
@@ -218,6 +217,12 @@ struct ZimFileDetailView: View {
         let title: String
         let count: Int64?
         
+        static let countFormatter: NumberFormatter = {
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            return formatter
+        }()
+        
         init(title: String, count: Int64?) {
             self.title = title
             self.count = count
@@ -227,7 +232,7 @@ struct ZimFileDetailView: View {
             HStack {
                 Text(title)
                 Spacer()
-                if let count = count, let formatted = ZimFile.countFormatter.string(from: NSNumber(value: count)) {
+                if let count = count, let formatted = CountCell.countFormatter.string(from: NSNumber(value: count)) {
                     Text(formatted).foregroundColor(.secondary)
                 } else {
                     Text("Unknown").foregroundColor(.secondary)

@@ -294,8 +294,8 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     }
     
     @objc func libraryButtonTapped() {
-        if #available(iOS 14.0, *), FeatureFlags.swiftUIBasedLibraryEnabled {
-            
+        if #available(iOS 14.0, *) {
+            present(LibraryViewController(), animated: true)
         } else {
             let libraryController = self.libraryController ?? LibraryController(onDismiss: {
                 let timer = Timer(timeInterval: 60, repeats: false, block: { [weak self] timer in
