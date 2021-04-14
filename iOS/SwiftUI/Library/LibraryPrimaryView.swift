@@ -17,7 +17,7 @@ struct LibraryPrimaryView: View {
         configuration: Realm.defaultConfig,
         filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
         sortDescriptor: SortDescriptor(keyPath: "creationDate", ascending: true)
-    ) var onDevice
+    ) private var onDevice
     @ObservedResults(
         ZimFile.self,
         configuration: Realm.defaultConfig,
@@ -26,7 +26,7 @@ struct LibraryPrimaryView: View {
             [ZimFile.State.downloadQueued, .downloadInProgress, .downloadPaused, .downloadError].map({ $0.rawValue })
         ),
         sortDescriptor: SortDescriptor(keyPath: "creationDate", ascending: true)
-    ) var download
+    ) private var download
     var zimFileSelected: (String, String) -> Void = { _, _ in }
     var categorySelected: (ZimFile.Category) -> Void = { _ in }
     
