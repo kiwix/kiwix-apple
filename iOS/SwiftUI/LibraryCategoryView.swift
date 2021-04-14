@@ -54,7 +54,7 @@ struct LibraryCategoryView: View {
         @Published private(set) var zimFiles = [String: [ZimFile]]()
         
         let category: ZimFile.Category
-        private let queue = DispatchQueue(label: "org.kiwix.libraryUI.category", qos: .userInitiated)
+        private let queue = DispatchQueue(label: "org.kiwix.library.category", qos: .userInitiated)
         private var defaultsSubscriber: AnyCancellable?
         private var collectionSubscriber: AnyCancellable?
         
