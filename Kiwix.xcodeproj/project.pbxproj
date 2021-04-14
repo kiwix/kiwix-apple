@@ -27,7 +27,6 @@
 		972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972E6F631FA11A6100F5C927 /* RoundedButton.swift */; };
 		9735AB35255AEE7B007887B0 /* OutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9735AB34255AEE7B007887B0 /* OutlineView.swift */; };
 		973B2A5D254609FD00093661 /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973B2A5C254609FD00093661 /* Modifiers.swift */; };
-		973B2A642546501200093661 /* ZimFilesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973B2A632546501200093661 /* ZimFilesViewModel.swift */; };
 		973B8012239066D0008CC8CE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973B8011239066D0008CC8CE /* SceneDelegate.swift */; };
 		974FD5CF23405C3700FFDEEC /* WindowControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FD5CE23405C3700FFDEEC /* WindowControllers.swift */; };
 		974FFE5B2352704600F6BF28 /* ZimFileManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */; };
@@ -220,7 +219,6 @@
 		972E6F631FA11A6100F5C927 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		9735AB34255AEE7B007887B0 /* OutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineView.swift; sourceTree = "<group>"; };
 		973B2A5C254609FD00093661 /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
-		973B2A632546501200093661 /* ZimFilesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFilesViewModel.swift; sourceTree = "<group>"; };
 		973B8011239066D0008CC8CE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		9742D7172545E1360046D88C /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		9743C30120878C70006981FB /* SearchResultsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsController.swift; sourceTree = "<group>"; };
@@ -464,7 +462,6 @@
 			children = (
 				9790112F2544D55800FF7855 /* SceneViewModel.swift */,
 				97138C102548EDB6007BA24E /* SearchViewModel.swift */,
-				973B2A632546501200093661 /* ZimFilesViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1098,7 +1095,6 @@
 				97974368257BF37E00D30F03 /* Alerts.swift in Sources */,
 				9779A73D2456796B00F6F6FF /* DirectoryMonitor.swift in Sources */,
 				97D7FB5C253CF97400E8ADDF /* RootView.swift in Sources */,
-				973B2A642546501200093661 /* ZimFilesViewModel.swift in Sources */,
 				97A2AE2225866D9200DEF81D /* ButtonProvider.swift in Sources */,
 				9779A5B22456793600F6F6FF /* LibraryService.swift in Sources */,
 				9779A5C42456793600F6F6FF /* ZimFileService.swift in Sources */,
