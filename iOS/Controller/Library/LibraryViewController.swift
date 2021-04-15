@@ -33,10 +33,6 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
             UIBarButtonItem(image: UIImage(systemName: "info.circle"),
                             primaryAction: UIAction(handler: { [unowned self] action in self.showInfo(action) })),
         ]
-        primaryController.rootView.zimFileSelected = {
-            [unowned self] zimFileID, title in self.showZimFile(zimFileID, title)
-        }
-        primaryController.rootView.categorySelected = { [unowned self] category in self.showCategory(category) }
         
         // searchController
         searchController.searchBar.autocapitalizationType = .none
@@ -53,6 +49,15 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
             controller.navigationBar.prefersLargeTitles = true
             return controller
         }()]
+        
+        // actions
+        searchResultsController.rootView.zimFileSelected = {
+            [unowned self] zimFileID, title in self.showZimFile(zimFileID, title)
+        }
+        primaryController.rootView.zimFileSelected = {
+            [unowned self] zimFileID, title in self.showZimFile(zimFileID, title)
+        }
+        primaryController.rootView.categorySelected = { [unowned self] category in self.showCategory(category) }
 
         showCategory(.wikipedia)
     }
