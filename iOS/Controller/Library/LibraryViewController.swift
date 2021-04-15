@@ -10,20 +10,22 @@ import SwiftUI
 import UIKit
 
 @available(iOS 14.0, *)
-class LibraryViewController: UISplitViewController, UISplitViewControllerDelegate {
-    let primaryController = UIHostingController(rootView: LibraryPrimaryView())
-    let doneButton = UIBarButtonItem(systemItem: .done)
+class LibraryViewController: UISplitViewController, UISplitViewControllerDelegate, UISearchResultsUpdating {
+    private let doneButton = UIBarButtonItem(systemItem: .done)
+    private let primaryController = UIHostingController(rootView: LibraryPrimaryView())
+    private let searchResultsController = UIHostingController(rootView: LibrarySearchResultView())
+    private let searchController: UISearchController
     
     init() {
+        searchController = UISearchController(searchResultsController: searchResultsController)
         super.init(nibName: nil, bundle: nil)
-        delegate = self
-        preferredDisplayMode = .allVisible
-        presentsWithGesture = false
-        
         doneButton.primaryAction = UIAction(handler: { [unowned self] _ in self.dismiss(animated: true) })
         
+        // primaryController
         primaryController.navigationItem.title = "Library"
         primaryController.navigationItem.largeTitleDisplayMode = .always
+        primaryController.navigationItem.searchController = searchController
+        primaryController.navigationItem.hidesSearchBarWhenScrolling = false
         primaryController.navigationItem.leftBarButtonItem = doneButton
         primaryController.navigationItem.rightBarButtonItems = [
             UIBarButtonItem(systemItem: .add,
@@ -31,13 +33,31 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
             UIBarButtonItem(image: UIImage(systemName: "info.circle"),
                             primaryAction: UIAction(handler: { [unowned self] action in self.showInfo(action) })),
         ]
+        
+        // searchController
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.placeholder = "Search by Name"
+        searchController.searchResultsUpdater = self
+        
+        // splitViewController
+        delegate = self
+        preferredDisplayMode = .allVisible
+        presentsWithGesture = false
+        definesPresentationContext = true
+        viewControllers = [{
+            let controller = UINavigationController(rootViewController: primaryController)
+            controller.navigationBar.prefersLargeTitles = true
+            return controller
+        }()]
+        
+        // actions
+        searchResultsController.rootView.zimFileSelected = {
+            [unowned self] zimFileID, title in self.showZimFile(zimFileID, title)
+        }
         primaryController.rootView.zimFileSelected = {
             [unowned self] zimFileID, title in self.showZimFile(zimFileID, title)
         }
         primaryController.rootView.categorySelected = { [unowned self] category in self.showCategory(category) }
-        let primaryNavigationController = UINavigationController(rootViewController: primaryController)
-        primaryNavigationController.navigationBar.prefersLargeTitles = true
-        viewControllers = [primaryNavigationController]
 
         showCategory(.wikipedia)
     }
@@ -50,6 +70,10 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
                              collapseSecondary secondaryViewController: UIViewController,
                              onto primaryViewController: UIViewController) -> Bool {
         true
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        searchResultsController.rootView.viewModel.searchText.send(searchController.searchBar.text ?? "")
     }
     
     private func importFile() {
