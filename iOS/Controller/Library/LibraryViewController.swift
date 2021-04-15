@@ -42,7 +42,6 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
         searchController.searchBar.autocapitalizationType = .none
         searchController.searchBar.placeholder = "Search by Name"
         searchController.searchResultsUpdater = self
-        searchController.showsSearchResultsController = true
         
         // splitViewController
         delegate = self

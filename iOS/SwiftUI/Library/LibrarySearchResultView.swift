@@ -18,9 +18,7 @@ struct LibrarySearchResultView: View {
     
     var body: some View {
         HStack {
-            if viewModel.searchText.value == "" {
-                Text("Find zim file by name")
-            } else if viewModel.results.count > 0 {
+            if viewModel.results.count > 0 {
                 List {
                     ForEach(viewModel.results) { zimFile in
                         Button(action: { zimFileSelected(zimFile.fileID, zimFile.title) }, label: {
@@ -28,7 +26,7 @@ struct LibrarySearchResultView: View {
                         })
                     }
                 }
-            } else {
+            } else if viewModel.searchText.value.count > 0 {
                 Text("No Results")
             }
         }
