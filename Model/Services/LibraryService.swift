@@ -13,6 +13,9 @@ import Defaults
 import RealmSwift
 
 class LibraryService {
+    private let faviconDownloadQueue = DispatchQueue(label: "org.kiwix.library_favicon_download")
+    private var faviconDownloadURLSession: URLSession?
+    
     func isFileInDocumentDirectory(zimFileID: String) -> Bool {
         if let fileName = ZimFileService.shared.getFileURL(zimFileID: zimFileID)?.lastPathComponent,
             let documentDirectoryURL = try? FileManager.default.url(
@@ -70,4 +73,19 @@ class LibraryService {
         )
     }
     #endif
+    
+    func downloadFavicon(zimFileID: String) {
+        let session: URLSession = faviconDownloadURLSession ?? {
+            let queue = OperationQueue()
+            queue.underlyingQueue = faviconDownloadQueue
+            return URLSession(configuration: .default, delegate: FaviconDownloadProcessor(), delegateQueue: queue)
+        }()
+        faviconDownloadURLSession = session
+        
+        
+    }
+}
+
+private class FaviconDownloadProcessor: NSObject, URLSessionDelegate {
+    
 }
