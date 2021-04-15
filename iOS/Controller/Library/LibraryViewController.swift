@@ -10,16 +10,15 @@ import SwiftUI
 import UIKit
 
 @available(iOS 14.0, *)
-class LibraryViewController: UISplitViewController, UISplitViewControllerDelegate {
+class LibraryViewController: UISplitViewController, UISplitViewControllerDelegate, UISearchResultsUpdating {
     private let doneButton = UIBarButtonItem(systemItem: .done)
     private let primaryController = UIHostingController(rootView: LibraryPrimaryView())
-    private let searchController = UISearchController(
-        searchResultsController: UIHostingController(rootView: LibrarySearchResultView())
-    )
+    private let searchResultsController = UIHostingController(rootView: LibrarySearchResultView())
+    private let searchController: UISearchController
     
     init() {
+        searchController = UISearchController(searchResultsController: searchResultsController)
         super.init(nibName: nil, bundle: nil)
-        
         doneButton.primaryAction = UIAction(handler: { [unowned self] _ in self.dismiss(animated: true) })
         
         // primaryController
@@ -42,8 +41,8 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
         // searchController
         searchController.searchBar.autocapitalizationType = .none
         searchController.searchBar.placeholder = "Search by Name"
+        searchController.searchResultsUpdater = self
         searchController.showsSearchResultsController = true
-//        searchController.searchResultsUpdater = searchController.searchResultsController as? LibrarySearchController
         
         // splitViewController
         delegate = self
@@ -67,6 +66,10 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
                              collapseSecondary secondaryViewController: UIViewController,
                              onto primaryViewController: UIViewController) -> Bool {
         true
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        searchResultsController.rootView.viewModel.searchText.send(searchController.searchBar.text ?? "")
     }
     
     private func importFile() {
