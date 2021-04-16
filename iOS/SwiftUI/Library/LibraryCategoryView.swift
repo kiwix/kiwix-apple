@@ -84,11 +84,15 @@ struct LibraryCategoryView: View {
                     var results = [String: [ZimFile]]()
                     for zimFile in zimFiles {
                         results[zimFile.languageCode, default: []].append(zimFile)
+                        guard zimFile.faviconData == nil,
+                              let urlString = zimFile.faviconURL,
+                              let url = URL(string: urlString) else { continue }
+                        LibraryService.shared.downloadFavicon(zimFileID: zimFile.fileID, url: url)
                     }
                     return results
                 }
                 .receive(on: DispatchQueue.main)
-                .catch { _ in Just([String: [ZimFile]]()) }
+                .catch { _ in Just(([String: [ZimFile]]())) }
                 .sink(receiveValue: { zimFiles in
                     withAnimation(self.zimFiles.count > 0 ? .default : nil) {
                         self.languages = zimFiles.keys
