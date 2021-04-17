@@ -6,6 +6,7 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
+import os
 #if canImport(UIKit)
 import UIKit
 #endif
@@ -76,6 +77,10 @@ class LibraryService {
     }
     #endif
     
+    /// Download and save favicon data of a zim file.
+    /// - Parameters:
+    ///   - zimFileID: ID of a zim file
+    ///   - url: URL of the favicon data
     func downloadFavicon(zimFileID: String, url: URL) {
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             defer { self.faviconDownloadSemaphore.signal() }
@@ -83,17 +88,20 @@ class LibraryService {
             
             // cache the retrieved data or log the error if no data is retrieved
             guard let data = data else {
-                // logging
+                os_log("Favicon download failed. File ID: %s. Error",
+                       log: Log.LibraryService,
+                       type: .error, zimFileID,
+                       error?.localizedDescription ?? "Unknown")
                 return
             }
             self.faviconDataCache[zimFileID] = data
             
-            // save batch
+            // save the retrieved data in batches
             if self.faviconDataCache.count >= 5 {
                 self.flushFaviconDataCache()
             } else {
                 let zimFileIDs = Set(self.faviconDataCache.keys)
-                DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + 1) {
+                DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + 0.5) {
                     guard zimFileIDs == Set(self.faviconDataCache.keys) else { return }
                     self.flushFaviconDataCache()
                 }
@@ -103,7 +111,6 @@ class LibraryService {
     }
     
     private func flushFaviconDataCache() {
-        print(self.faviconDataCache)
         do {
             let database = try Realm()
             try database.write {
