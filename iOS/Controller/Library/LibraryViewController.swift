@@ -73,7 +73,11 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
     }
     
     func updateSearchResults(for searchController: UISearchController) {
-        searchResultsController.rootView.viewModel.searchText.send(searchController.searchBar.text ?? "")
+        let searchText = searchController.searchBar.text
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            guard let searchText = searchText, searchText == searchController.searchBar.text else { return }
+            self.searchResultsController.rootView.update(searchText)
+        }
     }
     
     private func importFile() {

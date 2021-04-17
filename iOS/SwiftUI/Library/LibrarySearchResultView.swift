@@ -6,13 +6,12 @@
 //  Copyright © 2021 Chris Li. All rights reserved.
 //
 
-import Combine
 import SwiftUI
 import RealmSwift
 
 @available(iOS 14.0, *)
 struct LibrarySearchResultView: View {
-    @State var searchText: String = ""
+    @State private var searchText: String = ""
     @ObservedResults(
         ZimFile.self,
         configuration: Realm.defaultConfig,
