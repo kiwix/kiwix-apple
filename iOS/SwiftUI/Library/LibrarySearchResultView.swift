@@ -12,53 +12,42 @@ import RealmSwift
 
 @available(iOS 14.0, *)
 struct LibrarySearchResultView: View {
-    @ObservedObject var viewModel = ViewModel()
-    
+    @State var searchText: String = ""
+    @ObservedResults(
+        ZimFile.self,
+        configuration: Realm.defaultConfig,
+        sortDescriptor: SortDescriptor(keyPath: "creationDate", ascending: true)
+    ) private var zimFiles
+
     var zimFileSelected: (String, String) -> Void = { _, _ in }
     
     var body: some View {
         HStack {
-            if viewModel.results.count > 0 {
+            if zimFiles.count > 0 {
                 List {
-                    ForEach(viewModel.results) { zimFile in
+                    ForEach(zimFiles) { zimFile in
                         Button(action: { zimFileSelected(zimFile.fileID, zimFile.title) }, label: {
                             ZimFileCell(zimFile)
                         })
                     }
                 }
-            } else if viewModel.searchText.value.count > 0 {
+            } else if searchText.count > 0 {
                 Text("No Results")
             }
         }
     }
     
-    class ViewModel: ObservableObject {
-        @Published private(set) var results: [ZimFile] = []
-        
-        var searchText = CurrentValueSubject<String, Never>("")
-        private var searchTextSubscriber: AnyCancellable?
-        
-        init() {
-            searchTextSubscriber = searchText
-                .debounce(for: .milliseconds(250), scheduler: RunLoop.main)
-                .compactMap({$0})
-                .sink { [unowned self] searchText in self.update(searchText) }
-        }
-        
-        private func update(_ searchText: String) {
-            DispatchQueue.global(qos: .userInitiated).async {
-                do {
-                    let database = try Realm()
-                    let zimFiles = database.objects(ZimFile.self)
-                        .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
-                            NSPredicate(format: "title CONTAINS[cd] %@", searchText),
-                            NSPredicate(format: "languageCode IN %@", UserDefaults.standard.libraryLanguageCodes),
-                        ])).freeze()
-                    DispatchQueue.main.async {
-                        self.results = Array(zimFiles)
-                    }
-                } catch { self.results = [] }
-            }
+    func update(_ searchText: String) {
+        self.searchText = searchText
+        _zimFiles.filter = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            NSPredicate(format: "title CONTAINS[cd] %@", searchText),
+            NSPredicate(format: "languageCode IN %@", UserDefaults.standard.libraryLanguageCodes),
+        ])
+        zimFiles.forEach { zimFile in
+            guard zimFile.faviconData == nil,
+                  let urlString = zimFile.faviconURL,
+                  let url = URL(string: urlString) else { return }
+            LibraryService.shared.downloadFavicon(zimFileID: zimFile.fileID, url: url)
         }
     }
 }
