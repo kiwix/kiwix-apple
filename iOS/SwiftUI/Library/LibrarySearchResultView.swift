@@ -11,7 +11,6 @@ import RealmSwift
 
 @available(iOS 14.0, *)
 struct LibrarySearchResultView: View {
-    @State private var searchText: String = ""
     @ObservedResults(
         ZimFile.self,
         configuration: Realm.defaultConfig,
@@ -30,14 +29,11 @@ struct LibrarySearchResultView: View {
                         })
                     }
                 }
-            } else if searchText.count > 0 {
-                Text("No Results")
             }
         }
     }
     
     func update(_ searchText: String) {
-        self.searchText = searchText
         _zimFiles.filter = NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "title CONTAINS[cd] %@", searchText),
             NSPredicate(format: "languageCode IN %@", UserDefaults.standard.libraryLanguageCodes),
