@@ -49,9 +49,7 @@ struct LibraryPrimaryView: View {
                                 Favicon(data: zimFile.faviconData)
                                 VStack(alignment: .leading) {
                                     Text(zimFile.title).lineLimit(1)
-                                    Text([
-                                        zimFile.downloadedSizeDescription, zimFile.downloadedPercentDescription
-                                    ].compactMap({ $0 }).joined(separator: " - ")).lineLimit(1).font(.footnote)
+                                    ZimFileDownloadDetailView(zimFile).lineLimit(1).font(.footnote)
                                 }.foregroundColor(.primary)
                                 Spacer()
                                 DisclosureIndicator()

@@ -133,3 +133,44 @@ struct ZimFileCell: View {
         case none, onDevice
     }
 }
+
+@available(iOS 13.0, *)
+struct ZimFileDownloadDetailView: View {
+    let zimFile: ZimFile
+    
+    init(_ zimFile: ZimFile) {
+        self.zimFile = zimFile
+    }
+    
+    var progress: String {
+        [zimFile.downloadedSizeDescription, zimFile.downloadedPercentDescription]
+            .compactMap({ $0 })
+            .joined(separator: " - ")
+    }
+    
+    var body: some View {
+        switch zimFile.state {
+        case .downloadQueued:
+            Text("Queued")
+        case .downloadInProgress:
+            HStack {
+                Text("Downloading...")
+                Spacer()
+                Text(progress).foregroundColor(.secondary)
+            }
+        case .downloadPaused:
+            HStack {
+                Text("Pause")
+                Spacer()
+                Text(progress).foregroundColor(.secondary)
+            }
+        case .downloadError:
+            Text("Error")
+            if let errorDescription = zimFile.downloadErrorDescription {
+                Text(errorDescription)
+            }
+        default:
+            EmptyView()
+        }
+    }
+}

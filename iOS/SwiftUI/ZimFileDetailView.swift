@@ -122,33 +122,22 @@ struct ZimFileDetailView: View {
                 UIApplication.shared.open(url)
             }
         case .downloadQueued:
-            Text("Queued")
+            ZimFileDownloadDetailView(zimFile)
             cancelButton
         case .downloadInProgress:
-            Cell(title: "Downloading...",
-                 detail: [
-                    zimFile.downloadedSizeDescription, zimFile.downloadedPercentDescription
-                 ].compactMap({ $0 }).joined(separator: " - ")
-            )
+            ZimFileDownloadDetailView(zimFile)
             ActionCell(title: "Pause") {
                 DownloadService.shared.pause(zimFileID: zimFile.fileID)
             }
             cancelButton
         case .downloadPaused:
-            Cell(title: "Paused",
-                 detail: [
-                    zimFile.downloadedSizeDescription, zimFile.downloadedPercentDescription
-                 ].compactMap({ $0 }).joined(separator: " - ")
-            )
+            ZimFileDownloadDetailView(zimFile)
             ActionCell(title: "Resume") {
                 DownloadService.shared.resume(zimFileID: zimFile.fileID)
             }
             cancelButton
         case .downloadError:
-            Text("Error")
-            if let errorDescription = zimFile.downloadErrorDescription {
-                Text(errorDescription)
-            }
+            ZimFileDownloadDetailView(zimFile)
             cancelButton
         default:
             cancelButton

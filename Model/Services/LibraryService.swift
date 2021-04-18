@@ -6,6 +6,7 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
+import os
 #if canImport(UIKit)
 import UIKit
 #endif
@@ -13,6 +14,11 @@ import Defaults
 import RealmSwift
 
 class LibraryService {
+    static let shared = LibraryService()
+    
+    private var faviconDataCache = [String: Data]()
+    private let faviconDownloadSemaphore = DispatchSemaphore(value: 1)
+    
     func isFileInDocumentDirectory(zimFileID: String) -> Bool {
         if let fileName = ZimFileService.shared.getFileURL(zimFileID: zimFileID)?.lastPathComponent,
             let documentDirectoryURL = try? FileManager.default.url(
@@ -70,4 +76,50 @@ class LibraryService {
         )
     }
     #endif
+    
+    /// Download and save favicon data of a zim file.
+    /// - Parameters:
+    ///   - zimFileID: ID of a zim file
+    ///   - url: URL of the favicon data
+    func downloadFavicon(zimFileID: String, url: URL) {
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            defer { self.faviconDownloadSemaphore.signal() }
+            self.faviconDownloadSemaphore.wait()
+            
+            // cache the retrieved data or log the error if no data is retrieved
+            guard let data = data else {
+                os_log("Favicon download failed. File ID: %s. Error",
+                       log: Log.LibraryService,
+                       type: .error, zimFileID,
+                       error?.localizedDescription ?? "Unknown")
+                return
+            }
+            self.faviconDataCache[zimFileID] = data
+            
+            // save the retrieved data in batches
+            if self.faviconDataCache.count >= 5 {
+                self.flushFaviconDataCache()
+            } else {
+                let zimFileIDs = Set(self.faviconDataCache.keys)
+                DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + 0.5) {
+                    guard zimFileIDs == Set(self.faviconDataCache.keys) else { return }
+                    self.flushFaviconDataCache()
+                }
+            }
+        }
+        task.resume()
+    }
+    
+    private func flushFaviconDataCache() {
+        do {
+            let database = try Realm()
+            try database.write {
+                for (zimFileID, faviconData) in faviconDataCache {
+                    let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID)
+                    zimFile?.faviconData = faviconData
+                    self.faviconDataCache.removeValue(forKey: zimFileID)
+                }
+            }
+        } catch {}
+    }
 }
