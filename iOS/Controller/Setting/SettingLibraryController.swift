@@ -88,7 +88,7 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
     
     @objc func toggleBackupDocumentDirectory() {
         Defaults[.backupDocumentDirectory] = !Defaults[.backupDocumentDirectory]
-        BackupManager.updateExcludedFromBackupForDocumentDirectoryContents(isExcluded: !Defaults[.backupDocumentDirectory])
+        LibraryService.shared.applyBackupSetting(isBackupEnabled: Defaults[.backupDocumentDirectory])
     }
     
     // MARK: - UITableViewDataSource & Delegates

@@ -30,8 +30,8 @@ struct LibraryInfoView: View {
                 Toggle(
                     isOn: $backupDocumentDirectory,
                     label: { Text("Include files in backup") }
-                ).onChange(of: backupDocumentDirectory, perform: { value in
-                    
+                ).onChange(of: backupDocumentDirectory, perform: { enabled in
+                    LibraryService.shared.applyBackupSetting(isBackupEnabled: enabled)
                 })
             }
         }.listStyle(InsetGroupedListStyle())
