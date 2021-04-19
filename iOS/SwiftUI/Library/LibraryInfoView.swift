@@ -11,7 +11,7 @@ import SwiftUI
 @available(iOS 14.0, *)
 struct LibraryInfoView: View {
     @AppStorage("libraryAutoRefresh") private var autoRefresh: Bool = true
-    @AppStorage("backupDocumentDirectory") private var backupDocumentDirectory: Bool = false
+    @AppStorage("backupDocumentDirectory") private var backupEnabled: Bool = false
     
     var body: some View {
         List {
@@ -28,9 +28,9 @@ struct LibraryInfoView: View {
             }
             Section(header: Text("Backup"), footer: Text("Does not apply to files that were opened in place.")) {
                 Toggle(
-                    isOn: $backupDocumentDirectory,
+                    isOn: $backupEnabled,
                     label: { Text("Include files in backup") }
-                ).onChange(of: backupDocumentDirectory, perform: { enabled in
+                ).onChange(of: backupEnabled, perform: { enabled in
                     LibraryService.shared.applyBackupSetting(isBackupEnabled: enabled)
                 })
             }
