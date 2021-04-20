@@ -24,7 +24,11 @@ struct LibraryInfoView: View {
                 HStack {
                     Text("Last update")
                 }
-                Toggle(isOn: $autoRefresh, label: { Text("Auto update") })
+                Toggle(
+                    isOn: $autoRefresh, label: { Text("Auto update") }
+                ).onChange(of: autoRefresh, perform: { value in
+                    LibraryService.shared.applyAutoUpdateSetting()
+                })
             }
             Section(header: Text("Backup"), footer: Text("Does not apply to files that were opened in place.")) {
                 Toggle(
