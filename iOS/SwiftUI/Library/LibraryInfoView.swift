@@ -13,12 +13,14 @@ struct LibraryInfoView: View {
     @AppStorage("libraryAutoRefresh") private var autoRefresh: Bool = true
     @AppStorage("backupDocumentDirectory") private var backupEnabled: Bool = false
     
+    @ObservedObject private var viewModel = ViewModel()
+    
     var body: some View {
         List {
             Section(header: Text("Catalog")) {
-                ActionCell(title: "Update Now") {
-                    
-                }
+                ActionCell(title: viewModel.isRefreshing ? "Refreshing..." : "Update Now") {
+                    viewModel.refresh()
+                }.disabled(viewModel.isRefreshing)
             }
             Section(footer: Text(
                 """
@@ -54,5 +56,41 @@ struct LibraryInfoView: View {
                 })
             }
         }.listStyle(InsetGroupedListStyle())
+    }
+    
+    private class ViewModel: ObservableObject {
+        @Published var isRefreshing = false
+        
+        private var operationObserver: NSKeyValueObservation?
+        
+        init() {
+            guard let operation = LibraryOperationQueue.shared.currentOPDSRefreshOperation else { return }
+            isRefreshing = !operation.isFinished
+            configureObserver(operation)
+        }
+        
+        func refresh() {
+            let operation: OPDSRefreshOperation = {
+                if let operation = LibraryOperationQueue.shared.currentOPDSRefreshOperation {
+                    return operation
+                } else {
+                    let operation = OPDSRefreshOperation(updateExisting: true)
+                    LibraryOperationQueue.shared.addOperation(operation)
+                    return operation
+                }
+            }()
+            isRefreshing = true
+            configureObserver(operation)
+        }
+        
+        private func configureObserver(_ operation: OPDSRefreshOperation) {
+            operationObserver = operation.observe(
+                \.isFinished, options: .new
+            ) { [weak self] (operation, _) in
+                DispatchQueue.main.sync {
+                    self?.isRefreshing = !operation.isFinished
+                }
+            }
+        }
     }
 }
