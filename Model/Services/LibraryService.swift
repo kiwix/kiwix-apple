@@ -60,22 +60,36 @@ class LibraryService {
 
     #if canImport(UIKit)
     static let autoUpdateInterval: TimeInterval = 3600.0 * 6
-    var isAutoUpdateEnabled: Bool {
-        get {
-            return Defaults[.libraryAutoRefresh]
-        }
-        set(newValue) {
-            Defaults[.libraryAutoRefresh] = newValue
-            applyAutoUpdateSetting()
-        }
-    }
-
     func applyAutoUpdateSetting() {
         UIApplication.shared.setMinimumBackgroundFetchInterval(
-            isAutoUpdateEnabled ? LibraryService.autoUpdateInterval : UIApplication.backgroundFetchIntervalNever
+            Defaults[.libraryAutoRefresh] ? LibraryService.autoUpdateInterval : UIApplication.backgroundFetchIntervalNever
         )
     }
     #endif
+    
+    /// Apply zim file back up setting.
+    /// Note: will only update zim files in app's docuemnt directory.
+    /// - Parameter isBackupEnabled: if backup is enabled
+    func applyBackupSetting(isBackupEnabled: Bool) {
+        do {
+            let directory = try FileManager.default.url(
+                for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false
+            )
+            let urls = try FileManager.default.contentsOfDirectory(
+                at: directory,
+                includingPropertiesForKeys: [.isExcludedFromBackupKey],
+                options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants]
+            ).filter({ $0.pathExtension.contains("zim") })
+            try urls.forEach { url in
+                var resourceValues = URLResourceValues()
+                resourceValues.isExcludedFromBackup = !isBackupEnabled
+                var url = url
+                try url.setResourceValues(resourceValues)
+            }
+        } catch {}
+    }
+    
+    // MARK: - Favicon Download
     
     /// Download and save favicon data of a zim file.
     /// - Parameters:

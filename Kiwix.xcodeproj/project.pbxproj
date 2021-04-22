@@ -75,7 +75,6 @@
 		9779A7E424567A5A00F6F6FF /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
 		9779A7E524567A5A00F6F6FF /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
 		9779A7EA24567AA600F6F6FF /* SettingLibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E824567AA600F6F6FF /* SettingLibraryController.swift */; };
-		9779A7ED24567ADD00F6F6FF /* BackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7EC24567ADD00F6F6FF /* BackupManager.swift */; };
 		9779E7A22379230F0058DC98 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779E7A12379230F0058DC98 /* SearchController.swift */; };
 		977D50632621E47D005345D1 /* LibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D50622621E47D005345D1 /* LibraryViewController.swift */; };
 		977D506D2621EAD1005345D1 /* LibraryPrimaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D506C2621EAD1005345D1 /* LibraryPrimaryView.swift */; };
@@ -264,7 +263,6 @@
 		9779A73A2456796B00F6F6FF /* WebKitHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebKitHandler.swift; sourceTree = "<group>"; };
 		9779A7E224567A5A00F6F6FF /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		9779A7E824567AA600F6F6FF /* SettingLibraryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingLibraryController.swift; sourceTree = "<group>"; };
-		9779A7EC24567ADD00F6F6FF /* BackupManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackupManager.swift; sourceTree = "<group>"; };
 		9779E7A12379230F0058DC98 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		977D50622621E47D005345D1 /* LibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewController.swift; sourceTree = "<group>"; };
 		977D506C2621EAD1005345D1 /* LibraryPrimaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryPrimaryView.swift; sourceTree = "<group>"; };
@@ -397,7 +395,6 @@
 		9706555A2473682C00A51319 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				9779A7EC24567ADD00F6F6FF /* BackupManager.swift */,
 				9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */,
 				9779A5D42456796A00F6F6FF /* DownloadProgress.swift */,
 				97B399952468CF3B00BC6F5B /* Enums.swift */,
@@ -1139,7 +1136,6 @@
 				9779A5B42456793600F6F6FF /* BookmarkService.swift in Sources */,
 				97AC121320878F8B004779D1 /* SearchResultsController.swift in Sources */,
 				97BB5D0E2479D24700786D1C /* SettingSideBarController.swift in Sources */,
-				9779A7ED24567ADD00F6F6FF /* BackupManager.swift in Sources */,
 				97B5D3E92596398400D12FEE /* SidebarController.swift in Sources */,
 				9779A5CA2456793600F6F6FF /* Bookmark.swift in Sources */,
 				9779A7452456796B00F6F6FF /* DownloadService.swift in Sources */,

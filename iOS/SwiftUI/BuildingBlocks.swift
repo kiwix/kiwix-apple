@@ -9,6 +9,31 @@
 import SwiftUI
 import WebKit
 
+@available(iOS 13.0, *)
+struct ActionCell: View {
+    let title: String
+    let isDestructive: Bool
+    let action: (() -> Void)
+    
+    init(title: String, isDestructive: Bool = false, action: @escaping (() -> Void) = {}) {
+        self.title = title
+        self.isDestructive = isDestructive
+        self.action = action
+    }
+    
+    var body: some View {
+        Button(action: action, label: {
+            HStack {
+                Spacer()
+                Text(title)
+                    .fontWeight(.medium)
+                    .foregroundColor(isDestructive ? .red : nil)
+                Spacer()
+            }
+        })
+    }
+}
+
 @available(iOS 14.0, *)
 extension View {
     @ViewBuilder func hidden(_ isHidden: Bool) -> some View {
