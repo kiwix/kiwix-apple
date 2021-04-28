@@ -33,12 +33,13 @@ struct LibraryInfoView: View {
                     Spacer()
                     if let lastRefreshTime = UserDefaults.standard.value(forKey: "libraryLastRefreshTime") as? Date {
                         if Date().timeIntervalSince(lastRefreshTime) < 120 {
-                            Text("Just Now")
+                            Text("Just Now").foregroundColor(.secondary)
                         } else {
                             Text(RelativeDateTimeFormatter().localizedString(for: lastRefreshTime, relativeTo: Date()))
+                                .foregroundColor(.secondary)
                         }
                     } else {
-                        Text("Never")
+                        Text("Never").foregroundColor(.secondary)
                     }
                 }
                 Toggle(
