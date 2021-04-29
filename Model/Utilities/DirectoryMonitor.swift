@@ -8,7 +8,7 @@ Abstract:
 
 import Foundation
 
-protocol DirectoryMonitorDelegate: class {
+protocol DirectoryMonitorDelegate: AnyObject {
     func directoryContentDidChange(url: URL)
 }
 
