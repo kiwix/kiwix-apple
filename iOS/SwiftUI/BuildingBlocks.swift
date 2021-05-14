@@ -35,6 +35,47 @@ struct ActionCell: View {
 }
 
 @available(iOS 14.0, *)
+struct RoundedRectButton: View {
+    let title: String
+    let iconSystemName: String
+    let backgroundColor: Color
+    var isCompact = true
+    var action: (() -> Void)?
+    
+    var body: some View {
+        Button(action: {
+            action?()
+        }) {
+            content
+            .font(.subheadline)
+            .padding(.vertical, 10)
+            .padding(.horizontal, 12)
+            .foregroundColor(.white)
+            .background(RoundedRectangle(cornerRadius: 10, style: .continuous).fill(backgroundColor))
+        }
+    }
+    
+    var content: some View {
+        if isCompact {
+            return AnyView(label)
+        } else {
+            return AnyView(HStack {
+                Spacer()
+                label
+                Spacer()
+            })
+        }
+    }
+    
+    var label: some View {
+        Label(
+            title: { Text(title).fontWeight(.semibold) },
+            icon: { Image(systemName: iconSystemName) }
+        )
+    }
+}
+
+@available(iOS 14.0, *)
 extension View {
     @ViewBuilder func hidden(_ isHidden: Bool) -> some View {
         if isHidden {
@@ -43,14 +84,6 @@ extension View {
             self
         }
     }
-}
-
-@available(iOS 14.0, *)
-struct WebView: UIViewRepresentable {
-    @EnvironmentObject var sceneViewModel: SceneViewModel
-    
-    func makeUIView(context: Context) -> WKWebView { sceneViewModel.webView }
-    func updateUIView(_ uiView: WKWebView, context: Context) { }
 }
 
 @available(iOS 13.0, *)

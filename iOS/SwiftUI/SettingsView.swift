@@ -292,3 +292,9 @@ struct SettingsView_Previews: PreviewProvider {
         FontSizeSettingsView().previewDevice("iPhone 12 Pro")
     }
 }
+
+extension URL: Identifiable {
+    public var id: String {
+        self.absoluteString
+    }
+}
