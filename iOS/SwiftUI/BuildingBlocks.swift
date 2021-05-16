@@ -182,13 +182,19 @@ struct ZimFileCell: View {
                 } else {
                     EmptyView()
                 }
+            case .includedInSearch:
+                if zimFile.includedInSearch {
+                    Image(systemName: "checkmark").foregroundColor(.blue)
+                } else {
+                    EmptyView()
+                }
             }
             DisclosureIndicator()
         }
     }
     
     enum Accessory {
-        case none, onDevice
+        case none, onDevice, includedInSearch
     }
 }
 
