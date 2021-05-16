@@ -65,6 +65,16 @@ private class ViewModel: ObservableObject {
         } catch { }
     }
     
+    func toggleZimFileIncludedInSearch(_ zimFileID: String) {
+        do {
+            let database = try Realm()
+            guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
+            try database.write {
+                zimFile.includedInSearch = !zimFile.includedInSearch
+            }
+        } catch {}
+    }
+    
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<String>) {
         self.searchText = searchText
         inProgress = true
@@ -102,13 +112,6 @@ private struct SearchResultsView: View {
 
 @available(iOS 14.0, *)
 private struct SearchFilterView: View {
-//    @ObservedResults(
-//        ZimFile.self,
-//        configuration: Realm.defaultConfig,
-//        filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
-//        sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
-//    ) private var zimFiles
-    
     @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
@@ -116,9 +119,9 @@ private struct SearchFilterView: View {
             if viewModel.zimFiles.count > 0 {
                 Section(header: Text("Search Filter")) {
                     ForEach(viewModel.zimFiles) { zimFile in
-                        Button(action: { }, label: {
-                            ZimFileCell(zimFile, accessories: [.includedInSearch])
-                        })
+                        ZimFileCell(zimFile, accessories: [.includedInSearch]).onTapGesture {
+                            viewModel.toggleZimFileIncludedInSearch(zimFile.fileID)
+                        }
                     }
                 }
             }
