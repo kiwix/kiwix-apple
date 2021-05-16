@@ -16,7 +16,7 @@ import RealmSwift
 class RootViewController: UIViewController, UISearchControllerDelegate, UISplitViewControllerDelegate {
     let searchController: UISearchController
     private let sidebarController = SidebarController()
-    private let searchResultsController: SearchResultsController
+    private let searchResultsController: UIViewController & UISearchResultsUpdating
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     private let webViewController = WebViewController()
     private var libraryController: LibraryController?
@@ -27,7 +27,13 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     // MARK: - Init & Overrides
     
     init() {
-        self.searchResultsController = SearchResultsController()
+        self.searchResultsController = {
+            if #available(iOS 14.0, *) {
+                return SearchResultsHostingController()
+            } else {
+                return SearchResultsController()
+            }
+        }()
         self.searchController = UISearchController(searchResultsController: self.searchResultsController)
         self.buttonProvider = ButtonProvider(webView: webViewController.webView)
         super.init(nibName: nil, bundle: nil)

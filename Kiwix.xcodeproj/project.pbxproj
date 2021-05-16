@@ -90,6 +90,7 @@
 		978D0AE525A26164003DEE33 /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DE324B00C82008E278D /* libkiwix.xcframework */; };
 		978FA76825851B4D00666E1B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978FA76725851B4D00666E1B /* HomeView.swift */; };
 		9793548B257D86370076E94A /* Queries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9793548A257D86370076E94A /* Queries.swift */; };
+		97952EF3264F557B00FC9237 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97952EF2264F557B00FC9237 /* SearchResultsView.swift */; };
 		9797434A257BF2B000D30F03 /* OutlineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97974349257BF2B000D30F03 /* OutlineItem.swift */; };
 		9797435C257BF33600D30F03 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9797435B257BF33600D30F03 /* WebViewController.swift */; };
 		97974368257BF37E00D30F03 /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97974367257BF37E00D30F03 /* Alerts.swift */; };
@@ -266,6 +267,7 @@
 		979315811E5127930093D3BA /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9793158C1E5127930093D3BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9793548A257D86370076E94A /* Queries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queries.swift; sourceTree = "<group>"; };
+		97952EF2264F557B00FC9237 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
 		97974349257BF2B000D30F03 /* OutlineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineItem.swift; sourceTree = "<group>"; };
 		9797435B257BF33600D30F03 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		97974367257BF37E00D30F03 /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
@@ -509,6 +511,7 @@
 				977D508C262680F9005345D1 /* Library */,
 				97D19F062546FF3700910CAE /* BuildingBlocks.swift */,
 				973B2A5C254609FD00093661 /* Modifiers.swift */,
+				97952EF2264F557B00FC9237 /* SearchResultsView.swift */,
 				97A963C3259D38D900496214 /* SettingsView.swift */,
 				979AAF3F257167C60078492F /* ZimFileDetailView.swift */,
 			);
@@ -1062,6 +1065,7 @@
 				978C58092468FC1100D56AC8 /* SettingSearchController.swift in Sources */,
 				97D19F072546FF3700910CAE /* BuildingBlocks.swift in Sources */,
 				9779A5CC2456793600F6F6FF /* ZimFile.swift in Sources */,
+				97952EF3264F557B00FC9237 /* SearchResultsView.swift in Sources */,
 				9779A5BA2456793600F6F6FF /* OPDSRefreshOperation.swift in Sources */,
 				9779A5BE2456793600F6F6FF /* OPDSStreamParser.mm in Sources */,
 				97802D7025789B1800A21352 /* SidebarViewController.swift in Sources */,
