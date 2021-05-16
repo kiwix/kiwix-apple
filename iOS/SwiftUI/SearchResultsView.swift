@@ -117,7 +117,7 @@ private struct SearchFilterView: View {
                 Section(header: Text("Search Filter")) {
                     ForEach(viewModel.zimFiles) { zimFile in
                         Button(action: { }, label: {
-                            ZimFileCell(zimFile, accessory: .includedInSearch)
+                            ZimFileCell(zimFile, accessories: [.includedInSearch])
                         })
                     }
                 }
