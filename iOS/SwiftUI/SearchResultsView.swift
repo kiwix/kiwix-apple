@@ -75,6 +75,28 @@ private class ViewModel: ObservableObject {
         } catch {}
     }
     
+    func includeAllZimFilesInSearch() {
+        do {
+            let database = try Realm()
+            try database.write {
+                for zimFile in database.objects(ZimFile.self) {
+                    zimFile.includedInSearch = true
+                }
+            }
+        } catch {}
+    }
+    
+    func excludeAllZimFilesInSearch() {
+        do {
+            let database = try Realm()
+            try database.write {
+                for zimFile in database.objects(ZimFile.self) {
+                    zimFile.includedInSearch = false
+                }
+            }
+        } catch {}
+    }
+    
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<String>) {
         self.searchText = searchText
         inProgress = true
@@ -117,7 +139,15 @@ private struct SearchFilterView: View {
     var body: some View {
         List {
             if viewModel.zimFiles.count > 0 {
-                Section(header: Text("Search Filter")) {
+                Section(header: HStack {
+                    Text("Search Filter")
+                    Spacer()
+                    if viewModel.zimFiles.count == viewModel.zimFiles.filter({ $0.includedInSearch }).count {
+                        Button("None", action: { viewModel.excludeAllZimFilesInSearch() }).foregroundColor(.secondary)
+                    } else {
+                        Button("All", action: { viewModel.includeAllZimFilesInSearch() }).foregroundColor(.secondary)
+                    }
+                }) {
                     ForEach(viewModel.zimFiles) { zimFile in
                         ZimFileCell(zimFile, accessories: [.includedInSearch]).onTapGesture {
                             viewModel.toggleZimFileIncludedInSearch(zimFile.fileID)
