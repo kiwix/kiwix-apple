@@ -149,9 +149,11 @@ private struct SearchFilterView: View {
                     }
                 }) {
                     ForEach(viewModel.zimFiles) { zimFile in
-                        ZimFileCell(zimFile, accessories: [.includedInSearch]).onTapGesture {
+                        Button {
                             viewModel.toggleZimFileIncludedInSearch(zimFile.fileID)
-                        }
+                        } label: {
+                            ZimFileCell(zimFile, accessories: [.includedInSearch])
+                        }.buttonStyle(PlainButtonStyle())
                     }
                 }
             }
