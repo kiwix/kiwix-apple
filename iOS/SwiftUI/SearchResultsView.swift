@@ -119,7 +119,13 @@ private struct SearchResultsView: View {
     @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
-        if viewModel.searchText.count == 0 {
+        if viewModel.zimFiles.isEmpty {
+            InfoView(
+                imageSystemName: "magnifyingglass",
+                title: "Nothing to search",
+                help: "Add some zim files to start a search."
+            )
+        } else if viewModel.searchText.isEmpty {
             SearchFilterView()
         } else if viewModel.inProgress {
             Text("In Progress")
@@ -153,10 +159,75 @@ private struct SearchFilterView: View {
                             viewModel.toggleZimFileIncludedInSearch(zimFile.fileID)
                         } label: {
                             ZimFileCell(zimFile, accessories: [.includedInSearch])
-                        }.buttonStyle(PlainButtonStyle())
+                        }
                     }
                 }
             }
         }.listStyle(GroupedListStyle())
+    }
+}
+
+@available(iOS 14.0, *)
+private struct InfoView: View {
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    
+    let imageSystemName: String
+    let title: String
+    let help: String
+    
+    var body: some View {
+        GeometryReader { geometry in
+            VStack {
+                Spacer(minLength: geometry.size.height * 0.3)
+                if verticalSizeClass == .regular {
+                    VStack {
+                        makeImage(geometry)
+                        text
+                    }
+                } else {
+                    HStack {
+                        makeImage(geometry)
+                        text
+                    }
+                }
+                Spacer()
+                Spacer()
+            }.frame(width: geometry.size.width)
+        }
+    }
+    
+    private func makeImage(_ geometry: GeometryProxy) -> some View {
+        ZStack {
+            GeometryReader { geometry in
+                Image(systemName: imageSystemName)
+                    .resizable()
+                    .padding(geometry.size.height * 0.25)
+                    .foregroundColor(.secondary)
+            }
+            Circle().foregroundColor(.secondary).opacity(0.2)
+        }.frame(
+            width: max(60, min(geometry.size.height * 0.2, geometry.size.width * 0.2)),
+            height: max(60, min(geometry.size.height * 0.2, geometry.size.width * 0.2))
+        )
+    }
+    
+    var text: some View {
+        VStack(spacing: 10) {
+            Text(title).font(.title2).fontWeight(.medium)
+            Text(help).font(.subheadline).foregroundColor(.secondary)
+        }.padding()
+    }
+}
+
+@available(iOS 14.0, *)
+struct SwiftUIView_Previews: PreviewProvider {
+    static var previews: some View {
+        InfoView(
+            imageSystemName: "magnifyingglass",
+            title: "Nothing to search",
+            help: "Add some zim files to start a search."
+        )
+        .previewDevice(PreviewDevice(rawValue: "iPhone 12 Pro"))
+        .previewDisplayName("iPhone 12 Pro")
     }
 }
