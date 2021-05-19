@@ -123,7 +123,7 @@ private struct SearchResultsView: View {
             InfoView(
                 imageSystemName: "magnifyingglass",
                 title: "Nothing to search",
-                help: "Add some zim files to start a search."
+                help: "Add some zim files first, then start a search."
             )
         } else if viewModel.searchText.isEmpty {
             SearchFilterView()
