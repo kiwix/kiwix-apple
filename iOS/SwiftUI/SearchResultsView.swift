@@ -225,7 +225,7 @@ struct SwiftUIView_Previews: PreviewProvider {
         InfoView(
             imageSystemName: "magnifyingglass",
             title: "Nothing to search",
-            help: "Add some zim files to start a search."
+            help: "Add some zim files first, then start a search."
         )
         .previewDevice(PreviewDevice(rawValue: "iPhone 12 Pro"))
         .previewDisplayName("iPhone 12 Pro")
