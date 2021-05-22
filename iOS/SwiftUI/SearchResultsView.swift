@@ -177,8 +177,20 @@ private struct SplitView: UIViewControllerRepresentable {
                 title: "No results",
                 help: "Start typing some text to initiate a search."
             )
+        } else if viewModel.inProgress  {
+            ProgressView().progressViewStyle(CircularProgressViewStyle())
+        } else if viewModel.results.isEmpty {
+            InfoView(
+                imageSystemName: "magnifyingglass",
+                title: "No results",
+                help: "Change the search text or include more zim files in search."
+            )
         } else {
-            EmptyView()
+            List {
+                ForEach(viewModel.results) { result in
+                    Text(result.title)
+                }
+            }
         }
    }
 }
@@ -251,8 +263,8 @@ private struct InfoView: View {
             }
             Circle().foregroundColor(.secondary).opacity(0.2)
         }.frame(
-            width: max(60, min(geometry.size.height * 0.2, geometry.size.width * 0.2)),
-            height: max(60, min(geometry.size.height * 0.2, geometry.size.width * 0.2))
+            width: max(60, min(geometry.size.height * 0.2, geometry.size.width * 0.2, 100)),
+            height: max(60, min(geometry.size.height * 0.2, geometry.size.width * 0.2, 100))
         )
     }
     
