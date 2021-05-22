@@ -36,6 +36,8 @@
 		976771791F4378FC007ED0C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 976771741F4378FC007ED0C2 /* Main.storyboard */; };
 		9768C2351F4B7BAC00FD499B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768C2341F4B7BAC00FD499B /* AppDelegate.swift */; };
 		9768C23B1F4B7F6300FD499B /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768C23A1F4B7F6300FD499B /* Preference.swift */; };
+		976A65B32659489F009A97C6 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976A65B22659489F009A97C6 /* SearchResult.swift */; };
+		976A65B42659489F009A97C6 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976A65B22659489F009A97C6 /* SearchResult.swift */; };
 		9779A5B22456793600F6F6FF /* LibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59C2456793500F6F6FF /* LibraryService.swift */; };
 		9779A5B42456793600F6F6FF /* BookmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59D2456793500F6F6FF /* BookmarkService.swift */; };
 		9779A5B52456793600F6F6FF /* BookmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59D2456793500F6F6FF /* BookmarkService.swift */; };
@@ -231,6 +233,7 @@
 		976771741F4378FC007ED0C2 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		9768C2341F4B7BAC00FD499B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9768C23A1F4B7F6300FD499B /* Preference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
+		976A65B22659489F009A97C6 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		9779A59C2456793500F6F6FF /* LibraryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryService.swift; sourceTree = "<group>"; };
 		9779A59D2456793500F6F6FF /* BookmarkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkService.swift; sourceTree = "<group>"; };
 		9779A59F2456793500F6F6FF /* LibraryScanOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryScanOperation.swift; sourceTree = "<group>"; };
@@ -569,6 +572,7 @@
 				9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */,
 				97B3998B2467561900BC6F5B /* SearchResult.h */,
 				97B3998C2467561900BC6F5B /* SearchResult.m */,
+				976A65B22659489F009A97C6 /* SearchResult.swift */,
 				97974349257BF2B000D30F03 /* OutlineItem.swift */,
 			);
 			path = Entities;
@@ -990,6 +994,7 @@
 				9779A5C52456793600F6F6FF /* ZimFileService.swift in Sources */,
 				974FFE6A23533E8D00F6BF28 /* NavigationController.swift in Sources */,
 				9779A7AC2456796B00F6F6FF /* SearchQueue.swift in Sources */,
+				976A65B42659489F009A97C6 /* SearchResult.swift in Sources */,
 				9779A5B52456793600F6F6FF /* BookmarkService.swift in Sources */,
 				97CE4247249323C000B334E9 /* Enums.swift in Sources */,
 				9768C23B1F4B7F6300FD499B /* Preference.swift in Sources */,
@@ -1032,6 +1037,7 @@
 				9779A7AB2456796B00F6F6FF /* SearchQueue.swift in Sources */,
 				9779A5C82456793600F6F6FF /* RealmConfig.swift in Sources */,
 				97B399922468502500BC6F5B /* Platform.swift in Sources */,
+				976A65B32659489F009A97C6 /* SearchResult.swift in Sources */,
 				97B399902467626A00BC6F5B /* SearchOperation.swift in Sources */,
 				97B399962468CF3B00BC6F5B /* Enums.swift in Sources */,
 				97A2180C2024EC3800D1E67B /* SettingFontSizeController.swift in Sources */,

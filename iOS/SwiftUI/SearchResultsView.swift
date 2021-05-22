@@ -126,7 +126,7 @@ private struct SearchResultsView: View {
                 help: "Add some zim files first, then start a search again."
             )
         } else if viewModel.searchText.isEmpty {
-            SearchFilterView()
+            FilterView()
         } else if viewModel.inProgress {
             ProgressView().progressViewStyle(CircularProgressViewStyle())
         } else if viewModel.results.isEmpty {
@@ -136,14 +136,17 @@ private struct SearchResultsView: View {
                 help: "Change the search text or include more zim files in search."
             )
         } else {
-            Text(viewModel.searchText)
+            List {
+                ForEach(viewModel.results) { result in
+                    Text(result.title)
+                }
+            }
         }
     }
 }
 
-
 @available(iOS 14.0, *)
-private struct SearchFilterView: View {
+private struct FilterView: View {
     @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
