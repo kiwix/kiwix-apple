@@ -33,8 +33,18 @@ class SearchResultsHostingController: UIViewController, UISearchResultsUpdating 
         bottomConstraint?.isActive = true
         controller.didMove(toParent: self)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardEvent(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardEvent(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleKeyboardEvent(notification:)),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleKeyboardEvent(notification:)),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
     
     deinit {
@@ -49,12 +59,14 @@ class SearchResultsHostingController: UIViewController, UISearchResultsUpdating 
         guard let userInfo = notification.userInfo,
               let keyboardEndFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
               let duration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue,
-              let animationCurveValue = (userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber)?.uintValue else {return}
+              let animationCurve = (userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber)?.uintValue
+        else {return}
+        
         let height = view.convert(keyboardEndFrame, from: nil).intersection(view.bounds).height
         UIView.animate(
             withDuration: duration,
             delay: 0,
-            options: UIView.AnimationOptions(rawValue: animationCurveValue)) {
+            options: UIView.AnimationOptions(rawValue: animationCurve)) {
             self.bottomConstraint?.constant = height
             self.view.layoutIfNeeded()
         }
