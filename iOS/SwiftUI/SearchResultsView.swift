@@ -175,7 +175,7 @@ private struct SearchResultsView: View {
             InfoView(
                 imageSystemName: "magnifyingglass",
                 title: "No results",
-                help: "Change the search text or include more zim files in search."
+                help: "Update the search text or include more zim files in search."
             )
         } else {
             List {
@@ -209,7 +209,7 @@ private struct SplitView: UIViewControllerRepresentable {
             InfoView(
                 imageSystemName: "magnifyingglass",
                 title: "No results",
-                help: "Start typing some text to initiate a search."
+                help: "Enter some text to start a search."
             )
         } else if viewModel.inProgress  {
             ProgressView().progressViewStyle(CircularProgressViewStyle())
@@ -217,7 +217,7 @@ private struct SplitView: UIViewControllerRepresentable {
             InfoView(
                 imageSystemName: "magnifyingglass",
                 title: "No results",
-                help: "Change the search text or include more zim files in search."
+                help: "Update the search text or include more zim files in search."
             )
         } else {
             List {
