@@ -123,14 +123,18 @@ private struct SearchResultsView: View {
             InfoView(
                 imageSystemName: "magnifyingglass",
                 title: "Nothing to search",
-                help: "Add some zim files first, then start a search."
+                help: "Add some zim files first, then start a search again."
             )
         } else if viewModel.searchText.isEmpty {
             SearchFilterView()
         } else if viewModel.inProgress {
-            Text("In Progress")
+            ProgressView().progressViewStyle(CircularProgressViewStyle())
         } else if viewModel.results.isEmpty {
-            Text("No Results")
+            InfoView(
+                imageSystemName: "magnifyingglass",
+                title: "No results",
+                help: "Change the search text or include more zim files in search."
+            )
         } else {
             Text(viewModel.searchText)
         }
@@ -214,7 +218,7 @@ private struct InfoView: View {
     var text: some View {
         VStack(spacing: 10) {
             Text(title).font(.title2).fontWeight(.medium)
-            Text(help).font(.subheadline).foregroundColor(.secondary)
+            Text(help).font(.subheadline).foregroundColor(.secondary).multilineTextAlignment(.center)
         }.padding()
     }
 }
