@@ -117,6 +117,7 @@ private class ViewModel: ObservableObject {
 @available(iOS 14.0, *)
 private struct SearchResultsView: View {
     @EnvironmentObject var viewModel: ViewModel
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
     var body: some View {
         if viewModel.zimFiles.isEmpty {
@@ -125,6 +126,8 @@ private struct SearchResultsView: View {
                 title: "Nothing to search",
                 help: "Add some zim files first, then start a search again."
             )
+        } else if horizontalSizeClass == .regular {
+            SplitView()
         } else if viewModel.searchText.isEmpty {
             FilterView()
         } else if viewModel.inProgress {
@@ -143,6 +146,41 @@ private struct SearchResultsView: View {
             }
         }
     }
+}
+
+@available(iOS 14.0, *)
+private struct SplitView: UIViewControllerRepresentable {
+    @EnvironmentObject var viewModel: ViewModel
+    
+    func makeUIViewController(context: Context) -> UISplitViewController {
+        let sidebarController = UINavigationController(rootViewController: UIHostingController(rootView: FilterView()))
+        sidebarController.navigationBar.isHidden = true
+        let controller = UISplitViewController(style: .doubleColumn)
+        controller.preferredDisplayMode = .oneBesideSecondary
+        controller.preferredSplitBehavior = .tile
+        controller.presentsWithGesture = false
+        controller.setViewController(sidebarController, for: .primary)
+        return controller
+    }
+    
+    func updateUIViewController(_ uiViewController: UISplitViewController, context: Context) {
+        let controller = UINavigationController(rootViewController: UIHostingController(rootView: content))
+        controller.navigationBar.isHidden = true
+        uiViewController.setViewController(controller, for: .secondary)
+    }
+    
+    @ViewBuilder
+    var content: some View {
+        if viewModel.searchText.isEmpty {
+            InfoView(
+                imageSystemName: "magnifyingglass",
+                title: "No results",
+                help: "Start typing some text to initiate a search."
+            )
+        } else {
+            EmptyView()
+        }
+   }
 }
 
 @available(iOS 14.0, *)
