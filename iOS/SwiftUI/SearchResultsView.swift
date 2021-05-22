@@ -11,20 +11,59 @@ import SwiftUI
 import RealmSwift
 
 @available(iOS 14.0, *)
-class SearchResultsHostingController: UIHostingController<AnyView>, UISearchResultsUpdating {
+class SearchResultsHostingController: UIViewController, UISearchResultsUpdating {
     private var viewModel = ViewModel()
     private var queue = OperationQueue()
+    private var bottomConstraint: NSLayoutConstraint?
     
-    init() {
-        super.init(rootView: AnyView(SearchResultsView().environmentObject(viewModel)))
+    override func viewDidLoad() {
+        super.viewDidLoad()
         queue.maxConcurrentOperationCount = 1
+        
+        let controller = UIHostingController(rootView: SearchResultsView().environmentObject(viewModel))
+        addChild(controller)
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(controller.view)
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: controller.view.topAnchor),
+            view.leftAnchor.constraint(equalTo: controller.view.leftAnchor),
+            view.rightAnchor.constraint(equalTo: controller.view.rightAnchor),
+        ])
+        bottomConstraint = view.bottomAnchor.constraint(equalTo: controller.view.bottomAnchor)
+        bottomConstraint?.isActive = true
+        controller.didMove(toParent: self)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardEvent(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardEvent(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    required dynamic init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
+    
+    // MARK: Keyboard Events
+    // These section of code is necessary because SwiftUI keyboard avoidance does not work as expected on iPadOS 14
+    
+    @objc func handleKeyboardEvent(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardEndFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
+              let duration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue,
+              let animationCurveValue = (userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber)?.uintValue else {return}
+        let height = view.convert(keyboardEndFrame, from: nil).intersection(view.bounds).height
+        UIView.animate(
+            withDuration: duration,
+            delay: 0,
+            options: UIView.AnimationOptions(rawValue: animationCurveValue)) {
+            self.bottomConstraint?.constant = height
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    // MARK: UISearchResultsUpdating
     
     func updateSearchResults(for searchController: UISearchController) {
+        guard searchController.isActive else { return }
         viewModel.searchTextPublisher.send(searchController.searchBar.text ?? "")
     }
 }
@@ -127,7 +166,7 @@ private struct SearchResultsView: View {
                 help: "Add some zim files first, then start a search again."
             )
         } else if horizontalSizeClass == .regular {
-            SplitView()
+            SplitView().edgesIgnoringSafeArea(.all)
         } else if viewModel.searchText.isEmpty {
             FilterView()
         } else if viewModel.inProgress {
@@ -153,20 +192,15 @@ private struct SplitView: UIViewControllerRepresentable {
     @EnvironmentObject var viewModel: ViewModel
     
     func makeUIViewController(context: Context) -> UISplitViewController {
-        let sidebarController = UINavigationController(rootViewController: UIHostingController(rootView: FilterView()))
-        sidebarController.navigationBar.isHidden = true
-        let controller = UISplitViewController(style: .doubleColumn)
-        controller.preferredDisplayMode = .oneBesideSecondary
-        controller.preferredSplitBehavior = .tile
+        let controller = UISplitViewController()
+        controller.preferredDisplayMode = .allVisible
         controller.presentsWithGesture = false
-        controller.setViewController(sidebarController, for: .primary)
+        controller.viewControllers = [UIHostingController(rootView: FilterView())]
         return controller
     }
     
     func updateUIViewController(_ uiViewController: UISplitViewController, context: Context) {
-        let controller = UINavigationController(rootViewController: UIHostingController(rootView: content))
-        controller.navigationBar.isHidden = true
-        uiViewController.setViewController(controller, for: .secondary)
+        uiViewController.showDetailViewController(UIHostingController(rootView: content), sender: nil)
     }
     
     @ViewBuilder

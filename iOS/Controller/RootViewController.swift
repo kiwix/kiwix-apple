@@ -174,6 +174,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         searchController.searchBar.autocapitalizationType = .none
         searchController.searchBar.searchBarStyle = .minimal
         searchController.hidesNavigationBarDuringPresentation = false
+        searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchResultsUpdater = searchResultsController
         if #available(iOS 13.0, *) {
             searchController.automaticallyShowsCancelButton = false
