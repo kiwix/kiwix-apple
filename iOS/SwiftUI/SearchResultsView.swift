@@ -192,15 +192,24 @@ private struct SplitView: UIViewControllerRepresentable {
     @EnvironmentObject var viewModel: ViewModel
     
     func makeUIViewController(context: Context) -> UISplitViewController {
-        let controller = UISplitViewController()
-        controller.preferredDisplayMode = .allVisible
+        let controller = UISplitViewController(style: .doubleColumn)
+        controller.preferredDisplayMode = .oneBesideSecondary
+        controller.preferredSplitBehavior = .tile
         controller.presentsWithGesture = false
-        controller.viewControllers = [UIHostingController(rootView: FilterView())]
+        controller.setViewController({
+            let controller = UINavigationController(rootViewController: UIHostingController(rootView: FilterView()))
+            controller.navigationBar.isHidden = true
+            return controller
+        }(), for: .primary)
         return controller
     }
     
     func updateUIViewController(_ uiViewController: UISplitViewController, context: Context) {
-        uiViewController.showDetailViewController(UIHostingController(rootView: content), sender: nil)
+        uiViewController.setViewController({
+            let controller = UINavigationController(rootViewController: UIHostingController(rootView: content))
+            controller.navigationBar.isHidden = true
+            return controller
+        }(), for: .secondary)
     }
     
     @ViewBuilder
