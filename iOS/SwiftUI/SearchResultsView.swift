@@ -190,11 +190,7 @@ private struct SearchResultsView: View {
                 help: "Update the search text or include more zim files in search."
             )
         } else {
-            List {
-                ForEach(viewModel.results) { result in
-                    Text(result.title)
-                }
-            }
+            ResultsListView()
         }
     }
 }
@@ -241,11 +237,7 @@ private struct SplitView: UIViewControllerRepresentable {
                 help: "Update the search text or include more zim files in search."
             )
         } else {
-            List {
-                ForEach(viewModel.results) { result in
-                    Text(result.title)
-                }
-            }
+            ResultsListView()
         }
    }
 }
@@ -276,6 +268,29 @@ private struct FilterView: View {
                 }
             }
         }.listStyle(GroupedListStyle())
+    }
+}
+
+@available(iOS 14.0, *)
+private struct ResultsListView: View {
+    @EnvironmentObject var viewModel: ViewModel
+    
+    var body: some View {
+        List {
+            ForEach(viewModel.results) { result in
+                Button { UIApplication.shared.open(result.url) } label: {
+                    HStack {
+                        Favicon(data: viewModel.zimFiles.first(where: { $0.fileID == result.zimFileID })?.faviconData)
+                        VStack(alignment: .leading) {
+                            Text(result.title).fontWeight(.medium)
+                            if let snippet = result.snippet?.string {
+                                Text(snippet).font(.caption)
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
