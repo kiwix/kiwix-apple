@@ -263,12 +263,28 @@ private struct FilterView: View {
     var body: some View {
         List {
             if UserDefaults.standard.recentSearchTexts.count > 0 {
-                ScrollView {
-                    HStack {
-                        ForEach(UserDefaults.standard.recentSearchTexts, id: \.hash) { searchText in
-                            Button(searchText, action: {})
-                        }
+                Section(header: HStack {
+                    Text("Recent")
+                    Spacer()
+                    Button("Clear", action: { }).foregroundColor(.secondary)
+                }) {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack {
+                            ForEach(UserDefaults.standard.recentSearchTexts, id: \.hash) { searchText in
+                                Button {
+                                    viewModel.searchTextPublisher.send(searchText)
+                                } label: {
+                                    Text(searchText)
+                                        .font(.callout)
+                                        .padding(.horizontal, 10)
+                                        .padding(.vertical, 2)
+                                        .foregroundColor(.white)
+                                        .background(Color.blue.cornerRadius(CGFloat.infinity))
+                                }
+                            }
+                        }.padding(.horizontal, 16)
                     }
+                    .listRowInsets(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
                 }
             }
             if viewModel.zimFiles.count > 0 {
