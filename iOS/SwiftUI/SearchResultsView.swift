@@ -148,6 +148,18 @@ private class ViewModel: ObservableObject {
         } catch {}
     }
     
+    func updateRecentSearchText() {
+        var searchTexts = UserDefaults.standard.recentSearchTexts
+        if let index = searchTexts.firstIndex(of: searchText) {
+            searchTexts.remove(at: index)
+        }
+        searchTexts.insert(searchText, at: 0)
+        if searchTexts.count > 20 {
+            searchTexts = Array(searchTexts[..<20])
+        }
+        UserDefaults.standard.recentSearchTexts = searchTexts
+    }
+    
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<String>) {
         self.searchText = searchText
         inProgress = true
@@ -250,6 +262,15 @@ private struct FilterView: View {
     
     var body: some View {
         List {
+            if UserDefaults.standard.recentSearchTexts.count > 0 {
+                ScrollView {
+                    HStack {
+                        ForEach(UserDefaults.standard.recentSearchTexts, id: \.hash) { searchText in
+                            Button(searchText, action: {})
+                        }
+                    }
+                }
+            }
             if viewModel.zimFiles.count > 0 {
                 Section(header: HStack {
                     Text("Search Filter")
@@ -280,7 +301,10 @@ private struct ResultsListView: View {
     var body: some View {
         List {
             ForEach(viewModel.results) { result in
-                Button { UIApplication.shared.open(result.url) } label: {
+                Button {
+                    UIApplication.shared.open(result.url)
+                    viewModel.updateRecentSearchText()
+                } label: {
                     HStack {
                         Favicon(data: viewModel.zimFiles.first(where: { $0.fileID == result.zimFileID })?.faviconData)
                         VStack(alignment: .leading) {
