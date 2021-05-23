@@ -237,7 +237,9 @@ private struct SplitView: UIViewControllerRepresentable {
                 help: "Update the search text or include more zim files in search."
             )
         } else {
-            ResultsListView()
+            GeometryReader { geometry in
+                ResultsListView().padding(.horizontal, max(0, (geometry.size.width - 700) / 2))
+            }
         }
    }
 }
@@ -282,7 +284,7 @@ private struct ResultsListView: View {
                     HStack {
                         Favicon(data: viewModel.zimFiles.first(where: { $0.fileID == result.zimFileID })?.faviconData)
                         VStack(alignment: .leading) {
-                            Text(result.title).fontWeight(.medium)
+                            Text(result.title).fontWeight(.medium).lineLimit(1)
                             if let snippet = result.snippet?.string {
                                 Text(snippet).font(.caption)
                             }
