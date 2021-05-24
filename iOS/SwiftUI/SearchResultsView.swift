@@ -18,6 +18,7 @@ class SearchResultsHostingController: UIViewController, UISearchResultsUpdating 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
         queue.maxConcurrentOperationCount = 1
         
         let controller = UIHostingController(rootView: SearchResultsView().environmentObject(viewModel))
