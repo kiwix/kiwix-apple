@@ -273,7 +273,8 @@ private struct FilterView: View {
                         HStack {
                             ForEach(UserDefaults.standard.recentSearchTexts, id: \.hash) { searchText in
                                 Button {
-                                    viewModel.searchTextPublisher.send(searchText)
+                                    guard let url = URL(string: "kiwix://search/\(searchText)") else { return }
+                                    UIApplication.shared.open(url)
                                 } label: {
                                     Text(searchText)
                                         .font(.callout)

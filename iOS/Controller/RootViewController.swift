@@ -82,7 +82,11 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     // MARK: - Public
     
     func openURL(_ url: URL) {
-        if url.isKiwixURL {
+        guard url.isKiwixURL else { return }
+        if url.host == "search" {
+            searchController.isActive = true
+            searchController.searchBar.text = url.pathComponents.last
+        } else {
             webViewController.webView.load(URLRequest(url: url))
             sidebarController.setContentViewController(webViewController)
             if searchController.isActive {
