@@ -28,7 +28,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     
     init() {
         self.searchResultsController = {
-            if #available(iOS 14.0, *) {
+            if #available(iOS 13.0, *) {
                 return SearchResultsHostingController()
             } else {
                 return SearchResultsController()

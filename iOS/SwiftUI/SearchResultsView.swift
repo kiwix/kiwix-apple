@@ -10,7 +10,7 @@ import Combine
 import SwiftUI
 import RealmSwift
 
-@available(iOS 14.0, *)
+@available(iOS 13.0, *)
 class SearchResultsHostingController: UIViewController, UISearchResultsUpdating {
     private var viewModel = ViewModel()
     private var queue = OperationQueue()
@@ -81,7 +81,7 @@ class SearchResultsHostingController: UIViewController, UISearchResultsUpdating 
     }
 }
 
-@available(iOS 14.0, *)
+@available(iOS 13.0, *)
 private class ViewModel: ObservableObject {
     @Published var searchText = ""
     @Published var inProgress = false
@@ -178,7 +178,7 @@ private class ViewModel: ObservableObject {
     }
 }
 
-@available(iOS 14.0, *)
+@available(iOS 13.0, *)
 private struct SearchResultsView: View {
     @EnvironmentObject var viewModel: ViewModel
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -195,7 +195,7 @@ private struct SearchResultsView: View {
         } else if viewModel.searchText.isEmpty {
             FilterView()
         } else if viewModel.inProgress {
-            ProgressView().progressViewStyle(CircularProgressViewStyle())
+            ActivityIndicator()
         } else if viewModel.results.isEmpty {
             InfoView(
                 imageSystemName: "magnifyingglass",
@@ -208,29 +208,21 @@ private struct SearchResultsView: View {
     }
 }
 
-@available(iOS 14.0, *)
+@available(iOS 13.0, *)
 private struct SplitView: UIViewControllerRepresentable {
     @EnvironmentObject var viewModel: ViewModel
     
     func makeUIViewController(context: Context) -> UISplitViewController {
-        let controller = UISplitViewController(style: .doubleColumn)
-        controller.preferredDisplayMode = .oneBesideSecondary
-        controller.preferredSplitBehavior = .tile
+        let controller = UISplitViewController()
+        controller.preferredDisplayMode = .allVisible
         controller.presentsWithGesture = false
-        controller.setViewController({
-            let controller = UINavigationController(rootViewController: UIHostingController(rootView: FilterView()))
-            controller.navigationBar.isHidden = true
-            return controller
-        }(), for: .primary)
+        controller.viewControllers = [UIHostingController(rootView: FilterView()), UIViewController()]
         return controller
     }
     
     func updateUIViewController(_ uiViewController: UISplitViewController, context: Context) {
-        uiViewController.setViewController({
-            let controller = UINavigationController(rootViewController: UIHostingController(rootView: content))
-            controller.navigationBar.isHidden = true
-            return controller
-        }(), for: .secondary)
+        guard uiViewController.viewControllers.count == 2 else { return }
+        uiViewController.viewControllers[1] = UIHostingController(rootView: content)
     }
     
     @ViewBuilder
@@ -242,7 +234,7 @@ private struct SplitView: UIViewControllerRepresentable {
                 help: "Enter some text to start a search."
             )
         } else if viewModel.inProgress  {
-            ProgressView().progressViewStyle(CircularProgressViewStyle())
+            ActivityIndicator()
         } else if viewModel.results.isEmpty {
             InfoView(
                 imageSystemName: "magnifyingglass",
@@ -251,13 +243,15 @@ private struct SplitView: UIViewControllerRepresentable {
             )
         } else {
             GeometryReader { geometry in
-                ResultsListView().padding(.horizontal, max(0, (geometry.size.width - 700) / 2))
+                ResultsListView()
+                    .padding(.horizontal, max(0, (geometry.size.width - 700) / 2))
+                    .environmentObject(self.viewModel) // HACK: this line seems to be required on iPadOS 13 simulator
             }
         }
    }
 }
 
-@available(iOS 14.0, *)
+@available(iOS 13.0, *)
 private struct FilterView: View {
     @EnvironmentObject var viewModel: ViewModel
     
@@ -312,7 +306,7 @@ private struct FilterView: View {
     }
 }
 
-@available(iOS 14.0, *)
+@available(iOS 13.0, *)
 private struct ResultsListView: View {
     @EnvironmentObject var viewModel: ViewModel
     
@@ -338,7 +332,18 @@ private struct ResultsListView: View {
     }
 }
 
-@available(iOS 14.0, *)
+@available(iOS 13.0, *)
+private struct ActivityIndicator: UIViewRepresentable {
+    func makeUIView(context: Context) -> UIActivityIndicatorView {
+        UIActivityIndicatorView(style: .large)
+    }
+
+    func updateUIView(_ uiView: UIActivityIndicatorView, context: Context) {
+        uiView.startAnimating()
+    }
+}
+
+@available(iOS 13.0, *)
 private struct InfoView: View {
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
@@ -384,13 +389,13 @@ private struct InfoView: View {
     
     var text: some View {
         VStack(spacing: 10) {
-            Text(title).font(.title2).fontWeight(.medium)
+            Text(title).font(.title).fontWeight(.medium)
             Text(help).font(.subheadline).foregroundColor(.secondary).multilineTextAlignment(.center)
         }.padding()
     }
 }
 
-@available(iOS 14.0, *)
+@available(iOS 13.0, *)
 struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
         InfoView(
