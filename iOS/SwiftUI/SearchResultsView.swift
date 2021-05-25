@@ -253,6 +253,7 @@ private struct SplitView: UIViewControllerRepresentable {
 
 @available(iOS 13.0, *)
 private struct FilterView: View {
+    @State private var showAlert = false
     @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
@@ -261,7 +262,7 @@ private struct FilterView: View {
                 Section(header: HStack {
                     Text("Recent")
                     Spacer()
-                    Button("Clear", action: { }).foregroundColor(.secondary)
+                    Button("Clear", action: { showAlert = true }).foregroundColor(.secondary)
                 }) {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
@@ -302,7 +303,16 @@ private struct FilterView: View {
                     }
                 }
             }
-        }.listStyle(GroupedListStyle())
+        }
+        .listStyle(GroupedListStyle())
+        .alert(isPresented: $showAlert) {
+            Alert(
+                title: Text("Clear Recent Search"),
+                message: Text("All recent search texts will be cleared. This action is not recoverable."),
+                primaryButton: .destructive( Text("Delete"), action: { UserDefaults.standard.recentSearchTexts = [] }),
+                secondaryButton: .cancel()
+            )
+        }
     }
 }
 
