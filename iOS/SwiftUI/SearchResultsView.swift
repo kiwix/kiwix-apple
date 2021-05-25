@@ -262,7 +262,14 @@ private struct FilterView: View {
                 Section(header: HStack {
                     Text("Recent")
                     Spacer()
-                    Button("Clear", action: { showAlert = true }).foregroundColor(.secondary)
+                    Button("Clear", action: {
+                        if #available(iOS 14.0, *) {
+                            showAlert = true
+                        } else {
+                            // iOS 13 simulator crashes when showing alert here, so I have to skip the alert
+                            UserDefaults.standard.recentSearchTexts = []
+                        }
+                    }).foregroundColor(.secondary)
                 }) {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
