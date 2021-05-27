@@ -1,3 +1,12 @@
+## 1.14.2
+
+- Search result UI tweaks
+- Stability Improvements & crash fixes
+
+Technical:
+
+- Search result UI is rewritten with SwiftUI on iOS 13 & 14
+
 ## 1.14.1
 
 - Hides zim files that requires service worker to function
