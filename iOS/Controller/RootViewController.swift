@@ -19,7 +19,6 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     private let searchResultsController: UIViewController & UISearchResultsUpdating
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     private let webViewController = WebViewController()
-    private var libraryController: LibraryController?
     
     private let onDeviceZimFiles = Queries.onDeviceZimFiles()?.sorted(byKeyPath: "size", ascending: false)
     private let buttonProvider: ButtonProvider
@@ -304,17 +303,10 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     }
     
     @objc func libraryButtonTapped() {
-        if #available(iOS 14.0, *) {
+        if #available(iOS 14.0, *), FeatureFlags.swiftUILibraryEnabled {
             present(LibraryViewController(), animated: true)
         } else {
-            let libraryController = self.libraryController ?? LibraryController(onDismiss: {
-                let timer = Timer(timeInterval: 60, repeats: false, block: { [weak self] timer in
-                    self?.libraryController = nil
-                })
-                RunLoop.main.add(timer, forMode: .default)
-            })
-            self.libraryController = libraryController
-            present(libraryController, animated: true)
+            present(LibraryController(), animated: true)
         }
     }
     
