@@ -174,11 +174,11 @@ private class ViewModel: ObservableObject {
         
         queue.cancelAllOperations()
         let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
-        operation.completionBlock = { [weak self] in
+        operation.completionBlock = { [unowned self] in
             guard !operation.isCancelled else { return }
             DispatchQueue.main.sync {
-                self?.results = operation.results
-                self?.inProgress = false
+                self.results = operation.results
+                self.inProgress = self.queue.operationCount > 0
             }
         }
         queue.addOperation(operation)
