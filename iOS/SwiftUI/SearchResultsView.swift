@@ -86,6 +86,7 @@ private class ViewModel: ObservableObject {
     @Published var searchText = ""
     @Published var inProgress = false
     @Published var results = [SearchResult]()
+    @Published var recentSearchTexts = UserDefaults.standard.recentSearchTexts
     @ObservedResults(
         ZimFile.self,
         configuration: Realm.defaultConfig,
@@ -149,7 +150,7 @@ private class ViewModel: ObservableObject {
         } catch {}
     }
     
-    func updateRecentSearchText() {
+    func updateRecentSearchTexts() {
         var searchTexts = UserDefaults.standard.recentSearchTexts
         if let index = searchTexts.firstIndex(of: searchText) {
             searchTexts.remove(at: index)
@@ -159,6 +160,12 @@ private class ViewModel: ObservableObject {
             searchTexts = Array(searchTexts[..<20])
         }
         UserDefaults.standard.recentSearchTexts = searchTexts
+        recentSearchTexts = searchTexts
+    }
+    
+    func clearRecentSearchTexts() {
+        UserDefaults.standard.recentSearchTexts = []
+        recentSearchTexts = []
     }
     
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<String>) {
@@ -258,7 +265,7 @@ private struct FilterView: View {
     
     var body: some View {
         List {
-            if UserDefaults.standard.recentSearchTexts.count > 0 {
+            if viewModel.recentSearchTexts.count > 0 {
                 Section(header: HStack {
                     Text("Recent")
                     Spacer()
@@ -267,7 +274,7 @@ private struct FilterView: View {
                             showAlert = true
                         } else {
                             // iOS 13 simulator crashes when showing alert here, so I have to skip the alert
-                            UserDefaults.standard.recentSearchTexts = []
+                            viewModel.clearRecentSearchTexts()
                         }
                     }).foregroundColor(.secondary)
                 }) {
@@ -316,7 +323,7 @@ private struct FilterView: View {
             Alert(
                 title: Text("Clear Recent Search"),
                 message: Text("All recent search texts will be cleared. This action is not recoverable."),
-                primaryButton: .destructive( Text("Delete"), action: { UserDefaults.standard.recentSearchTexts = [] }),
+                primaryButton: .destructive( Text("Delete"), action: { viewModel.clearRecentSearchTexts() }),
                 secondaryButton: .cancel()
             )
         }
@@ -332,7 +339,7 @@ private struct ResultsListView: View {
             ForEach(viewModel.results) { result in
                 Button {
                     UIApplication.shared.open(result.url)
-                    viewModel.updateRecentSearchText()
+                    viewModel.updateRecentSearchTexts()
                 } label: {
                     HStack {
                         Favicon(data: viewModel.zimFiles.first(where: { $0.fileID == result.zimFileID })?.faviconData)
