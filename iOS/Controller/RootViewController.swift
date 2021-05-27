@@ -16,10 +16,9 @@ import RealmSwift
 class RootViewController: UIViewController, UISearchControllerDelegate, UISplitViewControllerDelegate {
     let searchController: UISearchController
     private let sidebarController = SidebarController()
-    private let searchResultsController: SearchResultsController
+    private let searchResultsController: UIViewController & UISearchResultsUpdating
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     private let webViewController = WebViewController()
-    private var libraryController: LibraryController?
     
     private let onDeviceZimFiles = Queries.onDeviceZimFiles()?.sorted(byKeyPath: "size", ascending: false)
     private let buttonProvider: ButtonProvider
@@ -27,7 +26,13 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     // MARK: - Init & Overrides
     
     init() {
-        self.searchResultsController = SearchResultsController()
+        self.searchResultsController = {
+            if #available(iOS 13.0, *) {
+                return SearchResultsHostingController()
+            } else {
+                return SearchResultsController()
+            }
+        }()
         self.searchController = UISearchController(searchResultsController: self.searchResultsController)
         self.buttonProvider = ButtonProvider(webView: webViewController.webView)
         super.init(nibName: nil, bundle: nil)
@@ -76,7 +81,11 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     // MARK: - Public
     
     func openURL(_ url: URL) {
-        if url.isKiwixURL {
+        guard url.isKiwixURL else { return }
+        if url.host == "search" {
+            searchController.isActive = true
+            searchController.searchBar.text = url.pathComponents.last
+        } else {
             webViewController.webView.load(URLRequest(url: url))
             sidebarController.setContentViewController(webViewController)
             if searchController.isActive {
@@ -294,17 +303,10 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     }
     
     @objc func libraryButtonTapped() {
-        if #available(iOS 14.0, *) {
+        if #available(iOS 14.0, *), FeatureFlags.swiftUILibraryEnabled {
             present(LibraryViewController(), animated: true)
         } else {
-            let libraryController = self.libraryController ?? LibraryController(onDismiss: {
-                let timer = Timer(timeInterval: 60, repeats: false, block: { [weak self] timer in
-                    self?.libraryController = nil
-                })
-                RunLoop.main.add(timer, forMode: .default)
-            })
-            self.libraryController = libraryController
-            present(libraryController, animated: true)
+            present(LibraryController(), animated: true)
         }
     }
     

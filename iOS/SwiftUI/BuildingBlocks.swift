@@ -152,11 +152,11 @@ extension List {
 @available(iOS 13.0, *)
 struct ZimFileCell: View {
     let zimFile: ZimFile
-    let accessory: Accessory
+    let accessories: [Accessory]
     
-    init(_ zimFile: ZimFile, accessory: Accessory = .none) {
+    init(_ zimFile: ZimFile, accessories: [Accessory] = [.disclosureIndicator]) {
         self.zimFile = zimFile
-        self.accessory = accessory
+        self.accessories = accessories
     }
     
     var body: some View {
@@ -169,26 +169,24 @@ struct ZimFileCell: View {
                         .joined(separator: ", ")).lineLimit(1).font(.footnote)
             }.foregroundColor(.primary)
             Spacer()
-            switch accessory {
-            case .none:
-                EmptyView()
-            case .onDevice:
-                if zimFile.state == .onDevice {
-                    if UIDevice.current.userInterfaceIdiom == .phone {
-                        Image(systemName:"iphone").foregroundColor(.secondary)
-                    } else if UIDevice.current.userInterfaceIdiom == .pad {
-                        Image(systemName:"ipad").foregroundColor(.secondary)
-                    }
-                } else {
-                    EmptyView()
+            if accessories.contains(.onDevice), zimFile.state == .onDevice {
+                if UIDevice.current.userInterfaceIdiom == .phone {
+                    Image(systemName:"iphone").foregroundColor(.secondary)
+                } else if UIDevice.current.userInterfaceIdiom == .pad {
+                    Image(systemName:"ipad").foregroundColor(.secondary)
                 }
             }
-            DisclosureIndicator()
+            if accessories.contains(.includedInSearch), zimFile.includedInSearch {
+                Image(systemName: "checkmark").foregroundColor(.blue)
+            }
+            if accessories.contains(.disclosureIndicator) {
+                DisclosureIndicator()
+            }
         }
     }
     
     enum Accessory {
-        case none, onDevice
+        case onDevice, includedInSearch, disclosureIndicator
     }
 }
 

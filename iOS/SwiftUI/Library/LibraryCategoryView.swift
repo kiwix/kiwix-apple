@@ -29,7 +29,7 @@ struct LibraryCategoryView: View {
                 Section(header: viewModel.languages.count > 1 ? Text(language.name) : nil) {
                     ForEach(viewModel.zimFiles[language.code, default: []]) { zimFile in
                         Button(action: { zimFileTapped(zimFile.fileID, zimFile.title) }, label: {
-                            ZimFileCell(zimFile, accessory: .onDevice)
+                            ZimFileCell(zimFile, accessories: [.onDevice, .disclosureIndicator])
                         })
                     }
                 }

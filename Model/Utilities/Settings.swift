@@ -49,7 +49,8 @@ extension Defaults {
 
 extension UserDefaults {
     @objc var recentSearchTexts: [String] {
-        get { return stringArray(forKey: "recentSearchTexts") ?? [] }
+        get { stringArray(forKey: "recentSearchTexts") ?? [] }
+        set { setValue(newValue, forKey: "recentSearchTexts") }
     }
     
     @objc var libraryLanguageCodes: [String] {

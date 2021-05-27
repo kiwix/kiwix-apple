@@ -36,6 +36,8 @@
 		976771791F4378FC007ED0C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 976771741F4378FC007ED0C2 /* Main.storyboard */; };
 		9768C2351F4B7BAC00FD499B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768C2341F4B7BAC00FD499B /* AppDelegate.swift */; };
 		9768C23B1F4B7F6300FD499B /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768C23A1F4B7F6300FD499B /* Preference.swift */; };
+		976A65B32659489F009A97C6 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976A65B22659489F009A97C6 /* SearchResult.swift */; };
+		976A65B42659489F009A97C6 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976A65B22659489F009A97C6 /* SearchResult.swift */; };
 		9779A5B22456793600F6F6FF /* LibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59C2456793500F6F6FF /* LibraryService.swift */; };
 		9779A5B42456793600F6F6FF /* BookmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59D2456793500F6F6FF /* BookmarkService.swift */; };
 		9779A5B52456793600F6F6FF /* BookmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59D2456793500F6F6FF /* BookmarkService.swift */; };
@@ -90,6 +92,7 @@
 		978D0AE525A26164003DEE33 /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E02DE324B00C82008E278D /* libkiwix.xcframework */; };
 		978FA76825851B4D00666E1B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978FA76725851B4D00666E1B /* HomeView.swift */; };
 		9793548B257D86370076E94A /* Queries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9793548A257D86370076E94A /* Queries.swift */; };
+		97952EF3264F557B00FC9237 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97952EF2264F557B00FC9237 /* SearchResultsView.swift */; };
 		9797434A257BF2B000D30F03 /* OutlineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97974349257BF2B000D30F03 /* OutlineItem.swift */; };
 		9797435C257BF33600D30F03 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9797435B257BF33600D30F03 /* WebViewController.swift */; };
 		97974368257BF37E00D30F03 /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97974367257BF37E00D30F03 /* Alerts.swift */; };
@@ -230,6 +233,7 @@
 		976771741F4378FC007ED0C2 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		9768C2341F4B7BAC00FD499B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9768C23A1F4B7F6300FD499B /* Preference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preference.swift; sourceTree = "<group>"; };
+		976A65B22659489F009A97C6 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		9779A59C2456793500F6F6FF /* LibraryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryService.swift; sourceTree = "<group>"; };
 		9779A59D2456793500F6F6FF /* BookmarkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkService.swift; sourceTree = "<group>"; };
 		9779A59F2456793500F6F6FF /* LibraryScanOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryScanOperation.swift; sourceTree = "<group>"; };
@@ -266,6 +270,7 @@
 		979315811E5127930093D3BA /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9793158C1E5127930093D3BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9793548A257D86370076E94A /* Queries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queries.swift; sourceTree = "<group>"; };
+		97952EF2264F557B00FC9237 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
 		97974349257BF2B000D30F03 /* OutlineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineItem.swift; sourceTree = "<group>"; };
 		9797435B257BF33600D30F03 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		97974367257BF37E00D30F03 /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
@@ -509,6 +514,7 @@
 				977D508C262680F9005345D1 /* Library */,
 				97D19F062546FF3700910CAE /* BuildingBlocks.swift */,
 				973B2A5C254609FD00093661 /* Modifiers.swift */,
+				97952EF2264F557B00FC9237 /* SearchResultsView.swift */,
 				97A963C3259D38D900496214 /* SettingsView.swift */,
 				979AAF3F257167C60078492F /* ZimFileDetailView.swift */,
 			);
@@ -566,6 +572,7 @@
 				9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */,
 				97B3998B2467561900BC6F5B /* SearchResult.h */,
 				97B3998C2467561900BC6F5B /* SearchResult.m */,
+				976A65B22659489F009A97C6 /* SearchResult.swift */,
 				97974349257BF2B000D30F03 /* OutlineItem.swift */,
 			);
 			path = Entities;
@@ -987,6 +994,7 @@
 				9779A5C52456793600F6F6FF /* ZimFileService.swift in Sources */,
 				974FFE6A23533E8D00F6BF28 /* NavigationController.swift in Sources */,
 				9779A7AC2456796B00F6F6FF /* SearchQueue.swift in Sources */,
+				976A65B42659489F009A97C6 /* SearchResult.swift in Sources */,
 				9779A5B52456793600F6F6FF /* BookmarkService.swift in Sources */,
 				97CE4247249323C000B334E9 /* Enums.swift in Sources */,
 				9768C23B1F4B7F6300FD499B /* Preference.swift in Sources */,
@@ -1029,6 +1037,7 @@
 				9779A7AB2456796B00F6F6FF /* SearchQueue.swift in Sources */,
 				9779A5C82456793600F6F6FF /* RealmConfig.swift in Sources */,
 				97B399922468502500BC6F5B /* Platform.swift in Sources */,
+				976A65B32659489F009A97C6 /* SearchResult.swift in Sources */,
 				97B399902467626A00BC6F5B /* SearchOperation.swift in Sources */,
 				97B399962468CF3B00BC6F5B /* Enums.swift in Sources */,
 				97A2180C2024EC3800D1E67B /* SettingFontSizeController.swift in Sources */,
@@ -1062,6 +1071,7 @@
 				978C58092468FC1100D56AC8 /* SettingSearchController.swift in Sources */,
 				97D19F072546FF3700910CAE /* BuildingBlocks.swift in Sources */,
 				9779A5CC2456793600F6F6FF /* ZimFile.swift in Sources */,
+				97952EF3264F557B00FC9237 /* SearchResultsView.swift in Sources */,
 				9779A5BA2456793600F6F6FF /* OPDSRefreshOperation.swift in Sources */,
 				9779A5BE2456793600F6F6FF /* OPDSStreamParser.mm in Sources */,
 				97802D7025789B1800A21352 /* SidebarViewController.swift in Sources */,
@@ -1414,7 +1424,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 64;
+				CURRENT_PROJECT_VERSION = 65;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_BITCODE = YES;
 				GCC_C_LANGUAGE_STANDARD = c11;
@@ -1425,7 +1435,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.14.1;
+				MARKETING_VERSION = 1.14.2;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					SwiftUI,
@@ -1454,7 +1464,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 64;
+				CURRENT_PROJECT_VERSION = 65;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_BITCODE = YES;
 				GCC_C_LANGUAGE_STANDARD = c11;
@@ -1465,7 +1475,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.14.1;
+				MARKETING_VERSION = 1.14.2;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					SwiftUI,
@@ -1546,7 +1556,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/BookmarksWidget/Bookmarks.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 64;
+				CURRENT_PROJECT_VERSION = 65;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iOS/BookmarksWidget/Info.plist;
@@ -1556,7 +1566,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.14.1;
+				MARKETING_VERSION = 1.14.2;
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.Bookmarks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1578,7 +1588,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/BookmarksWidget/Bookmarks.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 64;
+				CURRENT_PROJECT_VERSION = 65;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iOS/BookmarksWidget/Info.plist;
@@ -1588,7 +1598,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.14.1;
+				MARKETING_VERSION = 1.14.2;
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.Bookmarks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
