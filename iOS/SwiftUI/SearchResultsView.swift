@@ -94,9 +94,9 @@ private class ViewModel: ObservableObject {
         sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
     ) var zimFiles
     
-    var searchTextPublisher = CurrentValueSubject<String, Never>("")
+    let searchTextPublisher = CurrentValueSubject<String, Never>("")
     private var searchObserver: AnyCancellable?
-    private var queue = OperationQueue()
+    private let queue = OperationQueue()
     
     init() {
         queue.maxConcurrentOperationCount = 1
