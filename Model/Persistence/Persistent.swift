@@ -38,10 +38,13 @@ struct PersistenceController {
 }
 
 class Persistent: NSPersistentContainer {
-    static let shared = Persistent()
+    static let shared = Persistent(inMemory: true)
     
-    convenience init() {
+    convenience init(inMemory: Bool = false) {
         self.init(name: "model")
+        if inMemory {
+            persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
+        }
         loadPersistentStores { description, error in
         }
     }
