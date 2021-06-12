@@ -29,15 +29,11 @@ class LibraryOperationBase: Operation {
         zimFile.groupID = meta.groupIdentifier
         zimFile.fileDescription = meta.fileDescription
         zimFile.languageCode = meta.languageCode
-        if let category = ZimFile.Category(rawValue: meta.category) {
-            zimFile.categoryRaw = category.rawValue
-        } else {
-            zimFile.categoryRaw = ZimFile.Category.other.rawValue
-        }
+        zimFile.categoryRaw = (ZimFile.Category(rawValue: meta.category) ?? .other).rawValue
+        zimFile.creationDate = meta.creationDate
         
         if let creator = meta.creator { zimFile.creator = creator}
         if let publisher = meta.publisher { zimFile.publisher = publisher }
-        if let creationDate = meta.creationDate { zimFile.creationDate = creationDate }
         if let url = meta.downloadURL { zimFile.downloadURL = url.absoluteString }
         if let url = meta.faviconURL { zimFile.faviconURL = url.absoluteString }
         if let faviconData = meta.faviconData { zimFile.faviconData = faviconData }

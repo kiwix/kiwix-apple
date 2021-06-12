@@ -17,11 +17,11 @@
 @property (nonatomic, strong, nonnull) NSString *fileDescription;
 @property (nonatomic, strong, nonnull) NSString *languageCode;
 @property (nonatomic, strong, nonnull) NSString *category;
+@property (nonatomic, strong, nonnull) NSDate *creationDate;
 
 // nullable attributes
 @property (nonatomic, strong, nullable) NSString *creator;
 @property (nonatomic, strong, nullable) NSString *publisher;
-@property (nonatomic, strong, nullable) NSDate *creationDate;
 @property (nonatomic, strong, nullable) NSURL *downloadURL;
 @property (nonatomic, strong, nullable) NSURL *faviconURL;
 @property (nonatomic, strong, nullable) NSData *faviconData;

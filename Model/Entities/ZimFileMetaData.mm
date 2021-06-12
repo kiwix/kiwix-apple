@@ -30,13 +30,18 @@
             self.fileDescription = [NSString stringWithUTF8String:_book->getDescription().c_str()];
             self.languageCode = [self getLanguageCodeFromBook:_book];
             self.category = [self getCategoryFromBook:_book];
+            self.creationDate = [self getCreationDateFromBook:_book];
         } catch (std::exception) {
+            return nil;
+        }
+        
+        // fail if required property is nil
+        if (self.creationDate == nil) {
             return nil;
         }
         
         SAFE_READ(self.creator, [NSString stringWithUTF8String:_book->getCreator().c_str()]);
         SAFE_READ(self.publisher, [NSString stringWithUTF8String:_book->getPublisher().c_str()]);
-        SAFE_READ(self.creationDate, [self getCreationDateFromBook:_book]);
         SAFE_READ(self.downloadURL, [self getURL:_book->getUrl()]);
         SAFE_READ(self.faviconURL, [self getURL:_book->getFaviconUrl()]);
         SAFE_READ(self.faviconData, [self getFaviconData:_book]);
