@@ -124,9 +124,9 @@
 		97B83C7026753B8800BFD8A2 /* model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 97B83C6E26753B8800BFD8A2 /* model.xcdatamodeld */; };
 		97B83C7126753B8800BFD8A2 /* model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 97B83C6E26753B8800BFD8A2 /* model.xcdatamodeld */; };
 		97B83C7226753B8800BFD8A2 /* model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 97B83C6E26753B8800BFD8A2 /* model.xcdatamodeld */; };
-		97B83C7526753C6800BFD8A2 /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B83C7426753C6800BFD8A2 /* PersistentContainer.swift */; };
-		97B83C7626753C6800BFD8A2 /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B83C7426753C6800BFD8A2 /* PersistentContainer.swift */; };
-		97B83C7726753C6800BFD8A2 /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B83C7426753C6800BFD8A2 /* PersistentContainer.swift */; };
+		97B83C7526753C6800BFD8A2 /* Persistent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B83C7426753C6800BFD8A2 /* Persistent.swift */; };
+		97B83C7626753C6800BFD8A2 /* Persistent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B83C7426753C6800BFD8A2 /* Persistent.swift */; };
+		97B83C7726753C6800BFD8A2 /* Persistent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B83C7426753C6800BFD8A2 /* Persistent.swift */; };
 		97BB5D0E2479D24700786D1C /* SettingSideBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BB5D0D2479D24700786D1C /* SettingSideBarController.swift */; };
 		97C575F4202CB0E800E37502 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C575F3202CB0E800E37502 /* NotificationCenter.framework */; };
 		97C575F7202CB0E800E37502 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C575F6202CB0E800E37502 /* TodayViewController.swift */; };
@@ -304,7 +304,7 @@
 		97B5D3E82596398400D12FEE /* SidebarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarController.swift; sourceTree = "<group>"; };
 		97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		97B83C6F26753B8800BFD8A2 /* model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = model.xcdatamodel; sourceTree = "<group>"; };
-		97B83C7426753C6800BFD8A2 /* PersistentContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentContainer.swift; sourceTree = "<group>"; };
+		97B83C7426753C6800BFD8A2 /* Persistent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistent.swift; sourceTree = "<group>"; };
 		97BB5D0D2479D24700786D1C /* SettingSideBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingSideBarController.swift; sourceTree = "<group>"; };
 		97C575F2202CB0E800E37502 /* Bookmarks.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Bookmarks.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		97C575F3202CB0E800E37502 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -712,7 +712,7 @@
 			isa = PBXGroup;
 			children = (
 				97B83C6E26753B8800BFD8A2 /* model.xcdatamodeld */,
-				97B83C7426753C6800BFD8A2 /* PersistentContainer.swift */,
+				97B83C7426753C6800BFD8A2 /* Persistent.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -988,7 +988,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97B83C7726753C6800BFD8A2 /* PersistentContainer.swift in Sources */,
+				97B83C7726753C6800BFD8A2 /* Persistent.swift in Sources */,
 				9789C26424F9600D00072090 /* Platform.swift in Sources */,
 				9789C26924F9611300072090 /* Log.swift in Sources */,
 				970EC3FC23BE8E31008DCA27 /* Parser.swift in Sources */,
@@ -1017,7 +1017,7 @@
 				976A65B42659489F009A97C6 /* SearchResult.swift in Sources */,
 				9779A5B52456793600F6F6FF /* BookmarkService.swift in Sources */,
 				97CE4247249323C000B334E9 /* Enums.swift in Sources */,
-				97B83C7626753C6800BFD8A2 /* PersistentContainer.swift in Sources */,
+				97B83C7626753C6800BFD8A2 /* Persistent.swift in Sources */,
 				9768C23B1F4B7F6300FD499B /* Preference.swift in Sources */,
 				974FFE612352744800F6BF28 /* WebKitWebViewController.swift in Sources */,
 				9779A5C92456793600F6F6FF /* RealmConfig.swift in Sources */,
@@ -1122,7 +1122,7 @@
 				97B5D3E92596398400D12FEE /* SidebarController.swift in Sources */,
 				9779A5CA2456793600F6F6FF /* Bookmark.swift in Sources */,
 				9779A7452456796B00F6F6FF /* DownloadService.swift in Sources */,
-				97B83C7526753C6800BFD8A2 /* PersistentContainer.swift in Sources */,
+				97B83C7526753C6800BFD8A2 /* Persistent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
