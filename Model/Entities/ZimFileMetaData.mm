@@ -31,19 +31,19 @@
             self.languageCode = [self getLanguageCodeFromBook:_book];
             self.category = [self getCategoryFromBook:_book];
             self.creationDate = [self getCreationDateFromBook:_book];
+            self.downloadURL = [self getURL:_book->getUrl()];
+            self.faviconURL = [self getURL:_book->getFaviconUrl()];
         } catch (std::exception) {
             return nil;
         }
         
         // fail if required property is nil
-        if (self.creationDate == nil) {
-            return nil;
-        }
+        if (self.creationDate == nil) { return nil; }
+        if (self.downloadURL == nil) { return nil; }
+        if (self.faviconURL == nil) { return nil; }
         
         SAFE_READ(self.creator, [NSString stringWithUTF8String:_book->getCreator().c_str()]);
         SAFE_READ(self.publisher, [NSString stringWithUTF8String:_book->getPublisher().c_str()]);
-        SAFE_READ(self.downloadURL, [self getURL:_book->getUrl()]);
-        SAFE_READ(self.faviconURL, [self getURL:_book->getFaviconUrl()]);
         SAFE_READ(self.faviconData, [self getFaviconData:_book]);
         SAFE_READ(self.size, [NSNumber numberWithUnsignedLongLong:_book->getSize()]);
         SAFE_READ(self.articleCount, [NSNumber numberWithUnsignedLongLong:_book->getArticleCount()]);
