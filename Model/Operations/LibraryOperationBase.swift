@@ -31,15 +31,14 @@ class LibraryOperationBase: Operation {
         zimFile.languageCode = meta.languageCode
         zimFile.categoryRaw = (ZimFile.Category(rawValue: meta.category) ?? .other).rawValue
         zimFile.creationDate = meta.creationDate
-        zimFile.downloadURL = meta.downloadURL.absoluteString
-        zimFile.faviconURL = meta.faviconURL.absoluteString
-        
-        if let creator = meta.creator { zimFile.creator = creator}
-        if let publisher = meta.publisher { zimFile.publisher = publisher }
+        zimFile.size.value = meta.size.int64Value
+        zimFile.articleCount.value = meta.articleCount.int64Value
+        zimFile.mediaCount.value = meta.mediaCount.int64Value
+        zimFile.creator = meta.creator
+        zimFile.publisher = meta.publisher
+        if let downloadURL = meta.downloadURL { zimFile.downloadURL = downloadURL.absoluteString }
+        if let faviconURL = meta.faviconURL { zimFile.faviconURL = faviconURL.absoluteString }
         if let faviconData = meta.faviconData { zimFile.faviconData = faviconData }
-        if let size = meta.size { zimFile.size.value = size.int64Value }
-        if let articleCount = meta.articleCount { zimFile.articleCount.value = articleCount.int64Value }
-        if let mediaCount = meta.mediaCount { zimFile.mediaCount.value = mediaCount.int64Value }
 
         zimFile.hasDetails = meta.hasDetails
         zimFile.hasIndex = meta.hasIndex
