@@ -182,7 +182,7 @@ class OPDSRefreshOperation: LibraryOperationBase {
                         // save
                         try context.save()
                     } catch {
-                        print(error.localizedDescription)
+                        os_log("Processing error: %s", log: Log.OPDS, type: .error, error.localizedDescription)
                     }
                 }
             }
