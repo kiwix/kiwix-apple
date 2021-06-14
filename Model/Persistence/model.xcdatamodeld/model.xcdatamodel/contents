@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20F71" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ZimFile" representedClassName="ZimFileEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="articleCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="categoryRaw" attributeType="String"/>
+        <attribute name="creationDate" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="creator" attributeType="String"/>
+        <attribute name="downloadErrorDescription" optional="YES" attributeType="String"/>
+        <attribute name="downloadResumeData" optional="YES" attributeType="Binary"/>
+        <attribute name="downloadTotalBytesWritten" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="downloadURL" optional="YES" attributeType="URI"/>
+        <attribute name="faviconData" optional="YES" attributeType="Binary"/>
+        <attribute name="faviconURL" optional="YES" attributeType="URI"/>
+        <attribute name="fileDescription" attributeType="String"/>
+        <attribute name="groupId" attributeType="String"/>
+        <attribute name="hasDetails" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="hasPictures" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="hasVideos" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="includedInSearch" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="languageCode" attributeType="String"/>
+        <attribute name="mediaCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="openInPlaceURLBookmark" optional="YES" attributeType="Binary"/>
+        <attribute name="publisher" attributeType="String"/>
+        <attribute name="size" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="stateRaw" attributeType="String" defaultValueString="remote"/>
+        <attribute name="title" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <elements>
+        <element name="ZimFile" positionX="-63" positionY="-18" width="128" height="389"/>
+    </elements>
+</model>

@@ -17,17 +17,17 @@
 @property (nonatomic, strong, nonnull) NSString *fileDescription;
 @property (nonatomic, strong, nonnull) NSString *languageCode;
 @property (nonatomic, strong, nonnull) NSString *category;
+@property (nonatomic, strong, nonnull) NSDate *creationDate;
+@property (nonatomic, strong, nonnull) NSNumber *size;
+@property (nonatomic, strong, nonnull) NSNumber *articleCount;
+@property (nonatomic, strong, nonnull) NSNumber *mediaCount;
+@property (nonatomic, strong, nonnull) NSString *creator;
+@property (nonatomic, strong, nonnull) NSString *publisher;
 
 // nullable attributes
-@property (nonatomic, strong, nullable) NSString *creator;
-@property (nonatomic, strong, nullable) NSString *publisher;
-@property (nonatomic, strong, nullable) NSDate *creationDate;
 @property (nonatomic, strong, nullable) NSURL *downloadURL;
 @property (nonatomic, strong, nullable) NSURL *faviconURL;
 @property (nonatomic, strong, nullable) NSData *faviconData;
-@property (nonatomic, strong, nullable) NSNumber *size;
-@property (nonatomic, strong, nullable) NSNumber *articleCount;
-@property (nonatomic, strong, nullable) NSNumber *mediaCount;
 
 // assigned attributes
 @property (nonatomic, assign) BOOL hasDetails;

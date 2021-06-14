@@ -6,6 +6,7 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
+import CoreData
 import os
 import Defaults
 import RealmSwift
@@ -132,6 +133,56 @@ class OPDSRefreshOperation: LibraryOperationBase {
                         zimFile.state = .remote
                         database.add(zimFile)
                         self.additionCount += 1
+                    }
+                }
+            }
+            
+            // update CoreData
+            if #available(iOS 13.0, *) {
+                var data = [UUID: [String: Any]]()
+                for (zimFileID, item) in metadata {
+                    guard let id = UUID(uuidString: zimFileID) else { continue }
+                    data[id] = [
+                        "id": id,
+                        "groupId": item.groupIdentifier,
+                        "title": item.title,
+                        "fileDescription": item.fileDescription,
+                        "languageCode": item.languageCode,
+                        "categoryRaw": (ZimFile.Category(rawValue: item.category) ?? .other).rawValue,
+                        "creationDate": item.creationDate,
+                        "size": item.size.int64Value,
+                        "articleCount": item.articleCount.int64Value,
+                        "mediaCount": item.mediaCount.int64Value,
+                        "creator": item.creator,
+                        "publisher": item.publisher,
+                        "hasDetails": item.hasDetails,
+                        "hasPictures": item.hasPictures,
+                        "hasVideos": item.hasVideos,
+                    ]
+                }
+
+                let context = Persistent.shared.newBackgroundContext()
+                context.performAndWait {
+                    do {
+                        // insert and update
+                        let insertRequest = NSBatchInsertRequest(
+                            entity: ZimFileEntity.entity(), objects: Array(data.values)
+                        )
+                        try context.execute(insertRequest)
+                        
+                        // delete outdated
+                        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = ZimFileEntity.fetchRequest()
+                        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                            NSPredicate(format: "stateRaw = %@", ZimFile.State.remote.rawValue),
+                            NSPredicate(format: "NOT id IN %@", Set(data.keys)),
+                        ])
+                        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+                        try context.execute(deleteRequest)
+                        
+                        // save
+                        try context.save()
+                    } catch {
+                        os_log("Processing error: %s", log: Log.OPDS, type: .error, error.localizedDescription)
                     }
                 }
             }

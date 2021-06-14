@@ -29,21 +29,16 @@ class LibraryOperationBase: Operation {
         zimFile.groupID = meta.groupIdentifier
         zimFile.fileDescription = meta.fileDescription
         zimFile.languageCode = meta.languageCode
-        if let category = ZimFile.Category(rawValue: meta.category) {
-            zimFile.categoryRaw = category.rawValue
-        } else {
-            zimFile.categoryRaw = ZimFile.Category.other.rawValue
-        }
-        
-        if let creator = meta.creator { zimFile.creator = creator}
-        if let publisher = meta.publisher { zimFile.publisher = publisher }
-        if let creationDate = meta.creationDate { zimFile.creationDate = creationDate }
-        if let url = meta.downloadURL { zimFile.downloadURL = url.absoluteString }
-        if let url = meta.faviconURL { zimFile.faviconURL = url.absoluteString }
+        zimFile.categoryRaw = (ZimFile.Category(rawValue: meta.category) ?? .other).rawValue
+        zimFile.creationDate = meta.creationDate
+        zimFile.size.value = meta.size.int64Value
+        zimFile.articleCount.value = meta.articleCount.int64Value
+        zimFile.mediaCount.value = meta.mediaCount.int64Value
+        zimFile.creator = meta.creator
+        zimFile.publisher = meta.publisher
+        if let downloadURL = meta.downloadURL { zimFile.downloadURL = downloadURL.absoluteString }
+        if let faviconURL = meta.faviconURL { zimFile.faviconURL = faviconURL.absoluteString }
         if let faviconData = meta.faviconData { zimFile.faviconData = faviconData }
-        if let size = meta.size { zimFile.size.value = size.int64Value }
-        if let articleCount = meta.articleCount { zimFile.articleCount.value = articleCount.int64Value }
-        if let mediaCount = meta.mediaCount { zimFile.mediaCount.value = mediaCount.int64Value }
 
         zimFile.hasDetails = meta.hasDetails
         zimFile.hasIndex = meta.hasIndex
