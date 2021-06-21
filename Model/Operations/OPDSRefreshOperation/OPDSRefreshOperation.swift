@@ -102,89 +102,48 @@ class OPDSRefreshOperation: LibraryOperationBase {
         do {
             // get zim file metadata
             // skip ones that require service worker to function
-            var metadata = [String: ZimFileMetaData]()
-            for zimFileID in parser.zimFileIDs {
-                guard let meta = parser.getZimFileMetaData(id: zimFileID), !meta.requiresServiceWorker else { continue }
-                metadata[zimFileID] = meta
-            }
+            let metadata = parser.zimFileIDs.compactMap { parser.getZimFileMetaData(id: $0) }
+                .filter { !$0.requiresServiceWorker }
             
-            // update database
+            // calculate the number of additions
             let database = try Realm(configuration: Realm.defaultConfig)
-            try database.write {
-                // remove old zimFiles
-                let predicateFormat = "NOT fileID IN %@ AND stateRaw == %@"
-                let predicate = NSPredicate(format: predicateFormat, Set(metadata.keys), ZimFile.State.remote.rawValue)
-                database.objects(ZimFile.self).filter(predicate).forEach({
-                    database.delete($0)
-                    self.deletionCount += 1
-                })
-
-                // upsert new and existing zimFiles
-                for (zimFileID, meta) in metadata {
-                    if let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) {
-                        if updateExisting {
-                            updateZimFile(zimFile, meta: meta)
-                            self.updateCount += 1
-                        }
-                    } else {
-                        let zimFile = ZimFile()
-                        zimFile.fileID = meta.identifier
-                        updateZimFile(zimFile, meta: meta)
-                        zimFile.state = .remote
-                        database.add(zimFile)
-                        self.additionCount += 1
-                    }
-                }
-            }
+            let existing = database.objects(ZimFile.self)
+                .filter(NSPredicate(format: "fileID IN %@", Set(metadata.map({ $0.identifier }))))
+            self.additionCount = metadata.count - existing.count
             
-            // update CoreData
-            if #available(iOS 13.0, *) {
-                var data = [UUID: [String: Any]]()
-                for (zimFileID, item) in metadata {
-                    guard let id = UUID(uuidString: zimFileID) else { continue }
-                    data[id] = [
-                        "id": id,
+            // update the database
+            try database.write {
+                // upsert new zim files
+                for item in metadata {
+                    database.create(ZimFile.self, value: [
+                        "fileID": item.identifier,
                         "groupId": item.groupIdentifier,
                         "title": item.title,
                         "fileDescription": item.fileDescription,
                         "languageCode": item.languageCode,
                         "categoryRaw": (ZimFile.Category(rawValue: item.category) ?? .other).rawValue,
+                        "creator": item.creator,
+                        "publisher": item.publisher,
                         "creationDate": item.creationDate,
+                        "downloadURL": item.downloadURL?.absoluteString as Any,
+                        "faviconURL": item.faviconURL?.absoluteString as Any,
                         "size": item.size.int64Value,
                         "articleCount": item.articleCount.int64Value,
                         "mediaCount": item.mediaCount.int64Value,
-                        "creator": item.creator,
-                        "publisher": item.publisher,
                         "hasDetails": item.hasDetails,
                         "hasPictures": item.hasPictures,
                         "hasVideos": item.hasVideos,
-                    ]
+                    ], update: .modified)
                 }
-
-                let context = Persistent.shared.newBackgroundContext()
-                context.performAndWait {
-                    do {
-                        // insert and update
-                        let insertRequest = NSBatchInsertRequest(
-                            entity: ZimFileEntity.entity(), objects: Array(data.values)
-                        )
-                        try context.execute(insertRequest)
-                        
-                        // delete outdated
-                        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = ZimFileEntity.fetchRequest()
-                        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                            NSPredicate(format: "stateRaw = %@", ZimFile.State.remote.rawValue),
-                            NSPredicate(format: "NOT id IN %@", Set(data.keys)),
-                        ])
-                        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-                        try context.execute(deleteRequest)
-                        
-                        // save
-                        try context.save()
-                    } catch {
-                        os_log("Processing error: %s", log: Log.OPDS, type: .error, error.localizedDescription)
-                    }
-                }
+                
+                // delete outdated zim files (that are not on device or being downloaded)
+                let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                    NSPredicate(format: "stateRaw = %@", ZimFile.State.remote.rawValue),
+                    NSPredicate(format: "NOT fileID IN %@", Set(metadata.map({ $0.identifier }))),
+                ])
+                let outdated = database.objects(ZimFile.self).filter(predicate)
+                self.deletionCount = outdated.count
+                database.delete(outdated)
             }
         } catch {
             throw OPDSRefreshError.process
