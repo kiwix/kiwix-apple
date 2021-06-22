@@ -40,7 +40,7 @@ class OPDSRefreshOperation: Operation {
                 Defaults[.libraryLastRefreshTime] = Date()
             }
 
-            os_log("Refresh succeed -- addition: %d, deletion: %d, total: %d",
+            os_log("Refresh finished -- addition: %d, deletion: %d, total: %d",
                    log: Log.OPDS,
                    type: .default,
                    additionCount,

@@ -38,9 +38,7 @@ class LibraryScanOperation: Operation {
         #endif
     }
     
-    /**
-     Add readers by scanning the urls specified.
-     */
+    /// Add readers by scanning the urls specified.
     private func addReadersFromURLs() {
         let zimFileURLs = urls.map({ url -> [URL] in
             if url.hasDirectoryPath {
@@ -56,9 +54,7 @@ class LibraryScanOperation: Operation {
         zimFileURLs.forEach({ ZimFileService.shared.open(url: $0) })
     }
     
-    /**
-     Add readers for all open in place zim files from bookmark data.
-     */
+    /// Add readers for all open in place zim files from bookmark data.
     private func addReadersFromBookmarkData() {
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
@@ -82,6 +78,7 @@ class LibraryScanOperation: Operation {
         } catch {}
     }
     
+    /// Close readers for all zim files that are no longer on disk.
     private func closeReadersForDeletedZimFiles() {
         for zimFileID in ZimFileService.shared.zimFileIDs {
             guard let fileURL = ZimFileService.shared.getFileURL(zimFileID: zimFileID),
@@ -90,6 +87,7 @@ class LibraryScanOperation: Operation {
         }
     }
     
+    /// Update on device zim files in the database.
     private func updateDatabase() {
         do {
             let zimFileIDs = ZimFileService.shared.zimFileIDs
