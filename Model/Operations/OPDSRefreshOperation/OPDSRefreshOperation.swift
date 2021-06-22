@@ -11,7 +11,7 @@ import os
 import Defaults
 import RealmSwift
 
-class OPDSRefreshOperation: LibraryOperationBase {
+class OPDSRefreshOperation: Operation {
     private let updateExisting: Bool
 
     private(set) var additionCount = 0

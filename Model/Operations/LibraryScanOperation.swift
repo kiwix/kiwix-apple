@@ -9,7 +9,7 @@
 import Defaults
 import RealmSwift
 
-class LibraryScanOperation: LibraryOperationBase {
+class LibraryScanOperation: Operation {
     let urls: [URL]
     private let documentDirectoryURL = try! FileManager.default.url(
         for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
