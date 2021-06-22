@@ -32,9 +32,9 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     @objc dynamic var downloadURL: String?
     @objc dynamic var faviconURL: String?
     @objc dynamic var faviconData: Data?
-    let size = RealmOptional<Int64>()
-    let articleCount = RealmOptional<Int64>()
-    let mediaCount = RealmOptional<Int64>()
+    let size = RealmProperty<Int64?>()
+    let articleCount = RealmProperty<Int64?>()
+    let mediaCount = RealmProperty<Int64?>()
     
     // MARK: -  additional Properties
     
