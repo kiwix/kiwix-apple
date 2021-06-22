@@ -31,6 +31,17 @@ extension ZimFileService {
         __getFileURL(zimFileID)
     }
     
+    func getFileURLBookmark(zimFileID: String) -> Data? {
+        guard let url = getFileURL(zimFileID: zimFileID),
+              let documentDirectoryURL = try? FileManager.default.url(
+                for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false
+              ),
+              FileManager.default.fileExists(
+                atPath: documentDirectoryURL.appendingPathComponent(url.lastPathComponent).path
+              ) else { return nil }
+        return try? url.bookmarkData()
+    }
+    
     func getRedirectedURL(url: URL) -> URL? {
         guard let zimFileID = url.host,
               let redirectedPath = __getRedirectedPath(zimFileID, contentPath: url.path) else { return nil }

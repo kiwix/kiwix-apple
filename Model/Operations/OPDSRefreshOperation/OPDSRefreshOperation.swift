@@ -114,26 +114,27 @@ class OPDSRefreshOperation: LibraryOperationBase {
             // update the database
             try database.write {
                 // upsert new zim files
-                for item in metadata {
-                    database.create(ZimFile.self, value: [
-                        "fileID": item.identifier,
-                        "groupId": item.groupIdentifier,
-                        "title": item.title,
-                        "fileDescription": item.fileDescription,
-                        "languageCode": item.languageCode,
-                        "categoryRaw": (ZimFile.Category(rawValue: item.category) ?? .other).rawValue,
-                        "creator": item.creator,
-                        "publisher": item.publisher,
-                        "creationDate": item.creationDate,
-                        "downloadURL": item.downloadURL?.absoluteString as Any,
-                        "faviconURL": item.faviconURL?.absoluteString as Any,
-                        "size": item.size.int64Value,
-                        "articleCount": item.articleCount.int64Value,
-                        "mediaCount": item.mediaCount.int64Value,
-                        "hasDetails": item.hasDetails,
-                        "hasPictures": item.hasPictures,
-                        "hasVideos": item.hasVideos,
-                    ], update: .modified)
+                for metadatum in metadata {
+                    let value: [String: Any?] = [
+                        "fileID": metadatum.identifier,
+                        "groupId": metadatum.groupIdentifier,
+                        "title": metadatum.title,
+                        "fileDescription": metadatum.fileDescription,
+                        "languageCode": metadatum.languageCode,
+                        "categoryRaw": (ZimFile.Category(rawValue: metadatum.category) ?? .other).rawValue,
+                        "creator": metadatum.creator,
+                        "publisher": metadatum.publisher,
+                        "creationDate": metadatum.creationDate,
+                        "downloadURL": metadatum.downloadURL?.absoluteString,
+                        "faviconURL": metadatum.faviconURL?.absoluteString,
+                        "size": metadatum.size.int64Value,
+                        "articleCount": metadatum.articleCount.int64Value,
+                        "mediaCount": metadatum.mediaCount.int64Value,
+                        "hasDetails": metadatum.hasDetails,
+                        "hasPictures": metadatum.hasPictures,
+                        "hasVideos": metadatum.hasVideos,
+                    ]
+                    database.create(ZimFile.self, value: value, update: .modified)
                 }
                 
                 // delete outdated zim files (that are not on device or being downloaded)
