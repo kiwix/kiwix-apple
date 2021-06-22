@@ -168,7 +168,7 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
             if let operation = LibraryOperationQueue.shared.currentOPDSRefreshOperation {
                 return operation
             } else {
-                let operation = OPDSRefreshOperation(updateExisting: true)
+                let operation = OPDSRefreshOperation()
                 LibraryOperationQueue.shared.addOperation(operation)
                 return operation
             }

@@ -12,20 +12,12 @@ import Defaults
 import RealmSwift
 
 class OPDSRefreshOperation: Operation {
-    private let updateExisting: Bool
-
     private(set) var additionCount = 0
-    private(set) var updateCount = 0
     private(set) var deletionCount = 0
     private(set) var error: OPDSRefreshError?
 
     var hasUpdates: Bool {
-        additionCount > 0 || updateCount > 0 || deletionCount > 0
-    }
-
-    init(updateExisting: Bool = false) {
-        self.updateExisting = updateExisting
-        super.init()
+        additionCount > 0 || deletionCount > 0
     }
 
     override func main() {
@@ -48,11 +40,10 @@ class OPDSRefreshOperation: Operation {
                 Defaults[.libraryLastRefreshTime] = Date()
             }
 
-            os_log("Refresh succeed -- addition: %d, update: %d, deletion: %d, total: %d",
+            os_log("Refresh succeed -- addition: %d, deletion: %d, total: %d",
                    log: Log.OPDS,
                    type: .default,
                    additionCount,
-                   updateCount,
                    deletionCount,
                    parser.zimFileIDs.count
             )
