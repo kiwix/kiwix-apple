@@ -52,7 +52,7 @@ struct LibraryCategoryView: View {
     class ViewModel: NSObject, ObservableObject, URLSessionDelegate, URLSessionDataDelegate {
         @Published private(set) var languages: [Language] = []
         @Published private(set) var zimFiles = [String: [ZimFile]]()
-        private var favicon = [String: Data]()
+        private var favicon = [URL: Data]()
         
         let category: ZimFile.Category
         private let queue = DispatchQueue(label: "org.kiwix.library.category", qos: .userInitiated)
@@ -87,10 +87,6 @@ struct LibraryCategoryView: View {
                     var results = [String: [ZimFile]]()
                     for zimFile in zimFiles {
                         results[zimFile.languageCode, default: []].append(zimFile)
-                        guard zimFile.faviconData == nil,
-                              let urlString = zimFile.faviconURL,
-                              let url = URL(string: urlString) else { continue }
-//                        LibraryService.shared.downloadFavicon(zimFileID: zimFile.fileID, url: url)
                     }
                     return results
                 }
@@ -111,29 +107,31 @@ struct LibraryCategoryView: View {
             operationQueue.underlyingQueue = queue
             let session = URLSession(configuration: .default, delegate: self, delegateQueue: operationQueue)
             
-            let database = try? Realm()
-            database?.objects(ZimFile.self)
-                .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
-                    NSPredicate(format: "categoryRaw = %@", category.rawValue),
-                    NSPredicate(format: "languageCode IN %@", languageCodes),
-                    NSPredicate(format: "faviconData = nil"),
-                    NSPredicate(format: "faviconURL != nil"),
-                ]))
-                .forEach { zimFile in
-                    guard let urlString = zimFile.faviconURL, let url = URL(string: urlString) else { return }
-                    let zimFileID = zimFile.fileID
-                    favicon[zimFileID] = Data()
-                    let task = session.dataTask(with: url) { data, response, error in
-                        self.favicon[zimFileID] = data
-                        self.flushFavicon(inBatch: true)
+            do {
+                let database = try Realm()
+                database.objects(ZimFile.self)
+                    .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
+                        NSPredicate(format: "categoryRaw = %@", category.rawValue),
+                        NSPredicate(format: "languageCode IN %@", languageCodes),
+                        NSPredicate(format: "faviconData = nil"),
+                        NSPredicate(format: "faviconURL != nil"),
+                    ]))
+                    .distinct(by: ["faviconURL"])
+                    .forEach { zimFile in
+                        guard let urlString = zimFile.faviconURL, let url = URL(string: urlString) else { return }
+                        favicon[url] = Data()
+                        let task = session.dataTask(with: url) { data, response, error in
+                            self.favicon[url] = data
+                            self.saveFavicon(inBatch: true)
+                        }
+                        task.resume()
                     }
-                    task.resume()
-                }
+            } catch {}
             session.finishTasksAndInvalidate()
         }
         
-        private func flushFavicon(inBatch: Bool) {
-            let favicon: [String: Data] = {
+        private func saveFavicon(inBatch: Bool) {
+            let favicon: [URL: Data] = {
                 if inBatch {
                     let batch = self.favicon.filter { $1.count > 0 }
                     return batch.count >= 5 ? batch : [:]
@@ -142,21 +140,24 @@ struct LibraryCategoryView: View {
                 }
             }()
             guard !favicon.isEmpty else { return }
-            print(favicon)
-            
+
             do {
                 let database = try Realm()
                 try database.write {
-                    for (zimFileID, data) in favicon {
-                        let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID)
-                        zimFile?.faviconData = data
+                    for (faviconURL, data) in favicon {
+                        let zimFiles = database.objects(ZimFile.self)
+                            .filter("faviconURL = %@", faviconURL.absoluteString)
+                        for zimFile in zimFiles {
+                            zimFile.faviconData = data
+                        }
                     }
                 }
+                favicon.forEach { self.favicon.removeValue(forKey: $0.key) }
             } catch {}
         }
         
         func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
-            flushFavicon(inBatch: false)
+            saveFavicon(inBatch: false)
         }
     }
 }
