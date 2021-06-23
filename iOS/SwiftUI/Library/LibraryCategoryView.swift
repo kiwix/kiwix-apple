@@ -49,9 +49,10 @@ struct LibraryCategoryView: View {
         }
     }
     
-    class ViewModel: ObservableObject {
+    class ViewModel: NSObject, ObservableObject, URLSessionDelegate, URLSessionDataDelegate {
         @Published private(set) var languages: [Language] = []
         @Published private(set) var zimFiles = [String: [ZimFile]]()
+        private var favicon = [String: Data]()
         
         let category: ZimFile.Category
         private let queue = DispatchQueue(label: "org.kiwix.library.category", qos: .userInitiated)
@@ -60,9 +61,11 @@ struct LibraryCategoryView: View {
         
         init(category: ZimFile.Category) {
             self.category = category
+            super.init()
             defaultsSubscriber = UserDefaults.standard.publisher(for: \.libraryLanguageCodes)
                 .sink(receiveValue: { languageCodes in
                     self.loadData(languageCodes: languageCodes)
+                    self.downloadFavicon(languageCodes: languageCodes)
                 })
         }
         
@@ -87,7 +90,7 @@ struct LibraryCategoryView: View {
                         guard zimFile.faviconData == nil,
                               let urlString = zimFile.faviconURL,
                               let url = URL(string: urlString) else { continue }
-                        LibraryService.shared.downloadFavicon(zimFileID: zimFile.fileID, url: url)
+//                        LibraryService.shared.downloadFavicon(zimFileID: zimFile.fileID, url: url)
                     }
                     return results
                 }
@@ -101,6 +104,59 @@ struct LibraryCategoryView: View {
                         self.zimFiles = zimFiles
                     }
                 })
+        }
+        
+        private func downloadFavicon(languageCodes: [String]) {
+            let operationQueue = OperationQueue()
+            operationQueue.underlyingQueue = queue
+            let session = URLSession(configuration: .default, delegate: self, delegateQueue: operationQueue)
+            
+            let database = try? Realm()
+            database?.objects(ZimFile.self)
+                .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
+                    NSPredicate(format: "categoryRaw = %@", category.rawValue),
+                    NSPredicate(format: "languageCode IN %@", languageCodes),
+                    NSPredicate(format: "faviconData = nil"),
+                    NSPredicate(format: "faviconURL != nil"),
+                ]))
+                .forEach { zimFile in
+                    guard let urlString = zimFile.faviconURL, let url = URL(string: urlString) else { return }
+                    let zimFileID = zimFile.fileID
+                    favicon[zimFileID] = Data()
+                    let task = session.dataTask(with: url) { data, response, error in
+                        self.favicon[zimFileID] = data
+                        self.flushFavicon(inBatch: true)
+                    }
+                    task.resume()
+                }
+            session.finishTasksAndInvalidate()
+        }
+        
+        private func flushFavicon(inBatch: Bool) {
+            let favicon: [String: Data] = {
+                if inBatch {
+                    let batch = self.favicon.filter { $1.count > 0 }
+                    return batch.count >= 5 ? batch : [:]
+                } else {
+                    return self.favicon
+                }
+            }()
+            guard !favicon.isEmpty else { return }
+            print(favicon)
+            
+            do {
+                let database = try Realm()
+                try database.write {
+                    for (zimFileID, data) in favicon {
+                        let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID)
+                        zimFile?.faviconData = data
+                    }
+                }
+            } catch {}
+        }
+        
+        func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
+            flushFavicon(inBatch: false)
         }
     }
 }
