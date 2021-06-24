@@ -103,15 +103,14 @@ class LibraryService {
         faviconDownloadPipeline = Combine.Publishers.MergeMany(publishers)
             .collect(5)
             .sink(receiveCompletion: { _ in }, receiveValue: { results in
-                print(results)
                 do {
                     let database = try Realm()
                     try database.write {
                         for result in results {
                             guard let url = result.response.url else { continue }
-                            for zimFile in database.objects(ZimFile.self).filter("faviconURL = %@", url.absoluteString) {
-                                zimFile.faviconData = result.data
-                            }
+                            database.objects(ZimFile.self)
+                                .filter("faviconURL = %@", url.absoluteString)
+                                .forEach { zimFile in zimFile.faviconData = result.data }
                         }
                     }
                 } catch {}
