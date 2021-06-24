@@ -368,58 +368,6 @@ private struct ActivityIndicator: UIViewRepresentable {
 }
 
 @available(iOS 13.0, *)
-private struct InfoView: View {
-    @Environment(\.verticalSizeClass) var verticalSizeClass
-    
-    let imageSystemName: String
-    let title: String
-    let help: String
-    
-    var body: some View {
-        GeometryReader { geometry in
-            VStack {
-                Spacer(minLength: geometry.size.height * 0.3)
-                if verticalSizeClass == .regular {
-                    VStack {
-                        makeImage(geometry)
-                        text
-                    }
-                } else {
-                    HStack {
-                        makeImage(geometry)
-                        text
-                    }
-                }
-                Spacer()
-                Spacer()
-            }.frame(width: geometry.size.width)
-        }
-    }
-    
-    private func makeImage(_ geometry: GeometryProxy) -> some View {
-        ZStack {
-            GeometryReader { geometry in
-                Image(systemName: imageSystemName)
-                    .resizable()
-                    .padding(geometry.size.height * 0.25)
-                    .foregroundColor(.secondary)
-            }
-            Circle().foregroundColor(.secondary).opacity(0.2)
-        }.frame(
-            width: max(60, min(geometry.size.height * 0.2, geometry.size.width * 0.2, 100)),
-            height: max(60, min(geometry.size.height * 0.2, geometry.size.width * 0.2, 100))
-        )
-    }
-    
-    var text: some View {
-        VStack(spacing: 10) {
-            Text(title).font(.title).fontWeight(.medium)
-            Text(help).font(.subheadline).foregroundColor(.secondary).multilineTextAlignment(.center)
-        }.padding()
-    }
-}
-
-@available(iOS 13.0, *)
 struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
         InfoView(
