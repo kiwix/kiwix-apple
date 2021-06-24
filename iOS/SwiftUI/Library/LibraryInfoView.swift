@@ -6,13 +6,14 @@
 //  Copyright © 2021 Chris Li. All rights reserved.
 //
 
+import Combine
 import SwiftUI
+import Defaults
 
-@available(iOS 14.0, *)
+@available(iOS 13.0, *)
 struct LibraryInfoView: View {
-    @AppStorage("libraryAutoRefresh") private var autoRefresh: Bool = true
-    @AppStorage("backupDocumentDirectory") private var backupEnabled: Bool = false
-    
+    @Default(.libraryAutoRefresh) var autoRefresh
+    @Default(.backupDocumentDirectory) var backupEnabled
     @ObservedObject private var viewModel = ViewModel()
     
     var body: some View {
@@ -31,7 +32,7 @@ struct LibraryInfoView: View {
                 HStack {
                     Text("Last update")
                     Spacer()
-                    if let lastRefreshTime = UserDefaults.standard.value(forKey: "libraryLastRefresh") as? Date {
+                    if let lastRefreshTime = Defaults[.libraryLastRefresh] {
                         if Date().timeIntervalSince(lastRefreshTime) < 120 {
                             Text("Just Now").foregroundColor(.secondary)
                         } else {
@@ -42,32 +43,30 @@ struct LibraryInfoView: View {
                         Text("Never").foregroundColor(.secondary)
                     }
                 }
-                Toggle(
-                    isOn: $autoRefresh, label: { Text("Auto update") }
-                ).onChange(of: autoRefresh, perform: { value in
-                    LibraryService.shared.applyAutoUpdateSetting()
-                })
+                Toggle(isOn: $autoRefresh, label: { Text("Auto update") })
             }
             Section(header: Text("Backup"), footer: Text("Does not apply to files that were opened in place.")) {
-                Toggle(
-                    isOn: $backupEnabled,
-                    label: { Text("Include files in backup") }
-                ).onChange(of: backupEnabled, perform: { enabled in
-                    LibraryService.shared.applyBackupSetting(isBackupEnabled: enabled)
-                })
+                Toggle(isOn: $backupEnabled, label: { Text("Include files in backup") })
             }
-        }.listStyle(InsetGroupedListStyle())
+        }.insetGroupedListStyle()
     }
     
     private class ViewModel: ObservableObject {
         @Published var isRefreshing = false
         
         private var operationObserver: NSKeyValueObservation?
+        private var backupDocumentDirectoryCancellable: AnyCancellable?
+        private var libraryAutoRefreshCancellable: AnyCancellable?
         
         init() {
-            guard let operation = LibraryOperationQueue.shared.currentOPDSRefreshOperation else { return }
-            isRefreshing = !operation.isFinished
-            configureObserver(operation)
+            if let operation = LibraryOperationQueue.shared.currentOPDSRefreshOperation {
+                isRefreshing = !operation.isFinished
+                configureObserver(operation)
+            }
+            backupDocumentDirectoryCancellable = Defaults.publisher(.backupDocumentDirectory)
+                .sink { enabled in LibraryService.shared.applyBackupSetting(isBackupEnabled: enabled.newValue) }
+            libraryAutoRefreshCancellable = Defaults.publisher(.libraryAutoRefresh)
+                .sink { _ in LibraryService.shared.applyAutoUpdateSetting() }
         }
         
         func refresh() {
