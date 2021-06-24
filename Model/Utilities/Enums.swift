@@ -6,10 +6,12 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
-enum ExternalLinkLoadingPolicy: Int, CaseIterable, Codable, CustomStringConvertible, Identifiable {
-    case alwaysAsk = 0, alwaysLoad, neverLoad
+import Defaults
+
+enum ExternalLinkLoadingPolicy: String, CaseIterable, CustomStringConvertible, Identifiable, Defaults.Serializable {
+    case alwaysAsk, alwaysLoad, neverLoad
     
-    var id: Int { self.rawValue }
+    var id: String { self.rawValue }
     var description: String {
         switch self {
         case .alwaysAsk:
@@ -22,7 +24,7 @@ enum ExternalLinkLoadingPolicy: Int, CaseIterable, Codable, CustomStringConverti
     }
 }
 
-enum LibraryLanguageFilterSortingMode: String, Codable, CustomStringConvertible {
+enum LibraryLanguageFilterSortingMode: String, Codable, CustomStringConvertible, Defaults.Serializable {
     case alphabetically, byCount
     
     var description: String {
@@ -35,7 +37,7 @@ enum LibraryLanguageFilterSortingMode: String, Codable, CustomStringConvertible 
     }
 }
 
-enum SearchResultSnippetMode: String, CaseIterable, Codable, CustomStringConvertible, Identifiable {
+enum SearchResultSnippetMode: String, CaseIterable, CustomStringConvertible, Identifiable, Defaults.Serializable {
     case disabled, firstParagraph, firstSentence, matches
     
     var id: String { self.rawValue }
@@ -53,7 +55,7 @@ enum SearchResultSnippetMode: String, CaseIterable, Codable, CustomStringConvert
     }
 }
 
-enum SideBarDisplayMode: String, CaseIterable, Codable, CustomStringConvertible, Identifiable {
+enum SideBarDisplayMode: String, CaseIterable, CustomStringConvertible, Identifiable, Defaults.Serializable {
     case automatic, sideBySide, overlay
     
     var id: String { self.rawValue }
