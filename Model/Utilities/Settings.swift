@@ -25,7 +25,7 @@ extension Defaults.Keys {
     )
     
     // library
-    static let libraryFilterLanguageCodes = Key<[String]>("libraryFilterLanguageCodes", default: [])
+    static let libraryFilterLanguageCodes = Key<[String]>("libraryLanguageCodes", default: [])
     static let libraryShownLanguageFilterAlert = Key<Bool>("libraryHasShownLanguageFilterAlert", default: false)
     static let libraryLanguageSortingMode = Key<LibraryLanguageFilterSortingMode>(
         "libraryLanguageSortingMode", default: LibraryLanguageFilterSortingMode.alphabetically
@@ -36,14 +36,33 @@ extension Defaults.Keys {
 }
 
 extension Defaults {
-    static subscript(key: Key<[String]>) -> [String] {
-        get { (key.suite.array(forKey: key.name) as? [String]) ?? key.defaultValue }
-        set { key.suite.set(newValue, forKey: key.name) }
-    }
-    
-    static subscript(key: Key<LibraryLanguageFilterSortingMode>) -> LibraryLanguageFilterSortingMode {
-        get { LibraryLanguageFilterSortingMode(rawValue: key.suite.string(forKey: key.name) ?? "") ?? key.defaultValue }
-        set { key.suite.set(newValue.rawValue, forKey: key.name) }
+    static func migrate() {
+        func getStringValue(key: String) -> String? {
+            guard let string = UserDefaults.standard.string(forKey: key),
+                  let decoded = try? JSONDecoder().decode(String.self, from: Data(string.utf8)) else { return nil }
+            return decoded
+        }
+        
+        switch UserDefaults.standard.integer(forKey: "externalLinkLoadingPolicy") {
+        case 1:
+            UserDefaults.standard.setValue("alwaysLoad", forKeyPath: "externalLinkLoadingPolicy")
+        case 2:
+            UserDefaults.standard.setValue("neverLoad", forKeyPath: "externalLinkLoadingPolicy")
+        default:
+            UserDefaults.standard.setValue("alwaysAsk", forKeyPath: "externalLinkLoadingPolicy")
+        }
+        if let value = getStringValue(key: "libraryLanguageSortingMode") {
+            UserDefaults.standard.setValue(value, forKeyPath: "libraryLanguageSortingMode")
+        }
+        if let value = getStringValue(key: "searchResultSnippetMode") {
+            UserDefaults.standard.setValue(value, forKeyPath: "searchResultSnippetMode")
+        }
+        if let value = getStringValue(key: "sideBarDisplayMode") {
+            UserDefaults.standard.setValue(value, forKeyPath: "sideBarDisplayMode")
+        }
+        if let value = UserDefaults.standard.stringArray(forKey: "libraryFilterLanguageCodes") {
+            UserDefaults.standard.setValue(value, forKeyPath: "libraryLanguageCodes")
+        }
     }
 }
 
