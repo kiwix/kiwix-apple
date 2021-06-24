@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Defaults
 import RealmSwift
 
 @UIApplicationMain
@@ -43,6 +44,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
             UIApplicationShortcutItem(type: Shortcut.bookmark.rawValue, localizedTitle: NSLocalizedString("Bookmark", comment: "3D Touch Menu Title")),
             UIApplicationShortcutItem(type: Shortcut.search.rawValue, localizedTitle: NSLocalizedString("Search", comment: "3D Touch Menu Title"))
         ]
+        
+        Defaults.migrate()
 
         return true
     }
