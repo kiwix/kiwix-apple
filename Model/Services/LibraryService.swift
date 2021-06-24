@@ -97,9 +97,8 @@ class LibraryService {
     ///   - url: URL of the favicon data
     @available(iOS 13.0, *)
     func downloadFavicons(zimFiles: [ZimFile]) {
-        let publishers = zimFiles.compactMap { $0.faviconURL }
-            .compactMap { URL(string: $0) }
-            .map { URLSession.shared.dataTaskPublisher(for: $0) }
+        let urls = Set(zimFiles.compactMap { $0.faviconURL }.compactMap { URL(string: $0) })
+        let publishers = urls.map { URLSession.shared.dataTaskPublisher(for: $0) }
         faviconDownloadPipeline = Combine.Publishers.MergeMany(publishers)
             .collect(5)
             .sink(receiveCompletion: { _ in }, receiveValue: { results in

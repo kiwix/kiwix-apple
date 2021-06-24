@@ -111,7 +111,6 @@ struct LibraryCategoryView: View {
                         NSPredicate(format: "faviconData = nil"),
                         NSPredicate(format: "faviconURL != nil"),
                     ]))
-                    .distinct(by: ["faviconURL"])
                 LibraryService.shared.downloadFavicons(zimFiles: Array(zimFiles))
             } catch {}
         }
