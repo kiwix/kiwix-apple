@@ -32,6 +32,7 @@ extension Defaults.Keys {
     )
     static let libraryAutoRefresh = Key<Bool>("libraryAutoRefresh", default: true)
     static let libraryLastRefresh = Key<Date?>("libraryLastRefresh")
+    static let libraryLastRefreshTime = Key<Date?>("libraryLastRefreshTime")
     static let backupDocumentDirectory = Key<Bool>("backupDocumentDirectory", default: false)
 }
 
@@ -63,8 +64,9 @@ extension Defaults {
         if let value = UserDefaults.standard.stringArray(forKey: "libraryFilterLanguageCodes") {
             UserDefaults.standard.setValue(value, forKeyPath: "libraryLanguageCodes")
         }
-        if let value = UserDefaults.standard.data(forKey: "libraryLastRefreshTime") {
-            UserDefaults.standard.setValue(value, forKeyPath: "libraryLastRefresh")
+        if let value = Defaults[.libraryLastRefreshTime] {
+            Defaults[.libraryLastRefresh] = value
+            Defaults[.libraryLastRefreshTime] = nil
         }
     }
 }
