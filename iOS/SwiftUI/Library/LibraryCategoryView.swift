@@ -24,13 +24,21 @@ struct LibraryCategoryView: View {
     }
     
     var body: some View {
-        List {
-            ForEach(viewModel.languages) { language in
-                Section(header: viewModel.languages.count > 1 ? Text(language.name) : nil) {
-                    ForEach(viewModel.zimFiles[language.code, default: []]) { zimFile in
-                        Button(action: { zimFileTapped(zimFile.fileID, zimFile.title) }, label: {
-                            ZimFileCell(zimFile, accessories: [.onDevice, .disclosureIndicator])
-                        })
+        if viewModel.languages.isEmpty {
+            InfoView(
+                imageSystemName: "text.book.closed",
+                title: "No Zim File",
+                help: "Enable some other languages to see zim files under this category."
+            )
+        } else {
+            List {
+                ForEach(viewModel.languages) { language in
+                    Section(header: viewModel.languages.count > 1 ? Text(language.name) : nil) {
+                        ForEach(viewModel.zimFiles[language.code, default: []]) { zimFile in
+                            Button(action: { zimFileTapped(zimFile.fileID, zimFile.title) }, label: {
+                                ZimFileCell(zimFile, accessories: [.onDevice, .disclosureIndicator])
+                            })
+                        }
                     }
                 }
             }
