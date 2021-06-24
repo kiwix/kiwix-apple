@@ -38,11 +38,6 @@ struct LibrarySearchResultView: View {
             NSPredicate(format: "title CONTAINS[cd] %@", searchText),
             NSPredicate(format: "languageCode IN %@", UserDefaults.standard.libraryLanguageCodes),
         ])
-        zimFiles.forEach { zimFile in
-            guard zimFile.faviconData == nil,
-                  let urlString = zimFile.faviconURL,
-                  let url = URL(string: urlString) else { return }
-            LibraryService.shared.downloadFavicon(zimFileID: zimFile.fileID, url: url)
-        }
+        LibraryService.shared.downloadFavicons(zimFiles: zimFiles.filter { $0.faviconData == nil })
     }
 }

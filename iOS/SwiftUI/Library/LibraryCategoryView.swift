@@ -24,13 +24,21 @@ struct LibraryCategoryView: View {
     }
     
     var body: some View {
-        List {
-            ForEach(viewModel.languages) { language in
-                Section(header: viewModel.languages.count > 1 ? Text(language.name) : nil) {
-                    ForEach(viewModel.zimFiles[language.code, default: []]) { zimFile in
-                        Button(action: { zimFileTapped(zimFile.fileID, zimFile.title) }, label: {
-                            ZimFileCell(zimFile, accessories: [.onDevice, .disclosureIndicator])
-                        })
+        if viewModel.languages.isEmpty {
+            InfoView(
+                imageSystemName: "text.book.closed",
+                title: "No Zim File",
+                help: "Enable some other languages to see zim files under this category."
+            )
+        } else {
+            List {
+                ForEach(viewModel.languages) { language in
+                    Section(header: viewModel.languages.count > 1 ? Text(language.name) : nil) {
+                        ForEach(viewModel.zimFiles[language.code, default: []]) { zimFile in
+                            Button(action: { zimFileTapped(zimFile.fileID, zimFile.title) }, label: {
+                                ZimFileCell(zimFile, accessories: [.onDevice, .disclosureIndicator])
+                            })
+                        }
                     }
                 }
             }
@@ -52,6 +60,7 @@ struct LibraryCategoryView: View {
     class ViewModel: ObservableObject {
         @Published private(set) var languages: [Language] = []
         @Published private(set) var zimFiles = [String: [ZimFile]]()
+        private var favicon = [URL: Data]()
         
         let category: ZimFile.Category
         private let queue = DispatchQueue(label: "org.kiwix.library.category", qos: .userInitiated)
@@ -63,6 +72,7 @@ struct LibraryCategoryView: View {
             defaultsSubscriber = UserDefaults.standard.publisher(for: \.libraryLanguageCodes)
                 .sink(receiveValue: { languageCodes in
                     self.loadData(languageCodes: languageCodes)
+                    self.downloadFavicon(languageCodes: languageCodes)
                 })
         }
         
@@ -84,10 +94,6 @@ struct LibraryCategoryView: View {
                     var results = [String: [ZimFile]]()
                     for zimFile in zimFiles {
                         results[zimFile.languageCode, default: []].append(zimFile)
-                        guard zimFile.faviconData == nil,
-                              let urlString = zimFile.faviconURL,
-                              let url = URL(string: urlString) else { continue }
-                        LibraryService.shared.downloadFavicon(zimFileID: zimFile.fileID, url: url)
                     }
                     return results
                 }
@@ -101,6 +107,20 @@ struct LibraryCategoryView: View {
                         self.zimFiles = zimFiles
                     }
                 })
+        }
+        
+        private func downloadFavicon(languageCodes: [String]) {
+            do {
+                let database = try Realm()
+                let zimFiles = database.objects(ZimFile.self)
+                    .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
+                        NSPredicate(format: "categoryRaw = %@", category.rawValue),
+                        NSPredicate(format: "languageCode IN %@", languageCodes),
+                        NSPredicate(format: "faviconData = nil"),
+                        NSPredicate(format: "faviconURL != nil"),
+                    ]))
+                LibraryService.shared.downloadFavicons(zimFiles: Array(zimFiles))
+            } catch {}
         }
     }
 }
