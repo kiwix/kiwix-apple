@@ -117,7 +117,7 @@ class SettingLibraryController: UIViewController, UITableViewDataSource, UITable
         case .lastUpdateTimestamp:
             let cell = tableView.dequeueReusableCell(withIdentifier: "DetailCell", for: indexPath) as! UIRightDetailTableViewCell
             cell.textLabel?.text = "Last updated"
-            if let refreshTime = Defaults[.libraryLastRefreshTime] {
+            if let refreshTime = Defaults[.libraryLastRefresh] {
                 if Date().timeIntervalSince(refreshTime) < 120 {
                     cell.detailTextLabel?.text = NSLocalizedString("Just now", comment: "Library Info")
                 } else if #available(iOS 13.0, *) {

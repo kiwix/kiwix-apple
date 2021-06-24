@@ -28,7 +28,7 @@ class LibraryCategoryController: UIViewController, UITableViewDataSource, UITabl
         self.category = category
         super.init(nibName: nil, bundle: nil)
         title = category.description
-        self.selectedLanguageCodeObserver = Defaults.observe(.libraryFilterLanguageCodes) { [unowned self] update in
+        self.selectedLanguageCodeObserver = Defaults.observe(.libraryLanguageCodes) { [unowned self] update in
             self.configure(selectedLanguages: update.newValue)
         }
     }

@@ -24,7 +24,7 @@ enum ExternalLinkLoadingPolicy: String, CaseIterable, CustomStringConvertible, I
     }
 }
 
-enum LibraryLanguageFilterSortingMode: String, Codable, CustomStringConvertible, Defaults.Serializable {
+enum LibraryLanguageSortingMode: String, Codable, CustomStringConvertible, Defaults.Serializable {
     case alphabetically, byCount
     
     var description: String {

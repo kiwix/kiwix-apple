@@ -31,7 +31,7 @@ struct LibraryInfoView: View {
                 HStack {
                     Text("Last update")
                     Spacer()
-                    if let lastRefreshTime = UserDefaults.standard.value(forKey: "libraryLastRefreshTime") as? Date {
+                    if let lastRefreshTime = UserDefaults.standard.value(forKey: "libraryLastRefresh") as? Date {
                         if Date().timeIntervalSince(lastRefreshTime) < 120 {
                             Text("Just Now").foregroundColor(.secondary)
                         } else {

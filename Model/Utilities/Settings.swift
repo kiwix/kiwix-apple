@@ -25,13 +25,13 @@ extension Defaults.Keys {
     )
     
     // library
-    static let libraryFilterLanguageCodes = Key<[String]>("libraryLanguageCodes", default: [])
+    static let libraryLanguageCodes = Key<[String]>("libraryLanguageCodes", default: [])
     static let libraryShownLanguageFilterAlert = Key<Bool>("libraryHasShownLanguageFilterAlert", default: false)
-    static let libraryLanguageSortingMode = Key<LibraryLanguageFilterSortingMode>(
-        "libraryLanguageSortingMode", default: LibraryLanguageFilterSortingMode.alphabetically
+    static let libraryLanguageSortingMode = Key<LibraryLanguageSortingMode>(
+        "libraryLanguageSortingMode", default: LibraryLanguageSortingMode.alphabetically
     )
     static let libraryAutoRefresh = Key<Bool>("libraryAutoRefresh", default: true)
-    static let libraryLastRefreshTime = Key<Date?>("libraryLastRefreshTime")
+    static let libraryLastRefresh = Key<Date?>("libraryLastRefresh")
     static let backupDocumentDirectory = Key<Bool>("backupDocumentDirectory", default: false)
 }
 
@@ -62,6 +62,9 @@ extension Defaults {
         }
         if let value = UserDefaults.standard.stringArray(forKey: "libraryFilterLanguageCodes") {
             UserDefaults.standard.setValue(value, forKeyPath: "libraryLanguageCodes")
+        }
+        if let value = UserDefaults.standard.data(forKey: "libraryLastRefreshTime") {
+            UserDefaults.standard.setValue(value, forKeyPath: "libraryLastRefresh")
         }
     }
 }

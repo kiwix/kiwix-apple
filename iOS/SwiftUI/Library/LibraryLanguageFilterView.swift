@@ -39,8 +39,8 @@ struct LibraryLanguageFilterView: View {
         .toolbar {
             ToolbarItem(placement: ToolbarItemPlacement.principal) {
                 Picker("Language Sorting Mode", selection: $viewModel.sortingMode, content: {
-                    Text("A-Z").tag(LibraryLanguageFilterSortingMode.alphabetically)
-                    Text("By Count").tag(LibraryLanguageFilterSortingMode.byCount)
+                    Text("A-Z").tag(LibraryLanguageSortingMode.alphabetically)
+                    Text("By Count").tag(LibraryLanguageSortingMode.byCount)
                 })
                 .pickerStyle(SegmentedPickerStyle())
             }
@@ -86,7 +86,7 @@ struct LibraryLanguageFilterView: View {
     class ViewModel: ObservableObject {
         @Published private(set) var showing: [Language] = []
         @Published private(set) var hiding: [Language] = []
-        @Published var sortingMode: LibraryLanguageFilterSortingMode {
+        @Published var sortingMode: LibraryLanguageSortingMode {
             didSet {
                 UserDefaults.standard.set(sortingMode.rawValue, forKey: "libraryLanguageSortingMode")
                 DispatchQueue.global(qos: .userInitiated).async { self.loadData() }
@@ -95,7 +95,7 @@ struct LibraryLanguageFilterView: View {
         
         init() {
             let sortingModeRawValue = UserDefaults.standard.string(forKey: "libraryLanguageSortingMode") ?? ""
-            sortingMode = LibraryLanguageFilterSortingMode(rawValue: sortingModeRawValue) ?? .alphabetically
+            sortingMode = LibraryLanguageSortingMode(rawValue: sortingModeRawValue) ?? .alphabetically
             DispatchQueue.global(qos: .userInitiated).async { self.loadData() }
         }
         
