@@ -12,8 +12,8 @@ import Defaults
 
 @available(iOS 13.0, *)
 struct LibraryInfoView: View {
-    @Default(.libraryAutoRefresh) var autoRefresh
-    @Default(.backupDocumentDirectory) var backupEnabled
+    @Default(.libraryAutoRefresh) var libraryAutoRefresh
+    @Default(.backupDocumentDirectory) var backupDocumentDirectory
     @ObservedObject private var viewModel = ViewModel()
     
     var body: some View {
@@ -43,10 +43,10 @@ struct LibraryInfoView: View {
                         Text("Never").foregroundColor(.secondary)
                     }
                 }
-                Toggle(isOn: $autoRefresh, label: { Text("Auto update") })
+                Toggle(isOn: $libraryAutoRefresh, label: { Text("Auto update") })
             }
             Section(header: Text("Backup"), footer: Text("Does not apply to files that were opened in place.")) {
-                Toggle(isOn: $backupEnabled, label: { Text("Include files in backup") })
+                Toggle(isOn: $backupDocumentDirectory, label: { Text("Include files in backup") })
             }
         }.insetGroupedListStyle()
     }
