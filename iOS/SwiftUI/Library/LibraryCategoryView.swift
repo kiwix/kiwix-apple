@@ -8,6 +8,7 @@
 
 import Combine
 import SwiftUI
+import Defaults
 import RealmSwift
 
 /// List of zim files under a single category,
@@ -69,10 +70,10 @@ struct LibraryCategoryView: View {
         
         init(category: ZimFile.Category) {
             self.category = category
-            defaultsSubscriber = UserDefaults.standard.publisher(for: \.libraryLanguageCodes)
+            defaultsSubscriber = Defaults.publisher(.libraryLanguageCodes)
                 .sink(receiveValue: { languageCodes in
-                    self.loadData(languageCodes: languageCodes)
-                    self.downloadFavicon(languageCodes: languageCodes)
+                    self.loadData(languageCodes: languageCodes.newValue)
+                    self.downloadFavicon(languageCodes: languageCodes.newValue)
                 })
         }
         

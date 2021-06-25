@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Defaults
 import RealmSwift
 
 /// Filter languages displaed in LibraryCategoryView.
@@ -106,7 +107,7 @@ struct LibraryLanguageFilterView: View {
                 self.sort(&showing)
                 self.sort(&hiding)
             }
-            UserDefaults.standard.libraryLanguageCodes.append(language.code)
+            Defaults[.libraryLanguageCodes].append(language.code)
         }
         
         func hide(_ language: Language) {
@@ -116,7 +117,7 @@ struct LibraryLanguageFilterView: View {
                 self.sort(&showing)
                 self.sort(&hiding)
             }
-            UserDefaults.standard.libraryLanguageCodes.removeAll(where: { language.code == $0 })
+            Defaults[.libraryLanguageCodes].removeAll(where: { language.code == $0 })
         }
         
         private func loadData() {
@@ -129,7 +130,7 @@ struct LibraryLanguageFilterView: View {
                 for code in codes {
                     let count = database.objects(ZimFile.self).filter("languageCode = %@", code).count
                     guard let language = Language(code: code, count: count) else { continue }
-                    if UserDefaults.standard.libraryLanguageCodes.contains(code) {
+                    if Defaults[.libraryLanguageCodes].contains(code) {
                         showing.append(language)
                     } else {
                         hiding.append(language)

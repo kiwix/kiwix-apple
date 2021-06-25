@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Defaults
 import RealmSwift
 
 @available(iOS 14.0, *)
@@ -36,7 +37,7 @@ struct LibrarySearchResultView: View {
     func update(_ searchText: String) {
         _zimFiles.filter = NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "title CONTAINS[cd] %@", searchText),
-            NSPredicate(format: "languageCode IN %@", UserDefaults.standard.libraryLanguageCodes),
+            NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]),
         ])
         LibraryService.shared.downloadFavicons(zimFiles: zimFiles.filter { $0.faviconData == nil })
     }

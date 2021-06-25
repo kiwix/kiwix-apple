@@ -52,7 +52,7 @@ extension Defaults {
         default:
             UserDefaults.standard.setValue("alwaysAsk", forKeyPath: "externalLinkLoadingPolicy")
         }
-        if let value = getStringValue(key: "libraryLanguageSortingMode") {
+        if let value = getStringValue(key: "libraryLangucageSortingMode") {
             UserDefaults.standard.setValue(value, forKeyPath: "libraryLanguageSortingMode")
         }
         if let value = getStringValue(key: "searchResultSnippetMode") {
@@ -75,10 +75,5 @@ extension UserDefaults {
     @objc var recentSearchTexts: [String] {
         get { stringArray(forKey: "recentSearchTexts") ?? [] }
         set { setValue(newValue, forKey: "recentSearchTexts") }
-    }
-    
-    @objc var libraryLanguageCodes: [String] {
-        get { stringArray(forKey: "libraryFilterLanguageCodes") ?? [] }
-        set { setValue(newValue, forKey: "libraryFilterLanguageCodes") }
     }
 }
