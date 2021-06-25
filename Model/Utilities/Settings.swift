@@ -70,10 +70,3 @@ extension Defaults {
         }
     }
 }
-
-extension UserDefaults {
-    @objc var recentSearchTexts: [String] {
-        get { stringArray(forKey: "recentSearchTexts") ?? [] }
-        set { setValue(newValue, forKey: "recentSearchTexts") }
-    }
-}

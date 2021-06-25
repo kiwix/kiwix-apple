@@ -8,6 +8,7 @@
 
 import Combine
 import SwiftUI
+import Defaults
 import RealmSwift
 
 @available(iOS 13.0, *)
@@ -86,7 +87,6 @@ private class ViewModel: ObservableObject {
     @Published var searchText = ""
     @Published var inProgress = false
     @Published var results = [SearchResult]()
-    @Published var recentSearchTexts = UserDefaults.standard.recentSearchTexts
     @ObservedResults(
         ZimFile.self,
         configuration: Realm.defaultConfig,
@@ -151,7 +151,7 @@ private class ViewModel: ObservableObject {
     }
     
     func updateRecentSearchTexts() {
-        var searchTexts = UserDefaults.standard.recentSearchTexts
+        var searchTexts = Defaults[.recentSearchTexts]
         if let index = searchTexts.firstIndex(of: searchText) {
             searchTexts.remove(at: index)
         }
@@ -159,13 +159,11 @@ private class ViewModel: ObservableObject {
         if searchTexts.count > 20 {
             searchTexts = Array(searchTexts[..<20])
         }
-        UserDefaults.standard.recentSearchTexts = searchTexts
-        recentSearchTexts = searchTexts
+        Defaults[.recentSearchTexts] = searchTexts
     }
     
     func clearRecentSearchTexts() {
-        UserDefaults.standard.recentSearchTexts = []
-        recentSearchTexts = []
+        Defaults[.recentSearchTexts] = []
     }
     
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<String>) {
@@ -262,10 +260,11 @@ private struct SplitView: UIViewControllerRepresentable {
 private struct FilterView: View {
     @State private var showAlert = false
     @EnvironmentObject var viewModel: ViewModel
+    @Default(.recentSearchTexts) var recentSearchTexts
     
     var body: some View {
         List {
-            if viewModel.recentSearchTexts.count > 0 {
+            if recentSearchTexts.count > 0 {
                 Section(header: HStack {
                     Text("Recent")
                     Spacer()
@@ -280,7 +279,7 @@ private struct FilterView: View {
                 }) {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
-                            ForEach(UserDefaults.standard.recentSearchTexts, id: \.hash) { searchText in
+                            ForEach(recentSearchTexts, id: \.hash) { searchText in
                                 Button {
                                     guard let url = URL(string: "kiwix://search/\(searchText)") else { return }
                                     UIApplication.shared.open(url)
