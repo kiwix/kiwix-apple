@@ -10,7 +10,7 @@ import SwiftUI
 import Defaults
 import RealmSwift
 
-@available(iOS 14.0, *)
+@available(iOS 13.0, *)
 struct LibrarySearchResultView: View {
     @ObservedResults(
         ZimFile.self,
