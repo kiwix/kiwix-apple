@@ -8,13 +8,14 @@
 
 import SwiftUI
 import RealmSwift
+import Defaults
 
 /// Information and action about a single zim file in a list view.
 @available(iOS 14.0, *)
 struct ZimFileDetailView: View {
     @StateRealmObject private var zimFile: ZimFile
     @State private var showingAlert = false
-    @AppStorage("downloadUsingCellular") private var downloadUsingCellular: Bool = false
+    @Default(.libraryDownloadUsingCellular) private var libraryDownloadUsingCellular
     
     let hasEnoughDiskSpace: Bool
     let viewModel: ViewModel
@@ -107,10 +108,10 @@ struct ZimFileDetailView: View {
         switch zimFile.state {
         case .remote:
             if hasEnoughDiskSpace {
-                Toggle("Cellular Data", isOn: $downloadUsingCellular)
+                Toggle("Cellular Data", isOn: $libraryDownloadUsingCellular)
                 ActionCell(title: "Download") {
                     DownloadService.shared.start(
-                        zimFileID: zimFile.fileID, allowsCellularAccess: downloadUsingCellular
+                        zimFileID: zimFile.fileID, allowsCellularAccess: libraryDownloadUsingCellular
                     )
                 }
             } else {
