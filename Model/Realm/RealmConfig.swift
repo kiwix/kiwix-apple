@@ -54,9 +54,12 @@ extension Realm {
                 }
                 if (oldSchemaVersion < 5) {
                     migration.enumerateObjects(ofType: ZimFile.className()) { oldObject, newObject in
+                        newObject?["creationDate"] = oldObject?["creationDate"] ?? Date()
                         newObject?["size"] = oldObject?["size"] ?? 0
                         newObject?["articleCount"] = oldObject?["articleCount"] ?? 0
                         newObject?["mediaCount"] = oldObject?["mediaCount"] ?? 0
+                        newObject?["creator"] = oldObject?["creator"] ?? ""
+                        newObject?["publisher"] = oldObject?["publisher"] ?? ""
                     }
                 }
             }

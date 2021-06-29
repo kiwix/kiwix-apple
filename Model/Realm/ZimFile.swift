@@ -15,7 +15,7 @@ import RealmSwift
 
 class ZimFile: Object, ObjectKeyIdentifiable {
     
-    // MARK: -  non-optional properties
+    // MARK: - nonnull properties
     
     @objc dynamic var fileID: String = ""
     @objc dynamic var groupID: String = ""
@@ -23,20 +23,15 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     @objc dynamic var fileDescription: String = ""
     @objc dynamic var languageCode: String = ""
     @objc dynamic var categoryRaw: String = Category.other.rawValue
-    
-    // MARK: -  optional properties
-    
-    @objc dynamic var creator: String?
-    @objc dynamic var publisher: String?
-    @objc dynamic var creationDate: Date?
-    @objc dynamic var downloadURL: String?
-    @objc dynamic var faviconURL: String?
-    @objc dynamic var faviconData: Data?
+    @objc dynamic var creationDate: Date = Date()
     @objc dynamic var size: Int64 = 0
     @objc dynamic var articleCount: Int64 = 0
     @objc dynamic var mediaCount: Int64 = 0
+    @objc dynamic var creator: String = ""
+    @objc dynamic var publisher: String = ""
+    @objc dynamic var stateRaw = State.remote.rawValue
     
-    // MARK: -  additional Properties
+    // MARK: - bool properties
     
     @objc dynamic var hasDetails = false
     @objc dynamic var hasIndex = false
@@ -44,11 +39,21 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     @objc dynamic var hasVideos = false
     @objc dynamic var includedInSearch = true
     
-    @objc dynamic var openInPlaceURLBookmark: Data?
-    @objc dynamic var stateRaw = State.remote.rawValue
+    // MARK: - favicon properties
+    
+    @objc dynamic var faviconURL: String?
+    @objc dynamic var faviconData: Data?
+    
+    // MARK: - download properties
+    
+    @objc dynamic var downloadURL: String?
     @objc dynamic var downloadTotalBytesWritten: Int64 = 0
     @objc dynamic var downloadResumeData: Data?
     @objc dynamic var downloadErrorDescription: String?
+    
+    // MARK: - open in place data
+    
+    @objc dynamic var openInPlaceURLBookmark: Data?
     
     // MARK: -  computed properties
     
@@ -85,8 +90,8 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     }
     
     var creationDateDescription: String? {
-        guard let creationDate = creationDate else { return nil }
-        return ZimFile.dateFormatter.string(from: creationDate)
+//        guard let creationDate = creationDate else { return "Unknown" }
+        ZimFile.dateFormatter.string(from: creationDate)
     }
     
     var sizeDescription: String? {
