@@ -12,16 +12,16 @@ import Defaults
 import RealmSwift
 
 /// List of zim files under a single category,
-@available(iOS 13.0, *)
+@available(iOS 14.0, *)
 struct LibraryCategoryView: View {
-    @ObservedObject private var viewModel: ViewModel
+    @StateObject private var viewModel: ViewModel
     
     let category: ZimFile.Category
     var zimFileTapped: (String, String) -> Void = { _, _ in }
     
     init(category: ZimFile.Category) {
         self.category = category
-        self._viewModel = ObservedObject(wrappedValue: ViewModel(category: category))
+        self._viewModel = StateObject(wrappedValue: ViewModel(category: category))
     }
     
     var body: some View {
@@ -36,9 +36,10 @@ struct LibraryCategoryView: View {
                 ForEach(viewModel.languages) { language in
                     Section(header: viewModel.languages.count > 1 ? Text(language.name) : nil) {
                         ForEach(viewModel.zimFiles[language.code, default: []]) { zimFile in
-                            Button(action: { zimFileTapped(zimFile.fileID, zimFile.title) }, label: {
-                                ZimFileCell(zimFile, accessories: [.onDevice, .disclosureIndicator])
-                            })
+                            Button(
+                                action: { zimFileTapped(zimFile.fileID, zimFile.title) },
+                                label: { ZimFileCell(zimFile, accessories: [.onDevice, .disclosureIndicator]) }
+                            )
                         }
                     }
                 }
@@ -61,7 +62,6 @@ struct LibraryCategoryView: View {
     class ViewModel: ObservableObject {
         @Published private(set) var languages: [Language] = []
         @Published private(set) var zimFiles = [String: [ZimFile]]()
-        private var favicon = [URL: Data]()
         
         let category: ZimFile.Category
         private let queue = DispatchQueue(label: "org.kiwix.library.category", qos: .userInitiated)
