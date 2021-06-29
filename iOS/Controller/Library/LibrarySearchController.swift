@@ -40,8 +40,8 @@ class LibrarySearchController: UITableViewController, UISearchResultsUpdating {
             }
             
             var zimFiles = self.database?.objects(ZimFile.self)
-            if Defaults[.libraryFilterLanguageCodes].count > 0 {
-                zimFiles = zimFiles?.filter("languageCode IN %@", Defaults[.libraryFilterLanguageCodes])
+            if Defaults[.libraryLanguageCodes].count > 0 {
+                zimFiles = zimFiles?.filter("languageCode IN %@", Defaults[.libraryLanguageCodes])
             }
             zimFiles = zimFiles?.filter("title CONTAINS[cd] %@", searchText)
             

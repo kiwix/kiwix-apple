@@ -8,6 +8,7 @@
 
 import Combine
 import SwiftUI
+import Defaults
 import RealmSwift
 
 /// List of zim files under a single category,
@@ -24,20 +25,21 @@ struct LibraryCategoryView: View {
     }
     
     var body: some View {
-        if viewModel.languages.isEmpty {
+        if let languages = viewModel.languages, languages.isEmpty {
             InfoView(
                 imageSystemName: "text.book.closed",
                 title: "No Zim File",
                 help: "Enable some other languages to see zim files under this category."
             )
-        } else {
+        } else if let languages = viewModel.languages {
             List {
-                ForEach(viewModel.languages) { language in
-                    Section(header: viewModel.languages.count > 1 ? Text(language.name) : nil) {
+                ForEach(languages) { language in
+                    Section(header: languages.count > 1 ? Text(language.name) : nil) {
                         ForEach(viewModel.zimFiles[language.code, default: []]) { zimFile in
-                            Button(action: { zimFileTapped(zimFile.fileID, zimFile.title) }, label: {
-                                ZimFileCell(zimFile, accessories: [.onDevice, .disclosureIndicator])
-                            })
+                            Button(
+                                action: { zimFileTapped(zimFile.fileID, zimFile.title) },
+                                label: { ZimFileCell(zimFile, accessories: [.onDevice, .disclosureIndicator]) }
+                            )
                         }
                     }
                 }
@@ -58,9 +60,8 @@ struct LibraryCategoryView: View {
     }
     
     class ViewModel: ObservableObject {
-        @Published private(set) var languages: [Language] = []
+        @Published private(set) var languages: [Language]?
         @Published private(set) var zimFiles = [String: [ZimFile]]()
-        private var favicon = [URL: Data]()
         
         let category: ZimFile.Category
         private let queue = DispatchQueue(label: "org.kiwix.library.category", qos: .userInitiated)
@@ -69,10 +70,10 @@ struct LibraryCategoryView: View {
         
         init(category: ZimFile.Category) {
             self.category = category
-            defaultsSubscriber = UserDefaults.standard.publisher(for: \.libraryLanguageCodes)
+            defaultsSubscriber = Defaults.publisher(.libraryLanguageCodes)
                 .sink(receiveValue: { languageCodes in
-                    self.loadData(languageCodes: languageCodes)
-                    self.downloadFavicon(languageCodes: languageCodes)
+                    self.loadData(languageCodes: languageCodes.newValue)
+                    self.downloadFavicon(languageCodes: languageCodes.newValue)
                 })
         }
         

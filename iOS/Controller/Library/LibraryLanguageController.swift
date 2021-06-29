@@ -15,7 +15,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private let sortBy: UISegmentedControl
-    private let sortingModes: [LibraryLanguageFilterSortingMode] = [.alphabetically, .byCount]
+    private let sortingModes: [LibraryLanguageSortingMode] = [.alphabetically, .byCount]
 
     private var visible: [Language] = []
     private var hidden: [Language] = []
@@ -40,7 +40,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
             } catch { return [String: Int]() }
         }()
 
-        let visibleLanguageCodes = Defaults[.libraryFilterLanguageCodes]
+        let visibleLanguageCodes = Defaults[.libraryLanguageCodes]
         for (languageCode, zimFileCount) in zimFileCount {
             guard let languageName = Locale.current.localizedString(forLanguageCode: languageCode) else { continue }
             let language = Language(code: languageCode, name: languageName, count: zimFileCount)
@@ -78,7 +78,7 @@ class LibraryLanguageController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        Defaults[.libraryFilterLanguageCodes] = visible.map({$0.code})
+        Defaults[.libraryLanguageCodes] = visible.map({$0.code})
         dismissCallback?()
     }
     

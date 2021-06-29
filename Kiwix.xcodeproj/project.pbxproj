@@ -1681,7 +1681,7 @@
 			repositoryURL = "https://github.com/sindresorhus/Defaults";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 4.2.0;
+				minimumVersion = 5.0.0;
 			};
 		};
 		97CE15B523B26EB300378D9F /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
