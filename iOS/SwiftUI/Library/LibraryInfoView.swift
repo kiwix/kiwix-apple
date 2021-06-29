@@ -10,10 +10,10 @@ import Combine
 import SwiftUI
 import Defaults
 
-@available(iOS 13.0, *)
+@available(iOS 14.0, *)
 struct LibraryInfoView: View {
-    @Default(.libraryAutoRefresh) var libraryAutoRefresh
-    @Default(.backupDocumentDirectory) var backupDocumentDirectory
+    @Default(.libraryAutoRefresh) private var libraryAutoRefresh
+    @Default(.backupDocumentDirectory) private var backupDocumentDirectory
     @ObservedObject private var viewModel = ViewModel()
     
     var body: some View {
@@ -48,25 +48,26 @@ struct LibraryInfoView: View {
             Section(header: Text("Backup"), footer: Text("Does not apply to files that were opened in place.")) {
                 Toggle(isOn: $backupDocumentDirectory, label: { Text("Include files in backup") })
             }
-        }.insetGroupedListStyle()
+        }
+        .listStyle(InsetGroupedListStyle())
+        .onChange(of: libraryAutoRefresh, perform: { value in
+            LibraryService.shared.applyAutoUpdateSetting()
+        })
+        .onChange(of: backupDocumentDirectory, perform: { isEnabled in
+            LibraryService.shared.applyBackupSetting(isBackupEnabled: isEnabled)
+        })
     }
     
     private class ViewModel: ObservableObject {
         @Published var isRefreshing = false
         
         private var operationObserver: NSKeyValueObservation?
-        private var backupDocumentDirectoryCancellable: AnyCancellable?
-        private var libraryAutoRefreshCancellable: AnyCancellable?
         
         init() {
             if let operation = LibraryOperationQueue.shared.currentOPDSRefreshOperation {
                 isRefreshing = !operation.isFinished
                 configureObserver(operation)
             }
-            backupDocumentDirectoryCancellable = Defaults.publisher(.backupDocumentDirectory)
-                .sink { enabled in LibraryService.shared.applyBackupSetting(isBackupEnabled: enabled.newValue) }
-            libraryAutoRefreshCancellable = Defaults.publisher(.libraryAutoRefresh)
-                .sink { _ in LibraryService.shared.applyAutoUpdateSetting() }
         }
         
         func refresh() {
