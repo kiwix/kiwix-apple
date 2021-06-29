@@ -130,7 +130,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                         return 0
                     }
                 }()
-                self.actions = ((zimFile.size.value ?? 0) <= freespace ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]], [])
+                self.actions = (zimFile.size <= freespace ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]], [])
 
                 // when state changed from onDevice to remote, and when split view controller is collapsed
                 // pop this view controller
@@ -233,10 +233,10 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
             cell.detailTextLabel?.text = zimFile.hasDetails ? NSLocalizedString("Yes", comment: "Book Detail Cell, has details") : NSLocalizedString("No", comment: "Book Detail Cell, does not have details")
         case .articleCount:
             cell.textLabel?.text = NSLocalizedString("Article Count", comment: "Book Detail Cell")
-            cell.detailTextLabel?.text = countFormatter.string(from: NSNumber(value: zimFile.articleCount.value ?? 0))
+            cell.detailTextLabel?.text = countFormatter.string(from: NSNumber(value: zimFile.articleCount))
         case .mediaCount:
             cell.textLabel?.text = NSLocalizedString("Media Count", comment: "Book Detail Cell")
-            cell.detailTextLabel?.text = countFormatter.string(from: NSNumber(value: zimFile.mediaCount.value ?? 0))
+            cell.detailTextLabel?.text = countFormatter.string(from: NSNumber(value: zimFile.mediaCount))
         case .creator:
             cell.textLabel?.text = NSLocalizedString("Creator", comment: "Book Detail Cell")
             cell.detailTextLabel?.text = zimFile.creator

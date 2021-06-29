@@ -32,9 +32,9 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     @objc dynamic var downloadURL: String?
     @objc dynamic var faviconURL: String?
     @objc dynamic var faviconData: Data?
-    let size = RealmProperty<Int64?>()
-    let articleCount = RealmProperty<Int64?>()
-    let mediaCount = RealmProperty<Int64?>()
+    @objc dynamic var size: Int64 = 0
+    @objc dynamic var articleCount: Int64 = 0
+    @objc dynamic var mediaCount: Int64 = 0
     
     // MARK: -  additional Properties
     
@@ -85,13 +85,11 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     }
     
     var articleCountShortDescription: String? {
-        guard let articleCount = self.articleCount.value else { return nil }
-        return NumberAbbrevationFormatter.string(from: Int(articleCount))
+        return NumberAbbrevationFormatter.string(from: articleCount)
     }
     
     var articleCountDescription: String? {
-        guard let articleCount = self.articleCount.value else { return nil }
-        return NumberAbbrevationFormatter.string(from: Int(articleCount)) + (articleCount > 1 ? " articles" : " article")
+        return NumberAbbrevationFormatter.string(from: articleCount) + (articleCount > 1 ? " articles" : " article")
     }
     
     var creationDateDescription: String? {
@@ -100,17 +98,15 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     }
     
     var sizeDescription: String? {
-        guard let size = size.value else { return nil }
-        return ByteCountFormatter.string(fromByteCount: size, countStyle: .file)
+        ByteCountFormatter.string(fromByteCount: size, countStyle: .file)
     }
     
     var downloadedSizeDescription: String? {
-        return ByteCountFormatter.string(fromByteCount: downloadTotalBytesWritten, countStyle: .file)
+        ByteCountFormatter.string(fromByteCount: downloadTotalBytesWritten, countStyle: .file)
     }
     
     var downloadedPercentDescription: String? {
-        guard let size = size.value else { return nil }
-        return ZimFile.percentFormatter.string(from: NSNumber(value: Double(downloadTotalBytesWritten) / Double(size)))
+        ZimFile.percentFormatter.string(from: NSNumber(value: Double(downloadTotalBytesWritten) / Double(size)))
     }
     
     // MARK: - Formatters
@@ -211,7 +207,7 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     }
     
     class NumberAbbrevationFormatter {
-        static func string(from value: Int) -> String {
+        static func string(from value: Int64) -> String {
             let sign = ((value < 0) ? "-" : "" )
             let abs = Swift.abs(value)
             guard abs >= 1000 else {return "\(sign)\(abs)"}

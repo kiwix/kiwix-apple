@@ -27,9 +27,8 @@ struct ZimFileDetailView: View {
                 guard let freeSpace = try? FileManager.default
                         .urls(for: .documentDirectory, in: .userDomainMask)
                         .first?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
-                        .volumeAvailableCapacityForImportantUsage,
-                      let fileSize = zimFile.size.value else { return false }
-                return fileSize <= freeSpace
+                        .volumeAvailableCapacityForImportantUsage else { return false }
+                return zimFile.size <= freeSpace
             }()
             self.viewModel = ViewModel(zimFile: zimFile)
         } else {
@@ -59,8 +58,8 @@ struct ZimFileDetailView: View {
                 CheckmarkCell(title: "Details", isChecked: zimFile.hasDetails)
             }
             Section {
-                CountCell(title: "Article Count", count: zimFile.articleCount.value)
-                CountCell(title: "Media Count", count: zimFile.mediaCount.value)
+                CountCell(title: "Article Count", count: zimFile.articleCount)
+                CountCell(title: "Media Count", count: zimFile.mediaCount)
             }
             Section {
                 Cell(title: "Creator", detail: zimFile.creator)

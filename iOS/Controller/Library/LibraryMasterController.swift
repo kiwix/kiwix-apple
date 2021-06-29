@@ -288,10 +288,10 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
             case .downloadInProgress:
                 let bytesWrittenFormatted = ByteCountFormatter.string(fromByteCount: zimFile.downloadTotalBytesWritten,
                                                                       countStyle: .file)
-                guard let fileSize = zimFile.size.value, let sizeDescription = zimFile.sizeDescription else {
+                guard let sizeDescription = zimFile.sizeDescription else {
                     return bytesWrittenFormatted
                 }
-                let percent = NSNumber(value: Double(zimFile.downloadTotalBytesWritten) / Double(fileSize))
+                let percent = NSNumber(value: Double(zimFile.downloadTotalBytesWritten) / Double(zimFile.size))
                 let percentFormatted = NumberFormatter.localizedString(from: percent, number: .percent)
                 return "\(bytesWrittenFormatted) / \(sizeDescription), \(percentFormatted)"
             case .downloadPaused:
