@@ -6,28 +6,16 @@
 //  Copyright © 2021 Chris Li. All rights reserved.
 //
 
-import Combine
 import SwiftUI
 import Defaults
 import RealmSwift
 
 /// Filter languages displaed in LibraryCategoryView.
-@available(iOS 13.0, *)
+@available(iOS 14.0, *)
 struct LibraryLanguageFilterView: View {
-    @Default(.libraryLanguageSortingMode) var libraryLanguageSortingMode
-    @ObservedObject private var viewModel = ViewModel()
+    @StateObject private var viewModel = ViewModel()
     
     var body: some View {
-        if #available(iOS 14.0, *) {
-            list.toolbar { ToolbarItem(placement: ToolbarItemPlacement.principal) { sortingMode } }
-        } else {
-            list.navigationBarItems(trailing: HStack {
-                sortingMode
-            })
-        }
-    }
-    
-    var list: some View {
         List {
             if viewModel.showing.count > 0 {
                 Section(header: Text("Showing")) {
@@ -47,15 +35,17 @@ struct LibraryLanguageFilterView: View {
                     }
                 }
             }
-        }.insetGroupedListStyle()
-    }
-    
-    var sortingMode: some View {
-        Picker("Language Sorting Mode", selection: $libraryLanguageSortingMode, content: {
-            Text("A-Z").tag(LibraryLanguageSortingMode.alphabetically)
-            Text("By Count").tag(LibraryLanguageSortingMode.byCount)
-        })
-        .pickerStyle(SegmentedPickerStyle())
+        }
+        .listStyle(GroupedListStyle())
+        .toolbar {
+            ToolbarItem(placement: ToolbarItemPlacement.principal) {
+                Picker("Language Sorting Mode", selection: $viewModel.sortingMode, content: {
+                    Text("A-Z").tag(LibraryLanguageSortingMode.alphabetically)
+                    Text("By Count").tag(LibraryLanguageSortingMode.byCount)
+                })
+                .pickerStyle(SegmentedPickerStyle())
+            }
+        }
     }
     
     struct Language: Identifiable, Comparable {
@@ -97,12 +87,17 @@ struct LibraryLanguageFilterView: View {
     class ViewModel: ObservableObject {
         @Published private(set) var showing: [Language] = []
         @Published private(set) var hiding: [Language] = []
-        private var libraryLanguageSortingModeCancellable: AnyCancellable?
-        
-        init() {
-            libraryLanguageSortingModeCancellable = Defaults.publisher(.libraryLanguageSortingMode).sink { _ in
+        @Published var sortingMode: LibraryLanguageSortingMode {
+            didSet {
+                UserDefaults.standard.set(sortingMode.rawValue, forKey: "libraryLanguageSortingMode")
                 DispatchQueue.global(qos: .userInitiated).async { self.loadData() }
             }
+        }
+        
+        init() {
+            let sortingModeRawValue = UserDefaults.standard.string(forKey: "libraryLanguageSortingMode") ?? ""
+            sortingMode = LibraryLanguageSortingMode(rawValue: sortingModeRawValue) ?? .alphabetically
+            DispatchQueue.global(qos: .userInitiated).async { self.loadData() }
         }
         
         func show(_ language: Language) {
@@ -153,7 +148,7 @@ struct LibraryLanguageFilterView: View {
         }
         
         private func sort(_ languages: inout [Language]) {
-            switch Defaults[.libraryLanguageSortingMode] {
+            switch sortingMode {
             case .alphabetically:
                 languages.sort { $0 < $1 }
             case .byCount:
