@@ -27,7 +27,7 @@ extension Realm {
         
         // migrations
         var config = Realm.Configuration(
-            schemaVersion: 4,
+            schemaVersion: 5,
             migrationBlock: { migration, oldSchemaVersion in
                 print("migration, oldSchemaVersion \(oldSchemaVersion)")
                 if (oldSchemaVersion < 2) {
@@ -51,6 +51,13 @@ extension Realm {
                 }
                 if (oldSchemaVersion < 4) {
                     migration.renameProperty(onType: ZimFile.className(), from: "id", to: "fileID")
+                }
+                if (oldSchemaVersion < 5) {
+                    migration.enumerateObjects(ofType: ZimFile.className()) { oldObject, newObject in
+                        newObject?["size"] = oldObject?["size"] ?? 0
+                        newObject?["articleCount"] = oldObject?["articleCount"] ?? 0
+                        newObject?["mediaCount"] = oldObject?["mediaCount"] ?? 0
+                    }
                 }
             }
         )
