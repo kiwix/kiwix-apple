@@ -52,10 +52,6 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     
     // MARK: -  computed properties
     
-    var localizedLanguageName: String {
-        Locale.current.localizedString(forLanguageCode: languageCode) ?? "Unknown"
-    }
-    
     var state: State {
         get { State(rawValue: stateRaw) ?? .remote }
         set { stateRaw = newValue.rawValue }
@@ -84,12 +80,8 @@ class ZimFile: Object, ObjectKeyIdentifiable {
             .joined(separator: ", ")
     }
     
-    var articleCountShortDescription: String? {
-        return NumberAbbrevationFormatter.string(from: articleCount)
-    }
-    
     var articleCountDescription: String? {
-        return NumberAbbrevationFormatter.string(from: articleCount) + (articleCount > 1 ? " articles" : " article")
+        NumberAbbrevationFormatter.string(from: articleCount)
     }
     
     var creationDateDescription: String? {
