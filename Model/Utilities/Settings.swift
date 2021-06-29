@@ -64,6 +64,7 @@ extension Defaults {
         }
         if let value = UserDefaults.standard.stringArray(forKey: "libraryFilterLanguageCodes") {
             UserDefaults.standard.setValue(value, forKeyPath: "libraryLanguageCodes")
+            UserDefaults.standard.removeObject(forKey: "libraryFilterLanguageCodes")
         }
         if let value = Defaults[.libraryLastRefreshTime] {
             Defaults[.libraryLastRefresh] = value
