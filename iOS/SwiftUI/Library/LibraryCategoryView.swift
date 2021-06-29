@@ -25,16 +25,16 @@ struct LibraryCategoryView: View {
     }
     
     var body: some View {
-        if viewModel.languages.isEmpty {
+        if let languages = viewModel.languages, languages.isEmpty {
             InfoView(
                 imageSystemName: "text.book.closed",
                 title: "No Zim File",
                 help: "Enable some other languages to see zim files under this category."
             )
-        } else {
+        } else if let languages = viewModel.languages {
             List {
-                ForEach(viewModel.languages) { language in
-                    Section(header: viewModel.languages.count > 1 ? Text(language.name) : nil) {
+                ForEach(languages) { language in
+                    Section(header: languages.count > 1 ? Text(language.name) : nil) {
                         ForEach(viewModel.zimFiles[language.code, default: []]) { zimFile in
                             Button(
                                 action: { zimFileTapped(zimFile.fileID, zimFile.title) },
@@ -60,7 +60,7 @@ struct LibraryCategoryView: View {
     }
     
     class ViewModel: ObservableObject {
-        @Published private(set) var languages: [Language] = []
+        @Published private(set) var languages: [Language]?
         @Published private(set) var zimFiles = [String: [ZimFile]]()
         
         let category: ZimFile.Category
