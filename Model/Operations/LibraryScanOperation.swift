@@ -113,8 +113,6 @@ class LibraryScanOperation: Operation {
                         "hasDetails": metadatum.hasDetails,
                         "hasPictures": metadatum.hasPictures,
                         "hasVideos": metadatum.hasVideos,
-                        "openInPlaceURLBookmark": ZimFileService.shared.getFileURLBookmark(
-                            zimFileID: metadatum.identifier),
                         "stateRaw": ZimFile.State.onDevice.rawValue,
                     ]
                     database.create(ZimFile.self, value: value, update: .modified)
