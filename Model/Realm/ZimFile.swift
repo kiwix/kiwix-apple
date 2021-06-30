@@ -15,7 +15,7 @@ import RealmSwift
 
 class ZimFile: Object, ObjectKeyIdentifiable {
     
-    // MARK: -  non-optional properties
+    // MARK: - nonnull properties
     
     @objc dynamic var fileID: String = ""
     @objc dynamic var groupID: String = ""
@@ -23,20 +23,15 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     @objc dynamic var fileDescription: String = ""
     @objc dynamic var languageCode: String = ""
     @objc dynamic var categoryRaw: String = Category.other.rawValue
+    @objc dynamic var creationDate: Date = Date()
+    @objc dynamic var size: Int64 = 0
+    @objc dynamic var articleCount: Int64 = 0
+    @objc dynamic var mediaCount: Int64 = 0
+    @objc dynamic var creator: String = ""
+    @objc dynamic var publisher: String = ""
+    @objc dynamic var stateRaw = State.remote.rawValue
     
-    // MARK: -  optional properties
-    
-    @objc dynamic var creator: String?
-    @objc dynamic var publisher: String?
-    @objc dynamic var creationDate: Date?
-    @objc dynamic var downloadURL: String?
-    @objc dynamic var faviconURL: String?
-    @objc dynamic var faviconData: Data?
-    let size = RealmProperty<Int64?>()
-    let articleCount = RealmProperty<Int64?>()
-    let mediaCount = RealmProperty<Int64?>()
-    
-    // MARK: -  additional Properties
+    // MARK: - bool properties
     
     @objc dynamic var hasDetails = false
     @objc dynamic var hasIndex = false
@@ -44,17 +39,23 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     @objc dynamic var hasVideos = false
     @objc dynamic var includedInSearch = true
     
-    @objc dynamic var openInPlaceURLBookmark: Data?
-    @objc dynamic var stateRaw = State.remote.rawValue
+    // MARK: - favicon properties
+    
+    @objc dynamic var faviconURL: String?
+    @objc dynamic var faviconData: Data?
+    
+    // MARK: - download properties
+    
+    @objc dynamic var downloadURL: String?
     @objc dynamic var downloadTotalBytesWritten: Int64 = 0
     @objc dynamic var downloadResumeData: Data?
     @objc dynamic var downloadErrorDescription: String?
     
-    // MARK: -  computed properties
+    // MARK: - open in place data
     
-    var localizedLanguageName: String {
-        Locale.current.localizedString(forLanguageCode: languageCode) ?? "Unknown"
-    }
+    @objc dynamic var openInPlaceURLBookmark: Data?
+    
+    // MARK: -  computed properties
     
     var state: State {
         get { State(rawValue: stateRaw) ?? .remote }
@@ -84,33 +85,25 @@ class ZimFile: Object, ObjectKeyIdentifiable {
             .joined(separator: ", ")
     }
     
-    var articleCountShortDescription: String? {
-        guard let articleCount = self.articleCount.value else { return nil }
-        return NumberAbbrevationFormatter.string(from: Int(articleCount))
-    }
-    
     var articleCountDescription: String? {
-        guard let articleCount = self.articleCount.value else { return nil }
-        return NumberAbbrevationFormatter.string(from: Int(articleCount)) + (articleCount > 1 ? " articles" : " article")
+        NumberAbbrevationFormatter.string(from: articleCount)
     }
     
     var creationDateDescription: String? {
-        guard let creationDate = creationDate else { return nil }
-        return ZimFile.dateFormatter.string(from: creationDate)
+//        guard let creationDate = creationDate else { return "Unknown" }
+        ZimFile.dateFormatter.string(from: creationDate)
     }
     
     var sizeDescription: String? {
-        guard let size = size.value else { return nil }
-        return ByteCountFormatter.string(fromByteCount: size, countStyle: .file)
+        ByteCountFormatter.string(fromByteCount: size, countStyle: .file)
     }
     
     var downloadedSizeDescription: String? {
-        return ByteCountFormatter.string(fromByteCount: downloadTotalBytesWritten, countStyle: .file)
+        ByteCountFormatter.string(fromByteCount: downloadTotalBytesWritten, countStyle: .file)
     }
     
     var downloadedPercentDescription: String? {
-        guard let size = size.value else { return nil }
-        return ZimFile.percentFormatter.string(from: NSNumber(value: Double(downloadTotalBytesWritten) / Double(size)))
+        ZimFile.percentFormatter.string(from: NSNumber(value: Double(downloadTotalBytesWritten) / Double(size)))
     }
     
     // MARK: - Formatters
@@ -211,7 +204,7 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     }
     
     class NumberAbbrevationFormatter {
-        static func string(from value: Int) -> String {
+        static func string(from value: Int64) -> String {
             let sign = ((value < 0) ? "-" : "" )
             let abs = Swift.abs(value)
             guard abs >= 1000 else {return "\(sign)\(abs)"}
