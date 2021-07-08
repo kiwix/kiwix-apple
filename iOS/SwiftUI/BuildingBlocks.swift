@@ -218,9 +218,7 @@ struct ZimFileCell: View {
             Favicon(data: zimFile.faviconData)
             VStack(alignment: .leading) {
                 Text(zimFile.title).lineLimit(1)
-                Text([zimFile.sizeDescription, zimFile.creationDateDescription, zimFile.articleCountDescription]
-                        .compactMap({$0})
-                        .joined(separator: ", ")).lineLimit(1).font(.footnote)
+                Text(zimFile.description).lineLimit(1).font(.footnote)
             }.foregroundColor(.primary)
             Spacer()
             if accessories.contains(.onDevice), zimFile.state == .onDevice {
@@ -246,16 +244,24 @@ struct ZimFileCell: View {
 
 @available(iOS 13.0, *)
 struct ZimFileDownloadDetailView: View {
-    let zimFile: ZimFile
+    static private let percentFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .percent
+        return formatter
+    }()
+    private let zimFile: ZimFile
     
     init(_ zimFile: ZimFile) {
         self.zimFile = zimFile
     }
     
     var progress: String {
-        [zimFile.downloadedSizeDescription, zimFile.downloadedPercentDescription]
-            .compactMap({ $0 })
-            .joined(separator: " - ")
+        [
+            ByteCountFormatter.string(fromByteCount: zimFile.downloadTotalBytesWritten, countStyle: .file),
+            ZimFileDownloadDetailView.percentFormatter.string(
+                from: NSNumber(value: Double(zimFile.downloadTotalBytesWritten) / Double(zimFile.size))
+            )
+        ].compactMap({ $0 }).joined(separator: " - ")
     }
     
     var body: some View {

@@ -270,9 +270,7 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
     func configure(localCell cell: TableViewCell, row: Int, animated: Bool = false) {
         guard let zimFile = localZimFiles?[row] else {return}
         cell.titleLabel.text = zimFile.title
-        cell.detailLabel.text = [
-            zimFile.sizeDescription, zimFile.creationDateDescription, zimFile.articleCountDescription
-        ].compactMap({ $0 }).joined(separator: ", ")
+        cell.detailLabel.text = zimFile.description
         cell.thumbImageView.image = UIImage(data: zimFile.faviconData ?? Data()) ?? #imageLiteral(resourceName: "GenericZimFile")
         cell.thumbImageView.contentMode = .scaleAspectFit
         cell.accessoryType = .disclosureIndicator
@@ -288,12 +286,9 @@ class LibraryMasterController: UIViewController, UIDocumentPickerDelegate, UITab
             case .downloadInProgress:
                 let bytesWrittenFormatted = ByteCountFormatter.string(fromByteCount: zimFile.downloadTotalBytesWritten,
                                                                       countStyle: .file)
-                guard let sizeDescription = zimFile.sizeDescription else {
-                    return bytesWrittenFormatted
-                }
                 let percent = NSNumber(value: Double(zimFile.downloadTotalBytesWritten) / Double(zimFile.size))
                 let percentFormatted = NumberFormatter.localizedString(from: percent, number: .percent)
-                return "\(bytesWrittenFormatted) / \(sizeDescription), \(percentFormatted)"
+                return "\(bytesWrittenFormatted) / \(zimFile.sizeDescription), \(percentFormatted)"
             case .downloadPaused:
                 return NSLocalizedString("Paused", comment: "Zim file download state")
             case .downloadError:

@@ -48,9 +48,7 @@ class LibraryController: UISplitViewController, UISplitViewControllerDelegate {
 class TableViewCellConfigurator: UIViewController {
     class func configure(_ cell: TableViewCell, zimFile: ZimFile, tableView: UITableView, indexPath: IndexPath) {
         cell.titleLabel.text = zimFile.title
-        cell.detailLabel.text = [
-            zimFile.sizeDescription, zimFile.creationDateDescription, zimFile.articleCountDescription
-        ].compactMap({ $0 }).joined(separator: ", ")
+        cell.detailLabel.text = zimFile.description
         cell.accessoryType = .disclosureIndicator
         cell.thumbImageView.contentMode = .scaleAspectFit
 

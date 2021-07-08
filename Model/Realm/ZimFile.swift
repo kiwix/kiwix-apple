@@ -74,47 +74,27 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     }
     
     override static func indexedProperties() -> [String] {
-        ["name", "title", "languageCode", "categoryRaw", "creationDate", "includedInSearch", "stateRaw"]
+        ["name", "title", "languageCode", "categoryRaw", "creationDate", "stateRaw", "includedInSearch", "faviconURL"]
     }
     
     // MARK: - Descriptions
     
     override var description: String {
-        [self.sizeDescription, self.creationDateDescription, self.articleCountDescription]
-            .compactMap({ $0 })
+        [self.sizeDescription, self.creationDateDescription, NumberAbbrevationFormatter.string(from: articleCount)]
             .joined(separator: ", ")
     }
     
-    var articleCountDescription: String? {
-        NumberAbbrevationFormatter.string(from: articleCount)
-    }
-    
-    var creationDateDescription: String? {
-//        guard let creationDate = creationDate else { return "Unknown" }
+    var creationDateDescription: String {
         ZimFile.dateFormatter.string(from: creationDate)
     }
     
-    var sizeDescription: String? {
+    var sizeDescription: String {
         ByteCountFormatter.string(fromByteCount: size, countStyle: .file)
-    }
-    
-    var downloadedSizeDescription: String? {
-        ByteCountFormatter.string(fromByteCount: downloadTotalBytesWritten, countStyle: .file)
-    }
-    
-    var downloadedPercentDescription: String? {
-        ZimFile.percentFormatter.string(from: NSNumber(value: Double(downloadTotalBytesWritten) / Double(size)))
     }
     
     // MARK: - Formatters
     
-    static let percentFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .percent
-        return formatter
-    }()
-    
-    static let dateFormatter: DateFormatter = {
+    static private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM-dd-yyyy"
         formatter.dateStyle = .medium
