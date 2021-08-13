@@ -8,9 +8,64 @@
 
 import SwiftUI
 import UIKit
+import RealmSwift
 
 @available(iOS 14.0, *)
-class LibraryViewController: UISplitViewController, UISplitViewControllerDelegate, UISearchResultsUpdating {
+class LibraryViewController: UISplitViewController, UISplitViewControllerDelegate {
+    private let primaryController = UIHostingController(rootView: LibraryPrimaryView())
+    private var zimFilesToken: NotificationToken?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        presentsWithGesture = false
+        
+        primaryController.navigationItem.title = "Library"
+        primaryController.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .done, target: self, action: #selector(dismissController)
+        )
+        
+        configureToken()
+    }
+    
+    private func configureToken() {
+        zimFilesToken = (try? Realm())?.objects(ZimFile.self)
+            .filter(NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue))
+            .observe { [unowned self] changes in
+                switch changes {
+                case .initial(let zimFiles), .update(let zimFiles, _, _, _):
+                    if zimFiles.isEmpty {
+                        self.preferredDisplayMode = .secondaryOnly
+                        viewControllers = [UIViewController(), {
+                            let controller = UITableViewController()
+                            controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
+                                barButtonSystemItem: .done, target: self, action: #selector(dismissController)
+                            )
+                            let navigationController = UINavigationController(rootViewController: controller)
+                            navigationController.navigationBar.prefersLargeTitles = true
+                            return navigationController
+                        }()]
+                    } else {
+                        self.preferredDisplayMode = .allVisible
+                        viewControllers = [{
+                            let controller = UINavigationController(rootViewController: primaryController)
+                            controller.navigationBar.prefersLargeTitles = true
+                            return controller
+                        }()]
+                    }
+                default:
+                    break
+                }
+            }
+    }
+    
+    @objc private func dismissController() {
+        self.dismiss(animated: true)
+    }
+}
+
+@available(iOS 14.0, *)
+class LibraryViewController_old: UISplitViewController, UISplitViewControllerDelegate, UISearchResultsUpdating {
     private let doneButton = UIBarButtonItem(systemItem: .done)
     private let primaryController = UIHostingController(rootView: LibraryPrimaryView())
     private let searchResultsController = UIHostingController(rootView: LibrarySearchResultView())
