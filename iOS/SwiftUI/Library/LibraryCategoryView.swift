@@ -12,16 +12,16 @@ import Defaults
 import RealmSwift
 
 /// List of zim files under a single category,
-@available(iOS 14.0, *)
+@available(iOS 13.0, *)
 struct LibraryCategoryView: View {
-    @StateObject private var viewModel: ViewModel
+    @ObservedObject private var viewModel: ViewModel
     
     let category: ZimFile.Category
     var zimFileTapped: (String, String) -> Void = { _, _ in }
     
     init(category: ZimFile.Category) {
         self.category = category
-        self._viewModel = StateObject(wrappedValue: ViewModel(category: category))
+        self._viewModel = ObservedObject(wrappedValue: ViewModel(category: category))
     }
     
     var body: some View {

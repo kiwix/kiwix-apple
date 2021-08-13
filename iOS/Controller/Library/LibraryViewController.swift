@@ -67,7 +67,10 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
     }
     
     private func showCategory(_ category: ZimFile.Category) {
-        
+        let controller = UIHostingController(rootView: LibraryCategoryView(category: category))
+        controller.title = category.description
+        controller.navigationItem.largeTitleDisplayMode = .never
+        showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
     }
 }
 
