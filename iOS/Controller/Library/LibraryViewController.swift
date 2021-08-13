@@ -10,13 +10,14 @@ import SwiftUI
 import UIKit
 import RealmSwift
 
-@available(iOS 14.0, *)
+@available(iOS 13.0, *)
 class LibraryViewController: UISplitViewController, UISplitViewControllerDelegate {
     private let primaryController = UIHostingController(rootView: LibraryPrimaryView())
     private var zimFilesToken: NotificationToken?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureToken()
         
         presentsWithGesture = false
         
@@ -24,8 +25,7 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
         primaryController.navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done, target: self, action: #selector(dismissController)
         )
-        
-        configureToken()
+        primaryController.rootView.categorySelected = { [unowned self] category in self.showCategory(category) }
     }
     
     private func configureToken() {
@@ -52,6 +52,7 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
                             controller.navigationBar.prefersLargeTitles = true
                             return controller
                         }()]
+                        showCategory(.wikipedia)
                     }
                 default:
                     break
@@ -59,8 +60,14 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
             }
     }
     
+    // MARK: - Action
+    
     @objc private func dismissController() {
         self.dismiss(animated: true)
+    }
+    
+    private func showCategory(_ category: ZimFile.Category) {
+        
     }
 }
 
