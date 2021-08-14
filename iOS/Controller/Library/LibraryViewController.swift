@@ -25,6 +25,14 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
         primaryController.navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done, target: self, action: #selector(dismissController)
         )
+        primaryController.navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(
+                image: UIImage(systemName: "info.circle"),
+                style: .plain,
+                target: self,
+                action: #selector(showInfo(sender:))
+            )
+        ]
         primaryController.rootView.categorySelected = { [unowned self] category in self.showCategory(category) }
     }
     
@@ -63,7 +71,23 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
     // MARK: - Action
     
     @objc private func dismissController() {
-        self.dismiss(animated: true)
+        dismiss(animated: true)
+    }
+    
+    @objc private func dismissPresentedController() {
+        presentedViewController?.dismiss(animated: true)
+    }
+    
+    @objc private func showInfo(sender: UIBarButtonItem) {
+        let controller = UIHostingController(rootView: LibraryInfoView())
+        controller.title = "Info"
+        controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .done, target: self, action: #selector(dismissPresentedController)
+        )
+        let navigation = UINavigationController(rootViewController: controller)
+        navigation.modalPresentationStyle = .popover
+        navigation.popoverPresentationController?.barButtonItem = sender
+        self.present(navigation, animated: true)
     }
     
     private func showCategory(_ category: ZimFile.Category) {

@@ -10,7 +10,7 @@ import Combine
 import SwiftUI
 import Defaults
 
-@available(iOS 14.0, *)
+@available(iOS 13.0, *)
 struct LibraryInfoView: View {
     @Default(.libraryAutoRefresh) private var libraryAutoRefresh
     @Default(.backupDocumentDirectory) private var backupDocumentDirectory
@@ -49,24 +49,24 @@ struct LibraryInfoView: View {
                 Toggle(isOn: $backupDocumentDirectory, label: { Text("Include files in backup") })
             }
         }
-        .listStyle(InsetGroupedListStyle())
-        .onChange(of: libraryAutoRefresh, perform: { value in
-            LibraryService.shared.applyAutoUpdateSetting()
-        })
-        .onChange(of: backupDocumentDirectory, perform: { isEnabled in
-            LibraryService.shared.applyBackupSetting(isBackupEnabled: isEnabled)
-        })
+        .insetGroupedListStyle()
     }
     
     private class ViewModel: ObservableObject {
         @Published var isRefreshing = false
         
-        private var operationObserver: NSKeyValueObservation?
+        private var refreshObserver: NSKeyValueObservation?
+        private let autoRefreshObserver = Defaults.observe(.libraryAutoRefresh) { _ in
+            LibraryService.shared.applyAutoUpdateSetting()
+        }
+        private let backupDocumentDirectoryObserver = Defaults.observe(.backupDocumentDirectory) { change in
+            LibraryService.shared.applyBackupSetting(isBackupEnabled: change.newValue)
+        }
         
         init() {
             if let operation = LibraryOperationQueue.shared.currentOPDSRefreshOperation {
                 isRefreshing = !operation.isFinished
-                configureObserver(operation)
+                configureRefreshObserver(operation)
             }
         }
         
@@ -81,11 +81,11 @@ struct LibraryInfoView: View {
                 }
             }()
             isRefreshing = true
-            configureObserver(operation)
+            configureRefreshObserver(operation)
         }
         
-        private func configureObserver(_ operation: OPDSRefreshOperation) {
-            operationObserver = operation.observe(
+        private func configureRefreshObserver(_ operation: OPDSRefreshOperation) {
+            refreshObserver = operation.observe(
                 \.isFinished, options: .new
             ) { [weak self] (operation, _) in
                 DispatchQueue.main.sync {
