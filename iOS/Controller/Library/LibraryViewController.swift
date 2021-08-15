@@ -11,17 +11,34 @@ import UIKit
 import RealmSwift
 
 @available(iOS 13.0, *)
-class LibraryViewController: UISplitViewController, UISplitViewControllerDelegate {
+class LibraryViewController: UISplitViewController, UISplitViewControllerDelegate, UISearchResultsUpdating {
     private let primaryController = UIHostingController(rootView: LibraryPrimaryView())
-    private var zimFilesToken: NotificationToken?
+    private let searchResultsController = UIHostingController(rootView: LibrarySearchResultView())
+    private let searchController: UISearchController
+    private var token: NotificationToken?
+    
+    init() {
+        searchController = UISearchController(searchResultsController: searchResultsController)
+        super.init(nibName: nil, bundle: nil)
+        presentsWithGesture = false
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureToken()
         
-        presentsWithGesture = false
+        // configure searchController
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.searchBar.placeholder = "Search by Name"
+        searchController.searchResultsUpdater = self
         
+        // configure primaryController
         primaryController.navigationItem.title = "Library"
+        primaryController.navigationItem.searchController = searchController
         primaryController.navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done, target: self, action: #selector(dismissController)
         )
@@ -44,7 +61,7 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
     }
     
     private func configureToken() {
-        zimFilesToken = (try? Realm())?.objects(ZimFile.self)
+        token = (try? Realm())?.objects(ZimFile.self)
             .filter(NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue))
             .observe { [unowned self] changes in
                 switch changes {
@@ -73,6 +90,14 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
                     break
                 }
             }
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchText = searchController.searchBar.text
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            guard let searchText = searchText, searchText == searchController.searchBar.text else { return }
+            self.searchResultsController.rootView.update(searchText)
+        }
     }
     
     // MARK: - Action
