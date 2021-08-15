@@ -33,7 +33,14 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
                 action: #selector(showInfo(sender:))
             )
         ]
+        primaryController.rootView.zimFileSelected = {
+            [unowned self] zimFileID, title in self.showZimFile(zimFileID, title)
+        }
         primaryController.rootView.categorySelected = { [unowned self] category in self.showCategory(category) }
+    }
+    
+    deinit {
+        print("Dealloc LibraryViewController")
     }
     
     private func configureToken() {
@@ -88,6 +95,12 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
         navigation.modalPresentationStyle = .popover
         navigation.popoverPresentationController?.barButtonItem = sender
         self.present(navigation, animated: true)
+    }
+    
+    private func showZimFile(_ zimFileID: String, _ title: String) {
+        let controller = UIHostingController(rootView: ZimFileDetailView(fileID: zimFileID))
+        controller.title = title
+        showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
     }
     
     private func showCategory(_ category: ZimFile.Category) {
