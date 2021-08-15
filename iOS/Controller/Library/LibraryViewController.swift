@@ -20,6 +20,9 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
     init() {
         searchController = UISearchController(searchResultsController: searchResultsController)
         super.init(nibName: nil, bundle: nil)
+        configureToken()
+        
+        delegate = self
         presentsWithGesture = false
     }
     
@@ -29,7 +32,6 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureToken()
         
         // configure searchController
         searchController.searchBar.autocapitalizationType = .none
@@ -54,10 +56,6 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
             [unowned self] zimFileID, title in self.showZimFile(zimFileID, title)
         }
         primaryController.rootView.categorySelected = { [unowned self] category in self.showCategory(category) }
-    }
-    
-    deinit {
-        print("Dealloc LibraryViewController")
     }
     
     private func configureToken() {
@@ -90,6 +88,14 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
                     break
                 }
             }
+    }
+    
+    // MARK: - Delegates
+    
+    func splitViewController(_ splitViewController: UISplitViewController,
+                             collapseSecondary secondaryViewController: UIViewController,
+                             onto primaryViewController: UIViewController) -> Bool {
+        true
     }
     
     func updateSearchResults(for searchController: UISearchController) {
