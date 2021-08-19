@@ -131,12 +131,14 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
     private func showZimFile(_ zimFileID: String, _ title: String) {
         let controller = UIHostingController(rootView: ZimFileDetailView(fileID: zimFileID))
         controller.title = title
+        controller.navigationItem.largeTitleDisplayMode = .never
         showDetailViewController(UINavigationController(rootViewController: controller), sender: nil)
     }
     
     private func showCategory(_ category: ZimFile.Category) {
         let controller = UIHostingController(rootView: LibraryCategoryView(category: category))
         controller.title = category.description
+        controller.navigationItem.largeTitleDisplayMode = .never
         controller.rootView.zimFileTapped = { [weak controller] fileID, title in
             let zimFileController = UIHostingController(rootView: ZimFileDetailView(fileID: fileID))
             zimFileController.title = title
