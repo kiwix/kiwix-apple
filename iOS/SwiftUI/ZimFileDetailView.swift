@@ -14,16 +14,17 @@ import Defaults
 @available(iOS 13.0, *)
 struct ZimFileDetailView: View {
     @State private var showingAlert = false
+    @ObservedObject var viewModel: ViewModel
     @Default(.libraryDownloadUsingCellular) private var libraryDownloadUsingCellular
-    
-    let viewModel: ViewModel
+    @ObservedResults(ZimFile.self, configuration: Realm.defaultConfig) private var zimFiles
     
     init(fileID: String) {
         self.viewModel = ViewModel(fileID: fileID)
+        self._zimFiles.filter = NSPredicate(format: "fileID == %@", fileID)
     }
     
     var body: some View {
-        if let zimFile = viewModel.zimFile {
+        if let zimFile = zimFiles.first {
             List {
                 Section {
                     Text(zimFile.title)
@@ -93,7 +94,7 @@ struct ZimFileDetailView: View {
     
     @ViewBuilder
     var actions: some View {
-        if let zimFile = viewModel.zimFile {
+        if let zimFile = zimFiles.first {
             switch zimFile.state {
             case .remote:
                 if viewModel.hasEnoughDiskSpace {
@@ -137,7 +138,7 @@ struct ZimFileDetailView: View {
     
     var cancelButton: some View {
         ActionCell(title: "Cancel", isDestructive: true) {
-            guard let fileID = viewModel.zimFile?.fileID else { return }
+            guard let fileID = zimFiles.first?.fileID else { return }
             DownloadService.shared.cancel(zimFileID: fileID)
         }
     }
@@ -201,28 +202,23 @@ struct ZimFileDetailView: View {
     }
     
     class ViewModel: ObservableObject {
-        let zimFile: ZimFile?
         let hasEnoughDiskSpace: Bool
         var onDelete: (() -> Void) = {}
-        
         private var zimFileObserver: NotificationToken?
         
         init(fileID: String) {
-            if let database = try? Realm(), let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: fileID) {
-                self.zimFile = zimFile
-                self.hasEnoughDiskSpace = {
-                    guard let freeSpace = try? FileManager.default
-                            .urls(for: .documentDirectory, in: .userDomainMask)
-                            .first?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
-                            .volumeAvailableCapacityForImportantUsage else { return false }
-                    return zimFile.size <= freeSpace
-                }()
-            } else {
-                self.zimFile = nil
+            guard let zimFile = (try? Realm())?.object(ofType: ZimFile.self, forPrimaryKey: fileID) else {
                 self.hasEnoughDiskSpace = false
+                return
             }
-            
-            zimFileObserver = zimFile?.observe { [unowned self] change in
+            self.hasEnoughDiskSpace = {
+                guard let freeSpace = try? FileManager.default
+                        .urls(for: .documentDirectory, in: .userDomainMask)
+                        .first?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
+                        .volumeAvailableCapacityForImportantUsage else { return false }
+                return zimFile.size <= freeSpace
+            }()
+            zimFileObserver = zimFile.observe { [unowned self] change in
                 guard case .deleted = change else { return }
                 self.onDelete()
             }
