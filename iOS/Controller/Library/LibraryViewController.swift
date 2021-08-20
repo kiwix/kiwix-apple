@@ -20,10 +20,17 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
     init() {
         searchController = UISearchController(searchResultsController: searchResultsController)
         super.init(nibName: nil, bundle: nil)
-        configureToken()
         
         delegate = self
         presentsWithGesture = false
+        if let zimFiles = (try? Realm())?.objects(ZimFile.self) {
+            configureViewControllers(zimFiles: zimFiles)
+        }
+        
+        token = (try? Realm())?.objects(ZimFile.self).observe { [unowned self] changes in
+            guard case .update(let zimFiles, _, _, _) = changes else { return }
+            configureViewControllers(zimFiles: zimFiles)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -58,36 +65,29 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
         primaryController.rootView.categorySelected = { [unowned self] category in self.showCategory(category) }
     }
     
-    private func configureToken() {
-        token = (try? Realm())?.objects(ZimFile.self)
-            .filter(NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue))
-            .observe { [unowned self] changes in
-                switch changes {
-                case .initial(let zimFiles), .update(let zimFiles, _, _, _):
-                    if zimFiles.isEmpty {
-                        self.preferredDisplayMode = .secondaryOnly
-                        viewControllers = [UIViewController(), {
-                            let controller = UITableViewController()
-                            controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
-                                barButtonSystemItem: .done, target: self, action: #selector(dismissController)
-                            )
-                            let navigationController = UINavigationController(rootViewController: controller)
-                            navigationController.navigationBar.prefersLargeTitles = true
-                            return navigationController
-                        }()]
-                    } else {
-                        self.preferredDisplayMode = .allVisible
-                        viewControllers = [{
-                            let controller = UINavigationController(rootViewController: primaryController)
-                            controller.navigationBar.prefersLargeTitles = true
-                            return controller
-                        }()]
-                        showCategory(.wikipedia)
-                    }
-                default:
-                    break
-                }
-            }
+    // MARK: - Configuration
+    
+    private func configureViewControllers(zimFiles: Results<ZimFile>) {
+        if zimFiles.isEmpty {
+            self.preferredDisplayMode = .secondaryOnly
+            viewControllers = [UIViewController(), {
+                let controller = UITableViewController()
+                controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
+                    barButtonSystemItem: .done, target: self, action: #selector(dismissController)
+                )
+                let navigationController = UINavigationController(rootViewController: controller)
+                navigationController.navigationBar.prefersLargeTitles = true
+                return navigationController
+            }()]
+        } else {
+            preferredDisplayMode = .allVisible
+            viewControllers = [{
+                let controller = UINavigationController(rootViewController: primaryController)
+                controller.navigationBar.prefersLargeTitles = true
+                return controller
+            }()]
+            showCategory(.wikipedia)
+        }
     }
     
     // MARK: - Delegates
