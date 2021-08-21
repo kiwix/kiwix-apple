@@ -29,7 +29,7 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     @Persisted var creator: String = ""
     @Persisted var publisher: String = ""
     @Persisted var categoryRaw: String = Category.other.rawValue
-    @objc dynamic var stateRaw: String = State.remote.rawValue
+    @Persisted var stateRaw: String = State.remote.rawValue
     
     // MARK: - bool properties
     
