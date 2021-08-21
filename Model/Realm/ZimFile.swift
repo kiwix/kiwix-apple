@@ -17,43 +17,43 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     
     // MARK: - nonnull properties
     
-    @objc dynamic var fileID: String = ""
-    @objc dynamic var groupID: String = ""
-    @objc dynamic var title: String = ""
-    @objc dynamic var fileDescription: String = ""
-    @objc dynamic var languageCode: String = ""
-    @objc dynamic var categoryRaw: String = Category.other.rawValue
-    @objc dynamic var creationDate: Date = Date()
-    @objc dynamic var size: Int64 = 0
-    @objc dynamic var articleCount: Int64 = 0
-    @objc dynamic var mediaCount: Int64 = 0
-    @objc dynamic var creator: String = ""
-    @objc dynamic var publisher: String = ""
-    @objc dynamic var stateRaw = State.remote.rawValue
+    @Persisted(primaryKey: true) var fileID: String = ""
+    @Persisted(indexed: true) var groupID: String = ""
+    @Persisted(indexed: true) var title: String = ""
+    @Persisted(indexed: true) var fileDescription: String = ""
+    @Persisted(indexed: true) var languageCode: String = ""
+    @Persisted(indexed: true) var creationDate: Date = Date()
+    @Persisted(indexed: true) var size: Int64 = 0
+    @Persisted var articleCount: Int64 = 0
+    @Persisted var mediaCount: Int64 = 0
+    @Persisted var creator: String = ""
+    @Persisted var publisher: String = ""
+    @Persisted var categoryRaw: String = Category.other.rawValue
+    @Persisted var stateRaw: String = State.remote.rawValue
     
     // MARK: - bool properties
     
-    @objc dynamic var hasDetails = false
-    @objc dynamic var hasIndex = false
-    @objc dynamic var hasPictures = false
-    @objc dynamic var hasVideos = false
-    @objc dynamic var includedInSearch = true
+    @Persisted var hasDetails = false
+    @Persisted var hasIndex = false
+    @Persisted var hasPictures = false
+    @Persisted var hasVideos = false
+    @Persisted var includedInSearch = true
     
     // MARK: - favicon properties
     
-    @objc dynamic var faviconURL: String?
-    @objc dynamic var faviconData: Data?
+    @Persisted var faviconURL: String?
+    @Persisted var faviconData: Data?
     
     // MARK: - download properties
     
-    @objc dynamic var downloadURL: String?
-    @objc dynamic var downloadTotalBytesWritten: Int64 = 0
-    @objc dynamic var downloadResumeData: Data?
-    @objc dynamic var downloadErrorDescription: String?
+    @Persisted var downloadURL: String?
+    @Persisted var downloadTotalBytesWritten: Int64 = 0
+    @Persisted var downloadResumeData: Data?
+    @Persisted var downloadErrorDescription: String?
     
     // MARK: - open in place data
     
-    @objc dynamic var openInPlaceURLBookmark: Data?
+    @Persisted var openInPlaceURLBookmark: Data?
     
     // MARK: -  computed properties
     

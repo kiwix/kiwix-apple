@@ -89,7 +89,7 @@ extension View {
 @available(iOS 13.0, *)
 struct DisclosureIndicator: View {
     var body: some View {
-        Image(systemName: "chevron.forward")
+        Image(systemName: "chevron.right")
             .font(Font.footnote.weight(.bold))
             .foregroundColor(Color(.systemFill))
     }

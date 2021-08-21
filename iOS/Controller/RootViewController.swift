@@ -303,7 +303,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     }
     
     @objc func libraryButtonTapped() {
-        if #available(iOS 14.0, *), FeatureFlags.swiftUILibraryEnabled {
+        if #available(iOS 13.0, *), FeatureFlags.swiftUILibraryEnabled {
             present(LibraryViewController(), animated: true)
         } else {
             present(LibraryController(), animated: true)

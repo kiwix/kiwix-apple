@@ -11,141 +11,137 @@ import RealmSwift
 import Defaults
 
 /// Information and action about a single zim file in a list view.
-@available(iOS 14.0, *)
+@available(iOS 13.0, *)
 struct ZimFileDetailView: View {
-    @StateRealmObject private var zimFile: ZimFile
     @State private var showingAlert = false
+    @ObservedObject var viewModel: ViewModel
     @Default(.libraryDownloadUsingCellular) private var libraryDownloadUsingCellular
-    
-    let hasEnoughDiskSpace: Bool
-    let viewModel: ViewModel
+    @ObservedResults(ZimFile.self, configuration: Realm.defaultConfig) private var zimFiles
     
     init(fileID: String) {
-        if let database = try? Realm(), let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: fileID) {
-            self._zimFile = StateRealmObject(wrappedValue: zimFile)
-            self.hasEnoughDiskSpace = {
-                guard let freeSpace = try? FileManager.default
-                        .urls(for: .documentDirectory, in: .userDomainMask)
-                        .first?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
-                        .volumeAvailableCapacityForImportantUsage else { return false }
-                return zimFile.size <= freeSpace
-            }()
-            self.viewModel = ViewModel(zimFile: zimFile)
-        } else {
-            self._zimFile = StateRealmObject(wrappedValue: ZimFile())
-            self.hasEnoughDiskSpace = false
-            self.viewModel = ViewModel(zimFile: ZimFile())
-        }
+        self.viewModel = ViewModel(fileID: fileID)
+        self._zimFiles.filter = NSPredicate(format: "fileID == %@", fileID)
     }
     
     var body: some View {
-        List {
-            Section {
-                Text(zimFile.title)
-                Text(zimFile.fileDescription)
-            }
-            Section {
-                actions
-            }
-            Section {
-                Cell(title: "Language", detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode))
-                Cell(title: "Size", detail: zimFile.sizeDescription)
-                Cell(title: "Date", detail: zimFile.creationDateDescription)
-            }
-            Section {
-                CheckmarkCell(title: "Picture", isChecked: zimFile.hasPictures)
-                CheckmarkCell(title: "Videos", isChecked: zimFile.hasVideos)
-                CheckmarkCell(title: "Details", isChecked: zimFile.hasDetails)
-            }
-            Section {
-                CountCell(title: "Article Count", count: zimFile.articleCount)
-                CountCell(title: "Media Count", count: zimFile.mediaCount)
-            }
-            Section {
-                Cell(title: "Creator", detail: zimFile.creator)
-                Cell(title: "Publisher", detail: zimFile.publisher)
-            }
-            Section {
-                Cell(title: "ID", detail: String(zimFile.fileID.prefix(8)))
-            }
-            if zimFile.state == .onDevice {
+        if let zimFile = zimFiles.first {
+            List {
                 Section {
-                    ActionCell(
-                        title: zimFile.openInPlaceURLBookmark == nil ? "Delete" : "Unlink",
-                        isDestructive: true
-                    ) { showingAlert = true }
+                    Text(zimFile.title)
+                    Text(zimFile.fileDescription)
+                }
+                Section {
+                    actions
+                }
+                Section {
+                    Cell(
+                        title: "Language", detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode)
+                    )
+                    Cell(title: "Category", detail: zimFile.category.description)
+                    Cell(title: "Size", detail: zimFile.sizeDescription)
+                    Cell(title: "Date", detail: zimFile.creationDateDescription)
+                }
+                Section {
+                    CheckmarkCell(title: "Picture", isChecked: zimFile.hasPictures)
+                    CheckmarkCell(title: "Videos", isChecked: zimFile.hasVideos)
+                    CheckmarkCell(title: "Details", isChecked: zimFile.hasDetails)
+                }
+                Section {
+                    CountCell(title: "Article Count", count: zimFile.articleCount)
+                    CountCell(title: "Media Count", count: zimFile.mediaCount)
+                }
+                Section {
+                    Cell(title: "Creator", detail: zimFile.creator)
+                    Cell(title: "Publisher", detail: zimFile.publisher)
+                }
+                Section {
+                    Cell(title: "ID", detail: String(zimFile.fileID.prefix(8)))
+                }
+                if zimFile.state == .onDevice {
+                    Section {
+                        ActionCell(
+                            title: zimFile.openInPlaceURLBookmark == nil ? "Delete" : "Unlink",
+                            isDestructive: true
+                        ) { showingAlert = true }
+                    }
                 }
             }
-        }
-        .navigationTitle(zimFile.title)
-        .listStyle(InsetGroupedListStyle())
-        .alert(isPresented: $showingAlert) {
-            if zimFile.openInPlaceURLBookmark == nil {
-                return Alert(
-                    title: Text("Delete Zim File"),
-                    message: Text("The zim file will be deleted from the app's document directory."),
-                    primaryButton: .destructive(Text("Delete"), action: {
-                        LibraryService().deleteOrUnlink(fileID: zimFile.fileID)
-                    }),
-                    secondaryButton: .cancel()
-                )
-            } else {
-                return Alert(
-                    title: Text("Unlink Zim File"),
-                    message: Text("The zim file will be unlinked from the app, but not deleted."),
-                    primaryButton: .destructive(Text("Unlink"), action: {
-                        LibraryService().deleteOrUnlink(fileID: zimFile.fileID)
-                    }),
-                    secondaryButton: .cancel()
-                )
+            .insetGroupedListStyle()
+            .alert(isPresented: $showingAlert) {
+                if zimFile.openInPlaceURLBookmark == nil {
+                    return Alert(
+                        title: Text("Delete Zim File"),
+                        message: Text("The zim file will be deleted from the app's document directory."),
+                        primaryButton: .destructive(Text("Delete"), action: {
+                            LibraryService().deleteOrUnlink(fileID: zimFile.fileID)
+                        }),
+                        secondaryButton: .cancel()
+                    )
+                } else {
+                    return Alert(
+                        title: Text("Unlink Zim File"),
+                        message: Text("The zim file will be unlinked from the app, but not deleted."),
+                        primaryButton: .destructive(Text("Unlink"), action: {
+                            LibraryService().deleteOrUnlink(fileID: zimFile.fileID)
+                        }),
+                        secondaryButton: .cancel()
+                    )
+                }
             }
+        } else {
+            Text("Zim file does not exist.")
         }
     }
     
     @ViewBuilder
     var actions: some View {
-        switch zimFile.state {
-        case .remote:
-            if hasEnoughDiskSpace {
-                Toggle("Cellular Data", isOn: $libraryDownloadUsingCellular)
-                ActionCell(title: "Download") {
-                    DownloadService.shared.start(
-                        zimFileID: zimFile.fileID, allowsCellularAccess: libraryDownloadUsingCellular
-                    )
+        if let zimFile = zimFiles.first {
+            switch zimFile.state {
+            case .remote:
+                if viewModel.hasEnoughDiskSpace {
+                    Toggle("Cellular Data", isOn: $libraryDownloadUsingCellular)
+                    ActionCell(title: "Download") {
+                        DownloadService.shared.start(
+                            zimFileID: zimFile.fileID, allowsCellularAccess: libraryDownloadUsingCellular
+                        )
+                    }
+                } else {
+                    ActionCell(title: "Download - Not Enough Space").disabled(true)
                 }
-            } else {
-                ActionCell(title: "Download - Not Enough Space").disabled(true)
+            case .onDevice:
+                ActionCell(title: "Open Main Page", isDestructive: false) {
+                    guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
+                    UIApplication.shared.open(url)
+                }
+            case .downloadQueued:
+                ZimFileDownloadDetailView(zimFile)
+                cancelButton
+            case .downloadInProgress:
+                ZimFileDownloadDetailView(zimFile)
+                ActionCell(title: "Pause") {
+                    DownloadService.shared.pause(zimFileID: zimFile.fileID)
+                }
+                cancelButton
+            case .downloadPaused:
+                ZimFileDownloadDetailView(zimFile)
+                ActionCell(title: "Resume") {
+                    DownloadService.shared.resume(zimFileID: zimFile.fileID)
+                }
+                cancelButton
+            case .downloadError:
+                ZimFileDownloadDetailView(zimFile)
+                cancelButton
+            default:
+                cancelButton
             }
-        case .onDevice:
-            ActionCell(title: "Open Main Page", isDestructive: false) {
-                guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-                UIApplication.shared.open(url)
-            }
-        case .downloadQueued:
-            ZimFileDownloadDetailView(zimFile)
-            cancelButton
-        case .downloadInProgress:
-            ZimFileDownloadDetailView(zimFile)
-            ActionCell(title: "Pause") {
-                DownloadService.shared.pause(zimFileID: zimFile.fileID)
-            }
-            cancelButton
-        case .downloadPaused:
-            ZimFileDownloadDetailView(zimFile)
-            ActionCell(title: "Resume") {
-                DownloadService.shared.resume(zimFileID: zimFile.fileID)
-            }
-            cancelButton
-        case .downloadError:
-            ZimFileDownloadDetailView(zimFile)
-            cancelButton
-        default:
-            cancelButton
         }
     }
     
     var cancelButton: some View {
-        ActionCell(title: "Cancel", isDestructive: true) { DownloadService.shared.cancel(zimFileID: zimFile.fileID) }
+        ActionCell(title: "Cancel", isDestructive: true) {
+            guard let fileID = zimFiles.first?.fileID else { return }
+            DownloadService.shared.cancel(zimFileID: fileID)
+        }
     }
     
     struct Cell: View {
@@ -207,10 +203,22 @@ struct ZimFileDetailView: View {
     }
     
     class ViewModel: ObservableObject {
-        private var zimFileObserver: NotificationToken?
+        let hasEnoughDiskSpace: Bool
         var onDelete: (() -> Void) = {}
+        private var zimFileObserver: NotificationToken?
         
-        init(zimFile: ZimFile) {
+        init(fileID: String) {
+            guard let zimFile = (try? Realm())?.object(ofType: ZimFile.self, forPrimaryKey: fileID) else {
+                self.hasEnoughDiskSpace = false
+                return
+            }
+            self.hasEnoughDiskSpace = {
+                guard let freeSpace = try? FileManager.default
+                        .urls(for: .documentDirectory, in: .userDomainMask)
+                        .first?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
+                        .volumeAvailableCapacityForImportantUsage else { return false }
+                return zimFile.size <= freeSpace
+            }()
             zimFileObserver = zimFile.observe { [unowned self] change in
                 guard case .deleted = change else { return }
                 self.onDelete()
