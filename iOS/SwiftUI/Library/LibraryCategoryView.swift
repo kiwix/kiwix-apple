@@ -28,7 +28,7 @@ struct LibraryCategoryView: View {
         if let languages = viewModel.languages, languages.isEmpty {
             InfoView(
                 imageSystemName: "text.book.closed",
-                title: "No Zim File",
+                title: "No Zim Files",
                 help: "Enable some other languages to see zim files under this category."
             )
         } else if let languages = viewModel.languages {
