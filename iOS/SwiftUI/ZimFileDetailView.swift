@@ -37,6 +37,7 @@ struct ZimFileDetailView: View {
                     Cell(
                         title: "Language", detail: Locale.current.localizedString(forLanguageCode: zimFile.languageCode)
                     )
+                    Cell(title: "Category", detail: zimFile.category.description)
                     Cell(title: "Size", detail: zimFile.sizeDescription)
                     Cell(title: "Date", detail: zimFile.creationDateDescription)
                 }
