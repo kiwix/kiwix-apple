@@ -10,13 +10,34 @@ import SwiftUI
 import Defaults
 import RealmSwift
 
-/// Filter languages displaed in LibraryCategoryView.
-@available(iOS 14.0, *)
-struct LibraryLanguageFilterView: View {
+/// Select languages displayed in LibraryCategoryView.
+@available(iOS 13.0, *)
+struct LibraryLanguageView: View {
     @Default(.libraryLanguageSortingMode) private var sortingMode
-    @StateObject private var viewModel = ViewModel()
+    @ObservedObject private var viewModel = ViewModel()
     
     var body: some View {
+        if #available(iOS 14.0, *) {
+            list.navigationTitle("Languages").toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Picker(selection: $sortingMode, label: Image(systemName: "arrow.up.arrow.down")) {
+                        Text("Alphabetically").tag(LibraryLanguageSortingMode.alphabetically)
+                        Text("By Count").tag(LibraryLanguageSortingMode.byCount)
+                    }.pickerStyle(MenuPickerStyle())
+                }
+            }
+        } else {
+            list.navigationBarItems(trailing: HStack {
+                Picker("Language Sorting Mode", selection: $sortingMode, content: {
+                    Text("A-Z").tag(LibraryLanguageSortingMode.alphabetically)
+                    Text("By Count").tag(LibraryLanguageSortingMode.byCount)
+                }).pickerStyle(SegmentedPickerStyle())
+                Spacer(minLength: 60)
+            })
+        }
+    }
+    
+    var list: some View {
         List {
             if viewModel.showing.count > 0 {
                 Section(header: Text("Showing")) {
@@ -39,17 +60,7 @@ struct LibraryLanguageFilterView: View {
                 }
             }
         }
-        .listStyle(GroupedListStyle())
-        .toolbar {
-            ToolbarItem(placement: ToolbarItemPlacement.principal) {
-                Picker("Language Sorting Mode", selection: $sortingMode, content: {
-                    Text("A-Z").tag(LibraryLanguageSortingMode.alphabetically)
-                    Text("By Count").tag(LibraryLanguageSortingMode.byCount)
-                })
-                .pickerStyle(SegmentedPickerStyle())
-            }
-        }
-        .onChange(of: sortingMode, perform: { _ in viewModel.loadData() })
+        .insetGroupedListStyle()
     }
     
     struct Language: Identifiable, Comparable {
@@ -65,7 +76,7 @@ struct LibraryLanguageFilterView: View {
             self.count = count
         }
         
-        static func < (lhs: LibraryLanguageFilterView.Language, rhs: LibraryLanguageFilterView.Language) -> Bool {
+        static func < (lhs: LibraryLanguageView.Language, rhs: LibraryLanguageView.Language) -> Bool {
             switch lhs.name.caseInsensitiveCompare(rhs.name) {
             case .orderedAscending:
                 return true
@@ -93,8 +104,10 @@ struct LibraryLanguageFilterView: View {
         @Published private(set) var showing: [Language] = []
         @Published private(set) var hiding: [Language] = []
         
+        private var sortingModeObserver: Defaults.Observation?
+        
         init() {
-            self.loadData()
+            sortingModeObserver = Defaults.observe(.libraryLanguageSortingMode) { _ in self.loadData() }
         }
         
         func show(_ language: Language) {
