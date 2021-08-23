@@ -13,12 +13,18 @@ import Defaults
 @available(iOS 13.0, *)
 struct LibraryInfoView: View {
     @Default(.libraryAutoRefresh) private var libraryAutoRefresh
+    @Default(.libraryLastRefresh) private var libraryLastRefresh
     @Default(.backupDocumentDirectory) private var backupDocumentDirectory
     @ObservedObject private var viewModel = ViewModel()
     
     var body: some View {
         List {
-            Section(header: Text("Catalog")) {
+            if libraryLastRefresh != nil {
+                Section {
+                    NavigationLink("Languages", destination: LibraryLanguageView())
+                }
+            }
+            Section(header: Text("Updates")) {
                 ActionCell(title: viewModel.isRefreshing ? "Refreshing..." : "Update Now") {
                     viewModel.refresh()
                 }.disabled(viewModel.isRefreshing)
@@ -32,11 +38,11 @@ struct LibraryInfoView: View {
                 HStack {
                     Text("Last update")
                     Spacer()
-                    if let lastRefreshTime = Defaults[.libraryLastRefresh] {
-                        if Date().timeIntervalSince(lastRefreshTime) < 120 {
+                    if let lastRefresh = libraryLastRefresh {
+                        if Date().timeIntervalSince(lastRefresh) < 120 {
                             Text("Just Now").foregroundColor(.secondary)
                         } else {
-                            Text(RelativeDateTimeFormatter().localizedString(for: lastRefreshTime, relativeTo: Date()))
+                            Text(RelativeDateTimeFormatter().localizedString(for: lastRefresh, relativeTo: Date()))
                                 .foregroundColor(.secondary)
                         }
                     } else {
