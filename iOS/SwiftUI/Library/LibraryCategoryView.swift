@@ -65,25 +65,23 @@ struct LibraryCategoryView: View {
         
         let category: ZimFile.Category
         private let queue = DispatchQueue(label: "org.kiwix.library.category", qos: .userInitiated)
-        private var defaultsSubscriber: AnyCancellable?
+        private var languageCodeObserver: Defaults.Observation?
         private var collectionSubscriber: AnyCancellable?
         
         init(category: ZimFile.Category) {
             self.category = category
-            defaultsSubscriber = Defaults.publisher(.libraryLanguageCodes)
-                .sink(receiveValue: { languageCodes in
-                    self.loadData(languageCodes: languageCodes.newValue)
-                    self.downloadFavicon(languageCodes: languageCodes.newValue)
-                })
+            languageCodeObserver = Defaults.observe(.libraryLanguageCodes) { languageCodes in
+                self.loadData(languageCodes: languageCodes.newValue)
+            }
         }
         
         private func loadData(languageCodes: [String]) {
-            let database = try? Realm()
-            collectionSubscriber = database?.objects(ZimFile.self)
-                .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
-                    NSPredicate(format: "categoryRaw = %@", category.rawValue),
-                    NSPredicate(format: "languageCode IN %@", languageCodes),
-                ]))
+            var predicates = [NSPredicate(format: "categoryRaw = %@", category.rawValue)]
+            if !languageCodes.isEmpty {
+                predicates.append(NSPredicate(format: "languageCode IN %@", languageCodes))
+            }
+            collectionSubscriber = (try? Realm())?.objects(ZimFile.self)
+                .filter(NSCompoundPredicate(andPredicateWithSubpredicates: predicates))
                 .sorted(by: [
                     SortDescriptor(keyPath: "title", ascending: true),
                     SortDescriptor(keyPath: "size", ascending: false)
