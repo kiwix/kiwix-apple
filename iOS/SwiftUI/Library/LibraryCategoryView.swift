@@ -64,6 +64,7 @@ struct LibraryCategoryView: View {
         @Published private(set) var zimFiles = [String: [ZimFile]]()
         
         let category: ZimFile.Category
+        private let database = try? Realm()
         private let queue = DispatchQueue(label: "org.kiwix.library.category", qos: .userInitiated)
         private var languageCodeObserver: Defaults.Observation?
         private var collectionSubscriber: AnyCancellable?
@@ -72,6 +73,14 @@ struct LibraryCategoryView: View {
             self.category = category
             languageCodeObserver = Defaults.observe(.libraryLanguageCodes) { languageCodes in
                 self.loadData(languageCodes: languageCodes.newValue)
+                self.database?.objects(ZimFile.self)
+                    .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
+                        NSPredicate(format: "categoryRaw = %@", category.rawValue),
+                        NSPredicate(format: "languageCode IN %@", languageCodes.newValue),
+                        NSPredicate(format: "faviconData = nil"),
+                        NSPredicate(format: "faviconURL != nil"),
+                    ]))
+                    .forEach { FaviconDownloadService.shared.download(zimFile: $0) }
             }
         }
         
@@ -80,7 +89,7 @@ struct LibraryCategoryView: View {
             if !languageCodes.isEmpty {
                 predicates.append(NSPredicate(format: "languageCode IN %@", languageCodes))
             }
-            collectionSubscriber = (try? Realm())?.objects(ZimFile.self)
+            collectionSubscriber = database?.objects(ZimFile.self)
                 .filter(NSCompoundPredicate(andPredicateWithSubpredicates: predicates))
                 .sorted(by: [
                     SortDescriptor(keyPath: "title", ascending: true),
@@ -89,6 +98,7 @@ struct LibraryCategoryView: View {
                 .collectionPublisher
                 .subscribe(on: queue)
                 .freeze()
+                .throttle(for: 0.2, scheduler: queue, latest: true)
                 .map { zimFiles in
                     var results = [String: [ZimFile]]()
                     for zimFile in zimFiles {
@@ -106,20 +116,6 @@ struct LibraryCategoryView: View {
                         self.zimFiles = zimFiles
                     }
                 })
-        }
-        
-        private func downloadFavicon(languageCodes: [String]) {
-            do {
-                let database = try Realm()
-                let zimFiles = database.objects(ZimFile.self)
-                    .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
-                        NSPredicate(format: "categoryRaw = %@", category.rawValue),
-                        NSPredicate(format: "languageCode IN %@", languageCodes),
-                        NSPredicate(format: "faviconData = nil"),
-                        NSPredicate(format: "faviconURL != nil"),
-                    ]))
-                LibraryService.shared.downloadFavicons(zimFiles: Array(zimFiles))
-            } catch {}
         }
     }
 }
