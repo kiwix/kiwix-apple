@@ -88,31 +88,4 @@ class LibraryService {
             }
         } catch {}
     }
-    
-    // MARK: - Favicon Download
-    
-    /// Download and save favicon data of a zim file.
-    /// - Parameters:
-    ///   - zimFileID: ID of a zim file
-    ///   - url: URL of the favicon data
-    @available(iOS 13.0, *)
-    func downloadFavicons(zimFiles: [ZimFile]) {
-        let urls = Set(zimFiles.compactMap { $0.faviconURL }.compactMap { URL(string: $0) })
-        let publishers = urls.map { URLSession.shared.dataTaskPublisher(for: $0) }
-        faviconDownloadPipeline = Combine.Publishers.MergeMany(publishers)
-            .collect(5)
-            .sink(receiveCompletion: { _ in }, receiveValue: { results in
-                do {
-                    let database = try Realm()
-                    try database.write {
-                        for result in results {
-                            guard let url = result.response.url else { continue }
-                            database.objects(ZimFile.self)
-                                .filter("faviconURL = %@", url.absoluteString)
-                                .forEach { zimFile in zimFile.faviconData = result.data }
-                        }
-                    }
-                } catch {}
-            })
-    }
 }
