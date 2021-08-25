@@ -39,6 +39,6 @@ struct LibrarySearchResultView: View {
             NSPredicate(format: "title CONTAINS[cd] %@", searchText),
             NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]),
         ])
-        LibraryService.shared.downloadFavicons(zimFiles: zimFiles.filter { $0.faviconData == nil })
+//        LibraryService.shared.downloadFavicons(zimFiles: zimFiles.filter { $0.faviconData == nil })
     }
 }

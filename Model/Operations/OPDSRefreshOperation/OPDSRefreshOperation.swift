@@ -6,7 +6,6 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
-import CoreData
 import os
 import Defaults
 import RealmSwift
