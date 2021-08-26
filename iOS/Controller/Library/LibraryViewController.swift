@@ -62,6 +62,11 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
             [unowned self] zimFileID, title in self.showZimFile(zimFileID, title)
         }
         primaryController.rootView.categorySelected = { [unowned self] category in self.showCategory(category) }
+        
+        // configure search result controller action
+        searchResultsController.rootView.zimFileSelected = {
+            [unowned self] zimFileID, title in self.showZimFile(zimFileID, title)
+        }
     }
     
     // MARK: - Delegates
