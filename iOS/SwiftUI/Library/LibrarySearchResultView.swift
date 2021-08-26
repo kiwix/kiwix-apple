@@ -34,10 +34,15 @@ struct LibrarySearchResultView: View {
     }
     
     func update(_ searchText: String) {
+        // update filter
         var predicates = [NSPredicate(format: "title CONTAINS[cd] %@", searchText)]
         if !Defaults[.libraryLanguageCodes].isEmpty {
             predicates.append(NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]))
         }
         _zimFiles.filter = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        
+        // download favicons
+        zimFiles.filter { zimFile in zimFile.faviconData == nil }
+            .forEach { FaviconDownloadService.shared.download(zimFile: $0) }
     }
 }
