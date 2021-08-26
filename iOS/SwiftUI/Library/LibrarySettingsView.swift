@@ -1,5 +1,5 @@
 //
-//  LibraryInfoView.swift
+//  LibrarySettingsView.swift
 //  Kiwix
 //
 //  Created by Chris Li on 4/11/21.
@@ -11,7 +11,7 @@ import SwiftUI
 import Defaults
 
 @available(iOS 13.0, *)
-struct LibraryInfoView: View {
+struct LibrarySettingsView: View {
     @Default(.libraryAutoRefresh) private var libraryAutoRefresh
     @Default(.libraryLastRefresh) private var libraryLastRefresh
     @Default(.backupDocumentDirectory) private var backupDocumentDirectory

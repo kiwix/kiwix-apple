@@ -114,8 +114,8 @@ class ButtonProvider {
     @available(iOS 14.0, *)
     private func configureMoreButtonMenu() {
         var items: [UIMenuElement] = [
-            UIAction(title: "Open Library", image: UIImage(systemName: "folder"), handler: { _ in self.rootViewController?.libraryButtonTapped() }),
-            UIAction(title: "Open Settings", image: UIImage(systemName: "gear"), handler: { _ in self.rootViewController?.settingsButtonTapped() }),
+            UIAction(title: "Library", image: UIImage(systemName: "folder"), handler: { _ in self.rootViewController?.libraryButtonTapped() }),
+            UIAction(title: "Settings", image: UIImage(systemName: "gear"), handler: { _ in self.rootViewController?.settingsButtonTapped() }),
         ]
         if let zimFiles = onDeviceZimFiles, !zimFiles.isEmpty {
             items.insert(UIMenu(options: .displayInline, children: zimFiles.map { zimFile in

@@ -27,7 +27,13 @@ struct LibraryCategoryView: View {
     var body: some View {
         if let languages = viewModel.languages, languages.isEmpty {
             InfoView(
-                imageSystemName: "text.book.closed",
+                imageSystemName: {
+                    if #available(iOS 14.0, *) {
+                        return "text.book.closed"
+                    } else {
+                        return "book"
+                    }
+                }(),
                 title: "No Zim Files",
                 help: "Enable some other languages to see zim files under this category."
             )
