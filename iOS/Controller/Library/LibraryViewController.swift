@@ -52,10 +52,10 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
         )
         primaryController.navigationItem.rightBarButtonItems = [
             UIBarButtonItem(
-                image: UIImage(systemName: "info.circle"),
+                image: UIImage(systemName: "gear"),
                 style: .plain,
                 target: self,
-                action: #selector(showInfo(sender:))
+                action: #selector(showSettings(sender:))
             )
         ]
         primaryController.rootView.zimFileSelected = {
@@ -95,9 +95,9 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
         presentedViewController?.dismiss(animated: true)
     }
     
-    @objc private func showInfo(sender: UIBarButtonItem) {
-        let controller = UIHostingController(rootView: LibraryInfoView())
-        controller.title = "Info"
+    @objc private func showSettings(sender: UIBarButtonItem) {
+        let controller = UIHostingController(rootView: LibrarySettingsView())
+        controller.title = "Settings"
         controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done, target: self, action: #selector(dismissPresentedController)
         )
