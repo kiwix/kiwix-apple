@@ -15,30 +15,29 @@ struct LibrarySearchResultView: View {
     @ObservedResults(
         ZimFile.self,
         configuration: Realm.defaultConfig,
-        sortDescriptor: SortDescriptor(keyPath: "creationDate", ascending: true)
+        sortDescriptor: SortDescriptor(keyPath: "creationDate", ascending: false)
     ) private var zimFiles
 
     var zimFileSelected: (String, String) -> Void = { _, _ in }
     
     var body: some View {
-        HStack {
-            if zimFiles.count > 0 {
-                List {
-                    ForEach(zimFiles) { zimFile in
-                        Button(action: { zimFileSelected(zimFile.fileID, zimFile.title) }, label: {
-                            ZimFileCell(zimFile)
-                        })
-                    }
-                }
+        List {
+            ForEach(zimFiles) { zimFile in
+                Button(action: { zimFileSelected(zimFile.fileID, zimFile.title) }, label: {
+                    ZimFileCell(zimFile)
+                })
             }
-        }
+        }.gesture(DragGesture().onChanged { gesture in
+            guard gesture.predictedEndLocation.y < gesture.startLocation.y else { return }
+            UIApplication.shared.windows.filter{$0.isKeyWindow}.first?.endEditing(false)
+        })
     }
     
     func update(_ searchText: String) {
-        _zimFiles.filter = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            NSPredicate(format: "title CONTAINS[cd] %@", searchText),
-            NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]),
-        ])
-//        LibraryService.shared.downloadFavicons(zimFiles: zimFiles.filter { $0.faviconData == nil })
+        var predicates = [NSPredicate(format: "title CONTAINS[cd] %@", searchText)]
+        if !Defaults[.libraryLanguageCodes].isEmpty {
+            predicates.append(NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]))
+        }
+        _zimFiles.filter = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
 }
