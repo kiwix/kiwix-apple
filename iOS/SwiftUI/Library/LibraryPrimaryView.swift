@@ -7,11 +7,13 @@
 //
 
 import SwiftUI
+import Defaults
 import RealmSwift
 
 /// A list of all on device & downloading zim files and all zim file categories.
 @available(iOS 13.0, *)
 struct LibraryPrimaryView: View {
+    @Default(.libraryLastRefresh) private var libraryLastRefresh
     @ObservedResults(
         ZimFile.self,
         configuration: Realm.defaultConfig,
@@ -32,6 +34,13 @@ struct LibraryPrimaryView: View {
     
     var body: some View {
         List {
+            if onDevice.count == 0, libraryLastRefresh == nil {
+                Section(header: Text("Get Started")) {
+                    Button(action: { }, label: {
+                        Text("Download Online Catalog").fontWeight(.medium).foregroundColor(.blue)
+                    })
+                }
+            }
             if onDevice.count > 0 {
                 Section(header: Text("On Device")) {
                     ForEach(onDevice) { zimFile in
