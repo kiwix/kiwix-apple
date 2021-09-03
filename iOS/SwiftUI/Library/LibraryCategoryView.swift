@@ -39,7 +39,7 @@ struct LibraryCategoryView: View {
                     }
                 }
             }
-        } else {
+        } else if let languages = viewModel.languages, languages.isEmpty {
             InfoView(
                 imageSystemName: {
                     if #available(iOS 14.0, *) {
@@ -57,6 +57,9 @@ struct LibraryCategoryView: View {
                     }
                 }()
             )
+        } else {
+            // show nothing when catagory hasn't been fully loaded
+            EmptyView()
         }
     }
     
