@@ -10,14 +10,11 @@ import os
 #if canImport(UIKit)
 import UIKit
 #endif
-import Combine
 import Defaults
 import RealmSwift
 
 class LibraryService {
     static let shared = LibraryService()
-    
-    private var faviconDownloadPipeline: Any?
     
     func isFileInDocumentDirectory(zimFileID: String) -> Bool {
         if let fileName = ZimFileService.shared.getFileURL(zimFileID: zimFileID)?.lastPathComponent,
