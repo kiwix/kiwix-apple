@@ -29,6 +29,7 @@ struct LibraryPrimaryView: View {
         ),
         sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
     ) private var download
+    @ObservedObject private var viewModel = ViewModel()
     var zimFileSelected: (String, String) -> Void = { _, _ in }
     var categorySelected: (ZimFile.Category) -> Void = { _ in }
     
@@ -36,9 +37,10 @@ struct LibraryPrimaryView: View {
         List {
             if onDevice.count == 0, libraryLastRefresh == nil {
                 Section(header: Text("Get Started")) {
-                    Button(action: { }, label: {
-                        Text("Download Online Catalog").fontWeight(.medium).foregroundColor(.blue)
-                    })
+                    ActionCell(
+                        title: viewModel.isRefreshing ? "Refreshing..." : "Download Online Catalog",
+                        alignment: .leading
+                    ) { viewModel.refresh() }.disabled(viewModel.isRefreshing)
                 }
             }
             if onDevice.count > 0 {
@@ -80,5 +82,21 @@ struct LibraryPrimaryView: View {
                 }
             }
         }.listStyle(GroupedListStyle())
+    }
+    
+    class ViewModel: ObservableObject {
+        @Published private(set) var isRefreshing = false
+        
+        init() {
+            if let operation = LibraryOperationQueue.shared.currentOPDSRefreshOperation {
+                isRefreshing = !operation.isFinished
+            }
+        }
+        
+        func refresh() {
+            guard LibraryOperationQueue.shared.currentOPDSRefreshOperation == nil else { return }
+            LibraryOperationQueue.shared.addOperation(OPDSRefreshOperation())
+            isRefreshing = true
+        }
     }
 }
