@@ -28,11 +28,23 @@ class OPDSRefreshOperation: Operation {
             let parser = OPDSStreamParser()
             try parser.parse(data: data)
             try processData(parser: parser)
+            
+            // if library has never been refreshed before, preload wikipedia favicons
+            if Defaults[.libraryLastRefresh] == nil, let languageCode = Locale.current.languageCode {
+                (try? Realm())?.objects(ZimFile.self)
+                    .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
+                        NSPredicate(format: "categoryRaw = %@", ZimFile.Category.wikipedia.rawValue),
+                        NSPredicate(format: "languageCode = %@", languageCode),
+                        NSPredicate(format: "faviconData = nil"),
+                        NSPredicate(format: "faviconURL != nil"),
+                    ]))
+                    .forEach { FaviconDownloadService.shared.download(zimFile: $0) }
+            }
 
             DispatchQueue.main.sync {
-                // apply language filter if library has never been refreshed
-                if Defaults[.libraryLastRefresh] == nil, let code = Locale.current.languageCode {
-                    Defaults[.libraryLanguageCodes] = [code]
+                // if library has never been refreshed before, apply initial language filter
+                if Defaults[.libraryLastRefresh] == nil, let languageCode = Locale.current.languageCode {
+                    Defaults[.libraryLanguageCodes] = [languageCode]
                 }
 
                 // update last library refresh time

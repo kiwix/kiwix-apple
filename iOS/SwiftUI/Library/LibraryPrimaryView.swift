@@ -7,11 +7,13 @@
 //
 
 import SwiftUI
+import Defaults
 import RealmSwift
 
 /// A list of all on device & downloading zim files and all zim file categories.
 @available(iOS 13.0, *)
 struct LibraryPrimaryView: View {
+    @Default(.libraryLastRefresh) private var libraryLastRefresh
     @ObservedResults(
         ZimFile.self,
         configuration: Realm.defaultConfig,
@@ -27,11 +29,20 @@ struct LibraryPrimaryView: View {
         ),
         sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
     ) private var download
+    @ObservedObject private var viewModel = ViewModel()
     var zimFileSelected: (String, String) -> Void = { _, _ in }
     var categorySelected: (ZimFile.Category) -> Void = { _ in }
     
     var body: some View {
         List {
+            if onDevice.count == 0, libraryLastRefresh == nil {
+                Section(header: Text("Get Started")) {
+                    ActionCell(
+                        title: viewModel.isRefreshing ? "Refreshing..." : "Download Online Catalog",
+                        alignment: .leading
+                    ) { viewModel.refresh() }.disabled(viewModel.isRefreshing)
+                }
+            }
             if onDevice.count > 0 {
                 Section(header: Text("On Device")) {
                     ForEach(onDevice) { zimFile in
@@ -71,5 +82,21 @@ struct LibraryPrimaryView: View {
                 }
             }
         }.listStyle(GroupedListStyle())
+    }
+    
+    class ViewModel: ObservableObject {
+        @Published private(set) var isRefreshing = false
+        
+        init() {
+            if let operation = LibraryOperationQueue.shared.currentOPDSRefreshOperation {
+                isRefreshing = !operation.isFinished
+            }
+        }
+        
+        func refresh() {
+            guard LibraryOperationQueue.shared.currentOPDSRefreshOperation == nil else { return }
+            LibraryOperationQueue.shared.addOperation(OPDSRefreshOperation())
+            isRefreshing = true
+        }
     }
 }

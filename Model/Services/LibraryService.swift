@@ -10,14 +10,11 @@ import os
 #if canImport(UIKit)
 import UIKit
 #endif
-import Combine
 import Defaults
 import RealmSwift
 
 class LibraryService {
     static let shared = LibraryService()
-    
-    private var faviconDownloadPipeline: Any?
     
     func isFileInDocumentDirectory(zimFileID: String) -> Bool {
         if let fileName = ZimFileService.shared.getFileURL(zimFileID: zimFileID)?.lastPathComponent,
@@ -60,6 +57,11 @@ class LibraryService {
 
     #if canImport(UIKit)
     static let autoUpdateInterval: TimeInterval = 3600.0 * 6
+    static var isOutdated: Bool {
+        guard let lastRefresh = Defaults[.libraryLastRefresh] else { return true }
+        return Date().timeIntervalSince(lastRefresh) > LibraryService.autoUpdateInterval
+    }
+    
     func applyAutoUpdateSetting() {
         UIApplication.shared.setMinimumBackgroundFetchInterval(
             Defaults[.libraryAutoRefresh] ? LibraryService.autoUpdateInterval : UIApplication.backgroundFetchIntervalNever

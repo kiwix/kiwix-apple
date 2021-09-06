@@ -15,6 +15,7 @@ import RealmSwift
 @available(iOS 13.0, *)
 struct LibraryCategoryView: View {
     @ObservedObject private var viewModel: ViewModel
+    @Default(.libraryLastRefresh) private var libraryLastRefresh
     
     let category: ZimFile.Category
     var zimFileTapped: (String, String) -> Void = { _, _ in }
@@ -25,19 +26,7 @@ struct LibraryCategoryView: View {
     }
     
     var body: some View {
-        if let languages = viewModel.languages, languages.isEmpty {
-            InfoView(
-                imageSystemName: {
-                    if #available(iOS 14.0, *) {
-                        return "text.book.closed"
-                    } else {
-                        return "book"
-                    }
-                }(),
-                title: "No Zim Files",
-                help: "Enable some other languages to see zim files under this category."
-            )
-        } else if let languages = viewModel.languages {
+        if let languages = viewModel.languages, !languages.isEmpty {
             List {
                 ForEach(languages) { language in
                     Section(header: languages.count > 1 ? Text(language.name) : nil) {
@@ -50,6 +39,27 @@ struct LibraryCategoryView: View {
                     }
                 }
             }
+        } else if let languages = viewModel.languages, languages.isEmpty {
+            InfoView(
+                imageSystemName: {
+                    if #available(iOS 14.0, *) {
+                        return "text.book.closed"
+                    } else {
+                        return "book"
+                    }
+                }(),
+                title: "No Zim Files",
+                help: {
+                    if libraryLastRefresh == nil {
+                        return "Download online catalog to see zim files under this category."
+                    } else {
+                        return "Enable some other languages to see zim files under this category."
+                    }
+                }()
+            )
+        } else {
+            // show nothing when catagory hasn't been fully loaded
+            EmptyView()
         }
     }
     

@@ -13,22 +13,28 @@ import WebKit
 struct ActionCell: View {
     let title: String
     let isDestructive: Bool
+    let alignment: HorizontalAlignment
     let action: (() -> Void)
     
-    init(title: String, isDestructive: Bool = false, action: @escaping (() -> Void) = {}) {
+    init(title: String,
+         isDestructive: Bool = false,
+         alignment: HorizontalAlignment = .center,
+         action: @escaping (() -> Void) = {}
+    ) {
         self.title = title
         self.isDestructive = isDestructive
+        self.alignment = alignment
         self.action = action
     }
     
     var body: some View {
         Button(action: action, label: {
             HStack {
-                Spacer()
+                if alignment != .leading { Spacer() }
                 Text(title)
                     .fontWeight(.medium)
                     .foregroundColor(isDestructive ? .red : nil)
-                Spacer()
+                if alignment != .trailing { Spacer() }
             }
         })
     }

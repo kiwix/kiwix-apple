@@ -8,6 +8,7 @@
 
 import SwiftUI
 import UIKit
+import Defaults
 import RealmSwift
 
 @available(iOS 13.0, *)
@@ -66,6 +67,11 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
         // configure search result controller action
         searchResultsController.rootView.zimFileSelected = {
             [unowned self] zimFileID, title in self.showZimFile(zimFileID, title)
+        }
+        
+        // refresh library when library is opened, but only when library has been previously refreshed
+        if Defaults[.libraryLastRefresh] != nil, Defaults[.libraryAutoRefresh], LibraryService.isOutdated {
+            LibraryOperationQueue.shared.addOperation(OPDSRefreshOperation())
         }
     }
     
