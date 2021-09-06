@@ -59,7 +59,7 @@ struct LibrarySettingsView: View {
     }
     
     private class ViewModel: ObservableObject {
-        @Published var isRefreshing = false
+        @Published private(set) var isRefreshing = false
         
         private var refreshObserver: NSKeyValueObservation?
         private let autoRefreshObserver = Defaults.observe(.libraryAutoRefresh) { _ in

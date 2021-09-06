@@ -21,17 +21,19 @@ struct LibraryLanguageView: View {
             list.navigationTitle("Languages").toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Picker(selection: $sortingMode, label: Image(systemName: "arrow.up.arrow.down")) {
-                        Text("Alphabetically").tag(LibraryLanguageSortingMode.alphabetically)
-                        Text("By Count").tag(LibraryLanguageSortingMode.byCount)
+                        ForEach(LibraryLanguageSortingMode.allCases) { sortingMode in
+                            Text(sortingMode.description).tag(sortingMode)
+                        }
                     }.pickerStyle(MenuPickerStyle())
                 }
             }
         } else {
             list.navigationBarItems(trailing: HStack {
-                Picker("Language Sorting Mode", selection: $sortingMode, content: {
-                    Text("A-Z").tag(LibraryLanguageSortingMode.alphabetically)
-                    Text("By Count").tag(LibraryLanguageSortingMode.byCount)
-                }).pickerStyle(SegmentedPickerStyle())
+                Picker(selection: $sortingMode, label: Image(systemName: "arrow.up.arrow.down")) {
+                    ForEach(LibraryLanguageSortingMode.allCases) { sortingMode in
+                        Text(sortingMode.description).tag(sortingMode)
+                    }
+                }.pickerStyle(SegmentedPickerStyle())
                 Spacer(minLength: 60)
             })
         }
