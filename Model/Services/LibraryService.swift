@@ -57,6 +57,11 @@ class LibraryService {
 
     #if canImport(UIKit)
     static let autoUpdateInterval: TimeInterval = 3600.0 * 6
+    static var isOutdated: Bool {
+        guard let lastRefresh = Defaults[.libraryLastRefresh] else { return true }
+        return Date().timeIntervalSince(lastRefresh) > LibraryService.autoUpdateInterval
+    }
+    
     func applyAutoUpdateSetting() {
         UIApplication.shared.setMinimumBackgroundFetchInterval(
             Defaults[.libraryAutoRefresh] ? LibraryService.autoUpdateInterval : UIApplication.backgroundFetchIntervalNever
