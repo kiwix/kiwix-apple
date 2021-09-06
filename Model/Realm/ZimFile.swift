@@ -24,12 +24,12 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     @Persisted(indexed: true) var languageCode: String = ""
     @Persisted(indexed: true) var creationDate: Date = Date()
     @Persisted(indexed: true) var size: Int64 = 0
-    @Persisted var articleCount: Int64 = 0
-    @Persisted var mediaCount: Int64 = 0
+    @Persisted(indexed: true) var articleCount: Int64 = 0
+    @Persisted(indexed: true) var mediaCount: Int64 = 0
+    @Persisted(indexed: true) var categoryRaw: String = Category.other.rawValue
+    @Persisted(indexed: true) var stateRaw: String = State.remote.rawValue
     @Persisted var creator: String = ""
     @Persisted var publisher: String = ""
-    @Persisted var categoryRaw: String = Category.other.rawValue
-    @Persisted var stateRaw: String = State.remote.rawValue
     
     // MARK: - bool properties
     
