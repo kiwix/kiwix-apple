@@ -281,7 +281,8 @@ private struct FilterView: View {
                         HStack {
                             ForEach(recentSearchTexts, id: \.hash) { searchText in
                                 Button {
-                                    guard let url = URL(string: "kiwix://search/\(searchText)") else { return }
+                                    guard var url = URL(string: "kiwix://search/") else { return }
+                                    url.appendPathComponent(searchText)
                                     UIApplication.shared.open(url)
                                 } label: {
                                     Text(searchText)
