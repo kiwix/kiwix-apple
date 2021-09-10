@@ -12,7 +12,7 @@ import Defaults
 import RealmSwift
 
 @available(iOS 13.0, *)
-class LibraryViewController: UISplitViewController, UISplitViewControllerDelegate, UISearchResultsUpdating {
+class LibraryViewController: UISplitViewController, UISplitViewControllerDelegate, UISearchResultsUpdating, UIDocumentPickerDelegate {
     private let primaryController = UIHostingController(rootView: LibraryPrimaryView())
     private let searchResultsController = UIHostingController(rootView: LibrarySearchResultView())
     private let searchController: UISearchController
@@ -57,6 +57,12 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
                 style: .plain,
                 target: self,
                 action: #selector(showSettings(sender:))
+            ),
+            UIBarButtonItem(
+                image: UIImage(systemName: "plus"),
+                style: .plain,
+                target: self,
+                action: #selector(importFiles(sender:))
             )
         ]
         primaryController.rootView.zimFileSelected = {
@@ -91,6 +97,11 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
         }
     }
     
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        guard let url = urls.first else { return }
+        
+    }
+    
     // MARK: - Action
     
     @objc private func dismissController() {
@@ -99,6 +110,13 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
     
     @objc private func dismissPresentedController() {
         presentedViewController?.dismiss(animated: true)
+    }
+    
+    @objc private func importFiles(sender: UIBarButtonItem) {
+        let controller = UIDocumentPickerViewController(documentTypes: ["org.openzim.zim"], in: .open)
+        controller.allowsMultipleSelection = false
+        controller.delegate = self
+        present(controller, animated: true)
     }
     
     @objc private func showSettings(sender: UIBarButtonItem) {
