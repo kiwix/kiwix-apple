@@ -12,7 +12,8 @@ import Defaults
 import RealmSwift
 
 @available(iOS 13.0, *)
-class LibraryViewController: UISplitViewController, UISplitViewControllerDelegate, UISearchResultsUpdating, UIDocumentPickerDelegate {
+class LibraryViewController: UISplitViewController, UISplitViewControllerDelegate,
+                             UISearchResultsUpdating, UIDocumentPickerDelegate {
     private let primaryController = UIHostingController(rootView: LibraryPrimaryView())
     private let searchResultsController = UIHostingController(rootView: LibrarySearchResultView())
     private let searchController: UISearchController
@@ -65,14 +66,14 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
                 action: #selector(importFiles(sender:))
             )
         ]
-        primaryController.rootView.zimFileSelected = {
-            [unowned self] zimFileID, title in self.showZimFile(zimFileID, title)
+        primaryController.rootView.zimFileSelected = { [unowned self] zimFileID, title in
+            self.showZimFile(zimFileID, title)
         }
         primaryController.rootView.categorySelected = { [unowned self] category in self.showCategory(category) }
         
         // configure search result controller action
-        searchResultsController.rootView.zimFileSelected = {
-            [unowned self] zimFileID, title in self.showZimFile(zimFileID, title)
+        searchResultsController.rootView.zimFileSelected = { [unowned self] zimFileID, title in
+            self.showZimFile(zimFileID, title)
         }
         
         // refresh library when library is opened, but only when library has been previously refreshed
