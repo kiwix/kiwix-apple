@@ -1,0 +1,4 @@
+disabled_rules:
+  - trailing_whitespace
+included:
+  - iOS/Controller/Library/LibraryViewController.swift
