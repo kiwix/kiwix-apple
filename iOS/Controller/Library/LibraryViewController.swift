@@ -12,7 +12,8 @@ import Defaults
 import RealmSwift
 
 @available(iOS 13.0, *)
-class LibraryViewController: UISplitViewController, UISplitViewControllerDelegate, UISearchResultsUpdating {
+class LibraryViewController: UISplitViewController, UISplitViewControllerDelegate,
+                             UISearchResultsUpdating, UIDocumentPickerDelegate {
     private let primaryController = UIHostingController(rootView: LibraryPrimaryView())
     private let searchResultsController = UIHostingController(rootView: LibrarySearchResultView())
     private let searchController: UISearchController
@@ -57,16 +58,22 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
                 style: .plain,
                 target: self,
                 action: #selector(showSettings(sender:))
+            ),
+            UIBarButtonItem(
+                image: UIImage(systemName: "plus"),
+                style: .plain,
+                target: self,
+                action: #selector(importFiles(sender:))
             )
         ]
-        primaryController.rootView.zimFileSelected = {
-            [unowned self] zimFileID, title in self.showZimFile(zimFileID, title)
+        primaryController.rootView.zimFileSelected = { [unowned self] zimFileID, title in
+            self.showZimFile(zimFileID, title)
         }
         primaryController.rootView.categorySelected = { [unowned self] category in self.showCategory(category) }
         
         // configure search result controller action
-        searchResultsController.rootView.zimFileSelected = {
-            [unowned self] zimFileID, title in self.showZimFile(zimFileID, title)
+        searchResultsController.rootView.zimFileSelected = { [unowned self] zimFileID, title in
+            self.showZimFile(zimFileID, title)
         }
         
         // refresh library when library is opened, but only when library has been previously refreshed
@@ -91,6 +98,15 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
         }
     }
     
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        guard let url = urls.first else { return }
+        if let _ = ZimFileService.getMetaData(url: url) {
+            present(FileImportController(fileURL: url), animated: true)
+        } else {
+            present(FileImportAlertController(fileName: url.lastPathComponent), animated: true)
+        }
+    }
+    
     // MARK: - Action
     
     @objc private func dismissController() {
@@ -99,6 +115,13 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
     
     @objc private func dismissPresentedController() {
         presentedViewController?.dismiss(animated: true)
+    }
+    
+    @objc private func importFiles(sender: UIBarButtonItem) {
+        let controller = UIDocumentPickerViewController(documentTypes: ["org.openzim.zim"], in: .open)
+        controller.allowsMultipleSelection = false
+        controller.delegate = self
+        present(controller, animated: true)
     }
     
     @objc private func showSettings(sender: UIBarButtonItem) {

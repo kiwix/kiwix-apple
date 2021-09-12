@@ -12,7 +12,6 @@ import RealmSwift
 class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private let zimFile: ZimFile
     private var zimFileObserver: NotificationToken?
-    private var zimFileStateRawObserver:  NSKeyValueObservation?
     private let documentDirectoryURL = try! FileManager.default.url(
         for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
 
@@ -89,6 +88,7 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureZimFileObservers()
+        configureState()
     }
 
     // MARK: -
@@ -109,56 +109,58 @@ class LibraryZimFileDetailController: UIViewController, UITableViewDataSource, U
                         self.navigationController?.popViewController(animated: true)
                     }
                 }
+            case .change(_, let properties):
+                for property in properties {
+                    if property.name == "stateRaw" {
+                        self.configureState(property: property)
+                    }
+                }
             default:
                 break
             }
         }
-        zimFileStateRawObserver = zimFile.observe(\.stateRaw,
-                                                  options: [.initial, .old],
-                                                  changeHandler: { (zimFile, change) in
-            guard let state = ZimFile.State(rawValue: zimFile.stateRaw) else {
-                self.actions = ([[]], [[]])
-                return
-            }
-            switch state {
-            case .remote:
-                let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-                let freespace: Int64 = {
-                    if let free = (((try? url?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])) as URLResourceValues??))??.volumeAvailableCapacityForImportantUsage {
-                        return free
-                    } else {
-                        return 0
-                    }
-                }()
-                self.actions = (zimFile.size <= freespace ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]], [])
-
-                // when state changed from onDevice to remote, and when split view controller is collapsed
-                // pop this view controller
-                if let oldState = ZimFile.State(rawValue: change.oldValue ?? ""),
-                    oldState == .onDevice,
-                    let splitViewController = self.splitViewController,
-                    splitViewController.isCollapsed,
-                    let masterNavigationController = splitViewController.viewControllers.first as? UINavigationController {
-                    masterNavigationController.popViewController(animated: true)
-                }
-            case .onDevice:
-                if LibraryService().isFileInDocumentDirectory(zimFileID: zimFile.fileID) {
-                    self.actions = ([[.openMainPage]], [[.deleteFile]])
+    }
+    
+    func configureState(property: PropertyChange? = nil) {
+        guard let state = ZimFile.State(rawValue: property?.newValue as? String ?? zimFile.stateRaw) else { return }
+        switch state {
+        case .remote:
+            let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+            let freespace: Int64 = {
+                if let free = (((try? url?.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])) as URLResourceValues??))??.volumeAvailableCapacityForImportantUsage {
+                    return free
                 } else {
-                    self.actions = ([[.openMainPage]], [[.unlink]])
+                    return 0
                 }
-            case .retained:
-                self.actions = ([], [[.deleteBookmarks]])
-            case .downloadQueued:
-                self.actions = ([[.cancel]], [])
-            case .downloadInProgress:
-                self.actions = ([[.pause, .cancel]], [])
-            case .downloadPaused:
-                self.actions = ([[.resume, .cancel]], [])
-            case .downloadError:
-                self.actions = ([[.cancel]], [])
+            }()
+            self.actions = (zimFile.size <= freespace ? [[.downloadWifiOnly, .downloadWifiAndCellular]] : [[.downloadSpaceNotEnough]], [])
+
+            // when state changed from onDevice to remote, and when split view controller is collapsed
+            // pop this view controller
+            if let oldState = ZimFile.State(rawValue: property?.oldValue as? String ?? ""),
+                oldState == .onDevice,
+                let splitViewController = self.splitViewController,
+                splitViewController.isCollapsed,
+                let masterNavigationController = splitViewController.viewControllers.first as? UINavigationController {
+                masterNavigationController.popViewController(animated: true)
             }
-        })
+        case .onDevice:
+            if LibraryService().isFileInDocumentDirectory(zimFileID: zimFile.fileID) {
+                self.actions = ([[.openMainPage]], [[.deleteFile]])
+            } else {
+                self.actions = ([[.openMainPage]], [[.unlink]])
+            }
+        case .retained:
+            self.actions = ([], [[.deleteBookmarks]])
+        case .downloadQueued:
+            self.actions = ([[.cancel]], [])
+        case .downloadInProgress:
+            self.actions = ([[.pause, .cancel]], [])
+        case .downloadPaused:
+            self.actions = ([[.resume, .cancel]], [])
+        case .downloadError:
+            self.actions = ([[.cancel]], [])
+        }
     }
 
     // MARK: - UITableViewDataSource & Delagates
