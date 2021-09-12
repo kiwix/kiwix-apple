@@ -1,3 +1,10 @@
+## 1.14.3
+
+- Library zim file detail now show file descriptions
+- Technical implementation improvements for library on iOS 13 & 14 (Mostly SwiftUI)
+- Fixed an issue where recent search button doesn't do anything if the search text contains spaces
+- Note: we will drop support for iOS 12 once iOS 15 is released, we support the last three major iOS versions
+
 ## 1.14.2
 
 - Search result UI tweaks
