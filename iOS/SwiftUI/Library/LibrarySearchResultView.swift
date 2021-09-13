@@ -6,23 +6,20 @@
 //  Copyright © 2021 Chris Li. All rights reserved.
 //
 
+import Combine
 import SwiftUI
 import Defaults
 import RealmSwift
 
 @available(iOS 13.0, *)
 struct LibrarySearchResultView: View {
-    @ObservedResults(
-        ZimFile.self,
-        configuration: Realm.defaultConfig,
-        sortDescriptor: SortDescriptor(keyPath: "creationDate", ascending: false)
-    ) private var zimFiles
+    @ObservedObject private(set) var viewModel = ViewModel()
 
     var zimFileSelected: (String, String) -> Void = { _, _ in }
     
     var body: some View {
         List {
-            ForEach(zimFiles) { zimFile in
+            ForEach(viewModel.zimFiles) { zimFile in
                 Button(action: { zimFileSelected(zimFile.fileID, zimFile.title) }, label: {
                     ZimFileCell(zimFile)
                 })
@@ -32,17 +29,42 @@ struct LibrarySearchResultView: View {
             UIApplication.shared.windows.filter{$0.isKeyWindow}.first?.endEditing(false)
         })
     }
-    
-    func update(_ searchText: String) {
-        // update filter
-        var predicates = [NSPredicate(format: "title CONTAINS[cd] %@", searchText)]
-        if !Defaults[.libraryLanguageCodes].isEmpty {
-            predicates.append(NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]))
-        }
-        _zimFiles.filter = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+
+    class ViewModel: ObservableObject {
+        @Published private(set) var zimFiles = [ZimFile]()
         
-        // download favicons
-        zimFiles.filter { zimFile in zimFile.faviconData == nil }
-            .forEach { FaviconDownloadService.shared.download(zimFile: $0) }
+        private let database = try? Realm()
+        private let queue = DispatchQueue(label: "org.kiwix.library.category", qos: .userInitiated)
+        private var collectionSubscriber: AnyCancellable?
+        
+        func update(_ searchText: String) {
+            collectionSubscriber = database?.objects(ZimFile.self)
+                .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
+                    NSPredicate(format: "title CONTAINS[cd] %@", searchText),
+                    NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes])
+                ]))
+                .sorted(by: [
+                    SortDescriptor(keyPath: "title", ascending: true),
+                    SortDescriptor(keyPath: "size", ascending: false)
+                ])
+                .collectionPublisher
+                .subscribe(on: queue)
+                .freeze()
+                .throttle(for: 0.2, scheduler: queue, latest: true)
+                .map { Array($0) }
+                .receive(on: DispatchQueue.main)
+                .catch { _ in Just(([ZimFile]())) }
+                .sink(receiveValue: { zimFiles in
+                    self.zimFiles = zimFiles
+                })
+            database?.objects(ZimFile.self)
+                .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
+                    NSPredicate(format: "title CONTAINS[cd] %@", searchText),
+                    NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]),
+                    NSPredicate(format: "faviconData = nil"),
+                    NSPredicate(format: "faviconURL != nil"),
+                ]))
+                .forEach { FaviconDownloadService.shared.download(zimFile: $0) }
+        }
     }
 }
