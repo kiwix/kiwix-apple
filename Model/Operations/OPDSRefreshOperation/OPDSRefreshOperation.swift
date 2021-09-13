@@ -22,6 +22,14 @@ class OPDSRefreshOperation: Operation {
     override func main() {
         do {
             os_log("Refresh started.", log: Log.OPDS, type: .debug)
+            
+            // if library has never been refreshed before, apply initial language filter
+            if Defaults[.libraryLastRefresh] == nil {
+                DispatchQueue.main.sync {
+                    guard let languageCode = Locale.current.languageCode else { return }
+                    Defaults[.libraryLanguageCodes] = [languageCode]
+                }
+            }
 
             // refresh the library
             let data = try fetchData()
@@ -30,24 +38,19 @@ class OPDSRefreshOperation: Operation {
             try processData(parser: parser)
             
             // if library has never been refreshed before, preload wikipedia favicons
-            if Defaults[.libraryLastRefresh] == nil, let languageCode = Locale.current.languageCode {
+            if Defaults[.libraryLastRefresh] == nil {
                 (try? Realm())?.objects(ZimFile.self)
                     .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
                         NSPredicate(format: "categoryRaw = %@", ZimFile.Category.wikipedia.rawValue),
-                        NSPredicate(format: "languageCode = %@", languageCode),
+                        NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]),
                         NSPredicate(format: "faviconData = nil"),
                         NSPredicate(format: "faviconURL != nil"),
                     ]))
                     .forEach { FaviconDownloadService.shared.download(zimFile: $0) }
             }
 
+            // update last library refresh time
             DispatchQueue.main.sync {
-                // if library has never been refreshed before, apply initial language filter
-                if Defaults[.libraryLastRefresh] == nil, let languageCode = Locale.current.languageCode {
-                    Defaults[.libraryLanguageCodes] = [languageCode]
-                }
-
-                // update last library refresh time
                 Defaults[.libraryLastRefresh] = Date()
             }
 
