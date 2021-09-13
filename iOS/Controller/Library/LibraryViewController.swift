@@ -94,7 +94,7 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
         let searchText = searchController.searchBar.text
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             guard let searchText = searchText, searchText == searchController.searchBar.text else { return }
-            self.searchResultsController.rootView.update(searchText)
+            self.searchResultsController.rootView.viewModel.update(searchText)
         }
     }
     
