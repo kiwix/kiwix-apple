@@ -10,5 +10,4 @@ import Foundation
 
 struct FeatureFlags {
     static let homeViewEnabled = false
-    static let swiftUILibraryEnabled = true
 }
