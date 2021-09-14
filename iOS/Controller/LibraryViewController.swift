@@ -11,7 +11,6 @@ import UIKit
 import Defaults
 import RealmSwift
 
-@available(iOS 13.0, *)
 class LibraryViewController: UISplitViewController, UISplitViewControllerDelegate,
                              UISearchResultsUpdating, UIDocumentPickerDelegate {
     private let primaryController = UIHostingController(rootView: LibraryPrimaryView())
@@ -100,7 +99,7 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         guard let url = urls.first else { return }
-        if let _ = ZimFileService.getMetaData(url: url) {
+        if ZimFileService.getMetaData(url: url) == nil {
             present(FileImportController(fileURL: url), animated: true)
         } else {
             present(FileImportAlertController(fileName: url.lastPathComponent), animated: true)

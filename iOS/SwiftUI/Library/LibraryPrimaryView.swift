@@ -11,7 +11,6 @@ import Defaults
 import RealmSwift
 
 /// A list of all on device & downloading zim files and all zim file categories.
-@available(iOS 13.0, *)
 struct LibraryPrimaryView: View {
     @Default(.libraryLastRefresh) private var libraryLastRefresh
     @ObservedResults(

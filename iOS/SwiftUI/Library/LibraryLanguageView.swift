@@ -11,7 +11,6 @@ import Defaults
 import RealmSwift
 
 /// Select languages displayed in LibraryCategoryView.
-@available(iOS 13.0, *)
 struct LibraryLanguageView: View {
     @Default(.libraryLanguageSortingMode) private var sortingMode
     @ObservedObject private var viewModel = ViewModel()

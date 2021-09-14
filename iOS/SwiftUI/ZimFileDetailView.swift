@@ -11,7 +11,6 @@ import RealmSwift
 import Defaults
 
 /// Information and action about a single zim file in a list view.
-@available(iOS 13.0, *)
 struct ZimFileDetailView: View {
     @State private var showingAlert = false
     @ObservedObject var viewModel: ViewModel
