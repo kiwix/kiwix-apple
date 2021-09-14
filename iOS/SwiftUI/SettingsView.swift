@@ -11,7 +11,6 @@ import SwiftUI
 
 import Defaults
 
-@available(iOS 13.0, *)
 struct SettingsView: View {
     var dismiss: (() -> Void) = {}
     var sendFeedback: (() -> Void) = {}
@@ -56,7 +55,6 @@ struct SettingsView: View {
     }
 }
 
-@available(iOS 13.0, *)
 fileprivate struct FontSizeSettingsView: View {
     @Default(.webViewTextSizeAdjustFactor) var webViewTextSizeAdjustFactor
     private let percentageFormatter: NumberFormatter = {
@@ -85,7 +83,6 @@ fileprivate struct FontSizeSettingsView: View {
     }
 }
 
-@available(iOS 13.0, *)
 fileprivate struct ExternalLinkSettingsView: View {
     @Default(.externalLinkLoadingPolicy) var externalLinkLoadingPolicy
     private let help = """
@@ -116,7 +113,6 @@ fileprivate struct ExternalLinkSettingsView: View {
     }
 }
 
-@available(iOS 13.0, *)
 fileprivate struct SearchSettingsView: View {
     @Default(.searchResultSnippetMode) var searchResultSnippetMode
     private let help = "If search is becoming too slow, disable the snippets to improve the situation."
@@ -144,7 +140,6 @@ fileprivate struct SearchSettingsView: View {
     }
 }
 
-@available(iOS 13.0, *)
 fileprivate struct SidebarSettingsView: View {
     @Default(.sideBarDisplayMode) var sideBarDisplayMode
     private let help = """
@@ -175,7 +170,6 @@ fileprivate struct SidebarSettingsView: View {
     }
 }
 
-@available(iOS 13.0, *)
 fileprivate struct AboutView: View {
     @State var externalLinkURL: URL?
     
@@ -237,18 +231,5 @@ fileprivate struct AboutView: View {
         }
         
         func updateUIViewController(_ uiViewController: SFSafariViewController, context: Context) { }
-    }
-}
-
-@available(iOS 13.0, *)
-struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        FontSizeSettingsView().previewDevice("iPhone 12 Pro")
-    }
-}
-
-extension URL: Identifiable {
-    public var id: String {
-        self.absoluteString
     }
 }
