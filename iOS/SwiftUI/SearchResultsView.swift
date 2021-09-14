@@ -11,7 +11,6 @@ import SwiftUI
 import Defaults
 import RealmSwift
 
-@available(iOS 13.0, *)
 class SearchResultsHostingController: UIViewController, UISearchResultsUpdating {
     private var viewModel = ViewModel()
     private var queue = OperationQueue()
@@ -82,7 +81,6 @@ class SearchResultsHostingController: UIViewController, UISearchResultsUpdating 
     }
 }
 
-@available(iOS 13.0, *)
 private class ViewModel: ObservableObject {
     @Published var searchText = ""
     @Published var inProgress = false
@@ -183,7 +181,6 @@ private class ViewModel: ObservableObject {
     }
 }
 
-@available(iOS 13.0, *)
 private struct SearchResultsView: View {
     @EnvironmentObject var viewModel: ViewModel
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
@@ -213,7 +210,6 @@ private struct SearchResultsView: View {
     }
 }
 
-@available(iOS 13.0, *)
 private struct SplitView: UIViewControllerRepresentable {
     @EnvironmentObject var viewModel: ViewModel
     
@@ -256,7 +252,6 @@ private struct SplitView: UIViewControllerRepresentable {
    }
 }
 
-@available(iOS 13.0, *)
 private struct FilterView: View {
     @State private var showAlert = false
     @EnvironmentObject var viewModel: ViewModel
@@ -330,7 +325,6 @@ private struct FilterView: View {
     }
 }
 
-@available(iOS 13.0, *)
 private struct ResultsListView: View {
     @EnvironmentObject var viewModel: ViewModel
     
@@ -348,15 +342,14 @@ private struct ResultsListView: View {
                             if let snippet = result.snippet?.string {
                                 Text(snippet).font(.caption)
                             }
-                        }
+                        }.foregroundColor(.primary)
                     }
                 }
             }
-        }
+        }.listStyle(PlainListStyle())
     }
 }
 
-@available(iOS 13.0, *)
 private struct ActivityIndicator: UIViewRepresentable {
     func makeUIView(context: Context) -> UIActivityIndicatorView {
         UIActivityIndicatorView(style: .large)
@@ -364,18 +357,5 @@ private struct ActivityIndicator: UIViewRepresentable {
 
     func updateUIView(_ uiView: UIActivityIndicatorView, context: Context) {
         uiView.startAnimating()
-    }
-}
-
-@available(iOS 13.0, *)
-struct SwiftUIView_Previews: PreviewProvider {
-    static var previews: some View {
-        InfoView(
-            imageSystemName: "magnifyingglass",
-            title: "Nothing to search",
-            help: "Add some zim files first, then start a search."
-        )
-        .previewDevice(PreviewDevice(rawValue: "iPhone 12 Pro"))
-        .previewDisplayName("iPhone 12 Pro")
     }
 }
