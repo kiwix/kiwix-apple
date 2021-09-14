@@ -81,17 +81,6 @@ struct RoundedRectButton: View {
     }
 }
 
-@available(iOS 14.0, *)
-extension View {
-    @ViewBuilder func hidden(_ isHidden: Bool) -> some View {
-        if isHidden {
-            self.hidden()
-        } else {
-            self
-        }
-    }
-}
-
 @available(iOS 13.0, *)
 struct DisclosureIndicator: View {
     var body: some View {
@@ -185,6 +174,17 @@ struct InfoView: View {
 }
 
 @available(iOS 13.0, *)
+extension List {
+    func insetGroupedListStyle() -> some View {
+        if #available(iOS 14.0, *) {
+            return AnyView(self.listStyle(InsetGroupedListStyle()))
+        } else {
+            return AnyView(self.listStyle(GroupedListStyle()).environment(\.horizontalSizeClass, .regular))
+        }
+    }
+}
+
+@available(iOS 13.0, *)
 struct TitleDetailCell: View {
     let title: String
     let detail: String
@@ -198,13 +198,13 @@ struct TitleDetailCell: View {
     }
 }
 
-@available(iOS 13.0, *)
-extension List {
-    func insetGroupedListStyle() -> some View {
-        if #available(iOS 14.0, *) {
-            return AnyView(self.listStyle(InsetGroupedListStyle()))
+@available(iOS 14.0, *)
+extension View {
+    @ViewBuilder func hidden(_ isHidden: Bool) -> some View {
+        if isHidden {
+            self.hidden()
         } else {
-            return AnyView(self.listStyle(GroupedListStyle()).environment(\.horizontalSizeClass, .regular))
+            self
         }
     }
 }
