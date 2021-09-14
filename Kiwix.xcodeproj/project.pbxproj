@@ -23,6 +23,7 @@
 		97252105200E908000B60A80 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252104200E908000B60A80 /* TableViewCell.swift */; };
 		97252108200F9D6A00B60A80 /* SettingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97252107200F9D6A00B60A80 /* SettingController.swift */; };
 		972B6662200808D6003F5365 /* WelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972B6661200808D6003F5365 /* WelcomeController.swift */; };
+		972C978026F042E40070987F /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972C977F26F042E40070987F /* SettingsViewController.swift */; };
 		972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972E6F631FA11A6100F5C927 /* RoundedButton.swift */; };
 		973B2A5D254609FD00093661 /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973B2A5C254609FD00093661 /* Modifiers.swift */; };
 		973B8012239066D0008CC8CE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973B8011239066D0008CC8CE /* SceneDelegate.swift */; };
@@ -230,6 +231,7 @@
 		97252104200E908000B60A80 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		97252107200F9D6A00B60A80 /* SettingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingController.swift; sourceTree = "<group>"; };
 		972B6661200808D6003F5365 /* WelcomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeController.swift; sourceTree = "<group>"; };
+		972C977F26F042E40070987F /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		972E6F631FA11A6100F5C927 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		973B2A5C254609FD00093661 /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
 		973B8011239066D0008CC8CE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -503,10 +505,11 @@
 			children = (
 				97E173D325733D10002CAD17 /* RootViewController.swift */,
 				97B5D3E82596398400D12FEE /* SidebarController.swift */,
-				97A2AE2125866D9200DEF81D /* ButtonProvider.swift */,
 				97802D6F25789B1800A21352 /* SidebarViewController.swift */,
+				97A2AE2125866D9200DEF81D /* ButtonProvider.swift */,
+				977D50622621E47D005345D1 /* LibraryViewController.swift */,
 				9797435B257BF33600D30F03 /* WebViewController.swift */,
-				978FA76725851B4D00666E1B /* HomeView.swift */,
+				972C977F26F042E40070987F /* SettingsViewController.swift */,
 				972E6F651FA2872A00F5C927 /* Search */,
 				97B1046D1F8FC61400488444 /* Library */,
 				97B4ADF72392B73300264AF6 /* Utilities */,
@@ -535,6 +538,7 @@
 				977D508C262680F9005345D1 /* Library */,
 				97D19F062546FF3700910CAE /* BuildingBlocks.swift */,
 				973B2A5C254609FD00093661 /* Modifiers.swift */,
+				978FA76725851B4D00666E1B /* HomeView.swift */,
 				97952EF2264F557B00FC9237 /* SearchResultsView.swift */,
 				97A963C3259D38D900496214 /* SettingsView.swift */,
 				979AAF3F257167C60078492F /* ZimFileDetailView.swift */,
@@ -677,7 +681,6 @@
 		97B1046D1F8FC61400488444 /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				977D50622621E47D005345D1 /* LibraryViewController.swift */,
 				97A36C561F8D5FCD0079B452 /* LibraryController.swift */,
 				97B1046E1F8FC63C00488444 /* LibraryMasterController.swift */,
 				97018984212357F200F8A6DD /* LibrarySearchController.swift */,
@@ -1081,6 +1084,7 @@
 				97B1046F1F8FC63C00488444 /* LibraryMasterController.swift in Sources */,
 				978FA76825851B4D00666E1B /* HomeView.swift in Sources */,
 				977D506D2621EAD1005345D1 /* LibraryPrimaryView.swift in Sources */,
+				972C978026F042E40070987F /* SettingsViewController.swift in Sources */,
 				972B6662200808D6003F5365 /* WelcomeController.swift in Sources */,
 				97252108200F9D6A00B60A80 /* SettingController.swift in Sources */,
 				973B2A5D254609FD00093661 /* Modifiers.swift in Sources */,
