@@ -56,3 +56,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         completionHandler(true)
     }
 }
+
+extension URL: Identifiable {
+    public var id: String {
+        self.absoluteString
+    }
+}
