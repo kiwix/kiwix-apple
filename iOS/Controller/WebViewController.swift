@@ -67,8 +67,10 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
     
     // MARK: - WKNavigationDelegate
     
-    @available(iOS 13.0, *)
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
+    func webView(_ webView: WKWebView,
+                 decidePolicyFor navigationAction: WKNavigationAction,
+                 preferences: WKWebpagePreferences,
+                 decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
         guard let url = navigationAction.request.url else { decisionHandler(.cancel, preferences); return }
         if url.isKiwixURL {
             if let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
@@ -95,35 +97,6 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
         }
     }
     
-    // for iOS 12
-    func webView(_ webView: WKWebView,
-                 decidePolicyFor navigationAction: WKNavigationAction,
-                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
-        if url.isKiwixURL {
-            if let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
-                decisionHandler(.cancel)
-                rootViewController?.openURL(redirectedURL)
-            } else {
-                decisionHandler(.allow)
-            }
-        } else if url.scheme == "http" || url.scheme == "https" {
-            let policy = Defaults[.externalLinkLoadingPolicy]
-            if policy == .alwaysLoad {
-                rootViewController?.present(SFSafariViewController(url: url), animated: true, completion: nil)
-            } else {
-                rootViewController?.present(UIAlertController.externalLink(policy: policy, action: {
-                    self.present(SFSafariViewController(url: url), animated: true, completion: nil)
-                }), animated: true)
-            }
-            decisionHandler(.cancel)
-        } else if url.scheme == "geo" {
-            decisionHandler(.cancel)
-        } else {
-            decisionHandler(.cancel)
-        }
-    }
-    
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         adjustTextSize()
         webView.evaluateJavaScript(
@@ -134,7 +107,6 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
     
     // MARK: - WKUIDelegate
     
-    @available(iOS 13.0, *)
     func webView(_ webView: WKWebView,
                  contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo,
                  completionHandler: @escaping (UIContextMenuConfiguration?) -> Void) {
