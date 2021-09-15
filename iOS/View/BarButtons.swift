@@ -25,12 +25,10 @@ class BarButtonGroup: UIStackView {
 class BarButton: UIButton {
     convenience init(imageName: String) {
         self.init(type: .system)
-        if #available(iOS 13.0, *) {
-            let configuration = UIImage.SymbolConfiguration(scale: .large)
-            setImage(UIImage(systemName: imageName, withConfiguration: configuration) ?? UIImage(named: imageName), for: .normal)
-        } else {
-            setImage(UIImage(named: imageName), for: .normal)
-        }
+        let image = UIImage(
+            systemName: imageName, withConfiguration: UIImage.SymbolConfiguration(scale: .large)
+        ) ?? UIImage(named: imageName)
+        setImage(image, for: .normal)
     }
     
     override var intrinsicContentSize: CGSize {
@@ -43,19 +41,11 @@ class BookmarkButton: BarButton {
     override var state: UIControl.State{ get { isBookmarked ? [.bookmarked, super.state] : super.state } }
     
     convenience init(imageName: String, bookmarkedImageName: String) {
-        if #available(iOS 13.0, *) {
-            self.init(imageName: imageName)
-            let configuration = UIImage.SymbolConfiguration(scale: .large)
-            let bookmarkedImage = UIImage(systemName: bookmarkedImageName, withConfiguration: configuration)?
-                .withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
-            setImage(bookmarkedImage, for: .bookmarked)
-            setImage(bookmarkedImage, for: [.bookmarked, .highlighted])
-        } else {
-            self.init(type: .system)
-            setImage(UIImage(named: imageName), for: .normal)
-            let bookmarkedImage = UIImage(named: bookmarkedImageName)
-            setImage(bookmarkedImage, for: .bookmarked)
-            setImage(bookmarkedImage, for: [.bookmarked, .highlighted])
-        }
+        self.init(imageName: imageName)
+        let configuration = UIImage.SymbolConfiguration(scale: .large)
+        let bookmarkedImage = UIImage(systemName: bookmarkedImageName, withConfiguration: configuration)?
+            .withTintColor(.systemYellow, renderingMode: .alwaysOriginal)
+        setImage(bookmarkedImage, for: .bookmarked)
+        setImage(bookmarkedImage, for: [.bookmarked, .highlighted])
     }
 }
