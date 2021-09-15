@@ -69,21 +69,15 @@ class SidebarController: UISplitViewController, UISplitViewControllerDelegate {
                 viewControllers[0] = controller
             }
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut) {
-                self.preferredDisplayMode = {
-                    if #available(iOS 13.0, *) {
-                        switch Defaults[.sideBarDisplayMode] {
-                        case .automatic:
-                            let size = self.view.frame.size
-                            return size.width > size.height ? .allVisible : .primaryOverlay
-                        case .overlay:
-                            return .primaryOverlay
-                        case .sideBySide:
-                            return .allVisible
-                        }
-                    } else {
-                        return .allVisible
-                    }
-                }()
+                switch Defaults[.sideBarDisplayMode] {
+                case .automatic:
+                    let size = self.view.frame.size
+                    self.preferredDisplayMode =  size.width > size.height ? .allVisible : .primaryOverlay
+                case .overlay:
+                    self.preferredDisplayMode =  .primaryOverlay
+                case .sideBySide:
+                    self.preferredDisplayMode = .allVisible
+                }
             }
         }
     }
