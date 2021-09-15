@@ -9,7 +9,6 @@
 import SwiftUI
 import WebKit
 
-@available(iOS 13.0, *)
 struct ActionCell: View {
     let title: String
     let isDestructive: Bool
@@ -81,7 +80,6 @@ struct RoundedRectButton: View {
     }
 }
 
-@available(iOS 13.0, *)
 struct DisclosureIndicator: View {
     var body: some View {
         Image(systemName: "chevron.right")
@@ -90,7 +88,6 @@ struct DisclosureIndicator: View {
     }
 }
 
-@available(iOS 13.0, *)
 struct Favicon: View {
     private let image: Image
     private let outline = RoundedRectangle(cornerRadius: 4, style: .continuous)
@@ -119,7 +116,6 @@ struct Favicon: View {
     }
 }
 
-@available(iOS 13.0, *)
 struct InfoView: View {
     @Environment(\.verticalSizeClass) var verticalSizeClass
     
@@ -173,7 +169,6 @@ struct InfoView: View {
     }
 }
 
-@available(iOS 13.0, *)
 extension List {
     func insetGroupedListStyle() -> some View {
         if #available(iOS 14.0, *) {
@@ -184,7 +179,6 @@ extension List {
     }
 }
 
-@available(iOS 13.0, *)
 struct TitleDetailCell: View {
     let title: String
     let detail: String
@@ -198,7 +192,6 @@ struct TitleDetailCell: View {
     }
 }
 
-@available(iOS 14.0, *)
 extension View {
     @ViewBuilder func hidden(_ isHidden: Bool) -> some View {
         if isHidden {
@@ -209,7 +202,6 @@ extension View {
     }
 }
 
-@available(iOS 13.0, *)
 struct ZimFileCell: View {
     let zimFile: ZimFile
     let accessories: [Accessory]
@@ -248,7 +240,6 @@ struct ZimFileCell: View {
     }
 }
 
-@available(iOS 13.0, *)
 struct ZimFileDownloadDetailView: View {
     static private let percentFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
