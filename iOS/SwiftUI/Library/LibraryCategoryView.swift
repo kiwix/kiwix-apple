@@ -12,7 +12,6 @@ import Defaults
 import RealmSwift
 
 /// List of zim files under a single category,
-@available(iOS 13.0, *)
 struct LibraryCategoryView: View {
     @ObservedObject private var viewModel: ViewModel
     @Default(.libraryLastRefresh) private var libraryLastRefresh
@@ -38,7 +37,7 @@ struct LibraryCategoryView: View {
                         }
                     }
                 }
-            }
+            }.listStyle(PlainListStyle())
         } else if let languages = viewModel.languages, languages.isEmpty {
             InfoView(
                 imageSystemName: {

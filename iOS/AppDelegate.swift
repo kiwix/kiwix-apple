@@ -23,12 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
     ) -> Bool {
         Realm.Configuration.defaultConfiguration = Realm.defaultConfig
         
-        if #available(iOS 13.0, *) {} else {
-            window = UIWindow(frame: UIScreen.main.bounds)
-            window?.rootViewController = UINavigationController(rootViewController: RootViewController())
-            window?.makeKeyAndVisible()
-        }
-        
         print("Document Directory URL: \(URL.documentDirectory)")
         
         DownloadService.shared.restorePreviousState()

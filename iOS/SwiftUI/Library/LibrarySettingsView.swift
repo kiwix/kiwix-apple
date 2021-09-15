@@ -10,7 +10,6 @@ import Combine
 import SwiftUI
 import Defaults
 
-@available(iOS 13.0, *)
 struct LibrarySettingsView: View {
     @Default(.libraryAutoRefresh) private var libraryAutoRefresh
     @Default(.libraryLastRefresh) private var libraryLastRefresh

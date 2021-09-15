@@ -26,13 +26,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     // MARK: - Init & Overrides
     
     init() {
-        self.searchResultsController = {
-            if #available(iOS 13.0, *) {
-                return SearchResultsHostingController()
-            } else {
-                return SearchResultsController()
-            }
-        }()
+        self.searchResultsController = SearchResultsHostingController()
         self.searchController = UISearchController(searchResultsController: self.searchResultsController)
         self.buttonProvider = ButtonProvider(webView: webViewController.webView)
         super.init(nibName: nil, bundle: nil)
@@ -58,6 +52,20 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
             sidebarController.setContentViewController(homeViewController)
         } else {
             sidebarController.setContentViewController(welcomeController)
+        }
+        
+        
+        if #available(iOS 15.0, *) {
+            navigationItem.scrollEdgeAppearance = {
+                let apperance = UINavigationBarAppearance()
+                apperance.configureWithDefaultBackground()
+                return apperance
+            }()
+            navigationController?.toolbar.scrollEdgeAppearance = {
+                let apperance = UIToolbarAppearance()
+                apperance.configureWithDefaultBackground()
+                return apperance
+            }()
         }
     }
     
@@ -149,25 +157,12 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         addChild(sidebarController)
         sidebarController.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sidebarController.view)
-        if #available(iOS 13.0, *) {
-            NSLayoutConstraint.activate([
-                view.topAnchor.constraint(equalTo: sidebarController.view.topAnchor),
-                view.leftAnchor.constraint(equalTo: sidebarController.view.leftAnchor),
-                view.bottomAnchor.constraint(equalTo: sidebarController.view.bottomAnchor),
-                view.rightAnchor.constraint(equalTo: sidebarController.view.rightAnchor),
-            ])
-        } else {
-            // on iOS 12, the contentViewController's master & detail controllers do not seem to be aware of the safe area,
-            // so the contentViewController is going to be pinned against the safe area layout guide veritcally
-            // and there won't be the content underneath the bar behavior
-            view.backgroundColor = .white
-            NSLayoutConstraint.activate([
-                view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: sidebarController.view.topAnchor),
-                view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: sidebarController.view.bottomAnchor),
-                view.leftAnchor.constraint(equalTo: sidebarController.view.leftAnchor),
-                view.rightAnchor.constraint(equalTo: sidebarController.view.rightAnchor),
-            ])
-        }
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: sidebarController.view.topAnchor),
+            view.leftAnchor.constraint(equalTo: sidebarController.view.leftAnchor),
+            view.bottomAnchor.constraint(equalTo: sidebarController.view.bottomAnchor),
+            view.rightAnchor.constraint(equalTo: sidebarController.view.rightAnchor),
+        ])
         sidebarController.didMove(toParent: self)
     }
     
@@ -178,10 +173,8 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         searchController.searchBar.searchBarStyle = .minimal
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchResultsUpdater = searchResultsController
-        if #available(iOS 13.0, *) {
-            searchController.automaticallyShowsCancelButton = false
-            searchController.showsSearchResultsController = true
-        }
+        searchController.automaticallyShowsCancelButton = false
+        searchController.showsSearchResultsController = true
         definesPresentationContext = true
         navigationItem.titleView = searchController.searchBar
     }
@@ -303,19 +296,11 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     }
     
     @objc func libraryButtonTapped() {
-        if #available(iOS 13.0, *) {
-            present(LibraryViewController(), animated: true)
-        } else {
-            present(LibraryController(), animated: true)
-        }
+        present(LibraryViewController(), animated: true)
     }
     
     @objc func settingsButtonTapped() {
-        if #available(iOS 13.0, *) {
-            present(SettingsViewController(), animated: true)
-        } else {
-            present(SettingNavigationController(), animated: true)
-        }
+        present(SettingsViewController(), animated: true)
     }
     
     @objc func moreButtonTapped() {

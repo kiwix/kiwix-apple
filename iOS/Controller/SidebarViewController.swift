@@ -19,11 +19,7 @@ class SidebarViewController: UIViewController {
         if #available(iOS 14.0, *), splitViewController != nil {
             navigationController?.isNavigationBarHidden = true
         }
-        if #available(iOS 13.0, *) {
-            view.backgroundColor = .secondarySystemBackground
-        } else {
-            view.backgroundColor = .white
-        }
+        view.backgroundColor = .secondarySystemBackground
     }
     
     fileprivate func setContent(_ content: UIView) {

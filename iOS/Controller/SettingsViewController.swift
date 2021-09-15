@@ -9,7 +9,6 @@
 import MessageUI
 import SwiftUI
 
-@available(iOS 13.0, *)
 class SettingsViewController: UIHostingController<SettingsView>, MFMailComposeViewControllerDelegate {
     convenience init() {
         self.init(rootView: SettingsView())
@@ -18,10 +17,13 @@ class SettingsViewController: UIHostingController<SettingsView>, MFMailComposeVi
     }
     
     private func presentFeedbackEmailComposer() {
-        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
         let controller = MFMailComposeViewController()
         controller.setToRecipients(["feedback@kiwix.org"])
-        controller.setSubject("Feedback of Kiwix for iOS v\(version)")
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            controller.setSubject("Feedback of Kiwix for iOS v\(version)")
+        } else {
+            controller.setSubject("Feedback of Kiwix for iOS.")
+        }
         controller.mailComposeDelegate = self
         present(controller, animated: true)
     }

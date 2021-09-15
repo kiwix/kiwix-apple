@@ -11,7 +11,6 @@ import SwiftUI
 import Defaults
 import RealmSwift
 
-@available(iOS 13.0, *)
 struct LibrarySearchResultView: View {
     @ObservedObject private(set) var viewModel = ViewModel()
 
