@@ -202,6 +202,55 @@ extension View {
     }
 }
 
+struct ListRow: View {
+    let title: String
+    let detail: String
+    let faviconData: Data?
+    let accessories: [Accessory]
+    
+    init(title: String, detail: String, faviconData: Data? = nil, accessories: [Accessory] = [.disclosureIndicator]) {
+        self.title = title
+        self.detail = detail
+        self.faviconData = faviconData
+        self.accessories = accessories
+    }
+    
+    var body: some View {
+        HStack {
+            if let data = faviconData {
+                Favicon(data: data)
+            }
+            VStack(alignment: .leading) {
+                Text(title).lineLimit(1)
+                Text(detail).lineLimit(1).font(.footnote)
+            }.foregroundColor(.primary)
+            Spacer()
+            accessory
+        }
+    }
+    
+    var accessory: some View {
+        ForEach(accessories, id: \.rawValue) { accessory in
+            switch accessory {
+            case .onDevice:
+                if UIDevice.current.userInterfaceIdiom == .phone {
+                    Image(systemName:"iphone").foregroundColor(.secondary)
+                } else if UIDevice.current.userInterfaceIdiom == .pad {
+                    Image(systemName:"ipad").foregroundColor(.secondary)
+                }
+            case .includedInSearch:
+                Image(systemName: "checkmark").foregroundColor(.blue)
+            case .disclosureIndicator:
+                DisclosureIndicator()
+            }
+        }
+    }
+    
+    enum Accessory: String {
+        case onDevice, includedInSearch, disclosureIndicator
+    }
+}
+
 struct ZimFileCell: View {
     let zimFile: ZimFile
     let accessories: [Accessory]
