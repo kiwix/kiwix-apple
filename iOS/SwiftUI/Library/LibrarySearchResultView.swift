@@ -17,22 +17,30 @@ struct LibrarySearchResultView: View {
     var zimFileSelected: (String, String) -> Void = { _, _ in }
     
     var body: some View {
-        List {
-            ForEach(viewModel.zimFiles) { zimFile in
-                Button { zimFileSelected(zimFile.fileID, zimFile.title) } label: {
-                    ListRow(
-                        title: zimFile.title,
-                        detail: zimFile.description,
-                        faviconData: viewModel.favicons[zimFile.fileID],
-                        accessories: zimFile.isOnDevice ? [.onDevice, .disclosureIndicator] :
-                            [.disclosureIndicator]
-                    )
+        if !viewModel.searchText.isEmpty, viewModel.zimFiles.isEmpty {
+            InfoView(
+                imageSystemName: "magnifyingglass",
+                title: "No Results",
+                help: "There are no zim files matching the search text."
+            )
+        } else {
+            List {
+                ForEach(viewModel.zimFiles) { zimFile in
+                    Button { zimFileSelected(zimFile.fileID, zimFile.title) } label: {
+                        ListRow(
+                            title: zimFile.title,
+                            detail: zimFile.description,
+                            faviconData: viewModel.favicons[zimFile.fileID],
+                            accessories: zimFile.isOnDevice ? [.onDevice, .disclosureIndicator] :
+                                [.disclosureIndicator]
+                        )
+                    }
                 }
-            }
-        }.gesture(DragGesture().onChanged { gesture in
-            guard gesture.predictedEndLocation.y < gesture.startLocation.y else { return }
-            UIApplication.shared.windows.filter{$0.isKeyWindow}.first?.endEditing(false)
-        })
+            }.gesture(DragGesture().onChanged { gesture in
+                guard gesture.predictedEndLocation.y < gesture.startLocation.y else { return }
+                UIApplication.shared.windows.filter{$0.isKeyWindow}.first?.endEditing(false)
+            })
+        }
     }
     
     struct ZimFileData: Identifiable {
@@ -44,6 +52,7 @@ struct LibrarySearchResultView: View {
     }
 
     class ViewModel: ObservableObject {
+        @Published private(set) var searchText = ""
         @Published private(set) var zimFiles = [ZimFileData]()
         @Published private(set) var favicons = [String: Data]()
         
@@ -53,6 +62,7 @@ struct LibrarySearchResultView: View {
         private var faviconSubscriber: AnyCancellable?
         
         func update(_ searchText: String) {
+            self.searchText = searchText
             let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
                 NSPredicate(format: "title CONTAINS[cd] %@", searchText),
                 NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes])
