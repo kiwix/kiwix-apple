@@ -73,7 +73,7 @@ struct LibraryCategoryView: View {
                             ListRow(
                                 title: zimFile.title,
                                 detail: zimFile.description,
-                                faviconData: zimFile.faviconData,
+                                faviconData: viewModel.favicons[zimFile.fileID],
                                 accessories: zimFile.isOnDevice ? [.onDevice, .disclosureIndicator] :
                                     [.disclosureIndicator]
                             )
@@ -90,7 +90,6 @@ struct LibraryCategoryView: View {
         let title: String
         let description: String
         let isOnDevice: Bool
-        var faviconData: Data?
     }
     
     struct SectionData: Identifiable {
@@ -123,14 +122,6 @@ struct LibraryCategoryView: View {
             self.category = category
             languageCodeObserver = Defaults.observe(.libraryLanguageCodes) { languageCodes in
                 self.loadData(languageCodes: languageCodes.newValue)
-//                self.database?.objects(ZimFile.self)
-//                    .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
-//                        NSPredicate(format: "categoryRaw = %@", category.rawValue),
-//                        NSPredicate(format: "languageCode IN %@", languageCodes.newValue),
-//                        NSPredicate(format: "faviconData = nil"),
-//                        NSPredicate(format: "faviconURL != nil"),
-//                    ]))
-//                    .forEach { FaviconDownloadService.shared.download(zimFile: $0) }
             }
         }
         
@@ -145,24 +136,28 @@ struct LibraryCategoryView: View {
                     SortDescriptor(keyPath: "title", ascending: true),
                     SortDescriptor(keyPath: "size", ascending: false)
                 ])
-                .collectionPublisher(keyPaths: ["fileID", "faviconData"])
+                .collectionPublisher(keyPaths: ["fileID"])
                 .subscribe(on: queue)
                 .freeze()
                 .throttle(for: 0.2, scheduler: queue, latest: true)
                 .map { zimFiles in
-                    var results = [String: [ZimFileData]]()
-                    for zimFile in zimFiles {
-                        let data = ZimFileData(
-                            fileID: zimFile.fileID,
-                            title: zimFile.title,
-                            description: zimFile.description,
-                            isOnDevice: zimFile.state == .onDevice,
-                            faviconData: zimFile.faviconData
-                        )
-                        results[zimFile.languageCode, default: []].append(data)
+                    zimFiles.forEach { zimFile in
+                        guard zimFile.faviconData == nil, zimFile.faviconURL != nil else { return }
+                        FaviconDownloadService.shared.download(zimFile: zimFile)
                     }
-                    return results.compactMap { SectionData(languageCode: $0, zimFiles: $1) }
-                    .sorted(by: { $0.languageName.caseInsensitiveCompare($1.languageName) == .orderedAscending })
+                    return Dictionary(grouping: zimFiles, by: { $0.languageCode })
+                        .map { languageCode, zimFiles in
+                            (languageCode, zimFiles.map { zimFile in
+                                ZimFileData(
+                                    fileID: zimFile.fileID,
+                                    title: zimFile.title,
+                                    description: zimFile.description,
+                                    isOnDevice: zimFile.state == .onDevice
+                                )
+                            })
+                        }
+                        .compactMap { SectionData(languageCode: $0, zimFiles: $1) }
+                        .sorted(by: { $0.languageName.caseInsensitiveCompare($1.languageName) == .orderedAscending })
                 }
                 .receive(on: DispatchQueue.main)
                 .catch { _ in Just([SectionData]()) }
@@ -179,19 +174,16 @@ struct LibraryCategoryView: View {
                 .freeze()
                 .throttle(for: 0.2, scheduler: queue, latest: true)
                 .map { zimFiles in
-                    
-                    var results = [String: Data]()
-                    for zimFile in zimFiles {
-                        results[zimFile.fileID] = zimFile.faviconData
-                    }
-                    return [String: Data]()
+                    Dictionary(
+                        zimFiles.map { ($0.fileID, $0.faviconData) }, uniquingKeysWith: { a, _ in a }
+                    ).compactMapValues({$0})
                 }
                 .receive(on: DispatchQueue.main)
                 .catch { _ in Just([String: Data]()) }
                 .sink(receiveValue: { favicons in
-                    withAnimation {
-                        self.favicons.merge(favicons, uniquingKeysWith: { $1 })
-                    }
+                    self.favicons.merge(favicons, uniquingKeysWith: { $1 })
+                    print(self.favicons.keys)
+                    print(self.sections)
                 })
         }
     }
