@@ -217,9 +217,7 @@ struct ListRow: View {
     
     var body: some View {
         HStack {
-            if let data = faviconData {
-                Favicon(data: data)
-            }
+            Favicon(data: faviconData)
             VStack(alignment: .leading) {
                 Text(title).lineLimit(1)
                 Text(detail).lineLimit(1).font(.footnote)
