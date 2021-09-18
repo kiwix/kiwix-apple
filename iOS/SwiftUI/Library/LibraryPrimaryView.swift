@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+
 import Defaults
 import RealmSwift
 
@@ -80,7 +81,7 @@ struct LibraryPrimaryView: View {
                     })
                 }
             }
-        }.listStyle(GroupedListStyle())
+        }.groupedListStyle()
     }
     
     class ViewModel: ObservableObject {
@@ -96,6 +97,17 @@ struct LibraryPrimaryView: View {
             guard LibraryOperationQueue.shared.currentOPDSRefreshOperation == nil else { return }
             LibraryOperationQueue.shared.addOperation(OPDSRefreshOperation())
             isRefreshing = true
+        }
+    }
+}
+
+private extension SwiftUI.List {
+    @ViewBuilder
+    func groupedListStyle() -> some View {
+        if #available(iOS 14.0, *), UIDevice.current.userInterfaceIdiom == .pad {
+            self.listStyle(InsetGroupedListStyle())
+        } else {
+            self.listStyle(GroupedListStyle())
         }
     }
 }
