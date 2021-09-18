@@ -45,16 +45,16 @@ struct LibraryPrimaryView: View {
             if onDevice.count > 0 {
                 Section(header: Text("On Device")) {
                     ForEach(onDevice) { zimFile in
-                        Button(action: { zimFileSelected(zimFile.fileID, zimFile.title) }, label: {
+                        Button { zimFileSelected(zimFile.fileID, zimFile.title) } label: {
                             ListRow(title: zimFile.title, detail: zimFile.description, faviconData: zimFile.faviconData)
-                        })
+                        }
                     }
                 }
             }
             if download.count > 0 {
                 Section(header: Text("Downloads")) {
                     ForEach(download) { zimFile in
-                        Button(action: { zimFileSelected(zimFile.fileID, zimFile.title) }, label: {
+                        Button { zimFileSelected(zimFile.fileID, zimFile.title) } label: {
                             HStack {
                                 Favicon(data: zimFile.faviconData)
                                 VStack(alignment: .leading) {
@@ -64,7 +64,7 @@ struct LibraryPrimaryView: View {
                                 Spacer()
                                 DisclosureIndicator()
                             }
-                        })
+                        }
                     }
                 }
             }
