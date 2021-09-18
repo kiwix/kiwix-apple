@@ -182,8 +182,6 @@ struct LibraryCategoryView: View {
                 .catch { _ in Just([String: Data]()) }
                 .sink(receiveValue: { favicons in
                     self.favicons.merge(favicons, uniquingKeysWith: { $1 })
-                    print(self.favicons.keys)
-                    print(self.sections)
                 })
         }
     }
