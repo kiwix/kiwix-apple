@@ -110,12 +110,14 @@ struct LibraryCategoryView: View {
     class ViewModel: ObservableObject {
         @Published private(set) var isInitialLoading = true
         @Published private(set) var sections = [SectionData]()
+        @Published private(set) var favicons = [String: Data]()
         
         private let category: ZimFile.Category
         private let database = try? Realm()
         private let queue = DispatchQueue(label: "org.kiwix.library.category", qos: .userInitiated)
         private var languageCodeObserver: Defaults.Observation?
         private var collectionSubscriber: AnyCancellable?
+        private var faviconSubscriber: AnyCancellable?
         
         init(category: ZimFile.Category) {
             self.category = category
@@ -133,11 +135,12 @@ struct LibraryCategoryView: View {
         }
         
         private func loadData(languageCodes: [String]) {
+            let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                NSPredicate(format: "categoryRaw = %@", category.rawValue),
+                NSPredicate(format: "languageCode IN %@", languageCodes)
+            ])
             collectionSubscriber = database?.objects(ZimFile.self)
-                .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
-                    NSPredicate(format: "categoryRaw = %@", category.rawValue),
-                    NSPredicate(format: "languageCode IN %@", languageCodes)
-                ]))
+                .filter(predicate)
                 .sorted(by: [
                     SortDescriptor(keyPath: "title", ascending: true),
                     SortDescriptor(keyPath: "size", ascending: false)
@@ -167,6 +170,27 @@ struct LibraryCategoryView: View {
                     withAnimation(self.sections.count > 0 ? .default : nil) {
                         self.isInitialLoading = false
                         self.sections = sections
+                    }
+                })
+            faviconSubscriber = database?.objects(ZimFile.self)
+                .filter(predicate)
+                .collectionPublisher(keyPaths: ["fileID", "faviconData"])
+                .subscribe(on: queue)
+                .freeze()
+                .throttle(for: 0.2, scheduler: queue, latest: true)
+                .map { zimFiles in
+                    
+                    var results = [String: Data]()
+                    for zimFile in zimFiles {
+                        results[zimFile.fileID] = zimFile.faviconData
+                    }
+                    return [String: Data]()
+                }
+                .receive(on: DispatchQueue.main)
+                .catch { _ in Just([String: Data]()) }
+                .sink(receiveValue: { favicons in
+                    withAnimation {
+                        self.favicons.merge(favicons, uniquingKeysWith: { $1 })
                     }
                 })
         }
