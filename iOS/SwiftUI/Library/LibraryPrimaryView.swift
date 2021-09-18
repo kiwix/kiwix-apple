@@ -46,7 +46,7 @@ struct LibraryPrimaryView: View {
                 Section(header: Text("On Device")) {
                     ForEach(onDevice) { zimFile in
                         Button(action: { zimFileSelected(zimFile.fileID, zimFile.title) }, label: {
-                            ZimFileCell(zimFile)
+                            ListRow(title: zimFile.title, detail: zimFile.description, faviconData: zimFile.faviconData)
                         })
                     }
                 }
