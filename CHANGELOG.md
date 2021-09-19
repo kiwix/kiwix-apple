@@ -2,6 +2,7 @@
 
 - Added iOS 15 compatibility and dropped iOS 12 support
 - Performance improvements and optimization for library search and category list
+- Technical: a database schema update, now directly use zim file category and state enum as field type
 
 ## 1.14.3
 
