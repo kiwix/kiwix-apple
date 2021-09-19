@@ -253,7 +253,6 @@ private struct SplitView: UIViewControllerRepresentable {
 }
 
 private struct FilterView: View {
-    @State private var showAlert = false
     @EnvironmentObject var viewModel: ViewModel
     @Default(.recentSearchTexts) var recentSearchTexts
     
