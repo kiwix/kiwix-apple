@@ -88,7 +88,7 @@ private class ViewModel: ObservableObject {
     @ObservedResults(
         ZimFile.self,
         configuration: Realm.defaultConfig,
-        filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
+        filter: NSPredicate(format: "state == %@", ZimFile.State.onDevice.rawValue),
         sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
     ) var zimFiles
     
@@ -101,7 +101,7 @@ private class ViewModel: ObservableObject {
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
             let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
+                NSPredicate(format: "state == %@", ZimFile.State.onDevice.rawValue),
                 NSPredicate(format: "includedInSearch == true"),
             ])
             searchObserver = database.objects(ZimFile.self).filter(predicate)

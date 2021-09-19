@@ -58,7 +58,7 @@ class LibraryScanOperation: Operation {
     private func addReadersFromBookmarkData() {
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
-            let predicate = NSPredicate(format: "stateRaw == %@ AND openInPlaceURLBookmark != nil",
+            let predicate = NSPredicate(format: "state == %@ AND openInPlaceURLBookmark != nil",
                                         ZimFile.State.onDevice.rawValue)
             for zimFile in database.objects(ZimFile.self).filter(predicate) {
                 var isStale: ObjCBool = false
@@ -113,7 +113,7 @@ class LibraryScanOperation: Operation {
                         "hasDetails": metadatum.hasDetails,
                         "hasPictures": metadatum.hasPictures,
                         "hasVideos": metadatum.hasVideos,
-                        "stateRaw": ZimFile.State.onDevice.rawValue,
+                        "state": ZimFile.State.onDevice,
                     ]
                     database.create(ZimFile.self, value: value, update: .modified)
                 }
@@ -121,7 +121,7 @@ class LibraryScanOperation: Operation {
                 // for all zim file objects that are currently onDevice, if the actual file is no longer on disk,
                 // set the object's state to remote or delete the object depending on if it can be re-downloaded.
                 let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                    NSPredicate(format: "stateRaw = %@", ZimFile.State.onDevice.rawValue),
+                    NSPredicate(format: "state = %@", ZimFile.State.onDevice.rawValue),
                     NSPredicate(format: "NOT fileID IN %@", Set(zimFileIDs)),
                 ])
                 for zimFile in database.objects(ZimFile.self).filter(predicate) {

@@ -132,7 +132,7 @@ class OPDSRefreshOperation: Operation {
                 
                 // delete outdated zim files (that are not on device or being downloaded)
                 let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                    NSPredicate(format: "stateRaw = %@", ZimFile.State.remote.rawValue),
+                    NSPredicate(format: "state = %@", ZimFile.State.remote.rawValue),
                     NSPredicate(format: "NOT fileID IN %@", Set(metadata.map({ $0.identifier }))),
                 ])
                 let outdated = database.objects(ZimFile.self).filter(predicate)
