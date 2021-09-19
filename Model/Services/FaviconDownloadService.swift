@@ -7,6 +7,8 @@
 //
 
 import os
+import UIKit
+
 import RealmSwift
 
 class FaviconDownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URLSessionDataDelegate {
@@ -21,6 +23,7 @@ class FaviconDownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelega
         configuration.httpMaximumConnectionsPerHost = 1
         let operationQueue = OperationQueue()
         operationQueue.underlyingQueue = queue
+        operationQueue.maxConcurrentOperationCount = 1
         return URLSession(configuration: configuration, delegate: self, delegateQueue: operationQueue)
     }()
     
@@ -60,6 +63,12 @@ class FaviconDownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelega
         // retry download later if request was unsuccessful
         guard let response = task.response as? HTTPURLResponse, response.statusCode == 200 else {
             retry(zimFileID: zimFileID)
+            return
+        }
+        
+        // check favicon data can be accepted by UIImage
+        guard let data = cache[zimFileID], UIImage(data: data) != nil else {
+            os_log("Invalid favicon data for zim file %@.", log: Log.FaviconDownloadService, type: .info, zimFileID)
             return
         }
         

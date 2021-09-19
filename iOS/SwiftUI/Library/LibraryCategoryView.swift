@@ -25,111 +25,163 @@ struct LibraryCategoryView: View {
     }
     
     var body: some View {
-        if let languages = viewModel.languages, !languages.isEmpty {
-            List {
-                ForEach(languages) { language in
-                    Section(header: languages.count > 1 ? Text(language.name) : nil) {
-                        ForEach(viewModel.zimFiles[language.code, default: []]) { zimFile in
-                            Button(
-                                action: { zimFileTapped(zimFile.fileID, zimFile.title) },
-                                label: { ZimFileCell(zimFile, accessories: [.onDevice, .disclosureIndicator]) }
+        if libraryLastRefresh == nil {
+            refreshNeeded
+        } else if viewModel.isInitialLoading {
+            EmptyView()
+        } else if viewModel.sections.isEmpty {
+            empty
+        } else {
+            list
+        }
+    }
+    
+    var refreshNeeded: some View {
+        InfoView(
+            imageSystemName: {
+                if #available(iOS 14.0, *) {
+                    return "text.book.closed"
+                } else {
+                    return "book"
+                }
+            }(),
+            title: "No Zim Files",
+            help: "Download online catalog to see zim files under this category."
+        )
+    }
+    
+    var empty: some View {
+        InfoView(
+            imageSystemName: {
+                if #available(iOS 14.0, *) {
+                    return "text.book.closed"
+                } else {
+                    return "book"
+                }
+            }(),
+            title: "No Zim Files",
+            help: "Enable some other languages to see zim files under this category."
+        )
+    }
+    
+    var list: some View {
+        List {
+            ForEach(viewModel.sections) { section in
+                Section(header: viewModel.sections.count > 1 ? Text(section.languageName) : nil) {
+                    ForEach(section.zimFiles) { zimFile in
+                        Button { zimFileTapped(zimFile.fileID, zimFile.title) } label: {
+                            ListRow(
+                                title: zimFile.title,
+                                detail: zimFile.description,
+                                faviconData: viewModel.favicons[zimFile.fileID],
+                                accessories: zimFile.isOnDevice ? [.onDevice, .disclosureIndicator] :
+                                    [.disclosureIndicator]
                             )
                         }
                     }
                 }
-            }.listStyle(PlainListStyle())
-        } else if let languages = viewModel.languages, languages.isEmpty {
-            InfoView(
-                imageSystemName: {
-                    if #available(iOS 14.0, *) {
-                        return "text.book.closed"
-                    } else {
-                        return "book"
-                    }
-                }(),
-                title: "No Zim Files",
-                help: {
-                    if libraryLastRefresh == nil {
-                        return "Download online catalog to see zim files under this category."
-                    } else {
-                        return "Enable some other languages to see zim files under this category."
-                    }
-                }()
-            )
-        } else {
-            // show nothing when catagory hasn't been fully loaded
-            EmptyView()
-        }
+            }
+        }.listStyle(PlainListStyle())
     }
     
-    struct Language: Identifiable {
-        var id: String { code }
-        let code: String
-        let name: String
+    struct ZimFileData: Identifiable {
+        var id: String { fileID }
+        let fileID: String
+        let title: String
+        let description: String
+        let isOnDevice: Bool
+    }
+    
+    struct SectionData: Identifiable {
+        var id: String { languageCode }
+        let languageCode: String
+        let languageName: String
+        let zimFiles: [ZimFileData]
         
-        init?(code: String) {
-            guard let name = Locale.current.localizedString(forLanguageCode: code) else { return nil }
-            self.code = code
-            self.name = name
+        init?(languageCode: String, zimFiles: [ZimFileData]) {
+            guard let languageName = Locale.current.localizedString(forLanguageCode: languageCode) else { return nil }
+            self.languageCode = languageCode
+            self.languageName = languageName
+            self.zimFiles = zimFiles
         }
     }
     
     class ViewModel: ObservableObject {
-        @Published private(set) var languages: [Language]?
-        @Published private(set) var zimFiles = [String: [ZimFile]]()
+        @Published private(set) var isInitialLoading = true
+        @Published private(set) var sections = [SectionData]()
+        @Published private(set) var favicons = [String: Data]()
         
-        let category: ZimFile.Category
+        private let category: ZimFile.Category
         private let database = try? Realm()
         private let queue = DispatchQueue(label: "org.kiwix.library.category", qos: .userInitiated)
         private var languageCodeObserver: Defaults.Observation?
         private var collectionSubscriber: AnyCancellable?
+        private var faviconSubscriber: AnyCancellable?
         
         init(category: ZimFile.Category) {
             self.category = category
             languageCodeObserver = Defaults.observe(.libraryLanguageCodes) { languageCodes in
                 self.loadData(languageCodes: languageCodes.newValue)
-                self.database?.objects(ZimFile.self)
-                    .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
-                        NSPredicate(format: "categoryRaw = %@", category.rawValue),
-                        NSPredicate(format: "languageCode IN %@", languageCodes.newValue),
-                        NSPredicate(format: "faviconData = nil"),
-                        NSPredicate(format: "faviconURL != nil"),
-                    ]))
-                    .forEach { FaviconDownloadService.shared.download(zimFile: $0) }
             }
         }
         
         private func loadData(languageCodes: [String]) {
-            var predicates = [NSPredicate(format: "categoryRaw = %@", category.rawValue)]
-            if !languageCodes.isEmpty {
-                predicates.append(NSPredicate(format: "languageCode IN %@", languageCodes))
-            }
+            let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                NSPredicate(format: "categoryRaw = %@", category.rawValue),
+                NSPredicate(format: "languageCode IN %@", languageCodes)
+            ])
             collectionSubscriber = database?.objects(ZimFile.self)
-                .filter(NSCompoundPredicate(andPredicateWithSubpredicates: predicates))
+                .filter(predicate)
                 .sorted(by: [
                     SortDescriptor(keyPath: "title", ascending: true),
                     SortDescriptor(keyPath: "size", ascending: false)
                 ])
-                .collectionPublisher
+                .collectionPublisher(keyPaths: ["fileID"])
                 .subscribe(on: queue)
                 .freeze()
                 .throttle(for: 0.2, scheduler: queue, latest: true)
                 .map { zimFiles in
-                    var results = [String: [ZimFile]]()
-                    for zimFile in zimFiles {
-                        results[zimFile.languageCode, default: []].append(zimFile)
+                    zimFiles.forEach { zimFile in
+                        guard zimFile.faviconData == nil, zimFile.faviconURL != nil else { return }
+                        FaviconDownloadService.shared.download(zimFile: zimFile)
                     }
-                    return results
+                    return Dictionary(grouping: zimFiles, by: { $0.languageCode })
+                        .map { languageCode, zimFiles in
+                            (languageCode, zimFiles.map { zimFile in
+                                ZimFileData(
+                                    fileID: zimFile.fileID,
+                                    title: zimFile.title,
+                                    description: zimFile.description,
+                                    isOnDevice: zimFile.state == .onDevice
+                                )
+                            })
+                        }
+                        .compactMap { SectionData(languageCode: $0, zimFiles: $1) }
+                        .sorted(by: { $0.languageName.caseInsensitiveCompare($1.languageName) == .orderedAscending })
                 }
                 .receive(on: DispatchQueue.main)
-                .catch { _ in Just(([String: [ZimFile]]())) }
-                .sink(receiveValue: { zimFiles in
-                    withAnimation(self.zimFiles.count > 0 ? .default : nil) {
-                        self.languages = zimFiles.keys
-                            .compactMap { Language(code: $0) }
-                            .sorted(by: { $0.name.caseInsensitiveCompare($1.name) == .orderedAscending })
-                        self.zimFiles = zimFiles
+                .catch { _ in Just([SectionData]()) }
+                .sink(receiveValue: { sections in
+                    withAnimation(self.sections.count > 0 ? .default : nil) {
+                        self.isInitialLoading = false
+                        self.sections = sections
                     }
+                })
+            faviconSubscriber = database?.objects(ZimFile.self)
+                .filter(predicate)
+                .collectionPublisher(keyPaths: ["fileID", "faviconData"])
+                .subscribe(on: queue)
+                .freeze()
+                .throttle(for: 0.2, scheduler: queue, latest: true)
+                .map { zimFiles in
+                    Dictionary(
+                        zimFiles.map { ($0.fileID, $0.faviconData) }, uniquingKeysWith: { a, _ in a }
+                    ).compactMapValues({$0})
+                }
+                .receive(on: DispatchQueue.main)
+                .catch { _ in Just([String: Data]()) }
+                .sink(receiveValue: { favicons in
+                    self.favicons.merge(favicons, uniquingKeysWith: { $1 })
                 })
         }
     }

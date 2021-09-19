@@ -36,18 +36,6 @@ class OPDSRefreshOperation: Operation {
             let parser = OPDSStreamParser()
             try parser.parse(data: data)
             try processData(parser: parser)
-            
-            // if library has never been refreshed before, preload wikipedia favicons
-            if Defaults[.libraryLastRefresh] == nil {
-                (try? Realm())?.objects(ZimFile.self)
-                    .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
-                        NSPredicate(format: "categoryRaw = %@", ZimFile.Category.wikipedia.rawValue),
-                        NSPredicate(format: "languageCode IN %@", Defaults[.libraryLanguageCodes]),
-                        NSPredicate(format: "faviconData = nil"),
-                        NSPredicate(format: "faviconURL != nil"),
-                    ]))
-                    .forEach { FaviconDownloadService.shared.download(zimFile: $0) }
-            }
 
             // update last library refresh time
             DispatchQueue.main.sync {

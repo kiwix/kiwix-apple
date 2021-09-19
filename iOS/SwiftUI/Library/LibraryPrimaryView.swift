@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+
 import Defaults
 import RealmSwift
 
@@ -45,16 +46,16 @@ struct LibraryPrimaryView: View {
             if onDevice.count > 0 {
                 Section(header: Text("On Device")) {
                     ForEach(onDevice) { zimFile in
-                        Button(action: { zimFileSelected(zimFile.fileID, zimFile.title) }, label: {
-                            ZimFileCell(zimFile)
-                        })
+                        Button { zimFileSelected(zimFile.fileID, zimFile.title) } label: {
+                            ListRow(title: zimFile.title, detail: zimFile.description, faviconData: zimFile.faviconData)
+                        }
                     }
                 }
             }
             if download.count > 0 {
                 Section(header: Text("Downloads")) {
                     ForEach(download) { zimFile in
-                        Button(action: { zimFileSelected(zimFile.fileID, zimFile.title) }, label: {
+                        Button { zimFileSelected(zimFile.fileID, zimFile.title) } label: {
                             HStack {
                                 Favicon(data: zimFile.faviconData)
                                 VStack(alignment: .leading) {
@@ -64,7 +65,7 @@ struct LibraryPrimaryView: View {
                                 Spacer()
                                 DisclosureIndicator()
                             }
-                        })
+                        }
                     }
                 }
             }
@@ -80,7 +81,7 @@ struct LibraryPrimaryView: View {
                     })
                 }
             }
-        }.listStyle(GroupedListStyle())
+        }.groupedListStyle()
     }
     
     class ViewModel: ObservableObject {
@@ -96,6 +97,17 @@ struct LibraryPrimaryView: View {
             guard LibraryOperationQueue.shared.currentOPDSRefreshOperation == nil else { return }
             LibraryOperationQueue.shared.addOperation(OPDSRefreshOperation())
             isRefreshing = true
+        }
+    }
+}
+
+private extension SwiftUI.List {
+    @ViewBuilder
+    func groupedListStyle() -> some View {
+        if #available(iOS 14.0, *), UIDevice.current.userInterfaceIdiom == .pad {
+            self.listStyle(InsetGroupedListStyle())
+        } else {
+            self.listStyle(GroupedListStyle())
         }
     }
 }
