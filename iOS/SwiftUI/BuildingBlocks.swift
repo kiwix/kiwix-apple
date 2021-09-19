@@ -179,29 +179,6 @@ extension List {
     }
 }
 
-struct TitleDetailCell: View {
-    let title: String
-    let detail: String
-    
-    var body: some View {
-        HStack {
-            Text(title)
-            Spacer()
-            Text(detail).foregroundColor(.secondary)
-        }
-    }
-}
-
-extension View {
-    @ViewBuilder func hidden(_ isHidden: Bool) -> some View {
-        if isHidden {
-            self.hidden()
-        } else {
-            self
-        }
-    }
-}
-
 struct ListRow: View {
     let title: String
     let detail: String
@@ -246,6 +223,29 @@ struct ListRow: View {
     
     enum Accessory: String {
         case onDevice, includedInSearch, disclosureIndicator
+    }
+}
+
+struct TitleDetailCell: View {
+    let title: String
+    let detail: String
+    
+    var body: some View {
+        HStack {
+            Text(title)
+            Spacer()
+            Text(detail).foregroundColor(.secondary)
+        }
+    }
+}
+
+extension View {
+    @ViewBuilder func hidden(_ isHidden: Bool) -> some View {
+        if isHidden {
+            self.hidden()
+        } else {
+            self
+        }
     }
 }
 
