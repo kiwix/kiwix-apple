@@ -1,3 +1,8 @@
+## 1.14.4
+
+- Added iOS 15 compatibility and dropped iOS 12 support
+- Performance improvements and optimization for library search and category list
+
 ## 1.14.3
 
 - Library zim file detail now show file descriptions
