@@ -127,7 +127,7 @@ struct LibraryCategoryView: View {
         
         private func loadData(languageCodes: [String]) {
             let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                NSPredicate(format: "category = %@", category.rawValue),
+                NSPredicate(format: "categoryRaw = %@", category.rawValue),
                 NSPredicate(format: "languageCode IN %@", languageCodes)
             ])
             collectionSubscriber = database?.objects(ZimFile.self)
