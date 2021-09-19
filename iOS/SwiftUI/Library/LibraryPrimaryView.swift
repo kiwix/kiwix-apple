@@ -17,14 +17,14 @@ struct LibraryPrimaryView: View {
     @ObservedResults(
         ZimFile.self,
         configuration: Realm.defaultConfig,
-        filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
+        filter: NSPredicate(format: "state == %@", ZimFile.State.onDevice.rawValue),
         sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
     ) private var onDevice
     @ObservedResults(
         ZimFile.self,
         configuration: Realm.defaultConfig,
         filter: NSPredicate(
-            format: "stateRaw IN %@",
+            format: "state IN %@",
             [ZimFile.State.downloadQueued, .downloadInProgress, .downloadPaused, .downloadError].map({ $0.rawValue })
         ),
         sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
