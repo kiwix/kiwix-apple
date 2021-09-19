@@ -249,44 +249,6 @@ struct ListRow: View {
     }
 }
 
-struct ZimFileCell: View {
-    let zimFile: ZimFile
-    let accessories: [Accessory]
-    
-    init(_ zimFile: ZimFile, accessories: [Accessory] = [.disclosureIndicator]) {
-        self.zimFile = zimFile
-        self.accessories = accessories
-    }
-    
-    var body: some View {
-        HStack {
-            Favicon(data: zimFile.faviconData)
-            VStack(alignment: .leading) {
-                Text(zimFile.title).lineLimit(1)
-                Text(zimFile.description).lineLimit(1).font(.footnote)
-            }.foregroundColor(.primary)
-            Spacer()
-            if accessories.contains(.onDevice), zimFile.state == .onDevice {
-                if UIDevice.current.userInterfaceIdiom == .phone {
-                    Image(systemName:"iphone").foregroundColor(.secondary)
-                } else if UIDevice.current.userInterfaceIdiom == .pad {
-                    Image(systemName:"ipad").foregroundColor(.secondary)
-                }
-            }
-            if accessories.contains(.includedInSearch), zimFile.includedInSearch {
-                Image(systemName: "checkmark").foregroundColor(.blue)
-            }
-            if accessories.contains(.disclosureIndicator) {
-                DisclosureIndicator()
-            }
-        }
-    }
-    
-    enum Accessory {
-        case onDevice, includedInSearch, disclosureIndicator
-    }
-}
-
 struct ZimFileDownloadDetailView: View {
     static private let percentFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
