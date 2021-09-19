@@ -114,7 +114,7 @@ class OPDSRefreshOperation: Operation {
                         "title": metadatum.title,
                         "fileDescription": metadatum.fileDescription,
                         "languageCode": metadatum.languageCode,
-                        "categoryRaw": (ZimFile.Category(rawValue: metadatum.category) ?? .other).rawValue,
+                        "category": ZimFile.Category(rawValue: metadatum.category) ?? .other,
                         "creator": metadatum.creator,
                         "publisher": metadatum.publisher,
                         "creationDate": metadatum.creationDate,
