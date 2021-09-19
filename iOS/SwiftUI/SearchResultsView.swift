@@ -263,14 +263,7 @@ private struct FilterView: View {
                 Section(header: HStack {
                     Text("Recent")
                     Spacer()
-                    Button("Clear", action: {
-                        if #available(iOS 14.0, *) {
-                            showAlert = true
-                        } else {
-                            // iOS 13 simulator crashes when showing alert here, so I have to skip the alert
-                            viewModel.clearRecentSearchTexts()
-                        }
-                    }).foregroundColor(.secondary)
+                    Button("Clear", action: { viewModel.clearRecentSearchTexts() }).foregroundColor(.secondary)
                 }) {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
@@ -289,8 +282,7 @@ private struct FilterView: View {
                                 }
                             }
                         }.padding(.horizontal, 16)
-                    }
-                    .listRowInsets(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
+                    }.listRowInsets(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
                 }
             }
             if viewModel.zimFiles.count > 0 {
@@ -317,16 +309,7 @@ private struct FilterView: View {
                     }
                 }
             }
-        }
-        .listStyle(GroupedListStyle())
-        .alert(isPresented: $showAlert) {
-            Alert(
-                title: Text("Clear Recent Search"),
-                message: Text("All recent search texts will be cleared. This action is not recoverable."),
-                primaryButton: .destructive( Text("Delete"), action: { viewModel.clearRecentSearchTexts() }),
-                secondaryButton: .cancel()
-            )
-        }
+        }.listStyle(GroupedListStyle())
     }
 }
 
