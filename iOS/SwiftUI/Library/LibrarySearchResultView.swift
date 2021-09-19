@@ -103,7 +103,7 @@ struct LibrarySearchResultView: View {
                 .throttle(for: 0.2, scheduler: queue, latest: true)
                 .map { zimFiles in
                     Dictionary(
-                        zimFiles.map { ($0.fileID, $0.faviconData) }, uniquingKeysWith: { a, _ in a }
+                        zimFiles.map { ($0.fileID, $0.faviconData) }, uniquingKeysWith: { data, _ in data }
                     ).compactMapValues({$0})
                 }
                 .receive(on: DispatchQueue.main)
