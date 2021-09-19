@@ -179,29 +179,6 @@ extension List {
     }
 }
 
-struct TitleDetailCell: View {
-    let title: String
-    let detail: String
-    
-    var body: some View {
-        HStack {
-            Text(title)
-            Spacer()
-            Text(detail).foregroundColor(.secondary)
-        }
-    }
-}
-
-extension View {
-    @ViewBuilder func hidden(_ isHidden: Bool) -> some View {
-        if isHidden {
-            self.hidden()
-        } else {
-            self
-        }
-    }
-}
-
 struct ListRow: View {
     let title: String
     let detail: String
@@ -249,41 +226,26 @@ struct ListRow: View {
     }
 }
 
-struct ZimFileCell: View {
-    let zimFile: ZimFile
-    let accessories: [Accessory]
-    
-    init(_ zimFile: ZimFile, accessories: [Accessory] = [.disclosureIndicator]) {
-        self.zimFile = zimFile
-        self.accessories = accessories
-    }
+struct TitleDetailCell: View {
+    let title: String
+    let detail: String
     
     var body: some View {
         HStack {
-            Favicon(data: zimFile.faviconData)
-            VStack(alignment: .leading) {
-                Text(zimFile.title).lineLimit(1)
-                Text(zimFile.description).lineLimit(1).font(.footnote)
-            }.foregroundColor(.primary)
+            Text(title)
             Spacer()
-            if accessories.contains(.onDevice), zimFile.state == .onDevice {
-                if UIDevice.current.userInterfaceIdiom == .phone {
-                    Image(systemName:"iphone").foregroundColor(.secondary)
-                } else if UIDevice.current.userInterfaceIdiom == .pad {
-                    Image(systemName:"ipad").foregroundColor(.secondary)
-                }
-            }
-            if accessories.contains(.includedInSearch), zimFile.includedInSearch {
-                Image(systemName: "checkmark").foregroundColor(.blue)
-            }
-            if accessories.contains(.disclosureIndicator) {
-                DisclosureIndicator()
-            }
+            Text(detail).foregroundColor(.secondary)
         }
     }
-    
-    enum Accessory {
-        case onDevice, includedInSearch, disclosureIndicator
+}
+
+extension View {
+    @ViewBuilder func hidden(_ isHidden: Bool) -> some View {
+        if isHidden {
+            self.hidden()
+        } else {
+            self
+        }
     }
 }
 

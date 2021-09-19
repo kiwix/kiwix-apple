@@ -67,16 +67,6 @@ class ZimFile: Object, ObjectKeyIdentifiable {
         set { categoryRaw = newValue.rawValue }
     }
     
-    // MARK: - Overrides
-    
-    override static func primaryKey() -> String? {
-        "fileID"
-    }
-    
-    override static func indexedProperties() -> [String] {
-        ["name", "title", "languageCode", "categoryRaw", "creationDate", "stateRaw", "includedInSearch", "faviconURL"]
-    }
-    
     // MARK: - Descriptions
     
     override var description: String {

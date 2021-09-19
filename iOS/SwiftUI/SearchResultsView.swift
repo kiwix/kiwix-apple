@@ -307,7 +307,12 @@ private struct FilterView: View {
                         Button {
                             viewModel.toggleZimFileIncludedInSearch(zimFile.fileID)
                         } label: {
-                            ZimFileCell(zimFile, accessories: [.includedInSearch])
+                            ListRow(
+                                title: zimFile.title,
+                                detail: zimFile.description,
+                                faviconData: zimFile.faviconData,
+                                accessories: zimFile.includedInSearch ? [.includedInSearch] : []
+                            )
                         }
                     }
                 }
