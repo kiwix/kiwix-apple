@@ -26,8 +26,8 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     @Persisted(indexed: true) var size: Int64 = 0
     @Persisted(indexed: true) var articleCount: Int64 = 0
     @Persisted(indexed: true) var mediaCount: Int64 = 0
-    @Persisted(indexed: true) var categoryRaw: String = Category.other.rawValue
-    @Persisted(indexed: true) var stateRaw: String = State.remote.rawValue
+    @Persisted(indexed: true) var category: Category = .other
+    @Persisted(indexed: true) var state: State = .remote
     @Persisted var creator: String = ""
     @Persisted var publisher: String = ""
     
@@ -55,18 +55,7 @@ class ZimFile: Object, ObjectKeyIdentifiable {
     
     @Persisted var openInPlaceURLBookmark: Data?
     
-    // MARK: -  computed properties
-    
-    var state: State {
-        get { State(rawValue: stateRaw) ?? .remote }
-        set { stateRaw = newValue.rawValue }
-    }
-    
-    var category: Category {
-        get { Category(rawValue: categoryRaw) ?? .other }
-        set { categoryRaw = newValue.rawValue }
-    }
-    
+
     // MARK: - Descriptions
     
     override var description: String {
@@ -93,11 +82,11 @@ class ZimFile: Object, ObjectKeyIdentifiable {
 
     // MARK: - Type Definition
     
-    enum State: String {
+    enum State: String, PersistableEnum {
         case remote, onDevice, retained, downloadQueued, downloadInProgress, downloadPaused, downloadError
     }
     
-    enum Category: String, CaseIterable, CustomStringConvertible, Identifiable {
+    enum Category: String, CaseIterable, CustomStringConvertible, Identifiable, PersistableEnum {
         case wikipedia
         case wikibooks
         case wikinews

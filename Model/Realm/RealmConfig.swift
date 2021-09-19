@@ -27,10 +27,9 @@ extension Realm {
         
         // migrations
         var config = Realm.Configuration(
-            schemaVersion: 5,
+            schemaVersion: 6,
             migrationBlock: { migration, oldSchemaVersion in
-                print("migration, oldSchemaVersion \(oldSchemaVersion)")
-                if (oldSchemaVersion < 2) {
+                if oldSchemaVersion < 2 {
                     migration.enumerateObjects(ofType: ZimFile.className()) { oldObject, newObject in
                         newObject?["name"] = oldObject?["pid"] ?? ""
                         newObject?["fileDescription"] = oldObject?["bookDescription"] ?? ""
@@ -49,10 +48,10 @@ extension Realm {
                         }
                     }
                 }
-                if (oldSchemaVersion < 4) {
+                if oldSchemaVersion < 4 {
                     migration.renameProperty(onType: ZimFile.className(), from: "id", to: "fileID")
                 }
-                if (oldSchemaVersion < 5) {
+                if oldSchemaVersion < 5 {
                     migration.enumerateObjects(ofType: ZimFile.className()) { oldObject, newObject in
                         newObject?["creationDate"] = oldObject?["creationDate"] ?? Date()
                         newObject?["size"] = oldObject?["size"] ?? 0
@@ -60,6 +59,12 @@ extension Realm {
                         newObject?["mediaCount"] = oldObject?["mediaCount"] ?? 0
                         newObject?["creator"] = oldObject?["creator"] ?? ""
                         newObject?["publisher"] = oldObject?["publisher"] ?? ""
+                    }
+                }
+                if oldSchemaVersion < 6 {
+                    migration.enumerateObjects(ofType: ZimFile.className()) { oldObject, newObject in
+                        newObject?["category"] = ZimFile.Category(rawValue: oldObject?["categoryRaw"] as? String ?? "")
+                        newObject?["state"] = ZimFile.State(rawValue: oldObject?["stateRaw"] as? String ?? "")
                     }
                 }
             }
