@@ -102,13 +102,4 @@ class Parser {
         }
         return snippet
     }
-
-    class func test() {
-//        let url = URL(string: "kiwix://aca10302-c60d-f47e-1733-4a6ae9d88c07/A/Global_catastrophic_risk")!
-//        let url = URL(string: "kiwix://aca10302-c60d-f47e-1733-4a6ae9d88c07/A/X-risk")!
-//        let content = ZimFileService.shared.getURLContent(url: url)!.data
-//        print(String(data: content, encoding: .utf8))
-//        let t = (try! Parser2(html: content)).getFirstParagraph()
-//        print(t)
-    }
 }
