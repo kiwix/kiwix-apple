@@ -13,7 +13,7 @@ import CoreLocation
 import SwiftSoup
 import Fuzi
 
-class Parser2 {
+class Parser {
     private let document: HTMLDocument
     
     static private let boldFont = NSUIFont.systemFont(ofSize: 12.0, weight: .medium)
@@ -40,7 +40,7 @@ class Parser2 {
             if let element = child as? XMLElement {
                 let attributedSting = NSAttributedString(
                     string: element.stringValue.trimmingCharacters(in: .whitespacesAndNewlines),
-                    attributes: element.tag == "b" ? [.font: Parser2.boldFont] : nil
+                    attributes: element.tag == "b" ? [.font: Parser.boldFont] : nil
                 )
                 snippet.append(attributedSting)
             } else {
@@ -93,7 +93,7 @@ class Parser2 {
         let document = try? SwiftSoup.parseBodyFragment(bodyFragment)
         for node in document?.body()?.getChildNodes() ?? [] {
             if let element = node as? Element, let text = try? element.text(), element.tagName() == "b" {
-                snippet.append(NSAttributedString(string: text, attributes: [.font: Parser2.boldFont]))
+                snippet.append(NSAttributedString(string: text, attributes: [.font: Parser.boldFont]))
             } else if let text = try? node.outerHtml() {
                 snippet.append(NSAttributedString(string: text.trimmingCharacters(in: .newlines)))
             }
