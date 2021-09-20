@@ -29,12 +29,13 @@ extension SearchOperation {
                 defer { dispatchGroup.leave() }
                 guard !self.isCancelled else { return }
                 
+                let url = ZimFileService.shared.getRedirectedURL(url: result.url) ?? result.url
                 switch mode {
                 case .firstParagraph:
-                    guard let parser = try? Parser(zimFileID: result.zimFileID, path: result.url.path) else { return }
+                    guard let parser = try? Parser(url: url) else { return }
                     result.snippet = parser.getFirstParagraph()
                 case .firstSentence:
-                    guard let parser = try? Parser(zimFileID: result.zimFileID, path: result.url.path) else { return }
+                    guard let parser = try? Parser(url: url) else { return }
                     if #available(iOS 12.0,  macOS 10.14, *) {
                         let database = try? Realm(configuration: Realm.defaultConfig)
                         let zimFile = database?.object(ofType: ZimFile.self, forPrimaryKey: result.zimFileID)

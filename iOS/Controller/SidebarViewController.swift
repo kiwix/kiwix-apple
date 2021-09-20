@@ -85,8 +85,7 @@ class OutlineViewController: SidebarViewController, UITableViewDataSource, UITab
     
     func reload(url: URL?) {
         DispatchQueue.global(qos: .userInitiated).async {
-            if let zimFileID = url?.host, let path = url?.path,
-               let parser = try? Parser(zimFileID: zimFileID, path: path) {
+            if let url = url, let parser = try? Parser(url: url) {
                 self.items = parser.getOutlineItems()
             } else {
                 self.items = []
