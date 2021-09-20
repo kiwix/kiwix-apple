@@ -88,9 +88,12 @@ class Parser2 {
         try self.init(html: data)
     }
     
-    func getTitle() -> String? {
-        document.title
+    convenience init(url: URL) throws {
+        guard let zimFileID = url.host else { throw NSError() }
+        try self.init(zimFileID: zimFileID, path: url.path)
     }
+    
+    var title: String? { document.title }
     
     func getFirstParagraph() -> NSAttributedString? {
         guard let firstParagraph = document.firstChild(xpath: "//p") else { return nil }
@@ -98,15 +101,16 @@ class Parser2 {
         for child in firstParagraph.childNodes(ofTypes: [.Text, .Element]) {
             if let element = child as? XMLElement {
                 let attributedSting = NSAttributedString(
-                    string: element.stringValue,
+                    string: element.stringValue.trimmingCharacters(in: .whitespacesAndNewlines),
                     attributes: element.tag == "b" ? [.font: Parser2.boldFont] : nil
                 )
                 snippet.append(attributedSting)
             } else {
-                snippet.append(NSAttributedString(string: child.stringValue))
+                let text = child.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
+                snippet.append(NSAttributedString(string: text))
             }
         }
-        return snippet.string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : snippet
+        return snippet.length > 0 ? snippet : nil
     }
     
     func getFirstSentence(languageCode: String?) -> NSAttributedString? {
@@ -130,8 +134,10 @@ class Parser2 {
     }
 
     class func test() {
-        let url = URL(string: "kiwix://aca10302-c60d-f47e-1733-4a6ae9d88c07/A/Global_catastrophic_risk")!
+//        let url = URL(string: "kiwix://aca10302-c60d-f47e-1733-4a6ae9d88c07/A/Global_catastrophic_risk")!
+        let url = URL(string: "kiwix://aca10302-c60d-f47e-1733-4a6ae9d88c07/A/X-risk")!
         let content = ZimFileService.shared.getURLContent(url: url)!.data
+        print(String(data: content, encoding: .utf8))
         let t = (try! Parser2(html: content)).getFirstParagraph()
         print(t)
     }
