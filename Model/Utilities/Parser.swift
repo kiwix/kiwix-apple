@@ -13,63 +13,6 @@ import CoreLocation
 import SwiftSoup
 import Fuzi
 
-class Parser {
-    private let document: Document
-    private lazy var firstParagraph: Element? = try? document.body()?.getElementsByTag("p").first()
-    
-    static private let boldFont = NSUIFont.systemFont(ofSize: 12.0, weight: .medium)
-    
-    init(document: Document) {
-        self.document = document
-    }
-    
-    convenience init(html: String) throws {
-        self.init(document: try SwiftSoup.parse(html))
-    }
-    
-    convenience init(zimFileID: String, path: String) throws {
-        guard let data = ZimFileService.shared.getData(zimFileID: zimFileID, contentPath: path),
-            let html = String(data: data, encoding: .utf8) else { throw NSError() }
-        try self.init(html: html)
-    }
-
-    func getGeoCoordinate() -> CLLocationCoordinate2D? {
-        do {
-            let elements = try document.select("head > meta[name='geo.position']")
-            let content = try elements.first()?.attr("content")
-            guard let parts = content?.split(separator: ";"), parts.count == 2,
-                let lat = Double(parts[0]), let lon = Double(parts[1]) else { return nil }
-            return CLLocationCoordinate2D(latitude: lat, longitude: lon)
-        } catch { return nil }
-    }
-    
-    func getOutlineItems() -> [OutlineItem] {
-        var items = [OutlineItem]()
-        do {
-            let elements = try document.select("h1, h2, h3, h4, h5, h6")
-            for (index, element) in elements.enumerated() {
-                guard let level = Int(element.tagName().suffix(1)), let text = try? element.text() else { continue }
-                let item = OutlineItem(index: index, text: text, level: level)
-                items.append(item)
-            }
-        } catch { }
-        return items
-    }
-    
-    class func parseBodyFragment(_ bodyFragment: String) -> NSAttributedString? {
-        let snippet = NSMutableAttributedString()
-        let document = try? SwiftSoup.parseBodyFragment(bodyFragment)
-        for node in document?.body()?.getChildNodes() ?? [] {
-            if let element = node as? Element, let text = try? element.text(), element.tagName() == "b" {
-                snippet.append(NSAttributedString(string: text, attributes: [.font: Parser.boldFont]))
-            } else if let text = try? node.outerHtml() {
-                snippet.append(NSAttributedString(string: text.trimmingCharacters(in: .newlines)))
-            }
-        }
-        return snippet
-    }
-}
-
 class Parser2 {
     private let document: HTMLDocument
     
@@ -83,14 +26,9 @@ class Parser2 {
         self.init(document: try HTMLDocument(data: html))
     }
     
-    convenience init(zimFileID: String, path: String) throws {
-        guard let data = ZimFileService.shared.getData(zimFileID: zimFileID, contentPath: path) else { throw NSError() }
-        try self.init(html: data)
-    }
-    
     convenience init(url: URL) throws {
-        guard let zimFileID = url.host else { throw NSError() }
-        try self.init(zimFileID: zimFileID, path: url.path)
+        guard let zimFileID = url.host, let data = ZimFileService.shared.getData(zimFileID: zimFileID, contentPath: url.path)else { throw NSError() }
+        try self.init(html: data)
     }
     
     var title: String? { document.title }
@@ -132,13 +70,43 @@ class Parser2 {
         guard let firstImage = document.firstChild(xpath: "//img") else { return nil }
         return firstImage.attributes["src"]
     }
+    
+    func getOutlineItems() -> [OutlineItem] {
+        document.css("h1, h2, h3, h4, h5, h6").enumerated().compactMap { index, element in
+            guard let tag = element.tag, let level = Int(tag.suffix(1)) else { return nil }
+            return OutlineItem(index: index, text: element.stringValue, level: level)
+        }
+    }
+    
+//    func getGeoCoordinate() -> CLLocationCoordinate2D? {
+//        do {
+//            let elements = try document.select("head > meta[name='geo.position']")
+//            let content = try elements.first()?.attr("content")
+//            guard let parts = content?.split(separator: ";"), parts.count == 2,
+//                let lat = Double(parts[0]), let lon = Double(parts[1]) else { return nil }
+//            return CLLocationCoordinate2D(latitude: lat, longitude: lon)
+//        } catch { return nil }
+//    }
+    
+    class func parseBodyFragment(_ bodyFragment: String) -> NSAttributedString? {
+        let snippet = NSMutableAttributedString()
+        let document = try? SwiftSoup.parseBodyFragment(bodyFragment)
+        for node in document?.body()?.getChildNodes() ?? [] {
+            if let element = node as? Element, let text = try? element.text(), element.tagName() == "b" {
+                snippet.append(NSAttributedString(string: text, attributes: [.font: Parser2.boldFont]))
+            } else if let text = try? node.outerHtml() {
+                snippet.append(NSAttributedString(string: text.trimmingCharacters(in: .newlines)))
+            }
+        }
+        return snippet
+    }
 
     class func test() {
 //        let url = URL(string: "kiwix://aca10302-c60d-f47e-1733-4a6ae9d88c07/A/Global_catastrophic_risk")!
-        let url = URL(string: "kiwix://aca10302-c60d-f47e-1733-4a6ae9d88c07/A/X-risk")!
-        let content = ZimFileService.shared.getURLContent(url: url)!.data
-        print(String(data: content, encoding: .utf8))
-        let t = (try! Parser2(html: content)).getFirstParagraph()
-        print(t)
+//        let url = URL(string: "kiwix://aca10302-c60d-f47e-1733-4a6ae9d88c07/A/X-risk")!
+//        let content = ZimFileService.shared.getURLContent(url: url)!.data
+//        print(String(data: content, encoding: .utf8))
+//        let t = (try! Parser2(html: content)).getFirstParagraph()
+//        print(t)
     }
 }
