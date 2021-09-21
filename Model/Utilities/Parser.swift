@@ -10,7 +10,6 @@ import CoreLocation
 #if canImport(NaturalLanguage)
     import NaturalLanguage
 #endif
-import SwiftSoup
 import Fuzi
 
 class Parser {
@@ -22,13 +21,18 @@ class Parser {
         self.document = document
     }
     
-    convenience init(html: Data) throws {
-        self.init(document: try HTMLDocument(data: html))
+    convenience init(html: String) throws {
+        self.init(document: try HTMLDocument(string: html))
+    }
+    
+    convenience init(data: Data) throws {
+        self.init(document: try HTMLDocument(data: data))
     }
     
     convenience init(url: URL) throws {
-        guard let zimFileID = url.host, let data = ZimFileService.shared.getData(zimFileID: zimFileID, contentPath: url.path)else { throw NSError() }
-        try self.init(html: data)
+        guard let zimFileID = url.host,
+              let data = ZimFileService.shared.getData(zimFileID: zimFileID, contentPath: url.path) else { throw NSError() }
+        try self.init(data: data)
     }
     
     var title: String? { document.title }
@@ -91,15 +95,7 @@ class Parser {
 //    }
     
     class func parseBodyFragment(_ bodyFragment: String) -> NSAttributedString? {
-        let snippet = NSMutableAttributedString()
-        let document = try? SwiftSoup.parseBodyFragment(bodyFragment)
-        for node in document?.body()?.getChildNodes() ?? [] {
-            if let element = node as? Element, let text = try? element.text(), element.tagName() == "b" {
-                snippet.append(NSAttributedString(string: text, attributes: [.font: Parser.boldFont]))
-            } else if let text = try? node.outerHtml() {
-                snippet.append(NSAttributedString(string: text.trimmingCharacters(in: .newlines)))
-            }
-        }
-        return snippet
+        let html = "<!DOCTYPE html><html><head></head><body><p>\(bodyFragment)</p></body></html>"
+        return (try? Parser(html: html))?.getFirstParagraph()
     }
 }
