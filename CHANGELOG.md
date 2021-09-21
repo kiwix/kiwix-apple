@@ -1,3 +1,7 @@
+## 1.14.5
+
+- Fixed crashes that could happen during search result snippet parsing
+
 ## 1.14.4
 
 - Added iOS 15 compatibility and dropped iOS 12 support

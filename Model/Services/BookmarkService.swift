@@ -44,8 +44,8 @@ class BookmarkService {
                 bookmark.path = url.path
                 bookmark.date = Date()
                 
-                let parser = try Parser(zimFileID: zimFileID, path: url.path)
-                if let title = parser.getTitle(), title.count > 0 {
+                let parser = try Parser(url: url)
+                if let title = parser.title, title.count > 0 {
                     bookmark.title = title
                 } else {
                     bookmark.title = zimFile.title

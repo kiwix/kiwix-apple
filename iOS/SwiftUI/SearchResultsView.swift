@@ -322,11 +322,13 @@ private struct ResultsListView: View {
                     UIApplication.shared.open(result.url)
                     viewModel.updateRecentSearchTexts()
                 } label: {
-                    HStack {
+                    HStack(alignment: result.snippet == nil ? .center : .top) {
                         Favicon(data: viewModel.zimFiles.first(where: { $0.fileID == result.zimFileID })?.faviconData)
                         VStack(alignment: .leading) {
                             Text(result.title).fontWeight(.medium).lineLimit(1)
-                            if let snippet = result.snippet?.string {
+                            if #available(iOS 15.0, *), let snippet = result.snippet {
+                                Text(AttributedString(snippet)).font(.caption)
+                            } else if let snippet = result.snippet?.string {
                                 Text(snippet).font(.caption)
                             }
                         }.foregroundColor(.primary)

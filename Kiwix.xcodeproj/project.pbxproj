@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		9707B8F61F4B4F1500075D4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9707B8F51F4B4F1500075D4F /* Assets.xcassets */; };
 		970EC3A123BCEC84008DCA27 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
-		970EC3A423BCED7F008DCA27 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 970EC3A323BCED7F008DCA27 /* SwiftSoup */; };
 		970EC3FB23BE8E25008DCA27 /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3AB23BCF31F008DCA27 /* ParserTests.swift */; };
 		970EC3FC23BE8E31008DCA27 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
 		97225A982618B2A200D8CB32 /* LibraryLanguageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97225A972618B2A200D8CB32 /* LibraryLanguageView.swift */; };
@@ -23,6 +22,7 @@
 		972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972E6F631FA11A6100F5C927 /* RoundedButton.swift */; };
 		973B2A5D254609FD00093661 /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973B2A5C254609FD00093661 /* Modifiers.swift */; };
 		973B8012239066D0008CC8CE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973B8011239066D0008CC8CE /* SceneDelegate.swift */; };
+		9744658026F7981500072DC2 /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 9744657F26F7981500072DC2 /* Fuzi */; };
 		974FD5CF23405C3700FFDEEC /* WindowControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FD5CE23405C3700FFDEEC /* WindowControllers.swift */; };
 		974FFE5B2352704600F6BF28 /* ZimFileManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */; };
 		974FFE612352744800F6BF28 /* WebKitWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE602352744800F6BF28 /* WebKitWebViewController.swift */; };
@@ -118,7 +118,6 @@
 		97CE4242249322E300B334E9 /* SearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998C2467561900BC6F5B /* SearchResult.m */; };
 		97CE42432493234D00B334E9 /* SearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998F2467626A00BC6F5B /* SearchOperation.swift */; };
 		97CE42442493235200B334E9 /* SearchOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998924673FE000BC6F5B /* SearchOperation.mm */; };
-		97CE42462493239C00B334E9 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 97CE42452493239C00B334E9 /* SwiftSoup */; };
 		97CE4247249323C000B334E9 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B399952468CF3B00BC6F5B /* Enums.swift */; };
 		97CE42482493244D00B334E9 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
 		97CE424A24957C3500B334E9 /* LibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59C2456793500F6F6FF /* LibraryService.swift */; };
@@ -325,7 +324,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97CE42462493239C00B334E9 /* SwiftSoup in Frameworks */,
 				97EC18B326E8555E008309ED /* libkiwix.xcframework in Frameworks */,
 				97EC18B626E8555E008309ED /* RealmSwift.xcframework in Frameworks */,
 				97EC18B926E8555E008309ED /* Realm.xcframework in Frameworks */,
@@ -338,9 +336,9 @@
 			files = (
 				97C5763D202CD9C000E37502 /* NotificationCenter.framework in Frameworks */,
 				97EC18BB26E85C28008309ED /* libkiwix.xcframework in Frameworks */,
+				9744658026F7981500072DC2 /* Fuzi in Frameworks */,
 				97EC18BE26E85C58008309ED /* Realm.xcframework in Frameworks */,
 				97A36C351F8C21210079B452 /* WebKit.framework in Frameworks */,
-				970EC3A423BCED7F008DCA27 /* SwiftSoup in Frameworks */,
 				97EC18C126E85C5A008309ED /* RealmSwift.xcframework in Frameworks */,
 				979E5AA326F2A78500423A40 /* Defaults in Frameworks */,
 			);
@@ -726,7 +724,6 @@
 			);
 			name = macOS;
 			packageProductDependencies = (
-				97CE42452493239C00B334E9 /* SwiftSoup */,
 			);
 			productName = Kiwix;
 			productReference = 979315811E5127930093D3BA /* Kiwix.app */;
@@ -750,8 +747,8 @@
 			);
 			name = iOS;
 			packageProductDependencies = (
-				970EC3A323BCED7F008DCA27 /* SwiftSoup */,
 				979E5AA226F2A78500423A40 /* Defaults */,
+				9744657F26F7981500072DC2 /* Fuzi */,
 			);
 			productName = WikiMed;
 			productReference = 97A36C4E1F8C21210079B452 /* Kiwix.app */;
@@ -868,8 +865,8 @@
 			);
 			mainGroup = 97A2AB7F1C1B80FF00052E74;
 			packageReferences = (
-				970EC3A223BCED7F008DCA27 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				979E5AA126F2A78500423A40 /* XCRemoteSwiftPackageReference "Defaults" */,
+				9744657E26F7981500072DC2 /* XCRemoteSwiftPackageReference "Fuzi" */,
 			);
 			productRefGroup = 97A2AB7F1C1B80FF00052E74;
 			projectDirPath = "";
@@ -1643,12 +1640,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		970EC3A223BCED7F008DCA27 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+		9744657E26F7981500072DC2 /* XCRemoteSwiftPackageReference "Fuzi" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/scinfu/SwiftSoup";
+			repositoryURL = "https://github.com/cezheng/Fuzi";
 			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 2.3.0;
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
 			};
 		};
 		979E5AA126F2A78500423A40 /* XCRemoteSwiftPackageReference "Defaults" */ = {
@@ -1662,20 +1659,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		970EC3A323BCED7F008DCA27 /* SwiftSoup */ = {
+		9744657F26F7981500072DC2 /* Fuzi */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 970EC3A223BCED7F008DCA27 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
-			productName = SwiftSoup;
+			package = 9744657E26F7981500072DC2 /* XCRemoteSwiftPackageReference "Fuzi" */;
+			productName = Fuzi;
 		};
 		979E5AA226F2A78500423A40 /* Defaults */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 979E5AA126F2A78500423A40 /* XCRemoteSwiftPackageReference "Defaults" */;
 			productName = Defaults;
-		};
-		97CE42452493239C00B334E9 /* SwiftSoup */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 970EC3A223BCED7F008DCA27 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
-			productName = SwiftSoup;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

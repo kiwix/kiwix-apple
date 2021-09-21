@@ -2,12 +2,12 @@
   "object": {
     "pins": [
       {
-        "package": "SwiftSoup",
-        "repositoryURL": "https://github.com/scinfu/SwiftSoup",
+        "package": "Fuzi",
+        "repositoryURL": "https://github.com/cezheng/Fuzi",
         "state": {
           "branch": null,
-          "revision": "02c63b7be50bda384f22c56c64d347231754a07e",
-          "version": "2.3.3"
+          "revision": "f08c8323da21e985f3772610753bcfc652c2103f",
+          "version": "3.1.3"
         }
       }
     ]

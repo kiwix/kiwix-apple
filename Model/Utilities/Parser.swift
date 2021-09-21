@@ -10,66 +10,53 @@ import CoreLocation
 #if canImport(NaturalLanguage)
     import NaturalLanguage
 #endif
-import SwiftSoup
+import Fuzi
 
 class Parser {
-    private let document: Document
-    private lazy var firstParagraph: Element? = try? document.body()?.getElementsByTag("p").first()
+    private let document: HTMLDocument
     
     static private let boldFont = NSUIFont.systemFont(ofSize: 12.0, weight: .medium)
     
-    init(document: Document) {
+    init(document: HTMLDocument) {
         self.document = document
     }
     
     convenience init(html: String) throws {
-        self.init(document: try SwiftSoup.parse(html))
+        self.init(document: try HTMLDocument(string: html))
     }
     
-    convenience init(zimFileID: String, path: String) throws {
-        guard let data = ZimFileService.shared.getData(zimFileID: zimFileID, contentPath: path),
-            let html = String(data: data, encoding: .utf8) else { throw NSError() }
-        try self.init(html: html)
+    convenience init(data: Data) throws {
+        self.init(document: try HTMLDocument(data: data))
     }
     
-    func getTitle() -> String? {
-        do {
-            let elements = try document.select("head > title")
-            return try elements.first()?.text()
-        } catch { return nil }
+    convenience init(url: URL) throws {
+        guard let zimFileID = url.host,
+              let data = ZimFileService.shared.getData(zimFileID: zimFileID, contentPath: url.path) else { throw NSError() }
+        try self.init(data: data)
     }
     
-    func getGeoCoordinate() -> CLLocationCoordinate2D? {
-        do {
-            let elements = try document.select("head > meta[name='geo.position']")
-            let content = try elements.first()?.attr("content")
-            guard let parts = content?.split(separator: ";"), parts.count == 2,
-                let lat = Double(parts[0]), let lon = Double(parts[1]) else { return nil }
-            return CLLocationCoordinate2D(latitude: lat, longitude: lon)
-        } catch { return nil }
-    }
-
+    var title: String? { document.title }
+    
     func getFirstParagraph() -> NSAttributedString? {
+        guard let firstParagraph = document.firstChild(xpath: "//p") else { return nil }
         let snippet = NSMutableAttributedString()
-        for node in firstParagraph?.getChildNodes() ?? [] {
-            if let element = node as? Element {
-                if let className = try? element.className(), className == "mw-ref" {
-                    continue
-                } else if let text = try? element.text() {
-                    let attributedSting = NSAttributedString(
-                        string: text,
-                        attributes: element.tagName() == "b" ? [.font: Parser.boldFont] : nil
-                    )
-                    snippet.append(attributedSting)
-                }
-            } else if let text = try? node.outerHtml() {
+        for child in firstParagraph.childNodes(ofTypes: [.Text, .Element]) {
+            if let element = child as? XMLElement, element.attributes["class"]?.contains("mw-ref") == true {
+                continue
+            } else if let element = child as? XMLElement {
+                let attributedSting = NSAttributedString(
+                    string: element.stringValue.replacingOccurrences(of: "\n", with: ""),
+                    attributes: element.tag == "b" ? [.font: Parser.boldFont] : nil
+                )
+                snippet.append(attributedSting)
+            } else {
+                let text = child.stringValue.replacingOccurrences(of: "\n", with: "")
                 snippet.append(NSAttributedString(string: text))
             }
         }
-        return snippet.string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : snippet
+        return snippet.length > 0 ? snippet : nil
     }
     
-    @available(iOS 12.0, macOS 10.14, *)
     func getFirstSentence(languageCode: String?) -> NSAttributedString? {
         guard let firstParagraph = self.getFirstParagraph() else { return nil }
         let text = firstParagraph.string
@@ -86,35 +73,29 @@ class Parser {
     }
     
     func getFirstImagePath() -> String? {
-        do {
-            let element = try document.getElementsByTag("img").first()
-            return element?.getAttributes()?.get(key: "src")
-        } catch { return nil }
+        guard let firstImage = document.firstChild(xpath: "//img") else { return nil }
+        return firstImage.attributes["src"]
     }
     
     func getOutlineItems() -> [OutlineItem] {
-        var items = [OutlineItem]()
-        do {
-            let elements = try document.select("h1, h2, h3, h4, h5, h6")
-            for (index, element) in elements.enumerated() {
-                guard let level = Int(element.tagName().suffix(1)), let text = try? element.text() else { continue }
-                let item = OutlineItem(index: index, text: text, level: level)
-                items.append(item)
-            }
-        } catch { }
-        return items
+        document.css("h1, h2, h3, h4, h5, h6").enumerated().compactMap { index, element in
+            guard let tag = element.tag, let level = Int(tag.suffix(1)) else { return nil }
+            return OutlineItem(index: index, text: element.stringValue, level: level)
+        }
     }
     
+//    func getGeoCoordinate() -> CLLocationCoordinate2D? {
+//        do {
+//            let elements = try document.select("head > meta[name='geo.position']")
+//            let content = try elements.first()?.attr("content")
+//            guard let parts = content?.split(separator: ";"), parts.count == 2,
+//                let lat = Double(parts[0]), let lon = Double(parts[1]) else { return nil }
+//            return CLLocationCoordinate2D(latitude: lat, longitude: lon)
+//        } catch { return nil }
+//    }
+    
     class func parseBodyFragment(_ bodyFragment: String) -> NSAttributedString? {
-        let snippet = NSMutableAttributedString()
-        let document = try? SwiftSoup.parseBodyFragment(bodyFragment)
-        for node in document?.body()?.getChildNodes() ?? [] {
-            if let element = node as? Element, let text = try? element.text(), element.tagName() == "b" {
-                snippet.append(NSAttributedString(string: text, attributes: [.font: Parser.boldFont]))
-            } else if let text = try? node.outerHtml() {
-                snippet.append(NSAttributedString(string: text.trimmingCharacters(in: .newlines)))
-            }
-        }
-        return snippet
+        let html = "<!DOCTYPE html><html><head></head><body><p>\(bodyFragment)</p></body></html>"
+        return (try? Parser(html: html))?.getFirstParagraph()
     }
 }
