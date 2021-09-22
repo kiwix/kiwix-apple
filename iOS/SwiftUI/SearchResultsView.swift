@@ -116,38 +116,6 @@ private class ViewModel: ObservableObject {
         } catch { }
     }
     
-    func toggleZimFileIncludedInSearch(_ zimFileID: String) {
-        do {
-            let database = try Realm()
-            guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
-            try database.write {
-                zimFile.includedInSearch = !zimFile.includedInSearch
-            }
-        } catch {}
-    }
-    
-    func includeAllZimFilesInSearch() {
-        do {
-            let database = try Realm()
-            try database.write {
-                for zimFile in database.objects(ZimFile.self) {
-                    zimFile.includedInSearch = true
-                }
-            }
-        } catch {}
-    }
-    
-    func excludeAllZimFilesInSearch() {
-        do {
-            let database = try Realm()
-            try database.write {
-                for zimFile in database.objects(ZimFile.self) {
-                    zimFile.includedInSearch = false
-                }
-            }
-        } catch {}
-    }
-    
     func updateRecentSearchTexts() {
         var searchTexts = Defaults[.recentSearchTexts]
         if let index = searchTexts.firstIndex(of: searchText) {
@@ -253,8 +221,14 @@ private struct SplitView: UIViewControllerRepresentable {
 }
 
 private struct FilterView: View {
-    @EnvironmentObject var viewModel: ViewModel
+    @ObservedObject private var viewModel = ViewModel()
     @Default(.recentSearchTexts) var recentSearchTexts
+    @ObservedResults(
+        ZimFile.self,
+        configuration: Realm.defaultConfig,
+        filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
+        sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
+    ) var zimFiles
     
     var body: some View {
         List {
@@ -262,7 +236,7 @@ private struct FilterView: View {
                 Section(header: HStack {
                     Text("Recent")
                     Spacer()
-                    Button("Clear", action: { viewModel.clearRecentSearchTexts() }).foregroundColor(.secondary)
+                    Button("Clear", action: { recentSearchTexts = [] }).foregroundColor(.secondary)
                 }) {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
@@ -284,20 +258,18 @@ private struct FilterView: View {
                     }.listRowInsets(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
                 }
             }
-            if viewModel.zimFiles.count > 0 {
+            if zimFiles.count > 0 {
                 Section(header: HStack {
                     Text("Search Filter")
                     Spacer()
-                    if viewModel.zimFiles.count == viewModel.zimFiles.filter({ $0.includedInSearch }).count {
-                        Button("None", action: { viewModel.excludeAllZimFilesInSearch() }).foregroundColor(.secondary)
+                    if zimFiles.count == zimFiles.filter({ $0.includedInSearch }).count {
+                        Button("None", action: { viewModel.excludeAllInSearch() }).foregroundColor(.secondary)
                     } else {
-                        Button("All", action: { viewModel.includeAllZimFilesInSearch() }).foregroundColor(.secondary)
+                        Button("All", action: { viewModel.includeAllInSearch() }).foregroundColor(.secondary)
                     }
                 }) {
-                    ForEach(viewModel.zimFiles) { zimFile in
-                        Button {
-                            viewModel.toggleZimFileIncludedInSearch(zimFile.fileID)
-                        } label: {
+                    ForEach(zimFiles) { zimFile in
+                        Button { viewModel.toggleSearch(zimFile.fileID) } label: {
                             ListRow(
                                 title: zimFile.title,
                                 detail: zimFile.description,
@@ -309,6 +281,34 @@ private struct FilterView: View {
                 }
             }
         }.listStyle(GroupedListStyle())
+    }
+    
+    class ViewModel: ObservableObject {
+        func toggleSearch(_ zimFileID: String) {
+            guard let database = try? Realm(),
+                  let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
+            try? database.write {
+                zimFile.includedInSearch = !zimFile.includedInSearch
+            }
+        }
+        
+        func includeAllInSearch() {
+            guard let database = try? Realm() else { return }
+            try? database.write {
+                database.objects(ZimFile.self)
+                    .filter(NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue))
+                    .forEach { $0.includedInSearch = true }
+            }
+        }
+        
+        func excludeAllInSearch() {
+            guard let database = try? Realm() else { return }
+            try? database.write {
+                database.objects(ZimFile.self)
+                    .filter(NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue))
+                    .forEach { $0.includedInSearch = false }
+            }
+        }
     }
 }
 
