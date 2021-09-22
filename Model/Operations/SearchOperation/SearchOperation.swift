@@ -8,7 +8,6 @@
 
 import RealmSwift
 import Defaults
-import SwiftSoup
 
 extension SearchOperation {
     var results: [SearchResult] { get { __results as? [SearchResult] ?? [] } }

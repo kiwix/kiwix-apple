@@ -263,13 +263,13 @@ private struct FilterView: View {
                     Text("Search Filter")
                     Spacer()
                     if zimFiles.count == zimFiles.filter({ $0.includedInSearch }).count {
-                        Button("None", action: { viewModel.excludeAllInSearch() }).foregroundColor(.secondary)
+                        Button("None", action: { excludeAllInSearch() }).foregroundColor(.secondary)
                     } else {
-                        Button("All", action: { viewModel.includeAllInSearch() }).foregroundColor(.secondary)
+                        Button("All", action: { includeAllInSearch() }).foregroundColor(.secondary)
                     }
                 }) {
                     ForEach(zimFiles) { zimFile in
-                        Button { viewModel.toggleSearch(zimFile.fileID) } label: {
+                        Button { toggleSearch(zimFile.fileID) } label: {
                             ListRow(
                                 title: zimFile.title,
                                 detail: zimFile.description,
@@ -283,31 +283,29 @@ private struct FilterView: View {
         }.listStyle(GroupedListStyle())
     }
     
-    class ViewModel: ObservableObject {
-        func toggleSearch(_ zimFileID: String) {
-            guard let database = try? Realm(),
-                  let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
-            try? database.write {
-                zimFile.includedInSearch = !zimFile.includedInSearch
-            }
+    private func toggleSearch(_ zimFileID: String) {
+        guard let database = try? Realm(),
+              let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
+        try? database.write {
+            zimFile.includedInSearch = !zimFile.includedInSearch
         }
-        
-        func includeAllInSearch() {
-            guard let database = try? Realm() else { return }
-            try? database.write {
-                database.objects(ZimFile.self)
-                    .filter(NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue))
-                    .forEach { $0.includedInSearch = true }
-            }
+    }
+    
+    private func includeAllInSearch() {
+        guard let database = try? Realm() else { return }
+        try? database.write {
+            database.objects(ZimFile.self)
+                .filter(NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue))
+                .forEach { $0.includedInSearch = true }
         }
-        
-        func excludeAllInSearch() {
-            guard let database = try? Realm() else { return }
-            try? database.write {
-                database.objects(ZimFile.self)
-                    .filter(NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue))
-                    .forEach { $0.includedInSearch = false }
-            }
+    }
+    
+    private func excludeAllInSearch() {
+        guard let database = try? Realm() else { return }
+        try? database.write {
+            database.objects(ZimFile.self)
+                .filter(NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue))
+                .forEach { $0.includedInSearch = false }
         }
     }
 }
