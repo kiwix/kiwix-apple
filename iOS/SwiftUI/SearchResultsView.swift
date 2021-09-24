@@ -85,12 +85,7 @@ private class ViewModel: ObservableObject {
     @Published var searchText = ""
     @Published var inProgress = false
     @Published var results = [SearchResult]()
-    @ObservedResults(
-        ZimFile.self,
-        configuration: Realm.defaultConfig,
-        filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
-        sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
-    ) var zimFiles
+    @Published var onDeviceZimFiles = [String: ZimFile]()
     
     let searchTextPublisher = CurrentValueSubject<String, Never>("")
     private var searchSubscriber: AnyCancellable?
@@ -101,20 +96,28 @@ private class ViewModel: ObservableObject {
         queue.maxConcurrentOperationCount = 1
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
-            let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
-                NSPredicate(format: "includedInSearch == true"),
-            ])
-            searchSubscriber = database.objects(ZimFile.self).filter(predicate)
+            searchSubscriber = database.objects(ZimFile.self)
+                .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
+                    NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
+                    NSPredicate(format: "includedInSearch == true"),
+                ]))
                 .collectionPublisher
                 .freeze()
-                .map { zimFiles in return Array(zimFiles.map({ $0.fileID })) }
+                .map { Array($0.map({ $0.fileID })) }
                 .catch { _ in Just([]) }
                 .combineLatest(searchTextPublisher)
                 .sink { zimFileIDs, searchText in
                     self.updateSearchResults(searchText, Set(zimFileIDs))
                 }
-//            collectionSubscriber =
+            collectionSubscriber = database.objects(ZimFile.self)
+                .filter(NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue))
+                .collectionPublisher
+                .freeze()
+                .map { zimFiles in
+                    Dictionary(zimFiles.map { ($0.fileID, $0) }, uniquingKeysWith: { $1 })
+                }
+                .catch { _ in Just([String: ZimFile]()) }
+                .assign(to: \.onDeviceZimFiles, on: self)
         } catch { }
     }
     
@@ -152,7 +155,7 @@ private struct SearchResultsView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
     var body: some View {
-        if viewModel.zimFiles.isEmpty {
+        if viewModel.onDeviceZimFiles.isEmpty {
             InfoView(
                 imageSystemName: "magnifyingglass",
                 title: "Nothing to search",
@@ -318,7 +321,7 @@ private struct ResultsListView: View {
                     viewModel.updateRecentSearchTexts()
                 } label: {
                     HStack(alignment: result.snippet == nil ? .center : .top) {
-                        Favicon(data: viewModel.zimFiles.first(where: { $0.fileID == result.zimFileID })?.faviconData)
+                        Favicon(data: viewModel.onDeviceZimFiles[result.zimFileID]?.faviconData)
                         VStack(alignment: .leading) {
                             Text(result.title).fontWeight(.medium).lineLimit(1)
                             if #available(iOS 15.0, *), let snippet = result.snippet {
