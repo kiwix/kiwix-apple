@@ -93,7 +93,8 @@ private class ViewModel: ObservableObject {
     ) var zimFiles
     
     let searchTextPublisher = CurrentValueSubject<String, Never>("")
-    private var searchObserver: AnyCancellable?
+    private var searchSubscriber: AnyCancellable?
+    private var collectionSubscriber: AnyCancellable?
     private let queue = OperationQueue()
     
     init() {
@@ -104,7 +105,7 @@ private class ViewModel: ObservableObject {
                 NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
                 NSPredicate(format: "includedInSearch == true"),
             ])
-            searchObserver = database.objects(ZimFile.self).filter(predicate)
+            searchSubscriber = database.objects(ZimFile.self).filter(predicate)
                 .collectionPublisher
                 .freeze()
                 .map { zimFiles in return Array(zimFiles.map({ $0.fileID })) }
@@ -113,6 +114,7 @@ private class ViewModel: ObservableObject {
                 .sink { zimFileIDs, searchText in
                     self.updateSearchResults(searchText, Set(zimFileIDs))
                 }
+//            collectionSubscriber =
         } catch { }
     }
     
@@ -126,10 +128,6 @@ private class ViewModel: ObservableObject {
             searchTexts = Array(searchTexts[..<20])
         }
         Defaults[.recentSearchTexts] = searchTexts
-    }
-    
-    func clearRecentSearchTexts() {
-        Defaults[.recentSearchTexts] = []
     }
     
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<String>) {
@@ -221,7 +219,6 @@ private struct SplitView: UIViewControllerRepresentable {
 }
 
 private struct FilterView: View {
-    @ObservedObject private var viewModel = ViewModel()
     @Default(.recentSearchTexts) var recentSearchTexts
     @ObservedResults(
         ZimFile.self,
