@@ -85,67 +85,40 @@ private class ViewModel: ObservableObject {
     @Published var searchText = ""
     @Published var inProgress = false
     @Published var results = [SearchResult]()
-    @ObservedResults(
-        ZimFile.self,
-        configuration: Realm.defaultConfig,
-        filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
-        sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
-    ) var zimFiles
+    @Published var onDeviceZimFiles = [String: ZimFile]()
     
     let searchTextPublisher = CurrentValueSubject<String, Never>("")
-    private var searchObserver: AnyCancellable?
+    private var searchSubscriber: AnyCancellable?
+    private var collectionSubscriber: AnyCancellable?
     private let queue = OperationQueue()
     
     init() {
         queue.maxConcurrentOperationCount = 1
         do {
             let database = try Realm(configuration: Realm.defaultConfig)
-            let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
-                NSPredicate(format: "includedInSearch == true"),
-            ])
-            searchObserver = database.objects(ZimFile.self).filter(predicate)
+            searchSubscriber = database.objects(ZimFile.self)
+                .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
+                    NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
+                    NSPredicate(format: "includedInSearch == true"),
+                ]))
                 .collectionPublisher
                 .freeze()
-                .map { zimFiles in return Array(zimFiles.map({ $0.fileID })) }
+                .map { Array($0.map({ $0.fileID })) }
                 .catch { _ in Just([]) }
                 .combineLatest(searchTextPublisher)
                 .sink { zimFileIDs, searchText in
                     self.updateSearchResults(searchText, Set(zimFileIDs))
                 }
+            collectionSubscriber = database.objects(ZimFile.self)
+                .filter(NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue))
+                .collectionPublisher
+                .freeze()
+                .map { zimFiles in
+                    Dictionary(zimFiles.map { ($0.fileID, $0) }, uniquingKeysWith: { $1 })
+                }
+                .catch { _ in Just([String: ZimFile]()) }
+                .assign(to: \.onDeviceZimFiles, on: self)
         } catch { }
-    }
-    
-    func toggleZimFileIncludedInSearch(_ zimFileID: String) {
-        do {
-            let database = try Realm()
-            guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
-            try database.write {
-                zimFile.includedInSearch = !zimFile.includedInSearch
-            }
-        } catch {}
-    }
-    
-    func includeAllZimFilesInSearch() {
-        do {
-            let database = try Realm()
-            try database.write {
-                for zimFile in database.objects(ZimFile.self) {
-                    zimFile.includedInSearch = true
-                }
-            }
-        } catch {}
-    }
-    
-    func excludeAllZimFilesInSearch() {
-        do {
-            let database = try Realm()
-            try database.write {
-                for zimFile in database.objects(ZimFile.self) {
-                    zimFile.includedInSearch = false
-                }
-            }
-        } catch {}
     }
     
     func updateRecentSearchTexts() {
@@ -158,10 +131,6 @@ private class ViewModel: ObservableObject {
             searchTexts = Array(searchTexts[..<20])
         }
         Defaults[.recentSearchTexts] = searchTexts
-    }
-    
-    func clearRecentSearchTexts() {
-        Defaults[.recentSearchTexts] = []
     }
     
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<String>) {
@@ -186,7 +155,7 @@ private struct SearchResultsView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
     var body: some View {
-        if viewModel.zimFiles.isEmpty {
+        if viewModel.onDeviceZimFiles.isEmpty {
             InfoView(
                 imageSystemName: "magnifyingglass",
                 title: "Nothing to search",
@@ -253,8 +222,13 @@ private struct SplitView: UIViewControllerRepresentable {
 }
 
 private struct FilterView: View {
-    @EnvironmentObject var viewModel: ViewModel
     @Default(.recentSearchTexts) var recentSearchTexts
+    @ObservedResults(
+        ZimFile.self,
+        configuration: Realm.defaultConfig,
+        filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
+        sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
+    ) var zimFiles
     
     var body: some View {
         List {
@@ -262,7 +236,7 @@ private struct FilterView: View {
                 Section(header: HStack {
                     Text("Recent")
                     Spacer()
-                    Button("Clear", action: { viewModel.clearRecentSearchTexts() }).foregroundColor(.secondary)
+                    Button("Clear", action: { recentSearchTexts = [] }).foregroundColor(.secondary)
                 }) {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
@@ -284,20 +258,18 @@ private struct FilterView: View {
                     }.listRowInsets(EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0))
                 }
             }
-            if viewModel.zimFiles.count > 0 {
+            if zimFiles.count > 0 {
                 Section(header: HStack {
                     Text("Search Filter")
                     Spacer()
-                    if viewModel.zimFiles.count == viewModel.zimFiles.filter({ $0.includedInSearch }).count {
-                        Button("None", action: { viewModel.excludeAllZimFilesInSearch() }).foregroundColor(.secondary)
+                    if zimFiles.count == zimFiles.filter({ $0.includedInSearch }).count {
+                        Button("None", action: { excludeAllInSearch() }).foregroundColor(.secondary)
                     } else {
-                        Button("All", action: { viewModel.includeAllZimFilesInSearch() }).foregroundColor(.secondary)
+                        Button("All", action: { includeAllInSearch() }).foregroundColor(.secondary)
                     }
                 }) {
-                    ForEach(viewModel.zimFiles) { zimFile in
-                        Button {
-                            viewModel.toggleZimFileIncludedInSearch(zimFile.fileID)
-                        } label: {
+                    ForEach(zimFiles) { zimFile in
+                        Button { toggleSearch(zimFile.fileID) } label: {
                             ListRow(
                                 title: zimFile.title,
                                 detail: zimFile.description,
@@ -309,6 +281,32 @@ private struct FilterView: View {
                 }
             }
         }.listStyle(GroupedListStyle())
+    }
+    
+    private func toggleSearch(_ zimFileID: String) {
+        guard let database = try? Realm(),
+              let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
+        try? database.write {
+            zimFile.includedInSearch = !zimFile.includedInSearch
+        }
+    }
+    
+    private func includeAllInSearch() {
+        guard let database = try? Realm() else { return }
+        try? database.write {
+            database.objects(ZimFile.self)
+                .filter(NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue))
+                .forEach { $0.includedInSearch = true }
+        }
+    }
+    
+    private func excludeAllInSearch() {
+        guard let database = try? Realm() else { return }
+        try? database.write {
+            database.objects(ZimFile.self)
+                .filter(NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue))
+                .forEach { $0.includedInSearch = false }
+        }
     }
 }
 
@@ -323,7 +321,7 @@ private struct ResultsListView: View {
                     viewModel.updateRecentSearchTexts()
                 } label: {
                     HStack(alignment: result.snippet == nil ? .center : .top) {
-                        Favicon(data: viewModel.zimFiles.first(where: { $0.fileID == result.zimFileID })?.faviconData)
+                        Favicon(data: viewModel.onDeviceZimFiles[result.zimFileID]?.faviconData)
                         VStack(alignment: .leading) {
                             Text(result.title).fontWeight(.medium).lineLimit(1)
                             if #available(iOS 15.0, *), let snippet = result.snippet {

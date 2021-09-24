@@ -175,7 +175,7 @@ struct LibraryCategoryView: View {
                 .throttle(for: 0.2, scheduler: queue, latest: true)
                 .map { zimFiles in
                     Dictionary(
-                        zimFiles.map { ($0.fileID, $0.faviconData) }, uniquingKeysWith: { data, _ in data }
+                        zimFiles.map { ($0.fileID, $0.faviconData) }, uniquingKeysWith: { $1 }
                     ).compactMapValues({$0})
                 }
                 .receive(on: DispatchQueue.main)
