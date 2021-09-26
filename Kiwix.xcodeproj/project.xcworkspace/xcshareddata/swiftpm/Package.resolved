@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "Defaults",
+        "repositoryURL": "https://github.com/automactic/Defaults/",
+        "state": {
+          "branch": "xcode13",
+          "revision": "1e9719a05d316efb0e60033f8119ecaaad207bb9",
+          "version": null
+        }
+      },
+      {
         "package": "Fuzi",
         "repositoryURL": "https://github.com/cezheng/Fuzi",
         "state": {

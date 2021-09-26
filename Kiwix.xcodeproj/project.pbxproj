@@ -11,6 +11,7 @@
 		970EC3A123BCEC84008DCA27 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
 		970EC3FB23BE8E25008DCA27 /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3AB23BCF31F008DCA27 /* ParserTests.swift */; };
 		970EC3FC23BE8E31008DCA27 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
+		971B486B27012756006BE2A8 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 971B486A27012756006BE2A8 /* Defaults */; };
 		97225A982618B2A200D8CB32 /* LibraryLanguageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97225A972618B2A200D8CB32 /* LibraryLanguageView.swift */; };
 		97225AA2261A006A00D8CB32 /* LibraryCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97225AA1261A006A00D8CB32 /* LibraryCategoryView.swift */; };
 		97246C821FC4D12A0056AE5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9717A2521FB2592D00837492 /* Main.storyboard */; };
@@ -91,7 +92,6 @@
 		97974368257BF37E00D30F03 /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97974367257BF37E00D30F03 /* Alerts.swift */; };
 		979AAF40257167C60078492F /* ZimFileDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979AAF3F257167C60078492F /* ZimFileDetailView.swift */; };
 		979B64C5259EBDB1001C74AE /* OutlineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97974349257BF2B000D30F03 /* OutlineItem.swift */; };
-		979E5AA326F2A78500423A40 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 979E5AA226F2A78500423A40 /* Defaults */; };
 		97A2AE2225866D9200DEF81D /* ButtonProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A2AE2125866D9200DEF81D /* ButtonProvider.swift */; };
 		97A36C321F8C21210079B452 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975FDAD91F6082DA00A10E8C /* AppDelegate.swift */; };
 		97A36C351F8C21210079B452 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 975FDB061F608F4100A10E8C /* WebKit.framework */; };
@@ -270,7 +270,6 @@
 		9797435B257BF33600D30F03 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		97974367257BF37E00D30F03 /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		979AAF3F257167C60078492F /* ZimFileDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileDetailView.swift; sourceTree = "<group>"; };
-		979E5A9D26F2A70500423A40 /* Defaults */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Defaults; path = ../Defaults; sourceTree = "<group>"; };
 		97A2AE2125866D9200DEF81D /* ButtonProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonProvider.swift; sourceTree = "<group>"; };
 		97A36C4E1F8C21210079B452 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A963C3259D38D900496214 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -340,7 +339,7 @@
 				97EC18BE26E85C58008309ED /* Realm.xcframework in Frameworks */,
 				97A36C351F8C21210079B452 /* WebKit.framework in Frameworks */,
 				97EC18C126E85C5A008309ED /* RealmSwift.xcframework in Frameworks */,
-				979E5AA326F2A78500423A40 /* Defaults in Frameworks */,
+				971B486B27012756006BE2A8 /* Defaults in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -587,18 +586,9 @@
 			path = Support;
 			sourceTree = "<group>";
 		};
-		979E5A9C26F2A70500423A40 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				979E5A9D26F2A70500423A40 /* Defaults */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 		97A2AB7F1C1B80FF00052E74 = {
 			isa = PBXGroup;
 			children = (
-				979E5A9C26F2A70500423A40 /* Packages */,
 				97EC18AE26E8555E008309ED /* Libraries */,
 				970EC39E23BCE7F5008DCA27 /* Model */,
 				979315821E5127930093D3BA /* macOS */,
@@ -747,8 +737,8 @@
 			);
 			name = iOS;
 			packageProductDependencies = (
-				979E5AA226F2A78500423A40 /* Defaults */,
 				9744657F26F7981500072DC2 /* Fuzi */,
+				971B486A27012756006BE2A8 /* Defaults */,
 			);
 			productName = WikiMed;
 			productReference = 97A36C4E1F8C21210079B452 /* Kiwix.app */;
@@ -865,8 +855,8 @@
 			);
 			mainGroup = 97A2AB7F1C1B80FF00052E74;
 			packageReferences = (
-				979E5AA126F2A78500423A40 /* XCRemoteSwiftPackageReference "Defaults" */,
 				9744657E26F7981500072DC2 /* XCRemoteSwiftPackageReference "Fuzi" */,
+				971B486927012756006BE2A8 /* XCRemoteSwiftPackageReference "Defaults" */,
 			);
 			productRefGroup = 97A2AB7F1C1B80FF00052E74;
 			projectDirPath = "";
@@ -1640,6 +1630,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		971B486927012756006BE2A8 /* XCRemoteSwiftPackageReference "Defaults" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/automactic/Defaults/";
+			requirement = {
+				branch = xcode13;
+				kind = branch;
+			};
+		};
 		9744657E26F7981500072DC2 /* XCRemoteSwiftPackageReference "Fuzi" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/cezheng/Fuzi";
@@ -1648,26 +1646,18 @@
 				minimumVersion = 3.0.0;
 			};
 		};
-		979E5AA126F2A78500423A40 /* XCRemoteSwiftPackageReference "Defaults" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/sindresorhus/Defaults";
-			requirement = {
-				branch = xcode13;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		971B486A27012756006BE2A8 /* Defaults */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 971B486927012756006BE2A8 /* XCRemoteSwiftPackageReference "Defaults" */;
+			productName = Defaults;
+		};
 		9744657F26F7981500072DC2 /* Fuzi */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9744657E26F7981500072DC2 /* XCRemoteSwiftPackageReference "Fuzi" */;
 			productName = Fuzi;
-		};
-		979E5AA226F2A78500423A40 /* Defaults */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 979E5AA126F2A78500423A40 /* XCRemoteSwiftPackageReference "Defaults" */;
-			productName = Defaults;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
