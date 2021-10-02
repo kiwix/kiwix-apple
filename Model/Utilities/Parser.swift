@@ -80,7 +80,8 @@ class Parser {
     func getOutlineItems() -> [OutlineItem] {
         document.css("h1, h2, h3, h4, h5, h6").enumerated().compactMap { index, element in
             guard let tag = element.tag, let level = Int(tag.suffix(1)) else { return nil }
-            return OutlineItem(index: index, text: element.stringValue, level: level)
+            let text = element.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
+            return OutlineItem(index: index, text: text, level: level)
         }
     }
     
