@@ -218,7 +218,8 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
                 sidebarController.hideSidebar()
             }
         } else {
-            let navigationController = UINavigationController(rootViewController: outlineViewController)
+            let controller = OutlineViewController(webView: webViewController.webView)
+            let navigationController = UINavigationController(rootViewController: controller)
             present(navigationController, animated: true)
         }
     }
