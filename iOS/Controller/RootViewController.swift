@@ -75,7 +75,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
             // dismiss presented outline and bookmark controller from when view was horizontally compact
             if let navigationController = presentedViewController as? UINavigationController,
                let topViewController = navigationController.topViewController,
-               (topViewController is OutlineViewController || topViewController is BookmarksViewController) {
+               (topViewController is OutlineViewController_old || topViewController is BookmarksViewController) {
                 presentedViewController?.dismiss(animated: false)
             }
         }
@@ -200,11 +200,11 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     }
     
     @objc func outlineButtonTapped() {
-        let outlineViewController = OutlineViewController(webView: webViewController.webView)
+        let outlineViewController = OutlineViewController_old(webView: webViewController.webView)
         if #available(iOS 14.0, *), traitCollection.horizontalSizeClass == .regular {
             if sidebarController.displayMode == .secondaryOnly {
                 sidebarController.showSidebar(outlineViewController)
-            } else if !(sidebarController.viewController(for: .primary) is OutlineViewController) {
+            } else if !(sidebarController.viewController(for: .primary) is OutlineViewController_old) {
                 sidebarController.setViewController(outlineViewController, for: .primary)
             } else {
                 sidebarController.hideSidebar()
@@ -212,7 +212,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         } else if traitCollection.horizontalSizeClass == .regular {
             if sidebarController.displayMode == .primaryHidden {
                 sidebarController.showSidebar(outlineViewController)
-            } else if !(sidebarController.viewControllers.first is OutlineViewController) {
+            } else if !(sidebarController.viewControllers.first is OutlineViewController_old) {
                 sidebarController.viewControllers[0] = outlineViewController
             } else {
                 sidebarController.hideSidebar()

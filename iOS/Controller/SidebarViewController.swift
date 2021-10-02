@@ -49,7 +49,7 @@ class SidebarViewController: UIViewController {
     }
 }
 
-class OutlineViewController: SidebarViewController, UITableViewDataSource, UITableViewDelegate {
+class OutlineViewController_old: SidebarViewController, UITableViewDataSource, UITableViewDelegate {
     private weak var webView: WKWebView?
     private var webViewURLObserver: NSKeyValueObservation?
     private var items = [OutlineItem]()
