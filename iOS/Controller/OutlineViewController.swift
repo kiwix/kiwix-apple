@@ -31,11 +31,14 @@ struct OutlineView: View {
     
     var body: some View {
         List {
-            
-        }
+            ForEach(viewModel.items) { item in
+                Text(item.text)
+            }
+        }.listStyle(PlainListStyle()).navigationBarTitle(viewModel.title)
     }
     
     class ViewModel: ObservableObject {
+        @Published private(set) var title = "Outline"
         @Published private(set) var items = [OutlineItem]()
         
         private weak var webView: WKWebView?
@@ -51,7 +54,19 @@ struct OutlineView: View {
         private func load(url: URL?) {
             DispatchQueue.global(qos: .userInitiated).async {
                 guard let url = url, let parser = try? Parser(url: url) else { self.items = []; return }
-                self.items = parser.getOutlineItems()
+                let items = parser.getOutlineItems()
+                let h1Items = items.filter{ $0.level == 1 }
+                DispatchQueue.main.async {
+                    if h1Items.count == 1, let h1Item = h1Items.first {
+                        self.title = h1Item.text
+                        self.items = items.filter { $0.level != 1 }.map { item in
+                            OutlineItem(index: item.index, text: item.text, level: item.level - 1)
+                        }
+                    } else {
+                        self.title = "Outline"
+                        self.items = items
+                    }
+                }
             }
         }
     }
