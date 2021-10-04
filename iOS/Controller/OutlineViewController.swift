@@ -31,7 +31,9 @@ struct OutlineView: View {
     }
     
     var body: some View {
-        TableView(items: viewModel.items).navigationBarTitle(viewModel.title)
+        TableView(items: viewModel.items)
+            .edgesIgnoringSafeArea(.bottom)
+            .navigationBarTitle(viewModel.title)
     }
     
     class ViewModel: ObservableObject {
