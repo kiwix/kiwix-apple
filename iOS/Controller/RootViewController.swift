@@ -217,17 +217,25 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
             } else {
                 sidebarController.hideSidebar()
             }
-        } else if #available(iOS 15.0, *) {
-            let controller = OutlineViewController(webView: webViewController.webView)
-            let navigationController = UINavigationController(rootViewController: controller)
-            if let sheetPresentationController = navigationController.sheetPresentationController {
-                sheetPresentationController.detents = [.medium(), .large()]
-                sheetPresentationController.prefersScrollingExpandsWhenScrolledToEdge = false
-            }
-            present(navigationController, animated: true)
         } else {
             let controller = OutlineViewController(webView: webViewController.webView)
-            present(UINavigationController(rootViewController: controller), animated: true)
+            let navigationController = UINavigationController(rootViewController: controller)
+            if #available(iOS 15.0, *), let sheetController = navigationController.sheetPresentationController {
+                sheetController.detents = [.medium(), .large()]
+                sheetController.prefersScrollingExpandsWhenScrolledToEdge = false
+            }
+            controller.rootView.outlineItemSelected = { [unowned self] item in
+                let javascript = "document.querySelectorAll(\"h1, h2, h3, h4, h5, h6\")[\(item.index)].scrollIntoView()"
+                self.webViewController.webView.evaluateJavaScript(javascript)
+                if #available(iOS 15.0, *),
+                   let sheetController = navigationController.sheetPresentationController,
+                   sheetController.selectedDetentIdentifier != .large {
+                    return
+                } else {
+                    controller.dismiss(animated: true)
+                }
+            }
+            present(navigationController, animated: true)
         }
     }
     

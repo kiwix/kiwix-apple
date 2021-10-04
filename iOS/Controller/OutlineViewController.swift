@@ -26,12 +26,14 @@ class OutlineViewController: UIHostingController<OutlineView> {
 struct OutlineView: View {
     @ObservedObject var viewModel: ViewModel
     
+    var outlineItemSelected: (OutlineItem) -> Void = { _ in }
+    
     init(webView: WKWebView) {
         self.viewModel = ViewModel(webView: webView)
     }
     
     var body: some View {
-        TableView(items: viewModel.items)
+        TableView(items: viewModel.items, outlineItemSelected: outlineItemSelected)
             .edgesIgnoringSafeArea(.bottom)
             .navigationBarTitle(viewModel.title)
     }
@@ -71,18 +73,20 @@ struct OutlineView: View {
     }
     
     struct TableView: UIViewRepresentable {
-        var items: [OutlineItem]
+        let items: [OutlineItem]
+        let outlineItemSelected: (OutlineItem) -> Void
         
         func makeUIView(context: Context) -> UITableView {
             let tableView = UITableView(frame: .zero)
             tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
             tableView.separatorInsetReference = .fromAutomaticInsets
             tableView.dataSource = context.coordinator
+            tableView.delegate = context.coordinator
             return tableView
         }
         
         func makeCoordinator() -> Coordinator {
-            Coordinator()
+            Coordinator(outlineItemSelected: outlineItemSelected)
         }
         
         func updateUIView(_ tableView: UITableView, context: Context) {
@@ -90,8 +94,13 @@ struct OutlineView: View {
             tableView.reloadData()
         }
         
-        class Coordinator: NSObject, UITableViewDataSource {
+        class Coordinator: NSObject, UITableViewDataSource, UITableViewDelegate {
+            let outlineItemSelected: (OutlineItem) -> Void
             var items: [OutlineItem] = []
+            
+            init(outlineItemSelected: @escaping (OutlineItem) -> Void) {
+                self.outlineItemSelected = outlineItemSelected
+            }
             
             func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
                 items.count
@@ -104,6 +113,11 @@ struct OutlineView: View {
                     top: 0, left: 25 * CGFloat(items[indexPath.row].level - 1), bottom: 0, right: 0
                 )
                 return cell
+            }
+            
+            func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+                tableView.deselectRow(at: indexPath, animated: true)
+                outlineItemSelected(items[indexPath.row])
             }
         }
     }
