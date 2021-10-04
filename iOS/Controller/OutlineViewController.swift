@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import UIKit
 import WebKit
 
 class OutlineViewController: UIHostingController<OutlineView> {
@@ -30,11 +31,7 @@ struct OutlineView: View {
     }
     
     var body: some View {
-        List {
-            ForEach(viewModel.items) { item in
-                Text(item.text)
-            }
-        }.listStyle(PlainListStyle()).navigationBarTitle(viewModel.title)
+        TableView(items: viewModel.items).navigationBarTitle(viewModel.title)
     }
     
     class ViewModel: ObservableObject {
@@ -67,6 +64,44 @@ struct OutlineView: View {
                         self.items = items
                     }
                 }
+            }
+        }
+    }
+    
+    struct TableView: UIViewRepresentable {
+        var items: [OutlineItem]
+        
+        func makeUIView(context: Context) -> UITableView {
+            let tableView = UITableView(frame: .zero)
+            tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+            tableView.separatorInsetReference = .fromAutomaticInsets
+            tableView.dataSource = context.coordinator
+            return tableView
+        }
+        
+        func makeCoordinator() -> Coordinator {
+            Coordinator()
+        }
+        
+        func updateUIView(_ tableView: UITableView, context: Context) {
+            context.coordinator.items = items
+            tableView.reloadData()
+        }
+        
+        class Coordinator: NSObject, UITableViewDataSource {
+            var items: [OutlineItem] = []
+            
+            func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+                items.count
+            }
+            
+            func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+                cell.textLabel?.text = items[indexPath.row].text
+                cell.separatorInset =  UIEdgeInsets(
+                    top: 0, left: 25 * CGFloat(items[indexPath.row].level - 1), bottom: 0, right: 0
+                )
+                return cell
             }
         }
     }
