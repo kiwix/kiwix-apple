@@ -33,13 +33,29 @@ struct OutlineView: View {
     }
     
     var body: some View {
-        TableView(items: viewModel.items, outlineItemSelected: outlineItemSelected)
-            .edgesIgnoringSafeArea(.bottom)
-            .navigationBarTitle(viewModel.title)
+        if #available(iOS 14.0, *) {
+            TableView(items: viewModel.items, outlineItemSelected: outlineItemSelected)
+                .edgesIgnoringSafeArea(.bottom)
+                .toolbar {
+                    ToolbarItem(placement: ToolbarItemPlacement.principal) {
+                        if let title = viewModel.title {
+                            Button { outlineItemSelected(title) } label: {
+                                Text(title.text).fontWeight(.semibold).foregroundColor(.primary)
+                            }
+                        } else {
+                            Text("Outline").fontWeight(.semibold)
+                        }
+                    }
+                }
+        } else {
+            TableView(items: viewModel.items, outlineItemSelected: outlineItemSelected)
+                .edgesIgnoringSafeArea(.bottom)
+                .navigationBarTitle(viewModel.title?.text ?? "Outline")
+        }
     }
     
     class ViewModel: ObservableObject {
-        @Published private(set) var title = "Outline"
+        @Published private(set) var title: OutlineItem?
         @Published private(set) var items = [OutlineItem]()
         
         private weak var webView: WKWebView?
@@ -59,12 +75,12 @@ struct OutlineView: View {
                 let h1Items = items.filter{ $0.level == 1 }
                 DispatchQueue.main.async {
                     if h1Items.count == 1, let h1Item = h1Items.first {
-                        self.title = h1Item.text
+                        self.title = h1Item
                         self.items = items.filter { $0.level != 1 }.map { item in
                             OutlineItem(index: item.index, text: item.text, level: item.level - 1)
                         }
                     } else {
-                        self.title = "Outline"
+                        self.title = nil
                         self.items = items
                     }
                 }
