@@ -75,7 +75,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
             // dismiss presented outline and bookmark controller from when view was horizontally compact
             if let navigationController = presentedViewController as? UINavigationController,
                let topViewController = navigationController.topViewController,
-               (topViewController is OutlineViewController_old || topViewController is BookmarksViewController) {
+               (topViewController is OutlineViewController || topViewController is BookmarksViewController) {
                 presentedViewController?.dismiss(animated: false)
             }
         }
@@ -200,40 +200,41 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     }
     
     @objc func outlineButtonTapped() {
-        let outlineViewController = OutlineViewController_old(webView: webViewController.webView)
+        let controller = OutlineViewController(webView: webViewController.webView)
+        controller.rootView.outlineItemSelected = { [unowned self] item in
+            let javascript = "document.querySelectorAll(\"h1, h2, h3, h4, h5, h6\")[\(item.index)].scrollIntoView()"
+            self.webViewController.webView.evaluateJavaScript(javascript)
+            if let sidebarController = controller.splitViewController as? SidebarController {
+                sidebarController.hideSidebar()
+            } else if #available(iOS 15.0, *),
+               let sheetController = controller.sheetPresentationController,
+               sheetController.selectedDetentIdentifier != .large {
+                return
+            } else {
+                controller.dismiss(animated: true)
+            }
+        }
         if #available(iOS 14.0, *), traitCollection.horizontalSizeClass == .regular {
             if sidebarController.displayMode == .secondaryOnly {
-                sidebarController.showSidebar(outlineViewController)
-            } else if !(sidebarController.viewController(for: .primary) is OutlineViewController_old) {
-                sidebarController.setViewController(outlineViewController, for: .primary)
+                sidebarController.showSidebar(controller)
+            } else if !(sidebarController.viewController(for: .primary) is OutlineViewController) {
+                sidebarController.setViewController(controller, for: .primary)
             } else {
                 sidebarController.hideSidebar()
             }
         } else if traitCollection.horizontalSizeClass == .regular {
             if sidebarController.displayMode == .primaryHidden {
-                sidebarController.showSidebar(outlineViewController)
-            } else if !(sidebarController.viewControllers.first is OutlineViewController_old) {
-                sidebarController.viewControllers[0] = outlineViewController
+                sidebarController.showSidebar(controller)
+            } else if !(sidebarController.viewControllers.first is OutlineViewController) {
+                sidebarController.viewControllers[0] = controller
             } else {
                 sidebarController.hideSidebar()
             }
         } else {
-            let controller = OutlineViewController(webView: webViewController.webView)
             let navigationController = UINavigationController(rootViewController: controller)
             if #available(iOS 15.0, *), let sheetController = navigationController.sheetPresentationController {
                 sheetController.detents = [.medium(), .large()]
                 sheetController.prefersScrollingExpandsWhenScrolledToEdge = false
-            }
-            controller.rootView.outlineItemSelected = { [unowned self] item in
-                let javascript = "document.querySelectorAll(\"h1, h2, h3, h4, h5, h6\")[\(item.index)].scrollIntoView()"
-                self.webViewController.webView.evaluateJavaScript(javascript)
-                if #available(iOS 15.0, *),
-                   let sheetController = navigationController.sheetPresentationController,
-                   sheetController.selectedDetentIdentifier != .large {
-                    return
-                } else {
-                    controller.dismiss(animated: true)
-                }
             }
             present(navigationController, animated: true)
         }
