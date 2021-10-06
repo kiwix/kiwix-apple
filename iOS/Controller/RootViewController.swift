@@ -204,7 +204,12 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
         controller.rootView.outlineItemSelected = { [unowned self] item in
             let javascript = "document.querySelectorAll(\"h1, h2, h3, h4, h5, h6\")[\(item.index)].scrollIntoView()"
             self.webViewController.webView.evaluateJavaScript(javascript)
-            if let sidebarController = controller.splitViewController as? SidebarController {
+            if #available(iOS 14.0, *),
+               let sidebarController = controller.splitViewController as? SidebarController,
+               sidebarController.displayMode == .oneOverSecondary {
+                sidebarController.hideSidebar()
+            } else if let sidebarController = controller.splitViewController as? SidebarController,
+                      sidebarController.displayMode == .primaryOverlay {
                 sidebarController.hideSidebar()
             } else if #available(iOS 15.0, *),
                let sheetController = controller.sheetPresentationController,

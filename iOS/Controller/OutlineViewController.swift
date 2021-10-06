@@ -18,16 +18,11 @@ class OutlineViewController: UIHostingController<OutlineView> {
         )
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-//        if #available(iOS 14.0, *), splitViewController != nil {
-//
-//        }
-        print(splitViewController)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         if splitViewController != nil {
             navigationController?.navigationBar.isHidden = true
         }
-        
     }
     
     @objc private func dismissController() {
