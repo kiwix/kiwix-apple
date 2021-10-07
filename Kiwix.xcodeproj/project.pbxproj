@@ -110,6 +110,7 @@
 		97B448A1210FBC2E0004B056 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97B4489F210FBC2E0004B056 /* LaunchScreen.storyboard */; };
 		97B5D3E92596398400D12FEE /* SidebarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B5D3E82596398400D12FEE /* SidebarController.swift */; };
 		97B794201F4E23F300F3EBE8 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */; };
+		97C14E232707F98400EF4CF2 /* OutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C14E222707F98400EF4CF2 /* OutlineViewController.swift */; };
 		97C575F4202CB0E800E37502 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97C575F3202CB0E800E37502 /* NotificationCenter.framework */; };
 		97C575F7202CB0E800E37502 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C575F6202CB0E800E37502 /* TodayViewController.swift */; };
 		97C575FA202CB0E800E37502 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C575F8202CB0E800E37502 /* MainInterface.storyboard */; };
@@ -288,6 +289,7 @@
 		97B448A2210FBC2E0004B056 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97B5D3E82596398400D12FEE /* SidebarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarController.swift; sourceTree = "<group>"; };
 		97B7941F1F4E23F300F3EBE8 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		97C14E222707F98400EF4CF2 /* OutlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineViewController.swift; sourceTree = "<group>"; };
 		97C575F2202CB0E800E37502 /* Bookmarks.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Bookmarks.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		97C575F3202CB0E800E37502 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		97C575F6202CB0E800E37502 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
@@ -447,6 +449,7 @@
 				97B5D3E82596398400D12FEE /* SidebarController.swift */,
 				97802D6F25789B1800A21352 /* SidebarViewController.swift */,
 				97A2AE2125866D9200DEF81D /* ButtonProvider.swift */,
+				97C14E222707F98400EF4CF2 /* OutlineViewController.swift */,
 				977D50622621E47D005345D1 /* LibraryViewController.swift */,
 				9797435B257BF33600D30F03 /* WebViewController.swift */,
 				972C977F26F042E40070987F /* SettingsViewController.swift */,
@@ -1027,6 +1030,7 @@
 				9779A5B82456793600F6F6FF /* LibraryOperationBase.swift in Sources */,
 				9779A5B62456793600F6F6FF /* LibraryScanOperation.swift in Sources */,
 				979AAF40257167C60078492F /* ZimFileDetailView.swift in Sources */,
+				97C14E232707F98400EF4CF2 /* OutlineViewController.swift in Sources */,
 				977D50632621E47D005345D1 /* LibraryViewController.swift in Sources */,
 				9779A5C62456793600F6F6FF /* ZimFileMetaData.mm in Sources */,
 				9779A7E424567A5A00F6F6FF /* Log.swift in Sources */,
@@ -1386,7 +1390,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 78;
+				CURRENT_PROJECT_VERSION = 79;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_BITCODE = YES;
 				GCC_C_LANGUAGE_STANDARD = c11;
@@ -1397,7 +1401,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.14.5;
+				MARKETING_VERSION = 1.15;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					SwiftUI,
@@ -1426,7 +1430,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 78;
+				CURRENT_PROJECT_VERSION = 79;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_BITCODE = YES;
 				GCC_C_LANGUAGE_STANDARD = c11;
@@ -1437,7 +1441,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.14.5;
+				MARKETING_VERSION = 1.15;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					SwiftUI,
@@ -1518,7 +1522,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/BookmarksWidget/Bookmarks.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 78;
+				CURRENT_PROJECT_VERSION = 79;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iOS/BookmarksWidget/Info.plist;
@@ -1528,7 +1532,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.14.5;
+				MARKETING_VERSION = 1.15;
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.Bookmarks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1550,7 +1554,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOS/BookmarksWidget/Bookmarks.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 78;
+				CURRENT_PROJECT_VERSION = 79;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = iOS/BookmarksWidget/Info.plist;
@@ -1560,7 +1564,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.14.5;
+				MARKETING_VERSION = 1.15;
 				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.Bookmarks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

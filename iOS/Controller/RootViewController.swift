@@ -200,25 +200,43 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     }
     
     @objc func outlineButtonTapped() {
-        let outlineViewController = OutlineViewController(webView: webViewController.webView)
+        let controller = OutlineViewController(webView: webViewController.webView)
+        controller.rootView.outlineItemSelected = { [unowned self] item in
+            let javascript = "document.querySelectorAll(\"h1, h2, h3, h4, h5, h6\")[\(item.index)].scrollIntoView()"
+            self.webViewController.webView.evaluateJavaScript(javascript)
+            if let sidebarController = controller.splitViewController as? SidebarController,
+               sidebarController.displayMode == .oneOverSecondary || sidebarController.displayMode == .primaryOverlay {
+                sidebarController.hideSidebar()
+            } else if #available(iOS 15.0, *),
+               let sheetController = controller.sheetPresentationController,
+               sheetController.selectedDetentIdentifier != .large {
+                return
+            } else {
+                controller.dismiss(animated: true)
+            }
+        }
         if #available(iOS 14.0, *), traitCollection.horizontalSizeClass == .regular {
             if sidebarController.displayMode == .secondaryOnly {
-                sidebarController.showSidebar(outlineViewController)
+                sidebarController.showSidebar(controller)
             } else if !(sidebarController.viewController(for: .primary) is OutlineViewController) {
-                sidebarController.setViewController(outlineViewController, for: .primary)
+                sidebarController.setViewController(controller, for: .primary)
             } else {
                 sidebarController.hideSidebar()
             }
         } else if traitCollection.horizontalSizeClass == .regular {
             if sidebarController.displayMode == .primaryHidden {
-                sidebarController.showSidebar(outlineViewController)
+                sidebarController.showSidebar(controller)
             } else if !(sidebarController.viewControllers.first is OutlineViewController) {
-                sidebarController.viewControllers[0] = outlineViewController
+                sidebarController.viewControllers[0] = controller
             } else {
                 sidebarController.hideSidebar()
             }
         } else {
-            let navigationController = UINavigationController(rootViewController: outlineViewController)
+            let navigationController = UINavigationController(rootViewController: controller)
+            if #available(iOS 15.0, *), let sheetController = navigationController.sheetPresentationController {
+                sheetController.detents = [.medium(), .large()]
+                sheetController.prefersScrollingExpandsWhenScrolledToEdge = false
+            }
             present(navigationController, animated: true)
         }
     }

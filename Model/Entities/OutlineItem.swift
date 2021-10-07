@@ -6,7 +6,8 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
-struct OutlineItem {
+struct OutlineItem: Identifiable {
+    var id: Int { index }
     let index: Int
     let text: String
     let level: Int
