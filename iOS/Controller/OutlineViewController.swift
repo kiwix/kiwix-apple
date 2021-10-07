@@ -20,7 +20,9 @@ class OutlineViewController: UIHostingController<OutlineView> {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if splitViewController != nil {
+        if splitViewController == nil {
+            rootView.ignoreBottomSafeArea = true
+        } else {
             navigationController?.navigationBar.isHidden = true
             rootView.viewModel.showTitleInList = true
         }
@@ -34,6 +36,7 @@ class OutlineViewController: UIHostingController<OutlineView> {
 struct OutlineView: View {
     @ObservedObject var viewModel: ViewModel
     
+    var ignoreBottomSafeArea = false
     var outlineItemSelected: (OutlineItem) -> Void = { _ in }
     
     init(webView: WKWebView) {
@@ -42,23 +45,31 @@ struct OutlineView: View {
     
     var body: some View {
         if #available(iOS 14.0, *) {
-            TableView(items: viewModel.items, outlineItemSelected: outlineItemSelected)
-                .edgesIgnoringSafeArea(.bottom)
-                .toolbar {
-                    ToolbarItem(placement: ToolbarItemPlacement.principal) {
-                        if let title = viewModel.title {
-                            Button { outlineItemSelected(title) } label: {
-                                Text(title.text).fontWeight(.semibold).foregroundColor(.primary)
-                            }
-                        } else {
-                            Text("Outline").fontWeight(.semibold)
+            content.toolbar {
+                ToolbarItem(placement: ToolbarItemPlacement.principal) {
+                    if let title = viewModel.title {
+                        Button { outlineItemSelected(title) } label: {
+                            Text(title.text).fontWeight(.semibold).foregroundColor(.primary)
                         }
+                    } else {
+                        Text("Outline").fontWeight(.semibold)
                     }
                 }
+            }
         } else {
+            content.navigationBarTitle(viewModel.title?.text ?? "Outline")
+        }
+    }
+    
+    @ViewBuilder
+    var content: some View {
+        if viewModel.items.isEmpty {
+            Text("table of content not available")
+        } else if ignoreBottomSafeArea {
             TableView(items: viewModel.items, outlineItemSelected: outlineItemSelected)
                 .edgesIgnoringSafeArea(.bottom)
-                .navigationBarTitle(viewModel.title?.text ?? "Outline")
+        } else {
+            TableView(items: viewModel.items, outlineItemSelected: outlineItemSelected)
         }
     }
     
