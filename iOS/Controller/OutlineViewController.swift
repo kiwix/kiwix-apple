@@ -64,7 +64,17 @@ struct OutlineView: View {
     @ViewBuilder
     var content: some View {
         if viewModel.items.isEmpty {
-            Text("table of content not available")
+            VStack(spacing: 30) {
+                ZStack {
+                    Image(systemName: "list.bullet")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .padding(20)
+                        .foregroundColor(.secondary)
+                    Circle().foregroundColor(.secondary).opacity(0.2)
+                }.frame(width: 75, height: 75, alignment: .center)
+                Text("Table of content not available.").font(Font.headline)
+            }
         } else if ignoreBottomSafeArea {
             TableView(items: viewModel.items, outlineItemSelected: outlineItemSelected)
                 .edgesIgnoringSafeArea(.bottom)
