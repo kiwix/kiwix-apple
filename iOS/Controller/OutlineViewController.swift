@@ -20,9 +20,7 @@ class OutlineViewController: UIHostingController<OutlineView> {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if splitViewController == nil {
-            rootView.ignoreBottomSafeArea = true
-        } else {
+        if splitViewController != nil {
             navigationController?.navigationBar.isHidden = true
             rootView.viewModel.showTitleInList = true
         }
@@ -36,7 +34,6 @@ class OutlineViewController: UIHostingController<OutlineView> {
 struct OutlineView: View {
     @ObservedObject var viewModel: ViewModel
     
-    var ignoreBottomSafeArea = false
     var outlineItemSelected: (OutlineItem) -> Void = { _ in }
     
     init(webView: WKWebView) {
@@ -46,7 +43,7 @@ struct OutlineView: View {
     var body: some View {
         if #available(iOS 14.0, *) {
             content.toolbar {
-                ToolbarItem(placement: ToolbarItemPlacement.principal) {
+                ToolbarItem(placement: .principal) {
                     if let title = viewModel.title {
                         Button { outlineItemSelected(title) } label: {
                             Text(title.text).fontWeight(.semibold).foregroundColor(.primary)
@@ -75,11 +72,9 @@ struct OutlineView: View {
                 }.frame(width: 75, height: 75, alignment: .center)
                 Text("Table of content not available.").font(Font.headline)
             }
-        } else if ignoreBottomSafeArea {
-            TableView(items: viewModel.items, outlineItemSelected: outlineItemSelected)
-                .edgesIgnoringSafeArea(.bottom)
         } else {
             TableView(items: viewModel.items, outlineItemSelected: outlineItemSelected)
+                .edgesIgnoringSafeArea(.bottom)
         }
     }
     
