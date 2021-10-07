@@ -22,6 +22,7 @@ class OutlineViewController: UIHostingController<OutlineView> {
         super.viewWillAppear(animated)
         if splitViewController != nil {
             navigationController?.navigationBar.isHidden = true
+            rootView.viewModel.showTitleInList = true
         }
     }
     
@@ -64,6 +65,7 @@ struct OutlineView: View {
     class ViewModel: ObservableObject {
         @Published private(set) var title: OutlineItem?
         @Published private(set) var items = [OutlineItem]()
+        var showTitleInList = false
         
         private weak var webView: WKWebView?
         private var webViewURLObserver: NSKeyValueObservation?
@@ -81,14 +83,24 @@ struct OutlineView: View {
                 let items = parser.getOutlineItems()
                 let h1Items = items.filter{ $0.level == 1 }
                 DispatchQueue.main.async {
-                    if h1Items.count == 1, let h1Item = h1Items.first {
+                    // When there is only one h1, that's usually the title.
+                    // We show it either centered or in navigation bar.
+                    if h1Items.count == 1, self.showTitleInList {
+                        self.title = nil
+                        self.items = items.map { item in
+                            OutlineItem(index: item.index, text: item.text, level: item.level - 1)
+                        }
+                    } else if h1Items.count == 1, let h1Item = h1Items.first {
                         self.title = h1Item
                         self.items = items.filter { $0.level != 1 }.map { item in
                             OutlineItem(index: item.index, text: item.text, level: item.level - 1)
                         }
                     } else {
+                        let offset = items.map{ $0.level }.min() ?? 1
                         self.title = nil
-                        self.items = items
+                        self.items = items.map { item in
+                            OutlineItem(index: item.index, text: item.text, level: item.level - offset + 1)
+                        }
                     }
                 }
             }
@@ -131,9 +143,11 @@ struct OutlineView: View {
             
             func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-                cell.textLabel?.text = items[indexPath.row].text
+                let item = items[indexPath.row]
+                cell.textLabel?.text = item.text
+                cell.textLabel?.textAlignment = item.level == 0 ? .center : .natural
                 cell.separatorInset =  UIEdgeInsets(
-                    top: 0, left: 25 * CGFloat(items[indexPath.row].level - 1), bottom: 0, right: 0
+                    top: 0, left: max(0, 20 * CGFloat(item.level - 1)), bottom: 0, right: 0
                 )
                 return cell
             }
