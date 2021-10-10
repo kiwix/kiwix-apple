@@ -16,6 +16,20 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
         config.mediaTypesRequiringUserActionForPlayback = []
+        config.userContentController = {
+            let controller = WKUserContentController()
+            guard FeatureFlags.wikipediaDarkUserCSS,
+                  let path = Bundle.main.path(forResource: "wikipedia_dark", ofType: "css"),
+                  let css = try? String(contentsOfFile: path) else { return controller }
+            let source = """
+                var style = document.createElement('style');
+                style.innerHTML = `\(css)`;
+                document.head.appendChild(style);
+                """
+            let script = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+            controller.addUserScript(script)
+            return controller
+        }()
         return WKWebView(frame: .zero, configuration: config)
     }()
     private var textSizeAdjustFactorObserver: DefaultsObservation?

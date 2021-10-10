@@ -1,0 +1,9 @@
+@media (prefers-color-scheme: dark) {
+  body { color: #ffffff; background-color: #000000; }
+  #content{ background-color: #000000; }
+  a { color: #4183c4; }
+  a:visited { color: #295887; }
+  table { color: #ffffff; background-color: #000000; }
+  .content table.infobox { color: #ffffff; background-color: #222222; }
+  .hatnote, .dablink, .rellink { color: #aaaaaa; background-color: #000000; }
+}
