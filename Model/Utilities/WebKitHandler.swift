@@ -66,15 +66,3 @@ class KiwixURLSchemeHandler: NSObject, WKURLSchemeHandler {
         activeRequestsSemaphore.signal()
     }
 }
-
-extension URL {
-    init?(zimFileID: String, contentPath: String) {
-        let baseURLString = "kiwix://" + zimFileID
-        guard let encoded = contentPath.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {return nil}
-        self.init(string: encoded, relativeTo: URL(string: baseURLString))
-    }
-
-    var isKiwixURL: Bool {
-        return scheme?.caseInsensitiveCompare("kiwix") == .orderedSame
-    }
-}
