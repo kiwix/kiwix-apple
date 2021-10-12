@@ -141,7 +141,6 @@
 		97F4210E22EE5590001E41F9 /* FileImportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4210D22EE5590001E41F9 /* FileImportController.swift */; };
 		97F425C227151A0D00D0F738 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97F425C127151A0D00D0F738 /* QuickLook.framework */; };
 		97F425C527151A0D00D0F738 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F425C427151A0D00D0F738 /* PreviewViewController.swift */; };
-		97F425C727151A0D00D0F738 /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F425C627151A0D00D0F738 /* PreviewProvider.swift */; };
 		97F425CA27151A0D00D0F738 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97F425C827151A0D00D0F738 /* MainInterface.storyboard */; };
 		97F425CE27151A0D00D0F738 /* QuickLookPreview.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 97F425C027151A0D00D0F738 /* QuickLookPreview.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		97F425D227151D9600D0F738 /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
@@ -329,7 +328,6 @@
 		97F425C027151A0D00D0F738 /* QuickLookPreview.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = QuickLookPreview.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		97F425C127151A0D00D0F738 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		97F425C427151A0D00D0F738 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
-		97F425C627151A0D00D0F738 /* PreviewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewProvider.swift; sourceTree = "<group>"; };
 		97F425C927151A0D00D0F738 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		97F425CB27151A0D00D0F738 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97F4D10B20ADFE370038FC87 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -726,7 +724,6 @@
 			isa = PBXGroup;
 			children = (
 				97F425C427151A0D00D0F738 /* PreviewViewController.swift */,
-				97F425C627151A0D00D0F738 /* PreviewProvider.swift */,
 				97F425C827151A0D00D0F738 /* MainInterface.storyboard */,
 				97F425CB27151A0D00D0F738 /* Info.plist */,
 			);
@@ -1177,7 +1174,6 @@
 				97F425D62715213A00D0F738 /* WebKitHandler.swift in Sources */,
 				97F425D527151EF800D0F738 /* ZimFileMetaData.mm in Sources */,
 				97F425D327151E9C00D0F738 /* ZimFileService.mm in Sources */,
-				97F425C727151A0D00D0F738 /* PreviewProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1706,7 +1702,7 @@
 				INFOPLIST_FILE = iOS/QuickLookPreview/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = QuickLook;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Chris Li. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1744,7 +1740,7 @@
 				INFOPLIST_FILE = iOS/QuickLookPreview/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = QuickLook;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Chris Li. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
