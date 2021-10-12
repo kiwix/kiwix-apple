@@ -139,6 +139,17 @@
 		97EC18C226E85C5A008309ED /* RealmSwift.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B026E8555E008309ED /* RealmSwift.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		97EFF05E235CAEFC00FBB7A4 /* ContentTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EFF05D235CAEFC00FBB7A4 /* ContentTabController.swift */; };
 		97F4210E22EE5590001E41F9 /* FileImportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4210D22EE5590001E41F9 /* FileImportController.swift */; };
+		97F425C227151A0D00D0F738 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97F425C127151A0D00D0F738 /* QuickLook.framework */; };
+		97F425C527151A0D00D0F738 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F425C427151A0D00D0F738 /* PreviewViewController.swift */; };
+		97F425C727151A0D00D0F738 /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F425C627151A0D00D0F738 /* PreviewProvider.swift */; };
+		97F425CA27151A0D00D0F738 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97F425C827151A0D00D0F738 /* MainInterface.storyboard */; };
+		97F425CE27151A0D00D0F738 /* QuickLookPreview.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 97F425C027151A0D00D0F738 /* QuickLookPreview.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		97F425D227151D9600D0F738 /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
+		97F425D327151E9C00D0F738 /* ZimFileService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A92456793500F6F6FF /* ZimFileService.mm */; };
+		97F425D427151E9C00D0F738 /* ZimFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimFileService.swift */; };
+		97F425D527151EF800D0F738 /* ZimFileMetaData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */; };
+		97F425D62715213A00D0F738 /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A73A2456796B00F6F6FF /* WebKitHandler.swift */; };
+		97F425D7271521DA00D0F738 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
 		97F4D10C20ADFE370038FC87 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97F4D10B20ADFE370038FC87 /* Assets.xcassets */; };
 		97FD2F5F251EA07B0034927C /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97FD2F5E251EA07B0034927C /* FeatureFlags.swift */; };
 /* End PBXBuildFile section */
@@ -157,6 +168,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 97C575F1202CB0E800E37502;
 			remoteInfo = Bookmarks;
+		};
+		97F425CC27151A0D00D0F738 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97A2AB801C1B80FF00052E74 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 97F425BF27151A0D00D0F738;
+			remoteInfo = QuickLook;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -178,6 +196,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				97C575FE202CB0E900E37502 /* Bookmarks.appex in Embed App Extensions */,
+				97F425CE27151A0D00D0F738 /* QuickLookPreview.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -307,6 +326,12 @@
 		97EC18B126E8555E008309ED /* Realm.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = Realm.xcframework; sourceTree = "<group>"; };
 		97EFF05D235CAEFC00FBB7A4 /* ContentTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTabController.swift; sourceTree = "<group>"; };
 		97F4210D22EE5590001E41F9 /* FileImportController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileImportController.swift; sourceTree = "<group>"; };
+		97F425C027151A0D00D0F738 /* QuickLookPreview.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = QuickLookPreview.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		97F425C127151A0D00D0F738 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
+		97F425C427151A0D00D0F738 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
+		97F425C627151A0D00D0F738 /* PreviewProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewProvider.swift; sourceTree = "<group>"; };
+		97F425C927151A0D00D0F738 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		97F425CB27151A0D00D0F738 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97F4D10B20ADFE370038FC87 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97F6CC5020BD960F005CDBD2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		97FD2F5E251EA07B0034927C /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
@@ -362,6 +387,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		97F425BD27151A0D00D0F738 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97F425D227151D9600D0F738 /* libkiwix.xcframework in Frameworks */,
+				97F425C227151A0D00D0F738 /* QuickLook.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -372,6 +406,7 @@
 				97F6CC5020BD960F005CDBD2 /* MapKit.framework */,
 				975FDB061F608F4100A10E8C /* WebKit.framework */,
 				97C575F3202CB0E800E37502 /* NotificationCenter.framework */,
+				97F425C127151A0D00D0F738 /* QuickLook.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -423,6 +458,7 @@
 				973B8011239066D0008CC8CE /* SceneDelegate.swift */,
 				97A996D81F62F3C5007A6282 /* View */,
 				975FDB0E1F60944A00A10E8C /* Controller */,
+				97F425C327151A0D00D0F738 /* QuickLookPreview */,
 				97F4D10B20ADFE370038FC87 /* Assets.xcassets */,
 				97C575F5202CB0E800E37502 /* BookmarksWidget */,
 				975FDAEA1F60839900A10E8C /* Support */,
@@ -606,6 +642,7 @@
 				97C575F2202CB0E800E37502 /* Bookmarks.appex */,
 				970EC3F123BE8E20008DCA27 /* ModelTests.xctest */,
 				970EC3FD23BE9987008DCA27 /* WikiMed.app */,
+				97F425C027151A0D00D0F738 /* QuickLookPreview.appex */,
 			);
 			sourceTree = "<group>";
 			wrapsLines = 0;
@@ -685,6 +722,17 @@
 			path = Libraries;
 			sourceTree = "<group>";
 		};
+		97F425C327151A0D00D0F738 /* QuickLookPreview */ = {
+			isa = PBXGroup;
+			children = (
+				97F425C427151A0D00D0F738 /* PreviewViewController.swift */,
+				97F425C627151A0D00D0F738 /* PreviewProvider.swift */,
+				97F425C827151A0D00D0F738 /* MainInterface.storyboard */,
+				97F425CB27151A0D00D0F738 /* Info.plist */,
+			);
+			path = QuickLookPreview;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -740,6 +788,7 @@
 			);
 			dependencies = (
 				979B64C0259EBA1B001C74AE /* PBXTargetDependency */,
+				97F425CD27151A0D00D0F738 /* PBXTargetDependency */,
 			);
 			name = iOS;
 			packageProductDependencies = (
@@ -785,13 +834,30 @@
 			productReference = 97C575F2202CB0E800E37502 /* Bookmarks.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		97F425BF27151A0D00D0F738 /* QuickLookPreview */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 97F425D127151A0D00D0F738 /* Build configuration list for PBXNativeTarget "QuickLookPreview" */;
+			buildPhases = (
+				97F425BC27151A0D00D0F738 /* Sources */,
+				97F425BD27151A0D00D0F738 /* Frameworks */,
+				97F425BE27151A0D00D0F738 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = QuickLookPreview;
+			productName = QuickLook;
+			productReference = 97F425C027151A0D00D0F738 /* QuickLookPreview.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		97A2AB801C1B80FF00052E74 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1220;
+				LastSwiftUpdateCheck = 1300;
 				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = "Chris Li";
 				TargetAttributes = {
@@ -849,6 +915,9 @@
 							};
 						};
 					};
+					97F425BF27151A0D00D0F738 = {
+						CreatedOnToolsVersion = 13.0;
+					};
 				};
 			};
 			buildConfigurationList = 97A2AB831C1B80FF00052E74 /* Build configuration list for PBXProject "Kiwix" */;
@@ -871,6 +940,7 @@
 				97A36C241F8C21210079B452 /* iOS */,
 				979315801E5127930093D3BA /* macOS */,
 				97B44893210FBC2C0004B056 /* WikiMed */,
+				97F425BF27151A0D00D0F738 /* QuickLookPreview */,
 				97C575F1202CB0E800E37502 /* Bookmarks */,
 				970EC3F023BE8E20008DCA27 /* ModelTests */,
 			);
@@ -922,6 +992,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				97C575FA202CB0E800E37502 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		97F425BE27151A0D00D0F738 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97F425CA27151A0D00D0F738 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1089,6 +1167,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		97F425BC27151A0D00D0F738 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97F425D427151E9C00D0F738 /* ZimFileService.swift in Sources */,
+				97F425D7271521DA00D0F738 /* Log.swift in Sources */,
+				97F425C527151A0D00D0F738 /* PreviewViewController.swift in Sources */,
+				97F425D62715213A00D0F738 /* WebKitHandler.swift in Sources */,
+				97F425D527151EF800D0F738 /* ZimFileMetaData.mm in Sources */,
+				97F425D327151E9C00D0F738 /* ZimFileService.mm in Sources */,
+				97F425C727151A0D00D0F738 /* PreviewProvider.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1102,6 +1194,11 @@
 			platformFilter = ios;
 			target = 97C575F1202CB0E800E37502 /* Bookmarks */;
 			targetProxy = 979B64BF259EBA1B001C74AE /* PBXContainerItemProxy */;
+		};
+		97F425CD27151A0D00D0F738 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 97F425BF27151A0D00D0F738 /* QuickLookPreview */;
+			targetProxy = 97F425CC27151A0D00D0F738 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1134,6 +1231,14 @@
 			isa = PBXVariantGroup;
 			children = (
 				97C575F9202CB0E800E37502 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+		97F425C827151A0D00D0F738 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				97F425C927151A0D00D0F738 /* Base */,
 			);
 			name = MainInterface.storyboard;
 			sourceTree = "<group>";
@@ -1275,7 +1380,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1304,7 +1409,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1323,6 +1428,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Utilities/Kiwix-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1333,7 +1439,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1362,7 +1468,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -1375,6 +1481,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Utilities/Kiwix-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -1384,6 +1491,7 @@
 		97A36C4C1F8C21210079B452 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Kiwix;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1424,6 +1532,7 @@
 		97A36C4D1F8C21210079B452 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Kiwix;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -1578,6 +1687,80 @@
 			};
 			name = Release;
 		};
+		97F425CF27151A0D00D0F738 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 79;
+				DEVELOPMENT_TEAM = L7HWM3SP3L;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = iOS/QuickLookPreview/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = QuickLook;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Chris Li. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.QuickLook;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		97F425D027151A0D00D0F738 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 79;
+				DEVELOPMENT_TEAM = L7HWM3SP3L;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = iOS/QuickLookPreview/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = QuickLook;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Chris Li. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.15;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = self.Kiwix.QuickLook;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1631,6 +1814,15 @@
 			buildConfigurations = (
 				97C57600202CB0E900E37502 /* Debug */,
 				97C57601202CB0E900E37502 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		97F425D127151A0D00D0F738 /* Build configuration list for PBXNativeTarget "QuickLookPreview" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97F425CF27151A0D00D0F738 /* Debug */,
+				97F425D027151A0D00D0F738 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
