@@ -32,14 +32,7 @@ extension ZimFileService {
     }
     
     func getFileURLBookmark(zimFileID: String) -> Data? {
-        guard let url = getFileURL(zimFileID: zimFileID),
-              let documentDirectoryURL = try? FileManager.default.url(
-                for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false
-              ),
-              FileManager.default.fileExists(
-                atPath: documentDirectoryURL.appendingPathComponent(url.lastPathComponent).path
-              ) else { return nil }
-        return try? url.bookmarkData()
+        try? getFileURL(zimFileID: zimFileID)?.bookmarkData()
     }
     
     func getRedirectedURL(url: URL) -> URL? {
@@ -60,18 +53,24 @@ extension ZimFileService {
     
     // MARK: - URL Response
     
-    func getURLContent(url: URL) -> (data: Data, mime: String, length: Int)? {
-        guard let zimFileID = url.host,
-              let content = __getURLContent(zimFileID, contentPath: url.path),
+    func getURLContent(url: URL) -> URLContent? {
+        guard let zimFileID = url.host else { return nil }
+        return getURLContent(zimFileID: zimFileID, contentPath: url.path)
+    }
+    
+    func getURLContent(zimFileID: String, contentPath: String) -> URLContent? {
+        guard let content = __getURLContent(zimFileID, contentPath: contentPath),
               let data = content["data"] as? Data,
               let mime = content["mime"] as? String,
               let length = content["length"] as? Int else { return nil }
-        return (data, mime, length)
+        return URLContent(data: data, mime: mime, length: length)
     }
-    
-    func getData(zimFileID: String, contentPath: String) -> Data? {
-        __getURLContent(zimFileID, contentPath: contentPath)?["data"] as? Data
-    }
+}
+
+struct URLContent {
+    let data: Data
+    let mime: String
+    let length: Int
 }
 
 extension URL {

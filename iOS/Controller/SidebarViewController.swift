@@ -128,8 +128,8 @@ class BookmarksViewController: SidebarViewController, UITableViewDataSource, UIT
         cell.detailLabel.text = bookmark.snippet
         
         if let zimFile = bookmark.zimFile, let thumbImagePath = bookmark.thumbImagePath,
-           let data = ZimFileService.shared.getData(zimFileID: zimFile.fileID, contentPath: thumbImagePath) {
-            cell.thumbImageView.image = UIImage(data: data)
+           let content = ZimFileService.shared.getURLContent(zimFileID: zimFile.fileID, contentPath: thumbImagePath) {
+            cell.thumbImageView.image = UIImage(data: content.data)
         } else if let zimFile = bookmark.zimFile, let data = zimFile.faviconData {
             cell.thumbImageView.image = UIImage(data: data)
         } else {

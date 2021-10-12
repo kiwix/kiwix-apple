@@ -30,9 +30,8 @@ class Parser {
     }
     
     convenience init(url: URL) throws {
-        guard let zimFileID = url.host,
-              let data = ZimFileService.shared.getData(zimFileID: zimFileID, contentPath: url.path) else { throw NSError() }
-        try self.init(data: data)
+        guard let content = ZimFileService.shared.getURLContent(url: url) else { throw NSError() }
+        try self.init(data: content.data)
     }
     
     var title: String? { document.title }
