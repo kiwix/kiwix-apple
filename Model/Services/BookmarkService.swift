@@ -85,8 +85,11 @@ class BookmarkService {
                     guard let zimFile = bookmark.zimFile,
                         let url = URL(zimFileID: zimFile.fileID, contentPath: bookmark.path) else {return nil}
                     let thumbImageData: Data? = {
-                        guard let thumbImagePath = bookmark.thumbImagePath else { return nil }
-                        return ZimFileService.shared.getData(zimFileID: zimFile.fileID, contentPath: thumbImagePath)
+                        guard let thumbImagePath = bookmark.thumbImagePath,
+                              let content = ZimFileService.shared.getURLContent(
+                                zimFileID: zimFile.fileID, contentPath: thumbImagePath
+                              ) else { return nil }
+                        return content.data
                     }()
                     return [
                         "title": bookmark.title,
