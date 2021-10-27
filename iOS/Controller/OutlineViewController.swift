@@ -60,7 +60,7 @@ struct OutlineView: View {
     
     @ViewBuilder
     var content: some View {
-        if viewModel.items.isEmpty {
+        if let items = viewModel.items, items.isEmpty {
             VStack(spacing: 30) {
                 ZStack {
                     Image(systemName: "list.bullet")
@@ -72,15 +72,17 @@ struct OutlineView: View {
                 }.frame(width: 75, height: 75, alignment: .center)
                 Text("Table of content not available.").font(Font.headline)
             }
-        } else {
-            TableView(items: viewModel.items, outlineItemSelected: outlineItemSelected)
+        } else if let items = viewModel.items {
+            TableView(items: items, outlineItemSelected: outlineItemSelected)
                 .edgesIgnoringSafeArea(.bottom)
+        } else {
+            EmptyView()
         }
     }
     
     class ViewModel: ObservableObject {
         @Published private(set) var title: OutlineItem?
-        @Published private(set) var items = [OutlineItem]()
+        @Published private(set) var items: [OutlineItem]?
         var showTitleInList = false
         
         private weak var webView: WKWebView?
