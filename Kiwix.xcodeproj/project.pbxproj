@@ -132,7 +132,6 @@
 		97E94B2E271EF630005B0295 /* ZimFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimFileService.swift */; };
 		97E94B2F271EF630005B0295 /* ZimFileService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A92456793500F6F6FF /* ZimFileService.mm */; };
 		97E94B30271EF639005B0295 /* ZimFileMetaData.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */; };
-		97E94B32271F1880005B0295 /* libapple_nghttp2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E94B31271F1876005B0295 /* libapple_nghttp2.tbd */; };
 		97E983541F4DDB670021E96A /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E983531F4DDB670021E96A /* SearchView.swift */; };
 		97EC18B326E8555E008309ED /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
 		97EC18B426E8555E008309ED /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
@@ -405,7 +404,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				97E94B2D271EF603005B0295 /* libkiwix.xcframework in Frameworks */,
-				97E94B32271F1880005B0295 /* libapple_nghttp2.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
