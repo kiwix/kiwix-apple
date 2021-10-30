@@ -8,7 +8,7 @@
 
 import RealmSwift
 
-class Bookmark: Object{
+class Bookmark: Object, ObjectKeyIdentifiable {
     @objc dynamic var path = ""
     @objc dynamic var zimFile: ZimFile?
     
@@ -16,5 +16,4 @@ class Bookmark: Object{
     @objc dynamic var snippet: String?
     @objc dynamic var thumbImagePath: String?
     @objc dynamic var date: Date?
-    
 }

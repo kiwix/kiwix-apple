@@ -29,6 +29,7 @@
 		974FFE5B2352704600F6BF28 /* ZimFileManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */; };
 		974FFE612352744800F6BF28 /* WebKitWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE602352744800F6BF28 /* WebKitWebViewController.swift */; };
 		974FFE6A23533E8D00F6BF28 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE6823533E8D00F6BF28 /* NavigationController.swift */; };
+		97566A562728F58000DE7165 /* BookmarksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97566A552728F58000DE7165 /* BookmarksViewController.swift */; };
 		975AEBD32597EACF00392988 /* Kiwix_logo_v3_320px.png in Resources */ = {isa = PBXBuildFile; fileRef = 975AEBD22597EACF00392988 /* Kiwix_logo_v3_320px.png */; };
 		9763EDCB201FCC3A00F3A6D5 /* About.html in Resources */ = {isa = PBXBuildFile; fileRef = 9763EDCA201FCC3900F3A6D5 /* About.html */; };
 		976771791F4378FC007ED0C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 976771741F4378FC007ED0C2 /* Main.storyboard */; };
@@ -78,7 +79,6 @@
 		977D506D2621EAD1005345D1 /* LibraryPrimaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D506C2621EAD1005345D1 /* LibraryPrimaryView.swift */; };
 		977D50772623580D005345D1 /* LibrarySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D50762623580D005345D1 /* LibrarySettingsView.swift */; };
 		977D509626268AAB005345D1 /* LibrarySearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977D509526268AAB005345D1 /* LibrarySearchResultView.swift */; };
-		97802D7025789B1800A21352 /* SidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802D6F25789B1800A21352 /* SidebarViewController.swift */; };
 		9789C26424F9600D00072090 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B399912468502500BC6F5B /* Platform.swift */; };
 		9789C26524F9601400072090 /* ZimFileService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A92456793500F6F6FF /* ZimFileService.mm */; };
 		9789C26624F9601700072090 /* ZimFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5AA2456793500F6F6FF /* ZimFileService.swift */; };
@@ -239,6 +239,7 @@
 		974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileManagerController.swift; sourceTree = "<group>"; };
 		974FFE602352744800F6BF28 /* WebKitWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitWebViewController.swift; sourceTree = "<group>"; };
 		974FFE6823533E8D00F6BF28 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		97566A552728F58000DE7165 /* BookmarksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksViewController.swift; sourceTree = "<group>"; };
 		9759D4211F4F278800705779 /* Kiwix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
 		975AEBD22597EACF00392988 /* Kiwix_logo_v3_320px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Kiwix_logo_v3_320px.png; sourceTree = "<group>"; };
 		975FDAD91F6082DA00A10E8C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -486,6 +487,7 @@
 				97B5D3E82596398400D12FEE /* SidebarController.swift */,
 				97802D6F25789B1800A21352 /* SidebarViewController.swift */,
 				97A2AE2125866D9200DEF81D /* ButtonProvider.swift */,
+				97566A552728F58000DE7165 /* BookmarksViewController.swift */,
 				97C14E222707F98400EF4CF2 /* OutlineViewController.swift */,
 				977D50622621E47D005345D1 /* LibraryViewController.swift */,
 				9797435B257BF33600D30F03 /* WebViewController.swift */,
@@ -1085,6 +1087,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97566A562728F58000DE7165 /* BookmarksViewController.swift in Sources */,
 				97B3998E246759E400BC6F5B /* SearchResult.m in Sources */,
 				97225AA2261A006A00D8CB32 /* LibraryCategoryView.swift in Sources */,
 				9779A5BC2456793600F6F6FF /* OPDSStreamParser.swift in Sources */,
@@ -1125,7 +1128,6 @@
 				97952EF3264F557B00FC9237 /* SearchResultsView.swift in Sources */,
 				9779A5BA2456793600F6F6FF /* OPDSRefreshOperation.swift in Sources */,
 				9779A5BE2456793600F6F6FF /* OPDSStreamParser.mm in Sources */,
-				97802D7025789B1800A21352 /* SidebarViewController.swift in Sources */,
 				9779A7B12456796B00F6F6FF /* WebKitHandler.swift in Sources */,
 				97FD2F5F251EA07B0034927C /* FeatureFlags.swift in Sources */,
 				977D50772623580D005345D1 /* LibrarySettingsView.swift in Sources */,

@@ -34,7 +34,7 @@ class OutlineViewController: UIHostingController<OutlineView> {
 struct OutlineView: View {
     @ObservedObject var viewModel: ViewModel
     
-    var outlineItemSelected: (OutlineItem) -> Void = { _ in }
+    var selected: (OutlineItem) -> Void = { _ in }
     
     init(webView: WKWebView) {
         self.viewModel = ViewModel(webView: webView)
@@ -45,7 +45,7 @@ struct OutlineView: View {
             content.toolbar {
                 ToolbarItem(placement: .principal) {
                     if let title = viewModel.title {
-                        Button { outlineItemSelected(title) } label: {
+                        Button { selected(title) } label: {
                             Text(title.text).fontWeight(.semibold).foregroundColor(.primary)
                         }
                     } else {
@@ -60,7 +60,7 @@ struct OutlineView: View {
     
     @ViewBuilder
     var content: some View {
-        if viewModel.items.isEmpty {
+        if let items = viewModel.items, items.isEmpty {
             VStack(spacing: 30) {
                 ZStack {
                     Image(systemName: "list.bullet")
@@ -72,15 +72,17 @@ struct OutlineView: View {
                 }.frame(width: 75, height: 75, alignment: .center)
                 Text("Table of content not available.").font(Font.headline)
             }
-        } else {
-            TableView(items: viewModel.items, outlineItemSelected: outlineItemSelected)
+        } else if let items = viewModel.items {
+            TableView(items: items, selected: selected)
                 .edgesIgnoringSafeArea(.bottom)
+        } else {
+            EmptyView()
         }
     }
     
     class ViewModel: ObservableObject {
         @Published private(set) var title: OutlineItem?
-        @Published private(set) var items = [OutlineItem]()
+        @Published private(set) var items: [OutlineItem]?
         var showTitleInList = false
         
         private weak var webView: WKWebView?
@@ -125,7 +127,7 @@ struct OutlineView: View {
     
     struct TableView: UIViewRepresentable {
         let items: [OutlineItem]
-        let outlineItemSelected: (OutlineItem) -> Void
+        let selected: (OutlineItem) -> Void
         
         func makeUIView(context: Context) -> UITableView {
             let tableView = UITableView(frame: .zero)
@@ -137,7 +139,7 @@ struct OutlineView: View {
         }
         
         func makeCoordinator() -> Coordinator {
-            Coordinator(outlineItemSelected: outlineItemSelected)
+            Coordinator(selected: selected)
         }
         
         func updateUIView(_ tableView: UITableView, context: Context) {
@@ -146,11 +148,11 @@ struct OutlineView: View {
         }
         
         class Coordinator: NSObject, UITableViewDataSource, UITableViewDelegate {
-            let outlineItemSelected: (OutlineItem) -> Void
+            let selected: (OutlineItem) -> Void
             var items: [OutlineItem] = []
             
-            init(outlineItemSelected: @escaping (OutlineItem) -> Void) {
-                self.outlineItemSelected = outlineItemSelected
+            init(selected: @escaping (OutlineItem) -> Void) {
+                self.selected = selected
             }
             
             func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -170,7 +172,7 @@ struct OutlineView: View {
             
             func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
                 tableView.deselectRow(at: indexPath, animated: true)
-                outlineItemSelected(items[indexPath.row])
+                selected(items[indexPath.row])
             }
         }
     }
