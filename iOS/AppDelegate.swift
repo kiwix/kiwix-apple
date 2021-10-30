@@ -44,11 +44,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         return true
     }
     
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        let scan = LibraryScanOperation(directoryURL: URL.documentDirectory)
-        LibraryOperationQueue.shared.addOperation(scan)
-    }
-    
     func applicationWillTerminate(_ application: UIApplication) {
         fileMonitor.stop()
     }
@@ -98,21 +93,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
             }
         }
         LibraryOperationQueue.shared.addOperation(operation)
-    }
-    
-    // MARK: - Home Screen Quick Actions
-    
-    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-        guard let shortcut = Shortcut(rawValue: shortcutItem.type),
-              let navigationController = window?.rootViewController as? UINavigationController,
-              let rootViewController = navigationController.topViewController as? RootViewController else { completionHandler(false); return }
-        switch shortcut {
-        case .bookmark:
-            rootViewController.bookmarkButtonTapped()
-        case .search:
-            rootViewController.searchController.isActive = true
-        }
-        completionHandler(true)
     }
 }
 
