@@ -40,7 +40,7 @@ struct BookmarksView: View {
     
     var body: some View {
         if bookmarks.isEmpty {
-            VStack(spacing: 10) {
+            VStack(spacing: 20) {
                 ZStack {
                     Image(systemName: "star.fill")
                         .resizable()
@@ -54,12 +54,27 @@ struct BookmarksView: View {
                     Text("To add, long press the bookmark button on the tool bar when reading an article.")
                         .multilineTextAlignment(.center)
                         .font(.footnote)
-                }.padding()
+                        .foregroundColor(.secondary)
+                }.padding(.horizontal)
             }.navigationBarTitle("Bookmarks")
         } else {
             List {
                 ForEach(bookmarks) { bookmark in
-                    Text(bookmark.title)
+                    Button { } label: {
+                        HStack(alignment: bookmark.thumbImagePath == nil ? .center : .top) {
+                            if let zimFile = bookmark.zimFile,
+                               let path = bookmark.thumbImagePath,
+                               let content = ZimFileService.shared.getURLContent(zimFileID: zimFile.fileID, contentPath: path) {
+                                Favicon(data: content.data)
+                            } else {
+                                Favicon(data: bookmark.zimFile?.faviconData)
+                            }
+                            VStack(alignment: .leading) {
+                                Text(bookmark.title).fontWeight(.medium).lineLimit(1)
+                                if let snippet = bookmark.snippet { Text(snippet).font(.caption).lineLimit(4) }
+                            }
+                        }
+                    }
                 }
             }
             .listStyle(.plain)
