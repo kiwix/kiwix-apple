@@ -201,7 +201,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     
     @objc func outlineButtonTapped() {
         let controller = OutlineViewController(webView: webViewController.webView)
-        controller.rootView.outlineItemSelected = { [unowned self] item in
+        controller.rootView.selected = { [unowned self] item in
             let javascript = "document.querySelectorAll(\"h1, h2, h3, h4, h5, h6\")[\(item.index)].scrollIntoView()"
             self.webViewController.webView.evaluateJavaScript(javascript)
             if let sidebarController = controller.splitViewController as? SidebarController,
@@ -243,7 +243,11 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     
     @objc func bookmarkButtonTapped() {
         let controller = BookmarksViewController()
-//        bookmarksController.bookmarkTapped = { [weak self] url in self?.openURL(url) }
+        controller.rootView.selected = { [unowned self] bookmark in
+            guard let zimFile = bookmark.zimFile,
+                  let url = URL(zimFileID: zimFile.fileID, contentPath: bookmark.path) else { return }
+            self.openURL(url)
+        }
         if #available(iOS 14.0, *), traitCollection.horizontalSizeClass == .regular {
             if sidebarController.displayMode == .secondaryOnly {
                 sidebarController.showSidebar(controller)

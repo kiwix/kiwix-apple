@@ -38,6 +38,8 @@ struct BookmarksView: View {
         sortDescriptor: SortDescriptor(keyPath: "date", ascending: false)
     ) private var bookmarks
     
+    var selected: (Bookmark) -> Void = { _ in }
+    
     var body: some View {
         if bookmarks.isEmpty {
             VStack(spacing: 20) {
@@ -60,7 +62,7 @@ struct BookmarksView: View {
         } else {
             List {
                 ForEach(bookmarks) { bookmark in
-                    Button { } label: {
+                    Button { selected(bookmark) } label: {
                         HStack(alignment: bookmark.thumbImagePath == nil ? .center : .top) {
                             if let zimFile = bookmark.zimFile,
                                let path = bookmark.thumbImagePath,
