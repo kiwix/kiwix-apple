@@ -9,11 +9,11 @@
 import RealmSwift
 
 class Bookmark: Object, ObjectKeyIdentifiable {
-    @objc dynamic var path = ""
-    @objc dynamic var zimFile: ZimFile?
+    @Persisted var path = ""
+    @Persisted var zimFile: ZimFile?
     
-    @objc dynamic var title = ""
-    @objc dynamic var snippet: String?
-    @objc dynamic var thumbImagePath: String?
-    @objc dynamic var date: Date?
+    @Persisted var title = ""
+    @Persisted var snippet: String?
+    @Persisted var thumbImagePath: String?
+    @Persisted var date: Date?
 }
