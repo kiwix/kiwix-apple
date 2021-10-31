@@ -90,26 +90,32 @@ struct DisclosureIndicator: View {
 
 struct Favicon: View {
     private let image: Image
+    private let contentMode: ContentMode
+    private let width: CGFloat
     private let outline = RoundedRectangle(cornerRadius: 4, style: .continuous)
     
-    init(data: Data?) {
+    init(data: Data?, contentMode: ContentMode = .fit, width: CGFloat = 24) {
         if let data = data, let image = UIImage(data: data) {
             self.image = Image(uiImage: image)
         } else {
             self.image = Image("GenericZimFile")
         }
+        self.contentMode = contentMode
+        self.width = width
     }
     
-    init(uiImage: UIImage) {
+    init(uiImage: UIImage, contentMode: ContentMode = .fit, width: CGFloat = 24) {
         self.image = Image(uiImage: uiImage)
+        self.contentMode = contentMode
+        self.width = width
     }
     
     var body: some View {
         image
             .renderingMode(.original)
             .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 24, height: 24)
+            .aspectRatio(contentMode: contentMode)
+            .frame(width: width, height: width)
             .background(Color(.white))
             .clipShape(outline)
             .overlay(outline.stroke(Color(.white).opacity(0.9), lineWidth: 1))

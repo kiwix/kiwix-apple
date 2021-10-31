@@ -67,9 +67,9 @@ struct BookmarksView: View {
                             if let zimFile = bookmark.zimFile,
                                let path = bookmark.thumbImagePath,
                                let content = ZimFileService.shared.getURLContent(zimFileID: zimFile.fileID, contentPath: path) {
-                                Favicon(data: content.data)
+                                Favicon(data: content.data, contentMode: .fill, width: 18)
                             } else {
-                                Favicon(data: bookmark.zimFile?.faviconData)
+                                Favicon(data: bookmark.zimFile?.faviconData, width: 18)
                             }
                             VStack(alignment: .leading) {
                                 Text(bookmark.title).fontWeight(.medium).lineLimit(1)
