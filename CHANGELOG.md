@@ -1,3 +1,9 @@
+## 1.15
+
+- Half sheet table of contents (iOS 15 & horizontally compact interfaces)
+- Using quicklook to preview zim files in the files app
+- Bookmark UI is made consistent with other article list UI (e.g. search results)
+
 ## 1.14.5
 
 - Fixed crashes that could happen during search result snippet parsing
