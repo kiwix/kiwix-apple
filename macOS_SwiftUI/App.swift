@@ -13,26 +13,7 @@ struct Kiwix: App {
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                VSplitView {
-                    VStack {
-                        SearchField().padding(.horizontal).padding(.top, 10)
-                        List {
-                            Text("result 1")
-                            Text("result 2")
-                        }.listStyle(SidebarListStyle())
-                    }
-                    List {
-                        Text("zim file 1")
-                        Text("zim file 2")
-                    }.listStyle(SidebarListStyle())
-                }
-                .frame(minWidth: 250)
-                .toolbar {
-                    ToolbarItem(placement: .primaryAction) {
-                        Button { toggleSidebar() } label: { Image(systemName: "sidebar.leading") }
-                    }
-                }
-                Text("Table of Content")
+                Sidebar()
                 Text("Content")
                     .frame(idealWidth: 800, minHeight: 300, idealHeight: 350)
                     .toolbar {
@@ -58,10 +39,6 @@ struct Kiwix: App {
         }
     }
     
-    private func toggleSidebar() {
-        NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
-    }
-    
     private func newTab() {
         guard let currentWindow = NSApp.keyWindow, let windowController = currentWindow.windowController else { return }
         windowController.newWindowForTab(nil)
@@ -80,15 +57,5 @@ struct Kiwix: App {
         panel.beginSheetModal(for: window) { response in
             
         }
-    }
-}
-
-struct SearchField: NSViewRepresentable {
-    func makeNSView(context: Context) -> some NSView {
-        NSSearchField()
-    }
-    
-    func updateNSView(_ nsView: NSViewType, context: Context) {
-        
     }
 }
