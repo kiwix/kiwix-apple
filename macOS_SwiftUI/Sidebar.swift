@@ -10,6 +10,7 @@ import SwiftUI
 
 struct Sidebar: View {
     @State private var displayMode: DisplayMode = .search
+    @State private var searchText: String = ""
     
     var body: some View {
         VStack {
@@ -27,17 +28,21 @@ struct Sidebar: View {
                 Button { displayMode = .library } label: {
                     Image(systemName: "folder").foregroundColor(displayMode == .library ? .blue : nil)
                 }
-            }.buttonStyle(.borderless).frame(maxWidth: .infinity)
+            }.padding(.vertical, -2.7).buttonStyle(.borderless).frame(maxWidth: .infinity)
             Divider()
             switch displayMode {
             case .search:
-                SearchField().padding(.horizontal, 6)
+                SearchField(searchText: $searchText).padding(.horizontal, 6)
                 Button("Scope") { }
                 Divider()
-                List {
-                    Text("result 1")
-                    Text("result 2")
-                    Text("result 3")
+                if !searchText.isEmpty {
+                    List {
+                        Text("result 1")
+                        Text("result 2")
+                        Text("result 3")
+                    }
+                } else {
+                    List {}
                 }
             case .bookmark:
                 List {
@@ -71,11 +76,35 @@ struct Sidebar: View {
 }
 
 private struct SearchField: NSViewRepresentable {
-    func makeNSView(context: Context) -> some NSView {
-        NSSearchField()
+    @Binding var searchText: String
+    
+    func makeNSView(context: Context) -> NSSearchField {
+        let searchField = NSSearchField()
+        searchField.delegate = context.coordinator
+        return searchField
     }
     
-    func updateNSView(_ nsView: NSViewType, context: Context) {
+    func updateNSView(_ nsView: NSSearchField, context: Context) {
+        nsView.stringValue = searchText
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
+    class Coordinator: NSObject, NSSearchFieldDelegate {
+        private var searchField: SearchField
         
+        init(_ searchField: SearchField) {
+            self.searchField = searchField
+        }
+        
+        func controlTextDidChange(_ obj: Notification) {
+            guard let searchField = obj.object as? NSSearchField else { return }
+            self.searchField.searchText = searchField.stringValue
+        }
+        func searchFieldDidEndSearching(_ sender: NSSearchField) {
+            print(sender.stringValue)
+        }
     }
 }
