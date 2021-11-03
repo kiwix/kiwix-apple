@@ -12,7 +12,6 @@
 		970EC3A123BCEC84008DCA27 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
 		970EC3FB23BE8E25008DCA27 /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3AB23BCF31F008DCA27 /* ParserTests.swift */; };
 		970EC3FC23BE8E31008DCA27 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970EC3A023BCEC84008DCA27 /* Parser.swift */; };
-		971B486B27012756006BE2A8 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 971B486A27012756006BE2A8 /* Defaults */; };
 		97225A982618B2A200D8CB32 /* LibraryLanguageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97225A972618B2A200D8CB32 /* LibraryLanguageView.swift */; };
 		97225AA2261A006A00D8CB32 /* LibraryCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97225AA1261A006A00D8CB32 /* LibraryCategoryView.swift */; };
 		97246C821FC4D12A0056AE5D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9717A2521FB2592D00837492 /* Main.storyboard */; };
@@ -32,6 +31,7 @@
 		97566A562728F58000DE7165 /* BookmarksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97566A552728F58000DE7165 /* BookmarksViewController.swift */; };
 		975AEBD32597EACF00392988 /* Kiwix_logo_v3_320px.png in Resources */ = {isa = PBXBuildFile; fileRef = 975AEBD22597EACF00392988 /* Kiwix_logo_v3_320px.png */; };
 		9763EDCB201FCC3A00F3A6D5 /* About.html in Resources */ = {isa = PBXBuildFile; fileRef = 9763EDCA201FCC3900F3A6D5 /* About.html */; };
+		97654726273214530070163D /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 97654725273214530070163D /* Defaults */; };
 		976771791F4378FC007ED0C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 976771741F4378FC007ED0C2 /* Main.storyboard */; };
 		9768C2351F4B7BAC00FD499B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768C2341F4B7BAC00FD499B /* AppDelegate.swift */; };
 		9768C23B1F4B7F6300FD499B /* Preference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9768C23A1F4B7F6300FD499B /* Preference.swift */; };
@@ -365,7 +365,7 @@
 				97EC18BE26E85C58008309ED /* Realm.xcframework in Frameworks */,
 				97A36C351F8C21210079B452 /* WebKit.framework in Frameworks */,
 				97EC18C126E85C5A008309ED /* RealmSwift.xcframework in Frameworks */,
-				971B486B27012756006BE2A8 /* Defaults in Frameworks */,
+				97654726273214530070163D /* Defaults in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -790,7 +790,7 @@
 			name = iOS;
 			packageProductDependencies = (
 				9744657F26F7981500072DC2 /* Fuzi */,
-				971B486A27012756006BE2A8 /* Defaults */,
+				97654725273214530070163D /* Defaults */,
 			);
 			productName = WikiMed;
 			productReference = 97A36C4E1F8C21210079B452 /* Kiwix.app */;
@@ -928,7 +928,7 @@
 			mainGroup = 97A2AB7F1C1B80FF00052E74;
 			packageReferences = (
 				9744657E26F7981500072DC2 /* XCRemoteSwiftPackageReference "Fuzi" */,
-				971B486927012756006BE2A8 /* XCRemoteSwiftPackageReference "Defaults" */,
+				97654724273214530070163D /* XCRemoteSwiftPackageReference "Defaults" */,
 			);
 			productRefGroup = 97A2AB7F1C1B80FF00052E74;
 			projectDirPath = "";
@@ -1826,14 +1826,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		971B486927012756006BE2A8 /* XCRemoteSwiftPackageReference "Defaults" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/automactic/Defaults/";
-			requirement = {
-				branch = xcode13;
-				kind = branch;
-			};
-		};
 		9744657E26F7981500072DC2 /* XCRemoteSwiftPackageReference "Fuzi" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/cezheng/Fuzi";
@@ -1842,18 +1834,26 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		97654724273214530070163D /* XCRemoteSwiftPackageReference "Defaults" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/Defaults";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		971B486A27012756006BE2A8 /* Defaults */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 971B486927012756006BE2A8 /* XCRemoteSwiftPackageReference "Defaults" */;
-			productName = Defaults;
-		};
 		9744657F26F7981500072DC2 /* Fuzi */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9744657E26F7981500072DC2 /* XCRemoteSwiftPackageReference "Fuzi" */;
 			productName = Fuzi;
+		};
+		97654725273214530070163D /* Defaults */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97654724273214530070163D /* XCRemoteSwiftPackageReference "Defaults" */;
+			productName = Defaults;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
