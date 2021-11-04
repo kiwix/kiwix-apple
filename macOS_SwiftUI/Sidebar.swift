@@ -18,16 +18,16 @@ struct Sidebar: View {
             HStack(spacing: 20) {
                 Button { displayMode = .search } label: {
                     Image(systemName: "magnifyingglass").foregroundColor(displayMode == .search ? .blue : nil)
-                }
+                }.help("Search among on device zim files").keyboardShortcut("1")
                 Button { displayMode = .bookmark } label: {
                     Image(systemName: "star").foregroundColor(displayMode == .bookmark ? .blue : nil)
-                }
+                }.help("Show sookmarked articles").keyboardShortcut("2")
                 Button { displayMode = .tableOfContent } label: {
                     Image(systemName: "list.bullet").foregroundColor(displayMode == .tableOfContent ? .blue : nil)
-                }
+                }.help("Show table of content of current article").keyboardShortcut("3")
                 Button { displayMode = .library } label: {
                     Image(systemName: "folder").foregroundColor(displayMode == .library ? .blue : nil)
-                }
+                }.help("Show library of zim files").keyboardShortcut("4")
             }.padding(.vertical, -2.7).buttonStyle(.borderless).frame(maxWidth: .infinity)
             Divider()
             switch displayMode {
