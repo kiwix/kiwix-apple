@@ -12,21 +12,7 @@ import SwiftUI
 struct Kiwix: App {
     var body: some Scene {
         WindowGroup {
-            NavigationView {
-                Sidebar()
-                Text("Content")
-                    .frame(idealWidth: 800, minHeight: 300, idealHeight: 350)
-                    .toolbar {
-                        ToolbarItemGroup(placement: .navigation) {
-                            Button { } label: { Image(systemName: "chevron.backward") }
-                            Button { } label: { Image(systemName: "chevron.forward") }
-                        }
-                        ToolbarItemGroup {
-                            Button { } label: { Image(systemName: "house") }
-                            Button { } label: { Image(systemName: "die.face.5") }
-                        }
-                    }
-            }
+            ContentView()
             .navigationTitle("Article Name")
             .navigationSubtitle("example.zim")
         }.commands {

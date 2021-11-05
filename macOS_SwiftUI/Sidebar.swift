@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct Sidebar: View {
-    @SceneStorage("sidebarDisplayMode") private var displayMode: DisplayMode = .search
+    @Binding var displayMode: DisplayMode
     @State private var searchText: String = ""
     
     var body: some View {
@@ -18,17 +18,17 @@ struct Sidebar: View {
             HStack(spacing: 20) {
                 Button { displayMode = .search } label: {
                     Image(systemName: "magnifyingglass").foregroundColor(displayMode == .search ? .blue : nil)
-                }.help("Search among on device zim files").keyboardShortcut("1")
+                }.help("Search among on device zim files")
                 Button { displayMode = .bookmark } label: {
                     Image(systemName: "star").foregroundColor(displayMode == .bookmark ? .blue : nil)
-                }.help("Show sookmarked articles").keyboardShortcut("2")
+                }.help("Show sookmarked articles")
                 Button { displayMode = .tableOfContent } label: {
                     Image(systemName: "list.bullet").foregroundColor(displayMode == .tableOfContent ? .blue : nil)
-                }.help("Show table of content of current article").keyboardShortcut("3")
+                }.help("Show table of content of current article")
                 Button { displayMode = .library } label: {
                     Image(systemName: "folder").foregroundColor(displayMode == .library ? .blue : nil)
-                }.help("Show library of zim files").keyboardShortcut("4")
-            }.padding(.vertical, -2.7).buttonStyle(.borderless).frame(maxWidth: .infinity)
+                }.help("Show library of zim files")
+            }.padding(.vertical, -2.75).buttonStyle(.borderless).frame(maxWidth: .infinity)
             Divider()
             switch displayMode {
             case .search:
@@ -72,6 +72,17 @@ struct Sidebar: View {
     
     enum DisplayMode: String {
         case search, bookmark, tableOfContent, library
+    }
+}
+
+extension FocusedValues {
+    var sidebarDisplayMode: Binding<Sidebar.DisplayMode>? {
+        get { self[SidebarDisplayModeKey.self] }
+        set { self[SidebarDisplayModeKey.self] = newValue }
+    }
+    
+    struct SidebarDisplayModeKey: FocusedValueKey {
+        typealias Value = Binding<Sidebar.DisplayMode>
     }
 }
 
