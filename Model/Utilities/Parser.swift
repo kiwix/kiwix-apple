@@ -40,9 +40,9 @@ class Parser {
         guard let firstParagraph = document.firstChild(xpath: "//p") else { return nil }
         let snippet = NSMutableAttributedString()
         for child in firstParagraph.childNodes(ofTypes: [.Text, .Element]) {
-            if let element = child as? XMLElement, element.attributes["class"]?.contains("mw-ref") == true {
+            if let element = child as? Fuzi.XMLElement, element.attributes["class"]?.contains("mw-ref") == true {
                 continue
-            } else if let element = child as? XMLElement {
+            } else if let element = child as? Fuzi.XMLElement {
                 let attributedSting = NSAttributedString(
                     string: element.stringValue.replacingOccurrences(of: "\n", with: ""),
                     attributes: element.tag == "b" ? [.font: Parser.boldFont] : nil

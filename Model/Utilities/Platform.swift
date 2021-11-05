@@ -10,10 +10,12 @@
 import UIKit
 
 public typealias NSUIFont = UIFont
+public typealias NSUIImage = UIImage
 #endif
 
 #if os(OSX)
 import Cocoa
 
 public typealias NSUIFont = NSFont
+public typealias NSUIImage = NSImage
 #endif

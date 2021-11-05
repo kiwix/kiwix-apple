@@ -143,7 +143,7 @@ class ZimFile: Object, ObjectKeyIdentifiable {
             }
         }
         
-        var icon: UIImage {
+        var icon: NSUIImage {
             switch self {
             case .wikibooks:
                 return #imageLiteral(resourceName: "Wikibooks")
