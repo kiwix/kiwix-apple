@@ -1,6 +1,6 @@
 //
 //  Sidebar.swift
-//  macOS_SwiftUI
+//  Kiwix for macOS
 //
 //  Created by Chris Li on 11/3/21.
 //  Copyright © 2021 Chris Li. All rights reserved.
@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct Sidebar: View {
-    @State private var displayMode: DisplayMode = .search
+    @SceneStorage("sidebarDisplayMode") private var displayMode: DisplayMode = .search
     @State private var searchText: String = ""
     
     var body: some View {
@@ -70,7 +70,7 @@ struct Sidebar: View {
         NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
     }
     
-    enum DisplayMode {
+    enum DisplayMode: String {
         case search, bookmark, tableOfContent, library
     }
 }
