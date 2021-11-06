@@ -56,16 +56,6 @@ struct Sidebar: View {
                 Library()
             }
         }
-        .frame(minWidth: 250)
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Button { toggleSidebar() } label: { Image(systemName: "sidebar.leading") }
-            }
-        }
-    }
-    
-    private func toggleSidebar() {
-        NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
     }
     
     enum DisplayMode: String {

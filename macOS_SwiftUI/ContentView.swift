@@ -14,7 +14,13 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             Sidebar(displayMode: $sidebarDisplayMode)
-            Text("Content")
+                .frame(minWidth: 250)
+                .toolbar {
+                    ToolbarItem(placement: .primaryAction) {
+                        Button { toggleSidebar() } label: { Image(systemName: "sidebar.leading") }
+                    }
+                }
+            WebView()
                 .frame(idealWidth: 800, minHeight: 300, idealHeight: 350)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigation) {
@@ -28,10 +34,8 @@ struct ContentView: View {
                 }
         }
     }
+    
+    private func toggleSidebar() {
+        NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
+    }
 }
-
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView()
-//    }
-//}
