@@ -64,17 +64,15 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     /// Save the cached total bytes written data to database in one batch
     private func saveCachedTotalBytesWritten() {
         queue.async {
-            do {
-                let database = try Realm(configuration: Realm.defaultConfig)
-                try database.write {
-                    self.cachedTotalBytesWritten.forEach { (zimFileID, bytes) in
-                        guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID),
-                            bytes > 0 else { return }
-                        if zimFile.state != .downloadInProgress { zimFile.state = .downloadInProgress }
-                        zimFile.downloadTotalBytesWritten = bytes
-                    }
+            let database = try? Realm()
+            try? database?.write {
+                self.cachedTotalBytesWritten.forEach { (zimFileID, bytes) in
+                    guard let zimFile = database?.object(ofType: ZimFile.self, forPrimaryKey: zimFileID),
+                          bytes > 0 else { return }
+                    if zimFile.state != .downloadInProgress { zimFile.state = .downloadInProgress }
+                    zimFile.downloadTotalBytesWritten = bytes
                 }
-            } catch {}
+            }
         }
     }
     
@@ -85,7 +83,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     ///   - zimFileID: identifier of the zim file
     ///   - allowsCellularAccess: if the file download allows using cellular data
     func start(zimFileID: String, allowsCellularAccess: Bool) {
-        let database = try? Realm(configuration: Realm.defaultConfig)
+        let database = try? Realm()
         guard let zimFile = database?.object(ofType: ZimFile.self, forPrimaryKey: zimFileID),
             var url = URL(string: zimFile.downloadURL ?? "") else {return}
         
@@ -112,7 +110,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
     /// Resume a zim file download task and start heartbeat
     /// - Parameter zimFileID: identifier of the zim file
     func resume(zimFileID: String) {
-        let database = try? Realm(configuration: Realm.defaultConfig)
+        let database = try? Realm()
         guard let zimFile = database?.object(ofType: ZimFile.self, forPrimaryKey: zimFileID),
             let resumeData = zimFile.downloadResumeData else { return }
         
@@ -145,7 +143,7 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
             if let task = downloadTasks.filter({ $0.taskDescription == zimFileID }).first {
                 task.cancel()
             } else {
-                guard let database = try? Realm(configuration: Realm.defaultConfig),
+                guard let database = try? Realm(),
                     let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
                 try? database.write {
                     zimFile.state = .remote
@@ -165,44 +163,42 @@ class DownloadService: NSObject, URLSessionDelegate, URLSessionTaskDelegate, URL
         if cachedTotalBytesWritten.count == 0 { stopHeartbeat() }
         
         if let error = error as NSError? {
-            do {
-                let database = try Realm(configuration: Realm.defaultConfig)
-                guard let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else {return}
-                
-                try database.write {
-                    if error.code == URLError.cancelled.rawValue {
-                        if let data = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data {
-                            // task is paused
-                            zimFile.state = .downloadPaused
-                            zimFile.downloadResumeData = data
-                            zimFile.downloadTotalBytesWritten = task.countOfBytesReceived
-                            os_log("Task paused. File ID: %s", log: Log.DownloadService, type: .info, zimFileID)
-                        } else {
-                            // task is cancelled
-                            zimFile.state = .remote
-                            zimFile.downloadResumeData = nil
-                            zimFile.downloadTotalBytesWritten = 0
-                            os_log("Task cancelled. File ID: %s", log: Log.DownloadService, type: .info, zimFileID)
-                        }
+            let database = try? Realm()
+            guard let zimFile = database?.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else {return}
+            
+            try? database?.write {
+                if error.code == URLError.cancelled.rawValue {
+                    if let data = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data {
+                        // task is paused
+                        zimFile.state = .downloadPaused
+                        zimFile.downloadResumeData = data
+                        zimFile.downloadTotalBytesWritten = task.countOfBytesReceived
+                        os_log("Task paused. File ID: %s", log: Log.DownloadService, type: .info, zimFileID)
                     } else {
-                        // some other error happened
-                        zimFile.state = .downloadError
-                        zimFile.downloadErrorDescription = error.localizedDescription
-                        if let data = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data {
-                            zimFile.downloadResumeData = data
-                            zimFile.downloadTotalBytesWritten = task.countOfBytesReceived
-                        } else {
-                            zimFile.downloadTotalBytesWritten = 0
-                        }
-                        os_log(
-                            "Task errored. File ID: %s. Error",
-                            log: Log.DownloadService,
-                            type: .error,
-                            zimFileID, error.localizedDescription
-                        )
+                        // task is cancelled
+                        zimFile.state = .remote
+                        zimFile.downloadResumeData = nil
+                        zimFile.downloadTotalBytesWritten = 0
+                        os_log("Task cancelled. File ID: %s", log: Log.DownloadService, type: .info, zimFileID)
                     }
+                } else {
+                    // some other error happened
+                    zimFile.state = .downloadError
+                    zimFile.downloadErrorDescription = error.localizedDescription
+                    if let data = error.userInfo[NSURLSessionDownloadTaskResumeData] as? Data {
+                        zimFile.downloadResumeData = data
+                        zimFile.downloadTotalBytesWritten = task.countOfBytesReceived
+                    } else {
+                        zimFile.downloadTotalBytesWritten = 0
+                    }
+                    os_log(
+                        "Task errored. File ID: %s. Error",
+                        log: Log.DownloadService,
+                        type: .error,
+                        zimFileID, error.localizedDescription
+                    )
                 }
-            } catch {}
+            }
         } else {
             os_log("Task finished successfully. File ID: %s.", log: Log.DownloadService, type: .info, zimFileID)
         }
