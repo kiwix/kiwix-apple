@@ -10,17 +10,26 @@ import SwiftUI
 import WebKit
 
 struct WebView: NSViewRepresentable {
+    @EnvironmentObject var viewModel: SceneViewModel
+    
     func makeNSView(context: Context) -> WKWebView {
         WKWebView()
     }
     
     func updateNSView(_ nsView: WKWebView, context: Context) {
-        
+        guard let action = viewModel.action else { return }
+        defer { viewModel.action = nil }
+        switch action {
+        case .back:
+            nsView.goBack()
+        case .forward:
+            nsView.goForward()
+        case .url(let url):
+            nsView.load(URLRequest(url: url))
+        }
     }
 }
 
-struct WebView_Previews: PreviewProvider {
-    static var previews: some View {
-        WebView()
-    }
+enum WebViewAction {
+    case back, forward, url(URL)
 }

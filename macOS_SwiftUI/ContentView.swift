@@ -9,11 +9,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    @SceneStorage("sidebarDisplayMode") private var sidebarDisplayMode: Sidebar.DisplayMode = .search
+    @StateObject var viewModel = SceneViewModel()
     
     var body: some View {
         NavigationView {
-            Sidebar(displayMode: $sidebarDisplayMode)
+            Sidebar()
                 .frame(minWidth: 250)
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
@@ -24,18 +24,28 @@ struct ContentView: View {
                 .frame(idealWidth: 800, minHeight: 300, idealHeight: 350)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigation) {
-                        Button { } label: { Image(systemName: "chevron.backward") }
-                        Button { } label: { Image(systemName: "chevron.forward") }
+                        Button { viewModel.action = .back } label: {
+                            Image(systemName: "chevron.backward")
+                        }.disabled(!viewModel.canGoBack)
+                        Button { viewModel.action = .forward } label: {
+                            Image(systemName: "chevron.forward")
+                        }.disabled(!viewModel.canGoForward)
                     }
                     ToolbarItemGroup {
                         Button { } label: { Image(systemName: "house") }
                         Button { } label: { Image(systemName: "die.face.5") }
                     }
                 }
-        }
+        }.environmentObject(viewModel)
     }
     
     private func toggleSidebar() {
         NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
     }
+}
+
+class SceneViewModel: ObservableObject {
+    @Published var action: WebViewAction?
+    @Published var canGoBack: Bool = false
+    @Published var canGoForward: Bool = false
 }

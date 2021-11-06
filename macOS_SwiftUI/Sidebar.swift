@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct Sidebar: View {
-    @Binding var displayMode: DisplayMode
+    @SceneStorage("sidebarDisplayMode") var displayMode: SidebarDisplayMode = .search
     @State private var searchText: String = ""
     
     var body: some View {
@@ -57,21 +57,10 @@ struct Sidebar: View {
             }
         }
     }
-    
-    enum DisplayMode: String {
-        case search, bookmark, tableOfContent, library
-    }
 }
 
-extension FocusedValues {
-    var sidebarDisplayMode: Binding<Sidebar.DisplayMode>? {
-        get { self[SidebarDisplayModeKey.self] }
-        set { self[SidebarDisplayModeKey.self] = newValue }
-    }
-    
-    struct SidebarDisplayModeKey: FocusedValueKey {
-        typealias Value = Binding<Sidebar.DisplayMode>
-    }
+enum SidebarDisplayMode: String {
+    case search, bookmark, tableOfContent, library
 }
 
 private struct SearchField: NSViewRepresentable {
