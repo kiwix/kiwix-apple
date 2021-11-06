@@ -19,7 +19,7 @@ class ArticleNavigationController: NSViewController, NSMenuDelegate, NSOutlineVi
     
     private let localZimFiles: Results<ZimFile>? = {
         do {
-            let database = try Realm(configuration: Realm.defaultConfig)
+            let database = try Realm()
             let predicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue)
             return database.objects(ZimFile.self).filter(predicate)
         } catch { return nil }
@@ -68,7 +68,7 @@ class ArticleNavigationController: NSViewController, NSMenuDelegate, NSOutlineVi
                 localOutlineView.removeItems(at: index, inParent: nil, withAnimation: NSTableView.AnimationOptions.slideLeft)
                 ZimFileService.shared.remove(id: zimFile.fileID)
                 do {
-                    let database = try Realm(configuration: Realm.defaultConfig)
+                    let database = try Realm()
                     try database.write {
                         database.delete(zimFile)
                     }

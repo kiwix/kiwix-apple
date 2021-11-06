@@ -36,7 +36,7 @@ extension SearchOperation {
                 case .firstSentence:
                     guard let parser = try? Parser(url: url) else { return }
                     if #available(iOS 12.0,  macOS 10.14, *) {
-                        let database = try? Realm(configuration: Realm.defaultConfig)
+                        let database = try? Realm()
                         let zimFile = database?.object(ofType: ZimFile.self, forPrimaryKey: result.zimFileID)
                         result.snippet = parser.getFirstSentence(languageCode: zimFile?.languageCode)
                     } else {

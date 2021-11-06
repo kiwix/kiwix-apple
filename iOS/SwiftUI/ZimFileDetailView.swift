@@ -15,7 +15,7 @@ struct ZimFileDetailView: View {
     @State private var showingAlert = false
     @ObservedObject var viewModel: ViewModel
     @Default(.libraryDownloadUsingCellular) private var libraryDownloadUsingCellular
-    @ObservedResults(ZimFile.self, configuration: Realm.defaultConfig) private var zimFiles
+    @ObservedResults(ZimFile.self) private var zimFiles
     
     init(fileID: String) {
         self.viewModel = ViewModel(fileID: fileID)

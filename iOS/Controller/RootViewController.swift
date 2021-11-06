@@ -20,7 +20,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     private let welcomeController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeController
     private let webViewController = WebViewController()
     
-    private let onDeviceZimFiles = Queries.onDeviceZimFiles()?.sorted(byKeyPath: "size", ascending: false)
+    private let onDeviceZimFiles = LibraryService.onDeviceZimFiles()?.sorted(byKeyPath: "size", ascending: false)
     private let buttonProvider: ButtonProvider
     
     // MARK: - Init & Overrides

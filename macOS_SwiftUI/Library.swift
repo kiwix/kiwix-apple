@@ -13,7 +13,6 @@ struct Library: View {
     @EnvironmentObject var viewModel: SceneViewModel
     @ObservedResults(
         ZimFile.self,
-        configuration: Realm.defaultConfig,
         filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
         sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
     ) private var onDevice

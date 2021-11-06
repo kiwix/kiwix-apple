@@ -31,7 +31,6 @@
 		97242B942735E69B00C87F85 /* LibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59C2456793500F6F6FF /* LibraryService.swift */; };
 		97242B952735E69B00C87F85 /* DownloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5D52456796A00F6F6FF /* DownloadService.swift */; };
 		97242B972735E69B00C87F85 /* BookmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59D2456793500F6F6FF /* BookmarkService.swift */; };
-		97242B982735E69B00C87F85 /* Queries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9793548A257D86370076E94A /* Queries.swift */; };
 		97242B992735E6A800C87F85 /* SearchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7372456796B00F6F6FF /* SearchQueue.swift */; };
 		97242B9A2735E6A800C87F85 /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A73A2456796B00F6F6FF /* WebKitHandler.swift */; };
 		97242B9B2735E6A800C87F85 /* DirectoryMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5CF2456796A00F6F6FF /* DirectoryMonitor.swift */; };
@@ -120,8 +119,6 @@
 		9789C26824F960F500072090 /* WebKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A73A2456796B00F6F6FF /* WebKitHandler.swift */; };
 		9789C26924F9611300072090 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A7E224567A5A00F6F6FF /* Log.swift */; };
 		978B688924F8080E003CCA8C /* BarButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978B688824F8080E003CCA8C /* BarButtons.swift */; };
-		978FA76825851B4D00666E1B /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978FA76725851B4D00666E1B /* HomeView.swift */; };
-		9793548B257D86370076E94A /* Queries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9793548A257D86370076E94A /* Queries.swift */; };
 		97952EF3264F557B00FC9237 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97952EF2264F557B00FC9237 /* SearchResultsView.swift */; };
 		9797434A257BF2B000D30F03 /* OutlineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97974349257BF2B000D30F03 /* OutlineItem.swift */; };
 		9797435C257BF33600D30F03 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9797435B257BF33600D30F03 /* WebViewController.swift */; };
@@ -139,6 +136,16 @@
 		97B399922468502500BC6F5B /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B399912468502500BC6F5B /* Platform.swift */; };
 		97B399932468508C00BC6F5B /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B399912468502500BC6F5B /* Platform.swift */; };
 		97B399962468CF3B00BC6F5B /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B399952468CF3B00BC6F5B /* Enums.swift */; };
+		97B3BACA2736CDCE00A23F49 /* URLContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3BAC92736CDCE00A23F49 /* URLContent.swift */; };
+		97B3BACB2736CDCE00A23F49 /* URLContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3BAC92736CDCE00A23F49 /* URLContent.swift */; };
+		97B3BACC2736CDCE00A23F49 /* URLContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3BAC92736CDCE00A23F49 /* URLContent.swift */; };
+		97B3BACE2736CE3500A23F49 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3BACD2736CE3500A23F49 /* URL.swift */; };
+		97B3BACF2736CE3500A23F49 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3BACD2736CE3500A23F49 /* URL.swift */; };
+		97B3BAD02736CE3500A23F49 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3BACD2736CE3500A23F49 /* URL.swift */; };
+		97B3BAD12736CE6700A23F49 /* URLContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3BAC92736CDCE00A23F49 /* URLContent.swift */; };
+		97B3BAD22736CE7200A23F49 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3BACD2736CE3500A23F49 /* URL.swift */; };
+		97B3BAD32736D03600A23F49 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 978FA76725851B4D00666E1B /* HomeView.swift */; };
+		97B3BAD52736D53C00A23F49 /* wikipedia_dark.css in Resources */ = {isa = PBXBuildFile; fileRef = 970885D0271339A300C5795C /* wikipedia_dark.css */; };
 		97B44897210FBC2C0004B056 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B44896210FBC2C0004B056 /* AppDelegate.swift */; };
 		97B44899210FBC2C0004B056 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B44898210FBC2C0004B056 /* ViewController.swift */; };
 		97B4489C210FBC2C0004B056 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97B4489A210FBC2C0004B056 /* Main.storyboard */; };
@@ -337,12 +344,10 @@
 		977D506C2621EAD1005345D1 /* LibraryPrimaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryPrimaryView.swift; sourceTree = "<group>"; };
 		977D50762623580D005345D1 /* LibrarySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarySettingsView.swift; sourceTree = "<group>"; };
 		977D509526268AAB005345D1 /* LibrarySearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarySearchResultView.swift; sourceTree = "<group>"; };
-		97802D6F25789B1800A21352 /* SidebarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarViewController.swift; sourceTree = "<group>"; };
 		978B688824F8080E003CCA8C /* BarButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtons.swift; sourceTree = "<group>"; };
 		978FA76725851B4D00666E1B /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		979315811E5127930093D3BA /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9793158C1E5127930093D3BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9793548A257D86370076E94A /* Queries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queries.swift; sourceTree = "<group>"; };
 		97952EF2264F557B00FC9237 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
 		97974349257BF2B000D30F03 /* OutlineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineItem.swift; sourceTree = "<group>"; };
 		9797435B257BF33600D30F03 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
@@ -358,6 +363,8 @@
 		97B3998F2467626A00BC6F5B /* SearchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchOperation.swift; sourceTree = "<group>"; };
 		97B399912468502500BC6F5B /* Platform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Platform.swift; sourceTree = "<group>"; };
 		97B399952468CF3B00BC6F5B /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		97B3BAC92736CDCE00A23F49 /* URLContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLContent.swift; sourceTree = "<group>"; };
+		97B3BACD2736CE3500A23F49 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		97B44896210FBC2C0004B056 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		97B44898210FBC2C0004B056 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		97B4489B210FBC2C0004B056 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -493,12 +500,12 @@
 				9779A5D42456796A00F6F6FF /* DownloadProgress.swift */,
 				97B399952468CF3B00BC6F5B /* Enums.swift */,
 				97FD2F5E251EA07B0034927C /* FeatureFlags.swift */,
-				9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */,
 				9779A7E224567A5A00F6F6FF /* Log.swift */,
 				970EC3A023BCEC84008DCA27 /* Parser.swift */,
+				97B399912468502500BC6F5B /* Platform.swift */,
 				9779A7372456796B00F6F6FF /* SearchQueue.swift */,
 				9779A7392456796B00F6F6FF /* Settings.swift */,
-				97B399912468502500BC6F5B /* Platform.swift */,
+				97B3BACD2736CE3500A23F49 /* URL.swift */,
 				9779A73A2456796B00F6F6FF /* WebKitHandler.swift */,
 			);
 			path = Utilities;
@@ -511,6 +518,7 @@
 				9779A59E2456793500F6F6FF /* Operations */,
 				9779A5AE2456793600F6F6FF /* Realm */,
 				9779A59B2456793500F6F6FF /* Services */,
+				97B3BAD42736D2A400A23F49 /* Support */,
 				9706555A2473682C00A51319 /* Utilities */,
 			);
 			path = Model;
@@ -551,7 +559,6 @@
 				975FDAE21F6082DA00A10E8C /* LaunchScreen.storyboard */,
 				975FDAE51F6082DA00A10E8C /* Info.plist */,
 				97041F7E1F9652D4007D63F5 /* WikiMed.plist */,
-				970885D0271339A300C5795C /* wikipedia_dark.css */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -561,7 +568,6 @@
 			children = (
 				97E173D325733D10002CAD17 /* RootViewController.swift */,
 				97B5D3E82596398400D12FEE /* SidebarController.swift */,
-				97802D6F25789B1800A21352 /* SidebarViewController.swift */,
 				97A2AE2125866D9200DEF81D /* ButtonProvider.swift */,
 				97566A552728F58000DE7165 /* BookmarksViewController.swift */,
 				97C14E222707F98400EF4CF2 /* OutlineViewController.swift */,
@@ -609,7 +615,6 @@
 				977959BF26D494C500D48E4A /* FaviconDownloadService.swift */,
 				9779A59C2456793500F6F6FF /* LibraryService.swift */,
 				9779A59D2456793500F6F6FF /* BookmarkService.swift */,
-				9793548A257D86370076E94A /* Queries.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -649,12 +654,13 @@
 		9779A5AB2456793600F6F6FF /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				9779A5AD2456793600F6F6FF /* ZimFileMetaData.h */,
-				9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */,
+				97974349257BF2B000D30F03 /* OutlineItem.swift */,
 				97B3998B2467561900BC6F5B /* SearchResult.h */,
 				97B3998C2467561900BC6F5B /* SearchResult.m */,
 				976A65B22659489F009A97C6 /* SearchResult.swift */,
-				97974349257BF2B000D30F03 /* OutlineItem.swift */,
+				97B3BAC92736CDCE00A23F49 /* URLContent.swift */,
+				9779A5AD2456793600F6F6FF /* ZimFileMetaData.h */,
+				9779A5AC2456793600F6F6FF /* ZimFileMetaData.mm */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -744,6 +750,15 @@
 				97B3998F2467626A00BC6F5B /* SearchOperation.swift */,
 			);
 			path = SearchOperation;
+			sourceTree = "<group>";
+		};
+		97B3BAD42736D2A400A23F49 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				9779A5D02456796A00F6F6FF /* Kiwix-Bridging-Header.h */,
+				970885D0271339A300C5795C /* wikipedia_dark.css */,
+			);
+			path = Support;
 			sourceTree = "<group>";
 		};
 		97B44895210FBC2C0004B056 /* WikiMed */ = {
@@ -1134,6 +1149,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				97E94B21271EF250005B0295 /* Preview Assets.xcassets in Resources */,
+				97B3BAD52736D53C00A23F49 /* wikipedia_dark.css in Resources */,
 				97E94B1E271EF250005B0295 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1193,6 +1209,7 @@
 				97CE42442493235200B334E9 /* SearchOperation.mm in Sources */,
 				97CE42432493234D00B334E9 /* SearchOperation.swift in Sources */,
 				97B399932468508C00BC6F5B /* Platform.swift in Sources */,
+				97B3BACB2736CDCE00A23F49 /* URLContent.swift in Sources */,
 				974FD5CF23405C3700FFDEEC /* WindowControllers.swift in Sources */,
 				9779A7E524567A5A00F6F6FF /* Log.swift in Sources */,
 				9779A5C52456793600F6F6FF /* ZimFileService.swift in Sources */,
@@ -1212,6 +1229,7 @@
 				9779A5C72456793600F6F6FF /* ZimFileMetaData.mm in Sources */,
 				9779A5B72456793600F6F6FF /* LibraryScanOperation.swift in Sources */,
 				9779A73E2456796B00F6F6FF /* DirectoryMonitor.swift in Sources */,
+				97B3BACF2736CE3500A23F49 /* URL.swift in Sources */,
 				9779A7B22456796B00F6F6FF /* WebKitHandler.swift in Sources */,
 				97EFF05E235CAEFC00FBB7A4 /* ContentTabController.swift in Sources */,
 				9779A5BD2456793600F6F6FF /* OPDSStreamParser.swift in Sources */,
@@ -1241,14 +1259,15 @@
 				9779A7AB2456796B00F6F6FF /* SearchQueue.swift in Sources */,
 				9779A5C82456793600F6F6FF /* RealmConfig.swift in Sources */,
 				97B399922468502500BC6F5B /* Platform.swift in Sources */,
+				97B3BAD32736D03600A23F49 /* HomeView.swift in Sources */,
 				976A65B32659489F009A97C6 /* SearchResult.swift in Sources */,
 				97B399902467626A00BC6F5B /* SearchOperation.swift in Sources */,
 				97B399962468CF3B00BC6F5B /* Enums.swift in Sources */,
+				97B3BACE2736CE3500A23F49 /* URL.swift in Sources */,
 				97A963C4259D38D900496214 /* SettingsView.swift in Sources */,
 				9797434A257BF2B000D30F03 /* OutlineItem.swift in Sources */,
 				973B8012239066D0008CC8CE /* SceneDelegate.swift in Sources */,
 				978B688924F8080E003CCA8C /* BarButtons.swift in Sources */,
-				978FA76825851B4D00666E1B /* HomeView.swift in Sources */,
 				977D506D2621EAD1005345D1 /* LibraryPrimaryView.swift in Sources */,
 				972C978026F042E40070987F /* SettingsViewController.swift in Sources */,
 				972B6662200808D6003F5365 /* WelcomeController.swift in Sources */,
@@ -1260,6 +1279,7 @@
 				977D50632621E47D005345D1 /* LibraryViewController.swift in Sources */,
 				9779A5C62456793600F6F6FF /* ZimFileMetaData.mm in Sources */,
 				9779A7E424567A5A00F6F6FF /* Log.swift in Sources */,
+				97B3BACA2736CDCE00A23F49 /* URLContent.swift in Sources */,
 				970EC3A123BCEC84008DCA27 /* Parser.swift in Sources */,
 				97974368257BF37E00D30F03 /* Alerts.swift in Sources */,
 				977D509626268AAB005345D1 /* LibrarySearchResultView.swift in Sources */,
@@ -1284,7 +1304,6 @@
 				977959C026D494C500D48E4A /* FaviconDownloadService.swift in Sources */,
 				9797435C257BF33600D30F03 /* WebViewController.swift in Sources */,
 				97A36C321F8C21210079B452 /* AppDelegate.swift in Sources */,
-				9793548B257D86370076E94A /* Queries.swift in Sources */,
 				97E173D425733D11002CAD17 /* RootViewController.swift in Sources */,
 				9779A5B42456793600F6F6FF /* BookmarkService.swift in Sources */,
 				97B5D3E92596398400D12FEE /* SidebarController.swift in Sources */,
@@ -1325,6 +1344,7 @@
 				97242B9A2735E6A800C87F85 /* WebKitHandler.swift in Sources */,
 				97242B912735E69400C87F85 /* Bookmark.swift in Sources */,
 				97E94B1C271EF24D005B0295 /* ContentView.swift in Sources */,
+				97B3BAD02736CE3500A23F49 /* URL.swift in Sources */,
 				97255D8C273608C3002B995B /* WebView.swift in Sources */,
 				97E94B1A271EF24D005B0295 /* App.swift in Sources */,
 				97242B952735E69B00C87F85 /* DownloadService.swift in Sources */,
@@ -1333,11 +1353,11 @@
 				97E94B30271EF639005B0295 /* ZimFileMetaData.mm in Sources */,
 				97E94B2F271EF630005B0295 /* ZimFileService.mm in Sources */,
 				97242B922735E69400C87F85 /* RealmConfig.swift in Sources */,
-				97242B982735E69B00C87F85 /* Queries.swift in Sources */,
 				97242BA22735E6A800C87F85 /* Settings.swift in Sources */,
 				97255D8A2735EA76002B995B /* Library.swift in Sources */,
 				97242B8C2735E68800C87F85 /* OPDSRefreshOperation.swift in Sources */,
 				97242B942735E69B00C87F85 /* LibraryService.swift in Sources */,
+				97B3BACC2736CDCE00A23F49 /* URLContent.swift in Sources */,
 				97242B8A2735E67500C87F85 /* SearchOperation.mm in Sources */,
 				97242BA12735E6A800C87F85 /* Parser.swift in Sources */,
 				97242B7D2732E52300C87F85 /* Sidebar.swift in Sources */,
@@ -1358,9 +1378,11 @@
 				97F425D427151E9C00D0F738 /* ZimFileService.swift in Sources */,
 				97F425D7271521DA00D0F738 /* Log.swift in Sources */,
 				97F425C527151A0D00D0F738 /* PreviewViewController.swift in Sources */,
+				97B3BAD12736CE6700A23F49 /* URLContent.swift in Sources */,
 				97F425D62715213A00D0F738 /* WebKitHandler.swift in Sources */,
 				97F425D527151EF800D0F738 /* ZimFileMetaData.mm in Sources */,
 				97F425D327151E9C00D0F738 /* ZimFileService.mm in Sources */,
+				97B3BAD22736CE7200A23F49 /* URL.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1497,7 +1519,6 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = icon;
 				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_ENTITLEMENTS = macOS/Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
@@ -1520,7 +1541,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Utilities/Kiwix-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -1531,7 +1551,6 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = icon;
 				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_ENTITLEMENTS = macOS/Support/Kiwix.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
@@ -1553,7 +1572,6 @@
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
-				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Utilities/Kiwix-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -1611,7 +1629,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Utilities/Kiwix-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Support/Kiwix-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1664,7 +1682,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Utilities/Kiwix-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Support/Kiwix-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -1678,8 +1696,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Kiwix;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
-				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = iOS/Support/Kiwix.entitlements;
@@ -1688,7 +1704,6 @@
 				CURRENT_PROJECT_VERSION = 81;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_BITCODE = YES;
-				GCC_C_LANGUAGE_STANDARD = c11;
 				INFOPLIST_FILE = iOS/Support/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1705,7 +1720,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Utilities/Kiwix-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1718,8 +1732,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Kiwix;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
-				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = iOS/Support/Kiwix.entitlements;
@@ -1728,7 +1740,6 @@
 				CURRENT_PROJECT_VERSION = 81;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_BITCODE = YES;
-				GCC_C_LANGUAGE_STANDARD = c11;
 				INFOPLIST_FILE = iOS/Support/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1744,7 +1755,6 @@
 				PRODUCT_NAME = Kiwix;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTS_MACCATALYST = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/Model/Utilities/Kiwix-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1875,7 +1885,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
@@ -1888,7 +1897,6 @@
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				GCC_C_LANGUAGE_STANDARD = c11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Chris Li. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1915,7 +1923,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
@@ -1928,7 +1935,6 @@
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				GCC_C_LANGUAGE_STANDARD = c11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Chris Li. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1951,8 +1957,6 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
-				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
@@ -1960,7 +1964,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 79;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				GCC_C_LANGUAGE_STANDARD = c11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/QuickLookPreview/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = QuickLook;
@@ -1989,8 +1992,6 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
-				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
@@ -1998,7 +1999,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 79;
 				DEVELOPMENT_TEAM = L7HWM3SP3L;
-				GCC_C_LANGUAGE_STANDARD = c11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iOS/QuickLookPreview/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = QuickLook;

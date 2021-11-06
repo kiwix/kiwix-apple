@@ -116,7 +116,7 @@ struct HomeView: View {
         @Published private(set) var onDeviceZimFiles: [ZimFile]?
         
         init() {
-            pipeline = Queries.onDeviceZimFiles()?
+            pipeline = LibraryService.onDeviceZimFiles()?
                 .sorted(byKeyPath: "size", ascending: false)
                 .collectionPublisher
                 .subscribe(on: queue)

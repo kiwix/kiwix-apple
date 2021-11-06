@@ -95,7 +95,7 @@ private class ViewModel: ObservableObject {
     init() {
         queue.maxConcurrentOperationCount = 1
         do {
-            let database = try Realm(configuration: Realm.defaultConfig)
+            let database = try Realm()
             searchSubscriber = database.objects(ZimFile.self)
                 .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
                     NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
@@ -225,7 +225,6 @@ private struct FilterView: View {
     @Default(.recentSearchTexts) var recentSearchTexts
     @ObservedResults(
         ZimFile.self,
-        configuration: Realm.defaultConfig,
         filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
         sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
     ) var zimFiles
