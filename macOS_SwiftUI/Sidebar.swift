@@ -53,9 +53,7 @@ struct Sidebar: View {
                     Text("table of contents")
                 }
             case .library:
-                List {
-                    Text("library")
-                }
+                Library()
             }
         }
         .frame(minWidth: 250)

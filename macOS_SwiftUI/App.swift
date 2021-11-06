@@ -41,7 +41,8 @@ struct Kiwix: App {
         panel.allowsMultipleSelection = false
         panel.allowedFileTypes = ["zim"]
         panel.beginSheetModal(for: window) { response in
-            
+            guard response == .OK, let url = panel.urls.first else { return }
+            LibraryOperationQueue.shared.addOperation(LibraryScanOperation(url: url))
         }
     }
 }
