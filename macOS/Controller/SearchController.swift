@@ -125,7 +125,7 @@ class SearchController: NSViewController, NSOutlineViewDataSource, NSOutlineView
     
     func configureImage(cell: NSTableCellView, zimFileID: String) {
         do {
-            let database = try Realm(configuration: Realm.defaultConfig)
+            let database = try Realm()
             let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID)
             cell.imageView?.image = NSImage(data: zimFile?.faviconData ?? Data()) ?? #imageLiteral(resourceName: "GenericZimFile")
         } catch {}

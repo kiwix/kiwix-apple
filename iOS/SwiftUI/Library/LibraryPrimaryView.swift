@@ -16,13 +16,11 @@ struct LibraryPrimaryView: View {
     @Default(.libraryLastRefresh) private var libraryLastRefresh
     @ObservedResults(
         ZimFile.self,
-        configuration: Realm.defaultConfig,
         filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
         sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
     ) private var onDevice
     @ObservedResults(
         ZimFile.self,
-        configuration: Realm.defaultConfig,
         filter: NSPredicate(
             format: "stateRaw IN %@",
             [ZimFile.State.downloadQueued, .downloadInProgress, .downloadPaused, .downloadError].map({ $0.rawValue })

@@ -99,7 +99,7 @@ class OPDSRefreshOperation: Operation {
                 .filter { !$0.requiresServiceWorker }
             
             // calculate the number of additions
-            let database = try Realm(configuration: Realm.defaultConfig)
+            let database = try Realm()
             let existing = database.objects(ZimFile.self)
                 .filter(NSPredicate(format: "fileID IN %@", Set(metadata.map({ $0.identifier }))))
             self.additionCount = metadata.count - existing.count

@@ -61,7 +61,7 @@ class BookmarksViewController: SidebarViewController, UITableViewDataSource, UIT
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let database = try? Realm(configuration: Realm.defaultConfig)
+        let database = try? Realm()
         self.bookmarks = database?.objects(Bookmark.self).sorted(byKeyPath: "date", ascending: false)
         navigationItem.title = "Bookmarks"
         tableView.dataSource = self

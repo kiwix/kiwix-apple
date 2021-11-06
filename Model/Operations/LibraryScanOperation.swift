@@ -57,7 +57,7 @@ class LibraryScanOperation: Operation {
     /// Add readers for all open in place zim files from bookmark data.
     private func addReadersFromBookmarkData() {
         do {
-            let database = try Realm(configuration: Realm.defaultConfig)
+            let database = try Realm()
             let predicate = NSPredicate(format: "stateRaw == %@ AND openInPlaceURLBookmark != nil",
                                         ZimFile.State.onDevice.rawValue)
             for zimFile in database.objects(ZimFile.self).filter(predicate) {
@@ -91,7 +91,7 @@ class LibraryScanOperation: Operation {
     private func updateDatabase() {
         do {
             let zimFileIDs = ZimFileService.shared.zimFileIDs
-            let database = try Realm(configuration: Realm.defaultConfig)
+            let database = try Realm()
             
             try database.write {
                 for zimFileID in zimFileIDs {

@@ -13,7 +13,7 @@ import RealmSwift
 class BookmarkService {
     class func list() -> Results<Bookmark>? {
         do {
-            let database = try Realm(configuration: Realm.defaultConfig)
+            let database = try Realm()
             return database.objects(Bookmark.self)
         } catch { return nil }
     }
@@ -26,7 +26,7 @@ class BookmarkService {
     func get(zimFileID: String, path: String) -> Bookmark? {
         let predicate = NSPredicate(format: "zimFile.fileID == %@ AND path == %@", zimFileID, path)
         do {
-            let database = try Realm(configuration: Realm.defaultConfig)
+            let database = try Realm()
             return database.objects(Bookmark.self).filter(predicate).first
         } catch { return nil }
     }
@@ -34,7 +34,7 @@ class BookmarkService {
     func create(url: URL) {
         DispatchQueue.global(qos: .userInitiated).async {
             do {
-                let database = try Realm(configuration: Realm.defaultConfig)
+                let database = try Realm()
                 guard let zimFileID = url.host,
                       let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID)
                 else { return }
@@ -69,7 +69,7 @@ class BookmarkService {
     
     func delete(_ bookmark: Bookmark) {
         do {
-            let database = try Realm(configuration: Realm.defaultConfig)
+            let database = try Realm()
             try database.write {
                 database.delete(bookmark)
             }
@@ -79,7 +79,7 @@ class BookmarkService {
     
     private func updateBookmarkWidgetData() {
         DispatchQueue.global(qos: .background).async {
-            guard let database = try? Realm(configuration: Realm.defaultConfig) else { return }
+            guard let database = try? Realm() else { return }
             let bookmarks = Array(database.objects(Bookmark.self).sorted(byKeyPath: "date", ascending: false).prefix(8))
             let data = bookmarks.compactMap { bookmark -> [String: Any]? in
                     guard let zimFile = bookmark.zimFile,
