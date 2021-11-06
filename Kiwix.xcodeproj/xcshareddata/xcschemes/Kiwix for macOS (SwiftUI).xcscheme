@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "979315801E5127930093D3BA"
-               BuildableName = "Kiwix.app"
-               BlueprintName = "macOS"
+               BlueprintIdentifier = "97E94B16271EF24D005B0295"
+               BuildableName = "macOS_SwiftUI.app"
+               BlueprintName = "macOS_SwiftUI"
                ReferencedContainer = "container:Kiwix.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -44,9 +44,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "979315801E5127930093D3BA"
-            BuildableName = "Kiwix.app"
-            BlueprintName = "macOS"
+            BlueprintIdentifier = "97E94B16271EF24D005B0295"
+            BuildableName = "macOS_SwiftUI.app"
+            BlueprintName = "macOS_SwiftUI"
             ReferencedContainer = "container:Kiwix.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -61,9 +61,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "979315801E5127930093D3BA"
-            BuildableName = "Kiwix.app"
-            BlueprintName = "macOS"
+            BlueprintIdentifier = "97E94B16271EF24D005B0295"
+            BuildableName = "macOS_SwiftUI.app"
+            BlueprintName = "macOS_SwiftUI"
             ReferencedContainer = "container:Kiwix.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
