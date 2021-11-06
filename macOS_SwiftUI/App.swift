@@ -7,9 +7,14 @@
 //
 
 import SwiftUI
+import RealmSwift
 
 @main
-struct Kiwix: App {
+struct Kiwix: SwiftUI.App {
+    init() {
+        Realm.Configuration.defaultConfiguration = Realm.defaultConfig
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
