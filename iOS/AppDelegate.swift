@@ -48,24 +48,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
         fileMonitor.stop()
     }
     
-    // MARK: - URL Handling
-    
-    func application(_ app: UIApplication, open url: URL,
-                     options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        guard let navigationController = window?.rootViewController as? UINavigationController,
-              let rootViewController = navigationController.topViewController as? RootViewController else {return false}
-        if url.isKiwixURL {
-            rootViewController.openURL(url)
-            return true
-        } else if url.isFileURL {
-            let canOpenInPlace = options[.openInPlace] as? Bool ?? false
-            rootViewController.openFileURL(url, canOpenInPlace: canOpenInPlace)
-            return true
-        } else {
-            return false
-        }
-    }
-    
     // MARK: - Directory Monitoring
     
     func directoryContentDidChange(url: URL) {
