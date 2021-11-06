@@ -54,19 +54,18 @@ extension Realm {
                 }
             }
         )
-        
-        if #available(iOS 13.0, *) {
-            let library = try! FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            let applicationSupport = try! FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-            let oldDatabaseURL = library.appendingPathComponent("realm")
-            let newDatabaseURL = applicationSupport.appendingPathComponent("kiwix.realm")
-            
-            // move database to application support
-            if FileManager.default.fileExists(atPath: oldDatabaseURL.path) {
-                try? FileManager.default.moveItem(at: oldDatabaseURL, to: newDatabaseURL)
-            }
-            config.fileURL = newDatabaseURL
+        #if os(iOS)
+        let library = try! FileManager.default.url(for: .libraryDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        let applicationSupport = try! FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        let oldDatabaseURL = library.appendingPathComponent("realm")
+        let newDatabaseURL = applicationSupport.appendingPathComponent("kiwix.realm")
+
+        // move database to application support
+        if FileManager.default.fileExists(atPath: oldDatabaseURL.path) {
+            try? FileManager.default.moveItem(at: oldDatabaseURL, to: newDatabaseURL)
         }
+        config.fileURL = newDatabaseURL
+        #endif
         
         return config
     }()
