@@ -13,8 +13,6 @@ struct Kiwix: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-            .navigationTitle("Article Name")
-            .navigationSubtitle("example.zim")
         }.commands {
             SidebarCommands()
             CommandGroup(after: CommandGroupPlacement.newItem) {

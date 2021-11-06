@@ -21,6 +21,7 @@ struct ContentView: View {
                     }
                 }
             WebView()
+                .ignoresSafeArea(.container, edges: .vertical)
                 .frame(idealWidth: 800, minHeight: 300, idealHeight: 350)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigation) {
@@ -36,7 +37,10 @@ struct ContentView: View {
                         Button { } label: { Image(systemName: "die.face.5") }
                     }
                 }
-        }.environmentObject(viewModel)
+        }
+        .environmentObject(viewModel)
+        .navigationTitle(viewModel.articleTitle ?? "")
+        .navigationSubtitle(viewModel.zimFileTitle ?? "")
     }
     
     private func toggleSidebar() {
@@ -48,4 +52,6 @@ class SceneViewModel: ObservableObject {
     @Published var action: WebViewAction?
     @Published var canGoBack: Bool = false
     @Published var canGoForward: Bool = false
+    @Published var articleTitle: String?
+    @Published var zimFileTitle: String?
 }
