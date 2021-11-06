@@ -101,7 +101,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DirectoryMonitorDelegate 
 enum Shortcut: String {
     case search, bookmark
 }
-
-extension URL {
-    static let documentDirectory = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-}

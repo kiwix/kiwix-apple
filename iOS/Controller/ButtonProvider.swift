@@ -29,7 +29,7 @@ class ButtonProvider {
     var navigationRightButtons: [BarButton] { [diceButton, houseButton, libraryButton, settingsButton] }
     var toolbarButtons: [BarButton] { [chevronLeftButton, chevronRightButton, outlineButton, bookmarkButton, diceButton, moreButton] }
     
-    private let onDeviceZimFiles = Queries.onDeviceZimFiles()?.sorted(byKeyPath: "size", ascending: false)
+    private let onDeviceZimFiles = LibraryService.onDeviceZimFiles()?.sorted(byKeyPath: "size", ascending: false)
     private var webViewURLObserver: NSKeyValueObservation?
     private var webViewCanGoBackObserver: NSKeyValueObservation?
     private var webViewCanGoForwardObserver: NSKeyValueObservation?
@@ -52,7 +52,7 @@ class ButtonProvider {
             guard case .update = change, let url = webView.url else { return }
             self.bookmarkButton.isBookmarked = BookmarkService().get(url: url) != nil
         }
-        onDeviceZimFilesObserver = Queries.onDeviceZimFiles()?
+        onDeviceZimFilesObserver = LibraryService.onDeviceZimFiles()?
             .sorted(byKeyPath: "size", ascending: false)
             .observe { change in
                 switch change {

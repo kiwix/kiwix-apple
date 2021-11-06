@@ -66,21 +66,3 @@ extension ZimFileService {
         return URLContent(data: data, mime: mime, length: length)
     }
 }
-
-struct URLContent {
-    let data: Data
-    let mime: String
-    let length: Int
-}
-
-extension URL {
-    init?(zimFileID: String, contentPath: String) {
-        let baseURLString = "kiwix://" + zimFileID
-        guard let encoded = contentPath.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {return nil}
-        self.init(string: encoded, relativeTo: URL(string: baseURLString))
-    }
-
-    var isKiwixURL: Bool {
-        return scheme?.caseInsensitiveCompare("kiwix") == .orderedSame
-    }
-}

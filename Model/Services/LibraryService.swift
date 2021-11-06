@@ -16,6 +16,14 @@ import RealmSwift
 class LibraryService {
     static let shared = LibraryService()
     
+    class func onDeviceZimFiles() -> Results<ZimFile>? {
+        do {
+            let database = try Realm(configuration: Realm.defaultConfig)
+            let predicate = NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue)
+            return database.objects(ZimFile.self).filter(predicate)
+        } catch { return nil }
+    }
+    
     func isFileInDocumentDirectory(zimFileID: String) -> Bool {
         if let fileName = ZimFileService.shared.getFileURL(zimFileID: zimFileID)?.lastPathComponent,
             let documentDirectoryURL = try? FileManager.default.url(
