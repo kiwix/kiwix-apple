@@ -20,13 +20,7 @@ struct Library: View {
     var body: some View {
         List {
             ForEach(onDevice) { zimFile in
-                Button(zimFile.title) {
-                    guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-                    viewModel.action = .url(url)
-                }
-//                Button { zimFileSelected(zimFile.fileID, zimFile.title) } label: {
-//                    ListRow(title: zimFile.title, detail: zimFile.description, faviconData: zimFile.faviconData)
-//                }
+                Button(zimFile.title) { viewModel.action = .main(zimFile.fileID) }
             }
         }
     }

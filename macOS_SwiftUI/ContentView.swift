@@ -33,7 +33,7 @@ struct ContentView: View {
                         }.disabled(!viewModel.canGoForward)
                     }
                     ToolbarItemGroup {
-                        Button { } label: { Image(systemName: "house") }
+                        Button { viewModel.action = .main() } label: { Image(systemName: "house") }
                         Button { } label: { Image(systemName: "die.face.5") }
                     }
                 }

@@ -8,6 +8,7 @@
 
 import SwiftUI
 import WebKit
+import RealmSwift
 
 struct WebView: NSViewRepresentable {
     @EnvironmentObject var viewModel: SceneViewModel
@@ -15,21 +16,20 @@ struct WebView: NSViewRepresentable {
     func makeNSView(context: Context) -> WKWebView {
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
-//        config.userContentController = {
-//            let controller = WKUserContentController()
-//            guard FeatureFlags.wikipediaDarkUserCSS,
-//                  let path = Bundle.main.path(forResource: "wikipedia_dark", ofType: "css"),
-//                  let css = try? String(contentsOfFile: path) else { return controller }
-//            let source = """
-//                var style = document.createElement('style');
-//                style.innerHTML = `\(css)`;
-//                document.head.appendChild(style);
-//                """
-//            let script = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
-//            controller.addUserScript(script)
-//            return controller
-//        }()
-        
+        config.userContentController = {
+            let controller = WKUserContentController()
+            guard FeatureFlags.wikipediaDarkUserCSS,
+                  let path = Bundle.main.path(forResource: "wikipedia_dark", ofType: "css"),
+                  let css = try? String(contentsOfFile: path) else { return controller }
+            let source = """
+                var style = document.createElement('style');
+                style.innerHTML = `\(css)`;
+                document.head.appendChild(style);
+                """
+            let script = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+            controller.addUserScript(script)
+            return controller
+        }()        
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = context.coordinator
         return webView
@@ -45,29 +45,38 @@ struct WebView: NSViewRepresentable {
             nsView.goForward()
         case .url(let url):
             nsView.load(URLRequest(url: url))
+        case .main(let zimFileID):
+            let zimFileID = zimFileID ?? nsView.url?.host ?? ""
+            guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
+            nsView.load(URLRequest(url: url))
         }
     }
     
     func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator(self.viewModel)
     }
     
     class Coordinator: NSObject, WKNavigationDelegate {
-        private let webView: WebView
+        let viewModel: SceneViewModel
         
-        init(_ webView: WebView) {
-            self.webView = webView
+        init(_ viewModel: SceneViewModel) {
+            self.viewModel = viewModel
         }
         
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            self.webView.viewModel.canGoBack = webView.canGoBack
-            self.webView.viewModel.canGoForward = webView.canGoForward
-            self.webView.viewModel.articleTitle = webView.title
-            self.webView.viewModel.zimFileTitle = "zim file"
+            viewModel.canGoBack = webView.canGoBack
+            viewModel.canGoForward = webView.canGoForward
+            viewModel.articleTitle = webView.title
+            viewModel.zimFileTitle = {
+                guard let zimFileID = webView.url?.host,
+                      let database = try? Realm() else { return nil }
+                let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID)
+                return zimFile?.title
+            }()
         }
     }
 }
 
 enum WebViewAction {
-    case back, forward, url(URL)
+    case back, forward, url(URL), main(String? = nil)
 }
