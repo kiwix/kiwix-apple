@@ -13,27 +13,7 @@ import RealmSwift
 struct WebView: NSViewRepresentable {
     @EnvironmentObject var viewModel: SceneViewModel
     
-    func makeNSView(context: Context) -> WKWebView {
-        let config = WKWebViewConfiguration()
-        config.setURLSchemeHandler(KiwixURLSchemeHandler(), forURLScheme: "kiwix")
-        config.userContentController = {
-            let controller = WKUserContentController()
-            guard FeatureFlags.wikipediaDarkUserCSS,
-                  let path = Bundle.main.path(forResource: "wikipedia_dark", ofType: "css"),
-                  let css = try? String(contentsOfFile: path) else { return controller }
-            let source = """
-                var style = document.createElement('style');
-                style.innerHTML = `\(css)`;
-                document.head.appendChild(style);
-                """
-            let script = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
-            controller.addUserScript(script)
-            return controller
-        }()        
-        let webView = WKWebView(frame: .zero, configuration: config)
-        webView.navigationDelegate = context.coordinator
-        return webView
-    }
+    func makeNSView(context: Context) -> WKWebView { viewModel.webView }
     
     func updateNSView(_ nsView: WKWebView, context: Context) {
         guard let action = viewModel.action else { return }
@@ -49,30 +29,6 @@ struct WebView: NSViewRepresentable {
             let zimFileID = zimFileID ?? nsView.url?.host ?? ""
             guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
             nsView.load(URLRequest(url: url))
-        }
-    }
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self.viewModel)
-    }
-    
-    class Coordinator: NSObject, WKNavigationDelegate {
-        let viewModel: SceneViewModel
-        
-        init(_ viewModel: SceneViewModel) {
-            self.viewModel = viewModel
-        }
-        
-        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            viewModel.canGoBack = webView.canGoBack
-            viewModel.canGoForward = webView.canGoForward
-            viewModel.articleTitle = webView.title
-            viewModel.zimFileTitle = {
-                guard let zimFileID = webView.url?.host,
-                      let database = try? Realm() else { return nil }
-                let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID)
-                return zimFile?.title
-            }()
         }
     }
 }
