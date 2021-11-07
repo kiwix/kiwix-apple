@@ -13,6 +13,7 @@ import RealmSwift
 struct Kiwix: SwiftUI.App {
     init() {
         Realm.Configuration.defaultConfiguration = Realm.defaultConfig
+        LibraryOperationQueue.shared.addOperation(LibraryScanOperation())
     }
     
     var body: some Scene {
