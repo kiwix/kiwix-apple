@@ -53,9 +53,7 @@
         SAFE_READ(self.faviconData, [self getFaviconData:_book]);
         
         SAFE_READ_BOOL(self.hasDetails, _book->getTagBool("details"));
-        SAFE_READ_BOOL(self.hasIndex, _book->getTagBool("ftindex"));
         SAFE_READ_BOOL(self.hasPictures, _book->getTagBool("pictures"));
-        SAFE_READ_BOOL(self.hasVideos, _book->getTagBool("videos"));
         SAFE_READ_BOOL(self.hasVideos, _book->getTagBool("videos"));
         SAFE_READ_BOOL(self.requiresServiceWorker, _book->getTagBool("sw"));
     }

@@ -25,11 +25,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
     
-    func sceneWillEnterForeground(_ scene: UIScene) {
-        let scan = LibraryScanOperation(directoryURL: URL.documentDirectory)
-        LibraryOperationQueue.shared.addOperation(scan)
-    }
-    
     // MARK: - URL Handling & Actions
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

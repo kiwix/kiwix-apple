@@ -31,7 +31,6 @@
 
 // assigned attributes
 @property (nonatomic, assign) BOOL hasDetails;
-@property (nonatomic, assign) BOOL hasIndex;
 @property (nonatomic, assign) BOOL hasPictures;
 @property (nonatomic, assign) BOOL hasVideos;
 @property (nonatomic, assign) BOOL requiresServiceWorker;

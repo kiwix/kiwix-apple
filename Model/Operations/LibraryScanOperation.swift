@@ -10,10 +10,8 @@ import Defaults
 import RealmSwift
 
 class LibraryScanOperation: Operation {
-    let urls: [URL]
-    private let documentDirectoryURL = try! FileManager.default.url(
-        for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-    
+    private let urls: [URL]
+
     init(urls: [URL] = []) {
         self.urls = urls
         super.init()
@@ -40,35 +38,35 @@ class LibraryScanOperation: Operation {
     
     /// Add readers by scanning the urls specified.
     private func addReadersFromURLs() {
-        let zimFileURLs = urls.map({ url -> [URL] in
+        urls.map { url -> [URL] in
             if url.hasDirectoryPath {
                 let contents = try? FileManager.default.contentsOfDirectory(
                     at: url,
                     includingPropertiesForKeys: [],
-                    options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants])
+                    options: [.skipsHiddenFiles, .skipsPackageDescendants, .skipsSubdirectoryDescendants]
+                )
                 return contents ?? []
             } else {
                 return [url]
             }
-        }).flatMap({ $0 }).filter({ $0.pathExtension == "zim" })
-        zimFileURLs.forEach({ ZimFileService.shared.open(url: $0) })
+        }
+        .flatMap { $0 }
+        .filter { $0.pathExtension == "zim" }
+        .forEach { ZimFileService.shared.open(url: $0) }
     }
     
     /// Add readers for all open in place zim files from bookmark data.
     private func addReadersFromBookmarkData() {
         do {
             let database = try Realm()
-            let predicate = NSPredicate(format: "stateRaw == %@ AND openInPlaceURLBookmark != nil",
-                                        ZimFile.State.onDevice.rawValue)
-            for zimFile in database.objects(ZimFile.self).filter(predicate) {
-                var isStale: ObjCBool = false
+            try database.objects(ZimFile.self).where { zimFile in
+                zimFile.stateRaw == ZimFile.State.onDevice.rawValue && zimFile.openInPlaceURLBookmark != nil
+            }.forEach { zimFile in
+                var isStale: Bool = false
                 guard let bookmarkData = zimFile.openInPlaceURLBookmark,
-                    let fileURL = try? NSURL(resolvingBookmarkData: bookmarkData,
-                                             options: [],
-                                             relativeTo: nil,
-                                             bookmarkDataIsStale: &isStale) as URL else {return}
+                      let fileURL = try? URL(resolvingBookmarkData: bookmarkData, bookmarkDataIsStale: &isStale) else { return }
                 ZimFileService.shared.open(url: fileURL)
-                if isStale.boolValue {
+                if isStale {
                     try database.write {
                         let bookmarkData = ZimFileService.shared.getFileURLBookmark(zimFileID: zimFile.fileID)
                         zimFile.openInPlaceURLBookmark = bookmarkData
@@ -80,9 +78,9 @@ class LibraryScanOperation: Operation {
     
     /// Close readers for all zim files that are no longer on disk.
     private func closeReadersForDeletedZimFiles() {
-        for zimFileID in ZimFileService.shared.zimFileIDs {
+        ZimFileService.shared.zimFileIDs.forEach { zimFileID in
             guard let fileURL = ZimFileService.shared.getFileURL(zimFileID: zimFileID),
-                  !FileManager.default.fileExists(atPath: fileURL.path) else { continue }
+                  !FileManager.default.fileExists(atPath: fileURL.path) else { return }
             ZimFileService.shared.close(id: zimFileID)
         }
     }
@@ -114,6 +112,12 @@ class LibraryScanOperation: Operation {
                         "hasPictures": metadatum.hasPictures,
                         "hasVideos": metadatum.hasVideos,
                         "stateRaw": ZimFile.State.onDevice.rawValue,
+                        "openInPlaceURLBookmark": {
+                            guard let fileURL = ZimFileService.shared.getFileURL(zimFileID: zimFileID),
+                                  let documentDirectory = try? FileManager.default.url(for: .documentDirectory,in: .userDomainMask, appropriateFor: nil, create: false),
+                                  !FileManager.default.fileExists(atPath: documentDirectory.appendingPathComponent(fileURL.lastPathComponent).path) else { return nil }
+                            return ZimFileService.shared.getFileURLBookmark(zimFileID: zimFileID)
+                        }()
                     ]
                     database.create(ZimFile.self, value: value, update: .modified)
                 }

@@ -1,3 +1,7 @@
+## 1.15.1
+
+- Fixed an issue where open in places zim files are identified as corrupted.
+
 ## 1.15
 
 - Half sheet table of contents (iOS 15 & horizontally compact interfaces)

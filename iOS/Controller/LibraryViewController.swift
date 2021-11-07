@@ -99,7 +99,7 @@ class LibraryViewController: UISplitViewController, UISplitViewControllerDelegat
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         guard let url = urls.first else { return }
-        if ZimFileService.getMetaData(url: url) == nil {
+        if ZimFileService.getMetaData(url: url) != nil {
             present(FileImportController(fileURL: url), animated: true)
         } else {
             present(FileImportAlertController(fileName: url.lastPathComponent), animated: true)
