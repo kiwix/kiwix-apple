@@ -77,9 +77,9 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         }()
         return WKWebView(frame: .zero, configuration: config)
     }()
-    var canGoBackObserver: NSKeyValueObservation?
-    var canGoForwardObserver: NSKeyValueObservation?
-    var urlObserver: NSKeyValueObservation?
+    private var canGoBackObserver: NSKeyValueObservation?
+    private var canGoForwardObserver: NSKeyValueObservation?
+    private var urlObserver: NSKeyValueObservation?
     
     override init() {
         super.init()
@@ -89,20 +89,6 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         }
         canGoForwardObserver = webView.observe(\.canGoForward) { [unowned self] webView, _ in
             self.canGoForward = webView.canGoForward
-        }
-        urlObserver = webView.observe(\.url) { webView, _ in
-            self.url = webView.url
-            if let title = webView.title,
-               let database = try? Realm(),
-               let zimFileID = webView.url?.host,
-               let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID),
-               !title.isEmpty {
-                self.articleTitle = title
-                self.zimFileTitle = zimFile.title
-            } else {
-                self.articleTitle = ""
-                self.zimFileTitle = ""
-            }
         }
     }
     
@@ -116,5 +102,46 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         let zimFileID = zimFileID ?? webView.url?.host ?? ""
         guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
         webView.load(URLRequest(url: url))
+    }
+    
+    func webView(_ webView: WKWebView,
+                 decidePolicyFor navigationAction: WKNavigationAction,
+                 preferences: WKWebpagePreferences,
+                 decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
+        guard let url = navigationAction.request.url else { decisionHandler(.cancel, preferences); return }
+        if url.isKiwixURL {
+            if let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
+                decisionHandler(.cancel, preferences)
+                webView.load(URLRequest(url: redirectedURL))
+            } else {
+                preferences.preferredContentMode = .mobile
+                decisionHandler(.allow, preferences)
+            }
+        } else if url.scheme == "http" || url.scheme == "https" {
+            decisionHandler(.cancel, preferences)
+        } else if url.scheme == "geo" {
+            decisionHandler(.cancel, preferences)
+        } else {
+            decisionHandler(.cancel, preferences)
+        }
+    }
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        url = webView.url
+        if let title = webView.title,
+           let database = try? Realm(),
+           let zimFileID = webView.url?.host,
+           let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID),
+           !title.isEmpty {
+            articleTitle = title
+            zimFileTitle = zimFile.title
+        } else {
+            articleTitle = ""
+            zimFileTitle = ""
+        }
+        webView.evaluateJavaScript(
+            "document.querySelectorAll(\"details\").forEach((detail) => {detail.setAttribute(\"open\", true)});",
+            completionHandler: nil
+        )
     }
 }
