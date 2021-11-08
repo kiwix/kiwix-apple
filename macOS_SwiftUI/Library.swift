@@ -20,7 +20,7 @@ struct Library: View {
     var body: some View {
         List {
             ForEach(onDevice) { zimFile in
-                Button(zimFile.title) { viewModel.action = .main(zimFile.fileID) }
+                Button(zimFile.title) { viewModel.loadMainPage(zimFileID: zimFile.fileID) }
             }
         }
     }

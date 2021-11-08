@@ -27,10 +27,10 @@ struct ContentView: View {
                 .frame(idealWidth: 800, minHeight: 300, idealHeight: 350)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigation) {
-                        Button { viewModel.action = .back } label: {
+                        Button { viewModel.webView.goBack() } label: {
                             Image(systemName: "chevron.backward")
                         }.disabled(!viewModel.canGoBack)
-                        Button { viewModel.action = .forward } label: {
+                        Button { viewModel.webView.goForward() } label: {
                             Image(systemName: "chevron.forward")
                         }.disabled(!viewModel.canGoForward)
                     }
@@ -51,7 +51,6 @@ struct ContentView: View {
 }
 
 class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
-    @Published var action: WebViewAction?
     @Published var canGoBack: Bool = false
     @Published var canGoForward: Bool = false
     @Published var url: URL?
