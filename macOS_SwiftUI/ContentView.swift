@@ -12,6 +12,11 @@ import RealmSwift
 
 struct ContentView: View {
     @StateObject var viewModel = SceneViewModel()
+    @ObservedResults(
+        ZimFile.self,
+        filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
+        sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
+    ) private var onDevice
     
     var body: some View {
         NavigationView {
@@ -36,7 +41,20 @@ struct ContentView: View {
                     }
                     ToolbarItemGroup {
                         Button { viewModel.loadMainPage() } label: { Image(systemName: "house") }
-                        Button { viewModel.loadRandomPage() } label: { Image(systemName: "die.face.5") }
+                        if #available(macOS 12, *) {
+                            Menu {
+                                ForEach(onDevice) { zimFile in
+                                    Button(zimFile.title) { viewModel.loadRandomPage(zimFileID: zimFile.fileID) }
+                                }
+                            } label: {
+                                Label("Random Page", systemImage: "die.face.5")
+                            } primaryAction: {
+                                guard let zimFile = onDevice.first else { return }
+                                viewModel.loadRandomPage(zimFileID: zimFile.fileID)
+                            }
+                        } else {
+                            Button { viewModel.loadRandomPage() } label: { Image(systemName: "die.face.5") }
+                        }
                     }
                 }
         }
