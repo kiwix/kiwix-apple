@@ -60,24 +60,21 @@ private class SearchViewModel: ObservableObject {
     
     init() {
         queue.maxConcurrentOperationCount = 1
-        do {
-            let database = try Realm()
-            searchSubscriber = database.objects(ZimFile.self)
-                .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
-                    NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
-                    NSPredicate(format: "includedInSearch == true"),
-                ]))
-                .collectionPublisher
-                .freeze()
-                .map { Array($0.map({ $0.fileID })) }
-                .catch { _ in Just([]) }
-                .combineLatest($searchText)
-                .debounce(for: 0.2, scheduler: queue, options: nil)
-                .receive(on: DispatchQueue.main, options: nil)
-                .sink { zimFileIDs, searchText in
-                    self.updateSearchResults(searchText, Set(zimFileIDs))
-                }
-        } catch {}
+        searchSubscriber = (try? Realm())?.objects(ZimFile.self)
+            .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
+                NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
+                NSPredicate(format: "includedInSearch == true"),
+            ]))
+            .collectionPublisher
+            .freeze()
+            .map { Array($0.map({ $0.fileID })) }
+            .catch { _ in Just([]) }
+            .combineLatest($searchText)
+            .debounce(for: 0.2, scheduler: queue, options: nil)
+            .receive(on: DispatchQueue.main, options: nil)
+            .sink { zimFileIDs, searchText in
+                self.updateSearchResults(searchText, Set(zimFileIDs))
+            }
         inProgressSubscriber = $searchText.sink { searchText in self.inProgress = !searchText.isEmpty }
     }
     
