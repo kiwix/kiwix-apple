@@ -16,5 +16,7 @@ struct WebView: NSViewRepresentable {
     func makeNSView(context: Context) -> WKWebView { viewModel.webView }
     
     func updateNSView(_ nsView: WKWebView, context: Context) {
+        guard let url = viewModel.url, nsView.url != url else { return }
+        nsView.load(URLRequest(url: url))
     }
 }

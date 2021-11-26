@@ -21,6 +21,7 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             Sidebar()
+                .environmentObject(viewModel)
                 .frame(minWidth: 250)
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
