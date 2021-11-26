@@ -10,9 +10,12 @@ import Combine
 import SwiftUI
 import RealmSwift
 
+import Defaults
+
 struct Search: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     @StateObject private var viewModel = SearchViewModel()
+    @Default(.recentSearchTexts) var recentSearchTexts
     
     var body: some View {
         SearchField(searchText: $viewModel.searchText).padding(.horizontal, 6)
@@ -32,14 +35,16 @@ struct Search: View {
                 Text("Recent search text 2")
                 Text("Recent search text 3")
             }
-        } else if viewModel.results.isEmpty {
-            List { Text("No result") }
-        } else {
+        } else if !viewModel.results.isEmpty, !viewModel.inProgress {
             List(selection: $sceneViewModel.url) {
                 ForEach(viewModel.results, id: \.url) { result in
                     Text(result.title)
                 }
             }
+        } else if viewModel.results.isEmpty, !viewModel.inProgress {
+            List { Text("No result") }
+        } else {
+            List {}
         }
     }
 }
@@ -50,6 +55,7 @@ private class SearchViewModel: ObservableObject {
     @Published var results = [SearchResult]()
     
     private var searchSubscriber: AnyCancellable?
+    private var inProgressSubscriber: AnyCancellable?
     private let queue = OperationQueue()
     
     init() {
@@ -72,10 +78,10 @@ private class SearchViewModel: ObservableObject {
                     self.updateSearchResults(searchText, Set(zimFileIDs))
                 }
         } catch {}
+        inProgressSubscriber = $searchText.sink { searchText in self.inProgress = !searchText.isEmpty }
     }
     
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<String>) {
-        inProgress = true
         queue.cancelAllOperations()
         let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
         operation.completionBlock = { [unowned self] in
