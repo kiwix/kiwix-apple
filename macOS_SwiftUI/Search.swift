@@ -94,6 +94,7 @@ private class SearchViewModel: ObservableObject {
 
 private struct SearchField: NSViewRepresentable {
     @Binding var searchText: String
+    @Binding var isFocused: Bool
     
     func makeNSView(context: Context) -> NSSearchField {
         let searchField = NSSearchField()
@@ -103,6 +104,11 @@ private struct SearchField: NSViewRepresentable {
     
     func updateNSView(_ nsView: NSSearchField, context: Context) {
         nsView.stringValue = searchText
+        if isFocused {
+            nsView.becomeFirstResponder()
+        } else {
+            nsView.resignFirstResponder()
+        }
     }
     
     func makeCoordinator() -> Coordinator {
