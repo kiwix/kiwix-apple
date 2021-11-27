@@ -31,9 +31,9 @@ struct Search: View {
         Divider()
         if viewModel.searchText.isEmpty {
             List {
-                Text("Recent search text 1")
-                Text("Recent search text 2")
-                Text("Recent search text 3")
+                ForEach(recentSearchTexts, id: \.hash) { searchText in
+                    Text(searchText)
+                }
             }
         } else if !viewModel.results.isEmpty, !viewModel.inProgress {
             List(selection: $sceneViewModel.url) {
