@@ -166,6 +166,7 @@
 		97CE424A24957C3500B334E9 /* LibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9779A59C2456793500F6F6FF /* LibraryService.swift */; };
 		97D07A09273719720002B9EB /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D07A08273719720002B9EB /* Search.swift */; };
 		97D19F072546FF3700910CAE /* BuildingBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D19F062546FF3700910CAE /* BuildingBlocks.swift */; };
+		97DED67F275278FF008D2C56 /* SearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97DED67E275278FF008D2C56 /* SearchField.swift */; };
 		97E173D425733D11002CAD17 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E173D325733D10002CAD17 /* RootViewController.swift */; };
 		97E94B1A271EF24D005B0295 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E94B19271EF24D005B0295 /* App.swift */; };
 		97E94B1C271EF24D005B0295 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E94B1B271EF24D005B0295 /* ContentView.swift */; };
@@ -384,6 +385,7 @@
 		97C57604202CB42100E37502 /* Kiwix.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Kiwix.entitlements; sourceTree = "<group>"; };
 		97D07A08273719720002B9EB /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		97D19F062546FF3700910CAE /* BuildingBlocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildingBlocks.swift; sourceTree = "<group>"; };
+		97DED67E275278FF008D2C56 /* SearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchField.swift; sourceTree = "<group>"; };
 		97E173D325733D10002CAD17 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		97E94B17271EF24D005B0295 /* macOS_SwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = macOS_SwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97E94B19271EF24D005B0295 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
@@ -798,9 +800,18 @@
 			path = BookmarksWidget;
 			sourceTree = "<group>";
 		};
+		97DED67D275278EB008D2C56 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				97DED67E275278FF008D2C56 /* SearchField.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		97E94B18271EF24D005B0295 /* macOS_SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				97DED67D275278EB008D2C56 /* View */,
 				97E94B19271EF24D005B0295 /* App.swift */,
 				97E94B1B271EF24D005B0295 /* ContentView.swift */,
 				97242B7C2732E52300C87F85 /* Sidebar.swift */,
@@ -1368,6 +1379,7 @@
 				97242B932735E69400C87F85 /* ZimFile.swift in Sources */,
 				97242B8B2735E67500C87F85 /* SearchOperation.swift in Sources */,
 				97242B8E2735E68A00C87F85 /* OPDSStreamParser.mm in Sources */,
+				97DED67F275278FF008D2C56 /* SearchField.swift in Sources */,
 				97E94B2E271EF630005B0295 /* ZimFileService.swift in Sources */,
 				97242B9B2735E6A800C87F85 /* DirectoryMonitor.swift in Sources */,
 				97242B992735E6A800C87F85 /* SearchQueue.swift in Sources */,
