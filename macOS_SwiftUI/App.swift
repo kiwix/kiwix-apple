@@ -26,6 +26,7 @@ struct Kiwix: SwiftUI.App {
                 Divider()
                 Button("Open...") { open() }.keyboardShortcut("o")
             }
+            SidebarDisplayModeCommands()
         }
     }
     

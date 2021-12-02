@@ -57,6 +57,7 @@
 		972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972E6F631FA11A6100F5C927 /* RoundedButton.swift */; };
 		973B2A5D254609FD00093661 /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973B2A5C254609FD00093661 /* Modifiers.swift */; };
 		973B8012239066D0008CC8CE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973B8011239066D0008CC8CE /* SceneDelegate.swift */; };
+		973BC75727587A29008D4114 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BC75627587A29008D4114 /* Commands.swift */; };
 		9744658026F7981500072DC2 /* Fuzi in Frameworks */ = {isa = PBXBuildFile; productRef = 9744657F26F7981500072DC2 /* Fuzi */; };
 		974FD5CF23405C3700FFDEEC /* WindowControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FD5CE23405C3700FFDEEC /* WindowControllers.swift */; };
 		974FFE5B2352704600F6BF28 /* ZimFileManagerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */; };
@@ -300,6 +301,7 @@
 		972E6F631FA11A6100F5C927 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		973B2A5C254609FD00093661 /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
 		973B8011239066D0008CC8CE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		973BC75627587A29008D4114 /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		974FD5CE23405C3700FFDEEC /* WindowControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowControllers.swift; sourceTree = "<group>"; };
 		974FFE5A2352704600F6BF28 /* ZimFileManagerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileManagerController.swift; sourceTree = "<group>"; };
 		974FFE602352744800F6BF28 /* WebKitWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitWebViewController.swift; sourceTree = "<group>"; };
@@ -813,6 +815,7 @@
 			children = (
 				97DED67D275278EB008D2C56 /* View */,
 				97E94B19271EF24D005B0295 /* App.swift */,
+				973BC75627587A29008D4114 /* Commands.swift */,
 				97E94B1B271EF24D005B0295 /* ContentView.swift */,
 				97242B7C2732E52300C87F85 /* Sidebar.swift */,
 				97D07A08273719720002B9EB /* Search.swift */,
@@ -1348,6 +1351,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				97242B9E2735E6A800C87F85 /* Platform.swift in Sources */,
+				973BC75727587A29008D4114 /* Commands.swift in Sources */,
 				97242B902735E68E00C87F85 /* LibraryScanOperation.swift in Sources */,
 				97242B872735E66B00C87F85 /* SearchResult.m in Sources */,
 				97242B8F2735E68E00C87F85 /* LibraryOperationBase.swift in Sources */,
