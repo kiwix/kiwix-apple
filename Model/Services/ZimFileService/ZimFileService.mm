@@ -192,10 +192,14 @@ struct SharedReaders {
     if (found == self.readers->end()) {
         return nil;
     } else {
-        std::shared_ptr<kiwix::Reader> reader = found->second;
-        kiwix::Entry entry = reader->getRandomPage();
-        std::string path = entry.getPath();
-        return [NSString stringWithCString:path.c_str() encoding:NSUTF8StringEncoding];
+        try {
+            std::shared_ptr<kiwix::Reader> reader = found->second;
+            kiwix::Entry entry = reader->getRandomPage();
+            std::string path = entry.getPath();
+            return [NSString stringWithCString:path.c_str() encoding:NSUTF8StringEncoding];
+        } catch (std::exception) {
+            return nil;
+        }
     }
 }
 

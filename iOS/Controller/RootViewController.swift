@@ -120,9 +120,15 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
     }
     
     func openRandomPage(zimFileID: String? = nil) {
-        guard let zimFileID = zimFileID ?? onDeviceZimFiles?.map({ $0.fileID }).randomElement(),
-              let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
-        openURL(url)
+        if let zimFileID = zimFileID ?? onDeviceZimFiles?.map({ $0.fileID }).randomElement(),
+           let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) {
+            openURL(url)
+        } else {
+            let message = "Unable to find a random article. Please try again or try use a different zim file."
+            let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        }
     }
     
     // MARK: - Setup & Configurations
