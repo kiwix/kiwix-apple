@@ -10,5 +10,11 @@ import Foundation
 
 struct FeatureFlags {
     static let homeViewEnabled = false
-    static let wikipediaDarkUserCSS = true
+    static var wikipediaDarkUserCSS: Bool {
+        #if DEBUG
+        true
+        #else
+        false
+        #endif
+    }
 }
