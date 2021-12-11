@@ -1,3 +1,12 @@
+## 1.15.3
+
+- Revert libkiwix and libzim to the last known stable release (9.4.1 and 6.3.2 respectively)
+- Added version notation of libkiwix and libzim to the about page
+
+## 1.15.2
+
+- Fixed an issue where press random button could lead to app crash
+
 ## 1.15.1
 
 - Fixed an issue where open in places zim files are identified as corrupted.
