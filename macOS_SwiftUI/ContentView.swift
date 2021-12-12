@@ -96,6 +96,7 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     }()
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
+    private var titleObserver: NSKeyValueObservation?
     
     override init() {
         super.init()
@@ -105,6 +106,13 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         }
         canGoForwardObserver = webView.observe(\.canGoForward) { [unowned self] webView, _ in
             self.canGoForward = webView.canGoForward
+        }
+        titleObserver = webView.observe(\.title) { [unowned self] webView, _ in
+            guard let title = webView.title, !title.isEmpty,
+                  let zimFileID = webView.url?.host,
+                  let zimFile = (try? Realm())?.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
+            self.articleTitle = title
+            self.zimFileTitle = zimFile.title
         }
     }
     
@@ -145,17 +153,6 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        if let title = webView.title,
-           let database = try? Realm(),
-           let zimFileID = webView.url?.host,
-           let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID),
-           !title.isEmpty {
-            articleTitle = title
-            zimFileTitle = zimFile.title
-        } else {
-            articleTitle = ""
-            zimFileTitle = ""
-        }
         webView.evaluateJavaScript(
             "document.querySelectorAll(\"details\").forEach((detail) => {detail.setAttribute(\"open\", true)});",
             completionHandler: nil
