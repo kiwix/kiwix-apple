@@ -12,6 +12,7 @@ import RealmSwift
 
 struct ContentView: View {
     @StateObject var viewModel = SceneViewModel()
+    @State var url: URL?
     @ObservedResults(
         ZimFile.self,
         filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
@@ -20,7 +21,7 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView {
-            Sidebar()
+            Sidebar(url: $url)
                 .environmentObject(viewModel)
                 .frame(minWidth: 250)
                 .toolbar {
@@ -28,7 +29,7 @@ struct ContentView: View {
                         Button { toggleSidebar() } label: { Image(systemName: "sidebar.leading") }
                     }
                 }
-            WebView()
+            WebView(url: $url, webView: viewModel.webView)
                 .ignoresSafeArea(.container, edges: .vertical)
                 .frame(idealWidth: 800, minHeight: 300, idealHeight: 350)
                 .toolbar {
@@ -73,7 +74,6 @@ struct ContentView: View {
 class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     @Published var canGoBack: Bool = false
     @Published var canGoForward: Bool = false
-    @Published var url: URL?
     @Published var articleTitle: String = ""
     @Published var zimFileTitle: String = ""
     
@@ -98,7 +98,6 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     }()
     private var canGoBackObserver: NSKeyValueObservation?
     private var canGoForwardObserver: NSKeyValueObservation?
-    private var urlObserver: NSKeyValueObservation?
     
     override init() {
         super.init()
@@ -131,9 +130,11 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         if url.isKiwixURL {
             if let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
                 decisionHandler(.cancel, preferences)
+                print("Redirecting to: \(redirectedURL.path)")
                 webView.load(URLRequest(url: redirectedURL))
             } else {
-                preferences.preferredContentMode = .mobile
+                preferences.preferredContentMode = .desktop
+                print("Loading: \(url.path)")
                 decisionHandler(.allow, preferences)
             }
         } else if url.scheme == "http" || url.scheme == "https" {
@@ -146,7 +147,6 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        url = webView.url
         if let title = webView.title,
            let database = try? Realm(),
            let zimFileID = webView.url?.host,

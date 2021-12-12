@@ -10,6 +10,7 @@ import SwiftUI
 
 struct Sidebar: View {
     @SceneStorage("sidebarDisplayMode") var displayMode: SidebarDisplayMode = .search
+    @Binding var url: URL?
     
     var body: some View {
         VStack {
@@ -31,7 +32,7 @@ struct Sidebar: View {
             Divider()
             switch displayMode {
             case .search:
-                Search()
+                Search(url: $url)
             case .bookmark:
                 List {
                     Text("bookmarks")

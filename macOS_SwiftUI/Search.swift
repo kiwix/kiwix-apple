@@ -16,6 +16,7 @@ struct Search: View {
     @EnvironmentObject var sceneViewModel: SceneViewModel
     @StateObject private var viewModel = SearchViewModel()
     @Default(.recentSearchTexts) var recentSearchTexts
+    @Binding var url: URL?
     
     var body: some View {
         SearchField(searchText: $viewModel.searchText).padding(.horizontal, 6)
@@ -36,7 +37,7 @@ struct Search: View {
                 }
             }
         } else if !viewModel.results.isEmpty, !viewModel.inProgress {
-            List(selection: $sceneViewModel.url) {
+            List(selection: $url) {
                 ForEach(viewModel.results, id: \.url) { result in
                     Text(result.title)
                 }
