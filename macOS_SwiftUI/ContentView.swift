@@ -60,6 +60,7 @@ struct ContentView: View {
                 }
         }
         .environmentObject(viewModel)
+        .focusedSceneValue(\.sceneViewModel, viewModel)
         .navigationTitle(viewModel.articleTitle)
         .navigationSubtitle(viewModel.zimFileTitle)
     }

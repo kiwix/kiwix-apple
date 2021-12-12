@@ -21,12 +21,16 @@ struct Kiwix: SwiftUI.App {
             ContentView()
         }.commands {
             SidebarCommands()
-            CommandGroup(after: CommandGroupPlacement.newItem) {
+            CommandGroup(replacing: .newItem) {
                 Button("New Tab") { newTab() }.keyboardShortcut("t")
                 Divider()
                 Button("Open...") { open() }.keyboardShortcut("o")
             }
-            SidebarDisplayModeCommands()
+            CommandGroup(before: .sidebar) {
+                SidebarDisplayModeCommandButtons()
+                Divider()
+            }
+            CommandMenu("Navigation") { NavigationCommandButtons() }
         }
     }
     

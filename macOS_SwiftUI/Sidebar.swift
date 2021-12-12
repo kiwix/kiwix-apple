@@ -43,7 +43,7 @@ struct Sidebar: View {
             case .library:
                 Library()
             }
-        }.focusedValue(\.sidebarDisplayMode, $displayMode)
+        }.focusedSceneValue(\.sidebarDisplayMode, $displayMode)
     }
 }
 
