@@ -42,21 +42,19 @@ struct ContentView: View {
                         }.disabled(!viewModel.canGoForward)
                     }
                     ToolbarItemGroup {
-                        Button { viewModel.loadMainPage() } label: { Image(systemName: "house") }
-                        if #available(macOS 12, *) {
-                            Menu {
-                                ForEach(onDevice) { zimFile in
-                                    Button(zimFile.title) { viewModel.loadRandomPage(zimFileID: zimFile.fileID) }
-                                }
-                            } label: {
-                                Label("Random Page", systemImage: "die.face.5")
-                            } primaryAction: {
-                                guard let zimFile = onDevice.first else { return }
-                                viewModel.loadRandomPage(zimFileID: zimFile.fileID)
+                        Button {
+                            viewModel.loadMainPage()
+                        } label: { Image(systemName: "house") }.disabled(onDevice.isEmpty)
+                        Menu {
+                            ForEach(onDevice) { zimFile in
+                                Button(zimFile.title) { viewModel.loadRandomPage(zimFileID: zimFile.fileID) }
                             }
-                        } else {
-                            Button { viewModel.loadRandomPage() } label: { Image(systemName: "die.face.5") }
-                        }
+                        } label: {
+                            Label("Random Page", systemImage: "die.face.5")
+                        } primaryAction: {
+                            guard let zimFile = onDevice.first else { return }
+                            viewModel.loadRandomPage(zimFileID: zimFile.fileID)
+                        }.disabled(onDevice.isEmpty)
                     }
                 }
         }
