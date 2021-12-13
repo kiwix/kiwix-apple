@@ -17,35 +17,44 @@ struct Search: View {
     @StateObject private var viewModel = SearchViewModel()
     @Default(.recentSearchTexts) var recentSearchTexts
     @Binding var url: URL?
+    @ObservedResults(
+        ZimFile.self,
+        filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
+        sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
+    ) private var zimFiles
+    
     
     var body: some View {
-        SearchField(searchText: $viewModel.searchText).padding(.horizontal, 6)
-        HStack(alignment: .center) {
-            Button("Scope") { }
-            Spacer()
-            if viewModel.inProgress {
-                ProgressView()
-                    .scaleEffect(0.5, anchor: .leading)
-                    .frame(width: 10, height: 10)
-            }
-        }.padding(.horizontal, 6)
+        SearchField(searchText: $viewModel.searchText).padding(.horizontal, 8)
         Divider()
         if viewModel.searchText.isEmpty {
             List {
-                ForEach(recentSearchTexts, id: \.hash) { searchText in
-                    Text(searchText)
-                }
+                Section {
+                    ForEach(zimFiles, id: \.fileID) { zimFile in
+                        Toggle(zimFile.title, isOn: zimFile.bind(\.includedInSearch))
+                    }
+                } header: {
+                    HStack {
+                        Text("Include in Search").foregroundColor(.primary)
+                        Spacer()
+                        if zimFiles.map {$0.includedInSearch }.reduce(true) { $0 && $1 } {
+                            Button("None") {
+
+                            }
+                        } else {
+                            Button("All") {
+
+                            }
+                        }
+                    }.padding(.trailing, 8)
+                }.collapsible(false)
             }
-        } else if !viewModel.results.isEmpty, !viewModel.inProgress {
+        } else {
             List(selection: $url) {
                 ForEach(viewModel.results, id: \.url) { result in
                     Text(result.title)
                 }
             }
-        } else if viewModel.results.isEmpty, !viewModel.inProgress {
-            List { Text("No result") }
-        } else {
-            List {}
         }
     }
 }

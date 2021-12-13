@@ -29,19 +29,21 @@ struct Sidebar: View {
                     Image(systemName: "folder").foregroundColor(displayMode == .library ? .blue : nil)
                 }.help("Show library of zim files")
             }.padding(.vertical, -2.75).buttonStyle(.borderless).frame(maxWidth: .infinity)
-            Divider()
             switch displayMode {
             case .search:
                 Search(url: $url)
             case .bookmark:
+                Divider()
                 List {
                     Text("bookmarks")
                 }
             case .tableOfContent:
+                Divider()
                 List {
                     Text("table of contents")
                 }
             case .library:
+                Divider()
                 Library()
             }
         }.focusedSceneValue(\.sidebarDisplayMode, $displayMode)
