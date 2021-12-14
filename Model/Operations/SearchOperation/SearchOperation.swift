@@ -11,12 +11,18 @@ import Defaults
 
 extension SearchOperation {
     var results: [SearchResult] { get { __results as? [SearchResult] ?? [] } }
+    var snippetMode: SearchResultSnippetMode {
+        #if os(iOS)
+        return Defaults[.searchResultSnippetMode]
+        #else
+        return .disabled
+        #endif
+    }
     
     open override func main() {
         guard !searchText.isEmpty else { return }
-        let mode = Defaults[.searchResultSnippetMode]
-        performSearch(mode == .matches)
-        if mode != .disabled { extractSnippet(mode) }
+        performSearch(snippetMode == .matches)
+        if snippetMode != .disabled { extractSnippet(snippetMode) }
         sortResults()
     }
     

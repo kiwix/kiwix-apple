@@ -42,14 +42,22 @@ struct SharedReaders {
 
 - (void)performSearch:(BOOL)withFullTextSnippet; {
     struct SharedReaders sharedReaders = [[ZimFileService sharedInstance] getSharedReaders:self.identifiers];
-    NSMutableSet *results = [[NSMutableSet alloc] initWithCapacity:15 + 3 * self.identifiers.count];
-    [results addObjectsFromArray:[self getTitleSearchResults:sharedReaders.readers]];
-    [results addObjectsFromArray:[self getFullTextSearchResults:sharedReaders withFullTextSnippet:withFullTextSnippet]];
+    NSMutableSet *results = [[NSMutableSet alloc] initWithCapacity:35];
+    
+    NSArray *fullTextResults = [self getFullTextSearchResults:sharedReaders withFullTextSnippet:withFullTextSnippet];
+    NSUInteger readerCount = sharedReaders.readers.size();
+    if (readerCount > 0) {
+        NSUInteger count = max((35 - [fullTextResults count]) / readerCount, (NSUInteger)3);
+        NSArray *titleResults = [self getTitleSearchResults:sharedReaders.readers count:count];
+        [results addObjectsFromArray:titleResults];
+    }
+    [results addObjectsFromArray:fullTextResults];
+    
     self.results = [results allObjects];
 }
 
 - (NSArray *)getFullTextSearchResults:(struct SharedReaders)sharedReaders withFullTextSnippet:(BOOL)withFullTextSnippet {
-    NSMutableArray *results = [[NSMutableArray alloc] initWithCapacity:15];
+    NSMutableArray *results = [[NSMutableArray alloc] initWithCapacity:25];
     
     // initialize full text search
     if (self.isCancelled) { return results; }
@@ -60,13 +68,17 @@ struct SharedReaders {
     
     // start full text search
     if (self.isCancelled) { return results; }
-    searcher.search([self.searchText cStringUsingEncoding:NSUTF8StringEncoding], 0, 15);
+    searcher.search([self.searchText cStringUsingEncoding:NSUTF8StringEncoding], 0, 25);
     
     // retrieve full text search results
     kiwix::Result *result = searcher.getNextResult();
     while (result != NULL) {
+        std::shared_ptr<kiwix::Reader> reader = sharedReaders.readers[result->get_readerIndex()];
+        kiwix::Entry entry = reader->getEntryFromPath(result->get_url());
+        entry = entry.getFinalEntry();
+        
         NSString *zimFileID = sharedReaders.readerIDs[result->get_readerIndex()];
-        NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
+        NSString *path = [NSString stringWithCString:entry.getPath().c_str() encoding:NSUTF8StringEncoding];
         NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
         
         SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
@@ -87,7 +99,7 @@ struct SharedReaders {
     return results;
 }
 
-- (NSArray *)getTitleSearchResults:(std::vector<std::shared_ptr<kiwix::Reader>>)readers {
+- (NSArray *)getTitleSearchResults:(std::vector<std::shared_ptr<kiwix::Reader>>)readers count:(NSUInteger)count {
     NSMutableArray *results = [[NSMutableArray alloc] init];
     std::string searchTermC = [self.searchText cStringUsingEncoding:NSUTF8StringEncoding];
     
@@ -98,8 +110,11 @@ struct SharedReaders {
         NSString *zimFileID = [NSString stringWithCString:reader->getId().c_str() encoding:NSUTF8StringEncoding];
         for (auto &suggestion : *suggestions) {
             try {
+                kiwix::Entry entry = reader->getEntryFromPath(suggestion.at(1));
+                entry = entry.getFinalEntry();
+                
                 NSString *title = [NSString stringWithCString:suggestion.at(0).c_str() encoding:NSUTF8StringEncoding];
-                NSString *path = [NSString stringWithCString:suggestion.at(1).c_str() encoding:NSUTF8StringEncoding];
+                NSString *path = [NSString stringWithCString:entry.getPath().c_str() encoding:NSUTF8StringEncoding];
                 SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
                 if (searchResult != nil) { [results addObject:searchResult]; }
                 if (self.isCancelled) { break; }
