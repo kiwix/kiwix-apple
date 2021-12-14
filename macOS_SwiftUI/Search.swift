@@ -25,37 +25,106 @@ struct Search: View {
     
     
     var body: some View {
-        SearchField(searchText: $viewModel.searchText).padding(.horizontal, 8)
-        Divider()
-        if viewModel.searchText.isEmpty {
-            List {
-                Section {
+        VSplitView {
+            VStack {
+                SearchField(searchText: $viewModel.searchText).padding(.horizontal, 8)
+                if viewModel.searchText.isEmpty, !recentSearchTexts.isEmpty {
+                    List {
+                        Section("Recent") {
+                            ForEach(recentSearchTexts, id: \.hash) { searchText in
+                                Text(searchText)
+                            }
+                        }
+                    }
+                } else if !viewModel.searchText.isEmpty, !viewModel.results.isEmpty {
+                    List(selection: $url) {
+                        ForEach(viewModel.results, id: \.url) { result in
+                            Text(result.title)
+                        }
+                    }
+                } else {
+                    List {}
+                }
+            }.frame(minHeight: 100, idealHeight: 300)
+            VStack(spacing: 0) {
+                HStack {
+                    Text("Include in Search").foregroundColor(.primary)
+                    Spacer()
+                    if zimFiles.map {$0.includedInSearch }.reduce(true) { $0 && $1 } {
+                        Button("None") {
+
+                        }
+                    } else {
+                        Button("All") {
+
+                        }
+                    }
+                }.padding(.vertical, 5).padding(.leading, 16).padding(.trailing, 10)
+                Divider()
+                List {
                     ForEach(zimFiles, id: \.fileID) { zimFile in
                         Toggle(zimFile.title, isOn: zimFile.bind(\.includedInSearch))
                     }
-                } header: {
-                    HStack {
-                        Text("Include in Search").foregroundColor(.primary)
-                        Spacer()
-                        if zimFiles.map {$0.includedInSearch }.reduce(true) { $0 && $1 } {
-                            Button("None") {
-
-                            }
-                        } else {
-                            Button("All") {
-
-                            }
-                        }
-                    }.padding(.trailing, 8)
-                }.collapsible(false)
-            }
-        } else {
-            List(selection: $url) {
-                ForEach(viewModel.results, id: \.url) { result in
-                    Text(result.title)
                 }
-            }
+            }.frame(minHeight: 100, idealHeight: 150)
         }
+        
+//        VStack(spacing: 0) {
+//            SearchField(searchText: $viewModel.searchText).padding(.horizontal, 8)
+//
+//
+//            if viewModel.searchText.isEmpty {
+//                List {
+//                    Section {
+//                        ForEach(zimFiles, id: \.fileID) { zimFile in
+//                            Toggle(zimFile.title, isOn: zimFile.bind(\.includedInSearch))
+//                        }
+//                    } header: {
+//                        HStack {
+//                            Text("Include in Search").foregroundColor(.primary)
+//                            Spacer()
+//                            if zimFiles.map {$0.includedInSearch }.reduce(true) { $0 && $1 } {
+//                                Button("None") {
+//
+//                                }
+//                            } else {
+//                                Button("All") {
+//
+//                                }
+//                            }
+//                        }.padding(.trailing, 8).padding(.top, 8)
+//                    }.collapsible(false)
+//                }.safeAreaInset(edge: .bottom) {
+//                    List {
+//                        Section {
+//                            ForEach(zimFiles, id: \.fileID) { zimFile in
+//                                Toggle(zimFile.title, isOn: zimFile.bind(\.includedInSearch))
+//                            }
+//                        } header: {
+//                            HStack {
+//                                Text("Include in Search").foregroundColor(.primary)
+//                                Spacer()
+//                                if zimFiles.map {$0.includedInSearch }.reduce(true) { $0 && $1 } {
+//                                    Button("None") {
+//
+//                                    }
+//                                } else {
+//                                    Button("All") {
+//
+//                                    }
+//                                }
+//                            }.padding(.trailing, 8).padding(.top, 8)
+//                        }.collapsible(false)
+//                    }
+//                }
+//            } else {
+//                List(selection: $url) {
+//                    ForEach(viewModel.results, id: \.url) { result in
+//                        Text(result.title)
+//                    }
+//                }
+//            }
+//        }
     }
 }
 

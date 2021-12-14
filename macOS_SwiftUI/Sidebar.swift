@@ -14,36 +14,36 @@ struct Sidebar: View {
     
     var body: some View {
         VStack {
-            Divider()
-            HStack(spacing: 20) {
-                Button { displayMode = .search } label: {
-                    Image(systemName: "magnifyingglass").foregroundColor(displayMode == .search ? .blue : nil)
-                }.help("Search among on device zim files")
-                Button { displayMode = .bookmark } label: {
-                    Image(systemName: "star").foregroundColor(displayMode == .bookmark ? .blue : nil)
-                }.help("Show sookmarked articles")
-                Button { displayMode = .tableOfContent } label: {
-                    Image(systemName: "list.bullet").foregroundColor(displayMode == .tableOfContent ? .blue : nil)
-                }.help("Show table of content of current article")
-                Button { displayMode = .library } label: {
-                    Image(systemName: "folder").foregroundColor(displayMode == .library ? .blue : nil)
-                }.help("Show library of zim files")
-            }.padding(.vertical, -2.75).buttonStyle(.borderless).frame(maxWidth: .infinity)
+            VStack(spacing: 0) {
+                Divider()
+                HStack(spacing: 20) {
+                    Button { displayMode = .search } label: {
+                        Image(systemName: "magnifyingglass").foregroundColor(displayMode == .search ? .blue : nil)
+                    }.help("Search among on device zim files")
+                    Button { displayMode = .bookmark } label: {
+                        Image(systemName: "star").foregroundColor(displayMode == .bookmark ? .blue : nil)
+                    }.help("Show sookmarked articles")
+                    Button { displayMode = .tableOfContent } label: {
+                        Image(systemName: "list.bullet").foregroundColor(displayMode == .tableOfContent ? .blue : nil)
+                    }.help("Show table of content of current article")
+                    Button { displayMode = .library } label: {
+                        Image(systemName: "folder").foregroundColor(displayMode == .library ? .blue : nil)
+                    }.help("Show library of zim files")
+                }.padding(.vertical, 6).buttonStyle(.borderless).frame(maxWidth: .infinity)
+                Divider()
+            }
             switch displayMode {
             case .search:
-                Search(url: $url)
+                Search(url: $url).listStyle(.sidebar)
             case .bookmark:
-                Divider()
                 List {
                     Text("bookmarks")
                 }
             case .tableOfContent:
-                Divider()
                 List {
                     Text("table of contents")
                 }
             case .library:
-                Divider()
                 Library()
             }
         }.focusedSceneValue(\.sidebarDisplayMode, $displayMode)
