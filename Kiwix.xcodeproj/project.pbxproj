@@ -53,6 +53,8 @@
 		972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972E6F631FA11A6100F5C927 /* RoundedButton.swift */; };
 		97381CB927680A2900F092EB /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 97381CB827680A2900F092EB /* Realm */; };
 		97381CBB27680A2900F092EB /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 97381CBA27680A2900F092EB /* RealmSwift */; };
+		97381CBD27682AD600F092EB /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 97381CBC27682AD600F092EB /* Realm */; };
+		97381CBF27682AD600F092EB /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 97381CBE27682AD600F092EB /* RealmSwift */; };
 		973B2A5D254609FD00093661 /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973B2A5C254609FD00093661 /* Modifiers.swift */; };
 		973B8012239066D0008CC8CE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973B8011239066D0008CC8CE /* SceneDelegate.swift */; };
 		973BC75727587A29008D4114 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973BC75627587A29008D4114 /* Commands.swift */; };
@@ -183,10 +185,6 @@
 		97EC18B926E8555E008309ED /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; };
 		97EC18BA26E8555E008309ED /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; };
 		97EC18BB26E85C28008309ED /* libkiwix.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18AF26E8555E008309ED /* libkiwix.xcframework */; };
-		97EC18BE26E85C58008309ED /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; };
-		97EC18BF26E85C58008309ED /* Realm.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		97EC18C126E85C5A008309ED /* RealmSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B026E8555E008309ED /* RealmSwift.xcframework */; };
-		97EC18C226E85C5A008309ED /* RealmSwift.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B026E8555E008309ED /* RealmSwift.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		97EFF05E235CAEFC00FBB7A4 /* ContentTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97EFF05D235CAEFC00FBB7A4 /* ContentTabController.swift */; };
 		97F4210E22EE5590001E41F9 /* FileImportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F4210D22EE5590001E41F9 /* FileImportController.swift */; };
 		97F425C227151A0D00D0F738 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97F425C127151A0D00D0F738 /* QuickLook.framework */; };
@@ -247,18 +245,6 @@
 				97F425CE27151A0D00D0F738 /* QuickLookPreview.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		97EC18C026E85C58008309ED /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				97EC18BF26E85C58008309ED /* Realm.xcframework in Embed Frameworks */,
-				97EC18C226E85C5A008309ED /* RealmSwift.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -423,12 +409,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97381CBD27682AD600F092EB /* Realm in Frameworks */,
 				97C5763D202CD9C000E37502 /* NotificationCenter.framework in Frameworks */,
+				97381CBF27682AD600F092EB /* RealmSwift in Frameworks */,
 				97EC18BB26E85C28008309ED /* libkiwix.xcframework in Frameworks */,
 				9744658026F7981500072DC2 /* Fuzi in Frameworks */,
-				97EC18BE26E85C58008309ED /* Realm.xcframework in Frameworks */,
 				97A36C351F8C21210079B452 /* WebKit.framework in Frameworks */,
-				97EC18C126E85C5A008309ED /* RealmSwift.xcframework in Frameworks */,
 				97654726273214530070163D /* Defaults in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -908,7 +894,6 @@
 				97A36C341F8C21210079B452 /* Frameworks */,
 				97A36C431F8C21210079B452 /* Resources */,
 				97C57602202CB0E900E37502 /* Embed App Extensions */,
-				97EC18C026E85C58008309ED /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -920,6 +905,8 @@
 			packageProductDependencies = (
 				9744657F26F7981500072DC2 /* Fuzi */,
 				97654725273214530070163D /* Defaults */,
+				97381CBC27682AD600F092EB /* Realm */,
+				97381CBE27682AD600F092EB /* RealmSwift */,
 			);
 			productName = WikiMed;
 			productReference = 97A36C4E1F8C21210079B452 /* Kiwix.app */;
@@ -2148,6 +2135,16 @@
 			productName = Realm;
 		};
 		97381CBA27680A2900F092EB /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97381CB727680A2900F092EB /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = RealmSwift;
+		};
+		97381CBC27682AD600F092EB /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97381CB727680A2900F092EB /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = Realm;
+		};
+		97381CBE27682AD600F092EB /* RealmSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 97381CB727680A2900F092EB /* XCRemoteSwiftPackageReference "realm-cocoa" */;
 			productName = RealmSwift;
