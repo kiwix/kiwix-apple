@@ -65,8 +65,12 @@ struct SharedReaders {
     // retrieve full text search results
     kiwix::Result *result = searcher.getNextResult();
     while (result != NULL) {
+        std::shared_ptr<kiwix::Reader> reader = sharedReaders.readers[result->get_readerIndex()];
+        kiwix::Entry entry = reader->getEntryFromPath(result->get_url());
+        entry = entry.getFinalEntry();
+        
         NSString *zimFileID = sharedReaders.readerIDs[result->get_readerIndex()];
-        NSString *path = [NSString stringWithCString:result->get_url().c_str() encoding:NSUTF8StringEncoding];
+        NSString *path = [NSString stringWithCString:entry.getPath().c_str() encoding:NSUTF8StringEncoding];
         NSString *title = [NSString stringWithCString:result->get_title().c_str() encoding:NSUTF8StringEncoding];
         
         SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
@@ -98,8 +102,11 @@ struct SharedReaders {
         NSString *zimFileID = [NSString stringWithCString:reader->getId().c_str() encoding:NSUTF8StringEncoding];
         for (auto &suggestion : *suggestions) {
             try {
+                kiwix::Entry entry = reader->getEntryFromPath(suggestion.at(1));
+                entry = entry.getFinalEntry();
+                
                 NSString *title = [NSString stringWithCString:suggestion.at(0).c_str() encoding:NSUTF8StringEncoding];
-                NSString *path = [NSString stringWithCString:suggestion.at(1).c_str() encoding:NSUTF8StringEncoding];
+                NSString *path = [NSString stringWithCString:entry.getPath().c_str() encoding:NSUTF8StringEncoding];
                 SearchResult *searchResult = [[SearchResult alloc] initWithZimFileID:zimFileID path:path title:title];
                 if (searchResult != nil) { [results addObject:searchResult]; }
                 if (self.isCancelled) { break; }
