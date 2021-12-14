@@ -13,10 +13,9 @@ import RealmSwift
 import Defaults
 
 struct Search: View {
-    @EnvironmentObject var sceneViewModel: SceneViewModel
-    @StateObject private var viewModel = SearchViewModel()
-    @Default(.recentSearchTexts) var recentSearchTexts
+    @StateObject private var viewModel = ViewModel()
     @Binding var url: URL?
+    @Default(.recentSearchTexts) var recentSearchTexts
     @ObservedResults(
         ZimFile.self,
         filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
@@ -43,9 +42,9 @@ struct Search: View {
                         }
                     }
                 } else if !viewModel.searchText.isEmpty, viewModel.results.isEmpty, !viewModel.inProgress {
-                    List { Text("No Result").disabled(true) }
+                    List { Text("No Result") }
                 } else {
-                    List {}
+                    List { }
                 }
             }.frame(minHeight: 100, idealHeight: 300)
             VStack(spacing: 0) {
@@ -70,67 +69,10 @@ struct Search: View {
                 }
             }.frame(minHeight: 100, idealHeight: 150)
         }
-        
-//        VStack(spacing: 0) {
-//            SearchField(searchText: $viewModel.searchText).padding(.horizontal, 8)
-//
-//
-//            if viewModel.searchText.isEmpty {
-//                List {
-//                    Section {
-//                        ForEach(zimFiles, id: \.fileID) { zimFile in
-//                            Toggle(zimFile.title, isOn: zimFile.bind(\.includedInSearch))
-//                        }
-//                    } header: {
-//                        HStack {
-//                            Text("Include in Search").foregroundColor(.primary)
-//                            Spacer()
-//                            if zimFiles.map {$0.includedInSearch }.reduce(true) { $0 && $1 } {
-//                                Button("None") {
-//
-//                                }
-//                            } else {
-//                                Button("All") {
-//
-//                                }
-//                            }
-//                        }.padding(.trailing, 8).padding(.top, 8)
-//                    }.collapsible(false)
-//                }.safeAreaInset(edge: .bottom) {
-//                    List {
-//                        Section {
-//                            ForEach(zimFiles, id: \.fileID) { zimFile in
-//                                Toggle(zimFile.title, isOn: zimFile.bind(\.includedInSearch))
-//                            }
-//                        } header: {
-//                            HStack {
-//                                Text("Include in Search").foregroundColor(.primary)
-//                                Spacer()
-//                                if zimFiles.map {$0.includedInSearch }.reduce(true) { $0 && $1 } {
-//                                    Button("None") {
-//
-//                                    }
-//                                } else {
-//                                    Button("All") {
-//
-//                                    }
-//                                }
-//                            }.padding(.trailing, 8).padding(.top, 8)
-//                        }.collapsible(false)
-//                    }
-//                }
-//            } else {
-//                List(selection: $url) {
-//                    ForEach(viewModel.results, id: \.url) { result in
-//                        Text(result.title)
-//                    }
-//                }
-//            }
-//        }
     }
 }
 
-private class SearchViewModel: ObservableObject {
+private class ViewModel: ObservableObject {
     @Published var searchText: String = ""
     @Published var inProgress = false
     @Published var results = [SearchResult]()
