@@ -42,6 +42,8 @@ struct Search: View {
                             Text(result.title)
                         }
                     }
+                } else if !viewModel.searchText.isEmpty, viewModel.results.isEmpty, !viewModel.inProgress {
+                    List { Text("No Result").disabled(true) }
                 } else {
                     List {}
                 }
