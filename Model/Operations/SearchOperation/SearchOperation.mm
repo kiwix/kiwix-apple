@@ -42,14 +42,22 @@ struct SharedReaders {
 
 - (void)performSearch:(BOOL)withFullTextSnippet; {
     struct SharedReaders sharedReaders = [[ZimFileService sharedInstance] getSharedReaders:self.identifiers];
-    NSMutableSet *results = [[NSMutableSet alloc] initWithCapacity:15 + 3 * self.identifiers.count];
-    [results addObjectsFromArray:[self getTitleSearchResults:sharedReaders.readers]];
-    [results addObjectsFromArray:[self getFullTextSearchResults:sharedReaders withFullTextSnippet:withFullTextSnippet]];
+    NSMutableSet *results = [[NSMutableSet alloc] initWithCapacity:35];
+    
+    NSArray *fullTextResults = [self getFullTextSearchResults:sharedReaders withFullTextSnippet:withFullTextSnippet];
+    NSUInteger readerCount = sharedReaders.readers.size();
+    if (readerCount > 0) {
+        NSUInteger count = max((35 - [fullTextResults count]) / readerCount, (NSUInteger)3);
+        NSArray *titleResults = [self getTitleSearchResults:sharedReaders.readers count:count];
+        [results addObjectsFromArray:titleResults];
+    }
+    [results addObjectsFromArray:fullTextResults];
+    
     self.results = [results allObjects];
 }
 
 - (NSArray *)getFullTextSearchResults:(struct SharedReaders)sharedReaders withFullTextSnippet:(BOOL)withFullTextSnippet {
-    NSMutableArray *results = [[NSMutableArray alloc] initWithCapacity:15];
+    NSMutableArray *results = [[NSMutableArray alloc] initWithCapacity:25];
     
     // initialize full text search
     if (self.isCancelled) { return results; }
@@ -60,7 +68,7 @@ struct SharedReaders {
     
     // start full text search
     if (self.isCancelled) { return results; }
-    searcher.search([self.searchText cStringUsingEncoding:NSUTF8StringEncoding], 0, 15);
+    searcher.search([self.searchText cStringUsingEncoding:NSUTF8StringEncoding], 0, 25);
     
     // retrieve full text search results
     kiwix::Result *result = searcher.getNextResult();
@@ -91,7 +99,7 @@ struct SharedReaders {
     return results;
 }
 
-- (NSArray *)getTitleSearchResults:(std::vector<std::shared_ptr<kiwix::Reader>>)readers {
+- (NSArray *)getTitleSearchResults:(std::vector<std::shared_ptr<kiwix::Reader>>)readers count:(NSUInteger)count {
     NSMutableArray *results = [[NSMutableArray alloc] init];
     std::string searchTermC = [self.searchText cStringUsingEncoding:NSUTF8StringEncoding];
     
