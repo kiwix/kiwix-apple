@@ -130,25 +130,24 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
-                 preferences: WKWebpagePreferences,
-                 decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
-        guard let url = navigationAction.request.url else { decisionHandler(.cancel, preferences); return }
-        if url.isKiwixURL {
-            if let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
-                decisionHandler(.cancel, preferences)
-                print("Redirecting to: \(redirectedURL.path)")
-                webView.load(URLRequest(url: redirectedURL))
-            } else {
-                preferences.preferredContentMode = .desktop
-                print("Loading: \(url.path)")
-                decisionHandler(.allow, preferences)
-            }
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
+        if url.isKiwixURL, let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
+            decisionHandler(.cancel)
+            webView.load(URLRequest(url: redirectedURL))
+        } else if url.isKiwixURL {
+            decisionHandler(.allow)
         } else if url.scheme == "http" || url.scheme == "https" {
-            decisionHandler(.cancel, preferences)
+            decisionHandler(.cancel)
+            NSWorkspace.shared.open(url)
         } else if url.scheme == "geo" {
-            decisionHandler(.cancel, preferences)
+            decisionHandler(.cancel)
+            let coordinate = url.absoluteString.replacingOccurrences(of: "geo:", with: "")
+            if let url = URL(string: "http://maps.apple.com/?ll=\(coordinate)") {
+                NSWorkspace.shared.open(url)
+            }
         } else {
-            decisionHandler(.cancel, preferences)
+            decisionHandler(.cancel)
         }
     }
     
