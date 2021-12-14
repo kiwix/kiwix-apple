@@ -13,6 +13,7 @@ import RealmSwift
 struct Kiwix: SwiftUI.App {
     init() {
         Realm.Configuration.defaultConfiguration = Realm.defaultConfig
+        LibraryOperationQueue.shared.addOperation(LibraryScanOperation())
     }
     
     var body: some Scene {
@@ -20,11 +21,16 @@ struct Kiwix: SwiftUI.App {
             ContentView()
         }.commands {
             SidebarCommands()
-            CommandGroup(after: CommandGroupPlacement.newItem) {
+            CommandGroup(replacing: .newItem) {
                 Button("New Tab") { newTab() }.keyboardShortcut("t")
                 Divider()
                 Button("Open...") { open() }.keyboardShortcut("o")
             }
+            CommandGroup(before: .sidebar) {
+                SidebarDisplayModeCommandButtons()
+                Divider()
+            }
+            CommandMenu("Navigation") { NavigationCommandButtons() }
         }
     }
     

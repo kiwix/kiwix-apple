@@ -11,6 +11,7 @@ import RealmSwift
 
 struct Library: View {
     @EnvironmentObject var viewModel: SceneViewModel
+    @State var selected: String?
     @ObservedResults(
         ZimFile.self,
         filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
@@ -18,16 +19,15 @@ struct Library: View {
     ) private var onDevice
     
     var body: some View {
-        List {
-            ForEach(onDevice) { zimFile in
-                Button(zimFile.title) {
-                    guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFile.fileID) else { return }
-                    viewModel.action = .url(url)
+        List(selection: $selected) {
+            Section("On Device") {
+                ForEach(onDevice, id: \.fileID) { zimFile in
+                    VStack(alignment: .leading) {
+                        Text(zimFile.title)
+                        Text(zimFile.sizeDescription)
+                    }
                 }
-//                Button { zimFileSelected(zimFile.fileID, zimFile.title) } label: {
-//                    ListRow(title: zimFile.title, detail: zimFile.description, faviconData: zimFile.faviconData)
-//                }
             }
-        }
+        }.onChange(of: selected) { newValue in viewModel.loadMainPage(zimFileID: newValue) }
     }
 }

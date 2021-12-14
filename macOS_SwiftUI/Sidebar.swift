@@ -10,40 +10,31 @@ import SwiftUI
 
 struct Sidebar: View {
     @SceneStorage("sidebarDisplayMode") var displayMode: SidebarDisplayMode = .search
-    @State private var searchText: String = ""
+    @Binding var url: URL?
     
     var body: some View {
         VStack {
-            Divider()
-            HStack(spacing: 20) {
-                Button { displayMode = .search } label: {
-                    Image(systemName: "magnifyingglass").foregroundColor(displayMode == .search ? .blue : nil)
-                }.help("Search among on device zim files")
-                Button { displayMode = .bookmark } label: {
-                    Image(systemName: "star").foregroundColor(displayMode == .bookmark ? .blue : nil)
-                }.help("Show sookmarked articles")
-                Button { displayMode = .tableOfContent } label: {
-                    Image(systemName: "list.bullet").foregroundColor(displayMode == .tableOfContent ? .blue : nil)
-                }.help("Show table of content of current article")
-                Button { displayMode = .library } label: {
-                    Image(systemName: "folder").foregroundColor(displayMode == .library ? .blue : nil)
-                }.help("Show library of zim files")
-            }.padding(.vertical, -2.75).buttonStyle(.borderless).frame(maxWidth: .infinity)
-            Divider()
+            VStack(spacing: 0) {
+                Divider()
+                HStack(spacing: 20) {
+                    Button { displayMode = .search } label: {
+                        Image(systemName: "magnifyingglass").foregroundColor(displayMode == .search ? .blue : nil)
+                    }.help("Search among on device zim files")
+                    Button { displayMode = .bookmark } label: {
+                        Image(systemName: "star").foregroundColor(displayMode == .bookmark ? .blue : nil)
+                    }.help("Show sookmarked articles")
+                    Button { displayMode = .tableOfContent } label: {
+                        Image(systemName: "list.bullet").foregroundColor(displayMode == .tableOfContent ? .blue : nil)
+                    }.help("Show table of content of current article")
+                    Button { displayMode = .library } label: {
+                        Image(systemName: "folder").foregroundColor(displayMode == .library ? .blue : nil)
+                    }.help("Show library of zim files")
+                }.padding(.vertical, 6).buttonStyle(.borderless).frame(maxWidth: .infinity)
+                Divider()
+            }
             switch displayMode {
             case .search:
-                SearchField(searchText: $searchText).padding(.horizontal, 6)
-                Button("Scope") { }
-                Divider()
-                if !searchText.isEmpty {
-                    List {
-                        Text("result 1")
-                        Text("result 2")
-                        Text("result 3")
-                    }
-                } else {
-                    List {}
-                }
+                Search(url: $url).listStyle(.sidebar)
             case .bookmark:
                 List {
                     Text("bookmarks")
@@ -55,44 +46,10 @@ struct Sidebar: View {
             case .library:
                 Library()
             }
-        }
+        }.focusedSceneValue(\.sidebarDisplayMode, $displayMode)
     }
 }
 
 enum SidebarDisplayMode: String {
     case search, bookmark, tableOfContent, library
-}
-
-private struct SearchField: NSViewRepresentable {
-    @Binding var searchText: String
-    
-    func makeNSView(context: Context) -> NSSearchField {
-        let searchField = NSSearchField()
-        searchField.delegate = context.coordinator
-        return searchField
-    }
-    
-    func updateNSView(_ nsView: NSSearchField, context: Context) {
-        nsView.stringValue = searchText
-    }
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-    
-    class Coordinator: NSObject, NSSearchFieldDelegate {
-        private var searchField: SearchField
-        
-        init(_ searchField: SearchField) {
-            self.searchField = searchField
-        }
-        
-        func controlTextDidChange(_ obj: Notification) {
-            guard let searchField = obj.object as? NSSearchField else { return }
-            self.searchField.searchText = searchField.stringValue
-        }
-        func searchFieldDidEndSearching(_ sender: NSSearchField) {
-            print(sender.stringValue)
-        }
-    }
 }
