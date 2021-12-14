@@ -24,30 +24,29 @@ struct Search: View {
     
     
     var body: some View {
-        VSplitView {
-            VStack {
-                SearchField(searchText: $viewModel.searchText).padding(.horizontal, 8)
-                if viewModel.searchText.isEmpty, !recentSearchTexts.isEmpty {
-                    List {
-                        Section("Recent") {
-                            ForEach(recentSearchTexts, id: \.hash) { searchText in
-                                Text(searchText)
-                            }
+        SearchField(searchText: $viewModel.searchText).padding(.horizontal, 8)
+        VStack(spacing: 0) {
+            if viewModel.searchText.isEmpty, !recentSearchTexts.isEmpty {
+                List {
+                    Section("Recent") {
+                        ForEach(recentSearchTexts, id: \.hash) { searchText in
+                            Text(searchText)
                         }
                     }
-                } else if !viewModel.searchText.isEmpty, !viewModel.results.isEmpty {
-                    List(selection: $url) {
-                        ForEach(viewModel.results, id: \.url) { result in
-                            Text(result.title)
-                        }
-                    }
-                } else if !viewModel.searchText.isEmpty, viewModel.results.isEmpty, !viewModel.inProgress {
-                    List { Text("No Result") }
-                } else {
-                    List { }
                 }
-            }.frame(minHeight: 100, idealHeight: 300)
+            } else if !viewModel.searchText.isEmpty, !viewModel.results.isEmpty {
+                List(selection: $url) {
+                    ForEach(viewModel.results, id: \.url) { result in
+                        Text(result.title)
+                    }
+                }
+            } else if !viewModel.searchText.isEmpty, viewModel.results.isEmpty, !viewModel.inProgress {
+                List { Text("No Result") }
+            } else {
+                List { }
+            }
             VStack(spacing: 0) {
+                Divider()
                 HStack {
                     Text("Include in Search").foregroundColor(.primary)
                     Spacer()
@@ -67,7 +66,7 @@ struct Search: View {
                         Toggle(zimFile.title, isOn: zimFile.bind(\.includedInSearch))
                     }
                 }
-            }.frame(minHeight: 100, idealHeight: 150)
+            }.frame(height: 180)
         }
     }
 }
