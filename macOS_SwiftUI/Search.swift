@@ -48,18 +48,22 @@ struct Search: View {
             VStack(spacing: 0) {
                 Divider()
                 HStack {
-                    Text("Include in Search").foregroundColor(.primary)
+                    Text("Include in Search").fontWeight(.medium)
                     Spacer()
                     if zimFiles.map {$0.includedInSearch }.reduce(true) { $0 && $1 } {
-                        Button("None") {
-
+                        Button {
+                            
+                        } label: {
+                            Text("None").font(.caption).fontWeight(.medium)
                         }
                     } else {
-                        Button("All") {
-
+                        Button {
+                            
+                        } label: {
+                            Text("All").font(.caption).fontWeight(.medium)
                         }
                     }
-                }.padding(.vertical, 5).padding(.leading, 16).padding(.trailing, 10)
+                }.padding(.vertical, 5).padding(.leading, 16).padding(.trailing, 10).background(.thickMaterial)
                 Divider()
                 List {
                     ForEach(zimFiles, id: \.fileID) { zimFile in
