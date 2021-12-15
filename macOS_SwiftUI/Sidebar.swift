@@ -31,7 +31,7 @@ struct Sidebar: View {
                     }.help("Show library of zim files")
                 }.padding(.vertical, 6).buttonStyle(.borderless).frame(maxWidth: .infinity)
                 Divider()
-            }
+            }.background(.thickMaterial)
             switch displayMode {
             case .search:
                 Search(url: $url).listStyle(.sidebar)

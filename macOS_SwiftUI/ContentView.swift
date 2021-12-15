@@ -29,7 +29,13 @@ struct ContentView: View {
                         Button { toggleSidebar() } label: { Image(systemName: "sidebar.leading") }
                     }
                 }
-            WebView(url: $url, webView: viewModel.webView)
+            Group {
+                if url == nil {
+                    EmptyView()
+                } else {
+                    WebView(url: $url, webView: viewModel.webView)
+                }
+            }
                 .ignoresSafeArea(.container, edges: .vertical)
                 .frame(idealWidth: 800, minHeight: 300, idealHeight: 350)
                 .toolbar {
