@@ -16,62 +16,66 @@ struct Search: View {
     @StateObject private var viewModel = ViewModel()
     @Binding var url: URL?
     @Default(.recentSearchTexts) var recentSearchTexts
+    
+    var body: some View {
+        SearchField(searchText: $viewModel.searchText).padding(.horizontal, 10).padding(.vertical, 6)
+        if viewModel.searchText.isEmpty, !recentSearchTexts.isEmpty {
+            List {
+                Section("Recent") {
+                    ForEach(recentSearchTexts, id: \.hash) { searchText in
+                        Text(searchText)
+                    }
+                }
+            }
+        } else if !viewModel.searchText.isEmpty, !viewModel.results.isEmpty {
+            List(selection: $url) {
+                ForEach(viewModel.results, id: \.url) { result in
+                    Text(result.title)
+                }
+            }
+        } else if !viewModel.searchText.isEmpty, viewModel.results.isEmpty, !viewModel.inProgress {
+            List { Text("No Result") }
+        } else {
+            List { }
+        }
+        SearchScopeView()
+    }
+}
+
+struct SearchScopeView: View {
     @ObservedResults(
         ZimFile.self,
         filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
         sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
     ) private var zimFiles
     
-    
     var body: some View {
-        SearchField(searchText: $viewModel.searchText).padding(.horizontal, 8)
         VStack(spacing: 0) {
-            if viewModel.searchText.isEmpty, !recentSearchTexts.isEmpty {
-                List {
-                    Section("Recent") {
-                        ForEach(recentSearchTexts, id: \.hash) { searchText in
-                            Text(searchText)
-                        }
+            Divider()
+            HStack {
+                Text("Include in Search").fontWeight(.medium)
+                Spacer()
+                if zimFiles.map {$0.includedInSearch }.reduce(true) { $0 && $1 } {
+                    Button {
+                        
+                    } label: {
+                        Text("None").font(.caption).fontWeight(.medium)
+                    }
+                } else {
+                    Button {
+                        
+                    } label: {
+                        Text("All").font(.caption).fontWeight(.medium)
                     }
                 }
-            } else if !viewModel.searchText.isEmpty, !viewModel.results.isEmpty {
-                List(selection: $url) {
-                    ForEach(viewModel.results, id: \.url) { result in
-                        Text(result.title)
-                    }
+            }.padding(.vertical, 5).padding(.leading, 16).padding(.trailing, 10).background(.regularMaterial)
+            Divider()
+            List {
+                ForEach(zimFiles, id: \.fileID) { zimFile in
+                    Toggle(zimFile.title, isOn: zimFile.bind(\.includedInSearch))
                 }
-            } else if !viewModel.searchText.isEmpty, viewModel.results.isEmpty, !viewModel.inProgress {
-                List { Text("No Result") }
-            } else {
-                List { }
             }
-            VStack(spacing: 0) {
-                Divider()
-                HStack {
-                    Text("Include in Search").fontWeight(.medium)
-                    Spacer()
-                    if zimFiles.map {$0.includedInSearch }.reduce(true) { $0 && $1 } {
-                        Button {
-                            
-                        } label: {
-                            Text("None").font(.caption).fontWeight(.medium)
-                        }
-                    } else {
-                        Button {
-                            
-                        } label: {
-                            Text("All").font(.caption).fontWeight(.medium)
-                        }
-                    }
-                }.padding(.vertical, 5).padding(.leading, 16).padding(.trailing, 10).background(.thickMaterial)
-                Divider()
-                List {
-                    ForEach(zimFiles, id: \.fileID) { zimFile in
-                        Toggle(zimFile.title, isOn: zimFile.bind(\.includedInSearch))
-                    }
-                }
-            }.frame(height: 180)
-        }
+        }.frame(height: 180)
     }
 }
 
