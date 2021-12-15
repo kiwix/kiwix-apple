@@ -42,7 +42,7 @@ struct Search: View {
     }
 }
 
-struct SearchScopeView: View {
+struct  v: View {
     @ObservedResults(
         ZimFile.self,
         filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
@@ -56,15 +56,11 @@ struct SearchScopeView: View {
                 Text("Include in Search").fontWeight(.medium)
                 Spacer()
                 if zimFiles.map {$0.includedInSearch }.reduce(true) { $0 && $1 } {
-                    Button {
-                        
-                    } label: {
+                    Button { selectNone() } label: {
                         Text("None").font(.caption).fontWeight(.medium)
                     }
                 } else {
-                    Button {
-                        
-                    } label: {
+                    Button { selectAll() } label: {
                         Text("All").font(.caption).fontWeight(.medium)
                     }
                 }
@@ -76,6 +72,22 @@ struct SearchScopeView: View {
                 }
             }
         }.frame(height: 180)
+    }
+    
+    private func selectAll() {
+        let database = try? Realm()
+        try? database?.write {
+            let zimFiles = database?.objects(ZimFile.self).where { ($0.stateRaw == ZimFile.State.onDevice.rawValue) }
+            zimFiles?.forEach { $0.includedInSearch = true }
+        }
+    }
+    
+    private func selectNone() {
+        let database = try? Realm()
+        try? database?.write {
+            let zimFiles = database?.objects(ZimFile.self).where { ($0.stateRaw == ZimFile.State.onDevice.rawValue) }
+            zimFiles?.forEach { $0.includedInSearch = false }
+        }
     }
 }
 
