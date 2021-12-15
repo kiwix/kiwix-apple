@@ -42,7 +42,7 @@ struct Search: View {
     }
 }
 
-struct  v: View {
+struct SearchScopeView: View {
     @ObservedResults(
         ZimFile.self,
         filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
