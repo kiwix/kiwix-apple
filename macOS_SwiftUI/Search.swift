@@ -12,26 +12,24 @@ import RealmSwift
 
 import Defaults
 
+/// Search interface in the sidebar.
 struct Search: View {
     @StateObject private var viewModel = ViewModel()
     @Binding var url: URL?
-    @Default(.recentSearchTexts) var recentSearchTexts
+    @State var selectedSearchText = Set<String>()
+    @Default(.recentSearchTexts) var recentSearchTexts: [String]
     
     var body: some View {
         SearchField(searchText: $viewModel.searchText).padding(.horizontal, 10).padding(.vertical, 6)
         if viewModel.searchText.isEmpty, !recentSearchTexts.isEmpty {
-            List {
-                Section("Recent") {
-                    ForEach(recentSearchTexts, id: \.hash) { searchText in
-                        Text(searchText)
-                    }
-                }
+            List(recentSearchTexts, id: \.self, selection: $selectedSearchText) { searchText in
+                Text(searchText)
+            }.onChange(of: selectedSearchText) { newValue in
+                print(newValue)
             }
         } else if !viewModel.searchText.isEmpty, !viewModel.results.isEmpty {
-            List(selection: $url) {
-                ForEach(viewModel.results, id: \.url) { result in
-                    Text(result.title)
-                }
+            List(viewModel.results, id: \.url, selection: $url) { searchResult in
+                Text(searchResult.title)
             }
         } else if !viewModel.searchText.isEmpty, viewModel.results.isEmpty, !viewModel.inProgress {
             List { Text("No Result") }
@@ -42,6 +40,7 @@ struct Search: View {
     }
 }
 
+/// Controls which zim files are included in search.
 struct SearchScopeView: View {
     @ObservedResults(
         ZimFile.self,
