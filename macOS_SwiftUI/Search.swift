@@ -25,11 +25,19 @@ struct Search: View {
             List(recentSearchTexts, id: \.self, selection: $selectedSearchText) { searchText in
                 Text(searchText)
             }.onChange(of: selectedSearchText) { newValue in
-                print(newValue)
+                guard let searchText = newValue.first else { return }
+                viewModel.searchText = searchText
+                selectedSearchText = []
             }
         } else if !viewModel.searchText.isEmpty, !viewModel.results.isEmpty {
             List(viewModel.results, id: \.url, selection: $url) { searchResult in
                 Text(searchResult.title)
+            }.onChange(of: url) { url in
+                guard !viewModel.searchText.isEmpty else { return }
+                var recentSearchTexts = self.recentSearchTexts
+                recentSearchTexts.removeAll { $0 == viewModel.searchText }
+                recentSearchTexts.insert(viewModel.searchText, at: 0)
+                self.recentSearchTexts = recentSearchTexts
             }
         } else if !viewModel.searchText.isEmpty, viewModel.results.isEmpty, !viewModel.inProgress {
             List { Text("No Result") }
