@@ -27,7 +27,9 @@ struct Search: View {
             }.onChange(of: selectedSearchText) { newValue in
                 guard let searchText = newValue.first else { return }
                 viewModel.searchText = searchText
-                selectedSearchText = []
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    selectedSearchText = []
+                }
             }
         } else if !viewModel.searchText.isEmpty, !viewModel.results.isEmpty {
             List(viewModel.results, id: \.url, selection: $url) { searchResult in
