@@ -8,15 +8,15 @@
 
 import Combine
 import SwiftUI
-import RealmSwift
 
+import RealmSwift
 import Defaults
 
 /// Search interface in the sidebar.
 struct Search: View {
-    @StateObject private var viewModel = ViewModel()
     @Binding var url: URL?
     @State var selectedSearchText = Set<String>()
+    @StateObject private var viewModel = ViewModel()
     @Default(.recentSearchTexts) var recentSearchTexts: [String]
     
     var body: some View {
@@ -46,57 +46,7 @@ struct Search: View {
         } else {
             List { }
         }
-        SearchScopeView()
-    }
-}
-
-/// Controls which zim files are included in search.
-struct SearchScopeView: View {
-    @ObservedResults(
-        ZimFile.self,
-        filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
-        sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
-    ) private var zimFiles
-    
-    var body: some View {
-        VStack(spacing: 0) {
-            Divider()
-            HStack {
-                Text("Include in Search").fontWeight(.medium)
-                Spacer()
-                if zimFiles.map {$0.includedInSearch }.reduce(true) { $0 && $1 } {
-                    Button { selectNone() } label: {
-                        Text("None").font(.caption).fontWeight(.medium)
-                    }
-                } else {
-                    Button { selectAll() } label: {
-                        Text("All").font(.caption).fontWeight(.medium)
-                    }
-                }
-            }.padding(.vertical, 5).padding(.leading, 16).padding(.trailing, 10).background(.regularMaterial)
-            Divider()
-            List {
-                ForEach(zimFiles, id: \.fileID) { zimFile in
-                    Toggle(zimFile.title, isOn: zimFile.bind(\.includedInSearch))
-                }
-            }
-        }.frame(height: 180)
-    }
-    
-    private func selectAll() {
-        let database = try? Realm()
-        try? database?.write {
-            let zimFiles = database?.objects(ZimFile.self).where { ($0.stateRaw == ZimFile.State.onDevice.rawValue) }
-            zimFiles?.forEach { $0.includedInSearch = true }
-        }
-    }
-    
-    private func selectNone() {
-        let database = try? Realm()
-        try? database?.write {
-            let zimFiles = database?.objects(ZimFile.self).where { ($0.stateRaw == ZimFile.State.onDevice.rawValue) }
-            zimFiles?.forEach { $0.includedInSearch = false }
-        }
+        SearchFilterView()
     }
 }
 
@@ -106,7 +56,7 @@ private class ViewModel: ObservableObject {
     @Published var results = [SearchResult]()
     
     private var searchSubscriber: AnyCancellable?
-    private var inProgressSubscriber: AnyCancellable?
+    private var searchTextSubscriber: AnyCancellable?
     private let queue = OperationQueue()
     
     init() {
@@ -126,7 +76,7 @@ private class ViewModel: ObservableObject {
             .sink { zimFileIDs, searchText in
                 self.updateSearchResults(searchText, Set(zimFileIDs))
             }
-        inProgressSubscriber = $searchText.sink { searchText in self.inProgress = !searchText.isEmpty }
+        searchTextSubscriber = $searchText.sink { searchText in self.inProgress = !searchText.isEmpty }
     }
     
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<String>) {
