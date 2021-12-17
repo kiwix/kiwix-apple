@@ -15,9 +15,9 @@ import Defaults
 /// Search interface in the sidebar.
 struct Search: View {
     @Binding var url: URL?
-    @State var selectedSearchText = Set<String>()
+    @State private var selectedSearchText = Set<String>()
     @StateObject private var viewModel = ViewModel()
-    @Default(.recentSearchTexts) var recentSearchTexts: [String]
+    @Default(.recentSearchTexts) private var recentSearchTexts: [String]
     
     var body: some View {
         SearchField(searchText: $viewModel.searchText).padding(.horizontal, 10).padding(.vertical, 6)
@@ -26,27 +26,33 @@ struct Search: View {
                 Text(searchText)
             }.onChange(of: selectedSearchText) { newValue in
                 guard let searchText = newValue.first else { return }
-                viewModel.searchText = searchText
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    selectedSearchText = []
-                }
+                self.updateCurrentSearchText(searchText)
             }
         } else if !viewModel.searchText.isEmpty, !viewModel.results.isEmpty {
             List(viewModel.results, id: \.url, selection: $url) { searchResult in
                 Text(searchResult.title)
-            }.onChange(of: url) { url in
-                guard !viewModel.searchText.isEmpty else { return }
-                var recentSearchTexts = self.recentSearchTexts
-                recentSearchTexts.removeAll { $0 == viewModel.searchText }
-                recentSearchTexts.insert(viewModel.searchText, at: 0)
-                self.recentSearchTexts = recentSearchTexts
-            }
+            }.onChange(of: url) { _ in self.updateRecentSearchTexts(viewModel.searchText) }
         } else if !viewModel.searchText.isEmpty, viewModel.results.isEmpty, !viewModel.inProgress {
             List { Text("No Result") }
         } else {
             List { }
         }
         SearchFilterView()
+    }
+    
+    private func updateCurrentSearchText(_ searchText: String) {
+        viewModel.searchText = searchText
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            selectedSearchText = []
+        }
+    }
+    
+    private func updateRecentSearchTexts(_ searchText: String) {
+        guard !searchText.isEmpty else { return }
+        var recentSearchTexts = self.recentSearchTexts
+        recentSearchTexts.removeAll { $0 == searchText }
+        recentSearchTexts.insert(searchText, at: 0)
+        self.recentSearchTexts = recentSearchTexts
     }
 }
 
