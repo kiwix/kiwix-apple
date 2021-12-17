@@ -49,8 +49,19 @@ struct ContentView: View {
                     }
                     ToolbarItemGroup {
                         Button {
+                            if viewModel.isBookmarked {
+                                viewModel.unBookmarkCurrentArticle()
+                            } else {
+                                viewModel.bookmarkCurrentArticle()
+                            }
+                        } label: {
+                            Image(systemName: viewModel.isBookmarked ? "star.fill" : "star")
+                        }.disabled(url == nil)
+                        Button {
                             viewModel.loadMainPage()
-                        } label: { Image(systemName: "house") }.disabled(onDevice.isEmpty)
+                        } label: {
+                            Image(systemName: "house")
+                        }.disabled(onDevice.isEmpty)
                         Menu {
                             ForEach(onDevice) { zimFile in
                                 Button(zimFile.title) { viewModel.loadRandomPage(zimFileID: zimFile.fileID) }
@@ -80,6 +91,7 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     @Published var canGoForward: Bool = false
     @Published var articleTitle: String = ""
     @Published var zimFileTitle: String = ""
+    @Published var isBookmarked: Bool = false
     
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
@@ -132,6 +144,13 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         let zimFileID = zimFileID ?? webView.url?.host ?? ""
         guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
         webView.load(URLRequest(url: url))
+    }
+    
+    func bookmarkCurrentArticle() {
+    }
+    
+    func unBookmarkCurrentArticle() {
+        
     }
     
     func webView(_ webView: WKWebView,
