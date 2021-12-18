@@ -13,7 +13,7 @@ struct Sidebar: View {
     @Binding var url: URL?
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             VStack(spacing: 0) {
                 Divider()
                 HStack(spacing: 20) {
@@ -31,7 +31,7 @@ struct Sidebar: View {
                     }.help("Show library of zim files")
                 }.padding(.vertical, 6).buttonStyle(.borderless).frame(maxWidth: .infinity)
                 Divider()
-            }
+            }.background(.regularMaterial)
             switch displayMode {
             case .search:
                 Search(url: $url).listStyle(.sidebar)

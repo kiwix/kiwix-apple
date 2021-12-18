@@ -29,7 +29,13 @@ struct ContentView: View {
                         Button { toggleSidebar() } label: { Image(systemName: "sidebar.leading") }
                     }
                 }
-            WebView(url: $url, webView: viewModel.webView)
+            Group {
+                if url == nil {
+                    EmptyView()
+                } else {
+                    WebView(url: $url, webView: viewModel.webView)
+                }
+            }
                 .ignoresSafeArea(.container, edges: .vertical)
                 .frame(idealWidth: 800, minHeight: 300, idealHeight: 350)
                 .toolbar {
@@ -43,8 +49,19 @@ struct ContentView: View {
                     }
                     ToolbarItemGroup {
                         Button {
+                            if viewModel.isBookmarked {
+                                viewModel.unBookmarkCurrentArticle()
+                            } else {
+                                viewModel.bookmarkCurrentArticle()
+                            }
+                        } label: {
+                            Image(systemName: viewModel.isBookmarked ? "star.fill" : "star")
+                        }.disabled(url == nil)
+                        Button {
                             viewModel.loadMainPage()
-                        } label: { Image(systemName: "house") }.disabled(onDevice.isEmpty)
+                        } label: {
+                            Image(systemName: "house")
+                        }.disabled(onDevice.isEmpty)
                         Menu {
                             ForEach(onDevice) { zimFile in
                                 Button(zimFile.title) { viewModel.loadRandomPage(zimFileID: zimFile.fileID) }
@@ -74,6 +91,7 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     @Published var canGoForward: Bool = false
     @Published var articleTitle: String = ""
     @Published var zimFileTitle: String = ""
+    @Published var isBookmarked: Bool = false
     
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
@@ -128,27 +146,43 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         webView.load(URLRequest(url: url))
     }
     
+    func bookmarkCurrentArticle() {
+        guard let database = try? Realm(),
+              let zimFileID = webView.url?.host,
+              let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
+        try? database.write {
+            let bookmark = Bookmark()
+            bookmark.zimFile = zimFile
+            bookmark.title = webView.title ?? "Unknown"
+            bookmark.path = webView.url?.path ?? ""
+            database.add(bookmark)
+        }
+    }
+    
+    func unBookmarkCurrentArticle() {
+        
+    }
+    
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
-                 preferences: WKWebpagePreferences,
-                 decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
-        guard let url = navigationAction.request.url else { decisionHandler(.cancel, preferences); return }
-        if url.isKiwixURL {
-            if let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
-                decisionHandler(.cancel, preferences)
-                print("Redirecting to: \(redirectedURL.path)")
-                webView.load(URLRequest(url: redirectedURL))
-            } else {
-                preferences.preferredContentMode = .desktop
-                print("Loading: \(url.path)")
-                decisionHandler(.allow, preferences)
-            }
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
+        if url.isKiwixURL, let redirectedURL = ZimFileService.shared.getRedirectedURL(url: url) {
+            decisionHandler(.cancel)
+            webView.load(URLRequest(url: redirectedURL))
+        } else if url.isKiwixURL {
+            decisionHandler(.allow)
         } else if url.scheme == "http" || url.scheme == "https" {
-            decisionHandler(.cancel, preferences)
+            decisionHandler(.cancel)
+            NSWorkspace.shared.open(url)
         } else if url.scheme == "geo" {
-            decisionHandler(.cancel, preferences)
+            decisionHandler(.cancel)
+            let coordinate = url.absoluteString.replacingOccurrences(of: "geo:", with: "")
+            if let url = URL(string: "http://maps.apple.com/?ll=\(coordinate)") {
+                NSWorkspace.shared.open(url)
+            }
         } else {
-            decisionHandler(.cancel, preferences)
+            decisionHandler(.cancel)
         }
     }
     
