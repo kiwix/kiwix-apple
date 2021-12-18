@@ -147,6 +147,16 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     }
     
     func bookmarkCurrentArticle() {
+        guard let database = try? Realm(),
+              let zimFileID = webView.url?.host,
+              let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
+        try? database.write {
+            let bookmark = Bookmark()
+            bookmark.zimFile = zimFile
+            bookmark.title = webView.title ?? "Unknown"
+            bookmark.path = webView.url?.path ?? ""
+            database.add(bookmark)
+        }
     }
     
     func unBookmarkCurrentArticle() {
