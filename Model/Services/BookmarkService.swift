@@ -62,7 +62,6 @@ class BookmarkService {
                 try database.write {
                     database.add(bookmark)
                 }
-                self.updateBookmarkWidgetData()
             } catch {}
         }
     }
@@ -74,33 +73,5 @@ class BookmarkService {
                 database.delete(bookmark)
             }
         } catch {}
-        updateBookmarkWidgetData()
-    }
-    
-    private func updateBookmarkWidgetData() {
-        DispatchQueue.global(qos: .background).async {
-            guard let database = try? Realm() else { return }
-            let bookmarks = Array(database.objects(Bookmark.self).sorted(byKeyPath: "date", ascending: false).prefix(8))
-            let data = bookmarks.compactMap { bookmark -> [String: Any]? in
-                    guard let zimFile = bookmark.zimFile,
-                        let url = URL(zimFileID: zimFile.fileID, contentPath: bookmark.path) else {return nil}
-                    let thumbImageData: Data? = {
-                        guard let thumbImagePath = bookmark.thumbImagePath,
-                              let content = ZimFileService.shared.getURLContent(
-                                zimFileID: zimFile.fileID, contentPath: thumbImagePath
-                              ) else { return nil }
-                        return content.data
-                    }()
-                    return [
-                        "title": bookmark.title,
-                        "url": url.absoluteString,
-                        "thumbImageData": thumbImageData ?? bookmark.zimFile?.faviconData ?? Data()
-                    ]
-                }
-            UserDefaults(suiteName: "group.kiwix")?.set(data, forKey: "bookmarks")
-            #if !targetEnvironment(macCatalyst)
-            NCWidgetController().setHasContent(data.count > 0, forWidgetWithBundleIdentifier: "self.Kiwix.Bookmarks")
-            #endif
-        }
     }
 }
