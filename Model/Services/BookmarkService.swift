@@ -49,11 +49,7 @@ class BookmarkService {
                 } else {
                     bookmark.title = zimFile.title
                 }
-                if #available(iOS 12.0, *, macOS 10.14) {
-                    bookmark.snippet = parser.getFirstSentence(languageCode: zimFile.languageCode)?.string
-                } else {
-                    bookmark.snippet = parser.getFirstParagraph()?.string
-                }
+                bookmark.snippet = parser.getFirstSentence(languageCode: zimFile.languageCode)?.string
                 if let imagePath = parser.getFirstImagePath(), let imageURL = URL(string: imagePath, relativeTo: url) {
                     bookmark.thumbImagePath = imageURL.path
                 }
