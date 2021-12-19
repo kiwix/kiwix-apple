@@ -15,7 +15,7 @@ import Defaults
 /// Search interface in the sidebar.
 struct Search: View {
     @Binding var url: URL?
-    @State private var selectedSearchText = Set<String>()
+    @State private var selectedSearchText: String?
     @StateObject private var viewModel = ViewModel()
     @Default(.recentSearchTexts) private var recentSearchTexts: [String]
     
@@ -24,10 +24,7 @@ struct Search: View {
         if viewModel.searchText.isEmpty, !recentSearchTexts.isEmpty {
             List(recentSearchTexts, id: \.self, selection: $selectedSearchText) { searchText in
                 Text(searchText)
-            }.onChange(of: selectedSearchText) { newValue in
-                guard let searchText = newValue.first else { return }
-                self.updateCurrentSearchText(searchText)
-            }
+            }.onChange(of: selectedSearchText) { self.updateCurrentSearchText($0) }
         } else if !viewModel.searchText.isEmpty, !viewModel.results.isEmpty {
             List(viewModel.results, id: \.url, selection: $url) { searchResult in
                 Text(searchResult.title)
@@ -40,10 +37,11 @@ struct Search: View {
         SearchFilterView()
     }
     
-    private func updateCurrentSearchText(_ searchText: String) {
+    private func updateCurrentSearchText(_ searchText: String?) {
+        guard let searchText = searchText else { return }
         viewModel.searchText = searchText
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            selectedSearchText = []
+            selectedSearchText = nil
         }
     }
     

@@ -37,7 +37,7 @@ struct ContentView: View {
                 }
             }
                 .ignoresSafeArea(.container, edges: .vertical)
-                .frame(idealWidth: 800, minHeight: 300, idealHeight: 350)
+                .frame(minWidth: 400, idealWidth: 800, minHeight: 400, idealHeight: 550)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigation) {
                         Button { viewModel.webView.goBack() } label: {
@@ -50,9 +50,9 @@ struct ContentView: View {
                     ToolbarItemGroup {
                         Button {
                             if viewModel.isBookmarked {
-                                viewModel.unBookmarkCurrentArticle()
+                                viewModel.isBookmarked = false
                             } else {
-                                viewModel.bookmarkCurrentArticle()
+                                viewModel.isBookmarked = true
                             }
                         } label: {
                             Image(systemName: viewModel.isBookmarked ? "star.fill" : "star")
@@ -147,16 +147,7 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     }
     
     func bookmarkCurrentArticle() {
-        guard let database = try? Realm(),
-              let zimFileID = webView.url?.host,
-              let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
-        try? database.write {
-            let bookmark = Bookmark()
-            bookmark.zimFile = zimFile
-            bookmark.title = webView.title ?? "Unknown"
-            bookmark.path = webView.url?.path ?? ""
-            database.add(bookmark)
-        }
+        
     }
     
     func unBookmarkCurrentArticle() {

@@ -36,9 +36,7 @@ struct Sidebar: View {
             case .search:
                 Search(url: $url).listStyle(.sidebar)
             case .bookmark:
-                List {
-                    Text("bookmarks")
-                }
+                BookmarksList(url: $url)
             case .tableOfContent:
                 List {
                     Text("table of contents")
