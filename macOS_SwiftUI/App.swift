@@ -19,6 +19,7 @@ struct Kiwix: SwiftUI.App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(\.managedObjectContext, Database.shared.persistentContainer.viewContext)
         }.commands {
             SidebarCommands()
             CommandGroup(replacing: .newItem) {
