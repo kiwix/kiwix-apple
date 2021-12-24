@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21C52" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Bookmark" representedClassName="Bookmark" syncable="YES" codeGenerationType="class">
+    <entity name="Bookmark" representedClassName=".Bookmark" syncable="YES">
         <attribute name="articleURL" attributeType="URI"/>
         <attribute name="created" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="snippet" optional="YES" attributeType="String" spotlightIndexingEnabled="YES"/>

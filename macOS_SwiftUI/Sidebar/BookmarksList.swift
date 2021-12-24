@@ -12,13 +12,14 @@ import RealmSwift
 
 /// List of bookmarked article
 struct BookmarksList: View {
+    @FetchRequest(sortDescriptors: [
+        SortDescriptor(\.created, order: .reverse)
+    ]) private var bookmarks: FetchedResults<Bookmark>
     @Binding var url: URL?
     
     var body: some View {
-        List {
-            Text("Bookmark 1")
-            Text("Bookmark 2")
-            Text("Bookmark 3")
+        List(bookmarks, selection: $url) { bookmark in
+            Text(bookmark.title)
         }
     }
 }

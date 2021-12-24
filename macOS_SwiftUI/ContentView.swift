@@ -6,6 +6,7 @@
 //  Copyright © 2021 Chris Li. All rights reserved.
 //
 
+import CoreData
 import SwiftUI
 import WebKit
 import RealmSwift
@@ -19,6 +20,9 @@ struct ContentView: View {
         filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
         sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
     ) private var onDevice
+    
+    /// Used to track if the current article is bookmarked
+    @FetchRequest(sortDescriptors: []) private var currentArticleBookmarks: FetchedResults<Bookmark>
     
     var body: some View {
         NavigationView {
@@ -56,7 +60,7 @@ struct ContentView: View {
                                 viewModel.bookmarkCurrentArticle()
                             }
                         } label: {
-                            Image(systemName: viewModel.isBookmarked ? "star.fill" : "star")
+                            Image(systemName: currentArticleBookmarks.isEmpty ? "star" : "star.fill")
                         }.disabled(url == nil)
                         Button {
                             viewModel.loadMainPage()
@@ -76,6 +80,13 @@ struct ContentView: View {
                     }
                 }
         }
+        .onChange(of: url, perform: { url in
+            if let url = url {
+                currentArticleBookmarks.nsPredicate = NSPredicate(format: "articleURL == %@", url as CVarArg)
+            } else {
+                currentArticleBookmarks.nsPredicate = NSPredicate(format: "articleURL == nil")
+            }
+        })
         .environmentObject(viewModel)
         .focusedSceneValue(\.sceneViewModel, viewModel)
         .navigationTitle(viewModel.articleTitle)
@@ -148,19 +159,16 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     }
     
     func bookmarkCurrentArticle() {
-        isBookmarked = true
-        
         guard let url = webView.url, let title = webView.title else { return }
         let context = Database.shared.persistentContainer.viewContext
         let bookmark = Bookmark(context: context)
         bookmark.articleURL = url
         bookmark.title = title
+        bookmark.created = Date()
         try? context.save()
     }
     
     func unBookmarkCurrentArticle() {
-        isBookmarked = false
-        
         guard let url = webView.url else { return }
         let context = Database.shared.persistentContainer.viewContext
         let request = Bookmark.fetchRequest()

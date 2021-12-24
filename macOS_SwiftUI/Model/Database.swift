@@ -43,3 +43,17 @@ class Database {
         return container
     }()
 }
+
+class Bookmark: NSManagedObject, Identifiable {
+    var id: URL { articleURL }
+    
+    @NSManaged var articleURL: URL
+    @NSManaged var thumbImageURL: URL?
+    @NSManaged var title: String
+    @NSManaged var snippet: String?
+    @NSManaged var created: Date
+    
+    class func fetchRequest() -> NSFetchRequest<Bookmark> {
+        super.fetchRequest() as! NSFetchRequest<Bookmark>
+    }
+}
