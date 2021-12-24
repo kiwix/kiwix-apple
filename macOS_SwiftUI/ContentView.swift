@@ -11,6 +11,7 @@ import WebKit
 import RealmSwift
 
 struct ContentView: View {
+    @Environment(\.managedObjectContext) var managedObjectContext
     @StateObject var viewModel = SceneViewModel()
     @State var url: URL?
     @ObservedResults(
@@ -50,9 +51,9 @@ struct ContentView: View {
                     ToolbarItemGroup {
                         Button {
                             if viewModel.isBookmarked {
-                                viewModel.isBookmarked = false
+                                viewModel.unBookmarkCurrentArticle()
                             } else {
-                                viewModel.isBookmarked = true
+                                viewModel.bookmarkCurrentArticle()
                             }
                         } label: {
                             Image(systemName: viewModel.isBookmarked ? "star.fill" : "star")
@@ -147,11 +148,26 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     }
     
     func bookmarkCurrentArticle() {
+        isBookmarked = true
         
+        guard let url = webView.url, let title = webView.title else { return }
+        let context = Database.shared.persistentContainer.viewContext
+        let bookmark = Bookmark(context: context)
+        bookmark.articleURL = url
+        bookmark.title = title
+        try? context.save()
     }
     
     func unBookmarkCurrentArticle() {
+        isBookmarked = false
         
+        guard let url = webView.url else { return }
+        let context = Database.shared.persistentContainer.viewContext
+        let request = Bookmark.fetchRequest()
+        request.predicate = NSPredicate(format: "articleURL == %@", url as CVarArg)
+        guard let bookmark = try? context.fetch(request).first else { return }
+        context.delete(bookmark)
+        try? context.save()
     }
     
     func webView(_ webView: WKWebView,
