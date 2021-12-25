@@ -8,7 +8,6 @@
 
 import SwiftUI
 import WebKit
-import RealmSwift
 
 struct WebView: NSViewRepresentable {
     @Binding var url: URL?

@@ -34,7 +34,7 @@ struct Search: View {
         } else {
             List { }
         }
-        SearchFilterView()
+//        SearchFilterView()
     }
     
     private func updateCurrentSearchText(_ searchText: String?) {

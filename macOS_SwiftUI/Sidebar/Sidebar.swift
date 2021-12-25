@@ -17,7 +17,10 @@ struct Sidebar: View {
             SidebarDisplayModeSelector(displayMode: $displayMode)
             switch displayMode {
             case .search:
-                Search(url: $url).listStyle(.sidebar)
+//                Search(url: $url).listStyle(.sidebar)
+                List {
+                    Text("search")
+                }
             case .bookmark:
                 BookmarksList(url: $url)
             case .tableOfContent:
@@ -25,7 +28,9 @@ struct Sidebar: View {
                     Text("table of contents")
                 }
             case .library:
-                Library()
+                List {
+                    Text("library")
+                }
             }
         }.focusedSceneValue(\.sidebarDisplayMode, $displayMode)
     }

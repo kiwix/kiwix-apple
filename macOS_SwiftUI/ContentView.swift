@@ -8,20 +8,19 @@
 
 import CoreData
 import SwiftUI
-import WebKit
 import UniformTypeIdentifiers
-import RealmSwift
+import WebKit
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     @StateObject var viewModel = SceneViewModel()
     @State var url: URL?
     @State var isPresentingFileImporter: Bool = false
-    @ObservedResults(
-        ZimFile.self,
-        filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
-        sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
-    ) private var onDevice
+//    @ObservedResults(
+//        ZimFile.self,
+//        filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
+//        sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
+//    ) private var onDevice
     
     var body: some View {
         NavigationView {
@@ -57,17 +56,18 @@ struct ContentView: View {
                             viewModel.loadMainPage()
                         } label: {
                             Image(systemName: "house")
-                        }.disabled(onDevice.isEmpty)
-                        Menu {
-                            ForEach(onDevice) { zimFile in
-                                Button(zimFile.title) { viewModel.loadRandomPage(zimFileID: zimFile.fileID) }
-                            }
-                        } label: {
-                            Label("Random Page", systemImage: "die.face.5")
-                        } primaryAction: {
-                            guard let zimFile = onDevice.first else { return }
-                            viewModel.loadRandomPage(zimFileID: zimFile.fileID)
-                        }.disabled(onDevice.isEmpty)
+                        }
+//                        .disabled(onDevice.isEmpty)
+//                        Menu {
+//                            ForEach(onDevice) { zimFile in
+//                                Button(zimFile.title) { viewModel.loadRandomPage(zimFileID: zimFile.fileID) }
+//                            }
+//                        } label: {
+//                            Label("Random Page", systemImage: "die.face.5")
+//                        } primaryAction: {
+//                            guard let zimFile = onDevice.first else { return }
+//                            viewModel.loadRandomPage(zimFileID: zimFile.fileID)
+//                        }.disabled(onDevice.isEmpty)
                     }
                 }
         }
@@ -77,7 +77,10 @@ struct ContentView: View {
         .navigationTitle(viewModel.articleTitle)
         .navigationSubtitle(viewModel.zimFileTitle)
         .fileImporter(isPresented: $isPresentingFileImporter, allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")]) { result in
-
+            if case let .success(url) = result {
+                ZimFileService.shared.open(url: url)
+                print(ZimFileService.shared.zimFileIDs)
+            }
         }
     }
     
@@ -124,13 +127,13 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         canGoForwardObserver = webView.observe(\.canGoForward) { [unowned self] webView, _ in
             self.canGoForward = webView.canGoForward
         }
-        titleObserver = webView.observe(\.title) { [unowned self] webView, _ in
-            guard let title = webView.title, !title.isEmpty,
-                  let zimFileID = webView.url?.host,
-                  let zimFile = (try? Realm())?.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
-            self.articleTitle = title
-            self.zimFileTitle = zimFile.title
-        }
+//        titleObserver = webView.observe(\.title) { [unowned self] webView, _ in
+//            guard let title = webView.title, !title.isEmpty,
+//                  let zimFileID = webView.url?.host,
+//                  let zimFile = (try? Realm())?.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
+//            self.articleTitle = title
+//            self.zimFileTitle = zimFile.title
+//        }
     }
     
     func loadMainPage(zimFileID: String? = nil) {

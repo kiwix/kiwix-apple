@@ -8,8 +8,6 @@
 
 import SwiftUI
 
-import RealmSwift
-
 /// List of bookmarked article
 struct BookmarksList: View {
     @FetchRequest(sortDescriptors: [
