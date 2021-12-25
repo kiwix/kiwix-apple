@@ -56,15 +56,7 @@ struct ContentView: View {
                         }.disabled(!viewModel.canGoForward)
                     }
                     ToolbarItemGroup {
-                        Button {
-                            if currentArticleBookmarks.isEmpty {
-                                viewModel.bookmarkCurrentArticle()
-                            } else {
-                                viewModel.unBookmarkCurrentArticle()
-                            }
-                        } label: {
-                            Image(systemName: currentArticleBookmarks.isEmpty ? "star" : "star.fill")
-                        }.disabled(url == nil)
+                        BookmarkButton(url: $url)
                         Button {
                             viewModel.loadMainPage()
                         } label: {
@@ -98,6 +90,36 @@ struct ContentView: View {
     
     private func toggleSidebar() {
         NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
+    }
+}
+
+struct BookmarkButton: View {
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @FetchRequest private var bookmarks: FetchedResults<Bookmark>
+    @EnvironmentObject var viewModel: SceneViewModel
+    @Binding var url: URL?
+    
+    init(url: Binding<URL?>) {
+        self._url = url
+        self._bookmarks = FetchRequest<Bookmark>(sortDescriptors: [], predicate: {
+            if let url = url.wrappedValue {
+                return NSPredicate(format: "articleURL == %@", url as CVarArg)
+            } else {
+                return NSPredicate(format: "articleURL == nil")
+            }
+        }())
+    }
+    
+    var body: some View {
+        Button {
+            if bookmarks.isEmpty {
+                viewModel.bookmarkCurrentArticle()
+            } else {
+                viewModel.unBookmarkCurrentArticle()
+            }
+        } label: {
+            Image(systemName: bookmarks.isEmpty ? "star" : "star.fill")
+        }
     }
 }
 
