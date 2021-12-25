@@ -21,12 +21,6 @@ struct ContentView: View {
         sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
     ) private var onDevice
     
-    /// Used to track if the current article is bookmarked
-    @FetchRequest(
-        sortDescriptors: [],
-        predicate: NSPredicate(format: "articleURL == nil")
-    ) private var currentArticleBookmarks: FetchedResults<Bookmark>
-    
     var body: some View {
         NavigationView {
             Sidebar(url: $url)
@@ -75,13 +69,6 @@ struct ContentView: View {
                     }
                 }
         }
-        .onChange(of: url, perform: { url in
-            if let url = url {
-                currentArticleBookmarks.nsPredicate = NSPredicate(format: "articleURL == %@", url as CVarArg)
-            } else {
-                currentArticleBookmarks.nsPredicate = NSPredicate(format: "articleURL == nil")
-            }
-        })
         .environmentObject(viewModel)
         .focusedSceneValue(\.sceneViewModel, viewModel)
         .navigationTitle(viewModel.articleTitle)
