@@ -22,7 +22,10 @@ struct ContentView: View {
     ) private var onDevice
     
     /// Used to track if the current article is bookmarked
-    @FetchRequest(sortDescriptors: []) private var currentArticleBookmarks: FetchedResults<Bookmark>
+    @FetchRequest(
+        sortDescriptors: [],
+        predicate: NSPredicate(format: "articleURL == nil")
+    ) private var currentArticleBookmarks: FetchedResults<Bookmark>
     
     var body: some View {
         NavigationView {
@@ -54,10 +57,10 @@ struct ContentView: View {
                     }
                     ToolbarItemGroup {
                         Button {
-                            if viewModel.isBookmarked {
-                                viewModel.unBookmarkCurrentArticle()
-                            } else {
+                            if currentArticleBookmarks.isEmpty {
                                 viewModel.bookmarkCurrentArticle()
+                            } else {
+                                viewModel.unBookmarkCurrentArticle()
                             }
                         } label: {
                             Image(systemName: currentArticleBookmarks.isEmpty ? "star" : "star.fill")
@@ -103,7 +106,6 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     @Published var canGoForward: Bool = false
     @Published var articleTitle: String = ""
     @Published var zimFileTitle: String = ""
-    @Published var isBookmarked: Bool = false
     
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
@@ -177,6 +179,8 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         context.delete(bookmark)
         try? context.save()
     }
+    
+    // MARK: - WKNavigationDelegate
     
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
