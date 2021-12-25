@@ -51,6 +51,7 @@
 		972E6F641FA11A6100F5C927 /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972E6F631FA11A6100F5C927 /* RoundedButton.swift */; };
 		9735D0BA2775363900C7D495 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0B82775363900C7D495 /* DataModel.xcdatamodeld */; };
 		9735D0BC2775594700C7D495 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0BB2775594700C7D495 /* Database.swift */; };
+		9735D0BE2777531400C7D495 /* BookmarkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9735D0BD2777531400C7D495 /* BookmarkButton.swift */; };
 		97381CC02769942C00F092EB /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; };
 		97381CC12769942C00F092EB /* Realm.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B126E8555E008309ED /* Realm.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		97381CC22769942C00F092EB /* RealmSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97EC18B026E8555E008309ED /* RealmSwift.xcframework */; };
@@ -293,6 +294,7 @@
 		972E6F631FA11A6100F5C927 /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		9735D0B92775363900C7D495 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		9735D0BB2775594700C7D495 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
+		9735D0BD2777531400C7D495 /* BookmarkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkButton.swift; sourceTree = "<group>"; };
 		973B2A5C254609FD00093661 /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
 		973B8011239066D0008CC8CE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		973BC75627587A29008D4114 /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
@@ -795,6 +797,7 @@
 			isa = PBXGroup;
 			children = (
 				97DED67E275278FF008D2C56 /* SearchField.swift */,
+				9735D0BD2777531400C7D495 /* BookmarkButton.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1308,6 +1311,7 @@
 				97E94B1C271EF24D005B0295 /* ContentView.swift in Sources */,
 				97B3BAD02736CE3500A23F49 /* URL.swift in Sources */,
 				97255D8C273608C3002B995B /* WebView.swift in Sources */,
+				9735D0BE2777531400C7D495 /* BookmarkButton.swift in Sources */,
 				97E94B1A271EF24D005B0295 /* App.swift in Sources */,
 				97242B952735E69B00C87F85 /* DownloadService.swift in Sources */,
 				97242B882735E66E00C87F85 /* OutlineItem.swift in Sources */,

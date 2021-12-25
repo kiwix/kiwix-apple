@@ -93,36 +93,6 @@ struct ContentView: View {
     }
 }
 
-struct BookmarkButton: View {
-    @Environment(\.managedObjectContext) var managedObjectContext
-    @FetchRequest private var bookmarks: FetchedResults<Bookmark>
-    @EnvironmentObject var viewModel: SceneViewModel
-    @Binding var url: URL?
-    
-    init(url: Binding<URL?>) {
-        self._url = url
-        self._bookmarks = FetchRequest<Bookmark>(sortDescriptors: [], predicate: {
-            if let url = url.wrappedValue {
-                return NSPredicate(format: "articleURL == %@", url as CVarArg)
-            } else {
-                return NSPredicate(format: "articleURL == nil")
-            }
-        }())
-    }
-    
-    var body: some View {
-        Button {
-            if bookmarks.isEmpty {
-                viewModel.bookmarkCurrentArticle()
-            } else {
-                viewModel.unBookmarkCurrentArticle()
-            }
-        } label: {
-            Image(systemName: bookmarks.isEmpty ? "star" : "star.fill")
-        }
-    }
-}
-
 class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     @Published var canGoBack: Bool = false
     @Published var canGoForward: Bool = false
@@ -180,26 +150,6 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         let zimFileID = zimFileID ?? webView.url?.host ?? ""
         guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
         webView.load(URLRequest(url: url))
-    }
-    
-    func bookmarkCurrentArticle() {
-        guard let url = webView.url, let title = webView.title else { return }
-        let context = Database.shared.persistentContainer.viewContext
-        let bookmark = Bookmark(context: context)
-        bookmark.articleURL = url
-        bookmark.title = title
-        bookmark.created = Date()
-        try? context.save()
-    }
-    
-    func unBookmarkCurrentArticle() {
-        guard let url = webView.url else { return }
-        let context = Database.shared.persistentContainer.viewContext
-        let request = Bookmark.fetchRequest()
-        request.predicate = NSPredicate(format: "articleURL == %@", url as CVarArg)
-        guard let bookmark = try? context.fetch(request).first else { return }
-        context.delete(bookmark)
-        try? context.save()
     }
     
     // MARK: - WKNavigationDelegate
