@@ -806,8 +806,8 @@
 			isa = PBXGroup;
 			children = (
 				9735D0B72775362000C7D495 /* Model */,
-				977BD5F8276C295C004D2C32 /* Sidebar */,
 				97DED67D275278EB008D2C56 /* View */,
+				977BD5F8276C295C004D2C32 /* Sidebar */,
 				97E94B19271EF24D005B0295 /* App.swift */,
 				973BC75627587A29008D4114 /* Commands.swift */,
 				97E94B1B271EF24D005B0295 /* ContentView.swift */,

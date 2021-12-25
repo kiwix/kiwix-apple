@@ -16,8 +16,10 @@ struct BookmarksList: View {
         SortDescriptor(\.created, order: .reverse)
     ]) private var bookmarks: FetchedResults<Bookmark>
     @Binding var url: URL?
+    @State var searchText: String = ""
     
     var body: some View {
+        SearchField(searchText: $searchText).padding(.horizontal, 10).padding(.vertical, 6)
         List(bookmarks, selection: $url) { bookmark in
             Text(bookmark.title)
         }
