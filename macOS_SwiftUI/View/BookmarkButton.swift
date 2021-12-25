@@ -34,7 +34,7 @@ struct BookmarkButton: View {
             }
         } label: {
             Image(systemName: bookmarks.isEmpty ? "star" : "star.fill")
-        }
+        }.disabled(url == nil)
     }
     
     private func createBookmark() {
