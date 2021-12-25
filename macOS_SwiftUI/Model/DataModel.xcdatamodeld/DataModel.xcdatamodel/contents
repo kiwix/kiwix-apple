@@ -6,8 +6,25 @@
         <attribute name="snippet" optional="YES" attributeType="String" spotlightIndexingEnabled="YES"/>
         <attribute name="thumbImageURL" optional="YES" attributeType="URI"/>
         <attribute name="title" attributeType="String" spotlightIndexingEnabled="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="articleURL"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="ZimFile" representedClassName=".ZimFile" syncable="YES">
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="mainPage" attributeType="URI"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="urlBookmark" optional="YES" attributeType="Binary"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <elements>
         <element name="Bookmark" positionX="-63" positionY="-18" width="128" height="104"/>
+        <element name="ZimFile" positionX="-63" positionY="18" width="128" height="89"/>
     </elements>
 </model>

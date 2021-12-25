@@ -79,7 +79,6 @@ struct ContentView: View {
         .fileImporter(isPresented: $isPresentingFileImporter, allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")]) { result in
             if case let .success(url) = result {
                 ZimFileService.shared.open(url: url)
-                print(ZimFileService.shared.zimFileIDs)
             }
         }
     }
