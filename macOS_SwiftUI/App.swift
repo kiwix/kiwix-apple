@@ -25,7 +25,7 @@ struct Kiwix: SwiftUI.App {
             CommandGroup(replacing: .newItem) {
                 Button("New Tab") { newTab() }.keyboardShortcut("t")
                 Divider()
-                Button("Open...") { open() }.keyboardShortcut("o")
+                FileImportButton()
             }
             CommandGroup(before: .sidebar) {
                 SidebarDisplayModeCommandButtons()
@@ -40,19 +40,5 @@ struct Kiwix: SwiftUI.App {
         windowController.newWindowForTab(nil)
         guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else { return }
         currentWindow.addTabbedWindow(newWindow, ordered: .above)
-    }
-    
-    private func open() {
-        guard let window = NSApp.keyWindow else { return }
-        let panel = NSOpenPanel()
-        panel.showsHiddenFiles = false
-        panel.canChooseFiles = true
-        panel.canChooseDirectories = false
-        panel.allowsMultipleSelection = false
-        panel.allowedFileTypes = ["zim"]
-        panel.beginSheetModal(for: window) { response in
-            guard response == .OK, let url = panel.urls.first else { return }
-            LibraryOperationQueue.shared.addOperation(LibraryScanOperation(url: url))
-        }
     }
 }

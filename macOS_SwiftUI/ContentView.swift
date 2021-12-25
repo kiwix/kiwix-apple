@@ -9,12 +9,14 @@
 import CoreData
 import SwiftUI
 import WebKit
+import UniformTypeIdentifiers
 import RealmSwift
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) var managedObjectContext
     @StateObject var viewModel = SceneViewModel()
     @State var url: URL?
+    @State var isPresentingFileImporter: Bool = false
     @ObservedResults(
         ZimFile.self,
         filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
@@ -70,9 +72,13 @@ struct ContentView: View {
                 }
         }
         .environmentObject(viewModel)
+        .focusedSceneValue(\.fileImporter, $isPresentingFileImporter)
         .focusedSceneValue(\.sceneViewModel, viewModel)
         .navigationTitle(viewModel.articleTitle)
         .navigationSubtitle(viewModel.zimFileTitle)
+        .fileImporter(isPresented: $isPresentingFileImporter, allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")]) { result in
+
+        }
     }
     
     private func toggleSidebar() {
