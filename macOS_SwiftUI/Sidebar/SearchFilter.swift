@@ -44,18 +44,18 @@ struct SearchFilterView: View {
     }
     
     private func selectAll() {
-//        let database = try? Realm()
-//        try? database?.write {
-//            let zimFiles = database?.objects(ZimFile.self).where { ($0.stateRaw == ZimFile.State.onDevice.rawValue) }
-//            zimFiles?.forEach { $0.includedInSearch = true }
-//        }
+        let request = ZimFile.fetchRequest()
+        try? managedObjectContext.fetch(request).forEach { zimFile in
+            zimFile.includedInSearch = true
+        }
+        try? managedObjectContext.save()
     }
     
     private func selectNone() {
-//        let database = try? Realm()
-//        try? database?.write {
-//            let zimFiles = database?.objects(ZimFile.self).where { ($0.stateRaw == ZimFile.State.onDevice.rawValue) }
-//            zimFiles?.forEach { $0.includedInSearch = false }
-//        }
+        let request = ZimFile.fetchRequest()
+        try? managedObjectContext.fetch(request).forEach { zimFile in
+            zimFile.includedInSearch = false
+        }
+        try? managedObjectContext.save()
     }
 }
