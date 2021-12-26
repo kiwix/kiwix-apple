@@ -14,10 +14,10 @@
     </entity>
     <entity name="ZimFile" representedClassName=".ZimFile" syncable="YES">
         <attribute name="fileID" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="fileURLBookmark" optional="YES" attributeType="Binary"/>
         <attribute name="includedInSearch" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="mainPage" attributeType="URI"/>
         <attribute name="name" attributeType="String"/>
-        <attribute name="urlBookmark" optional="YES" attributeType="Binary"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="fileID"/>

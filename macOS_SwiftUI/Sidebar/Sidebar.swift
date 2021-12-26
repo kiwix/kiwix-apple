@@ -17,8 +17,7 @@ struct Sidebar: View {
             SidebarDisplayModeSelector(displayMode: $displayMode)
             switch displayMode {
             case .search:
-                Search(url: $url).listStyle(.sidebar)
-                SearchFilterView()
+                Search(url: $url)
             case .bookmark:
                 BookmarksList(url: $url)
             case .tableOfContent:
