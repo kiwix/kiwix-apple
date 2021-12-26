@@ -59,10 +59,13 @@ class Bookmark: NSManagedObject, Identifiable {
 }
 
 class ZimFile: NSManagedObject, Identifiable {
-    @NSManaged var id: UUID
-    @NSManaged var title: String
+    var id: UUID { fileID }
+    
+    @NSManaged var fileID: UUID
+    @NSManaged var name: String
     @NSManaged var mainPage: URL
     @NSManaged var urlBookmark: Data?
+    @NSManaged var includedInSearch: Bool
     
     class func fetchRequest() -> NSFetchRequest<ZimFile> {
         super.fetchRequest() as! NSFetchRequest<ZimFile>

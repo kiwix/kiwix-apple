@@ -125,6 +125,7 @@
 		97A36C351F8C21210079B452 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 975FDB061F608F4100A10E8C /* WebKit.framework */; };
 		97A36C441F8C21210079B452 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975FDAE21F6082DA00A10E8C /* LaunchScreen.storyboard */; };
 		97A963C4259D38D900496214 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A963C3259D38D900496214 /* SettingsView.swift */; };
+		97B304862778002000E82DE0 /* SearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977BD5F9276C2991004D2C32 /* SearchFilter.swift */; };
 		97B3998A24673FE000BC6F5B /* SearchOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998924673FE000BC6F5B /* SearchOperation.mm */; };
 		97B3998E246759E400BC6F5B /* SearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998C2467561900BC6F5B /* SearchResult.m */; };
 		97B399902467626A00BC6F5B /* SearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998F2467626A00BC6F5B /* SearchOperation.swift */; };
@@ -1283,6 +1284,7 @@
 				9735D0C227777E5900C7D495 /* DisplayModeSelector.swift in Sources */,
 				977BD6072772350B004D2C32 /* BookmarksList.swift in Sources */,
 				97E94B1C271EF24D005B0295 /* ContentView.swift in Sources */,
+				97B304862778002000E82DE0 /* SearchFilter.swift in Sources */,
 				97B3BAD02736CE3500A23F49 /* URL.swift in Sources */,
 				97255D8C273608C3002B995B /* WebView.swift in Sources */,
 				9735D0BE2777531400C7D495 /* BookmarkButton.swift in Sources */,

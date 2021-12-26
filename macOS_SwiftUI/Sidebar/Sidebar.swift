@@ -21,6 +21,7 @@ struct Sidebar: View {
                 List {
                     Text("search")
                 }
+                SearchFilterView()
             case .bookmark:
                 BookmarksList(url: $url)
             case .tableOfContent:

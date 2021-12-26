@@ -8,15 +8,10 @@
 
 import SwiftUI
 
-import RealmSwift
-
 /// Controls which zim files are included in search.
 struct SearchFilterView: View {
-    @ObservedResults(
-        ZimFile.self,
-        filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
-        sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
-    ) private var zimFiles
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @FetchRequest(sortDescriptors: []) private var zimFiles: FetchedResults<ZimFile>
     
     var body: some View {
         VStack(spacing: 0) {
@@ -37,25 +32,30 @@ struct SearchFilterView: View {
             Divider()
             List {
                 ForEach(zimFiles, id: \.fileID) { zimFile in
-                    Toggle(zimFile.title, isOn: zimFile.bind(\.includedInSearch))
+                    Toggle(zimFile.name, isOn: Binding<Bool>(get: {
+                        zimFile.includedInSearch
+                    }, set: {
+                        zimFile.includedInSearch = $0
+                        try? managedObjectContext.save()
+                    }))
                 }
             }
         }.frame(height: 180)
     }
     
     private func selectAll() {
-        let database = try? Realm()
-        try? database?.write {
-            let zimFiles = database?.objects(ZimFile.self).where { ($0.stateRaw == ZimFile.State.onDevice.rawValue) }
-            zimFiles?.forEach { $0.includedInSearch = true }
-        }
+//        let database = try? Realm()
+//        try? database?.write {
+//            let zimFiles = database?.objects(ZimFile.self).where { ($0.stateRaw == ZimFile.State.onDevice.rawValue) }
+//            zimFiles?.forEach { $0.includedInSearch = true }
+//        }
     }
     
     private func selectNone() {
-        let database = try? Realm()
-        try? database?.write {
-            let zimFiles = database?.objects(ZimFile.self).where { ($0.stateRaw == ZimFile.State.onDevice.rawValue) }
-            zimFiles?.forEach { $0.includedInSearch = false }
-        }
+//        let database = try? Realm()
+//        try? database?.write {
+//            let zimFiles = database?.objects(ZimFile.self).where { ($0.stateRaw == ZimFile.State.onDevice.rawValue) }
+//            zimFiles?.forEach { $0.includedInSearch = false }
+//        }
     }
 }

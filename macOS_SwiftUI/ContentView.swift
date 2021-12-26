@@ -12,15 +12,11 @@ import UniformTypeIdentifiers
 import WebKit
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) var managedObjectContext
     @StateObject var viewModel = SceneViewModel()
     @State var url: URL?
     @State var isPresentingFileImporter: Bool = false
-//    @ObservedResults(
-//        ZimFile.self,
-//        filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
-//        sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
-//    ) private var onDevice
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @FetchRequest(sortDescriptors: []) private var onDeviceZimFiles: FetchedResults<ZimFile>
     
     var body: some View {
         NavigationView {
@@ -57,17 +53,17 @@ struct ContentView: View {
                         } label: {
                             Image(systemName: "house")
                         }
-//                        .disabled(onDevice.isEmpty)
-//                        Menu {
-//                            ForEach(onDevice) { zimFile in
-//                                Button(zimFile.title) { viewModel.loadRandomPage(zimFileID: zimFile.fileID) }
-//                            }
-//                        } label: {
-//                            Label("Random Page", systemImage: "die.face.5")
-//                        } primaryAction: {
-//                            guard let zimFile = onDevice.first else { return }
-//                            viewModel.loadRandomPage(zimFileID: zimFile.fileID)
-//                        }.disabled(onDevice.isEmpty)
+                        .disabled(onDeviceZimFiles.isEmpty)
+                        Menu {
+                            ForEach(onDeviceZimFiles) { zimFile in
+                                Button(zimFile.name) { viewModel.loadRandomPage(zimFileID: zimFile.id.uuidString) }
+                            }
+                        } label: {
+                            Label("Random Page", systemImage: "die.face.5")
+                        } primaryAction: {
+                            guard let zimFile = onDeviceZimFiles.first else { return }
+                            viewModel.loadRandomPage(zimFileID: zimFile.fileID.uuidString)
+                        }.disabled(onDeviceZimFiles.isEmpty)
                     }
                 }
         }
@@ -78,7 +74,13 @@ struct ContentView: View {
         .navigationSubtitle(viewModel.zimFileTitle)
         .fileImporter(isPresented: $isPresentingFileImporter, allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")]) { result in
             if case let .success(url) = result {
+                guard let metadata = ZimFileService.getMetaData(url: url) else { return }
                 ZimFileService.shared.open(url: url)
+                let zimFile = ZimFile(context: managedObjectContext)
+                zimFile.fileID = UUID(uuidString: metadata.identifier)!
+                zimFile.name = metadata.title
+                zimFile.mainPage = ZimFileService.shared.getMainPageURL(zimFileID: metadata.identifier)!
+                try? managedObjectContext.save()
             }
         }
     }
