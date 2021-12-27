@@ -67,7 +67,13 @@ class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var includedInSearch: Bool
     @NSManaged var fileURLBookmark: Data?
     
-    class func fetchRequest() -> NSFetchRequest<ZimFile> {
-        super.fetchRequest() as! NSFetchRequest<ZimFile>
+    class func fetchRequest(
+        predicate: NSPredicate? = nil,
+        sortDescriptors: [NSSortDescriptor] = []
+    ) -> NSFetchRequest<ZimFile> {
+        let request = super.fetchRequest() as! NSFetchRequest<ZimFile>
+        request.predicate = predicate
+        request.sortDescriptors = sortDescriptors
+        return request
     }
 }

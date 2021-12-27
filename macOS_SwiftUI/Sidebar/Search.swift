@@ -7,6 +7,7 @@
 //
 
 import Combine
+import CoreData
 import SwiftUI
 
 import Defaults
@@ -22,10 +23,6 @@ struct Search: View {
         sortDescriptors: [],
         predicate: NSPredicate(format: "fileURLBookmark != nil")
     ) private var zimFiles: FetchedResults<ZimFile>
-    @FetchRequest(
-        sortDescriptors: [],
-        predicate: NSPredicate(format: "fileURLBookmark != nil AND includedInSearch == true")
-    ) private var includedInSearchZimFiles: FetchedResults<ZimFile>
     
     var body: some View {
         SearchField(searchText: $viewModel.searchText).padding(.horizontal, 10).padding(.vertical, 6)
@@ -113,34 +110,40 @@ struct Search: View {
     }
 }
 
-private class ViewModel: ObservableObject {
+private class ViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDelegate {
     @Published var searchText: String = ""
+    @Published var zimFileIDs: [UUID] = []
     @Published var inProgress = false
     @Published var results = [SearchResult]()
     
+    private let fetchedResultsController: NSFetchedResultsController<ZimFile>
     private var searchSubscriber: AnyCancellable?
     private var searchTextSubscriber: AnyCancellable?
     private let queue = OperationQueue()
     
-    init() {
+    override init() {
         queue.maxConcurrentOperationCount = 1
         
-//        searchSubscriber = (try? Realm())?.objects(ZimFile.self)
-//            .filter(NSCompoundPredicate(andPredicateWithSubpredicates: [
-//                NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
-//                NSPredicate(format: "includedInSearch == true"),
-//            ]))
-//            .collectionPublisher
-//            .freeze()
-//            .map { Array($0.map({ $0.fileID })) }
-//            .catch { _ in Just([]) }
-//            .combineLatest($searchText)
-//            .debounce(for: 0.2, scheduler: queue, options: nil)
-//            .receive(on: DispatchQueue.main, options: nil)
-//            .sink { zimFileIDs, searchText in
-//                self.updateSearchResults(searchText, Set(zimFileIDs))
-//            }
-        searchTextSubscriber = $searchText.sink { searchText in self.inProgress = !searchText.isEmpty }
+        let predicate = NSPredicate(format: "includedInSearch == true AND fileURLBookmark != nil")
+        fetchedResultsController = NSFetchedResultsController(
+            fetchRequest: ZimFile.fetchRequest(predicate: predicate),
+            managedObjectContext: Database.shared.persistentContainer.viewContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
+        try? fetchedResultsController.performFetch()
+        zimFileIDs = fetchedResultsController.fetchedObjects?.map { $0.fileID } ?? []
+        
+        super.init()
+        
+        fetchedResultsController.delegate = self
+        searchSubscriber = Publishers.CombineLatest($zimFileIDs, $searchText)
+            .debounce(for: 0.2, scheduler: queue, options: nil)
+            .receive(on: DispatchQueue.main, options: nil)
+            .sink { zimFileIDs, searchText in
+                self.updateSearchResults(searchText, Set(zimFileIDs.map { $0.uuidString }))
+            }
+//        searchTextSubscriber = $searchText.sink { searchText in self.inProgress = !searchText.isEmpty }
     }
     
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<String>) {
@@ -154,5 +157,9 @@ private class ViewModel: ObservableObject {
             }
         }
         queue.addOperation(operation)
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        zimFileIDs = fetchedResultsController.fetchedObjects?.map { $0.fileID } ?? []
     }
 }
