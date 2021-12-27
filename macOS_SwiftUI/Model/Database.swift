@@ -14,7 +14,7 @@ class Database {
     private init() {}
     
     /// A persistent container to set up the Core Data stack.
-    lazy var persistentContainer: NSPersistentContainer = {
+    lazy var container: NSPersistentContainer = {
         /// - Tag: persistentContainer
         let container = NSPersistentContainer(name: "DataModel")
 

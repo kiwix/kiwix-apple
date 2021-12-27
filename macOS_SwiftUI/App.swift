@@ -11,14 +11,13 @@ import SwiftUI
 @main
 struct Kiwix: SwiftUI.App {
     init() {
-//        Realm.Configuration.defaultConfiguration = Realm.defaultConfig
-//        LibraryOperationQueue.shared.addOperation(LibraryScanOperation())
+        reopenZimFiles()
     }
     
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(\.managedObjectContext, Database.shared.persistentContainer.viewContext)
+                .environment(\.managedObjectContext, Database.shared.container.viewContext)
         }.commands {
             SidebarCommands()
             CommandGroup(replacing: .newItem) {
@@ -39,5 +38,9 @@ struct Kiwix: SwiftUI.App {
         windowController.newWindowForTab(nil)
         guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else { return }
         currentWindow.addTabbedWindow(newWindow, ordered: .above)
+    }
+    
+    private func reopenZimFiles() {
+        let request = ZimFile.fetchRequest(predicate: NSPredicate(format: ""), sortDescriptors: <#T##[NSSortDescriptor]#>)
     }
 }

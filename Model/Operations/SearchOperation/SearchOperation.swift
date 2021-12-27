@@ -6,7 +6,7 @@
 //  Copyright © 2020 Chris Li. All rights reserved.
 //
 
-import RealmSwift
+//import RealmSwift
 import Defaults
 
 extension SearchOperation {
@@ -41,13 +41,14 @@ extension SearchOperation {
                     result.snippet = parser.getFirstParagraph()
                 case .firstSentence:
                     guard let parser = try? Parser(url: url) else { return }
-                    if #available(iOS 12.0,  macOS 10.14, *) {
-                        let database = try? Realm()
-                        let zimFile = database?.object(ofType: ZimFile.self, forPrimaryKey: result.zimFileID)
-                        result.snippet = parser.getFirstSentence(languageCode: zimFile?.languageCode)
-                    } else {
-                        result.snippet = nil
-                    }
+                    result.snippet = parser.getFirstSentence(languageCode: nil )
+//                    if #available(iOS 12.0,  macOS 10.14, *) {
+//                        let database = try? Realm()
+//                        let zimFile = database?.object(ofType: ZimFile.self, forPrimaryKey: result.zimFileID)
+//                        result.snippet = parser.getFirstSentence(languageCode: zimFile?.languageCode)
+//                    } else {
+//                        result.snippet = nil
+//                    }
                 case .matches:
                     guard let html = result.htmlSnippet else { return }
                     result.snippet = Parser.parseBodyFragment(html)

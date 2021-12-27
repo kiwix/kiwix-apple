@@ -39,7 +39,7 @@ struct BookmarkButton: View {
     
     private func createBookmark() {
         guard let url = viewModel.webView.url, let title = viewModel.webView.title else { return }
-        let context = Database.shared.persistentContainer.viewContext
+        let context = Database.shared.container.viewContext
         let bookmark = Bookmark(context: context)
         bookmark.articleURL = url
         bookmark.title = title
@@ -49,7 +49,7 @@ struct BookmarkButton: View {
     
     private func deleteBookmark() {
         guard let url = viewModel.webView.url else { return }
-        let context = Database.shared.persistentContainer.viewContext
+        let context = Database.shared.container.viewContext
         let request = Bookmark.fetchRequest()
         request.predicate = NSPredicate(format: "articleURL == %@", url as CVarArg)
         guard let bookmark = try? context.fetch(request).first else { return }

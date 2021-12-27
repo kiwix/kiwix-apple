@@ -126,7 +126,7 @@ private class ViewModel: NSObject, ObservableObject, NSFetchedResultsControllerD
         let predicate = NSPredicate(format: "includedInSearch == true AND fileURLBookmark != nil")
         fetchedResultsController = NSFetchedResultsController(
             fetchRequest: ZimFile.fetchRequest(predicate: predicate),
-            managedObjectContext: Database.shared.persistentContainer.viewContext,
+            managedObjectContext: Database.shared.container.viewContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -140,18 +140,18 @@ private class ViewModel: NSObject, ObservableObject, NSFetchedResultsControllerD
             .debounce(for: 0.2, scheduler: queue, options: nil)
             .receive(on: DispatchQueue.main, options: nil)
             .sink { zimFileIDs, searchText in
-                self.updateSearchResults(searchText, Set(zimFileIDs.map { $0.uuidString }))
+                self.updateSearchResults(searchText, Set(zimFileIDs))
             }
-//        searchTextSubscriber = $searchText.sink { searchText in self.inProgress = !searchText.isEmpty }
+//        searchTextSubscriber = $searchTet.sink { searchText in self.inProgress = !searchText.isEmpty }
     }
     
-    private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<String>) {
+    private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<UUID>) {
         queue.cancelAllOperations()
-        let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
+        let operation = SearchOperation(searchText: searchText, zimFileIDs: Set(zimFileIDs.map { $0.uuidString }))
         operation.completionBlock = { [unowned self] in
             guard !operation.isCancelled else { return }
             DispatchQueue.main.sync {
-//                self.results = operation.results
+                self.results = operation.results
                 self.inProgress = false
             }
         }
