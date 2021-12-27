@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21C52" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Bookmark" representedClassName=".Bookmark" syncable="YES">
+        <attribute name="articleURL" attributeType="URI"/>
+        <attribute name="created" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="snippet" optional="YES" attributeType="String" spotlightIndexingEnabled="YES"/>
+        <attribute name="thumbImageURL" optional="YES" attributeType="URI"/>
+        <attribute name="title" attributeType="String" spotlightIndexingEnabled="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="articleURL"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="ZimFile" representedClassName=".ZimFile" syncable="YES">
+        <attribute name="fileID" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="fileURLBookmark" optional="YES" attributeType="Binary"/>
+        <attribute name="includedInSearch" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="mainPage" attributeType="URI"/>
+        <attribute name="name" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="fileID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <elements>
+        <element name="Bookmark" positionX="-63" positionY="-18" width="128" height="104"/>
+        <element name="ZimFile" positionX="-63" positionY="18" width="128" height="104"/>
+    </elements>
+</model>

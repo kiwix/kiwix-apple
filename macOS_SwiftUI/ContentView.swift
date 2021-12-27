@@ -6,18 +6,17 @@
 //  Copyright © 2021 Chris Li. All rights reserved.
 //
 
+import CoreData
 import SwiftUI
+import UniformTypeIdentifiers
 import WebKit
-import RealmSwift
 
 struct ContentView: View {
     @StateObject var viewModel = SceneViewModel()
     @State var url: URL?
-    @ObservedResults(
-        ZimFile.self,
-        filter: NSPredicate(format: "stateRaw == %@", ZimFile.State.onDevice.rawValue),
-        sortDescriptor: SortDescriptor(keyPath: "size", ascending: false)
-    ) private var onDevice
+    @State var isPresentingFileImporter: Bool = false
+    @Environment(\.managedObjectContext) var managedObjectContext
+    @FetchRequest(sortDescriptors: []) private var onDeviceZimFiles: FetchedResults<ZimFile>
     
     var body: some View {
         NavigationView {
@@ -37,7 +36,7 @@ struct ContentView: View {
                 }
             }
                 .ignoresSafeArea(.container, edges: .vertical)
-                .frame(idealWidth: 800, minHeight: 300, idealHeight: 350)
+                .frame(minWidth: 400, idealWidth: 800, minHeight: 400, idealHeight: 550)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigation) {
                         Button { viewModel.webView.goBack() } label: {
@@ -48,37 +47,43 @@ struct ContentView: View {
                         }.disabled(!viewModel.canGoForward)
                     }
                     ToolbarItemGroup {
-                        Button {
-                            if viewModel.isBookmarked {
-                                viewModel.unBookmarkCurrentArticle()
-                            } else {
-                                viewModel.bookmarkCurrentArticle()
-                            }
-                        } label: {
-                            Image(systemName: viewModel.isBookmarked ? "star.fill" : "star")
-                        }.disabled(url == nil)
+                        BookmarkButton(url: $url)
                         Button {
                             viewModel.loadMainPage()
                         } label: {
                             Image(systemName: "house")
-                        }.disabled(onDevice.isEmpty)
+                        }
+                        .disabled(onDeviceZimFiles.isEmpty)
                         Menu {
-                            ForEach(onDevice) { zimFile in
-                                Button(zimFile.title) { viewModel.loadRandomPage(zimFileID: zimFile.fileID) }
+                            ForEach(onDeviceZimFiles) { zimFile in
+                                Button(zimFile.name) { viewModel.loadRandomPage(zimFileID: zimFile.id.uuidString) }
                             }
                         } label: {
                             Label("Random Page", systemImage: "die.face.5")
                         } primaryAction: {
-                            guard let zimFile = onDevice.first else { return }
-                            viewModel.loadRandomPage(zimFileID: zimFile.fileID)
-                        }.disabled(onDevice.isEmpty)
+                            guard let zimFile = onDeviceZimFiles.first else { return }
+                            viewModel.loadRandomPage(zimFileID: zimFile.fileID.uuidString)
+                        }.disabled(onDeviceZimFiles.isEmpty)
                     }
                 }
         }
         .environmentObject(viewModel)
+        .focusedSceneValue(\.fileImporter, $isPresentingFileImporter)
         .focusedSceneValue(\.sceneViewModel, viewModel)
         .navigationTitle(viewModel.articleTitle)
         .navigationSubtitle(viewModel.zimFileTitle)
+        .fileImporter(isPresented: $isPresentingFileImporter, allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")]) { result in
+            if case let .success(url) = result {
+                guard let metadata = ZimFileService.getMetaData(url: url) else { return }
+                ZimFileService.shared.open(url: url)
+                let zimFile = ZimFile(context: managedObjectContext)
+                zimFile.fileID = UUID(uuidString: metadata.identifier)!
+                zimFile.name = metadata.title
+                zimFile.mainPage = ZimFileService.shared.getMainPageURL(zimFileID: metadata.identifier)!
+                zimFile.fileURLBookmark = ZimFileService.shared.getFileURLBookmark(zimFileID: metadata.identifier)
+                try? managedObjectContext.save()
+            }
+        }
     }
     
     private func toggleSidebar() {
@@ -91,7 +96,6 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
     @Published var canGoForward: Bool = false
     @Published var articleTitle: String = ""
     @Published var zimFileTitle: String = ""
-    @Published var isBookmarked: Bool = false
     
     let webView: WKWebView = {
         let config = WKWebViewConfiguration()
@@ -125,13 +129,13 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         canGoForwardObserver = webView.observe(\.canGoForward) { [unowned self] webView, _ in
             self.canGoForward = webView.canGoForward
         }
-        titleObserver = webView.observe(\.title) { [unowned self] webView, _ in
-            guard let title = webView.title, !title.isEmpty,
-                  let zimFileID = webView.url?.host,
-                  let zimFile = (try? Realm())?.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
-            self.articleTitle = title
-            self.zimFileTitle = zimFile.title
-        }
+//        titleObserver = webView.observe(\.title) { [unowned self] webView, _ in
+//            guard let title = webView.title, !title.isEmpty,
+//                  let zimFileID = webView.url?.host,
+//                  let zimFile = (try? Realm())?.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
+//            self.articleTitle = title
+//            self.zimFileTitle = zimFile.title
+//        }
     }
     
     func loadMainPage(zimFileID: String? = nil) {
@@ -146,22 +150,7 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
         webView.load(URLRequest(url: url))
     }
     
-    func bookmarkCurrentArticle() {
-        guard let database = try? Realm(),
-              let zimFileID = webView.url?.host,
-              let zimFile = database.object(ofType: ZimFile.self, forPrimaryKey: zimFileID) else { return }
-        try? database.write {
-            let bookmark = Bookmark()
-            bookmark.zimFile = zimFile
-            bookmark.title = webView.title ?? "Unknown"
-            bookmark.path = webView.url?.path ?? ""
-            database.add(bookmark)
-        }
-    }
-    
-    func unBookmarkCurrentArticle() {
-        
-    }
+    // MARK: - WKNavigationDelegate
     
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,

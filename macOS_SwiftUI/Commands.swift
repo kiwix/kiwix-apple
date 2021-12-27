@@ -8,6 +8,14 @@
 
 import SwiftUI
 
+struct FileImportButton: View {
+    @FocusedBinding(\.fileImporter) var isPresented: Bool?
+    
+    var body: some View {
+        Button("Open...") { isPresented = true }.keyboardShortcut("o")
+    }
+}
+
 struct SidebarDisplayModeCommandButtons: View {
     @FocusedBinding(\.sidebarDisplayMode) var displayMode: SidebarDisplayMode?
     
@@ -38,6 +46,10 @@ struct NavigationCommandButtons: View {
     }
 }
 
+struct FileImporterKey: FocusedValueKey {
+    typealias Value = Binding<Bool>
+}
+
 struct SidebarDisplayModeKey: FocusedValueKey {
     typealias Value = Binding<SidebarDisplayMode>
 }
@@ -47,6 +59,11 @@ struct SceneViewModelKey: FocusedValueKey {
 }
 
 extension FocusedValues {
+    var fileImporter: FileImporterKey.Value? {
+        get { self[FileImporterKey.self] }
+        set { self[FileImporterKey.self] = newValue }
+    }
+    
     var sidebarDisplayMode: SidebarDisplayModeKey.Value? {
         get { self[SidebarDisplayModeKey.self] }
         set { self[SidebarDisplayModeKey.self] = newValue }

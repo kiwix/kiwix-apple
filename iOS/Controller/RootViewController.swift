@@ -302,7 +302,7 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
             bookmarkService.delete(bookmark)
             presentBookmarkHUDController(isBookmarked: false)
         } else {
-            bookmarkService.create(url: url)
+            BookmarkService().create(url: url)
             presentBookmarkHUDController(isBookmarked: true)
         }
     }

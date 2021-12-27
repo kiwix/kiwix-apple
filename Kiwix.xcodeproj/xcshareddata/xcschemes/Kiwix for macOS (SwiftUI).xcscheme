@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "97E94B16271EF24D005B0295"
-               BuildableName = "macOS_SwiftUI.app"
+               BuildableName = "Kiwix.app"
                BlueprintName = "macOS_SwiftUI"
                ReferencedContainer = "container:Kiwix.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "97E94B16271EF24D005B0295"
-            BuildableName = "macOS_SwiftUI.app"
+            BuildableName = "Kiwix.app"
             BlueprintName = "macOS_SwiftUI"
             ReferencedContainer = "container:Kiwix.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "97E94B16271EF24D005B0295"
-            BuildableName = "macOS_SwiftUI.app"
+            BuildableName = "Kiwix.app"
             BlueprintName = "macOS_SwiftUI"
             ReferencedContainer = "container:Kiwix.xcodeproj">
          </BuildableReference>
