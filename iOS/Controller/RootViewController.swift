@@ -298,11 +298,11 @@ class RootViewController: UIViewController, UISearchControllerDelegate, UISplitV
               recognizer.state == .began,
               let url = webViewController.webView.url else { return }
         let bookmarkService = BookmarkService()
-        if let _ = bookmarkService.get(url: url) {
-            BookmarkService.delete(url)
+        if let bookmark = bookmarkService.get(url: url) {
+            bookmarkService.delete(bookmark)
             presentBookmarkHUDController(isBookmarked: false)
         } else {
-            BookmarkService.create(url)
+            BookmarkService().create(url: url)
             presentBookmarkHUDController(isBookmarked: true)
         }
     }
