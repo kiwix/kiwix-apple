@@ -47,34 +47,33 @@ struct Search: View {
         }
     }
     
+    @ViewBuilder
     var searchFilter: some View {
-        VStack(spacing: 0) {
-            Divider()
-            HStack {
-                Text("Include in Search").fontWeight(.medium)
-                Spacer()
-                if zimFiles.map {$0.includedInSearch }.reduce(true) { $0 && $1 } {
-                    Button { selectNoZimFiles() } label: {
-                        Text("None").font(.caption).fontWeight(.medium)
-                    }
-                } else {
-                    Button { selectAllZimFiles() } label: {
-                        Text("All").font(.caption).fontWeight(.medium)
-                    }
+        Divider()
+        HStack {
+            Text("Include in Search").fontWeight(.medium)
+            Spacer()
+            if zimFiles.map {$0.includedInSearch }.reduce(true) { $0 && $1 } {
+                Button { selectNoZimFiles() } label: {
+                    Text("None").font(.caption).fontWeight(.medium)
                 }
-            }.padding(.vertical, 5).padding(.leading, 16).padding(.trailing, 10).background(.regularMaterial)
-            Divider()
-            List {
-                ForEach(zimFiles, id: \.fileID) { zimFile in
-                    Toggle(zimFile.name, isOn: Binding<Bool>(get: {
-                        zimFile.includedInSearch
-                    }, set: {
-                        zimFile.includedInSearch = $0
-                        try? managedObjectContext.save()
-                    }))
+            } else {
+                Button { selectAllZimFiles() } label: {
+                    Text("All").font(.caption).fontWeight(.medium)
                 }
             }
-        }.frame(height: 180)
+        }.padding(.vertical, 5).padding(.leading, 16).padding(.trailing, 10).background(.regularMaterial)
+        Divider()
+        List {
+            ForEach(zimFiles, id: \.fileID) { zimFile in
+                Toggle(zimFile.name, isOn: Binding<Bool>(get: {
+                    zimFile.includedInSearch
+                }, set: {
+                    zimFile.includedInSearch = $0
+                    try? managedObjectContext.save()
+                }))
+            }
+        }.frame(height: 150)
     }
     
     private func updateCurrentSearchText(_ searchText: String?) {
