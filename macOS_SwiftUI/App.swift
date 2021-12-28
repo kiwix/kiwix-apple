@@ -11,7 +11,7 @@ import SwiftUI
 @main
 struct Kiwix: SwiftUI.App {
     init() {
-        reopenZimFiles()
+        ZimFileDataProvider.reopen()
     }
     
     var body: some Scene {
@@ -38,9 +38,5 @@ struct Kiwix: SwiftUI.App {
         windowController.newWindowForTab(nil)
         guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else { return }
         currentWindow.addTabbedWindow(newWindow, ordered: .above)
-    }
-    
-    private func reopenZimFiles() {
-        let request = ZimFile.fetchRequest(predicate: NSPredicate(format: ""), sortDescriptors: <#T##[NSSortDescriptor]#>)
     }
 }
