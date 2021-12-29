@@ -319,7 +319,6 @@
 		9779A73A2456796B00F6F6FF /* WebKitHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebKitHandler.swift; sourceTree = "<group>"; };
 		9779A7E224567A5A00F6F6FF /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		9779E7A12379230F0058DC98 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
-		977BD5F9276C2991004D2C32 /* SearchFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFilter.swift; sourceTree = "<group>"; };
 		977BD6062772350B004D2C32 /* BookmarksList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksList.swift; sourceTree = "<group>"; };
 		977D50622621E47D005345D1 /* LibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViewController.swift; sourceTree = "<group>"; };
 		977D506C2621EAD1005345D1 /* LibraryPrimaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryPrimaryView.swift; sourceTree = "<group>"; };
@@ -659,7 +658,6 @@
 			children = (
 				977BD6062772350B004D2C32 /* BookmarksList.swift */,
 				97D07A08273719720002B9EB /* Search.swift */,
-				977BD5F9276C2991004D2C32 /* SearchFilter.swift */,
 				97242B7C2732E52300C87F85 /* Sidebar.swift */,
 				9735D0C127777E5900C7D495 /* DisplayModeSelector.swift */,
 			);
