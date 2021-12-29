@@ -110,10 +110,10 @@ struct Search: View {
 }
 
 private class ViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDelegate {
-    @Published var searchText: String = ""
-    @Published var zimFileIDs: [UUID] = []
-    @Published var inProgress = false
-    @Published var results = [SearchResult]()
+    @Published var searchText: String = ""  // text in the search field
+    @Published private var zimFileIDs: [UUID]  // ID of zim files that are included in search
+    @Published private(set) var inProgress = false
+    @Published private(set) var results = [SearchResult]()
     
     private let fetchedResultsController: NSFetchedResultsController<ZimFile>
     private var searchSubscriber: AnyCancellable?
@@ -130,13 +130,15 @@ private class ViewModel: NSObject, ObservableObject, NSFetchedResultsControllerD
             cacheName: nil
         )
         
+        // initilze zim file IDs
+        try? fetchedResultsController.performFetch()
+        zimFileIDs = fetchedResultsController.fetchedObjects?.map { $0.fileID } ?? []
+        
         super.init()
         
         // additional configurations
         queue.maxConcurrentOperationCount = 1
         fetchedResultsController.delegate = self
-        try? fetchedResultsController.performFetch()
-        zimFileIDs = fetchedResultsController.fetchedObjects?.map { $0.fileID } ?? []
         
         // subscribers
         searchSubscriber = Publishers.CombineLatest($zimFileIDs, $searchText)
