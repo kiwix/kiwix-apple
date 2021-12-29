@@ -121,8 +121,7 @@ private class ViewModel: NSObject, ObservableObject, NSFetchedResultsControllerD
     private let queue = OperationQueue()
     
     override init() {
-        queue.maxConcurrentOperationCount = 1
-        
+        // initilize fetched results controller
         let predicate = NSPredicate(format: "includedInSearch == true AND fileURLBookmark != nil")
         fetchedResultsController = NSFetchedResultsController(
             fetchRequest: ZimFile.fetchRequest(predicate: predicate),
@@ -130,12 +129,16 @@ private class ViewModel: NSObject, ObservableObject, NSFetchedResultsControllerD
             sectionNameKeyPath: nil,
             cacheName: nil
         )
-        try? fetchedResultsController.performFetch()
-        zimFileIDs = fetchedResultsController.fetchedObjects?.map { $0.fileID } ?? []
         
         super.init()
         
+        // additional configurations
+        queue.maxConcurrentOperationCount = 1
         fetchedResultsController.delegate = self
+        try? fetchedResultsController.performFetch()
+        zimFileIDs = fetchedResultsController.fetchedObjects?.map { $0.fileID } ?? []
+        
+        // subscribers
         searchSubscriber = Publishers.CombineLatest($zimFileIDs, $searchText)
             .debounce(for: 0.2, scheduler: queue, options: nil)
             .receive(on: DispatchQueue.main, options: nil)
