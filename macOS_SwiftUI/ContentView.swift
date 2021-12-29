@@ -74,14 +74,7 @@ struct ContentView: View {
         .navigationSubtitle(viewModel.zimFileTitle)
         .fileImporter(isPresented: $isPresentingFileImporter, allowedContentTypes: [UTType(exportedAs: "org.openzim.zim")]) { result in
             if case let .success(url) = result {
-                guard let metadata = ZimFileService.getMetaData(url: url) else { return }
-                ZimFileService.shared.open(url: url)
-                let zimFile = ZimFile(context: managedObjectContext)
-                zimFile.fileID = UUID(uuidString: metadata.identifier)!
-                zimFile.name = metadata.title
-                zimFile.mainPage = ZimFileService.shared.getMainPageURL(zimFileID: metadata.identifier)!
-                zimFile.fileURLBookmark = ZimFileService.shared.getFileURLBookmark(zimFileID: metadata.identifier)
-                try? managedObjectContext.save()
+                ZimFileDataProvider.open(url: url)
             }
         }
     }

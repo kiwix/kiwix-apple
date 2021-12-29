@@ -18,12 +18,22 @@ class ZimFileDataProvider {
         zimFile.fileID = UUID(uuidString: metadata.identifier)!
         zimFile.name = metadata.title
         zimFile.mainPage = ZimFileService.shared.getMainPageURL(zimFileID: metadata.identifier)!
-        zimFile.fileURLBookmark = ZimFileService.shared.getFileURL(zimFileID: metadata.identifier).book
+        zimFile.fileURLBookmark = ZimFileService.shared.getFileURLBookmark(zimFileID: metadata.identifier)
         try? context.save()
     }
     
     class func reopen() {
+        let context = Database.shared.container.viewContext
         let request = ZimFile.fetchRequest(predicate: NSPredicate(format: "fileURLBookmark != nil"))
-        let zimFiles = try? Database.shared.container.viewContext.execute(request)
+        guard let zimFiles = try? context.fetch(request) else { return }
+        zimFiles.forEach { zimFile in
+            guard let data = zimFile.fileURLBookmark else { return }
+            if let data = ZimFileService.shared.open(bookmark: data) {
+                zimFile.fileURLBookmark = data
+            }
+        }
+        if context.hasChanges {
+            try? context.save()
+        }
     }
 }

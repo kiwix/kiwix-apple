@@ -142,12 +142,13 @@ private class ViewModel: NSObject, ObservableObject, NSFetchedResultsControllerD
             .sink { zimFileIDs, searchText in
                 self.updateSearchResults(searchText, Set(zimFileIDs))
             }
-//        searchTextSubscriber = $searchTet.sink { searchText in self.inProgress = !searchText.isEmpty }
+        searchTextSubscriber = $searchText.sink { searchText in self.inProgress = true }
     }
     
     private func updateSearchResults(_ searchText: String, _ zimFileIDs: Set<UUID>) {
         queue.cancelAllOperations()
-        let operation = SearchOperation(searchText: searchText, zimFileIDs: Set(zimFileIDs.map { $0.uuidString }))
+        let zimFileIDs = Set(zimFileIDs.map { $0.uuidString.lowercased() })
+        let operation = SearchOperation(searchText: searchText, zimFileIDs: zimFileIDs)
         operation.completionBlock = { [unowned self] in
             guard !operation.isCancelled else { return }
             DispatchQueue.main.sync {

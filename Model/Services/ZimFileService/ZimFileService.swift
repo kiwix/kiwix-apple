@@ -13,6 +13,15 @@ extension ZimFileService {
     // MARK: - Reader Management
     
     func open(url: URL) { __open(url) }
+    
+    @discardableResult
+    func open(bookmark: Data) -> Data? {
+        var isStale: Bool = false
+        guard let url = try? URL(resolvingBookmarkData: bookmark, bookmarkDataIsStale: &isStale) else { return nil }
+        open(url: url)
+        return isStale ? try? url.bookmarkData() : nil
+    }
+    
     func close(id: String) { __close(id) }
     
     // MARK: - Metadata
