@@ -63,10 +63,10 @@ class ZimFile: NSManagedObject, Identifiable {
     
     @NSManaged var fileID: UUID
     @NSManaged var name: String
+    @NSManaged var size: Int64
     @NSManaged var includedInSearch: Bool
     
     @NSManaged var favicon: Data?
-    @NSManaged var mainPage: URL?
     @NSManaged var fileURLBookmark: Data?
     
     class func fetchRequest(

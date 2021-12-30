@@ -25,9 +25,7 @@ struct Sidebar: View {
                     Text("table of contents")
                 }
             case .library:
-                List {
-                    Text("library")
-                }
+                LibraryList(url: $url)
             }
         }.focusedSceneValue(\.sidebarDisplayMode, $displayMode)
     }

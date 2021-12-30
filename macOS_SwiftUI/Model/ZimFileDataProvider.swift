@@ -17,7 +17,7 @@ class ZimFileDataProvider {
         let zimFile = ZimFile(context: context)
         zimFile.fileID = UUID(uuidString: metadata.identifier)!
         zimFile.name = metadata.title
-        zimFile.mainPage = ZimFileService.shared.getMainPageURL(zimFileID: metadata.identifier)!
+        zimFile.size = metadata.size.int64Value
         zimFile.favicon = metadata.faviconData
         zimFile.fileURLBookmark = ZimFileService.shared.getFileURLBookmark(zimFileID: metadata.identifier)
         try? context.save()

@@ -56,13 +56,13 @@ struct ContentView: View {
                         .disabled(onDeviceZimFiles.isEmpty)
                         Menu {
                             ForEach(onDeviceZimFiles) { zimFile in
-                                Button(zimFile.name) { viewModel.loadRandomPage(zimFileID: zimFile.id.uuidString) }
+                                Button(zimFile.name) { viewModel.loadRandomPage(zimFileID: zimFile.id) }
                             }
                         } label: {
                             Label("Random Page", systemImage: "die.face.5")
                         } primaryAction: {
                             guard let zimFile = onDeviceZimFiles.first else { return }
-                            viewModel.loadRandomPage(zimFileID: zimFile.fileID.uuidString)
+                            viewModel.loadRandomPage(zimFileID: zimFile.fileID)
                         }.disabled(onDeviceZimFiles.isEmpty)
                     }
                 }
@@ -131,14 +131,14 @@ class SceneViewModel: NSObject, ObservableObject, WKNavigationDelegate {
 //        }
     }
     
-    func loadMainPage(zimFileID: String? = nil) {
-        let zimFileID = zimFileID ?? webView.url?.host ?? ""
+    func loadMainPage(zimFileID: UUID? = nil) {
+        let zimFileID = zimFileID?.uuidString ?? webView.url?.host ?? ""
         guard let url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID) else { return }
         webView.load(URLRequest(url: url))
     }
     
-    func loadRandomPage(zimFileID: String? = nil) {
-        let zimFileID = zimFileID ?? webView.url?.host ?? ""
+    func loadRandomPage(zimFileID: UUID? = nil) {
+        let zimFileID = zimFileID?.uuidString ?? webView.url?.host ?? ""
         guard let url = ZimFileService.shared.getRandomPageURL(zimFileID: zimFileID) else { return }
         webView.load(URLRequest(url: url))
     }

@@ -17,8 +17,8 @@
         <attribute name="fileID" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="fileURLBookmark" optional="YES" attributeType="Binary"/>
         <attribute name="includedInSearch" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
-        <attribute name="mainPage" optional="YES" attributeType="URI"/>
         <attribute name="name" attributeType="String"/>
+        <attribute name="size" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="fileID"/>

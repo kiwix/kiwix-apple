@@ -127,6 +127,7 @@
 		97B304882778B45B00E82DE0 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D07A08273719720002B9EB /* Search.swift */; };
 		97B3048927796C9000E82DE0 /* SearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998F2467626A00BC6F5B /* SearchOperation.swift */; };
 		97B3048B277B633600E82DE0 /* ZimFileDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3048A277B633600E82DE0 /* ZimFileDataProvider.swift */; };
+		97B3048D277D4EF400E82DE0 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3048C277D4EF400E82DE0 /* Library.swift */; };
 		97B3998A24673FE000BC6F5B /* SearchOperation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998924673FE000BC6F5B /* SearchOperation.mm */; };
 		97B3998E246759E400BC6F5B /* SearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998C2467561900BC6F5B /* SearchResult.m */; };
 		97B399902467626A00BC6F5B /* SearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998F2467626A00BC6F5B /* SearchOperation.swift */; };
@@ -337,6 +338,7 @@
 		97A36C4E1F8C21210079B452 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A963C3259D38D900496214 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		97B3048A277B633600E82DE0 /* ZimFileDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileDataProvider.swift; sourceTree = "<group>"; };
+		97B3048C277D4EF400E82DE0 /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		97B3998824673FE000BC6F5B /* SearchOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchOperation.h; sourceTree = "<group>"; };
 		97B3998924673FE000BC6F5B /* SearchOperation.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SearchOperation.mm; sourceTree = "<group>"; };
 		97B3998B2467561900BC6F5B /* SearchResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchResult.h; sourceTree = "<group>"; };
@@ -656,9 +658,10 @@
 		977BD5F8276C295C004D2C32 /* Sidebar */ = {
 			isa = PBXGroup;
 			children = (
-				977BD6062772350B004D2C32 /* BookmarksList.swift */,
-				97D07A08273719720002B9EB /* Search.swift */,
 				97242B7C2732E52300C87F85 /* Sidebar.swift */,
+				97D07A08273719720002B9EB /* Search.swift */,
+				977BD6062772350B004D2C32 /* BookmarksList.swift */,
+				97B3048C277D4EF400E82DE0 /* Library.swift */,
 				9735D0C127777E5900C7D495 /* DisplayModeSelector.swift */,
 			);
 			path = Sidebar;
@@ -1293,6 +1296,7 @@
 				97242B882735E66E00C87F85 /* OutlineItem.swift in Sources */,
 				97242B9F2735E6A800C87F85 /* Enums.swift in Sources */,
 				97E94B30271EF639005B0295 /* ZimFileMetaData.mm in Sources */,
+				97B3048D277D4EF400E82DE0 /* Library.swift in Sources */,
 				97E94B2F271EF630005B0295 /* ZimFileService.mm in Sources */,
 				97B3048B277B633600E82DE0 /* ZimFileDataProvider.swift in Sources */,
 				97242BA22735E6A800C87F85 /* Settings.swift in Sources */,
