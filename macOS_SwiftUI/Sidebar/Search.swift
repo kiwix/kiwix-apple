@@ -20,7 +20,7 @@ struct Search: View {
     @Default(.recentSearchTexts) private var recentSearchTexts: [String]
     @Environment(\.managedObjectContext) var managedObjectContext
     @FetchRequest(
-        sortDescriptors: [],
+        sortDescriptors: [SortDescriptor(\.size, order: .reverse)],
         predicate: NSPredicate(format: "fileURLBookmark != nil")
     ) private var zimFiles: FetchedResults<ZimFile>
     
@@ -70,7 +70,17 @@ struct Search: View {
             }, set: {
                 zimFile.includedInSearch = $0
                 try? managedObjectContext.save()
-            }))
+            })).contextMenu {
+                Button("Open Main Page") {
+                    let zimFileID = zimFile.fileID.uuidString.lowercased()
+                    url = ZimFileService.shared.getMainPageURL(zimFileID: zimFileID)
+                }
+                Button("Unlink") {
+                    ZimFileService.shared.close(id: zimFile.fileID)
+                    managedObjectContext.delete(zimFile)
+                    try? managedObjectContext.save()
+                }
+            }
         }.frame(height: 150)
     }
     

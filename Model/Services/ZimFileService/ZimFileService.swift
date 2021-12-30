@@ -23,6 +23,7 @@ extension ZimFileService {
     }
     
     func close(id: String) { __close(id) }
+    func close(id: UUID) { __close(id.uuidString.lowercased()) }
     
     // MARK: - Metadata
     
