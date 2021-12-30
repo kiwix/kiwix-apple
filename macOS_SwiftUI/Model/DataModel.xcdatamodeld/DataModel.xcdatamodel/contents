@@ -13,10 +13,11 @@
         </uniquenessConstraints>
     </entity>
     <entity name="ZimFile" representedClassName=".ZimFile" syncable="YES">
+        <attribute name="favicon" optional="YES" attributeType="Binary"/>
         <attribute name="fileID" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="fileURLBookmark" optional="YES" attributeType="Binary"/>
         <attribute name="includedInSearch" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
-        <attribute name="mainPage" attributeType="URI"/>
+        <attribute name="mainPage" optional="YES" attributeType="URI"/>
         <attribute name="name" attributeType="String"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
@@ -26,6 +27,6 @@
     </entity>
     <elements>
         <element name="Bookmark" positionX="-63" positionY="-18" width="128" height="104"/>
-        <element name="ZimFile" positionX="-63" positionY="18" width="128" height="104"/>
+        <element name="ZimFile" positionX="-63" positionY="18" width="128" height="119"/>
     </elements>
 </model>

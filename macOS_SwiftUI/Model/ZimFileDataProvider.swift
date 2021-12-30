@@ -18,6 +18,7 @@ class ZimFileDataProvider {
         zimFile.fileID = UUID(uuidString: metadata.identifier)!
         zimFile.name = metadata.title
         zimFile.mainPage = ZimFileService.shared.getMainPageURL(zimFileID: metadata.identifier)!
+        zimFile.favicon = metadata.faviconData
         zimFile.fileURLBookmark = ZimFileService.shared.getFileURLBookmark(zimFileID: metadata.identifier)
         try? context.save()
     }
