@@ -64,15 +64,13 @@ struct Search: View {
             }
         }.padding(.vertical, 5).padding(.leading, 16).padding(.trailing, 10).background(.regularMaterial)
         Divider()
-        List {
-            ForEach(zimFiles, id: \.fileID) { zimFile in
-                Toggle(zimFile.name, isOn: Binding<Bool>(get: {
-                    zimFile.includedInSearch
-                }, set: {
-                    zimFile.includedInSearch = $0
-                    try? managedObjectContext.save()
-                }))
-            }
+        List(zimFiles) { zimFile in
+            Toggle(zimFile.name, isOn: Binding<Bool>(get: {
+                zimFile.includedInSearch
+            }, set: {
+                zimFile.includedInSearch = $0
+                try? managedObjectContext.save()
+            }))
         }.frame(height: 150)
     }
     
