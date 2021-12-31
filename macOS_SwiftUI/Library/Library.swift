@@ -18,16 +18,15 @@ struct Library: View {
     var body: some View {
         ScrollView {
             LazyVGrid(
-                columns: [GridItem(.adaptive(minimum: 200, maximum: 300))],
+                columns: [GridItem(.adaptive(minimum: 200, maximum: 300), spacing: 12)],
                 alignment: HorizontalAlignment.leading,
-                spacing: 5,
+                spacing: 12,
                 pinnedViews: [.sectionHeaders]
             ) {
                 ForEach(zimFiles) { section in
                     Section {
                         ForEach(section) { zimFile in
                             VStack {
-//                                Text(zimFile.name)
                                 HStack {
                                     VStack(alignment: .leading) {
                                         Text(ByteCountFormatter().string(fromByteCount: zimFile.size)).font(.title2).fontWeight(.bold)
@@ -58,9 +57,11 @@ struct Library: View {
                                 .thickMaterial,
                                 in: RoundedRectangle(cornerRadius: .infinity, style: .continuous)
                             )
-                    }.padding(10)
+                            .padding(.top, 12)
+                            .padding(.bottom, -2)
+                    }
                 }
-            }
+            }.padding()
         }.task { try? await Database.shared.refreshOnlineZimFileCatalog() }
     }
 }
