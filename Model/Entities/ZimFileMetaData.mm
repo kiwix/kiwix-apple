@@ -25,6 +25,7 @@
         
         try {
             self.identifier = [NSString stringWithUTF8String:_book->getId().c_str()];
+            self.fileID = [[NSUUID alloc] initWithUUIDString:self.identifier];
             self.title = [NSString stringWithUTF8String:_book->getTitle().c_str()];
             self.groupIdentifier = [NSString stringWithUTF8String:_book->getName().c_str()];
             self.fileDescription = [NSString stringWithUTF8String:_book->getDescription().c_str()];
@@ -41,6 +42,7 @@
         }
         
         // fail if required property is nil
+        if (self.fileID == nil) { return nil; }
         if (self.creationDate == nil) { return nil; }
         if (self.size == nil) { return nil; }
         if (self.articleCount == nil) { return nil; }
