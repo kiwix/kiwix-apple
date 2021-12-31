@@ -70,9 +70,9 @@ class Database {
                     zimFile.languageCode = metadata.languageCode
                     zimFile.mediaCount = metadata.mediaCount.int64Value
                     zimFile.name = metadata.title
+                    zimFile.persistentID = metadata.groupIdentifier
                     zimFile.size = metadata.size.int64Value
-                    
-                    
+                    zimFile.tag = metadata.tag
                     
                     return false
                 })
@@ -114,7 +114,9 @@ class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var languageCode: String
     @NSManaged var mediaCount: Int64
     @NSManaged var name: String
+    @NSManaged var persistentID: String
     @NSManaged var size: Int64
+    @NSManaged var tag: String?
     
     class func fetchRequest(
         predicate: NSPredicate? = nil,

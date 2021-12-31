@@ -24,7 +24,9 @@
         <attribute name="languageCode" attributeType="String"/>
         <attribute name="mediaCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
+        <attribute name="persistentID" attributeType="String"/>
         <attribute name="size" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="tag" optional="YES" attributeType="String"/>
         <fetchIndex name="category">
             <fetchIndexElement property="category" type="Binary" order="ascending"/>
         </fetchIndex>
@@ -39,6 +41,6 @@
     </entity>
     <elements>
         <element name="Bookmark" positionX="-63" positionY="-18" width="128" height="104"/>
-        <element name="ZimFile" positionX="-63" positionY="18" width="128" height="209"/>
+        <element name="ZimFile" positionX="-63" positionY="18" width="128" height="239"/>
     </elements>
 </model>
