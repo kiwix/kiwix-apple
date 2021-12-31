@@ -61,12 +61,19 @@ class Database {
                     guard let zimFile = zimFile as? ZimFile,
                           let id = allZimFileIDs.popFirst(),
                           let metadata = parser.getZimFileMetaData(id: id) else { return true }
-                    zimFile.fileID = metadata.fileID
-                 
-                    zimFile.name = metadata.title
+                    zimFile.articleCount = metadata.articleCount.int64Value
                     zimFile.category = metadata.category
+                    zimFile.created = metadata.creationDate
+                    zimFile.faviconData = metadata.faviconData
+                    zimFile.faviconURL = metadata.faviconURL
+                    zimFile.fileID = metadata.fileID
                     zimFile.languageCode = metadata.languageCode
+                    zimFile.mediaCount = metadata.mediaCount.int64Value
+                    zimFile.name = metadata.title
                     zimFile.size = metadata.size.int64Value
+                    
+                    
+                    
                     return false
                 })
                 guard let result = try context.execute(request) as? NSBatchInsertResult,
@@ -96,15 +103,18 @@ class Bookmark: NSManagedObject, Identifiable {
 class ZimFile: NSManagedObject, Identifiable {
     var id: UUID { fileID }
     
-    @NSManaged var fileID: UUID
-    @NSManaged var name: String
+    @NSManaged var articleCount: Int64
     @NSManaged var category: String
-    @NSManaged var languageCode: String
-    @NSManaged var size: Int64
-    @NSManaged var includedInSearch: Bool
-    
-    @NSManaged var favicon: Data?
+    @NSManaged var created: Date
+    @NSManaged var faviconData: Data?
+    @NSManaged var faviconURL: URL?
+    @NSManaged var fileID: UUID
     @NSManaged var fileURLBookmark: Data?
+    @NSManaged var includedInSearch: Bool
+    @NSManaged var languageCode: String
+    @NSManaged var mediaCount: Int64
+    @NSManaged var name: String
+    @NSManaged var size: Int64
     
     class func fetchRequest(
         predicate: NSPredicate? = nil,

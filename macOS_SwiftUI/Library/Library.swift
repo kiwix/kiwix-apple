@@ -29,9 +29,13 @@ struct Library: View {
                             VStack {
                                 HStack {
                                     VStack(alignment: .leading) {
-                                        Text(ByteCountFormatter().string(fromByteCount: zimFile.size)).font(.title2).fontWeight(.bold)
-                                        Text("xx articles").font(.caption)
-                                        Text("2021-12-21").font(.caption)
+                                        Text(zimFile.size.formatted(.byteCount(style: .file)))
+                                            .font(.title2)
+                                            .fontWeight(.bold)
+                                        Text("\(zimFile.articleCount.formatted(.number.notation(.compactName))) articles")
+                                            .font(.caption)
+                                        Text(zimFile.created.formatted(date: .abbreviated, time: .omitted))
+                                            .font(.caption)
                                     }
                                     Spacer()
                                     VStack(alignment: .trailing) {
