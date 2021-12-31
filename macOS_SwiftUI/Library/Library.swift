@@ -39,7 +39,9 @@ struct Library: View {
                                     }
                                     Spacer()
                                     VStack(alignment: .trailing) {
-                                        Text("tag")
+                                        if let tag = zimFile.tag {
+                                            ZimFileTag(string: tag)
+                                        }
                                         Spacer()
                                         Image(systemName: "arrow.down.to.line.circle.fill")
                                     }
