@@ -30,7 +30,7 @@ struct ContentView: View {
                 }
             Group {
                 if url == nil {
-                    EmptyView()
+                    Library()
                 } else {
                     WebView(url: $url, webView: viewModel.webView)
                 }
