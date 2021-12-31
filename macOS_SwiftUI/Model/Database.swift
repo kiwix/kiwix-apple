@@ -42,6 +42,38 @@ class Database {
         container.viewContext.shouldDeleteInaccessibleFaults = true
         return container
     }()
+    
+    /// Update the local zim file catalog with what's available online.
+    func refreshOnlineZimFileCatalog() async throws {
+        guard let url = URL(string: "https://library.kiwix.org/catalog/root.xml") else { return }
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        let parser = OPDSStreamParser()
+        try parser.parse(data: data)
+        
+        do {
+            var allZimFileIDs = Set(parser.zimFileIDs)
+            let context = container.newBackgroundContext()
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+            context.undoManager = nil  // Set to nil to reduce resource usage, nil by default on iOS/iPadOS
+            try await context.perform {
+                let request = NSBatchInsertRequest(entity: ZimFile.entity(), managedObjectHandler: { zimFile in
+                    guard let zimFile = zimFile as? ZimFile,
+                          let id = allZimFileIDs.popFirst(),
+                          let metadata = parser.getZimFileMetaData(id: id) else { return true }
+                    zimFile.fileID = metadata.fileID
+                    zimFile.name = metadata.title
+                    zimFile.size = metadata.size.int64Value
+                    return false
+                })
+                guard let result = try context.execute(request) as? NSBatchInsertResult,
+                      let success = result.result as? Bool,
+                      success else { throw OPDSRefreshError.process }
+            }
+        } catch {
+            throw OPDSRefreshError.process
+        }
+    }
 }
 
 class Bookmark: NSManagedObject, Identifiable {
