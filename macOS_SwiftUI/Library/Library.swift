@@ -57,7 +57,7 @@ struct Library: View {
                     }
                 }
             }.padding()
-        }.task { try? await Database.shared.refreshOnlineZimFileCatalog() }
+        }.task { try? await Database.shared.refreshOnlineZimFileCatalog() }.frame(minWidth: 500)
     }
 }
 

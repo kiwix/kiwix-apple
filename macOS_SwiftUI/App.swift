@@ -16,8 +16,7 @@ struct Kiwix: SwiftUI.App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, Database.shared.container.viewContext)
+            ContentView().environment(\.managedObjectContext, Database.shared.container.viewContext)
         }.commands {
             SidebarCommands()
             CommandGroup(replacing: .newItem) {
@@ -30,7 +29,19 @@ struct Kiwix: SwiftUI.App {
                 Divider()
             }
             CommandMenu("Navigation") { NavigationCommandButtons() }
-        }
+            CommandGroup(after: .windowSize) {
+                Divider()
+                ForEach(WindowGroupTitle.allCases) { windowGroup in
+                    Button(windowGroup.rawValue) {
+                        guard let url = URL(string: "kiwix://\(windowGroup.rawValue)") else { return }
+                        NSWorkspace.shared.open(url)
+                    }
+                }
+            }
+        }.handlesExternalEvents(matching: [WindowGroupTitle.view.rawValue])
+        WindowGroup(WindowGroupTitle.library.rawValue) {
+            Library().environment(\.managedObjectContext, Database.shared.container.viewContext)
+        }.handlesExternalEvents(matching: [WindowGroupTitle.library.rawValue])
     }
     
     private func newTab() {
@@ -38,5 +49,12 @@ struct Kiwix: SwiftUI.App {
         windowController.newWindowForTab(nil)
         guard let newWindow = NSApp.keyWindow, currentWindow != newWindow else { return }
         currentWindow.addTabbedWindow(newWindow, ordered: .above)
+    }
+    
+    enum WindowGroupTitle: String, Identifiable, CaseIterable {
+        var id: String { self.rawValue }
+        
+        case view = "View"
+        case library = "Library"
     }
 }
