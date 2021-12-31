@@ -30,7 +30,7 @@ struct ContentView: View {
                 }
             Group {
                 if url == nil {
-                    Library()
+                    EmptyView()
                 } else {
                     WebView(url: $url, webView: viewModel.webView)
                         .ignoresSafeArea(.container, edges: .vertical)

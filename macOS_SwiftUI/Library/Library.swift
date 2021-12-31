@@ -60,9 +60,3 @@ struct Library: View {
         }.task { try? await Database.shared.refreshOnlineZimFileCatalog() }.frame(minWidth: 500)
     }
 }
-
-struct Library_Previews: PreviewProvider {
-    static var previews: some View {
-        Library()
-    }
-}
