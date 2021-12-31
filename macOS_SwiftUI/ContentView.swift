@@ -33,9 +33,9 @@ struct ContentView: View {
                     Library()
                 } else {
                     WebView(url: $url, webView: viewModel.webView)
+                        .ignoresSafeArea(.container, edges: .vertical)
                 }
             }
-                .ignoresSafeArea(.container, edges: .vertical)
                 .frame(minWidth: 400, idealWidth: 800, minHeight: 400, idealHeight: 550)
                 .toolbar {
                     ToolbarItemGroup(placement: .navigation) {

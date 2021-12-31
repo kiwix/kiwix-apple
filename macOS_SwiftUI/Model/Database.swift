@@ -62,7 +62,10 @@ class Database {
                           let id = allZimFileIDs.popFirst(),
                           let metadata = parser.getZimFileMetaData(id: id) else { return true }
                     zimFile.fileID = metadata.fileID
+                 
                     zimFile.name = metadata.title
+                    zimFile.category = metadata.category
+                    zimFile.languageCode = metadata.languageCode
                     zimFile.size = metadata.size.int64Value
                     return false
                 })
@@ -95,6 +98,8 @@ class ZimFile: NSManagedObject, Identifiable {
     
     @NSManaged var fileID: UUID
     @NSManaged var name: String
+    @NSManaged var category: String
+    @NSManaged var languageCode: String
     @NSManaged var size: Int64
     @NSManaged var includedInSearch: Bool
     
