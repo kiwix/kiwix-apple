@@ -51,18 +51,7 @@ struct Library: View {
                             .background(.background, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                         }
                     } header: {
-                        Text(section.id)
-                            .fontWeight(.medium)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: .infinity, style: .continuous)
-                                    .stroke(.tertiary, lineWidth: 1)
-                            )
-                            .background(
-                                .thickMaterial,
-                                in: RoundedRectangle(cornerRadius: .infinity, style: .continuous)
-                            )
+                        LibrarySectionHeader(title: section.id)
                             .padding(.top, 12)
                             .padding(.bottom, -2)
                     }
