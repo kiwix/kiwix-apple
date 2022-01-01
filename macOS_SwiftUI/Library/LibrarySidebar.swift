@@ -10,24 +10,19 @@ import SwiftUI
 
 struct LibrarySidebar: View {
     @Binding var displayMode: LibraryDisplayMode?
-    private let sections: [[LibraryDisplayMode]] = [
-        [.opened, .featured, .new, .downloading],
-        Category.allCases.map {.category($0)}
-    ]
+    private let topDisplayModes: [LibraryDisplayMode] = [.opened, .featured, .new, .downloads]
+    private let categories: [LibraryDisplayMode] = Category.allCases.map {.category($0)}
     
     var body: some View {
-        List(sections, id: \.self, selection: $displayMode) { section in
-            Section {
-                ForEach(section, id: \.self) { item in
-                    Text(item.description)
+        List(selection: $displayMode) {
+            ForEach(topDisplayModes, id: \.self) { displayMode in
+                Label(displayMode.description, systemImage: displayMode.iconName)
+            }
+            Section("Category") {
+                ForEach(categories, id: \.self) { displayMode in
+                    Text(displayMode.description)
                 }
-            } header: {
-                if section.count == Category.allCases.count {
-                    Text("Category")
-                } else {
-                    EmptyView()
-                }
-            }.collapsible(false)
+            }
         }
     }
 }

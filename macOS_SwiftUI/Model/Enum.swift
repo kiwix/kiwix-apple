@@ -53,7 +53,7 @@ enum Category: String, CaseIterable, Identifiable {
 }
 
 enum LibraryDisplayMode: CustomStringConvertible, Hashable {
-    case opened, featured, new, downloading
+    case opened, featured, new, downloads
     case category(Category)
     
     var description: String {
@@ -64,10 +64,25 @@ enum LibraryDisplayMode: CustomStringConvertible, Hashable {
             return "Featured"
         case .new:
             return "New"
-        case .downloading:
-            return "Downloading"
+        case .downloads:
+            return "Downloads"
         case .category(let category):
             return category.description
+        }
+    }
+    
+    var iconName: String {
+        switch self {
+        case .opened:
+            return "laptopcomputer"
+        case .featured:
+            return "lightbulb"
+        case .new:
+            return "newspaper"
+        case .downloads:
+            return "square.and.arrow.down"
+        case .category(_):
+            return "book"
         }
     }
 }
