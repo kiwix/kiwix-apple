@@ -25,7 +25,7 @@ struct ContentView: View {
                 .frame(minWidth: 250)
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
-                        Button { toggleSidebar() } label: { Image(systemName: "sidebar.leading") }
+                        Button { Kiwix.toggleSidebar() } label: { Image(systemName: "sidebar.leading") }
                     }
                 }
             Group {
@@ -77,10 +77,6 @@ struct ContentView: View {
                 ZimFileDataProvider.open(url: url)
             }
         }
-    }
-    
-    private func toggleSidebar() {
-        NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
     }
 }
 

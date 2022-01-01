@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct Library: View {
-    @State private var selection: LibraryDisplayMode?
+    @State private var displayMode: LibraryDisplayMode?
 
     let sections: [[LibraryDisplayMode]] = [
         [.opened, .featured, .new],
@@ -18,8 +18,15 @@ struct Library: View {
 
     var body: some View {
         NavigationView {
-            LibrarySidebar(selection: $selection)
-            ZimFileGrid()
+            LibrarySidebar(displayMode: $displayMode)
+                .frame(minWidth: 200)
+                .toolbar {
+                    ToolbarItem(placement: .primaryAction) {
+                        Button { Kiwix.toggleSidebar() } label: { Image(systemName: "sidebar.leading") }
+                    }
+                }
+            LibraryZimFiles(displayMode: $displayMode)
+            Text("detail").frame(minWidth: 200)
         }
     }
 }

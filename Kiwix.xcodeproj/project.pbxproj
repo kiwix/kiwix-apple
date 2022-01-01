@@ -47,7 +47,7 @@
 		973A2FC5277EAA2500BD4320 /* OPDSRefreshError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */; };
 		973A2FC6277EAA2700BD4320 /* OPDSRefreshError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */; };
 		973A2FC7277F656B00BD4320 /* OPDSStreamParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9779A5A52456793500F6F6FF /* OPDSStreamParser.mm */; };
-		973A2FCA277F673800BD4320 /* ZimFileGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC9277F673800BD4320 /* ZimFileGrid.swift */; };
+		973A2FCA277F673800BD4320 /* LibraryZimFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FC9277F673800BD4320 /* LibraryZimFiles.swift */; };
 		973A2FCE277FB03F00BD4320 /* ZimFileTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FCD277FB03F00BD4320 /* ZimFileTag.swift */; };
 		973A2FD0277FB99000BD4320 /* LibrarySectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FCF277FB99000BD4320 /* LibrarySectionHeader.swift */; };
 		973A2FD2277FC32D00BD4320 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 973A2FD1277FC32D00BD4320 /* Library.swift */; };
@@ -284,7 +284,7 @@
 		9735D0C127777E5900C7D495 /* DisplayModeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayModeSelector.swift; sourceTree = "<group>"; };
 		9735D0C327778B2A00C7D495 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = macOS_SwiftUI/Support/Info.plist; sourceTree = SOURCE_ROOT; };
 		973A2FC4277EAA2500BD4320 /* OPDSRefreshError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OPDSRefreshError.swift; sourceTree = "<group>"; };
-		973A2FC9277F673800BD4320 /* ZimFileGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileGrid.swift; sourceTree = "<group>"; };
+		973A2FC9277F673800BD4320 /* LibraryZimFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryZimFiles.swift; sourceTree = "<group>"; };
 		973A2FCD277FB03F00BD4320 /* ZimFileTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileTag.swift; sourceTree = "<group>"; };
 		973A2FCF277FB99000BD4320 /* LibrarySectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibrarySectionHeader.swift; sourceTree = "<group>"; };
 		973A2FD1277FC32D00BD4320 /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
@@ -533,7 +533,7 @@
 			children = (
 				973A2FD1277FC32D00BD4320 /* Library.swift */,
 				973A2FD5277FD8F300BD4320 /* LibrarySidebar.swift */,
-				973A2FC9277F673800BD4320 /* ZimFileGrid.swift */,
+				973A2FC9277F673800BD4320 /* LibraryZimFiles.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -1334,7 +1334,7 @@
 				97B3BACC2736CDCE00A23F49 /* URLContent.swift in Sources */,
 				97242B8A2735E67500C87F85 /* SearchOperation.mm in Sources */,
 				97242BA12735E6A800C87F85 /* Parser.swift in Sources */,
-				973A2FCA277F673800BD4320 /* ZimFileGrid.swift in Sources */,
+				973A2FCA277F673800BD4320 /* LibraryZimFiles.swift in Sources */,
 				97242B7D2732E52300C87F85 /* Sidebar.swift in Sources */,
 				97B3048927796C9000E82DE0 /* SearchOperation.swift in Sources */,
 				9735D0C027777E3300C7D495 /* Enum.swift in Sources */,

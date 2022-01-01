@@ -38,7 +38,7 @@ struct Kiwix: SwiftUI.App {
                     }
                 }
             }
-        }.handlesExternalEvents(matching: [WindowGroupTitle.view.rawValue])
+        }.handlesExternalEvents(matching: [WindowGroupTitle.reading.rawValue])
         WindowGroup(WindowGroupTitle.library.rawValue) {
             Library().environment(\.managedObjectContext, Database.shared.container.viewContext)
         }.handlesExternalEvents(matching: [WindowGroupTitle.library.rawValue])
@@ -51,10 +51,14 @@ struct Kiwix: SwiftUI.App {
         currentWindow.addTabbedWindow(newWindow, ordered: .above)
     }
     
+    static func toggleSidebar() {
+        NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
+    }
+    
     private enum WindowGroupTitle: String, CaseIterable, Identifiable {
         var id: String { rawValue }
         
-        case view = "View"
+        case reading = "Reading"
         case library = "Library"
     }
 }

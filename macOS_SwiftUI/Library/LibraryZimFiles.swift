@@ -8,7 +8,8 @@
 
 import SwiftUI
 
-struct ZimFileGrid: View {
+struct LibraryZimFiles: View {
+    @Binding var displayMode: LibraryDisplayMode?
     @SectionedFetchRequest(
         sectionIdentifier: \.name,
         sortDescriptors: [SortDescriptor(\.name), SortDescriptor(\.size, order: .reverse)],

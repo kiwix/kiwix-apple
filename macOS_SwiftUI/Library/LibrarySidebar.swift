@@ -9,14 +9,14 @@
 import SwiftUI
 
 struct LibrarySidebar: View {
-    @Binding var selection: LibraryDisplayMode?
+    @Binding var displayMode: LibraryDisplayMode?
     private let sections: [[LibraryDisplayMode]] = [
         [.opened, .featured, .new, .downloading],
         Category.allCases.map {.category($0)}
     ]
     
     var body: some View {
-        List(sections, id: \.self, selection: $selection) { section in
+        List(sections, id: \.self, selection: $displayMode) { section in
             Section {
                 ForEach(section, id: \.self) { item in
                     Text(item.description)
@@ -34,6 +34,6 @@ struct LibrarySidebar: View {
 
 struct LibrarySidebar_Previews: PreviewProvider {
     static var previews: some View {
-        LibrarySidebar(selection: .constant(.featured))
+        LibrarySidebar(displayMode: .constant(.featured))
     }
 }
