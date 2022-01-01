@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ZimFileCell: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
+    @State var isHovering: Bool = false
     
     let zimFile: ZimFile
     
@@ -31,18 +32,23 @@ struct ZimFileCell: View {
                         ZimFileTag(string: tag)
                     }
                     Spacer()
-                    Image(systemName: "arrow.down.to.line.circle.fill")
+                    Image(systemName: "arrow.down.to.line.circle")
                 }
             }
         }
         .padding(12)
         .background(backgroundColor, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .onHover { self.isHovering = $0 }
     }
     
     private var backgroundColor: Color {
-        switch colorScheme {
-        case .dark:
+        switch (colorScheme, isHovering) {
+        case (.dark, true):
+            return Color.gray.opacity(0.1)
+        case (.dark, false):
             return Color.gray.opacity(0.2)
+        case (.light, true):
+            return Color.white.opacity(0.4)
         default:
             return Color.white
         }
