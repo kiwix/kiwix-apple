@@ -1,5 +1,5 @@
 //
-//  ZimFileGrid.swift
+//  LibraryZimFiles.swift
 //  Kiwix for macOS
 //
 //  Created by Chris Li on 12/31/21.

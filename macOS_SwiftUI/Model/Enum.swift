@@ -52,11 +52,8 @@ enum Category: String, CaseIterable, Identifiable {
     }
 }
 
-enum LibraryDisplayMode: CaseIterable, CustomStringConvertible, Hashable {
-    static var allCases: [LibraryDisplayMode] = [.opened, .featured, .new] + Category.allCases.map {.category($0)}
-    
-    
-    case opened, featured, new
+enum LibraryDisplayMode: CustomStringConvertible, Hashable {
+    case opened, featured, new, downloading
     case category(Category)
     
     var description: String {
@@ -67,6 +64,8 @@ enum LibraryDisplayMode: CaseIterable, CustomStringConvertible, Hashable {
             return "Featured"
         case .new:
             return "New"
+        case .downloading:
+            return "Downloading"
         case .category(let category):
             return category.description
         }

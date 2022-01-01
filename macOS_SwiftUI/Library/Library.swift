@@ -18,19 +18,7 @@ struct Library: View {
 
     var body: some View {
         NavigationView {
-            List(sections, id: \.self, selection: $selection) { section in
-                Section {
-                    ForEach(section, id: \.self) { item in
-                        Text(item.description)
-                    }
-                } header: {
-                    if section.count == Category.allCases.count {
-                        Text("Category")
-                    } else {
-                        EmptyView()
-                    }
-                }.collapsible(false)
-            }
+            LibrarySidebar(selection: $selection)
             ZimFileGrid()
         }
     }
