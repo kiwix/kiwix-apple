@@ -28,7 +28,7 @@ struct ZimFileCell: View {
                     VStack(alignment: .leading) {
                         Text(zimFile.size.formatted(.byteCount(style: .file)))
                             .font(.title2)
-                            .fontWeight(.bold)
+                            .fontWeight(.semibold)
                         Text("\(zimFile.articleCount.formatted(.number.notation(.compactName))) articles")
                             .font(.caption)
                         Text(zimFile.created.formatted(date: .abbreviated, time: .omitted))
@@ -36,9 +36,13 @@ struct ZimFileCell: View {
                     }
                 case .title:
                     VStack(alignment: .leading) {
-                        Text(zimFile.category == Category.stackExchange.rawValue ? zimFile.name.replacingOccurrences(of: "Stack Exchange", with: "") : zimFile.name)
+                        Text(
+                            zimFile.category == Category.stackExchange.rawValue ?
+                            zimFile.name.replacingOccurrences(of: "Stack Exchange", with: "") :
+                            zimFile.name
+                        )
                             .font(.title2)
-                            .fontWeight(.bold)
+                            .fontWeight(.semibold)
                             .lineLimit(1)
                         Text(zimFile.size.formatted(.byteCount(style: .file)))
                             .font(.caption)
