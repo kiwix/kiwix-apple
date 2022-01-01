@@ -21,18 +21,27 @@ struct LibraryZimFileDetail: View {
                     Text(zimFile.fileDescription).lineLimit(nil).font(.callout)
                 }
                 Section("Attributes") {
-                    Attribute(title: "Language",
-                              detail: Locale.current.localizedString(forIdentifier: zimFile.languageCode) ?? "Unknown")
-                    Attribute(title: "Category", detail: (Category(rawValue: zimFile.category) ?? .other).description)
-                    Attribute(title: "Flavor", detail: Flavor(rawValue: zimFile.flavor)?.description ?? "Unknown")
-                    Attribute(title: "Size", detail: zimFile.size.formatted(.byteCount(style: .file)))
-                    Attribute(title: "Date", detail: zimFile.created.formatted(date: .abbreviated, time: .omitted))
-                    Attribute(title: "Pictures", detail: zimFile.hasPictures ? "Yes" : "No")
-                    Attribute(title: "Videos", detail: zimFile.hasVideos ? "Yes" : "No")
-                    Attribute(title: "Details", detail: zimFile.hasDetails ? "Yes" : "No")
-                    Attribute(title: "Article", detail: zimFile.articleCount.formatted(.number.notation(.compactName)))
-//                    Attribute(title: "Media", detail: zimFile.mediaCount.formatted(.number.notation(.compactName)))
-                    Attribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
+                    Group {
+                        Attribute(
+                            title: "Language",
+                            detail: Locale.current.localizedString(forIdentifier: zimFile.languageCode) ?? "Unknown"
+                        )
+                        Attribute(
+                            title: "Category", detail: (Category(rawValue: zimFile.category) ?? .other).description
+                        )
+                        Attribute(title: "Flavor", detail: Flavor(rawValue: zimFile.flavor)?.description ?? "Unknown")
+                        Attribute(title: "Flavor Raw", detail: zimFile.flavor ?? "")
+                        Attribute(title: "Size", detail: zimFile.size.formatted(.byteCount(style: .file)))
+                        Attribute(title: "Date", detail: zimFile.created.formatted(date: .abbreviated, time: .omitted))
+                    }
+                    Group {
+                        Attribute(title: "Pictures", detail: zimFile.hasPictures ? "Yes" : "No")
+                        Attribute(title: "Videos", detail: zimFile.hasVideos ? "Yes" : "No")
+                        Attribute(title: "Details", detail: zimFile.hasDetails ? "Yes" : "No")
+                        Attribute(title: "Article", detail: zimFile.articleCount.formatted(.number.notation(.compactName)))
+                        Attribute(title: "Media", detail: zimFile.mediaCount.formatted(.number.notation(.compactName)))
+                        Attribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
+                    }
                 }
             }.listStyle(.automatic)
         } else {

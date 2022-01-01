@@ -11,6 +11,7 @@ import SwiftUI
 struct LibraryZimFiles: View {
     @Binding var displayMode: Library.DisplayMode?
     @Binding var zimFile: ZimFile?
+    @State var searchText: String = ""
     @SectionedFetchRequest(
         sectionIdentifier: \.name,
         sortDescriptors: [SortDescriptor(\.name), SortDescriptor(\.size, order: .reverse)],
@@ -37,6 +38,7 @@ struct LibraryZimFiles: View {
             }.padding()
         }
         .task { try? await Database.shared.refreshOnlineZimFileCatalog() }
+        .searchable(text: $searchText)
         .onChange(of: displayMode) { displayMode in
             guard let displayMode = displayMode else { return }
             zimFiles.sortDescriptors = generateSortDescriptors(displayMode: displayMode)

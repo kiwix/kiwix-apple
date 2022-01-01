@@ -94,7 +94,8 @@
 }
 
 - (NSString *)getFlavorFromBook:(kiwix::Book *)book {
-    return [NSString stringWithUTF8String:book->getFlavour().c_str()];
+    NSString *flavor = [NSString stringWithUTF8String:book->getFlavour().c_str()];
+    return [flavor stringByReplacingOccurrencesOfString:@"_" withString:@""];
 }
 
 @end
