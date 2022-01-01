@@ -27,29 +27,7 @@ struct LibraryZimFiles: View {
                 ForEach(zimFiles) { section in
                     Section {
                         ForEach(section) { zimFile in
-                            VStack {
-                                HStack {
-                                    VStack(alignment: .leading) {
-                                        Text(zimFile.size.formatted(.byteCount(style: .file)))
-                                            .font(.title2)
-                                            .fontWeight(.bold)
-                                        Text("\(zimFile.articleCount.formatted(.number.notation(.compactName))) articles")
-                                            .font(.caption)
-                                        Text(zimFile.created.formatted(date: .abbreviated, time: .omitted))
-                                            .font(.caption)
-                                    }
-                                    Spacer()
-                                    VStack(alignment: .trailing) {
-                                        if let tag = zimFile.tag {
-                                            ZimFileTag(string: tag)
-                                        }
-                                        Spacer()
-                                        Image(systemName: "arrow.down.to.line.circle.fill")
-                                    }
-                                }
-                            }.frame(maxHeight: .infinity)
-                            .padding(12)
-                            .background(.background, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                            ZimFileCell(zimFile: zimFile)
                         }
                     } header: {
                         LibrarySectionHeader(title: section.id)

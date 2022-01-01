@@ -80,7 +80,7 @@ enum LibraryDisplayMode: CustomStringConvertible, Hashable {
         case .new:
             return "newspaper"
         case .downloads:
-            return "square.and.arrow.down"
+            return "tray.and.arrow.down"
         case .category(_):
             return "book"
         }
