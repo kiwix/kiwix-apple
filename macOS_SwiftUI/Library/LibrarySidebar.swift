@@ -9,9 +9,9 @@
 import SwiftUI
 
 struct LibrarySidebar: View {
-    @Binding var displayMode: LibraryDisplayMode?
-    private let topDisplayModes: [LibraryDisplayMode] = [.opened, .featured, .new, .downloads]
-    private let categories: [LibraryDisplayMode] = Category.allCases.map {.category($0)}
+    @Binding var displayMode: Library.DisplayMode?
+    private let topDisplayModes: [Library.DisplayMode] = [.opened, .featured, .new, .downloads]
+    private let categories: [Library.DisplayMode] = Category.allCases.map {.category($0)}
     
     var body: some View {
         List(selection: $displayMode) {

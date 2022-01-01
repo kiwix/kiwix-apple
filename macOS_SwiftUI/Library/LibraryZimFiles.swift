@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct LibraryZimFiles: View {
-    @Binding var displayMode: LibraryDisplayMode?
+    @Binding var displayMode: Library.DisplayMode?
     @SectionedFetchRequest(
         sectionIdentifier: \.name,
         sortDescriptors: [SortDescriptor(\.name), SortDescriptor(\.size, order: .reverse)],

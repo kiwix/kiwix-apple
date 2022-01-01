@@ -9,9 +9,9 @@
 import SwiftUI
 
 struct Library: View {
-    @State private var displayMode: LibraryDisplayMode?
+    @State private var displayMode: DisplayMode? = .opened
 
-    let sections: [[LibraryDisplayMode]] = [
+    let sections: [[DisplayMode]] = [
         [.opened, .featured, .new],
         Category.allCases.map {.category($0)}
     ]
@@ -27,6 +27,41 @@ struct Library: View {
                 }
             LibraryZimFiles(displayMode: $displayMode)
             Text("detail").frame(minWidth: 200)
+        }
+    }
+    
+    enum DisplayMode: CustomStringConvertible, Hashable {
+        case opened, featured, new, downloads
+        case category(Category)
+        
+        var description: String {
+            switch self {
+            case .opened:
+                return "Opened"
+            case .featured:
+                return "Featured"
+            case .new:
+                return "New"
+            case .downloads:
+                return "Downloads"
+            case .category(let category):
+                return category.description
+            }
+        }
+        
+        var iconName: String {
+            switch self {
+            case .opened:
+                return "laptopcomputer"
+            case .featured:
+                return "lightbulb"
+            case .new:
+                return "newspaper"
+            case .downloads:
+                return "tray.and.arrow.down"
+            case .category(_):
+                return "book"
+            }
         }
     }
 }
