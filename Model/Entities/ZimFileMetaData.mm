@@ -53,7 +53,7 @@
         SAFE_READ(self.downloadURL, [self getURL:_book->getUrl()]);
         SAFE_READ(self.faviconURL, [self getURL:_book->getFaviconUrl()]);
         SAFE_READ(self.faviconData, [self getFaviconData:_book]);
-        SAFE_READ(self.tag, [self getTag:_book->getUrl()]);
+        SAFE_READ(self.tag, [self getTagFromBook:_book]);
         
         SAFE_READ_BOOL(self.hasDetails, _book->getTagBool("details"));
         SAFE_READ_BOOL(self.hasPictures, _book->getTagBool("pictures"));
@@ -93,8 +93,8 @@
     return [NSData dataWithBytes:favicon.c_str() length:favicon.length()];
 }
 
-- (NSString *)getTag:(std::string)urlString {
-    NSString *url = [NSString stringWithUTF8String:urlString.c_str()];
+- (NSString *)getTagFromBook:(kiwix::Book *)book {
+    NSString *url = [NSString stringWithUTF8String:book->getFlavour().c_str()];
     if ([url containsString:@"maxi"]) {
         return @"max";
     } else if ([url containsString:@"nopic"]) {
