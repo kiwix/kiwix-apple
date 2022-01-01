@@ -51,8 +51,8 @@ struct Kiwix: SwiftUI.App {
         currentWindow.addTabbedWindow(newWindow, ordered: .above)
     }
     
-    private enum WindowGroupTitle: String, Identifiable, CaseIterable {
-        var id: String { self.rawValue }
+    private enum WindowGroupTitle: String, CaseIterable, Identifiable {
+        var id: String { rawValue }
         
         case view = "View"
         case library = "Library"
