@@ -35,7 +35,7 @@ struct LibraryZimFiles: View {
                 }
             }.padding()
         }
-        .task { try? await Database.shared.refreshOnlineZimFileCatalog() }.frame(minWidth: 500)
+        .task { try? await Database.shared.refreshOnlineZimFileCatalog() }
         .onChange(of: displayMode) { displayMode in
             guard let displayMode = displayMode else { return }
             zimFiles.nsPredicate = generatePredicate(displayMode: displayMode)

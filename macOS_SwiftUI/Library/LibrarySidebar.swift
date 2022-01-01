@@ -22,7 +22,7 @@ struct LibrarySidebar: View {
                 ForEach(categories, id: \.self) { displayMode in
                     Text(displayMode.description)
                 }
-            }
+            }.collapsible(false)
         }
     }
 }

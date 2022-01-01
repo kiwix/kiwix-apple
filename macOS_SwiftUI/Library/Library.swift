@@ -26,6 +26,7 @@ struct Library: View {
                     }
                 }
             LibraryZimFiles(displayMode: $displayMode)
+                .frame(minWidth: 500, idealWidth: 500)
             Text("detail").frame(minWidth: 200)
         }.navigationSubtitle(displayMode?.description ?? "Unknown")
     }
