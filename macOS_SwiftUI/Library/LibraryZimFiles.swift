@@ -50,9 +50,7 @@ struct LibraryZimFiles: View {
     
     private var flattened: some View {
         ForEach(zimFiles.flatMap { $0 }) { zimFile in
-            ZimFileCell(zimFile, prominent: .title).onTapGesture {
-                self.zimFile = zimFile
-            }
+            ZimFileCell(zimFile, prominent: .title).onTapGesture { self.zimFile = zimFile }
         }
     }
     
@@ -60,12 +58,12 @@ struct LibraryZimFiles: View {
         ForEach(zimFiles) { section in
             if zimFiles.count <= 1 {
                 ForEach(section) { zimFile in
-                    ZimFileCell(zimFile)
+                    ZimFileCell(zimFile).onTapGesture { self.zimFile = zimFile }
                 }
             } else {
                 Section {
                     ForEach(section) { zimFile in
-                        ZimFileCell(zimFile)
+                        ZimFileCell(zimFile).onTapGesture { self.zimFile = zimFile }
                     }
                 } header: {
                     LibrarySectionHeader(title: section.id)

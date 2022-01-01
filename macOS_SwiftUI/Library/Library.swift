@@ -27,8 +27,8 @@ struct Library: View {
                     }
                 }
             LibraryZimFiles(displayMode: $displayMode, zimFile: $zimFile)
-                .frame(minWidth: 500, idealWidth: 500)
-            LibraryZimFileDetail(zimFile: $zimFile).frame(minWidth: 200)
+                .frame(minWidth: 500, idealWidth: .infinity)
+            LibraryZimFileDetail(zimFile: $zimFile).frame(minWidth: 200, idealWidth: 300)
         }.navigationSubtitle(displayMode?.description ?? "Unknown")
     }
     
