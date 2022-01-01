@@ -23,7 +23,7 @@ struct ZimFileTag: View {
                     .stroke(.tertiary, lineWidth: 1)
             )
             .background(
-                backgroundColor,
+                backgroundColor.opacity(0.75),
                 in: RoundedRectangle(cornerRadius: .infinity, style: .continuous)
             )
             .help(help)

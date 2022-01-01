@@ -1,6 +1,6 @@
 //
 //  ZimFileCell.swift
-//  macOS_SwiftUI
+//  Kiwix for macOS
 //
 //  Created by Chris Li on 12/31/21.
 //  Copyright © 2021 Chris Li. All rights reserved.
