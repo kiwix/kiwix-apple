@@ -66,7 +66,11 @@ class Database {
                     zimFile.created = metadata.creationDate
                     zimFile.faviconData = metadata.faviconData
                     zimFile.faviconURL = metadata.faviconURL
+                    zimFile.fileDescription = metadata.fileDescription
                     zimFile.fileID = metadata.fileID
+                    zimFile.hasDetails = metadata.hasDetails
+                    zimFile.hasPictures = metadata.hasPictures
+                    zimFile.hasVideos = metadata.hasVideos
                     zimFile.languageCode = metadata.languageCode
                     zimFile.mediaCount = metadata.mediaCount.int64Value
                     zimFile.name = metadata.title
@@ -108,8 +112,12 @@ class ZimFile: NSManagedObject, Identifiable {
     @NSManaged var created: Date
     @NSManaged var faviconData: Data?
     @NSManaged var faviconURL: URL?
+    @NSManaged var fileDescription: String
     @NSManaged var fileID: UUID
     @NSManaged var fileURLBookmark: Data?
+    @NSManaged var hasDetails: Bool
+    @NSManaged var hasPictures: Bool
+    @NSManaged var hasVideos: Bool
     @NSManaged var includedInSearch: Bool
     @NSManaged var languageCode: String
     @NSManaged var mediaCount: Int64

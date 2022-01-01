@@ -18,8 +18,12 @@
         <attribute name="created" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="faviconData" optional="YES" attributeType="Binary"/>
         <attribute name="faviconURL" optional="YES" attributeType="URI"/>
+        <attribute name="fileDescription" attributeType="String"/>
         <attribute name="fileID" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="fileURLBookmark" optional="YES" attributeType="Binary"/>
+        <attribute name="hasDetails" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="hasPictures" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="hasVideos" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="includedInSearch" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="languageCode" attributeType="String"/>
         <attribute name="mediaCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
@@ -41,6 +45,6 @@
     </entity>
     <elements>
         <element name="Bookmark" positionX="-63" positionY="-18" width="128" height="104"/>
-        <element name="ZimFile" positionX="-63" positionY="18" width="128" height="239"/>
+        <element name="ZimFile" positionX="-63" positionY="18" width="128" height="14"/>
     </elements>
 </model>
