@@ -13,7 +13,7 @@ struct LibraryZimFiles: View {
     @SectionedFetchRequest(
         sectionIdentifier: \.name,
         sortDescriptors: [SortDescriptor(\.name), SortDescriptor(\.size, order: .reverse)],
-        predicate: NSPredicate(format: "category == %@ AND languageCode == %@", "wikipedia", "en")
+        predicate: NSPredicate(format: "fileURLBookmark != nil")
     ) private var zimFiles: SectionedFetchResults<String, ZimFile>
     
     var body: some View {
@@ -36,6 +36,31 @@ struct LibraryZimFiles: View {
                     }
                 }
             }.padding()
-        }.task { try? await Database.shared.refreshOnlineZimFileCatalog() }.frame(minWidth: 500)
+        }
+        .task { try? await Database.shared.refreshOnlineZimFileCatalog() }.frame(minWidth: 500)
+        .onChange(of: displayMode) { displayMode in
+            guard let displayMode = displayMode else { return }
+            zimFiles.nsPredicate = generatePredicate(displayMode: displayMode)
+        }
+    }
+    
+    private func generatePredicate(displayMode: Library.DisplayMode) -> NSPredicate {
+        switch displayMode {
+        case .opened:
+            return NSPredicate(format: "fileURLBookmark != nil")
+        case .category(let category):
+            switch category {
+            case .ted, .stackExchange:
+                return NSPredicate(format: "category == %@", category.rawValue)
+            default:
+                return NSCompoundPredicate(andPredicateWithSubpredicates: [
+                    NSPredicate(format: "languageCode == %@", "en"),
+                    NSPredicate(format: "category == %@", category.rawValue)
+                ])
+            }
+        default:
+            break
+        }
+        return NSPredicate(format: "languageCode == %@", "en")
     }
 }

@@ -27,7 +27,7 @@ struct Library: View {
                 }
             LibraryZimFiles(displayMode: $displayMode)
             Text("detail").frame(minWidth: 200)
-        }
+        }.navigationSubtitle(displayMode?.description ?? "Unknown")
     }
     
     enum DisplayMode: CustomStringConvertible, Hashable {
