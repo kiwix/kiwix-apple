@@ -25,14 +25,20 @@ struct LibraryZimFiles: View {
                 pinnedViews: [.sectionHeaders]
             ) {
                 ForEach(zimFiles) { section in
-                    Section {
+                    if zimFiles.count <= 1 {
                         ForEach(section) { zimFile in
                             ZimFileCell(zimFile: zimFile)
                         }
-                    } header: {
-                        LibrarySectionHeader(title: section.id)
-                            .padding(.top, 12)
-                            .padding(.bottom, -2)
+                    } else {
+                        Section {
+                            ForEach(section) { zimFile in
+                                ZimFileCell(zimFile: zimFile)
+                            }
+                        } header: {
+                            LibrarySectionHeader(title: section.id)
+                                .padding(.top, 12)
+                                .padding(.bottom, -2)
+                        }
                     }
                 }
             }.padding()
