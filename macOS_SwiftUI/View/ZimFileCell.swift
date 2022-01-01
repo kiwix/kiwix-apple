@@ -13,18 +13,38 @@ struct ZimFileCell: View {
     @State var isHovering: Bool = false
     
     let zimFile: ZimFile
+    let prominent: Prominent
+    
+    init(_ zimFile: ZimFile, prominent: Prominent = .size) {
+        self.zimFile = zimFile
+        self.prominent = prominent
+    }
     
     var body: some View {
         VStack {
             HStack {
-                VStack(alignment: .leading) {
-                    Text(zimFile.size.formatted(.byteCount(style: .file)))
-                        .font(.title2)
-                        .fontWeight(.bold)
-                    Text("\(zimFile.articleCount.formatted(.number.notation(.compactName))) articles")
-                        .font(.caption)
-                    Text(zimFile.created.formatted(date: .abbreviated, time: .omitted))
-                        .font(.caption)
+                switch prominent {
+                case .size:
+                    VStack(alignment: .leading) {
+                        Text(zimFile.size.formatted(.byteCount(style: .file)))
+                            .font(.title2)
+                            .fontWeight(.bold)
+                        Text("\(zimFile.articleCount.formatted(.number.notation(.compactName))) articles")
+                            .font(.caption)
+                        Text(zimFile.created.formatted(date: .abbreviated, time: .omitted))
+                            .font(.caption)
+                    }
+                case .title:
+                    VStack(alignment: .leading) {
+                        Text(zimFile.category == Category.stackExchange.rawValue ? zimFile.name.replacingOccurrences(of: "Stack Exchange", with: "") : zimFile.name)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .lineLimit(1)
+                        Text(zimFile.size.formatted(.byteCount(style: .file)))
+                            .font(.caption)
+                        Text(zimFile.created.formatted(date: .abbreviated, time: .omitted))
+                            .font(.caption)
+                    }
                 }
                 Spacer()
                 VStack(alignment: .trailing) {
@@ -53,6 +73,10 @@ struct ZimFileCell: View {
             return Color.white
         }
     }
+    
+    enum Prominent {
+        case size, title
+    }
 }
 
 struct ZimFileCell_Previews: PreviewProvider {
@@ -65,7 +89,7 @@ struct ZimFileCell_Previews: PreviewProvider {
         zimFile.fileID = UUID()
         zimFile.languageCode = "en"
         zimFile.mediaCount = 100
-        zimFile.name = "Wikipedia"
+        zimFile.name = "Wikipedia Zim File Name"
         zimFile.persistentID = ""
         zimFile.size = 1000000000
         zimFile.tag = "max"
@@ -74,12 +98,22 @@ struct ZimFileCell_Previews: PreviewProvider {
     
     static var previews: some View {
         Group {
-            ZimFileCell(zimFile: ZimFileCell_Previews.zimFile)
+            ZimFileCell(ZimFileCell_Previews.zimFile)
                 .preferredColorScheme(.light)
                 .padding()
                 .background(Color(.sRGB, red: 239, green: 240, blue: 243, opacity: 0))
                 .frame(width: 300, height: 100)
-            ZimFileCell(zimFile: ZimFileCell_Previews.zimFile)
+            ZimFileCell(ZimFileCell_Previews.zimFile)
+                .preferredColorScheme(.dark)
+                .padding()
+                .background(Color(.sRGB, red: 37, green: 41, blue: 48, opacity: 0))
+                .frame(width: 300, height: 100)
+            ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .title)
+                .preferredColorScheme(.light)
+                .padding()
+                .background(Color(.sRGB, red: 239, green: 240, blue: 243, opacity: 0))
+                .frame(width: 300, height: 100)
+            ZimFileCell(ZimFileCell_Previews.zimFile, prominent: .title)
                 .preferredColorScheme(.dark)
                 .padding()
                 .background(Color(.sRGB, red: 37, green: 41, blue: 48, opacity: 0))

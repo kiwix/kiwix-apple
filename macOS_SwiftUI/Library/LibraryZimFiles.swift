@@ -40,7 +40,7 @@ struct LibraryZimFiles: View {
     
     var flattened: some View {
         ForEach(zimFiles.flatMap { $0 }) { zimFile in
-            ZimFileCell(zimFile: zimFile)
+            ZimFileCell(zimFile, prominent: .title)
         }
     }
     
@@ -48,12 +48,12 @@ struct LibraryZimFiles: View {
         ForEach(zimFiles) { section in
             if zimFiles.count <= 1 {
                 ForEach(section) { zimFile in
-                    ZimFileCell(zimFile: zimFile)
+                    ZimFileCell(zimFile)
                 }
             } else {
                 Section {
                     ForEach(section) { zimFile in
-                        ZimFileCell(zimFile: zimFile)
+                        ZimFileCell(zimFile)
                     }
                 } header: {
                     LibrarySectionHeader(title: section.id)
