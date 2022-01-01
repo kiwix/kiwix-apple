@@ -10,12 +10,12 @@ import SwiftUI
 
 struct LibrarySidebar: View {
     @Binding var displayMode: Library.DisplayMode?
-    private let topDisplayModes: [Library.DisplayMode] = [.opened, .featured, .new, .downloads]
+    private let displayModes: [Library.DisplayMode] = [.opened, .featured, .new, .downloads]
     private let categories: [Library.DisplayMode] = Category.allCases.map {.category($0)}
     
     var body: some View {
         List(selection: $displayMode) {
-            ForEach(topDisplayModes, id: \.self) { displayMode in
+            ForEach(displayModes, id: \.self) { displayMode in
                 Label(displayMode.description, systemImage: displayMode.iconName)
             }
             Section("Category") {
@@ -29,6 +29,6 @@ struct LibrarySidebar: View {
 
 struct LibrarySidebar_Previews: PreviewProvider {
     static var previews: some View {
-        LibrarySidebar(displayMode: .constant(.featured))
+        LibrarySidebar(displayMode: .constant(.featured)).frame(width: 250)
     }
 }

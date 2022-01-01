@@ -12,11 +12,6 @@ struct Library: View {
     @State private var displayMode: DisplayMode? = .opened
     @State private var zimFile: ZimFile?
 
-    let sections: [[DisplayMode]] = [
-        [.opened, .featured, .new],
-        Category.allCases.map {.category($0)}
-    ]
-
     var body: some View {
         NavigationView {
             LibrarySidebar(displayMode: $displayMode)
