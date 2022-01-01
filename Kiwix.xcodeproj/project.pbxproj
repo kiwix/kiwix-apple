@@ -134,6 +134,7 @@
 		97A36C351F8C21210079B452 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 975FDB061F608F4100A10E8C /* WebKit.framework */; };
 		97A36C441F8C21210079B452 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 975FDAE21F6082DA00A10E8C /* LaunchScreen.storyboard */; };
 		97A963C4259D38D900496214 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97A963C3259D38D900496214 /* SettingsView.swift */; };
+		97B073742780A000007C7DF3 /* LibraryZimFileDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B073732780A000007C7DF3 /* LibraryZimFileDetail.swift */; };
 		97B304882778B45B00E82DE0 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D07A08273719720002B9EB /* Search.swift */; };
 		97B3048927796C9000E82DE0 /* SearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3998F2467626A00BC6F5B /* SearchOperation.swift */; };
 		97B3048B277B633600E82DE0 /* ZimFileDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B3048A277B633600E82DE0 /* ZimFileDataProvider.swift */; };
@@ -353,6 +354,7 @@
 		97A2AE2125866D9200DEF81D /* ButtonProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonProvider.swift; sourceTree = "<group>"; };
 		97A36C4E1F8C21210079B452 /* Kiwix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiwix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97A963C3259D38D900496214 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		97B073732780A000007C7DF3 /* LibraryZimFileDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryZimFileDetail.swift; sourceTree = "<group>"; };
 		97B3048A277B633600E82DE0 /* ZimFileDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZimFileDataProvider.swift; sourceTree = "<group>"; };
 		97B3048C277D4EF400E82DE0 /* LibraryList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryList.swift; sourceTree = "<group>"; };
 		97B3998824673FE000BC6F5B /* SearchOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchOperation.h; sourceTree = "<group>"; };
@@ -536,6 +538,7 @@
 				973A2FD1277FC32D00BD4320 /* Library.swift */,
 				973A2FD5277FD8F300BD4320 /* LibrarySidebar.swift */,
 				973A2FC9277F673800BD4320 /* LibraryZimFiles.swift */,
+				97B073732780A000007C7DF3 /* LibraryZimFileDetail.swift */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -1351,6 +1354,7 @@
 				9735D0BA2775363900C7D495 /* DataModel.xcdatamodeld in Sources */,
 				973A2FC6277EAA2700BD4320 /* OPDSRefreshError.swift in Sources */,
 				973A2FC3277EA9F300BD4320 /* OPDSStreamParser.swift in Sources */,
+				97B073742780A000007C7DF3 /* LibraryZimFileDetail.swift in Sources */,
 				9735D0BC2775594700C7D495 /* Database.swift in Sources */,
 				97242B9D2735E6A800C87F85 /* Log.swift in Sources */,
 			);

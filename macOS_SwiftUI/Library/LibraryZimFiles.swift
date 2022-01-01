@@ -10,6 +10,7 @@ import SwiftUI
 
 struct LibraryZimFiles: View {
     @Binding var displayMode: Library.DisplayMode?
+    @Binding var zimFile: ZimFile?
     @SectionedFetchRequest(
         sectionIdentifier: \.name,
         sortDescriptors: [SortDescriptor(\.name), SortDescriptor(\.size, order: .reverse)],
@@ -49,7 +50,9 @@ struct LibraryZimFiles: View {
     
     private var flattened: some View {
         ForEach(zimFiles.flatMap { $0 }) { zimFile in
-            ZimFileCell(zimFile, prominent: .title)
+            ZimFileCell(zimFile, prominent: .title).onTapGesture {
+                self.zimFile = zimFile
+            }
         }
     }
     

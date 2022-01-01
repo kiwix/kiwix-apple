@@ -10,6 +10,7 @@ import SwiftUI
 
 struct Library: View {
     @State private var displayMode: DisplayMode? = .opened
+    @State private var zimFile: ZimFile?
 
     let sections: [[DisplayMode]] = [
         [.opened, .featured, .new],
@@ -25,9 +26,9 @@ struct Library: View {
                         Button { Kiwix.toggleSidebar() } label: { Image(systemName: "sidebar.leading") }
                     }
                 }
-            LibraryZimFiles(displayMode: $displayMode)
+            LibraryZimFiles(displayMode: $displayMode, zimFile: $zimFile)
                 .frame(minWidth: 500, idealWidth: 500)
-            Text("detail").frame(minWidth: 200)
+            LibraryZimFileDetail(zimFile: $zimFile).frame(minWidth: 200)
         }.navigationSubtitle(displayMode?.description ?? "Unknown")
     }
     
