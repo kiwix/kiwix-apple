@@ -36,7 +36,7 @@ struct LibraryZimFiles: View {
                             }
                         } header: {
                             LibrarySectionHeader(title: section.id)
-                                .padding(.top, 12)
+                                .padding(.top, section.id == zimFiles.first?.id ? 0 : 12)
                                 .padding(.bottom, -2)
                         }
                     }
