@@ -43,7 +43,7 @@ struct LibraryZimFileDetail: View {
                         Attribute(title: "ID", detail: String(zimFile.fileID.uuidString.prefix(8)))
                     }
                 }
-            }.listStyle(.automatic)
+            }
         } else {
             Text("Select a zim file to see detail")
                 .font(.title2)
