@@ -52,8 +52,25 @@ enum Category: String, CaseIterable, Identifiable {
     }
 }
 
-enum Flavor {
+enum Flavor: String, CustomStringConvertible {
+    case max = "maxi"
+    case noPic = "nopic"
+    case mini = "mini"
     
+    init?(rawValue: String?) {
+        self.init(rawValue: rawValue ?? "")
+    }
+    
+    var description: String {
+        switch self {
+        case .max:
+            return "max"
+        case .noPic:
+            return "no pic"
+        case .mini:
+            return "mini"
+        }
+    }
 }
 
 enum SidebarDisplayMode: String {

@@ -9,10 +9,14 @@
 import SwiftUI
 
 struct ZimFileFlavor: View {
-    let string: String
+    let flavor: Flavor
+    
+    init(_ flavor: Flavor) {
+        self.flavor = flavor
+    }
     
     var body: some View {
-        Text(string)
+        Text(flavor.description)
             .fontWeight(.medium)
             .font(.caption)
             .foregroundColor(.white)
@@ -30,37 +34,32 @@ struct ZimFileFlavor: View {
     }
     
     var backgroundColor: Color {
-        switch string {
-        case "max":
+        switch flavor {
+        case .max:
             return .green
-        case "nopic":
+        case .noPic:
             return .blue
-        case "mini":
+        case .mini:
             return .orange
-        default:
-            return .gray
         }
     }
     
     var help: String {
-        switch string {
-        case "max":
+        switch flavor {
+        case .max:
             return "everything except large media files like video/audio"
-        case "nopic":
+        case .noPic:
             return "most pictures have been removed"
-        case "mini":
+        case .mini:
             return "only a subset of the text is available, probably the first section"
-        default:
-            return "we have done our best to scrape everything"
         }
     }
 }
 
 struct Tag_Previews: PreviewProvider {
     static var previews: some View {
-        ZimFileFlavor(string: "max").padding()
-        ZimFileFlavor(string: "nopic").padding()
-        ZimFileFlavor(string: "mini").padding()
-        ZimFileFlavor(string: "other").padding()
+        ZimFileFlavor(Flavor(rawValue: "maxi")!).padding()
+        ZimFileFlavor(Flavor(rawValue: "nopic")!).padding()
+        ZimFileFlavor(Flavor(rawValue: "mini")!).padding()
     }
 }

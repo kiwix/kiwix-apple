@@ -52,8 +52,8 @@ struct ZimFileCell: View {
                 }
                 Spacer()
                 VStack(alignment: .trailing) {
-                    if let flavor = zimFile.flavor {
-                        ZimFileFlavor(string: flavor)
+                    if let flavor = Flavor(rawValue: zimFile.flavor) {
+                        ZimFileFlavor(flavor)
                     }
                     Spacer()
                     Image(systemName: "arrow.down.to.line.circle")
@@ -91,7 +91,7 @@ struct ZimFileCell_Previews: PreviewProvider {
         zimFile.category = "wikipedia"
         zimFile.created = Date()
         zimFile.fileID = UUID()
-        zimFile.flavor = "max"
+        zimFile.flavor = "mini"
         zimFile.languageCode = "en"
         zimFile.mediaCount = 100
         zimFile.name = "Wikipedia Zim File Name"
